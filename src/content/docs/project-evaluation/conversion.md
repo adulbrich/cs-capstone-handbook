@@ -1,5 +1,5 @@
 ---
-title: Grading Scale
+title: Points to Letter Conversion
 description: Projects are evaluated based on their outcomes, which depend on the category.
 sidebar:
   order: 2
@@ -13,6 +13,8 @@ Generally speaking, capstone projects should, in all relevant ways:
 - not suffer serious oversights.
 
 A central premise is that the software should perform its intended function properly and in a unified way.
+
+Here's how we'll convert your points to your letter grade. The `Points` column denotes the minimum amount of point to get the grade, e.g., 95 points or more will get you an `A`, less than 60 points will land you an `F`.
 
 Letter Grade | Points | Description
 -------------|--------|------------

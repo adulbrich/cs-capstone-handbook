@@ -1,24 +1,38 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
+import tailwind from "@astrojs/tailwind";
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
       title: "Computer Science Capstone Handbook",
+      customCss: [
+        // Path to your Tailwind base styles:
+        "./src/tailwind.css",
+      ],
       social: {
         github: "https://github.com/adulbrich/cs-capstone-handbook",
       },
       sidebar: [
         {
           label: "Project Selection",
-          autogenerate: { directory: "project-selection" },
+          autogenerate: {
+            directory: "project-selection",
+          },
         },
         {
           label: "Project Evaluation",
-          autogenerate: { directory: "project-evaluation" },
+          autogenerate: {
+            directory: "project-evaluation",
+          },
         },
       ],
+    }),
+    tailwind({
+      // Disable the default base styles:
+      applyBaseStyles: false,
     }),
   ],
 });

@@ -1,11 +1,17 @@
 ---
-title: Outcome Criteria
+title: Verification and Validation
 description: Projects are evaluated based on their outcomes, which depend on the category.
 sidebar:
-  order: 3
+  order: 6
 ---
 
+The Verification and Validation facet looks at the **outcome** of your Capstone project, not just the output.
+
+Each project category has a different grading scale, inherent to the category.
+
 ## FOSS
+
+This category involves contributing patches to an existing Free and Open-Source Software project. Examples include writing patches for the Rust compiler, the Xen hypervisor, the Habitica todo-list game, or the OSU Open Source Lab repositories.
 
 Points | Criteria
 -------|---------
@@ -19,6 +25,8 @@ Points | Criteria
 
 ## Research
 
+Collaborate with a professor on a research topic, aiming to publish a small paper with your findings.
+
 Points | Criteria
 -------|---------
 100    | Novel results or context or paper published, etc.
@@ -29,6 +37,8 @@ Points | Criteria
 
 ## Consultant
 
+Develop software for a specific external project partner.
+
 Points | Criteria
 -------|---------
 100    | System is in production and is public-facing or part of critical operations
@@ -37,17 +47,21 @@ Points | Criteria
 70     | Project partner feedback on an earlier prototype
 50     | System diverges significantly from Project partner requirements; project partner does not intend to use the system; team has stopped speaking to project partner
 
-## New Product
+## New Product or Game
+
+This category involves creating a new product or game, which may or may not become a viable business.
 
 Points | Criteria
 -------|---------
-100    | Thousands of light users or hundreds of heavy users or positive mention in mainstream/industry press or winning a reputable startup pitch competition
+100    | Thousands of light users or hundreds of heavy users or positive mention in mainstream/industry press or winning a reputable startup/gaming pitch competition
 90     | Hundreds of users you don’t know or rigorous user study.
 80     | Dozens of users you don’t know or user study
 70     | Friends have tried your software
 50     | No users, nor user testing
 
 ## Advanced Technology
+
+Undertake a project that leverages your technical skills, often combining knowledge and skills from multiple advanced technical elective courses.
 
 Measures:
 

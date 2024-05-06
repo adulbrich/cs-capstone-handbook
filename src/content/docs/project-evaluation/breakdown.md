@@ -1,15 +1,23 @@
 ---
-title: Breakdown
+title: Grade Distribution
 description: Facet distributions by course.
 sidebar:
   order: 1
 ---
 
+In the Capstone series, you will be evaluated on different facets, as listed below.
+
+Each course will have a different grade distribution based on the project progress.
+
+For example, CS461 puts more emphasis on Requirements & Specifications, while CS463 focuses more on Verification & Validation.
+
 Facet | CS461 | CS462 | CS463
 ------|-------|-------|------
 Reflection (learning outcomes, feedback, impact, IP, etc.) | 15% | 15% | 15%
-Requirements & Specifications | 25% | 20% | 15%
-Design, Implementation, & Deployment | 15% | 25% | 25%
-Verification & Validation (outcome) | 10% | 10% | 25%
+Requirements and Specifications | 25% | 20% | 15%
+Design, Implementation, and Deployment | 15% | 25% | **25%**
+Verification and Validation | 10% | 10% | **25%**
 Teamwork | 15% | 10% | 10%
 Communication (abstract, demo, presentation) | 10% | 10% | 10%
+
+If you change project during the series, we won't adjust the distribution accordingly, and you'll probably have to put extra effort in to meet the expectations and get a good final grade.
