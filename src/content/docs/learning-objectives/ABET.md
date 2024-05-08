@@ -1,9 +1,15 @@
 ---
 title: ABET
-description: tbd
+description: Learning objectives based on the Accreditation Board for Engineering and Technology (ABET)
 sidebar:
   order: 2
 ---
+
+The Accreditation Board for Engineering and Technology (ABET) is a nonprofit organization that accredits college and university programs in applied and natural science, computing, engineering, and engineering technology.
+
+ABET accreditation is recognized as a standard of quality for these programs, ensuring that they meet the needs of their professions and provide a rigorous education that prepares graduates to enter the workforce.
+
+The Bachelor of Science and Honors Bachelor of Science degree programs in the Computer Science Computer Systems Option are accredited by the Computing Accreditation Commission of ABET.
 
 ## Student Outcomes (SOs)
 
@@ -17,7 +23,6 @@ Graduates of the program will have an ability to:
 6. Apply computer science theory and software development fundamentals to produce computing-based solutions.
 
 [1] “Criteria for Accrediting Computing Programs, 2024 - 2025,” ABET. Accessed: May 08, 2024. [Online]. Available: https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-computing-programs-2024-2025/
-
 
 ## Performance Indicators (PIs)
 
