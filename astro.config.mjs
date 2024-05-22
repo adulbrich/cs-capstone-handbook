@@ -17,6 +17,12 @@ export default defineConfig({
       },
       sidebar: [
         {
+          label: "Introduction",
+          autogenerate: {
+            directory: "introduction",
+          },
+        },
+        {
           label: "Learning Objectives",
           autogenerate: {
             directory: "learning-objectives",

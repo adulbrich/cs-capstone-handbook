@@ -33,7 +33,7 @@ Points | Criteria
 90     | Prototype works on a wide range of reasonable inputs and some challenging ones
 80     | Prototype works on reasonable inputs
 70     | Prototype works on trivial inputs
-50     | Patch is vaporware
+50     | Prototype is vaporware
 
 ## Consultant
 
@@ -72,7 +72,7 @@ Measures:
 
 Points | Criteria
 -------|---------
-100    | Demonstrates that a problem was solved convincingly, meets two or more of the measures below with excellence, and positive mention from an industry professional
+100    | Demonstrates that a problem was solved convincingly, meets two or more of the measures above with excellence, and positive mention from an industry professional
 90     | Demonstrates that a problem was solved convincingly and meets two or more of the measures above with excellence
 80     | Demonstrates that a problem was solved convincingly and meets one of the measures above with excellence
 70     | Demonstrates that a problem was solved satisfactorily

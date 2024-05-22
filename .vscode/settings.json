@@ -1,0 +1,6 @@
+{
+  "[mdx]": {
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 75
+  },
+}
