@@ -59,21 +59,3 @@ Points | Criteria
 70     | Friends have tried your software
 50     | No users, nor user testing
 
-## Advanced Technology
-
-Undertake a project that leverages your technical skills, often combining knowledge and skills from multiple advanced technical elective courses.
-
-Measures:
-
-- Importance of the problem
-- (Technical) difficulty and scope
-- Novelty of the solution
-- Applies knowledge from multiple upper-year courses
-
-Points | Criteria
--------|---------
-100    | Demonstrates that a problem was solved convincingly, meets two or more of the measures above with excellence, and positive mention from an industry professional
-90     | Demonstrates that a problem was solved convincingly and meets two or more of the measures above with excellence
-80     | Demonstrates that a problem was solved convincingly and meets one of the measures above with excellence
-70     | Demonstrates that a problem was solved satisfactorily
-50     | Demonstrates that a problem was solved marginally
