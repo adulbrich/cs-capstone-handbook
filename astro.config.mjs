@@ -35,6 +35,12 @@ export default defineConfig({
           },
         },
         {
+          label: "Activities",
+          autogenerate: {
+            directory: "activities",
+          },
+        },
+        {
           label: "Project Evaluation",
           autogenerate: {
             directory: "project-evaluation",
