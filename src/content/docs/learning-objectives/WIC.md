@@ -5,9 +5,11 @@ sidebar:
   order: 3
 ---
 
-CS 461 and 462 are Writing Intensive Courses (WIC). We don't want to make you write for the sake of writing, so we align the WIC learning outcomes with the ABET ones. All the writing will happen through traditional software engineering activites, such as writing requirements, documentation, or outreach material (among other things).
+CS 461 and 462 are Writing Intensive Courses (WIC). We don't want to make you write for the sake of writing, so we align the WIC learning outcomes with the ABET ones. All the writing will happen through traditional software engineering activities, such as writing requirements, documentation, or outreach material (among other things).
 
 ## Learning Outcomes
+
+Graduates of the program will have an ability to:
 
 1. Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing
 2. Demonstrate knowledge/understanding of audience expectations, genres, and conventions appropriate to communicating in the discipline

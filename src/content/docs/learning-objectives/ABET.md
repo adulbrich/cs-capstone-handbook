@@ -13,7 +13,7 @@ The Bachelor of Science and Honors Bachelor of Science degree programs in the Co
 
 ## Student Outcomes (SOs)
 
-Graduates of the program will have an ability to:
+Graduates of the program will have an ability to:[^1]
 
 1. Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.
 2. Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline.
@@ -21,8 +21,6 @@ Graduates of the program will have an ability to:
 4. Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles.
 5. Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline.
 6. Apply computer science theory and software development fundamentals to produce computing-based solutions.
-
-[1] “Criteria for Accrediting Computing Programs, 2024 - 2025,” ABET. Accessed: May 08, 2024. [Online]. Available: https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-computing-programs-2024-2025/
 
 ## Performance Indicators (PIs)
 
@@ -65,3 +63,7 @@ Each SO has three performance indicators that are relevant for the Capstone seri
 1. Students can articulate how specific computer science theories apply to the design and development of their project.
 2. Students demonstrate proficiency in applying software development best practices and standards in their projects.
 3. Students' projects show an innovative application of computing principles to solve practical problems.
+
+## References
+
+[^1]: “Criteria for Accrediting Computing Programs, 2024 - 2025,” ABET. Accessed: May 08, 2024. [Online]. Available: https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-computing-programs-2024-2025/
