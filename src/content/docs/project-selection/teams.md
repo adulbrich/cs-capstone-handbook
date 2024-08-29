@@ -11,7 +11,7 @@ We require each team to have at least one experienced "external partner".
 
 Some categories have a project partner by definition (Research, Consultant), but they might not be technical enough. In that case, consider getting a faculty or industry mentor that has the technical acumen to guide you.
 
-If your project does not have a partner at all (New Product or Game, FOSS, Advanced Technology), it is mandatory to find one or more mentors as well. This will increase your chances of success. Mentors can be faculty, industry professionals, or other people that can contribute positively to the success of your project.
+If your project does not have a partner at all (New Product or Game, FOSS), it is mandatory to find one or more mentors as well. This will increase your chances of success. Mentors can be faculty, industry professionals, or other people that can contribute positively to the success of your project.
 
 ## Friends
 
