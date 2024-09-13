@@ -16,6 +16,16 @@ export default defineConfig({
       social: {
         github: "https://github.com/adulbrich/cs-capstone-handbook",
       },
+      head: [
+        {
+          tag: "script",
+          attrs: {
+            src: "https://plausible.io/js/script.outbound-links.js",
+            "data-domain": "capstone.alexulbrich.com",
+            defer: true,
+          },
+        },
+      ],
       sidebar: [
         {
           label: "Introduction",
