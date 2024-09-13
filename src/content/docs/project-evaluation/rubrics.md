@@ -11,7 +11,7 @@ Note that each facet will have a different weight depending the term, see the [g
 
 ## Reflection
 
-The purpose of the Reflection facet is evaluate your ability to critically analyze learnings and project experiences.
+The purpose of the Reflection facet is to evaluate your ability to critically analyze learnings and project experiences.
 
 Reflection will be evaluated both individually and as a team through different activities.
 
@@ -35,6 +35,8 @@ Points | Criteria
 70     | Basic requirements documented. Some stakeholder needs may be overlooked.
 50     | Minimal requirements documented. Many stakeholder needs are missing or unclear.
 
+Stakeholders refers to the project partners, which can be faculty members, students, industry partners, or else. Make sure that the goals of the project are stated, clear, and measurable. We can't evaluate requirements otherwise.
+
 ## Design, Implementation, and Deployment
 
 <!-- This needs to be improved depending on the category. -->
@@ -48,6 +50,8 @@ Points | Criteria
 80     | Design is adequate and implementation is functional. Deployment is successful but may have some issues.
 70     | Basic design and implementation. Deployment is functional but with notable issues.
 50     | Minimal design and incomplete implementation. Deployment is problematic or incomplete.
+
+We use the term "deployment" very loosely here. If you have a research project, this means that your code or artifacts are well-documented (think reusable/reproducible). If you have a FOSS project, it means your patches include all the necessary changes (incl. to documentation) and successfully works within the existing codebase with no regression.
 
 ## Verification and Validation
 

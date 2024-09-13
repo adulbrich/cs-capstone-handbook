@@ -18,7 +18,7 @@ Here's how we'll convert your points to your letter grade. The `Points` column d
 
 Letter Grade | Points | Description
 -------------|--------|------------
-A  | 95 | demonstrates mastery on all learning objectives, with no oversights
+A  | 94 | demonstrates mastery on all learning objectives, with no oversights
 A- | 90 | demonstrates mastery on most learning objectives, with some minor oversights
 B+ | 85 | adequacy on all learning objectives, mastery of some, with some minor oversights
 B  | 80 | adequacy on all learning objectives, with some minor oversights

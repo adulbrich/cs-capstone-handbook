@@ -6,7 +6,7 @@ sidebar:
 ---
 
 :::caution
-Changing or pivoting projects requires your instructors approval.
+Changing or pivoting projects requires your instructors approval and might require finding a new project partner or mentor.
 :::
 
 Although not recommended, unforeseen circumstances might lead you to pivot on your initial project idea, or completely change projects, such as:

@@ -14,9 +14,9 @@ For example, CS461 puts more emphasis on Requirements & Specifications, while CS
 Facet | CS461 | CS462 | CS463
 ------|-------|-------|------
 Reflection (learning outcomes, feedback, impact, IP, etc.) | 15% | 15% | 15%
-Requirements and Specifications | 25% | 20% | 15%
-Design, Implementation, and Deployment | 15% | 25% | **25%**
-Verification and Validation | 10% | 10% | **25%**
+Requirements and Specifications | **40%** | 15% | 5%
+Design, Implementation, and Deployment | 15% | **40%** | 20%
+Verification and Validation | 5% | 10% | **40%**
 Teamwork | 15% | 10% | 10%
 Communication (abstract, demo, presentation) | 10% | 10% | 10%
 
