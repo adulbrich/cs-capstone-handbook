@@ -57,6 +57,12 @@ export default defineConfig({
             directory: "project-evaluation",
           },
         },
+        {
+          label: "About",
+          autogenerate: {
+            directory: "about",
+          },
+        },
       ],
     }),
     tailwind({
