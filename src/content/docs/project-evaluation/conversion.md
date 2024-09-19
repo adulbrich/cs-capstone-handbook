@@ -2,7 +2,7 @@
 title: Points to Letter Conversion
 description: Projects are evaluated based on their outcomes, which depend on the category.
 sidebar:
-  order: 2
+  order: 3
 ---
 
 Generally speaking, capstone projects should, in all relevant ways:

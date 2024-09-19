@@ -2,7 +2,7 @@
 title: Rubrics
 description: TBD
 sidebar:
-  order: 3
+  order: 4
 ---
 
 Every term, your project partners, mentors, instructors, and teaching assistants will evaluate you on the six facets using the rubrics below, either through Canvas assignments or a survey.
