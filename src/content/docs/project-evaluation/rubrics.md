@@ -7,7 +7,7 @@ sidebar:
 
 Every term, your project partners, mentors, instructors, and teaching assistants will evaluate you on the six facets using the rubrics below, either through Canvas assignments or a survey.
 
-Note that each facet will have a different weight depending the term, see the [grade distribution](../../project-evaluation/breakdown).
+Note that each facet will have a different weight depending the term, see the [grade distribution](/project-evaluation/breakdown).
 
 ## Reflection
 
