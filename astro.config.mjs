@@ -21,7 +21,8 @@ export default defineConfig({
         {
           tag: "script",
           attrs: {
-            src: "https://plausible.io/js/script.outbound-links.js",
+            src: "/knowledge/js/script.outbound-links.js",
+            "data-api": "/knowledge/api/event",
             "data-domain": "capstone.alexulbrich.com",
             defer: true,
           },
