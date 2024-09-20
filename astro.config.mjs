@@ -2,12 +2,13 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
 import starlightImageZoom from "starlight-image-zoom";
+import starlightLinksValidator from 'starlight-links-validator'
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
-      plugins: [starlightImageZoom()],
+      plugins: [starlightImageZoom(), starlightLinksValidator()],
       title: "Computer Science Capstone Handbook",
       customCss: [
         // Path to your Tailwind base styles:
