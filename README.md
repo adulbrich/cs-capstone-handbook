@@ -2,7 +2,7 @@
 
 ## To Do
 
-- add activities
+- add activities, add conflict activities page
 - finish summative assignments for CS 462 / 463
 - automate link checking with GH Actions (run prod build and run `linkinator` on it or run post deploy on prod deployment)
 - add general email address: eecs_capstone_staff@engr.oregonstate.edu
