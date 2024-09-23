@@ -2,18 +2,106 @@
 title: Planning Activities
 description: TBD
 sidebar:
-  order: 9
+  order: 6
 ---
+
+import { Badge } from '@astrojs/starlight/components';
 
 > "Plans are nothing; planning is everything." -- Dwight D. Eisenhower
 
 ## Identify Success Metrics
 
+<Badge text="Team Activity" variant="note" class="mb-6"/>
+
+Especially for New Product or Game projects, it can be important to select and define the success metrics. 
+
+Here are some common metrics:
+
+- Number of Downloads or Sign Ups
+- Monthly Active Users (MAU)
+- Churn Rate
+- Average Session Duration
+- Net Promoter Score (NPS)
+- Positive Mentions / Up-votes
+- Research Citations
+
+Choose [success metrics relevant to your project](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf). Be careful with "vanity" metrics, e.g., the number of downloads is meaningless if nobody can run the software or everybody stops using it after the first use. Think about how meaningful your metrics are. Use multiple metrics if the need arises (see below for frameworks). 
+
+Depending on your project category, metrics can be quantitative (large surveys or wen analytics) or qualitative (for example based on one-on-one interviews) in nature.
+
+In addition to choosing the metrics, research and document how you will collect them. Consider using web analytics tools (Google Analytics, Plausible, Hotjar, ...), various tracking methods (database counts), interviews, surveys, etc.
+
+### Product-Market Fit (PMF) Question
+
+The PMF question asks, “How would you feel if you could no longer use this product?” Users typically respond with options like “Very disappointed,” “Somewhat disappointed,” or “Not disappointed.” A high percentage of “Very disappointed” responses (typically 40% or more) indicates strong product-market fit, showing that the product is essential to its users.
+
+### Pirate Metrics (AAARR)
+
+The [Pirate Metrics (AARRR) Framework](https://www.productplan.com/glossary/aarrr-framework/) is used for tracking customer behavior and business growth, consisting of five stages:
+
+- Acquisition (or awareness): How are people discovering our product?
+- Activation: Are these people taking the actions we want them to? For example, signing up or downloading your app.
+- Retention: Are our activated users continuing to engage with the product? Do they return after using it the first time?
+- Referral: Do users like the product enough to tell others about it?
+- Revenue: Are our users willing to pay for this product? 
+
+These metrics help businesses identify strengths and weaknesses in the customer journey to optimize growth strategies.
+
+### HEART Framework
+
+The [HEART Framework](https://www.heartframework.com/) is a user experience (UX) measurement framework developed by Google. It consists of five key metrics:
+
+- Happiness: Measures user satisfaction (e.g., surveys, ratings).
+- Engagement: Tracks how often and intensely users interact with the product.
+- Adoption: Measures how many new users begin using the product over time.
+- Retention: Tracks how many users return to the product.
+- Task Success: Measures the effectiveness and efficiency of completing core tasks (e.g., task completion rates).
+
+The HEART Framework helps teams evaluate UX impact and improve product design.
+
 ## Weekly Work Intensity
+
+<Badge text="Individual Activity" variant="success" class="mb-6"/>
+
+Rate each week of the term as low, medium, or high based on the effort you expect to dedicate to your project, considering other (course) commitments. Throughout the term, track your actual effort and compare it to your predictions. At the end, reflect on how your expectations matched your experience and identify any adjustments needed to better manage your time going forward.
+
+Discuss your weekly work intensity with your team and align expectations.
 
 ## Plan Prototype
 
+<Badge text="Team Activity" variant="note" class="mb-6"/>
+
+Your project might have a lot of unknowns, either on the technical feasibility side or on the user side (value or usability).
+
+Here are common feasibility concerns:
+
+- Algorithm concerns
+- Performance concerns
+- Scalability concerns
+- Fault tolerance concerns
+- Use of a technology the team has not used before
+- Use of a third-party component or service the team has not used before
+- Use of a legacy system the team has not used before
+- Dependency on new or related changes by other teams
+
+The idea with a feasibility prototype is to write code, quick and dirty, generally, to tackle items listed above. You could for example build a basic app in a language you have never used before, compare different algorithms on a subset of data, or make sure you can compile legacy code. This code is most likely intended to be thrown away.
+
+On the user side, low-fidelity prototypes are interactive wireframes that only focus on the information and workflow of your software, not the visual design nor differences in the actual data. High-fidelity prototypes is very similar but you'd have to look closer to figure out it's fake. The visual design and data are very realistic, but the data is not live. Consider [Figma](https://www.figma.com/) for your interactive use prototypes; you can also use pen and paper, powerpoint, or anything else you feel comfortable with.
+
+Finally, there's the live-data prototype. Consider it a substantially smaller implementation of the eventual product. The quality, performance, and functionality are very limited, but it runs well enough to collect data for specific use cases. This is the type of prototype you can start iterating on, so figure out feasibility first.
+
+Submit a plan with the types of prototypes you will build, in what order, and in what time frame, and indicate what concerns they will tackle. 
+
 ## Gantt Chart
 
+<Badge text="Team Activity" variant="note" class="mb-6"/>
 
+A [Gantt chart](https://www.atlassian.com/agile/project-management/gantt-chart) is a visual project management tool that displays tasks and timelines. It consists of a horizontal bar chart, where each bar represents a task, showing its start date, duration, and end date. The chart helps in tracking project progress, managing deadlines, and identifying dependencies between tasks, making it easier to plan and monitor the project's workflow.
 
+:::note
+This activity is easier to complete if you've already worked on the requirements and know what you need to build. You should anyway plan contingencies.
+:::
+
+For this activity, define your tasks, set the timeline (for all three terms), and create a visually appealing Gantt chart. You could use the Roadmap view on GitHub Projects for that purpose. 
+
+Submit the Gantt chart at the start, mid-point, and deadline of the assignment, along with a reflection on how well you adhered to your plan and any changes made along the way.
