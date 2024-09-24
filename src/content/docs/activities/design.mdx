@@ -5,22 +5,164 @@ sidebar:
   order: 4
 ---
 
+import { Badge } from '@astrojs/starlight/components';
+
+Design activities focus both on the technical and visual aspects. Activities tackle either one or the other. These activities will help you figure out what you need to implement and how you will make your software available (deployment).
+
+> "Design is not just what it looks like and feels like. Design is how it works." -- Steve Jobs
+
+{/* https://www.nngroup.com/articles/accessibility-inclusivity-study-guide/ */}
+
 ## Test Plan
+
+<Badge text="Individual Activity" variant="success" class="mb-6"/>
+
+Develop a comprehensive [test plan](https://en.wikipedia.org/wiki/Test_plan) to ensure your project's functionality, performance, and reliability.
+
+1. Identify Test Objectives: Define what you need to test (e.g., functionality, usability).
+2. Create Test Cases: Develop detailed test scenarios for each feature.
+3. Determine Test Methods: Choose manual or automated testing.
+4. Set Success Criteria: Define what constitutes a pass/fail result.
+
+Submit a test plan document outlining test cases, methods, and criteria. 
 
 ## Deployment Plan
 
-## Privacy by Design Guidelines
+<Badge text="Individual Activity" variant="success" class="mb-6"/>
+
+[Software deployment](https://en.wikipedia.org/wiki/Software_deployment) is all the things that need to happen for a software system to be  available for use.
+
+Outline the steps needed to either:
+
+- deploy your project to a production environment or app store, 
+- build your software and make it available for download.
+
+That means:
+
+1. Identify Deployment Environment: Specify where your software will be deployed (e.g., cloud, server) or where artifacts will be stored.
+2. Create a Deployment Checklist: Include steps like configuration, testing, build, integration, uploads, release, and backups. 
+3. Define Rollback Plan: Plan actions if deployment fails.
+
+Submit a deployment plan detailing environment, steps, and rollback procedures.
+
+## Apply the Privacy by Design (PbD) Guidelines
+
+<Badge text="Individual Activity" variant="success" class="mb-6"/>
+
+[Privacy by Design](https://en.wikipedia.org/wiki/Privacy_by_design) is a systems engineering approach developed by Ann Cavoukian, former Information & Privacy Commissioner of Ontario. 
+
+The [seven foundational principles](https://www.ietf.org/ietf-ftp/slides/slides-privacyws-privacy-by-design-the-seven-foundational-principles-00.pdf) are:
+
+1. Proactive not reactive; preventive not remedial
+2. Privacy as the default setting
+3. Privacy embedded into Design
+4. Full functionality -- positive-sum, not zero-sum
+5. End-to-end security -- full lifecycle protection
+6. Visibility and transparency -- keep it open
+7. Respect for user privacy -- keep it user-centric
+
+Read the principles in details, then write a report that explains how your software implements each one, or what needs to be done to get there. 
 
 ## UI Design Guidelines
 
+<Badge text="Team Activity" variant="note" class="mb-6"/>
+
+Select an appropriate set of user interface guidelines and apply them.
+There are user interface guidelines published by free/open-source
+organizations, corporations, and even government. Here are some
+examples:
+
+- [Microsoft's Fluent 2 Design System](https://fluent2.microsoft.design/)
+- [Google's Material 3 Design System](https://m3.material.io/)
+- [Adobe's Spectrum Design System](https://spectrum.adobe.com/)
+- [Firefox's Acorn Design System](https://acorn.firefox.com/)
+- [Atlassian's Design Language](https://atlassian.design/)
+- [KDE Human Interface Guidelines](https://develop.kde.org/hig/)
+- [GNOME Human Interface Guidelines](https://developer.gnome.org/hig/index.html)
+- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/)
+- [Digital.gov's Usability](https://digital.gov/topics/usability/)
+
+Feel free to come up with another design system or your own exhaustive one.
+
+Submit your updated UI wireframes or a demo of your updated software with a summary of what changed and why.
+
 ## Apply the GenderMag Method
 
-{/* https://gendermag.org/index.php */}
+<Badge text="Individual Activity" variant="success" class="mb-6"/>
 
-## Peer Design Exploration
+The [GenderMag Method](https://gendermag.org/index.php) enables software practitioners (e.g., developers, managers, UX professionals) find gender-inclusivity "bugs" in their software, and then fix the bugs they find.
 
-## Peer Design Review
+Apply the method and write a summary of your findings and what you will change in your software.
+
+{/* ## Peer UI Design Review
+
+<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> */}
+
+{/* ## Peer Design Exploration */}
+
+{/* Every team is expected to provide, in advance of class, a brief (one page maximum) description of at least one (possibly two) design challenge(s). This description may be diagrammatic or textual or some combination thereof. The challenge might concern fitness for purpose or fitness for future. When in consulting role, each team is expected to provide at least two alternative solutions to the other team’s presented design challenge.*/}
+
+## Peer Technical Design Review
+
+<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/>
+
+In this activity, find two other teams to run a technical design review, either on Zoom or in person.
+
+Your team will receive reviews from two other teams and will review these two teams. 
+
+As the reviewing team, your job is to think critically about the other team's design: 
+
+- Does the design report address the questions below?
+- Is the design fit for purpose? Does it meet the specification?
+- Is the design fit for the future? Can it grow modularly?
+- Does the code implement the design? (look at the code!)
+- Is the design solving the right problem?
+- Are there design alternatives that should be considered?
+- Are there coding issues that should be addressed?
+
+Submit your report (see below) and your consolidated reviews (from each member of the team). Share your review with the corresponding team. This activity can either be individual (one person from each team) or team (everyone on the team reviews both other teams).
+
+Your report should be a one page diagram and one page of text covering the following three issues:
+
+### Explanation of the Design
+
+This exercise is focused on the internal design and architecture of the software -- not the user experience.
+
+- What are the components? 
+- What libraries and tools are used? 
+- How are they arranged? 
+- Any noteworthy uses of architectural styles or design patterns?
+- etc.
+
+### Fitness for Purpose
+
+A rationale for why this design meets the requirements/specification.
+
+- Why is this design better than reasonable alternatives? 
+- If the project is in a known domain with a known solution strategy, is it following normal design conventions? 
+- If the project is in a novel domain or has a novel solution strategy, why is the proposed design a good match?
+
+### Fitness for Future
+
+- What are the anticipated kinds of change, growth, or variability in the domain?
+- Does the design facilitate managing that change in a modular fashion? 
+- What are core assumptions that cannot be changed?
 
 ## Read a Book on Approaches to Software Design
 
-{/* https://www.nngroup.com/articles/accessibility-inclusivity-study-guide/ */}
+<Badge text="Team Activity" variant="note" class="mb-6"/>
+
+Take a look at a book about software design, and discuss in the context of your project. One good approach is that each team member skims several chapters, so that collectively you have examined the entire book. The books listed here are a starting point; you might find other interesting books worth reading.
+
+- [Clean Architecture](https://www.goodreads.com/book/show/18043011-clean-architecture) by Robert C. Martin
+- [Release It!: Design and Deploy Production-Ready Software](https://www.goodreads.com/book/show/1069827.Release_It_) by Michael T. Nygard
+- [A Philosophy of Software Design](https://www.goodreads.com/book/show/39996759-a-philosophy-of-software-design) by John Ousterhout
+- [Software Design Decoded: 66 Ways Experts Think](https://www.goodreads.com/book/show/29889476-software-design-decoded) by Marian Petre and André van der Hoek
+- [Software Designers in Action: A Human-Centric Look at Design Work](https://www.goodreads.com/book/show/16236113-software-designers-in-action) by Marian Petre and André van der Hoek
+- [Designing Secure Software: A Guide for Developers](https://www.goodreads.com/book/show/58877754-designing-secure-software) by Loren Kohnfelder
+
+{/* ## Select a Database Technology */}
+
+{/* ## Describe your Architecture */}
