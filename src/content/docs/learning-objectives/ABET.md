@@ -22,7 +22,7 @@ Graduates of the program will have an ability to:[^1]
 5. Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline.
 6. Apply computer science theory and software development fundamentals to produce computing-based solutions.
 
-## Performance Indicators (PIs)
+<!-- ## Performance Indicators (PIs)
 
 Performance indicators are measurable statements that describe what evidence of student achievement looks like for each outcome.
 
@@ -62,7 +62,7 @@ Each SO has three performance indicators that are relevant for the Capstone seri
 
 1. Students can articulate how specific computer science theories apply to the design and development of their project.
 2. Students demonstrate proficiency in applying software development best practices and standards in their projects.
-3. Students' projects show an innovative application of computing principles to solve practical problems.
+3. Students' projects show an innovative application of computing principles to solve practical problems. -->
 
 ## References
 

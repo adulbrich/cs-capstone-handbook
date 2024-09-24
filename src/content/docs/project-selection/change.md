@@ -28,7 +28,7 @@ When you start your project, we recommend that you do some form of **product dis
 - Can we build it? (feasibility risk)
 - Does this solution work for our organization? ("business" viability risk)
 
-Depending on your project category, all risks might not apply int he same way.
+Depending on your project category, all risks might not apply in the same way.
 
 Reference: M. Cagan, INSPIRED: how to create tech products customers love, Second edition. Hoboken: Wiley, 2017.
 :::
