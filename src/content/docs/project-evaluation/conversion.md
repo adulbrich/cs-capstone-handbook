@@ -14,7 +14,7 @@ Generally speaking, capstone projects should, in all relevant ways:
 
 A central premise is that the software should perform its intended function properly and in a unified way.
 
-Here's how we'll convert your points to your letter grade. The `Points` column denotes the minimum amount of point to get the grade, e.g., 95 points or more will get you an `A`, less than 60 points will land you an `F`.
+Here's how we'll convert your points to your letter grade. The `Points` column denotes the minimum amount of point to get the grade, e.g., 94 points or more will get you an `A`, strictly less than 60 points will land you an `F`.
 
 Letter Grade | Points | Description
 -------------|--------|------------

@@ -3,16 +3,18 @@ import "astro-feelback/styles/feelback.css";
 import FeelbackTaggedMessage from "astro-feelback/components/FeelbackTaggedMessage.astro";
 ---
 
-<div class="container">
+<div class="container mx-auto py-3 sm:py-6 px-3 sm:px-6 grid justify-items-center">
   <FeelbackTaggedMessage
     contentSetId="1781cea3-51ff-4998-8160-5caabe74d5d4"
     preset="like-dislike"
+    layout="reveal-message"
+    title="Was this page helpful?"
   />
 </div>
 
 <style is:global>
     .feelback-container {
-        margin: 0 auto 3rem;
+        /* margin: 0 auto 3rem; */
         --max-width: 400px !important;
     }
 
@@ -48,6 +50,6 @@ import FeelbackTaggedMessage from "astro-feelback/components/FeelbackTaggedMessa
         font-weight: bold;
     }
     .feelback-container .feelback-btn[type="submit"]:hover {
-        background-color: hsl(var(--sl-hue-accent), 80%, 70%);
+        background-color: var(--sl-color-gray-2);
     }
 </style>
