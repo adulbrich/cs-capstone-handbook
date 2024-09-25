@@ -15,7 +15,7 @@ If your project does not have a partner at all (New Product or Game, FOSS), it i
 
 ## Friends
 
-Team up with friends. While familiarity can be an asset, productivity may sometimes be challenging to maintain. You can specify who you want to work with in the project selection survey in week 1 of Fall term. You'll need to choose the same project and list your names to be considered for the same team.
+Team up with friends. While familiarity can be an asset, productivity may sometimes be challenging to maintain. You can specify who you want to work with in the project selection survey in week 0 of Fall term. You'll need to choose the same projects and list your names to be considered for the same team.
 
 ## Shared Interests
 
