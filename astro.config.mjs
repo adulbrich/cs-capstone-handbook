@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
 import starlightImageZoom from "starlight-image-zoom";
@@ -6,7 +7,9 @@ import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://capstone.alexulbrich.com",
   integrations: [
+    sitemap(),
     starlight({
       plugins: [starlightImageZoom(), starlightLinksValidator()],
       title: "Computer Science Capstone Handbook",
