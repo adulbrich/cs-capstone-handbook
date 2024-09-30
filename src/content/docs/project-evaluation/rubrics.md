@@ -40,8 +40,6 @@ Stakeholders refers to the project partners, which can be faculty members, stude
 ## Design, Implementation, and Deployment
 
 <!-- This needs to be improved depending on the category. -->
-<!-- This needs to be improved because the points drop in CS461 is huge. -->
-<!-- Alternatively, change the breakdown to reduce impact in CS461. -->
 
 Points | Criteria
 -------|---------
@@ -54,9 +52,6 @@ Points | Criteria
 We use the term "deployment" very loosely here. If you have a research project, this means that your code or artifacts are well-documented (think reusable/reproducible). If you have a FOSS project, it means your patches include all the necessary changes (incl. to documentation) and successfully works within the existing codebase with no regression.
 
 ## Verification and Validation
-
-<!-- This needs to be improved because the points drop in CS461 is huge. -->
-<!-- Alternatively, change the breakdown to reduce impact in CS461. -->
 
 The Verification and Validation facet looks at the **outcome** of your Capstone project, not just the output.
 

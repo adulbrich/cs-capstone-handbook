@@ -48,9 +48,9 @@ export default defineConfig({
           },
         },
         {
-          label: "Project Selection",
+          label: "Practicalities",
           autogenerate: {
-            directory: "project-selection",
+            directory: "practicalities",
           },
         },
         {
