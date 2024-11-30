@@ -1,7 +1,7 @@
 {
   "name": "cs46x-handbook",
   "type": "module",
-  "version": "0.0.1",
+  "version": "2024-2025.WI.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
