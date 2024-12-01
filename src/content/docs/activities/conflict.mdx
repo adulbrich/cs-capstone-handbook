@@ -5,6 +5,8 @@ sidebar:
   order: 3
 ---
 
+import { LinkCard } from '@astrojs/starlight/components';
+
 Conflict is an inevitable part of teamwork and collaboration, but it doesn't have to be destructive. When managed effectively, conflict can serve as a productive force that drives progress and improvement. Here are ways in which conflict can be beneficial to a team:
 
 - **Clarifies Goals:** Conflict can help team members better understand the project's objectives by challenging assumptions or addressing ambiguities. This ensures alignment and focus on what truly matters.
@@ -93,9 +95,9 @@ Addressing issues often requires escalating steps to ensure fairness and resolut
 - Clearly explain the steps already taken and outline the concerns using the principles of assertive communication (specific, respectful, and focused on behavior rather than personality).
 - Collaborate with the professor or TA to develop an action plan to address the issue.
 
-## Thomas–Kilmann Conflict Mode Instrument
+## Thomas-Kilmann Conflict Mode Instrument
 
-The Thomas–Kilmann Conflict Mode Instrument (TKI) is a framework for understanding how people handle conflict in different situations. It identifies five conflict-handling modes based on two dimensions: 
+The Thomas-Kilmann Conflict Mode Instrument (TKI) is a framework for understanding how people handle conflict in different situations. It identifies five conflict-handling modes based on two dimensions: 
 
 - assertiveness (the extent to which you pursue your own needs) and 
 - cooperativeness (the extent to which you prioritize others needs). 
@@ -106,28 +108,58 @@ Each mode is a unique combination of these dimensions, suitable for different co
 ![](../../../assets/tki-matrix.png)
 </div>
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+#### Competing
 
-### Competing
+A “win-lose” approach where you pursue your own goals without regard for others' needs or interests. It can harm relationships if overused or if others feel disregarded. Apply it when:
 
-<Tabs syncKey="modes">
-  <TabItem label="Description">
-  </TabItem>
-  <TabItem label="When to Apply">
-  </TabItem>
-  <TabItem label="Risks">
-  </TabItem>
-</Tabs>
+- Quick, decisive action is needed (e.g., during emergencies).
+- The issue is critical, and you're confident you're right.
+- Protecting yourself from exploitation when others are not cooperating.
 
-### Collaborating
+#### Collaborating
 
-<Tabs syncKey="modes">
-  <TabItem label="Description">
-  </TabItem>
-  <TabItem label="When to Apply">
-  </TabItem>
-  <TabItem label="Risks">
-  </TabItem>
-</Tabs>
+A “win-win” approach where all parties work together to find a solution that fully satisfies everyone's needs. It is more time-consuming and requires mutual trust and effort. Apply it when: 
 
-...
+- The conflict is complex, and creative solutions are needed.
+- Long-term relationships or team goals are a priority.
+- The concerns of all parties are too important to compromise.
+
+#### Compromising
+
+A "middle ground" approach where each party gives up something to reach a mutually acceptable solution. It can result in suboptimal outcomes if overused, as neither party fully achieves their goals. Apply it when:
+
+- A temporary solution is needed, and time is limited.
+- Goals are moderately important, but not worth the effort of collaboration.
+- Parties are equally powerful and willing to negotiate.
+
+#### Avoiding
+
+A “no-deal” approach where the conflict is ignored or postponed. Problems may fester if avoided too often, leading to larger issues. Apply it when:
+
+- The issue is trivial or not worth the effort to address.
+- There is no chance of winning, or more information is needed.
+- Emotions are running high, and cooling off is necessary.
+
+#### Accommodating
+
+A “yield-lose” approach where you prioritize others' needs over your own. It can lead to resentment or feelings of being undervalued if overused. Apply it when:
+
+- Maintaining harmony or preserving relationships is more important than the issue.
+- The other party's position is stronger, or you're wrong.
+- It's a goodwill gesture to foster cooperation in the future.
+
+### Team Conflict Assessment
+
+First, fill the template as a team.
+
+<LinkCard title="Team Conflict Situation Assessment Template" href="/public/team-conflict-assessment.pdf" download="team-conflict-situation-assessment.pdf"/>
+
+Then, in order to make an informed decision about which style to use, consider the potential outcomes or consequences of applying each conflict handling style in the matrix below.
+
+| Handling Style | Positive Outcome | Negative Outcome |
+| -------------- | ---------------- | ---------------- |
+| Compete | |
+| Collaborate | |
+| Compromise | |
+| Accommodate | |
+| Avoid | |
