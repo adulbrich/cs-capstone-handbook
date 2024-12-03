@@ -39,7 +39,7 @@ Stakeholders refers to the project partners, which can be faculty members, stude
 
 ## Design, Implementation, and Deployment
 
-<!-- This needs to be improved depending on the category. -->
+This rubric is very broad and we don't expect to hit a hundred points before Winter or Spring. Fall term does not put a lot of weight on this rubric, but your goal is still to get the implementation and deployment under way to hit the ground running in Winter.
 
 Points | Criteria
 -------|---------
@@ -109,6 +109,8 @@ Points | Criteria
 
 ## Teamwork
 
+Capstone is fundamentally a team effort. Teamwork will be judged on the team and individual level. 
+
 Points | Criteria
 -------|---------
 100    | Actively contributes to team success. Demonstrates leadership, collaboration, and conflict resolution skills.
@@ -116,6 +118,14 @@ Points | Criteria
 80     | Participates in team activities and contributes to goals. Basic collaboration skills.
 70     | Inconsistent participation. Limited contribution to team goals and collaboration.
 50     | Minimal participation or negative impact on team dynamics.
+
+In addition to the general rubric for teamwork, we're also using the Comprehensive Assessment of Team Member Effectiveness (CATME). The [CATME Five Temwork Dimensions](https://info.catme.org/features/catme-five-dimensions/) will only be used for individual peer reviews:
+
+- Contributing to the Team’s Work
+- Interacting with Teammates
+- Keeping the Team on Track
+- Expecting Quality
+- Having Relevant Knowledge, Skills, and Abilities
 
 ## Communication
 
