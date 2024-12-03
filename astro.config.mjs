@@ -12,7 +12,7 @@ export default defineConfig({
     sitemap(),
     starlight({
       plugins: [starlightImageZoom(), starlightLinksValidator()],
-      title: "Computer Science Capstone Handbook",
+      title: "CS Capstone Handbook",
       components: {
         Pagination: "./src/components/Pagination.astro",
       },
