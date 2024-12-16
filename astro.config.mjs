@@ -2,8 +2,8 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
-import starlightImageZoom from "starlight-image-zoom";
-import starlightLinksValidator from "starlight-links-validator";
+// import starlightImageZoom from "starlight-image-zoom";
+// import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,7 +11,7 @@ export default defineConfig({
   integrations: [
     sitemap(),
     starlight({
-      plugins: [starlightImageZoom(), starlightLinksValidator()],
+      // plugins: [starlightImageZoom(), starlightLinksValidator()],
       title: "CS Capstone Handbook",
       components: {
         Pagination: "./src/components/Pagination.astro",
