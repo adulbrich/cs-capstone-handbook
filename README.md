@@ -2,7 +2,6 @@
 
 ## To Do
 
-- add conflict activities
 - improve research activities
 - improve FOSS activities
 - add recommended activities based on project category or type
