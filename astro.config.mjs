@@ -13,6 +13,7 @@ export default defineConfig({
     starlight({
       // plugins: [starlightImageZoom(), starlightLinksValidator()],
       title: "CS Capstone Handbook",
+      lastUpdated: true,
       components: {
         Pagination: "./src/components/Pagination.astro",
       },
@@ -57,6 +58,12 @@ export default defineConfig({
           label: "Activities",
           autogenerate: {
             directory: "activities",
+          },
+        },
+        {
+          label: "Guides",
+          autogenerate: {
+            directory: "guides",
           },
         },
         {
