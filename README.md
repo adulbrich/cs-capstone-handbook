@@ -1,5 +1,11 @@
 # CS Capstone Handbook
 
+```sh
+bun install
+bun run dev
+bun run build
+```
+
 ## To Do
 
 - improve research activities
