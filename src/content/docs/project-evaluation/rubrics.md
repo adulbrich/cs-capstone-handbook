@@ -109,6 +109,8 @@ Points | Criteria
 
 ## Teamwork
 
+<!-- TODO: potentially add CATME here https://info.catme.org/features/catme-five-dimensions/ -->
+
 Capstone is fundamentally a team effort. Teamwork will be judged on the team and individual level. 
 
 Points | Criteria
