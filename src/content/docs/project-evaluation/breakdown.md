@@ -24,8 +24,8 @@ If you change project during the series, we won't adjust the distribution accord
 
 ## Assignment Matrix
 
-Here's the summative assignment matrix for each term, including which assignment fulfills which learning outcome(s). Some assignments like the career activities don't count toward final grade but are required to get your grade.
+Here's the assignment matrix for each term, including which assignment fulfills which learning outcome(s). Some assignments like the career activities don't count toward final grade but are required to get your grade.
 
 <iframe class="w-full aspect-video" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRvLGwqAltJPhXy1VzDcpBIHTctgyXLmGFfiKEW_D---nsALzPPkqUc6-c9Ia5gIkTmN6a1tdJEldN2/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
 
-See next section for the details for each summative assignment.
+See next section for the details for each assignment.
