@@ -15,27 +15,30 @@ hero:
       </span> Handbook
   tagline: Your one-stop shop for everything CS Capstone!
   image:
-    file: ../../assets/codey.webp
+    file: ../../assets/hero.jpg
   actions:
     - text: What is Capstone?
       link: /learning-objectives/series/
       icon: right-arrow
       variant: primary
-    - text: Project Categories
-      link: /practicalities/categories/
+    - text: Activities
+      link: /activities/introduction/
+      icon: rocket
       variant: secondary
-    - text: Project Evaluation
-      link: /project-evaluation/breakdown/
-      variant: secondary
+    # TODO: uncomment when it's ready
+    # - text: Guides
+    #   link: /guides/introduction/
+    #   variant: secondary
+    #   icon: open-book
 ---
 
 import { LinkCard, CardGrid } from '@astrojs/starlight/components';
-
-:::caution
-This handbook is a work in progress. Refer to Canvas for the most up-to-date information. 
-:::
 
 <CardGrid>
   <LinkCard title="For Students" description="Learn everything you need to know to succeed in the CS Capstone series." href="/introduction/for-students/" />
   <LinkCard title="For Project Partners" description="Learn about project requirements, categories, and evaluation criteria." href="/introduction/for-partners/" />
 </CardGrid>
+
+:::caution
+This handbook is a work in progress. Refer to Canvas for the most up-to-date information. 
+:::

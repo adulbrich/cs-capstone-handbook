@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.actions {
+    @apply gap-4;
+}
+
+.actions > a {
+    @apply rounded-lg;
+}
+
+.hero > img {
+    @apply rounded-lg;
+}
