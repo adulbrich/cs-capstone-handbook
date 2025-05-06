@@ -66,4 +66,4 @@ Each SO has three performance indicators that are relevant for the Capstone seri
 
 ## References
 
-[^1]: “Criteria for Accrediting Computing Programs, 2024 - 2025,” ABET. Accessed: May 08, 2024. [Online]. Available: https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-computing-programs-2024-2025/
+[^1]: “Criteria for Accrediting Computing Programs, 2025 – 2026,” ABET. Accessed: May 06, 2025. [Online]. Available: https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-computing-programs-2025-2026/
