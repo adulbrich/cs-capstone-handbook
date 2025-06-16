@@ -8,6 +8,10 @@ bun run build
 
 ## To Do
 
+- review grade distribution (25% pp, 25% peers, 50% class)
+- improve project partner guidelines
+- add project to showcase and improve layout
+- add guides
 - improve research activities
 - improve FOSS activities
 - add recommended activities based on project category or type
