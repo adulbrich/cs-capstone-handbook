@@ -119,9 +119,7 @@ output[!is.na(Q23), Q23_normalized := (Q23_mean * 50 / 3) + (100 / 3)]
 output[!is.na(Q24), Q24_normalized := (Q24_mean * 50 / 3) + (100 / 3)]
 output[!is.na(Q3) , Q3_normalized   := Q3_mean * n]
 
-output <- output[Email != "saucierd@oregonstate.edu"]
-
-output[, Q3_shifted := Q3_normalized / 4]
+output[, Q3_shifted := Q3_normalized / 5]
 output[Q3_shifted < 10, Q3_shifted := 10]
 output[Q3_shifted > 40, Q3_shifted := 40]
 output[, Q3_shifted := (0.65 + (0.0225 * Q3_shifted) - (0.00025 * Q3_shifted ^ 2)) * 100]
