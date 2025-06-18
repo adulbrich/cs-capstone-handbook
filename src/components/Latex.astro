@@ -1,0 +1,15 @@
+---
+import katex from "katex";
+
+const { formula = "", inline = true } = Astro.props;
+const html = katex.renderToString(formula, { throwOnError: false, displayMode: !inline });
+---
+
+<span class={inline ? "inline" : "block text-center"} set:html={html}/>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.css"
+  integrity="sha384-veTAhWILPOotXm+kbR5uY7dRamYLJf58I7P+hJhjeuc7hsMAkJHTsPahAl0hBST0"
+  crossorigin="anonymous"
+/>

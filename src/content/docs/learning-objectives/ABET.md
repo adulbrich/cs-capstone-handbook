@@ -16,10 +16,10 @@ The Bachelor of Science and Honors Bachelor of Science degree programs in the Co
 Graduates of the program will have an ability to:[^1]
 
 1. Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.
-2. Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline.
+2. Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.
 3. Communicate effectively in a variety of professional contexts.
 4. Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles.
-5. Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline.
+5. Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline.
 6. Apply computer science theory and software development fundamentals to produce computing-based solutions.
 
 <!-- ## Performance Indicators (PIs)
