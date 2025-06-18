@@ -45,13 +45,13 @@ dt <- merge(dt, team_sizes, by = "Team")
 # Does the member do an appropriate quantity of work?
 # labels[,Q2_X_1]
 
-# How about the quality of the member’s work?
+# How about the quality of the member's work?
 # labels[,Q2_X_2]
 
-# Rate the member’s attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.).
+# Rate the member's attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.).
 # labels[,Q2_X_3]
 
-# Rate the overall value of the member’s technical contribution.
+# Rate the overall value of the member's technical contribution.
 # labels[,Q2_X_4]
 
 ### Question 3
@@ -176,7 +176,7 @@ output_emails <- output[, .(Email, Subject = "CS463 Peer Review Results", Body="
 
 fwrite(output_emails, "data/2025-05-05-peer-review-survey-emails.csv", row.names = FALSE)
 # after creating the email file, open it in Excel and add the body of the email
-# =CONCAT("Does the member do an appropriate quantity of work?",CHAR(10), ROUND(D2,2),CHAR(10),CHAR(10),"How about the quality of the member’s work? ",CHAR(10),ROUND(E2,2),CHAR(10),CHAR(10),"Rate the member’s attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.).",CHAR(10),ROUND(F2,2),CHAR(10),CHAR(10),"Rate the overall value of the member’s technical contribution.",CHAR(10),ROUND(G2,2),CHAR(10),CHAR(10),"Overall Contribution",CHAR(10),ROUND(H2,2),CHAR(10),CHAR(10),"Total Score (mean of above scores)",CHAR(10),ROUND(I2,2))
+# =CONCAT("Does the member do an appropriate quantity of work?",CHAR(10), ROUND(D2,2),CHAR(10),CHAR(10),"How about the quality of the member's work? ",CHAR(10),ROUND(E2,2),CHAR(10),CHAR(10),"Rate the member's attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.).",CHAR(10),ROUND(F2,2),CHAR(10),CHAR(10),"Rate the overall value of the member's technical contribution.",CHAR(10),ROUND(G2,2),CHAR(10),CHAR(10),"Overall Contribution",CHAR(10),ROUND(H2,2),CHAR(10),CHAR(10),"Total Score (mean of above scores)",CHAR(10),ROUND(I2,2))
 # then save it as an XLSM file and add a new VBA module (see `./send-emails-macos.vba`)
 
 

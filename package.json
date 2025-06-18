@@ -16,6 +16,8 @@
     "@astrojs/tailwind": "^5.1.5",
     "astro": "^5.2.3",
     "astro-feelback": "^0.3.4",
+    "katex": "^0.16.22",
+    "mermaid": "^11.6.0",
     "sharp": "^0.32.6",
     "starlight-image-zoom": "^0.8.0",
     "starlight-links-validator": "^0.12.4",

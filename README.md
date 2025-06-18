@@ -8,7 +8,7 @@ bun run build
 
 ## To Do
 
-- review grade distribution (25% pp, 25% peers, 50% class)
+- change wording to talk about students, project partners, and instructors instead of using pronouns such as "you", "your", "we", "us"
 - improve project partner guidelines
 - add project to showcase and improve layout
 - add guides
