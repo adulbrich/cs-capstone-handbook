@@ -1,0 +1,201 @@
+---
+title: Project Partner Evaluation
+description: Rubrics for project partner evaluations and progress assessments.
+sidebar:
+  order: 4
+---
+
+import { Badge } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+This page contains rubrics used for **project partner evaluations**, which account for 25% of your total grade. Your project partner will assess your team using these rubrics at the end of each term.
+
+Project partner assessments use different approaches depending on the term. In Fall and Winter, the evaluation is **progress-focused** using adapted criteria that assess development milestones and learning growth. In Spring, the evaluation shifts to **an outcome-focused approach** that assesses final deliverables and project outcomes. Each facet will have a different weight depending on the term, see the [grade distribution](/project-evaluation/breakdown).
+
+**Students should discuss expectations with their project partner or mentor at the beginning of each term and review progress regularly.**
+
+The evaluation will be colletected **through a survey sent to each project partner at the end of each term**. The survey will include the rubrics below, which you can also use to self-assess your progress and development.
+
+## Reflection
+
+The purpose of the Reflection facet is to evaluate your ability to critically analyze learnings and project experiences.
+
+<Tabs syncKey="terms">
+  <TabItem label="Fall & Winter">
+    Points | Criteria
+    -------|---------
+    100    | Demonstrates clear learning progression and applies insights to improve team processes. Regular reflection evident.
+    90     | Shows good learning progression with some application of insights. Regular reflection with minor gaps.
+    80     | Adequate learning progression. Basic reflection on experiences with some insights.
+    70     | Limited learning progression. Minimal reflection with general observations.
+    50     | No clear learning progression. Lacks meaningful reflection.
+  </TabItem>
+  <TabItem label="Spring">
+    Points | Criteria
+    -------|---------
+    100    | Demonstrates deep critical thinking, learning, and insight with specific examples. Identifies future improvements.
+    90     | Shows clear critical thinking, learning, and insight. Provides some specific examples and suggestions for improvement.
+    80     | Reflects on learning and experiences with general insights. May lack specific examples or suggestions.
+    70     | Basic reflection on experiences. Limited insights and general observations.
+    50     | Minimal reflection. Lacks depth, examples, and insights.
+  </TabItem>
+</Tabs>
+
+## Requirements and Specifications
+
+The purpose of the Requirements and Specifications facet is to evaluate your ability to gather, document, and prioritize project requirements.
+
+<Tabs syncKey="terms">
+  <TabItem label="Fall & Winter">
+    Points | Criteria
+    -------|---------
+    100    | Requirements gathering shows clear progress and stakeholder engagement. Well-documented evolution of understanding.
+    90     | Good progress in requirements gathering. Most stakeholder needs identified with documentation improving.
+    80     | Adequate progress in requirements. Basic stakeholder engagement with some documentation.
+    70     | Limited progress in requirements gathering. Minimal stakeholder engagement.
+    50     | No clear progress in requirements. Stakeholder needs remain unclear.
+  </TabItem>
+  <TabItem label="Spring">
+    Points | Criteria
+    -------|---------
+    100    | Requirements are comprehensive, well-documented, and prioritized. Stakeholder needs are thoroughly addressed.
+    90     | Requirements are detailed and mostly well-documented. Stakeholder needs are largely addressed.
+    80     | Requirements are clear but may lack some detail or prioritization. Stakeholder needs are generally addressed.
+    70     | Basic requirements documented. Some stakeholder needs may be overlooked.
+    50     | Minimal requirements documented. Many stakeholder needs are missing or unclear.
+  </TabItem>
+</Tabs>
+
+Stakeholders refers to the project partners, which can be faculty members, students, industry partners, or else. Make sure that the goals of the project are stated, clear, and measurable. We can't evaluate requirements otherwise.
+
+## Design, Implementation, and Deployment
+
+This rubric is very broad and we don't expect to hit a hundred points before Winter or Spring. Fall term does not put a lot of weight on this rubric, but your goal is still to get the implementation and deployment under way to hit the ground running in Winter.
+
+<Tabs syncKey="terms">
+  <TabItem label="Fall & Winter">
+    Points | Criteria
+    -------|---------
+    100    | Significant progress in design and implementation. Clear development milestones achieved with good documentation.
+    90     | Good progress with most milestones met. Implementation advancing steadily with adequate documentation.
+    80     | Adequate progress with some milestones met. Basic implementation progress.
+    70     | Limited progress. Few milestones achieved with minimal implementation.
+    50     | No clear progress. Implementation has not advanced meaningfully.
+  </TabItem>
+  <TabItem label="Spring">
+    Points | Criteria
+    -------|---------
+    100    | Solution design is innovative, well-thought-out, and thoroughly implemented. Deployment is smooth and well-documented.
+    90     | Design is solid and implementation is mostly complete. Deployment is successful with minor issues.
+    80     | Design is adequate and implementation is functional. Deployment is successful but may have some issues.
+    70     | Basic design and implementation. Deployment is functional but with notable issues.
+    50     | Minimal design and incomplete implementation. Deployment is problematic or incomplete.
+  </TabItem>
+</Tabs>
+
+We use the term "deployment" very loosely here. If you have a research project, this means that your code or artifacts are well-documented (think reusable/reproducible). If you have a FOSS project, it means your patches include all the necessary changes (incl. to documentation) and successfully works within the existing codebase with no regression.
+
+## Verification and Validation
+
+The Verification and Validation facet looks at the **outcome** of your Capstone project, not just the output.
+
+In Spring, the grading scale is different depending on the project **category**. If your project does not fit any category or if your project partner has other expectations, they will be able to provide a custom grade on the scale [50,100].
+
+### Fall & Winter Terms
+
+Points | Criteria
+-------|---------
+100    | Clear testing and validation strategy in place. Regular feedback collection and incorporation.
+90     | Good validation approach developing. Some testing and feedback collection evident.
+80     | Basic validation planning. Limited testing or feedback collection.
+70     | Minimal validation planning. Little evidence of testing approach.
+50     | No clear validation strategy. No testing or feedback collection.
+
+### FOSS
+
+This category involves contributing patches to an existing **Free and Open-Source Software** project. Examples include writing patches for the Rust compiler, the Xen hypervisor, the Habitica todo-list game, or the OSU Open Source Lab repositories.
+
+Points | Criteria
+-------|---------
+100    | Patches accepted, positive mentions in press/release.
+90     | Patches accepted.
+85     | Patches accepted but then reverted due to bug/issue.
+80     | Patches submitted and reviewed.
+75     | Patches submitted.
+70     | Patch appears to work on student computers.
+50     | Patch is vaporware.
+
+### Research
+
+Collaborate with a professor on a research topic, aiming to publish a small paper with your findings.
+
+Points | Criteria
+-------|---------
+100    | Novel results or context or paper published, etc.
+90     | Prototype works on a wide range of reasonable inputs and some challenging ones.
+80     | Prototype works on reasonable inputs.
+70     | Prototype works on trivial inputs.
+50     | Prototype is vaporware.
+
+### Consultant
+
+Develop software for a specific external project partner.
+
+Points | Criteria
+-------|---------
+100    | System is in production and is public-facing or part of critical operations.
+90     | Project partner is actively working to integrate system into production, and system is public-facing or part of critical operations.
+80     | Project partner feedback on an earlier prototype; concerns have been addressed in newer version.
+70     | Project partner feedback on an earlier prototype.
+50     | System diverges significantly from Project partner requirements; project partner does not intend to use the system; team has stopped speaking to project partner.
+
+### New Product or Game
+
+This category involves creating a new product or game, which may or may not become a viable business.
+
+Points | Criteria
+-------|---------
+100    | Hundreds of light users or tens of heavy users or positive mention in mainstream/industry press or winning a reputable startup/gaming pitch competition.
+90     | Two dozens users you don’t know or rigorous user study.
+80     | A dozen users you don’t know or user study.
+70     | Friends have tried your software.
+50     | No users, nor user testing.
+
+## Teamwork
+
+{/* TODO: figure out if this facet should be team-based on individually assessed */}
+
+Capstone is fundamentally a team effort. Teamwork will be judged on the team and individual level.
+
+Points | Criteria
+-------|---------
+100    | Actively contributes to team success. Demonstrates leadership, collaboration, and conflict resolution skills.
+90     | Contributes effectively to team goals. Shows good collaboration and some leadership or conflict resolution.
+80     | Participates in team activities and contributes to goals. Basic collaboration skills.
+70     | Inconsistent participation. Limited contribution to team goals and collaboration.
+50     | Minimal participation or negative impact on team dynamics.
+
+{/* Alternative that is more team-focused.
+Points | Criteria
+-------|---------
+100    | Excellent team collaboration and communication. Clear role distribution and conflict resolution.
+90     | Good team dynamics with effective collaboration. Roles mostly clear with good communication.
+80     | Adequate teamwork. Basic collaboration with some communication issues.
+70     | Limited teamwork effectiveness. Unclear roles or communication problems.
+50     | Poor team dynamics. Significant collaboration or communication issues. */}
+
+In addition to the general rubric for teamwork, we're also using the Comprehensive Assessment of Team Member Effectiveness (CATME). The [CATME Five Teamwork Dimensions](https://info.catme.org/features/catme-five-dimensions/) will only be used for intra-groups peer reviews.
+
+## Communication
+
+The Communication facet evaluates sudents' ability to effectively convey ideas, progress, and outcomes through various means such as email updates, presentations, documentation, and discussions.
+
+Points | Criteria
+-------|---------
+100    | Clear, concise, and effective communication. Excellent presentations and well-structured documentation.
+90     | Good communication skills. Effective presentations and documentation with minor issues.
+80     | Adequate communication. Presentations and documentation are clear but may lack polish.
+70     | Basic communication skills. Presentations and documentation are understandable but with notable issues.
+50     | Poor communication. Presentations and documentation are unclear or ineffective.
+
+
