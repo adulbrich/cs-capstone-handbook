@@ -8,6 +8,7 @@ bun run build
 
 ## To Do
 
+- change wording to talk about students, project partners, and instructors instead of using pronouns such as "you", "your", "we", "us"
 - improve project partner guidelines
 - add project to showcase and improve layout
 - add guides
