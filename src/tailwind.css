@@ -2,10 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.actions {
+    @apply gap-4;
+}
+
 .hero > img {
     @apply rounded-lg;
 }
 
-.sl-link-button {
+.actions > a {
+    @apply rounded-lg;
+}
+
+.cta > a {
     @apply rounded-lg;
 }
