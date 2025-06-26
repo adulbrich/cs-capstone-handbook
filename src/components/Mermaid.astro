@@ -1,0 +1,74 @@
+---
+export interface Props {
+  title?: string;
+  showForPrint?: boolean;
+}
+const { title = "", showForPrint = false } = Astro.props;
+---
+
+<!-- https://xkonti.tech/blog/astro-mermaid-mdx/ --><!-- https://mermaid.js.org/syntax/flowchart.html -->
+<script>
+  import mermaid from "mermaid";
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: "neutral",
+    fontFamily: "inherit",
+    fontSize: 14,
+  });
+
+  function extractMermaidCode() {
+    // Find all mermaid components
+    const mermaidElements = document.querySelectorAll(
+      "figure.expandable-diagram"
+    );
+    mermaidElements.forEach((element) => {
+      // Find the `copy` button for each component
+      const copyButton = element.querySelector(".copy button");
+      // Check if copyButton exists before accessing its properties
+      if (!copyButton) return;
+      // Extract the code from the `data-code` attribute
+      let code = (copyButton as HTMLButtonElement).dataset.code || "";
+      // Replace the U+007f character with `\n` to simulate new lines
+      code = code.replace(/\u007F/g, "\n");
+      // Construct the `pre` element for the diagram code
+      const preElement = document.createElement("pre");
+      preElement.className =
+        "mermaid not-prose flex justify-center items-center rounded bg-gray-50";
+      preElement.innerHTML = code;
+      // Find the diagram content container and override it's content
+      const diagramContainer = element.querySelector(".diagram-content");
+      if (diagramContainer && diagramContainer.firstChild) {
+        diagramContainer.replaceChild(preElement, diagramContainer.firstChild);
+      } else if (diagramContainer) {
+        diagramContainer.appendChild(preElement);
+      }
+    });
+  }
+
+  // Wait for the DOM to be fully loaded
+  document.addEventListener("DOMContentLoaded", async () => {
+    extractMermaidCode();
+    mermaid.run();
+  });
+</script>
+
+<figure class="expandable-diagram">
+  <figcaption class={`${showForPrint ? "print:block" : "print:hidden"}`}>
+    {title}
+  </figcaption>
+
+  <div
+    class={`diagram-content ${showForPrint ? "print:block" : "print:hidden"}`}
+  >
+    Loading diagram...
+  </div>
+
+  <details class="text-sm print:hidden">
+    <summary>Source</summary>
+    <slot />
+  </details>
+</figure>
+<div class={`${showForPrint ? "hidden" : "print:block"} hidden italic`}>
+  The flowchart is not printed to PDF. Consult the handbook to see it.
+</div>

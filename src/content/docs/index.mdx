@@ -32,13 +32,46 @@ hero:
     #   icon: open-book
 ---
 
-import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+import { LinkCard, CardGrid, Card, LinkButton } from '@astrojs/starlight/components';
 
 <CardGrid>
   <LinkCard title="For Students" description="Learn everything you need to know to succeed in the CS Capstone series." href="/introduction/for-students/" />
   <LinkCard title="For Project Partners" description="Learn about project requirements, categories, and evaluation criteria." href="/introduction/for-partners/" />
 </CardGrid>
 
-:::caution
-This handbook is a work in progress. Refer to Canvas for the most up-to-date information. 
-:::
+<h2 class="text-center">Why Partner with Us?</h2>
+
+<p class="text-center">Our project partners play a crucial role in the success of our students and the CS Capstone program.</p>
+
+<div class="cta text-center">
+  <LinkButton
+    href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/"
+    variant="primary"
+    icon="external"
+    iconPlacement="start"
+    target="_blank"
+  >
+    Browse or Submit a Project
+  </LinkButton>
+</div>
+
+<CardGrid>
+  <Card title="Technology Exploration" icon="rocket">
+    Experiment with new tools, frameworks, or methodologies through student-led projects without risking core resources.
+  </Card>
+  <Card title="Showcase Leadership" icon="star">
+    Demonstrate your commitment to education and innovation by supporting student-driven projects.
+  </Card>
+  <Card title="Cost-Effective Development" icon="puzzle">
+    Gain high-quality project deliverables at a fraction of the cost of professional development, maximizing your budget.
+  </Card>
+  <Card title="Mentorship Opportunities" icon="heart">
+    Faculty and industry leaders can mentor the next generation of engineers, fostering professional growth and networking.
+  </Card>
+  <Card title="Early Recruitment Pipeline" icon="seti:pipeline">
+    Identify and engage with top talent for internships or full-time roles before they enter the job market.
+  </Card>
+  <Card title="Prototype Development" icon="approve-check-circle">
+    Identify and engage with top talent for internships or full-time roles before they enter the job market.
+  </Card>
+</CardGrid>

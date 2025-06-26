@@ -6,10 +6,14 @@
     @apply gap-4;
 }
 
+.hero > img {
+    @apply rounded-lg;
+}
+
 .actions > a {
     @apply rounded-lg;
 }
 
-.hero > img {
+.cta > a {
     @apply rounded-lg;
 }

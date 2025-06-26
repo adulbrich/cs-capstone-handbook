@@ -1,10 +1,11 @@
 ---
 title: Project Requirements
-description: TBD
-draft: true
+description: Understanding the importance of requirements in software development, how to gather and write them effectively, and their role in project success.
 sidebar:
   order: 2
 ---
+
+import { LinkCard } from '@astrojs/starlight/components';
 
 Requirements are the foundation of any successful project. They define what the product should do, how it should perform, and who it serves, ensuring everyone—developers, stakeholders, and users—has a shared understanding. Without clear requirements:
 
@@ -25,7 +26,11 @@ Requirements can take many forms, including:
 
 Gathering requirements involves talking to stakeholders, users, and developers to understand their needs and constraints. Techniques like **interviews**, **surveys**, **workshops**, and **researching competitors** can help elicit requirements. Once gathered, requirements must be documented, validated, and managed throughout the project lifecycle. 
 
-{/* TODO: add card link to requirement activities */}
+<LinkCard
+  title="Requirements Activities"
+  href="/activities/requirements/"
+  description="Activities to help figure out and structure requirements."
+/>
 
 This means the *requirements document will evolve* as students learn more about the project throughout the academic year. 
 
@@ -41,6 +46,12 @@ Many would argue that the problem statement is the most important part of the re
 
 We could even go as far as saying that the **highest performing team re-frame the problem constantly**, and that the problem statement is a living document that evolves as the team learns more about the problem and the solution space. **Complex problems are rarely understood fully at the beginning of a project.**
 
+<LinkCard
+  title="Creative Activities"
+  href="/activities/creative/"
+  description="Activities to help uncover, frame, and re-frame problems to solve."
+/>
+
 ## What Are Good Requirements?
 
 Good requirements are clear, concise, and testable (and in the end, validated). They should support solving the problem. Use simple, unambiguous language to describe what the product should do. Avoid vague terms ("fast", "easy"), jargon, or technical terms that may confuse stakeholders.
@@ -54,10 +65,14 @@ Non-functional requirements should be quantifiable and measurable. For example, 
 Requirements should be **prioritized** based on their importance to the project. This helps developers focus on the most critical features first and ensures the project stays on track.
 
 :::tip[Managing Requirements]
-Using a spreadsheet or a requirements management tool can help organize and track requirements throughout the project lifecycle. [GitHub Projects](https://github.com/features/issues) or [Linear](https://linear.app/) are great options.
+Using a spreadsheet or a requirements management tool can help organize and track requirements throughout the project lifecycle. [GitHub Projects](https://github.com/features/issues) or [Linear](https://linear.app/) are great options. There's also Jira, Trello, Notion, Asana, Airtable, and many others.
 :::
 
-{/* TODO: add card link to planning activities */}
+<LinkCard
+  title="Planning Activities"
+  href="/activities/planning/"
+  description="Activities to help figure out your scope, timeline, and deliverables. This include prioritization, risk management, and project planning."
+/>
 
 ## Validation
 
@@ -70,7 +85,7 @@ Validated requirements should roughly meet the following criteria:
 
 The quickest way to validate requirements would be a build a prototype and test it with users. In addition to getting feedback on something tangible, it will also help figure out technical feasibility. 
 
-In addition, reviewing requirements with the project partner, mentor, or other stakeholders can help catch any misunderstandings or ambiguities early on. This happens more often than not. We have seen it happen many times: in academia, in industry, and in previous Capstone projects. 
+In addition, **reviewing requirements with the project partner, mentor, or other stakeholders** can help catch any misunderstandings or ambiguities early on. This happens more often than not. We have seen it happen many times: in academia, in industry, and in previous Capstone projects. 
 
 ## Measuring Success
 
@@ -78,7 +93,11 @@ After writing a clear problem statement and requirements that support it, we hav
 
 Based on the project category, teams will have different success metrics. For example, a team building a game might measure success by the number of downloads, the average time spent playing, or the number of in-app purchases. If the team is building a new product, they might measure success by the number of active users, the number of paying customers, or the revenue generated. In a research project, the definition success is based on the research questions the team or student is trying to answer. For open-source contributions, success might be measured by the number of issues closed or the number of pull requests merged.
 
-{/* TODO: link card to planning activities again */}
+<LinkCard
+  title="Planning Activities"
+  href="/activities/planning/"
+  description="Activities to help define success metrics."
+/>
 
 ## Best Practices for Writing Requirements
 
@@ -99,11 +118,13 @@ When writing your requirements document, there might be gaps or areas that need 
 
 ## Some Truths about Software Requirements
 
+Let's be honest.
+
 - They can be busywork. Keep them short and easy to skim. Focus on decisions.
 - They are quickly outdated. Some might even discard them after everyone is on the same page in favor of the design document, UX/UI wireframes, or the code itself. An agile approach might be more effective.
 - They are often wrong or incomplete. They are based on assumptions and guesses until validated. Make uncertainties explicit and collaborative decision-making key.
 
-{/* TODO: not always true, specifically for hardware projects */}
+While the points above are true for many software projects, hardware projects, or projects with strict requirements (e.g., safety-critical systems), might require more detailed and formal requirements documentation. In these cases, the requirements document serves as a contract between stakeholders and developers, ensuring **compliance with regulations and standards**.
 
 ## Requirements in Industry and Academia
 
