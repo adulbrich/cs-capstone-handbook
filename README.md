@@ -8,6 +8,7 @@ bun run build
 
 ## To Do
 
+- more material offered during lecture time: case studies from successful companies, advice for starting a company, career advice, anything that would add value to the course
 - change wording to talk about students, project partners, and instructors instead of using pronouns such as "you", "your", "we", "us"
 - improve project partner guidelines
 - add project to showcase and improve layout
