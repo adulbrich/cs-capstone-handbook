@@ -13,17 +13,21 @@ hero:
       >
         Capstone
       </span> Handbook
-  tagline: Your one-stop shop for everything CS Capstone!
+  tagline: Transform ideas into reality through student-industry partnerships that drive innovation
   image:
     file: ../../assets/hero.jpg
   actions:
-    - text: What is Capstone?
+    - text: Discover Capstone
       link: /introduction/series/
       icon: right-arrow
       variant: primary
-    - text: Activities
+    - text: Explore Activities
       link: /activities/introduction/
       icon: rocket
+      variant: secondary
+    - text: Partner with Us
+      link: "#partner-benefits"
+      icon: heart
       variant: secondary
     # TODO: uncomment when it's ready
     # - text: Guides
@@ -35,11 +39,13 @@ hero:
 import { LinkCard, CardGrid, Card, LinkButton } from '@astrojs/starlight/components';
 
 <CardGrid>
-  <LinkCard title="For Students" description="Learn everything you need to know to succeed in the CS Capstone series." href="/introduction/for-students/" />
-  <LinkCard title="For Project Partners" description="Learn about project requirements, categories, and evaluation criteria." href="/introduction/for-partners/" />
+  <LinkCard title="For Students" description="Master the skills you need to excel in your capstone journey and launch your career." href="/introduction/for-students/" />
+  <LinkCard title="For Project Partners" description="Discover how to collaborate with talented students on meaningful projects that drive real impact." href="/introduction/for-partners/" />
 </CardGrid>
 
-<h2 class="text-center">Why Partner with Us?</h2>
+<h2 id="partner-benefits" class="text-center">Why Partner with Us?</h2>
+
+<p class="text-center">Join <span class="font-bold">100+ companies and faculty</span> who've accelerated innovation through strategic student partnerships.</p>
 
 <p class="text-center">Our project partners play a crucial role in the success of our students and the CS Capstone program.</p>
 
@@ -75,3 +81,4 @@ import { LinkCard, CardGrid, Card, LinkButton } from '@astrojs/starlight/compone
     Obtain functional prototypes or minimum viable products (MVPs) to accelerate your development timeline.
   </Card>
 </CardGrid>
+
