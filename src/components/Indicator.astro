@@ -1,0 +1,22 @@
+---
+interface Props {
+  count: number;
+}
+
+const { count } = Astro.props;
+---
+
+<div
+  id="indicators"
+  class="absolute bottom-4 left-1/2"
+>
+  {
+    Array.from({ length: count }).map((_, index) => (
+      <button
+        class={`indicator h-2 w-2 rounded-full md:h-3 md:w-3 mx-1 ${index === 0 ? 'bg-white/80' : 'bg-white/50'}`}
+        data-slide-index={index}
+        aria-label={`Go to slide ${index + 1}`}
+      />
+    ))
+  }
+</div>

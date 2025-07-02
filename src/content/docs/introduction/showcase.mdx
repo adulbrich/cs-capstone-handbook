@@ -6,10 +6,10 @@ sidebar:
 ---
 
 import { Badge, LinkButton } from '@astrojs/starlight/components';
+import ImageCarousel from '../../../components/Carousel.astro';
 
 We list some noteworthy past projects. More projects will be added soon!
 
-{/* TODO: improve layout, have clickable badges for GitHub or Website + Award */}
 {/* TODO: FeedBias, AI in Psychology */}
 {/* TODO: add app stores for ephira */}
 {/* TODO: check claude to see if other usefull info to add, like tech stack for different projects */}
@@ -45,7 +45,17 @@ The platform enables providers to monitor sleep patterns, view sleep diary entri
 
 The Robot Underground™ aims to break open tech education for middle and high schoolers everywhere, even if they live in a robot wasteland. 
 
-![](../../../assets/2024-robot-underground.png)
+import imageRobotUnderground1 from '../../../assets/2024-robot-underground-1.png'
+import imageRobotUnderground2 from '../../../assets/2024-robot-underground-2.png'
+import imageRobotUnderground3 from '../../../assets/2024-robot-underground-3.png'
+import imageRobotUnderground4 from '../../../assets/2024-robot-underground-4.png'
+
+<ImageCarousel images={[
+  { src: imageRobotUnderground1, alt: '3D Robot Next to a Cube' },
+  { src: imageRobotUnderground2, alt: '3D Arduino Board' },
+  { src: imageRobotUnderground3, alt: 'Code Editor' },
+  { src: imageRobotUnderground4, alt: 'Unreal Engine Editor' },
+]} />
 
 The team built a demo for an immersive robotics video game that catapults the player into a world of building, wiring, and programming increasingly difficult robots in order to unravel a tantalizing mystery.
 
@@ -132,6 +142,14 @@ Built with Flutter and powered by Firebase, this project aims to streamline loca
 <Badge text="Web" variant="success" class="my-6" size="small"/>
 
 NextJudge is a suite of services, tools, and applications for creating programming platforms (framework), facilitating programming contests (cli tool), and showcasing programming prowess (platform). The primary product is the [NextJudge](https://web.archive.org/web/20240925165513/https://nextjudge.vercel.app/) platform, built with competitive programming in mind.
+
+<div class="hidden dark:block">
+![](../../../assets/2023-nextjudge-dark.png)
+</div>
+
+<div class="dark:hidden">
+![](../../../assets/2023-nextjudge.png)
+</div>
 
 The NextJudge toolchain comprises a secure code-execution engine, an API gateway, a web application, a CLI tool, and a data layer, all of which are 100% self-hostable.
 

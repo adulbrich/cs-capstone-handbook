@@ -1,0 +1,195 @@
+---
+import { Image } from 'astro:assets';
+import ToggleButton from './ToggleButton.astro';
+import Spinner from './Spinner.astro';
+import NavigationButton from './NavigationButton.astro';
+import Indicators from './Indicator.astro';
+interface IImage {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  images: IImage[];
+}
+
+const { images } = Astro.props;
+---
+
+<!-- Auhor: https://github.com/gwattana/astro-image-carousel -->
+<!--  TODO: fix styles such as rounded corners -->
+
+<section class="relative w-full -m-2" role="region" aria-label="Image carousel">
+  <!-- Carousel Wrapper -->
+  <div class="relative w-full overflow-hidden">
+    <!-- Toggle Box -->
+    <div
+      class="hidden"
+    >
+      <ToggleButton id="autoplay-toggle" label="Auto play" />
+    </div>
+
+    <!-- Carousel Items -->
+    <div
+      id="carousel"
+      class="flex aspect-[16/9] snap-x snap-mandatory overflow-x-auto overflow-y-hidden scroll-smooth rounded-lg md:overflow-hidden"
+      tabindex="0"
+      aria-live="polite"
+    >
+      {
+        images?.map((image) => (
+          <div class="relative aspect-[16/9] h-full w-full touch-pan-x snap-center">
+            {/* Spinner */}
+            <div class="absolute inset-0 flex items-center justify-center">
+              <Spinner class="h-6 w-6" />
+            </div>
+            <Image
+              src={image.src}
+              alt={image.alt}
+              inferSize
+              class="h-full w-full"
+              loading="lazy"
+            />
+          </div>
+        ))
+      }
+    </div>
+    <!-- Navigation Buttons -->
+    <NavigationButton
+      direction="prev"
+      class="absolute left-4 top-0"
+      data-action={'prev'}
+    />
+    <NavigationButton
+      direction="next"
+      class="absolute right-4 top-0"
+      data-action={'next'}
+    />
+
+    <!-- Indicators -->
+    <Indicators count={images.length} />
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.querySelector<HTMLDivElement>('#carousel')!;
+    const images = carousel.querySelectorAll<HTMLImageElement>('img');
+    const indicators =
+      document.querySelectorAll<HTMLButtonElement>('.indicator');
+    const navigationButtons =
+      document.querySelectorAll<HTMLButtonElement>('[data-action]');
+    let currentIndex = 0;
+    const autoplayInterval = 3000; // Change slides every 3 seconds
+    let autoplayTimer: ReturnType<typeof setInterval>;
+    let isAutoplay = true;
+    const autoPlayToggle = document.getElementById('autoplay-toggle')!;
+
+    images.forEach((img: HTMLImageElement) => {
+      const spinner = img.previousElementSibling as HTMLElement;
+      if (img.complete) {
+        spinner.style.display = 'none'; // Hide spinner immediately if image is already loaded
+        return;
+      }
+
+      img.addEventListener('load', () => {
+        spinner.style.display = 'none'; // Hide spinner when image is loaded
+      });
+    });
+
+    // Updates the carousel to show the slide at the given index.
+    function updateCarousel(index: number): void {
+      const slideWidth = images[0].clientWidth;
+      carousel.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+      currentIndex = index;
+
+      // Update indicators
+      indicators.forEach((dot, i) => {
+        dot.classList.toggle('bg-white/80', i === index);
+        dot.classList.toggle('bg-white/50', i !== index);
+      });
+    }
+
+    // Handles navigation button clicks (params: prev/next).
+    function handleNavigation(action: string): void {
+      const newIndex =
+        action === 'prev'
+          ? currentIndex === 0
+            ? images.length - 1
+            : currentIndex - 1
+          : (currentIndex + 1) % images.length;
+      updateCarousel(newIndex);
+      resetAutoplay(); // Reset autoplay when manually navigating
+    }
+
+    // Start the autoplay.
+    function startAutoplay(): void {
+      if (autoplayTimer) clearInterval(autoplayTimer); // Clear existing timer
+
+      if (isAutoplay) {
+        autoplayTimer = setInterval(() => {
+          const newIndex = (currentIndex + 1) % images.length;
+          updateCarousel(newIndex);
+        }, autoplayInterval);
+      }
+    }
+
+    // Stop the autoplay.
+    function stopAutoplay(): void {
+      clearInterval(autoplayTimer);
+    }
+
+    // Reset the autoplay.
+    function resetAutoplay(): void {
+      stopAutoplay();
+      startAutoplay();
+    }
+
+    // Event listener for auto-play toggle
+    autoPlayToggle.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+
+      if (target.checked) {
+        // Start auto-play when checked
+        isAutoplay = true;
+        startAutoplay();
+      } else {
+        // Stop auto-play when unchecked
+        isAutoplay = false;
+        stopAutoplay();
+      }
+    });
+
+    // Add event listeners for navigation buttons
+    navigationButtons.forEach((button) => {
+      button.addEventListener('click', () =>
+        handleNavigation(button.dataset.action!),
+      );
+    });
+
+    // Add event listeners for indicators
+    indicators.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        updateCarousel(index);
+        resetAutoplay(); // Reset autoplay on manual selection
+      });
+    });
+
+    // Start autoplay on load
+    startAutoplay();
+
+    // Pause autoplay on hover or focus
+    carousel.addEventListener('mouseover', stopAutoplay);
+    carousel.addEventListener('focusin', stopAutoplay);
+
+    // Resume autoplay when focus or mouse leaves
+    carousel.addEventListener('mouseout', () => {
+      if (isAutoplay) startAutoplay();
+    });
+    carousel.addEventListener('focusout', () => {
+      if (isAutoplay) startAutoplay();
+    });
+  });
+</script>
+
+<style></style>
