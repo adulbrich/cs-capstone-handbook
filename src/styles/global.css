@@ -1,0 +1,39 @@
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+    /* Generated accent color palettes. */
+    --color-accent-200: oklch(0.901 0.076 70.697);
+    --color-accent-600: oklch(0.646 0.222 41.116);
+    --color-accent-900: oklch(0.408 0.123 38.172);
+    --color-accent-950: oklch(0.266 0.079 36.259);
+    /* Generated gray color palettes. */
+    --color-gray-100: oklch(0.97 0.001 106.424);
+    --color-gray-200: oklch(0.923 0.003 48.717);
+    --color-gray-300: oklch(0.869 0.005 56.366);
+    --color-gray-400: oklch(0.709 0.01 56.259);
+    --color-gray-500: oklch(0.553 0.013 58.071);
+    --color-gray-700: oklch(0.374 0.01 67.558);
+    --color-gray-800: oklch(0.268 0.007 34.298);
+    --color-gray-900: oklch(0.216 0.006 56.043);
+}
+
+
+.actions {
+    @apply gap-4;
+}
+
+.hero > img {
+    @apply rounded-lg;
+}
+
+.actions > a {
+    @apply rounded-lg;
+}
+
+.cta > a {
+    @apply rounded-lg;
+}

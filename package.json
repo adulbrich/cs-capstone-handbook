@@ -11,17 +11,19 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/starlight": "^0.30.6",
-    "@astrojs/starlight-tailwind": "^3.0.0",
-    "@astrojs/tailwind": "^5.1.5",
-    "astro": "^5.2.3",
+    "@astrojs/starlight": "0.34.4",
+    "@astrojs/starlight-tailwind": "^4.0.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "5.10.2",
     "astro-feelback": "^0.3.4",
+    "astro-mermaid": "^1.0.3",
     "katex": "^0.16.22",
-    "mermaid": "^11.6.0",
+    "mermaid": "^11.7.0",
     "sharp": "^0.32.6",
     "starlight-image-zoom": "^0.8.0",
     "starlight-links-validator": "^0.12.4",
-    "tailwindcss": "^3.4.17",
+    "starlight-scroll-to-top": "^0.1.1",
+    "tailwindcss": "^4.1.11",
     "typescript": "^5.7.3"
   }
 }

@@ -1,17 +1,20 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
+import starlightScrollToTop from "starlight-scroll-to-top";
+import mermaid from "astro-mermaid";
 // import starlightImageZoom from "starlight-image-zoom";
 // import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://capstone.alexulbrich.com",
+
   integrations: [
+    mermaid(),
     sitemap(),
     starlight({
-      // plugins: [starlightImageZoom(), starlightLinksValidator()],
       title: "CS Capstone Handbook",
       lastUpdated: true,
       components: {
@@ -19,11 +22,15 @@ export default defineConfig({
       },
       customCss: [
         // Path to your Tailwind base styles:
-        "./src/tailwind.css",
+        "./src/styles/global.css",
       ],
-      social: {
-        github: "https://github.com/adulbrich/cs-capstone-handbook",
-      },
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/adulbrich/cs-capstone-handbook",
+        },
+      ],
       head: [
         {
           tag: "script",
@@ -80,9 +87,9 @@ export default defineConfig({
         },
       ],
     }),
-    tailwind({
-      // Disable the default base styles:
-      applyBaseStyles: false,
-    }),
   ],
+
+  vite: {
+    plugins: [tailwindcss(), starlightScrollToTop()],
+  },
 });
