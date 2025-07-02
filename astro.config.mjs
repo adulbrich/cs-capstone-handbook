@@ -3,6 +3,7 @@ import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
 import starlightScrollToTop from "starlight-scroll-to-top";
+import mermaid from "astro-mermaid";
 // import starlightImageZoom from "starlight-image-zoom";
 // import starlightLinksValidator from "starlight-links-validator";
 
@@ -11,6 +12,7 @@ export default defineConfig({
   site: "https://capstone.alexulbrich.com",
 
   integrations: [
+    mermaid(),
     sitemap(),
     starlight({
       title: "CS Capstone Handbook",
