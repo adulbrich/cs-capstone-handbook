@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
+// import starlightScrollToTop from "starlight-scroll-to-top";
 // import starlightImageZoom from "starlight-image-zoom";
 // import starlightLinksValidator from "starlight-links-validator";
 
@@ -12,6 +13,7 @@ export default defineConfig({
     sitemap(),
     starlight({
       // plugins: [starlightImageZoom(), starlightLinksValidator()],
+      // plugins: [starlightScrollToTop()],
       title: "CS Capstone Handbook",
       lastUpdated: true,
       components: {
@@ -21,9 +23,13 @@ export default defineConfig({
         // Path to your Tailwind base styles:
         "./src/tailwind.css",
       ],
-      social: {
-        github: "https://github.com/adulbrich/cs-capstone-handbook",
-      },
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/adulbrich/cs-capstone-handbook",
+        },
+      ],
       head: [
         {
           tag: "script",
