@@ -1,19 +1,18 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
-import tailwind from "@astrojs/tailwind";
-// import starlightScrollToTop from "starlight-scroll-to-top";
+import tailwindcss from "@tailwindcss/vite";
+import starlightScrollToTop from "starlight-scroll-to-top";
 // import starlightImageZoom from "starlight-image-zoom";
 // import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://capstone.alexulbrich.com",
+
   integrations: [
     sitemap(),
     starlight({
-      // plugins: [starlightImageZoom(), starlightLinksValidator()],
-      // plugins: [starlightScrollToTop()],
       title: "CS Capstone Handbook",
       lastUpdated: true,
       components: {
@@ -21,7 +20,7 @@ export default defineConfig({
       },
       customCss: [
         // Path to your Tailwind base styles:
-        "./src/tailwind.css",
+        "./src/styles/global.css",
       ],
       social: [
         {
@@ -86,9 +85,9 @@ export default defineConfig({
         },
       ],
     }),
-    tailwind({
-      // Disable the default base styles:
-      applyBaseStyles: false,
-    }),
   ],
+
+  vite: {
+    plugins: [tailwindcss(), starlightScrollToTop()],
+  },
 });
