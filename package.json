@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/starlight": "0.34.4",
+    "@astrojs/starlight": "0.34.6",
     "@astrojs/starlight-tailwind": "^4.0.1",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "5.10.2",
+    "astro": "5.11.1",
     "astro-feelback": "^0.3.4",
     "astro-mermaid": "^1.0.3",
     "katex": "^0.16.22",
