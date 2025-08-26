@@ -1,0 +1,1660 @@
+{
+  "assessments": [
+    {
+      "id": "A001",
+      "title": "Team Charter & Working Agreement",
+      "type": "Document",
+      "description": "Each team defines roles, decision-making, meeting cadence, conflict-resolution plan, tooling, and definition of done. Submitted in Week 2 of Fall; revised as needed. Aligns team expectations early and provides a reference during peer/partner evaluations.",
+      "learning_outcomes": [
+        "Communicate effectively in a variety of professional contexts.",
+        "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline.",
+        "Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing."
+      ],
+      "term_week": "Fall W2",
+      "criteria": [
+        {
+          "name": "Clarity & Completeness of Roles/Processes",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO3", "LO5", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Roles, decision rules, cadence, and tools are explicit, unambiguous, and cover all phases; risks and escalation paths included.",
+            "Meets Expectations": "Defines roles, decisions, cadence, and tools with enough detail to run; minor gaps.",
+            "Does Not Meet Expectations": "Missing key elements or vague; cannot guide team operations."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        },
+        {
+          "name": "Conflict Resolution & Accountability",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO4", "LO5"],
+          "descriptors": {
+            "Exceeds Expectations": "Conflict plan includes measurable triggers, restorative steps, and escalation timeline; accountability tied to evidence (e.g., PRs, attendance).",
+            "Meets Expectations": "Conflict plan present with clear steps and escalation; accountability described at a high level.",
+            "Does Not Meet Expectations": "No clear conflict plan or accountability; punitive or unclear steps."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        },
+        {
+          "name": "Definition of Done & Quality Gates",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "DoD includes tests, code review, security checks, and documentation; CI gates named.",
+            "Meets Expectations": "DoD lists tests and review; basic CI gates referenced.",
+            "Does Not Meet Expectations": "DoD absent or only output-focused; no quality gates."
+          },
+          "evidence_sources": ["CI config/logs", "Definition of Done section"]
+        },
+        {
+          "name": "Accessibility & Inclusivity Practices",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO4", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Meeting norms accommodate time zones, accessibility needs, and inclusive turn-taking; notes on accommodations.",
+            "Meets Expectations": "States inclusive meeting norms and openness to accommodations.",
+            "Does Not Meet Expectations": "No evidence of inclusive practices; potential barriers unaddressed."
+          },
+          "evidence_sources": ["Team charter inclusivity section"]
+        },
+        {
+          "name": "Professional Writing & Organization",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO7", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Well-structured document with headings, actionable bullets, and owner+date on each policy.",
+            "Meets Expectations": "Readable document with headings and action items.",
+            "Does Not Meet Expectations": "Hard to follow; missing structure or owners/dates."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        }
+      ],
+      "evidence_to_check": [
+        "Team charter doc",
+        "Repo README/CONTRIBUTING",
+        "Meeting notes or agenda templates"
+      ],
+      "ta_notes_and_anchors": [
+        "Common gaps: missing escalation path; vague DoD; no inclusion notes.",
+        "Partial credit when elements present but lack owners/dates.",
+        "Request resubmission if roles/processes are ambiguous enough to block work."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": [
+        "Check charter contains sections: roles, cadence, conflict plan, DoD",
+        "Presence of linter/formatter config referenced in DoD"
+      ],
+      "time_estimate_minutes": 10
+    },
+    {
+      "id": "A002",
+      "title": "Stakeholder Interviews & Requirements v1 (User Stories with Acceptance Criteria)",
+      "type": "Requirements",
+      "description": "Plan and run interviews with the project partner and end users; synthesize goals and produce a first requirements spec or backlog with INVEST-quality user stories and acceptance tests. Include a traceability table to partner goals. Iteratively refined through Fall & Winter.",
+      "learning_outcomes": [
+        "Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.",
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Communicate effectively in a variety of professional contexts.",
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+        "Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing."
+      ],
+      "term_week": "Fall W3; revise: Winter W2 & W6",
+      "criteria": [
+        {
+          "name": "Stakeholder Interview Planning & Execution",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO3", "LO1"],
+          "descriptors": {
+            "Exceeds Expectations": "Interview plan covers goals, scripts, sampling, consent; ≥3 stakeholder types interviewed; notes timestamped.",
+            "Meets Expectations": "Plan with goals and scripts; ≥2 interviews completed; notes captured.",
+            "Does Not Meet Expectations": "Ad hoc interviews; consent/scripts absent; minimal notes."
+          },
+          "evidence_sources": ["Interview plan", "Interview notes"]
+        },
+        {
+          "name": "Requirements Quality (INVEST + Traceability)",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO2", "LO1", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Backlog items meet INVEST; acceptance criteria testable; traceability links goals→stories→tests complete.",
+            "Meets Expectations": "Most items INVEST-compliant; acceptance criteria mostly testable; basic traceability table present.",
+            "Does Not Meet Expectations": "Stories vague; criteria not testable; no traceability."
+          },
+          "evidence_sources": ["Backlog/issue tracker", "Traceability table"]
+        },
+        {
+          "name": "Prioritization & Scope Control",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO2", "LO1"],
+          "descriptors": {
+            "Exceeds Expectations": "Clear MoSCoW/WSJF; scope fits term capacity; risks logged with mitigations.",
+            "Meets Expectations": "Priority marked; scope roughly matches capacity; risks noted.",
+            "Does Not Meet Expectations": "No prioritization; scope unrealistic; risks absent."
+          },
+          "evidence_sources": ["Backlog priorities", "Capacity plan"]
+        },
+        {
+          "name": "Partner Communication & Feedback Integration",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO3", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Meeting notes show decisions, action owners, and changes merged to backlog within 48h.",
+            "Meets Expectations": "Feedback documented and reflected in backlog within a week.",
+            "Does Not Meet Expectations": "Feedback not captured or not reflected in backlog."
+          },
+          "evidence_sources": [
+            "Partner meeting notes",
+            "Backlog change history"
+          ]
+        },
+        {
+          "name": "Specification Hygiene",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO7", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Consistent templates; glossary; non-functional reqs quantified (e.g., latency <200ms).",
+            "Meets Expectations": "Templates mostly consistent; some NFRs listed.",
+            "Does Not Meet Expectations": "Inconsistent format; NFRs missing or not measurable."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        }
+      ],
+      "evidence_to_check": [
+        "Interview plans/notes",
+        "Backlog with user stories & acceptance criteria",
+        "Traceability matrix"
+      ],
+      "ta_notes_and_anchors": [
+        "Watch for non-testable acceptance criteria; require traceability to partner goals.",
+        "Partial credit if INVEST mostly met but traceability weak.",
+        "Request follow-up interviews when user types are missing."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": [
+        "Lint user story templates",
+        "Check for acceptance criteria presence"
+      ],
+      "time_estimate_minutes": 18
+    },
+    {
+      "id": "A003",
+      "title": "Architecture Overview & ADR Pack",
+      "type": "Technical Design",
+      "description": "Deliver a concise architecture doc (context, containers/components, key risks) plus a living set of Architecture Decision Records (ADRs) for significant choices (e.g., framework, data store, auth). Update ADRs throughout the year.",
+      "learning_outcomes": [
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+        "Communicate effectively in a variety of professional contexts.",
+        "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles."
+      ],
+      "term_week": "Fall W4; updates rolling",
+      "criteria": [
+        {
+          "name": "Architecture Context & Decomposition",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO2", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Context+container/component diagrams align to requirements; boundaries, interfaces, and data flows labeled.",
+            "Meets Expectations": "High-level diagrams with main components and interactions.",
+            "Does Not Meet Expectations": "Diagrams missing/unclear; components or flows undefined."
+          },
+          "evidence_sources": ["Architecture doc", "ADR files"]
+        },
+        {
+          "name": "Risk Analysis & Mitigations",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO1", "LO2"],
+          "descriptors": {
+            "Exceeds Expectations": "Top 5 risks prioritized with experiments/spikes; exit criteria and owners set.",
+            "Meets Expectations": "Key risks listed with general mitigations.",
+            "Does Not Meet Expectations": "Risks missing or generic; no plans to reduce uncertainty."
+          },
+          "evidence_sources": ["Risk log", "Issues"]
+        },
+        {
+          "name": "ADR Quality & Rationale",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO2", "LO4", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "ADRs record decision, options, trade-offs, and consequences; links to code and issues.",
+            "Meets Expectations": "ADRs capture decision and brief rationale; some links.",
+            "Does Not Meet Expectations": "ADRs absent or just record choices without rationale."
+          },
+          "evidence_sources": ["Architecture doc", "ADR files"]
+        },
+        {
+          "name": "Non-Functional Requirements Mapping",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO2", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Explicit NFR targets (e.g., p95 latency, error budget); validation plan defined.",
+            "Meets Expectations": "NFRs listed with general targets.",
+            "Does Not Meet Expectations": "NFRs absent or not measurable."
+          },
+          "evidence_sources": ["Architecture doc", "ADR files"]
+        },
+        {
+          "name": "Communication & Readability",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Concise, navigable doc; diagrams legible; glossary and version history present.",
+            "Meets Expectations": "Readable doc with legible diagrams.",
+            "Does Not Meet Expectations": "Hard to read; diagrams or explanations missing."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        }
+      ],
+      "evidence_to_check": [
+        "Architecture doc & diagrams",
+        "ADR files",
+        "Risk log/issues"
+      ],
+      "ta_notes_and_anchors": [
+        "Anchor 'Meets': context+container diagram and 3+ ADRs with rationale.",
+        "Partial credit for risks listed without experiments.",
+        "Ask for update if diagrams don't match repo boundaries."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": [
+        "Validate ADR template fields",
+        "Diagram lints (plantuml/json schema)"
+      ],
+      "time_estimate_minutes": 16
+    },
+    {
+      "id": "A004",
+      "title": "Prototype 0: Walking Skeleton (End-to-End Vertical Slice)",
+      "type": "Prototype",
+      "description": "Ship a tiny, end-to-end, deployable slice that exercises the main architecture (build, test, deploy) with basic functionality. Demo in Fall Week 5. Encourages coding early and validates integration.",
+      "learning_outcomes": [
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.",
+        "Communicate effectively in a variety of professional contexts."
+      ],
+      "term_week": "Fall W5",
+      "criteria": [
+        {
+          "name": "Functional Vertical Slice",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO6", "LO2"],
+          "descriptors": {
+            "Exceeds Expectations": "End-to-end path works in deployed env; covers auth/data/UI; demo shows success path.",
+            "Meets Expectations": "Basic slice works locally or in a staging env; demo covers main flow.",
+            "Does Not Meet Expectations": "Slice incomplete or non-functional; cannot demo full path."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Build, Test, Deploy Pipeline",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "CI builds on PR; tests run; auto deploy to test env; status badges visible.",
+            "Meets Expectations": "CI builds and tests; manual or scripted deploy documented.",
+            "Does Not Meet Expectations": "No CI or unreliable build; deploy manual and undocumented."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Quality Signals",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Linter passes; ≥70% unit tests pass; minimal known critical issues logged.",
+            "Meets Expectations": "Linter mostly passes; tests run with some failures; issues tracked.",
+            "Does Not Meet Expectations": "Frequent lint errors; tests absent/failing; no issue tracking."
+          },
+          "evidence_sources": ["Test reports", "Coverage report"]
+        },
+        {
+          "name": "Partner Value & Feedback",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3", "LO1"],
+          "descriptors": {
+            "Exceeds Expectations": "Slice addresses a validated high-priority use case; partner feedback logged and actions filed.",
+            "Meets Expectations": "Addresses a meaningful use case; feedback acknowledged.",
+            "Does Not Meet Expectations": "Misaligned with partner priorities; no feedback loop."
+          },
+          "evidence_sources": [
+            "Partner meeting notes",
+            "Backlog change history"
+          ]
+        },
+        {
+          "name": "Demo Readiness & Clarity",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Clear demo script; reproducible steps; failures handled gracefully; timeboxed to 5–7 min.",
+            "Meets Expectations": "Demo plan present; mostly smooth.",
+            "Does Not Meet Expectations": "No script; demo unclear or exceeds time."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        }
+      ],
+      "evidence_to_check": [
+        "Deployed app link",
+        "CI build logs",
+        "Demo script"
+      ],
+      "ta_notes_and_anchors": [
+        "Anchor 'Meets': working slice with PR-based build and manual deploy.",
+        "Partial credit if slice runs locally only.",
+        "Resubmit if no demoable path end-to-end."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["CI passing badge", "Smoke test job"],
+      "time_estimate_minutes": 15
+    },
+    {
+      "id": "A005",
+      "title": "Project Plan, CI/CD Setup & Release Strategy",
+      "type": "Plan/Process",
+      "description": "Submit a plan covering roadmap, milestones, risk register, CI pipeline, branching policy, and release/versioning approach (e.g., SemVer). Include a running build and basic automated tests.",
+      "learning_outcomes": [
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline.",
+        "Communicate effectively in a variety of professional contexts."
+      ],
+      "term_week": "Fall W3",
+      "criteria": [
+        {
+          "name": "Roadmap & Milestones",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Milestones timeboxed with owner, deliverables, and acceptance checks; capacity-based planning.",
+            "Meets Expectations": "Milestones listed with owners and dates.",
+            "Does Not Meet Expectations": "Vague milestones; missing owners or dates."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        },
+        {
+          "name": "Risk Register & Contingencies",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO1", "LO5"],
+          "descriptors": {
+            "Exceeds Expectations": "Risks scored (impact×likelihood) with triggers and contingency plans; review cadence set.",
+            "Meets Expectations": "Risks listed with general mitigations.",
+            "Does Not Meet Expectations": "Risks not identified or unmanaged."
+          },
+          "evidence_sources": ["Risk log", "Issues"]
+        },
+        {
+          "name": "CI/CD & Branching Policy",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Branch protections enforced; required checks defined; release strategy (SemVer) documented.",
+            "Meets Expectations": "Branch policy and basic CI checks described.",
+            "Does Not Meet Expectations": "No clear branching or CI policy."
+          },
+          "evidence_sources": ["Repo settings", "CI config"]
+        },
+        {
+          "name": "Testing Strategy",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO6", "LO2"],
+          "descriptors": {
+            "Exceeds Expectations": "Test pyramid defined; coverage targets per layer; flaky-test handling process.",
+            "Meets Expectations": "Unit/integration tests planned; general targets set.",
+            "Does Not Meet Expectations": "Testing plan missing or non-specific."
+          },
+          "evidence_sources": ["Test reports", "Coverage report"]
+        },
+        {
+          "name": "Communication & Process",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3", "LO5"],
+          "descriptors": {
+            "Exceeds Expectations": "Issue templates, standup/retro cadence, and decision logs defined; partner update rhythm set.",
+            "Meets Expectations": "Basic cadence and issue tracking defined.",
+            "Does Not Meet Expectations": "No defined process or comms rhythm."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        }
+      ],
+      "evidence_to_check": [
+        "Project plan document",
+        "CI config",
+        "Branch protection settings"
+      ],
+      "ta_notes_and_anchors": [
+        "Look for realistic capacity planning (hrs/week/team).",
+        "Partial credit for basic CI without protections.",
+        "Resubmit if risk register absent."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": [
+        "Check branch protection via API",
+        "CI config presence"
+      ],
+      "time_estimate_minutes": 14
+    },
+    {
+      "id": "A006",
+      "title": "Biweekly Progress Reports",
+      "type": "Report",
+      "description": "Every 2 weeks (all terms): brief written update with accomplished work, demo links, risks/mitigations, and next goals. Tie tasks to requirements and tests. Use consistent sprint/iteration cadence and reference Scrum review/retrospective outputs.",
+      "learning_outcomes": [
+        "Communicate effectively in a variety of professional contexts.",
+        "Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline."
+      ],
+      "term_week": "Fall/Winter/Spring W2,4,6,8,10",
+      "criteria": [
+        {
+          "name": "Progress Against Plan",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Completed vs planned work quantified; blockers and replan recorded; links to PRs/issues.",
+            "Meets Expectations": "Accomplishments and next steps listed; some links provided.",
+            "Does Not Meet Expectations": "Updates vague; few links; no connection to plan."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        },
+        {
+          "name": "Evidence of Working Software",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Report includes deploy link, screenshots or short clip; CI status included.",
+            "Meets Expectations": "Screenshots or demo link provided; CI status referenced.",
+            "Does Not Meet Expectations": "No evidence of working software."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Risk & Quality Tracking",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO1", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "New risks logged; test/bug metrics trended; actions assigned.",
+            "Meets Expectations": "Risks and bugs mentioned; basic actions noted.",
+            "Does Not Meet Expectations": "Risks/bugs not tracked or ownerless."
+          },
+          "evidence_sources": ["Risk log", "Issues"]
+        },
+        {
+          "name": "Writing Quality & Clarity",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO7", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Concise, structured; uses headings and bullets; neutral tone; accessible formatting.",
+            "Meets Expectations": "Readable with structure; minor clarity issues.",
+            "Does Not Meet Expectations": "Hard to read; missing structure; ambiguous wording."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Team Process Reflection",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Short retro notes with 1–2 actionable improvements applied next sprint.",
+            "Meets Expectations": "Reflection present with intended improvements.",
+            "Does Not Meet Expectations": "No reflection or no actionable items."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        }
+      ],
+      "evidence_to_check": [
+        "Progress report file",
+        "Links to PRs/issues",
+        "Deploy/CI links"
+      ],
+      "ta_notes_and_anchors": [
+        "Strong reports link to PRs/issues; weak ones restate plans.",
+        "Partial credit for missing deploy link but clear work evidence.",
+        "Resubmit if no progress or links to artifacts."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Auto-pull CI status", "Count merged PRs"],
+      "time_estimate_minutes": 8
+    },
+    {
+      "id": "A007",
+      "title": "Code Review & Contribution Workflow Compliance",
+      "type": "Quality Assurance",
+      "description": "Adopt PR-based reviews with agreed checklist (readability, tests, security, performance). Submit 2+ evidence PRs per member per term showing both author and reviewer roles; include review artifacts. Benchmarked against widely-used code review guidance.",
+      "learning_outcomes": [
+        "Communicate effectively in a variety of professional contexts.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline.",
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions."
+      ],
+      "term_week": "Evidence due: Fall W6; Winter W6; Spring W6",
+      "criteria": [
+        {
+          "name": "Review Depth & Use of Checklist",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO3", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Reviews cite specific lines/tests/perf/security; checklist items checked with rationale.",
+            "Meets Expectations": "Reviews reference code sections and checklist; minor gaps.",
+            "Does Not Meet Expectations": "Shallow approvals; checklist ignored or perfunctory."
+          },
+          "evidence_sources": ["PR reviews", "PRs authored"]
+        },
+        {
+          "name": "Quality of Authored PRs",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "PRs small, scoped, with tests and docs; passes checks; logical commits.",
+            "Meets Expectations": "PRs generally scoped; tests/docs present; passes checks.",
+            "Does Not Meet Expectations": "Large unscoped PRs; missing tests/docs; failing checks."
+          },
+          "evidence_sources": ["PRs authored", "Test reports"]
+        },
+        {
+          "name": "Participation & Responsiveness",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Responds to review within 48h; resolves threads; seeks clarification where needed.",
+            "Meets Expectations": "Responds within a week; resolves most threads.",
+            "Does Not Meet Expectations": "Slow/no responses; unresolved threads."
+          },
+          "evidence_sources": ["PR reviews", "PRs authored"]
+        },
+        {
+          "name": "Process Compliance",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Branch protections, required reviewers, and status checks consistently met.",
+            "Meets Expectations": "Mostly meets process; occasional misses corrected.",
+            "Does Not Meet Expectations": "Frequent bypasses of required process."
+          },
+          "evidence_sources": ["Repo settings", "CI config"]
+        },
+        {
+          "name": "Evidence per Member",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5", "LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "≥2 reviewed PRs and ≥2 authored PRs per term with artifacts.",
+            "Meets Expectations": "At least one of each with artifacts.",
+            "Does Not Meet Expectations": "Insufficient evidence of both roles."
+          },
+          "evidence_sources": ["PR reviews", "PRs authored"]
+        }
+      ],
+      "evidence_to_check": [
+        "PRs showing authored/reviewed",
+        "Review checklist artifacts",
+        "Branch protection logs"
+      ],
+      "ta_notes_and_anchors": [
+        "Check both roles per member (author+reviewer).",
+        "Partial credit for thorough reviews but oversized PRs.",
+        "Resubmit if approvals bypass required checks."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Require status checks", "Lint PR templates"],
+      "time_estimate_minutes": 12
+    },
+    {
+      "id": "A008",
+      "title": "Verification Plan & Automated Test Coverage",
+      "type": "Quality Assurance",
+      "description": "Define test strategy (unit, integration, end-to-end), acceptance criteria alignment, and CI gates. Report coverage and flaky-test remediation. Provide evidence of test results on each demo/release.",
+      "learning_outcomes": [
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions."
+      ],
+      "term_week": "Plan: Fall W6; updates each term",
+      "criteria": [
+        {
+          "name": "Test Strategy Completeness",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO2", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Unit/integration/e2e levels mapped to requirements; test data and environments defined.",
+            "Meets Expectations": "Covers key levels with basic mapping to requirements.",
+            "Does Not Meet Expectations": "Strategy incomplete; weak mapping to requirements."
+          },
+          "evidence_sources": ["Test reports", "Coverage report"]
+        },
+        {
+          "name": "Coverage & Quality Gates",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Coverage thresholds per layer; gate in CI; flaky tests quarantined with owner/ETA.",
+            "Meets Expectations": "Coverage targets set; CI reports coverage; flaky tests noted.",
+            "Does Not Meet Expectations": "No targets; coverage unknown; flakes ignored."
+          },
+          "evidence_sources": ["Test reports", "Coverage report"]
+        },
+        {
+          "name": "Traceability to Acceptance Criteria",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO1", "LO2"],
+          "descriptors": {
+            "Exceeds Expectations": "Each high-priority story has linked tests; acceptance tests automated where feasible.",
+            "Meets Expectations": "Most key stories linked to tests; some manual acceptance tests.",
+            "Does Not Meet Expectations": "Few/no links; acceptance criteria untested."
+          },
+          "evidence_sources": ["Test reports", "Coverage report"]
+        },
+        {
+          "name": "Reporting & Results",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Reports show pass/fail, trends, and defects by severity; actions assigned.",
+            "Meets Expectations": "Reports show latest results and defects; some actions.",
+            "Does Not Meet Expectations": "Sparse results; no clear actions."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Tooling & Environments",
+          "weight_percent": 10,
+          "outcomes_aligned": ["LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Stable test envs; data seeding/reset scripts; parallelization documented.",
+            "Meets Expectations": "Envs mostly stable; some setup scripts.",
+            "Does Not Meet Expectations": "Unreliable envs; manual, error-prone setup."
+          },
+          "evidence_sources": ["Repo settings", "CI config"]
+        }
+      ],
+      "evidence_to_check": [
+        "Test plan document",
+        "Coverage reports",
+        "CI test run artifacts"
+      ],
+      "ta_notes_and_anchors": [
+        "Measurable gates reduce grading time; verify with CI artifacts.",
+        "Partial credit when targets set but not enforced.",
+        "Resubmit if acceptance criteria lack tests."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Parse coverage %", "Detect flaky tests via reruns"],
+      "time_estimate_minutes": 14
+    },
+    {
+      "id": "A009",
+      "title": "Usability Evaluation: Heuristic Review + Task-Based User Test",
+      "type": "Testing/UX",
+      "description": "Conduct a heuristic evaluation and a small, scripted task-based usability test; produce issues and design updates with before/after screenshots or clips.",
+      "learning_outcomes": [
+        "Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.",
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Communicate effectively in a variety of professional contexts."
+      ],
+      "term_week": "Winter W4",
+      "criteria": [
+        {
+          "name": "Heuristic Evaluation Rigor",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO1", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Uses recognized heuristics; prioritizes findings with severity; actionable recommendations.",
+            "Meets Expectations": "Identifies usability issues with general recommendations.",
+            "Does Not Meet Expectations": "Superficial review; limited findings; vague advice."
+          },
+          "evidence_sources": ["Usability report", "User test notes"]
+        },
+        {
+          "name": "Task-Based User Test Design",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO1", "LO2", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Clear tasks, success metrics, and protocol; ≥5 users or roles covered; consent captured.",
+            "Meets Expectations": "Usable tasks with success criteria; 3–4 users; consent noted.",
+            "Does Not Meet Expectations": "Vague tasks; metrics absent; few users; consent missing."
+          },
+          "evidence_sources": ["Usability report", "User test notes"]
+        },
+        {
+          "name": "Data & Analysis",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO1", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Logs include timings/errors/success; insights tied to design changes with before/after evidence.",
+            "Meets Expectations": "Basic metrics and resulting updates documented.",
+            "Does Not Meet Expectations": "Anecdotal notes only; weak linkage to changes."
+          },
+          "evidence_sources": ["Usability report", "User test notes"]
+        },
+        {
+          "name": "Design Iteration & Fixes",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO2", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "High-severity issues addressed in backlog with owners; UI updated and re-tested.",
+            "Meets Expectations": "Top issues filed; some fixes demonstrated.",
+            "Does Not Meet Expectations": "Issues not filed or not acted upon."
+          },
+          "evidence_sources": [
+            "Partner meeting notes",
+            "Backlog change history"
+          ]
+        },
+        {
+          "name": "Reporting Quality",
+          "weight_percent": 10,
+          "outcomes_aligned": ["LO3", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Concise report with screenshots/clips and summary table of findings.",
+            "Meets Expectations": "Readable report with examples.",
+            "Does Not Meet Expectations": "Sparse report; hard to follow."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        }
+      ],
+      "evidence_to_check": [
+        "Heuristic review doc",
+        "User test scripts/notes",
+        "Before/after screenshots"
+      ],
+      "ta_notes_and_anchors": [
+        "Use a short checklist of heuristics to speed scoring.",
+        "Partial credit for solid test but weak analysis.",
+        "Resubmit if consent/ethics not addressed."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Checklist of heuristics", "Count users tested"],
+      "time_estimate_minutes": 15
+    },
+    {
+      "id": "A010",
+      "title": "Security & Privacy Threat Model + Ethics & Licensing Memo",
+      "type": "Compliance/Ethics",
+      "description": "Create a lightweight STRIDE-based threat model with mitigations; include data handling, privacy, and an ethics memo referencing applicable professional principles. If open-sourcing, justify license choice (e.g., MIT vs. GPL) and add NOTICE files.",
+      "learning_outcomes": [
+        "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles.",
+        "Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.",
+        "Communicate effectively in a variety of professional contexts."
+      ],
+      "term_week": "Fall W8; update Winter W5",
+      "criteria": [
+        {
+          "name": "Threat Model Coverage",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO4", "LO1"],
+          "descriptors": {
+            "Exceeds Expectations": "STRIDE applied to key assets/data flows; mitigations mapped; residual risk noted.",
+            "Meets Expectations": "Main threats identified with general mitigations.",
+            "Does Not Meet Expectations": "Threats minimal or misapplied; mitigations unclear."
+          },
+          "evidence_sources": ["Threat model", "Ethics/licensing memo"]
+        },
+        {
+          "name": "Privacy & Data Handling",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO4"],
+          "descriptors": {
+            "Exceeds Expectations": "Data inventory, retention, consent, and access controls documented; PII handling justified.",
+            "Meets Expectations": "Data handling described; access controls mentioned.",
+            "Does Not Meet Expectations": "Data handling unspecified or risky."
+          },
+          "evidence_sources": ["Threat model", "Ethics/licensing memo"]
+        },
+        {
+          "name": "Ethics & Licensing Analysis",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO4", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Memo cites professional codes; license choice justified with implications.",
+            "Meets Expectations": "Ethical considerations and license noted.",
+            "Does Not Meet Expectations": "Little ethical analysis; license unspecified or mismatched."
+          },
+          "evidence_sources": ["Ethics/licensing memo", "Threat model"]
+        },
+        {
+          "name": "Communication & Actionability",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Risks prioritized with owners and timelines; issues filed.",
+            "Meets Expectations": "Risks listed with next steps.",
+            "Does Not Meet Expectations": "No priorities or owners; no follow-up actions."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Partner Review & Updates",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3", "LO4"],
+          "descriptors": {
+            "Exceeds Expectations": "Partner feedback recorded; model updated within a week; security review scheduled.",
+            "Meets Expectations": "Feedback acknowledged; updates planned.",
+            "Does Not Meet Expectations": "No feedback loop or updates."
+          },
+          "evidence_sources": [
+            "Partner meeting notes",
+            "Backlog change history"
+          ]
+        }
+      ],
+      "evidence_to_check": [
+        "Threat model diagram",
+        "Ethics & licensing memo",
+        "Issues created"
+      ],
+      "ta_notes_and_anchors": [
+        "Anchors: concrete data flows and asset list.",
+        "Partial credit for identified threats without mitigations.",
+        "Resubmit if licensing unclear for OSS release."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Check for LICENSE file", "Static secrets scan"],
+      "time_estimate_minutes": 14
+    },
+    {
+      "id": "A011",
+      "title": "Term Demo & Tech Talk (Fall)",
+      "type": "Presentation",
+      "description": "Live demo of the walking skeleton and key learning; 8–10 minute talk tailored to a technical audience with slides and live product walkthrough. Incorporate feedback from partner and peers.",
+      "learning_outcomes": [
+        "Communicate effectively in a variety of professional contexts.",
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline."
+      ],
+      "term_week": "Fall W10",
+      "criteria": [
+        {
+          "name": "Technical Content & Accuracy",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Explains architecture, slice, and constraints accurately; includes metrics and test status.",
+            "Meets Expectations": "Covers core design and demo status accurately.",
+            "Does Not Meet Expectations": "Missing or inaccurate technical content."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Demo Effectiveness",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Live demo runs end-to-end; shows real data; handles failure cases.",
+            "Meets Expectations": "Demo covers main flow; minor hiccups handled.",
+            "Does Not Meet Expectations": "Demo fails or unclear; canned screenshots only."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Narrative & Structure",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Clear storyline with problem→solution→value; slide titles are claims with evidence.",
+            "Meets Expectations": "Organized talk with clear sections.",
+            "Does Not Meet Expectations": "Disorganized; hard to follow."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Audience Fit & Delivery",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Timing 8–10 min; confident delivery; answers questions precisely.",
+            "Meets Expectations": "Within time; answers most questions.",
+            "Does Not Meet Expectations": "Over/under time; weak delivery; poor Q&A."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Team Participation",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5"],
+          "descriptors": {
+            "Exceeds Expectations": "Multiple members present; roles visible; smooth handoffs.",
+            "Meets Expectations": "At least two members present; acceptable handoffs.",
+            "Does Not Meet Expectations": "Single speaker without team presence; poor handoffs."
+          },
+          "evidence_sources": ["Presentation recording", "Agenda with speakers"]
+        }
+      ],
+      "evidence_to_check": ["Slide deck", "Demo video/link", "Q&A notes"],
+      "ta_notes_and_anchors": [
+        "Anchor 'Exceeds': live demo + metrics + clear Q&A.",
+        "Partial credit for recorded demo when live is impossible.",
+        "Resubmit only if demo cannot run and no evidence provided."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Timer for talk length"],
+      "time_estimate_minutes": 10
+    },
+    {
+      "id": "A012",
+      "title": "Term Demo & Tech Talk (Winter)",
+      "type": "Presentation",
+      "description": "Live demo of feature-complete beta with test results, performance metrics, deployment status, and roadmap-to-final. Address earlier risks and ADR changes; solicit partner feedback.",
+      "learning_outcomes": [
+        "Communicate effectively in a variety of professional contexts.",
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline."
+      ],
+      "term_week": "Winter W10",
+      "criteria": [
+        {
+          "name": "Beta Completeness & Quality",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO2", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Feature set near-complete; bugs categorized; performance targets reported.",
+            "Meets Expectations": "Most features complete; key bugs noted; some metrics.",
+            "Does Not Meet Expectations": "Major gaps; few metrics; unstable build."
+          },
+          "evidence_sources": ["Metrics dashboard", "Test reports"]
+        },
+        {
+          "name": "Evidence & Metrics",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO2", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Test results, p95 latency/error rate, and deploy status shown; trend vs Fall.",
+            "Meets Expectations": "Test results and deploy status shown.",
+            "Does Not Meet Expectations": "Little evidence of quality/perf."
+          },
+          "evidence_sources": ["Metrics dashboard", "Test reports"]
+        },
+        {
+          "name": "Risk Resolution & ADR Updates",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO1", "LO2"],
+          "descriptors": {
+            "Exceeds Expectations": "Earlier risks addressed; ADRs updated with consequences; deltas explained.",
+            "Meets Expectations": "Some risks addressed; ADR changes noted.",
+            "Does Not Meet Expectations": "Risks unresolved; ADRs stale."
+          },
+          "evidence_sources": ["Architecture doc", "ADR files"]
+        },
+        {
+          "name": "Narrative & Delivery",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Clear story connecting user needs to beta; stick to 8–10 min.",
+            "Meets Expectations": "Coherent talk within time.",
+            "Does Not Meet Expectations": "Unclear; time mismanaged."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Team & Partner Engagement",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Multiple voices; partner questions addressed; follow-ups filed.",
+            "Meets Expectations": "Team engages; follow-ups noted.",
+            "Does Not Meet Expectations": "Limited engagement; no follow-ups."
+          },
+          "evidence_sources": ["Presentation recording", "Agenda with speakers"]
+        }
+      ],
+      "evidence_to_check": ["Slide deck", "Metrics dashboard", "Test reports"],
+      "ta_notes_and_anchors": [
+        "Expect frank discussion of unresolved risks.",
+        "Partial credit for strong demo with limited metrics.",
+        "Resubmit if beta cannot run or lacks test evidence."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Compare metrics trend", "CI status"],
+      "time_estimate_minutes": 12
+    },
+    {
+      "id": "A013",
+      "title": "Project Partner Evaluation (End of Each Term)",
+      "type": "External Evaluation",
+      "description": "Partner completes rubric-based evaluation across facets: Reflection; Requirements & Specifications; Design, Implementation & Deployment; Verification & Validation (category-specific in Spring); Teamwork; Communication. Counts toward course grade.",
+      "learning_outcomes": [
+        "Communicate effectively in a variety of professional contexts.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline.",
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions."
+      ],
+      "term_week": "Fall/Winter/Spring W10",
+      "criteria": [
+        {
+          "name": "Communication & Professionalism",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Consistently clear, timely updates; responsive to partner feedback.",
+            "Meets Expectations": "Generally clear updates; responds to feedback.",
+            "Does Not Meet Expectations": "Irregular or unclear communication."
+          },
+          "evidence_sources": [
+            "Partner meeting notes",
+            "Backlog change history"
+          ]
+        },
+        {
+          "name": "Requirements & Specifications",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO2", "LO1"],
+          "descriptors": {
+            "Exceeds Expectations": "Requirements well-understood; deliverables match partner priorities.",
+            "Meets Expectations": "Understands most requirements; minor mismatches.",
+            "Does Not Meet Expectations": "Misunderstands needs; frequent mismatches."
+          },
+          "evidence_sources": ["Backlog/issue tracker", "Traceability table"]
+        },
+        {
+          "name": "Design, Implementation & Deployment",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO2", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Solution robust and maintainable; deployable in partner context.",
+            "Meets Expectations": "Working solution with acceptable quality.",
+            "Does Not Meet Expectations": "Unreliable solution or hard to deploy."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Verification & Validation",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO2", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Evidence of testing and validation with partner scenarios.",
+            "Meets Expectations": "Some testing evidence; basic validation.",
+            "Does Not Meet Expectations": "Little test evidence; unvalidated."
+          },
+          "evidence_sources": ["Test reports", "Coverage report"]
+        },
+        {
+          "name": "Teamwork",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Collaborative and reliable; resolves issues constructively.",
+            "Meets Expectations": "Generally collaborative; resolves most issues.",
+            "Does Not Meet Expectations": "Poor collaboration; unresolved conflicts."
+          },
+          "evidence_sources": ["Presentation recording", "Agenda with speakers"]
+        }
+      ],
+      "evidence_to_check": ["Partner evaluation form/responses"],
+      "ta_notes_and_anchors": [
+        "Use partner rubric as-is to avoid TA bias.",
+        "Partial credit determined by partner scale.",
+        "Follow up if partner flags major concerns."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["N/A"],
+      "time_estimate_minutes": 6
+    },
+    {
+      "id": "A014",
+      "title": "Peer Evaluations (Mid & End of Each Term)",
+      "type": "Peer Evaluation",
+      "description": "Anonymous peer assessment using common teamwork dimensions (contribution, interaction, keeping team on track, expecting quality, relevant knowledge/skills) plus 100-point distribution and qualitative feedback. Used for individual accountability.",
+      "learning_outcomes": [
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline.",
+        "Communicate effectively in a variety of professional contexts.",
+        "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles."
+      ],
+      "term_week": "Fall/Winter/Spring W5 & W10",
+      "criteria": [
+        {
+          "name": "Contribution & Reliability",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO5"],
+          "descriptors": {
+            "Exceeds Expectations": "Consistently contributes and meets commitments; peers report dependable work.",
+            "Meets Expectations": "Usually meets commitments; dependable overall.",
+            "Does Not Meet Expectations": "Often misses commitments or unreliable."
+          },
+          "evidence_sources": ["PR reviews", "PRs authored"]
+        },
+        {
+          "name": "Collaboration & Interaction",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Constructive feedback; inclusive collaboration; supports others.",
+            "Meets Expectations": "Works well with others; communicates adequately.",
+            "Does Not Meet Expectations": "Poor collaboration or communication."
+          },
+          "evidence_sources": ["Presentation recording", "Agenda with speakers"]
+        },
+        {
+          "name": "Quality Expectations",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO5"],
+          "descriptors": {
+            "Exceeds Expectations": "Sets and upholds high quality standards in team.",
+            "Meets Expectations": "Meets agreed quality bar.",
+            "Does Not Meet Expectations": "Accepts low-quality work or cuts corners."
+          },
+          "evidence_sources": ["PR reviews", "PRs authored"]
+        },
+        {
+          "name": "Initiative & Ownership",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO5"],
+          "descriptors": {
+            "Exceeds Expectations": "Proactively identifies work; takes ownership of outcomes.",
+            "Meets Expectations": "Takes ownership when assigned.",
+            "Does Not Meet Expectations": "Requires prompting; avoids ownership."
+          },
+          "evidence_sources": ["PR reviews", "PRs authored"]
+        },
+        {
+          "name": "Professional Conduct",
+          "weight_percent": 10,
+          "outcomes_aligned": ["LO4", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Respectful, ethical behavior; honors agreements.",
+            "Meets Expectations": "Generally respectful and ethical.",
+            "Does Not Meet Expectations": "Disrespectful or unethical behavior."
+          },
+          "evidence_sources": [
+            "Partner meeting notes",
+            "Backlog change history"
+          ]
+        }
+      ],
+      "evidence_to_check": ["Peer eval responses", "Narrative comments"],
+      "ta_notes_and_anchors": [
+        "Calibrate using distribution to avoid inflation.",
+        "Partial credit for mixed peer comments; weigh patterns over outliers.",
+        "Escalate if comments indicate misconduct."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": false,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["N/A"],
+      "time_estimate_minutes": 6
+    },
+    {
+      "id": "A015",
+      "title": "Term Retrospectives (End of Fall, Winter, Spring)",
+      "type": "Reflection",
+      "description": "Team submits a written retrospective (what went well, what to improve, action items) and updates to the working agreement. Tie outcomes to metrics and partner feedback; feed next term's plan.",
+      "learning_outcomes": [
+        "Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing.",
+        "Communicate effectively in a variety of professional contexts.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline."
+      ],
+      "term_week": "Fall/Winter/Spring W10",
+      "criteria": [
+        {
+          "name": "Insightful Analysis",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO7", "LO1"],
+          "descriptors": {
+            "Exceeds Expectations": "Identifies causes using data/metrics; proposes targeted improvements.",
+            "Meets Expectations": "Identifies issues and suggests improvements.",
+            "Does Not Meet Expectations": "Lists events without analysis or actions."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Action Items & Follow-through",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "1–3 SMART actions with owners/dates; tracked next term.",
+            "Meets Expectations": "Actions listed with owners or dates.",
+            "Does Not Meet Expectations": "Vague actions; no owners or tracking."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        },
+        {
+          "name": "Use of Evidence & Feedback",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO7", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "References partner feedback and metrics; links to artifacts.",
+            "Meets Expectations": "Mentions feedback and some evidence.",
+            "Does Not Meet Expectations": "No evidence cited; opinions only."
+          },
+          "evidence_sources": [
+            "Partner meeting notes",
+            "Backlog change history"
+          ]
+        },
+        {
+          "name": "Writing & Structure",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO7", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Clear sections; concise bullets; accessible formatting.",
+            "Meets Expectations": "Readable; mostly structured.",
+            "Does Not Meet Expectations": "Unstructured; hard to follow."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Working Agreement Update",
+          "weight_percent": 10,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Agreement updated to reflect lessons; versions tracked.",
+            "Meets Expectations": "Update noted; some changes.",
+            "Does Not Meet Expectations": "No update or changes unclear."
+          },
+          "evidence_sources": ["Team charter doc", "Meeting notes"]
+        }
+      ],
+      "evidence_to_check": ["Retrospective doc", "Updated working agreement"],
+      "ta_notes_and_anchors": [
+        "Strong retros have 1–3 actions, not laundry lists.",
+        "Partial credit for reflection without data.",
+        "Resubmit if no actionable items."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Detect action items count"],
+      "time_estimate_minutes": 10
+    },
+    {
+      "id": "A016",
+      "title": "Final Project Report (≥2000 words)",
+      "type": "Report",
+      "description": "A professional report synthesizing requirements, design/ADRs, implementation, testing/validation, deployment, ethics/legal considerations, outcomes vs. goals, and future work. Meets Writing Intensive learning outcome of composing ≥2000 words with revision.",
+      "learning_outcomes": [
+        "Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing.",
+        "Demonstrate knowledge/understanding of audience expectations, genres, and conventions appropriate to communicating in the discipline.",
+        "Demonstrate the ability to compose a document of at least 2000 words through multiple aspects of writing, including brainstorming, drafting, using sources appropriately, and revising comprehensively after receiving feedback on a draft.",
+        "Communicate effectively in a variety of professional contexts."
+      ],
+      "term_week": "Draft: Winter W8; Final: Spring W9",
+      "criteria": [
+        {
+          "name": "Content Completeness & Accuracy",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO7", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Covers all required sections with correct details and evidence.",
+            "Meets Expectations": "Covers most sections with generally correct details.",
+            "Does Not Meet Expectations": "Major sections missing or inaccurate."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Organization & Readability",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO7", "LO8"],
+          "descriptors": {
+            "Exceeds Expectations": "Logical flow; headings, figures, and tables aid navigation.",
+            "Meets Expectations": "Readable structure with headings and figures.",
+            "Does Not Meet Expectations": "Disorganized; difficult to navigate."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Audience & Genre Conventions",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO8", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Professional tone; citations/figures formatted consistently; executive summary present.",
+            "Meets Expectations": "Appropriate tone; basic formatting and summary.",
+            "Does Not Meet Expectations": "Tone or conventions inappropriate; missing summary/citations."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Use of Sources & Evidence",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO9", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Appropriate sources integrated and cited; data and code links provided.",
+            "Meets Expectations": "Some sources used and cited; basic evidence.",
+            "Does Not Meet Expectations": "Few or poorly cited sources; weak evidence."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Revision & Process Documentation",
+          "weight_percent": 10,
+          "outcomes_aligned": ["LO9", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "Draft→feedback→revision cycle documented; substantive changes visible.",
+            "Meets Expectations": "Draft and revision submitted; some changes.",
+            "Does Not Meet Expectations": "Little revision; minimal changes."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Length & Mechanics",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO9", "LO7"],
+          "descriptors": {
+            "Exceeds Expectations": "≥2000 words; grammar/spelling polished; accessible formatting.",
+            "Meets Expectations": "≥2000 words; minor mechanical issues.",
+            "Does Not Meet Expectations": "<2000 words or major mechanical problems."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        }
+      ],
+      "evidence_to_check": [
+        "Draft and final report",
+        "Revision history with comments",
+        "Citations/bibliography"
+      ],
+      "ta_notes_and_anchors": [
+        "Check word count and revision evidence first.",
+        "Partial credit for solid content under-length; allow revision.",
+        "Resubmit if sources are plagiarized or uncited."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Word count ≥2000", "Reference checker"],
+      "time_estimate_minutes": 25
+    },
+    {
+      "id": "A017",
+      "title": "Final Presentation & Expo Demo (Spring)",
+      "type": "Presentation",
+      "description": "Public-facing talk and live demo for partners, faculty, and external guests; includes outcomes, lessons learned, and a clear narrative connecting user needs to delivered value. Incorporates rehearsal feedback and QA results.",
+      "learning_outcomes": [
+        "Communicate effectively in a variety of professional contexts.",
+        "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+        "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline."
+      ],
+      "term_week": "Spring W10",
+      "criteria": [
+        {
+          "name": "Story & Value Communication",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Persuasive narrative tying user needs to results and impact.",
+            "Meets Expectations": "Clear narrative with connection to needs.",
+            "Does Not Meet Expectations": "Weak or disjointed story; impact unclear."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Live Demo & Reliability",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO2", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Live system runs smoothly; real scenarios; contingency shown.",
+            "Meets Expectations": "Demo works for main scenario.",
+            "Does Not Meet Expectations": "Demo unreliable or absent."
+          },
+          "evidence_sources": ["Deployed app", "CI logs"]
+        },
+        {
+          "name": "Visuals & Materials",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3", "LO8"],
+          "descriptors": {
+            "Exceeds Expectations": "Slides/poster readable at distance; figures labeled; accessible design.",
+            "Meets Expectations": "Readable materials with labeled figures.",
+            "Does Not Meet Expectations": "Cluttered or hard-to-read materials."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Q&A & Professionalism",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Concise, accurate answers; acknowledges limits; invites follow-up.",
+            "Meets Expectations": "Answers most questions adequately.",
+            "Does Not Meet Expectations": "Evasive or inaccurate answers."
+          },
+          "evidence_sources": ["Submitted document", "Rubric checklist"]
+        },
+        {
+          "name": "Team Presence & Roles",
+          "weight_percent": 20,
+          "outcomes_aligned": ["LO5", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "All members contribute; roles clear; smooth transitions.",
+            "Meets Expectations": "Multiple members contribute; transitions mostly smooth.",
+            "Does Not Meet Expectations": "One speaker dominates; roles unclear."
+          },
+          "evidence_sources": ["Presentation recording", "Agenda with speakers"]
+        }
+      ],
+      "evidence_to_check": [
+        "Expo slides/poster",
+        "Live demo link",
+        "Q&A notes"
+      ],
+      "ta_notes_and_anchors": [
+        "Anchor 'Exceeds': compelling story + reliable live demo.",
+        "Partial credit for strong talk with recorded demo.",
+        "Resubmit if demo absent and claims unverified."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": ["Timer for talk length"],
+      "time_estimate_minutes": 12
+    },
+    {
+      "id": "A018",
+      "title": "Release & Handoff Package",
+      "type": "Delivery/Documentation",
+      "description": "Deliver a tagged release, deployment artifacts, runbook, API docs, test evidence, data/ops notes, and licensing files. For open-source work, publish a release following SemVer and include contribution guidelines.",
+      "learning_outcomes": [
+        "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+        "Communicate effectively in a variety of professional contexts.",
+        "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles."
+      ],
+      "term_week": "Spring W10",
+      "criteria": [
+        {
+          "name": "Release Artifacts & Versioning",
+          "weight_percent": 30,
+          "outcomes_aligned": ["LO6", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "Tagged release with changelog; SemVer applied; binaries/images reproducible.",
+            "Meets Expectations": "Release tagged with basic notes.",
+            "Does Not Meet Expectations": "No tagged release or unclear contents."
+          },
+          "evidence_sources": ["Release notes", "Runbook/API docs"]
+        },
+        {
+          "name": "Deployment & Runbook",
+          "weight_percent": 25,
+          "outcomes_aligned": ["LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "Install/ops docs reproducible; health checks and rollback steps included.",
+            "Meets Expectations": "Install steps documented; basic health check.",
+            "Does Not Meet Expectations": "Install steps missing or non-reproducible."
+          },
+          "evidence_sources": ["Release notes", "Runbook/API docs"]
+        },
+        {
+          "name": "API & Developer Docs",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO3", "LO6"],
+          "descriptors": {
+            "Exceeds Expectations": "API reference with examples; onboarding guide; diagrams current.",
+            "Meets Expectations": "API basics and setup documented.",
+            "Does Not Meet Expectations": "Sparse or outdated docs."
+          },
+          "evidence_sources": ["Runbook/API docs", "Release notes"]
+        },
+        {
+          "name": "Test Evidence & Quality Status",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO6", "LO2"],
+          "descriptors": {
+            "Exceeds Expectations": "CI reports, coverage, and known issues attached; release criteria met.",
+            "Meets Expectations": "Basic test report and known issues listed.",
+            "Does Not Meet Expectations": "Little test evidence; unknown quality."
+          },
+          "evidence_sources": ["Test reports", "Coverage report"]
+        },
+        {
+          "name": "Licensing & Compliance",
+          "weight_percent": 15,
+          "outcomes_aligned": ["LO4", "LO3"],
+          "descriptors": {
+            "Exceeds Expectations": "License files, NOTICE, third-party attributions; sensitive data handled per policy.",
+            "Meets Expectations": "License noted; basic attributions.",
+            "Does Not Meet Expectations": "Licensing unclear; missing attributions."
+          },
+          "evidence_sources": ["Ethics/licensing memo", "Threat model"]
+        }
+      ],
+      "evidence_to_check": [
+        "Release tag page",
+        "Runbook/docs",
+        "API reference",
+        "Test/CI artifacts",
+        "LICENSE/NOTICE"
+      ],
+      "ta_notes_and_anchors": [
+        "Look for reproducibility: can you set up with docs only?",
+        "Partial credit if release tagged but docs sparse.",
+        "Resubmit if LICENSE/NOTICE missing in OSS."
+      ],
+      "individual_contribution_adjustment": {
+        "applies": true,
+        "method": "Calibrated peer assessment + repo analytics review",
+        "range_percent": "+/-10",
+        "rules": [
+          "If peer median < 0.8 and repo activity materially lower, apply -5% to -10%",
+          "If peer median > 1.1 with strong review activity, apply +5% to +10%"
+        ]
+      },
+      "automation_hooks": [
+        "Check SemVer tag pattern",
+        "CI release workflow success"
+      ],
+      "time_estimate_minutes": 16
+    }
+  ]
+}

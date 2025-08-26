@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/starlight": "0.34.6",
+    "@astrojs/starlight": "0.35.2",
     "@astrojs/starlight-tailwind": "^4.0.1",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "5.11.1",
+    "astro": "5.13.3",
     "astro-feelback": "^0.3.4",
     "astro-mermaid": "^1.0.3",
     "katex": "^0.16.22",
@@ -25,5 +25,10 @@
     "starlight-scroll-to-top": "^0.1.1",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.0",
+    "lefthook": "^1.12.3",
+    "ultracite": "5.2.4"
   }
 }

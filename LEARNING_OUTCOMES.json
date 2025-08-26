@@ -1,0 +1,64 @@
+{
+  "learning_outcomes": [
+    {
+      "id": "L01",
+      "outcome": "Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.",
+      "cognitive_level": "Analyze",
+      "notes": "to be assessed individually"
+    },
+    {
+      "id": "L02",
+      "outcome": "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+      "cognitive_level": "Create",
+      "notes": "to be assessed individually"
+    },
+    {
+      "id": "L03",
+      "outcome": "Communicate effectively in a variety of professional contexts.",
+      "cognitive_level": "Apply",
+      "notes": "to be assessed individually"
+    },
+    {
+      "id": "L04",
+      "outcome": "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles.",
+      "cognitive_level": "Evaluate",
+      "notes": "to be assessed individually"
+    },
+    {
+      "id": "L05",
+      "outcome": "Function effectively as a member or leader of a team engaged in activities appropriate to the program's discipline.",
+      "cognitive_level": "Apply",
+      "notes": "to be assessed individually"
+    },
+    {
+      "id": "L06",
+      "outcome": "Apply computer science theory and software development fundamentals to produce computing-based solutions.",
+      "cognitive_level": "Apply",
+      "notes": "to be assessed individually"
+    },
+    {
+      "id": "L07",
+      "outcome": "Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing.",
+      "cognitive_level": "Analyze",
+      "notes": "to be assessed individually, only in CS 461 and 462"
+    },
+    {
+      "id": "L08",
+      "outcome": "Demonstrate knowledge/understanding of audience expectations, genres, and conventions appropriate to communicating in the discipline.",
+      "cognitive_level": "Understand",
+      "notes": "to be assessed individually, only in CS 461 and 462"
+    },
+    {
+      "id": "L09",
+      "outcome": "Demonstrate the ability to compose a document of at least 2000 words through multiple aspects of writing, including brainstorming, drafting, using sources appropriately, and revising comprehensively after receiving feedback on a draft.",
+      "cognitive_level": "Create",
+      "notes": "to be assessed individually, only in CS 461 and 462"
+    },
+    {
+      "id": "L10",
+      "outcome": "Apply career development concepts to relevant artifacts from engagement in a career related experience or activity.",
+      "cognitive_level": "Apply",
+      "notes": "to be assessed individually, only in CS 463"
+    }
+  ]
+}
