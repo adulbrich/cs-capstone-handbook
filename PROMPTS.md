@@ -170,7 +170,63 @@ Return one clean Markdown document per assignment/assessment with the following 
 
 1. Overview & Purpose
    - 2–3 sentences on what the assignment is and why it matters.
-   - Briefly connect to specific learning outcomes (mention LO IDs/titles).
+   - Add a sentence to briefly connect to specific learning outcomes (mention LO IDs/titles).
+2. Tasks & Milestones
+   - Step-by-step instructions for what students must do.
+   - Include a concise milestone table with dates, expected artifacts, and quick success checks.
+3. Deliverables & Success Criteria
+   - Bullet list of exact items to submit with precise paths/filenames and formats.
+   - Concrete, observable “done” conditions (no points)—e.g., CI green, coverage threshold, performance/security/UX bars.
+   - Add: “Detailed scoring is in [See Grading Rubric & TA Guide].”
+4. Logistics, Policies & Support
+   - Submission workflow (where/how), naming/tag format, and late policy.
+   - Team collaboration expectations (roles, PR reviews) and how individual credit is acknowledged (peer eval + brief orals)—link to separate policy if needed.
+   - Academic integrity & GenAI usage expectations (what’s allowed, what must be disclosed, what’s not allowed).
+   - Accessibility & inclusion notes (alt formats, captions, time-zone fairness), and where to get help.
+   - Time expectations (estimated hours and suggested pacing).
+
+Must-Include Checklist (work these into the sections above):
+
+- Assignment title and one-paragraph summary tied to real-world practice.
+- Reference to the relevant LO IDs/titles.
+- Clear steps for required processes (e.g., ADRs, design review, tests, scans, usability check).
+- Team roles (if Team) and PR review rules (e.g., ≥1 approval, small PRs).
+- Exact deliverable paths (e.g., `/docs/requirements.md`, `/docs/ADR-00X.md`, `/docs/test-plan.md`).
+- CI requirement (badge/link) and minimum coverage threshold for named modules.
+- Security/static analysis expectation (no High/Critical or documented mitigation).
+- Any perf/UX target (e.g., p95 ≤ [ms] under [load], ≤[N] Sev-2 issues post-heuristic review).
+- Release/tag format (e.g., `v0.3.0`) and changelog entry in `CHANGELOG.md`.
+- Links/IDs for issues and PRs included in this milestone.
+- Submission location(s) and what counts as “on time”.
+- GenAI disclosure line example (e.g., in README and/or code comments).
+- Accessibility requirements (captions for video, color-safe diagrams) and support channels.
+- “See Grading Rubric & TA Guide” placeholder link where grading is referenced.
+
+Style constraints
+
+- Be concise and scannable; prefer bullets and small tables.
+- Use precise, testable language; avoid vague adjectives.
+- Keep to four sections only as specified above.
+
+## Single Assessment Content Prompt
+
+You are a senior US college instructor in computer science with prior software engineering experience in tech. You are designing a senior software engineering project series, in the 400-level range (advanced). Prerequisites are two software engineering courses. The series is for up to 350 students. The series includes three courses (3 credits in Fall, 3 credits in Winter, 2 credits in Spring). Terms are 10 weeks. Here's the course description:
+
+"Utilize software engineering methodology in a team environment to develop a real-world application. Teams will be responsible for all phases of software development, including project planning, requirements analysis, design, coding, testing, configuration management, quality assurance, documentation, and delivery."
+
+Students will work for the 3 terms on a single project, which will be a real-world application (from industry, faculty, or brought by students themselves, subject to approval by course instructors). Teams are 3-5 students. Each project is different.
+
+Here are the assessment and its rubrics:
+
+<SINGLE_ASSESSMENT_WITH_RUBRICS.json>
+
+Generate a COMPLETE, publish-ready student-facing assignment brief only. Do NOT include any grading rubrics, TA notes, or grader guide content. If needed, reference them with a placeholder link (e.g., “[See Grading Rubric & TA Guide]”).
+
+Return one clean Markdown document per assignment/assessment with the following structure:
+
+1. Overview & Purpose
+   - 2–3 sentences on what the assignment is and why it matters.
+   - Add a sentence to briefly connect to specific learning outcomes (mention LO IDs/titles).
 2. Tasks & Milestones
    - Step-by-step instructions for what students must do.
    - Include a concise milestone table with dates, expected artifacts, and quick success checks.

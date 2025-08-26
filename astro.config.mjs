@@ -1,88 +1,88 @@
-import { defineConfig } from "astro/config";
-import sitemap from "@astrojs/sitemap";
-import starlight from "@astrojs/starlight";
-import tailwindcss from "@tailwindcss/vite";
-import starlightScrollToTop from "starlight-scroll-to-top";
-import mermaid from "astro-mermaid";
+import sitemap from '@astrojs/sitemap';
+import starlight from '@astrojs/starlight';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'astro/config';
+import mermaid from 'astro-mermaid';
+import starlightScrollToTop from 'starlight-scroll-to-top';
 // import starlightImageZoom from "starlight-image-zoom";
 // import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://capstone.alexulbrich.com",
+  site: 'https://capstone.alexulbrich.com',
 
   integrations: [
     mermaid(),
     sitemap(),
     starlight({
-      title: "CS Capstone Handbook",
+      title: 'CS Capstone Handbook',
       lastUpdated: true,
       components: {
-        Pagination: "./src/components/Pagination.astro",
+        Pagination: './src/components/Pagination.astro',
       },
       customCss: [
         // Path to your Tailwind base styles:
-        "./src/styles/global.css",
+        './src/styles/global.css',
       ],
       social: [
         {
-          icon: "github",
-          label: "GitHub",
-          href: "https://github.com/adulbrich/cs-capstone-handbook",
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/adulbrich/cs-capstone-handbook',
         },
       ],
       head: [
         {
-          tag: "script",
+          tag: 'script',
           attrs: {
-            src: "/knowledge/js/script.outbound-links.js",
-            "data-api": "/knowledge/api/event",
-            "data-domain": "capstone.alexulbrich.com",
+            src: '/knowledge/js/script.outbound-links.js',
+            'data-api': '/knowledge/api/event',
+            'data-domain': 'capstone.alexulbrich.com',
             defer: true,
           },
         },
       ],
       sidebar: [
         {
-          label: "Introduction",
+          label: 'Introduction',
           autogenerate: {
-            directory: "introduction",
+            directory: 'introduction',
           },
         },
         {
-          label: "Learning Objectives",
+          label: 'Learning Objectives',
           autogenerate: {
-            directory: "learning-objectives",
+            directory: 'learning-objectives',
           },
         },
         {
-          label: "Practicalities",
+          label: 'Practicalities',
           autogenerate: {
-            directory: "practicalities",
+            directory: 'practicalities',
           },
         },
         {
-          label: "Activities",
+          label: 'Activities',
           autogenerate: {
-            directory: "activities",
+            directory: 'activities',
           },
         },
         {
-          label: "Guides",
+          label: 'Guides',
           autogenerate: {
-            directory: "guides",
+            directory: 'guides',
           },
         },
         {
-          label: "Project Evaluation",
+          label: 'Project Evaluation',
           autogenerate: {
-            directory: "project-evaluation",
+            directory: 'project-evaluation',
           },
         },
         {
-          label: "About",
+          label: 'About',
           autogenerate: {
-            directory: "about",
+            directory: 'about',
           },
         },
       ],
@@ -91,5 +91,8 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss(), starlightScrollToTop()],
+    ssr: {
+      noExternal: ['zod'],
+    },
   },
 });
