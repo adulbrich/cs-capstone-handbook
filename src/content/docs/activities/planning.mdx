@@ -140,14 +140,26 @@ For this activity, submit your list of requirements or tasks, prioritized and ex
 
 The Impact-Effort Matrix helps teams evaluate tasks or features based on their potential impact and the effort required to implement them. It consists of four quadrants:
 
-1. Low Effort, High Impact: Quick wins that should be prioritized.
-2. High Effort, High Impact: Major projects that require planning but are worth pursuing.
+1. High Effort, High Impact: Major projects that require planning but are worth pursuing.
+2. High Effort, Low Impact: Usually not worth pursuing.
 3. Low Effort, Low Impact: Low-priority tasks, tackle if time permits.
-4. High Effort, Low Impact: Usually not worth pursuing.
+4. Low Effort, High Impact: **Quick wins that should be prioritized.**
 
-<div class="has-[img]:invert-0 has-[img]:dark:invert">
-![](../../../assets/impact-effort-matrix.png)
-</div>
+```mermaid
+quadrantChart
+  title Impact-Effort Matrix
+  x-axis Low Impact --> High Impact
+  y-axis Low Effort --> High Effort
+  quadrant-1 1 
+  quadrant-2 2 
+  quadrant-3 3 
+  quadrant-4 4
+  Major projects that require planning: [0.75, 0.75] radius: 0
+  but are worth pursuing: [0.75, 0.70] radius: 0
+  Usually not worth pursuing: [0.25, 0.75] radius: 0
+  Low-priority tasks, tackle if time permits: [0.25, 0.25] radius: 0
+  Quick wins that should be prioritized: [0.75, 0.25] radius: 0
+```
 
 This matrix helps focus on tasks that provide the most value with the least effort.
 
@@ -155,14 +167,25 @@ This matrix helps focus on tasks that provide the most value with the least effo
 
 The Eisenhower Matrix helps prioritize tasks based on urgency and importance. It consists of four quadrants:
 
-1. Important and Urgent: Do these tasks immediately.
+1. Important and Urgent: **Do these tasks immediately**.
 2. Important but Not Urgent: Schedule these tasks for later.
-3. Not Important but Urgent: Delegate these tasks if possible.
-4. Not Important Nor Urgent: Consider eliminating these tasks.
+3. Not Important and Not Urgent: Consider eliminating these tasks.
+4. Not Important but Urgent: Delegate these tasks if possible.
 
-<div class="has-[img]:invert-0 has-[img]:dark:invert">
-![](../../../assets/eisenhower-matrix.png)
-</div>
+```mermaid
+quadrantChart
+  title Eisenhower Matrix
+  x-axis Not Urgent --> Urgent
+  y-axis Not Important --> Important
+  quadrant-1 1 
+  quadrant-2 2 
+  quadrant-3 3 
+  quadrant-4 4
+  Do these tasks immediately: [0.75, 0.75] radius: 0
+  Schedule these tasks for later: [0.25, 0.75] radius: 0
+  Consider eliminating these tasks: [0.25, 0.25] radius: 0
+  Delegate these tasks if possible: [0.75, 0.25] radius: 0
+```
 
 This matrix helps focus on what truly matters, improving productivity and decision-making.
 
@@ -170,14 +193,25 @@ This matrix helps focus on what truly matters, improving productivity and decisi
 
 The Cost-Value Matrix is used to prioritize tasks, features, or projects based on their cost (time, money, effort) and the value or benefit they provide. It consists of four quadrants:
 
-1. High Value, Low Cost: Prioritize these “quick wins.”
-2. High Value, High Cost: Worth investing in if resources allow.
+1. High Value, High Cost: Worth investing in if resources allow.
+2. High Value, Low Cost: **Prioritize these quick wins.**
 3. Low Value, Low Cost: Consider doing if time permits.
 4. Low Value, High Cost: Generally avoid or minimize these tasks.
 
-<div class="has-[img]:invert-0 has-[img]:dark:invert">
-![](../../../assets/cost-value-matrix.png)
-</div>
+```mermaid
+quadrantChart
+  title Cost-Value Matrix
+  x-axis Low Cost --> High Cost
+  y-axis Low Value --> High Value
+  quadrant-1 1 
+  quadrant-2 2 
+  quadrant-3 3 
+  quadrant-4 4
+  Worth investing in if resources allow: [0.75, 0.75] radius: 0
+  Prioritize these quick wins: [0.25, 0.75] radius: 0
+  Consider doing if time permits: [0.25, 0.25] radius: 0
+  Generally avoid or minimize these tasks: [0.75, 0.25] radius: 0
+```
 
 This matrix helps focus on efforts that offer the best return on investment. In the context of your Capstone project, cost will mostly be time.
 
@@ -224,6 +258,28 @@ Set up a Kanban board to visualize and manage your project's workflow effectivel
 5. Team Agreement: Discuss the process and tool with your team and ensure everyone agrees.
 
 Provide a screenshot of your Kanban board and a brief explanation of its structure.
+
+## Responsibility Assignment Matrix (RACI)
+
+<Badge text="Team Activity" variant="note" class="mb-6"/>
+
+A [RACI matrix](https://en.wikipedia.org/wiki/Responsibility_assignment_matrix) is a project management tool that clarifies roles and responsibilities for tasks or deliverables. RACI stands for:
+
+- **Responsible**: The person(s) who perform the work to complete the task.
+- **Accountable**: The person who is ultimately answerable for the task's completion and approves the work.
+- **Consulted**: Individuals who provide input or expertise during the task.
+- **Informed**: Individuals who need to be kept updated on the task's progress or completion.
+
+Here's an example of a RACI matrix:
+
+| Task/Deliverable | Team Member A | Team Member B | ... | TA/Instructor | Project Partner |
+|:-----------------|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
+| Stakeholder Interview | R | A | C | I |
+| Figma: User Login | R | C |  | I | I |
+| Compare Databases Technology |  | R |  | I | C |
+| Testing | R | R | R | I | A |
+
+Provide a RACI matrix for your project, detailing roles and responsibilities for key tasks or deliverables.
 
 ## Stakeholder Mapping
 
