@@ -1,0 +1,135 @@
+---
+title: Architecture Decision Record (ADR)
+description: A guide to understanding, writing, and managing Architecture Decision Records in software projects.
+sidebar:
+  order: 4
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+[Architecture Decision Records (ADRs)](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record) are the backbone of a well-documented software project. They capture the key decisions that shape your system's architecture, technology choices, and design patterns, ensuring everyone—developers, stakeholders, and future maintainers—understands why things are the way they are. Without clear ADRs:
+
+- Teams forget why decisions were made, leading to repeated debates or mistakes.
+- New contributors struggle to understand the rationale behind the architecture.
+- Projects risk inconsistency, technical debt, or costly rework.
+
+ADRs are **concise, focused documents** that bridge the gap between architectural ideas and their implementation. They detail the context, options considered, reasoning, and consequences of decisions, serving as a living record for your project.
+
+## What is an ADR?
+
+An ADR records:
+
+- **Decision**: What architectural or technical choice was made?
+- **Context**: What problem, need, or situation led to this decision?
+- **Options considered**: What alternatives were evaluated?
+- **Rationale**: Why was this option chosen? What were the trade-offs?
+- **Consequences**: What are the implications, risks, or follow-up actions?
+
+ADRs should be easy to read, update, and reference. Focus on decisions with lasting impact, not every minor detail.
+
+<LinkCard
+  title="Design Activities"
+  href="/activities/design/"
+  description="Activities to help figure out architecture decisions."
+/>
+
+## Addressing an Architectural Problem
+
+The best ADRs address a real architectural problem or challenge. When you tackle a problem affecting your system's structure, scalability, or maintainability, you clarify what you want to achieve, why, and how. A good ADR starts with a **problem statement**: clear, concise, and specific. It should describe the problem, who is affected, and why it matters.
+
+Just as with requirements, the problem statement in an ADR is a living document. High-performing teams revisit and refine their architectural problems as they learn more about the system and its context.
+
+## What Makes a Good ADR?
+
+Good ADRs are clear, concise, and justified. Use simple, unambiguous language. Avoid jargon or vague terms. Document the alternatives considered and the reasoning behind your choice. For example:
+
+{/* TODO: change decision to use Supabase */}
+```md
+# ADR-001: Use PostgreSQL for the main database
+
+**Status:** Accepted
+
+**Context:**
+We need a reliable, scalable database for our web application. Requirements include ACID compliance, support for complex queries, and compatibility with our hosting provider.
+
+**Decision:**
+We will use PostgreSQL as the primary database for the project.
+
+**Options Considered:**
+- PostgreSQL
+- MySQL
+- MongoDB
+
+**Rationale:**
+PostgreSQL offers strong ACID guarantees, advanced query capabilities, and is well-supported by our cloud provider. MySQL lacks some features we need, and MongoDB is less suitable for relational data.
+
+**Consequences:**
+- Team members need to learn PostgreSQL basics.
+- We will use the pg library for Node.js integration.
+- Future migrations may require careful planning.
+
+**References:**
+- [PostgreSQL documentation](https://www.postgresql.org/docs/)
+- Team discussion notes (2025-09-01)
+```
+
+> Add the date and author to the ADR if not in version control.
+
+ADRs should be **prioritized** based on their impact. Focus on decisions that shape the system's direction or have significant consequences.
+
+:::tip[Managing ADRs]
+Store ADRs in a dedicated folder (e.g., `/docs/adr/` or `/architecture/adr/`). Use sequential numbering or descriptive titles. Use version control to track changes. Markdown is recommended for readability and easy linking.
+:::
+
+<LinkCard
+  title="ADR Templates & Tools"
+  href="https://adr.github.io/"
+  description="Templates, tools, and resources for managing ADRs."
+/>
+
+## Validation
+
+A validated ADR should answer:
+
+- Is the decision **valuable** to the project or users?
+- Is it **feasible** given technical constraints?
+- Is it **viable** for the business or organization?
+- Is it **understandable** to future team members?
+
+Review ADRs with stakeholders, mentors, or team members to catch misunderstandings or ambiguities early. Revisit ADRs as the project evolves.
+
+## Measuring Success
+
+Success for an ADR means the decision leads to positive outcomes: improved system quality, easier maintenance, or better team alignment. Optionally track the impact of architectural decisions through metrics like system performance, developer productivity, or user satisfaction.
+
+## Best Practices for Writing ADRs
+
+- Be concise. Focus on the decision and its reasoning.
+- Use clear, unambiguous language.
+- Document alternatives, even briefly.
+- Update status (accepted, deprecated, superseded) as decisions evolve.
+- Link related ADRs to show connections.
+- Review and update ADRs regularly.
+- Make uncertainties explicit.
+- Prioritize impactful decisions.
+- Separate decisions from explanations.
+- Consider listing non-decisions (what you chose NOT to do).
+- If your ADR has "and" in the decision, break it down.
+
+## Some Truths about ADRs
+
+- They can be busywork if not focused—keep them short and easy to skim.
+- They are quickly outdated if not maintained.
+- They are often based on assumptions until validated—make uncertainties explicit.
+- They may be superseded as the project evolves; that's normal.
+- They are most valuable when they capture reasoning, not just outcomes.
+
+ADRs are a living part of your project's documentation. Use them to support good decision-making, transparency, and learning.
+
+## ADRs in Industry and Academia
+
+In industry, ADRs are used by software teams, open-source projects, and [organizations](https://aws.amazon.com/blogs/architecture/master-architecture-decision-records-adrs-best-practices-for-effective-decision-making/) practicing agile or DevOps. They make decisions visible, auditable, and collaborative. Some companies use formal templates; others prefer lightweight records. The key is capturing reasoning and context.
+
+One might argue that it's better to **decide and commit early**, even with incomplete information, than to delay decisions (sometimes for months) waiting for perfect data (which don't exist). If the decision turns out to be wrong, it can be changed later. Fail fast.
+
+In academia, ADRs help student teams reflect on design choices, justify decisions to instructors or peers, and learn from past projects. They support critical thinking and communication skills.
