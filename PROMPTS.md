@@ -12,7 +12,85 @@ And here are the learning outcomes with notes:
 
 <LEARNING_OUTCOMES.json>
 
-Create an assessment plan for the course series that includes a variety of assessments aligned with the learning outcomes. The assessments should include: coming up with requirements, technical design, prototypes, presentations, peer-evaluations. Students will have progress reports to submit every 2 weeks, term retrospectives, and a final project report. We want them to code as early as possible (even if onl prototypes). Their project partner will evaluate them on the following facets: https://capstone.alexulbrich.com/project-evaluation/project-partner-evaluation/
+Create an assessment plan for the course series that includes a variety of assessments aligned with the learning outcomes. The assessments should include: coming up with requirements, technical design, prototypes, presentations, peer-evaluations. Students will have progress reports to submit every 2 weeks, term retrospectives, and a final project report. We want them to code as early as possible (even if onl prototypes). Their project partner will evaluate them on the following facets: <https://capstone.alexulbrich.com/project-evaluation/project-partner-evaluation/>
+
+Make sure you search for good assessment ideas that align with the learning outcomes.
+
+The learning outcomes must be assessed individually even though this is a project-based course. Multiple outcomes can be assessed by a single assessment. Outcomes L1 through L6 need to be assessed at least twice. Outcome L9 could be assessed individually for example with a pre-requirements or per-design document which would involve research or prototyping. L10 can be assessed simply, once in CS463.
+
+Reduce writing overhead and focus on practical, real-world writing. Prefer individually authored contribution to team-authored documents. Use peer evaluations to assess teamwork and individual contributions.
+
+Provide the assessments using the following JSON format:
+
+```json
+{
+  "assessments": [
+    {
+      "id": "id starting with A and 3 digits, e.g., A001",
+      "title": "Assessment title here",
+      "type": "Assessment type here",
+      "description": "Description of the assessment here",
+      "learning_outcomes": [
+        "Aligned outcome 1",
+        "Aligned outcome 2",
+        ...
+      ],
+      "term_week": "which terms and weeks this assessment is due (can be multiple)"
+    },
+    ...
+  ]
+}
+```
+
+Generate the JSON as a file, and an additional XLSX table mapping the assessments as rows and the learning outcomes as columns, with an X in each cell where the assessment maps to the outcome. Add the term+week column.
+
+## Preliminary Assessment Plan Prompt
+
+You are a senior US college instructor in computer science with prior software engineering experience in tech. You are designing a senior software engineering project series, in the 400-level range (advanced). Prerequisites are two software engineering courses. The series is for up to 350 students. The series includes three courses (3 credits in Fall, 3 credits in Winter, 2 credits in Spring). Terms are 10 weeks. Here's the course description:
+
+"Utilize software engineering methodology in a team environment to develop a real-world application. Teams will be responsible for all phases of software development, including project planning, requirements analysis, design, coding, testing, configuration management, quality assurance, documentation, and delivery."
+
+Students will work for the 3 terms on a single project, which will be a real-world application (from industry, faculty, or brought by students themselves, subject to approval by course instructors). Teams are 3-5 students. Each project is different.
+
+And here are the learning outcomes with notes:
+
+<LEARNING_OUTCOMES.json>
+
+Create an assessment plan for the course series that includes a variety of assessments aligned with the learning outcomes. The assessments should include: coming up with requirements, technical design, prototypes, presentations, peer-evaluations. Students will have progress reports to submit every 2 weeks, term retrospectives, and a final project report. We want them to code as early as possible (even if onl prototypes). Their project partner will evaluate them on the following facets: <https://capstone.alexulbrich.com/project-evaluation/project-partner-evaluation/>
+
+Here is an initial assessment plan I want you to improve. It is incomplete for Winter (CS 462) and Spring (CS 463). It also does not have learning outcomes mapped to assessments.
+
+Course End of Week Assessment Name
+CS 461 0 Project Bidding Survey
+CS 461 2 Stakeholder Interview + IP/Licensing + Expectations
+CS 461 2 Progress Report: Sprint 1
+CS 461 3 Background Research Brief
+CS 461 4 Requirements
+CS 461 4 Progress Report: Sprint 2
+CS 461 5 Team Charter and Working Agreement
+CS 461 5 Mid-Term Peer Evaluation Survey (Qualtrics)
+CS 461 5 Mid-Term Project Partner Check-In Survey (Qualtrics)
+CS 461 6 Walking Skeleton Prototype
+CS 461 6 Progress Report: Sprint 3
+CS 461 7 ADR + Code Review Pack #1
+CS 461 8 Architecture and Risks (Technical Design Brief)
+CS 461 8 Progress Report: Sprint 4
+CS 461 9 Stakeholder Presentation (Recorded)
+CS 461 10 Fall Term Retrospective
+CS 461 10 Final Peer Evaluation Survey (Qualtrics)
+CS 461 10 Project Partner Survey (Qualtrics)
+CS 461 10 Progress Report: Sprint 5
+WINTER BREAK  
+CS 462 2 Progress Report: Sprint 6
+CS 462 4 Progress Report: Sprint 7
+CS 462 6 Progress Report: Sprint 8
+CS 462 8 Progress Report: Sprint 9
+CS 462 10 Progress Report: Sprint 10
+SPRING BREAK  
+CS 463 2 Progress Report: Sprint 11
+CS 463 4 Progress Report: Sprint 12
+CS 463 6 Progress Report: Sprint 13
+CS 463 8 Progress Report: Sprint 14
 
 Make sure you search for good assessment ideas that align with the learning outcomes.
 
@@ -216,9 +294,10 @@ You are a senior US college instructor in computer science with prior software e
 
 Students will work for the 3 terms on a single project, which will be a real-world application (from industry, faculty, or brought by students themselves, subject to approval by course instructors). Teams are 3-5 students. Each project is different.
 
-You are writing an academic assignment using TILT (Purpose, Task, Criteria). Delivery is in Canvas LMS. Do NOT restate due dates, availability windows, points/weight, submission type, allowed file types, rubric weights/levels, group/peer-review settings, plagiarism/anonymity/moderation toggles, or module timelines. Canvas is the single source of truth.
+You are writing an academic assignment using TILT (Purpose, Task, Criteria). Delivery is in Canvas LMS, preferably as MD or PDF, not links. If video, students should upload to media.oregonstate.edu and make the video public and unlisted. Do NOT restate due dates, availability windows, points/weight, submission type, allowed file types, rubric weights/levels, group/peer-review settings, plagiarism/anonymity/moderation toggles, or module timelines. Canvas is the single source of truth.
 
 Use the provided rubric(s) ONLY to:
+
 - derive Task steps (observable actions),
 - specify Deliverable content/format that Canvas can’t infer,
 - produce a qualitative “What Good Looks Like” summary,
@@ -230,6 +309,7 @@ INPUTS:
 <SINGLE_ASSESSMENT_WITH_RUBRICS.json>
 
 TRANSFORMATION RULES:
+
 1) Map each rubric criterion → (a) a Task action verb, (b) a Deliverable element, (c) a qualitative success cue.
 2) Extract “evidence to show” (tests, traces, citations, logs, demos) from descriptors/examples.
 3) Turn pitfalls into peer-review prompts and TA comment-bank starters.
@@ -239,49 +319,68 @@ TRANSFORMATION RULES:
 OUTPUT: TWO markdown docs in this exact order.
 
 === BEGIN: ASSIGNMENT_STUDENT.md ===
+
 # <Assignment Title>
+
 *Course/Context:* <optional>  
 *Canvas note:* Deadlines, points, submission type, and the full rubric appear in Canvas.
 
 ## Purpose
+
 - Brief, 2–4 bullets explaining why this matters and what you’ll learn.
 
 ## Task
+
 Numbered, step-by-step instructions derived from the rubric’s criteria.
 State the intended audience/genre (e.g., technical memo, research brief, demo).
 List allowed tools/resources at a high level (link detailed policies).
 
-## Deliverables & Format
-Only include elements Canvas can’t infer:
-- Required sections/structure and word/time limits
+## Deliverables and Format
+
+Submit:
+
+- …  
+- …  
+
+### Required Contents
+
+- Required sections/structure and word/time limits for each delivrables
 - Evidence to include (e.g., tests, benchmarks, citations, logs, screencast)
+
+### Conventions and Packaging
+
 - Code/docs conventions (style/linting, docstrings, README keys)
 - Naming and packaging (folder layout, manifest)
 
 ## What Good Looks Like
+
 Qualitative indicators distilled from the rubric (no points/levels):
+
 - …  
 - …
+
 See the Canvas rubric for detailed performance levels.
 
 ## Self-Check (brief)
+
 A short checklist aligned to the rubric (3–7 items).
 
-## Policies & Support
-Link to integrity/collaboration/accessibility and GenAI use policy. Add assignment-specific constraints if any.
-
 ## Reflection (optional, ~5–8 min)
+
 1–2 prompts to identify what you learned and next steps.
 
 === END: ASSIGNMENT_STUDENT.md ===
 
 === BEGIN: ASSIGNMENT_INSTRUCTOR.md ===
+
 # Instructor Guide — <Assignment Title>
 
 ## Alignment & Rationale
+
 Outcomes addressed; why this task/genre fits them; target cognitive level.
 
 ## Canvas Setup — single source of truth
+
 - Attach rubric; “Use this rubric for assignment grading”
 - Points/weight; due/available/until; submission type & file types
 - Group settings; peer-review config; plagiarism/anonymity/moderation
@@ -289,30 +388,38 @@ Outcomes addressed; why this task/genre fits them; target cognitive level.
 (Do not echo these in the student prose.)
 
 ## Rubric Crosswalk
+
 For each rubric and criterion:
+
 - LO mapping
 - Intended evidence to look for
 - Observable behaviors (what graders should see)
 
 ## Grading & Calibration
+
 - Anchors/samples per criterion (snippets or links)
 - Common pitfalls (from rubric) + ready-to-paste SpeedGrader comments
 - TA norming plan (10–15 min with 2 anonymized samples)
 - Feedback strategy (what gets inline vs overall comments)
 
 ## Scaffolding Plan (Canvas objects, not dates in prose)
+
 List related draft/review/demo as separate Canvas items (names/IDs) and their purpose.
 
 ## Integrity & Policy Notes
+
 Permitted tools/AI boundaries; reuse of prior work; late/make-up scenarios — link to canonical Canvas pages.
 
 ## Accessibility & Inclusion
+
 Anticipated barriers and alternatives; assistive-tech notes.
 
 ## Variations & Extensions
+
 Lighter/heavier variants; alternative media; honors/extra credit ideas.
 
 ## Post-mortem Prompts
+
 Questions to capture what worked and what to change next time.
 
 === END: ASSIGNMENT_INSTRUCTOR.md ===
