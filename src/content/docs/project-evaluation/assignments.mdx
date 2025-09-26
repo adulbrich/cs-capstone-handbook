@@ -1,537 +1,96 @@
 ---
 title: Assignments
-description: TBD
+description: One-page index of all major assignments with short definitions, links to guides, activities, and grading.
 sidebar:
   order: 2
 ---
 
-{/* TODO: revisit this whole page
-    - list key assignments only
-    - link to guides
-    - explain the need to sync with project partner or mentor
-     */}
-{/* TODO:
-    - export all key assignments from Canvas
-    - ask GenAI to summarize each of them
-    - phrase it for project partners */}
-
-import { Badge } from '@astrojs/starlight/components';
-
 :::caution
-This page is under heavy revision for the upocoming academic year (2025-2026). It will be updated as we finalize the assignments and their requirements.
+We are still fleshing out assignments for 2025-2026. There might be a couple more for Winter and Spring terms. Please check back soon!
 :::
 
-The Capstone Series assessment focuses on evaluating the six  facets that, in our opinion, define a software engineer. For better or worse, we're also bound by the ABET, WIC, and Beyond OSU, learning outcomes. 
+The Capstone Series assessment focuses on evaluating the six facets that, in our opinion, define a software engineer. For better or worse, we're also bound by the ABET (Accreditation Board for Engineering and Technology), WIC (Writing Intensive Curriculum), and Beyond OSU (program-level) learning outcomes.
 
-In your professional life, [writing will help you become a better engineer](https://yieldcode.blog/post/why-engineers-should-write/). It is hard for us to assess individual contributions to written documentation, so we had to shape a few individual writing assignments such as the project abstract.
+In professional life, [writing will help students become better engineers](https://yieldcode.blog/post/why-engineers-should-write/). It is hard for us to assess individual contributions to written documentation, so we had to shape a few individual writing assignments and team assignment with individual contributions.
 
-Here are all the assignments we believe are relevant for you to successfully complete your project. **Each assignment will require you to complete a set of activities.**
+Here are all the assignments we believe are relevant for the team to successfully complete the project. The handbook contains many activities that can help determine the contents of these assignments. If the team is unsure where to begin, [browse activities](/activities/introduction/).
 
-## Project Abstract
+All assignments below apply to every term. We encourage an **iterative approach**: start simple, get feedback, and improve over time.
 
-<Badge text="CS461" variant="success" class="mb-6"/>
+## Sprint Progress Reports
 
-Your abstract serves as a crucial introduction and summary of your project. It should adhere to the following guidelines:
+An evidence-based update: planned vs done, working software proof (URL + commit + CI—Continuous Integration), top risks/quality signals, next goals, brief team reflection, and linked individual contributions.
 
-- approximately 300 words;
-- primarily text-based (limited use of figures, tables, formulas, etc.);
-- written mostly in present tense;
-- minimize jargon and acronyms;
-- ensure proper grammar and spelling.
-
-The abstract will be used over the course of the academic year when introducing your project, e.g., documents, demos, etc. You will revise this abstract as a team later in the term. The abstract should align with the vision set by your project partner.
-
-> You should complete at least [one creative activity](/activities/creative) individually or as a team, to help you figuring out the contents of your abstract.
-
-The abstract should address the following five key points:
-
-### Opportunity & Problem
-
-What opportunity does your software address? Who will use it? What specific technical problem does it solve? Be as clear, specific, and factual as possible. Here are some made-up examples:
-
-- "Over 70% of mobile app users report concerns about data privacy, yet 50% of apps fail to provide clear consent options for data collection, leading to increased distrust and app abandonment."
-- "Nonprofits lose nearly 20% of potential donor contributions due to outdated donation tracking systems, resulting in missed opportunities for growth and program development."
-
-### Objective
-
-What is the goal of your project within this context? The objective should be broad enough to allow for multiple design solutions to be considered.
-
-### Plausible Design Approach
-
-While multiple solutions may be possible, start with one initial design approach. This may evolve as the project develops and could differ by the end. Highlight key design challenges and the advanced technical knowledge needed to address them.
-
-### Expected Benefits Over Existing Alternatives
-
-Clearly outline at least one advantage your design has over existing solutions. Be specific. Here are some made-up examples:
-
-- "Our app includes a transparent, easy-to-understand consent management dashboard, giving users full control over their data permissions, which existing alternatives lack by providing only basic or hidden privacy settings."
-- "Unlike traditional donation tracking systems that require manual updates, our system automatically tracks donations in real-time and integrates with CRM tools, helping nonprofits increase donor retention by 20%."
-
-### Summary of (Expected) Results
-
-What evidence have you or will you collect to demonstrate that the objective has been met? Note that this will change depending on your [project category](/project-evaluation/project-partner-evaluation/#verification-and-validation).
+What is a sprint? A sprint is a fixed-length iteration where the team plans, builds, and reviews a small, shippable slice of value. Sprints are **two weeks long**. The team will submit a sprint report at the end of each sprint, for a total of 14 reports over the academic year.
 
 ## Team Charter or Working Agreement
 
-<Badge text="CS461" variant="success" class="mb-6"/>
-<Badge text="CS462" variant="caution" class="mb-6"/>
-<Badge text="CS463" variant="caution" class="mb-6"/>
+Define how the team will work (roles, decisions, cadence/tools), a restorative conflict path, Definition of Done (tests, reviews, static checks, docs, CI), and inclusion norms; publish CONTRIBUTING.md and show evidence of individual contributions.
 
-The team charter is a must for high performing teams. It sets clear expectations and guidelines for how your team members will collaborate and operate throughout the project. 
+{/* TODO: link to working agreement guide */}
 
-The charter will develop a sense of shared responsibility, increase one own awareness, empower the team to lead according to agreements, and enhance the quality of the team process.
+## Requirements
 
-The agreements in the charter will work well when:
+Align on scope and “what good looks like.” The team creates an ID'd, atomic, testable set with non-functional requirements (NFRs), acceptance criteria (AC) for priorities, an explicit prioritization method, and traceability to risks/constraints.
 
-- they are important to you, 
-- they are limited in number, 
-- they are fully supported by everyone, 
-- the team is reminded of agreements during process checks,
-- the team is reminded of agreements when they are broken.
+{/* TODO: link to reqs guide */}
 
-You would be surprised how many times that last one does not happen.
+### Stakeholder Memo
 
-The team charter should be reviewed every term, or after retrospectives, whatever comes first. Make sure to document updates to your charter (for example by versioning it, or exporting new versions to PDF, or adding a change log at the beginning of the document).
+Interview the project stakeholder(s) and turn it into a one-page internal memo: problem statement, initial constraints/acceptance criteria, IP—Intellectual Property/licensing/data-use notes, and expectations.
 
-Check the resources below to figure out what to put in the team charter:
+### Background Research Brief
 
-- [Team Friction Inspires Working Agreements](https://agilepainrelief.com/blog/team-friction-inspires-working-agreements.html)
-- [Creating a Team Working Agreement](https://www.scrum.org/resources/creating-team-working-agreement)
+Learn a narrow, high-leverage slice (tech, standard, user, competitor) and synthesize credible sources into key findings and actionable implications for the team.
 
-Here's a high level list of items you can explore:
+## ADRs and Code Review Packs
 
-- purpose and goals
-- meeting guidelines
-- team composition and roles
-- norms and values
-- decision-making process
-- work plan and tasks
-- software development process
-- tooling
-- communication and feedback
-- accountability and performance
-- review and revision
+Write an Architecture Decision Record (ADR) that documents a real design decision (context, options including “do nothing,” decision, consequences) with embedded evidence, and perform a substantive code review covering correctness, design, tests, and security, with proof of follow-through.
 
-Some of these items can be considered from an internal perspective (within the team) or from an external one (with project partners, users, FOSS community, or instruction team). If you work in an existing group (in a company, with an FOSS project/community, or in a research group), your team charter might reflect their way of doing things.
+{/* TODO: link to ADR guide */}
 
-Consider looking at the questions listed for the requirements and design documents, as some concerns might be reflected in different places.
+## Technical Design
 
-> Each team member should complete at least [one teamwork activity](/activities/teamwork) and [one planning activity](/activities/planning) that help figuring out the team charter. Activities can be done as a team or individually (see specific activity for details).
+Share a coherent system view (context + diagrams), concrete interfaces/contracts (examples, errors, auth/authorization + authentication, versioning), and a ranked risk register; provide evidence artifact and ADR links.
 
-Put together a list of items for your team agreement. Choose five (5) items to prioritize. Choose items that the team needs to work on. Probably most of the items on your list are good for most teams, but your team might already be doing well implicitly on many of them. Explain why you are focusing on these five items.
+{/* TODO: link to technical design guide */}
 
-## Requirements Document
 
-<Badge text="CS461" variant="success" class="mb-6"/>
-<Badge text="CS462" variant="caution" class="mb-6"/>
-<Badge text="CS463" variant="caution" class="mb-6"/>
+## Project Partner Evaluations
 
-The requirements act as the foundation of the project, ensuring that all stakeholders (project partners, mentors, instructors, teaching assistants, team members) have a shared understanding of what the software will do and how it will be developed. It will help you define the scope, identify user needs, and set clear, measurable goals. It also helps prevent misunderstandings, scope creep, and unnecessary rework later in the project. By outlining both functional and non-functional requirements, you can ensure that you later design a solution that meets technical specifications and user expectations.
+At the mid **and** end of every term, the project partner or mentor will receive a survey asking them to grade the team. [See the details and criteria here.](/project-evaluation/project-partner-evaluation/).
 
-> Each team member should complete at least [one creative activity](/activities/creative), [one requirements activity](/activities/requirements), and [one planning activity](/activities/planning) that help figuring out the requirements. Activities can be done as a team or individually (see specific activity for details).
+Project partner evaluations account for **25% of each student's total grade** each term. The evaluation approach varies by term:
 
-Put together an exhaustive document with your project requirements. You are free to organize your document in the best way you see fit to communicate to your audience (your project partner or mentor and the team). You might not have all the answers just yet for the submission deadline, so you'll need to be clear about what is missing, what still needs to be refined, and so on. You'll have the opportunity to submit a revision in 462 and 463. 
+- **Fall & Winter Terms**: Progress-focused assessment using adapted rubrics that evaluate development milestones, learning growth, and team collaboration.
+- **Spring Term**: Final outcome-focused assessment using complete rubrics that evaluate project deliverables and final results.
 
-Your requirements must be shared with and reviewed by your project partner. It's one of the key pieces of documentation for the duration of the project. Keep it up to date, even when big changes are necessary (e.g., project pivot because lack of product-market fit).
+The midterm survey is a lightweight "pulse" check to ensure that the team is on track. The end-of-term survey is more comprehensive and will significantly impact each student's grade.
 
-Depending on the type of project, your requirements can take different forms; we list some generic and specific questions to consider below.
+They will grade the team as a *whole*, but they will have the option to add notes as needed. The team must ensure the project partner is up to date on progress and aligned on expectations. Review all artifacts for the term (including the demo) with them.
 
-- What is the project's purpose, and how does it benefit users? What problem does this software solve?
-- Who are the key stakeholders (professors, research assistants, other institutions, users, project partners, etc.)? 
-- Who will use the software, and what are their needs?
-- How will success be measured for this project? What criteria will determine if the software meets user needs and project goals? How will the project demonstrate that its goals have been achieved? 
-- What are the key features the software must provide? What inputs, outputs, and processes are required?
-- What performance metrics, security, or usability considerations are essential? What are the scalability, reliability, and availability expectations?
-- Are there any technology, time, or budget constraints? What dependencies or integrations are required (e.g., databases, APIs)?
-- What are the user interface design expectations? Are there specific accessibility standards or design principles that must be followed?
-- What assumptions have been made regarding technology, user behavior, or availability of resources? What is this project dependent on for success (e.g., third-party services, hardware)?
-- What are the potential risks (e.g., data availability, methodological challenges, access to users)? How will these risks be mitigated?
-- What are the key milestones and overall project timeline?
-- Are there any legal, ethical, or regulatory considerations? Are there specific data protection or privacy laws the software must comply with?
+The facet distribution for project partner evaluations can be found on the [grade distribution](/project-evaluation/breakdown/) page.
 
-### Research
+## Peer Evaluations
 
-Research projects might be a little different because you don't always know what the end result will be. Consider these alternative and additional questions:
+At the mid and end of each term, students evaluate their teammates on contributions to the team's success. This feedback is important for fostering a productive and collaborative work environment. Students receive a survey from the instruction team asking them to grade each team member.
 
-- What are the main research questions or hypotheses?
-- What gaps in existing research does this project aim to address? What new knowledge or insights will this research provide?
-- What background research has been done on this topic? How does your project build on or challenge existing work?
-- What methods (e.g., experiments, simulations, data analysis) will be used to answer the research questions?
--	What data sources or datasets are needed for the research? How will data be collected and analyzed? Are there any specific data quality, format, or privacy considerations?
-- What journals or conferences are being targeted for publication? What are the submission deadlines and formatting requirements?
-- Are there any ethical approvals or reviews (e.g., IRB) required for this research?
+Peer evaluations account for **25% of each student's total grade** each term, making them a significant component alongside project partner evaluations (25%) and assignment-specific rubrics (50%).
 
-### FOSS
+The midterm survey is worth less than the end-of-term survey, giving time to adjust based on feedback and team dynamics. They are otherwise similar in structure and content.
 
-Contributing to FOSS projects brings additional constraints. Your document as a way to summarize the requirements that you will share with the FOSS community, for example user stories for the issues you'll be working on.
+## Stakeholder Presentation
 
-- What are the rules for contributing (e.g., coding standards, documentation, code of conduct)?	What is the expected workflow (e.g., forking, pull requests, issue tracking)?
-- What areas need contributions (e.g., bug fixes, new features, documentation)? Are there beginner-friendly tasks or advanced tasks listed in the repository?
-- What development environment is required (e.g., programming languages, frameworks)? What are the dependencies, and how should they be managed?
-- What is the project's license, and what does it mean for contributors? Are there specific legal considerations (e.g., signing contributor license agreements)?
-- How will contributions be evaluated for success (e.g., code quality, passing tests)?
+Create a 10-12 minute recorded update for an external audience that states problem→approach, shows a working path or credible walkthrough, credits third-party assets, and notes known limits; every student speaks.
 
-### New Product or Game
+## Retrospectives
 
-For a new product or game, you'll want to attract users and potentially monetize. Consider these additional questions to get you started:
-
-- What existing products or games will your product compete with?
-- What core features or game mechanics will drive engagement? What platform(s) will it run on?
-- What are the requirements for visuals, character design, and audio? Will there be in-game assets like levels, items, or environments?
-- How will the product or game generate revenue in the long-run (e.g., one-time purchase, in-app purchases, ads)?
-- What kind of playtesting or user feedback will be conducted to refine gameplay or product features?
-- What are the requirements for launching and distributing the product (e.g., app stores, platforms)?
+Tell the story of the term via 2-3 themes covering top successes and pain points, support with 1-3 crisp artifacts, and commit to three actions with owners/timeframes/recognition cues; include an individual page per student (wins/gaps, commitments, one risk+mitigation).
 
-### Consultancy
+{/* TODO: link to retro guide */}
 
-Working for a company will add a whole new set of constraints to your project. Here are some questions worth considering when talking to your project partner:
+{/* ## Project Retrospective */}
 
-- What's the company mission and how does the project align with it? 
-- What are the specific business goals the software must meet (e.g., improve efficiency, increase sales)?
-- Who are the primary stakeholders, and how will their input be gathered? What is the process for regular client feedback and updates?
-- What are the key features the software must provide to meet business needs? What specific workflows and use cases must the software handle?
-- What performance, security, and scalability requirements does the software need to meet? What availability and uptime metrics are expected?
-- What systems or APIs will the software need to integrate with? Are there any constraints related to legacy systems?
-- What technology stack will be used?
-- What infrastructure will be used (cloud, on-premises)? What deployment processes and tools will be required (e.g., CI/CD pipelines, containerization)?
-- What testing strategies (unit, integration, user acceptance) will ensure the software functions correctly? How will production readiness be determined?
-- What user manuals or technical documentation will be provided? Will there be any training sessions for client staff?
-- What is the plan for ongoing maintenance and updates? What support levels (e.g., bug fixes, technical support) are required after deployment?
+{/* A comprehensive project retrospective should cover multiple aspects of the project lifecycle, providing a detailed analysis of what went well, what didn't, and how future projects can be improved. */}
 
-## Design Document
-
-<Badge text="CS461" variant="caution" class="mb-6"/>
-<Badge text="CS462" variant="success" class="mb-6"/>
-<Badge text="CS463" variant="caution" class="mb-6"/>
-
-Your design document provides a detailed blueprint for how the system will be built. It bridges the gap between requirements and implementation, helping developers, stakeholders, and future maintainers understand how the software will work. It clarifies design decisions, ensuring alignment among team members and reducing the risk of rework or misunderstandings later in the project.
-
-> Each team member should complete at least [two design activities](/activities/design) that help figuring out the design. Activities can be done as a team or individually (see specific activity for details).
-
-Put together an exhaustive document with your (software) design. You are free to organize your document in the best way you see fit to communicate to your audience (your project partner or mentor and the team). We encourage you to use visuals and tables wherever useful. You might not have all the answers just yet for the submission deadline, so you'll need to be clear about what is missing, what still needs to be refined, and so on. You'll have the opportunity to submit revisions in 462 and 463.
-
-Your design document must be shared with and reviewed by your project partner. It's another one of the key pieces of documentation for the duration of the project. Keep it up to date, even when big changes are necessary (e.g., project pivot because lack of product-market fit).
-
-**Link any implementations or deployments (even if just prototypes) to this document.**
-
-Depending on the type of project, your design specs can take different forms; we list some generic and specific questions to consider below.
-
-- What are the core components/modules of the system?
-- What are the key design decisions (e.g., architecture, patterns)?
-- What technologies or frameworks will be used?
-- How will the components interact?
-- What are the performance, scalability, and security considerations?
-
-Depending on your target technology stack, type of software or application, database choices, you will probably need to figure out additional details. Here we explore questions that might arise when developing a front-end application.
-
-<details class="cursor-pointer border rounded px-3 py-1 sm:px-4 sm:py-3 shadow-md">
-<summary>
-Front-End Specific Example
-</summary>
-- What is the overall layout and structure of the UI? How will the navigation flow work? How will you ensure the design is visually appealing and intuitive?
-- How will the frontend support user interaction?	Are there any accessibility standards to follow? What feedback mechanisms will be provided (e.g., success messages, errors)?
-- How will the design adapt to different devices (mobile, tablet, desktop)? What CSS framework or grid system will be used?
-- How will the frontend handle and store application state (e.g., React state, Vuex, Redux)?
-- What optimizations will ensure quick load times (e.g., lazy loading, image optimization)?
-- How will you minimize JavaScript and CSS for better performance?
-- How will you secure user inputs (e.g., validation, sanitization)?
-- How will sensitive data (e.g., authentication tokens) be handled in the frontend?
-- How will the frontend communicate with the backend (e.g., REST, GraphQL)?
-- How will API responses be handled and displayed?
-- How will errors be presented to the user (e.g., 404 pages, form validation errors)?
-- How will network or server errors be managed?
-- How will the design work across different browsers (e.g., Chrome, Firefox, Safari)?
-</details>
-
-### Research
-
-- What experimental or computational models will be used in the design?
-- How will the design support reproducibility of results?
-- What specific data structures or algorithms will be employed to analyze the data?
-- How will the design scale for different data sets or scenarios?
-
-### FOSS
-
-- How will the project's architecture align with existing contributions?
-- How will modularity enable external contributors to work on different components?
-- What coding standards will be followed to ensure community involvement?
-- How will testing and CI/CD be integrated into the development process?
-
-### New Product or Game
-
-- What is the overall game loop or product workflow?
-- How will user interactions be handled (UI/UX design)?
-- What graphical assets, animations, or audio will be integrated?
-- How will performance optimization be addressed, particularly for mobile or lower-end devices?
-
-### Consultancy
-
-- How will the software integrate with the client's existing systems?
-- What deployment environments are required (e.g., cloud, on-premises)?
-- How will security and data privacy be handled according to the client's needs?
-- What customization or configuration options will be included to adapt the software to future client requirements?
-
-## Fall, Winter, and Spring Project Partner Evaluations
-
-<Badge text="CS461" variant="success" class="mb-6"/>
-<Badge text="CS462" variant="success" class="mb-6"/>
-<Badge text="CS463" variant="success" class="mb-6"/>
-
-At the end of every term, your project partner or mentor will receive a survey asking them to grade your team using the [project partner rubrics](/project-evaluation/project-partner-evaluation/).
-
-**Important:** Project partner evaluations account for **25% of your total grade** each term. The evaluation approach varies by term:
-
-- **Fall & Winter Terms**: Progress-focused assessment using adapted rubrics that evaluate development milestones, learning growth, and team collaboration
-- **Spring Term**: Final outcome-focused assessment using complete rubrics that evaluate project deliverables and final results
-
-They will grade the team as a *whole*, but they will have the option to add notes as needed. You'll need to make sure that your project partner is up to date on your progress and that you are aligned on expectations. Review all your artifacts of the term (including doing the demo) with them.
-
-The facet distribution for project partner evaluations can be found on the [Grade Distribution](/project-evaluation/breakdown/) page.
-
-## Fall, Winter, and Spring Peer Evaluations
-
-<Badge text="CS461" variant="success" class="mb-6"/>
-<Badge text="CS462" variant="success" class="mb-6"/>
-<Badge text="CS463" variant="success" class="mb-6"/>
-
-At the end of each term, you will evaluate your teammates on their contributions to the team's success. This feedback is important for fostering a productive and collaborative work environment. You will receive a survey from the instruction team asking you to grade each team member based on the [teamwork rubric](/project-evaluation/project-partner-evaluation/#teamwork).
-
-**Important:** Peer evaluations account for **25% of your total grade** each term, making them a significant component of your assessment alongside project partner evaluations (25%) and assignment-specific rubrics (50%).
-
-:::caution
-This assignment could well tank your grade if your team feels like you did not contribute to the team's success. If there are conflicts within the team, consider addressing them *early*, for example doing a [teamwork activity](/activities/teamwork) that helps you figure things out before it's too late.
-:::
-
-When grading your peers, or better, when working during the term, consider these questions:
-
-- How effectively did you or your teammate communicate with the group?
-- Were you/they responsive and clear in your/their interactions?
-- How consistently did you or your teammate contribute to the project?
-- Were you/they reliable and did you/they meet your/their responsibilities?
-- How well did you or your teammate collaborate and support the team's efforts?
-- Did you/they actively participate in discussions and decision-making?
-- Did you or your teammate help address challenges and provide solutions when issues arose?
-- Did you or your teammate take ownership of your/their work and follow through on your/their commitments?
-
-If any of the answers are in the negative, it might be worth questioning your or their impact on the project and team.
-
-## Fall, Winter, and Spring Demos
-
-<Badge text="CS461" variant="success" class="mb-6"/>
-<Badge text="CS462" variant="success" class="mb-6"/>
-<Badge text="CS463" variant="success" class="mb-6"/>
-
-Demos are highly relevant for software engineers and engineering teams because they mirror real-world practices, where presenting progress to stakeholders and clients is crucial. Demos help in:
-
-- Validating work: demonstrating how the project aligns with initial requirements
-- Receiving feedback: allowing teams to adapt based on user or client input
-- Improving communication skills: clearly conveying technical concepts to non-technical audiences
-- Collaboration: helping teams stay aligned on project goals and next steps, while identifying potential risks or challenges early
-
-These demos contribute to refining both technical and soft skills, critical in professional environments.
-
-You will present a demo of your project progress at the end of each term. Your demo will be evaluated on the communication (slide deck and oral delivery) and different facets of your project.
-
-:::caution
-Please note that the rubrics change every term, as more emphasis is put on different aspects of the project. In Fall, you will already be judged on the design, implementation, delivery, and outcome, not only requirements, because we want you to come up with an early prototype. This is the only option to get an "A" in Fall.
-:::
-
-As the academic year progresses, different weights will be assigned to each facet; see rubrics for details. 
-
-> Each team member should complete at least [one communication activity](/activities/communication) to help preparing the demo. Activities can be done as a team or individually (see specific activity for details).
-
-Below are some ideas to guide you in preparing your demo. Don't hesitate to include things relevant to your project category. See the requirements and design assignments for more information.
-
-- Is the slide deck clear, well-organized, and visually appealing?
-- Are you using concise bullet points and relevant visuals?
-- Is your presentation engaging and clearly delivered?
-- Are you effectively explaining the technical aspects in an accessible way?
-- Are you prepared for questions?
-- What problem is your project solving?
-- Who are the users or stakeholders, and what are their needs?
-- Have you defined clear, specific, and measurable goals and requirements?
-- How does your design address the project requirements?
-- Have you justified key design decisions (e.g., technologies, architectures)?
-- What have you implemented so far? Is it aligned with the design? Can you demo it (or record a demo)?
-- Are you meeting key milestones according to your project timeline?
-- How are you planning for deployment or production (if applicable)? 
-- How will the software be accessed by end users?
-- Have you demonstrated functionality that aligns with your requirements?
-- What is the current status of the project?
-- What challenges or obstacles have you encountered, and how did you address them?
-- Have you gathered any (preliminary) results, feedback, or validation for your solution?
-- What are your next steps moving forward?
-
-It is highly recommended to present your demo to your project partners or mentors by the end of the term. This will provide another opportunity to receive feedback and to showcase your progress. Don't forget that a big part of your grade comes from their evaluation every term.
-
-### Slide Deck and Presentation
-
-The demo itself will last a maximum of 5 minutes. Each team member will contribute equally to the oral delivery, and the grades will reflect the performance of the team as a whole. 
-
-When preparing slides for your demo, keep the following in mind:
-
-- Clarity: use concise text, avoid long paragraphs, and emphasize key points
-- Visuals: incorporate diagrams, screenshots, recordings, or charts to support your message.
-- Structure: ensure a logical flow, for example starting with the problem and target users, followed by the design, implementation, and outcome
-- Consistency: use uniform fonts, colors, and formatting across slides
-- Engagement: avoid clutter; focus on making the slides easy to follow
-- Timing: ensure your slides align with the demo time limit, pacing your explanations appropriately
-
-After the presentation, the instruction team can ask questions. Don't hesitate to take a few seconds with your team to discuss your answer and decide who will do deliver it.
-
-## Fall and Winter Retrospectives
-
-<Badge text="CS461" variant="success" class="mb-6"/>
-<Badge text="CS462" variant="success" class="mb-6"/>
-
-At the end of both the Fall and Winter terms, you will conduct a team retrospective to reflect on your progress and teamwork. For CS463, you'll have an [exhaustive project retrospective](/project-evaluation/assignments/#project-retrospective). 
-
-Team retrospectives are an integral item of a productive team's rituals. During a retrospective, the team's goal is to identify what is going well (and congratulate each other), what is not going so well (focus on behavior, not personality, use "I" statements, ...), and come up with concrete action items for improvement. 
-
-This reflection will help your team grow and improve for the remainder of the project. Be honest and constructive in your feedback. 
-
-Some teams do this every sprint, but in the context of this class, we're asking you to meet at the end of each term.
-
-It is highly recommended to do the retrospective on your own first, or to allot some time at the beginning of the meeting to give everyone time to collect their thoughts.
-
-> Each team member should complete at least [one teamwork activity](/activities/teamwork) and [one reflective activity](/activities/reflective) to help complete the team retrospective. Activities can be done as a team or individually (see specific activity for details).
-
-In your retrospective, consider the following:
-
-- What aspects of the project and teamwork were successful?
-- What practices should the team continue in the next term?
-- What were the major challenges or obstacles the team faced?
-- How did the team overcome them, or where did you struggle?
-- How well did the team collaborate and communicate?
-- Were roles and responsibilities clear and well-balanced?
-- What areas can the team improve on for the next term?
-- How can communication, collaboration, or time management be enhanced?
-- What are the team's key goals for the next term?
-- What action items will help achieve those goals?
-
-There are different formats to run a team retrospective. After running a team retrospective, come up with specific and actionable items aimed at improving the team performance. Assign one team member per action item, responsible to implement and follow up with that item.
-
-### Start-Stop-Continue
-
-The Start-Stop-Continue retrospective is a simple, action-oriented reflection method that helps teams improve their processes and collaboration.
-
-#### Start
-
-- What practices or behaviors should the team start doing in the next iteration or project cycle?
-- What new ideas, approaches, or techniques could contribute to better outcomes?
-
-#### Stop
-
-- What practices or behaviors should the team stop doing in the next iteration or project cycle?
-- What actions or habits have not been effective and should be discontinued?
-
-#### Continue
-
-- What practices or behaviors have worked well and should be continued in the next iteration or project cycle?
-- What strategies, processes, or actions have been successful and should be maintained?
-
-### 4Ls
-
-The 4Ls retrospective is a reflection technique used in teams to evaluate performance and collaboration. It focuses on four key areas:
-
-- Liked: What did you enjoy about the project or process?
-- Learned: What new skills or knowledge did you gain?
-- Lacked: What resources or support were missing?
-- Longed For: What do you wish had been part of the project or team dynamic?
-
-Read [detailed instructions for the 4Ls Retrospective from Atlassian](https://www.atlassian.com/team-playbook/plays/4-ls-retrospective-technique). 
-
-## Documentation
-
-<Badge text="CS463" variant="success" class="mb-6"/>
-
-<Badge text="TBD" size="small" />
-
-## Engineering Expo
-
-<Badge text="CS463" variant="success" class="mb-6"/>
-
-<Badge text="TBD" size="small" />
-
-## Project Retrospective
-
-<Badge text="CS463" variant="success" class="mb-6"/>
-
-A comprehensive project retrospective should cover multiple aspects of the project lifecycle, providing a detailed analysis of what went well, what didn't, and how future projects can be improved.
-
-We explain below what should be included in the document. You can adapt the contents based on your project category.
-
-We will use your project retrospective as reflection activities for our future CS Capstone students.
-
-### Introduction
-
-- Project Overview: Brief summary of the project goals, scope, and key deliverables.
-- Team Members: List of all team members and their roles.
-
-### Objectives and Goals
-
-- Initial Objectives: Clearly state the original objectives and goals of the project.
-- **Outcome Evaluation**: Assess whether these objectives and goals were met. List all supporting evidence for the "Verification and Validation" of your project.
-
-### Planning and Execution
-
-- Timeline Review: Analyze the project timeline, including key milestones, deadlines, and any delays.
-- Resource Allocation: Discuss how resources (time, personnel, tools) were allocated and utilized throughout the project.
-
-### Requirements and Specifications
-
-- Requirement Gathering: Evaluate the effectiveness of requirement gathering and documentation processes.
-- Changes and Adaptations: Note any significant changes to the requirements and how they were managed.
-
-### Design, Implementation, and Deployment
-
-- Design Process: Review the design process, including any models, prototypes, and design decisions made.
-- Implementation: Discuss the implementation phase, focusing on coding, testing, and iteration processes.
-- Deployment: Analyze the deployment process, including any challenges faced and how they were overcome.
-
-### Testing and Quality Assurance
-
-- Testing Strategies: Review the testing strategies used, such as unit testing, integration testing, and user acceptance testing.
-- Issues and Resolutions: Document any bugs or issues found and how they were resolved.
-- User Feedback: Include feedback from users or stakeholders regarding the quality and usability of the final project.
-
-### Teamwork and Collaboration
-
-- Team Dynamics: Discuss how the team worked together, including communication methods, collaboration tools, and team meetings.
-- Roles and Responsibilities: Reflect on whether roles and responsibilities were clear and appropriately assigned.
-- Conflict Resolution: Mention any conflicts that arose and how they were resolved.
-
-### Communication
-
-- Internal Communication: Evaluate the effectiveness of internal communication within the team.
-- Stakeholder Communication: Assess the communication with stakeholders, including the frequency and quality of updates provided.
-
-### Challenges and Obstacles
-
-- Major Challenges: Identify major challenges or obstacles faced during the project.
-- Problem-Solving: Describe how these challenges were addressed and what strategies were effective.
-
-### Successes and Achievements
-
-- Key Successes: Highlight the key successes and achievements of the project.
-- Best Practices: Identify best practices that contributed to the project's success and should be replicated in future projects.
-
-### Lessons Learned
-
-- What Worked Well: Document what worked well and why.
-- Areas for Improvement: Note areas where the project could have been improved.
-- Recommendations: Provide specific recommendations for future projects based on the lessons learned.
-
-### Future Steps
-
-- Next Steps: Outline any next steps or follow-up actions required after the project's completion.
-- Long-term Considerations: Discuss any long-term considerations or impacts of the project.
-
-### Conclusion
-
-- Summary: Summarize the key points of the retrospective.
-- Acknowledgements: Acknowledge the contributions of team members, stakeholders, and any other relevant parties.
-
-### Appendices
-
-Supporting Documents: include any supporting documents such as meeting minutes, requirements and design documents, test reports, user feedback, outcome verification, etc.
+{/* ## Documentation */}
