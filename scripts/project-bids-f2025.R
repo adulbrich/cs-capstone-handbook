@@ -122,7 +122,8 @@ for (p in c(
   "AI-Enhanced Neurofeedback Calibration",
   "Mars Rover Autonomy Capstone",
   "LLM-DRIVEN MIGRATION OF LEGACY�",
-  "MARS Rover Simulation Team"
+  "MARS Rover Simulation Team",
+  "Digiclips"
 )) {
   if (p %in% names(max_teams)) max_teams[p] <- 0L
 }
@@ -225,21 +226,45 @@ if (n_students > max_capacity) {
   ))
 }
 
-# ILP: assign each student to exactly one slot; each slot active with project-specific min/max
+# Build the model
 model <- MIPModel() |>
   add_variable(y[i, k], i = 1:n_students, k = 1:n_slots, type = "binary") |>
   add_variable(a[k], k = 1:n_slots, type = "binary") |>
-  # maximize total preference weight
   set_objective(sum_expr(W[i, k] * y[i, k], i = 1:n_students, k = 1:n_slots), "max") |>
-  # every student assigned to exactly one team slot
   add_constraint(sum_expr(y[i, k], k = 1:n_slots) == 1, i = 1:n_students) |>
-  # eligibility: forbid assignments to unranked projects
   add_constraint(y[i, k] <= E[i, k], i = 1:n_students, k = 1:n_slots) |>
-  # slot capacity with activation
   add_constraint(sum_expr(y[i, k], i = 1:n_students) >= min_cap[k] * a[k], k = 1:n_slots) |>
   add_constraint(sum_expr(y[i, k], i = 1:n_students) <= max_cap[k] * a[k], k = 1:n_slots)
 
-# Force exactly two VRyu teams active (each will have exactly 3 due to caps)
+# Enforce at least one team per project when feasible from rankings
+proj_slot_map <- slots_dt[, .(k_list = list(k)), by = project]
+
+# Minimum headcount required to activate any slot for each project (scalar)
+proj_req <- proj_slot_map[, .(
+  project,
+  k_list,
+  min_needed = as.integer(sapply(k_list, function(idx) min(min_cap[idx])))
+)]
+
+elig_by_project <- pref[!is.na(rank) & rank %in% 1:6, .(eligible_students = uniqueN(name)), by = project]
+proj_req <- merge(proj_req, elig_by_project, by = "project", all.x = TRUE)
+proj_req[is.na(eligible_students), eligible_students := 0L]
+
+enforceable <- proj_req[eligible_students >= min_needed]
+not_enforceable <- setdiff(proj_req$project, enforceable$project)
+if (length(not_enforceable)) {
+  warning(sprintf(
+    "Cannot guarantee assignment for %d project(s) due to insufficient eligible students: %s",
+    length(not_enforceable), paste(not_enforceable, collapse = "; ")
+  ))
+}
+
+for (kk in enforceable$k_list) {
+  model <- model |>
+    add_constraint(sum_expr(a[k], k = unlist(kk)) >= 1)
+}
+
+# Force exactly two VRyu teams active (each exactly 3 due to caps)
 if (length(vryu_idx)) {
   model <- model |>
     add_constraint(sum_expr(a[k], k = vryu_idx) == 2)
