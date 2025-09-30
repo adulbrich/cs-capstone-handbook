@@ -1,0 +1,226 @@
+library(data.table)
+
+# load project bids from Qualtrics survey export
+bids <- fread("data/2025-09-30-project-bids.csv")
+setnames(bids, "Recipient Last Name", "name")
+bids <- bids[name != "", ]
+
+# load current teams (pre-approved projects)
+current_teams <- fread("data/2025-09-30-current-teams.csv")
+current_teams <- current_teams[group_name != "",]
+
+# manual overal check
+overlap <- merge(bids, current_teams, by = "name")
+fwrite(overlap, "data/2025-09-30-bids-current-teams-overlap.csv")
+
+# remove current team members from bids
+bids <- bids[!name %in% current_teams$name, ]
+
+bids[, `Recipient Email` := NULL]
+bids[, `External Data Reference` := NULL]
+
+# separate qualitative answers
+custom_cols <- c(
+  "Write a compelling reason for each choice. This statement will act as a tie breaker between people with similar preferences. - reason for choice 1",
+  "Write a compelling reason for each choice. This statement will act as a tie breaker between people with similar preferences. - reason for choice 2",
+  "Write a compelling reason for each choice. This statement will act as a tie breaker between people with similar preferences. - reason for choice 3",
+  "Write a compelling reason for each choice. This statement will act as a tie breaker between people with similar preferences. - reason for choice 4",
+  "Write a compelling reason for each choice. This statement will act as a tie breaker between people with similar preferences. - reason for choice 5",
+  "Write a compelling reason for each choice. This statement will act as a tie breaker between people with similar preferences. - reason for choice 6",
+  "Sometimes we have important projects that are overlooked by students in the bidding survey. We often ask for volunteers to switch projects. Would you like to be contacted about one of these projects? - Selected Choice",
+  "Sometimes we have important projects that are overlooked by students in the bidding survey. We often ask for volunteers to switch projects. Would you like to be contacted about one of these projects? - it depends; see: - Text",
+  "Select as many of the following as applies to you: - Selected Choice",
+  "Select as many of the following as applies to you: - I'm the following CS track: - Text",
+  "List the name of one person in class you'd prefer not to work with (Optional).",
+  "Is there anything else you'd like to share with the instructors of the course?"
+)
+existing_custom_cols <- intersect(custom_cols, names(bids))
+missing_custom_cols <- setdiff(custom_cols, names(bids))
+if (length(missing_custom_cols) > 0) {
+  warning(sprintf(
+    "Missing %d custom columns in bids: %s",
+    length(missing_custom_cols),
+    paste(missing_custom_cols, collapse = "; ")
+  ))
+}
+
+# identify project columns (all non-name, non-custom fields)
+project_cols <- setdiff(names(bids), c("name", custom_cols))
+
+# coerce project rank columns to numeric (quietly)
+suppressWarnings(
+  bids[, (project_cols) := lapply(.SD, as.numeric), .SDcols = project_cols]
+)
+
+# derive ordered project choices per row from ranks 1..6
+bids[, paste0("choice_", 1:6) := {
+  rvals <- unlist(.SD, use.names = FALSE)
+  pnames <- names(.SD)
+  pos <- match(1:6, rvals)
+  ch <- ifelse(is.na(pos), NA_character_, pnames[pos])
+  as.list(ch)
+}, .SDcols = project_cols, by = .I]
+
+# save project choices with justifications
+qualitative_answers <- bids[, c("name", existing_custom_cols, paste0("choice_", 1:6)), with = FALSE]
+setcolorder(qualitative_answers, c("name", paste0("choice_", 1:6)))
+fwrite(qualitative_answers, "data/2025-09-30-bids-qualitative-answers.csv")
+
+# project choices without justifications
+project_choices <- bids[, c("name", project_cols, paste0("choice_", 1:6)), with = FALSE]
+setcolorder(project_choices, c("name", paste0("choice_", 1:6)))
+fwrite(project_choices, "data/2025-09-30-bids-project-choices.csv")
+
+# list of all projects and the number of bids on each (any rank 1–6)
+proj_long <- melt(
+  bids[, c("name", project_cols), with = FALSE],
+  id.vars = "name",
+  variable.name = "project",
+  value.name = "rank",
+  variable.factor = FALSE
+)
+
+# count bids per project (exclude NA ranks), then include projects with zero bids
+counts <- proj_long[!is.na(rank), .N, by = project]
+all_projects <- data.table(project = project_cols)
+
+project_bid_counts <- merge(all_projects, counts, by = "project", all.x = TRUE)
+project_bid_counts[is.na(N), N := 0L]
+setnames(project_bid_counts, "N", "bids")
+setorder(project_bid_counts, -bids, project)
+
+fwrite(project_bid_counts, "data/2025-09-30-project-bids-counts.csv")
+
+
+suppressPackageStartupMessages({
+  if (!requireNamespace("ompr", quietly = TRUE) ||
+      !requireNamespace("ompr.roi", quietly = TRUE) ||
+      !requireNamespace("ROI.plugin.glpk", quietly = TRUE)) {
+    stop("Please install required packages: install.packages(c('ompr','ompr.roi','ROI.plugin.glpk'))")
+  }
+  library(ompr)
+  library(ompr.roi)
+  library(ROI.plugin.glpk)
+})
+
+students <- unique(bids$name)
+
+# Configure team counts per project:
+# - Default: 1 team
+# - Special: up to 2 teams
+# - Dropped: 0 teams
+all_projects_vec <- project_cols
+max_teams <- setNames(rep(1L, length(all_projects_vec)), all_projects_vec)
+
+special_three <- intersect(c("Game Development", "Low-Level Game Technology"), names(max_teams))
+max_teams[special_three] <- 2L
+
+# Drop some projects completely
+for (p in c(
+  "TinyLines",
+  "Enhancing Localized Deformation Analysis in Materials Science Using AI/ML",
+  "AI-Enhanced Neurofeedback Calibration"
+)) {
+  if (p %in% names(max_teams)) max_teams[p] <- 0L
+}
+
+# Build team slots (one row per potential team)
+slots_dt <- data.table(project = character(), slot = integer())
+for (p in names(max_teams)) {
+  mt <- max_teams[[p]]
+  if (mt > 0L) {
+    slots_dt <- rbind(slots_dt, data.table(project = p, slot = seq_len(mt)))
+  }
+}
+if (nrow(slots_dt) == 0L) stop("No team slots available after applying project constraints.")
+slots_dt[, k := .I]
+
+# Preference weights (rank 1..6). Unranked -> 0 (allowed but discouraged).
+rank_to_weight <- function(r) {
+  ifelse(is.na(r), 0L,
+    fifelse(r == 1, 100L,
+    fifelse(r == 2,  50L,
+    fifelse(r == 3,  25L,
+    fifelse(r == 4,  10L,
+    fifelse(r == 5,   5L,
+    fifelse(r == 6,   1L, 0L)))))))
+}
+
+# Build long preferences and weights
+pref <- melt(
+  bids[, c("name", project_cols), with = FALSE],
+  id.vars = "name",
+  variable.name = "project",
+  value.name = "rank",
+  variable.factor = FALSE
+)
+
+# Keep only projects that have team slots (drops TinyLines)
+pref <- pref[project %in% unique(slots_dt$project)]
+
+pref[, weight := rank_to_weight(rank)]
+
+# Deprioritize "Meal Planning Web App" (scale down weights)
+pref[project == "Meal Planning Web App", weight := as.integer(round(weight * 0.25))]
+
+# Expand weights to team slots (each project slot inherits project weight)
+pref_slots <- merge(pref, slots_dt[, .(project, k)], by = "project", allow.cartesian = TRUE)
+
+# Index students
+student_index <- data.table(name = students)[, i := .I]
+n_students <- nrow(student_index)
+n_slots <- nrow(slots_dt)
+
+# Weight matrix W[i, k]
+pref_idx <- merge(pref_slots, student_index, by = "name")
+W <- matrix(0, nrow = n_students, ncol = n_slots)
+if (nrow(pref_idx)) W[cbind(pref_idx$i, pref_idx$k)] <- pref_idx$weight
+
+# Capacity sanity check (max capacity must cover all students)
+max_capacity <- 5L * n_slots
+if (n_students > max_capacity) {
+  warning(sprintf(
+    "Infeasible: %d students but max capacity is %d (need more teams or larger caps).",
+    n_students, max_capacity
+  ))
+}
+
+# ILP: assign each student to exactly one slot; each slot active with 3..5 students
+model <- MIPModel() |>
+  add_variable(y[i, k], i = 1:n_students, k = 1:n_slots, type = "binary") |>
+  add_variable(a[k], k = 1:n_slots, type = "binary") |>
+  # maximize total preference weight
+  set_objective(sum_expr(W[i, k] * y[i, k], i = 1:n_students, k = 1:n_slots), "max") |>
+  # every student assigned to exactly one team slot
+  add_constraint(sum_expr(y[i, k], k = 1:n_slots) == 1, i = 1:n_students) |>
+  # team slot active only if it has 3–5 students
+  add_constraint(sum_expr(y[i, k], i = 1:n_students) >= 3 * a[k], k = 1:n_slots) |>
+  add_constraint(sum_expr(y[i, k], i = 1:n_students) <= 5 * a[k], k = 1:n_slots)
+
+solution <- solve_model(model, with_ROI(solver = "glpk", verbose = TRUE))
+
+assign_y <- as.data.table(get_solution(solution, y[i, k]))
+assign_y <- assign_y[value > 0.5]
+
+if (nrow(assign_y) != n_students) {
+  warning("Some students may be unassigned; check solver status/capacity.")
+}
+
+# Build assignment table: name, project, team (slot within project), and original rank
+assignments <- merge(assign_y[, .(i, k)], student_index[, .(i, name)], by = "i", all.x = TRUE)
+assignments <- merge(assignments, slots_dt[, .(k, project, team = slot)], by = "k", all.x = TRUE)
+
+rank_lookup <- pref[, .(name, project, rank)]
+assignments <- merge(assignments, rank_lookup, by = c("name", "project"), all.x = TRUE)
+
+setorder(assignments, project, team, name)
+
+# Write outputs
+fwrite(assignments[, .(name, project, team, rank)], "data/2025-09-30-team-assignments.csv")
+
+team_sizes <- assignments[, .N, by = .(project, team)][order(project, team)]
+fwrite(team_sizes, "data/2025-09-30-team-sizes.csv")
+
+# Optional: quick console summary
+cat(sprintf("Assigned %d students across %d active teams.\n",
+            n_students, nrow(team_sizes)))
