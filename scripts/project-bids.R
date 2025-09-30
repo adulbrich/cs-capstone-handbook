@@ -112,14 +112,17 @@ students <- unique(bids$name)
 all_projects_vec <- project_cols
 max_teams <- setNames(rep(1L, length(all_projects_vec)), all_projects_vec)
 
-special_three <- intersect(c("Game Development", "Low-Level Game Technology"), names(max_teams))
+special_three <- intersect(c("Low-Level Game Technology","VRyu"), names(max_teams))
 max_teams[special_three] <- 2L
 
 # Drop some projects completely
 for (p in c(
   "TinyLines",
   "Enhancing Localized Deformation Analysis in Materials Science Using AI/ML",
-  "AI-Enhanced Neurofeedback Calibration"
+  "AI-Enhanced Neurofeedback Calibration",
+  "Mars Rover Autonomy Capstone",
+  "LLM-DRIVEN MIGRATION OF LEGACY�",
+  "MARS Rover Simulation Team"
 )) {
   if (p %in% names(max_teams)) max_teams[p] <- 0L
 }
@@ -135,15 +138,38 @@ for (p in names(max_teams)) {
 if (nrow(slots_dt) == 0L) stop("No team slots available after applying project constraints.")
 slots_dt[, k := .I]
 
-# Preference weights (rank 1..6). Unranked -> 0 (allowed but discouraged).
-rank_to_weight <- function(r) {
-  ifelse(is.na(r), 0L,
-    fifelse(r == 1, 100L,
-    fifelse(r == 2,  50L,
-    fifelse(r == 3,  25L,
-    fifelse(r == 4,  10L,
-    fifelse(r == 5,   5L,
-    fifelse(r == 6,   1L, 0L)))))))
+# Per-slot capacity (defaults 3..5), with overrides
+min_cap <- rep(3L, nrow(slots_dt))
+max_cap <- rep(5L, nrow(slots_dt))
+
+vryu_idx <- slots_dt[project == "VRyu", k]
+if (length(vryu_idx)) {
+  min_cap[vryu_idx] <- 3L
+  max_cap[vryu_idx] <- 3L
+}
+
+sky_idx <- slots_dt[project == "Skyborn Pirate Game (Working Title)", k]
+if (length(sky_idx)) {
+  min_cap[sky_idx] <- 1L
+  max_cap[sky_idx] <- 1L
+}
+
+emotion_idx <- slots_dt[project == "Emotion-Based Control System for Drone Swarm Choreography", k]
+if (length(emotion_idx)) {
+  min_cap[emotion_idx] <- 2L
+  max_cap[emotion_idx] <- 3L
+}
+
+guardianly_idx <- slots_dt[project == "Guardianly", k]
+if (length(guardianly_idx)) {
+  min_cap[guardianly_idx] <- 2L
+  max_cap[guardianly_idx] <- 3L
+}
+
+ha_idx <- slots_dt[project == "LLM-Powered Conversational Agent for Home Assistant", k]
+if (length(ha_idx)) {
+  min_cap[ha_idx] <- 2L
+  max_cap[ha_idx] <- 3L
 }
 
 # Build long preferences and weights
@@ -176,8 +202,22 @@ pref_idx <- merge(pref_slots, student_index, by = "name")
 W <- matrix(0, nrow = n_students, ncol = n_slots)
 if (nrow(pref_idx)) W[cbind(pref_idx$i, pref_idx$k)] <- pref_idx$weight
 
+# Eligibility: only allow assignments to projects the student ranked (1..6)
+E <- matrix(0L, nrow = n_students, ncol = n_slots)
+if (nrow(pref_idx)) {
+  elig_idx <- pref_idx[!is.na(rank) & rank %in% 1:6, .(i, k)]
+  if (nrow(elig_idx)) E[cbind(elig_idx$i, elig_idx$k)] <- 1L
+}
+no_elig <- which(rowSums(E) == 0L)
+if (length(no_elig)) {
+  warning(sprintf(
+    "Some students have no eligible ranked projects after constraints: %s",
+    paste(student_index$name[no_elig], collapse = "; ")
+  ))
+}
+
 # Capacity sanity check (max capacity must cover all students)
-max_capacity <- 5L * n_slots
+max_capacity <- sum(max_cap) # account for per-slot caps
 if (n_students > max_capacity) {
   warning(sprintf(
     "Infeasible: %d students but max capacity is %d (need more teams or larger caps).",
@@ -185,7 +225,7 @@ if (n_students > max_capacity) {
   ))
 }
 
-# ILP: assign each student to exactly one slot; each slot active with 3..5 students
+# ILP: assign each student to exactly one slot; each slot active with project-specific min/max
 model <- MIPModel() |>
   add_variable(y[i, k], i = 1:n_students, k = 1:n_slots, type = "binary") |>
   add_variable(a[k], k = 1:n_slots, type = "binary") |>
@@ -193,12 +233,19 @@ model <- MIPModel() |>
   set_objective(sum_expr(W[i, k] * y[i, k], i = 1:n_students, k = 1:n_slots), "max") |>
   # every student assigned to exactly one team slot
   add_constraint(sum_expr(y[i, k], k = 1:n_slots) == 1, i = 1:n_students) |>
-  # team slot active only if it has 3–5 students
-  add_constraint(sum_expr(y[i, k], i = 1:n_students) >= 3 * a[k], k = 1:n_slots) |>
-  add_constraint(sum_expr(y[i, k], i = 1:n_students) <= 5 * a[k], k = 1:n_slots)
+  # eligibility: forbid assignments to unranked projects
+  add_constraint(y[i, k] <= E[i, k], i = 1:n_students, k = 1:n_slots) |>
+  # slot capacity with activation
+  add_constraint(sum_expr(y[i, k], i = 1:n_students) >= min_cap[k] * a[k], k = 1:n_slots) |>
+  add_constraint(sum_expr(y[i, k], i = 1:n_students) <= max_cap[k] * a[k], k = 1:n_slots)
+
+# Force exactly two VRyu teams active (each will have exactly 3 due to caps)
+if (length(vryu_idx)) {
+  model <- model |>
+    add_constraint(sum_expr(a[k], k = vryu_idx) == 2)
+}
 
 solution <- solve_model(model, with_ROI(solver = "glpk", verbose = TRUE))
-
 assign_y <- as.data.table(get_solution(solution, y[i, k]))
 assign_y <- assign_y[value > 0.5]
 
@@ -221,6 +268,18 @@ fwrite(assignments[, .(name, project, team, rank)], "data/2025-09-30-team-assign
 team_sizes <- assignments[, .N, by = .(project, team)][order(project, team)]
 fwrite(team_sizes, "data/2025-09-30-team-sizes.csv")
 
+# Unassigned students (not present in assignments)
+assigned_students <- unique(assignments$name)
+unassigned_students <- data.table(name = setdiff(students, assigned_students))
+fwrite(unassigned_students, "data/2025-09-30-unassigned-students.csv")
+
+# Projects with no teams formed (had slots but no assignments)
+projects_with_slots <- unique(slots_dt$project)
+projects_without_teams <- data.table(project = setdiff(projects_with_slots, unique(assignments$project)))
+fwrite(projects_without_teams, "data/2025-09-30-projects-without-teams.csv")
+
 # Optional: quick console summary
 cat(sprintf("Assigned %d students across %d active teams.\n",
             n_students, nrow(team_sizes)))
+cat(sprintf("Unassigned students: %d | Projects without teams: %d\n",
+            nrow(unassigned_students), nrow(projects_without_teams)))
