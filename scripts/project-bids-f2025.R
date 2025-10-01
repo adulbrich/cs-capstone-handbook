@@ -123,7 +123,8 @@ for (p in c(
   "Mars Rover Autonomy Capstone",
   "LLM-DRIVEN MIGRATION OF LEGACY�",
   "MARS Rover Simulation Team",
-  "Digiclips"
+  "Digiclips",
+  "Empowering Instructors with AI-Enhanced Teaching Tools"
 )) {
   if (p %in% names(max_teams)) max_teams[p] <- 0L
 }
@@ -173,6 +174,12 @@ if (length(ha_idx)) {
   max_cap[ha_idx] <- 3L
 }
 
+college_idx <- slots_dt[project == "AI Scholarship Agent: CollegeAppAssist", k]
+if (length(college_idx)) {
+  min_cap[college_idx] <- 3L
+  max_cap[college_idx] <- 4L
+}
+
 # Build long preferences and weights
 pref <- melt(
   bids[, c("name", project_cols), with = FALSE],
@@ -182,7 +189,21 @@ pref <- melt(
   variable.factor = FALSE
 )
 
-# Keep only projects that have team slots (drops TinyLines)
+# Map ranks (1..6) to weights; NA/unranked -> 0
+rank_to_weight <- function(r) {
+  r <- as.integer(r)
+  w <- integer(length(r))
+  w[r == 1L] <- 100L
+  w[r == 2L] <- 85L
+  w[r == 3L] <- 75L
+  w[r == 4L] <- 70L
+  w[r == 5L] <- 0L
+  w[r == 6L] <- 0L
+  w[is.na(r)] <- 0L
+  w
+}
+
+# Keep only projects that have team slots
 pref <- pref[project %in% unique(slots_dt$project)]
 
 pref[, weight := rank_to_weight(rank)]
@@ -302,6 +323,29 @@ fwrite(unassigned_students, "data/2025-09-30-unassigned-students.csv")
 projects_with_slots <- unique(slots_dt$project)
 projects_without_teams <- data.table(project = setdiff(projects_with_slots, unique(assignments$project)))
 fwrite(projects_without_teams, "data/2025-09-30-projects-without-teams.csv")
+
+# Choice satisfaction (counts and percentages by rank 1..6)
+n_assigned <- uniqueN(assignments$name)
+n_total <- length(students)
+
+rank_labels <- c("first", "second", "third", "fourth", "fifth", "sixth")
+
+rank_dist <- assignments[!is.na(rank), .(count = .N), by = rank]
+rank_dist <- rank_dist[CJ(rank = 1:6, unique = TRUE), on = "rank"]
+rank_dist[is.na(count), count := 0L][order(rank)]
+rank_dist[, label := rank_labels[rank]]
+rank_dist[, pct_assigned := if (n_assigned > 0) round(100 * count / n_assigned, 1) else NA_real_]
+rank_dist[, pct_all := if (n_total > 0) round(100 * count / n_total, 1) else NA_real_]
+
+setcolorder(rank_dist, c("rank", "label", "count", "pct_assigned", "pct_all"))
+fwrite(rank_dist, "data/2025-09-30-choice-satisfaction.csv")
+
+# Optional: console summary
+cat("Choice satisfaction (assigned-only %):\n")
+for (r in 1:6) {
+  row <- rank_dist[rank == r]
+  cat(sprintf("  %s: %d (%.1f%%)\n", row$label, row$count, row$pct_assigned))
+}
 
 # Optional: quick console summary
 cat(sprintf("Assigned %d students across %d active teams.\n",
