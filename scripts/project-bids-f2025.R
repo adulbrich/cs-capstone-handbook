@@ -7,7 +7,7 @@ bids <- bids[name != "", ]
 
 # load current teams (pre-approved projects)
 current_teams <- fread("data/2025-09-30-current-teams.csv")
-current_teams <- current_teams[group_name != "",]
+current_teams <- current_teams[group_name != "", ]
 
 # manual overal check
 overlap <- merge(bids, current_teams, by = "name")
@@ -112,8 +112,8 @@ students <- unique(bids$name)
 all_projects_vec <- project_cols
 max_teams <- setNames(rep(1L, length(all_projects_vec)), all_projects_vec)
 
-special_three <- intersect(c("Low-Level Game Technology","VRyu"), names(max_teams))
-max_teams[special_three] <- 2L
+special_two <- intersect(c("Low-Level Game Technology","VRyu"), names(max_teams))
+max_teams[special_two] <- 2L
 
 # Drop some projects completely
 for (p in c(
@@ -124,7 +124,11 @@ for (p in c(
   "LLM-DRIVEN MIGRATION OF LEGACY�",
   "MARS Rover Simulation Team",
   "Digiclips",
-  "Empowering Instructors with AI-Enhanced Teaching Tools"
+  "Empowering Instructors with AI-Enhanced Teaching Tools",
+  "(NVIDIA) Genomic Analysis and Design with Deep Learning",
+  "High-Level Waste Glass App (PNNL Contractor)",
+  "OWASP for GenAI",
+  "Securing Agent-to-Agent Communication in Generative AI Systems"
 )) {
   if (p %in% names(max_teams)) max_teams[p] <- 0L
 }
@@ -352,3 +356,26 @@ cat(sprintf("Assigned %d students across %d active teams.\n",
             n_students, nrow(team_sizes)))
 cat(sprintf("Unassigned students: %d | Projects without teams: %d\n",
             nrow(unassigned_students), nrow(projects_without_teams)))
+
+
+students_all <- fread("data/2025-10-01-students.csv")
+setnames(students_all, "Login ID", "email")
+
+setnames(current_teams, "login_id", "email")
+
+bids <- fread("data/2025-09-30-project-bids.csv")
+setnames(bids, "Recipient Last Name", "name")
+bids <- bids[name != "", ]
+setnames(bids, "Recipient Email", "email")
+
+
+taken_emails <- unique(c(bids$email, current_teams$email))
+students_remaining <- unique(students_all[!(email %chin% taken_emails), .(email)])
+
+# Save result
+fwrite(students_remaining, "data/2025-10-01-students-unresponsive-emails.csv")
+
+cat(sprintf(
+  "Unresponsive (emails only): %d remaining of %d in roster\n",
+  nrow(students_remaining), nrow(unique(students_all[, .(email)]))
+))
