@@ -6,6 +6,13 @@ bun run dev
 bun run build
 ```
 
+## Instructor Checklist
+
+- Create projects sheet with TAs and Project Partner Emails
+- Finalize team assignments (students) sheet and add calculated columns with assigned TA, project partner email, and cohort/check-in information
+- Create Teams channel for TAs and instructors
+- Create TA Meeting Notes document
+
 ## To Do
 
 - more material offered during lecture time: case studies from successful companies, advice for starting a company, career advice, anything that would add value to the course

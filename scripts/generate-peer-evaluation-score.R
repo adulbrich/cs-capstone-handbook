@@ -113,10 +113,10 @@ output[!is.na(Q23), Q23_mean := sapply(Q23, function(x) mean(as.numeric(unlist(x
 output[!is.na(Q24), Q24_mean := sapply(Q24, function(x) mean(as.numeric(unlist(x)), na.rm = TRUE)), by = Email]
 output[!is.na(Q3) , Q3_mean  := sapply(Q3 , function(x) mean(as.numeric(unlist(x)), na.rm = TRUE)), by = Email]
 
-output[!is.na(Q21), Q21_normalized := (Q21_mean * 50 / 3) + (100 / 3)]
-output[!is.na(Q22), Q22_normalized := (Q22_mean * 50 / 3) + (100 / 3)]
-output[!is.na(Q23), Q23_normalized := (Q23_mean * 50 / 3) + (100 / 3)]
-output[!is.na(Q24), Q24_normalized := (Q24_mean * 50 / 3) + (100 / 3)]
+output[!is.na(Q21), Q21_normalized := (Q21_mean * 12.5) + 37.5]
+output[!is.na(Q22), Q22_normalized := (Q22_mean * 12.5) + 37.5]
+output[!is.na(Q23), Q23_normalized := (Q23_mean * 12.5) + 37.5]
+output[!is.na(Q24), Q24_normalized := (Q24_mean * 12.5) + 37.5]
 output[!is.na(Q3) , Q3_normalized   := Q3_mean * n]
 
 output[, Q3_shifted := Q3_normalized / 5]
