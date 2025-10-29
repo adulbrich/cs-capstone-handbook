@@ -1,0 +1,31 @@
+Subject: CS Capstone – <Project Name> – Team Intro & Meeting
+
+To: <Partner/Mentor Name>
+Cc: <Teammate 1 Name>, <Teammate 2 Name>, <Teammate 3 Name>
+Bcc: cs-46x-help@oregonstate.edu
+
+Hi <Partner/Mentor Name>,
+
+We’re the <Project Name> team in OSU CS Capstone. We’d love to introduce ourselves and schedule a first meeting.
+
+- <Student A> – <1-line intro: interests/skills/why this project>
+- <Student B> – <1-line intro>
+- <Student C> – <1-line intro>
+- <Student D> – <1-line intro>
+
+To find a time, please choose any slot that works for you: <When2Meet or Calendly link>.
+
+Preferred channel for follow-ups: <Teams/Slack/Email/other>. <Name> will drive the next step and send the calendar invite.
+
+A few quick questions to help us prepare:
+
+1. Are there must-read docs or environments we should access beforehand?
+2. What’s the preferred meeting cadence and communication channel?
+3. Any early constraints (timeline, tech stack, data access) we should note?
+4. Is there a “definition of success” you’d like us to target for the next checkpoint?
+
+Thank you — we’re looking forward to collaborating!
+
+Best,
+
+<Your Name> (on behalf of Team <Project Name>)

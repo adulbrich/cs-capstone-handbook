@@ -41,4 +41,4 @@ Bullets per member with links to PRs/reviews/issues
 
 ## Team Process Reflection
 
-Optional, 3-5 sentences
+3-5 sentences
