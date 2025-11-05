@@ -6,19 +6,34 @@ library(ggplot2)
 # Click on the Export & Import tab, and select Export Data.
 # Select the CSV format, check Download all fields, Export labels, and click Download.
 
-filename_groups <- "data/2025-04-10-project-groups.csv"
+# !!! change assignment name and ID in gradebook at the bottom !!!
+# !!! change filenames below !!!
+
+filename_groups <- "data/2025-10-27-project-groups.csv"
+gradebook_filename <- "data/2025-11-04T1625_Grades-SENIOR_SOFTWARE_ENGIN_PROJECT_(CS_461_001_F2025).csv"
+gradebook_updated_filename <- "data/2025-11-04T1625_Grades-SENIOR_SOFTWARE_ENGIN_PROJECT_(CS_461_001_F2025)-updated.csv"
 
 team_sizes <- fread(filename_groups, header = TRUE)
 team_sizes <- team_sizes[, .(n = .N), by = group_name]
 setnames(team_sizes, "group_name", "Team")
 
-filename <- "data/2025-05-05-peer-review-survey.csv"
+filename <- "data/2025-11-04-peer-review-survey.csv"
+
+output_filename <- "data/2025-11-04-peer-review-survey-output.csv"
+output_email_filename <- "data/2025-11-04-peer-review-survey-emails.csv"
+output_email_subject <- "CS461 Peer Review Results"
 
 dt <- fread(filename, header = TRUE)
 
 labels <- data.table(question_id = colnames(dt), question_label=as.list(dt[1,]))
 dt <- dt[-1,]
 dt <- dt[-1,]
+
+# keep only the latest submission per student
+dt[, RecordedDateParsed := as.POSIXct(RecordedDate, format = "%Y-%m-%d %H:%M:%S", tz = "UTC")]
+setorder(dt, RecipientEmail, -RecordedDateParsed)
+dt <- dt[!duplicated(RecipientEmail)]
+dt[, RecordedDateParsed := NULL]
 
 # clean up columns
 dt[, StartDate := NULL]
@@ -59,10 +74,53 @@ dt <- merge(dt, team_sizes, by = "Team")
 # X goes from 1 to 9, 1 is self, 2-9 are team members
 # labels[,Q3_X]
 
-output <- dt[, .(Name = str_c(RecipientLastName, ", " , RecipientFirstName),Email=RecipientEmail, Team, n, `Team Member 1`, `Team Member 2`, `Team Member 3`,`Team Member 4`,`Team Member 5`,`Team Member 6`,`Team Member 7`,`Team Member 8`)]
+output <- dt[, .(Name = str_c(RecipientLastName, ", " , RecipientFirstName),Email=RecipientEmail, Team, n, `Team Member 1`, `Team Member 2`, `Team Member 3`,`Team Member 4`,`Team Member 5`)]
 # need to make sure results are unique
 
-# TODO: need to check that self was at least 100/N because otherwise it boosts the other scores
+## DATA VALIDATION
+
+# Students who did give themselves less than 100/N points
+check_q3_min <- dt[Q3_1 < floor(100 / n) & n > 2, ]
+
+# Students that did not allocate exactly 100 points to their team members
+q3_cols <- paste0("Q3_", 1:6)
+q3_matrix <- as.matrix(dt[, ..q3_cols])
+dt[, Q3_check := vapply(
+    seq_len(.N),
+    function(row_idx) {
+        limit <- min(n[row_idx], ncol(q3_matrix))
+        if (is.na(limit) || limit < 1) {
+            return(NA_real_)
+        }
+        sum(as.numeric(q3_matrix[row_idx, seq_len(limit)]), na.rm = TRUE)
+    },
+    numeric(1)
+)]
+check_q3_sum <- dt[Q3_check < 99,]
+
+# Students that did not allocate 1-5 points to each team member
+q2_cols <- paste0("Q2_", rep(1:6, each = 4), "_", rep(1:4, times = 6))
+q2_matrix <- as.matrix(dt[, ..q2_cols])
+q2_col_groups <- split(seq_along(q2_cols), rep(seq_len(6), each = 4))
+dt[, Q2_invalid := vapply(
+    seq_len(.N),
+    function(row_idx) {
+        limit <- min(n[row_idx], length(q2_col_groups))
+        if (is.na(limit) || limit < 1) {
+            return(FALSE)
+        }
+        cols_to_check <- unlist(q2_col_groups[seq_len(limit)], use.names = FALSE)
+        values <- suppressWarnings(as.numeric(q2_matrix[row_idx, cols_to_check]))
+        if (anyNA(values)) {
+            return(TRUE)
+        }
+        any(values < 1 | values > 5)
+    },
+    logical(1)
+)]
+check_q2_range <- dt[Q2_invalid == TRUE]
+
+## SCORE CALCULATION
 for (i in 1:nrow(output)) {
     # i <- 1
    team <- output[i, Team]
@@ -126,6 +184,11 @@ output[, Q3_shifted := (0.65 + (0.0225 * Q3_shifted) - (0.00025 * Q3_shifted ^ 2
 
 output[, PeerEvaluationScore := (Q21_normalized + Q22_normalized + Q23_normalized + Q24_normalized + Q3_shifted) / 5]
 
+output[, PeerEvaluationScore_Correction := PeerEvaluationScore]
+output[(Email %in% check_q2_range$RecipientEmail), PeerEvaluationScore_Correction := PeerEvaluationScore_Correction - 8]
+output[(Email %in% check_q3_min$RecipientEmail), PeerEvaluationScore_Correction := PeerEvaluationScore_Correction - 8]
+output[(Email %in% check_q3_sum$RecipientEmail), PeerEvaluationScore_Correction := PeerEvaluationScore_Correction - 8]
+
 # Plot the original vs shifted distribution
 ggplot() +
   # Original distribution
@@ -151,6 +214,10 @@ ggplot() +
   )
 
 ## Looking at the distribution of Q3_normalized
+# Warning message:
+# The dot-dot notation (`..count..`) was deprecated in ggplot2 3.4.0.
+# ℹ Please use `after_stat(count)` instead.
+# This warning is displayed once every 8 hours.
 ggplot(output, aes(x = Q3_normalized)) +
   geom_histogram(bins = 20, fill = "#4285F4", color = "white", alpha = 0.8) +
   geom_density(aes(y = ..count.. * 0.8), color = "#DB4437", linewidth = 1) +
@@ -168,13 +235,13 @@ ggplot(output, aes(x = Q3_normalized)) +
     axis.title = element_text(face = "bold")
   )
 
-fwrite(output, "data/2025-05-05-peer-review-survey-output.csv", row.names = FALSE)
+fwrite(output, output_filename, row.names = FALSE)
 
 ## Format for sending emails
 
-output_emails <- output[, .(Email, Subject = "CS463 Peer Review Results", Body="", Q21 = Q21_normalized, Q22 = Q22_normalized, Q23 = Q23_normalized, Q24 = Q24_normalized, Q3 = Q3_shifted, Total = PeerEvaluationScore)]
+output_emails <- output[, .(Email, Subject = output_email_subject, Body="", Q21 = Q21_normalized, Q22 = Q22_normalized, Q23 = Q23_normalized, Q24 = Q24_normalized, Q3 = Q3_shifted, Total = PeerEvaluationScore, Total_Corrected = PeerEvaluationScore_Correction)]
 
-fwrite(output_emails, "data/2025-05-05-peer-review-survey-emails.csv", row.names = FALSE)
+fwrite(output_emails, output_email_filename, row.names = FALSE)
 # after creating the email file, open it in Excel and add the body of the email
 # =CONCAT("Does the member do an appropriate quantity of work?",CHAR(10), ROUND(D2,2),CHAR(10),CHAR(10),"How about the quality of the member's work? ",CHAR(10),ROUND(E2,2),CHAR(10),CHAR(10),"Rate the member's attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.).",CHAR(10),ROUND(F2,2),CHAR(10),CHAR(10),"Rate the overall value of the member's technical contribution.",CHAR(10),ROUND(G2,2),CHAR(10),CHAR(10),"Overall Contribution",CHAR(10),ROUND(H2,2),CHAR(10),CHAR(10),"Total Score (mean of above scores)",CHAR(10),ROUND(I2,2))
 # then save it as an XLSM file and add a new VBA module (see `./send-emails-macos.vba`)
@@ -182,10 +249,24 @@ fwrite(output_emails, "data/2025-05-05-peer-review-survey-emails.csv", row.names
 
 # merge with gradebook
 
-gradebook <- fread("data/2025-06-16T1035_Grades-SOFTWARE_ENGINEERING_PROJECT_(CS_463_001_S2025).csv", header = TRUE)
+gradebook <- fread(gradebook_filename, header = TRUE)
 
-gradebook[,`Mid-Term Peer Review (Qualtrics Survey) (10083801)` := as.numeric(`Mid-Term Peer Review (Qualtrics Survey) (10083801)`)]
-gradebook[,`Mid-Term Peer Review (Qualtrics Survey) (10083801)` := 0]
-gradebook[`SIS Login ID` %in% dt$RecipientEmail, `Mid-Term Peer Review (Qualtrics Survey) (10083801)` := 3.0]
+output[, `SIS Login ID` := Email]
 
-fwrite(gradebook, "data/2025-06-16T1035_Grades-SOFTWARE_ENGINEERING_PROJECT_(CS_463_001_S2025)-updated.csv", row.names = FALSE)
+gradebook <- merge(gradebook, output[, .(`SIS Login ID`, PeerEvaluationScore_Correction)], by = "SIS Login ID", all.x = TRUE)
+
+gradebook[, `Mid-Term Peer Evaluation Survey (10265729)` := PeerEvaluationScore_Correction/4]
+gradebook[, PeerEvaluationScore_Correction := NULL]
+
+gradebook[is.na(`Mid-Term Peer Evaluation Survey (10265729)`), `Mid-Term Peer Evaluation Survey (10265729)` := 12.5]
+
+# re-order columns to have the new score at the end
+# Student
+# ID
+# SIS User ID
+# SIS Login ID
+# Section
+# Mid-Term Peer Evaluation Survey (10265729)
+gradebook <- gradebook[, .(Student, ID, `SIS User ID`, `SIS Login ID`, Section, `Mid-Term Peer Evaluation Survey (10265729)`)]
+
+fwrite(gradebook, gradebook_updated_filename, row.names = FALSE)
