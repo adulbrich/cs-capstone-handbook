@@ -6,7 +6,7 @@ filename_input_qualtrics <- "data/2025-11-05-project-partner-midterm-survey.csv"
 output_feedback_filename <- "data/2025-11-05-project-partner-midterm-feedback.csv"
 output_score_filename <- "data/2025-11-05-project-partner-midterm-scores.csv"
 
-input_qualtrics <- fread(input_filename_qualtrics, header = TRUE)
+input_qualtrics <- fread(filename_input_qualtrics, header = TRUE)
 
 # Extract question labels from the first row
 labels <- data.table(
@@ -47,8 +47,8 @@ input_qualtrics[, RecipientFirstName := NULL]
 
 # Export feedback data with question labels
 output_feedback <- input_qualtrics
-output_feedback <- output_feedback[Q3 != "", ]
-output_feedback <- output_feedback[, .(RecipientEmail, Team, Q3)]
+output_feedback <- output_feedback[(Q3 != "" | `Q2 Names` != "" | `Q2 Comments` != ""), ]
+output_feedback <- output_feedback[, .(RecipientEmail, Team, `Q2 Names`, `Q2 Comments`, Q3)]
 
 fwrite(output_feedback, output_feedback_filename, row.names = FALSE)
 
