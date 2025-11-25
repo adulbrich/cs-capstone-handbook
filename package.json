@@ -1,7 +1,7 @@
 {
   "name": "cs46x-handbook",
   "type": "module",
-  "version": "2025-2026.FA.0",
+  "version": "2025-2026.FA.1",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -10,25 +10,25 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/starlight": "0.35.2",
-    "@astrojs/starlight-tailwind": "^4.0.1",
-    "@tailwindcss/vite": "^4.1.11",
-    "astro": "5.13.3",
+    "@astrojs/check": "0.9.5",
+    "@astrojs/starlight": "0.36.2",
+    "@astrojs/starlight-tailwind": "4.0.2",
+    "@tailwindcss/vite": "^4.1.17",
+    "astro": "5.15.6",
     "astro-feelback": "^0.3.4",
-    "astro-mermaid": "^1.0.3",
-    "katex": "^0.16.22",
-    "mermaid": "^11.7.0",
+    "astro-mermaid": "^1.2.0",
+    "katex": "^0.16.25",
+    "mermaid": "^11.12.1",
     "sharp": "^0.32.6",
     "starlight-image-zoom": "^0.8.0",
     "starlight-links-validator": "^0.12.4",
     "starlight-scroll-to-top": "^0.1.1",
-    "tailwindcss": "^4.1.11",
-    "typescript": "^5.7.3"
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
-    "lefthook": "^1.12.3",
+    "lefthook": "^1.13.6",
     "ultracite": "5.2.4"
   }
 }
