@@ -12,9 +12,12 @@ bun run build
 - Finalize team assignments (students) sheet and add calculated columns with assigned TA, project partner email, and cohort/check-in information
 - Create Teams channel for TAs and instructors
 - Create TA Meeting Notes document
+- Update Qualtrics surveys
 
 ## To Do
 
+- consider splitting rubrics (e.g. requirements update) to make it easier to grade
+- add back different ways to conduct retrospectives (4Ls, Start-Stop-Continue, etc.)
 - more material offered during lecture time: case studies from successful companies, advice for starting a company, career advice, anything that would add value to the course
 - change wording to talk about students, project partners, and instructors instead of using pronouns such as "you", "your", "we", "us"
 - improve project partner guidelines
@@ -24,7 +27,7 @@ bun run build
 - improve FOSS activities
 - add recommended activities based on project category or type
 - see commented lines for more activity ideas
-- revise assignments
+- revise activities so that it complements/helps with the project instead of reading like assignments
 - automate link checking with GH Actions (run prod build and run `linkinator` on it or run post deploy on prod deployment)
 
 ## Link Checking
