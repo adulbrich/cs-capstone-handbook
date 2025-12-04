@@ -1,0 +1,126 @@
+<p><span style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 14px;">Team Submission</span></p>
+<h2>Purpose</h2>
+<ul>
+    <li>Align your team on a shared system vision before deep implementation.</li>
+    <li>Make interfaces and contracts explicit to reduce integration risk.</li>
+    <li>Surface and prioritize project risks early with concrete mitigations.</li>
+    <li>Practice owning a component by writing a concise, evidence-backed design.</li>
+</ul>
+<h2>What You Must Produce</h2>
+<p>Submit <strong>one technical design brief</strong> (PDF<span>, ~3&ndash;8 pages with core content, more if required by your project partner + appendix)</span>.</p>
+<ul>
+    <li>Filename: <code>YYYY-MM-DD-[TeamID]-TechnicalDesignBrief.pdf</code> (e.g., <code>2025-11-27-CS.042-TechnicalDesignBrief.pdf</code>)</li>
+    <li>Example(s): TBD</li>
+    <li>Template(s): TBD&nbsp;</li>
+</ul>
+<p>See the handbook&rsquo;s <a class="inline_disabled" style="font-family: inherit; font-size: 1rem;" href="https://capstone.alexulbrich.com/activities/design/" target="_blank" rel="noopener">Design activities</a><span style="font-family: inherit; font-size: 1rem;"> to complement previous effort or ADRs. Use the activities that best fit your project and partner.</span></p>
+<h2>Required Report Structure</h2>
+<p>Your submission must include the following sections.&nbsp;</p>
+<h3>0. Change Log</h3>
+<p>Briefly record how this <em>document</em> has changed since the previous version. Focus on high-level edits (which sections were updated and why), <strong>not</strong> on restating every design decisions.</p>
+<p><strong>For each revision, include:</strong></p>
+<ul>
+    <li><strong>Date</strong> of the update</li>
+    <li><strong>Version or Tag</strong> (e.g., v1.1, &ldquo;Winter Week 4 Update&rdquo;)</li>
+    <li><strong>Sections Changed</strong> (&ldquo;Interfaces/APIs and Data Contracts&rdquo;, &ldquo;Component Design and Responsibilities&rdquo;, etc.)</li>
+    <li><strong>What Changed</strong> (1&ndash;2 sentence summary)</li>
+    <li><strong>Reason / Driver</strong> (e.g., stakeholder feedback, implementation discovery, new risk discovered)</li>
+    <li><strong>Author(s)</strong> &mdash; individual names or subteam</li>
+</ul>
+<p>A table format is recommended:</p>
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid #ccc; padding: 6px;">Date</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Version</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Sections Changed</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Summary of Changes</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Reason / Driver</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Author(s)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 6px;">2026-02-15</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">v1.1</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Interfaces/APIs and Data Contracts; Component Design and Responsibilities</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Refined API contracts and updated component responsibilities to match the current implementation plan.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Implementation spike results and updated sponsor feedback.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">J. Doe</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 6px;">2026-03-01</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">v1.2</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Technical and Integration Risk Register; Design Decisions and ADR Links</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Re-ranked technical and integration risks; added new ADRs for data model changes and third-party service integration.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">New performance findings and integration constraints discovered during Winter Sprint 4.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Everyone</td>
+        </tr>
+    </tbody>
+</table>
+<p><em>Note:</em> The Change Log is a brief history of <strong>document updates</strong>, not a restatement of all design decisions.</p>
+<h3>1. System Context and High-Level Architecture</h3>
+<p>Describe how your system fits into its environment and how major pieces fit together.</p>
+<ul>
+    <li>Identify external actors (users, services, devices, third-party APIs).</li>
+    <li>Show major containers/components and how they interact (e.g., C4 level 1&ndash;2 view).</li>
+    <li>Name connectors and protocols (HTTP/REST, gRPC, queues, database connections, etc.).</li>
+    <li>State boundaries and key deployment assumptions (e.g., cloud/on-prem, major services, data stores).</li>
+    <li>Include at least <strong>one architecture diagram</strong> with a figure number, caption, and alt text.</li>
+    <li>Ensure the diagram is consistent with your current or planned repo structure.</li>
+</ul>
+<h3>2. Interfaces/APIs and Data Contracts</h3>
+<p>Make the key interfaces and contracts explicit.</p>
+<ul>
+    <li>List the key interfaces/APIs and which components own them.</li>
+    <li>Provide contracts (schemas/specs) for important requests, responses, and messages (e.g., OpenAPI, Protobuf, JSON Schema, or clear typed tables).</li>
+    <li>Include <strong>example requests/responses</strong> for key endpoints or messages.</li>
+    <li>Describe expected error cases and how errors are represented.</li>
+    <li>Summarize your approach to <strong>authentication, authorization, and versioning</strong> (paths, headers, tokens, feature flags, etc.).</li>
+    <li>Reference any attached schema/spec files from this section.</li>
+</ul>
+<h3>3. Component Design and Responsibilities</h3>
+<p>Explain how the system is decomposed into components and what each is responsible for.</p>
+<ul>
+    <li>Define the main components or services in your system and their responsibilities (what each owns and does not own).</li>
+    <li>Show how components relate to the interfaces/APIs defined in Section 2 (who calls what, who owns which contracts).</li>
+    <li>Describe key dependencies between components and external services (databases, queues, third-party APIs, libraries).</li>
+    <li>For each component, note any important performance, scalability, or operational considerations (e.g., expected load, latency sensitivity, scaling strategy).</li>
+    <li>For each component, identify <strong>1&ndash;2 component-specific technical or integration risks</strong> (e.g., resource hotspots, fragile integrations, data model churn) and link them to entries in the shared <strong>Technical &amp; Integration Risk Register</strong> in Section 4 (by risk ID).</li>
+</ul>
+<h3>4. Technical and Integration Risk Register</h3>
+<p>Capture the most important <strong>technical and integration risks</strong> and what you will do about them.</p>
+<ul>
+    <li>Provide a <strong>risk register table</strong> with at least the following columns: <em>ID, Risk, Impact, Likelihood, Mitigation / Acceptance</em></li>
+    <li>Focus on <strong>implementation and architecture risks</strong>, such as performance and scalability, integration with third-party services, tech stack immaturity, data model churn, security/ops, observability, deployment, and rollback risks.</li>
+    <li><strong>Do not re-list pure requirements or stakeholder risks.</strong> Instead, link to the relevant requirements or stakeholder documents where needed.</li>
+    <li>Include and re-rank the technical and integration risks contributed by your components (from <strong>Section 3</strong>) so the register reflects a <strong>shared, prioritized view</strong> of system-level technical risk.</li>
+    <li>Rank or otherwise indicate relative priority based on impact and likelihood.</li>
+    <li>For each risk, give a concise mitigation or acceptance plan.</li>
+    <li>Where relevant, reference <strong>requirements, components, or ADRs</strong> that are shaped by this risk.</li>
+</ul>
+<h3>5. Design Decisions and ADR Links</h3>
+<p>Show how you document and adopt key design decisions.</p>
+<ul>
+    <li>Reference any <strong>Architecture Decision Records (ADRs)</strong> or decision notes relevant to your component and system.</li>
+    <li>For each major decision, briefly summarize:
+        <ul>
+            <li>Context and options considered.</li>
+            <li>The decision and primary tradeoffs.</li>
+            <li>Important consequences (good and bad).</li>
+        </ul>
+    </li>
+    <li>Include ADR <strong>status</strong> (e.g., proposed, accepted, superseded) where applicable.</li>
+    <li>Link to PRs or issues where the decision has been adopted or implemented, if available.</li>
+</ul>
+<h2>Formatting Guidelines</h2>
+<ul>
+    <li>Keep the main team sections to ~3&ndash;8 pages. Use appendix for supporting information.</li>
+    <li>Use clear headings, subheadings, bullets, and descriptive link text.</li>
+    <li>Use consistent notation and naming between diagrams, text, and code.</li>
+    <li>Give all figures <strong>figure numbers, captions, and alt text</strong>.</li>
+    <li>Explain non-obvious notation.</li>
+    <li>Ensure diagrams and text are readable when printed or viewed on a laptop screen.</li>
+    <li>Ensure a reader can quickly answer: &ldquo;Which part of the system addresses this risk?&rdquo; and &ldquo;Where is that decision documented?&rdquo;</li>
+    <li><strong>Generative AI may be used for writing.</strong> Do <strong>not</strong> fabricate artifacts, evidence, or data; all examples, metrics, and links must be real.</li>
+</ul>

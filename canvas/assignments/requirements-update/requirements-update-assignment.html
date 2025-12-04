@@ -1,0 +1,100 @@
+<p><span style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 14px;"> Team Submission </span></p>
+<h2>Purpose</h2>
+<ul>
+    <li>Align your team and stakeholders on the problem you are solving and what &ldquo;good&rdquo; looks like.</li>
+    <li>Practice writing atomic, testable, unambiguous requirements (functional and non-functional).</li>
+    <li>Prioritize collaboratively using a transparent method to guide early engineering work.</li>
+    <li>Surface<strong> </strong>product and stakeholder risks early and show which requirements they shape.</li>
+</ul>
+<h2>What You Must Produce</h2>
+<p>Submit <strong>one requirements specification</strong> (PDF, ~2&ndash;4 pages with core content + more if required by your project partner).</p>
+<ul>
+    <li>Filename: <code>YYYY-MM-DD-[TeamID]-Requirements.pdf</code></li>
+    <li>Example: <code>2026-02-15-CS.042-Requirements.pdf</code></li>
+    <li>Template: TBD</li>
+</ul>
+<h2>Required Report Structure</h2>
+<p>Your submission must include the following sections.</p>
+<h3>0. Change Log</h3>
+<p>Briefly record how this <em>document</em> has changed since the previous version. Focus on high-level edits (which sections were updated and why), <strong>not</strong> on restating every requirement.</p>
+<p><strong>For each revision, include:</strong></p>
+<ul>
+    <li><strong>Date</strong> of the update</li>
+    <li><strong>Version or Tag</strong> (e.g., v1.1, &ldquo;Winter Week 4 Update&rdquo;)</li>
+    <li><strong>Sections Changed</strong> (&ldquo;Requirements&rdquo;, &ldquo;Product &amp; Stakeholder Risks&rdquo;, etc.)</li>
+    <li><strong>What Changed</strong> (1&ndash;2 sentence summary)</li>
+    <li><strong>Reason / Driver</strong> (e.g., stakeholder feedback, implementation discovery, new risk discovered)</li>
+    <li><strong>Author(s)</strong> &mdash; individual names or subteam</li>
+</ul>
+<p>A table format is recommended:</p>
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid #ccc; padding: 6px;">Date</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Version</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Sections Changed</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Summary of Changes</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Reason / Driver</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Author(s)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 6px;">2026-02-15</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">v1.1</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Requirements</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Reprioritized top requirements and marked implemented items after Winter sprint progress.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Implementation findings from Sprint 4 demo.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">J. Doe</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 6px;">2026-03-01</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">v1.2</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Product &amp; Stakeholder Risks</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Added accessibility and adoption risks; refined mapping between risks and high-priority requirements.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Sponsor review + updated OSU data handling guidelines.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Everyone</td>
+        </tr>
+    </tbody>
+</table>
+<p><em>Note:</em> The Change Log is a brief history of <strong>document updates</strong>, not a restatement of all requirement edits. Detailed content belongs in <strong>Section 2: Requirements</strong>.</p>
+<h3>1. Problem Statement and Scope</h3>
+<p>Define the problem and boundaries of the system clearly. Include:</p>
+<ul>
+    <li>Problem statement (what problem are you solving?)</li>
+    <li>Primary and secondary users</li>
+    <li>Context of use and system boundaries</li>
+    <li>At least <strong>two measurable success criteria</strong></li>
+    <li>At least <strong>one explicit non-goal</strong> (what you are intentionally not doing)</li>
+</ul>
+<p>Briefly note how you are doing with regard to the success criteria.</p>
+<h3>2. Requirements</h3>
+<p>Create a prioritized (i.e., ordered starting with the most important) set of requirements:</p>
+<ul>
+    <li>Use a consistent ID format (e.g., <code>REQ-001</code>, can be GitHub issue numbers or similar).</li>
+    <li>Ensure each requirement is <strong>atomic, testable, and unambiguous</strong>.</li>
+    <li>Represent both functional requirements and <strong>non-functional requirements (NFRs)/quality attributes</strong>.</li>
+    <li>For all <strong>high-priority</strong> requirements, include acceptance criteria (AC): <em>Given/When/Then</em> or clearly numbered AC lines.</li>
+    <li>Highlight key dependencies among requirements.</li>
+    <li><span style="background-color: #fbeeb8;"> <strong>For each requirement, link the PR/issue (if applicable), and indicate if the requirement was already completed/implemented.</strong> </span></li>
+</ul>
+<h3>3. Product and Stakeholder Risks</h3>
+<p>Focus on <strong>risks to solving the right problem</strong> and <strong>achieving adoption</strong>: misaligned scope, stakeholder availability, regulatory/data-use constraints, licensing, intellectual property, user adoption, accessibility/privacy, and related concerns.</p>
+<p>For each risk, include:</p>
+<ul>
+    <li><strong>Short description</strong> (what could go wrong related to solving the right problem or adoption?)</li>
+    <li><strong>Impact</strong> (e.g., High / Medium / Low)</li>
+    <li><strong>Likelihood</strong> (e.g., High / Medium / Low)</li>
+    <li><strong>Mitigation</strong> (what you will do about it, or why you accept it)</li>
+    <li><strong>Which requirement(s) this risk shapes or constrains</strong> (IDs of specific requirements that were added, changed, or prioritized because of this risk)</li>
+</ul>
+<p>Your goal is to show <strong>how product and stakeholder risks shape your requirements and priorities</strong>, not to list every possible bad thing. Focus on the top risks that actually influence what you build and how you build it.</p>
+<h2>Formatting Guidelines</h2>
+<ul>
+    <li>Keep the main body to ~2&ndash;4 pages.</li>
+    <li>Use consistent wording (&ldquo;The system shall&hellip;&rdquo;) or a consistent user-story format.</li>
+    <li>One behavior/quality per requirement; avoid conjunctions hiding multiple ideas.</li>
+    <li>All acceptance criteria must be clear and verifiable.</li>
+    <li>Include lightweight screenshots/snippets for <em>private</em> links.</li>
+    <li><strong>Generative AI may be used for writing.</strong> Do <strong>not</strong> fabricate evidence, artifacts, or data.</li>
+</ul>
