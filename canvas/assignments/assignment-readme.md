@@ -1,6 +1,9 @@
-# Assignment Schedule and Improvements
+# Assignment README
 
-There are mid-term/end-of-term peer review surveys and project partner feedback surveys, every term.
+- Each assignment has its own directory under `canvas/assignments/`.
+- Assignments are stored in HTML that are ready to paste in Canvas.
+- Rubrics are stored in Markdown files in the same folder as the assignment HTML.
+- There is a template for the assignment and rubrics structures in `canvas/assignments/_template/`.
 
 ## Improvements
 
@@ -21,9 +24,11 @@ Improvement Ideas:
 | Retrospective | Yes | No |
 | Requirements Update | Yes | Yes |
 | Technical Design Update | Yes | Yes |
-| Team Charter | No | No |
+| Team Charter | Yes | No |
 
 ## Schedule
+
+There are mid-term/end-of-term peer review surveys and project partner feedback surveys, every term.
 
 ### CS 461 (Fall Term)
 
