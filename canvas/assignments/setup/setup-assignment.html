@@ -1,0 +1,87 @@
+<p><span style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 14px;">Team Submission with Individual Contributions</span></p>
+<div style="background-color: #ffcccb; color: #a94442; border-radius: 10px; padding: 5px 15px; margin: 10px 0px;">
+    <p>This is a <strong>group submission</strong> that results in <strong>individual grades</strong>. Each team member must demonstrate specific, measurable contributions to receive credit. TAs and instructors reserve the right to take away up to 30 points per progress report for students who do not contribute meaningfully to the project.</p>
+</div>
+<h2>Purpose</h2>
+<ul>
+    <li>Stand up the minimum rails so the team can collaborate smoothly starting Sprint 2.</li>
+    <li>Agree on communication channels and cadences.</li>
+    <li>Create a tiny set of next tasks that align with near-term Canvas assignments and partner meetings.</li>
+    <li><strong data-start="690" data-end="715">If inheriting a repo (legacy code):</strong> capture a brief &ldquo;current-state&rdquo; summary and verify you can run it.</li>
+</ul>
+<h2>Task</h2>
+<p><strong>Deliverables, Audience and Genre:</strong> Brief pre-sprint enablement memo for course staff and your partner.</p>
+<p><strong>Recommended Tools:</strong> <strong>GitHub</strong> (repo, issues, PRs Actions), optionally <strong>Linear</strong> or <strong>GitHub Projects</strong> (board). These are recommendations. You can use whatever tools you want.</p>
+<ol>
+    <li><strong>Repo and Basics (GitHub recommended)</strong>
+        <ul style="list-style-type: disc;">
+            <li><strong>New project:</strong> create team repo (empty/skeleton is fine)</li>
+            <li><strong>Inherited project:</strong> ensure access to existing repo (or fork/mirror to your org)</li>
+            <li>Add/confirm: <code>README</code> (one-liner project description, team roster &amp; contacts), <code>.gitignore</code>, and if known, <code>LICENSE</code> (confirm with project partner)</li>
+            <li>Invite all teammates + partner (read)</li>
+        </ul>
+    </li>
+    <li><strong>PM Rails (GitHub Projects or Linear recommended)</strong>
+        <ul>
+            <li>Columns: Backlog &rarr; Ready &rarr; In Progress &rarr; Review &rarr; Done (or similar)</li>
+            <li><strong data-start="1207" data-end="1229">Inherited project:</strong> check existing backlog for tasks, discuss with project partner what to do with them</li>
+            <li>Add <strong>5&ndash;10 light tasks</strong> (see &ldquo;Next Tasks and Plan&rdquo; below) and put <strong>due dates</strong> to match Canvas.</li>
+        </ul>
+    </li>
+    <li><strong>Communication Mediums and Cadences</strong>
+        <ul>
+            <li>Choose primary async channel (Slack/Discord/Teams) and escalation path (email).</li>
+            <li>Add: standup cadence (e.g., Mon/Thu 10 min), weekly partner sync window, and response-time expectations (e.g., PR review &le;24h).</li>
+            <li>Document all of the above <strong>and</strong> pin in your chat.</li>
+        </ul>
+    </li>
+    <li><strong>Branching and Reviews</strong>
+        <ul>
+            <li>Default branch set; agree on simple flow: <code>feature/*</code> &rarr; PR &rarr; &ge;1 review &rarr; merge</li>
+            <li><strong data-start="1207" data-end="1229">Inherited project:</strong> check contribution guidelines</li>
+        </ul>
+    </li>
+    <li><strong>(Optional) CI (GitHub Actions recommended)</strong>
+        <ul>
+            <li>Add a minimal workflow file (even a no-op &ldquo;echo CI OK&rdquo; is fine) <strong>or</strong> defer with a Linear task due early Sprint 2</li>
+        </ul>
+    </li>
+    <li><strong>Inherited projects only:</strong>
+        <ul style="list-style-type: circle;">
+            <li><strong>Repo Summary (&le;&frac12; page):</strong> table with Languages/Frameworks, Build/Run commands (as you observed), External services (DB/APIs), Tests present (Y/N), Last release/tag, Open issues (#), Default branch.</li>
+            <li><strong>Run Verification:</strong> copy the exact command(s) you used to run locally (or in a container), and state the observed result (e.g., &ldquo;server started on :3000&rdquo;, &ldquo;CLI printed help&rdquo;). A small screenshot or short log excerpt is fine.</li>
+            <li><strong>Gap Notes (bullets):</strong> anything that blocked running (missing secrets, OS deps, tool versions), plus 2&ndash;3 <strong>small tasks</strong> you added to your backlog to close those gaps (e.g., &ldquo;Document env vars (dev)&rdquo;, &ldquo;Add sample .env.local&rdquo;, &ldquo;Dockerize later&mdash;optional&rdquo;).</li>
+            <li><strong>Access and Permissions Check:</strong> confirm who can push/PR; partner/staff visibility set.</li>
+        </ul>
+    </li>
+    <li><strong>Next Tasks and Plan</strong>
+        <ul>
+            <li>Populate your backlog with <strong>enough items for Sprint 2 (or later)<br /></strong></li>
+            <li>You can use tasks/issues to help split the work on upcoming assignments, document research, progress, and make sure everyone has their work defined</li>
+            <li>Check upcoming assignments + <strong>start planning for coding tasks</strong></li>
+        </ul>
+    </li>
+</ol>
+<h2>Deliverables and Format</h2>
+<p>Submit <strong>one</strong> report in PDF or Markdown:</p>
+<ul>
+    <li><em>Filename:</em><strong> </strong><code>YYYY-MM-DD-[TeamID]-Sprint1-ProgressReport.pdf/md</code> (e.g, <code>2025-10-09-CS.042-Sprint1-ProgressReport.pdf</code>)</li>
+    <li><em>Contents:</em>
+        <ul>
+            <li><strong>Executive Summary</strong> (4&ndash;6 bullets; &le;120 words): repo created, comms chosen, board live, 5&ndash;10 tasks queued, partner sync scheduled, <strong data-start="4214" data-end="4262">and (if inherited) run verified / gaps noted</strong>.</li>
+            <li><strong>Communication</strong>: table with channels, usage, owners, response times, recurring meetings (with days/times).</li>
+            <li><strong>Repo Snapshot:</strong> screenshot of project repository and README, PR template if available.</li>
+            <li><strong>PM Rails Snapshot</strong>: screenshot of project board showing at least 5 items.</li>
+            <li><strong>(Optional)</strong> CI Snapshot: screenshot of CI setup and succesfully run even if empty.</li>
+            <li><strong>Inherited projects:</strong> Repo Summary table + short Run Verification (command(s) and brief evidence).</li>
+        </ul>
+    </li>
+</ul>
+<h2>Quality Checklist</h2>
+<ul>
+    <li>Single, <strong>pinned async channel</strong> with documented meeting cadence and response-time expectations.</li>
+    <li><strong>Repo and project board exist</strong>; a small, dated plan (5&ndash;10 tasks) is visible; partner and teammates have access.</li>
+    <li><strong>New projects:</strong> PR template present; CI stub exists <em>or</em> a ticket is filed to add it early in Sprint 2.</li>
+    <li><strong>Inherited projects:</strong> current-state snapshot captured; exact run command(s) and observed outcome recorded; follow-up gap tasks added.</li>
+    <li>(Optional) <strong>CI runs on PRs</strong>, or there is a near-term task scheduled to enable it.</li>
+</ul>

@@ -1,0 +1,84 @@
+<p><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 14px;">Individual Submission</span></p>
+<h2>Purpose</h2>
+<ul>
+    <li>Practice making an explicit, defensible engineering decision using an Architecture Decision Record (ADR).</li>
+    <li>Demonstrate rigorous code review that checks correctness, design, tests, and security&mdash;not just style nits.</li>
+    <li>Show professional communication and follow-through by tying feedback to concrete changes.</li>
+    <li>Build a durable team artifact that documents why a choice was made and how quality improved.</li>
+</ul>
+<h2>Task</h2>
+<p><strong>Deliverable, Audience and Genre:</strong></p>
+<ul>
+    <li><strong>ADR:</strong> Individually write an internal technical memo for your project team and future maintainers.</li>
+    <li><strong>Code review:</strong> Complete and summarize a code review aimed at the PR author and maintainers; the feedback should be objective, specific, and constructive.</li>
+</ul>
+<p><strong>Allowed Resources:</strong> Your team repo and review system for gathering materials, your ADR template; project style guides; official framework/security docs, linting, test runners, static analysis, <span>and&nbsp;</span><span>Generative AI tools for reserach, editing, organization, and phrasing</span><span>. Do not fabricate evidence (e.g., benchmarks).</span></p>
+<p><span>Check the handbook's <a class="inline_disabled" href="https://capstone.alexulbrich.com/activities/design/" target="_blank" rel="noopener">Design&nbsp;activities</a> and <a class="inline_disabled" href="https://capstone.alexulbrich.com/guides/adr/" target="_blank" rel="noopener">ADR guide</a> to get started. Depending on your situation and your stakeholder(s), some of activities might be more useful than others. Follow the links in the <a class="inline_disabled" href="https://capstone.alexulbrich.com/guides/git-and-github/" target="_blank" rel="noopener">Git and GitHub Essentials guide</a> if you need a refresher on how to collaborate in a shared codebase.</span></p>
+<ol>
+    <li><strong>Select a design choice</strong> you influenced this term (e.g., library/API selection, data model change, build/deploy strategy).</li>
+    <li><strong>Author an ADR</strong> using your team&rsquo;s template that includes: context, decision drivers, at least two viable options plus the &ldquo;do nothing&rdquo; baseline, rationale/tradeoffs, decision, and consequences. Cite benchmarks/docs as relevant.</li>
+    <li><strong>Collect evidence</strong> (tests, measurements, docs) that informed your decision and embed it in your ADR or an appendix.</li>
+    <li><strong>Choose an active or recently merged PR</strong> from your project that you did not author.</li>
+    <li><strong>Conduct a substantive code review</strong>: check correctness, design/architecture, test impact/coverage, and security considerations. Provide actionable comments with examples or links to standards (not to your repo).</li>
+    <li><strong>Capture the review</strong> by exporting your comments and relevant snippets into a self-contained document with screenshots as needed.</li>
+    <li><strong>Demonstrate adoption/follow-through</strong> by capturing evidence of updates that resulted from your review or ADR (diffs, added tests, author replies).</li>
+    <li><strong>Assemble your submission package</strong> (see Deliverables). All evidence must be <strong>self-contained</strong> in files you upload to Canvas, no repository links required.</li>
+</ol>
+<h2>Deliverables and Format</h2>
+<p>Submit:</p>
+<ul>
+    <li>Your <strong>individually authored ADR</strong> (markdown or PDF, ~0.5-to-1.5-page equivalent)
+        <ul>
+            <li><em>Filename:</em>&nbsp;<code>YYYY-MM-DD-[ONID]-ADR.md/pdf</code> (e.g., <code>2025-09-23-ulbrical-ADR.md</code>)</li>
+            <li><em>Contents (see the <a class="inline_disabled" href="https://capstone.alexulbrich.com/guides/adr/" target="_blank" rel="noopener">handbook ADR guide</a> for reference):</em>
+                <ul>
+                    <li>Context</li>
+                    <li>Decision</li>
+                    <li>Options (incl. &ldquo;Do nothing&rdquo;)</li>
+                    <li>Consequences</li>
+                    <li>References/Appendix (optional)</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Your <strong>code review evidence</strong> (markdown or PDF)
+        <ul>
+            <li><em>Filename:</em>&nbsp;<code>YYYY-MM-DD-[ONID]-CodeReview.md/pdf</code> (e.g., <code>2025-09-23-ulbrical-CodeReview.pdf</code>)</li>
+            <li><em>Contents:</em>
+                <ul>
+                    <li>PR metadata (title, scope, date, authors) copied into the doc.</li>
+                    <li>Your review comments (verbatim) with file/line context.</li>
+                    <li>Screenshots of the review UI (as needed) and any referenced diffs/snippets.</li>
+                    <li>Checks across correctness, design, tests, and security (as applicable), with examples and links to standards/docs (not to your repo).</li>
+                    <li><strong></strong>Short narrative of what changed as a result of your ADR/review.</li>
+                    <li>Before/after diffs (pasted snippets or screenshots), added tests, or author replies.</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+<p>Evidence to include (as applicable):</p>
+<ul>
+    <li>test logs/coverage snapshots;</li>
+    <li>micro-benchmarks;</li>
+    <li>security checklist items;</li>
+    <li>diffs/snippets;</li>
+    <li>citations to official docs;</li>
+    <li>timeline notes.</li>
+</ul>
+<p>Follow your repo&rsquo;s style/lint rules; use clear, respectful language; cite standards or docs you reference.</p>
+<h2>Quality Checklist</h2>
+<ul>
+    <li>ADR includes context, decision drivers, viable options (including &ldquo;do nothing&rdquo;), decision, tradeoffs, and consequences; evidence is embedded (snippets, screenshots, measurements) and references to standards/docs are cited.</li>
+    <li>Consequences are concrete and discuss impact on complexity, performance, testing, security, and operations.</li>
+    <li>Code review provides actionable guidance with examples/diffs and covers correctness, design/architecture, tests/coverage, and security; links point to standards/docs (not to your repo).</li>
+    <li>Professional, respectful tone throughout.</li>
+    <li>Visible follow-through: updated code/tests or a documented explanation when suggestions weren&rsquo;t adopted.</li>
+    <li>Submission is self-contained so a grader can verify everything without accessing your repository.</li>
+</ul>
+<p>See the Canvas rubric for detailed performance levels.</p>
+<h2>Reflection (optional, ~5&ndash;8 min)</h2>
+<ul>
+    <li>What tradeoff became clearer only after you wrote the ADR, and what metric would you gather next time?</li>
+    <li>Which type of review comment most effectively led to change, and how will you use that pattern going forward?</li>
+</ul>

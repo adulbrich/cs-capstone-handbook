@@ -5,49 +5,42 @@ sidebar:
   order: 9
 ---
 
-Most of the recommendations below are supported by most code editors and AI agents. Check your tool's documentation for specifics.
+Generative AI tools (such as ChatGPT, Copilot, Claude, Gemini, and image-generation models) are now part of professional engineering work. Engineers use AI to brainstorm ideas, explore design options, write and review code, generate documentation, and accelerate analysis tasks.
 
-Tooling is evolving rapidly. New features and capabilities are being added frequently. Stay updated with the latest developments in AI-assisted coding tools to leverage new functionalities as they become available.
+But there's a catch: **you are still responsible for the correctness, safety, legality, and professionalism of anything the AI helps you create.**
 
-> This page might not be updated frequently.
+## Understanding Generative AI
 
-Some zero-config tools do exist. For example, for web projects, consider [Ultracite](https://www.ultracite.ai/).
+Generative AI refers to systems that create new content—text, images, code, diagrams—based on statistical patterns learned from large datasets. For example, ChatGPT can produce code, explain APIs, write documentation, or outline design approaches.
 
-## Instructions
+### What AI can help with
 
-Setup custom instructions or prompts for your AI code editor. 
+- Brainstorming ideas and exploring alternatives
+- Drafting code, tests, documentation, emails, and plans
+- Explaining unfamiliar topics or code snippets
+- Generating sample data, messages, or interaction flows
+- Creating diagrams, wireframes, and content outlines
+- Accelerating “first drafts” of writing or implementation
 
-These instructions will guide the AI in generating code that fits your project's needs and style. 
+### What AI cannot do well
 
-When providing instructions, consider including:
+- Exercise engineering judgment
+- Apply local constraints (e.g., OSU environment, your team's architecture, your client's requirements)
+- Produce secure, efficient, or trustworthy code without oversight
+- Make ethical decisions
+- Guarantee correctness: AI frequently **hallucinates** information
+- Understand the nuances of your Capstone's unique context
 
-- Project Overview: A brief description of your project, its goals, and its target audience.
-- Technology Stack: Specify the programming languages, frameworks, and libraries you are using.
-- Coding Standards: Outline any specific coding conventions or best practices you want the AI to follow.
-- Constraints: Mention any limitations or constraints, such as performance requirements or compatibility issues.
-- Testing Requirements: Specify if you want the AI to generate tests along with the code.
-- Documentation: Indicate if you want the AI to include comments or documentation in the generated code.
-- Collaboration Style: Describe how you want the AI to interact with you (e.g., ask questions, provide explanations, etc.).
-- Persona: Define a persona for the AI to adopt, such as a senior developer, a code reviewer, or a mentor.
+### Risks
 
-## Memory
+- Incorrect or misleading information
+- Fabricated citations or nonexistent libraries
+- Insecure or poorly optimized code
+- Biased or inappropriate content
+- Privacy and intellectual property issues
+- Over-reliance leading to lack of understanding
 
-Setup memory for your AI code editor. 
-
-Memory allows the AI to retain context over time, making interactions more coherent and relevant to your project's history and goals. Ask your AI code editor or agent to remember important details about your project, preferences, or specific requirements in a separate reference file. 
-
-## MCP Servers
-
-Setup MCP servers to empower your AI code editors. 
-
-Some examples:
-
-- [context7](https://context7.com/) provides up-to-date documentation to your agent
-- [Tavily](https://www.tavily.com/) allows your agent to browse the web
-
-Many other options exist. Explore and choose the ones that best fit your needs. Tell your models how and when to use them.
-
-## Choosing the Right Model
+## Choosing the Right AI Tools
 
 Things change rapidly in the AI world. New models are released frequently, each with its own strengths and weaknesses. 
 
@@ -68,3 +61,59 @@ Here are some relevant metrics to consider:
 - Accuracy
 
 As students, you can access [GitHub Education](https://github.com/education) for free. It includes access to Copilot Pro and other perks.
+
+Here's a summary of popular tools and their best use cases:
+
+| Tool                                           | Best for                                              | Notes                                            |
+| ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------ |
+| **ChatGPT / Claude / Gemini / Grok**                  | General reasoning, brainstorming, code, documentation | Great for iterative prompting and deep reasoning |
+| **GitHub Copilot / Cursor / Claude Code / ChatGPT Codex**                    | Code completion, refactoring, tests and more                 | Works best when installed in your IDE or Terminal           |
+| **Nano-Banana / Midjourney / Stable Diffusion / DALL·E**     | Images, diagrams, UI mockups                          | Check licenses for generated assets              |
+| **AI search tools (Perplexity, Bing Copilot)** | Research, summaries                                   | Verify all facts                                 |
+
+
+## Setting Up Generative AI for Coding
+
+Most of the recommendations below are supported by most code editors and AI agents. Check your tool's documentation for specifics.
+
+Tooling is evolving rapidly. New features and capabilities are being added frequently. Stay updated with the latest developments in AI-assisted coding tools to leverage new functionalities as they become available.
+
+> This page might not be updated frequently.
+
+Some zero-config tools do exist. For example, for web projects, consider [Ultracite](https://www.ultracite.ai/).
+
+### Instructions
+
+Setup custom instructions or prompts for your AI code editor. 
+
+These instructions will guide the AI in generating code that fits your project's needs and style. 
+
+When providing instructions, consider including:
+
+- Project Overview: A brief description of your project, its goals, and its target audience.
+- Technology Stack: Specify the programming languages, frameworks, and libraries you are using.
+- Coding Standards: Outline any specific coding conventions or best practices you want the AI to follow.
+- Constraints: Mention any limitations or constraints, such as performance requirements or compatibility issues.
+- Testing Requirements: Specify if you want the AI to generate tests along with the code.
+- Documentation: Indicate if you want the AI to include comments or documentation in the generated code.
+- Collaboration Style: Describe how you want the AI to interact with you (e.g., ask questions, provide explanations, etc.).
+- Persona: Define a persona for the AI to adopt, such as a senior developer, a code reviewer, or a mentor.
+
+### Memory
+
+Setup memory for your AI code editor. 
+
+Memory allows the AI to retain context over time, making interactions more coherent and relevant to your project's history and goals. Ask your AI code editor or agent to remember important details about your project, preferences, or specific requirements in a separate reference file. 
+
+### MCP Servers
+
+Setup MCP servers to empower your AI code editors. 
+
+Some examples:
+
+- [context7](https://context7.com/) provides up-to-date documentation to your agent
+- [Tavily](https://www.tavily.com/) allows your agent to browse the web
+
+Many other options exist. Explore and choose the ones that best fit your needs. Tell your models how and when to use them.
+
+
