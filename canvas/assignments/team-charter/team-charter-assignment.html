@@ -1,19 +1,4 @@
-<p><span style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 14px;">Team Submission with Individual Contributions</span></p>
-<div style="background-color: #d3d3d3; border-radius: 10px; padding: 5px 15px; margin: 10px 0px;" role="note">
-    <p>As part of the CS Capstone sequence (CS 461, 462, 463), your team will submit a team charter and working agreement, and contribution guidelines. This document should be updated continuously. We will collect the document once every term. <span>The charter will develop a sense of shared responsibility, increase one's own awareness, empower the team to lead according to agreements, and enhance the quality of the team process.</span></p>
-    <p><span>Note that you might <strong>not have</strong> all the answers for your <strong>first submission</strong>. <strong>That is OK.&nbsp;</strong>Note the limitations or constraints and update them as you acquire additional information.</span></p>
-</div>
-<div style="background-color: #ffcccb; color: #a94442; border-radius: 10px; padding: 5px 15px; margin: 10px 0px;" role="alert">
-    <p>This is a <strong>group submission</strong> that results in <strong>individual grades</strong>. Each team member must demonstrate specific, measurable contributions to receive credit. TAs and instructors reserve the right to dock up to 30 points for students who did not contribute meaningfully to assignment. Here are some concrete ways/artifacts to show individual contributions:</p>
-    <ul>
-        <li>PRs/Commits/Diffs (not only of documents but of supporting elements, boilerplate, ...)</li>
-        <li>Decision/Meeting Records with Attribution</li>
-        <li>Activity Reports with Attribution</li>
-        <li>Changelog Entries for the Doc</li>
-    </ul>
-    <p>Each team member must include at least <strong data-start="2789" data-end="2796">one</strong> verifiable artifact in the submission notes.</p>
-</div>
-
+<p><span style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 14px;">Team Submission</span></p>
 <h2>Purpose</h2>
 <ul>
     <li>Align team expectations early so you can move fast without stepping on each other.</li>
@@ -23,19 +8,25 @@
 </ul>
 
 <h2>What You Must Produce</h2>
-<p>Submit the following documents:</p>
-<ul>
-    <li><strong>Team Charter and Working Agreement</strong> (PDF or Markdown)</li>
-    <li><strong>Contribution Guidelines</strong> (Markdown, typically <code>CONTRIBUTING.md</code>)</li>
-</ul>
+<p>Submit your Team Charter and Working Agreement document (PDF) and Contribution Guidelines (Markdown)</p>
 <p><strong>Filenames:</strong></p>
 <ul>
-    <li><code>YYYY-MM-DD-[TeamID]-TeamCharter.pdf</code> (or <code>.md</code>)</li>
-    <li><code>CONTRIBUTING.md</code></li>
+    <li>Filenames:
+        <ul>
+            <li><code>YYYY-MM-DD-[TeamID]-TeamCharter.pdf</code> (e.g., <code>2025-10-04-CS.042-TeamCharter.pdf</code>)</li>
+            <li><code>CONTRIBUTING.md</code></li>
+        </ul>
+    </li>
+    <li>Templates:
+        <ul>
+            <li>TBD</li>
+        </ul>
+    </li>
+    
 </ul>
-<p><strong>Example:</strong> <code>2025-10-04-CS.001-TeamCharter.pdf</code></p>
 
-<h2>Required Report Structure</h2>
+<h2>Required Team Charter Structure</h2>
+<p>Create a professional team policy document that defines how you will work together. This document must include a change log and the following policy sections.</p>
 
 <h3>0. Change Log</h3>
 <p>Briefly record how this <em>document</em> has changed since the previous version. Focus on high-level edits (which sections were updated and why).</p>
@@ -48,27 +39,59 @@
     <li><strong>Reason / Driver</strong> (e.g., team retrospective, new tool adoption)</li>
     <li><strong>Author(s)</strong> &mdash; individual names or subteam</li>
 </ul>
+<p>A table format is recommended:</p>
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid #ccc; padding: 6px;">Date</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Version</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Sections Changed</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Summary of Changes</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Reason / Driver</th>
+            <th style="border: 1px solid #ccc; padding: 6px;">Author(s)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 6px;">2026-02-15</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">v1.1</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Meeting Cadence &amp; Tools</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Updated meeting times for Winter term and added Zoom link for remote sessions.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Schedule changes for new term.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">J. Doe</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 6px;">2026-03-01</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">v1.2</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Definition of Done</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Added requirement for accessibility audit on frontend PRs.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Team retrospective decision to improve a11y.</td>
+            <td style="border: 1px solid #ccc; padding: 6px;">Everyone</td>
+        </tr>
+    </tbody>
+</table>
+<p><em>Note:</em> The Change Log is a brief history of <strong>document updates</strong>, not a restatement of all policy edits. Detailed content belongs in the sections below.</p>
 
-<h3>1. Team Charter and Working Agreement</h3>
-<p>Create a professional team policy document that defines how you will work together. This document must include:</p>
-<ul>
-    <li><strong>Team Members &amp; Roles:</strong> Specify roles (including leadership/rotation) and responsibilities.</li>
-    <li><strong>Decision-Making Model:</strong> Define how decisions are made (e.g., consent, majority, unanimity).</li>
-    <li><strong>Meeting Cadence &amp; Tools:</strong> List meeting times, core tools, and link to your meeting agenda/notes template.</li>
-    <li><strong>Risk Management &amp; Escalation Path:</strong> Identify risks and define an escalation path for issues.</li>
-    <li><strong>Conflict Resolution &amp; Accountability:</strong> Write a restorative, stepwise plan with triggers, timelines, and how you&rsquo;ll use evidence (PRs, reviews, attendance) to hold each other accountable.</li>
-    <li><strong>Definition of Done (DoD) &amp; Quality Gates:</strong> List required checks: tests, code review, security/lint/static analysis, docs updates, and CI gates. Reference the exact CI/lint configs you&rsquo;ll use.</li>
-    <li><strong>Accessibility &amp; Inclusion Practices:</strong> Describe meeting norms (time zones, note-taking, turn-taking), how to request accommodations, and how you&rsquo;ll surface and address barriers.</li>
-    <li><strong>Policy Owners &amp; Review Dates:</strong> Add an owner and &ldquo;review-by&rdquo; date to each policy section.</li>
-</ul>
-<p><strong>Evidence Links:</strong> Within the charter, provide links to:</p>
-<ul>
-    <li>CI configuration (e.g., workflow file) and a public link to a successful run log (or a screenshot if the repo is private).</li>
-    <li>Linter/formatter config committed to the repo.</li>
-    <li>Where tests live and how they&rsquo;re run.</li>
-</ul>
+<h3>1. Roles and Decision Making</h3>
+<p>Specify team member roles (including leadership/rotation) and responsibilities. Define your decision-making model (e.g., consent, majority, unanimity) for different types of choices.</p>
 
-<h3>2. Contribution Guidelines</h3>
+<h3>2. Communication and Meetings</h3>
+<p>List your meeting cadence (times/days), communication channels, and core tools. Link to your meeting agenda/notes template.</p>
+
+<h3>3. Definition of Done (DoD) and Quality Gates</h3>
+<p>Define your quality bar. List required checks (tests, code review, security/lint/static analysis, docs updates) and reference the exact CI/CD gates that enforce them.</p>
+<p><strong>Evidence Required:</strong> Provide links to your CI configuration, linter/formatter config, and a successful run log.</p>
+
+<h3>4. Conflict Resolution and Accountability</h3>
+<p>Write a restorative, stepwise plan for resolving conflict. Define how you will use evidence (PRs, reviews, attendance) to hold each other accountable.</p>
+
+<h3>5. Accessibility and Inclusion</h3>
+<p>Describe meeting norms (time zones, note-taking, turn-taking), how to request accommodations, and how you will surface and address barriers.</p>
+
+<h3>6. Risk Management</h3>
+<p>Identify key risks to the team process and define an escalation path for issues.</p>
+
+<h2>Required Contribution Guidelines Structure</h2>
 <p>Create a <code>CONTRIBUTING.md</code> file that lives in your repository. This document should include:</p>
 <ul>
     <li>References to your Definition of Done (DoD).</li>

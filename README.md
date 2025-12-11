@@ -17,6 +17,7 @@ bun run build
 
 ## To Do
 
+- make one scripts for the project partner survey processing that works for all terms
 - get all assignments/rubrics in html/markdown instead of Canvas
 - improve assignment descriptions by comparing different project types
 - create good examples for all assignments based on previous years' projects
