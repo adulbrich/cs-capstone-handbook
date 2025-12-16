@@ -1,12 +1,17 @@
 # This scripts computes the project partner end-of-term survey scores.
 # It is based on the weights defined for each course (CS461, CS462, CS463).
 
+# TODO: Allow user to upload gradebook + assignment gradebook name (Canvas-specific)
+
 # Packages
 library(data.table)
 library(stringr)
 
-# Export from Qualtrics as CSV (values, not labels)
-filename_input <- "data/2025-12-11-pp-survey-values.csv"
+# Export from QUALTRICS as CSV (values, not labels)
+# Go to Project > Data & Analysis > Export & Import > Export Data
+# Select "CSV" and "Export Values", click "Download"
+# Save file to data/ directory and edit filename here:
+filename_input <- "data/2025-12-15-pp-survey-values.csv"
 
 # Comment/Uncomment based on course/term
 course_id <- "CS461"
@@ -36,7 +41,8 @@ filename_comments_output <- str_c(
     "-COMMENTS.csv"
 )
 
-# Read the CSV file, skipping the label row and the third row
+# Read the CSV file
+# TODO: rows 1 and 2 (under the header) are metadata, need to skip. Filters on Status and Finished are enough for now to skip them.
 dt <- fread(filename_input, header = TRUE)
 dt <- dt[Status == 0 & Finished == 1, ]
 
