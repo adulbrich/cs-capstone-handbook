@@ -1,31 +1,109 @@
 # Requirements Update - Rubrics
 
-## Change Log Quality and Traceability (15 pts)
+## Change log: completeness (6 pts)
 
-- **Exceeds Expectations** (15 to >12.0 pts): Clear, high-level entries documenting each revision with date, version/tag, sections changed, concise edit summary, rationale/drivers, and named authors/subteam.
-- **Meets Expectations** (12 to >3.0 pts): Basic entries that include date, sections changed, brief rationale, and minimal author detail.
-- **Does Not Meet Expectations** (3 to >0 pts): Missing or unclear change log; no authors; entries too vague.
+- **Exceeds Expectations** (6 to >4.8 pts): Each revision includes date, version/tag, and specific sections changed.
+- **Meets Expectations** (4.8 to >1.0 pts): Most entries include date and sections changed; some details missing.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Change log missing or too vague to understand what changed.
 
-## Problem Statement and Scope (15 pts)
+## Change log: summary and rationale (5 pts)
 
-- **Exceeds Expectations** (15 to >12.0 pts): Clear problem statement with primary/secondary users, context of use, system boundaries, ≥2 measurable success criteria, and ≥1 explicit non-goal.
-- **Meets Expectations** (12 to >3.0 pts): Includes users and context with at least one measurable success criterion or non-goal; some elements may be unclear.
-- **Does Not Meet Expectations** (3 to >0 pts): Missing key elements or not updated; success criteria vague or not measurable.
+- **Exceeds Expectations** (5 to >4.0 pts): Concise edit summary and clear rationale/drivers are included for each meaningful change.
+- **Meets Expectations** (4 to >1.0 pts): Basic rationale is present for many entries.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Little or no rationale; entries read like unhelpful placeholders.
 
-## Requirements Quality, Structure and Updates (35 pts)
+## Change log: authorship (4 pts)
 
-- **Exceeds Expectations** (35 to >28.0 pts): Requirements are atomic, testable, unambiguous with unique IDs; clear prioritization; high-priority items include ACs (Given/When/Then); NFRs present; dependencies and PR/issue links included.
-- **Meets Expectations** (28 to >7.0 pts): Mostly atomic/testable requirements with IDs; some ACs or NFRs missing or underdeveloped; links/status present for many items.
-- **Does Not Meet Expectations** (7 to >0 pts): Many vague/compound requirements, missing IDs/ACs/NFRs; little or no links or implementation status.
+- **Exceeds Expectations** (4 to >3.2 pts): Authors/subteam are clearly named for each revision.
+- **Meets Expectations** (3.2 to >0.8 pts): Authors are listed but inconsistent or incomplete.
+- **Does Not Meet Expectations** (0.8 to >0 pts): No authors listed.
 
-## Product and Stakeholder Risks (20 pts)
+## Problem statement: users (3 pts)
 
-- **Exceeds Expectations** (20 to >16.0 pts): Key product/stakeholder risks identified with impact/likelihood/mitigation; mappings to affected requirements are clear and accurate.
-- **Meets Expectations** (16 to >4.0 pts): Several relevant risks identified with basic impact/likelihood/mitigation; mapping to requirements may be incomplete.
-- **Does Not Meet Expectations** (4 to >0 pts): Risk list superficial, missing important risks, or lacks meaningful mapping.
+- **Exceeds Expectations** (3 to >2.4 pts): Primary and secondary users are clearly identified and current.
+- **Meets Expectations** (2.4 to >0.5 pts): Users are listed but are vague or incomplete.
+- **Does Not Meet Expectations** (0.5 to >0 pts): Users missing.
 
-## Formatting, Clarity and Professionalism (15 pts)
+## Problem statement: context of use (3 pts)
 
-- **Exceeds Expectations** (15 to >12.0 pts): Clean, concise, well-structured (2–4 pages), consistently formatted, professional language; requirements follow a uniform style and evidence links are clear.
-- **Meets Expectations** (12 to >3.0 pts): Mostly clear and readable; some formatting or consistency issues; minor ambiguity in wording.
-- **Does Not Meet Expectations** (3 to >0 pts): Hard to read, inconsistent structure, missing sections, or unclear requirement wording.
+- **Exceeds Expectations** (3 to >2.4 pts): Context of use is clear and current (where/when/how the system will be used).
+- **Meets Expectations** (2.4 to >0.5 pts): Context is mentioned but lacks detail.
+- **Does Not Meet Expectations** (0.5 to >0 pts): Context missing.
+
+## Scope: measurable success criteria (5 pts)
+
+- **Exceeds Expectations** (5 to >4.0 pts): Includes 2+ measurable success criteria that match the project and are clearly measurable.
+- **Meets Expectations** (4 to >1.0 pts): Includes at least one success criterion; measurability may be weak.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Success criteria are missing or purely subjective.
+
+## Scope: explicit non-goals (4 pts)
+
+- **Exceeds Expectations** (4 to >3.2 pts): Includes at least one explicit non-goal that clarifies boundaries.
+- **Meets Expectations** (3.2 to >0.8 pts): Non-goals are mentioned but vague.
+- **Does Not Meet Expectations** (0.8 to >0 pts): No non-goals.
+
+## Requirements: atomic, testable, unambiguous, with unique IDs (10 pts)
+
+- **Exceeds Expectations** (10 to >8.0 pts): Requirements are atomic, testable, unambiguous, and consistently labeled with unique IDs.
+- **Meets Expectations** (8 to >2.0 pts): Mostly atomic/testable with IDs; some compound or ambiguous items remain.
+- **Does Not Meet Expectations** (2 to >0 pts): Many vague/compound requirements and/or missing IDs.
+
+## Requirements: prioritization (5 pts)
+
+- **Exceeds Expectations** (5 to >4.0 pts): Prioritization is clear and consistent across requirements; rationale for priorities is plausible.
+- **Meets Expectations** (4 to >1.0 pts): Priorities exist but are inconsistently applied or lightly justified.
+- **Does Not Meet Expectations** (1.0 to >0 pts): No prioritization.
+
+## Requirements: acceptance criteria for high-priority items (8 pts)
+
+- **Exceeds Expectations** (8 to >6.5 pts): High-priority items include clear acceptance criteria (e.g., Given/When/Then) that are testable.
+- **Meets Expectations** (6.5 to >1.5 pts): Some ACs exist but coverage or quality is uneven.
+- **Does Not Meet Expectations** (1.5 to >0 pts): ACs missing or not testable.
+
+## Requirements: NFRs and constraints (6 pts)
+
+- **Exceeds Expectations** (6 to >4.8 pts): Non-functional requirements/constraints are present and written in a testable way where possible.
+- **Meets Expectations** (4.8 to >1.0 pts): NFRs exist but are underdeveloped.
+- **Does Not Meet Expectations** (1.0 to >0 pts): NFRs missing.
+
+## Requirements: dependencies, status, and links (6 pts)
+
+- **Exceeds Expectations** (6 to >4.8 pts): Dependencies are noted; implementation status is current; links to PRs/issues/artifacts are included where relevant.
+- **Meets Expectations** (4.8 to >1.0 pts): Some dependencies/status/links/artifacts are present but incomplete.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Little or no traceability or status.
+
+## Product and stakeholder risks: identification quality (8 pts)
+
+- **Exceeds Expectations** (8 to >6.5 pts): Key product/stakeholder risks are identified and are project-specific.
+- **Meets Expectations** (6.5 to >1.5 pts): Several relevant risks are listed.
+- **Does Not Meet Expectations** (1.5 to >0 pts): Risk list is superficial or missing important risks.
+
+## Product and stakeholder risks: impact and likelihood (6 pts)
+
+- **Exceeds Expectations** (6 to >4.8 pts): Risks include clear impact and likelihood assessments.
+- **Meets Expectations** (4.8 to >1.0 pts): Some impact/likelihood info is present.
+- **Does Not Meet Expectations** (1.0 to >0 pts): No meaningful impact/likelihood assessment.
+
+## Product and stakeholder risks: mitigation and mapping (6 pts)
+
+- **Exceeds Expectations** (6 to >4.8 pts): Mitigations are concrete; mapping to affected requirements is clear and accurate.
+- **Meets Expectations** (4.8 to >1.0 pts): Basic mitigations exist; mapping may be incomplete.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Mitigation/mapping missing or unclear.
+
+## Writing: structure and readability (5 pts)
+
+- **Exceeds Expectations** (5 to >4.0 pts): Concise, well-structured, polished; uses clear headings and bullets; stays close to the expected core length (~2–4 pages) while still being complete; images/media enhance readability.
+- **Meets Expectations** (4 to >1.0 pts): Mostly clear with some structure; minor readability issues or slightly off-target length.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Hard to read; poorly structured.
+
+## Writing: professionalism and clarity (5 pts)
+
+- **Exceeds Expectations** (5 to >4.0 pts): Professional tone; claims are precise and easy to follow; requirements and acceptance criteria use consistent formatting and are written in verifiable language.
+- **Meets Expectations** (4 to >1.0 pts): Generally clear; occasional ambiguity, inconsistent formatting, or awkward wording.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Unclear or unprofessional tone; inconsistent or confusing requirement/AC wording.
+
+## Writing: accessibility (5 pts)
+
+- **Exceeds Expectations** (5 to >4.0 pts): Images/media are legible and include alt text and short captions; links are descriptive; private links include lightweight screenshots/snippets so graders can evaluate.
+- **Meets Expectations** (4 to >1.0 pts): Some accessibility practices are used; minor gaps (e.g., missing some alt text/captions or vague link text).
+- **Does Not Meet Expectations** (1.0 to >0 pts): Missing alt text/captions or inaccessible formatting; evidence not evaluable due to inaccessible/private links.
