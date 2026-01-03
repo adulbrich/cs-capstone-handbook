@@ -63,7 +63,7 @@
 <p>Describe how your system fits into its environment and how major pieces fit together.</p>
 <ul>
     <li>Identify external actors (users, services, devices, third-party APIs).</li>
-    <li>Show major containers/components and how they interact (e.g., C4 level 1&ndash;2 view).</li>
+    <li>Show major containers/components and how they interact (e.g., <a class="inline_disabled" href="https://capstone.alexulbrich.com/activities/design/#c4-model" target="_blank" rel="noopener noreferrer">C4 level 1&ndash;2 view</a>).</li>
     <li>Name connectors and protocols (HTTP/REST, gRPC, queues, database connections, etc.).</li>
     <li>State boundaries and key deployment assumptions (e.g., cloud/on-prem, major services, data stores).</li>
     <li>Include at least <strong>one architecture diagram</strong> with a figure number, caption, and alt text.</li>
@@ -86,7 +86,7 @@
     <li>Show how components relate to the interfaces/APIs defined in Section 2 (who calls what, who owns which contracts).</li>
     <li>Describe key dependencies between components and external services (databases, queues, third-party APIs, libraries).</li>
     <li>For each component, note any important performance, scalability, or operational considerations (e.g., expected load, latency sensitivity, scaling strategy).</li>
-    <li>For each component, identify <strong>1&ndash;2 component-specific technical or integration risks</strong> (e.g., resource hotspots, fragile integrations, data model churn) and link them to entries in the shared <strong>Technical &amp; Integration Risk Register</strong> in Section 4 (by risk ID).</li>
+    <li>For each component, identify <strong>1&ndash;2 component-specific technical or integration risks</strong> (e.g., resource hotspots, fragile integrations, data model churn) and link them to entries in the shared <strong>Technical &amp; Integration Risk Register</strong> in Section 4 (by risk ID, e.g., <code>R-03</code>).</li>
 </ul>
 <h3>4. Technical and Integration Risk Register</h3>
 <p>Capture the most important <strong>technical and integration risks</strong> and what you will do about them.</p>
@@ -117,6 +117,7 @@
 <ul>
     <li>Keep the main team sections to ~3&ndash;8 pages. Use appendix for supporting information.</li>
     <li>Use clear headings, subheadings, bullets, and descriptive link text.</li>
+    <li>Write for a technical stakeholder: be concise, define project-specific terms on first use, and keep terminology consistent across the document.</li>
     <li>Use consistent notation and naming between diagrams, text, and code.</li>
     <li>Give all figures <strong>figure numbers, captions, and alt text</strong>.</li>
     <li>Explain non-obvious notation.</li>
