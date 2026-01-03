@@ -2,38 +2,32 @@
 
 # Team Charter & Working Agreement
 
-## Team Members & Roles
+## Change Log
 
-Describe each member’s role, primary responsibilities, backups/rotation plan, and contact info.
+| Date | Version | Sections Changed | Summary of Changes | Reason / Driver | Author(s) |
+| --- | --- | --- | --- | --- | --- |
+| 2025-09-30 | V1.0 | All sections | Initial creation | Start of project | Team |
 
-## Decision-Making Model
+## Roles and Decision Making
 
-State how decisions are made (e.g., consent/majority), quorum, tie-break rules, and which decisions need instructor/partner input.
+Specify team member roles (including leadership/rotation) and responsibilities. Define your decision-making model (e.g., consent, majority, unanimity) for different types of choices.
 
-## Meeting Cadence & Tools
+## Communication and Meetings
 
-List recurring meetings (purpose, length, when/where), required tools (repo, tracker, chat, CI), and response-time expectations.
+List your meeting cadence (times/days), communication channels, and core tools. Link to your meeting agenda/notes template.
 
-## Risk Management & Escalation Path
+## Definition of Done (DoD) and Quality Gates
 
-Identify top risks, early warning indicators, and who escalates to whom with timelines and evidence to provide.
+Define your quality bar. List required checks (tests, code review, security/lint/static analysis, docs updates) and reference the exact CI/CD gates that enforce them. Point to your CI configuration, linter/formatter config, etc.
 
 ## Conflict Resolution & Accountability
 
-Define triggers, stepwise restorative actions, timelines, and how objective evidence (PRs, reviews, attendance) will be used.
+Write a restorative, stepwise plan for resolving conflict. Define how you will use evidence (PRs, reviews, attendance) to hold each other accountable.
 
-## Definition of Done (DoD) & Quality Gates
+## Accessibility & Inclusion
 
-Enumerate required checks before merge (tests, code review, security/static analysis, docs updates) and name the enforcing CI jobs.
+Describe meeting norms (time zones, note-taking, turn-taking), how to request accommodations, and how you will surface and address barriers.
 
-## Accessibility & Inclusion Practices
+## Risk Management
 
-Specify meeting norms (time zones, turn-taking, note-taking), accommodation process, and how barriers will be surfaced/addressed.
-
-## Policy Owners & Review Dates
-
-Assign an owner and next review date for each section; explain how updates are proposed and approved.
-
-## Links & Artifacts
-
-Link to meeting agenda/notes template, CI dashboard, linter/formatter config, and any external docs referenced.
+Identify key risks to the team process and define an escalation path for issues.
