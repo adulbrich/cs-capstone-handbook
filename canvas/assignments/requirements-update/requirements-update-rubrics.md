@@ -1,22 +1,16 @@
 # Requirements Update - Rubrics
 
-## Change log: completeness (6 pts)
+## Change log: present and usable (5 pts)
 
-- **Exceeds Expectations** (6 to >4.8 pts): Each revision includes date, version/tag, and specific sections changed.
-- **Meets Expectations** (4.8 to >1.0 pts): Most entries include date and sections changed; some details missing.
-- **Does Not Meet Expectations** (1.0 to >0 pts): Change log missing or too vague to understand what changed.
+- **Exceeds Expectations** (5 to >4.0 pts): Change log is present and contains the required information (date, version, sections changed, summary of changes, reason, authors).
+- **Meets Expectations** (4 to >1.0 pts): Change log is present but inconsistent.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Change log missing.
 
-## Change log: summary and rationale (5 pts)
+## Problem statement: clarity and completeness (8 pts)
 
-- **Exceeds Expectations** (5 to >4.0 pts): Concise edit summary and clear rationale/drivers are included for each meaningful change.
-- **Meets Expectations** (4 to >1.0 pts): Basic rationale is present for many entries.
-- **Does Not Meet Expectations** (1.0 to >0 pts): Little or no rationale; entries read like unhelpful placeholders.
-
-## Change log: authorship (4 pts)
-
-- **Exceeds Expectations** (4 to >3.2 pts): Authors/subteam are clearly named for each revision.
-- **Meets Expectations** (3.2 to >0.8 pts): Authors are listed but inconsistent or incomplete.
-- **Does Not Meet Expectations** (0.8 to >0 pts): No authors listed.
+- **Exceeds Expectations** (8 to >6.4 pts): Problem statement clearly communicates the project’s **WHY** (the underlying need/pain, who is impacted, and why it matters) without drifting into solution design; it is complete and well-structured, covering the issue being addressed, its significance, and the context.
+- **Meets Expectations** (6.4 to >1.0 pts): Problem statement exists but the **WHY** is vague, mixed with implementation details, or incomplete in some areas.
+- **Does Not Meet Expectations** (1.0 to >0 pts): Problem statement is missing or unclear.
 
 ## Problem statement: users (3 pts)
 
@@ -42,11 +36,11 @@
 - **Meets Expectations** (3.2 to >0.8 pts): Non-goals are mentioned but vague.
 - **Does Not Meet Expectations** (0.8 to >0 pts): No non-goals.
 
-## Requirements: atomic, testable, unambiguous, with unique IDs (10 pts)
+## Requirements: atomic, testable, unambiguous, with unique IDs (12 pts)
 
-- **Exceeds Expectations** (10 to >8.0 pts): Requirements are atomic, testable, unambiguous, and consistently labeled with unique IDs.
-- **Meets Expectations** (8 to >2.0 pts): Mostly atomic/testable with IDs; some compound or ambiguous items remain.
-- **Does Not Meet Expectations** (2 to >0 pts): Many vague/compound requirements and/or missing IDs.
+- **Exceeds Expectations** (12 to >9.6 pts): Requirements are atomic, testable, unambiguous, and consistently labeled with unique IDs.
+- **Meets Expectations** (9.6 to >2.4 pts): Mostly atomic/testable with IDs; some compound (“A and B”), ambiguous, or multi-scenario items remain.
+- **Does Not Meet Expectations** (2.4 to >0 pts): Many vague/compound requirements and/or missing IDs.
 
 ## Requirements: prioritization (5 pts)
 
