@@ -1,2 +1,2 @@
 title_or_outcome_id	description	use_range	rating_points_1	rating_title_1	rating_description_1	rating_points_2	rating_title_2	rating_description_2	rating_points_3	rating_title_3	rating_description_3	rating_points_4	rating_title_4	rating_description_4	*DO NOT COPY THIS LINE FOR IMPORT* Note: Additional rating columns can be added if needed.
-Description of criterion		false	5	Full Marks		0	No Marks	
+Description of criterion		true	5	Full Marks		0	No Marks	

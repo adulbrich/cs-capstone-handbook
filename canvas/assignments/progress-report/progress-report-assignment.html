@@ -8,55 +8,53 @@
     <li>Strengthen accountability through transparent documentation of individual contributions.</li>
 </ul>
 <h2>What You Must Produce</h2>
-<p>Submit <strong>one team progress report</strong> (PDF, 1-2 pages). Individual grades depend on demonstrated contributions.</p>
+<p>Submit <strong>one team progress report</strong> (PDF, 1-2 pages). Individual grades depend on demonstrated contributions. There is a separate assignment for graders to deduct points at the individual level. By default, you will get max points on that assignment.</p>
 <ul>
     <li>Filename format: <code>YYYY-MM-DD-[TeamID]-Sprint6-ProgressReport.pdf</code></li>
     <li>Example: <code>2026-01-18-CS.042-Sprint6-ProgressReport.pdf</code></li>
     <li>Template: TBD</li>
 </ul>
 <h2>Required Report Structure</h2>
-<p>Your submission must include the following sections. Each section corresponds directly to a rubric criterion.</p>
+<p>Your submission must include the following sections. Each section aligns to one or more rubric criteria.</p>
 <h3>1. Summary</h3>
 <p>A concise overview of the sprint: major outcomes, blockers, and key insights (<strong>3-5 bullets</strong>).</p>
-<h3>2. Progress vs. Plan&nbsp;</h3>
-<p>A <strong>table</strong> with the following columns:</p>
+<h3>2. Sprint Work Log (Work Items + Evidence + Attribution)</h3>
+<p>List the work items you completed or meaningfully worked on during the sprint. A <strong>list format</strong> is preferred over a table (tables can become hard to read with many items).</p>
+<p>Each item must be <strong>measurable</strong> and include <strong>evidence</strong> and <strong>attribution</strong>. Items can be requirements work, bug fixes, infrastructure work, stakeholder/marketing/outreach tasks, research/spikes, documentation, etc.</p>
+<p><strong>For each work item, include:</strong></p>
 <ul>
-    <li>Planned Item</li>
-    <li>Status (% or done/partial/not done)</li>
-    <li>Links (issue/PR)</li>
-    <li>Notes and Blockers</li>
-    <li>Plan Change (if any)</li>
-</ul>
-<p><em>You can add the author/reviewers for each entry as well (see section 7 about individual contributions).</em></p>
-<h3>3. Supporting Artifacts (Evidence)</h3>
-<p>Provide at least <strong>one verifiable supporting artifact</strong> for each item in <strong>Section 2: Progress vs. Plan</strong> (or <strong>one artifact that clearly covers multiple items</strong>). Artifacts may show working software <em>or</em> other measurable progress (e.g., research or design work).</p>
-<p>Supporting artifacts can be any of:</p>
-<ul>
-    <li>Deploy URL</li>
-    <li>1&ndash;3 screenshots</li>
-    <li>&le;2-minute demo clip&nbsp;</li>
-    <li>CI/build status (badge or link)</li>
-    <li>Brief test summary (e.g., total tests, failures, coverage &plusmn;&Delta;, manual/qualitative)</li>
-    <li>Write-up artifacts (e.g., ADR, design doc, spike results, interview summary, decision log)</li>
-    <li>Diagrams or specifications</li>
-    <li>Any other artifact that a grader can verify</li>
-</ul>
-<p>If an artifact corresponds to a code state, indicate the relevant commit hash(es). If an artifact is a write-up, include a stable link and enough context to evaluate it (title/date/version/location).</p>
-<p><em>Example: a single deployment link or demo clip can cover multiple completed items, as long as it clearly demonstrates them.</em></p>
-<h3>4. Risk &amp; Quality Tracking</h3>
-<ul>
-    <li>Top 2&ndash;3 active risks, each with:
+    <li><strong>Title</strong> (short, specific)</li>
+    <li><strong>Status</strong> (done / partial / not done) or a clear %</li>
+    <li><strong>Owner / Author</strong> (who did the primary work)</li>
+    <li><strong>Reviewer(s) / Collaborator(s)</strong> (if applicable)</li>
+    <li><strong>Source link</strong> (issue, task, PR, sprint plan item, requirement, test, ADR, or doumentation, i.e., something trackable)</li>
+    <li><strong>Supporting artifact</strong> (at least one verifiable artifact)
         <ul>
-            <li>owner</li>
-            <li>current status</li>
+            <li>Deploy URL, screenshots, demo clip</li>
+            <li>CI/build status or brief test summary</li>
+            <li>Write-up artifacts (ADR, design doc, spike results, interview summary, decision log)</li>
+            <li>Diagrams/specifications</li>
         </ul>
     </li>
-    <li>Bug and test metrics and trends: counts, link to relevant issues/tasks, severity if relevant, failures, flaky tests, missing coverage, etc.&nbsp;</li>
-    <li>Concrete actions assigned to specific owner(s)</li>
+    <li><strong>Notes</strong> (optional): blockers, plan changes, or what remains</li>
 </ul>
-<h3>5. Next Goals</h3>
-<p>Each goal must link to a requirement ID, test ID, or corresponding issue/task (<strong>3-5 items</strong>). This ensures traceability and supports planning for the next sprint.</p>
-<h3>6. Team Process Reflection</h3>
+<p><em>One artifact may cover multiple work items</em> (e.g., one demo clip shows several features), as long as you clearly say which items it covers.</p>
+<p>If an artifact corresponds to a code state, include the relevant commit hash(es). If an artifact is a write-up, include a stable link and enough context to evaluate it (title/date/version/location).</p>
+<h3>3. Risk and Quality Tracking</h3>
+<p>List the number of recorded bugs currently open and the highest-impact open bugs.</p>
+<ul>
+    <li><strong>Bug count (1 line):</strong> Open bugs now = <strong>[N]</strong>. Include a link to your bug list / issue query.</li>
+    <li><strong>Top bugs (3&ndash;5 items):</strong> list your highest-impact open bugs.</li>
+    <li><strong>Each bug must include:</strong> severity/impact, owner, current status, and a link.</li>
+    <li><strong>Actions:</strong> assign a concrete next step for the top 2&ndash;3 bugs (who does what by when).</li>
+</ul>
+
+<p><strong>If you truly have no bugs:</strong> write <strong>&ldquo;No known bugs&rdquo;</strong> and link to where you track issues, plus 1 sentence describing what you did to check (e.g., manual test pass, demo run-through, CI green).</p>
+
+<h3>4. Next Sprint Plan</h3>
+<p>List the most important next sprint work items (<strong>3-5 items</strong>). These do <strong>not</strong> have to be requirements&mdash;they can be bug fixes, infrastructure work, stakeholder/marketing/outreach tasks, research/spikes, documentation, or anything else that produces a measurable outcome.</p>
+<p>Each item must include a link to a verifiable source of truth, such as a requirement ID, test ID, GitHub issue/task, ADR/design doc, marketing plan doc, or other trackable artifact. This supports traceability and makes planning gradeable.</p>
+<h3>5. Team Process Reflection</h3>
 <p>Write <strong>3-5 sentences</strong> reflecting on:</p>
 <ul>
     <li>What worked</li>
@@ -64,15 +62,6 @@
     <li>One or two actionable improvements</li>
     <li>What evidence will show the improvements worked</li>
 </ul>
-<h3>7. Individual Contributions</h3>
-<p>For every teammate, list:</p>
-<ul>
-    <li>PRs authored</li>
-    <li>PR reviews</li>
-    <li>Issues created/closed</li>
-    <li>Other <strong>measurable</strong> contributions (documentation, research, interviews, administrative overhead, etc.)</li>
-</ul>
-<p>Each item must include links. Measurable means that we can see the results: "I worked on researching a database schema" is not measurable, provide instead a <em>proper write-up</em> of the research, decisions, and final artifacts and save it in a place it can be referenced to (e.g., ADRs, issues, wiki, user story or acceptance criteria, Figma design, etc.)</p>
 <h2>Formatting Guidelines</h2>
 <ul>
     <li>Keep the main body around 1-2 pages, with screenshots/clips linked or appended.</li>

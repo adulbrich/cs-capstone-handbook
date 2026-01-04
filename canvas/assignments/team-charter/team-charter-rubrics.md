@@ -72,11 +72,11 @@
 - **Meets Expectations** (4.8 to >1.0 pts): Risks are listed with basic escalation guidance.
 - **Does Not Meet Expectations** (1.0 to >0 pts): Risks and/or escalation paths are missing.
 
-## Contribution guidelines: CONTRIBUTING completeness (6 pts)
+## Contribution guidelines: CONTRIBUTING completeness (10 pts)
 
-- **Exceeds Expectations** (6 to >4.8 pts): `CONTRIBUTING.md` includes all required elements: prerequisites/setup steps, local commands for CI/linting/formatting, the contribution workflow (branching + PR expectations) with a DoD reference and code review expectations, how to report bugs/requests (issues), and where to ask for help.
-- **Meets Expectations** (4.8 to >1.0 pts): `CONTRIBUTING.md` exists and covers the core workflow and local commands, but is missing one or more required elements (e.g., setup steps, issue reporting guidance, or help/contact info) and/or the DoD/review expectations are lightly specified.
-- **Does Not Meet Expectations** (1.0 to >0 pts): `CONTRIBUTING.md` is missing, empty, or too incomplete to follow (e.g., missing local commands and/or no usable contribution workflow).
+- **Exceeds Expectations** (10 to >8.0 pts): `CONTRIBUTING.md` includes all required elements: prerequisites/setup steps, local commands for CI/linting/formatting, the contribution workflow (branching + PR expectations) with a DoD reference and code review expectations, how to report bugs/requests (issues), and where to ask for help.
+- **Meets Expectations** (8.0 to >2.0 pts): `CONTRIBUTING.md` exists and covers the core workflow and local commands, but is missing one or more required elements (e.g., setup steps, issue reporting guidance, or help/contact info) and/or the DoD/review expectations are lightly specified.
+- **Does Not Meet Expectations** (2.0 to >0 pts): `CONTRIBUTING.md` is missing, empty, or too incomplete to follow (e.g., missing local commands and/or no usable contribution workflow).
 
 ## Writing: structure and readability (5 pts)
 
@@ -84,10 +84,10 @@
 - **Meets Expectations** (4 to >1.0 pts): Mostly clear with some structure; minor readability issues or slightly off-target length.
 - **Does Not Meet Expectations** (1.0 to >0 pts): Hard to read; poorly structured.
 
-## Writing: professionalism and clarity (5 pts)
+## Writing: professionalism and clarity (6 pts)
 
-- **Exceeds Expectations** (5 to >4.0 pts): Professional tone; claims are precise and easy to follow; requirements and acceptance criteria use consistent formatting and are written in verifiable language.
-- **Meets Expectations** (4 to >1.0 pts): Generally clear; occasional ambiguity, inconsistent formatting, or awkward wording.
+- **Exceeds Expectations** (6 to >4.8 pts): Professional tone; claims are precise and easy to follow; requirements and acceptance criteria use consistent formatting and are written in verifiable language.
+- **Meets Expectations** (4.8 to >1.0 pts): Generally clear; occasional ambiguity, inconsistent formatting, or awkward wording.
 - **Does Not Meet Expectations** (1.0 to >0 pts): Unclear or unprofessional tone; inconsistent or confusing requirement/AC wording.
 
 ## Writing: accessibility (5 pts)

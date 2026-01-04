@@ -17,6 +17,8 @@ bun run build
 
 ## To Do
 
+- add a video demo to sprint 10 or make it a small separate assignment
+- decide what to do with "does not meet" rubric item (e.g., 0 pts vs. partial credit)
 - make one scripts for the project partner survey processing that works for all terms
 - get all assignments/rubrics in html/markdown instead of Canvas
 - improve assignment descriptions by comparing different project types
