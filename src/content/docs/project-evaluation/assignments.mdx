@@ -5,9 +5,7 @@ sidebar:
   order: 2
 ---
 
-:::caution
-We are still fleshing out assignments for 2025-2026. There might be a couple more for Winter and Spring terms. Please check back soon!
-:::
+import { LinkCard } from '@astrojs/starlight/components';
 
 The Capstone Series assessment focuses on evaluating the six facets that, in our opinion, define a software engineer. For better or worse, we're also bound by the ABET (Accreditation Board for Engineering and Technology), WIC (Writing Intensive Curriculum), and Beyond OSU (program-level) learning outcomes.
 
@@ -23,6 +21,8 @@ An evidence-based update: planned vs done, working software proof (URL + commit 
 
 What is a sprint? A sprint is a fixed-length iteration where the team plans, builds, and reviews a small, shippable slice of value. Sprints are **two weeks long**. The team will submit a sprint report at the end of each sprint, for a total of 14 reports over the academic year.
 
+{/* TODO: link to sprint guide */}
+
 ## Team Charter or Working Agreement
 
 Define how the team will work (roles, decisions, cadence/tools), a restorative conflict path, Definition of Done (tests, reviews, static checks, docs, CI), and inclusion norms; publish CONTRIBUTING.md and show evidence of individual contributions.
@@ -33,7 +33,10 @@ Define how the team will work (roles, decisions, cadence/tools), a restorative c
 
 Align on scope and “what good looks like.” The team creates an ID'd, atomic, testable set with non-functional requirements (NFRs), acceptance criteria (AC) for priorities, an explicit prioritization method, and traceability to risks/constraints.
 
-{/* TODO: link to reqs guide */}
+<LinkCard
+  title="Project Requirements Guide"
+  href="/guides/requirements/"
+/>
 
 ### Stakeholder Memo
 
@@ -47,7 +50,10 @@ Learn a narrow, high-leverage slice (tech, standard, user, competitor) and synth
 
 Write an Architecture Decision Record (ADR) that documents a real design decision (context, options including “do nothing,” decision, consequences) with embedded evidence, and perform a substantive code review covering correctness, design, tests, and security, with proof of follow-through.
 
-{/* TODO: link to ADR guide */}
+<LinkCard
+  title="ADR Guide"
+  href="/guides/adr/"
+/>
 
 ## Technical Design
 
@@ -55,17 +61,16 @@ Share a coherent system view (context + diagrams), concrete interfaces/contracts
 
 {/* TODO: link to technical design guide */}
 
-
 ## Project Partner Evaluations
 
-At the mid **and** end of every term, the project partner or mentor will receive a survey asking them to grade the team. [See the details and criteria here.](/project-evaluation/project-partner-evaluation/).
+At the mid or end of every term, the project partner or mentor will receive a survey asking them to grade the team. [See the details and criteria here.](/project-evaluation/project-partner-evaluation/)
 
 Project partner evaluations account for **25% of each student's total grade** each term. The evaluation approach varies by term:
 
 - **Fall & Winter Terms**: Progress-focused assessment using adapted rubrics that evaluate development milestones, learning growth, and team collaboration.
 - **Spring Term**: Final outcome-focused assessment using complete rubrics that evaluate project deliverables and final results.
 
-The midterm survey is a lightweight "pulse" check to ensure that the team is on track. The end-of-term survey is more comprehensive and will significantly impact each student's grade.
+The midterm survey (when there is one) is a lightweight "pulse" check to ensure that the team is on track. The end-of-term survey is more comprehensive and will significantly impact each student's grade.
 
 They will grade the team as a *whole*, but they will have the option to add notes as needed. The team must ensure the project partner is up to date on progress and aligned on expectations. Review all artifacts for the term (including the demo) with them.
 
@@ -82,6 +87,10 @@ The midterm survey is worth less than the end-of-term survey, giving time to adj
 ## Stakeholder Presentation
 
 Create a 10-12 minute recorded update for an external audience that states problem→approach, shows a working path or credible walkthrough, credits third-party assets, and notes known limits; every student speaks.
+
+## Video Demos
+
+Create a 5 minute recorded demo of the working software, with a clear narrative: problem statement, motivation, demo, and next steps.
 
 ## Retrospectives
 
