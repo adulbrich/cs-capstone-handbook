@@ -1,19 +1,209 @@
 ---
 title: Team Working Agreement
-description: TBD
-draft: true
+description: Why teams need a shared operating model, what makes one effective, and how to keep it useful as your project evolves.
 sidebar:
   order: 1
 ---
 
-TBD
+import { LinkCard } from '@astrojs/starlight/components';
 
-- minimum information to include in a team working agreement
-- how to create a team working agreement
-- how to validate a team working agreement
-- how to update a team working agreement
-- SOLID principles
-- software engineering best practices
-- software engineering principles
+Every team develops habits: how decisions get made, how conflicts get handled, how people communicate, what "done" means. The question is whether those habits form intentionally or by accident. A working agreement (sometimes called a team charter) makes the team's operating model explicit. Without one:
 
-links to planning, teamwork activities
+- Disagreements about process derail technical discussions.
+- Contribution expectations drift until resentment builds.
+- Critical decisions get made inconsistently, or by whoever speaks loudest.
+- Bringing someone up to speed (a new member, or a teammate returning after a break) is painful because nothing is written down.
+
+A working agreement is **not a set of rules imposed from above**. It is a document your team writes together, revisits regularly, and updates as the project evolves. Its value comes not from the act of writing it, but from the conversations it forces and the clarity it creates.
+
+## Why Working Agreements Matter
+
+Software teams fail far more often from coordination problems than from technical ones. A team of strong individual developers can still produce poor results if they cannot agree on branching strategy, cannot resolve disagreements constructively, or cannot maintain a shared understanding of what "finished" means.
+
+A working agreement addresses this by making implicit expectations explicit. When a team member says "I thought we agreed to review PRs within a day," the agreement is where that expectation is either confirmed or revealed as an assumption that was never actually shared.
+
+This is especially important in Capstone, where teams form quickly, members may not know each other well, and there is no manager to set norms. The team has to define its own operating model, or one will emerge by default (and it usually will not be one anyone chose).
+
+## What Effective Agreements Cover
+
+There is no single template that works for every team, but effective agreements tend to address a few recurring areas. Think of these less as required sections and more as conversations your team should have early.
+
+### Roles and Ownership
+
+Teams work better when everyone knows who to go to for what. This does not mean rigid hierarchy; it means clarity. Common areas of ownership in a Capstone team include:
+
+- **Project partner liaison**: the primary point of contact who ensures alignment with partner expectations.
+- **Technical direction**: whoever drives architectural decisions and sets standards for code quality.
+- **Documentation**: someone who ensures written artifacts (README, design docs, changelogs) stay current.
+- **Process facilitation**: the person who keeps retrospectives, stand-ups, and planning on track.
+
+Roles can rotate by sprint or term. What matters is that coordination work is distributed rather than falling on one person by default.
+
+### Decision-Making
+
+Not every decision needs a team meeting. A useful agreement distinguishes between levels:
+
+- **Individual decisions**: implementation details within your own work.
+- **Team decisions**: anything that affects others' work, the architecture, or project direction. These should be discussed (in a stand-up, async channel, or dedicated meeting) before acting.
+- **Escalated decisions**: blockers, pivots, or changes that affect the project partner. These should involve the partner and/or instructor.
+
+A default async policy helps keep decisions moving: "if no one objects within 24 hours, the proposal is accepted" works well for low-stakes choices.
+
+### Communication
+
+Be specific about how the team stays in touch:
+
+- **Where** conversations happen. Pick one primary channel (Slack, Discord, Teams) and commit to it.
+- **Response time**. "Acknowledge messages within 24 hours on weekdays" is a norm. "Respond promptly" is not.
+- **Meeting cadence**. When do stand-ups, sprint reviews, and retrospectives happen?
+- **Escalation**. How does someone flag something urgent?
+
+The tool matters less than the shared commitment to use it consistently. A team that checks Discord daily will outperform a team with five communication channels and no habits.
+
+### Definition of Done
+
+The Definition of Done (DoD) answers one question: *what does it mean for a task to be finished?*
+
+Without a shared DoD, "done" means different things to different people. One person considers a feature done when it works on their machine. Another considers it done when it is deployed, reviewed, and documented. This mismatch creates friction at integration time and during sprint reviews.
+
+A DoD does not need to be elaborate, but it does need to be written down and agreed upon. It typically evolves as the project matures: early sprints might only require a reviewed PR and passing tests, while later sprints might add deployment and documentation requirements.
+
+<LinkCard
+  title="Sprints"
+  href="/guides/sprint/#definition-of-done"
+  description="The Definition of Done is used every sprint to determine when work is complete. See example DoD checklists for software and research projects."
+/>
+
+### Conflict Resolution
+
+Every team experiences disagreement. The working agreement should define how to address it *before* tensions arise, not in the middle of a dispute.
+
+A simple escalation path:
+
+1. **Direct conversation** between the people involved.
+2. **Team discussion** in a retrospective or dedicated meeting.
+3. **Escalation** to a TA or instructor.
+
+The agreement should make clear that escalation is a tool, not a failure. Teams that escalate early recover faster than those that let issues fester.
+
+<LinkCard
+  title="Conflict Resolution Activities"
+  href="/activities/conflict/"
+  description="Frameworks for addressing conflict constructively."
+/>
+
+### Inclusion
+
+Agree explicitly on how the team ensures every member's voice is heard, especially during design discussions, code reviews, and retrospectives. Practical approaches include:
+
+- Rotating who facilitates meetings.
+- Using async proposals to give everyone time to think before a decision is made.
+- Explicitly inviting quieter members to share their perspective before closing a discussion.
+
+These norms are easy to write and hard to maintain. The retrospective is where the team checks whether they are actually being followed.
+
+## From Agreement to Repository
+
+A working agreement captures *how the team operates*. A `CONTRIBUTING.md` file in your repository captures *how someone contributes to the codebase*. The two are related but serve different audiences.
+
+Your working agreement is for the team. It covers roles, communication, conflict resolution, and norms. Your `CONTRIBUTING.md` is for anyone who touches the code: current team members, future contributors, and reviewers. It covers branching strategy, PR requirements, code style, testing expectations, and the Definition of Done.
+
+Think of `CONTRIBUTING.md` as the technical expression of your working agreement. When the agreement says "all work goes through reviewed pull requests," the `CONTRIBUTING.md` explains what that means in practice: branch naming conventions, review turnaround expectations, merge strategy.
+
+:::tip[Starting Points]
+You do not need to write your `CONTRIBUTING.md` from scratch. GitHub has a [guide to CONTRIBUTING.md](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), and many open-source projects publish excellent examples worth reading: [Node.js](https://github.com/nodejs/node/blob/main/CONTRIBUTING.md), [React](https://github.com/facebook/react/blob/main/CONTRIBUTING.md).
+:::
+
+## Writing Your Agreement
+
+The most important thing about writing a working agreement is that you do it together. A document drafted by one person and signed off by the rest is not an agreement; it is a policy.
+
+A short workshop (45-60 minutes) is usually enough:
+
+1. Each person writes their top three non-negotiables for working well in a team.
+2. Share and discuss. Look for consensus and surface tensions early.
+3. Draft the document collaboratively during the session.
+4. Review the communication cadence and Definition of Done with your project partner.
+
+The conversations that happen during this process are often more valuable than the document itself. Tensions about work style, availability, and expectations surface here rather than three weeks into the project when they are harder to address.
+
+<LinkCard
+  title="Teamwork Activities"
+  href="/activities/teamwork/"
+  description="Activities to help your team align early."
+/>
+
+## Keeping It Alive
+
+A working agreement written in week 2 and never revisited is a wasted artifact. The team that wrote it in October is not the same team in January; the project has changed, the dynamics have shifted, and some norms have proven unrealistic.
+
+Review it at natural checkpoints:
+
+- **Start of each term**: does it still reflect how the team actually works?
+- **After a significant conflict**: what process gap allowed this to happen?
+- **When the project scope changes**: do roles and the DoD still apply?
+
+Version your working agreement in your repository. Being able to see how it evolved over the year is useful context, both for the team and for anyone evaluating how the team operated.
+
+## When Things Go Wrong
+
+A working agreement is only useful if the team is willing to enforce it. In practice, enforcement is the hardest part, and the most common failure modes are not dramatic blowups but slow erosion.
+
+### Someone Is Not Pulling Their Weight
+
+This is the most common problem in student teams. It usually looks like: missed deadlines, incomplete work, vague status updates ("I'm still working on it"), or tasks that sit in progress for an entire sprint with no visible output.
+
+The working agreement helps here only if the team actually uses it. When someone consistently under-delivers, the first step is a direct, specific conversation. Not "you need to do more" but "you committed to finishing the login page by Friday and it is now the following Wednesday with no update. What happened?" The agreement gives this conversation legitimacy: the team agreed to these expectations together.
+
+If the pattern continues after a direct conversation, bring it to the retrospective. If it continues after that, escalate to your TA or instructor. Do not wait until the end of the term to raise it. By then, the damage is done, the project has suffered, and the peer evaluations become the only consequence rather than a course correction.
+
+### The Excuse Cycle
+
+Some teams develop a pattern where one or two members consistently have reasons for not delivering: other classes, personal issues, technical blockers that never get resolved, "I didn't know what to do." Individually, each excuse may be legitimate. The pattern is the problem.
+
+The working agreement can help break this cycle if it includes concrete expectations:
+
+- **Availability**: how many hours per week each person commits to the project (and when those hours are, roughly).
+- **Blockers**: if you are stuck, you raise it at the next stand-up or in the team channel. Sitting silently for a week is not acceptable.
+- **Minimum deliverables**: every team member should have at least one visible contribution per sprint, tracked on the sprint board.
+
+When the agreement spells these out, the conversation shifts from "I feel like you're not contributing" (subjective, easy to deflect) to "the board shows no completed tasks from you in the last two sprints" (observable, harder to argue with).
+
+### When a Role Goes Unfilled
+
+Assigning someone the role of documentation owner or process facilitator does not guarantee they will actually do it. If the person responsible for a role consistently neglects it, the team has two choices:
+
+1. **Reassign the role** to someone willing to do it, and have an honest conversation about why.
+2. **Redistribute the work** so the role is shared rather than owned by one person.
+
+What does not work: quietly picking up someone else's responsibilities without addressing the gap. This breeds resentment and teaches the team that accountability is optional.
+
+### Escalation Is Not Betrayal
+
+Many students resist escalating to a TA or instructor because it feels like "tattling." It is not. The instruction team expects to hear about persistent problems; that is part of what they are there for. Escalating early gives everyone (including the struggling team member) a chance to course-correct before grades are affected.
+
+The peer evaluation process will surface contribution gaps at the end of the term regardless. Escalating early turns a grade consequence into a learning opportunity.
+
+## Best Practices
+
+- Keep it short enough to re-read. A two-page agreement that people actually reference is better than a ten-page one nobody opens.
+- Be specific. "Respond to messages promptly" is not a norm. "Acknowledge within 24 hours on weekdays" is.
+- Distinguish between team norms and project standards. Conflict resolution belongs in the working agreement. Branching strategy belongs in `CONTRIBUTING.md`.
+- Include a process for updating it. "Any team member can propose a change; the team discusses it at the next retrospective" is a reasonable default.
+- Write it synchronously. Async collaboration does not surface tensions the same way face-to-face conversation does.
+
+## Some Truths About Working Agreements
+
+- Most teams write them and forget them. The value is in revisiting, not just writing.
+- No working agreement survives first contact with a real deadline unchanged. That is expected; update it.
+- If the team frequently violates an agreement, either the agreement is wrong or the team has a problem worth surfacing in a retrospective.
+- The hardest part is not writing the norms. It is holding each other accountable to them.
+- A working agreement will not fix a dysfunctional team on its own. But it gives the team a shared reference point for the conversation about what needs to change.
+
+## Working Agreements in Industry and Academia
+
+In industry, team charters and working agreements are common in Agile teams. They go by many names: team manifesto, team norms, social contract. Large engineering organizations maintain documented engineering norms (coding standards, on-call expectations, incident response protocols) that function as the operational equivalent of a working agreement.
+
+New hires at well-run companies are onboarded to these norms explicitly, not expected to infer them. Your `CONTRIBUTING.md` serves this same function for anyone who joins your project or reviews your work.
+
+In academia, working agreements give instructors visibility into how the team intended to operate, which is essential context when evaluating teamwork at the end of a term. They also give the team itself a tool for self-correction: when something is not working, the agreement is the starting point for figuring out why.
