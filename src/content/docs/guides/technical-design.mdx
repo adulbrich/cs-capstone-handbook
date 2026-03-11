@@ -1,23 +1,199 @@
 ---
 title: Technical Design
-description: TBD
+description: How to think about, document, and validate the technical design of your Capstone project.
 draft: true
 sidebar:
   order: 3
 ---
 
-TBD
+import { LinkCard } from '@astrojs/starlight/components';
 
-- What is technical design
-- Why technical design is important
-- Types of technical design
-- prototypes
-- How to document/write technical design
-- different design docs in industry
-- different design docs in academia/research
-- minimum content to include in class design doc
-- use case diagram, class diagram, sequence diagram, state diagram, activity diagram, component diagram, deployment diagram, UML
-- architectural patterns and decisions
-- how to validate technical design
-- recommended tools for technical design (diagramming)
-- architecture design record (ADR): An Architecture Decision Record (ADR) is a document that captures a specific architectural decision, including the context, decision, consequences, and rationale. An ADR Pack is a collection of these records, typically organized to document and manage the architectural decisions made throughout a project's lifecycle. It serves as a centralized repository or knowledge base for all architecture-related decisions.
+Technical design is the process of deciding *how* your system will be built, before or alongside building it. It bridges the gap between requirements (what the system must do) and implementation (how it actually does it). Without deliberate design work:
+
+- Teams make inconsistent decisions that accumulate into architectural debt.
+- Interfaces between components are discovered at integration time, not before.
+- Onboarding a new contributor requires spelunking through the codebase rather than reading a document.
+- Risks that could have been caught on paper get caught in production instead.
+
+Technical design is not about producing perfect diagrams before writing a line of code. It is about **thinking through the hard parts before they become expensive to change**.
+
+## What Is Technical Design?
+
+Technical design answers three questions:
+
+1. **What are the major components, and how do they interact?** (Architecture)
+2. **What are the interfaces and contracts between them?** (Interface design)
+3. **What are the riskiest assumptions, and how will we validate them?** (Risk and prototyping)
+
+The output is a design document: a written artifact that captures decisions, diagrams, and rationale. It does not need to be exhaustive. It needs to be useful.
+
+The design document captures the big picture. Individual decisions along the way (why PostgreSQL over MongoDB, why a monolith instead of microservices, why this particular data pipeline architecture) are recorded as Architecture Decision Records (ADRs). The two artifacts complement each other: the design document shows *what* the system looks like; ADRs explain *why* it looks that way.
+
+<LinkCard
+  title="Architecture Decision Records"
+  href="/guides/adr/"
+  description="ADRs document individual design decisions and their rationale."
+/>
+
+## Levels of Design
+
+### System-Level Design (Architecture)
+
+The highest-level view: what are the major subsystems, services, or modules, and how do they communicate? The C4 model provides a useful framework for thinking about this at different levels of zoom:
+
+- **Context diagram** (C4 Level 1): your system as a black box, showing who and what interacts with it (users, external services, data sources, hardware).
+- **Container diagram** (C4 Level 2): the major deployable or runnable units. For a web application, these might be a frontend, an API server, and a database. For a data pipeline, they might be an ingestion service, a processing framework, and a storage layer. For an embedded project, they might be firmware modules and a host application.
+- **Component diagram** (C4 Level 3): the internal structure of a single container.
+
+You do not need all three levels. A context diagram plus one level of decomposition is sufficient for most Capstone projects. The goal is to give any reader, including your project partner, a mental model of the system without reading the code.
+
+<LinkCard
+  title="C4 Model Activity"
+  href="/activities/design/#c4-model"
+  description="Hands-on activity for describing your architecture using the C4 model."
+/>
+
+### Interface Design
+
+Wherever two components meet, there is an interface: a contract that defines what each side provides and expects. Making these contracts explicit early lets team members work in parallel, even before the implementations exist.
+
+What "interface" means depends on the project:
+
+- In a web or mobile application, interfaces are typically **API endpoints** (paths, methods, request/response schemas, error codes) and **database schemas** (tables, relationships, constraints).
+- In a data pipeline or research project, interfaces are the **stage boundaries**: what format does the output of one stage take, and what does the next stage expect? A CSV with specific columns, a serialized model artifact, a set of image files in a particular directory structure.
+- In a library or framework contribution, the interface is the **public API**: which functions, classes, or modules are exposed, and what are their signatures and guarantees?
+- In any project with asynchronous communication, interfaces include **event or message formats**: what gets published, what gets consumed, and what happens when a message is malformed or delayed.
+
+The documentation does not need to be elaborate. A Markdown table, an OpenAPI specification, or even a well-commented type definition file can serve as the contract. What matters is that the team agrees on the boundary before building toward it from both sides.
+
+### Data Design
+
+For most projects, how data is modeled is among the most consequential early decisions. Changes to the data model late in a project are expensive, whether that means database migrations and rewritten queries or reformatted datasets and invalidated experimental results. Sketch your data model early, even informally.
+
+The questions worth asking depend on the project, but a few are nearly universal:
+
+- What are the core entities or data objects, and how do they relate to each other?
+- What data must be persisted vs. derived at runtime or recomputed on demand?
+- What data has privacy, compliance, or NDA implications?
+
+For projects with a database, this means entity-relationship diagrams, table schemas, and indexing strategy. For research or data-intensive projects, the equivalent questions are: where does the data come from, how is it preprocessed, what format is it stored in, and how will someone else reproduce the pipeline from raw input to final output? Versioning datasets (or at minimum, documenting the source, retrieval date, and preprocessing steps) is as important for reproducibility as version-controlling code.
+
+## Prototypes and Spikes
+
+Sometimes the right approach is to build a small, throwaway prototype to answer a specific question before committing to a design: *Can we integrate with this third-party API? Is this library fast enough for our use case? Does this algorithm generalize to real data?*
+
+This is called a **spike** in agile terminology. A spike is time-boxed (1–3 days) and produces a finding, not production code. Document what you learned in an ADR and discard the prototype code.
+
+The best technical designs are informed by spikes on the riskiest assumptions. If you have a component you have never built before, spike it first.
+
+## The Design Document
+
+A design document is not a form to fill out. It is a narrative that helps someone understand how the system works (or will work) without reading the code. A good design document answers questions that the team and its project partner actually have, and it does so concisely enough that people will read it more than once.
+
+In practice, most useful design documents cover a few recurring themes. They start with a brief overview of what the system does and why it exists, then show the architecture: the major pieces and how they fit together, usually through one or two diagrams. They describe the key interfaces or contracts between components, because that is where misunderstandings cause the most damage. They address data: how it is structured, where it lives, and how it flows through the system. And they surface risk: the parts that are uncertain, novel, or likely to change, along with how the team plans to address them.
+
+For a software project, this might mean a context diagram, an API specification, a database schema, and a list of technical unknowns. For a research project, the equivalent might be a computational workflow diagram, a description of the data pipeline stages and their input/output formats, a reproducibility plan, and a list of experimental assumptions that need validation. For a FOSS contribution, the focus shifts to understanding the existing architecture and explaining where and how the proposed change fits in.
+
+The design document should also reference the team's ADRs. Every significant "why" in the design (why this database, why this architecture, why this algorithm) should have a corresponding ADR that captures the alternatives considered and the reasoning. The design document shows the current state; the ADRs show how and why it got there.
+
+:::tip[Diagramming Tools]
+[Excalidraw](https://excalidraw.com/) is excellent for quick, hand-drawn-style diagrams. [draw.io / diagrams.net](https://app.diagrams.net/) supports formal UML and exports cleanly. [Mermaid](https://mermaid.js.org/) lets you write diagrams as code inside Markdown files, keeping them version-controlled. The [C4 Model](https://c4model.com/) provides a lightweight framework for structuring architecture diagrams at different levels of detail.
+:::
+
+## UML: Use It, Don't Worship It
+
+UML (Unified Modeling Language) provides a standard vocabulary for describing software structure and behavior. Useful diagram types:
+
+- **Class diagram**: static structure of classes and their relationships.
+- **Sequence diagram**: how objects interact over time for a specific scenario or use case.
+- **State diagram**: lifecycle of an entity with distinct states and transitions.
+- **Activity diagram**: flow of control through a process or algorithm.
+- **Deployment diagram**: physical or cloud topology of the running system.
+
+Pick the diagrams that answer the questions your team is currently uncertain about. A sequence diagram for your authentication flow is more valuable than a complete UML suite nobody maintains. Never create a diagram just because a template requires it.
+
+<LinkCard
+  title="UML Diagrams Activity"
+  href="/activities/design/#unified-modeling-language-uml-diagrams"
+  description="Hands-on activity for using UML diagrams to describe your architecture."
+/>
+
+## Validating Your Design
+
+A design that has never been challenged is just an assumption. Validate it by:
+
+- **Reviewing it with your project partner**: does the architecture support their use cases and deployment constraints?
+- **Walking through a key scenario end-to-end**: trace a representative workflow (a user action, a data processing run, an experimental trial) through every component in your diagram. Where are the gaps?
+- **Asking "what if this component fails?"**: how does the system degrade gracefully?
+- **Running a spike on the riskiest assumption**: if a component or integration is high-risk, build a throwaway prototype before committing to it.
+
+<LinkCard
+  title="Design Activities"
+  href="/activities/design/"
+  description="Activities to help evaluate and validate design decisions."
+/>
+
+## The Design Document Is a Living Artifact
+
+Your design will change; that is normal. The goal is not to freeze it in Fall term and execute blindly. The goal is to ensure design changes are *deliberate*, *communicated*, and *documented* rather than happening implicitly as team members make independent local decisions.
+
+When the design changes significantly, update the document and write an ADR explaining the change, the alternatives considered, and the rationale.
+
+## Technical Design in the Age of AI
+
+AI coding tools have changed how individuals write software, but they have not changed the need for technical design. If anything, they have made it more important.
+
+When one person works alone with an AI assistant, the design document may feel unnecessary. The AI can read the codebase, infer patterns, and generate code that fits. In that context, the codebase *is* the design, and the AI is reasonably good at following it.
+
+The picture changes completely when a team of three or four people are each working with their own AI tools. Every AI assistant operates within its own local context: the files it has been shown, the conversation it has had, and whatever instructions it has been given. It does not know what another team member's AI suggested yesterday, what architectural direction the team agreed on in a meeting, or which approaches were considered and rejected. Without a shared reference point, each human-AI pair drifts toward its own interpretation of how the system should work.
+
+The result is a codebase that grows quickly but incoherently. One team member's AI introduces a new abstraction layer while another's solves the same problem with a utility function. Naming conventions diverge. Error handling strategies multiply. Components that should share a pattern each implement their own variation. The code compiles, tests pass, but the system becomes progressively harder to understand, modify, and maintain. By the time the team notices, the inconsistencies are deeply embedded.
+
+The design document is the antidote. It gives every team member (and by extension, every AI tool they use) a shared understanding of how the system is structured, what patterns to follow, and what boundaries to respect. Several practices help:
+
+- **Feed the design document to your AI tools.** Many AI coding assistants support project-level instructions (such as `CLAUDE.md`, agent skills, or similar configuration files). Distill your architectural decisions, naming conventions, and interface contracts into these files so that every AI-generated suggestion is at least aware of them.
+- **Use ADRs to record what was rejected, not just what was chosen.** AI tools have no memory of your team's past discussions. Without an ADR that says "we considered a microservices architecture and rejected it because of deployment complexity," an AI assistant may cheerfully suggest exactly the approach your team already ruled out.
+- **Review AI-generated code against the design, not just against correctness.** Code that works but violates the agreed architecture is not done. The design document gives reviewers a basis for catching structural drift before it accumulates.
+- **Treat the design document as onboarding material for your AI tools.** Just as you would walk a new team member through the architecture before they start contributing, give your AI tools the same context. The more explicit and accessible the design, the better the AI's suggestions will align with it.
+
+This does not mean every interaction with an AI tool needs to go through a formal process. During prototyping and spikes, the whole point is to experiment freely: try things, learn fast, throw the result away. The discipline matters when the code is intended to last. If it is going into the main branch, being deployed, or being built upon by others, it should align with the design. If it is a throwaway prototype to test a hypothesis, let the AI run.
+
+The irony is that teams using AI tools need *more* design discipline for production code, not less. The speed of AI-assisted development means that architectural mistakes propagate faster. A human writing code by hand might produce one inconsistent module in a week; an AI can generate five in an afternoon. The design document is what keeps that speed from becoming a liability.
+
+The design document addresses the *architectural* side of AI coordination: what constraints and patterns to enforce. The *process* side (which tools the team uses, how AI-generated code is reviewed, how AI-suggested changes are evaluated) belongs in the team's working agreement.
+
+<LinkCard
+  title="Team Working Agreement: AI Tool Usage"
+  href="/guides/working-agreement/#ai-tool-usage"
+  description="Team norms for coordinating AI tool usage across the team."
+/>
+
+<LinkCard
+  title="Generative AI"
+  href="/guides/generative-ai/"
+  description="Guidelines for using AI tools effectively and responsibly."
+/>
+
+## Best Practices
+
+- Design for your current phase, not for a hypothetical future scale. Over-engineering is a real risk in a 9-month project.
+- Separate concerns. If a component diagram has too much in one box, break it apart.
+- Make implicit dependencies explicit. If service A only works when service B is running, say so.
+- Treat interface definitions as more stable than implementations. Protect your contracts; change your implementations freely.
+- Include a section on what was *not* designed: explicitly out-of-scope components or deferred decisions. This shows intentionality.
+- Write the design document for the next person joining the project cold, not for the team that already knows everything.
+
+## Some Truths About Technical Design
+
+- No design survives contact with implementation unchanged. That is expected; the value is in the thinking, not the document.
+- Over-designed systems are a form of technical debt. Design what you need now.
+- Teams that skip design often move fast in Fall, then spend Winter untangling integration problems and redoing work.
+- A diagram drawn in a 20-minute meeting can prevent days of rework.
+
+## Technical Design in Industry and Academia
+
+In industry, technical design documents go by many names: **Tech Spec**, **RFC (Request for Comments)**, **Design Doc**, **TDD (Technical Design Document)**. Google, Amazon, and most large software companies require design documents for non-trivial changes. They serve as the basis for code review, stakeholder alignment, and future reference.
+
+Amazon's Working Backwards methodology starts with the customer (the press release and FAQ) before the design. The design document is where the "how" is evaluated before engineering investment is committed.
+
+In research settings, the closest equivalent is the **methods section** of a paper, describing the approach in enough detail for replication. For computational research, this includes architectural and algorithmic decisions sufficient to reproduce results.

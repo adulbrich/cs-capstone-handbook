@@ -102,6 +102,32 @@ Agree explicitly on how the team ensures every member's voice is heard, especial
 
 These norms are easy to write and hard to maintain. The retrospective is where the team checks whether they are actually being followed.
 
+### AI Tool Usage
+
+Most teams will use AI coding assistants during the project. Without a shared understanding of how these tools fit into the workflow, teams run into problems: inconsistent code patterns, duplicated or conflicting abstractions, and code that no one on the team fully understands.
+
+A few questions worth settling early:
+
+- **Which tools and configurations does the team share?** If the team uses a tool that supports project-level instructions (such as `CLAUDE.md`, agent skills, or a shared system prompt), agree on a single configuration checked into the repository. This ensures every team member's AI assistant gets the same architectural context.
+- **What is the review expectation for AI-generated code?** A reasonable default: AI-generated code goes through the same review process as human-written code. The author is responsible for understanding and defending what they commit, regardless of who (or what) wrote the first draft.
+- **How does the team handle AI-suggested architectural changes?** An AI tool might propose restructuring a module or introducing a new pattern. The team should treat these the same way it treats any design change: discuss it, check it against the design document, and write an ADR if the team decides to adopt it. No one should merge a structural change just because an AI suggested it.
+
+One important distinction: these norms apply differently depending on the phase of work. During early exploration, prototyping, and spikes, the team should feel free to experiment loosely with AI tools. The point of a prototype is to learn fast and throw the result away. Requiring full design compliance and rigorous review for throwaway code slows down the exact kind of experimentation that helps the team make better design decisions. The norms above matter most when the code is intended to last: anything that will be merged into the main branch, deployed, or built upon by others.
+
+These norms belong in the working agreement because they are about how the team coordinates, not about the tools themselves. The technical details (what architectural constraints to encode, how to keep AI output consistent with the design) are covered in the technical design guide.
+
+<LinkCard
+  title="Technical Design in the Age of AI"
+  href="/guides/technical-design/#technical-design-in-the-age-of-ai"
+  description="How design documents help coordinate teams where everyone uses AI coding tools."
+/>
+
+<LinkCard
+  title="Generative AI"
+  href="/guides/generative-ai/"
+  description="Individual guidelines for using AI tools effectively and responsibly."
+/>
+
 ## From Agreement to Repository
 
 A working agreement captures *how the team operates*. A `CONTRIBUTING.md` file in your repository captures *how someone contributes to the codebase*. The two are related but serve different audiences.

@@ -1,119 +1,190 @@
 ---
 title: Generative AI
-description: Learn how to set up, configure, and optimize generative AI tools for coding, including custom instructions, memory, model selection, and integration with MCP servers to enhance your development workflow.
+description: How to use AI coding tools effectively in your Capstone project, from setup and configuration to team coordination and responsible use.
 sidebar:
   order: 9
 ---
 
-Generative AI tools (such as ChatGPT, Copilot, Claude, Gemini, and image-generation models) are now part of professional engineering work. Engineers use AI to brainstorm ideas, explore design options, write and review code, generate documentation, and accelerate analysis tasks.
+import { LinkCard } from '@astrojs/starlight/components';
 
-But there's a catch: **you are still responsible for the correctness, safety, legality, and professionalism of anything the AI helps you create.**
+Generative AI tools are now part of professional engineering work. Engineers use AI to brainstorm ideas, explore design options, write and review code, generate documentation, and accelerate analysis tasks.
 
-## Understanding Generative AI
+But there is a catch: **you are still responsible for the correctness, safety, legality, and professionalism of anything the AI helps you create.** An AI tool can write code faster than you can type it. That does not mean the code is correct, secure, or appropriate for your project. Treat AI output the same way you would treat a suggestion from a junior colleague: consider it, verify it, and take ownership of the final result.
 
-Generative AI refers to systems that create new content—text, images, code, diagrams—based on statistical patterns learned from large datasets. For example, ChatGPT can produce code, explain APIs, write documentation, or outline design approaches.
+## What AI Can and Cannot Do
 
-### What AI can help with
+### What AI helps with
 
 - Brainstorming ideas and exploring alternatives
-- Drafting code, tests, documentation, emails, and plans
-- Explaining unfamiliar topics or code snippets
-- Generating sample data, messages, or interaction flows
-- Creating diagrams, wireframes, and content outlines
-- Accelerating “first drafts” of writing or implementation
+- Drafting code, tests, documentation, and plans
+- Explaining unfamiliar topics, APIs, or code snippets
+- Generating sample data, interaction flows, or boilerplate
+- Refactoring, debugging, and code review
+- Accelerating "first drafts" of writing or implementation
 
 ### What AI cannot do well
 
 - Exercise engineering judgment
-- Apply local constraints (e.g., OSU environment, your team's architecture, your client's requirements)
+- Apply your project's specific constraints (your team's architecture, your project partner's requirements, your deployment environment)
 - Produce secure, efficient, or trustworthy code without oversight
+- Guarantee correctness: AI frequently **hallucinates** information, including fabricated libraries, nonexistent APIs, and incorrect citations
+- Understand the nuances of your Capstone project's unique context
 - Make ethical decisions
-- Guarantee correctness: AI frequently **hallucinates** information
-- Understand the nuances of your Capstone's unique context
 
 ### Risks
 
-- Incorrect or misleading information
-- Fabricated citations or nonexistent libraries
+- Incorrect or misleading information presented confidently
 - Insecure or poorly optimized code
-- Biased or inappropriate content
-- Privacy and intellectual property issues
-- Over-reliance leading to lack of understanding
+- Over-reliance leading to lack of understanding: if you cannot explain what the code does, you should not commit it
+- Privacy and intellectual property issues (be careful about what you paste into AI tools, especially if your project involves NDA-protected or sensitive data)
 
-## Choosing the Right AI Tools
+## AI Coding Tools
 
-Things change rapidly in the AI world. New models are released frequently, each with its own strengths and weaknesses. 
+The landscape changes rapidly. Rather than an exhaustive list, here are the categories of tools and some current options in each.
 
-Consider looking at the latest benchmarks and comparisons to choose the right model for your needs.
+:::tip[GitHub Copilot Pro for Students]
+All students with a GitHub Education account get **GitHub Copilot Pro for free**. Activate it at [GitHub Education](https://github.com/education). This gives you AI-assisted code completion, chat, and agent capabilities in VS Code, JetBrains, and other editors. If you do not have another preferred tool, Copilot is a solid default.
+:::
 
-Some resources to get you started:
+### Chat-Based Assistants
 
-- [AI Benchmarking Hub](https://epoch.ai/benchmarks)
-- [LiveBench](https://livebench.ai/)
-- [Benchable](https://benchable.ai/models)
+General-purpose AI models you interact with through conversation. Useful for brainstorming, explaining concepts, drafting documentation, debugging, and exploring design alternatives.
 
-Here are some relevant metrics to consider:
+- **ChatGPT** (OpenAI): strong general reasoning and code generation.
+- **Claude** (Anthropic): strong at long-context analysis, writing, and careful reasoning.
+- **Gemini** (Google): tightly integrated with Google's ecosystem.
 
-- [Context window](https://docs.anthropic.com/en/docs/build-with-claude/context-windows)
-- Speed
-- Cost
-- Ability
-- Accuracy
+### AI Code Editors and Agents
 
-As students, you can access [GitHub Education](https://github.com/education) for free. It includes access to Copilot Pro and other perks.
+Tools that integrate directly into your editor or terminal and can read, write, and modify your codebase. These range from autocomplete assistants to fully agentic tools that can execute multi-step tasks.
 
-Here's a summary of popular tools and their best use cases:
+- **GitHub Copilot**: code completion, chat, and agent mode in VS Code and JetBrains. Free for students.
+- **Cursor**: AI-native code editor built on VS Code with strong multi-file editing.
+- **Claude Code** and **ChatGPT Codex**: terminal-based agentic coding tools.
 
-| Tool                                           | Best for                                              | Notes                                            |
-| ---------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------ |
-| **ChatGPT / Claude / Gemini / Grok**                  | General reasoning, brainstorming, code, documentation | Great for iterative prompting and deep reasoning |
-| **GitHub Copilot / Cursor / Claude Code / ChatGPT Codex**                    | Code completion, refactoring, tests and more                 | Works best when installed in your IDE or Terminal           |
-| **Nano-Banana / Midjourney / Stable Diffusion / DALL·E**     | Images, diagrams, UI mockups                          | Check licenses for generated assets              |
-| **AI search tools (Perplexity, Bing Copilot)** | Research, summaries                                   | Verify all facts                                 |
+The distinction between "autocomplete" and "agent" matters. Autocomplete tools suggest the next few lines as you type. Agentic tools can plan multi-step changes, read multiple files, run commands, and modify your codebase autonomously. Agentic tools are more powerful but require more oversight, especially on a team where multiple people are using them simultaneously.
 
+### Image and Design Tools
 
-## Setting Up Generative AI for Coding
+- **Midjourney**, **Stable Diffusion**, **DALL-E**: image generation for mockups, assets, or diagrams. Check licenses before using generated assets in your project.
 
-Most of the recommendations below are supported by most code editors and AI agents. Check your tool's documentation for specifics.
+### AI Search Tools
 
-Tooling is evolving rapidly. New features and capabilities are being added frequently. Stay updated with the latest developments in AI-assisted coding tools to leverage new functionalities as they become available.
+- **Perplexity**, **ChatGPT Search**: research and summarization with source citations. Always verify the facts and check that cited sources actually exist.
 
-> This page might not be updated frequently.
+## Setting Up AI Tools for Your Project
 
-Some zero-config tools do exist. For example, for web projects, consider [Ultracite](https://www.ultracite.ai/).
+The difference between a helpful AI assistant and a frustrating one is almost entirely about context. An AI tool with no knowledge of your project will produce generic suggestions. The same tool, given your project's architecture, conventions, and constraints, will produce suggestions that actually fit.
 
-### Instructions
+### Project-Level Instructions
 
-Setup custom instructions or prompts for your AI code editor. 
+Most AI coding tools support some form of project-level configuration that persists across sessions:
 
-These instructions will guide the AI in generating code that fits your project's needs and style. 
+- **Claude Code**: `CLAUDE.md` file in your repository root.
+- **Cursor**: `.cursor/rules/` directory or `.cursorrules` file.
+- **GitHub Copilot**: `.github/copilot-instructions.md` file.
 
-When providing instructions, consider including:
+These files are checked into version control, which means the entire team shares the same AI context. This is one of the most effective ways to keep AI-generated code consistent across team members.
 
-- Project Overview: A brief description of your project, its goals, and its target audience.
-- Technology Stack: Specify the programming languages, frameworks, and libraries you are using.
-- Coding Standards: Outline any specific coding conventions or best practices you want the AI to follow.
-- Constraints: Mention any limitations or constraints, such as performance requirements or compatibility issues.
-- Testing Requirements: Specify if you want the AI to generate tests along with the code.
-- Documentation: Indicate if you want the AI to include comments or documentation in the generated code.
-- Collaboration Style: Describe how you want the AI to interact with you (e.g., ask questions, provide explanations, etc.).
-- Persona: Define a persona for the AI to adopt, such as a senior developer, a code reviewer, or a mentor.
+What to include in project-level instructions:
 
-### Memory
-
-Setup memory for your AI code editor. 
-
-Memory allows the AI to retain context over time, making interactions more coherent and relevant to your project's history and goals. Ask your AI code editor or agent to remember important details about your project, preferences, or specific requirements in a separate reference file. 
+- A brief project overview (what it does, who it is for).
+- The technology stack (languages, frameworks, key libraries).
+- Coding conventions (naming, file structure, error handling patterns).
+- Architectural constraints ("we use a monolith, not microservices"; "all data access goes through the repository layer").
+- Testing expectations (what to test, which framework, where tests live).
+- Anything the AI should *not* do (e.g., "do not add new dependencies without discussion"; "do not refactor code outside the scope of the current task").
 
 ### MCP Servers
 
-Setup MCP servers to empower your AI code editors. 
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) allows AI tools to connect to external data sources and services. Some useful MCP servers:
 
-Some examples:
+- **[Context7](https://context7.com/)**: provides up-to-date library and framework documentation to your AI tool, reducing hallucinated API calls.
+- **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**: allows your AI tool to interact with a browser for testing and debugging web applications.
+- **Database MCP servers**: let your AI tool query your database schema directly rather than guessing at table structures.
 
-- [context7](https://context7.com/) provides up-to-date documentation to your agent
-- [Tavily](https://www.tavily.com/) allows your agent to browse the web
+Many other MCP servers exist and new ones appear frequently. Explore what is available for your stack and tell your AI tool how and when to use them.
 
-Many other options exist. Explore and choose the ones that best fit your needs. Tell your models how and when to use them.
+### Skills
 
+[Skills](https://skills.sh/) (sometimes called slash commands, custom commands, or agent skills) are reusable prompts or workflows that you define once and invoke repeatedly. They let you encode team-specific processes into your AI tool so that common tasks are performed consistently.
 
+For example, a team might define skills for:
+
+- **Code review**: a skill that checks a pull request against the team's coding standards and architectural constraints.
+- **Commit messages**: a skill that generates commit messages following the team's convention.
+- **Test generation**: a skill that writes tests matching the project's testing patterns and framework.
+- **Documentation**: a skill that generates or updates documentation in the team's preferred format.
+
+Skills are particularly valuable on a team because they standardize how the AI performs recurring tasks. Without them, each team member prompts the AI differently and gets different results. With a shared set of skills checked into the repository, everyone gets the same behavior.
+
+How skills are defined depends on the tool:
+
+- **Claude Code**: skills are Markdown files in `.claude/skills/<skill-name>/SKILL.md`, each in its own directory. They can be invoked as slash commands.
+- **Cursor**: custom commands or notepad entries that encode reusable prompts.
+- **GitHub Copilot**: reusable prompts configured through the Copilot instructions file or VS Code tasks.
+
+Like project-level instructions, skills should be version-controlled so the whole team benefits from improvements.
+
+### Memory and Context
+
+Some tools support persistent memory across sessions. Use this to store project-specific knowledge that the AI should retain: architectural decisions, common patterns, known gotchas, or recurring instructions you find yourself repeating.
+
+## Using AI Effectively
+
+### Start with clear intent
+
+Before asking an AI tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the AI enough context to produce something useful. The clearer your intent, the less time you spend correcting the output.
+
+### Verify, do not trust
+
+AI-generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Read what the AI produces. Run it. Test the edge cases. If you cannot explain why the code works, you do not understand it well enough to commit it.
+
+### Use AI to learn, not just to produce
+
+When the AI generates code you do not understand, ask it to explain. Use it as a learning tool, not just a production tool. The goal of Capstone is to grow as an engineer. Shipping code you cannot maintain or debug is not growth; it is debt.
+
+### Know when to stop prompting
+
+If you have gone back and forth with an AI tool more than a few times on the same problem and the output is still wrong, step back. Read the documentation. Look at examples. Ask a teammate. Sometimes the fastest path is not through the AI.
+
+## Choosing the Right Tool
+
+Things change rapidly in the AI space. New models are released frequently, each with different strengths. Rather than chasing benchmarks, consider what matters for your workflow:
+
+- **Context window**: how much of your codebase can the tool see at once? Larger context windows help with multi-file tasks.
+- **Speed vs. quality**: faster models are better for autocomplete; slower, more capable models are better for complex reasoning and multi-step changes.
+- **Integration**: does the tool work with your editor, terminal, and version control? The best tool is the one you actually use.
+- **Cost**: many tools have free tiers or student pricing. GitHub Copilot Pro is free with GitHub Education.
+
+If you want to compare models, these resources track current benchmarks:
+
+- [AI Benchmarking Hub](https://epoch.ai/benchmarks)
+- [LiveBench](https://livebench.ai/)
+
+## AI on a Team
+
+Using AI tools as an individual is straightforward. Using them on a team requires coordination, because each person's AI operates in its own context and has no awareness of what other team members (or their AI tools) are doing. Without shared norms, the codebase drifts toward inconsistency.
+
+This is covered in detail in the technical design and working agreement guides:
+
+<LinkCard
+  title="Technical Design in the Age of AI"
+  href="/guides/technical-design/#technical-design-in-the-age-of-ai"
+  description="How design documents help coordinate teams where everyone uses AI coding tools."
+/>
+
+<LinkCard
+  title="Team Working Agreement: AI Tool Usage"
+  href="/guides/working-agreement/#ai-tool-usage"
+  description="Team norms for coordinating AI tool usage."
+/>
+
+## Some Truths About AI Tools
+
+- AI tools make fast developers faster and careless developers more dangerous. The bottleneck is judgment, not typing speed.
+- The quality of AI output is proportional to the quality of context you provide. Invest in good project-level instructions.
+- AI-generated code is not inherently better or worse than human-written code. It still needs review, testing, and maintenance.
+- If you find yourself unable to debug or modify AI-generated code, you have a problem. You should understand everything in your codebase.
+- AI tools are evolving rapidly. What is true today may not be true next term. Stay curious and adapt.
+- The teams that use AI most effectively are not the ones that generate the most code. They are the ones that generate the *right* code and catch the wrong code early.
