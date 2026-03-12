@@ -1,0 +1,380 @@
+---
+title: DevOps and Deployment
+description: How to deploy your Capstone project reliably, from local development to production, using CI/CD pipelines and modern hosting platforms.
+draft: true
+sidebar:
+  order: 12
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+DevOps is the set of practices that bridges writing code and running it in production. Deployment is the act of getting your software from a repository to a place where users can actually use it. Without a deliberate approach to both:
+
+- Deployments happen manually and inconsistently, with each team member doing it slightly differently.
+- Bugs that the team caught locally slip through because the production environment behaves differently.
+- A deployment breaks the live system, and the team has no way to roll back quickly.
+- Setting up a development environment takes hours of tribal knowledge instead of a single command.
+
+The goal is not to become infrastructure experts. It is to reach a state where deploying is boring: predictable, repeatable, and recoverable when something goes wrong.
+
+## Development Environment Setup
+
+Before the team can deploy anything, every member needs to be able to run the project locally. This sounds trivial, but "it works on my machine" is one of the most common sources of wasted time in team projects.
+
+A good development setup has three properties:
+
+1. **Documented.** A new team member (or an AI coding tool) can go from cloning the repository to running the application by following a README. No Slack messages, no "ask Jordan, they know how to set it up."
+2. **Reproducible.** Every team member runs the same versions of dependencies, the same database schema, and the same configuration. Differences between environments are a source of bugs that are painful to diagnose.
+3. **Fast.** Getting started should take minutes, not hours. If setup requires installing six tools and configuring three services manually, automate it.
+
+### The README as Setup Guide
+
+Your repository's README should include a "Getting Started" section that covers:
+
+```markdown
+## Getting Started
+
+### Prerequisites
+- Node.js 20+ (recommend using [nvm](https://github.com/nvm-sh/nvm))
+- PostgreSQL 16+
+- A `.env` file (copy `.env.example` and fill in values)
+
+### Setup
+git clone https://github.com/your-team/your-project.git
+cd your-project
+cp .env.example .env        # then edit with your local values
+npm install
+npm run db:migrate
+npm run dev                  # starts the dev server at localhost:3000
+```
+
+If the project has multiple services (a frontend, a backend, a database), document how to start each one and in what order.
+
+<LinkCard
+  title="Documentation"
+  href="/guides/documentation/"
+  description="Writing effective README and CONTRIBUTING files."
+/>
+
+### Containers for Consistency
+
+If the project has complex dependencies (a specific database version, a message queue, system-level libraries), Docker and Docker Compose can standardize the environment across the team:
+
+```yaml
+# docker-compose.yml
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/mydb
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+```
+
+With this file, `docker compose up` starts the entire stack regardless of what is installed on each team member's machine. This is especially valuable when the team uses different operating systems.
+
+Containers are not required for every project. A simple frontend application or a Python script may not need them. Use containers when environment differences are causing problems or when the project has dependencies that are difficult to install consistently.
+
+:::tip[.env.example]
+Include a `.env.example` file in the repository with placeholder values for every required environment variable. This documents what configuration the application needs without exposing actual secrets. Each team member copies it to `.env` and fills in their own values.
+:::
+
+## Continuous Integration (CI)
+
+Continuous integration means automatically running checks (tests, linting, type checking, builds) on every push and pull request. CI catches problems before they reach the main branch, which means before they affect the rest of the team.
+
+### GitHub Actions
+
+GitHub Actions is the most common CI platform for GitHub-hosted projects. It is free for public repositories and has generous limits for private ones. A basic workflow file lives in `.github/workflows/`:
+
+```yaml
+# .github/workflows/ci.yml
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+```
+
+This workflow runs on every push to `main` and on every pull request targeting `main`. If any step fails, the workflow fails, and the PR is marked accordingly.
+
+For Python projects, the setup is similar:
+
+```yaml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Run tests
+        run: pytest
+```
+
+### What to Run in CI
+
+At minimum, CI should run:
+
+- **Tests.** The automated test suite is the most important check. If tests pass locally but fail in CI, that is a signal that the test depends on local state, which is a bug in the test.
+- **Linting.** Enforces code style consistency without relying on everyone to remember to run the linter.
+- **Build.** Verifies that the project compiles and builds successfully. A PR that passes tests but breaks the build is still broken.
+
+Optional but valuable:
+
+- **Type checking** (TypeScript's `tsc`, Python's `mypy` or `pyright`). Catches type errors before runtime.
+- **Security audits** (`npm audit`, `pip audit`). Flags known vulnerabilities in dependencies.
+- **Preview deployments.** Some platforms (Vercel, Netlify) automatically deploy every PR to a unique URL so reviewers can see the changes live.
+
+<CardGrid>
+  <LinkCard
+    title="Testing Strategy"
+    href="/guides/testing-strategy/"
+    description="What to test and how to integrate testing into your workflow."
+  />
+  <LinkCard
+    title="Git and GitHub Essentials"
+    href="/guides/git-and-github/"
+    description="Branch protection rules that require CI to pass before merging."
+  />
+</CardGrid>
+
+### CI and Branch Protection
+
+CI is most effective when combined with branch protection rules that require checks to pass before merging. In your repository's settings, under *Branches > Branch protection rules*, you can require:
+
+- Status checks (your CI workflow) to pass before merging.
+- At least one pull request review approval.
+
+This turns CI from an informational signal ("the build failed") into an enforced gate ("you cannot merge until the build passes"). It is the single most effective way to keep the main branch stable.
+
+## Continuous Deployment (CD)
+
+Continuous deployment means automatically deploying the application when code is merged to `main`. For many Capstone projects, this is the right approach: the main branch is always in a deployable state (because CI enforces that), so deploying it automatically is a natural extension.
+
+### Platform-as-a-Service (PaaS)
+
+For most Capstone projects, a platform-as-a-service provider is the right deployment target. These platforms handle server provisioning, HTTPS, scaling, and most infrastructure concerns so the team can focus on the application:
+
+| Platform | Good For | Free Tier |
+|----------|----------|-----------|
+| [Vercel](https://vercel.com) | Frontend apps, Next.js, static sites | Yes |
+| [Netlify](https://www.netlify.com) | Static sites, serverless functions | Yes |
+| [Railway](https://railway.app) | Full-stack apps, databases, background jobs | Trial credits |
+| [Render](https://render.com) | Web services, databases, cron jobs | Yes (limited) |
+| [Fly.io](https://fly.io) | Docker-based apps, globally distributed | Yes (limited) |
+| [Heroku](https://www.heroku.com) | Traditional web apps, add-on ecosystem | No (paid only) |
+| [GitHub Pages](https://pages.github.com) | Static sites, documentation | Yes |
+
+Most of these platforms support automatic deployments from GitHub: connect the repository, specify the build command and output directory, and every push to `main` triggers a deployment.
+
+:::tip[Preview Deployments]
+Vercel and Netlify automatically create preview deployments for every pull request. This lets reviewers see the changes running live before the PR is merged. It is an excellent addition to code review and costs nothing for public repositories.
+:::
+
+### Deploying to a VM or VPS
+
+Some projects need more control than a PaaS provides: custom system packages, GPU access, specific network configurations, or long-running background processes. In these cases, deploying to a virtual machine (DigitalOcean Droplet, AWS EC2, Google Compute Engine, OSU infrastructure) may be appropriate.
+
+Deploying to a VM involves more operational responsibility:
+
+- **SSH access and security.** Use SSH keys, not passwords. Disable root login. Keep the OS updated.
+- **Process management.** Use `systemd`, `pm2`, or `supervisor` to keep your application running and restart it if it crashes.
+- **Reverse proxy.** Use Nginx or Caddy in front of your application to handle HTTPS, static files, and request routing.
+- **Updates.** You are responsible for deploying new versions. Automate this with a GitHub Actions workflow that SSHs into the server and pulls the latest code, or use a tool like Ansible or Kamal.
+
+A VM deployment is more work to set up and maintain, but it teaches skills that are directly transferable to industry roles.
+
+### Database Hosting
+
+If your project uses a database, you need somewhere to host it in production. Options:
+
+- **Managed database services**: Supabase (PostgreSQL), PlanetScale (MySQL), MongoDB Atlas (MongoDB), Neon (PostgreSQL). These handle backups, scaling, and security patches.
+- **Platform-provided databases**: Railway, Render, and Heroku offer database add-ons that integrate with the application deployment.
+- **Self-hosted on a VM**: Running PostgreSQL or MySQL on your own server gives full control but requires you to handle backups, updates, and security.
+
+For most Capstone projects, a managed service is the right choice. It removes operational burden and provides a reliable free tier for small workloads.
+
+## Environment Management
+
+Most applications behave differently in development, staging, and production. Environment variables control these differences without changing code.
+
+### The Three Environments
+
+- **Development (local).** Runs on each developer's machine. Uses local databases, mock services, verbose logging, and debug tools.
+- **Staging (optional).** A deployed version that mirrors production but is not public. Useful for testing deployments and integrations before they reach real users.
+- **Production.** The live system that users interact with. Uses real databases, real API keys, minimal logging, and error tracking.
+
+### Environment Variables
+
+Configuration that changes between environments (database URLs, API keys, feature flags, log levels) should be stored in environment variables, not in code:
+
+```javascript
+// Good: reads from the environment
+const dbUrl = process.env.DATABASE_URL;
+
+// Bad: hardcoded connection string
+const dbUrl = "postgres://user:password@localhost:5432/mydb";
+```
+
+Each environment has its own set of variables:
+
+- **Local:** defined in `.env` (never committed).
+- **CI:** defined in GitHub Actions workflow files or repository secrets.
+- **Production:** defined in the hosting platform's settings (Vercel Environment Variables, Railway Variables, Heroku Config Vars).
+
+<LinkCard
+  title="Security and Threat Modeling"
+  href="/guides/security/"
+  description="Why secrets must stay out of code and how to manage them."
+/>
+
+### Database Migrations
+
+Changes to the database schema should be managed through migration files, not manual SQL commands. Migrations are version-controlled scripts that transform the database from one state to the next:
+
+```bash
+# Create a new migration
+npx prisma migrate dev --name add-user-roles
+
+# Apply migrations in production
+npx prisma migrate deploy
+```
+
+Every ORM and database toolkit has a migration system: Prisma (JavaScript/TypeScript), Alembic (Python/SQLAlchemy), Django migrations (Python), Flyway (Java), golang-migrate (Go). Use whichever matches your stack.
+
+The key discipline is: *never modify the database schema by hand in production.* Always create a migration, test it locally, commit it, and apply it through the deployment pipeline. This ensures every environment has the same schema and that changes are reversible.
+
+## Deployment Checklist
+
+Before your first production deployment (and periodically after), walk through this checklist:
+
+### Application
+- [ ] The application builds and starts successfully with production configuration.
+- [ ] Environment variables are set for production (database URL, API keys, secrets).
+- [ ] Debug mode is off and error pages do not expose stack traces.
+- [ ] Logging is configured to capture errors without leaking sensitive data.
+
+### Infrastructure
+- [ ] HTTPS is enabled (most PaaS providers handle this automatically).
+- [ ] The database is hosted and accessible from the production environment.
+- [ ] Database migrations have been run against the production database.
+- [ ] DNS is configured if using a custom domain.
+
+### Operations
+- [ ] The team knows how to trigger a deployment (automatic on merge, or manual steps).
+- [ ] The team knows how to roll back a deployment if something goes wrong.
+- [ ] Error tracking is set up (Sentry, LogRocket, or at minimum, centralized logging).
+- [ ] The team has access to production logs for debugging.
+
+### Security
+- [ ] Secrets are stored in the platform's environment variable system, not in code.
+- [ ] Default credentials have been changed.
+- [ ] CORS is configured appropriately.
+- [ ] The `.gitignore` includes `.env` and other sensitive files.
+
+<LinkCard
+  title="Security and Threat Modeling"
+  href="/guides/security/"
+  description="Security misconfiguration checklist for deployments."
+/>
+
+## Monitoring and Error Tracking
+
+Deploying the application is not the end. You need to know when something breaks in production, ideally before a user reports it.
+
+**Error tracking services** like [Sentry](https://sentry.io/) (free tier available) capture unhandled exceptions with full stack traces, request context, and the release version that introduced the error. Setting up Sentry takes a few minutes and provides visibility that console logging cannot match.
+
+At minimum, ensure the team has a way to:
+
+- See errors that occur in production.
+- Identify which deployment introduced a regression.
+- Access application logs from the hosting platform.
+
+You do not need a sophisticated monitoring stack. For a Capstone project, Sentry plus the hosting platform's built-in logs is sufficient. The important thing is that errors do not disappear silently.
+
+## Rollbacks
+
+Every deployment should be reversible. When a deployment breaks something, the team needs to restore the previous working version quickly. How you roll back depends on your deployment approach:
+
+- **PaaS platforms:** Vercel, Netlify, and Render allow instant rollbacks to any previous deployment through their dashboard. Learn where this button is before you need it.
+- **Container-based deployments:** Keep the previous container image tagged and ready. Rolling back means deploying the previous image.
+- **VM deployments:** If deploying via `git pull`, a rollback means checking out the previous commit and restarting the service. Automate this so it is a single command, not a scramble.
+
+A deployment process without a rollback plan is incomplete. The first time a deploy goes wrong at 10 PM before a demo, you will be glad you thought about this in advance.
+
+## Best Practices
+
+- Automate everything you do more than twice. If you SSH into a server and run the same three commands on every deploy, put them in a script or a GitHub Actions workflow.
+- Deploy early and often. The first deployment should happen in the first or second sprint, even if the application does little. Deploying a "Hello World" page validates the entire pipeline. Waiting until the project is "ready" means debugging application bugs and infrastructure bugs simultaneously.
+- Keep the main branch deployable at all times. CI plus branch protection makes this achievable. If `main` is always in a working state, deploying from it is safe.
+- Use the same build process everywhere. If the application builds with `npm run build` locally, it should build with `npm run build` in CI and in production. Different build commands in different environments hide bugs.
+- Treat infrastructure configuration as code. Docker Compose files, GitHub Actions workflows, Nginx configs, and deployment scripts belong in the repository and go through the same review process as application code.
+- Document your deployment process. Even if it is automated, write down what happens when, how to trigger a deploy, and how to roll back. The team member who set it up will not always be available when something goes wrong.
+
+## Some Truths About DevOps
+
+- The first deployment is the hardest. Every one after that is routine, provided you automate it.
+- Teams that delay deployment until "the code is ready" inevitably discover deployment problems at the worst possible time: right before a demo or handoff.
+- A deployment that takes 30 minutes of manual steps will eventually be done incorrectly. Automation is not a luxury. It is how you prevent mistakes.
+- Most production outages in student projects are caused by configuration errors (wrong environment variable, missing database migration, debug mode on), not by code bugs. The deployment checklist exists for this reason.
+- You do not need Kubernetes. For a Capstone project, a PaaS with automatic deployments is almost certainly sufficient. Choose the simplest infrastructure that meets your needs.
+- Containers are powerful but optional. If `npm install && npm start` works reliably for your team, you do not need Docker. Add it when environment inconsistency becomes a real problem, not as a resume-driven decision.
+
+## DevOps in Industry and Academia
+
+In industry, DevOps is not a separate role for most organizations. It is a set of practices that every software engineer is expected to understand. CI/CD pipelines, containerized deployments, infrastructure as code, and monitoring are baseline skills for software engineering positions. Companies like Google, Netflix, and Amazon deploy hundreds or thousands of times per day, and their ability to do so reliably depends on the automation and practices described in this guide.
+
+The "you build it, you run it" philosophy (attributed to Amazon's Werner Vogels) means that the team that writes the code is also responsible for deploying, monitoring, and supporting it. Capstone projects are a natural place to practice this: your team builds the software, and your team is responsible for getting it running and keeping it running.
+
+In research settings, reproducibility is the equivalent of reliable deployment. A research project that cannot be set up and run by someone other than the original author has limited scientific value. Docker, dependency pinning, and clear setup instructions serve the same purpose in academia as deployment pipelines serve in industry: they make the work reproducible by others.
+
+The deployment skills you develop during Capstone transfer directly. Every professional software project needs to go from code to running system, and the team that understands that pipeline has a significant advantage over one that treats deployment as someone else's problem.

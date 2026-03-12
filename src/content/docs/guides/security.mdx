@@ -1,0 +1,247 @@
+---
+title: Security and Threat Modeling
+description: How to think about security in your Capstone project, from identifying threats early to building software that handles real-world attacks gracefully.
+sidebar:
+  order: 11
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Security is the practice of building software that behaves correctly even when someone is actively trying to break it. It is not a feature you add at the end. It is a property of how you design, build, and deploy your system from the start. Without deliberate attention to security:
+
+- User data gets exposed through a misconfigured API endpoint or a leaked database connection string.
+- An attacker exploits a form input to run arbitrary code on your server.
+- Credentials committed to a public repository get scraped within minutes and used to compromise cloud accounts.
+- The project partner's production environment is left vulnerable because the team never considered who might use the system maliciously.
+
+You are not building a bank. But you are building software that real people may use, and many Capstone projects handle real data, real user accounts, and real deployments. The baseline expectation is not perfection. It is *awareness*: knowing where the risks are, addressing the most critical ones, and making conscious decisions about the rest.
+
+## Threat Modeling: Thinking Like an Attacker
+
+Threat modeling is a structured way to identify what could go wrong before it does. Instead of guessing at security measures, you systematically ask: *What are we building? What can go wrong? What are we going to do about it?*
+
+The goal is not to enumerate every possible attack. It is to find the threats that matter most for *your* project and address them proportionally. A student portfolio site has different security needs than a healthcare data pipeline.
+
+### A Lightweight Threat Modeling Process
+
+For a Capstone project, a full formal threat model is overkill. A lightweight version that the team can complete in a single session is far more valuable than a comprehensive one that never happens. Here is a practical approach:
+
+**1. Draw the system.** Start with a diagram of your architecture: the components, the data flows between them, and the trust boundaries (where data crosses from one security context to another). If you already have a C4 context or container diagram from your technical design, use that.
+
+<LinkCard
+  title="Technical Design"
+  href="/guides/technical-design/"
+  description="Architecture diagrams that double as the starting point for threat modeling."
+/>
+
+**2. Identify the assets.** What data or resources are valuable? User credentials, personal information, API keys, payment data, research datasets, administrative access. These are what an attacker wants.
+
+**3. Identify the entry points.** Where can external input reach your system? Web forms, API endpoints, file uploads, URL parameters, WebSocket connections, environment variables read from external sources. Every entry point is a potential attack surface.
+
+**4. Ask "what could go wrong?" at each entry point.** For each entry point and each asset, consider the common threat categories. The STRIDE model provides a useful checklist:
+
+| Threat | Question | Example |
+|--------|----------|---------|
+| **S**poofing | Can someone pretend to be another user or system? | Forged authentication tokens, session hijacking |
+| **T**ampering | Can someone modify data they should not? | Changing another user's profile via a direct API call |
+| **R**epudiation | Can someone deny an action they took? | Deleting audit logs, unsigned transactions |
+| **I**nformation Disclosure | Can someone access data they should not see? | Database dumps via SQL injection, verbose error messages exposing internals |
+| **D**enial of Service | Can someone make the system unavailable? | Flooding an endpoint with requests, triggering expensive queries |
+| **E**levation of Privilege | Can someone gain access beyond their role? | A regular user accessing admin endpoints, path traversal to read server files |
+
+You do not need to address every cell in the matrix. Focus on the threats that are both likely and impactful for your specific project.
+
+**5. Decide what to do about each threat.** For each identified threat, the team has four options:
+
+- **Mitigate**: implement a control that reduces or eliminates the risk (input validation, authentication, encryption).
+- **Accept**: acknowledge the risk and document why it is acceptable for this project (low likelihood, low impact, out of scope).
+- **Transfer**: shift the risk to a third party (use a managed authentication service instead of building your own).
+- **Avoid**: remove the feature or component that introduces the risk.
+
+Document your decisions. An Architecture Decision Record is a natural place for security decisions and their rationale.
+
+<LinkCard
+  title="Architecture Decision Records"
+  href="/guides/adr/"
+  description="Document security decisions alongside other architectural choices."
+/>
+
+:::tip[When to Threat Model]
+Do a lightweight threat modeling session early, ideally when the technical design is taking shape. Revisit it when the architecture changes significantly or when you add a new integration. It does not need to be a formal event. A 30-minute team discussion with a whiteboard or shared document is enough.
+:::
+
+## The OWASP Top 10: Common Vulnerabilities
+
+The [OWASP Top 10](https://owasp.org/www-project-top-ten/) is a regularly updated list of the most critical security risks in web applications. Not every item applies to every project, but knowing the list helps you recognize common mistakes before you make them.
+
+Here are the ones most relevant to Capstone projects:
+
+### Injection
+
+Injection attacks happen when untrusted input is sent to an interpreter (a database, a shell, an operating system command) as part of a command or query. The most common variant is SQL injection:
+
+```python
+# Vulnerable: user input is concatenated directly into the query
+query = f"SELECT * FROM users WHERE email = '{user_input}'"
+
+# Safe: parameterized query separates data from code
+cursor.execute("SELECT * FROM users WHERE email = %s", (user_input,))
+```
+
+The principle applies everywhere input meets an interpreter: SQL queries, shell commands, LDAP queries, template engines. The defense is always the same: never concatenate untrusted input into executable code. Use parameterized queries, prepared statements, or safe APIs that handle escaping for you.
+
+If you are using an ORM (like SQLAlchemy, Prisma, or Django's ORM), you are largely protected from SQL injection for standard queries. But be cautious with raw query methods or string-based filters, which bypass the ORM's built-in protections.
+
+### Broken Authentication and Session Management
+
+Authentication is how the system verifies who a user is. Session management is how it remembers that identity across requests. Common mistakes:
+
+- Storing passwords in plaintext or with weak hashing. Use `bcrypt`, `argon2`, or `scrypt`. Never use MD5 or SHA-256 alone for password hashing.
+- Session tokens that are predictable, never expire, or are not invalidated on logout.
+- Missing rate limiting on login endpoints, allowing brute-force attacks.
+
+For most Capstone projects, the best approach is to *not build your own authentication*. Use a managed service or established library:
+
+- **Firebase Authentication**, **Auth0**, **Clerk**, or **Supabase Auth** for managed solutions.
+- **Passport.js** (Node.js), **Django's auth system** (Python), or **NextAuth.js** (Next.js) for library-based approaches.
+
+If you must implement authentication yourself, treat it as a high-risk component and test it thoroughly.
+
+### Cross-Site Scripting (XSS)
+
+XSS attacks inject malicious scripts into web pages viewed by other users. If your application displays user-generated content without escaping it, an attacker can inject JavaScript that steals cookies, redirects users, or modifies the page.
+
+Modern frontend frameworks (React, Vue, Svelte, Angular) escape output by default, which prevents most XSS. The risk surfaces when you use escape hatches that bypass this protection, such as React's `dangerouslySetInnerHTML`, Vue's `v-html`, or Svelte's `{@html}` directive. These should only be used with content you fully control or have sanitized with a library like [DOMPurify](https://github.com/cure53/DOMPurify).
+
+The same risk applies when rendering user input in contexts that frameworks do not protect: URLs, CSS values, and inline JavaScript.
+
+### Broken Access Control
+
+Access control determines what an authenticated user is allowed to do. Broken access control means a user can perform actions or access data beyond their intended permissions. Common patterns:
+
+- A user can view another user's data by changing an ID in the URL (`/api/users/42/profile` to `/api/users/43/profile`).
+- An API endpoint checks whether a user is logged in but not whether they have permission to perform the requested action.
+- Administrative functions are hidden from the UI but accessible via direct API calls.
+
+The fix is to check authorization on the server for every request, not just in the frontend. Never rely on hiding a button or link as a security measure.
+
+### Security Misconfiguration
+
+The most common security failures are not sophisticated attacks. They are misconfigurations:
+
+- Debug mode left enabled in production, exposing stack traces and internal state.
+- Default credentials on databases, admin panels, or cloud services.
+- Overly permissive CORS policies that allow any origin to make authenticated requests.
+- Cloud storage buckets (S3, GCS) left publicly readable.
+- Unnecessary ports or services exposed to the internet.
+
+A quick checklist before any deployment:
+
+- [ ] Debug mode is off.
+- [ ] Default passwords are changed.
+- [ ] Environment variables (not hardcoded values) are used for secrets.
+- [ ] CORS is configured to allow only the origins that need access.
+- [ ] Error pages do not leak stack traces or internal details.
+
+## Secrets Management
+
+Secrets (API keys, database passwords, tokens, private keys) must never appear in your source code or version history. This is the single most common security mistake in student projects, and it has real consequences: bots continuously scan public GitHub repositories for leaked credentials.
+
+```bash
+# .env file (never committed to version control)
+DATABASE_URL=postgres://user:password@localhost:5432/mydb
+API_KEY=sk-abc123...
+JWT_SECRET=your-secret-key
+```
+
+```bash
+# .gitignore (add this before your first commit)
+.env
+.env.local
+.env.production
+```
+
+If you have already committed a secret to your repository, changing the `.gitignore` is not enough. The secret exists in Git history. Rotate the credential immediately (generate a new key and revoke the old one), then use a tool like [git-filter-repo](https://github.com/newren/git-filter-repo) or [BFG Repo-Cleaner](https://github.com/rtyley/bfg-repo-cleaner) to remove it from history if needed.
+
+For deployment, use your platform's secrets management: environment variables on Vercel, Heroku, or Railway; GitHub Secrets for CI/CD workflows; cloud provider secret managers (AWS Secrets Manager, Google Secret Manager) for production systems.
+
+<LinkCard
+  title="Git and GitHub Essentials"
+  href="/guides/git-and-github/"
+  description="Using .gitignore and keeping secrets out of version control."
+/>
+
+## Dependency Security
+
+Your project depends on dozens or hundreds of open-source packages. Any of them could contain known vulnerabilities. Keeping dependencies updated and audited is a basic security hygiene practice.
+
+```bash
+# Check for known vulnerabilities
+npm audit              # Node.js
+pip audit              # Python (requires pip-audit)
+cargo audit            # Rust
+```
+
+GitHub's **Dependabot** can automatically open pull requests when a dependency has a known vulnerability. Enable it in your repository settings under *Security > Dependabot alerts*. It is free for public repositories and requires minimal configuration.
+
+Not every vulnerability alert is urgent. Read the advisory, understand whether the vulnerable code path is actually reachable in your project, and prioritize accordingly. But do not ignore alerts indefinitely. Unpatched known vulnerabilities are one of the most common ways real systems get compromised.
+
+## HTTPS and Transport Security
+
+All communication between your frontend and backend (and between your backend and external services) should use HTTPS, not HTTP. HTTPS encrypts data in transit, preventing anyone on the network from reading or modifying it.
+
+Most modern hosting platforms (Vercel, Netlify, Heroku, Railway) provide HTTPS by default. If you are deploying to a VM or container, use a reverse proxy like Nginx or Caddy with automatic TLS certificate management via Let's Encrypt.
+
+For API calls to external services, always use `https://` URLs. If a third-party API only supports HTTP, treat the data flowing through it as potentially compromised.
+
+## Input Validation and Output Encoding
+
+The general principle behind most web vulnerabilities is the same: untrusted input is treated as trusted code or data. The defense has two sides:
+
+- **Validate input**: check that incoming data matches expected formats, types, lengths, and ranges *before* processing it. Reject anything that does not conform. Do this on the server, even if you also validate on the client.
+- **Encode output**: when displaying user-supplied data, ensure it is treated as data, not as executable code. This means HTML-encoding for web pages, parameterizing for SQL, and escaping for shell commands.
+
+Validation on the client (in the browser) improves user experience but provides no security. A user can bypass any client-side check by sending requests directly to the API. Server-side validation is the real boundary.
+
+## Security for Research and Data Projects
+
+Projects that handle datasets, machine learning models, or research data have security concerns that differ from typical web applications:
+
+- **Data privacy.** If your dataset contains personally identifiable information (PII) such as names, emails, health records, or location data, it must be handled with care. Anonymize or pseudonymize data before processing. Store raw data with restricted access. Check whether your project needs IRB approval.
+- **Model security.** Machine learning models can be vulnerable to adversarial inputs (data crafted to cause misclassification) and data poisoning (corrupted training data). If your model makes decisions that affect people, consider how it might be manipulated.
+- **Notebook hygiene.** Jupyter notebooks frequently contain hardcoded credentials, API keys, and connection strings in cell outputs. Clear outputs before committing, and use environment variables for credentials.
+
+:::note[IRB and Data Handling]
+If your project involves human subjects data or personally identifiable information, check with your faculty advisor about [IRB requirements](https://research.oregonstate.edu/ori/irb) early. The approval process takes time and must be completed before data collection begins.
+:::
+
+## Best Practices
+
+- Do a lightweight threat modeling session when the architecture takes shape. Revisit when it changes.
+- Never commit secrets to version control. Use environment variables and `.gitignore` from day one.
+- Use established libraries and services for authentication. Do not roll your own unless the project specifically requires it.
+- Validate all input on the server. Client-side validation is a convenience, not a security measure.
+- Keep dependencies updated and enable Dependabot alerts.
+- Check the OWASP Top 10 against your project before each major deployment.
+- Use HTTPS for all network communication.
+- Apply the principle of least privilege: give users, services, and API keys only the access they need, nothing more.
+- Log security-relevant events (failed logins, access denied, input validation failures) so you can detect suspicious behavior.
+
+## Some Truths About Security
+
+- Most security breaches exploit simple, well-known vulnerabilities, not sophisticated zero-day attacks. The basics matter more than the advanced stuff.
+- Security is a spectrum, not a binary. You will not make your project perfectly secure. You can make it meaningfully harder to exploit.
+- The earlier you think about security, the cheaper it is to address. Retrofitting authentication or access control into a system that was not designed for it is painful.
+- Teams that never think about security are not building insecure software on purpose. They just do not realize they are making decisions with security implications.
+- Using a framework's defaults is often more secure than customizing. Frameworks encode years of security lessons into their defaults. Override them only when you understand why they exist.
+- If you leak a credential, rotating it immediately is the only reliable fix. Deleting the commit is not enough.
+
+## Security in Industry and Academia
+
+In industry, security is a baseline expectation, not a specialization. Companies like Google, Microsoft, and Amazon require threat models for new features and conduct regular security reviews. The OWASP Top 10 and STRIDE are standard vocabulary in software engineering interviews and design reviews. Many organizations require automated security scanning (SAST, DAST, dependency auditing) as part of their CI/CD pipeline.
+
+Security certifications and compliance frameworks (SOC 2, HIPAA, GDPR, PCI-DSS) govern how companies handle sensitive data. While Capstone projects are unlikely to require formal compliance, understanding that these frameworks exist and why they matter is valuable context for industry roles.
+
+In academia, security concerns increasingly intersect with research ethics, especially in projects involving human subjects data, machine learning models that affect people, or systems deployed in sensitive environments. Responsible data handling and privacy-preserving techniques are becoming standard expectations in computational research.
+
+The security habits you build now (thinking about threats early, managing secrets properly, validating input, keeping dependencies updated) transfer directly to professional practice. They are not overhead. They are part of building software that works reliably in the real world.
