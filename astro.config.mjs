@@ -17,9 +17,7 @@ export default defineConfig({
     starlight({
       title: 'CS Capstone Handbook',
       lastUpdated: true,
-      components: {
-        Pagination: './src/components/Pagination.astro',
-      },
+      components: {},
       customCss: [
         // Path to your Tailwind base styles:
         './src/styles/global.css',
