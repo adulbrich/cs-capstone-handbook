@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets';
-import ToggleButton from './ToggleButton.astro';
 import Spinner from './Spinner.astro';
 import NavigationButton from './NavigationButton.astro';
 import Indicators from './Indicator.astro';
@@ -11,24 +10,18 @@ interface IImage {
 
 interface Props {
   images: IImage[];
+  autoplayInterval?: number;
 }
 
-const { images } = Astro.props;
+const { images, autoplayInterval = 3000 } = Astro.props;
 ---
 
-<!-- Auhor: https://github.com/gwattana/astro-image-carousel -->
+<!-- Author: https://github.com/gwattana/astro-image-carousel -->
 <!--  TODO: fix styles such as rounded corners -->
 
-<section class="relative w-full -m-2" role="region" aria-label="Image carousel">
+<section class="relative w-full -m-2" role="region" aria-label="Image carousel" data-autoplay-interval={autoplayInterval}>
   <!-- Carousel Wrapper -->
   <div class="relative w-full overflow-hidden">
-    <!-- Toggle Box -->
-    <div
-      class="hidden"
-    >
-      <ToggleButton id="autoplay-toggle" label="Auto play" />
-    </div>
-
     <!-- Carousel Items -->
     <div
       id="carousel"
@@ -57,12 +50,12 @@ const { images } = Astro.props;
     <!-- Navigation Buttons -->
     <NavigationButton
       direction="prev"
-      class="absolute left-4 top-0"
+      class="absolute left-4 top-1/2 -translate-y-1/2"
       data-action={'prev'}
     />
     <NavigationButton
       direction="next"
-      class="absolute right-4 top-0"
+      class="absolute right-4 top-1/2 -translate-y-1/2"
       data-action={'next'}
     />
 
@@ -73,6 +66,7 @@ const { images } = Astro.props;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const section = document.querySelector<HTMLElement>('[data-autoplay-interval]')!;
     const carousel = document.querySelector<HTMLDivElement>('#carousel')!;
     const images = carousel.querySelectorAll<HTMLImageElement>('img');
     const indicators =
@@ -80,10 +74,9 @@ const { images } = Astro.props;
     const navigationButtons =
       document.querySelectorAll<HTMLButtonElement>('[data-action]');
     let currentIndex = 0;
-    const autoplayInterval = 3000; // Change slides every 3 seconds
+    const autoplayInterval = Number(section.dataset.autoplayInterval) || 3000;
     let autoplayTimer: ReturnType<typeof setInterval>;
     let isAutoplay = true;
-    const autoPlayToggle = document.getElementById('autoplay-toggle')!;
 
     images.forEach((img: HTMLImageElement) => {
       const spinner = img.previousElementSibling as HTMLElement;
@@ -145,21 +138,6 @@ const { images } = Astro.props;
       startAutoplay();
     }
 
-    // Event listener for auto-play toggle
-    autoPlayToggle.addEventListener('change', (e) => {
-      const target = e.target as HTMLInputElement;
-
-      if (target.checked) {
-        // Start auto-play when checked
-        isAutoplay = true;
-        startAutoplay();
-      } else {
-        // Stop auto-play when unchecked
-        isAutoplay = false;
-        stopAutoplay();
-      }
-    });
-
     // Add event listeners for navigation buttons
     navigationButtons.forEach((button) => {
       button.addEventListener('click', () =>
@@ -191,5 +169,3 @@ const { images } = Astro.props;
     });
   });
 </script>
-
-<style></style>

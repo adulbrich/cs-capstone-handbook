@@ -1,15 +1,68 @@
 ---
 import katex from "katex";
+import "katex/dist/katex.min.css";
 
-const { formula = "", inline = true } = Astro.props;
-const html = katex.renderToString(formula, { throwOnError: false, displayMode: !inline });
+const {
+  formula = "",
+  inline = true,
+  numbered = false,
+  label = "",
+} = Astro.props;
+
+const html = katex.renderToString(formula, {
+  throwOnError: false,
+  displayMode: !inline,
+  strict: (errorCode) => {
+    if (errorCode === "newLineInDisplayMode") {
+      return "ignore";
+    }
+    return "warn";
+  },
+});
+
+const eqLabel = numbered ? label || "" : "";
 ---
 
-<span class={inline ? "inline" : "block text-center"} set:html={html}/>
+{
+  inline ? (
+    // Inline formulas: keep them inline-block so text flows correctly
+    <span class="inline-block align-middle" set:html={html} />
+  ) : (
+    // Display formulas: allow horizontal scrolling for long formulas and
+    // show a right-aligned equation number outside the scroll area.
+    <div class="relative block my-4 w-full">
+      {/* Scroll container (makes long formulas scrollable) — add right padding so
+        the absolute eq-number doesn't overlap the formula */}
+      <div
+        class="max-w-full overflow-x-auto overflow-y-hidden pr-4 md:pr-16"
+        style="-webkit-overflow-scrolling: touch;"
+      >
+        {/*
+        On small screens: left align and keep the equation-number inline at the
+        end of the formula so users can scroll to see the whole expression.
+        On md+ screens: horizontally center the formula and hide the inline
+        number (we'll show the absolute right-aligned number instead).
+      */}
+        <div class="w-full flex justify-start md:justify-center items-center gap-4">
+          <span class="inline-block" set:html={html} />
 
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.css"
-  integrity="sha384-veTAhWILPOotXm+kbR5uY7dRamYLJf58I7P+hJhjeuc7hsMAkJHTsPahAl0hBST0"
-  crossorigin="anonymous"
-/>
+          {/* Inline eq-number for small/mobile screens (hidden on md+). It will sit
+            immediately after the formula and be part of the scrollable content */}
+          {numbered && eqLabel && (
+            <span class="text-sm text-gray-600 whitespace-nowrap md:hidden">
+              {eqLabel}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {numbered && eqLabel && (
+        // Absolute-position the equation number to the right on md+ screens and
+        // vertically center it — hidden on small screens where we show the inline label.
+        <span class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 ml-4 shrink-0 text-sm text-gray-600 whitespace-nowrap">
+          {eqLabel}
+        </span>
+      )}
+    </div>
+  )
+}

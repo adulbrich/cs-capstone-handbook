@@ -6,7 +6,7 @@ interface Props {
 const { count } = Astro.props;
 ---
 
-<div id="indicators" class="absolute bottom-4 left-1/2">
+<div id="indicators" class="absolute bottom-4 left-1/2 -translate-x-1/2">
   {
     Array.from({ length: count }).map((_, index) => (
       <button
