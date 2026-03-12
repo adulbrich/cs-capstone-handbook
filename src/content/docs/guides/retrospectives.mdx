@@ -1,20 +1,160 @@
 ---
 title: Retrospectives
-description: TBD
-draft: true
+description: How to run effective retrospectives that drive real improvement, from sprint-level check-ins to project-wide reflections.
 sidebar:
   order: 5
 ---
 
-TBD
+import { LinkCard } from '@astrojs/starlight/components';
 
-Discuss the following:
-- continuous improvement
-- on-demand team retrospectives
-- sprint retrospectives
-- project retrospectives
-- incident retrospectives / root cause analysis
-- post-mortem
-- who should participate to what
-- 4Ls
-- Start, Stop, Continue
+A retrospective is a structured conversation where the team examines how it worked, not what it built. It is the primary mechanism for continuous improvement in software engineering. Without regular retrospectives:
+
+- Problems that are obvious to everyone get discussed privately but never fixed.
+- Teams repeat the same mistakes across sprints and terms.
+- Wins go unacknowledged, and the team underestimates its own progress.
+- Interpersonal friction accumulates silently until it becomes a crisis.
+
+A good retrospective is **psychologically safe, time-boxed, and action-oriented**. It is not a blame session, a status meeting, or a performance review.
+
+## Types of Retrospectives
+
+Retrospectives serve different purposes depending on the scope and timing. The format and depth should match what the team is reflecting on.
+
+### Sprint Retrospective
+
+Run at the end of each sprint. The team reflects on the sprint just completed: what worked, what did not, and what will change next sprint. Time-box this to 30 to 45 minutes. It should feel lightweight, a habit rather than a ceremony.
+
+### Term Retrospective
+
+Run at the end of each term. Broader in scope than a sprint retrospective, it covers the term's arc: major successes, major failures, team dynamics, and what to carry forward. The term retrospective should produce a written artifact that captures themes and commitments, not just meeting notes.
+
+Time-box the meeting to 60 to 90 minutes. The written document takes additional time to produce.
+
+:::tip[Writing a Term Retrospective]
+The best written retrospectives tell the story of the term rather than listing events. Identify a few major themes (successes or pain points), support each with concrete evidence (a sprint metric, a code review thread, a project partner comment), and commit to specific actions with named owners and timeframes. A retrospective that demonstrates *why* things happened and *what the team is doing about it* is far more valuable than a chronological summary.
+:::
+
+### Project Retrospective
+
+Run at the end of the project. Covers the full lifecycle from initial requirements through delivery. A project retrospective is a good time for individual reflections, where each team member documents their own growth, contributions, and lessons learned.
+
+### Incident Retrospective (Post-Mortem)
+
+When something breaks (or nearly breaks) in production, run a targeted retrospective focused on root cause analysis. The output is a post-mortem document. The goal is systemic improvement, not assigning blame.
+
+:::tip[Blameless Culture]
+Effective post-mortems are blameless. Assume everyone involved acted with good intent and the best information available at the time. The question is "what system or process failed?", not "who failed?" Teams that punish honest post-mortems get dishonest ones.
+:::
+
+## Formats
+
+There is no single right way to run a retrospective. Different formats surface different kinds of insight. Try a few and settle on what works for the team, or rotate formats to keep the conversation fresh.
+
+### Start, Stop, Continue
+
+One of the simplest and most effective formats. Each team member contributes to three lists:
+
+- **Start**: things the team should begin doing.
+- **Stop**: things the team should stop doing.
+- **Continue**: things that are working and should be preserved.
+
+After individual contributions, cluster similar items and select two or three to act on. Avoid trying to address everything.
+
+### 4Ls
+
+Each team member reflects on four dimensions:
+
+- **Liked**: what did you enjoy or appreciate this sprint?
+- **Learned**: what did you learn?
+- **Lacked**: what was missing or insufficient?
+- **Longed for**: what do you wish had happened?
+
+4Ls surfaces individual emotional experience, not just process observations. It works well when the team has been under stress or when something significant happened.
+
+### Timeline
+
+Draw a shared timeline of the sprint or term. Each member adds events: technical milestones, good moments, hard moments, surprises. The exercise builds shared memory and often reveals patterns ("every integration push happens in the last two days of the sprint").
+
+### Sailboat
+
+Draw a sailboat with:
+
+- **Wind** (things pushing the team forward)
+- **Anchors** (things slowing it down)
+- **Rocks ahead** (upcoming risks)
+- **Destination** (the goal)
+
+Good for mid-project retrospectives when the team needs to reconnect with why it is doing what it is doing.
+
+## Running a Good Retrospective
+
+The format matters less than how the retrospective is facilitated. A well-run retrospective with a simple format will outperform a poorly facilitated one with an elaborate structure.
+
+### Set the Stage
+
+Open with a brief check-in. Ask each person a low-stakes question ("One word for how the sprint went?") to ensure everyone has spoken before the harder topics come up. This reduces the activation energy to contribute.
+
+### Psychological Safety First
+
+People will not share real observations if they fear embarrassment or retaliation. Ground rules:
+
+- What is said in the retrospective stays in the retrospective, unless the team decides to document it.
+- Observations are about systems and processes, not about individuals.
+- The facilitator actively invites quieter voices before closing a topic.
+
+### Facilitate, Don't Dominate
+
+Rotate the facilitator role across team members. The facilitator's job is to run the process, not to share the most opinions. A good facilitator asks questions, synthesizes contributions, and keeps time.
+
+### Focus on Actions
+
+A retrospective without concrete action items is a vent session. For every theme the team selects, define:
+
+- **What will change?** (a specific action, not a vague intention)
+- **Who owns it?** (one person, not "the team")
+- **By when?** (a sprint number or a date)
+- **How will we know it worked?** (a success indicator)
+
+Review action items from the previous retrospective at the opening of the next one. If they were not completed, understand why before adding new ones.
+
+<LinkCard
+  title="Teamwork Activities"
+  href="/activities/teamwork/"
+  description="Team health and process assessment activities that pair well with retrospectives."
+/>
+
+## Post-Mortem Format
+
+For incidents, a lightweight post-mortem covers five areas:
+
+1. **Summary**: what happened, and what was the impact?
+2. **Timeline**: a chronological reconstruction of events.
+3. **Root cause**: what was the underlying cause, not the proximate trigger?
+4. **Contributing factors**: what conditions made this outcome possible?
+5. **Action items**: what will prevent recurrence?
+
+The [5 Whys](https://en.wikipedia.org/wiki/Five_whys) technique is useful for root cause analysis: ask "why did this happen?" recursively until you reach a systemic cause rather than a human error.
+
+## Best Practices
+
+- Run retrospectives even when things are going well. Normalizing the practice means it is not treated as a fire alarm.
+- Keep sprint retrospectives short. If they are running over an hour, the format is too heavy.
+- Limit action items to three. More than three usually means none of them get done.
+- Assign one owner per action. "The team" is nobody.
+- Follow up. The fastest way to kill retro culture is to never check in on last sprint's commitments.
+- Vary the format occasionally to avoid habituation.
+
+## Some Truths About Retrospectives
+
+- The first retrospective is usually awkward. Run them anyway; they improve with practice.
+- Teams that feel things are going fine often discover in a retrospective that individuals feel very differently.
+- Action items get dropped. Build a habit of reviewing them at the start of the next retrospective.
+- Written retrospectives are harder to produce than they look. Starting from meeting notes and a few themes is far easier than writing from scratch.
+
+## Retrospectives in Industry and Academia
+
+Retrospectives are a core practice in Scrum, but the concept predates agile. NASA, aviation, and the military all use structured after-action reviews (AARs) to learn from operations. The format varies, but the intent is the same: systematic learning from experience.
+
+Google's Site Reliability Engineering (SRE) culture has formalized the blameless post-mortem as a standard practice, documented in detail in the [SRE Book](https://sre.google/sre-book/postmortem-culture/). Atlassian, GitHub, and Stripe publish public post-mortems as a transparency and trust-building practice.
+
+In academic settings, retrospectives build the metacognitive habit of reflecting on your own process, a skill that distinguishes strong engineers throughout their careers regardless of the tools or methodologies they work with.

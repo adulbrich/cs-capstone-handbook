@@ -1,18 +1,181 @@
 ---
 title: Presentations
-description: TBD
-draft: true
+description: How to prepare and deliver effective technical presentations, from sprint demos to stakeholder updates.
 sidebar:
   order: 4
 ---
 
-TBD
+import { LinkCard } from '@astrojs/starlight/components';
 
-Discuss the following:
-- elevator pitch
-- non-technical presentation
-- technical presentation
-- sprint demo
-- technical walkthrough
-- technical design review
-- UX/UI design review
+Engineering work that is not communicated effectively might as well not exist. A working feature nobody understands has no champions. A strong technical decision nobody can explain gets overruled by whoever speaks loudest. A risk nobody articulates becomes a surprise in production.
+
+Presentations are how engineers share progress, build trust with stakeholders, and collect the feedback that keeps a project aligned with reality. Without strong communication skills:
+
+- Stakeholders lose confidence in the team's direction, even when the technical work is solid.
+- Good decisions get revisited because nobody remembers (or understood) the rationale.
+- Demos that fail live overshadow months of real progress.
+- Opportunities to collect critical feedback are wasted because the audience did not understand enough to respond.
+
+The goal of any technical presentation is simple: **leave the audience with a clear, accurate understanding of what matters most**, whether that is a decision they need to make, a risk they should know about, or progress they should feel confident in.
+
+## Sprint Demos
+
+A sprint demo is a live walkthrough of what the team delivered in the most recent sprint. It is not a status report. It is a demonstration of real results: working software, experimental outputs, validated findings.
+
+A good sprint demo:
+
+- Shows the work in action, end-to-end, on realistic data. Not a description of what was attempted, not a status update, not a slide deck about future plans.
+- Demonstrates work that meets the team's Definition of Done. If the team agreed that "done" means reviewed, tested, and deployed to a staging environment, the demo should show it running there. If the DoD for this phase only requires passing tests locally, that is fine too; the point is that the demo reflects the standard the team committed to.
+- Connects what was built to a requirement or acceptance criterion the audience already understands.
+- Is honest about what was descoped, delayed, or changed, and explains why.
+- Ends with a clear invitation for feedback: "Does this meet your expectations? What should we adjust?"
+
+The sprint demo is the team's primary feedback loop with stakeholders. Whether the audience is a project partner, an instructor, or the rest of the team, treat it as a conversation, not a performance. The goal is alignment, not applause.
+
+<LinkCard
+  title="Sprints"
+  href="/guides/sprint/"
+  description="The sprint cycle, including how demos fit into the review phase."
+/>
+
+## Stakeholder Presentations
+
+A stakeholder presentation addresses a broader audience: people who care about the project's outcomes but may not be involved in the day-to-day work. This includes leadership, management, cross-functional teams, sponsors, and anyone evaluating the project from the outside.
+
+Stakeholder presentations follow a different rhythm than sprint demos. Where a demo says "here is what we built this sprint," a stakeholder presentation says "here is where the project stands, how we got here, and where it is going."
+
+Effective stakeholder presentations tend to cover four things:
+
+- **The problem.** What problem is this project solving, and for whom? This grounds the audience before any technical content.
+- **The approach.** How did the team decide to solve it? What alternatives were considered and rejected? This builds credibility by showing the team made deliberate choices.
+- **Current state.** What has been built, validated, or discovered so far? Show it. A working demo, a visualization of results, or a credible walkthrough of the system is far more convincing than a summary of tasks completed.
+- **What comes next.** What are the known limitations? What risks remain? What is the plan for the next phase?
+
+## Design Reviews
+
+A design review is a presentation to peers: teammates, advisors, or anyone qualified to critique the proposed approach. Design reviews are not limited to architecture and code. They apply equally to UI/UX designs, data models, research methodologies, and workflow proposals. Any decision that affects how the system looks, behaves, or is built benefits from structured critique before implementation begins.
+
+The purpose is not to defend a design but to stress-test it. Present the design, the options that were considered, the decision that was made, and its consequences. Then invite critique. The best design reviews surface problems that would have been expensive to discover during implementation.
+
+Treat hard questions as help, not attacks. A design review that produces no changes is either a very mature design or a review that was not honest enough.
+
+<LinkCard
+  title="Technical Design"
+  href="/guides/technical-design/"
+  description="How to create and document technical designs worth reviewing."
+/>
+
+## Public Demonstrations
+
+Some presentations happen in open, public settings: expos, showcases, poster sessions, or employer events. These have different dynamics than team-internal or classroom presentations.
+
+Key differences:
+
+- **The audience is diverse.** Some viewers are deeply technical; many are not. You need a version of the pitch that works for both.
+- **You do not control timing.** Someone may approach your booth at any moment. Be ready to start cold.
+- **Brevity matters more.** A 60-second elevator pitch is as important as a full walkthrough. Many visitors will only give you a minute. Make it count.
+- **The demo runs continuously.** Have it looping or ready to restart. Do not rely on a single run-through.
+
+<LinkCard
+  title="Engineering Expo"
+  href="/practicalities/expo/"
+  description="Registration, logistics, and preparation for Expo."
+/>
+
+## Principles That Apply to Every Presentation
+
+Regardless of format or audience, a few principles consistently separate effective presentations from forgettable ones.
+
+### Lead with the Point
+
+Do not build to a conclusion; start with it. "This sprint we shipped user authentication and onboarded our first external tester" is a stronger opening than three slides of context. The audience should understand what matters before you explain the details.
+
+This applies at every level: the presentation as a whole, each section, each slide. If someone walked in halfway through your presentation and saw only the current slide, would they understand the point being made?
+
+### Show, Do Not Tell
+
+A live demo is worth ten slides. If you can show something working, show it. Reserve slides for things you cannot demo: architecture diagrams, risk tables, timelines, before-and-after comparisons, data visualizations.
+
+For research-oriented projects, "showing" means displaying real outputs: plots, model performance metrics, pipeline results on actual data. A Jupyter notebook with real outputs is more convincing than a slide summarizing what the notebook produced.
+
+### Design for Your Audience
+
+Technical presentations to peers can include architecture diagrams, code snippets, and implementation specifics. Stakeholder presentations should not. Ask yourself: "Would a non-engineer in this audience understand this slide?"
+
+The same project might require both versions. A sprint demo to the project partner focuses on functionality and outcomes. A design review with the team focuses on architecture and trade-offs. Adjust the depth and vocabulary to match who is listening.
+
+### Let Ownership Guide Who Speaks
+
+The person closest to a piece of work should be the one explaining it. This applies to sprint demos, stakeholder presentations, and design reviews alike. Dividing presentation responsibilities by ownership (the person who built the feature explains the feature, the person who ran the experiment presents the results) produces more credible and natural delivery than arbitrary segmentation.
+
+### Prepare for Questions
+
+Spend a meaningful portion of your preparation time anticipating questions and rehearsing answers. Common hard questions in technical presentations:
+
+- "Why did you choose X instead of Y?"
+- "What happens if this component fails?"
+- "How does this scale beyond your current usage?"
+- "What is the biggest risk right now?"
+
+You do not need perfect answers. "We considered that and chose not to because..." or "We do not know yet, and here is how we plan to find out" are honest and credible responses. What damages trust is being caught without having thought about it at all.
+
+## Delivering a Demo
+
+Demos are high-stakes moments, and the teams that make them look effortless are the ones that practiced the most.
+
+- **Use realistic data.** Demos with obviously fake data ("Test User 1", "Lorem ipsum", "AAAA") undermine credibility. Populate the demo environment with data that looks like the real thing.
+- **Know the path.** Practice the exact sequence of interactions you will perform. Know what you will click, what you will type, and what the system will show in response.
+- **Have a fallback.** Record a video of the demo before the presentation. If the live demo breaks (and live demos break regularly), play the recording. This is not a failure; it is preparation.
+- **Narrate as you go.** Do not silently click through screens. Say what you are doing and why: "I am logging in as an admin user and navigating to the project dashboard, where we can see the new analytics view."
+- **Leave the demo visible.** After the walkthrough, keep the application or notebook open rather than switching back to slides. It stays available for follow-up questions.
+
+## Recorded vs. Live Presentations
+
+Each format has different preparation requirements.
+
+For **recorded presentations**:
+
+- Use a quiet environment with consistent lighting.
+- Screen recording tools (Loom, OBS, Zoom local recording) can capture both slides and a face camera. Showing the speaker builds engagement.
+- Edit out dead air and false starts. Polished recordings show professionalism.
+- Speak slightly slower than feels natural. Playback consistently sounds faster than the original delivery.
+
+For **live presentations**:
+
+- Practice the full run-through, including transitions between speakers, at least once before delivery.
+- Confirm the technical setup (display resolution, audio, browser, microphone) on the actual machine and screen you will use. Adapter and display issues are the most common source of last-minute panic.
+- Arrive early. Problems discovered five minutes before the presentation starts are emergencies; problems discovered thirty minutes before are inconveniences.
+
+## Slide Design
+
+You do not need design expertise to make effective slides. A few principles go a long way:
+
+- **One idea per slide.** If a slide makes two separate points, split it. Cramming information onto a single slide forces the audience to read instead of listen.
+- **Minimal text.** Bullet points should be fragments, not full sentences. If you are reading your slides to the audience, the slides have too much text.
+- **Diagrams over prose.** A system architecture diagram, a data flow visualization, or an experimental workflow communicates more than three paragraphs of description.
+- **Readable type.** Use at minimum 24pt for body text. Never use light gray text on a white background. Test readability from the back of the room (or on a small screen if presenting remotely).
+- **Attribute borrowed assets.** If you use an image, icon, or diagram you did not create, include a source credit.
+
+## Best Practices
+
+- Practice the full presentation at least once before delivering it, especially the demo.
+- Time yourself. A presentation that significantly overruns its allotted time signals poor preparation.
+- Get feedback from someone outside the team before the final delivery. Fresh eyes catch what familiarity hides.
+- Do not apologize for things being "in progress." Own the current state confidently and explain what comes next.
+- Know your handoffs. "I will now hand it over to Alex, who will walk through the data pipeline" is more professional than trailing off while someone else starts unexpectedly.
+
+## Some Truths About Presentations
+
+- The first few times are uncomfortable. That is normal, and it does get easier with practice.
+- Most demos that fail do so because they were not rehearsed on the actual demo machine.
+- Audiences forgive a lot if you are honest. "This part does not work yet, and here is why" is far better than glossing over it and hoping nobody notices.
+- The best engineers are not always the best communicators, and that is a real disadvantage. Technical communication is a skill that improves with deliberate practice, not with avoidance.
+- A presentation is not a test of your speaking ability. It is a tool for getting feedback, building alignment, and moving the project forward. Focus on the purpose, not the performance.
+
+## Presentations in Industry and Academia
+
+In industry, engineers present constantly: sprint demos, design reviews, incident post-mortems, all-hands updates, sales engineering calls, and cross-team coordination meetings. The ability to communicate technical work clearly to both technical and non-technical audiences is consistently cited as a key differentiator for senior engineering roles. Many companies consider communication skills as important as technical depth when evaluating promotions.
+
+Amazon's "six-pager" written memo replaces slides for many leadership reviews: the document is read silently in the first 15 minutes of the meeting, then discussed. The principle is the same as any presentation: structure your argument clearly, support it with evidence, and be prepared to defend your thinking under questioning.
+
+In academia, conference presentations and thesis defenses follow similar principles. A poster session at an academic conference has more in common with a public demo at an engineering expo than either audience might expect: brevity, clarity, and the ability to adjust depth based on who is asking.

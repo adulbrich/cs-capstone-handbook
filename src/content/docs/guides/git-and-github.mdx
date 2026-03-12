@@ -1,13 +1,20 @@
 ---
 title: Git and GitHub Essentials
-description: TBD
+description: How to use Git and GitHub effectively on a team, from basic version control to a branching workflow that keeps your project stable.
 sidebar:
   order: 7
 ---
 
 import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-Please refer to the following resources for a comprehensive introduction to Git, a version control system widely used in software development, and GitHub, a platform for hosting and collaborating on Git repositories.
+Git is the version control system that tracks every change to your codebase. GitHub is the platform where your team hosts, reviews, and collaborates on that code. Together, they form the backbone of nearly every modern software project. Without version control:
+
+- There is no reliable way to undo a mistake or recover a deleted file.
+- Two people editing the same file at the same time creates conflicts nobody knows how to resolve.
+- There is no record of who changed what, when, or why.
+- Deploying code means copying files around and hoping nothing breaks.
+
+If you are new to Git and GitHub, or need a refresher, start with the resources below before continuing with this guide.
 
 <CardGrid>
   <LinkCard
@@ -24,27 +31,240 @@ Please refer to the following resources for a comprehensive introduction to Git,
   />
 </CardGrid>
 
-Your project might be using other platforms like GitLab or Bitbucket, but the concepts are similar. The guides focus on Git and GitHub, which are widely used in the industry and academia.
+Your project might use other platforms like GitLab or Bitbucket, but the concepts are the same. This guide focuses on Git and GitHub because they are the most widely used tools in industry and academia.
 
-{/* - Basic git concepts
-  - git init
-  - git clone
-  - git add
-  - git commit
-  - git push
-  - git pull
-  - git fetch
-  - git log
-  - git status
-  - git diff
-- Advanced git concepts.
-  - git merge
-  - git rebase
-  - git checkout
-  - git branch
-  - git reset
-  - git revert
-  - git stash
-  - git tag
-  - git reflog
-  - git cherry-pick */}
+## Branching Workflows
+
+A branching workflow defines how and when the team creates branches, reviews changes, and merges code into the main codebase. Without a shared workflow, team members step on each other's work, the main branch breaks regularly, and nobody is confident that the code they pulled is safe to build on.
+
+Several well-known workflows exist. Each makes different tradeoffs between simplicity, safety, and flexibility.
+
+### GitHub Flow
+
+**GitHub Flow** is the simplest workflow that supports team collaboration. It has one rule: the `main` branch is always in a deployable (or at least stable) state. All work happens on short-lived feature branches that are merged back through pull requests.
+
+This is the recommended workflow for most Capstone projects. It is easy to learn, works well for small teams, and enforces code review without adding ceremony.
+
+### Git Flow
+
+**Git Flow** uses long-lived `develop` and `main` branches, plus dedicated branches for releases and hotfixes. It provides more structure for projects with formal release cycles but adds complexity that most Capstone projects do not need. It is common in enterprise environments where multiple versions are maintained simultaneously.
+
+### Trunk-Based Development
+
+In **trunk-based development**, everyone commits directly to `main` (or to very short-lived branches that are merged within hours). This requires strong CI, comprehensive test coverage, and high team discipline. It is used by large engineering organizations (Google, for example) but is difficult to adopt without mature testing infrastructure.
+
+:::tip[Which Workflow Should We Use?]
+For most Capstone teams, **GitHub Flow** is the right choice. It is simple enough that the team will actually follow it, and it enforces the two practices that matter most: working on branches and reviewing each other's code before merging. If you find you need more structure later, you can adopt elements of Git Flow. Start simple.
+:::
+
+## GitHub Flow in Practice
+
+The rest of this guide walks through GitHub Flow step by step, from creating a branch to merging a pull request. Each stage includes the exact commands and actions involved.
+
+### 1. Start from an up-to-date main branch
+
+Before starting any new work, make sure your local `main` branch reflects the latest state of the remote repository. This prevents you from building on outdated code.
+
+```bash
+git checkout main
+git pull origin main
+```
+
+### 2. Create a feature branch
+
+Create a new branch for the piece of work you are about to do. The branch name should be short, descriptive, and follow whatever convention your team agreed on in the working agreement.
+
+```bash
+git checkout -b feature/add-login-endpoint
+```
+
+Common naming conventions:
+
+- `feature/add-login-endpoint` for new functionality
+- `fix/null-pointer-dashboard` for bug fixes
+- `chore/update-dependencies` for maintenance tasks
+
+If the work corresponds to a GitHub issue, include the issue number in the branch name. This makes it easy to trace a branch back to the conversation that motivated it:
+
+```bash
+git checkout -b feature/42-add-login-endpoint
+```
+
+Each branch should represent a single, focused unit of work. A branch called `feature/add-login-endpoint` that also refactors the database layer and updates the README is doing too many things. Keep branches small and focused so they are easy to review and safe to merge.
+
+### 3. Make commits as you work
+
+As you implement the feature, commit your changes in logical increments. Each commit should represent a coherent step, not necessarily every save, but not an entire feature in one commit either.
+
+```bash
+git add src/auth/login.py src/auth/tests/test_login.py
+git commit -m "Add login endpoint with email/password validation"
+```
+
+Write commit messages that explain *what* changed and *why*. A reviewer reading the commit history should be able to follow the progression of your work.
+
+Good commit messages:
+
+```
+Add login endpoint with email/password validation
+Fix token expiration check to use UTC consistently
+Add integration tests for login with invalid credentials
+```
+
+Poor commit messages:
+
+```
+WIP
+fix stuff
+update files
+```
+
+### 4. Push your branch to GitHub
+
+Push your branch to the remote repository so others can see your work and so it is backed up.
+
+```bash
+git push origin feature/add-login-endpoint
+```
+
+If you are pushing the branch for the first time, Git will suggest using the `-u` flag to set up tracking:
+
+```bash
+git push -u origin feature/add-login-endpoint
+```
+
+After the first push with `-u`, subsequent pushes only need `git push`.
+
+### 5. Open a pull request
+
+On GitHub, open a pull request (PR) from your feature branch into `main`. The pull request is where the team reviews your code before it is merged.
+
+A good pull request includes:
+
+- **A clear title** that summarizes the change: "Add login endpoint with email/password validation"
+- **A description** that explains what changed, why, and how to test it. If the change relates to an issue, reference it (`Closes #42`).
+- **A reasonable size.** Pull requests that touch hundreds of lines across dozens of files are hard to review well. If your PR is getting large, consider splitting it into smaller, sequential PRs.
+
+:::tip[Draft Pull Requests]
+If your work is not ready for review but you want early feedback or want teammates to see your progress, open a **draft pull request**. This signals "I am not done yet, but feel free to look." Convert it to a regular PR when you are ready for review.
+:::
+
+### 6. Review and discuss
+
+At least one teammate (or however many your team agreed on in the working agreement) reviews the pull request. Reviewers should check:
+
+- Does the code do what the PR description says it does?
+- Is the code readable and consistent with the project's style?
+- Are there tests, and do they cover the important cases?
+- Does the change introduce any obvious bugs, security issues, or performance problems?
+
+Reviewers leave comments on specific lines or on the PR as a whole. The author responds, makes changes if needed, and pushes additional commits to the same branch. The PR updates automatically.
+
+```bash
+# After addressing review feedback
+git add src/auth/login.py
+git commit -m "Handle empty password field per review feedback"
+git push
+```
+
+Code review is not about gatekeeping. It is about catching mistakes early, sharing knowledge across the team, and maintaining a codebase that everyone can work in confidently.
+
+<LinkCard
+  title="Team Working Agreement"
+  href="/guides/working-agreement/"
+  description="Where the team defines PR review requirements, branching conventions, and coding standards."
+/>
+
+### 7. Merge into main
+
+Once the PR is approved and any CI checks pass, merge the branch into `main`. GitHub offers three merge options:
+
+- **Merge commit**: preserves the full branch history. Every commit on the branch appears in `main`'s history, plus a merge commit.
+- **Squash and merge**: combines all commits on the branch into a single commit on `main`. This keeps the main branch history clean, especially for branches with many small "fix typo" or "WIP" commits.
+- **Rebase and merge**: replays the branch commits on top of `main` without a merge commit. Produces a linear history.
+
+For most teams, **squash and merge** is a good default. It keeps `main`'s history readable (one commit per feature or fix) while allowing developers to commit freely on their branches without worrying about messy history.
+
+After merging, delete the feature branch. It has served its purpose.
+
+### 8. Pull the updated main branch
+
+After a merge, other team members should pull the latest `main` before starting new work:
+
+```bash
+git checkout main
+git pull origin main
+```
+
+If you already have a feature branch in progress, you can bring it up to date with `main`:
+
+```bash
+git checkout feature/your-branch
+git merge main
+```
+
+This prevents your branch from diverging too far from `main`, which makes merging easier later.
+
+## Handling Merge Conflicts
+
+Merge conflicts happen when two branches modify the same lines in the same file. Git cannot decide which version to keep, so it asks you to resolve the conflict manually.
+
+When a conflict occurs (either during `git merge` or when merging a PR on GitHub), Git marks the conflicting sections in the file:
+
+```
+<<<<<<< HEAD
+def authenticate(email, password):
+    return check_credentials(email, password)
+=======
+def authenticate(user_email, user_password):
+    return verify_user(user_email, user_password)
+>>>>>>> feature/refactor-auth
+```
+
+To resolve: edit the file to keep the correct version (or combine both), remove the conflict markers, then stage and commit:
+
+```bash
+git add src/auth/login.py
+git commit -m "Resolve merge conflict in authenticate function"
+```
+
+The best way to handle merge conflicts is to avoid them. Keep branches short-lived, merge `main` into your branch regularly, and coordinate with teammates when you are both working in the same area of the codebase.
+
+## Protecting the Main Branch
+
+GitHub allows you to add **branch protection rules** to prevent direct pushes to `main` and enforce quality checks before merging. For a Capstone project, useful protections include:
+
+- **Require pull request reviews**: at least one approval before merging.
+- **Require status checks to pass**: CI tests must pass before the merge button is available.
+- **Restrict who can push**: prevent accidental direct pushes to `main`.
+
+Set these up in the repository settings under *Branches > Branch protection rules*. These protections codify your team's working agreement into the repository itself, so the rules are enforced automatically rather than depending on everyone remembering to follow them.
+
+## Best Practices
+
+- Commit early and often. Small, frequent commits are easier to review, easier to revert, and less likely to cause conflicts.
+- Pull from `main` before starting new work. Always build on the latest code.
+- Keep branches short-lived. A branch that lives for two weeks accumulates conflicts and becomes painful to merge. Aim for branches that last a few days at most.
+- Write meaningful commit messages. Your future self (and your teammates) will thank you.
+- Never commit secrets. API keys, passwords, and tokens do not belong in the repository. Use environment variables and add sensitive files to `.gitignore`.
+- Use `.gitignore` from the start. Ignoring build artifacts, IDE configuration files, and OS-specific files keeps the repository clean.
+
+:::tip[gitignore Templates]
+GitHub provides `.gitignore` templates for most languages and frameworks at [github.com/github/gitignore](https://github.com/github/gitignore). Start with the one that matches your stack and customize it.
+:::
+
+## Some Truths About Git
+
+- Git is confusing at first. That is normal. The commands become muscle memory after a few weeks of regular use.
+- Most Git disasters are recoverable. `git reflog` shows a history of every state your repository has been in, even after a bad reset or a dropped branch.
+- Merge conflicts are not emergencies. They are a normal part of collaboration. The first time is stressful; by the fifth, it is routine.
+- Teams that skip code review move faster in the short term and slower in the long term. Review catches bugs, spreads knowledge, and keeps the codebase coherent.
+- The branching workflow matters less than actually following one. A simple workflow followed consistently beats a sophisticated one that half the team ignores.
+
+## Git and GitHub in Industry and Academia
+
+Git is the dominant version control system in software engineering. GitHub, GitLab, and Bitbucket host the vast majority of both open-source and proprietary projects. Familiarity with Git workflows, pull requests, and code review is a baseline expectation for software engineering roles.
+
+In open-source communities, the pull request model (fork, branch, PR, review, merge) is the standard contribution mechanism. Understanding this workflow is essential for contributing to FOSS projects, which many Capstone teams do.
+
+In research settings, version control is increasingly recognized as essential for reproducibility. Journals and conferences expect computational work to be backed by a public repository with clear commit history. Git enables this, and platforms like GitHub and GitLab provide the infrastructure for sharing and collaborating on research code.
