@@ -9,19 +9,19 @@ library(ggplot2)
 # !!! change assignment name and ID in gradebook at the bottom !!!
 # !!! change filenames below !!!
 
-filename_groups <- "data/2025-10-27-project-groups.csv"
-gradebook_filename <- "data/2025-12-10T1033_Grades-SENIOR_SOFTWARE_ENGIN_PROJECT_(CS_461_001_F2025).csv"
-gradebook_updated_filename <- "data/2025-12-10T1033_Grades-SENIOR_SOFTWARE_ENGIN_PROJECT_(CS_461_001_F2025)-updated.csv"
+filename_groups <- "data/2026-02-04-project-groups.csv"
+gradebook_filename <- "data/2026-02-19T0923_Grades-SENIOR_SOFTWARE_ENGIN_PROJECT_(CS_462_001_W2026).csv"
+gradebook_updated_filename <- "data/2026-02-19T0923_Grades-SENIOR_SOFTWARE_ENGIN_PROJECT_(CS_462_001_W2026)-updated.csv"
 
 team_sizes <- fread(filename_groups, header = TRUE)
 team_sizes <- team_sizes[, .(n = .N), by = group_name]
 setnames(team_sizes, "group_name", "Team")
 
-filename <- "data/2025-12-15-peer-review-survey-results.csv"
+filename <- "data/2026-03-19-peer-review-survey-results.csv"
 
-output_filename <- "data/2025-12-15-peer-review-survey-output.csv"
-output_email_filename <- "data/2025-12-15-peer-review-survey-emails.csv"
-output_email_subject <- "CS461 Final Peer Review Results"
+output_filename <- "data/2026-03-19-peer-review-survey-output.csv"
+output_email_filename <- "data/2026-03-19-peer-review-survey-emails.csv"
+output_email_subject <- "CS462 Final Peer Review Results"
 
 dt <- fread(filename, header = TRUE)
 
@@ -353,18 +353,18 @@ gradebook <- merge(
 )
 
 # gradebook[,
-#   `Final Peer Evaluation Survey (10265726)` := PeerEvaluationScore_Correction /
+#   `Mid-Term Peer Evaluation Survey (10383695)` := PeerEvaluationScore /
 #     4
 # ]
 gradebook[,
-  `Final Peer Evaluation Survey (10265726)` := PeerEvaluationScore
+  `Final Peer Evaluation Survey (10383693)` := PeerEvaluationScore
 ]
 gradebook[, PeerEvaluationScore := NULL]
 
 gradebook[
-  is.na(`Final Peer Evaluation Survey (10265726)`),
-  # `Final Peer Evaluation Survey (10265726)` := 12.5
-  `Final Peer Evaluation Survey (10265726)` := 50
+  is.na(`Final Peer Evaluation Survey (10383693)`),
+  # `Mid-Term Peer Evaluation Survey (10383695)` := 12.5
+  `Final Peer Evaluation Survey (10383693)` := 50
 ]
 
 # re-order columns to have the new score at the end
@@ -373,14 +373,14 @@ gradebook[
 # SIS User ID
 # SIS Login ID
 # Section
-# Final Peer Evaluation Survey (10265726)
+# Final Peer Evaluation Survey (10383693)
 gradebook <- gradebook[, .(
   Student,
   ID,
   `SIS User ID`,
   `SIS Login ID`,
   Section,
-  `Final Peer Evaluation Survey (10265726)`
+  `Final Peer Evaluation Survey (10383693)`
 )]
 
 fwrite(gradebook, gradebook_updated_filename, row.names = FALSE)

@@ -17,6 +17,7 @@ bun run build
 
 ## To Do
 
+- make an "instructor tools" client side only page where I can upload the peer review and project partner surveys and gradebook and run scripts to process them and output the results in a format that can be easily imported into Canvas (port R scripts)
 - add a video demo to sprint 10 or make it a small separate assignment
 - decide what to do with "does not meet" rubric item (e.g., 0 pts vs. partial credit)
 - make one scripts for the project partner survey processing that works for all terms

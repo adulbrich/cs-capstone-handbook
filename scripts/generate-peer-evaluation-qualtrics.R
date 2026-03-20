@@ -19,7 +19,7 @@
 library(data.table)
 library(stringr)
 
-filename <- "data/2025-10-27-project-groups.csv"
+filename <- "data/2026-02-04-project-groups.csv"
 
 dt <- fread(filename, header = TRUE)
 
@@ -34,9 +34,14 @@ dt <- fread(filename, header = TRUE)
 # - figure out largest team --> size n
 # - create n columns for team members 1 through n
 
-contacts <- dt[,.(Email = login_id, `First Name` = str_trim(str_extract(name, "(?<=,).+$")), `Last Name` = str_trim(str_extract(name, "^.+(?=,)")), Team = group_name)]
+contacts <- dt[, .(
+  Email = login_id,
+  `First Name` = str_trim(str_extract(name, "(?<=,).+$")),
+  `Last Name` = str_trim(str_extract(name, "^.+(?=,)")),
+  Team = group_name
+)]
 
-max_n <- max(dt[, .N, by = group_name]$N)-1
+max_n <- max(dt[, .N, by = group_name]$N) - 1
 
 # Create columns for team members (excluding self)
 for (i in 1:max_n) {
@@ -49,14 +54,17 @@ for (i in 1:nrow(contacts)) {
   # Get current student's email and team
   current_email <- contacts[i, Email]
   current_team <- contacts[i, Team]
-  
+
   # Get all team members except the current student
-  team_members <- dt[group_name == current_team & login_id != current_email, login_id]
-  
+  team_members <- dt[
+    group_name == current_team & login_id != current_email,
+    login_id
+  ]
+
   # Fill in team member columns for this student
   if (length(team_members) > 0) {
     for (j in 1:length(team_members)) {
-        contacts[i, paste0("Team Member ", j) := team_members[j]]
+      contacts[i, paste0("Team Member ", j) := team_members[j]]
     }
   }
 }
@@ -68,12 +76,18 @@ contacts <- contacts[!Team %in% solo_students]
 
 # Wrtite the contact list to a CSV file to import in Qualtrics
 
-fwrite(contacts, "data/2025-10-27-qualtrics-team-peer-review.csv", row.names = FALSE)
+fwrite(
+  contacts,
+  "data/2026-02-04-qualtrics-team-peer-review.csv",
+  row.names = FALSE
+)
 
 # Display the list of solo students in the terminal
 
 if (length(solo_students) > 0) {
-  cat("The following students are working solo and have been removed from the contact list:\n")
+  cat(
+    "The following students are working solo and have been removed from the contact list:\n"
+  )
   for (solo_team in solo_students) {
     solo_student <- dt[group_name == solo_team, .(name, login_id)]
     cat(paste0("- ", solo_student$name, " (", solo_student$login_id, ")\n"))
