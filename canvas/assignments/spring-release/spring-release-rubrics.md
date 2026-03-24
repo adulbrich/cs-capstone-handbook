@@ -14,9 +14,9 @@
 
 ## Outcomes: results, impact, and honest assessment (20 pts)
 
-- **Exceeds Expectations** (20 to >16.0 pts): Clearly states what was delivered vs. original goals; provides evidence of impact or validation (user testing, partner feedback, performance data, research findings, etc.); shares 1&ndash;2 meaningful lessons; identifies the highest-priority next step with a specific reason; tone is honest and professional, not promotional or defensive.
-- **Meets Expectations** (16.0 to >4.0 pts): Outcomes are summarized but scope comparison is superficial, evidence of impact is absent, or lessons are vague.
-- **Does Not Meet Expectations** (4.0 to >0 pts): Outcomes segment is missing or claims only success without honest assessment of scope or limitations.
+- **Exceeds Expectations** (20 to >16.0 pts): Clearly states what was delivered vs. original goals; reports the project outcome with concrete numbers or verifiable status (e.g., patches accepted and release version, user counts distinguishing light vs. heavy users, deployment status and partner intent, prototype evaluation results); shares 1&ndash;2 meaningful lessons; identifies the highest-priority next step with a specific reason; tone is honest and professional, not promotional or defensive.
+- **Meets Expectations** (16.0 to >4.0 pts): Outcomes are summarized but scope comparison is superficial, category-specific outcome evidence is absent or lacks numbers, or lessons are vague.
+- **Does Not Meet Expectations** (4.0 to >0 pts): Outcomes segment is missing or claims only success without honest assessment of scope, limitations, or project category outcome.
 
 ## Delivery: clarity, pacing, and professionalism (16 pts)
 
