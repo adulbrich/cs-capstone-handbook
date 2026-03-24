@@ -14,7 +14,7 @@
 
 ## Causal analysis: why things went the way they did (10 pts)
 
-- **Exceeds Expectations** (10 to >8.0 pts): For most significant successes and challenges, provides plausible, grounded causes tied to specific decisions, behaviors, or circumstances—not just descriptions of what happened.
+- **Exceeds Expectations** (10 to >8.0 pts): For most significant successes and challenges, provides plausible, grounded causes tied to specific decisions, behaviors, or circumstances, not just descriptions of what happened.
 - **Meets Expectations** (8.0 to >2.0 pts): Some causal explanation exists but is thin, speculative, or only applied to a subset of the successes/challenges.
 - **Does Not Meet Expectations** (2.0 to >0 pts): Little or no causal analysis; mostly describes what happened without explaining why.
 
@@ -26,7 +26,7 @@
 
 ## Team dynamics: collaboration, roles, and growth (10 pts)
 
-- **Exceeds Expectations** (10 to >8.0 pts): Reflects meaningfully on how roles evolved, communication and coordination patterns that helped or hurt, how conflict or disagreement was handled, and what the team learned about working together—tied to concrete examples.
+- **Exceeds Expectations** (10 to >8.0 pts): Reflects meaningfully on how roles evolved, communication and coordination patterns that helped or hurt, how conflict or disagreement was handled, and what the team learned about working together, tied to concrete examples.
 - **Meets Expectations** (8.0 to >2.0 pts): Team dynamics are mentioned but connections to concrete examples are light or the reflection is surface-level.
 - **Does Not Meet Expectations** (2.0 to >0 pts): No meaningful team dynamics reflection; or reflection is entirely positive with no critical honesty.
 
