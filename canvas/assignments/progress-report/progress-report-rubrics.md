@@ -30,23 +30,11 @@
 - **Meets Expectations** (4 to >1.0 pts): Blockers are mentioned with a basic response.
 - **Does Not Meet Expectations** (1.0 to >0 pts): Blockers/replans are missing or unclear.
 
-## Sprint work log: supporting artifacts (per-item evidence coverage) (12 pts)
+## Sprint work log: supporting artifacts (25 pts)
 
-- **Exceeds Expectations** (12 to >9.5 pts): Each work item in the sprint work log has at least one verifiable supporting artifact, or one artifact clearly covers multiple items (explicitly stated).
-- **Meets Expectations** (9.5 to >2.5 pts): Many items have supporting artifacts, but coverage is incomplete or doesn’t clearly map to the listed items.
-- **Does Not Meet Expectations** (2.5 to >0 pts): Few or no items have verifiable supporting artifacts.
-
-## Sprint work log: supporting artifacts (relevance and context) (7 pts)
-
-- **Exceeds Expectations** (7 to >5.5 pts): Artifacts are clearly relevant to claims and include brief context (what it shows and why it matters).
-- **Meets Expectations** (5.5 to >1.0 pts): Artifacts are mostly relevant but context/captions are inconsistent.
-- **Does Not Meet Expectations** (1.0 to >0 pts): Artifacts are unclear, unlabeled, or not clearly tied to the claims.
-
-## Sprint work log: supporting artifacts (traceability and “version of truth”) (6 pts)
-
-- **Exceeds Expectations** (6 to >4.8 pts): Artifacts link to an evaluable source of truth. For code-related artifacts, commit hash(es) are included; for write-ups, a stable link plus title/date/version/location is included.
-- **Meets Expectations** (4.8 to >1.0 pts): Some traceability details are present, but hashes/links/context are incomplete.
-- **Does Not Meet Expectations** (1.0 to >0 pts): Artifacts aren’t traceable (no hashes where applicable, broken links, or missing context).
+- **Exceeds Expectations** (25 to >20.0 pts): Each work item has at least one verifiable artifact, or one artifact explicitly covers multiple items; artifacts are clearly relevant to claims and include brief context (what it shows and why it matters); artifacts link to an evaluable source of truth (commit hash for code; stable link plus title/date/version/location for write-ups).
+- **Meets Expectations** (20.0 to >5.0 pts): Many items have artifacts but coverage is incomplete; relevance is partial or captions are inconsistent; some traceability details present but hashes/links/context are incomplete.
+- **Does Not Meet Expectations** (5.0 to >0 pts): Few or no items have verifiable artifacts; artifacts are unlabeled or not tied to claims; links are broken, missing, or not traceable.
 
 ## Bug tracking: bug snapshot is current (8 pts)
 
