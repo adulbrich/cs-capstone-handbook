@@ -4,7 +4,7 @@
 library(data.table)
 library(stringr)
 
-filename <- "data/2026-03-20-pp-survey-values.csv"
+filename <- "data/2026-03-23-pp-survey-values.csv"
 
 # Read the CSV file, skipping the label row and the third row
 dt <- fread(filename, header = TRUE) # Skip label and third row
@@ -57,6 +57,7 @@ dt[Q6 == 2, Verification := 9]
 dt[Q6 == 3, Verification := 8]
 dt[Q6 == 4, Verification := 7]
 dt[Q6 == 5, Verification := 5]
+# TODO BUG: some answers have the value 6 instead of 1-5, need to investigate and clean those up
 
 # Team Score Output
 dt[,
@@ -83,7 +84,7 @@ fwrite(
         IndividualNotes = `Q7 Comments`,
         GeneralNotes = Q9
     )],
-    "data/2026-03-20-pp-survey-processed.csv",
+    "data/2026-03-23-pp-survey-processed.csv",
     row.names = FALSE
 )
 
