@@ -147,15 +147,13 @@ A quick checklist before any deployment:
 
 Secrets (API keys, database passwords, tokens, private keys) must never appear in your source code or version history. This is the single most common security mistake in student projects, and it has real consequences: bots continuously scan public GitHub repositories for leaked credentials.
 
-```bash
-# .env file (never committed to version control)
+```text title=".env"
 DATABASE_URL=postgres://user:password@localhost:5432/mydb
 API_KEY=sk-abc123...
 JWT_SECRET=your-secret-key
 ```
 
-```bash
-# .gitignore (add this before your first commit)
+```text title=".gitignore"
 .env
 .env.local
 .env.production
