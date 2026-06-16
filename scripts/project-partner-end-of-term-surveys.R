@@ -11,12 +11,12 @@ library(stringr)
 # Go to Project > Data & Analysis > Export & Import > Export Data
 # Select "CSV" and "Export Values", click "Download"
 # Save file to data/ directory and edit filename here:
-filename_input <- "data/2025-12-15-pp-survey-values.csv"
+filename_input <- "data/2026-06-15-pp-survey-values.csv"
 
 # Comment/Uncomment based on course/term
-course_id <- "CS461"
+# course_id <- "CS461"
 #course_id <- "CS462"
-#course_id <- "CS463"
+course_id <- "CS463"
 
 # Weights for each facet by course
 # Must align with https://capstone.alexulbrich.com/project-evaluation/breakdown/#project-partner-assessment-facets
@@ -114,11 +114,13 @@ if (course_id == "CS461" || course_id == "CS462") {
     # Option 2: Research
     # Option 3: Consultancy
     # Option 6: New Product or Game
+    # Option 7: Other [50-100]
 
     dt[Q6 == 1, Q6_Consolidated := `Q6 FOSS`]
     dt[Q6 == 2, Q6_Consolidated := `Q6 Research`]
     dt[Q6 == 3, Q6_Consolidated := `Q6 Consultant`]
     dt[Q6 == 6, Q6_Consolidated := `Q6 New Product`]
+    dt[Q6 == 7, Verification := coeff * as.numeric(`Q6 Custom_4`)]
 
     dt[Q6_Consolidated == 1, Verification := coeff * 100]
     dt[Q6_Consolidated == 2, Verification := coeff * 90]
