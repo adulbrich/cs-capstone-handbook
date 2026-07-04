@@ -1,7 +1,8 @@
 {
   "name": "cs46x-handbook",
   "type": "module",
-  "version": "2025-2026.FA.1",
+  "version": "2026.SU.0",
+  "packageManager": "pnpm@10.34.1+sha512.b58fbde6dca66a929538021581f648b4570b6ca19b18e7cbd7f2c07a7b24454155388dacdf08f2af3678e88a6d1fe04f9d609df24bf51735a060ea041b374ab7",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -10,25 +11,27 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.5",
-    "@astrojs/starlight": "0.36.2",
-    "@astrojs/starlight-tailwind": "4.0.2",
-    "@tailwindcss/vite": "^4.1.17",
-    "astro": "5.15.6",
+    "@astrojs/check": "0.9.9",
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/starlight": "0.41.3",
+    "@astrojs/starlight-tailwind": "5.0.0",
+    "@tailwindcss/vite": "^4.3.2",
+    "astro": "7.0.6",
     "astro-feelback": "^0.3.4",
-    "astro-mermaid": "^1.2.0",
-    "katex": "^0.16.25",
-    "mermaid": "^11.12.1",
-    "sharp": "^0.32.6",
-    "starlight-image-zoom": "^0.8.0",
-    "starlight-links-validator": "^0.12.4",
-    "starlight-scroll-to-top": "^0.1.1",
-    "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3"
+    "astro-mermaid": "^2.1.0",
+    "katex": "^0.17.0",
+    "mermaid": "^11.16.0",
+    "sharp": "^0.35.3",
+    "starlight-image-zoom": "^0.15.0",
+    "starlight-links-validator": "^0.25.2",
+    "starlight-page-actions": "^0.6.2",
+    "starlight-scroll-to-top": "^1.0.1",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.0",
-    "lefthook": "^1.13.6",
-    "ultracite": "5.2.4"
+    "@biomejs/biome": "2.5.2",
+    "lefthook": "^2.1.9",
+    "ultracite": "7.8.4"
   }
 }

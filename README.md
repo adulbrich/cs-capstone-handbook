@@ -1,9 +1,9 @@
 # CS Capstone Handbook
 
 ```sh
-bun install
-bun run dev
-bun run build
+pnpm install
+pnpm run dev
+pnpm run build
 ```
 
 ## Instructor Checklist

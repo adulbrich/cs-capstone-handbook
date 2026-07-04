@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import mermaid from 'astro-mermaid';
 import starlightScrollToTop from 'starlight-scroll-to-top';
+// import starlightPageActions from 'starlight-page-actions';
 // import starlightImageZoom from "starlight-image-zoom";
 // import starlightLinksValidator from "starlight-links-validator";
 
@@ -15,6 +16,21 @@ export default defineConfig({
     mermaid(),
     sitemap(),
     starlight({
+      plugins: [
+        // starlightLinksValidator(),
+        // starlightPageActions({
+        //   baseUrl: "https://engr103.alexulbrich.com",
+        //   actions: {
+        //     markdown: false,
+        //     // custom: {
+        //     //   grok: {
+        //     //     label: "Open in Grok",
+        //     //     href: "https://grok.com/?q=",
+        //     //   },
+        //     // },
+        //   },
+        // })
+      ],
       title: 'CS Capstone Handbook',
       lastUpdated: true,
       components: {},
@@ -43,45 +59,45 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Introduction',
-          autogenerate: {
+          items: [{ autogenerate: {
             directory: 'introduction',
-          },
+          }}],
         },
         {
           label: 'Learning Objectives',
-          autogenerate: {
+          items: [{ autogenerate: {
             directory: 'learning-objectives',
-          },
+          }}],
         },
         {
           label: 'Practicalities',
-          autogenerate: {
+          items: [{ autogenerate: {
             directory: 'practicalities',
-          },
+          }}],
         },
         {
           label: 'Activities',
-          autogenerate: {
+          items: [{ autogenerate: {
             directory: 'activities',
-          },
+          }}],
         },
         {
           label: 'Guides',
-          autogenerate: {
+          items: [{ autogenerate: {
             directory: 'guides',
-          },
+          }}],
         },
         {
           label: 'Project Evaluation',
-          autogenerate: {
+          items: [{ autogenerate: {
             directory: 'project-evaluation',
-          },
+          }}],
         },
         {
           label: 'About',
-          autogenerate: {
+          items: [{ autogenerate: {
             directory: 'about',
-          },
+          }}],
         },
       ],
     }),
