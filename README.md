@@ -13,31 +13,25 @@ pnpm run build
 - Create Teams channel for TAs and instructors
 - Create TA Meeting Notes document
 - Update Qualtrics surveys
-- Update Sylabus statements
+- Update Syllabus statements
+- Import rubric TSVs into Canvas (browser extension; sources in `canvas/assignments/`)
+- Install git hooks once per clone: `pnpm exec lefthook install`
+
+## Course Revision (branch `revision-fall-2026`)
+
+The full Fall 2026 course revision lives on the `revision-fall-2026` branch. See `IDEAS.md` (assessment and design rationale) and `IMPLEMENTED.md` (change log). Done there, among others: assignments and rubrics moved into the handbook as source of truth, GH Actions CI with link and outcome validation, activities repositioned as a practice library, missing-work zero policy, retrospective format variety, video demos in the sprint cadence.
 
 ## To Do
 
-- make an "instructor tools" client side only page where I can upload the peer review and project partner surveys and gradebook and run scripts to process them and output the results in a format that can be easily imported into Canvas (port R scripts)
-- add a video demo to sprint 10 or make it a small separate assignment
-- decide what to do with "does not meet" rubric item (e.g., 0 pts vs. partial credit)
-- make one scripts for the project partner survey processing that works for all terms
-- get all assignments/rubrics in html/markdown instead of Canvas
-- improve assignment descriptions by comparing different project types
+- make an "instructor tools" client side only page where I can upload the peer review and project partner surveys and gradebook and run scripts to process them and output the results in a format that can be easily imported into Canvas (port R scripts); include a repo-checkpoint mode (team repo list -> docs/CI/PR-per-student view) and NDA-team tracking
+- fix known R script bugs until the port lands: peer-eval correction is emailed but not posted to the gradebook; s2026 partner survey maps one Requirements answer to 3 instead of 3.5; team-size cap at 6 including self breaks larger teams; Q7 individual-concern extraction is stubbed
 - create good examples for all assignments based on previous years' projects
 - stretch: create bad examples for all assignments based on previous years' projects
-- consider splitting rubrics (e.g. requirements update) to make it easier to grade
-- add back different ways to conduct retrospectives (4Ls, Start-Stop-Continue, iceberg/sky, etc.)
-- more material offered during lecture time: case studies from successful companies, advice for starting a company, career advice, anything that would add value to the course
-- change wording to talk about students, project partners, and instructors instead of using pronouns such as "you", "your", "we", "us"
+- more material offered during lecture time: case studies from successful companies, advice for starting a company, career advice, workshops on spec-writing for AI agents, reviewing AI diffs, and testing as the safety net
 - improve project partner guidelines
-- add project to showcase and improve layout
-- add guides
-- improve research activities
-- improve FOSS activities
-- add recommended activities based on project category or type
-- see commented lines for more activity ideas
-- revise activities so that it complements/helps with the project instead of reading like assignments
-- automate link checking with GH Actions (run prod build and run `linkinator` on it or run post deploy on prod deployment)
+- add projects to showcase and improve layout
+- add recommended activities based on project category or type (partially covered by the Shipping guide)
+- run CATME-style peer evaluation every term once tooling supports it (parked; see IDEAS.md)
 
 ## Link Checking
 
