@@ -85,7 +85,10 @@ New: `rfc-template.md`, `sprint-note-template.md`, `definition-of-shipped-templa
 
 ## 8. Canvas Mirror (`canvas/`)
 
-(Completed by the canvas workstream; see its section below when finalized.) Rubric TSVs in the browser-extension import format for the new assignments; an individual-contribution assignment page documenting the deduction logic; `assignment-readme.md` rewritten to the new schedule with a deprecation table; syllabi updated with the explicit grade split; a CS 461 syllabus created.
+- New rubric TSVs in the browser-extension import format, points matching the handbook exactly: `rfc/`, `defense/`, `sprint-note/`, `repo-checkpoint/`, `definition-of-shipped/`, `incident-postmortem/`, `career-retrospective/`, plus an updated `spring-release/` with the metrics-evidence criteria.
+- New `individual-contribution/` assignment (HTML + rubric notes) documenting the sprint-note deduction logic (full/half/zero per sprint, evidence-based). The mechanism that previously existed only inside Canvas is now versioned here.
+- `assignment-readme.md`: rewritten with the source-of-truth statement, the grade architecture, the full week-by-week schedule for all three terms, and a deprecation table mapping every retired assignment to its replacement. Old assignment directories kept for reference.
+- Syllabi: `cs462.html` and `cs463.html` now state the four-component grade split and link the assignments overview; new `cs461.html` created (3 credits, fall, ABET outcomes; WIC remains only in cs462).
 
 ## 9. Infrastructure
 

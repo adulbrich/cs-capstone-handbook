@@ -57,8 +57,8 @@ There are midterm and end-of-term peer evaluation surveys and project partner su
 
 These directories are kept for reference but are no longer assigned:
 
-- `memo/`: replaced by the Team Charter (week 2 of fall) and the handbook onboarding pages.
-- `research-brief/`: replaced by the RFC (individual design document with a draft, feedback, and revision cycle).
+- `memo/`: folds into the fall RFC (the stakeholder context and constraints become the RFC's problem framing) and the early partner conversations.
+- `research-brief/`: folds into the RFC (the background research becomes the RFC's evidence and analysis).
 - `progress-report/`: replaced by Sprint Notes and Demos (one page, pass/fail per item, plus a live demo cadence).
 - `requirements-update/`: replaced by Repo Checkpoints (`docs/requirements.md` is graded in place, in the repository).
 - `technical-design-update/`: replaced by Repo Checkpoints (`docs/design.md` is graded in place, in the repository).
