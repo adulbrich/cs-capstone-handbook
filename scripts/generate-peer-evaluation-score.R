@@ -346,8 +346,9 @@ output[, `SIS Login ID` := Email]
 
 gradebook <- merge(
   gradebook,
-  # output[, .(`SIS Login ID`, PeerEvaluationScore_Correction)],
-  output[, .(`SIS Login ID`, PeerEvaluationScore)],
+  # the corrected score (with validation penalties) is what gets posted,
+  # matching the handbook and the feedback emails
+  output[, .(`SIS Login ID`, PeerEvaluationScore, PeerEvaluationScore_Correction)],
   by = "SIS Login ID",
   all.x = TRUE
 )
@@ -357,7 +358,7 @@ gradebook <- merge(
 #     4
 # ]
 gradebook[,
-  `Final Peer Evaluation Survey (10383693)` := PeerEvaluationScore
+  `Final Peer Evaluation Survey (10383693)` := PeerEvaluationScore_Correction
 ]
 gradebook[, PeerEvaluationScore := NULL]
 

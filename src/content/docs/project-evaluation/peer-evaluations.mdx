@@ -71,9 +71,17 @@ For the **100-point distribution**:
 4. Clamp the result to [10, 40].
 5. Apply <Latex formula="0.65 + 0.0225\cdot x - 0.00025\cdot x^2"/>, where <Latex formula="x"/> is the clamped average.
 
-The distribution multiplier is therefore bounded between 85% and 115%, which is generous: scoring over 100% means teammates rated your contribution above an equal share, and you are rewarded for it.
+The formula's output is a multiplier bounded between 0.85 and 1.15; **multiply it by 100 to get the distribution score** (85 to 115). Scoring over 100 means teammates rated your contribution above an equal share, and you are rewarded for it.
 
-**The final peer score is the average of the four criteria scores and the 100-point distribution score.** Survey validation issues (self-rating below the floor, totals that do not sum to 100, out-of-range ratings) each deduct from the rater's own score; these deductions are reflected in the posted grade, not just in the feedback email.
+**The final peer score is the average of five numbers: the four criteria scores and the distribution score.**
+
+Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four criteria, converting to 87.5, 87.5, 100, 87.5. On the distribution, teammates gave the student an average of 28 points; normalized for team size (× 4 ÷ 5) that is 22.4, within the [10, 40] clamp; the formula gives 0.65 + 0.0225(22.4) − 0.00025(22.4²) = 1.03, so the distribution score is 103. Final peer score: (87.5 + 87.5 + 100 + 87.5 + 103) / 5 = **93.1**.
+
+Survey validation issues (self-rating below the floor, totals that do not sum to 100, out-of-range ratings) each deduct from the rater's own score; these deductions are reflected in the posted grade, not just in the feedback email.
+
+## Teams of Two
+
+On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. Two protections apply: the self-allocation floor is relaxed, and **any two-person team where the received ratings average below 3 (or the two teammates' ratings of each other diverge sharply) is reviewed by an instructor against the repo record and partner feedback before the score stands.** A single teammate's ratings never finalize a low score on a team of two without corroboration.
 
 ## References
 

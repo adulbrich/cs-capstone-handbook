@@ -34,7 +34,7 @@ Each term's second checkpoint carries a gate that pulls the year's risk forward:
 | Checkpoint | Gate |
 |---|---|
 | Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real |
-| Fall, week 10 | **"Hello, production"**: a walking skeleton deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
+| Fall, week 10 | **"Hello, production"**: a [walking skeleton](/walking-skeleton-prototype-template.md) (the thinnest end-to-end slice of your system that actually runs) deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
 | Winter, week 5 | Integration health: the skeleton has organs; CI meaningful; real-user session scheduled |
 | Winter, week 10 | **Release candidate**: installable/deployable by a stranger, plus evidence of at least one real-user session |
 
@@ -48,12 +48,16 @@ The gates exist because the spring outcome bar is won or lost on lead times that
 | Term gate met (see table above) | 25 | SO2 |
 | Build health: CI green, tests exist and test something real, quickstart works | 20 | SO6 |
 | Decision and risk hygiene: RFCs/ADRs recorded, single risk register alive and ranked | 15 | SO1 |
-| Contribution traceability: reviewed PRs per student visible over the period | 15 | SO5 |
+| Contribution traceability: the infrastructure exists to attribute work per student (PRs authored and reviewed under real accounts, contribution lines in sprint notes match the record) | 15 | SO5 |
 
 ## Track A and Track B
 
 - **Track A (staff repo access, the default):** graded asynchronously; staff may leave issues or PR comments as feedback.
 - **Track B (NDA):** the checkpoint is a 15-minute screen-shared walkthrough in your cohort check-in. A designated student drives; the TA follows the same checklist against the live repo and retains nothing. Where the partner permits, a sanitized evidence pack (docs snapshot, redacted PR list, CI screenshots) supports the review. Identical criteria, identical points.
+
+## How Graders Review
+
+To keep ten graders consistent: "tests something real" means at least one test would fail if the feature it covers broke (per category: user-visible behavior for products, pipeline correctness for research, upstream test conventions for FOSS); "quickstart works" means a grader followed it cold; the docs spot-check compares one recent feature against `docs/design.md`. The contribution-traceability criterion grades whether the **infrastructure** for attribution exists, not whether every student contributed: individual non-contribution is handled by the individual modifier, never double-counted here. Track B walkthroughs follow a fixed order (quickstart, CI, docs spot-check, risk register, PR list) so 15 minutes suffices.
 
 :::note[Why this replaces document assignments]
 A submitted PDF is a snapshot that starts rotting at upload time. A repository is either healthy or it is not, and your project partner, your future maintainers, and your AI tools all consume the repository, not the PDF. Grading the real thing aligns the course with how you actually work.

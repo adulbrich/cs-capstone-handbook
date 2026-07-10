@@ -109,8 +109,55 @@ New: `rfc-template.md`, `sprint-note-template.md`, `definition-of-shipped-templa
 
 ## Validation
 
-(Persona review results recorded here after the review passes.)
+Four persona reviews ran against the branch (student, ABET program evaluator, senior instructor, grading TA), producing ~40 findings. All actionable findings were fixed; the record:
+
+**Student review** (10 findings, all fixed):
+- No late/absence/makeup policy existed anywhere; the Defense (10%, live) had no sick path. Added a full "Late Work, Absence, and Makeup" section to the assignments overview, with defense/demo rescheduling.
+- Team-of-2 peer-score exposure (one rater determines everything): added an instructor-review trigger before any low score on a 2-person team stands.
+- Death weeks defused: fall Term Retrospective moved to week 9; spring Landing Page moved to week 7.
+- Peer-eval formula had a missing step (multiplier vs score units): now explicit, with a worked example.
+- RFC cross-team review had no NDA path: added the decision-skeleton rule, NDA-to-NDA pairing, staff-review fallback.
+- Fall sprint notes referenced a Definition of Shipped that does not exist yet: rephrased.
+- Templates were unlinked from every assignment page: all five now linked; eight deprecated template files deleted from public/.
+- "Cohort check-in" and "walking skeleton" were load-bearing but undefined: both defined at first use.
+- Defense role criterion assumed everyone holds a named role: broadened to "or comparable ownership area" (page, TSV, scoresheet).
+- Sprint guide still referenced progress reports: fixed.
+
+**ABET evaluator review** (verdict: the ABET core would survive a visit; WIC and the assurance process were the exposed flanks; all fixed):
+- The validator trusted frontmatter, which had drifted from rubric tables on six team pages. Rewritten: `validate-outcomes.mjs` now parses the rubric tables as source of truth, fails on any frontmatter/rubric drift, and enforces L07-L10 coverage in addition to the two-point ABET minimum. All frontmatter reconciled; drift now breaks CI and pre-commit.
+- Sprint notes over-claimed outcomes with no gradeable criterion: claim removed.
+- WIC L09 (single 2,000-word document) could not be met by combining two terms: the winter RFC now carries an explicit 2,000-word floor (1,500 to 2,500 draft range in winter).
+- WIC.mdx claimed 461 and 462 are WIC; syllabi say 462 only: corrected to 462.
+- Mapping prose disagreed with the tags in three places (SO3 undercount, SO5 CATME double-count, unsubstantiated handoff L08): all corrected.
+- Defense had no evidence-retention story: Canvas is now the stated per-student score record for program assessment.
+- Known concern documented, not yet resolved: SO4's in-capstone evidence is concentrated in the RFC (4 of 5 points); diversifying is on the roadmap.
+
+**Senior instructor review** (9 findings; the two blockers and most others fixed):
+- Blocker 1: "cohort check-in" undefined (see student fix) plus no operational spec: STAFF-RUNBOOK.md created (cohort ratios, term rhythm, defense calibration and logistics, RFC pairing and grading model, checkpoint protocol, modifier workflow, survey runbook, partner sign-off handling, week-0 checklist, lecture plan).
+- Blocker 2: the handbook promised peer-eval corrections the R script never posted: **the script is fixed** (corrected score now merged into the gradebook), along with the s2026 facet-mapping bug. Two script issues remain open and are documented in the runbook and README (team-size cap at 6; Q7 extraction stub).
+- RFC grader model was unassigned: now stated on the page (TA-graded, instructor calibration on a sample per grader) and in the runbook; same for the career retrospective.
+- Partner sign-offs could block team grades on partner responsiveness: non-responsive-partner fallbacks added to Definition of Shipped and Handoff.
+- Lecture-content gap acknowledged: priority workshop list in the runbook; decks remain to be built (open item).
+
+**TA review** (15 findings; TSV fidelity was verified clean; all actionable items fixed):
+- Double jeopardy on non-contribution (modifier + partner facet + checkpoint criterion): precedence declared everywhere; the checkpoint criterion now grades attribution infrastructure, not individuals.
+- Defense TSV had a 20-point floor contradicting the zero policy: a zero band was added to all five criteria; scoresheet anchors now map to the TSV bands.
+- Track B modifier enforcement was impossible as written: now bound to live evidence only.
+- The modifier implied 160 audits/term: fast-pass default documented (investigate only on triggers).
+- Defense throughput: scoresheet gained per-student timebox, artifact/PR line, repo-check field, assessor-split and dominance-redirect rules.
+- Repo checkpoint anchors for cross-TA consistency added ("How Graders Review"), including a fixed Track B walkthrough order.
+- Sprint-note pass/fail smuggled quality judgments: evidence item is now an OR, judgment layer passes on any genuine sprint-specific content.
+- RFC reviewer no-show held the author harmless (fixed), late-joiner policy added, universal no-sanitized-evidence fallback added, numeric sprint-note split stated (Canvas double-count risk), appeal rule for the modifier defined (evidence note, five business days, instructor decides).
+
+## Remaining Open Items (honest list)
+
+1. SO4 evidence concentration in the RFC (accreditor concern; add a second non-RFC individual SO4 criterion in a future pass).
+2. R scripts: team-size cap at 6 including self; Q7 individual-concern extraction stubbed. Fix or supersede with the instructor-tools page.
+3. Lecture deck series (spec-writing for agents, AI-diff review, testing workshop) exists as a plan in STAFF-RUNBOOK.md, not as decks. `decks/Fall.md` week 1 deck is done.
+4. The instructor-tools client-side page (README todo) is unbuilt; the runbook documents the manual pipeline until then.
+5. Week numbers assume the standard term calendar; verify against the actual academic calendar before publishing.
+6. Examples library (good/bad examples per assignment) still to be collected from past projects.
 
 ## Build Status
 
-`pnpm run build` passes: astro check clean, 66 pages, internal links validated at build time. `node scripts/validate-outcomes.mjs` passes.
+`pnpm run build` passes: astro check (warnings only, pre-existing `z` deprecation), 66 pages, internal links validated at build time. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 5, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.

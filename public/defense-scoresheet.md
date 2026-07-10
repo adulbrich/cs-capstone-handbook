@@ -6,7 +6,11 @@
 
 **Term:** ______________ **Assessor:** ______________________ **Date:** ______________
 
-Score each criterion 0 to 20. Anchors: high (17-20), middle (10-16), low (0-9). "I don't know, but here is how I would find out" scores; bluffing does not.
+**Artifact/PR under discussion:** ______________________ **Repo record checked:** yes / no / Track B live
+
+Score each criterion 0 to 20. Anchors: high (17-20) = Exceeds, middle (10-16) = Meets, low (1-9) = Does Not Meet, 0 = unexcused no-show or no meaningful attempt. "I don't know, but here is how I would find out" scores; bluffing does not.
+
+Logistics: about 6 minutes per student; when two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes into Canvas after the session (the sheet is the live instrument; Canvas is the record).
 
 ## 1. Ownership (SO2): ____ / 20
 
@@ -34,9 +38,9 @@ Notes: __________________________________________________________________
 
 ## 4. Role and Team Accountability (SO5): ____ / 20
 
-- High: articulates what their named role (PM, AI Coordinator, Quality Owner) required this term and how the team's decisions actually got made.
+- High: articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term and how the team's decisions actually got made.
 - Middle: describes the role's duties but gives little evidence of carrying them out, or describes decisions vaguely.
-- Low: cannot say what the role involved or how any team decision was reached.
+- Low: cannot say what the role or ownership area involved or how any team decision was reached.
 
 Notes: __________________________________________________________________
 

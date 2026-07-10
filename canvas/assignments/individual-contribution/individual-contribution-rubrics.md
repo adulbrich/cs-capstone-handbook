@@ -46,3 +46,25 @@ Deductions are evidence-based, never testimonial:
 
 A pattern of missed sprints with no explanation is what this modifier exists
 for; a single explained miss costs nothing.
+
+## Grader Workflow (keep it cheap)
+
+"Defaults to full credit" means exactly that: graders do **not** audit every
+student every sprint. Investigate only when a trigger fires: a blank or
+unexplained contribution line, a peer or partner flag, or something off at the
+demo or defense. Expect a handful of investigations per cohort per sprint, not
+160 checks.
+
+**Track B (NDA) teams:** staff cannot read the repo, so the modifier binds to
+the live evidence only: the walkthrough and defense spot-checks, peer
+evaluations, and partner flags. Do not imply an async repo check that cannot
+happen.
+
+**Appeals:** the student is shown the evidence note, has five business days to
+respond with evidence, and an instructor decides. TAs flag; instructors
+adjudicate.
+
+**No double jeopardy:** non-contribution is penalized here and only here. The
+repo checkpoint's traceability criterion grades whether attribution
+infrastructure exists (team-level), and partner-evaluation facet adjustments
+are reserved for partner-originated flags.

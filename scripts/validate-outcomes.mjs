@@ -1,8 +1,11 @@
 #!/usr/bin/env node
-// Validates ABET outcome coverage from assignment frontmatter.
-// Every ABET student outcome (SO1-SO6) must have at least MIN_POINTS
-// individual-level data points (rubric items on individual assignments,
-// plus the standing peer-evaluation instrument for SO5).
+// Validates learning-outcome coverage from the assignment pages.
+//
+// Source of truth: the Outcome column of each page's rubric table(s).
+// The frontmatter `assignment.outcomes` block must reconcile with the
+// rubric tags exactly, so neither can silently drift. Coverage minimums:
+//   - every ABET outcome (SO1-SO6): >= 2 individual-level data points
+//   - every WIC / Beyond OSU outcome (L07-L10): >= 1 individual-level point
 //
 // Run: node scripts/validate-outcomes.mjs
 
@@ -10,8 +13,10 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ASSIGNMENTS_DIR = 'src/content/docs/assignments';
-const MIN_POINTS = 2;
 const ABET_OUTCOMES = ['SO1', 'SO2', 'SO3', 'SO4', 'SO5', 'SO6'];
+const OTHER_OUTCOMES = ['L07', 'L08', 'L09', 'L10'];
+const MIN_ABET = 2;
+const TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;
 
 // Standing individual instruments not represented as assignment pages:
 // peer evaluations run mid + final every term and evidence SO5.
@@ -34,7 +39,7 @@ function parseAssignment(frontmatter) {
   for (let i = start + 1; i < lines.length; i++) {
     const line = lines[i];
     if (/^\S/.test(line)) {
-      break; // left the assignment block
+      break;
     }
     const level = line.match(/^\s{2}level:\s*(\w+)/);
     if (level) {
@@ -66,16 +71,44 @@ function parseAssignment(frontmatter) {
   return assignment;
 }
 
-const counts = Object.fromEntries(ABET_OUTCOMES.map((o) => [o, 0]));
+// Extract outcome tags from rubric tables: rows whose LAST cell is a
+// comma-separated list of outcome IDs (the "Outcome" column).
+function parseRubricTags(body) {
+  const tags = {};
+  for (const line of body.split('\n')) {
+    if (!line.trim().startsWith('|')) {
+      continue;
+    }
+    const cells = line.split('|').map((c) => c.trim()).filter((c, i, a) => !(c === '' && (i === 0 || i === a.length - 1)));
+    if (cells.length < 2) {
+      continue;
+    }
+    const last = cells[cells.length - 1];
+    const parts = last.split(',').map((p) => p.trim());
+    if (parts.length > 0 && parts.every((p) => TAG_RE.test(p))) {
+      for (const p of parts) {
+        tags[p] = (tags[p] || 0) + 1;
+      }
+    }
+  }
+  return tags;
+}
+
+const counts = {};
+const sources = {};
+for (const o of [...ABET_OUTCOMES, ...OTHER_OUTCOMES]) {
+  counts[o] = 0;
+  sources[o] = [];
+}
 for (const [outcome, n] of Object.entries(STANDING_INDIVIDUAL_POINTS)) {
   counts[outcome] += n;
+  sources[outcome].push(`peer evaluations (${n} standing)`);
 }
-const sources = Object.fromEntries(
-  ABET_OUTCOMES.map((o) => [o, counts[o] ? ['peer evaluations'] : []])
-);
 
+let failed = false;
 const files = readdirSync(ASSIGNMENTS_DIR).filter((f) => f.endsWith('.mdx'));
 let parsed = 0;
+
 for (const file of files) {
   const source = readFileSync(join(ASSIGNMENTS_DIR, file), 'utf8');
   const frontmatter = parseFrontmatter(source);
@@ -87,11 +120,27 @@ for (const file of files) {
     continue;
   }
   parsed++;
+  const body = source.slice(source.indexOf('---', 3) + 3);
+  const rubricTags = parseRubricTags(body);
+
+  // Reconcile: frontmatter must equal the rubric-table tags exactly.
+  const keys = new Set([...Object.keys(rubricTags), ...Object.keys(assignment.outcomes)]);
+  for (const k of keys) {
+    const fm = assignment.outcomes[k] || 0;
+    const rb = rubricTags[k] || 0;
+    if (fm !== rb) {
+      console.error(
+        `DRIFT ${file}: outcome ${k} declared ${fm} in frontmatter but tagged on ${rb} rubric criteria.`
+      );
+      failed = true;
+    }
+  }
+
   if (assignment.level !== 'individual') {
     continue; // team-level work is corroboration, not a data point
   }
   const runs = assignment.terms.length || 1;
-  for (const [outcome, items] of Object.entries(assignment.outcomes)) {
+  for (const [outcome, items] of Object.entries(rubricTags)) {
     if (outcome in counts) {
       counts[outcome] += items * runs;
       sources[outcome].push(`${file} (${items} item(s) x ${runs} term(s))`);
@@ -104,13 +153,20 @@ if (parsed === 0) {
   process.exit(1);
 }
 
-let failed = false;
-console.log('ABET individual data points per student per year:');
+console.log('Individual data points per student per year (from rubric tables):');
 for (const outcome of ABET_OUTCOMES) {
-  const ok = counts[outcome] >= MIN_POINTS;
-  console.log(
-    `  ${outcome}: ${counts[outcome]} ${ok ? 'ok' : `INSUFFICIENT (need ${MIN_POINTS})`}`
-  );
+  const ok = counts[outcome] >= MIN_ABET;
+  console.log(`  ${outcome}: ${counts[outcome]} ${ok ? 'ok' : `INSUFFICIENT (need ${MIN_ABET})`}`);
+  for (const src of sources[outcome]) {
+    console.log(`      - ${src}`);
+  }
+  if (!ok) {
+    failed = true;
+  }
+}
+for (const outcome of OTHER_OUTCOMES) {
+  const ok = counts[outcome] >= 1;
+  console.log(`  ${outcome}: ${counts[outcome]} ${ok ? 'ok' : 'INSUFFICIENT (need 1)'}`);
   for (const src of sources[outcome]) {
     console.log(`      - ${src}`);
   }
@@ -120,7 +176,7 @@ for (const outcome of ABET_OUTCOMES) {
 }
 
 if (failed) {
-  console.error('\nOutcome coverage regression: an ABET outcome has fewer than 2 individual data points.');
+  console.error('\nOutcome coverage or traceability regression detected (see above).');
   process.exit(1);
 }
-console.log('\nAll ABET outcomes have sufficient individual coverage.');
+console.log('\nAll outcomes covered; frontmatter and rubric tables reconcile.');
