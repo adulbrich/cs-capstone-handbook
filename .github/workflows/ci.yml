@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Validate ABET outcome coverage
+        run: node scripts/validate-outcomes.mjs
+      - name: Build (includes astro check and internal link validation)
+        run: pnpm run build
+      - name: Guard against student data
+        run: |
+          if git ls-files | grep -E '^data/'; then
+            echo "Tracked files under data/ detected. Student data must never be committed."
+            exit 1
+          fi

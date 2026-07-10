@@ -9,6 +9,8 @@ import { Badge } from '@astrojs/starlight/components';
 
 Design activities focus on both the technical and visual aspects. Activities tackle either one or the other. These activities will help you figure out what you need to implement and how you will make your software available (deployment).
 
+The technical design activities on this page are direct preparation for your [RFC](/assignments/rfc/): architecture descriptions, technology evaluations, and design reviews are exactly the reasoning an RFC asks you to write down and defend.
+
 > "Design is not just what it looks like and feels like. Design is how it works." -- Steve Jobs
 
 {/* https://www.nngroup.com/articles/accessibility-inclusivity-study-guide/ */}
@@ -40,7 +42,7 @@ Choose the most suitable database or storage technology for your project based o
 - Scalability and Performance: Consider factors like read/write speeds, scalability, and how well the database or store handles your expected workload.
 - Final Selection: Justify your choice based on how it aligns with the project's goals.
 
-Provide a report detailing the options considered, pros/cons, and rationale for your final database/storage selection.
+A good output details the options considered, pros/cons, and the rationale for your final database/storage selection.
 
 ## Define your Database Schema
 
@@ -55,7 +57,7 @@ Design a structured database schema to organize and store your project's data ef
 - Performance: Index key fields for faster querying and optimize design for scalability.
 - Security Measures: Plan data encryption, define access controls, and ensure proper handling of sensitive data (e.g., user passwords).
 
-Submit your database schema diagram with explanations of the relationships, key tables or objects, and fields. Explain how normalization was used, and which performance and security considerations you plan to implement. Optionally, submit a schema configuration file (e.g., SQL query to create the tables).
+A good output is your database schema diagram with explanations of the relationships, key tables or objects, and fields. Explain how normalization was used, and which performance and security considerations you plan to implement. A schema configuration file (e.g., SQL query to create the tables) is a plus.
 
 ## Evaluate Different Technologies
 
@@ -68,7 +70,7 @@ Compare and assess multiple technologies (e.g., languages, frameworks, libraries
 - Compare Performance and Compatibility: Evaluate how well each technology integrates with your existing project and meets performance goals.
 - Security and Support: Consider security features and available community support for each option.
 
-Provide a comparison matrix and a justification for the chosen technology.
+A good output is a comparison matrix and a justification for the chosen technology; this maps directly onto the alternatives section of your [RFC](/assignments/rfc/).
 
 ## Describe your Architecture ⭐️
 
@@ -82,7 +84,7 @@ Clearly define the overall system architecture of your project, focusing on key 
 - Consider Scalability: Discuss how the architecture handles future growth.
 - Security and Performance: Identify security measures and performance optimization techniques integrated into the architecture.
 
-Submit a diagram of the architecture and a brief explanation of each component and its role in the system.
+A good output is a diagram of the architecture and a brief explanation of each component and its role in the system. This diagram belongs in your repository docs, and it anchors your [RFC](/assignments/rfc/).
 
 ### C4 Model
 
@@ -128,7 +130,7 @@ Develop a high-fidelity prototype to visualize and refine the design of your pro
 
 Check this fantastic [blog post about a SoundCloud iOS redesign](https://www.freecodecamp.org/news/my-friends-hate-soundcloud-ios-so-i-redesigned-it-for-them-d3038cdd020b).
 
-Submit the prototype link and a reflection on design choices and feedback incorporated.
+A good output is the prototype link and a reflection on design choices and feedback incorporated.
 
 ## Proof-of-Concept
 
@@ -140,7 +142,7 @@ Build a small-scale prototype or demo to test the feasibility of a specific idea
 - Develop the Prototype: Create a minimal version focusing on the critical feature or technology.
 - Test Feasibility: Evaluate the proof-of-concept to ensure the technology or idea works as intended.
 
-Submit the proof-of-concept and a brief report on its feasibility, challenges encountered, and potential next steps.
+A good output is the proof-of-concept itself and a brief write-up on its feasibility, challenges encountered, and potential next steps.
 
 ## Test Plan
 
@@ -153,7 +155,7 @@ Develop a comprehensive [test plan](https://en.wikipedia.org/wiki/Test_plan) to 
 3. Determine Test Methods: Choose manual or automated testing.
 4. Set Success Criteria: Define what constitutes a pass/fail result.
 
-Submit a test plan document outlining test cases, methods, and criteria. 
+A good output is a test plan document outlining test cases, methods, and criteria.
 
 ## Deployment Plan
 
@@ -172,7 +174,7 @@ That means:
 2. Create a Deployment Checklist: Include steps like configuration, testing, build, integration, uploads, release, and backups. 
 3. Define Rollback Plan: Plan actions if deployment fails.
 
-Submit a deployment plan detailing environment, steps, and rollback procedures.
+A good output is a deployment plan detailing environment, steps, and rollback procedures. See the [Shipping guide](/guides/shipping/) for the lead times your deployment path involves.
 
 ## Describe your API Reference
 
@@ -184,7 +186,7 @@ Develop a comprehensive API reference to document the functions, endpoints, and 
 2. Define Inputs/Outputs: Clearly specify the required parameters, data types, and response formats for each endpoint.
 3. Document Error Handling: Include examples of error messages and how to handle them.
 
-Provide the complete API reference document and a sample request/response for each endpoint.
+A good output is the complete API reference document and a sample request/response for each endpoint, living alongside the code in your repository.
 
 ## Apply the Privacy by Design (PbD) Guidelines
 
@@ -225,7 +227,7 @@ examples:
 
 Feel free to come up with another design system or your own exhaustive one.
 
-Submit your updated UI wireframes or a demo of your updated software with a summary of what changed and why.
+A good output is your updated UI wireframes or a demo of your updated software with a summary of what changed and why.
 
 ## Apply the GenderMag Method
 
@@ -234,15 +236,6 @@ Submit your updated UI wireframes or a demo of your updated software with a summ
 The [GenderMag Method](https://gendermag.org/index.php) enables software practitioners (e.g., developers, managers, UX professionals) to find gender-inclusivity "bugs" in their software, and then fix the bugs they find.
 
 Apply the method and write a summary of your findings and what you will change in your software.
-
-{/* ## Peer UI Design Review
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-<Badge text="Team Activity" variant="note" class="mb-6"/> */}
-
-{/* ## Peer Design Exploration */}
-
-{/* Every team is expected to provide, in advance of class, a brief (one page maximum) description of at least one (possibly two) design challenge(s). This description may be diagrammatic or textual or some combination thereof. The challenge might concern fitness for purpose or fitness for future. When in consulting role, each team is expected to provide at least two alternative solutions to the other team's presented design challenge.*/}
 
 ## Peer Technical Design Review
 
@@ -263,7 +256,7 @@ As the reviewing team, your job is to think critically about the other team's de
 - Are there design alternatives that should be considered?
 - Are there coding issues that should be addressed?
 
-Submit your report (see below) and your consolidated reviews (from each member of the team). Share your review with the corresponding team. This activity can either be individual (one person from each team) or team (everyone on the team reviews both other teams).
+Write your report (see below) and your consolidated reviews (from each member of the team), and share your review with the corresponding team. This activity can either be individual (one person from each team) or team (everyone on the team reviews both other teams). Both giving and receiving this kind of review is excellent rehearsal for your [RFC](/assignments/rfc/) and its review round.
 
 Your report should be a one page diagram and one page of text covering the following three issues:
 
@@ -298,7 +291,7 @@ A rationale for why this design meets the requirements/specification.
 
 Take a look at a book about software design, and discuss in the context of your project. One good approach is that each team member skims several chapters, so that collectively you have examined the entire book. The books listed here are a starting point; you might find other interesting books worth reading.
 
-Submit a write-up of what you learned and how you will apply it to your project.
+Write up what you learned and how you will apply it to your project.
 
 - [Clean Architecture](https://www.goodreads.com/book/show/18043011-clean-architecture) by Robert C. Martin
 - [Release It!: Design and Deploy Production-Ready Software](https://www.goodreads.com/book/show/1069827.Release_It_) by Michael T. Nygard
@@ -328,7 +321,7 @@ Instructions:
 - Support Structure: Identify the team or resources responsible for providing user support and resolving issues.
 - Create Documentation: Develop a plan for user manuals, FAQs, and support guides.
 
-Provide a detailed plan addressing maintenance, scalability, and user support.
+A good output is a detailed plan addressing maintenance, scalability, and user support; it becomes raw material for your spring [Project Handoff](/assignments/project-handoff/).
 
 ## Optimizing System Performance
 
@@ -341,7 +334,7 @@ Identify and address factors that influence system performance to ensure optimal
 - Optimize Code and Queries: Identify areas for improving efficiency (e.g., database indexing, caching).
 - Monitoring and Scaling: Plan for performance monitoring tools and strategies for scaling.
 
-Provide a performance plan with identified bottlenecks and optimization strategies.
+A good output is a performance plan with identified bottlenecks and optimization strategies.
 
 ## Designing for System Security
 
@@ -354,7 +347,7 @@ Ensure the system is designed with robust security measures to protect data and 
 - Secure Data: Outline how sensitive data will be protected both in transit and at rest.
 - Compliance and Monitoring: Ensure the system meets security standards (e.g., GDPR, HIPAA) and establish regular monitoring for threats.
 
-Submit a security plan that details risks, countermeasures, and compliance strategies.
+A good output is a security plan that details risks, countermeasures, and compliance strategies.
 
 ## MDA Framework
 
@@ -383,12 +376,3 @@ Identify and refine the fundamental repeatable actions that drive engagement and
 <Badge text="Team Activity" variant="note" class="mb-6"/>
 
 Map out the player's journey from the First Time User Experience (FTUE) through the mid-game. This activity helps your team visualize onboarding, learning curves, and progression, ensuring that players are supported and engaged as they move deeper into the game. Use this to identify potential drop-off points and opportunities to enhance player satisfaction.
-
-{/* ## Peer UI Design Review
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-<Badge text="Team Activity" variant="note" class="mb-6"/> */}
-
-{/* ## Peer Design Exploration */}
-
-{/* Every team is expected to provide, in advance of class, a brief (one page maximum) description of at least one (possibly two) design challenge(s). This description may be diagrammatic or textual or some combination thereof. The challenge might concern fitness for purpose or fitness for future. When in consulting role, each team is expected to provide at least two alternative solutions to the other team's presented design challenge.*/}

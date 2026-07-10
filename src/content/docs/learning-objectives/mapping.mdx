@@ -1,0 +1,45 @@
+---
+title: Outcome Mapping
+description: Where each learning outcome is evidenced, per student, across the capstone series.
+sidebar:
+  order: 5
+---
+
+This page maps every learning outcome to the assignments and rubric criteria that evidence it. Three rules govern the map:
+
+1. **Individual evidence for accreditation.** ABET and WIC outcomes must be evidenced at the individual student level. Team-level instruments (partner evaluations, repo checkpoints, team deliverables) appear only as corroboration.
+2. **At least two data points per student per outcome.** A data point is a rubric criterion or an assignment scored per student. Every ABET outcome below clears this bar inside the capstone alone, most with margin.
+3. **Program-level context.** ABET assesses the program and accepts representative sampling of student work. Some outcomes also draw data points from other courses; SO4 is partly evidenced by the ethics course (CS 391).
+
+## ABET Student Outcomes
+
+| Outcome | Individual data points (per student, per year) | Team-level corroboration |
+|---|---|---|
+| **SO1** Analyze a complex computing problem and apply principles of computing to identify solutions | [RFC](/assignments/rfc/) fall and winter: problem framing criterion + options criterion (4 data points); [Defense](/assignments/defense/) each term: judgment criterion (3) | Partner evaluation Requirements facet; [repo checkpoint](/assignments/repo-checkpoints/) decision and risk hygiene |
+| **SO2** Design, implement, and evaluate a computing-based solution | RFC fall and winter: recommendation and verification plan criterion (2); Defense each term: ownership criterion (3); [Career Retrospective](/assignments/career-retrospective/): PR portfolio criterion (1) | Partner evaluation Design and V&V facets; repo checkpoints; [Release and Metrics](/assignments/release/) |
+| **SO3** Communicate effectively in a variety of professional contexts | RFC fall and winter: writing criterion + peer feedback criterion (4); Defense each term: communication criterion (3); Career Retrospective: writing criterion (1) | Demos, [landing page](/assignments/landing-page/), [handoff](/assignments/project-handoff/), Expo |
+| **SO4** Recognize professional responsibilities and make informed judgments based on legal and ethical principles | Ethics course (CS 391, program-level data point); RFC fall and winter: constraints criterion + AI disclosure criterion (4); Career Retrospective: responsible practice criterion (1) | Team Charter AI and confidentiality section; blameless conduct in the [postmortem](/assignments/incident-postmortem/) |
+| **SO5** Function effectively as a member or leader of a team | [Peer evaluations](/project-evaluation/peer-evaluations/), midterm and final, every term (6); Defense each term: role accountability criterion (3); CATME instrument in spring (1) | Partner evaluation Teamwork facet; sprint note contribution traceability; charter roles |
+| **SO6** Apply computer science theory and software development fundamentals | RFC fall and winter: technical tradeoff criterion (2); Defense each term: technical depth criterion (3) | Repo checkpoint build health; postmortem root cause analysis |
+
+Every outcome has at least five individual data points per student per year; the two-point minimum holds even if a defense round or an RFC is missed.
+
+## WIC Outcomes (CS 462)
+
+The WIC requirements are under official revision; this mapping will be finalized against the new language. The current structure already carries:
+
+| Outcome | Where |
+|---|---|
+| **L07** Frequent informal and formal writing | RFC drafts and reviews (formal), sprint note judgment layers (informal, ~10 per year), retrospective individual pages |
+| **L08** Audience, genre, and convention awareness | RFC (engineering decision genre), release notes and landing page (public genre), handoff (maintainer genre); the RFC writing criterion assesses this individually |
+| **L09** 2,000+ word document through drafting, sources, and comprehensive revision after feedback | The two RFCs: each runs a full draft, cross-team feedback, revision cycle with a response-to-feedback note; combined polished output exceeds 2,000 words per student |
+
+## Beyond OSU (CS 463)
+
+| Outcome | Where |
+|---|---|
+| **L10** Apply career development concepts to artifacts from a career-related experience | [Career and Individual Retrospective](/assignments/career-retrospective/): resume criterion and peer-review-exchange criterion |
+
+## How This Stays True
+
+Assignment pages declare their outcome coverage in frontmatter, and `scripts/validate-outcomes.mjs` (run in CI) fails the build if any ABET outcome drops below two individual data points. The map above cannot silently rot.

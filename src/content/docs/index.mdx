@@ -29,11 +29,6 @@ hero:
       link: "#partner-benefits"
       icon: heart
       variant: secondary
-    # TODO: uncomment when it's ready
-    # - text: Guides
-    #   link: /guides/introduction/
-    #   variant: secondary
-    #   icon: open-book
 ---
 
 import { LinkCard, CardGrid, Card, LinkButton } from '@astrojs/starlight/components';
@@ -42,6 +37,11 @@ import { LinkCard, CardGrid, Card, LinkButton } from '@astrojs/starlight/compone
   <LinkCard title="For Students" description="Master the skills you need to excel in your capstone journey and launch your career." href="/introduction/for-students/" />
   <LinkCard title="For Project Partners" description="Discover how to collaborate with talented students on meaningful projects that drive real impact." href="/introduction/for-partners/" />
   <LinkCard title="For Mentors" description="No project idea? Our students benefit from your guidance for their own projects." href="/introduction/for-mentors/" />
+</CardGrid>
+
+<CardGrid>
+  <LinkCard title="Assignments" description="All graded work for the series: grade weights, cadence, and term-by-term deliverables." href="/assignments/introduction/" />
+  <LinkCard title="Guides" description="Practical guides on requirements, technical design, Git and GitHub, testing, DevOps, and more." href="/guides/introduction/" />
 </CardGrid>
 
 <h2 id="partner-benefits" class="text-center">Why Partner with Us?</h2>
