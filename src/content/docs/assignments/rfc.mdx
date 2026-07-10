@@ -1,0 +1,64 @@
+---
+title: RFC (Request for Comments)
+description: An individual design document proposing a real decision your team faces, with a draft, cross-team feedback, and revision cycle.
+sidebar:
+  order: 4
+assignment:
+  level: individual
+  terms: [fall, winter]
+  weight: 15
+  outcomes:
+    SO1: 2
+    SO2: 1
+    SO3: 2
+    SO4: 2
+    SO6: 1
+    L07: 1
+    L08: 1
+    L09: 1
+---
+
+**Individual submission. Fall and winter terms. 15% of the term grade.**
+
+An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. You will write one RFC per term (fall and winter) about a **real decision your team currently faces**. Not a hypothetical, not a retrospective justification of something already built: a live decision where your document should genuinely change what the team does.
+
+Writing a precise, well-scoped RFC is the engineering skill whose value has gone up the most with AI tools: the quality of what you can direct an agent or a teammate to build is bounded by the quality of your specification.
+
+## The Cycle
+
+| Step | When | What |
+|---|---|---|
+| Draft | End of week 4 | 800 to 1,500 words, committed to your repo under `docs/rfcs/` (Track B teams submit a PDF export) |
+| Cross-team feedback | Week 5 | You give structured feedback on two drafts from **other teams**; two students review yours |
+| Revision and decision | End of week 8 | Revised RFC plus a short response-to-feedback note; your team records the decision (accepted, rejected, superseded) |
+
+Feedback is structured: for each draft you review, answer four questions in writing (Is the problem framed so a newcomer understands the stakes? Is any credible option missing? Would the verification plan actually detect failure? What is the single strongest improvement?). Reviewing other teams' thinking is not overhead; it is the cheapest way to see how a different project reasons.
+
+## What the RFC Must Contain
+
+1. **Problem and context**: what decision is needed, why now, what happens if the team does nothing.
+2. **Options**: at least three credible options including "do nothing", each with honest costs.
+3. **Analysis**: the technical tradeoffs that matter (performance, complexity, maintainability, security, cost), argued with evidence, not vibes.
+4. **Recommendation and verification plan**: what you propose and, concretely, how the team will know it worked (tests, metrics, acceptance criteria).
+5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
+6. **AI disclosure**: which tools you used, for what, and what verification you performed on their output.
+
+## Rubric (100 points)
+
+| Criterion | Points | Outcome |
+|---|---|---|
+| Problem framing and context: a newcomer understands the decision and the stakes | 15 | SO1 |
+| Options: three or more credible options including "do nothing", with honest costs | 10 | SO1 |
+| Technical tradeoff analysis: evidence-backed, project-specific, acknowledges uncertainty | 15 | SO6 |
+| Recommendation with a concrete verification plan | 15 | SO2 |
+| Constraints: licensing, data use, IP, confidentiality boundary addressed | 10 | SO4 |
+| AI disclosure: tools, purposes, and verification performed | 10 | SO4 |
+| Writing: structured, professional, right for a technical audience | 10 | SO3, L08 |
+| Revision: substantive response to feedback, with a response note | 10 | SO3, L09 |
+| Feedback given: your written reviews of two peer drafts are specific and useful | 5 | SO3, L07 |
+
+Non-submission of the draft forfeits the revision points (there is nothing to revise) in addition to the draft's own late handling; non-submission of peer feedback forfeits those 5 points and is visible to the affected teams.
+
+:::note[Relationship to ADRs]
+When your team records the decision, the RFC becomes the Architecture Decision Record: add the outcome and date at the top. See the [ADR guide](/guides/adr/). One document, two lifecycle stages.
+:::

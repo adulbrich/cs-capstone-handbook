@@ -1,0 +1,44 @@
+---
+title: Incident Postmortem
+description: A blameless analysis of a real setback your project experienced, written the way engineering teams write them.
+sidebar:
+  order: 8
+assignment:
+  level: team
+  terms: [winter]
+  weight: 5
+  outcomes:
+    SO4: 1
+    SO6: 1
+---
+
+**Team submission. Winter, week 9. 5% of the winter grade. Replaces the winter retrospective.**
+
+By week 9 of winter, something real has gone wrong: an outage, a bad merge that cost a weekend, a dependency or platform surprise, a security scare, a missed commitment, a partner miscommunication that burned a sprint. Pick the most instructive one and write the document engineering teams write when it happens to them: a **blameless postmortem**.
+
+Blameless means the unit of analysis is the system, not the person. "Alex broke the deploy" is banned; "the deploy process allowed an untested migration to reach production because nothing checked for it" is the genre. The test of blamelessness: every person involved would happily co-sign the document.
+
+If your team genuinely cannot identify an incident, that itself is worth investigating (are risks being surfaced?), and your TA will help you find one. There is always one.
+
+## Structure (2 to 3 pages, in `docs/postmortems/`)
+
+1. **Summary and impact**: what happened, when, who and what was affected, in factual, measurable terms.
+2. **Timeline**: the sequence of events, decisions, and signals (including missed ones), timestamped where possible.
+3. **Root cause analysis**: why it happened, past the first answer (five-whys or contributing-factors style). Include what made detection slow, if it was.
+4. **What went well**: what limited the damage; honest credit.
+5. **Corrective actions**: 3 to 5 specific changes with owners and dates, distinguishing "prevent recurrence" from "detect faster". At least one must be verifiable at the next repo checkpoint.
+6. **AI involvement, if any**: if AI-generated code or advice contributed to the incident or to the recovery, say so plainly; both are normal and instructive.
+
+## Rubric (100 points)
+
+| Criterion | Points | Outcome |
+|---|---|---|
+| Impact and timeline factual, specific, and honest | 25 | SO3 |
+| Root cause analysis reaches systemic causes, not first answers or scapegoats | 25 | SO6 |
+| Blameless throughout: systems language, co-signable by everyone involved | 15 | SO4 |
+| Corrective actions specific, owned, dated, and at least one verifiable at the next checkpoint | 25 | SO2 |
+| Writing: clear, structured, appropriately brief | 10 | SO3 |
+
+:::tip[Why this replaces a retrospective]
+A retrospective asks "how do we feel about how we work"; a postmortem asks "what does this specific failure teach us about our system". Teams consistently report the second conversation is the one that changes behavior. You still get a term-story retrospective in fall and a full project retrospective in spring.
+:::

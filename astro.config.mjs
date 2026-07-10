@@ -70,6 +70,12 @@ export default defineConfig({
           }}],
         },
         {
+          label: 'Assignments',
+          items: [{ autogenerate: {
+            directory: 'assignments',
+          }}],
+        },
+        {
           label: 'Practicalities',
           items: [{ autogenerate: {
             directory: 'practicalities',

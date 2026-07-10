@@ -1,0 +1,91 @@
+---
+title: Assignments Overview
+description: The full assignment architecture for the capstone series, including grade weights, cadence, individual accountability, and NDA handling.
+sidebar:
+  order: 0
+---
+
+This section is the source of truth for all graded work in the capstone series. Canvas mirrors these pages; when in doubt, this handbook wins, and discrepancies should be reported to the instructors.
+
+The design philosophy is simple: **the repository is the product and the documentation, and students spend their hours building, verifying, and shipping, not producing documents about work.** Standalone requirements and design documents no longer exist as submissions. They live in the repository as continuously updated docs (which is also what makes AI coding tools effective), and graders assess the repository directly. Individual credit comes from the things no one else can do for you: writing an RFC, defending your own work live, and owning reviewed pull requests.
+
+## Grade Architecture
+
+Each term, the grade is composed of four equal components:
+
+| Component | Weight | Level | Details |
+|-----------|--------|-------|---------|
+| Project Partner Evaluation | 25% | Team, with individual corroboration | Midterm pulse 5% + final survey 20%. See [Project Partner Evaluation](/project-evaluation/project-partner-evaluation/). |
+| Peer Evaluation | 25% | Individual | Midterm survey 5% + final survey 20%. See [Peer Evaluations](/project-evaluation/peer-evaluations/). |
+| Individual Evidence | 25% | Individual | Fall and winter: [RFC](/assignments/rfc/) 15% + [Defense](/assignments/defense/) 10%. Spring: [Career and Individual Retrospective](/assignments/career-retrospective/) 15% + Defense/Expo Q&A 10%. |
+| Team Deliverables | 25% | Team, with the individual contribution modifier | Term-specific set, detailed below. |
+
+## The Year at a Glance
+
+| | Fall (CS 461, 3 cr) | Winter (CS 462, 3 cr) | Spring (CS 463, 2 cr) |
+|---|---|---|---|
+| Theme | Discover, specify, walking skeleton | Build, verify, real users | Ship, prove, hand off |
+| Individual | RFC 1, Defense 1 | RFC 2, Defense 2 | Career and Individual Retrospective, Defense 3 (Expo Q&A may count) |
+| Team | Team Charter, 4 Sprint Notes, 2 Repo Checkpoints (ending with "hello, production"), Term Retrospective | Definition of Shipped, 4 Sprint Notes, 2 Repo Checkpoints (ending with a release candidate and real-user evidence), Incident Postmortem | 2 Sprint Notes, Release and Metrics, Landing Page, Project Handoff, Project Retrospective |
+
+### Fall Team Deliverables (25%)
+
+| Assignment | Weight | Due |
+|---|---|---|
+| [Team Charter](/assignments/team-charter/) | 5% | Week 2 |
+| [Sprint Notes](/assignments/sprint-notes/) (4 × 2%) | 8% | Weeks 4, 6, 8, 10 |
+| [Repo Checkpoints](/assignments/repo-checkpoints/) (2 × 4%) | 8% | Weeks 5, 10 |
+| [Term Retrospective](/assignments/term-retrospective/) | 4% | Week 10 |
+
+### Winter Team Deliverables (25%)
+
+| Assignment | Weight | Due |
+|---|---|---|
+| [Definition of Shipped](/assignments/definition-of-shipped/) | 4% | Week 3 |
+| [Sprint Notes](/assignments/sprint-notes/) (4 × 2%) | 8% | Weeks 2, 4, 6, 8 |
+| [Repo Checkpoints](/assignments/repo-checkpoints/) (2 × 4%) | 8% | Weeks 5, 10 |
+| [Incident Postmortem](/assignments/incident-postmortem/) | 5% | Week 9 |
+
+### Spring Team Deliverables (25%)
+
+| Assignment | Weight | Due |
+|---|---|---|
+| [Sprint Notes](/assignments/sprint-notes/) (2 × 2%) | 4% | Weeks 3, 6 |
+| [Release and Metrics](/assignments/release/) | 8% | Week 8 |
+| [Landing Page](/assignments/landing-page/) | 3% | Week 8 |
+| [Project Handoff](/assignments/project-handoff/) | 6% | Week 10 |
+| [Project Retrospective](/assignments/project-retrospective/) | 4% | Week 9 |
+
+## Individual Accountability on Team Work
+
+Team deliverables carry an **individual contribution modifier**: half the points of each Sprint Note are individual and default to full credit. Graders deduct from a student's individual half when the evidence shows they did not contribute meaningfully during that sprint. The evidence stream is structural, not testimonial:
+
+- Every student owns **at least one reviewed pull request per sprint** (agreed in the Team Charter). "Owns" means authored or drove it, responded to review, and merged it.
+- Sprint Notes carry a per-student contribution line (PR titles or IDs).
+- The [Defense](/assignments/defense/) spot-verifies ownership claims live.
+- Project partners can flag individual concerns in their surveys, which triggers the corroboration review described on the [partner evaluation page](/project-evaluation/project-partner-evaluation/).
+
+## NDA Projects: Track A and Track B
+
+Some industry projects operate under NDAs, and teaching staff may not have repository access.
+
+- **Track A (default):** teaching staff have read access to the repository. Repo Checkpoints are graded asynchronously. State this default in your partner conversation early; it is part of the standard partner agreement.
+- **Track B (NDA):** checkpoints run as a 15-minute screen-shared walkthrough during your cohort check-in, following the same checklist. Where the partner permits, supplement with a sanitized evidence pack (docs snapshot, redacted PR list, CI screenshots). Sprint Notes list PR titles or IDs only, no content.
+
+Both tracks are graded on identical criteria. Live channels (demos, defenses, walkthroughs) work the same on both, which is one reason this course leans on them.
+
+## AI Policy (applies to every assignment)
+
+Generative AI tools may be used on any assignment unless a page says otherwise. Three standing rules:
+
+1. **You own the result.** Correctness, security, licensing, and professionalism of anything you submit are your responsibility, whatever produced it.
+2. **Disclose and verify.** Major deliverables include a short AI disclosure: which tools, for what, and, most importantly, **what verification you performed**. Verification quality is graded; usage is not penalized.
+3. **Respect the confidentiality boundary.** What may be pasted into which tools is defined in your Team Charter's AI and confidentiality section, per your partner agreement. See the [Generative AI guide](/guides/generative-ai/).
+
+## Learning Outcome Tags
+
+Rubric criteria across these pages carry tags such as `SO1` through `SO6` (the [ABET student outcomes](/learning-objectives/abet/)) and `L07` through `L10` ([WIC](/learning-objectives/wic/) and [Beyond OSU](/learning-objectives/beyond-osu/) outcomes). They document where each outcome is evidenced; the full picture is on the [outcome mapping page](/learning-objectives/mapping/). The tags change nothing about how you complete the work.
+
+## Rubric Conventions
+
+Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial points), and **Does Not Meet** (low or no points). Work that is not submitted, is off-topic, or is inaccessible to graders scores zero on the affected criteria; that state is explicit, not folded into "Does Not Meet". Formatting expectations, unless a page overrides them: PDF or Markdown, linkable evidence (URLs, commit hashes, CI runs), readable structure with headings, alt text on images, and no links that graders cannot open (Track B exceptions are noted per assignment).
