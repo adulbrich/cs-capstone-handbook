@@ -5,7 +5,7 @@ Written 2026-07-03, revised same day with instructor corrections. A complete rev
 ## Context this document is written against
 
 - Three terms of 10 weeks: CS 461 (3 cr), CS 462 (3 cr), CS 463 (2 cr). Per-student effort budget is roughly 90 + 90 + 60 hours, about 240 hours across the year. Every comparison with other programs must be scaled to this.
-- **~300 students, 2 instructors**, plus TAs running cohort check-ins. Teams aim for 3-4 students but range from 2 to 4+. That is roughly 80-100 teams. Nothing in this document is allowed to assume boutique-program staffing.
+- **~300 students, 2 instructors, at most 6 TAs** (correction 2026-07: earlier drafts assumed 10-12 TAs; all staffing math now assumes 6, which forces bi-weekly rather than weekly cohort check-ins at ~14 teams per TA; see STAFF-RUNBOOK.md for the per-TA hours ledger). TAs run the cohort check-ins. Teams aim for 3-4 students but range from 2 to 4+. That is roughly 80-100 teams. Nothing in this document is allowed to assume boutique-program staffing.
 - Students must be assessed individually on ABET outcomes with minimal overhead for them and for staff.
 - Project partner evaluation and peer review stay. Everything else is open.
 - Students should deliver on an **outcome**, end to end: coding, prototyping, getting results, testing with real people and real data. Judgment over document production.

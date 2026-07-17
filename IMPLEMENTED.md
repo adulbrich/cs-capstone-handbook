@@ -149,6 +149,15 @@ Four persona reviews ran against the branch (student, ABET program evaluator, se
 - Sprint-note pass/fail smuggled quality judgments: evidence item is now an OR, judgment layer passes on any genuine sprint-specific content.
 - RFC reviewer no-show held the author harmless (fixed), late-joiner policy added, universal no-sanitized-evidence fallback added, numeric sprint-note split stated (Canvas double-count risk), appeal rule for the modifier defined (evidence note, five business days, instructor decides).
 
+## Staffing Recalibration (July 2026)
+
+The original persona reviews and runbook assumed 10 to 12 TAs; the real ceiling is **6 TAs** (~14 teams and ~50 students per TA). Changes made on that basis:
+
+- **Check-ins are bi-weekly per team, aligned to sprint boundaries** (was weekly). At 14 teams per TA, weekly per-team check-ins alone would cost 6 to 7 hours a week; bi-weekly costs ~3.5. Defense and Track B checkpoint sessions replace that cycle's regular check-in, so they add scoring time, not meeting time. Updated in the assignments overview and the runbook.
+- **STAFF-RUNBOOK.md now carries a per-TA hours ledger at 6 TAs**: ~64 hours per TA in fall and winter (~6.4 h/week average, peaking ~9-10 in weeks 8-10), ~60 in spring. This fits a standard 0.49 FTE appointment with headroom. The dominant line is check-ins, by design; grading proper is ~25 h/term because sprint notes are pass/fail, checkpoints are checklists, and the defense produces no take-home artifact.
+- RFC arithmetic updated: ~50 per TA per term (not 25-30), ~8 hours in weeks 8-10, with length caps enforced at grading time.
+- If the load still feels too high after a live term, the documented relief valve is the fall RFC: grading it credit/no-credit with instructor sampling would save ~6 h/TA in fall while outcome coverage stays above the two-point floor (winter RFC + three defenses carry it). Not applied; noted as the first thing to cut.
+
 ## Remaining Open Items (honest list)
 
 1. SO4 evidence concentration in the RFC (accreditor concern; add a second non-RFC individual SO4 criterion in a future pass).
