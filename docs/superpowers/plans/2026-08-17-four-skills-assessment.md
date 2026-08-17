@@ -10,6 +10,24 @@
 
 **Spec:** `docs/superpowers/specs/2026-08-17-four-skills-assessment-design.md`
 
+## Status
+
+**Phase 1 complete, 2026-08-17.** Validator: SO4 5 to 8, zero drift, all other outcomes unchanged. Build: 66 pages, all internal links valid.
+
+| Task | Commit |
+|---|---|
+| 1. Defense re-anchoring and SO4 dual-tag | `c0ce51c` |
+| 2. Scoresheet and Canvas TSV | `50c357c` |
+| 3. RFC criterion and hard-to-reverse trigger | `8051065` |
+| 4. Course-wide AI policy | `2c2276c` |
+| 5. Leadership rotation record | `273dc26` |
+| 6. Repo checkpoint safety net and modifier trigger | `287dfd2` |
+| 7. Outcome mapping | `04bf051` |
+
+Deviation from plan in Task 6: the checkpoint rubric was already at 100 points across five criteria, so the safety net extended the existing **Build health** criterion rather than adding a sixth and redistributing points. Same SO6 tag, same total, no validator movement. The spec's intent (assess net-versus-delegation fit at team level) is met.
+
+Phases 2 and 3 not started.
+
 ## Global Constraints
 
 - **Package manager is npm.** `npm run build`, `npx <tool>`. Never `pnpm` or `bun`; the lockfile is `package-lock.json` and Dependabot reads it.
