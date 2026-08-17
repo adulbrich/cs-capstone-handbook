@@ -1,10 +1,16 @@
 # CS Capstone Handbook
 
+Requires Node 24+, matching Vercel's default runtime (`.nvmrc` pins the
+version; run `nvm use`).
+
 ```sh
-pnpm install
-pnpm run dev
-pnpm run build
+npm install
+npm run dev
+npm run build
 ```
+
+Use `npm ci` instead of `npm install` when you want the exact tree from
+`package-lock.json` and no lockfile changes, which is what CI runs.
 
 ## Instructor Checklist
 
@@ -15,7 +21,7 @@ pnpm run build
 - Update Qualtrics surveys
 - Update Syllabus statements
 - Import rubric TSVs into Canvas (browser extension; sources in `canvas/assignments/`)
-- Install git hooks once per clone: `pnpm exec lefthook install`
+- Install git hooks once per clone: `npx lefthook install`
 
 ## Course Revision (branch `revision-fall-2026`)
 
@@ -35,7 +41,9 @@ The full Fall 2026 course revision lives on the `revision-fall-2026` branch. See
 
 ## Link Checking
 
-Internal links are checked at build time.
+Internal link checking is currently **off**: `starlightLinksValidator()` is
+installed but commented out in `astro.config.mjs`. Uncomment it to have the
+build fail on broken internal links.
 
 To check the production build for broken links (incl. external ones), run:
 

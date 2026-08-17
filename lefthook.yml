@@ -1,5 +1,5 @@
 # Git hooks via lefthook (https://lefthook.dev)
-# Install hooks once with: pnpm exec lefthook install
+# Install hooks once with: npx lefthook install
 
 pre-commit:
   commands:

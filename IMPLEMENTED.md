@@ -95,8 +95,44 @@ New: `rfc-template.md`, `sprint-note-template.md`, `definition-of-shipped-templa
 - `src/content.config.ts`: schema extended with the `assignment` frontmatter block (level, terms, weight, outcomes).
 - `astro.config.mjs`: Assignments sidebar group added.
 - `.github/workflows/ci.yml`: build + astro check, outcome validation, tracked-student-data guard. First CI in this repo.
-- `lefthook.yml`: activated (was all comments): pre-commit block on `data/` paths + outcome validation. Install with `pnpm exec lefthook install`.
+- `lefthook.yml`: activated (was all comments): pre-commit block on `data/` paths + outcome validation. Install with `npx lefthook install`.
 - `package.json`: `validate:outcomes` script.
+
+### Package Manager Migration to npm (August 2026)
+
+Moved off pnpm. `pnpm-lock.yaml` deleted, `package-lock.json` committed, the
+`packageManager` pnpm pin removed from `package.json`.
+
+Regenerating the lockfile was itself the security fix. The pnpm lock was last
+written 2026-07-04 and had frozen transitive deps at that day's resolution, so
+`pnpm audit` reported 18 vulnerabilities (9 high, 7 moderate, 2 low) even though
+the declared ranges already permitted patched versions. A clean `npm install`
+cleared 17 of them without a single version change. Only `astro`, pinned exactly
+at `7.0.6`, needed a real bump.
+
+Added:
+
+- `.npmrc`: `engine-strict=true`, `fund=false`, `prefer-dedupe=true`.
+- `.nvmrc`: `24`, matching `engines.node` in `package.json` and CI. Node 24 is
+  Vercel's default runtime, and Vercel reads `engines.node`, so local, CI, and
+  deploy now all resolve to the same major.
+- `.github/dependabot.yml`: weekly grouped npm updates, monthly GitHub Actions.
+  This is what prevents the lockfile drift described above from recurring.
+- CI `audit` job: `npm audit signatures` (supply-chain) and
+  `npm audit --audit-level=high`, split from `build` so a new advisory does not
+  mask a compile failure.
+
+CI now runs `npm ci` rather than `npm install`, on `actions/checkout@v5` and
+`actions/setup-node@v5` reading the Node version from `.nvmrc`.
+
+Three dependencies are installed and updated but currently inert, commented out
+in `astro.config.mjs`: `starlight-links-validator`, `starlight-page-actions`,
+and `starlight-image-zoom`. Either enable them or drop them from
+`package.json`; as-is they carry advisory surface for no benefit.
+
+`typescript` stays on 6.0.3. TypeScript 7.0.2 is available but
+`@astrojs/check@0.9.10` declares `typescript: "^5.0.0 || ^6.0.0"`, so the bump
+would break `astro check`. Revisit when `@astrojs/check` widens its peer range.
 
 ## Decisions That Need Your Confirmation
 
@@ -169,4 +205,4 @@ The original persona reviews and runbook assumed 10 to 12 TAs; the real ceiling 
 
 ## Build Status
 
-`pnpm run build` passes: astro check (warnings only, pre-existing `z` deprecation), 66 pages, internal links validated at build time. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 5, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.
+`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 66 pages. Note that internal link validation is **not** actually running: `starlightLinksValidator()` is commented out in `astro.config.mjs`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 5, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.
