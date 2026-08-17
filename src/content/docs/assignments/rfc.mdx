@@ -20,7 +20,13 @@ assignment:
 
 **Individual submission. Fall and winter terms. 15% of the term grade.**
 
-An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. You will write one RFC per term (fall and winter) about a **real decision your team currently faces**. Not a hypothetical, not a retrospective justification of something already built: a live decision where your document should genuinely change what the team does.
+An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. You will write one RFC per term (fall and winter) about a **real decision your team currently faces that is hard to reverse**. Not a hypothetical, not a retrospective justification of something already built: a live decision where your document should genuinely change what the team does.
+
+:::note[What counts as hard to reverse]
+Architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments are typically one-way doors: undoing them later costs far more than getting them right now. Most feature code is a two-way door, cheap to change once you learn something. Deciding which of your team's live decisions is genuinely hard to reverse is itself part of the exercise, and it is the judgment that matters most when a lot of the building is delegated.
+
+If no hard-to-reverse decision is live in your four-week window, write the RFC on the most consequential reversible decision you face, and say in the problem framing why it is reversible and what would make it not. Do not invent a one-way door you are not actually standing in front of.
+:::
 
 Writing a precise, well-scoped RFC is the engineering skill whose value has gone up the most with AI tools: the quality of what you can direct an agent or a teammate to build is bounded by the quality of your specification.
 
@@ -47,7 +53,7 @@ Feedback is structured: for each draft you review, answer four questions in writ
 3. **Analysis**: the technical tradeoffs that matter (performance, complexity, maintainability, security, cost), argued with evidence, not vibes.
 4. **Recommendation and verification plan**: what you propose and, concretely, how the team will know it worked (tests, metrics, acceptance criteria).
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
-6. **AI disclosure**: which tools you used, for what, and what verification you performed on their output.
+6. **Delegation and validation**: what you handed to AI tools on this decision, what safety net made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. What is assessed is the fit between how far you delegated and how strong your net is, not how sophisticated your tooling is.
 
 ## Rubric (100 points)
 
@@ -58,7 +64,7 @@ Feedback is structured: for each draft you review, answer four questions in writ
 | Technical tradeoff analysis: evidence-backed, project-specific, acknowledges uncertainty | 15 | SO6 |
 | Recommendation with a concrete verification plan | 15 | SO2 |
 | Constraints: licensing, data use, IP, confidentiality boundary addressed | 10 | SO4 |
-| AI disclosure: tools, purposes, and verification performed | 10 | SO4 |
+| Delegation and validation: what you handed to AI tools, the safety net that made that reasonable, and the points where you validated yourself | 10 | SO4 |
 | Writing: structured, professional, right for a technical audience | 10 | SO3, L08 |
 | Revision: substantive response to feedback, with a response note | 10 | SO3, L09 |
 | Feedback given: your written reviews of two peer drafts are specific and useful | 5 | SO3, L07 |

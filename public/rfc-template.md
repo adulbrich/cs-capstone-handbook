@@ -47,6 +47,10 @@ Which option you propose and why it wins the analysis above. Then, concretely: h
 
 Licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision. If none apply, say so explicitly and briefly explain why.
 
-## AI Disclosure
+## Delegation and Validation
 
-Which AI tools you used, for what parts of this document or its supporting analysis, and what verification you performed on their output.
+- **What you handed to AI tools** on this decision, whether that was the analysis, the prototype, the tests, or the writing.
+- **What safety net made that reasonable**: tests, CI, review gates, a staging environment, a rollback path. Name the ones that actually exist in your repo, not the ones you intend to build.
+- **Where you stopped and validated the result yourself, and why those points.** If this decision is hard to reverse, say what you personally checked before committing to it.
+
+What is assessed is the fit between how far you delegated and how strong your net is, not how sophisticated your tooling is.
