@@ -37,7 +37,25 @@ Deviation from plan in Task 6: the checkpoint rubric was already at 100 points a
 
 Task 9 note: the page's YAML `description` needed quoting because it contains a colon. Worth remembering for any new content page.
 
-**Remaining:** Task 12 (activity tiering) is blocked on the instructor's selection of Workshop and Recommended tiers; Task 13 (prerequisite routing) is unblocked; Phase 3 (Tasks 14 and 15, propagation) is deliberately last so it does not restate framing that is still being reviewed.
+| 12. Activity tiering | `e1e9037` |
+| 13. Prerequisite routing | `015837b` |
+
+Tiering decision recorded separately in `2026-08-17-activity-tiering.md` (`1dce0e3`), which corrected this plan's cap logic: recommendations are now sized to how many times each assignment runs.
+
+**Phase 3 complete, 2026-08-17.**
+
+| Task | Commit |
+|---|---|
+| 14. Root docs propagation | `758e024` |
+| 15. Canvas mirror and syllabi | `f7f87d7` |
+
+**All 15 tasks complete.** Final state: validator passes with SO4 at 8 and zero drift; build passes 67 pages with all internal links valid; all three edited Canvas TSVs total 100 with field counts intact; closing grep finds no stale stance wording in `src/`, `canvas/`, or `public/`.
+
+Deferred by instructor decision, not oversight:
+
+1. `career.mdx` excluded from both promoted tiers pending its own review pass, leaving the Career Retrospective's resume and PR-portfolio criteria without a promoted activity.
+2. Workshop decks (spec §4.6) are still unbuilt. The six workshop activities and their timing are now decided, which was the blocker.
+3. Whether the six workshop Canvas items should carry weight instead of being zero-point. Recommendation on record: keep them at zero.
 
 ## Global Constraints
 
