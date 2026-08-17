@@ -35,7 +35,7 @@ reviewable.
 
 Deductions are evidence-based, never testimonial:
 
-1. Contribution lines in the team's Sprint Notes (PR titles or IDs; Track B
+1. Contribution lines in the team's Sprint Notes (PR titles or IDs; NDA
    teams list IDs only).
 2. The repository record: authored or driven PRs, review responses, merges.
 3. Review activity over the sprint window.
@@ -55,7 +55,7 @@ unexplained contribution line, a peer or partner flag, or something off at the
 demo or defense. Expect a handful of investigations per cohort per sprint, not
 160 checks.
 
-**Track B (NDA) teams:** staff cannot read the repo, so the modifier binds to
+**NDA teams:** staff cannot read the repo, so the modifier binds to
 the live evidence only: the walkthrough and defense spot-checks, peer
 evaluations, and partner flags. Do not imply an async repo check that cannot
 happen.

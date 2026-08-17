@@ -33,7 +33,7 @@ The single biggest threat to your Definition of Shipped, and one concrete decisi
 
 ## 4. Contribution Lines
 
-One line per student: the reviewed PR(s) they owned this sprint (titles or IDs; Track B teams list IDs only). If a student has no PR this sprint, say why on their line.
+One line per student: the reviewed PR(s) they owned this sprint (titles or IDs; NDA teams list IDs only). If a student has no PR this sprint, say why on their line.
 
 - [Student 1]:
 - [Student 2]:

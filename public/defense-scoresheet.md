@@ -6,7 +6,7 @@
 
 **Term:** ______________ **Assessor:** ______________________ **Date:** ______________
 
-**Artifact/PR under discussion:** ______________________ **Repo record checked:** yes / no / Track B live
+**Artifact/PR under discussion:** ______________________ **Repo record checked:** yes / no / NDA live
 
 Score each criterion 0 to 20. Anchors: high (17-20) = Exceeds, middle (10-16) = Meets, low (1-9) = Does Not Meet, 0 = unexcused no-show or no meaningful attempt. "I don't know, but here is how I would find out" scores; bluffing does not.
 

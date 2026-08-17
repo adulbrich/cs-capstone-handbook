@@ -13,7 +13,7 @@ Each term's grade has four equal components:
 | Individual Evidence | 25% | Fall/winter: RFC 15% + Defense 10%. Spring: Career and Individual Retrospective 15% + Defense 10% |
 | Team Deliverables | 25% | Per-term set; sprint notes carry the individual contribution modifier |
 
-Key structural moves: standalone requirements and technical design documents are gone (living docs in the repo, graded via twice-a-term Repo Checkpoints, with an NDA Track B walkthrough variant); 14 progress reports became 10 pass/fail sprint notes plus a demo cadence; individual credit runs through RFCs (draft, cross-team feedback, revision), live defenses, and PR-per-sprint ownership; the spring outcome ladder is scaffolded by a Definition of Shipped contract, term gates ("hello, production" in fall, release candidate in winter), and a new Shipping guide.
+Key structural moves: standalone requirements and technical design documents are gone (living docs in the repo, graded via twice-a-term Repo Checkpoints, with a live walkthrough variant for NDA teams); 14 progress reports became 10 pass/fail sprint notes plus a demo cadence; individual credit runs through RFCs (draft, cross-team feedback, revision), live defenses, and PR-per-sprint ownership; the spring outcome ladder is scaffolded by a Definition of Shipped contract, term gates ("hello, production" in fall, release candidate in winter), and a new Shipping guide.
 
 ## 1. New Assignments Section (`src/content/docs/assignments/`, 16 pages, new sidebar group)
 
@@ -21,17 +21,17 @@ Source of truth for all graded work; Canvas mirrors it. Every rubric criterion c
 
 | Page | Level | Terms | Weight | Notes |
 |---|---|---|---|---|
-| introduction.mdx | | | | Grade architecture, year at a glance, individual accountability, NDA Track A/B, AI policy, rubric conventions |
+| introduction.mdx | | | | Grade architecture, year at a glance, individual accountability, NDA handling, AI policy, rubric conventions |
 | team-charter.mdx | Team | F | 4% | Adds rotating named roles (PM, AI Coordinator, Quality Owner) and the AI/confidentiality one-pager; winter/spring refresh folds into checkpoint 1 |
 | sprint-notes.mdx | Team + individual modifier | F/W/S | 8/8/4% | One page, five items, pass/fail; live demo cadence in cohort check-ins + two all-hands demo days |
-| repo-checkpoints.mdx | Team | F/W | 4% each | Replaces requirements-update and technical-design-update; term gates; Track B walkthrough protocol |
+| repo-checkpoints.mdx | Team | F/W | 4% each | Replaces requirements-update and technical-design-update; term gates; NDA walkthrough protocol |
 | rfc.mdx | Individual | F/W | 15% | Draft week 4, cross-team feedback week 5, revision week 8; becomes the ADR; absorbs memo, research brief, standalone ADR |
 | defense.mdx | Individual | F/W/S | 10% | 30-40 min per team in cohort check-ins; live scoresheet; AI open for explaining, closed for generating |
 | term-retrospective.mdx | Team + individual pages | F | 3% | 4Ls format; winter uses the postmortem, spring the project retrospective |
 | definition-of-shipped.mdx | Team | W | 4% | Partner-agreed contract: target ladder rung, metrics, lead times, user access plan; v0 drafted at fall checkpoint 2 |
 | incident-postmortem.mdx | Team | W | 4% | Blameless, real incident, corrective actions verifiable at next checkpoint |
 | release.mdx | Team | S | 8% | Video + release notes + new metrics evidence section (measured values against docs/shipped.md) |
-| landing-page.mdx | Team | S | 3% | Resolved to team-level; Track B alternatives stated |
+| landing-page.mdx | Team | S | 3% | Resolved to team-level; alternatives for NDA teams stated |
 | project-retrospective.mdx | Team | S | 3% | Cross-year arc, delivered vs Definition of Shipped, decisions traced via RFCs |
 | career-retrospective.mdx | Individual | S | 15% | PR portfolio, judgment/AI reflection, resume + two-way peer review |
 | project-handoff.mdx | Team | S | 6% | Partner-facing, living-docs links, written partner confirmation, consent declaration |
@@ -43,7 +43,7 @@ Source of truth for all graded work; Canvas mirrors it. Every rubric criterion c
 
 - `breakdown.mdx`: rewritten to the four-component architecture; partner facet weight table kept; CATME-dimensions listing removed (was inconsistent with the actual per-term instrument).
 - `peer-evaluations.mdx`: documents the real per-term instrument (four criteria + 100-point distribution) and CATME's actual place (end of spring); mid/final split stated (5% + 20%); team-size policy stated (aim 3-4, range 2 to 5+, formula normalized for size, n=2 handling noted); the ~90-line commented-out CATME rubric removed; states that survey-validation deductions are reflected in the posted grade (this was a scripts bug: penalties were emailed but never posted).
-- `project-partner-evaluation.mdx`: midterm/final arithmetic reconciled (5% + 20%, was "0-5%"/"20-25%"); corroboration-review sources updated to sprint-note contribution lines, repo activity with Track B live verification, and individual assignments; spring V&V explicitly scored against the Definition of Shipped; partner survey's individual-concern question mentioned; typos fixed.
+- `project-partner-evaluation.mdx`: midterm/final arithmetic reconciled (5% + 20%, was "0-5%"/"20-25%"); corroboration-review sources updated to sprint-note contribution lines, repo activity with live verification for NDA teams, and individual assignments; spring V&V explicitly scored against the Definition of Shipped; partner survey's individual-concern question mentioned; typos fixed.
 - `conversion.mdx`: full letter scale (adds B+/C+/C-/D+ granularity; A at 93); explicit missing-work-scores-zero policy.
 - `rubrics.mdx`: was a hidden "TBD" stub; now documents band conventions, the missing-is-not-a-band rule, evidence-over-prose, outcome tags, and handbook-wins-over-Canvas.
 - `assignments.mdx`: now a short pointer to the Assignments section (no duplicated list to drift).
@@ -67,10 +67,10 @@ All 11 pages: converted from graded-assignment voice ("Submit...") to practice-l
 
 ## 6. Introduction, Practicalities, About
 
-- `for-partners.mdx`: new assignment vocabulary, four-component grade split, Track A/B repo-access paragraph (staff read access is the stated default), living-docs explanation.
+- `for-partners.mdx`: new assignment vocabulary, four-component grade split, NDA repo-access paragraph (staff read access is the stated default), living-docs explanation.
 - `for-mentors.mdx`: de-duplicated against for-partners; mentor-specific content kept.
 - `series.mdx`: four-component evaluation summary; term/credit table verified.
-- `for-students.mdx`: typo fixes, grade summary, NDA answer now describes Track B.
+- `for-students.mdx`: typo fixes, grade summary, NDA answer now describes the walkthrough path.
 - `index.mdx`: removed TODO comment block; added Assignments and Guides cards.
 - `showcase.mdx`: alt text on all images, team-size claim defers to policy, TODOs cleared.
 - `teams.mdx`: canonical team-size policy (aim 3-4, range 2 to 5+).
@@ -139,7 +139,7 @@ would break `astro check`. Revisit when `@astrojs/check` widens its peer range.
 
 1. **Letter scale changed** (A at 93, added B+/C+/C-/D+ granularity). Check against department norms.
 2. **Sprint note count and weeks** (fall 4/winter 4/spring 2, listed in introduction.mdx) assume the usual term calendar; adjust week numbers to the real academic calendar.
-3. **RFC peer feedback is cross-team.** For NDA-heavy cohorts, an RFC may reveal partner context; the pages tell Track B students to sanitize, but you may prefer within-team review for NDA teams.
+3. **RFC peer feedback is cross-team.** For NDA-heavy cohorts, an RFC may reveal partner context; the pages tell students on NDA teams to sanitize, but you may prefer within-team review for NDA teams.
 4. **Defense inside cohort check-ins** assumes check-ins are at least 40 minutes and TAs can score live. The printable scoresheet is in `public/defense-scoresheet.md`.
 5. **CATME in spring** is kept as-is (parked per your instruction); the peer-evaluations page now says so explicitly.
 6. **The old canvas/assignments sources for deprecated assignments were left in place** (with the readme marking them deprecated) rather than deleted, so nothing is lost while Canvas still holds live content.
@@ -179,10 +179,10 @@ Four persona reviews ran against the branch (student, ABET program evaluator, se
 **TA review** (15 findings; TSV fidelity was verified clean; all actionable items fixed):
 - Double jeopardy on non-contribution (modifier + partner facet + checkpoint criterion): precedence declared everywhere; the checkpoint criterion now grades attribution infrastructure, not individuals.
 - Defense TSV had a 20-point floor contradicting the zero policy: a zero band was added to all five criteria; scoresheet anchors now map to the TSV bands.
-- Track B modifier enforcement was impossible as written: now bound to live evidence only.
+- NDA modifier enforcement was impossible as written: now bound to live evidence only.
 - The modifier implied 160 audits/term: fast-pass default documented (investigate only on triggers).
 - Defense throughput: scoresheet gained per-student timebox, artifact/PR line, repo-check field, assessor-split and dominance-redirect rules.
-- Repo checkpoint anchors for cross-TA consistency added ("How Graders Review"), including a fixed Track B walkthrough order.
+- Repo checkpoint anchors for cross-TA consistency added ("How Graders Review"), including a fixed NDA walkthrough order.
 - Sprint-note pass/fail smuggled quality judgments: evidence item is now an OR, judgment layer passes on any genuine sprint-specific content.
 - RFC reviewer no-show held the author harmless (fixed), late-joiner policy added, universal no-sanitized-evidence fallback added, numeric sprint-note split stated (Canvas double-count risk), appeal rule for the modifier defined (evidence note, five business days, instructor decides).
 
@@ -190,7 +190,7 @@ Four persona reviews ran against the branch (student, ABET program evaluator, se
 
 The original persona reviews and runbook assumed 10 to 12 TAs; the real ceiling is **6 TAs** (~14 teams and ~50 students per TA). Changes made on that basis:
 
-- **Check-ins are bi-weekly per team, aligned to sprint boundaries** (was weekly). At 14 teams per TA, weekly per-team check-ins alone would cost 6 to 7 hours a week; bi-weekly costs ~3.5. Defense and Track B checkpoint sessions replace that cycle's regular check-in, so they add scoring time, not meeting time. Updated in the assignments overview and the runbook.
+- **Check-ins are bi-weekly per team, aligned to sprint boundaries** (was weekly). At 14 teams per TA, weekly per-team check-ins alone would cost 6 to 7 hours a week; bi-weekly costs ~3.5. Defense and NDA checkpoint sessions replace that cycle's regular check-in, so they add scoring time, not meeting time. Updated in the assignments overview and the runbook.
 - **STAFF-RUNBOOK.md now carries a per-TA hours ledger at 6 TAs**: ~64 hours per TA in fall and winter (~6.4 h/week average, peaking ~9-10 in weeks 8-10), ~60 in spring. This fits a standard 0.49 FTE appointment with headroom. The dominant line is check-ins, by design; grading proper is ~25 h/term because sprint notes are pass/fail, checkpoints are checklists, and the defense produces no take-home artifact.
 - RFC arithmetic updated: ~50 per TA per term (not 25-30), ~8 hours in weeks 8-10, with length caps enforced at grading time.
 - If the load still feels too high after a live term, the documented relief valve is the fall RFC: grading it credit/no-credit with instructor sampling would save ~6 h/TA in fall while outcome coverage stays above the two-point floor (winter RFC + three defenses carry it). Not applied; noted as the first thing to cut.

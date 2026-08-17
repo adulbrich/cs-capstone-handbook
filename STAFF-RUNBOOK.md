@@ -5,16 +5,16 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 ## Cohort Operations
 
 - Each TA owns a cohort of ~14 teams. Check-ins are **bi-weekly per team, aligned to sprint boundaries**: 7 team-meetings per week at 25 to 30 minutes, about 3.5 hours of meetings per TA per week. Weekly per-team check-ins do not fit at 6 TAs; do not promise them.
-- Defense and Track B checkpoint sessions run 40 minutes and **replace** that team's regular check-in for the cycle, so they add scoring time, not meeting time.
+- Defense and NDA checkpoint sessions run 40 minutes and **replace** that team's regular check-in for the cycle, so they add scoring time, not meeting time.
 - Cohort assignments and meeting grids are built in week 0 from the team-assignment sheet and published in Canvas week 1.
-- The TA is the team's first contact for everything operational: absences, Track B scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
+- The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
 
 ## Term Rhythm (staff view)
 
 | Weeks | Staff activity |
 |---|---|
 | 1-2 | Cohorts formed; charters graded (TAs); Qualtrics contact lists built |
-| 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; Track B walkthroughs in check-ins); midterm surveys out |
+| 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; NDA walkthroughs in check-ins); midterm surveys out |
 | 5 | All-hands demo day 1 (sampled lineup, ~15 teams in 110 minutes) |
 | 7-9 | Defenses inside check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
@@ -29,22 +29,22 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 
 ## RFC Machinery
 
-- Pairing: generate reviewer pairs across teams (avoid same-project pairs; pair Track B teams with each other when possible). A spreadsheet or small script from the roster suffices; publish at the start of week 5.
+- Pairing: generate reviewer pairs across teams (avoid same-project pairs; pair NDA teams with each other when possible). A spreadsheet or small script from the roster suffices; publish at the start of week 5.
 - Grading: TAs grade their cohort's RFCs (~50 each per term in fall and winter, ~10 minutes each against the rubric; budget ~8 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
 - Reviewer no-shows: the author is held harmless (revision graded on self-identified improvements or staff feedback); the no-show reviewer loses the feedback points.
 
 ## Repo Checkpoints
 
-- Track A: asynchronous review, ~10-15 minutes per team against the checklist; leave feedback as issues where useful.
-- Track B: 15-minute walkthrough in the check-in, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing.
-- Consistency anchors live on the assignment page ("How Graders Review"). Calibrate by having all TAs review one volunteer Track A repo together in week 4.
+- Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist; leave feedback as issues where useful.
+- NDA teams: 15-minute walkthrough in the check-in, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing.
+- Consistency anchors live on the assignment page ("How Graders Review"). Calibrate by having all TAs review one volunteer staff-accessible repo together in week 4.
 
 ## Individual Contribution Modifier
 
 - Default full credit; investigate only on triggers (blank or unexplained contribution line, peer or partner flag, something off at demo or defense, a low Ownership-and-Delegation or Role score at the defense).
 - **These signals are inputs to one decision, not separate deductions.** A student is never penalized twice for the same behavior: the declared precedence order across the individual modifier, the partner evaluation facet, and the checkpoint contribution-traceability criterion is unchanged. The checkpoint criterion still grades whether attribution infrastructure exists, never individuals.
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
-- Track B: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
+- NDA teams: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
 
 ## Surveys (per term: 4 processing runs)
 
@@ -90,4 +90,4 @@ Instructors carry no cohort: calibration samples (RFC, defense, checkpoints), mo
 - [ ] Both sprint-note Canvas columns (team + individual) created; together they equal the Sprint Notes weight
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
-- [ ] Track B teams identified and flagged in the tracking sheet
+- [ ] NDA teams identified and flagged in the tracking sheet

@@ -22,10 +22,27 @@ There is no requirements document assignment and no technical design document as
 
 - `docs/requirements.md`: what the product must do and how you will know, with acceptance criteria for current priorities. Updated as scope changes; git history is the change log.
 - `docs/design.md`: the system view someone would need to contribute safely: context, key diagrams, interfaces and contracts, deployment shape.
-- `docs/rfcs/`: RFCs and recorded decisions (see [RFC](/assignments/rfc/) and the [ADR guide](/guides/adr/)).
+- `docs/rfcs/` or `docs/adr/`: recorded decisions. Either directory is fine, and so is both; several published agent skill sets write to `docs/adr/` by default, and fighting your tooling over a directory name is a waste of a term. See the [ADR guide](/guides/adr/).
 - `docs/risks.md`: **one** risk register for the whole project (process, product, and technical risks together), ranked, with owners. This is the only risk register; do not maintain copies elsewhere.
 - `README.md`: an honest quickstart that a new contributor (or grader) can actually follow.
-- `CONTRIBUTING.md` and the AI context file (`CLAUDE.md`, `.github/copilot-instructions.md`, or equivalent) from your [Team Charter](/assignments/team-charter/).
+- `CONTRIBUTING.md` and the AI context file (`AGENTS.md`, `CLAUDE.md`, or your tool's equivalent) from your [Team Charter](/assignments/team-charter/). `AGENTS.md` is the cross-tool convention and the safest default; per-tool files should point at it rather than duplicate it, because two instruction files disagreeing with each other is worse than none.
+
+## What CI Must Do
+
+Every project category needs continuous integration, but "have a GitHub Actions workflow" is the wrong requirement: a team contributing upstream to someone else's repository cannot satisfy it, and a research team can satisfy it while testing nothing. The minimum is stated as outcomes:
+
+1. **Every change reaches the default branch through a pull request** that someone other than the author approved.
+2. **An automated check runs on every pull request, and it can actually fail.** A check that passes unconditionally is not a check. Break something on a branch once and watch it go red, so you know.
+3. **The check runs your tests**, and at least one test fails if the behavior it covers breaks.
+4. **A stranger can go from a clean clone to a running system using only the README.**
+
+What that looks like depends on your category:
+
+| Category | Realization |
+|---|---|
+| New Product or Game, Consultancy | A workflow that installs from a lockfile, builds, lints, and runs the test suite on every pull request |
+| FOSS | Upstream's CI passes on your pull request, and your fork documents the build-and-test command a maintainer expects you to have run before submitting |
+| Research | The pipeline runs end to end on a small sample dataset in CI, with at least one test asserting a known result rather than the pipeline merely exiting zero |
 
 ## Term Gates
 
@@ -33,12 +50,18 @@ Each term's second checkpoint carries a gate that pulls the year's risk forward:
 
 | Checkpoint | Gate |
 |---|---|
-| Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real |
+| Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real, **and the week 10 production target is written down and agreed with your partner** |
 | Fall, week 10 | **"Hello, production"**: a [walking skeleton](/walking-skeleton-prototype-template.md) (the thinnest end-to-end slice of your system that actually runs) deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
 | Winter, week 5 | Integration health: the skeleton has organs; CI meaningful; real-user session scheduled |
 | Winter, week 10 | **Release candidate**: installable/deployable by a stranger, plus evidence of at least one real-user session |
 
 The gates exist because the spring outcome bar is won or lost on lead times that start now. See the [Shipping guide](/guides/shipping/) for your category's path.
+
+:::caution[Agree the production target in week 5, not week 9]
+"Hello, production" is the one gate your team may not be able to meet alone: it can need an account, a hosting decision, a security review, or a maintainer's willingness to look at your pull request, and every one of those is somebody else's calendar. So the week 5 checkpoint asks you to **record what "deployed" will mean for this project**, in `docs/design.md` under deployment: where the skeleton will run, who owns the account or infrastructure, what approval is needed, and who is asking for it. One paragraph, agreed with your partner or mentor.
+
+Teams that discover in week 9 that their partner never intended to give them a production environment do not fail because they built badly. They fail because nobody asked in week 5. If the answer is "there will be no deployment", that is a fine answer, and it needs to be written down then, so staff can agree an equivalent gate while there is still time to hit it.
+:::
 
 ## Rubric (100 points per checkpoint)
 
@@ -48,18 +71,31 @@ The gates exist because the spring outcome bar is won or lost on lead times that
 | Term gate met (see table above) | 25 | SO2 |
 | Build health and safety net: CI green, tests exist and test something real, quickstart works, and the net matches how much the team delegates (review gates on the paths that are hard to undo, a staging or preview environment, a documented rollback path) | 20 | SO6 |
 | Decision and risk hygiene: RFCs/ADRs recorded, single risk register alive and ranked | 15 | SO1 |
-| Contribution traceability: the infrastructure exists to attribute work per student (PRs authored and reviewed under real accounts, contribution lines in sprint notes match the record) | 15 | SO5 |
+| Contribution traceability and git hygiene: work is attributable per student (PRs authored and reviewed under real accounts, contribution lines in sprint notes matching the record), and the history is one a maintainer could inherit | 15 | SO5 |
 
-## Track A and Track B
+Each criterion has one thing graders check first, so you can check it yourself:
 
-- **Track A (staff repo access, the default):** graded asynchronously; staff may leave issues or PR comments as feedback.
-- **Track B (NDA):** the checkpoint is a 15-minute screen-shared walkthrough in your cohort check-in. A designated student drives; the TA follows the same checklist against the live repo and retains nothing. Where the partner permits, a sanitized evidence pack (docs snapshot, redacted PR list, CI screenshots) supports the review. Identical criteria, identical points.
+- **Living docs**: one recent feature, compared against `docs/design.md`. If the doc describes a system that no longer exists, this criterion is where it shows.
+- **Term gate**: met or not met, judged against the table above and nothing else.
+- **Build health**: the safety net is judged **relative to how your team works**, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team writing most code by hand, and neither approach is penalized: what is graded is whether the net catches what your way of working lets through. Gates belong on the changes that are expensive to undo (schema, authentication, deployment, migrations), not spread uniformly. A team with no CI that hand-merges agent output to production fails this regardless of whether anything has broken yet.
+- **Decision and risk hygiene**: does the risk register have owners and a ranking, and is there exactly one of it?
+- **Contribution traceability**: this grades whether the **infrastructure** for attribution exists, not whether every student contributed. Individual non-contribution is handled by the [individual modifier](/assignments/introduction/#individual-accountability-on-team-work) and never double-counted here.
 
-## How Graders Review
+### Git hygiene: what "a history a maintainer could inherit" means
 
-To keep graders consistent: "tests something real" means at least one test would fail if the feature it covers broke (per category: user-visible behavior for products, pipeline correctness for research, upstream test conventions for FOSS); "quickstart works" means a grader followed it cold; the docs spot-check compares one recent feature against `docs/design.md`. The contribution-traceability criterion grades whether the **infrastructure** for attribution exists, not whether every student contributed: individual non-contribution is handled by the individual modifier, never double-counted here. Track B walkthroughs follow a fixed order (quickstart, CI, docs spot-check, risk register, PR list) so 15 minutes suffices.
+Never enforced before this year, and the most common thing that makes an otherwise good project unpleasant to take over:
 
-The **safety net** half of build health is judged relative to how the team works, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team that writes most code by hand, and neither approach is penalized: what is graded is whether the net actually catches what the team's way of working lets through. Look for gates on the changes that are expensive to undo (schema, authentication, deployment, migrations) rather than uniform coverage everywhere. A team with no CI that hand-merges agent output to production fails this half regardless of whether anything has broken yet.
+- **Nothing lands on the default branch except through a pull request.** Turn on branch protection so this is structural rather than a promise.
+- **No secrets, no build artifacts, no dependency directories in the history.** A committed `.env` is a security incident even after you delete the file, because the history keeps it. Fix `.gitignore` before the first commit, not after.
+- **Commit messages say what changed and why.** "fix", "update", "asdf", and forty commits called "wip" are the failure mode. Squash noisy branches before merging.
+- **No force-pushing the default branch**, ever.
+- **Large binaries belong outside git** or in Git LFS.
+
+Your [git and GitHub guide](/guides/git-and-github/) covers the mechanics.
+
+:::note[If your project is under NDA]
+The checkpoint is a 15-minute screen-shared walkthrough in your cohort check-in instead of an asynchronous review. A designated student drives; the TA follows the same checklist against the live repo, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing. Where the partner permits, a sanitized evidence pack (docs snapshot, redacted PR list, CI screenshots) supports the review. Identical criteria, identical points.
+:::
 
 :::note[Why this replaces document assignments]
 A submitted PDF is a snapshot that starts rotting at upload time. A repository is either healthy or it is not, and your project partner, your future maintainers, and your AI tools all consume the repository, not the PDF. Grading the real thing aligns the course with how you actually work.
