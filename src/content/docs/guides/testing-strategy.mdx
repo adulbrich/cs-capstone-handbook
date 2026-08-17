@@ -107,6 +107,33 @@ The most common testing mistake is testing the wrong things: writing tests for t
 - **Do not test framework code.** If a framework guarantees that a route returns a 404 for an unregistered path, you do not need to test that. Test *your* code, not the tools you are using.
 - **Do not chase coverage numbers.** Code coverage measures which lines were executed during testing, not whether the tests are meaningful. A test suite with 90% coverage that only tests happy paths is worse than one with 60% coverage that tests critical paths and edge cases thoroughly. Use coverage as a signal to find blind spots, not as a target to optimize.
 
+### Automated Accessibility Testing
+
+If people will use your software, some of them will use it with a screen reader, a keyboard only, at 200% zoom, or with low vision. Accessibility is not a polish task for the last sprint; it is a correctness property, and like every other correctness property it belongs in CI.
+
+The reference standard is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA. That gives you a target instead of a vibe, and it is the level most institutions and public-sector partners require.
+
+Three layers, cheapest first:
+
+- **Lint level**: rules like [`eslint-plugin-jsx-a11y`](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y) catch missing alt text, unlabeled inputs, and click handlers on non-interactive elements before a browser is ever involved.
+- **Component and page level**: [axe-core](https://github.com/dequelabs/axe-core) runs inside your existing test suite and fails a test when a rendered component violates a rule. Wiring it into the tests you already have is usually a few lines.
+- **Whole-page budgets**: [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [pa11y](https://pa11y.org/) score a running page and can fail the build below a threshold.
+
+Run these as a CI gate, not as a pre-release scramble. An accessibility violation caught in a pull request costs minutes; the same violation found the week before the Expo costs a redesign.
+
+### Manual Accessibility Testing
+
+Automated tools catch roughly a third to a half of real accessibility defects. They are excellent at the mechanical rules (is there alt text, is the contrast ratio sufficient) and blind to the ones that require judgment: whether focus order makes sense, whether a label is *meaningful* rather than merely present, whether the flow is completable at all without a mouse.
+
+Four checks, none of which need special equipment:
+
+- **Keyboard only.** Unplug your mouse and complete your critical flow with Tab, Shift-Tab, Enter, and Escape. If you get stuck or cannot see where focus is, so will your users.
+- **Screen reader pass.** VoiceOver ships with macOS (Cmd-F5), [NVDA](https://www.nvaccess.org/) is free on Windows, Orca ships with most Linux desktops. Ten minutes on your main flow is enough to find the worst problems.
+- **Zoom to 200%.** Text should reflow rather than clip or overlap.
+- **Contrast.** Browser devtools report contrast ratios directly in the element inspector.
+
+Do this before demos and before releases, alongside your smoke test.
+
 ### Manual and Exploratory Testing
 
 Automated tests verify that the system does what the team *told* it to do. Manual testing verifies that the system does what a human *expects* it to do. Both are necessary.
@@ -128,6 +155,14 @@ Watch real users (or reasonable proxies) attempt key tasks in your system. Note 
 Usability testing does not require a finished product. Paper prototypes, clickable mockups, and partially implemented features are all testable. The earlier you test with users, the cheaper it is to fix what you learn.
 
 Plan usability sessions deliberately. Decide which tasks to test, recruit participants, and prepare a script or task list. Unstructured "try it and tell me what you think" sessions produce less actionable feedback than specific task-based observations.
+
+### Testing with Assistive Technology Users
+
+Automated rules and your own keyboard pass tell you whether the software is *usable*. Only someone who relies on assistive technology daily can tell you whether it is *good*. They navigate at speeds and in patterns you will not think to try, and they will find in two minutes what your checklist missed entirely.
+
+Where feasible, recruit one participant who uses a screen reader, voice control, or switch access as part of their normal day, and run the same task-based session you would run with any other user. Campus disability services, local accessibility meetups, and your project partner's own user base are the usual routes.
+
+Where that is not feasible in your timeline, the honest substitute is a task-based session under simulated constraint: a teammate who did not build the feature completes the flow keyboard-only or with a screen reader on. State plainly in your writeup that this was simulated. Simulation finds broken things; it does not tell you what daily use feels like, and pretending otherwise is the mistake worth avoiding.
 
 ### Beta Testing and Feedback
 
@@ -256,6 +291,8 @@ The right tools depend on your stack. Here are common choices across popular fra
 | Go | built-in `testing` package | [httptest](https://pkg.go.dev/net/http/httptest) |
 | Java | [JUnit](https://junit.org/) | [Selenium](https://www.selenium.dev/) |
 | Mobile (React Native) | [Jest](https://jestjs.io/) + [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) | [Detox](https://wix.github.io/Detox/) |
+
+For accessibility, the common stack is [axe-core](https://github.com/dequelabs/axe-core) inside your test suite, [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [pa11y](https://pa11y.org/) for page-level budgets in CI, and a lint rule set such as [`eslint-plugin-jsx-a11y`](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y) for JavaScript UI code. Screen readers for the manual pass are already on your machine: VoiceOver on macOS, [NVDA](https://www.nvaccess.org/) on Windows, Orca on Linux.
 
 For usability testing, screen and session recording tools like [Lookback](https://lookback.io/), [Hotjar](https://www.hotjar.com/), or even a simple Zoom recording can capture user interactions for later analysis.
 
