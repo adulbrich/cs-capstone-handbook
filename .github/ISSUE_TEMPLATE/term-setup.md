@@ -27,5 +27,6 @@ labels: type:chore
 
 - [ ] Bump the version in `package.json` (format: `YYYY.TT.N`, e.g. `2026.FA.0`)
 - [ ] Install git hooks in each clone: `npx lefthook install`
-- [ ] Review time-sensitive content: `src/content/docs/activities/career.mdx` carries job-market framing that dates fastest
+- [ ] Fall only: re-read `src/content/docs/activities/career.mdx` (job-market framing and external links date fastest; the page carries a dated review marker at the top, so update it)
+- [ ] Confirm `npm run validate:activities` is green and the tier counts still look right
 - [ ] Confirm `npm run build` and `npm run validate:outcomes` are green on `main`

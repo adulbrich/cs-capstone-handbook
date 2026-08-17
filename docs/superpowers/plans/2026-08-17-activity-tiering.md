@@ -135,7 +135,9 @@ Fall is short (800-1,500 words); winter is the WIC term with a 2,000-word floor 
 | **Project Handoff** (spring) | Planning for Maintenance and Long-Term Support (`design`) → known issues and future work (20); Describe your API Reference (`design`) → living docs (10) | `design`, `communication` |
 | **Career and Individual Retrospective** (spring) | Portfolio Development and Public Code Repository (`career`) → PR portfolio; Resume Building (`career`) → resume and the peer-review exchange; Learning Journal (`reflective`) → judgment and responsible practice (25, SO4); Learn from Jean-Luc Doumont (`communication`) → writing (10) | `career`, `reflective` |
 
-**Career activities are promoted only onto the career assignment** (instructor decision, revised 2026-08-17): Portfolio Development and Public Code Repository for the PR-portfolio criterion, Resume Building for the resume and peer-review criteria. The other 13 career activities stay in the Library tier, and no career activity is recommended for any non-career assignment. The page's 2026 job-market framing remains the most time-sensitive content in the library and should be reviewed each August.
+**Career activities are promoted only onto the career assignment** (instructor decision, revised 2026-08-17): Portfolio Development, Public Code Repository, Personal Branding, and Mock Interviews for the PR-portfolio criterion and its captions, and Resume Building for the resume and peer-review criteria. The other 11 career activities stay in the Library tier, and no career activity is recommended for any non-career assignment.
+
+`career.mdx` had its own review pass in August 2026: all 16 activities brought to the standard format, all six external links verified live, and the market framing kept free of statistics and named tools so it ages slowly. It remains the most time-sensitive page in the library and carries a dated review marker; re-read it every August.
 
 ## Revision, August 2026: Routing by Project Category
 
@@ -150,8 +152,8 @@ Six research and R&D activities were added, each tied to a gate in the Shipping 
 | Tier | Count (Aug 2026 revision) |
 |---|---|
 | Workshop | 6 slots, 8 distinct activities (slot 6 rotates through 3) |
-| Recommended | 52 |
-| Library | 60, kept and browsable |
+| Recommended | 54 |
+| Library | 58, kept and browsable |
 | **Total activities** | **120** |
 
 Higher than the spec's "~20" and correctly so: the figure follows from instance counts and now from category counts, neither of which the spec had worked out.
