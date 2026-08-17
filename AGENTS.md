@@ -20,6 +20,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `canvas/` | Canvas-ready HTML and rubric TSVs. Mirrors the handbook; the handbook wins. |
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator. Runs in CI and pre-commit. |
+| `scripts/validate-activity-tiers.mjs` | The activity tier validator. Runs in CI and pre-commit. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -41,8 +42,9 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 Run both before considering any content change done:
 
 ```sh
-npm run build          # astro check + astro build; fails on broken internal links
+npm run build            # astro check + astro build; fails on broken internal links
 npm run validate:outcomes
+npm run validate:activities
 ```
 
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build
@@ -69,6 +71,17 @@ carries. This is the rule most easily gotten wrong: a team-level page tagged
 of the same map and is hand-maintained against this check. When you change a
 rubric criterion's tags, update the frontmatter, the mapping page, and the
 Canvas TSV in the same commit.
+
+## How activity tiers stay true
+
+An activity is Recommended because an assignment page links to it, but the tier
+is *displayed* as a badge on the activity page. Two files, one fact, so it
+drifts. `scripts/validate-activity-tiers.mjs` reconciles them and fails if a
+linked activity carries no badge, if a Recommended badge has no assignment
+linking to it, or if an assignment links to an anchor that matches no heading.
+
+Workshop tier is exempt from the second rule: those are assigned centrally
+through `assignments/workshop-activities.mdx`, not per assignment page.
 
 ## Grade weight arithmetic
 

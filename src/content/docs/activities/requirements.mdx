@@ -30,7 +30,7 @@ For this activity, participate in all four workshops as a team, and write a repo
 
 ## Lean Canvas
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Complete the [Lean Canvas](https://www.leanfoundry.com/tools/lean-canvas) with as much detail as you can.
 
@@ -43,7 +43,7 @@ A good output is your completed Canvas with any additional information that migh
 ## Hypothesis Testing
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/>
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Most of the information in your **Lean Canvas** is hypotheses. Identify five of the riskiest hypotheses in your plan's customer segments, problems, and competition. 
 
@@ -105,7 +105,7 @@ A good output is a diagram along with a brief explanation of the entities and th
 ## User Manual
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/>
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Develop a preliminary user manual that outlines how end-users will interact with your software.
 
@@ -120,13 +120,20 @@ If working on this activity as a team, have each person focus on a different sub
 
 ## Define Your Research Questions
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-:::note
-It is highly recommended to do a [literature review](/activities/creative/#write-a-literature-review) first.
-:::
+For research and R&D projects, this does the job user stories do for everyone else: it decides what you build and how you will know it worked. One to two hours with your faculty partner, after a [literature review](/activities/creative/#write-a-literature-review).
 
-After identifying gaps or unique insights in existing research, [write your research question(s)](https://research.com/research/how-to-write-a-research-question). Explain whether your research will be primary (i.e., collecting original data) or secondary (i.e., analyzing existing data), and what you'll need to get started.
+- **Write the question** in one sentence, specific enough to be answerable in three terms. "Can transformer models help with X" is not a question; "does fine-tuning on Y reduce false negatives on Z below the current baseline" is. This [guide to writing research questions](https://research.com/research/how-to-write-a-research-question) helps if you are starting cold.
+- **Say whether the research is primary or secondary**: are you collecting original data, or analyzing data someone else collected? The answer changes your whole timeline, because primary research usually means [an IRB application](/activities/user/#complete-an-irb-application).
+- **State the hypothesis and its negation**: what result would support it, and what result would refute it. If no observable result would change your mind, you have a topic rather than a hypothesis.
+- **Name the baseline** you will compare against, with a citation and a code link if one exists.
+- **Name the metric** and the threshold that counts as success. Agree it with your partner now, in writing.
+- **Write down what you are not asking.** Research scope creep is worse than product scope creep, because it stays invisible until the term runs out.
+
+A good output is a page in `docs/requirements.md` carrying the question, whether it is primary or secondary, the hypothesis with its refutation condition, the named baseline with a citation, and the success metric your faculty partner agreed to.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) living-docs criterion, and the winter [Definition of Shipped](/assignments/definition-of-shipped/) target rung.
 
 ## Collect Data Sources
 

@@ -23,6 +23,8 @@ jobs:
       - run: npm ci
       - name: Validate ABET outcome coverage
         run: node scripts/validate-outcomes.mjs
+      - name: Validate activity tiers
+        run: node scripts/validate-activity-tiers.mjs
       - name: Build (includes astro check)
         run: npm run build
       - name: Guard against student data

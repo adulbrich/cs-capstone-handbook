@@ -367,6 +367,40 @@ If your project has no user interface, the equivalent targets are your error mes
 
 A good output is a marked-up screenshot or a short list of specific fixes, each tied to the guideline it addresses.
 
+## Reproduce Your Baseline
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Get the number you intend to beat running on your own machine, before you try to beat it. Budget a week of calendar time, because this takes longer than anyone expects.
+
+- **Pick the specific published result**: paper, table, row, number.
+- **Get the authors' code running** if it exists. Expect broken dependencies, missing data, and undocumented preprocessing.
+- **Run it on the data it was published on**, and compare your number to theirs.
+- **Write down the gap and why it exists**: different hardware, a different data version, a preprocessing step the paper never mentioned, or a genuine failure to reproduce.
+- **If you cannot reproduce it, say so explicitly** and choose a baseline you can. A number you could not reproduce is not a number you can claim to beat.
+
+A good output is your reproduced number next to the published one, with a written explanation of any gap, committed to the repository.
+
+**Feeds:** the winter [repo checkpoint](/assignments/repo-checkpoints/) term gate, and the [RFC](/assignments/rfc/) technical-tradeoff criterion.
+
+## Make Your Artifact Reproducible
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Get your project to the state where a stranger runs one command and gets your numbers. Half a day, and it is the difference between a result and a rumor.
+
+- **Pin your dependencies**: a lock file or a container image, not a list of package names.
+- **Version or precisely reference your data**, including which split and which preprocessing.
+- **Seed every run**, and record the seeds.
+- **Write the one command** that goes from clean checkout to result table, and put it in the README.
+- **Test it literally**: have a teammate who did not build it, or your partner's graduate student, run it fresh on a different machine and check that the numbers match.
+
+That last step is the activity. A pipeline that only runs on the machine of the person who wrote it has not been reproduced, it has been remembered.
+
+A good output is a repository tag plus a README command that a teammate ran on a different machine and got your result table from.
+
+**Feeds:** the winter [repo checkpoint](/assignments/repo-checkpoints/) term gate and build-health criterion, and the spring [Project Handoff](/assignments/project-handoff/).
+
 ## MDA Framework
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/>

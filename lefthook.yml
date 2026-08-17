@@ -16,3 +16,6 @@ pre-commit:
     validate-outcomes:
       glob: "src/content/docs/assignments/*.mdx"
       run: node scripts/validate-outcomes.mjs
+    validate-activity-tiers:
+      glob: "src/content/docs/{assignments,activities}/*.mdx"
+      run: node scripts/validate-activity-tiers.mjs

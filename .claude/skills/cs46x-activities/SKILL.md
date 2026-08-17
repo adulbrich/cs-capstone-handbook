@@ -45,6 +45,11 @@ promote an activity to Recommended without adding it to an assignment page's
 "Activities That Prepare This" section in the same commit.** A `Recommended`
 badge that no assignment references is a lie to the student.
 
+This is enforced, not merely requested. `npm run validate:activities` fails if a
+linked activity carries no badge, if a Recommended badge has no assignment
+linking to it, or if an assignment links to an anchor matching no heading. It
+runs in CI and pre-commit.
+
 ## Required Section Shape
 
 Every activity is one `##` section with exactly this structure:
@@ -199,10 +204,11 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 
 ## Before Finishing
 
-1. Run `npm run build`. It runs `astro check`, compiles the MDX, and validates
-   every internal link and anchor. It is the only reliable check of the anchors
-   you just wrote.
-2. If you promoted or demoted any activity, confirm the assignment page's
-   "Activities That Prepare This" section agrees, and update the tier counts in
+1. Run `npm run validate:activities`. It reconciles badges against assignment
+   links and prints the tier counts.
+2. Run `npm run build`. It runs `astro check`, compiles the MDX, and validates
+   every internal link and anchor, which is the only reliable check of the
+   anchors you just wrote.
+3. If you promoted or demoted any activity, update the tier counts in
    `docs/superpowers/plans/2026-08-17-activity-tiering.md` and `IMPLEMENTED.md`.
-3. Grep for em dashes in what you wrote.
+4. Grep for em dashes in what you wrote.

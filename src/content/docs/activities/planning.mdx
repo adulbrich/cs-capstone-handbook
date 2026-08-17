@@ -297,7 +297,7 @@ A good output is a RACI matrix for your project, detailing roles and responsibil
 
 ## Stakeholder Mapping
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Identify and categorize project stakeholders to ensure effective communication and alignment of expectations.
 
@@ -371,3 +371,39 @@ Define and plan the software development process for your project to ensure clea
 5. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
 A good output is a document outlining the chosen process, phases, milestones, and team roles. Much of this belongs in your [Team Charter](/assignments/team-charter/).
+
+## Start the Approval Clocks
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Find every approval your project needs from someone outside your team, and start the slowest one this week. Ninety minutes in fall weeks 1 to 2, then a standing agenda item.
+
+Research and consultancy projects fail on calendars far more often than on code. IRB review takes weeks even for an exempt determination, data use agreements between institutions can take a full term, and an enterprise security review is measured in months. None of those clocks run faster because you started late.
+
+- **Ask directly** in your first partner or faculty meeting: what approvals does this project need, who files them, and how long do they usually take?
+- **List every clock**: [IRB or human-subjects review](/activities/user/#complete-an-irb-application), data use agreements, security or IT review, vendor onboarding, account provisioning, CLA signing for FOSS, license review, export control.
+- **For each, record** who owns it, when it starts, how long it historically takes, and what is blocked until it lands.
+- **Start the longest one now**, even from an incomplete application, if the process allows amendment later.
+- **Put them in `docs/risks.md`** with owners and dates, and review them at every checkpoint.
+
+A good output is a dated table of every external approval with an owner and an expected duration, living in your risk register, with the longest clock already started.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) decision-and-risk-hygiene criterion, and the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites-and-lead-times criterion.
+
+## Choose Your Evaluation Metric Before You Run Anything
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Commit to how you will measure success before you see any results, so you cannot be talked into whichever metric happens to look good. One hour, before the first real experiment.
+
+- **Write the primary metric** and why it is right for the question, not merely easiest to compute.
+- **Write the decision rule**: what value counts as success, what counts as failure, and what you do in each case.
+- **Name the secondary metrics** you will report regardless of outcome, including the ones that could make you look bad.
+- **State the comparison**: against which baseline, on which data split, over how many runs, with which seeds.
+- **Commit it to the repository, dated**, before the experiment runs.
+
+Choosing a metric after seeing results is the most common way honest people produce misleading work. It rarely feels like cheating. It feels like noticing that a different measure describes the finding better.
+
+A good output is a dated, committed note stating the primary metric, the decision rule, the comparison, and the secondary metrics, written before any real run.
+
+**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) metrics-and-instrumentation criterion, and the spring [Release and Metrics](/assignments/release/) report.
