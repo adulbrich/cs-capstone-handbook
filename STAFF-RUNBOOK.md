@@ -5,7 +5,8 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 ## Cohort Operations
 
 - Each TA owns a cohort of ~14 teams. Check-ins are **bi-weekly per team, aligned to sprint boundaries**: 7 team-meetings per week at 25 to 30 minutes, about 3.5 hours of meetings per TA per week. Weekly per-team check-ins do not fit at 6 TAs; do not promise them.
-- Defense and NDA checkpoint sessions run 40 minutes and **replace** that team's regular check-in for the cycle, so they add scoring time, not meeting time.
+- **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint.
+- Defense and NDA checkpoint sessions run 40 minutes and **replace** that team's regular check-in for the cycle, so they add scoring time, not meeting time. Those sprints have no live demo slot, so the team attaches a timestamped video with one segment per student instead. Check the timestamps exist: an untimestamped team video is not a per-student demo and should be sent back.
 - Cohort assignments and meeting grids are built in week 0 from the team-assignment sheet and published in Canvas week 1.
 - The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
 

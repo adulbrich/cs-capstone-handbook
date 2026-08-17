@@ -11,23 +11,55 @@ assignment:
 
 **Team submission with the individual contribution modifier. Every term: 4 notes in fall and winter (2% each), 2 in spring. Pass/fail per checklist item.**
 
-At the end of every two-week sprint, the team submits a **one-page** sprint note and, on the demo cadence below, shows working software live. There is no long-form progress report in this course. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
+At the end of every two-week sprint, the team submits a **one-page** sprint note and demos working software. There is no long-form progress report in this course. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
 
-You may generate the evidence sections with AI from your own repo history and board. The judgment layer must be written by humans; it is the part we actually read. Start from the [sprint note template](/sprint-note-template.md).
+You may generate the evidence with AI from your own repo history and board. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and the one sentence in each contribution line saying what you shipped and how you know it works. Start from the [sprint note template](/sprint-note-template.md).
 
 ## The Sprint Note (one page, five items)
 
-1. **Working software evidence**: a URL, tagged release, or 3-minute demo video, plus the CI run. If nothing works yet, say so plainly and say why.
-2. **Planned versus done**: link to the board; carried-over items named, not hidden.
+1. **Working software evidence**: a URL, tagged release, or demo video, plus the CI run. If nothing works yet, say so plainly and say why.
+2. **What got done**: the things the team actually finished this sprint, each one concrete and consequential. Link the board.
 3. **Top risk and one decision needed**: the single biggest threat to shipping (in fall, before your [Definition of Shipped](/assignments/definition-of-shipped/) exists, the biggest threat to the term gate), and one concrete decision the team needs from the partner, the staff, or itself.
-4. **Contribution lines**: one line per student listing the reviewed PR(s) they owned this sprint (titles or IDs; NDA teams list IDs only), and, for whoever chaired a decision this sprint, which decision they drove to a conclusion. Across a term every student should appear at least once as the decision chair; this is the record your [defense](/assignments/defense/) role criterion is checked against, so it saves you from having to reconstruct your own leadership from memory in week 8.
+4. **Contribution lines**: one per student, in the shape below.
 5. **Judgment layer** (about five lines, human-written): what the team learned this sprint and what it changes about the plan.
+
+### What counts as "done"
+
+Concrete means someone could go and look at it. Consequential means the project is meaningfully further along because of it. **It does not have to be code.** A partner agreement reached, a dataset cleared for use, a deployment pipeline that now works, a real-user session run and written up, a flaky test suite made reliable: all of these are done things worth naming.
+
+What does not count is activity without a result. "Worked on the API", "researched options", "had meetings", and "made progress on the frontend" describe how time was spent, not what exists now that did not exist two weeks ago.
+
+Everything in this list should be something you can show. The demo and this list are the same content in two formats.
+
+### Contribution lines
+
+One line per student, three parts:
+
+1. **The pull request(s) you owned this sprint**, by title or ID. NDA teams list IDs only. Owning it means you authored or drove it, answered review, and merged it.
+2. **Whose work you reviewed, and the one change you asked for.** Name it specifically: "asked Priya to handle the empty-cart case in checkout" is a review; "LGTM" is not, and neither is a comment that names no line and requests no change.
+3. **The most consequential thing you shipped this sprint, in one sentence, and how the team knows it works.** This is the part with judgment in it, and it is the part that is read.
+
+Also name **who chaired a decision** this sprint and which decision they drove to a conclusion. Over a term every student should appear here at least once. This is the record your [defense](/assignments/defense/) role criterion is checked against, so it saves you reconstructing your own leadership from memory in week 8.
+
+:::note[Why the numbers are shaped this way]
+Counting pull requests and reviews gives staff something countable, which matters because "everyone says they contributed" is not evidence. But volume metrics are easy to inflate and easy to misread, so three rules bound them.
+
+**Mechanical changes are not evidence.** A formatter run, a lockfile bump, a bulk rename, a generated file, a dependency update: all normal work, none of it a signal about contribution. Do not pad your line with them, and staff will not count them. This is exactly why the course does not use lines of code: a lint pass can move ten thousand lines and mean nothing.
+
+**The numbers are only ever read as a pattern.** One sprint where you shipped little, with an explanation, is ordinary life. Four sprints of nothing with no explanation is the thing the modifier exists for. No single sprint's count decides anything.
+
+**The sentence outranks the counts.** A student with one pull request who can say what it made possible and how they know it works is contributing more than a student with six and nothing to say about any of them.
+:::
 
 ## Demo Cadence
 
-- Every team demos **live at least twice per term** in its cohort check-in (5 minutes: working software, or an honest account of why not).
-- Sprints without a live slot attach a **3-minute video demo** to the sprint note. Partners are welcome to both.
-- Two **all-hands demo days** per term (around weeks 5 and 10) feature a sampled lineup in lecture, with partners invited.
+**Every sprint, your team demos to your TA in your cohort check-in, and every student demos the part they owned.** One team, one TA, nobody else's team in the room. Two to three minutes each, so 6 to 12 minutes of a 25-to-30-minute check-in for a team of three or four. The rest of the check-in is your top risk and the decision you need; anything that would have been open-ended TA coaching happens async between check-ins.
+
+Demoing your own work every two weeks is the point. It is the same claim your contribution line makes, made out loud in front of the people who would know if it were not true, and it is twelve rehearsals before the Expo.
+
+**When the check-in is taken by something else** (your [defense](/assignments/defense/), or a checkpoint walkthrough if your project is under NDA), attach a demo video to the sprint note instead: **one video, timestamped, one segment per student**. Timestamps are not a formality. They are what makes each student's segment individually findable and scoreable, which is the whole reason the video substitutes for the live slot.
+
+Two **all-hands demo days** per term, around weeks 5 and 10, put a sampled lineup in front of the whole cohort with partners invited. These are not assessed. They exist because seeing what eleven other teams built is good for morale and occasionally changes what you decide to build next.
 
 ## Grading
 
@@ -36,7 +68,7 @@ Each note is checked pass/fail per item (20 points each, 100 total). A missing i
 **Individual contribution modifier:** half of each sprint note's points are individual and default to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the cohort TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/project-evaluation/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note is normal life; a pattern with no explanation is what this modifier exists for.
 
 :::tip[Why demos]
-A report can be embellished; a demo cannot. Twelve reps of demoing before the Expo is also the only way the Expo presentation stops being scary. Partners consistently say the teams that demo often are the teams they trust.
+A report can be embellished; a demo cannot. Partners consistently say the teams that demo often are the teams they trust.
 :::
 
 ## Activities That Prepare This

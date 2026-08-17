@@ -3,26 +3,31 @@
 # Sprint Note: Sprint [N], [Team Name]
 
 <!-- One page maximum. Each numbered section is graded pass/fail (20 points each).
-     Sections 1 to 4 may be AI-generated from your repo history and board.
-     Section 5 must be written by humans; it is the part we actually read. -->
+     The evidence may be AI-generated from your repo history and board.
+     Two things must be human-written: section 5, and the "shipped" sentence
+     in each contribution line. Those are the parts anyone reads. -->
 
 **Team:** | **Sprint dates:** | **Date submitted:**
 
 ## 1. Working Software Evidence
 
-A URL, tagged release, or 3-minute demo video link, plus a link to the CI run. If nothing works yet, say so plainly and say why.
+A URL, tagged release, or demo video link, plus a link to the CI run. If nothing works yet, say so plainly and say why.
+For a sprint with no live demo slot, the video is one file, timestamped, one segment per student.
 
 - Deployed URL / release tag / demo video:
+- Video timestamps (one per student), if applicable:
 - CI run:
 
-## 2. Planned versus Done
+## 2. What Got Done
 
-Link to the sprint board. Name the items carried over to next sprint; do not hide them.
+Everything the team finished this sprint. Each item concrete (someone could go look at it) and consequential
+(the project is meaningfully further along). It does not have to be code. Activity without a result does not
+belong here: "worked on the API" and "researched options" are not done things.
 
 - Board link:
-- Sprint goal:
-- Done:
-- Carried over (and why):
+- Done this sprint:
+-
+-
 
 ## 3. Top Risk and One Decision Needed
 
@@ -33,12 +38,17 @@ The single biggest threat to your Definition of Shipped, and one concrete decisi
 
 ## 4. Contribution Lines
 
-One line per student: the reviewed PR(s) they owned this sprint (titles or IDs; NDA teams list IDs only). If a student has no PR this sprint, say why on their line.
+One line per student, three parts:
+  (a) the PR(s) you owned this sprint, by title or ID (NDA teams: IDs only);
+  (b) whose work you reviewed and the one change you asked for, named specifically ("LGTM" is not a review);
+  (c) one human-written sentence: the most consequential thing you shipped, and how the team knows it works.
+If a student has no PR this sprint, say why on their line. Mechanical changes (formatter runs, lockfile bumps,
+generated files, bulk renames) are normal work but are not evidence; leave them out.
 
-- [Student 1]:
-- [Student 2]:
-- [Student 3]:
-- [Student 4]:
+- [Student 1] | owned: | reviewed: | shipped:
+- [Student 2] | owned: | reviewed: | shipped:
+- [Student 3] | owned: | reviewed: | shipped:
+- [Student 4] | owned: | reviewed: | shipped:
 
 **Decision chaired this sprint:** who drove which decision to a conclusion. Over a term everyone should appear here at least once.
 
