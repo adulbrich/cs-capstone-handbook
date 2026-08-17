@@ -477,6 +477,17 @@ Frontmatter must match the sibling activity pages' shape (`title`, `description`
 
 - [ ] **Step 4: Write pillar 3, "Do the work AI cannot."** Acceptance judgment: does the product do what a user actually expects. Sharper than "manual testing", because an agent can drive the browser but only you can decide whether what it did is right. Mostly a pointer into `testing-strategy.mdx` plus the framing that this is where your hours now go.
 
+- [ ] **Step 4b: Add the "set up your repo's skills" exercise.** Hands-on and repo-changing, which is what makes it an activity rather than a guide entry. Students install a published skill collection, run one of its workflows against their own repository, and report what changed in the output.
+
+Name the two real collections, verified 2026-08-17:
+
+- [obra's Superpowers](https://github.com/obra/superpowers): brainstorming, subagent-driven development with built-in code review, systematic debugging, red/green TDD, and authoring new skills.
+- [Matt Pocock's skills](https://github.com/mattpocock/skills): grilling, spec and ticket flows, TDD, code review, domain modelling.
+
+State why each is relevant here rather than listing them as trivia: a separate architectural-review pass and a code-review pass are pillar-2 net components, and a plan-before-you-build skill is what turns a vague prompt into the kind of specification the [RFC](/assignments/rfc/) grades. The caveat pattern applies: skill collections assume a tool that can load and run them, so state the substitute (a written checklist in `CONTRIBUTING.md` that a human follows) for students whose tooling cannot.
+
+Add the standing warning: **a skill is someone else's opinion, executed automatically.** Read one before installing it, because the team owns whatever it produces (AI policy rule 1).
+
 - [ ] **Step 5: Add the capability-and-equity note.** State plainly that models vary greatly in capability, that this page teaches the current industry baseline because a software engineering course owes coverage of it, and that no graded criterion requires these tools. Link to the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment).
 
 - [ ] **Step 6: Add pointers to the graded work it feeds:** the [RFC](/assignments/rfc/) delegation-and-validation criterion and the [Defense](/assignments/defense/) ownership-and-delegation criterion, naming the criteria explicitly so the just-in-time routing of Task 13 has something concrete to point at.
@@ -556,6 +567,10 @@ git commit -m "Add accessibility activity cluster across design, user, ai, commu
 | Documentation and changelog generation | `documentation.mdx` |
 
 - [ ] **Step 3: Add the counterpart list, "what stays human":** acceptance judgment, one-way-door decisions, user-facing tradeoffs, and deciding whether an automated finding actually matters.
+
+- [ ] **Step 3b: Add named skill collections to the existing `### Skills` subsection.** The subsection currently lists generic categories (code review, commit messages, test generation, documentation) with no real examples, so students have nothing to actually go look at. Add [obra's Superpowers](https://github.com/obra/superpowers) and [Matt Pocock's skills](https://github.com/mattpocock/skills) as published collections worth reading, note that reading a well-built skill is the fastest way to learn what a good one looks like, and point to the hands-on exercise in `activities/ai.mdx`.
+
+Keep the guide entry short: the guide says what exists and why it matters, the activity is where students actually do it. This subsection is squarely in the volatile layer flagged for annual review in Step 4.
 
 - [ ] **Step 4: Mark the section for annual review.** Add a line stating this index is where tool names churn fastest and is reviewed each August, per the principle that rubrics carry invariants and guides carry the volatile layer.
 
