@@ -25,7 +25,7 @@ Use `npm ci` instead of `npm install` when you want the exact tree from
 
 ## Course Revision (branch `revision-fall-2026`)
 
-The full Fall 2026 course revision lives on the `revision-fall-2026` branch. See `IDEAS.md` (assessment and design rationale) and `IMPLEMENTED.md` (change log). Done there, among others: assignments and rubrics moved into the handbook as source of truth, GH Actions CI with link and outcome validation, activities repositioned as a practice library, missing-work zero policy, retrospective format variety, video demos in the sprint cadence.
+The full Fall 2026 course revision lives on the `revision-fall-2026` branch. See `IDEAS.md` (assessment and design rationale) and `IMPLEMENTED.md` (change log). Done there, among others: assignments and rubrics moved into the handbook as source of truth, GH Actions CI with link and outcome validation (internal link validation is now actually enabled), activities tiered into workshop/recommended/library with each graded assignment routed to the activities that prepare it, missing-work zero policy, retrospective format variety, video demos in the sprint cadence. A second pass added assessment for critical thinking, AI literacy, leadership, and collaboration: see `docs/superpowers/specs/2026-08-17-four-skills-assessment-design.md`.
 
 ## To Do
 

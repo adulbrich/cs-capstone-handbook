@@ -52,7 +52,7 @@ Source of truth for all graded work; Canvas mirrors it. Every rubric criterion c
 
 - New `learning-objectives/mapping.mdx`: outcome-by-outcome table of individual data points per student per year (every ABET SO has 5 to 10; SO4 lists the ethics course as the program-level point), WIC section marked pending the official revision, L10 mapped to the career retrospective.
 - `ABET.mdx` and `WIC.mdx` link to the mapping; WIC page names the RFC as the primary vehicle.
-- New `scripts/validate-outcomes.mjs`: parses assignment frontmatter, fails if any ABET outcome has fewer than 2 individual data points. Wired into CI and lefthook. Current output: SO1: 7, SO2: 6, SO3: 10, SO4: 5 (approaching 5 without ethics course), SO5: 9, SO6: 5.
+- New `scripts/validate-outcomes.mjs`: parses assignment frontmatter, fails if any ABET outcome has fewer than 2 individual data points. Wired into CI and lefthook. Current output: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5.
 
 ## 4. Guides
 
@@ -62,7 +62,7 @@ Source of truth for all graded work; Canvas mirrors it. Every rubric criterion c
 
 ## 5. Activities Repositioned
 
-All 11 pages: converted from graded-assignment voice ("Submit...") to practice-library voice; `introduction.mdx` rewritten (practice companions; small pass/fail extra-credit subset announced in Canvas); grading threats removed; pointers added from activities to the graded assignments they prepare (user research feeds the winter real-user gate and Definition of Shipped; design feeds the RFC; retro formats feed the term retrospective; career feeds the career retrospective); the documentary list gained verified 2020s AI-relevant titles; the Mom Test cheat sheet is finally linked; large commented-out blocks moved to `BACKLOG.md`.
+All 11 pages: converted from graded-assignment voice ("Submit...") to practice-library voice; `introduction.mdx` rewritten (practice companions; an extra-credit subset was proposed here and later replaced by tiering, see section 10); grading threats removed; pointers added from activities to the graded assignments they prepare (user research feeds the winter real-user gate and Definition of Shipped; design feeds the RFC; retro formats feed the term retrospective; career feeds the career retrospective); the documentary list gained verified 2020s AI-relevant titles; the Mom Test cheat sheet is finally linked; large commented-out blocks moved to `BACKLOG.md`.
 
 ## 6. Introduction, Practicalities, About
 
@@ -166,7 +166,7 @@ Four persona reviews ran against the branch (student, ABET program evaluator, se
 - WIC.mdx claimed 461 and 462 are WIC; syllabi say 462 only: corrected to 462.
 - Mapping prose disagreed with the tags in three places (SO3 undercount, SO5 CATME double-count, unsubstantiated handoff L08): all corrected.
 - Defense had no evidence-retention story: Canvas is now the stated per-student score record for program assessment.
-- Known concern documented, not yet resolved: SO4's in-capstone evidence is concentrated in the RFC (4 of 5 points); diversifying is on the roadmap.
+- Concern raised here and since resolved: SO4's in-capstone evidence was concentrated in the RFC (4 of 5 points). Dual-tagging the defense ownership criterion `SO2, SO4` added three non-RFC individual points, one per term, taking SO4 to 8. See the four-skills design spec.
 
 **Senior instructor review** (9 findings; the two blockers and most others fixed):
 - Blocker 1: "cohort check-in" undefined (see student fix) plus no operational spec: STAFF-RUNBOOK.md created (cohort ratios, term rhythm, defense calibration and logistics, RFC pairing and grading model, checkpoint protocol, modifier workflow, survey runbook, partner sign-off handling, week-0 checklist, lecture plan).
@@ -194,9 +194,37 @@ The original persona reviews and runbook assumed 10 to 12 TAs; the real ceiling 
 - RFC arithmetic updated: ~50 per TA per term (not 25-30), ~8 hours in weeks 8-10, with length caps enforced at grading time.
 - If the load still feels too high after a live term, the documented relief valve is the fall RFC: grading it credit/no-credit with instructor sampling would save ~6 h/TA in fall while outcome coverage stays above the two-point floor (winter RFC + three defenses carry it). Not applied; noted as the first thing to cut.
 
+## 10. Four-Skills Pass (August 2026)
+
+A second pass added explicit assessment for **critical thinking, AI literacy, leadership, and collaboration**, driven by partner and employer reports of four failure modes (students who cannot explain their own system, unverified AI output reaching the partner, nobody driving decisions to a conclusion, invisible contribution) and by the pace of change in AI practice. Full rationale in `docs/superpowers/specs/2026-08-17-four-skills-assessment-design.md`; tiering decision in `docs/superpowers/plans/2026-08-17-activity-tiering.md`.
+
+**Governing principles:** rubrics assess invariants while guides and activities carry the volatile tool layer (no rubric criterion names a tool); the standard is capability-relative, so delegation is graded against the strength of the safety net rather than against tool sophistication; graders score the triage decision, not whether the code happened to turn out fine; content teaches the frontier baseline while assessment accommodates limited tooling; new behavioral signals feed the single existing contribution modifier and never create a new deduction channel.
+
+**Assessment layer:**
+
+- `defense.mdx`: the five criteria were re-anchored to the four skills rather than extended, because 6 minutes per student is the binding constraint on the course. Ownership became **Ownership and delegation**, dual-tagged `SO2, SO4`. Judgment gained the hard-to-reverse element; Role gained work distribution. The question "what did the AI get wrong and how did you catch it" became "where did you decide to stop and check, and why there", since the original assumed line-by-line review of AI output.
+- **SO4 went from 5 to 8 individual data points**, 4 of them non-RFC. This closes open item 1, previously the branch's live accreditor exposure.
+- `rfc.mdx`: the AI-disclosure criterion became **Delegation and validation** (same 10 points, same SO4 tag). Disclosure is a compliance instrument and cannot measure skill. The RFC trigger tightened to decisions that are **hard to reverse**, with a stated fallback, so topic choice is itself a triage exercise.
+- `assignments/introduction.mdx`: the course-wide AI policy rule 2 changed from "disclose and verify" to delegate-deliberately-and-build-the-net.
+- `sprint-notes.mdx`: contribution lines now record who chaired which decision, giving the defense role criterion a record instead of self-narration. `team-charter.mdx` carries the rotation commitment.
+- `repo-checkpoints.mdx`: Build health became **Build health and safety net**, judged relative to how much the team delegates. Extended the existing criterion rather than adding a sixth, so points stayed at 100.
+- `STAFF-RUNBOOK.md`: defense calibration now covers the delegation criterion explicitly; a low defense Ownership or Role score is a new **input** to the one modifier decision, with precedence unchanged.
+- `mapping.mdx`: SO4 row rebuilt, concentration sentence deleted, and a caution added that L07's only individual source is the RFC peer-feedback criterion (the term retrospective's `L07` tag is team-level and counts zero, so cutting peer review would fail CI).
+
+**Instruction layer:**
+
+- New `activities/ai.mdx` (7 activities): the library had 105 exercises and **not one** taught AI-assisted engineering practice. Three pillars: which doors are one-way (a concept absent from the handbook entirely), you may delegate only as far as your net catches, and the acceptance judgment that cannot be delegated. Every exercise states a substitute for more limited tooling. Includes a repo-skills setup exercise naming [obra's Superpowers](https://github.com/obra/superpowers) and [Matt Pocock's skills](https://github.com/mattpocock/skills).
+- `guides/testing-strategy.mdx`: accessibility added in three forms (automated as a CI gate, manual because roughly half of real defects need judgment, assistive-technology user sessions with an honest simulated substitute). WCAG 2.2 AA named as the standard; the handbook previously had none.
+- `guides/generative-ai.mdx`: "Verify, do not trust" replaced by "verify what matters, build the net that lets you trust the rest". Added a nine-entry index of what can be automated, each linking to the owning guide, plus the counterpart list of what stays human. Marked for annual review.
+- Accessibility activity cluster distributed across `design`, `user`, `ai`, and `communication`.
+- **Activities tiered**: 8 Workshop (zero-point complete/incomplete in Canvas), 37 Recommended, 69 Library. Extra credit removed: it tried to solve a routing problem with an incentive. Every graded assignment now names its recommended activities and the criterion each serves, with repeated assignments differentiated (repo checkpoints by their four escalating gates, defense and RFC by term, sprint notes by one-time-setup versus repeatable). `career.mdx` deliberately excluded from both promoted tiers pending its own review pass.
+- Fixed two malformed activity headings (leading space in `planning.mdx`, trailing space in `teamwork.mdx`) that produced broken anchors, plus missing `Badge` imports in `conflict.mdx` and `ai.mdx`.
+
+**Infrastructure:** `starlightLinksValidator` was commented out in `astro.config.mjs` and is now enabled and verified by negative test. This pass added roughly 90 internal cross-references, most of them anchor links, none of which would otherwise have been checked.
+
 ## Remaining Open Items (honest list)
 
-1. SO4 evidence concentration in the RFC (accreditor concern; add a second non-RFC individual SO4 criterion in a future pass).
+1. ~~SO4 evidence concentration in the RFC.~~ **Resolved 2026-08-17**: the defense ownership-and-delegation criterion is now tagged `SO2, SO4`, giving three non-RFC individual SO4 points per year (SO4 total 5 to 8).
 2. R scripts: team-size cap at 6 including self; Q7 individual-concern extraction stubbed. Fix or supersede with the instructor-tools page.
 3. Lecture deck series (spec-writing for agents, AI-diff review, testing workshop) exists as a plan in STAFF-RUNBOOK.md, not as decks. `decks/Fall.md` week 1 deck is done.
 4. The instructor-tools client-side page (README todo) is unbuilt; the runbook documents the manual pipeline until then.
@@ -205,4 +233,4 @@ The original persona reviews and runbook assumed 10 to 12 TAs; the real ceiling 
 
 ## Build Status
 
-`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 66 pages. Internal link validation **is** running as of 2026-08-17: `starlightLinksValidator()` was previously commented out in `astro.config.mjs` and is now enabled, reporting "All internal links are valid" across all 66 pages. Verified by negative test (a deliberately broken link fails the build), and CI gates on it because CI runs `npm run build`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 5, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.
+`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 67 pages. Internal link validation **is** running as of 2026-08-17: `starlightLinksValidator()` was previously commented out in `astro.config.mjs` and is now enabled, reporting "All internal links are valid" across all 67 pages. Verified by negative test (a deliberately broken link fails the build), and CI gates on it because CI runs `npm run build`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.
