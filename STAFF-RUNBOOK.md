@@ -22,7 +22,7 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 
 ## Defense Logistics
 
-- One calibration hour before week 7 each term: all graders score the same recorded or role-played walkthrough on the printed scoresheet and reconcile.
+- One calibration hour before week 7 each term: all graders score the same recorded or role-played walkthrough on the printed scoresheet and reconcile. Spend part of it on the Ownership-and-Delegation criterion specifically, because it is the one graders most often get backwards: **score the triage decision, not the luck.** A student who let an agent drive a schema migration with no net scores low even though nothing broke; a student who stopped to validate an auth change scores high even with buggy feature code. Sophisticated tooling earns no points by itself, and a student on weaker tools who gated tightly has done the harder work.
 - 6 minutes per student; two assessors split the students when both attend.
 - Absences: rescheduled into another check-in that term if flagged before the session; unexcused no-show scores zero (the TSV has a zero band).
 - Scores and notes entered into Canvas after each session; sheets are the live instrument, Canvas is the retention record for program assessment.
@@ -41,7 +41,8 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 
 ## Individual Contribution Modifier
 
-- Default full credit; investigate only on triggers (blank or unexplained contribution line, peer or partner flag, something off at demo or defense).
+- Default full credit; investigate only on triggers (blank or unexplained contribution line, peer or partner flag, something off at demo or defense, a low Ownership-and-Delegation or Role score at the defense).
+- **These signals are inputs to one decision, not separate deductions.** A student is never penalized twice for the same behavior: the declared precedence order across the individual modifier, the partner evaluation facet, and the checkpoint contribution-traceability criterion is unchanged. The checkpoint criterion still grades whether attribution infrastructure exists, never individuals.
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
 - Track B: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
 

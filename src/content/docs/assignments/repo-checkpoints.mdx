@@ -46,7 +46,7 @@ The gates exist because the spring outcome bar is won or lost on lead times that
 |---|---|---|
 | Living docs current and consistent with the code (spot-checked: does `docs/design.md` describe the system that exists?) | 25 | SO2 |
 | Term gate met (see table above) | 25 | SO2 |
-| Build health: CI green, tests exist and test something real, quickstart works | 20 | SO6 |
+| Build health and safety net: CI green, tests exist and test something real, quickstart works, and the net matches how much the team delegates (review gates on the paths that are hard to undo, a staging or preview environment, a documented rollback path) | 20 | SO6 |
 | Decision and risk hygiene: RFCs/ADRs recorded, single risk register alive and ranked | 15 | SO1 |
 | Contribution traceability: the infrastructure exists to attribute work per student (PRs authored and reviewed under real accounts, contribution lines in sprint notes match the record) | 15 | SO5 |
 
@@ -57,7 +57,9 @@ The gates exist because the spring outcome bar is won or lost on lead times that
 
 ## How Graders Review
 
-To keep ten graders consistent: "tests something real" means at least one test would fail if the feature it covers broke (per category: user-visible behavior for products, pipeline correctness for research, upstream test conventions for FOSS); "quickstart works" means a grader followed it cold; the docs spot-check compares one recent feature against `docs/design.md`. The contribution-traceability criterion grades whether the **infrastructure** for attribution exists, not whether every student contributed: individual non-contribution is handled by the individual modifier, never double-counted here. Track B walkthroughs follow a fixed order (quickstart, CI, docs spot-check, risk register, PR list) so 15 minutes suffices.
+To keep graders consistent: "tests something real" means at least one test would fail if the feature it covers broke (per category: user-visible behavior for products, pipeline correctness for research, upstream test conventions for FOSS); "quickstart works" means a grader followed it cold; the docs spot-check compares one recent feature against `docs/design.md`. The contribution-traceability criterion grades whether the **infrastructure** for attribution exists, not whether every student contributed: individual non-contribution is handled by the individual modifier, never double-counted here. Track B walkthroughs follow a fixed order (quickstart, CI, docs spot-check, risk register, PR list) so 15 minutes suffices.
+
+The **safety net** half of build health is judged relative to how the team works, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team that writes most code by hand, and neither approach is penalized: what is graded is whether the net actually catches what the team's way of working lets through. Look for gates on the changes that are expensive to undo (schema, authentication, deployment, migrations) rather than uniform coverage everywhere. A team with no CI that hand-merges agent output to production fails this half regardless of whether anything has broken yet.
 
 :::note[Why this replaces document assignments]
 A submitted PDF is a snapshot that starts rotting at upload time. A repository is either healthy or it is not, and your project partner, your future maintainers, and your AI tools all consume the repository, not the PDF. Grading the real thing aligns the course with how you actually work.
