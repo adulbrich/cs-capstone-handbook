@@ -5,6 +5,8 @@ sidebar:
   order: 5
 ---
 
+import { Badge } from '@astrojs/starlight/components';
+
 Most advice about AI tools is some version of "check the output carefully." That advice does not survive contact with how software is actually built now. Nobody reads every line an agent writes, any more than a tech lead reads every line their team writes. What experienced engineers do instead is decide **where their attention is worth spending**, and build enough automated safety that everywhere else can run without them.
 
 That is a real skill, it is learnable, and it is what these activities practice. Three ideas organize them:
@@ -23,6 +25,8 @@ This page teaches the current industry baseline, including things that need a ca
 
 ## Map Your One-Way Doors
 
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+
 *Pillar 1. Effort: 30 minutes as a team, once a term.*
 
 List the next ten decisions your team expects to make. Classify each as a **one-way door** (expensive or impossible to undo) or a **two-way door** (cheap to change once you learn something). Then decide, for each one-way door, who validates it and what they check before the team commits.
@@ -38,6 +42,8 @@ At the end of the term, revisit the list. Which classifications were wrong? Gett
 **Feeds:** your [RFC](/assignments/rfc/) topic, which must be a decision that is hard to reverse.
 
 ## Audit Your Safety Net
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
 *Pillar 2. Effort: one hour as a team.*
 
@@ -56,6 +62,8 @@ The gap between those two lists is your actual risk. Close it from the top: the 
 **Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion, which grades exactly this fit.
 
 ## Set Up Your Repository's Skills
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
 *Pillar 2. Effort: one to two hours, once.*
 
@@ -78,6 +86,8 @@ Read a skill before you install it. Some encode strong workflow opinions that ma
 
 ## Put a Browser Agent on Your Critical Flow
 
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
 *Pillar 2. Effort: two to three hours to set up, minutes per run after.*
 
 Have an agent drive a real browser through your critical user flow with [Playwright](https://playwright.dev/), and report what it finds. Then keep the run as an end-to-end test so it happens on every change instead of when someone remembers.
@@ -90,6 +100,8 @@ See [end-to-end testing](/guides/testing-strategy/#end-to-end-tests) for how thi
 
 ## Wire an Accessibility Audit Into CI
 
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
 *Pillar 2. Effort: one to two hours.*
 
 Add [axe-core](https://github.com/dequelabs/axe-core) to your test suite so a rendered component fails a test when it violates an accessibility rule, and add a page-level check to CI. Then have an agent triage the first report, and go through it yourself deciding which findings are real, which are noise, and which need a human to look at the actual screen.
@@ -101,6 +113,8 @@ Follow up with the [manual pass](/guides/testing-strategy/#manual-accessibility-
 **If your project has no user interface:** the equivalent is your output formats and documentation. Can someone consume your API errors, your CSV exports, or your README with a screen reader?
 
 ## Run a Self-Audit and an Architectural Review Pass
+
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 *Pillar 2. Effort: 30 minutes per pass.*
 
@@ -116,6 +130,8 @@ The second pass is the one teams skip, and it is where architectural drift accum
 **If your tooling cannot run separate passes:** ask a teammate who did not write the change to answer the same two questions. This is what code review was always for.
 
 ## Run an Acceptance Pass
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 *Pillar 3. Effort: 30 minutes before each demo or release.*
 
