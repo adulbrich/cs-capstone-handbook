@@ -349,6 +349,24 @@ Ensure the system is designed with robust security measures to protect data and 
 
 A good output is a security plan that details risks, countermeasures, and compliance strategies.
 
+## Designing for Accessibility
+
+<Badge text="Team Activity" variant="note" class="mb-6"/>
+
+Review one screen or output of your system against accessibility basics, before it is built rather than after. Accessibility retrofitted at the end is a redesign; designed in from the start it is usually free.
+
+- Contrast and color: text meets [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA contrast ratios, and no information is carried by color alone (a red border meaning "error" is invisible to some users; a red border plus the word "error" is not).
+- Target size and spacing: interactive elements are large enough and far enough apart to hit reliably, including on a phone and for users with motor impairments.
+- Focus states: every interactive element shows clearly when it has keyboard focus, and the tab order follows the visual order.
+- Semantics before ARIA: a real `<button>` is accessible by default; a `<div>` with a click handler and four ARIA attributes usually is not. Reach for the correct element first.
+- Labels: every input has a programmatically associated label, not just placeholder text.
+
+Then check your work with the [manual accessibility pass](/guides/testing-strategy/#manual-accessibility-testing): keyboard only, screen reader, 200% zoom. To automate the mechanical parts, see [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci).
+
+If your project has no user interface, the equivalent targets are your error messages, output formats, and documentation.
+
+A good output is a marked-up screenshot or a short list of specific fixes, each tied to the guideline it addresses.
+
 ## MDA Framework
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/>
