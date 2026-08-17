@@ -13,6 +13,10 @@
 //   3. Every anchor an assignment links to must resolve to a real heading.
 //      (The Starlight link validator also catches this at build time; this
 //      check runs without a build and names the activity, not the URL.)
+//   4. Every Workshop or Recommended activity carries a "Feeds:" line naming
+//      the rubric criterion it prepares. That line is how a student working
+//      backward from a rubric finds the activity, and how a future editor
+//      tells whether the activity still earns its tier.
 //
 // Workshop-tier activities are exempt from rule 2: they are assigned centrally
 // through assignments/workshop-activities.mdx, not per assignment page.
@@ -58,7 +62,21 @@ function readActivities() {
       } else if (/<Badge[^>]*text="Recommended"/.test(window)) {
         tier = 'Recommended';
       }
-      activities.set(`${page}#${slugify(heading)}`, { page, heading, tier });
+      // The section body runs to the next h2 or end of file.
+      let end = lines.length;
+      for (let j = i + 1; j < lines.length; j++) {
+        if (lines[j].startsWith('## ')) {
+          end = j;
+          break;
+        }
+      }
+      const body = lines.slice(i + 1, end).join('\n');
+      activities.set(`${page}#${slugify(heading)}`, {
+        page,
+        heading,
+        tier,
+        hasFeeds: /^\*\*Feeds:\*\*/m.test(body),
+      });
     }
   }
   return activities;
@@ -107,11 +125,16 @@ for (const [key, sources] of links) {
   }
 }
 
-// Rule 2.
+// Rules 2 and 4.
 for (const [key, activity] of activities) {
   if (activity.tier === 'Recommended' && !links.has(key)) {
     problems.push(
       `unearned badge: "${activity.heading}" (${activity.page}) is marked Recommended but no assignment page links to it`
+    );
+  }
+  if (activity.tier && !activity.hasFeeds) {
+    problems.push(
+      `missing Feeds: "${activity.heading}" (${activity.page}) is ${activity.tier} tier but has no "**Feeds:**" line naming the criterion it prepares`
     );
   }
 }

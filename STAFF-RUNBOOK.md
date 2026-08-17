@@ -7,6 +7,7 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 - Each TA owns a cohort of ~14 teams. Check-ins are **bi-weekly per team, aligned to sprint boundaries**: 7 team-meetings per week at 25 to 30 minutes, about 3.5 hours of meetings per TA per week. Weekly per-team check-ins do not fit at 6 TAs; do not promise them.
 - **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint.
 - Defense and NDA checkpoint sessions run 40 minutes and **replace** that team's regular check-in for the cycle, so they add scoring time, not meeting time. Those sprints have no live demo slot, so the team attaches a timestamped video with one segment per student instead. Check the timestamps exist: an untimestamped team video is not a per-student demo and should be sent back.
+- A student who misses their demo slot sends a timestamped video of their segment within 48 hours. Do not reschedule demos into another check-in: every check-in now carries its own, so there is no spare slot, and the video already exists as a mechanism.
 - Cohort assignments and meeting grids are built in week 0 from the team-assignment sheet and published in Canvas week 1.
 - The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
 
@@ -79,6 +80,10 @@ The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 | Career retrospectives (~50 x ~10 min) | — | — | ~8 h |
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
 | **Total** | **~64 h (~6.4 h/wk)** | **~64 h** | **~60 h** |
+
+The check-ins row is 14 teams x 5 bi-weekly cycles x 30 minutes. **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
+
+The number that would break it is team size. At six or more students, 3 minutes each is 18 minutes and the rest of the agenda stops fitting. If a cohort has unusually large teams, either cap demo time at 2 minutes per student or extend those teams' slots and re-run this row.
 
 Peaks land in weeks 8-10 (~9-10 h/wk); weeks 1-4 run light (~4-5 h/wk). This fits a standard 0.49 FTE appointment with headroom for office hours and admin. For comparison, the old design at 6 TAs meant ~200 fifteen-criterion progress-report gradings per TA per year before anything else.
 

@@ -45,10 +45,25 @@ One line per student, three parts:
 If a student has no PR this sprint, say why on their line. Mechanical changes (formatter runs, lockfile bumps,
 generated files, bulk renames) are normal work but are not evidence; leave them out.
 
-- [Student 1] | owned: | reviewed: | shipped:
-- [Student 2] | owned: | reviewed: | shipped:
-- [Student 3] | owned: | reviewed: | shipped:
-- [Student 4] | owned: | reviewed: | shipped:
+**[Student 1]**
+- owned:
+- reviewed:
+- shipped:
+
+**[Student 2]**
+- owned:
+- reviewed:
+- shipped:
+
+**[Student 3]**
+- owned:
+- reviewed:
+- shipped:
+
+**[Student 4]**
+- owned:
+- reviewed:
+- shipped:
 
 **Decision chaired this sprint:** who drove which decision to a conclusion. Over a term everyone should appear here at least once.
 
