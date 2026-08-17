@@ -218,13 +218,48 @@ A second pass added explicit assessment for **critical thinking, AI literacy, le
 - `guides/testing-strategy.mdx`: accessibility added in three forms (automated as a CI gate, manual because roughly half of real defects need judgment, assistive-technology user sessions with an honest simulated substitute). WCAG 2.2 AA named as the standard; the handbook previously had none.
 - `guides/generative-ai.mdx`: "Verify, do not trust" replaced by "verify what matters, build the net that lets you trust the rest". Added a nine-entry index of what can be automated, each linking to the owning guide, plus the counterpart list of what stays human. Marked for annual review.
 - Accessibility activity cluster distributed across `design`, `user`, `ai`, and `communication`.
-- **Activities tiered**: 8 Workshop, 40 Recommended, 66 Library, out of 114 total. Extra credit removed: it tried to solve a routing problem with an incentive. Every graded assignment now names its recommended activities and the criterion each serves, with repeated assignments differentiated (repo checkpoints by their four escalating gates, defense and RFC by term, sprint notes by one-time-setup versus repeatable). `career.mdx` deliberately excluded from both promoted tiers pending its own review pass.
+- **Activities tiered**: 8 Workshop, 40 Recommended, 66 Library, out of 114 total (revised to 8 / 52 / 60 out of 120 in the August revision pass below). Extra credit removed: it tried to solve a routing problem with an incentive. Every graded assignment now names its recommended activities and the criterion each serves, with repeated assignments differentiated (repo checkpoints by their four escalating gates, defense and RFC by term, sprint notes by one-time-setup versus repeatable). `career.mdx` deliberately excluded from both promoted tiers pending its own review pass.
 - Fixed two malformed activity headings (leading space in `planning.mdx`, trailing space in `teamwork.mdx`) that produced broken anchors, plus missing `Badge` imports in `conflict.mdx` and `ai.mdx`.
 
 - **Workshop activities are graded** complete/incomplete on a new `assignments/workshop-activities.mdx` page: fall 2% across 6 items, winter 1%, spring 1%. Funded by re-cutting Team Deliverables while keeping every term at exactly 25%: Charter 5 to 4 and Term Retrospective 4 to 3 in fall, Incident Postmortem 5 to 4 in winter, Project Retrospective 4 to 3 in spring. Sprint Notes and Repo Checkpoints were deliberately left alone, since they carry the individual contribution modifier and the living-docs gate. All three syllabi updated to match; new Canvas rubric TSVs in `canvas/assignments/workshop-activities/` at 10 points per item.
 - **Career activities promoted onto the career assignment only**: Portfolio Development and Public Code Repository for the PR-portfolio criterion, Resume Building for the resume and peer-review criteria. No career activity is recommended for any non-career assignment.
 
 **Infrastructure:** `starlightLinksValidator` was commented out in `astro.config.mjs` and is now enabled and verified by negative test. This pass added roughly 90 internal cross-references, most of them anchor links, none of which would otherwise have been checked.
+
+## 11. Revision Pass (August 2026)
+
+Instructor feedback pass over the four-skills work. Grouped by what changed.
+
+**Terminology.** "Track A" and "Track B" are gone from every student-facing and staff-facing surface (21 files). The default is stated once, on the assignments overview, and each page notes locally where an NDA team does something different. The vocabulary was cost with no benefit: most students were on the default and still had to learn both labels to read the pages. The anchor `#nda-projects-track-a-and-track-b` became `#nda-projects`; inbound links updated. `IDEAS.md` and `docs/superpowers/**` were deliberately left alone, being dated design records.
+
+**Sprint notes.**
+- Demos are now per-student, every sprint, in the team's own check-in. 2 to 3 minutes each is 6 to 12 minutes for a team of three or four, inside the existing 25-to-30-minute slot; the runbook names open-ended coaching as what it displaces.
+- Sprints whose check-in is consumed by a defense or an NDA walkthrough substitute one timestamped video with a segment per student. TAs are told to reject untimestamped team videos, because an untimestamped video is not a per-student signal.
+- "Planned versus done" became "what got done": concrete, consequential, explicitly not required to be code.
+- Contribution lines gained a quantitative and qualitative proxy: PRs owned, the specific change asked for in review, and one human-written sentence on the most consequential thing shipped and how the team knows it works. Bounded by three stated rules (mechanical changes are not evidence; numbers are read as a pattern, never one sprint; the sentence outranks the counts). Self-reported and passes on being filled in, so a grader never opens GitHub for a pass/fail item, with spot-verification live at demo and defense.
+
+**Repo checkpoints.**
+- `docs/adr/` accepted alongside `docs/rfcs/`.
+- `AGENTS.md` and `CLAUDE.md` named as the AI context file; the Copilot instructions reference is gone.
+- The CI minimum is defined as four outcomes rather than "have a workflow file", with per-category realizations, because the file-based phrasing is unsatisfiable for FOSS and vacuous for research.
+- Git hygiene (PR-only merges, no committed secrets or artifacts, meaningful messages, no force-push) folded into the Contribution traceability criterion rather than becoming a sixth criterion. The 100-point split and the Canvas TSV field counts are unchanged.
+- The fall week 10 production target must be recorded in `docs/design.md` and partner-agreed at the week 5 checkpoint.
+- "How Graders Review" replaced by one line per criterion in rubric order.
+
+**RFC.** ADR framing removed from the page and the template. The hard-to-reverse note now covers partner-constrained teams, who inherit the stack and hosting and were being asked to pick a one-way door they are not standing in front of. Padding cut.
+
+**Outcome mapping.** The two-data-point rule is scoped to ABET, since WIC and Beyond OSU need coverage rather than redundancy; the L07 caution is removed. "How This Stays True" moved to `AGENTS.md`.
+
+**Activities.**
+- New `cs46x-activities` skill in `.claude/skills/` defines the page format. The library had grown to 114 entries across twelve pages without a written format, and `ai.mdx` had drifted; `ai.mdx` was rewritten to the majority convention rather than the reverse.
+- Two headings carried a decorative emoji, producing anchor slugs containing an invisible variation selector. Stripped, with all seven inbound links fixed.
+- Six new research and R&D activities, each tied to a gate in the Shipping guide. A seventh was merged into the existing `Define Your Research Questions` stub instead of shipping a near-duplicate.
+- Five assignment pages carry a **By project category** table (FOSS, Research, Consultancy, New Product or Game). This is what lets a repeated assignment name more than two or three options without asking anyone to redo an exercise.
+- `scripts/validate-activity-tiers.mjs` reconciles badges against assignment links, because the tier is decided in one file and displayed in another. Wired into CI and pre-commit. Tiers now: **8 Workshop, 52 Recommended, 60 Library, 120 total**.
+
+**Repository.**
+- `AGENTS.md` at root replaces `.github/copilot-instructions.md`, which was 324 autogenerated lines of Biome lint rules for a repo that is almost entirely MDX. Named `AGENTS.md`, not `AGENT.md`, to match the cross-tool convention.
+- `.github/ISSUE_TEMPLATE/term-setup.md` added, modeled on the engr103 and cs312 templates; the README's instructor checklist points at it.
 
 ## Remaining Open Items (honest list)
 
@@ -234,7 +269,9 @@ A second pass added explicit assessment for **critical thinking, AI literacy, le
 4. The instructor-tools client-side page (README todo) is unbuilt; the runbook documents the manual pipeline until then.
 5. Week numbers assume the standard term calendar; verify against the actual academic calendar before publishing.
 6. Examples library (good/bad examples per assignment) still to be collected from past projects.
+7. **Defense format is an open instructor decision.** Team-together versus per-student individual slots: the cost math and the anti-bluffing argument favor the current team format, the cueing problem is its real cost. Nothing has been changed on `defense.mdx` pending that decision.
+8. **Canvas sprint-note TSV claims outcome tags the handbook does not.** `sprint-note-rubric-details.tsv` tags criteria `[SO5]` and `[L07]`, but `sprint-notes.mdx` has no outcomes block, those tags having been removed from the handbook when the claim was found to be over-reaching. Harmless for accreditation (sprint notes are team-level, so they count zero either way) but it is exactly the Canvas-versus-handbook drift the design exists to prevent. `career.mdx` still owes its own review pass.
 
 ## Build Status
 
-`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 67 pages. Internal link validation **is** running as of 2026-08-17: `starlightLinksValidator()` was previously commented out in `astro.config.mjs` and is now enabled, reporting "All internal links are valid" across all 67 pages. Verified by negative test (a deliberately broken link fails the build), and CI gates on it because CI runs `npm run build`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.
+`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 68 pages. Internal link validation **is** running as of 2026-08-17: `starlightLinksValidator()` was previously commented out in `astro.config.mjs` and is now enabled, reporting "All internal links are valid" across all 68 pages. Verified by negative test (a deliberately broken link fails the build), and CI gates on it because CI runs `npm run build`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift. `node scripts/validate-activity-tiers.mjs` passes: 8 Workshop, 52 Recommended, 60 Library, every linked activity tiered and every Recommended badge earned.

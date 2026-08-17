@@ -39,9 +39,9 @@ The full Fall 2026 course revision lives on the `revision-fall-2026` branch. See
 - create good examples for all assignments based on previous years' projects
 - stretch: create bad examples for all assignments based on previous years' projects
 - more material offered during lecture time: case studies from successful companies, advice for starting a company, career advice, workshops on spec-writing for AI agents, reviewing AI diffs, and testing as the safety net
+- review `src/content/docs/activities/career.mdx`: only 3 of 16 activities are promoted, and its 2026 job-market framing is the fastest-dating content in the library
 - improve project partner guidelines
 - add projects to showcase and improve layout
-- add recommended activities based on project category or type (partially covered by the Shipping guide)
 - run CATME-style peer evaluation every term once tooling supports it (parked; see IDEAS.md)
 
 ## Link Checking

@@ -137,24 +137,31 @@ Fall is short (800-1,500 words); winter is the WIC term with a 2,000-word floor 
 
 **Career activities are promoted only onto the career assignment** (instructor decision, revised 2026-08-17): Portfolio Development and Public Code Repository for the PR-portfolio criterion, Resume Building for the resume and peer-review criteria. The other 13 career activities stay in the Library tier, and no career activity is recommended for any non-career assignment. The page's 2026 job-market framing remains the most time-sensitive content in the library and should be reviewed each August.
 
+## Revision, August 2026: Routing by Project Category
+
+The tables above route by *assignment instance*, which was the right first cut but still assumed every team needs the same preparation. It does not survive contact with the four [project categories](/practicalities/categories/): a FOSS team contributing upstream, a research team running experiments, a consultancy team waiting on a partner's security review, and a product team hunting for users need materially different activities from the same rubric.
+
+Five assignment pages now carry a **By project category** table alongside the shared list: repo checkpoints, definition of shipped, RFC, release and metrics, and project handoff. This is what allows a repeated assignment to name more than two or three options without asking anyone to redo an exercise, which was the sizing constraint the whole document is built around.
+
+Six research and R&D activities were added, each tied to a gate in the Shipping guide rather than invented: Start the Approval Clocks, Choose Your Evaluation Metric Before You Run Anything, Reproduce Your Baseline, Make Your Artifact Reproducible, Keep an Experiment Log, and a rewritten Complete an IRB Application. A seventh was merged into the existing `Define Your Research Questions` stub instead of shipping a near-duplicate.
+
 ## Counts
 
-| Tier | Count |
+| Tier | Count (Aug 2026 revision) |
 |---|---|
 | Workshop | 6 slots, 8 distinct activities (slot 6 rotates through 3) |
-| Recommended | 40 |
-| Library | 66, kept and browsable |
-| **Total activities** | **114** |
+| Recommended | 52 |
+| Library | 60, kept and browsable |
+| **Total activities** | **120** |
 
-Higher than the spec's "~20" and correctly so: the figure follows from instance counts, which the spec had not worked out.
+Higher than the spec's "~20" and correctly so: the figure follows from instance counts and now from category counts, neither of which the spec had worked out.
 
-Every activity page now contributes at least one promoted activity. Counts verified against the badge markup, not estimated.
+**Counts are no longer maintained by hand.** `scripts/validate-activity-tiers.mjs` derives them from the badge markup and fails the build if a linked activity carries no badge, if a Recommended badge has no assignment linking to it, or if an assignment links to an anchor matching no heading. Run `npm run validate:activities`.
 
 ## Source Bugs Found While Building This
 
-Two heading defects in the activity source, worth fixing in Task 12:
+All fixed.
 
-- `planning.mdx`: `## Software Development Process` has a **leading space** in the heading, which will produce a malformed anchor.
-- `teamwork.mdx`: `## Regular Stand-Up Meetings ` has a **trailing space**, same problem.
-
-Both matter now that activities are link targets from assignment pages and the link validator is enabled.
+- `planning.mdx`: `## Software Development Process` had a **leading space** in the heading, producing a malformed anchor. Fixed.
+- `teamwork.mdx`: `## Regular Stand-Up Meetings ` had a **trailing space**, same problem. Fixed.
+- `design.mdx` and `requirements.mdx` had a decorative emoji in two headings, producing anchors containing an invisible variation selector (`#user-story-mapping-\uFE0F`). Stripped, with all seven inbound links fixed. The `cs46x-activities` skill now bans emoji in headings.
