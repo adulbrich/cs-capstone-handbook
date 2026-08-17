@@ -82,11 +82,14 @@ The difference between a helpful AI assistant and a frustrating one is almost en
 
 Most AI coding tools support some form of project-level configuration that persists across sessions:
 
-- **Claude Code**: `CLAUDE.md` file in your repository root.
+- **`AGENTS.md`** in your repository root: the cross-tool convention, read by a growing number of agents and the right default when your team does not all use the same tool.
+- **Claude Code**: `CLAUDE.md` in your repository root.
 - **Cursor**: `.cursor/rules/` directory or `.cursorrules` file.
-- **GitHub Copilot**: `.github/copilot-instructions.md` file.
+- **GitHub Copilot**: `.github/copilot-instructions.md`.
 
 These files are checked into version control, which means the entire team shares the same AI context. This is one of the most effective ways to keep AI-generated code consistent across team members.
+
+Write the content once, in `AGENTS.md`, and have any per-tool file point at it. Two instruction files that disagree with each other are worse than none: whichever one your teammate's tool reads is the one that wins, and nobody will notice they have drifted until the suggestions stop matching the code.
 
 What to include in project-level instructions:
 
