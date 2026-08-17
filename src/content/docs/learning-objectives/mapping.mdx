@@ -8,7 +8,7 @@ sidebar:
 This page maps every learning outcome to the assignments and rubric criteria that evidence it. Three rules govern the map:
 
 1. **Individual evidence for accreditation.** ABET and WIC outcomes must be evidenced at the individual student level. Team-level instruments (partner evaluations, repo checkpoints, team deliverables) appear only as corroboration.
-2. **At least two data points per student per outcome.** A data point is a rubric criterion or an assignment scored per student. Every ABET outcome below clears this bar inside the capstone alone, most with margin.
+2. **Two data points per student, for ABET only.** A data point is a rubric criterion or an assignment scored per student. Every ABET outcome below clears this bar inside the capstone alone, most with margin. WIC and Beyond OSU outcomes carry no two-point requirement: they need individual coverage, and one well-placed source satisfies them.
 3. **Program-level context.** ABET assesses the program and accepts representative sampling of student work. Some outcomes also draw data points from other courses; SO4 is partly evidenced by the ethics course (CS 391).
 
 ## ABET Student Outcomes
@@ -30,20 +30,12 @@ The WIC requirements are under official revision; this mapping will be finalized
 
 | Outcome | Where |
 |---|---|
-| **L07** Frequent informal and formal writing | RFC drafts and the written peer reviews (formal, the only individual source), sprint note judgment layers (informal, ~10 per year), retrospective individual pages (team-level, corroboration only) |
+| **L07** Frequent informal and formal writing | RFC drafts and the written peer reviews (formal, individually scored), sprint note judgment layers (informal, ~10 per year), retrospective individual pages (team-level, corroboration only) |
 | **L08** Audience, genre, and convention awareness | RFC (engineering decision genre; the writing criterion assesses this individually), release notes and landing page (public genre, team-level corroboration) |
 | **L09** 2,000+ word document through drafting, sources, and comprehensive revision after feedback | The two RFCs: each runs a full draft, cross-team feedback, revision cycle with a response-to-feedback note; combined polished output exceeds 2,000 words per student |
-
-:::caution[L07 has a single individual source]
-L07's individual coverage comes entirely from the RFC's peer-feedback criterion (one criterion, two terms). The [Term Retrospective](/assignments/term-retrospective/) also carries an `L07` tag, but it is a team-level assignment, so the validator counts it as corroboration and it contributes no individual data points. **Removing the RFC's peer-feedback criterion would drop L07 to zero and fail CI**, so treat the cross-team review cycle as load-bearing rather than optional.
-:::
 
 ## Beyond OSU (CS 463)
 
 | Outcome | Where |
 |---|---|
 | **L10** Apply career development concepts to artifacts from a career-related experience | [Career and Individual Retrospective](/assignments/career-retrospective/): resume criterion and peer-review-exchange criterion |
-
-## How This Stays True
-
-Every assignment page carries outcome tags in its rubric table and declares matching counts in frontmatter. `scripts/validate-outcomes.mjs` (run in CI and pre-commit) parses the rubric tables directly, fails if frontmatter and rubric disagree, fails if any ABET outcome drops below two individual data points, and fails if any WIC or Beyond OSU outcome loses individual coverage. This page is hand-maintained against that check.
