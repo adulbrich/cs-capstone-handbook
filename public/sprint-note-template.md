@@ -40,6 +40,10 @@ One line per student: the reviewed PR(s) they owned this sprint (titles or IDs; 
 - [Student 3]:
 - [Student 4]:
 
+**Decision chaired this sprint:** who drove which decision to a conclusion. Over a term everyone should appear here at least once.
+
+-
+
 ## 5. Judgment Layer (human-written, about five lines)
 
 What the team learned this sprint and what it changes about the plan. Not a status recap: the insight, the surprise, the course correction.
