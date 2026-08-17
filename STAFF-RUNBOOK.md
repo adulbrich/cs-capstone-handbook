@@ -6,7 +6,7 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 
 - Each TA owns a cohort of ~14 teams. Check-ins are **bi-weekly per team, aligned to sprint boundaries**: 7 team-meetings per week at 25 to 30 minutes, about 3.5 hours of meetings per TA per week. Weekly per-team check-ins do not fit at 6 TAs; do not promise them.
 - **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint.
-- Defense and NDA checkpoint sessions run 40 minutes and **replace** that team's regular check-in for the cycle, so they add scoring time, not meeting time. Those sprints have no live demo slot, so the team attaches a timestamped video with one segment per student instead. Check the timestamps exist: an untimestamped team video is not a per-student demo and should be sent back.
+- Defense and NDA checkpoint sessions **replace** that team's regular check-in for the cycle, so they add scoring time, not meeting time. NDA checkpoints run 40 minutes; defense length scales with the team (see Defense Logistics). Those sprints have no live demo slot, so the team attaches a timestamped video with one segment per student instead. Check the timestamps exist: an untimestamped team video is not a per-student demo and should be sent back.
 - A student who misses their demo slot sends a timestamped video of their segment within 48 hours. Do not reschedule demos into another check-in: every check-in now carries its own, so there is no spare slot, and the video already exists as a mechanism.
 - Cohort assignments and meeting grids are built in week 0 from the team-assignment sheet and published in Canvas week 1.
 - The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
@@ -25,7 +25,11 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 ## Defense Logistics
 
 - One calibration hour before week 7 each term: all graders score the same recorded or role-played walkthrough on the printed scoresheet and reconcile. Spend part of it on the Ownership-and-Delegation criterion specifically, because it is the one graders most often get backwards: **score the triage decision, not the luck.** A student who let an agent drive a schema migration with no net scores low even though nothing broke; a student who stopped to validate an auth change scores high even with buggy feature code. Sophisticated tooling earns no points by itself, and a student on weaker tools who gated tightly has done the harder work.
-- 6 minutes per student; two assessors split the students when both attend.
+- **Session length is 6 minutes per student plus ~10 minutes of setup and wrap.** Team of 2 = 22 min, 3 = 28, 4 = 34, 5 = 40, 6 = 46. Do not compress per-student time on a large team: the scoresheet anchors are calibrated at 6 minutes and stop comparing across cohorts below that. The session simply runs longer. Book the slot from the roster before the cycle starts, since it is no longer a uniform 40 minutes.
+- Because most teams are three or four, the average defense session is at or under the 30-minute check-in it replaces. Across a cohort of 14 this cycle is close to cost-neutral: about **+0.3 h per TA per term** of meeting time, against +2.3 h under the old fixed 40-minute session.
+- **Anti-cueing protocol, mandatory.** Draw the speaking order at random in the room and never publish it in advance. Give each student a different artifact and a different "what breaks if X" question. Without this, whoever goes last has heard several rounds and is answering a question they have had ten minutes to prepare.
+- **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per cohort per term.
+- Two assessors split the students between them when both attend.
 - Absences: rescheduled into another check-in that term if flagged before the session; unexcused no-show scores zero (the TSV has a zero band).
 - Scores and notes entered into Canvas after each session; sheets are the live instrument, Canvas is the retention record for program assessment.
 
@@ -75,13 +79,13 @@ The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 | Sprint notes (pass/fail, ~5 min each) | ~5 h | ~5 h | ~2.5 h |
 | Repo checkpoints (~12 min per team, x2) | ~6 h | ~6 h | — |
 | RFCs (~50 x ~10 min) | ~8 h | ~8 h | — |
-| Defense scoring + Canvas entry (replaces check-ins) | ~4 h | ~4 h | ~4 h |
+| Defense scoring, follow-ups + Canvas entry (replaces check-ins) | ~2 h | ~2 h | ~2 h |
 | Term deliverable (charter / DoS + postmortem / spring set incl. release videos) | ~5 h | ~5 h | ~9 h |
 | Career retrospectives (~50 x ~10 min) | — | — | ~8 h |
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
-| **Total** | **~64 h (~6.4 h/wk)** | **~64 h** | **~60 h** |
+| **Total** | **~62 h (~6.2 h/wk)** | **~62 h** | **~58 h** |
 
-The check-ins row is 14 teams x 5 bi-weekly cycles x 30 minutes. **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
+The check-ins row is 14 teams x 5 bi-weekly cycles x 30 minutes. The defense row dropped from ~4 h to ~2 h when session length became 6 minutes per student plus buffer rather than a flat 40 minutes: at an average team size of 3.5 the sessions now roughly match the check-ins they replace, so the row is mostly Canvas entry and follow-ups. **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
 
 The number that would break it is team size. At six or more students, 3 minutes each is 18 minutes and the rest of the agenda stops fitting. If a cohort has unusually large teams, either cap demo time at 2 minutes per student or extend those teams' slots and re-run this row.
 

@@ -8,9 +8,13 @@
 
 **Artifact/PR under discussion:** ______________________ **Repo record checked:** yes / no / NDA live
 
+**Speaking position:** ____ of ____ (order drawn at random) **Individual follow-up needed:** yes / no
+
 Score each criterion 0 to 20. Anchors: high (17-20) = Exceeds, middle (10-16) = Meets, low (1-9) = Does Not Meet, 0 = unexcused no-show or no meaningful attempt. "I don't know, but here is how I would find out" scores; bluffing does not.
 
-Logistics: about 6 minutes per student; when two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes into Canvas after the session (the sheet is the live instrument; Canvas is the record).
+Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session. **Draw the speaking order at random in the room and do not publish it in advance**, and give each student a different artifact and a different "what breaks if X" question: whoever goes last has otherwise heard several rounds of the same questions. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes into Canvas after the session (the sheet is the live instrument; Canvas is the record).
+
+If a score comes out borderline, or a student's part of the session ran short, tick the follow-up box below and arrange a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine.
 
 **Score the decision, not the luck.** A student who delegated a hard-to-reverse change (schema, auth, deployment, data migration) with no safety net scores low on criterion 1 even if nothing broke. A student who stopped and validated at the right point scores high even if some reversible feature code has bugs. Sophisticated tooling is not itself worth points: a student with a weaker model who gated tightly and validated more has done the harder work, and the anchors are written so that reads as strength.
 
