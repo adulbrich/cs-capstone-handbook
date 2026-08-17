@@ -26,7 +26,18 @@
 
 Deviation from plan in Task 6: the checkpoint rubric was already at 100 points across five criteria, so the safety net extended the existing **Build health** criterion rather than adding a sixth and redistributing points. Same SO6 tag, same total, no validator movement. The spec's intent (assess net-versus-delegation fit at team level) is met.
 
-Phases 2 and 3 not started.
+**Phase 2 partially complete, 2026-08-17.** Build: 67 pages, all internal links valid.
+
+| Task | Commit |
+|---|---|
+| 8. Accessibility in three forms | `83aa01c` |
+| 9. New `activities/ai.mdx` | `26aac96` |
+| 10. Accessibility activity cluster | `039fee8` |
+| 11. Gen-AI reframe and automation index | `a75dc2b` |
+
+Task 9 note: the page's YAML `description` needed quoting because it contains a colon. Worth remembering for any new content page.
+
+**Remaining:** Task 12 (activity tiering) is blocked on the instructor's selection of Workshop and Recommended tiers; Task 13 (prerequisite routing) is unblocked; Phase 3 (Tasks 14 and 15, propagation) is deliberately last so it does not restate framing that is still being reviewed.
 
 ## Global Constraints
 
