@@ -3,10 +3,10 @@ import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import mermaid from 'astro-mermaid';
+import starlightLinksValidator from 'starlight-links-validator';
 import starlightScrollToTop from 'starlight-scroll-to-top';
 // import starlightPageActions from 'starlight-page-actions';
 // import starlightImageZoom from "starlight-image-zoom";
-// import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,7 +17,7 @@ export default defineConfig({
     sitemap(),
     starlight({
       plugins: [
-        // starlightLinksValidator(),
+        starlightLinksValidator(),
         // starlightPageActions({
         //   baseUrl: "https://engr103.alexulbrich.com",
         //   actions: {

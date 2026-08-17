@@ -205,4 +205,4 @@ The original persona reviews and runbook assumed 10 to 12 TAs; the real ceiling 
 
 ## Build Status
 
-`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 66 pages. Note that internal link validation is **not** actually running: `starlightLinksValidator()` is commented out in `astro.config.mjs`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 5, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.
+`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 66 pages. Internal link validation **is** running as of 2026-08-17: `starlightLinksValidator()` was previously commented out in `astro.config.mjs` and is now enabled, reporting "All internal links are valid" across all 66 pages. Verified by negative test (a deliberately broken link fails the build), and CI gates on it because CI runs `npm run build`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 5, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift.
