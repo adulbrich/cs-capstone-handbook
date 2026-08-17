@@ -128,6 +128,15 @@ How skills are defined depends on the tool:
 
 Like project-level instructions, skills should be version-controlled so the whole team benefits from improvements.
 
+**Published collections worth reading.** You do not have to invent these from scratch, and reading a well-built skill is the fastest way to learn what a good one looks like:
+
+- **[obra's Superpowers](https://github.com/obra/superpowers)**: brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development. It also includes skills for writing and testing new skills.
+- **[Matt Pocock's skills](https://github.com/mattpocock/skills)**: spec and ticket flows, TDD, code review, domain modelling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
+
+Several of these are not conveniences but **safety-net components**: a separate architectural-review pass, a code-review pass, and a plan-before-you-build step are exactly the gates that make delegating the rest reasonable. Run the hands-on version in [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills).
+
+One warning: a skill is someone else's opinion, executed automatically. Read one before you install it, because your team owns whatever it produces.
+
 ### Memory and Context
 
 Some tools support persistent memory across sessions. Use this to store project-specific knowledge that the AI should retain: architectural decisions, common patterns, known gotchas, or recurring instructions you find yourself repeating.
@@ -140,9 +149,21 @@ The difference between productive AI usage and frustrating AI usage usually come
 
 Before asking an AI tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the AI enough context to produce something useful. The clearer your intent, the less time you spend correcting the output.
 
-### Verify, do not trust
+### Verify what matters, and build the net that lets you trust the rest
 
-AI-generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Read what the AI produces. Run it. Test the edge cases. If you cannot explain why the code works, you do not understand it well enough to commit it.
+AI-generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. The obvious response is "read everything it writes", and that advice fails in practice for the same reason a tech lead does not read every line their team ships. It does not scale, so people stop doing it, and then they have no strategy at all.
+
+The strategy that does scale has two parts.
+
+**Spend your attention where mistakes are expensive to undo.** Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are one-way doors: getting them wrong costs far more than the review would have. Most feature code is a two-way door, cheap to fix once something tells you it is broken. Validate hard at the doors; delegate freely elsewhere.
+
+**Make "elsewhere" safe by building the net.** You may reasonably delegate exactly as far as your safety net catches: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without a net is recklessness. Trust with one is ordinary engineering. If you want to hand off more, improve the net first rather than reading harder.
+
+This is why the course grades the *fit* between how far you delegated and how strong your net is, rather than how much AI you used or how good your tools are. A weaker model simply means tighter gates and more checking of your own, which is more work, not less.
+
+You still own the result. If you cannot explain why the code works when your project partner asks, no tool and no net will cover for that.
+
+The [AI practice activities](/activities/ai/) turn all of this into exercises you can run on your own repository this week.
 
 ### Use AI to learn, not just to produce
 
@@ -183,6 +204,28 @@ This is covered in detail in the technical design and working agreement guides:
   href="/guides/working-agreement/#ai-tool-usage"
   description="Team norms for coordinating AI tool usage."
 />
+
+## What You Can Automate
+
+When you ask "what can I hand off?", this is the index. Each entry links to the guide that owns the topic; nothing is restated here, so the owning guide stays the single source of truth.
+
+| Automatable | Where it is covered |
+|---|---|
+| Test generation across the pyramid (unit, integration, end-to-end) | [Testing strategy](/guides/testing-strategy/#automated-testing) |
+| Browser-driven exercising of real user flows | [End-to-end tests](/guides/testing-strategy/#end-to-end-tests), and [Playwright MCP](https://github.com/microsoft/playwright-mcp) above |
+| Accessibility auditing (axe-core, Lighthouse, lint-level rules) | [Automated accessibility testing](/guides/testing-strategy/#automated-accessibility-testing) |
+| Lint and format gates | Your repo's configuration, checked in and enforced in CI |
+| CI pipeline construction and gate configuration | [DevOps](/guides/devops/) |
+| Self-audit and adversarial review passes | [Run a self-audit and an architectural review pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass) |
+| Architectural review as a distinct step | [Technical design](/guides/technical-design/) |
+| Security scanning (dependency audit, secret scanning) | [Security](/guides/security/) |
+| Documentation and changelog generation | [Documentation](/guides/documentation/) |
+
+**What stays human.** Whether the product is actually good for the person using it. Which decisions are one-way doors. The tradeoffs your users and your project partner will feel. And whether an automated finding actually matters, which is a judgment no tool makes for you: a report with forty findings is not forty problems.
+
+:::note[Reviewed annually]
+This section and the tool names throughout this guide are the fastest-moving content in the handbook, and they are reviewed each August. The judgment they support (spend attention where mistakes are expensive, build the net that covers the rest) has been stable much longer than any of these tools have existed, which is why the course's rubrics assess the judgment and never the tooling.
+:::
 
 ## Some Truths About AI Tools
 
