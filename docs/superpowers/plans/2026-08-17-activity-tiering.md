@@ -22,7 +22,7 @@ A repeated assignment needs a **pool** sized to its instances, not a fixed pair,
 
 ## Workshop Tier: 6 slots
 
-Zero-point complete/incomplete Canvas items. Graded on submission existing, never on quality: at ~300 students with 6 TAs, anything requiring judgment per submission is unaffordable, and the value here is the trigger signal plus the Canvas mirror being complete.
+Graded complete/incomplete: **fall 2% across 6 items, winter 1%, spring 1%** (instructor decision, 2026-08-17, revising an earlier zero-point recommendation). Scored on submission existing, never on quality, because at ~300 students with 6 TAs anything requiring judgment per submission is unaffordable. Funded by re-cutting Team Deliverables (Charter 5 to 4 and Term Retro 4 to 3 in fall, Postmortem 5 to 4 in winter, Project Retro 4 to 3 in spring), leaving Sprint Notes and Repo Checkpoints untouched. Documented as its own assignment page, `assignments/workshop-activities.mdx`, since the Assignments section is the source of truth for all graded work.
 
 | Slot | Activity | When | Criteria fed |
 |---|---|---|---|
@@ -133,21 +133,22 @@ Fall is short (800-1,500 words); winter is the WIC term with a 2,000-word floor 
 | **Landing Page** (spring) | Designing for Accessibility (`design`) → polish and accessibility (20); The Parent Test (`creative`) → value proposition | `communication`, `design` |
 | **Project Retrospective** (spring) | Team Health Assessment (`teamwork`) → team dynamics; Learning Journal (`reflective`) → arc and pivots (20) | `reflective`, `teamwork` |
 | **Project Handoff** (spring) | Planning for Maintenance and Long-Term Support (`design`) → known issues and future work (20); Describe your API Reference (`design`) → living docs (10) | `design`, `communication` |
-| **Career and Individual Retrospective** (spring) | Learning Journal (`reflective`) → judgment and responsible practice (25, SO4); Learn from Jean-Luc Doumont (`communication`) → writing (10) | `reflective`, `communication` |
+| **Career and Individual Retrospective** (spring) | Portfolio Development and Public Code Repository (`career`) → PR portfolio; Resume Building (`career`) → resume and the peer-review exchange; Learning Journal (`reflective`) → judgment and responsible practice (25, SO4); Learn from Jean-Luc Doumont (`communication`) → writing (10) | `career`, `reflective` |
 
-**`career.mdx` is deliberately excluded from both promoted tiers for now** (instructor decision, 2026-08-17). All 16 of its activities stay in the Library tier. The Career and Individual Retrospective's resume and PR-portfolio criteria therefore have no promoted activity pointing at them, which is a known gap to revisit rather than an oversight: the page needs its own review pass before anything on it is promoted, and the 2026 job-market framing already on it is the most time-sensitive content in the library.
+**Career activities are promoted only onto the career assignment** (instructor decision, revised 2026-08-17): Portfolio Development and Public Code Repository for the PR-portfolio criterion, Resume Building for the resume and peer-review criteria. The other 13 career activities stay in the Library tier, and no career activity is recommended for any non-career assignment. The page's 2026 job-market framing remains the most time-sensitive content in the library and should be reviewed each August.
 
 ## Counts
 
 | Tier | Count |
 |---|---|
 | Workshop | 6 slots, 8 distinct activities (slot 6 rotates through 3) |
-| Recommended | ~32 distinct |
-| Library | ~72, kept and browsable, including all 16 career activities |
+| Recommended | 40 |
+| Library | 66, kept and browsable |
+| **Total activities** | **114** |
 
 Higher than the spec's "~20" and correctly so: the figure follows from instance counts, which the spec had not worked out.
 
-Pages contributing nothing to the promoted tiers, by decision rather than accident: `career.mdx` (excluded for now, see above). Pages contributing only via browse categories: none.
+Every activity page now contributes at least one promoted activity. Counts verified against the badge markup, not estimated.
 
 ## Source Bugs Found While Building This
 

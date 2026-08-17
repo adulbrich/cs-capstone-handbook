@@ -30,7 +30,17 @@ Points are unchanged in every case; only labels and band descriptions moved. The
 
 **AI policy changed in all three syllabi.** "Briefly disclose any AI use" is gone. The policy is now: state what you delegated, what safety net made that reasonable, and where you validated yourself, with grading on the fit rather than on tool sophistication.
 
-**New Canvas items to create:** six zero-point complete/incomplete workshop activities, listed with their timing in the [activities introduction](https://capstone.alexulbrich.com/activities/introduction/). They carry no weight; the mark exists so students and TAs can both see the work happened, and so a skipped workshop is visible as a trigger signal alongside a low score on the criterion it feeds. **The old extra-credit activity items are retired.**
+**New Canvas item to create:** one **Workshop Activities** column per term, graded complete/incomplete per item. Fall is 2% across 6 items, winter 1% across 1 item, spring 1% across 1 item. See [Workshop Activities](https://capstone.alexulbrich.com/assignments/workshop-activities/) for the item list and timing. Grading is confirming something real was submitted; there is no quality bar and no rubric, so a grader spends seconds per item. **The old extra-credit activity items are retired.**
+
+**Team Deliverables weights were re-cut to fund this**, keeping every term at 25%. Sprint Notes and Repo Checkpoints are untouched, because they carry the individual contribution modifier and the living-docs gate respectively:
+
+| Term | Changed |
+|---|---|
+| Fall | Team Charter 5% to 4%; Term Retrospective 4% to 3%; Workshop Activities 2% added |
+| Winter | Incident Postmortem 5% to 4%; Workshop Activities 1% added |
+| Spring | Project Retrospective 4% to 3%; Workshop Activities 1% added |
+
+All three syllabi were updated to match.
 
 ## Schedule
 
@@ -38,6 +48,7 @@ Points are unchanged in every case; only labels and band descriptions moved. The
 
 | Week | Due |
 |------|-----|
+| 1-5 | Workshop Activities (6 items, complete/incomplete) |
 | 2 | Team Charter |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback |

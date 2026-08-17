@@ -15,26 +15,27 @@ Each term's grade has four equal components:
 
 Key structural moves: standalone requirements and technical design documents are gone (living docs in the repo, graded via twice-a-term Repo Checkpoints, with an NDA Track B walkthrough variant); 14 progress reports became 10 pass/fail sprint notes plus a demo cadence; individual credit runs through RFCs (draft, cross-team feedback, revision), live defenses, and PR-per-sprint ownership; the spring outcome ladder is scaffolded by a Definition of Shipped contract, term gates ("hello, production" in fall, release candidate in winter), and a new Shipping guide.
 
-## 1. New Assignments Section (`src/content/docs/assignments/`, 15 pages, new sidebar group)
+## 1. New Assignments Section (`src/content/docs/assignments/`, 16 pages, new sidebar group)
 
 Source of truth for all graded work; Canvas mirrors it. Every rubric criterion carries a learning-outcome tag, and pages declare coverage in frontmatter.
 
 | Page | Level | Terms | Weight | Notes |
 |---|---|---|---|---|
 | introduction.mdx | | | | Grade architecture, year at a glance, individual accountability, NDA Track A/B, AI policy, rubric conventions |
-| team-charter.mdx | Team | F | 5% | Adds rotating named roles (PM, AI Coordinator, Quality Owner) and the AI/confidentiality one-pager; winter/spring refresh folds into checkpoint 1 |
+| team-charter.mdx | Team | F | 4% | Adds rotating named roles (PM, AI Coordinator, Quality Owner) and the AI/confidentiality one-pager; winter/spring refresh folds into checkpoint 1 |
 | sprint-notes.mdx | Team + individual modifier | F/W/S | 8/8/4% | One page, five items, pass/fail; live demo cadence in cohort check-ins + two all-hands demo days |
 | repo-checkpoints.mdx | Team | F/W | 4% each | Replaces requirements-update and technical-design-update; term gates; Track B walkthrough protocol |
 | rfc.mdx | Individual | F/W | 15% | Draft week 4, cross-team feedback week 5, revision week 8; becomes the ADR; absorbs memo, research brief, standalone ADR |
 | defense.mdx | Individual | F/W/S | 10% | 30-40 min per team in cohort check-ins; live scoresheet; AI open for explaining, closed for generating |
-| term-retrospective.mdx | Team + individual pages | F | 4% | 4Ls format; winter uses the postmortem, spring the project retrospective |
+| term-retrospective.mdx | Team + individual pages | F | 3% | 4Ls format; winter uses the postmortem, spring the project retrospective |
 | definition-of-shipped.mdx | Team | W | 4% | Partner-agreed contract: target ladder rung, metrics, lead times, user access plan; v0 drafted at fall checkpoint 2 |
-| incident-postmortem.mdx | Team | W | 5% | Blameless, real incident, corrective actions verifiable at next checkpoint |
+| incident-postmortem.mdx | Team | W | 4% | Blameless, real incident, corrective actions verifiable at next checkpoint |
 | release.mdx | Team | S | 8% | Video + release notes + new metrics evidence section (measured values against docs/shipped.md) |
 | landing-page.mdx | Team | S | 3% | Resolved to team-level; Track B alternatives stated |
-| project-retrospective.mdx | Team | S | 4% | Cross-year arc, delivered vs Definition of Shipped, decisions traced via RFCs |
+| project-retrospective.mdx | Team | S | 3% | Cross-year arc, delivered vs Definition of Shipped, decisions traced via RFCs |
 | career-retrospective.mdx | Individual | S | 15% | PR portfolio, judgment/AI reflection, resume + two-way peer review |
 | project-handoff.mdx | Team | S | 6% | Partner-facing, living-docs links, written partner confirmation, consent declaration |
+| workshop-activities.mdx | Team | F/W/S | 2/1/1% | Six practice-library activities graded complete/incomplete; added in the August 2026 four-skills pass (section 10) |
 
 **Deprecated assignments and their replacements:** Setup (folds into Sprint 1 note + fall checkpoint 1), Memo and Research Brief (fold into RFC 1's context and evidence), Progress Report ×14 (Sprint Notes + demos), Requirements Update and Technical Design Update (Repo Checkpoints on living docs), ADR + Code Review (RFC decision record + PR-per-sprint norm), winter Retrospective (Incident Postmortem), Retrospective and Career old form (Career and Individual Retrospective).
 
@@ -217,8 +218,11 @@ A second pass added explicit assessment for **critical thinking, AI literacy, le
 - `guides/testing-strategy.mdx`: accessibility added in three forms (automated as a CI gate, manual because roughly half of real defects need judgment, assistive-technology user sessions with an honest simulated substitute). WCAG 2.2 AA named as the standard; the handbook previously had none.
 - `guides/generative-ai.mdx`: "Verify, do not trust" replaced by "verify what matters, build the net that lets you trust the rest". Added a nine-entry index of what can be automated, each linking to the owning guide, plus the counterpart list of what stays human. Marked for annual review.
 - Accessibility activity cluster distributed across `design`, `user`, `ai`, and `communication`.
-- **Activities tiered**: 8 Workshop (zero-point complete/incomplete in Canvas), 37 Recommended, 69 Library. Extra credit removed: it tried to solve a routing problem with an incentive. Every graded assignment now names its recommended activities and the criterion each serves, with repeated assignments differentiated (repo checkpoints by their four escalating gates, defense and RFC by term, sprint notes by one-time-setup versus repeatable). `career.mdx` deliberately excluded from both promoted tiers pending its own review pass.
+- **Activities tiered**: 8 Workshop, 40 Recommended, 66 Library, out of 114 total. Extra credit removed: it tried to solve a routing problem with an incentive. Every graded assignment now names its recommended activities and the criterion each serves, with repeated assignments differentiated (repo checkpoints by their four escalating gates, defense and RFC by term, sprint notes by one-time-setup versus repeatable). `career.mdx` deliberately excluded from both promoted tiers pending its own review pass.
 - Fixed two malformed activity headings (leading space in `planning.mdx`, trailing space in `teamwork.mdx`) that produced broken anchors, plus missing `Badge` imports in `conflict.mdx` and `ai.mdx`.
+
+- **Workshop activities are graded** complete/incomplete on a new `assignments/workshop-activities.mdx` page: fall 2% across 6 items, winter 1%, spring 1%. Funded by re-cutting Team Deliverables while keeping every term at exactly 25%: Charter 5 to 4 and Term Retrospective 4 to 3 in fall, Incident Postmortem 5 to 4 in winter, Project Retrospective 4 to 3 in spring. Sprint Notes and Repo Checkpoints were deliberately left alone, since they carry the individual contribution modifier and the living-docs gate. All three syllabi updated to match; new Canvas rubric TSVs in `canvas/assignments/workshop-activities/` at 10 points per item.
+- **Career activities promoted onto the career assignment only**: Portfolio Development and Public Code Repository for the PR-portfolio criterion, Resume Building for the resume and peer-review criteria. No career activity is recommended for any non-career assignment.
 
 **Infrastructure:** `starlightLinksValidator` was commented out in `astro.config.mjs` and is now enabled and verified by negative test. This pass added roughly 90 internal cross-references, most of them anchor links, none of which would otherwise have been checked.
 
