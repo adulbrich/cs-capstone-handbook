@@ -72,6 +72,14 @@ of the same map and is hand-maintained against this check. When you change a
 rubric criterion's tags, update the frontmatter, the mapping page, and the
 Canvas TSV in the same commit.
 
+The same validator reconciles **Canvas against the handbook**: the set of
+outcome tags in each `canvas/assignments/*/​*-rubric-details.tsv` must equal the
+set in the handbook rubric table it mirrors. Nothing else in the toolchain reads
+Canvas, so without this it drifts silently, and it had. The directory-to-page
+map and the deprecated-directory list live at the top of the script; a Canvas
+directory that starts claiming outcomes without being in either list fails the
+check rather than being skipped.
+
 ## How activity tiers stay true
 
 An activity is Recommended because an assignment page links to it, but the tier

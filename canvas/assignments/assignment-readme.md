@@ -42,6 +42,22 @@ Points are unchanged in every case; only labels and band descriptions moved. The
 
 All three syllabi were updated to match.
 
+## Rubric TSVs Requiring Re-Import (August 2026)
+
+`node scripts/validate-outcomes.mjs` now reconciles every Canvas rubric TSV against the handbook rubric table it mirrors and fails on any mismatch. That check found five files out of sync. **All five must be re-imported into Canvas**; the first four change criteria and point splits, not just labels.
+
+| File | Was | Now |
+|---|---|---|
+| `team-charter/` | 16 criteria, 5-10 points each | 7 criteria matching the handbook (20/15/10/15/15/15/10) |
+| `project-retrospective/` | 10 criteria | 6 criteria (20/20/25/15/10/10) |
+| `project-handoff/` | 7 criteria | 5 criteria (15/30/20/10/25) |
+| `project-landing-page/` | 6 criteria | 4 criteria (30/35/15/20) |
+| `sprint-note/` | criteria tagged `[SO5]` and `[L07]` | tags removed |
+
+The first four were written before the handbook rubrics were rewritten and were never regenerated, so a grader importing them would have graded against criteria and point values the handbook does not state. Every total is still 100.
+
+The sprint-note case is the opposite error: the TSV claimed outcome tags that `sprint-notes.mdx` deliberately does not carry, those having been removed when the outcome claim was found to be over-reaching. Harmless for accreditation, since sprint notes are team-level and count zero either way, but it is Canvas asserting evidence the source of truth does not.
+
 ## Schedule
 
 ### CS 461 (Fall Term)

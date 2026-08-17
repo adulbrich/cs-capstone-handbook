@@ -269,8 +269,9 @@ Instructor feedback pass over the four-skills work. Grouped by what changed.
 4. The instructor-tools client-side page (README todo) is unbuilt; the runbook documents the manual pipeline until then.
 5. Week numbers assume the standard term calendar; verify against the actual academic calendar before publishing.
 6. Examples library (good/bad examples per assignment) still to be collected from past projects.
-7. **Defense format is an open instructor decision.** Team-together versus per-student individual slots: the cost math and the anti-bluffing argument favor the current team format, the cueing problem is its real cost. Nothing has been changed on `defense.mdx` pending that decision.
-8. **Canvas sprint-note TSV claims outcome tags the handbook does not.** `sprint-note-rubric-details.tsv` tags criteria `[SO5]` and `[L07]`, but `sprint-notes.mdx` has no outcomes block, those tags having been removed from the handbook when the claim was found to be over-reaching. Harmless for accreditation (sprint notes are team-level, so they count zero either way) but it is exactly the Canvas-versus-handbook drift the design exists to prevent. `career.mdx` still owes its own review pass.
+7. ~~Canvas rubric TSVs drifting from the handbook.~~ **Resolved**: `validate-outcomes.mjs` now reconciles every TSV against the handbook rubric table it mirrors. It found five out of sync, not the one visible by inspection: `team-charter`, `project-retrospective`, `project-handoff`, and `project-landing-page` still carried pre-rewrite criteria and point splits, and `sprint-note` claimed outcome tags the handbook does not. All regenerated; **all five need re-importing into Canvas**.
+8. **Defense format is an open instructor decision.** Team-together versus per-student individual slots: the cost math and the anti-bluffing argument favor the current team format, the cueing problem is its real cost. Nothing has been changed on `defense.mdx` pending that decision.
+9. `career.mdx` review pass (in progress).
 
 ## Build Status
 

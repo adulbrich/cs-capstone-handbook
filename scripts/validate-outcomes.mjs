@@ -9,10 +9,11 @@
 //
 // Run: node scripts/validate-outcomes.mjs
 
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ASSIGNMENTS_DIR = 'src/content/docs/assignments';
+const CANVAS_DIR = 'canvas/assignments';
 const ABET_OUTCOMES = ['SO1', 'SO2', 'SO3', 'SO4', 'SO5', 'SO6'];
 const OTHER_OUTCOMES = ['L07', 'L08', 'L09', 'L10'];
 const MIN_ABET = 2;
@@ -21,6 +22,43 @@ const TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;
 // Standing individual instruments not represented as assignment pages:
 // peer evaluations run mid + final every term and evidence SO5.
 const STANDING_INDIVIDUAL_POINTS = { SO5: 6 };
+
+// Canvas rubric TSV directory -> the handbook page it mirrors.
+// Canvas is a mirror; the handbook wins. A TSV that tags an outcome the
+// handbook rubric does not claims accreditation evidence that does not exist,
+// and nothing else in the toolchain reads Canvas, so it drifts silently.
+const CANVAS_TO_HANDBOOK = {
+  'career-retrospective': 'career-retrospective',
+  defense: 'defense',
+  'definition-of-shipped': 'definition-of-shipped',
+  'incident-postmortem': 'incident-postmortem',
+  'project-handoff': 'project-handoff',
+  'project-landing-page': 'landing-page',
+  'project-retrospective': 'project-retrospective',
+  'repo-checkpoint': 'repo-checkpoints',
+  rfc: 'rfc',
+  'spring-release': 'release',
+  'sprint-note': 'sprint-notes',
+  'team-charter': 'team-charter',
+  'workshop-activities': 'workshop-activities',
+};
+
+// Kept for reference, no longer assigned; see canvas/assignments/assignment-readme.md.
+const CANVAS_DEPRECATED = new Set([
+  '_template',
+  'adr-code-review',
+  'final-peer-evaluation',
+  'individual-contribution',
+  'memo',
+  'midterm-peer-evaluation',
+  'progress-report',
+  'requirements-update',
+  'research-brief',
+  'retrospective',
+  'retrospective-and-career',
+  'setup',
+  'technical-design-update',
+]);
 
 function parseFrontmatter(source) {
   const match = source.match(/^---\n([\s\S]*?)\n---/);
@@ -151,6 +189,60 @@ for (const file of files) {
 if (parsed === 0) {
   console.error('validate-outcomes: no assignment frontmatter found; refusing to pass vacuously.');
   process.exit(1);
+}
+
+// --- Canvas mirror reconciliation -------------------------------------------
+// The set of outcomes tagged in a Canvas rubric TSV must equal the set tagged
+// in the handbook rubric table it mirrors.
+function canvasTags(dir) {
+  const tags = new Set();
+  const path = join(CANVAS_DIR, dir);
+  for (const file of readdirSync(path)) {
+    if (!file.endsWith('rubric-details.tsv')) {
+      continue;
+    }
+    for (const line of readFileSync(join(path, file), 'utf8').split('\n')) {
+      const criterion = line.split('\t')[0];
+      for (const m of criterion.matchAll(/\b(SO[1-6]|L0[789]|L10)\b/g)) {
+        tags.add(m[1]);
+      }
+    }
+  }
+  return tags;
+}
+
+for (const dir of readdirSync(CANVAS_DIR)) {
+  if (!statSync(join(CANVAS_DIR, dir)).isDirectory() || CANVAS_DEPRECATED.has(dir)) {
+    continue;
+  }
+  const page = CANVAS_TO_HANDBOOK[dir];
+  const tags = canvasTags(dir);
+  if (!page) {
+    // An unmapped directory is fine until it starts claiming outcomes.
+    if (tags.size > 0) {
+      console.error(
+        `UNMAPPED canvas/assignments/${dir}: tags ${[...tags].sort().join(', ')} but no handbook page mapped. Add it to CANVAS_TO_HANDBOOK or CANVAS_DEPRECATED.`
+      );
+      failed = true;
+    }
+    continue;
+  }
+  const source = readFileSync(join(ASSIGNMENTS_DIR, `${page}.mdx`), 'utf8');
+  const handbook = new Set(Object.keys(parseRubricTags(source.slice(source.indexOf('---', 3) + 3))));
+  const onlyCanvas = [...tags].filter((t) => !handbook.has(t)).sort();
+  const onlyHandbook = [...handbook].filter((t) => !tags.has(t)).sort();
+  if (onlyCanvas.length > 0) {
+    console.error(
+      `MIRROR DRIFT canvas/assignments/${dir}: tags ${onlyCanvas.join(', ')} that ${page}.mdx does not. Canvas mirrors the handbook; remove the tag from the TSV.`
+    );
+    failed = true;
+  }
+  if (onlyHandbook.length > 0) {
+    console.error(
+      `MIRROR DRIFT canvas/assignments/${dir}: ${page}.mdx tags ${onlyHandbook.join(', ')} that the TSV does not. Add it to the TSV.`
+    );
+    failed = true;
+  }
 }
 
 console.log('Individual data points per student per year (from rubric tables):');
