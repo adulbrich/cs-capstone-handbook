@@ -12,18 +12,20 @@ Score each criterion 0 to 20. Anchors: high (17-20) = Exceeds, middle (10-16) = 
 
 Logistics: about 6 minutes per student; when two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes into Canvas after the session (the sheet is the live instrument; Canvas is the record).
 
-## 1. Ownership (SO2): ____ / 20
+**Score the decision, not the luck.** A student who delegated a hard-to-reverse change (schema, auth, deployment, data migration) with no safety net scores low on criterion 1 even if nothing broke. A student who stopped and validated at the right point scores high even if some reversible feature code has bugs. Sophisticated tooling is not itself worth points: a student with a weaker model who gated tightly and validated more has done the harder work, and the anchors are written so that reads as strength.
 
-- High: presents work they demonstrably own end to end; account matches the repo record without prompting.
-- Middle: owns the work but is shaky on parts of its history or on how pieces they touched fit together.
-- Low: presents team or AI output they cannot trace; repo record contradicts the account.
+## 1. Ownership and Delegation (SO2, SO4): ____ / 20
+
+- High: presents work they demonstrably own end to end, account matches the repo record without prompting; explains what they handed to AI tools, the safety net that made that reasonable (tests, CI, review gates, staging, rollback), and the specific points where they stopped to validate, with a defensible reason for choosing those points.
+- Middle: ownership is credible and some delegation reasoning is present, but the account of the net or of where they validated is thin, generic, or reconstructed after the fact.
+- Low: presents team or AI output they cannot trace; or describes delegating a hard-to-reverse change with no net and no validation; or the repo record contradicts the account.
 
 Notes: __________________________________________________________________
 
 ## 2. Judgment (SO1): ____ / 20
 
-- High: explains why this approach won and names credible alternatives that were rejected, with reasons.
-- Middle: justifies the approach taken but alternatives are vague, strawmanned, or unexamined.
+- High: explains why this approach won, names credible alternatives that were rejected with reasons, and identifies which parts of the decision were hard to reverse.
+- Middle: justifies the approach taken but alternatives are vague, strawmanned, or unexamined, or shows no sense of which parts were one-way doors.
 - Low: cannot explain why it was done this way; "the AI suggested it" or "it was the first thing that worked" is the whole answer.
 
 Notes: __________________________________________________________________
@@ -38,9 +40,9 @@ Notes: __________________________________________________________________
 
 ## 4. Role and Team Accountability (SO5): ____ / 20
 
-- High: articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term and how the team's decisions actually got made.
-- Middle: describes the role's duties but gives little evidence of carrying them out, or describes decisions vaguely.
-- Low: cannot say what the role or ownership area involved or how any team decision was reached.
+- High: articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, names a decision they chaired to a conclusion (check it against the sprint-note record), and explains how the team's decisions actually got made and how work was distributed.
+- Middle: describes the role's duties but gives little evidence of carrying them out, or describes decisions and work distribution vaguely.
+- Low: cannot say what the role or ownership area involved, or how any team decision was reached, or who did what.
 
 Notes: __________________________________________________________________
 
