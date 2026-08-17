@@ -1,0 +1,159 @@
+# Activity Tiering Decision
+
+Companion to `2026-08-17-four-skills-assessment.md` (Tasks 12 and 13). Resolves spec §9 open decision 1.
+
+## Sizing Principle
+
+The spec guessed "~20 Recommended". That was wrong, because it ignored **how many times each assignment runs**:
+
+| Assignment | Instances per year |
+|---|---|
+| Sprint Notes | 10 (4 fall, 4 winter, 2 spring) |
+| Repo Checkpoints | 4 (2 fall, 2 winter) |
+| Defense | 3 (one per term) |
+| RFC | 2 (fall, winter) |
+| Everything else | 1 |
+
+A repeated assignment needs a **pool** sized to its instances, not a fixed pair, or students hit the second instance with nothing left to do. Three rules follow:
+
+1. **One-time setup activities are named once and not recycled.** Kanban Board Setup and Definition of Done are done once and benefit every later instance; listing them against instance 3 is useless.
+2. **Repeated assignments get a pool mapped to what differs between instances.** The four repo checkpoints escalate through different term gates, so the pool is organized by gate rather than offered as an undifferentiated list.
+3. **Category pointers cover the long tail.** Each assignment names one or two activity *categories* to browse when the specific suggestions are exhausted. This is what keeps the Library tier alive instead of dead weight.
+
+## Workshop Tier: 6 slots
+
+Zero-point complete/incomplete Canvas items. Graded on submission existing, never on quality: at ~300 students with 6 TAs, anything requiring judgment per submission is unaffordable, and the value here is the trigger signal plus the Canvas mirror being complete.
+
+| Slot | Activity | When | Criteria fed |
+|---|---|---|---|
+| 1 | **Set Up Your Repository's Skills** (`ai`) | Fall wk 1-2 | Charter CONTRIBUTING/AI-context (15), AI-confidentiality one-pager (15) |
+| 2 | **User Story Mapping** ⭐️ (`requirements`) | Fall wk 2-3 | Checkpoint living docs (25); winter DoS target rung (25), metrics (25) |
+| 3 | **Describe your Architecture** ⭐️ (`design`) | Fall wk 3-4 | Checkpoint living docs (25); RFC framing (15), tradeoffs (15); Defense technical depth (20) |
+| 4 | **Map Your One-Way Doors** (`ai`) | Fall wk 3-4 | RFC topic choice, RFC framing (15); Defense judgment (20) |
+| 5 | **Audit Your Safety Net** (`ai`) | Fall wk 4-5 | Checkpoint build health and safety net (20); RFC delegation (10); Defense ownership and delegation (20); Postmortem corrective actions (25) |
+| 6 | **A teamwork assessment, rotating** (`teamwork`) | Once per term | Charter conflict and inclusion (15); Defense role criterion (20); Project Retro team dynamics |
+
+Slot 6 rotates so it does not recycle: **Team Formation Strategies Assessment** in fall, **Team Dysfunctions Assessment** in winter, **Team Health Assessment** in spring. All three already exist on `teamwork.mdx`.
+
+Slots 4 and 5 must land **before the RFC draft at end of week 4**, or students choose RFC topics without the triage vocabulary the tightened trigger now expects.
+
+Slot 5 feeds four criteria across three assignments and two terms, more than any other activity in the library. It is both the highest-value workshop and the best available modifier trigger: a team that skipped it is disproportionately likely to fail checkpoint build health *and* have students stumble on the defense delegation question. Worth telling TAs to watch that pairing.
+
+## Repo Checkpoints: pool of 15, organized by gate
+
+The four instances are not interchangeable. Each gate needs different preparation, so the pool is mapped to the gate rather than to the criteria alone.
+
+### Fall wk 5, "rails stood up"
+
+| Activity | Page | Criterion |
+|---|---|---|
+| Describe your Architecture ⭐️ | `design` | Living docs (25) |
+| User Story Mapping ⭐️ | `requirements` | Living docs (25) |
+| Kanban Board Setup | `planning` | Term gate (25), one-time setup |
+| Definition of Done | `planning` | Build health (20), one-time setup |
+| Audit Your Safety Net | `ai` | Build health and safety net (20) |
+
+### Fall wk 10, "hello, production"
+
+| Activity | Page | Criterion |
+|---|---|---|
+| Deployment Plan | `design` | Term gate (25) |
+| Plan Prototype | `planning` | Term gate (25) |
+| Put a Browser Agent on Your Critical Flow | `ai` | Build health and safety net (20) |
+| Software Release and Versioning | `planning` | Term gate (25) |
+
+### Winter wk 5, "integration health, real-user session scheduled"
+
+| Activity | Page | Criterion |
+|---|---|---|
+| Test Plan | `design` | Build health (20) |
+| Wire an Accessibility Audit Into CI | `ai` | Build health and safety net (20) |
+| Find Users, then Engage Users | `user` | Term gate (25) |
+| Risk Management Plan | `planning` | Decision and risk hygiene (15) |
+
+### Winter wk 10, "release candidate, real-user evidence"
+
+| Activity | Page | Criterion |
+|---|---|---|
+| Test with an Assistive Technology User | `user` | Term gate (25), real-user evidence |
+| Run an Acceptance Pass | `ai` | Term gate (25) |
+| Describe your API Reference | `design` | Living docs (25) |
+| Fishbone Diagram | `planning` | Decision and risk hygiene (15) |
+
+**Browse when exhausted:** `design` and `planning`.
+
+This also gives **Test with an Assistive Technology User** the home it lacked under the old cap: the winter checkpoint's real-user gate is exactly where an assistive-technology session counts as evidence.
+
+## Sprint Notes: category-first, 10 instances
+
+Ten instances make per-instance activity lists absurd. Recommend by category, with three one-time setups and one repeatable.
+
+**One-time setup (fall, then never again):** Kanban Board Setup (`planning`), Definition of Done (`planning`), Regular Stand-Up Meetings (`teamwork`).
+
+**Repeatable every sprint:** Prioritization (`planning`) for the top-risk-and-decision item; Learning Journal (`reflective`) for the human judgment layer, which is the part staff actually read.
+
+**Browse when you need more:** `planning` for anything touching the board, estimates, or risk.
+
+## Defense: rotate by term, 3 instances
+
+| Term | Activities |
+|---|---|
+| Fall | Map Your One-Way Doors (`ai`), Audit Your Safety Net (`ai`) |
+| Winter | Run a Self-Audit and an Architectural Review Pass (`ai`), Peer Technical Design Review (`design`) |
+| Spring | Run an Acceptance Pass (`ai`), Learn from Patrick Winston (`communication`) |
+
+**Browse when exhausted:** `ai` and `communication`.
+
+## RFC: differentiate by term, 2 instances
+
+Fall is short (800-1,500 words); winter is the WIC term with a 2,000-word floor and needs source work.
+
+| Term | Activities | Criterion |
+|---|---|---|
+| Fall | Map Your One-Way Doors (`ai`) | Topic choice, framing (15) |
+| Fall | Evaluate Different Technologies (`design`) | Options (10), tradeoffs (15) |
+| Fall | Six Thinking Hats (`creative`) | Options (10) |
+| Winter | Write a Literature Review (`creative`) | Tradeoff analysis (15), and the 2,000-word source work |
+| Winter | Proof-of-Concept (`design`) | Recommendation and verification plan (15) |
+| Winter | Peer Technical Design Review (`design`) | Feedback given (5), revision (10) |
+| Both | Apply the Privacy by Design (PbD) Guidelines (`design`) | Constraints (10) |
+| Both | Run a Self-Audit and an Architectural Review Pass (`ai`) | Delegation and validation (10) |
+
+**Browse when exhausted:** `design` and `creative`.
+
+## Single-instance assignments: 2 each plus categories
+
+| Assignment | Activities | Browse |
+|---|---|---|
+| **Team Charter** | Thomas-Kilmann Conflict Mode Instrument (`conflict`) → conflict and inclusion (15); Responsibility Assignment Matrix RACI (`planning`) → roles (20) | `teamwork`, `conflict` |
+| **Term Retrospective** (fall) | Learning Journal (`reflective`) → individual pages (25, L07); External Feedback Session (`reflective`) → evidence (20) | `reflective`, `teamwork` |
+| **Definition of Shipped** (winter) | Identify Success Metrics (`planning`) → metrics and instrumentation (25); Dependency Mapping or Critical Path Analysis (`planning`) → prerequisites and lead times (25) | `planning`, `user` |
+| **Incident Postmortem** (winter) | Fishbone Diagram (`planning`) → root cause (25); Performance Conversations (`conflict`) → blameless (15) | `planning`, `conflict` |
+| **Release and Metrics** (spring) | Run an Acceptance Pass (`ai`) → showcase (25); Learn from TED Presentation Advice (`communication`) → production quality | `communication`, `user` |
+| **Landing Page** (spring) | Designing for Accessibility (`design`) → polish and accessibility (20); The Parent Test (`creative`) → value proposition | `communication`, `design` |
+| **Project Retrospective** (spring) | Team Health Assessment (`teamwork`) → team dynamics; Learning Journal (`reflective`) → arc and pivots (20) | `reflective`, `teamwork` |
+| **Project Handoff** (spring) | Planning for Maintenance and Long-Term Support (`design`) → known issues and future work (20); Describe your API Reference (`design`) → living docs (10) | `design`, `communication` |
+| **Career and Individual Retrospective** (spring) | Learning Journal (`reflective`) → judgment and responsible practice (25, SO4); Learn from Jean-Luc Doumont (`communication`) → writing (10) | `reflective`, `communication` |
+
+**`career.mdx` is deliberately excluded from both promoted tiers for now** (instructor decision, 2026-08-17). All 16 of its activities stay in the Library tier. The Career and Individual Retrospective's resume and PR-portfolio criteria therefore have no promoted activity pointing at them, which is a known gap to revisit rather than an oversight: the page needs its own review pass before anything on it is promoted, and the 2026 job-market framing already on it is the most time-sensitive content in the library.
+
+## Counts
+
+| Tier | Count |
+|---|---|
+| Workshop | 6 slots, 8 distinct activities (slot 6 rotates through 3) |
+| Recommended | ~32 distinct |
+| Library | ~72, kept and browsable, including all 16 career activities |
+
+Higher than the spec's "~20" and correctly so: the figure follows from instance counts, which the spec had not worked out.
+
+Pages contributing nothing to the promoted tiers, by decision rather than accident: `career.mdx` (excluded for now, see above). Pages contributing only via browse categories: none.
+
+## Source Bugs Found While Building This
+
+Two heading defects in the activity source, worth fixing in Task 12:
+
+- `planning.mdx`: `## Software Development Process` has a **leading space** in the heading, which will produce a malformed anchor.
+- `teamwork.mdx`: `## Regular Stand-Up Meetings ` has a **trailing space**, same problem.
+
+Both matter now that activities are link targets from assignment pages and the link validator is enabled.
