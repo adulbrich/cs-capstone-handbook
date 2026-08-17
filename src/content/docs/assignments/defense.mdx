@@ -11,6 +11,7 @@ assignment:
     SO1: 1
     SO2: 1
     SO3: 1
+    SO4: 1
     SO5: 1
     SO6: 1
 ---
@@ -19,11 +20,13 @@ assignment:
 
 Once per term, your team's [cohort check-in](/assignments/introduction/#cohort-check-ins) (weeks 7 to 9; your TA publishes the schedule) becomes a defense: 30 to 40 minutes for the whole team, during which **each student** walks through something they own and answers live questions. Sick or absent that week? Tell your TA before the session and you will be rescheduled, per the [absence policy](/assignments/introduction/#late-work-absence-and-makeup). In spring, the defense runs the same way by default; in terms where the instructors announce it, answering questions at your team's Expo booth with staff present can substitute.
 
-You may present a pull request you drove, a subsystem you maintain, your RFC decision, or a test or deployment strategy you built. The questions are the point: why this way, what alternatives did you reject, what breaks if X changes, what did the AI get wrong along the way and how did you catch it.
+You may present a pull request you drove, a subsystem you maintain, your RFC decision, or a test or deployment strategy you built. The questions are the point: why this way, what alternatives did you reject, what breaks if X changes, where did you decide to stop and check the work yourself, and why there.
 
 **Ground rules:** your docs, your repo, and your AI tools are open **for explaining** (looking things up, walking through code) and closed **for generating** (no asking a model to produce the answer live). Notes are fine. Slides are unnecessary.
 
 This is deliberately the assessment AI cannot do for you. If you built and understood your work, the defense is a friendly conversation about it. If you cannot explain your own contribution, no artifact will cover for that, and that is by design: your project partner will expect the same of you in every meeting.
+
+Delegating work to AI tools is expected and is not penalized. What is assessed is the fit between how far you delegated and how strong a safety net you built: a student who let an agent drive a database migration unchecked and got lucky scores badly, and a student who stopped to validate an authentication change scores well even if some feature code has bugs. Students working with less capable tools or tighter budgets are not disadvantaged, because a weaker tool simply means tighter gates and more validation of your own, which this criterion rewards.
 
 ## Scoring
 
@@ -33,10 +36,10 @@ TAs and instructors score each student live on a printed sheet (the [scoresheet]
 
 | Criterion | Points | Outcome |
 |---|---|---|
-| Ownership: presents work they demonstrably own, end to end, matching the repo record | 20 | SO2 |
-| Judgment: explains why this approach and what credible alternatives were rejected | 20 | SO1 |
+| Ownership and delegation: presents work they demonstrably own, and explains what they handed to AI tools, what safety net made that reasonable, and where they stopped to validate | 20 | SO2, SO4 |
+| Judgment: explains why this approach, what credible alternatives were rejected, and which parts of the decision were hard to reverse | 20 | SO1 |
 | Technical depth: answers "what breaks if X" with correct, specific reasoning about the system's behavior and limits | 20 | SO6 |
-| Role and team accountability: articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term and how the team's decisions actually got made | 20 | SO5 |
+| Role and team accountability: articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, how the team's decisions actually got made, and how work was distributed | 20 | SO5 |
 | Communication: clear, honest, right level of detail for the audience, handles not-knowing gracefully | 20 | SO3 |
 
 "Handles not-knowing gracefully" is real: "I don't know, but here is how I would find out" scores; bluffing does not.
