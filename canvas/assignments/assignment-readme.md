@@ -14,6 +14,24 @@ Four equal components (25% each): Project Partner Evaluation (midterm pulse 5% +
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
+## Four-Skills Pass (August 2026): What Changed in Canvas
+
+Criterion renames that require re-importing rubric TSVs:
+
+| Assignment | Was | Now |
+|---|---|---|
+| RFC | `AI disclosure: tools, purposes, verification [SO4]` | `Delegation and validation [SO4]` |
+| Defense | `Ownership: work they demonstrably own [SO2]` | `Ownership and delegation [SO2, SO4]` |
+| Defense | `Judgment: why this approach, what was rejected [SO1]` | adds "what was hard to reverse" |
+| Defense | `Role and team accountability [SO5]` | `Role, team accountability, and work distribution [SO5]` |
+| Repo Checkpoint | `Build health: CI, tests, quickstart [SO6]` | `Build health and safety net: CI, tests, quickstart, gates [SO6]` |
+
+Points are unchanged in every case; only labels and band descriptions moved. The **defense Ownership criterion is now dual-tagged `SO2, SO4`**, which is the course's fix for the SO4 concentration concern and the reason per-student defense scores must keep reaching Canvas as program assessment evidence.
+
+**AI policy changed in all three syllabi.** "Briefly disclose any AI use" is gone. The policy is now: state what you delegated, what safety net made that reasonable, and where you validated yourself, with grading on the fit rather than on tool sophistication.
+
+**New Canvas items to create:** six zero-point complete/incomplete workshop activities, listed with their timing in the [activities introduction](https://capstone.alexulbrich.com/activities/introduction/). They carry no weight; the mark exists so students and TAs can both see the work happened, and so a skipped workshop is visible as a trigger signal alongside a low score on the criterion it feeds. **The old extra-credit activity items are retired.**
+
 ## Schedule
 
 ### CS 461 (Fall Term)
