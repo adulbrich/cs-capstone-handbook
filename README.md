@@ -12,16 +12,21 @@ npm run build
 Use `npm ci` instead of `npm install` when you want the exact tree from
 `package-lock.json` and no lockfile changes, which is what CI runs.
 
-## Instructor Checklist
+## Term Setup
 
-- Create projects sheet with TAs and Project Partner Emails
-- Finalize team assignments (students) sheet and add calculated columns with assigned TA, project partner email, and cohort/check-in information
-- Create Teams channel for TAs and instructors
-- Create TA Meeting Notes document
-- Update Qualtrics surveys
-- Update Syllabus statements
-- Import rubric TSVs into Canvas (browser extension; sources in `canvas/assignments/`)
-- Install git hooks once per clone: `npx lefthook install`
+Open a **Term setup** issue at the start of every term
+(`.github/ISSUE_TEMPLATE/term-setup.md`) and work the checklist there: rosters
+and staffing, Canvas and survey setup, and the repository chores. Keeping it as
+an issue rather than a README list means each term's setup has its own
+completion record.
+
+## Working in This Repository
+
+`AGENTS.md` carries the project invariants: what must never be committed, why
+CI uses `npm ci`, how the outcome validator decides coverage, and which four
+places grade weights have to agree in. Read it before making content changes,
+and point any per-tool instruction file (`CLAUDE.md` and friends) at it rather
+than duplicating it.
 
 ## Course Revision (branch `revision-fall-2026`)
 
@@ -41,11 +46,11 @@ The full Fall 2026 course revision lives on the `revision-fall-2026` branch. See
 
 ## Link Checking
 
-Internal link checking is currently **off**: `starlightLinksValidator()` is
-installed but commented out in `astro.config.mjs`. Uncomment it to have the
-build fail on broken internal links.
+Internal link checking is **on**: `starlightLinksValidator()` runs as part of
+`npm run build`, so the build fails on any broken internal link, anchors
+included.
 
-To check the production build for broken links (incl. external ones), run:
+To check the production build for external links as well, run:
 
 ```bash
 npx linkinator https://capstone.alexulbrich.com --recurse
