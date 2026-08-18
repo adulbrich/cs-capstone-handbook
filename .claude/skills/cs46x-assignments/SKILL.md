@@ -61,15 +61,26 @@ A page with no `assignment:` block is skipped by the validator entirely. Only
 
 Sections in **bold** are required.
 
-1. **Bold summary line**, first line of the body, no heading. One line, in this
-   order: who submits, when, what it is worth, then at most one clarifying
-   clause. Copy the register of these:
+1. **`<AssignmentMeta>` block**, immediately after the frontmatter, before any
+   prose. This replaced the freehand bold sentence; do not reintroduce one.
 
-   ```md
-   **Team submission. Winter, week 3 (v1, partner-agreed). 4% of the winter grade. A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).**
-   **Individual assessment, held as a team session. Every term. 10% of the term grade.**
-   **Team submission with the individual contribution modifier. Every term: 4 notes in fall and winter (2% each), 2 in spring. Pass/fail per checklist item.**
+   ```mdx
+   import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+
+   <AssignmentMeta submission="Team" due="Winter, week 3 (v1, partner-agreed)" weight="4% of the winter grade">
+     A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).
+   </AssignmentMeta>
    ```
+
+   - `submission`: "Team", "Individual", or the qualified form where it matters
+     ("Team, with the individual contribution modifier"; "Individual, held as a
+     team session").
+   - `due`: the term and week, or the cadence for repeated work.
+   - `weight`: percent of that term's grade, matching the `weight` frontmatter.
+   - The slot is optional and holds **one** qualifying clause. It is MDX, so
+     links work. Anything longer belongs in the intro prose.
+
+   Self-close it (`/>`) when there is no note.
 
 2. **Intro prose.** One to three paragraphs on why the assignment exists and
    what it is really testing. This is where you are allowed to argue. Say what
