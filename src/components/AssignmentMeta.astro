@@ -1,0 +1,141 @@
+---
+/**
+ * AssignmentMeta: the standard summary block at the top of every assignment page.
+ *
+ * Replaces the freehand bold sentence with a consistent, scannable set of
+ * facts. Mobile-first: a single stacked column that becomes three across at
+ * the `sm` breakpoint.
+ *
+ * Accessibility notes:
+ * - Rendered as a <dl>, because these are genuinely term/definition pairs.
+ *   Screen readers announce "Submission, Team" rather than reading a wall of
+ *   bold text with no structure.
+ * - The labels are real text, not icons or color, so nothing depends on
+ *   seeing a visual cue.
+ * - Colors come from Starlight's own custom properties, so light and dark
+ *   themes and their contrast ratios are inherited rather than re-invented.
+ * - Nothing here is a heading, so the page's heading outline is untouched and
+ *   the "skip to content" order still makes sense.
+ *
+ * Usage in MDX:
+ *
+ *   import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+ *
+ *   <AssignmentMeta submission="Team" due="Winter, week 3" weight="4% of the winter grade">
+ *     A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).
+ *   </AssignmentMeta>
+ *
+ * The optional slot is MDX, so links and emphasis work normally. Use it only
+ * for a genuine qualifier; everything else belongs in the intro prose.
+ */
+interface Props {
+  /** Who submits: "Team", "Individual", "Individual, held as a team session". */
+  submission: string;
+  /** When it is due: "Winter, week 3", "Every term", "Fall and winter, weeks 5 and 10". */
+  due: string;
+  /** What it is worth: "4% of the winter grade", "Complete/incomplete". */
+  weight: string;
+}
+
+const { submission, due, weight } = Astro.props;
+const hasNote = Astro.slots.has('default');
+
+const items = [
+  { label: 'Submission', value: submission },
+  { label: 'Due', value: due },
+  { label: 'Weight', value: weight },
+];
+---
+
+<div class="assignment-meta not-content">
+  <dl>
+    {
+      items.map((item) => (
+        <div>
+          <dt>{item.label}</dt>
+          <dd>{item.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+  {
+    hasNote && (
+      <div class="assignment-meta__note">
+        <slot />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .assignment-meta {
+    border: 1px solid var(--sl-color-gray-5);
+    border-inline-start: 4px solid var(--sl-color-accent);
+    border-radius: 0.5rem;
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+    padding: 1rem;
+    margin-block: 1.5rem;
+  }
+
+  /* Mobile first: one column, stacked. */
+  .assignment-meta dl {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem 1.5rem;
+    margin: 0;
+  }
+
+  /* Three across once there is room. */
+  @media (min-width: 34rem) {
+    .assignment-meta dl {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .assignment-meta dt {
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sl-color-gray-3);
+    margin: 0 0 0.15rem;
+  }
+
+  .assignment-meta dd {
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    color: var(--sl-color-white);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .assignment-meta__note {
+    margin-block-start: 0.9rem;
+    padding-block-start: 0.9rem;
+    border-block-start: 1px solid var(--sl-color-gray-5);
+  }
+
+  /* MDX wraps slot content in its own <p>, so style that rather than nesting. */
+  .assignment-meta__note :global(p) {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+    margin: 0;
+  }
+
+  /* Respect users who have asked for less motion or higher contrast. */
+  @media (prefers-contrast: more) {
+    .assignment-meta {
+      border-width: 2px;
+    }
+    .assignment-meta dt {
+      color: var(--sl-color-white);
+    }
+  }
+
+  @media print {
+    .assignment-meta {
+      border: 1px solid #000;
+      background: none;
+    }
+  }
+</style>
