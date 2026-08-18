@@ -1,6 +1,6 @@
 ---
 title: Release and Metrics
-description: The spring release video for a general audience, one-page release notes, and measured evidence against your Definition of Shipped metrics.
+description: "A short release trailer plus a written report: measured evidence against your Definition of Shipped metrics, and an honest outcomes assessment."
 sidebar:
   order: 9
 assignment:
@@ -18,41 +18,47 @@ import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 
 <AssignmentMeta submission="Team" due="Spring, week 8" weight="8% of the spring grade" />
 
-This is the permanent, shareable record of what your team built: an 8-to-12-minute video presenting the project to a general audience, plus one page of release notes. It is a portfolio artifact you will reference in interviews, and it is where you show, with real numbers, whether the project did what your [Definition of Shipped](/assignments/definition-of-shipped/) said it would. You have demoed live at least a dozen times by now; this is the polished cut.
+Two artifacts, each doing what its medium is good at: a **3-minute trailer** that proves the software runs and that someone might actually watch, and a **2-page report** carrying the numbers. Splitting them is deliberate. A twelve-minute video is not something a recruiter, a future teammate, or your partner's boss ever finishes, and measured results belong in text where they can be checked, quoted in a resume, and read again next year.
 
-## The Video (8 to 12 minutes)
+You have demoed every sprint for three terms. This is the polished cut of the one flow that matters.
 
-Upload to media.oregonstate.edu as unlisted (public platforms in addition are welcome). Closed captions or a transcript required. The [Presentations guide](/guides/presentations/) covers structure and delivery.
+## The Trailer (3 minutes, hard cap)
 
-**Problem statement (1 to 2 minutes).** What problem, stated concretely; who experiences it and what it costs them; why it was not already solved; what your team's specific scope was and what you deliberately left out. Support with visuals, not a talking head.
+Upload to media.oregonstate.edu as unlisted; public platforms in addition are welcome. Closed captions or a transcript are required. The [Presentations guide](/guides/presentations/) covers structure and delivery.
 
-**Showcase (5 to 7 minutes).** The project in action. Product and tool teams: start from a realistic user entry point and walk one or two complete use cases end to end. Research and pipeline teams: run the pipeline or analysis end to end and present findings a non-specialist can follow. Narrate clearly, highlight the technically interesting parts, and say plainly which features are partial. No silence longer than five seconds.
+Three minutes forces one decision: which single thing do you show? Answer it before you record.
 
-**Metrics and outcomes (2 to 3 minutes).** The segment that separates a release from a demo:
+- **The problem, in one sentence** (about 20 seconds). Who has it and what it costs them. No preamble, no team introductions, no agenda slide.
+- **The software running** (about 2 minutes 10). One complete flow end to end from a realistic entry point. Product and tool teams: a real user task. Research and pipeline teams: the pipeline running on real data and producing the result. Narrate what is happening. No silence longer than five seconds, and no slides where you could show the thing itself.
+- **What it achieved, in one line** (about 20 seconds). One real number, and where the report is.
 
-- Restate the **2 or 3 success metrics** from `docs/shipped.md`.
-- Report a **real measured value for at least one**, with instrumentation evidence on screen: an analytics screenshot, benchmark output, download or install counts, user task results. Winter's instrumentation commitment comes due here.
-- Give an **honest outcomes assessment** with concrete numbers against your category's bar: delivered versus the Definition of Shipped, what is fully working, partial, or descoped, patches accepted, users reached, deployment status, or findings produced.
-- Close with the one or two most important lessons and the highest-priority next step.
+Say plainly if a feature shown is partial. Fabricated footage fails the assignment.
 
-## Release Notes (one page, PDF)
+## The Report (2 pages, PDF)
 
-Project name, team, and date; the video link with **timestamps for each segment**; a one-paragraph summary; features or findings delivered; one line of measured outcome ("42 installs, 8 of 10 study participants completed the core task"); known limitations; and the repository or archive link. Test every link in a private browser window before submitting; a link graders cannot open is a zero on the affected criteria.
+This is the graded evidence and the durable artifact. Convert it from Markdown with the [one-liner](/assignments/introduction/#submitting-markdown-as-pdf) so the cover carries your project ID, name, and team.
+
+1. **Problem and scope**: the problem concretely, who experiences it, and what your team deliberately left out.
+2. **Delivered**: the features, findings, or merged contributions that exist, with what is fully working, partial, or descoped stated as such.
+3. **Metrics**: restate the **2 or 3 success metrics** from `docs/shipped.md`. Report a **real measured value for at least one**, with instrumentation evidence embedded: an analytics screenshot, benchmark output, install counts, user task results. Winter's instrumentation commitment comes due here.
+4. **Delivered versus the Definition of Shipped**: your category's target rung, where you actually landed, and the gap with concrete numbers. Patches accepted, users reached, deployment status, findings produced.
+5. **Limitations and next step**: the one or two most important lessons and the highest-priority thing a successor should do.
+6. **Links**: the trailer, the repository or archive, the [Landing Page](/assignments/landing-page/), and the release tag. Test every link in a private browser window before submitting; a link graders cannot open scores zero on the affected criteria.
 
 ## Rubric (100 points)
 
 | Criterion | Points | Outcome |
 |---|---|---|
-| Problem statement: concrete, audience-appropriate, with cost to the user and explicit scope | 15 | SO3 |
-| Showcase: complete use case or pipeline end to end, realistic entry point, honest about partial features | 25 | SO2 |
-| Metrics evidence: metrics match `docs/shipped.md`, at least one reported with a real measured value and visible instrumentation evidence | 30 | SO2 |
-| Honest outcomes: delivered versus the Definition of Shipped with concrete numbers, lessons, and a prioritized next step | 20 | SO6 |
-| Release notes and production quality: complete one-pager with timestamps and working links; clear narration, captions or transcript, within 8 to 12 minutes | 10 | L08 |
+| Trailer: one complete flow shown end to end from a realistic entry point, within 3 minutes, captioned, honest about partial features | 20 | SO2 |
+| Problem and scope: concrete, audience-appropriate, with the cost to the user and what was deliberately left out | 15 | SO3 |
+| Metrics evidence: metrics match `docs/shipped.md`, at least one reported with a real measured value and embedded instrumentation evidence | 30 | SO2 |
+| Honest outcomes: delivered versus the Definition of Shipped with concrete numbers, lessons, and a prioritized next step | 25 | SO6 |
+| Report quality: within 2 pages, structured, every link tested and working | 10 | L08 |
 
-**AI use:** AI may help with scripting, slides, and editing. Fabricating demo footage, metrics, findings, or user feedback fails the assignment; a smaller true number always beats a bigger invented one. The outcomes segment is graded on honesty, and "we did not reach the bar, here is exactly how far we got and why" scores well.
+**AI use:** AI may help with scripting, editing, and drafting the report. Fabricating demo footage, metrics, findings, or user feedback fails the assignment; a smaller true number always beats a bigger invented one. The outcomes section is graded on honesty, and "we did not reach the bar, here is exactly how far we got and why" scores well.
 
 :::note[NDA teams]
-Agree with your partner in advance on what may appear on screen. A redacted or sanitized showcase is fine; most partners approve a version once they see the plan. If nothing public is possible, your instructor arranges a private review of the same material against the same rubric.
+Agree with your partner in advance on what may appear on screen. A redacted or sanitized trailer is fine; most partners approve a version once they see the plan. If nothing public is possible, your instructor arranges a private review of the same material against the same rubric.
 :::
 
 ## Activities That Prepare This

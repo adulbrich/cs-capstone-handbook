@@ -15,29 +15,60 @@ Planning activities are designed to help you figure out your timeline and delive
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Especially for New Product or Game projects, it can be important to select and define the success metrics. 
+Decide what "it worked" will mean, in numbers, while you are still far enough from the deadline to be honest about it. One to two hours as a team in fall, revisited when you write your [Definition of Shipped](/assignments/definition-of-shipped/).
 
-Here are some common metrics:
+Every project commits to 2 or 3 metrics, but what makes a good metric differs completely by category. Start with your own subsection below; the frameworks at the end are for product and game teams.
 
-- Number of Downloads or Sign Ups
-- Monthly Active Users (MAU)
-- Churn Rate
-- Average Session Duration
-- Net Promoter Score (NPS)
-- Positive Mentions / Up-votes
-- Research Citations
+Four rules hold whatever you are building:
 
-Choose [success metrics relevant to your project](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf). Be careful with "vanity" metrics, e.g., the number of downloads is meaningless if nobody can run the software or everybody stops using it after the first use. Think about how meaningful your metrics are. Use multiple metrics if the need arises (see below for frameworks). 
+- **Write the metric and the decision rule together.** Not just "task completion rate" but what value counts as success, what counts as failure, and what you do in each case.
+- **Commit it, dated, before you measure.** Picking a metric after seeing results is the most common way honest people produce misleading work. It rarely feels like cheating; it feels like noticing that a different measure describes the finding better.
+- **Say how you will collect it**, concretely: analytics (Plausible, Google Analytics, Hotjar), database counts, benchmark output, interviews, surveys. A metric with no instrumentation plan is a wish.
+- **Beware vanity metrics.** Downloads mean nothing if nobody can run the software, and nothing at all if nobody comes back. Ask what the number would have to be for your partner to call the project a success.
 
-Depending on your project category, metrics can be quantitative (large surveys or web analytics) or qualitative (for example based on one-on-one interviews) in nature.
+### New Product or Game
 
-In addition to choosing the metrics, research and document how you will collect them. Consider using web analytics tools (Google Analytics, Plausible, Hotjar, ...), various tracking methods (database counts), interviews, surveys, etc.
+Usage and retention are the point, so measure people, not code:
 
-Metrics you define and instrument early are exactly what the spring [Release and Metrics](/assignments/release/) assignment asks you to report on.
+- Downloads or sign-ups, monthly active users, churn rate
+- Average session duration, task success rate
+- Net Promoter Score, positive mentions or up-votes
+
+Choose [metrics relevant to your project](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf) and use the frameworks below if they fit.
+
+### Research
+
+Your metric decides what counts as a result, so it is one of your one-way doors: change it late and every earlier run stops being comparable.
+
+- **The primary metric**, and why it is right for the question rather than easiest to compute.
+- **The comparison**: against which baseline, on which data split, over how many runs, with which seeds.
+- **The decision rule**: what value supports the hypothesis, what value refutes it.
+- **Secondary metrics you will report regardless of outcome**, including the ones that could make you look bad.
+
+Pair this with [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline): a metric is only meaningful next to a number you have actually reproduced.
+
+### FOSS
+
+Your success is measured in someone else's repository, so read what the project itself tracks:
+
+- Patches submitted, reviewed, merged, and still merged a month later
+- Review turnaround, and whether maintainers start assigning you work
+- Issues closed, and whether your changes appear in a tagged release
+
+A merged trivial patch in fall is worth more as a signal than a large unmerged one in spring, because it proves the whole pipeline works.
+
+### Consultancy
+
+Your top rungs describe actions the **partner** takes, so measure their adoption rather than your output:
+
+- Is it running in their environment, and whose environment is it
+- How many of their people use it, and for what task
+- Has it cleared their security or IT review, and when
+- What would have to be true for them to call it production
 
 ### Product-Market Fit (PMF) Question
 
-The PMF question asks, “How would you feel if you could no longer use this product?” Users typically respond with options like “Very disappointed,” “Somewhat disappointed,” or “Not disappointed.” A high percentage of “Very disappointed” responses (typically 40% or more) indicates strong product-market fit, showing that the product is essential to its users.
+The PMF question asks, "How would you feel if you could no longer use this product?" Users typically respond with options like "Very disappointed," "Somewhat disappointed," or "Not disappointed." A high percentage of "Very disappointed" responses (typically 40% or more) indicates strong product-market fit, showing that the product is essential to its users.
 
 ### Pirate Metrics (AAARR)
 
@@ -47,7 +78,7 @@ The [Pirate Metrics (AARRR) Framework](https://www.productplan.com/glossary/aarr
 - Activation: Are these people taking the actions we want them to? For example, signing up or downloading your app.
 - Retention: Are our activated users continuing to engage with the product? Do they return after using it the first time?
 - Referral: Do users like the product enough to tell others about it?
-- Revenue: Are our users willing to pay for this product? 
+- Revenue: Are our users willing to pay for this product?
 
 These metrics help businesses identify strengths and weaknesses in the customer journey to optimize growth strategies.
 
@@ -62,6 +93,8 @@ The [HEART Framework](https://www.heartframework.com/) is a user experience (UX)
 - Task Success: Measures the effectiveness and efficiency of completing core tasks (e.g., task completion rates).
 
 The HEART Framework helps teams evaluate UX impact and improve product design.
+
+A good output is 2 or 3 metrics with their decision rules and a named instrumentation method for at least one, committed and dated.
 
 **Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) metrics-and-instrumentation criterion, and the spring [Release and Metrics](/assignments/release/) evidence.
 
@@ -394,7 +427,7 @@ Define and plan the software development process for your project to ensure clea
 
 A good output is a document outlining the chosen process, phases, milestones, and team roles. Much of this belongs in your [Team Charter](/assignments/team-charter/).
 
-## Start the Approval Clocks
+## Map Your External Approvals
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
@@ -412,20 +445,3 @@ A good output is a dated table of every external approval with an owner and an e
 
 **Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) decision-and-risk-hygiene criterion, and the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites-and-lead-times criterion.
 
-## Choose Your Evaluation Metric Before You Run Anything
-
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
-
-Commit to how you will measure success before you see any results, so you cannot be talked into whichever metric happens to look good. One hour, before the first real experiment.
-
-- **Write the primary metric** and why it is right for the question, not merely easiest to compute.
-- **Write the decision rule**: what value counts as success, what counts as failure, and what you do in each case.
-- **Name the secondary metrics** you will report regardless of outcome, including the ones that could make you look bad.
-- **State the comparison**: against which baseline, on which data split, over how many runs, with which seeds.
-- **Commit it to the repository, dated**, before the experiment runs.
-
-Choosing a metric after seeing results is the most common way honest people produce misleading work. It rarely feels like cheating. It feels like noticing that a different measure describes the finding better.
-
-A good output is a dated, committed note stating the primary metric, the decision rule, the comparison, and the secondary metrics, written before any real run.
-
-**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) metrics-and-instrumentation criterion, and the spring [Release and Metrics](/assignments/release/) report.

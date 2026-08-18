@@ -147,6 +147,11 @@ Five assignment pages now carry a **By project category** table alongside the sh
 
 Six research and R&D activities were added, each tied to a gate in the Shipping guide rather than invented: Start the Approval Clocks, Choose Your Evaluation Metric Before You Run Anything, Reproduce Your Baseline, Make Your Artifact Reproducible, Keep an Experiment Log, and a rewritten Complete an IRB Application. A seventh was merged into the existing `Define Your Research Questions` stub instead of shipping a near-duplicate.
 
+**Revised again, 2026-08-18** (instructor review). Two of those six did not survive contact:
+
+- *Choose Your Evaluation Metric Before You Run Anything* duplicated **Identify Success Metrics** and was named after a rule rather than an exercise. Folded in. Identify Success Metrics now carries a subsection per project category, since that page had been New-Product-flavored throughout (AARRR, PMF, HEART) and a research team met a metrics activity that did not speak to them.
+- *Start the Approval Clocks* renamed to **Map Your External Approvals**, matching the noun-phrase pattern of Map Your One-Way Doors. No duplicate existed, so the content stayed.
+
 ## Counts
 
 | Tier | Count (Aug 2026 revision) |

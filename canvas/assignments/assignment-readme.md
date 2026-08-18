@@ -44,6 +44,9 @@ All three syllabi were updated to match.
 
 ## Rubric TSVs Requiring Re-Import (August 2026)
 
+**Release and Metrics changed format** (instructor decision, 2026-08-18). The 8-to-12-minute video plus one-page notes became a **3-minute trailer plus a 2-page report**. A twelve-minute video is not an artifact anyone watches to the end, and measured results belong in text where they can be checked and quoted. Criteria and points both changed, so `spring-release/` must be re-imported. Total is still 100, and the outcome tags are unchanged (SO2 x2, SO3, SO6, L08).
+
+
 `node scripts/validate-outcomes.mjs` now reconciles every Canvas rubric TSV against the handbook rubric table it mirrors and fails on any mismatch. That check found five files out of sync. **All five must be re-imported into Canvas**; the first four change criteria and point splits, not just labels.
 
 | File | Was | Now |
