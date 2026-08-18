@@ -105,6 +105,32 @@ The [AI practice activities](/activities/ai/) teach all three of these, includin
 
 Rubric criteria across these pages carry tags such as `SO1` through `SO6` (the [ABET student outcomes](/learning-objectives/abet/)) and `L07` through `L10` ([WIC](/learning-objectives/wic/) and [Beyond OSU](/learning-objectives/beyond-osu/) outcomes). They document where each outcome is evidenced; the full picture is on the [outcome mapping page](/learning-objectives/mapping/). The tags change nothing about how you complete the work.
 
+## Submitting Markdown as PDF
+
+Most of your writing lives in the repository as Markdown, and several assignments want a PDF. Convert it with one command rather than by hand, so the cover information is correct every time and nobody retypes it.
+
+Once per project, put a `team-metadata.yml` at your repository root ([template](/team-metadata.yml)):
+
+```yaml
+subtitle: "Project 42: Beaver Habitat Tracker"
+author:
+  - Alex Ulbrich <ulbrical@oregonstate.edu>
+  - Jane Doe <doej@oregonstate.edu>
+```
+
+Then, for any Markdown file:
+
+```sh
+pandoc FILE.md -o FILE.pdf --metadata-file=team-metadata.yml --pdf-engine=typst \
+  -M title="$(sed -n 's/^# //p' FILE.md | head -1)" -M date="$(date +%F)"
+```
+
+The PDF opens with the document title (taken from the file's first `#` heading), your project ID and name, every team member with their email, and the date. Needs [pandoc](https://pandoc.org/installing.html) and [typst](https://github.com/typst/typst#installation), both single-binary installs on macOS, Linux, and Windows, and neither needs a LaTeX distribution.
+
+Put it in your `CONTRIBUTING.md` as a make target or a shell alias so nobody has to remember it. If your file has no `#` heading the title comes out empty, so either add one or pass the title yourself.
+
+**Cannot install anything?** Use the VS Code "Markdown PDF" extension, or open the rendered Markdown in a browser and print to PDF. Then put the project ID, the project name, and every team member with their email at the top of the document by hand. What graders need is the cover information; the tool that produced it is not graded.
+
 ## Rubric Conventions
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial points), and **Does Not Meet** (low or no points). Work that is not submitted, is off-topic, or is inaccessible to graders scores zero on the affected criteria; that state is explicit, not folded into "Does Not Meet". Formatting expectations, unless a page overrides them: PDF or Markdown, linkable evidence (URLs, commit hashes, CI runs), readable structure with headings, alt text on images, and no links that graders cannot open (exceptions for NDA teams are noted per assignment).

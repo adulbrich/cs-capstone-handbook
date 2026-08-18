@@ -236,11 +236,12 @@ A VM deployment is more work to set up and maintain, but it teaches skills that 
 
 If your project uses a database, you need somewhere to host it in production. Options:
 
-- **Managed database services**: Supabase (PostgreSQL), PlanetScale (MySQL), MongoDB Atlas (MongoDB), Neon (PostgreSQL). These handle backups, scaling, and security patches.
-- **Platform-provided databases**: Railway, Render, and Heroku offer database add-ons that integrate with the application deployment.
+- **Managed database services**: [Supabase](https://supabase.com/) (PostgreSQL), [Neon](https://neon.com/) (serverless PostgreSQL), [PlanetScale](https://planetscale.com/) (MySQL and PostgreSQL), [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) (MongoDB), [Turso](https://turso.tech/) (SQLite), [Upstash](https://upstash.com/) (Redis). These handle backups, scaling, and security patches.
+- **Platform-provided databases**: [Railway](https://railway.com/), [Render](https://render.com/), [Fly.io](https://fly.io/), and [Heroku](https://www.heroku.com/) offer database add-ons that integrate with the application deployment.
+- **Cloud provider services**: [AWS RDS](https://aws.amazon.com/rds/), [Google Cloud SQL](https://cloud.google.com/sql), and [Azure Database](https://azure.microsoft.com/en-us/products/category/databases) if your partner already runs on that cloud, which is often the deciding factor.
 - **Self-hosted on a VM**: Running PostgreSQL or MySQL on your own server gives full control but requires you to handle backups, updates, and security.
 
-For most Capstone projects, a managed service is the right choice. It removes operational burden and provides a reliable free tier for small workloads.
+For most Capstone projects, a managed service is the right choice: it removes operational burden you have no time for. **Check the current pricing page before you commit.** Free and hobby tiers appear and disappear on a timescale shorter than this course, so confirm what you are actually getting rather than trusting a recommendation from last year. If your partner already runs on a particular cloud, use theirs; matching the partner's stack is worth more than picking the nicest developer experience.
 
 ## Environment Management
 

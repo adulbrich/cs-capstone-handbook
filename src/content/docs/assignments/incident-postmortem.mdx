@@ -20,7 +20,11 @@ By week 9 of winter, something real has gone wrong: an outage, a bad merge that 
 
 Blameless means the unit of analysis is the system, not the person. "Alex broke the deploy" is banned; "the deploy process allowed an untested migration to reach production because nothing checked for it" is the genre. The test of blamelessness: every person involved would happily co-sign the document.
 
-If your team genuinely cannot identify an incident, that itself is worth investigating (are risks being surfaced?), and your TA will help you find one. There is always one.
+:::note[If nothing went wrong]
+Some terms really are quiet. If your team cannot name an incident, write the postmortem on a **near miss**: something that would have caused real damage and did not, because a test failed, a review comment landed, someone noticed in time, or you got lucky. Near-miss analysis is standard practice in industries where waiting for real incidents is too expensive to be a learning strategy, and the document is identical except that the impact section becomes what the impact **would** have been and how close it came.
+
+If you cannot name a near miss either, that is your finding, and it is a real one: nothing in your process is currently surfacing problems early enough to see them. Write that up instead, using the same structure, with the timeline tracing how a plausible failure would travel through your system undetected and the corrective actions aimed at detection. Tell your TA in week 7 rather than week 9, so there is time to scope it properly.
+:::
 
 ## Structure (2 to 3 pages, in `docs/postmortems/`)
 
