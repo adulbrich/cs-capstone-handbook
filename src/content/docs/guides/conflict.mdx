@@ -1,0 +1,204 @@
+---
+title: Conflict and Performance Conversations
+description: How team conflict actually shows up in capstone projects, how to raise a contribution problem without damaging the relationship, and when to escalate.
+sidebar:
+  order: 1
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Conflict is inevitable in teamwork, and managed well it is productive: it clarifies goals by forcing assumptions into the open, improves decisions by surfacing perspectives that would otherwise stay unsaid, and builds the interpersonal skills that separate a competent engineer from one people want to work with.
+
+Teams that have no way to handle it pay for that in predictable ways:
+
+- The work quietly redistributes onto whoever is least willing to let something fail, and resentment builds where nobody can see it.
+- A contribution problem goes unraised for six weeks, and by the time anyone speaks the relationship is damaged and the project has already slipped.
+- Disagreements about the work get read as disagreements about people, so the technical question never actually gets settled.
+
+> "Peace is not the absence of conflict, but the ability to cope with it." -- Dorothy Thomas
+
+## What Kind of Conflict Is This?
+
+Diagnosing the type first tells you what to do about it. Three kinds show up in student teams:
+
+- **Relationship conflict** comes from interpersonal differences: clashing personalities, egos, values. It damages morale and rarely resolves itself.
+- **Task conflict** is about the work: goals, priorities, what to build. Handled respectfully it is **productive**, and a team with none of it is usually a team where people have stopped saying what they think.
+- **Process conflict** is about how the work gets done: tools, timelines, who decides. It is the easiest to fix, because the answer belongs in your working agreement.
+
+The common mistake is treating task conflict as relationship conflict. "Sam keeps pushing back on my design" is often just Sam doing their job.
+
+## Where It Comes From
+
+Five sources account for most of it:
+
+- **Value asymmetry**: teammates want different things from the project. One wants an A, one wants a portfolio piece, one wants to learn Rust, one wants to graduate. All legitimate, all pulling different directions if never said out loud.
+- **Social loafing**: unequal contribution, in quality or quantity. The most common serious problem in capstone.
+- **Ego and personality clashes**: usually a symptom of low trust rather than a cause.
+- **Poor communication**: unclear roles, misaligned expectations, decisions made in a channel half the team does not read.
+- **Ineffective project management**: vague goals and unrealistic timelines manufacture conflict out of nothing.
+
+Notice how many of these are prevented by a document rather than a conversation. That is what the [team working agreement](/guides/working-agreement/) is for.
+
+## Difficult Behaviors
+
+Some behaviors disrupt a team regardless of intent: assigning blame to avoid accountability, insulting teammates, overreacting to criticism, expressing frustration in ways that damage morale, refusing to negotiate, undermining others through gossip, and refusing to own mistakes.
+
+Before you address any of them, prepare yourself:
+
+- **Check your own history.** Have you clashed with this person before, and is that shaping what you are reading into their behavior?
+- **Check your assumptions.** You are guessing at their motivation. Approach with curiosity instead: you may be wrong, and if you are, you will find out in the first two minutes.
+- **Name your hesitation.** What are you worried will happen if you raise it? That worry is usually what has kept it unraised.
+
+Then aim the conversation at two outcomes: helping the person improve, and improving how the team works. Not at being right.
+
+### The Escalation Path
+
+Escalate in steps, and document each one.
+
+1. **A private one-to-one.** One teammate, chosen deliberately, describes the observed behavior and its effect. Respectful, specific, and open to a response you did not expect.
+2. **A mediated conversation.** If it continues, bring in a neutral third party (a mentor, or a peer outside the team) to sit in. They do not take sides; they keep the conversation productive.
+3. **Formal intervention.** Bring in your TA or instructor. Explain what you have already tried and describe the behavior, not the personality. Staff expect to hear about this and have tools you do not.
+
+## Performance Conversations
+
+The most common team problem in capstone is not dramatic conflict. It is a teammate who quietly stops delivering: missed deadlines, vague status updates, tasks sitting in progress for a whole sprint with nothing to show. It is harder to raise than overt bad behavior, because it feels less clear-cut and because the person often does not realize the pattern exists.
+
+The goal is not to win a disagreement. It is to surface the gap between what was expected and what happened, understand why, and agree what happens next.
+
+### Situation, Behavior, Impact
+
+Structure what you say around three elements: the **situation** (when, where, which task), the **behavior** you actually observed rather than the motive you inferred, and the **impact** on the team.
+
+```text
+"During the last sprint you were assigned the API integration. It's been
+marked in-progress for two weeks with no commits or updates in the channel.
+The rest of us couldn't start the frontend work that depends on it, so we
+lost a week."
+
+"You missed the last two stand-ups without letting anyone know. When we
+don't hear from you we can't tell if you're blocked, behind, or on track,
+and we end up planning around incomplete information."
+```
+
+Compare those with what not to say:
+
+- "You're not pulling your weight." Vague, and it lands as a character attack.
+- "You clearly don't care about this project." Assumes a motive you cannot see.
+- "Everyone else is doing more than you." Comparative, and it guarantees defensiveness.
+
+### A Bad Week Versus a Pattern
+
+Everyone has a bad sprint. One missed deadline does not warrant a structured conversation, and treating it as one will cost you trust.
+
+The signal is the **pattern**: the same problem across two or more sprints, or several indicators arriving together (deadlines missed, absent from meetings, silent in the channel). For a single incident, a light check-in is the right move: "You seemed stuck on the auth task this sprint. Everything okay?"
+
+### Having the Conversation
+
+**Do it privately**, in person or on a call, never in a stand-up, a group channel, or text. Public correction produces defensiveness, not change.
+
+**Lead with curiosity.** There is often something you do not know: a health problem, a family crisis, a skills gap they are embarrassed about, or a genuine misunderstanding of what was expected. Open by describing what you observed and asking what happened.
+
+Then let the answer decide the next step:
+
+- **A legitimate reason** (illness, emergency, a task that turned out much harder than it looked): acknowledge it, ask what they need, adjust the plan. This is not a performance problem, it is a situation that needs support.
+- **A skills gap**: pair them with someone, break the task down, or reassign it. Then address the real issue, which is that the blocker went unraised.
+- **No clear reason**, or the same reason several sprints running: move to explicit expectations.
+
+**Set expectations that are specific and time-bound.** "Can you have the dashboard endpoint done by Wednesday and post a progress update Monday? If you hit a blocker, raise it in stand-up the same day." That gives the person a target and the team a way to tell whether things improved.
+
+**Follow up** at the agreed time. If they met it, say so.
+
+### When to Escalate
+
+A workable timeline, tied to sprints:
+
+1. **Sprint N**: you notice the pattern. Private check-in.
+2. **Sprint N+1**: no change. Raise it at the retrospective so the whole team discusses it.
+3. **Sprint N+2**: still no change. Escalate to your TA or instructor.
+
+The usual mistake is waiting far too long. The team absorbs the work, frustration compounds, and by the time anyone speaks the relationship cannot be repaired inside a term. Escalating is not a punishment; it is bringing in someone with more tools.
+
+<LinkCard
+  title="Team Working Agreement: When Things Go Wrong"
+  href="/guides/working-agreement/#when-things-go-wrong"
+  description="The escalation process and accountability structures that support these conversations."
+/>
+
+### When You Are the One Underperforming
+
+If you recognize yourself here, get ahead of it. Tell your team you are stuck or overwhelmed, and be specific about what is blocking you. Ask for help: pairing, a task swap, or breaking the work into smaller pieces usually unsticks it. If it is personal you owe nobody the details; "I'm dealing with something outside school and need to adjust my workload this sprint" is enough.
+
+Silence is the worst available option. A team can plan around a member who is struggling. It cannot plan around one who disappears.
+
+## Conflict-Handling Modes
+
+The [Thomas-Kilmann model](https://kilmanndiagnostics.com/overview-thomas-kilmann-conflict-mode-instrument-tki/) describes five ways people handle conflict, positioned on two axes: **assertiveness** (how far you pursue your own needs) and **cooperativeness** (how far you accommodate others'). None is correct in general; each fits a situation.
+
+- **Competing** (assertive, uncooperative): a win-lose push. Right for emergencies, for issues where you are confident and the stakes are high, and for protecting yourself from exploitation. Corrosive if it is your default.
+- **Collaborating** (assertive, cooperative): work the problem until everyone's needs are met. Right when the conflict is complex, the relationship matters long term, and nobody's concerns can be dropped. Expensive in time and trust.
+- **Compromising** (middle on both): everyone gives something up. Right under time pressure, and between equally matched parties. Overused, it produces solutions nobody actually wanted.
+- **Avoiding** (unassertive, uncooperative): postpone or ignore. Right when the issue is trivial, when you need more information, or when emotions are too high to be useful. Left running, small problems compound.
+- **Accommodating** (unassertive, cooperative): yield. Right when the relationship matters more than the issue, when you are wrong, or as deliberate goodwill. Overused, it builds quiet resentment.
+
+Most people have one default mode they use everywhere. Knowing yours, and your teammates', is most of the value.
+
+<LinkCard
+  title="Assess Your Team's Conflict Styles"
+  href="/activities/conflict/#assess-your-teams-conflict-styles"
+  description="The activity that puts this model to work on a real situation your team is facing."
+/>
+
+## Personality and Working Styles
+
+There is no single correct way to classify personality, and the popular models vary a lot in rigor. This course prefers trait-based models, specifically the [Big Five](https://en.wikipedia.org/wiki/Big_Five_personality_traits), which measures openness, conscientiousness, extraversion, agreeableness, and emotional stability as spectra rather than types. You will meet MBTI and DISC in industry; treat their outputs with more caution than they are usually given.
+
+The Big Five draws on the International Personality Item Pool, a public-domain item collection managed by the Oregon Research Institute. You can [take the test free](https://bigfive-test.com/), and the site is [open source](https://github.com/rubynor/bigfive-web).
+
+The useful move is not learning your own score. It is noticing where you and a teammate sit at **opposite ends** of a trait, because that gap is where friction comes from and where a small adjustment pays off. A highly conscientious student reads a spontaneous teammate as unreliable; the spontaneous one reads them as rigid. Both are wrong about the motive and right about the friction.
+
+## Validation
+
+You can tell these practices are working when a teammate can describe a problem to you factually, without hedging and without an accusation, and you do not feel attacked hearing it. Concretely, check that:
+
+- Your working agreement names an escalation path with **measurable** triggers, not "if problems persist".
+- Someone other than the most senior or most confident person has raised a concern this term.
+- A concern raised in one sprint visibly changed something by the next.
+
+If nobody has ever raised anything, that is not a healthy team. That is an unsafe one.
+
+## Measuring Success
+
+The signals are about the team, not the documents:
+
+- **Time to raise**: how long between a problem starting and someone naming it. Weeks is normal and bad; one sprint is good.
+- **Resolution without escalation**: most issues settled at step one of the path.
+- **Distribution of who speaks**: if the same person raises everything, the others have concluded it is not worth it.
+- **Peer evaluation spread**: large gaps between how teammates rate each other usually mean a conversation that never happened.
+
+## Best Practices
+
+- Raise things early, small, and privately. The cost of a conversation grows faster than the problem does.
+- Describe behavior you observed, never motive you inferred.
+- Separate the person from the work. Task conflict is healthy and you want more of it, not less.
+- Write the escalation path into your charter before you need it, with triggers you can point at.
+- Ask before you conclude. You are missing context roughly half the time.
+- Document each escalation step as it happens, not afterwards from memory.
+- Assume your own default conflict mode is showing up whether or not it fits.
+
+## Some Truths about Conflict
+
+Let's be honest.
+
+- **Most student teams never have the conversation.** They absorb the imbalance, complain privately, and settle it in the peer evaluation at the end of the term, where the person cannot respond and nothing improves. That is the realistic failure mode, not shouting.
+- **Frameworks do not resolve conflict.** Knowing you are an "avoider" changes nothing by itself. The models are useful for naming a pattern quickly, and that is all they are for.
+- **Some conflict is not resolvable inside a term.** Where a teammate is genuinely disengaged, the honest outcome is an escalation and a documented record, not a breakthrough. Staff would rather know in week 4 than read it in a final survey.
+- **Personality models are weaker evidence than they look.** Big Five has real research behind it; MBTI mostly does not. Use them as vocabulary, never as a reason to expect someone to behave a particular way.
+- **Being the person who raises things is genuinely uncomfortable**, and it is also the skill that separates people who get put in charge of things from people who do not.
+
+## Conflict in Industry and Academia
+
+Every mature engineering organization has a version of this machinery, usually more formal than a student team's. Performance conversations are a named managerial responsibility with a documented cadence, and the situation-behavior-impact structure taught here comes from the [Center for Creative Leadership](https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-sbii/), whose framing is widely used in industry feedback training.
+
+The blameless discipline you practice in the [Incident Postmortem](/assignments/incident-postmortem/) comes from operations culture, popularized by Google's Site Reliability Engineering practice and Etsy's engineering blog: analyze the system, never the person, because teams that punish individuals for failures simply stop reporting them. The same logic applies to team problems. A team where raising a concern is expensive is a team that runs on incomplete information.
+
+Academic research groups have the same dynamics with worse structure, because supervision is informal and power is unequal. The habits here transfer directly, and the escalation path matters more, not less.

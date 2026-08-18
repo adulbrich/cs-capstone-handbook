@@ -157,13 +157,13 @@ Six research and R&D activities were added, each tied to a gate in the Shipping 
 | Tier | Count (Aug 2026 revision) |
 |---|---|
 | Workshop | 6 slots, 8 distinct activities (slot 6 rotates through 3) |
-| Recommended | 54 |
-| Library | 58, kept and browsable |
-| **Total activities** | **120** |
+| Recommended | 53 |
+| Library | 57, kept and browsable |
+| **Total activities** | **118** |
 
 Higher than the spec's "~20" and correctly so: the figure follows from instance counts and now from category counts, neither of which the spec had worked out.
 
-**Counts are no longer maintained by hand.** `scripts/validate-activity-tiers.mjs` derives them from the badge markup and fails the build if a linked activity carries no badge, if a Recommended badge has no assignment linking to it, or if an assignment links to an anchor matching no heading. Run `npm run validate:activities`.
+**Counts are no longer maintained by hand.** `scripts/validate-activities.mjs` derives them from the badge markup, counting only sections that carry an audience badge (page framing prose also uses `##`), and fails the build if a linked activity carries no badge, if a Recommended badge has no assignment linking to it, or if an assignment links to an anchor matching no heading. Run `npm run validate:activities`.
 
 ## Source Bugs Found While Building This
 

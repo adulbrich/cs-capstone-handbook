@@ -33,6 +33,30 @@ not a lecture, and not an assignment. Three properties define it:
 - **Attached to graded work.** Every activity should be traceable to a rubric
   criterion it prepares. Activities that prepare nothing are library filler.
 
+**Mechanically, an activity is a `##` section carrying an audience badge.**
+That is the definition the validator uses, and it is why the badge is
+load-bearing rather than decorative. Page framing and closing prose also use
+`##`, so a heading count alone silently counts non-activities as activities.
+A section with no audience badge is prose; a section with one is an activity
+and must satisfy everything below.
+
+### Explanation versus instrument
+
+An activity over roughly 400 words is usually a guide with an exercise stapled
+to it. The test is what the bulk *is*:
+
+- **Explanation** teaches a concept, a model, or a practice, and it belongs in
+  a guide. `activities/conflict.mdx` was four sections of this, up to 1,100
+  words each, and became `guides/conflict.mdx` plus four short exercises.
+- **An instrument** is something the student fills in, scores, or works
+  through *during* the activity: an assessment table, a scoring rubric, a
+  canvas, a checklist. It stays, however long it is. `Team Health Assessment`
+  keeps its 1,219 words because they are the health check itself, not a
+  lecture about health checks.
+
+When you move explanation out, leave a `LinkCard` to the guide near the top of
+the page rather than a link buried mid-activity.
+
 Activities are **not graded on quality** anywhere in this course. Workshop-tier
 activities are graded complete/incomplete on submission existing. Everything
 else is ungraded. Never write grading language, point values, or rubric bands
@@ -84,12 +108,17 @@ Line by line:
 below; they are load-bearing.
 
 **Badge line.** Always present, always immediately after the heading, always
-one blank line below it. The audience badge comes first and is mandatory:
+one blank line below it. The audience badge comes first and is mandatory. There
+are exactly three legal states:
 
 - `<Badge text="Individual Activity" variant="success" class="mb-6"/>`
 - `<Badge text="Team Activity" variant="note" class="mb-6"/>`
+- **both**, on the same line, when the activity genuinely works either way.
+  This is a real pattern used across the library, not drift, and the validator
+  allows it. Use it only when solo and team both make sense; defaulting to both
+  because you cannot decide makes the badge useless.
 
-The tier badge, if any, comes second on the same line. Never invent a third
+The tier badge, if any, comes last on the same line. Never invent a fourth
 badge. `class="mb-6"` is required on every badge; without it the badge collides
 with the paragraph below.
 

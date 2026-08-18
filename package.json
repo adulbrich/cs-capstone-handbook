@@ -10,7 +10,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "validate:outcomes": "node scripts/validate-outcomes.mjs",
-    "validate:activities": "node scripts/validate-activity-tiers.mjs",
+    "validate:activities": "node scripts/validate-activities.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

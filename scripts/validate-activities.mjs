@@ -1,5 +1,9 @@
 #!/usr/bin/env node
-// Validates the activity tier system described in .claude/skills/cs46x-activities.
+// Validates the activity pages against .claude/skills/cs46x-activities.
+//
+// An ACTIVITY is a `##` section carrying an audience badge. That is the whole
+// definition, and it is mechanical on purpose: page framing and closing prose
+// also use `##`, so counting headings alone silently counts non-activities.
 //
 // Tiers are expressed as badges on activity pages, but the thing that actually
 // makes an activity Recommended is an assignment page linking to it. Those two
@@ -17,6 +21,12 @@
 //      the rubric criterion it prepares. That line is how a student working
 //      backward from a rubric finds the activity, and how a future editor
 //      tells whether the activity still earns its tier.
+//
+//   5. Every activity carries an audience badge ("Individual Activity",
+//      "Team Activity", or both when it genuinely works either way) and a
+//      closing "A good output is..." line. The deliverable line is the only
+//      quality signal an activity has, and it is what lets a student
+//      self-check.
 //
 // Workshop-tier activities are exempt from rule 2: they are assigned centrally
 // through assignments/workshop-activities.mdx, not per assignment page.
@@ -56,6 +66,13 @@ function readActivities() {
       const heading = lines[i].slice(3).trim();
       // The badge line is within the next few lines, before any prose.
       const window = lines.slice(i + 1, i + 5).join('\n');
+      const audience = [
+        ...window.matchAll(/<Badge[^>]*text="(Individual Activity|Team Activity)"/g),
+      ].length;
+      // No audience badge means this is page prose, not an activity.
+      if (audience === 0) {
+        continue;
+      }
       let tier = null;
       if (/<Badge[^>]*text="Workshop"/.test(window)) {
         tier = 'Workshop';
@@ -75,7 +92,9 @@ function readActivities() {
         page,
         heading,
         tier,
+        audience,
         hasFeeds: /^\*\*Feeds:\*\*/m.test(body),
+        hasOutput: /^A good output/m.test(body),
       });
     }
   }
@@ -125,8 +144,18 @@ for (const [key, sources] of links) {
   }
 }
 
-// Rules 2 and 4.
+// Rules 2, 4, and 5.
 for (const [key, activity] of activities) {
+  if (activity.audience > 2) {
+    problems.push(
+      `too many audience badges: "${activity.heading}" (${activity.page}) carries ${activity.audience}; legal states are Individual, Team, or both`
+    );
+  }
+  if (!activity.hasOutput) {
+    problems.push(
+      `missing deliverable: "${activity.heading}" (${activity.page}) has no closing "A good output is..." line`
+    );
+  }
   if (activity.tier === 'Recommended' && !links.has(key)) {
     problems.push(
       `unearned badge: "${activity.heading}" (${activity.page}) is marked Recommended but no assignment page links to it`

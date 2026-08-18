@@ -116,8 +116,8 @@ Sections in **bold** are required.
    out.` line naming one or two activity categories.
 
    Every activity you link here must carry a `Recommended` or `Workshop` badge;
-   `scripts/validate-activity-tiers.mjs` fails otherwise. Promote and link in
-   the same commit.
+   `scripts/validate-activities.mjs` fails otherwise. Promote and link in the
+   same commit.
 
 ## Rubric Rules
 

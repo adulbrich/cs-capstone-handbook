@@ -20,7 +20,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `canvas/` | Canvas-ready HTML and rubric TSVs. Mirrors the handbook; the handbook wins. |
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator. Runs in CI and pre-commit. |
-| `scripts/validate-activity-tiers.mjs` | The activity tier validator. Runs in CI and pre-commit. |
+| `scripts/validate-activities.mjs` | The activity tier validator. Runs in CI and pre-commit. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -84,7 +84,7 @@ check rather than being skipped.
 
 An activity is Recommended because an assignment page links to it, but the tier
 is *displayed* as a badge on the activity page. Two files, one fact, so it
-drifts. `scripts/validate-activity-tiers.mjs` reconciles them and fails if a
+drifts. `scripts/validate-activities.mjs` reconciles them and fails if a
 linked activity carries no badge, if a Recommended badge has no assignment
 linking to it, or if an assignment links to an anchor that matches no heading.
 
