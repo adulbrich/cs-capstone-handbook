@@ -114,12 +114,21 @@ modern JavaScript and let the formatter settle the rest.
 
 ## Skills
 
-- `cs46x-activities`: required reading before creating or editing any file in
-  `src/content/docs/activities/`.
+Required reading before touching the matching content directory. Each one
+carries the writing voice verbatim, so loading the skill is enough.
+
+| Skill | Load before editing |
+|---|---|
+| `cs46x-activities` | `src/content/docs/activities/` |
+| `cs46x-guides` | `src/content/docs/guides/` |
+| `cs46x-assignments` | `src/content/docs/assignments/` |
 
 ## Writing voice
 
-Lead with the point. Specific nouns and verbs. Cut any sentence that does not
-change what the reader will do or understand. No "it's worth noting", no
-rule-of-three padding, no vague intensifiers. Students read these pages under
-deadline pressure; length is a cost they pay.
+Lead with the point. Specific nouns and verbs. Cut every sentence that does not
+change what the reader will do or understand. No "it's worth noting,"
+rule-of-three padding, or vague intensifiers. Opinion is preferred when a
+recommendation is required. Code stays exact. For prose, never use emdashes but
+use proper punctuation instead.
+
+Students read these pages under deadline pressure; length is a cost they pay.

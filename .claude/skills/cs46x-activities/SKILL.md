@@ -11,6 +11,14 @@ entries across twelve pages without a written format, and pages added later
 drifted from the ones added first. **The format below is the format. Bring
 non-conforming activities into line rather than adding a second convention.**
 
+## Writing Voice (applies to everything below)
+
+Lead with the point. Specific nouns and verbs. Cut every sentence that does not
+change what the reader will do or understand. No "it's worth noting,"
+rule-of-three padding, or vague intensifiers. Opinion is preferred when a
+recommendation is required. Code stays exact. For prose, never use emdashes but
+use proper punctuation instead.
+
 ## What an Activity Is
 
 An activity is a **self-contained exercise a team or student can run in one

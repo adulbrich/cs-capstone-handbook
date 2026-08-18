@@ -1,0 +1,196 @@
+---
+name: cs46x-assignments
+description: Use when creating or editing assignment pages (MDX files in src/content/docs/assignments/) for the CS 461/462/463 capstone handbook. Covers the frontmatter contract read by the validators, the section skeleton, rubric rules, Canvas mirroring, and grade-weight arithmetic. Always load this skill before writing or editing any assignment file.
+---
+
+# Assignment Style Guide
+
+Assignment pages are **the source of truth for all graded work in the course**.
+Canvas mirrors them, the syllabi mirror them, and two validators parse them. A
+mistake here propagates into student grades and accreditation evidence, which is
+why more of this skill is mechanical than the guide or activity skills.
+
+## Writing Voice (applies to everything below)
+
+Lead with the point. Specific nouns and verbs. Cut every sentence that does not
+change what the reader will do or understand. No "it's worth noting,"
+rule-of-three padding, or vague intensifiers. Opinion is preferred when a
+recommendation is required. Code stays exact. For prose, never use emdashes but
+use proper punctuation instead.
+
+Students read these pages under deadline pressure. Length is a cost they pay.
+
+## Frontmatter Contract
+
+```yaml
+---
+title: <Assignment Name>
+description: <one sentence; quote it if it contains a colon>
+sidebar:
+  order: <number>
+assignment:
+  level: individual | team
+  terms: [fall, winter, spring]
+  weight: <percent of that term's grade>
+  outcomes:
+    SO2: 1
+    SO4: 2
+---
+```
+
+Four rules the validators enforce, all of which have been gotten wrong before:
+
+1. **`outcomes` counts must equal the number of rubric criteria carrying that
+   tag.** `scripts/validate-outcomes.mjs` parses the rubric table as the source
+   of truth and fails on any disagreement. Tag a criterion, bump the count, in
+   the same edit.
+2. **Only `level: individual` pages contribute accreditation data points.** A
+   `level: team` page contributes **zero**, however many tags its rubric
+   carries. This is the rule most easily gotten wrong: a team page tagged `L07`
+   looks like coverage and counts as nothing.
+3. **Every ABET outcome (SO1-SO6) needs two individual data points; WIC and
+   Beyond OSU (L07-L10) need one.** Removing a tagged criterion can drop an
+   outcome below its floor and fail CI. Run the validator before assuming a
+   deletion is safe.
+4. **`weight` participates in arithmetic.** See **Grade Weights** below.
+
+A page with no `assignment:` block is skipped by the validator entirely. Only
+`introduction.mdx` should be in that state.
+
+## Section Skeleton
+
+Sections in **bold** are required.
+
+1. **Bold summary line**, first line of the body, no heading. One line, in this
+   order: who submits, when, what it is worth, then at most one clarifying
+   clause. Copy the register of these:
+
+   ```md
+   **Team submission. Winter, week 3 (v1, partner-agreed). 4% of the winter grade. A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).**
+   **Individual assessment, held as a team session. Every term. 10% of the term grade.**
+   **Team submission with the individual contribution modifier. Every term: 4 notes in fall and winter (2% each), 2 in spring. Pass/fail per checklist item.**
+   ```
+
+2. **Intro prose.** One to three paragraphs on why the assignment exists and
+   what it is really testing. This is where you are allowed to argue. Say what
+   the failure mode is that the assignment kills.
+
+3. **The deliverable section.** Heading names the artifact and, where it
+   applies, its length and repository path:
+
+   - `## What You Must Produce`
+   - `## What It Must Contain (1 to 2 pages, in \`docs/shipped.md\`)`
+   - `## Structure (2 to 3 pages, in \`docs/postmortems/\`)`
+   - `## Required Sections`
+
+   Prefer a numbered list when the artifact has named parts a grader will look
+   for one by one. State the format, the length, and where it lives.
+
+4. **`## Rubric (100 points)`.** See **Rubric Rules**.
+
+5. **`**AI use:**` paragraph**, required on any assignment whose deliverable is
+   a written document. State what AI may legitimately do here, and name the
+   specific dishonest use that would fail the assignment. Be concrete:
+   "fabricating demo footage, metrics, findings, or user feedback fails the
+   assignment; a smaller true number always beats a bigger invented one."
+
+6. *Admonitions.* Optional, but two patterns recur and are worth reusing:
+   `:::note[If your project is under NDA]` for the local NDA variation, and
+   `:::tip[Why this replaces X]` for defending a design choice students will
+   question. Keep each to one idea.
+
+7. **`## Activities That Prepare This`.** The shared recommendations first,
+   naming the criterion each one serves. Then, where categories genuinely
+   differ, a **By project category** table. Then a `Browse ... when these run
+   out.` line naming one or two activity categories.
+
+   Every activity you link here must carry a `Recommended` or `Workshop` badge;
+   `scripts/validate-activity-tiers.mjs` fails otherwise. Promote and link in
+   the same commit.
+
+## Rubric Rules
+
+```md
+| Criterion | Points | Outcome |
+|---|---|---|
+| Criterion name: what specifically is being judged | 25 | SO2 |
+| Another criterion, dual-tagged where it genuinely evidences both | 20 | SO2, SO4 |
+```
+
+- **Points total exactly 100.** Every rubric in the course is out of 100 except
+  the deliberate pass/fail exception documented in
+  `canvas/assignments/workshop-activities/`.
+- **Three or six criteria is the working range.** Fewer than three cannot
+  discriminate; more than six is unaffordable at ~300 students and 6 TAs.
+- **Write criteria as observable checks, not qualities.** "Setup: complete,
+  copy-pasteable, and actually verified by a fresh run" tells a grader what to
+  do. "High-quality documentation" does not.
+- **The Outcome column is the accreditation record.** Only tag a criterion when
+  the criterion genuinely evidences that outcome for that individual student.
+- **Follow the rubric table with per-criterion grading notes** when graders need
+  consistency. One line per criterion, in rubric order, saying the first thing
+  the grader checks. `repo-checkpoints.mdx` is the model.
+
+Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
+**Does Not Meet** (low or none). Not submitted, off-topic, or inaccessible to
+graders scores zero, stated explicitly rather than folded into Does Not Meet.
+
+## Canvas Mirroring
+
+Each graded assignment has a directory under `canvas/assignments/` holding a
+`*-rubric-details.tsv` for the rubric-import browser extension.
+
+- Banded rubrics are **12 tab-separated fields** per row: criterion (with its
+  outcome tags in brackets), empty, `true`, high points, `Exceeds Expectations`,
+  description, mid points, `Meets Expectations`, description, low points,
+  `Does Not Meet Expectations`, description. Bands run full / 80% / 20%.
+- Pass/fail rubrics are **9 fields**: criterion, empty, `true`, points, `Pass`,
+  description, `0`, `Fail`, description.
+- **The set of outcome tags in the TSV must equal the set in the handbook
+  rubric table.** `validate-outcomes.mjs` reconciles them and fails on drift in
+  either direction. Nothing else in the toolchain reads Canvas, so without that
+  check it drifts silently, and it has.
+- Changing criteria or points means the TSV must be re-imported into Canvas.
+  Say so in `canvas/assignments/assignment-readme.md` when you change one.
+
+## Grade Weights
+
+Each term's grade is four components of 25% each. Team Deliverables is split
+across several assignment pages and **every term must sum to exactly 25%**. A
+weight appears in four places that must agree:
+
+1. the page's `assignment.weight` frontmatter,
+2. the term tables in `assignments/introduction.mdx`,
+3. the three syllabi,
+4. `canvas/assignments/assignment-readme.md`.
+
+Raising one weight means cutting another. Verify the sums with a script, not by
+eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
+carry the individual contribution modifier and the living-docs gate.
+
+## NDA Projects
+
+There is no "Track A / Track B" vocabulary. The default is that staff have
+repository read access; where an NDA team does something different, say so
+**locally on the affected page** in a short `:::note`, not as a global concept
+the student has to learn first.
+
+## What Assignment Pages Must Not Contain
+
+- Em dashes.
+- A rubric that does not total 100, absent a documented exception.
+- Outcome tags whose counts disagree with the frontmatter.
+- Links to activities that carry no tier badge.
+- Explanations that belong in a guide. Link to the guide instead; two
+  descriptions of one practice drift, and students read the assignment.
+- Grading language on any page other than an assignment page. This section is
+  the only place point values live.
+
+## Before Finishing
+
+1. `npm run validate:outcomes` (frontmatter, rubric tags, Canvas mirror).
+2. `npm run validate:activities` (every linked activity is tiered).
+3. `npm run build` (MDX, internal links, anchors).
+4. If you touched a weight, verify all three terms still sum to 25%.
+5. If you touched a rubric, update the Canvas TSV in the same commit.
+6. Grep for em dashes.
