@@ -128,9 +128,11 @@ Sections in **bold** are required.
 | Another criterion, dual-tagged where it genuinely evidences both | 20 | SO2, SO4 |
 ```
 
-- **Points total exactly 100.** Every rubric in the course is out of 100 except
-  the deliberate pass/fail exception documented in
-  `canvas/assignments/workshop-activities/`.
+- **Points total exactly 100.** Two documented exceptions: the pass/fail
+  workshop rubric (`canvas/assignments/workshop-activities/`), and the two
+  survey-based instruments, `peer-evaluations.mdx` and
+  `project-partner-evaluation.mdx`, which run through Qualtrics rather than a
+  banded rubric and whose tables carry weights instead of points.
 - **Three or six criteria is the working range.** Fewer than three cannot
   discriminate; more than six is unaffordable at ~300 students and 6 TAs.
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
@@ -163,6 +165,29 @@ Each graded assignment has a directory under `canvas/assignments/` holding a
   check it drifts silently, and it has.
 - Changing criteria or points means the TSV must be re-imported into Canvas.
   Say so in `canvas/assignments/assignment-readme.md` when you change one.
+
+## What Does Not Belong Here
+
+Assignment pages hold **assignments**: things submitted, evaluated, and carrying
+a weight. Two neighbours are deliberately elsewhere:
+
+- **Grading policy** (points to letter grade, what each letter means, how
+  outcome tags work) lives in `learning-objectives/grading.mdx`, because every
+  letter is defined in terms of the learning objectives.
+- **Rubric conventions** (the three bands, missing-is-zero, evidence over
+  prose) live in `assignments/introduction.mdx` and nowhere else. Do not restate
+  them on individual assignment pages.
+
+Peer evaluations and project partner evaluations **are** assignments, despite
+being completed by someone other than the student: together they are 50% of
+every term's grade, and this section is the source of truth for all graded work.
+
+## Say Each Fact Once
+
+One canonical statement, everywhere else links. A page may state the single
+number its own reader needs; no page other than the canonical one re-tabulates
+the whole thing. `AGENTS.md` lists the current canonical homes. Before writing
+a paragraph that explains something, grep for it.
 
 ## Grade Weights
 

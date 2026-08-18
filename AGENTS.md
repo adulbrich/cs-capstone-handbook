@@ -16,7 +16,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/assignments/` | Graded work. Source of truth. Every page's rubric table is machine-parsed. |
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
-| `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcome mapping. |
+| `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
 | `canvas/` | Canvas-ready HTML and rubric TSVs. Mirrors the handbook; the handbook wins. |
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator. Runs in CI and pre-commit. |
@@ -91,19 +91,43 @@ linking to it, or if an assignment links to an anchor that matches no heading.
 Workshop tier is exempt from the second rule: those are assigned centrally
 through `assignments/workshop-activities.mdx`, not per assignment page.
 
+## Say each fact once
+
+The handbook's worst failure mode is the same fact stated in five places and
+edited in three. The rule:
+
+**One canonical statement; everywhere else links to it.** A page may state the
+single number its own reader needs (a project partner needs to know their
+evaluation is 25% without clicking), but no page other than the canonical one
+re-tabulates the whole thing.
+
+Current canonical homes:
+
+| Fact | Lives in |
+|---|---|
+| The four-component grade split | `assignments/introduction.mdx` |
+| Per-term Team Deliverables weights | `assignments/introduction.mdx` |
+| Rubric bands, missing-is-zero, evidence rules | `assignments/introduction.mdx` |
+| Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
+| Project category descriptions | `practicalities/categories.mdx` |
+| V&V outcome ladders | `assignments/project-partner-evaluation.mdx` |
+| Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
+
+Before adding a paragraph that explains something, grep for it. If it already
+exists somewhere, link instead.
+
 ## Grade weight arithmetic
 
 Each term's grade is four components of 25% each. The Team Deliverables
 component is split across several assignment pages, and **every term must sum
-to exactly 25%**. The weights appear in four places that must agree:
+to exactly 25%**. `validate-outcomes.mjs` now enforces that against the term
+tables, but the weights also appear in three other places it cannot see:
 
 1. each assignment page's `assignment.weight` frontmatter,
-2. the term tables in `src/content/docs/assignments/introduction.mdx`,
-3. the three syllabi,
-4. `canvas/assignments/assignment-readme.md`.
+2. the three syllabi,
+3. `canvas/assignments/assignment-readme.md`.
 
-Changing one weight means re-cutting another. Verify the sums programmatically
-rather than by eye.
+Changing one weight means re-cutting another, in all four places.
 
 ## Code style
 

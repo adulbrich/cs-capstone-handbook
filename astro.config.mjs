@@ -12,6 +12,19 @@ import starlightScrollToTop from 'starlight-scroll-to-top';
 export default defineConfig({
   site: 'https://capstone.alexulbrich.com',
 
+  // The Project Evaluation section was dissolved into Assignments and Learning
+  // Objectives (2026-08-18). These URLs were live and linked from elsewhere, so
+  // they redirect rather than 404.
+  redirects: {
+    '/project-evaluation/project-partner-evaluation':
+      '/assignments/project-partner-evaluation/',
+    '/project-evaluation/peer-evaluations': '/assignments/peer-evaluations/',
+    '/project-evaluation/conversion': '/learning-objectives/grading/',
+    '/project-evaluation/breakdown': '/assignments/introduction/',
+    '/project-evaluation/rubrics': '/assignments/introduction/',
+    '/project-evaluation/assignments': '/assignments/introduction/',
+  },
+
   integrations: [
     mermaid(),
     sitemap(),
@@ -64,7 +77,7 @@ export default defineConfig({
           }}],
         },
         {
-          label: 'Learning Objectives',
+          label: 'Learning Objectives and Grading',
           items: [{ autogenerate: {
             directory: 'learning-objectives',
           }}],
@@ -91,12 +104,6 @@ export default defineConfig({
           label: 'Guides',
           items: [{ autogenerate: {
             directory: 'guides',
-          }}],
-        },
-        {
-          label: 'Project Evaluation',
-          items: [{ autogenerate: {
-            directory: 'project-evaluation',
           }}],
         },
         {

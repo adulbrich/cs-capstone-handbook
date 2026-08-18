@@ -6,6 +6,9 @@
 // rubric tags exactly, so neither can silently drift. Coverage minimums:
 //   - every ABET outcome (SO1-SO6): >= 2 individual-level data points
 //   - every WIC / Beyond OSU outcome (L07-L10): >= 1 individual-level point
+// It also checks that each term's Team Deliverables table sums to exactly 25%,
+// and that every Canvas rubric TSV tags the same outcomes as the handbook page
+// it mirrors.
 //
 // Run: node scripts/validate-outcomes.mjs
 
@@ -18,10 +21,6 @@ const ABET_OUTCOMES = ['SO1', 'SO2', 'SO3', 'SO4', 'SO5', 'SO6'];
 const OTHER_OUTCOMES = ['L07', 'L08', 'L09', 'L10'];
 const MIN_ABET = 2;
 const TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;
-
-// Standing individual instruments not represented as assignment pages:
-// peer evaluations run mid + final every term and evidence SO5.
-const STANDING_INDIVIDUAL_POINTS = { SO5: 6 };
 
 // Canvas rubric TSV directory -> the handbook page it mirrors.
 // Canvas is a mirror; the handbook wins. A TSV that tags an outcome the
@@ -138,11 +137,6 @@ for (const o of [...ABET_OUTCOMES, ...OTHER_OUTCOMES]) {
   counts[o] = 0;
   sources[o] = [];
 }
-for (const [outcome, n] of Object.entries(STANDING_INDIVIDUAL_POINTS)) {
-  counts[outcome] += n;
-  sources[outcome].push(`peer evaluations (${n} standing)`);
-}
-
 let failed = false;
 const files = readdirSync(ASSIGNMENTS_DIR).filter((f) => f.endsWith('.mdx'));
 let parsed = 0;
@@ -189,6 +183,42 @@ for (const file of files) {
 if (parsed === 0) {
   console.error('validate-outcomes: no assignment frontmatter found; refusing to pass vacuously.');
   process.exit(1);
+}
+
+// --- Term weight arithmetic --------------------------------------------------
+// Team Deliverables is one of four equal 25% components, split across several
+// assignment pages. The per-term tables on the assignments overview must each
+// sum to exactly 25, and nothing else checks it: the weights also appear in
+// each page's frontmatter, in three syllabi, and in the Canvas readme, so a
+// re-cut that misses one leaves students' grades not adding up.
+const overview = readFileSync(join(ASSIGNMENTS_DIR, 'introduction.mdx'), 'utf8');
+const termSections = [...overview.matchAll(
+  /### (Fall|Winter|Spring) Team Deliverables \(25%\)([\s\S]*?)(?=\n#{2,3} |$)/g
+)];
+if (termSections.length !== 3) {
+  console.error(
+    `TERM WEIGHTS: expected 3 "### <Term> Team Deliverables (25%)" tables in introduction.mdx, found ${termSections.length}.`
+  );
+  failed = true;
+}
+for (const [, term, table] of termSections) {
+  let sum = 0;
+  for (const row of table.split('\n')) {
+    if (!row.trim().startsWith('|')) {
+      continue;
+    }
+    const cells = row.split('|').map((c) => c.trim());
+    const pct = cells.find((c) => /^\d+(\.\d+)?%$/.test(c));
+    if (pct) {
+      sum += Number.parseFloat(pct);
+    }
+  }
+  if (Math.abs(sum - 25) > 0.001) {
+    console.error(`TERM WEIGHTS: ${term} Team Deliverables sums to ${sum}%, must be exactly 25%.`);
+    failed = true;
+  } else {
+    console.log(`  ${term} Team Deliverables: ${sum}% ok`);
+  }
 }
 
 // --- Canvas mirror reconciliation -------------------------------------------

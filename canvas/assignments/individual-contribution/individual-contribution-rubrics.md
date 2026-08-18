@@ -41,7 +41,7 @@ Deductions are evidence-based, never testimonial:
 3. Review activity over the sprint window.
 4. Live spot-verification at the Defense.
 5. Partner or peer flags trigger the corroboration review described on the
-   [partner evaluation page](https://capstone.alexulbrich.com/project-evaluation/project-partner-evaluation/);
+   [partner evaluation page](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/);
    the student can respond with evidence before a deduction is finalized.
 
 A pattern of missed sprints with no explanation is what this modifier exists

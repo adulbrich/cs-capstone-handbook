@@ -2,12 +2,32 @@
 title: Peer Evaluations
 description: How students evaluate their teammates each term, how scores are computed, and how CATME is used in spring.
 sidebar:
-  order: 5
+  order: 15
+assignment:
+  level: individual
+  terms: [fall, winter, spring]
+  weight: 25
+  outcomes:
+    SO5: 2
 ---
 
+import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import Latex from '../../../components/Latex.astro';
 
-Peer evaluations are how students evaluate the contributions of their team members to the project. They account for **25% of the grade each term**: a lighter midterm survey worth 5% and a comprehensive end-of-term survey worth 20%. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
+<AssignmentMeta submission="Individual, one survey per teammate" due="Midterm and end of term, every term" weight="25% of the term grade">
+  Anonymous. Results go to instructors only.
+</AssignmentMeta>
+
+Peer evaluations are how students evaluate the contributions of their team members. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
+
+## The Two Instruments
+
+| Instrument | Share of term grade | Outcome |
+|---|---|---|
+| Midterm survey: four criteria plus the point distribution | 5% | SO5 |
+| End-of-term survey: the same instrument, plus CATME in spring | 20% | SO5 |
+
+These two are the course's standing per-student evidence for SO5, six data points a year. They are scored per student rather than banded, so the usual three-band rubric convention does not apply.
 
 :::caution
 A failure to complete a peer evaluation results in a 50/100 on the corresponding assignment for the student who did not complete the survey (12.5/25 for the midterm).
