@@ -18,11 +18,11 @@ assignment:
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 
-<AssignmentMeta submission="Individual, held as a team session" due="Every term, weeks 7 to 9" weight="10% of the term grade" />
+<AssignmentMeta submission="Individual, held as a team session" due="Fall and winter, weeks 7 to 9; spring, weeks 7 to 10" weight="10% of the term grade" />
 
-Once per term, your team's [cohort check-in](/assignments/introduction/#cohort-check-ins) (weeks 7 to 9; your TA publishes the schedule) becomes a defense, during which **each student** walks through something they own and answers live questions. The session is **six minutes per student plus about ten minutes for setup and wrap**, so a team of three runs a little under half an hour and a team of five runs about forty minutes. Per-student time does not shrink on a larger team; the session simply runs longer. Sick or absent that week? Tell your TA before the session and you will be rescheduled, per the [absence policy](/assignments/introduction/#late-work-absence-and-makeup). In spring, the defense runs the same way by default; in terms where the instructors announce it, answering questions at your team's Expo booth with staff present can substitute.
+Once per term, your team's [cohort check-in](/assignments/introduction/#cohort-check-ins) (weeks 7 to 9 in fall and winter, weeks 7 to 10 in spring; your TA publishes the schedule) becomes a defense, during which **each student** walks through something they own and answers live questions. The session is **six minutes per student plus about ten minutes for setup and wrap**, so a team of three runs a little under half an hour and a team of five runs about forty minutes. Per-student time does not shrink on a larger team; the session simply runs longer. Sick or absent that week? Tell your TA before the session and you will be rescheduled, per the [absence policy](/assignments/introduction/#late-work-absence-and-makeup). In spring, the defense runs the same way by default; in terms where the instructors announce it, answering questions at your team's [Expo](/practicalities/expo/) booth with staff present can substitute, which is why the spring window runs through week 10.
 
-You may present a pull request you drove, a subsystem you maintain, your RFC decision, or a test or deployment strategy you built. The questions are the point: why this way, what alternatives did you reject, what breaks if X changes, where did you decide to stop and check the work yourself, and why there.
+You may present a pull request you drove, a subsystem you maintain, your RFC decision, or a test or deployment strategy you built. The questions are the point: why this way and what you rejected, what breaks if X changes, where did you decide to stop and check the work yourself and why there, and what was the most useful thing you told someone whose work you reviewed.
 
 **Ground rules:** your docs, your repo, and your AI tools are open **for explaining** (looking things up, walking through code) and closed **for generating** (no asking a model to produce the answer live). Notes are fine. Slides are unnecessary.
 
@@ -50,9 +50,11 @@ TAs and instructors score each student live on a printed sheet (the [scoresheet]
 | Judgment: explains why this approach, what credible alternatives were rejected, and which parts of the decision were hard to reverse | 20 | SO1 |
 | Technical depth: answers "what breaks if X" with correct, specific reasoning about the system's behavior and limits | 20 | SO6 |
 | Role and team accountability: articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, how the team's decisions actually got made, and how work was distributed | 20 | SO5 |
-| Communication: clear, honest, right level of detail for the audience, handles not-knowing gracefully | 20 | SO3 |
+| Communication, both directions: clear, honest, right level of detail for the audience, handles not-knowing gracefully, and names the most useful thing they told someone whose work they reviewed and what changed because of it | 20 | SO3 |
 
 "Handles not-knowing gracefully" is real: "I don't know, but here is how I would find out" scores; bluffing does not.
+
+The reviewer-side half is there because communication runs both directions, and a student who is articulate about their own work can still be useless in review. In fall and winter it is your [RFC](/assignments/rfc/) cross-team review; in spring it is code review, and your [sprint note](/assignments/sprint-notes/) contribution lines already name the one change you asked for. Both are graded records, so this is checkable: "I left some comments" is not an answer, and neither is anything that named no line and requested no change.
 
 :::note[NDA teams]
 The defense runs identically whether or not your project is under NDA: everything happens live and no artifact changes hands, so NDA constraints do not apply.

@@ -21,6 +21,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator. Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator. Runs in CI and pre-commit. |
+| `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -39,12 +40,13 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 
 ## Validation
 
-Run both before considering any content change done:
+Run all four before considering any content change done:
 
 ```sh
 npm run build            # astro check + astro build; fails on broken internal links
 npm run validate:outcomes
 npm run validate:activities
+npm run validate:downloads
 ```
 
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build
@@ -91,6 +93,21 @@ linking to it, or if an assignment links to an anchor that matches no heading.
 Workshop tier is exempt from the second rule: those are assigned centrally
 through `assignments/workshop-activities.mdx`, not per assignment page.
 
+## Downloads in `public/`
+
+Templates, cheat sheets, and scoresheets students download live in `public/`
+and are linked as root-relative URLs (`/rfc-template.md`).
+`starlight-links-validator` catches a link to a missing file;
+`validate-downloads.mjs` catches the reverse, which is what actually happened:
+six downloads were being served while no page linked them, so they went stale
+unnoticed. **Every download has exactly one owning page, and that page is the
+one that requires the artifact.** A template with nothing to own it should be
+deleted, not kept.
+
+Where the assignment page already enumerates the artifact's sections in prose,
+the page *is* the template; do not ship a second copy that will drift. That is
+why there is no charter template.
+
 ## Say each fact once
 
 The handbook's worst failure mode is the same fact stated in five places and
@@ -120,19 +137,35 @@ exists somewhere, link instead.
 
 Each term's grade is four components of 25% each. The Team Deliverables
 component is split across several assignment pages, and **every term must sum
-to exactly 25%**. `validate-outcomes.mjs` now enforces that against the term
-tables, but the weights also appear in three other places it cannot see:
+to exactly 25%**. `validate-outcomes.mjs` enforces that against the term tables,
+and also reconciles each page's `assignment.weight` frontmatter against the row
+that links it. `weight` is a scalar when the page is worth the same in every
+term it runs, and a per-term map when it varies:
 
-1. each assignment page's `assignment.weight` frontmatter,
-2. the three syllabi,
-3. `canvas/assignments/assignment-readme.md`.
+```yaml
+assignment:
+  terms: [fall, winter, spring]
+  weight:
+    fall: 8
+    winter: 8
+    spring: 4
+```
+
+A scalar on a page whose weight varies is now a hard failure. It used to be
+silent, and Sprint Notes and Workshop Activities were both wrong.
+
+Two places still hold weights the validator cannot see:
+
+1. the three syllabi,
+2. `canvas/assignments/assignment-readme.md`.
 
 Changing one weight means re-cutting another, in all four places.
 
 ## Code style
 
 Biome (via Ultracite) formats and lints the small amount of JS/TS here. Run
-`npx ultracite format` to fix and `npx ultracite lint` to check. The rules are
+`npx ultracite format` to fix and `npx ultracite check` to check (there is no
+`lint` subcommand). The rules are
 enforced mechanically, so there is no need to memorize them; write ordinary
 modern JavaScript and let the formatter settle the rest.
 

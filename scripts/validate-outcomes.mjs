@@ -71,8 +71,12 @@ function parseAssignment(frontmatter) {
   if (start === -1) {
     return null;
   }
-  const assignment = { level: null, terms: [], outcomes: {} };
+  // `weight` is either a scalar (the page is worth the same in every term it
+  // runs) or a per-term map. Sprint Notes and Workshop Activities vary by term,
+  // and a scalar silently stated the wrong number for two of the three.
+  const assignment = { level: null, terms: [], outcomes: {}, weight: null };
   let inOutcomes = false;
+  let inWeight = false;
   for (let i = start + 1; i < lines.length; i++) {
     const line = lines[i];
     if (/^\S/.test(line)) {
@@ -82,20 +86,44 @@ function parseAssignment(frontmatter) {
     if (level) {
       assignment.level = level[1];
       inOutcomes = false;
+      inWeight = false;
       continue;
     }
     const terms = line.match(/^\s{2}terms:\s*\[([^\]]*)\]/);
     if (terms) {
       assignment.terms = terms[1].split(',').map((t) => t.trim());
       inOutcomes = false;
+      inWeight = false;
+      continue;
+    }
+    const weightScalar = line.match(/^\s{2}weight:\s*(\d+(?:\.\d+)?)\s*$/);
+    if (weightScalar) {
+      assignment.weight = Number(weightScalar[1]);
+      inOutcomes = false;
+      inWeight = false;
+      continue;
+    }
+    if (/^\s{2}weight:\s*$/.test(line)) {
+      assignment.weight = {};
+      inWeight = true;
+      inOutcomes = false;
       continue;
     }
     if (/^\s{2}outcomes:\s*$/.test(line)) {
       inOutcomes = true;
+      inWeight = false;
       continue;
     }
     if (/^\s{2}\w/.test(line)) {
       inOutcomes = false;
+      inWeight = false;
+      continue;
+    }
+    if (inWeight) {
+      const item = line.match(/^\s{4}(fall|winter|spring):\s*(\d+(?:\.\d+)?)/);
+      if (item) {
+        assignment.weight[item[1]] = Number(item[2]);
+      }
       continue;
     }
     if (inOutcomes) {
@@ -140,6 +168,8 @@ for (const o of [...ABET_OUTCOMES, ...OTHER_OUTCOMES]) {
 let failed = false;
 const files = readdirSync(ASSIGNMENTS_DIR).filter((f) => f.endsWith('.mdx'));
 let parsed = 0;
+// slug -> parsed assignment block, for the weight reconciliation below.
+const pages = new Map();
 
 for (const file of files) {
   const source = readFileSync(join(ASSIGNMENTS_DIR, file), 'utf8');
@@ -152,6 +182,7 @@ for (const file of files) {
     continue;
   }
   parsed++;
+  pages.set(file.replace(/\.mdx$/, ''), assignment);
   const body = source.slice(source.indexOf('---', 3) + 3);
   const rubricTags = parseRubricTags(body);
 
@@ -201,7 +232,11 @@ if (termSections.length !== 3) {
   );
   failed = true;
 }
+// term -> (slug -> percent), harvested from the same rows that get summed.
+const tableWeights = new Map();
 for (const [, term, table] of termSections) {
+  const key = term.toLowerCase();
+  tableWeights.set(key, new Map());
   let sum = 0;
   for (const row of table.split('\n')) {
     if (!row.trim().startsWith('|')) {
@@ -211,6 +246,10 @@ for (const [, term, table] of termSections) {
     const pct = cells.find((c) => /^\d+(\.\d+)?%$/.test(c));
     if (pct) {
       sum += Number.parseFloat(pct);
+      const slug = cells[1]?.match(/\]\(\/assignments\/([a-z0-9-]+)\/\)/)?.[1];
+      if (slug) {
+        tableWeights.get(key).set(slug, Number.parseFloat(pct));
+      }
     }
   }
   if (Math.abs(sum - 25) > 0.001) {
@@ -219,6 +258,64 @@ for (const [, term, table] of termSections) {
   } else {
     console.log(`  ${term} Team Deliverables: ${sum}% ok`);
   }
+}
+
+// --- Frontmatter weight reconciliation ---------------------------------------
+// Each page's `assignment.weight` restates what the term tables above already
+// say. Nothing read it, so it drifted: Sprint Notes declared 8 while spring is
+// 4%, and Workshop Activities declared 2 while winter and spring are 1%.
+// `weight` may be a scalar when the page is worth the same in every term it
+// runs, or a per-term map when it varies. Only Team Deliverables pages appear
+// in the term tables; the four 25% components (RFC, Defense, Career
+// Retrospective, and the two evaluation instruments) are stated in the Grade
+// Architecture table instead and are skipped here deliberately, not by
+// accident. Their weights are uniform across terms and have never drifted.
+for (const [slug, assignment] of pages) {
+  const inTables = [...tableWeights.entries()].filter(([, m]) => m.has(slug));
+  if (inTables.length === 0) {
+    continue; // a 25% component, checked by the Grade Architecture table by hand
+  }
+  const declared = assignment.weight;
+  if (declared === null) {
+    console.error(`WEIGHT ${slug}.mdx: appears in a Team Deliverables table but declares no weight.`);
+    failed = true;
+    continue;
+  }
+  const varies = new Set(inTables.map(([, m]) => m.get(slug))).size > 1;
+  if (varies && typeof declared === 'number') {
+    console.error(
+      `WEIGHT ${slug}.mdx: weight is the scalar ${declared} but the term tables give ${inTables
+        .map(([t, m]) => `${t} ${m.get(slug)}%`)
+        .join(', ')}. Use a per-term map.`
+    );
+    failed = true;
+    continue;
+  }
+  for (const [term, m] of inTables) {
+    const expected = m.get(slug);
+    const actual = typeof declared === 'number' ? declared : declared[term];
+    if (actual === undefined) {
+      console.error(`WEIGHT ${slug}.mdx: no ${term} weight declared, but the ${term} table gives ${expected}%.`);
+      failed = true;
+    } else if (Math.abs(actual - expected) > 0.001) {
+      console.error(
+        `WEIGHT ${slug}.mdx: declares ${actual} for ${term} but the ${term} table gives ${expected}%.`
+      );
+      failed = true;
+    }
+  }
+  // A declared term the tables do not carry is the same drift in reverse.
+  if (typeof declared === 'object') {
+    for (const term of Object.keys(declared)) {
+      if (!tableWeights.get(term)?.has(slug)) {
+        console.error(`WEIGHT ${slug}.mdx: declares a ${term} weight, but no ${term} table row links it.`);
+        failed = true;
+      }
+    }
+  }
+}
+if (!failed) {
+  console.log('  Frontmatter weights reconcile with the term tables.');
 }
 
 // --- Canvas mirror reconciliation -------------------------------------------

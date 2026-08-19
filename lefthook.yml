@@ -19,3 +19,6 @@ pre-commit:
     validate-activities:
       glob: "src/content/docs/{assignments,activities}/*.mdx"
       run: node scripts/validate-activities.mjs
+    validate-downloads:
+      glob: "{public/*,src/content/docs/**/*.mdx}"
+      run: node scripts/validate-downloads.mjs

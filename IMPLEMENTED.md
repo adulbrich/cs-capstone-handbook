@@ -15,7 +15,7 @@ Each term's grade has four equal components:
 
 Key structural moves: standalone requirements and technical design documents are gone (living docs in the repo, graded via twice-a-term Repo Checkpoints, with a live walkthrough variant for NDA teams); 14 progress reports became 10 pass/fail sprint notes plus a demo cadence; individual credit runs through RFCs (draft, cross-team feedback, revision), live defenses, and PR-per-sprint ownership; the spring outcome ladder is scaffolded by a Definition of Shipped contract, term gates ("hello, production" in fall, release candidate in winter), and a new Shipping guide.
 
-## 1. New Assignments Section (`src/content/docs/assignments/`, 16 pages, new sidebar group)
+## 1. New Assignments Section (`src/content/docs/assignments/`, 17 pages, new sidebar group)
 
 Source of truth for all graded work; Canvas mirrors it. Every rubric criterion carries a learning-outcome tag, and pages declare coverage in frontmatter.
 
@@ -30,12 +30,14 @@ Source of truth for all graded work; Canvas mirrors it. Every rubric criterion c
 | term-retrospective.mdx | Team + individual pages | F | 3% | 4Ls format; winter uses the postmortem, spring the project retrospective |
 | definition-of-shipped.mdx | Team | W | 4% | Partner-agreed contract: target ladder rung, metrics, lead times, user access plan; v0 drafted at fall checkpoint 2 |
 | incident-postmortem.mdx | Team | W | 4% | Blameless, real incident, corrective actions verifiable at next checkpoint |
-| release.mdx | Team | S | 8% | Video + release notes + new metrics evidence section (measured values against docs/shipped.md) |
+| release.mdx | Team | S | 8% | 3-minute trailer + 2-page report with a metrics evidence section (measured values against docs/shipped.md); format changed 2026-08-18 |
 | landing-page.mdx | Team | S | 3% | Resolved to team-level; alternatives for NDA teams stated |
 | project-retrospective.mdx | Team | S | 3% | Cross-year arc, delivered vs Definition of Shipped, decisions traced via RFCs |
 | career-retrospective.mdx | Individual | S | 15% | PR portfolio, judgment/AI reflection, resume + two-way peer review |
 | project-handoff.mdx | Team | S | 6% | Partner-facing, living-docs links, written partner confirmation, consent declaration |
-| workshop-activities.mdx | Team | F/W/S | 2/1/1% | Six practice-library activities graded complete/incomplete; added in the August 2026 four-skills pass (section 10) |
+| workshop-activities.mdx | Team | F/W/S | 2/1/1% | Eight practice-library activities graded complete/incomplete (6 fall, 1 winter, 1 spring); added in the August 2026 four-skills pass (section 10) |
+| peer-evaluations.mdx | Individual | F/W/S | 25% | Moved in from Project Evaluation in the deduplication pass (section 12); midterm 5% + final 20%, CATME at end of spring |
+| project-partner-evaluation.mdx | Team, individually adjustable | F/W/S | 25% | Moved in from Project Evaluation in the deduplication pass (section 12); midterm pulse 5% + final 20%, six facets, V&V ladders |
 
 **Deprecated assignments and their replacements:** Setup (folds into Sprint 1 note + fall checkpoint 1), Memo and Research Brief (fold into RFC 1's context and evidence), Progress Report ×14 (Sprint Notes + demos), Requirements Update and Technical Design Update (Repo Checkpoints on living docs), ADR + Code Review (RFC decision record + PR-per-sprint norm), winter Retrospective (Incident Postmortem), Retrospective and Career old form (Career and Individual Retrospective).
 
@@ -84,6 +86,8 @@ All 11 pages: converted from graded-assignment voice ("Submit...") to practice-l
 
 New: `rfc-template.md`, `sprint-note-template.md`, `definition-of-shipped-template.md`, `postmortem-template.md`, `defense-scoresheet.md` (printable per-student sheet with behavioral anchors). All linked from their assignment pages.
 
+Pass 13 extended that to the whole directory: 14 downloads, every one linked from an owning page, enforced by `scripts/validate-downloads.mjs`. `team-charter-template.md` was deleted rather than kept, because `team-charter.mdx` enumerates the sections itself.
+
 ## 8. Canvas Mirror (`canvas/`)
 
 - New rubric TSVs in the browser-extension import format, points matching the handbook exactly: `rfc/`, `defense/`, `sprint-note/`, `repo-checkpoint/`, `definition-of-shipped/`, `incident-postmortem/`, `career-retrospective/`, plus an updated `spring-release/` with the metrics-evidence criteria.
@@ -93,11 +97,11 @@ New: `rfc-template.md`, `sprint-note-template.md`, `definition-of-shipped-templa
 
 ## 9. Infrastructure
 
-- `src/content.config.ts`: schema extended with the `assignment` frontmatter block (level, terms, weight, outcomes).
+- `src/content.config.ts`: schema extended with the `assignment` frontmatter block (level, terms, weight, outcomes). `weight` accepts a number or a strict per-term map as of pass 13.
 - `astro.config.mjs`: Assignments sidebar group added.
-- `.github/workflows/ci.yml`: build + astro check, outcome validation, tracked-student-data guard. First CI in this repo.
-- `lefthook.yml`: activated (was all comments): pre-commit block on `data/` paths + outcome validation. Install with `npx lefthook install`.
-- `package.json`: `validate:outcomes` script.
+- `.github/workflows/ci.yml`: build + astro check, outcome validation, activity-tier validation, download-ownership validation, tracked-student-data guard. First CI in this repo.
+- `lefthook.yml`: activated (was all comments): pre-commit block on `data/` paths plus all three validators. Install with `npx lefthook install`.
+- `package.json`: `validate:outcomes`, `validate:activities`, `validate:downloads` scripts.
 
 ### Package Manager Migration to npm (August 2026)
 
@@ -143,6 +147,7 @@ would break `astro check`. Revisit when `@astrojs/check` widens its peer range.
 4. **Defense inside cohort check-ins** assumes check-ins are at least 40 minutes and TAs can score live. The printable scoresheet is in `public/defense-scoresheet.md`.
 5. **CATME in spring** is kept as-is (parked per your instruction); the peer-evaluations page now says so explicitly.
 6. **The old canvas/assignments sources for deprecated assignments were left in place** (with the readme marking them deprecated) rather than deleted, so nothing is lost while Canvas still holds live content.
+7. ~~The four-skills spec's Communication substitution is unimplemented and unrecorded.~~ **Resolved 2026-08-19**: implemented, with one deliberate divergence from the spec text. See section 14.
 
 ## Validation
 
@@ -287,20 +292,86 @@ Peer evaluations and partner evaluations are 50% of every term's grade, so the a
 
 Project category prose was also deduplicated: the partner evaluation page repeated the descriptions from `practicalities/categories.mdx` (two sentences byte-identical) and now links once, keeping the V&V ladders that are genuinely its own.
 
+## 13. Consistency Sweep (August 2026)
+
+A full content sweep. All three validators passed on entry, which was the useful starting fact: every real defect had to be in what they cannot see. Eleven discrepancies in the first pass, then the `public/` download surface turned out to hold a worse problem than the content drift it was checked for.
+
+**Handbook internal.** `activities/introduction.mdx` and `assignments/workshop-activities.mdx` both said "six activities everyone does" while the Workshop tier is eight (6 fall, 1 winter, 1 spring), which the same pages' own tables and the validator already stated. The Year at a Glance omitted Workshop Activities from the winter and spring team rows. The activities description listed 9 themes for a page that has 11. `guides/introduction.mdx` never listed `guides/conflict.mdx`, extracted two commits earlier, and advertised Presentations as covering "the release video" three days after Release became a trailer plus a written report, which `presentations.mdx` covers neither of. `for-students.mdx` still listed "project evaluation" in its coverage list, a section dissolved in pass 12.
+
+**Canvas mirror.** Landing Page was week 8 in `cs463.html` and `assignment-readme.md` against week 7 in the handbook; the readme's CS 462 and CS 463 schedules carried no Workshop Activities row despite the same file's weights section adding them. `scripts/project-partner-end-of-term-surveys.R` pointed at `/project-evaluation/breakdown/#project-partner-assessment-facets`, whose redirect drops the anchor. Its facet weights match the handbook exactly; only the comment was stale.
+
+**Spring defense runs through week 10**, and here Canvas was right and the handbook was wrong. Expo is week 10 and Expo Q&A may substitute for the defense, so the spring window is weeks 7 to 10 where fall and winter are 7 to 9. `expo.mdx` now states the week instead of only "in June."
+
+**All 13 Canvas rubric TSVs verified clean** on points, criterion order, and outcome tags, every total 100. `mapping.mdx` counts match validator output on all ten outcomes. The syllabi weights match the term tables. Pass 12's reconciliation held.
+
+**Two more invariants moved from memory into CI.**
+
+- **`assignment.weight` is now reconciled against the term tables.** It was documentary: nothing read it, so it drifted. Sprint Notes declared `8` while spring is 4%, Workshop Activities declared `2` while winter and spring are 1%. The field now takes a scalar when the weight is uniform across the terms a page runs, and a per-term map when it varies. `validate-outcomes.mjs` fails on scalar-where-varying, a wrong per-term number, a missing term, and a declared term no table row links; `content.config.ts` uses a **strict** object so a misspelled term fails at build rather than silently declaring nothing. The check was written before the fix and independently flagged exactly the two pages. Negative-tested in both directions.
+- **`scripts/validate-downloads.mjs`, new**: every file in `public/` must be linked from a page under `src/content/docs/`. `starlight-links-validator` already covered links to missing files; nothing covered the reverse, and **six of fifteen downloads were being served with no page linking them**. An orphan is worse than a missing file: it stays served while going stale, and the assignment it belongs to never notices. Negative-tested.
+
+**The download surface got a rule**, now in `AGENTS.md`: every download has exactly one owning page, and that page is the one that requires the artifact.
+
+| File | Fate |
+|---|---|
+| `team-charter-template.md` | Deleted. See below. |
+| `CONTRIBUTING-template.md` | Linked from `team-charter.mdx` artifact 2. Covers all five stated requirements. |
+| `team-retrospective-template.md` | Asked for 2 improvement commitments plus a risk plan where the page requires one commitment, and named a date-stamped filename where the page says `docs/retrospectives/fall.md`. Both fixed, then linked. |
+| `rfc-template.md` | Gained **Response to Feedback** and **Decision** sections. Criterion 8 is worth 10 points and had no template home. |
+| `problem-statement-template.md` | LinkCard from `guides/requirements.mdx`. |
+| `email-template.txt` | Linked from `practicalities/selection.mdx`, "reach out to and meet your project partner." |
+| `the-20-min-networking-cheat-sheet.md` | Linked from the networking activity in `career.mdx`. The weakest of the seven: the sheet is about one-on-one informational meetings, not job fairs. |
+
+**`team-charter-template.md` was deleted rather than repaired.** `team-charter.mdx` already enumerates all eight required sections with per-role duties and rotation rules. The template restated that badly: it was missing the two rubric-scored sections worth 30 points combined (PR-per-Sprint Norm, AI and Confidentiality One-Pager) and opened with a Change Log table the page explicitly says not to maintain, git history being the change log. Where the assignment page enumerates the sections, **the page is the template**; a second copy is the same "say each fact once" failure that pass 12 was about, and this file is what it looks like after a year.
+
+**Em dashes eliminated repo-wide.** Four in `guides/`, twenty across four `public/` templates, three used as empty-cell markers in `STAFF-RUNBOOK.md` (now `n/a`), two in a `Latex.astro` comment. A repo-wide grep for the character now returns nothing outside `node_modules`.
+
+**Home page.** The hero's *Explore Activities* button became *Explore Assignments*. The Assignments/Guides card grid was dropped as redundant with it, replaced by a **What Students Learn** paragraph naming the four skills (critical thinking, AI literacy, leadership, collaboration) and stating that each is assessed per student rather than inferred from the team's output. The vocabulary is the four-skills pass's own, already load-bearing in the defense and RFC rubrics, so the page makes no claim the handbook does not back.
+
+## 14. Defense Communication Criterion (August 2026)
+
+The last unimplemented line of the four-skills design (section 10), surfaced by the pass 13 sweep. The spec's table said: *substitute one question: what was the strongest thing you told a peer whose RFC you reviewed.* The plan document never carried it forward, so it reached neither `defense.mdx` nor the scoresheet, and nothing recorded it as cut.
+
+**Why it exists.** Communication was assessed in one direction only: how well a student explains their own work. A student can be articulate about their own work and useless in review, and the course already generates reviewer-side evidence it was not asking about.
+
+**The criterion is now `Communication, both directions`**, still 20 points, still tagged `SO3` alone. It keeps the self-expression half unchanged and adds: names the most useful thing they told someone whose work they reviewed, and what changed because of it. No `L07`: this is spoken, not writing, and L07's individual floor is already met by the RFC.
+
+**The divergence: the spec's wording is unimplementable in spring.** The RFC runs fall and winter only, so "a peer whose RFC you reviewed" has no referent at the spring defense. The criterion is therefore anchored on review generally: the RFC cross-team review in fall and winter, code review in spring, where sprint-note contribution lines already require naming "the one change you asked for." Both are graded records, which makes the answer checkable rather than self-reported.
+
+**The 6-minute budget was respected.** The defense budget is the binding constraint on the whole design, and the rule is that no question is added without one being removed. `defense.mdx` listed "why this way" and "what alternatives did you reject" as two questions, while the scoresheet and the Canvas TSV already scored them as one combined Judgment answer. Merging the prose list brings it into line with both grading instruments and leaves the question count at four.
+
+**Band descriptions changed, not just the label.** The old bands were entirely about self-expression, so a grader would have accepted "I left some comments." The discriminator is now whether the reviewee changed something: Exceeds names the specific thing said and what moved, Meets names something real but cannot say what changed, Does Not Meet has nothing or feedback that named no line and requested no change. That is `sprint-notes.mdx`'s existing standard for what counts as a review, reused rather than reinvented.
+
+Files: `src/content/docs/assignments/defense.mdx`, `public/defense-scoresheet.md`, `canvas/assignments/defense/defense-rubric-details.tsv` (**needs re-importing into Canvas**), `canvas/assignments/assignment-readme.md`, and a calibration line in `STAFF-RUNBOOK.md`, since a new half of a criterion with a known grader failure mode is exactly what the calibration hour is for. The anti-cueing bullet gained a clause noting the reviewer-side question needs no per-student variation: each student reviewed different work, so it is cueing-resistant by construction.
+
+Outcome tags are unchanged, and `validate-outcomes.mjs` still reports SO3: 10.
+
 ## Remaining Open Items (honest list)
 
 1. ~~SO4 evidence concentration in the RFC.~~ **Resolved 2026-08-17**: the defense ownership-and-delegation criterion is now tagged `SO2, SO4`, giving three non-RFC individual SO4 points per year (SO4 total 5 to 8).
 2. R scripts: team-size cap at 6 including self; Q7 individual-concern extraction stubbed. Fix or supersede with the instructor-tools page.
 3. Lecture deck series (spec-writing for agents, AI-diff review, testing workshop) exists as a plan in STAFF-RUNBOOK.md, not as decks. `decks/Fall.md` week 1 deck is done.
 4. The instructor-tools client-side page (README todo) is unbuilt; the runbook documents the manual pipeline until then.
-5. Week numbers assume the standard term calendar; verify against the actual academic calendar before publishing.
+5. Week numbers assume the standard term calendar; verify against the actual academic calendar before publishing. Expo is confirmed as spring week 10 (instructor, 2026-08-19), which is what sets the spring defense window at weeks 7 to 10.
 6. Examples library (good/bad examples per assignment) still to be collected from past projects.
 7. ~~Canvas rubric TSVs drifting from the handbook.~~ **Resolved**: `validate-outcomes.mjs` now reconciles every TSV against the handbook rubric table it mirrors. It found five out of sync, not the one visible by inspection: `team-charter`, `project-retrospective`, `project-handoff`, and `project-landing-page` still carried pre-rewrite criteria and point splits, and `sprint-note` claimed outcome tags the handbook does not. All regenerated; **all five need re-importing into Canvas**.
 8. ~~Defense format is an open instructor decision.~~ **Resolved 2026-08-17**: team session retained, with a mandatory anti-cueing protocol (order drawn at random in the room, a different artifact and a different "what breaks if X" per student) and a documented right to an individual follow-up on borderline scores. Session length changed from a flat 40 minutes to **6 minutes per student plus ~10 minutes of buffer**, which scales with team size instead of squeezing large teams. Because the average team is 3.5 students, sessions now roughly match the 30-minute check-in they replace: the marginal cost fell from +2.3 h to **+0.3 h per TA per term**, and the ledger row went from ~4 h to ~2 h.
 
    The reasoning, recorded because it will be asked again: individual slots use less total contact time (6.5 h vs 9.3 h per TA) but roughly triple the *marginal* cost, because a team session replaces a check-in and individual slots replace nothing. They also give up the peer-presence deterrent, which is the strongest thing the defense has going for it: claiming work you did not do is much harder in front of the people who did it.
-9. ~~`career.mdx` review pass.~~ **Resolved**: all 16 activities brought to the standard format, all six external links verified live, market framing kept statistic-free so it ages slowly, and a dated review marker added. Personal Branding and Mock Interviews promoted onto the career assignment, taking it from 3 promoted to 5.
+9. **`npx biome check` fails at config resolution** with `Could not resolve ultracite: module not found`, though `node_modules/ultracite` exists. It fires before any file is read, so formatting and linting cannot run locally. CI never invokes Biome, so nothing is currently gated on it. Pre-existing.
+10. ~~`career.mdx` review pass.~~ **Resolved**: all 16 activities brought to the standard format, all six external links verified live, market framing kept statistic-free so it ages slowly, and a dated review marker added. Personal Branding and Mock Interviews promoted onto the career assignment, taking it from 3 promoted to 5.
 
 ## Build Status
 
-`npm run build` passes: astro check (0 errors, warnings only, pre-existing `z` deprecation), 65 pages plus 6 redirect stubs. Internal link validation **is** running as of 2026-08-17: `starlightLinksValidator()` was previously commented out in `astro.config.mjs` and is now enabled, reporting "All internal links are valid" across all 65 pages. Verified by negative test (a deliberately broken link fails the build), and CI gates on it because CI runs `npm run build`. `node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5, L07-L10 covered, zero frontmatter drift. `node scripts/validate-activities.mjs` passes: 8 Workshop, 53 Recommended, 57 Library, 118 total, every activity carrying an audience badge and a deliverable line, every linked activity tiered, and every Recommended badge earned.
+Verified 2026-08-19, all four gates green.
+
+`npm run build` passes: `astro check` reports **0 errors** across 15 files, with warnings only (16 occurrences of the pre-existing `z` deprecation in `content.config.ts`; the `weight` union adds zod calls, so the count rose with it). 66 pages built, 72 HTML files indexed once the 6 redirect stubs are counted. Internal link validation is running: `starlightLinksValidator()` reports "All internal links are valid," and CI gates on it because CI runs `npm run build`.
+
+`node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5, L07-L10 at 2 each, zero frontmatter drift. All three Team Deliverables tables sum to exactly 25%, and every page's `assignment.weight` reconciles with the row that links it.
+
+`node scripts/validate-activities.mjs` passes: 8 Workshop, 53 Recommended, 57 Library, 118 total, every activity carrying an audience badge and a deliverable line, every linked activity tiered, and every Recommended badge earned.
+
+`node scripts/validate-downloads.mjs` passes: 14 downloads in `public/`, every one linked from a handbook page.
+
+The defense rubric TSV changed in section 14 and **needs re-importing into Canvas**; the validator confirms its outcome tag set still matches the handbook.
+
+Each of the three scripts has been negative-tested by injecting the drift it exists to catch and confirming a non-zero exit.

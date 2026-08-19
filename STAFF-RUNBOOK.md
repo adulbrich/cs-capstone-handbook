@@ -24,10 +24,10 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 
 ## Defense Logistics
 
-- One calibration hour before week 7 each term: all graders score the same recorded or role-played walkthrough on the printed scoresheet and reconcile. Spend part of it on the Ownership-and-Delegation criterion specifically, because it is the one graders most often get backwards: **score the triage decision, not the luck.** A student who let an agent drive a schema migration with no net scores low even though nothing broke; a student who stopped to validate an auth change scores high even with buggy feature code. Sophisticated tooling earns no points by itself, and a student on weaker tools who gated tightly has done the harder work.
+- One calibration hour before week 7 each term: all graders score the same recorded or role-played walkthrough on the printed scoresheet and reconcile. Spend part of it on the Ownership-and-Delegation criterion specifically, because it is the one graders most often get backwards: **score the triage decision, not the luck.** A student who let an agent drive a schema migration with no net scores low even though nothing broke; a student who stopped to validate an auth change scores high even with buggy feature code. Sophisticated tooling earns no points by itself, and a student on weaker tools who gated tightly has done the harder work. Spend a few minutes on the reviewer-side half of Communication as well, which is new: it asks what the student told someone whose work they reviewed and what changed because of it. "I left some comments" scores low; the discriminator is whether they can name the thing they said and the thing that moved. It is checkable against the RFC reviews in fall and winter and against sprint-note contribution lines in spring.
 - **Session length is 6 minutes per student plus ~10 minutes of setup and wrap.** Team of 2 = 22 min, 3 = 28, 4 = 34, 5 = 40, 6 = 46. Do not compress per-student time on a large team: the scoresheet anchors are calibrated at 6 minutes and stop comparing across cohorts below that. The session simply runs longer. Book the slot from the roster before the cycle starts, since it is no longer a uniform 40 minutes.
 - Because most teams are three or four, the average defense session is at or under the 30-minute check-in it replaces. Across a cohort of 14 this cycle is close to cost-neutral: about **+0.3 h per TA per term** of meeting time, against +2.3 h under the old fixed 40-minute session.
-- **Anti-cueing protocol, mandatory.** Draw the speaking order at random in the room and never publish it in advance. Give each student a different artifact and a different "what breaks if X" question. Without this, whoever goes last has heard several rounds and is answering a question they have had ten minutes to prepare.
+- **Anti-cueing protocol, mandatory.** Draw the speaking order at random in the room and never publish it in advance. Give each student a different artifact and a different "what breaks if X" question. The reviewer-side Communication question needs no variation: each student reviewed different work, so it is cueing-resistant by construction. Without this, whoever goes last has heard several rounds and is answering a question they have had ten minutes to prepare.
 - **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per cohort per term.
 - Two assessors split the students between them when both attend.
 - Absences: rescheduled into another check-in that term if flagged before the session; unexcused no-show scores zero (the TSV has a zero band).
@@ -77,11 +77,11 @@ The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 |---|---|---|---|
 | Bi-weekly check-ins (incl. demos) | ~35 h | ~35 h | ~35 h |
 | Sprint notes (pass/fail, ~5 min each) | ~5 h | ~5 h | ~2.5 h |
-| Repo checkpoints (~12 min per team, x2) | ~6 h | ~6 h | — |
-| RFCs (~50 x ~10 min) | ~8 h | ~8 h | — |
+| Repo checkpoints (~12 min per team, x2) | ~6 h | ~6 h | n/a |
+| RFCs (~50 x ~10 min) | ~8 h | ~8 h | n/a |
 | Defense scoring, follow-ups + Canvas entry (replaces check-ins) | ~2 h | ~2 h | ~2 h |
 | Term deliverable (charter / DoS + postmortem / spring set incl. release trailers) | ~5 h | ~5 h | ~7 h |
-| Career retrospectives (~50 x ~10 min) | — | — | ~8 h |
+| Career retrospectives (~50 x ~10 min) | n/a | n/a | ~8 h |
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
 | **Total** | **~62 h (~6.2 h/wk)** | **~62 h** | **~56 h** |
 

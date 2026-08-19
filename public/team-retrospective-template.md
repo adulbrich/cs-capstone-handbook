@@ -1,4 +1,4 @@
-<!-- YYYY-MM-DD-[TeamID]-Retrospective.md -->
+<!-- docs/retrospectives/fall.md -->
 
 # Retrospective
 
@@ -46,7 +46,7 @@ Each action: owner, timeframe, and a plain recognition cue so you can tell it's 
 
 ## Individual Sections
 
-Create one subsection per student. Keep it 0.5-1 page each. Cover 1-2 wins, 1-2 gaps, 2 measurable improvement commitments, and 1 risk + mitigation plan.
+Create one subsection per student, clearly labeled. Keep it short. Cover 1 or 2 wins and 1 or 2 gaps, each tied to a concrete example (a PR, a review, a decision you drove or dodged), plus **one** commitment for winter: what you will do differently, how progress will be visible, and by when.
 
 ## Optional Appendix
 

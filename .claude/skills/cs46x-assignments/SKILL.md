@@ -31,11 +31,21 @@ sidebar:
 assignment:
   level: individual | team
   terms: [fall, winter, spring]
-  weight: <percent of that term's grade>
+  weight: <percent of that term's grade, or a per-term map>
   outcomes:
     SO2: 1
     SO4: 2
 ---
+```
+
+`weight` is a scalar when the page is worth the same in every term it runs, and
+a per-term map when it varies:
+
+```yaml
+  weight:
+    fall: 8
+    winter: 8
+    spring: 4
 ```
 
 Four rules the validators enforce, all of which have been gotten wrong before:
@@ -52,7 +62,10 @@ Four rules the validators enforce, all of which have been gotten wrong before:
    Beyond OSU (L07-L10) need one.** Removing a tagged criterion can drop an
    outcome below its floor and fail CI. Run the validator before assuming a
    deletion is safe.
-4. **`weight` participates in arithmetic.** See **Grade Weights** below.
+4. **`weight` is reconciled against the term tables** in
+   `assignments/introduction.mdx`. A scalar on a page whose weight varies by
+   term is a hard failure, as is a declared term no table row links. See
+   **Grade Weights** below.
 
 A page with no `assignment:` block is skipped by the validator entirely. Only
 `introduction.mdx` should be in that state.
@@ -200,6 +213,9 @@ weight appears in four places that must agree:
 3. the three syllabi,
 4. `canvas/assignments/assignment-readme.md`.
 
+The validator reconciles the first two against each other. The last two it
+cannot see.
+
 Raising one weight means cutting another. Verify the sums with a script, not by
 eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
 carry the individual contribution modifier and the living-docs gate.
@@ -224,9 +240,10 @@ the student has to learn first.
 
 ## Before Finishing
 
-1. `npm run validate:outcomes` (frontmatter, rubric tags, Canvas mirror).
+1. `npm run validate:outcomes` (frontmatter, rubric tags, weights, Canvas mirror).
 2. `npm run validate:activities` (every linked activity is tiered).
-3. `npm run build` (MDX, internal links, anchors).
+3. `npm run validate:downloads` (every `public/` download has an owning page).
+4. `npm run build` (MDX, internal links, anchors).
 4. If you touched a weight, verify all three terms still sum to 25%.
 5. If you touched a rubric, update the Canvas TSV in the same commit.
 6. Grep for em dashes.

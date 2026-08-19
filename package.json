@@ -11,6 +11,7 @@
     "build": "astro check && astro build",
     "validate:outcomes": "node scripts/validate-outcomes.mjs",
     "validate:activities": "node scripts/validate-activities.mjs",
+    "validate:downloads": "node scripts/validate-downloads.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

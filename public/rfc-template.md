@@ -54,3 +54,16 @@ Licensing, data use, IP, and the partner confidentiality boundary as they bear o
 - **Where you stopped and validated the result yourself, and why those points.** If this decision is hard to reverse, say what you personally checked before committing to it.
 
 What is assessed is the fit between how far you delegated and how strong your net is, not how sophisticated your tooling is.
+
+## Response to Feedback
+
+Written at revision time, after the week 5 cross-team review. One short paragraph per reviewer:
+
+- **What they raised**, in your words, not a quote dump.
+- **What you changed because of it**, pointing at the section above that moved. If you changed nothing, say why the objection does not hold.
+
+Reviewers whose points you accepted should be able to find their fingerprints in the document.
+
+## Decision
+
+Accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.

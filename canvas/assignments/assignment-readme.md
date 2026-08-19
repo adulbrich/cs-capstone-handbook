@@ -25,8 +25,9 @@ Criterion renames that require re-importing rubric TSVs:
 | Defense | `Judgment: why this approach, what was rejected [SO1]` | adds "what was hard to reverse" |
 | Defense | `Role and team accountability [SO5]` | `Role, team accountability, and work distribution [SO5]` |
 | Repo Checkpoint | `Build health: CI, tests, quickstart [SO6]` | `Build health and safety net: CI, tests, quickstart, gates [SO6]` |
+| Defense | `Communication: clear, honest, handles not-knowing [SO3]` | `Communication, both directions [SO3]` |
 
-Points are unchanged in every case; only labels and band descriptions moved. The **defense Ownership criterion is now dual-tagged `SO2, SO4`**, which is the course's fix for the SO4 concentration concern and the reason per-student defense scores must keep reaching Canvas as program assessment evidence.
+Points are unchanged in every case; only labels and band descriptions moved. The Communication rename landed last (2026-08-19) and completes the pass: the criterion now also asks what the student told someone whose work they reviewed and what changed because of it, so all three band descriptions changed and `defense/` needs re-importing. In fall and winter that is the RFC cross-team review; in spring it is code review, because there is no RFC in spring. The **defense Ownership criterion is now dual-tagged `SO2, SO4`**, which is the course's fix for the SO4 concentration concern and the reason per-student defense scores must keep reaching Canvas as program assessment evidence.
 
 **AI policy changed in all three syllabi.** "Briefly disclose any AI use" is gone. The policy is now: state what you delegated, what safety net made that reasonable, and where you validated yourself, with grading on the fit rather than on tool sophistication.
 
@@ -81,6 +82,7 @@ The sprint-note case is the opposite error: the TSV claimed outcome tags that `s
 | Week | Due |
 |------|-----|
 | 2 | Sprint Note 1 |
+| 2-3 | Workshop Activities (1 item, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
 | 4 | Sprint Note 2; RFC draft |
 | 5 | Repo Checkpoint 1 (integration health); RFC cross-team feedback |
@@ -94,10 +96,12 @@ The sprint-note case is the opposite error: the TSV claimed outcome tags that `s
 
 | Week | Due |
 |------|-----|
+| 2-3 | Workshop Activities (1 item, complete/incomplete) |
 | 3 | Sprint Note 1 |
 | 6 | Sprint Note 2 |
+| 7 | Landing Page |
 | 7-10 | Defense (Expo Q&A may substitute, at the instructors' discretion) |
-| 8 | Release and Metrics; Landing Page |
+| 8 | Release and Metrics |
 | 9 | Project Retrospective; Career and Individual Retrospective |
 | 10 | Project Handoff |
 
