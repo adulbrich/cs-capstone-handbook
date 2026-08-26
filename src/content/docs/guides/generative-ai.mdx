@@ -44,8 +44,8 @@ Understanding what AI tools are good at and where they fall short helps you use 
 
 The landscape changes rapidly. Rather than an exhaustive list, here are the categories of tools and some current options in each.
 
-:::tip[GitHub Copilot Pro for Students]
-All students with a GitHub Education account get **GitHub Copilot Pro for free**. Activate it at [GitHub Education](https://github.com/education). This gives you AI-assisted code completion, chat, and agent capabilities in VS Code, JetBrains, and other editors. If you do not have another preferred tool, Copilot is a solid default.
+:::tip[Free GitHub Copilot for Students]
+Verified students get the free **GitHub Copilot Student** plan. Activate it at [GitHub Education](https://github.com/education). It gives you unlimited code completions plus limited chat and agent usage in VS Code, JetBrains, and other editors, with an allowance of AI credits and automatic model selection rather than a model picker. GitHub re-checks your eligibility every month. This replaced the older "free Copilot Pro for students" offer in March 2026; verified teachers and open-source maintainers still get Copilot Pro. If you do not have another preferred tool, Copilot is a solid default.
 :::
 
 ### Chat-Based Assistants
@@ -62,13 +62,13 @@ Tools that integrate directly into your editor or terminal and can read, write, 
 
 - **GitHub Copilot**: code completion, chat, and agent mode in VS Code and JetBrains. Free for students.
 - **Cursor**: AI-native code editor built on VS Code with strong multi-file editing.
-- **Claude Code** and **ChatGPT Codex**: terminal-based agentic coding tools.
+- **Claude Code** and **OpenAI Codex**: agentic coding tools that started in the terminal and now also run as desktop apps, web apps, and IDE extensions.
 
 The distinction between "autocomplete" and "agent" matters. Autocomplete tools suggest the next few lines as you type. Agentic tools can plan multi-step changes, read multiple files, run commands, and modify your codebase autonomously. Agentic tools are more powerful but require more oversight, especially on a team where multiple people are using them simultaneously.
 
 ### Image and Design Tools
 
-- **Midjourney**, **Stable Diffusion**, **DALL-E**: image generation for mockups, assets, or diagrams. Check licenses before using generated assets in your project.
+- **Midjourney**, **Stable Diffusion**, **GPT Image** (the model behind ChatGPT Images, which replaced DALL-E when OpenAI retired it in May 2026), **Google Gemini image generation**: image generation for mockups, assets, or diagrams. Check licenses before using generated assets in your project.
 
 ### AI Search Tools
 
@@ -84,7 +84,7 @@ Most AI coding tools support some form of project-level configuration that persi
 
 - **`AGENTS.md`** in your repository root: the cross-tool convention, read by a growing number of agents and the right default when your team does not all use the same tool.
 - **Claude Code**: `CLAUDE.md` in your repository root.
-- **Cursor**: `.cursor/rules/` directory or `.cursorrules` file.
+- **Cursor**: `.mdc` files in the `.cursor/rules/` directory. Cursor also reads `AGENTS.md`. A top-level `.cursorrules` file is the legacy format; do not start a new project with it.
 - **GitHub Copilot**: `.github/copilot-instructions.md`.
 
 These files are checked into version control, which means the entire team shares the same AI context. This is one of the most effective ways to keep AI-generated code consistent across team members.
@@ -112,7 +112,7 @@ Many other MCP servers exist and new ones appear frequently. Explore what is ava
 
 ### Skills
 
-[Skills](https://skills.sh/) (sometimes called slash commands, custom commands, or agent skills) are reusable prompts or workflows that you define once and invoke repeatedly. They let you encode team-specific processes into your AI tool so that common tasks are performed consistently.
+Agent skills (sometimes called slash commands or custom commands) are reusable prompts or workflows that you define once and invoke repeatedly. They let you encode team-specific processes into your AI tool so that common tasks are performed consistently. A skill is a directory containing a `SKILL.md` file: Markdown instructions with YAML frontmatter naming and describing the skill, optionally alongside scripts and reference files. [skills.sh](https://skills.sh/) is a public directory of published ones.
 
 For example, a team might define skills for:
 
@@ -123,11 +123,11 @@ For example, a team might define skills for:
 
 Skills are particularly valuable on a team because they standardize how the AI performs recurring tasks. Without them, each team member prompts the AI differently and gets different results. With a shared set of skills checked into the repository, everyone gets the same behavior.
 
-How skills are defined depends on the tool:
+`SKILL.md` is now close to a cross-tool convention, so where you put the directory matters more than which tool you use:
 
-- **Claude Code**: skills are Markdown files in `.claude/skills/<skill-name>/SKILL.md`, each in its own directory. They can be invoked as slash commands.
-- **Cursor**: custom commands or notepad entries that encode reusable prompts.
-- **GitHub Copilot**: reusable prompts configured through the Copilot instructions file or VS Code tasks.
+- **Claude Code**: `.claude/skills/<skill-name>/SKILL.md`. Invoke with `/<skill-name>`.
+- **Cursor**: `.cursor/skills/<skill-name>/SKILL.md`, also `.agents/skills/`. Pick one from the `/` menu.
+- **GitHub Copilot**: `.github/skills/<skill-name>/SKILL.md`, and it also reads `.claude/skills/` and `.agents/skills/`. Copilot separately supports single-file prompt files at `.github/prompts/<name>.prompt.md`, invoked as `/<name>` in Copilot Chat.
 
 Like project-level instructions, skills should be version-controlled so the whole team benefits from improvements.
 
@@ -183,7 +183,7 @@ Things change rapidly in the AI space. New models are released frequently, each 
 - **Context window**: how much of your codebase can the tool see at once? Larger context windows help with multi-file tasks.
 - **Speed vs. quality**: faster models are better for autocomplete; slower, more capable models are better for complex reasoning and multi-step changes.
 - **Integration**: does the tool work with your editor, terminal, and version control? The best tool is the one you actually use.
-- **Cost**: many tools have free tiers or student pricing. GitHub Copilot Pro is free with GitHub Education.
+- **Cost**: many tools have free tiers or student pricing. GitHub Copilot Student is free with GitHub Education.
 
 If you want to compare models, these resources track current benchmarks:
 

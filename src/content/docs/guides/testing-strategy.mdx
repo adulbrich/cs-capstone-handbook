@@ -123,7 +123,7 @@ Run these as a CI gate, not as a pre-release scramble. An accessibility violatio
 
 ### Manual Accessibility Testing
 
-Automated tools catch roughly a third to a half of real accessibility defects. They are excellent at the mechanical rules (is there alt text, is the contrast ratio sufficient) and blind to the ones that require judgment: whether focus order makes sense, whether a label is *meaningful* rather than merely present, whether the flow is completable at all without a mouse.
+Automated tools catch roughly a third to a half of real accessibility defects. [Deque's audit data](https://www.deque.com/automated-accessibility-coverage-report/) puts axe-core at 57% of issues by volume; counting WCAG success criteria instead gives a lower figure. They are excellent at the mechanical rules (is there alt text, is the contrast ratio sufficient) and blind to the ones that require judgment: whether focus order makes sense, whether a label is *meaningful* rather than merely present, whether the flow is completable at all without a mouse.
 
 Four checks, none of which need special equipment:
 
@@ -223,7 +223,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install dependencies
         run: npm install
       - name: Run tests
