@@ -197,6 +197,31 @@ for (const activity of activities.values()) {
   counts[activity.tier ?? "Library"] += 1;
 }
 
+// Two pages describe the size of the non-workshop library in prose. An exact
+// number went stale within a month, so the prose says "more than a hundred"
+// and this asserts both that the phrase is still there and that it is still
+// true. If the library shrinks below a hundred, change the phrase in both
+// places and here, in the same commit.
+const LIBRARY_CLAIM = /more than a hundred/i;
+const LIBRARY_CLAIM_MIN = 100;
+const LIBRARY_CLAIM_PAGES = [
+  join(ACTIVITIES_DIR, "introduction.mdx"),
+  join(ASSIGNMENTS_DIR, "workshop-activities.mdx"),
+];
+const nonWorkshop = activities.size - counts.Workshop;
+for (const page of LIBRARY_CLAIM_PAGES) {
+  if (!LIBRARY_CLAIM.test(readFileSync(page, "utf8"))) {
+    problems.push(
+      `library count: ${page} no longer says "more than a hundred"; the two prose figures must agree with each other and with the ${nonWorkshop} non-workshop activities`
+    );
+  }
+}
+if (nonWorkshop < LIBRARY_CLAIM_MIN) {
+  problems.push(
+    `library count: the pages claim more than a hundred non-workshop activities but there are ${nonWorkshop}`
+  );
+}
+
 console.log("Activity tiers:");
 console.log(`  Workshop:    ${counts.Workshop}`);
 console.log(`  Recommended: ${counts.Recommended}`);
