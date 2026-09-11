@@ -43,7 +43,7 @@ See the Shipping guide in the handbook.
 | Individual evidence (RFC + Defense) | 25% |
 | Team deliverables | 25% |
 
-Half your grade is individually determined. Handbook: Assignments section.
+Half your grade is individually determined. Weights, weeks and policies: the handbook's Assignments overview, which this deck only summarizes.
 
 ---
 
@@ -69,7 +69,7 @@ If you built it and understood it, both are easy.
 
 - Use them. Professionals do.
 - **You own the result**: correctness, security, licensing.
-- Disclose what you used and **what you verified**.
+- **Delegate deliberately**: say what you handed to AI, what safety net made that reasonable, and where you validated yourself. Graded on the fit, not the tool.
 - Your team charter defines what may enter which tools (NDA teams especially).
 
 The bottleneck is judgment, not typing speed.
@@ -80,12 +80,14 @@ The bottleneck is judgment, not typing speed.
 
 | Week | What |
 |---|---|
+| 1-5 | Six workshop activities, complete/incomplete |
 | 2 | Team charter (roles, norms, AI and confidentiality) |
 | 4 | RFC draft; sprint note 1 |
 | 5 | Repo checkpoint 1: rails stood up; RFC peer feedback |
 | 7-9 | Defense in cohort check-ins |
 | 8 | RFC final |
-| 10 | Repo checkpoint 2: **"hello, production"** + Definition of Shipped v0; term retrospective |
+| 9 | Term retrospective |
+| 10 | Repo checkpoint 2: **"hello, production"** + Definition of Shipped v0 |
 
 ---
 
