@@ -389,7 +389,7 @@ Six commits after section 14 went unrecorded here, and the branch review (#21, 2
 - MILP bids solver parameterization and mojibake (IDEAS 4.1): **defer** to before the fall 2027 bids run; the fall 2026 run has happened.
 - Term facts as a data file (IDEAS 4.3): **wontfix**. Superseded by one canonical page per fact plus validators that reconcile the restatements.
 
-**Found while fixing, still open:** the fall Term Retrospective has no Canvas TSV directory at all (`retrospective/` is the deprecated old form), so its rewritten Writing criterion is not mirrored; the readme records it. Decision issues #22 to #31 remain the instructor's; #32 (syllabi) and #36, #39, #42, #44 are agent-ready and untouched here except that #48 replaced the nine `&mdash;` entities in the syllabi so the new check could land green.
+**Found while fixing, still open:** the fall Term Retrospective has no Canvas TSV directory at all (`retrospective/` is the deprecated old form), so its rewritten Writing criterion is not mirrored; the readme records it. Decision issues #22 to #31 and #39 (survey dates) remain the instructor's, except that #29 was decided by #40 and #48 (Sprint Notes is a documented rubric exception and its meta states the term totals); #32 (syllabi), #36, #42 and #44 are agent-ready and untouched here, except that #48 replaced the nine `&mdash;` entities in the syllabi so the new check could land green.
 
 ## Build Status
 
