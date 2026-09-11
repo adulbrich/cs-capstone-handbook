@@ -1,10 +1,9 @@
 # Assignment README
 
 - Each assignment has its own directory under `canvas/assignments/`.
-- Assignments are stored in HTML that are ready to paste in Canvas.
-- Rubrics are stored in Markdown files in the same folder as the assignment HTML.
-- Rubric details for the Canvas rubric-import browser extension are stored in `*-rubric-details.tsv` files in the same folder.
-- There is a template for the assignment and rubrics structures in `canvas/assignments/_template/`.
+- The current, validated artifact in each live directory is the `*-rubric-details.tsv` for the Canvas rubric-import browser extension. `scripts/validate-outcomes.mjs` reconciles every live TSV against the handbook rubric table it mirrors, in CI and pre-commit; `canvas/assignments/_template/` holds the TSV format the extension imports.
+- The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/superpowers/specs/2026-08-19-canvas-import-package-design.md` generates it (#5).
+- The `*-assignment.html` and `*-rubrics.md` files still present in some directories are pre-revision. Nothing reads them, they describe formats the handbook no longer states, and they must not be pasted into Canvas. Their disposition is decided in #30.
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is now the source of truth for all graded work.** Canvas mirrors the handbook; when in doubt, the handbook wins, and rubric points in the TSV files must match the handbook rubric tables exactly.
 
@@ -70,6 +69,7 @@ Criterion text changed on the branch review (#40). Points and outcome tags are u
 |---|---|
 | `project-retrospective/` | Arc and pivots: rewritten as an observable check (dated, linked milestones; each pivot with decision, date, evidence) |
 | `project-landing-page/` | Value proposition: rewritten as an observable check (one sentence, user's terms, no course vocabulary) |
+| `career-retrospective/` | PR portfolio: the retired track vocabulary replaced by "NDA teams", matching the handbook page (#33) |
 
 The fall Term Retrospective's Writing criterion changed in the same way, but no TSV for it exists under `canvas/assignments/`; it needs one before the fall rubric is built in Canvas.
 
@@ -86,7 +86,8 @@ The fall Term Retrospective's Writing criterion changed in the same way, but no 
 | 6 | Sprint Note 2 |
 | 7-9 | Defense (during cohort check-ins) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
-| 10 | Sprint Note 4; Repo Checkpoint 2 ("hello, production" gate); Term Retrospective |
+| 9 | Term Retrospective |
+| 10 | Sprint Note 4; Repo Checkpoint 2 ("hello, production" gate) |
 
 ### CS 462 (Winter Term)
 
