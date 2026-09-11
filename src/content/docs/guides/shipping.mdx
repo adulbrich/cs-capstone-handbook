@@ -117,6 +117,16 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 
 **Evidence to collect:** the signed acceptance criteria, meeting notes and emails showing feedback rounds and sign-offs, security review correspondence, screenshots of the system running in the partner's environment, the handoff package, and the partner's written statement of production use.
 
+## Best Practices for Shipping
+
+- Start every external clock in fall: domain, TLS, hosting, store accounts, CLA, IRB, partner IT access. None of them runs faster for being started late.
+- Deploy the walking skeleton while there is nothing to lose. A production URL with a placeholder page flushes out the whole dependency chain at zero risk.
+- Instrument before you need the numbers. Analytics wired in fall is evidence in spring; analytics wired in May is a screenshot of an empty chart.
+- Treat recruiting strangers as a workstream: an owner, a channel that exists, backlog items, starting in winter.
+- Put dates earlier than March in your Definition of Shipped, and renegotiate the rung in the open when they slip rather than discovering the slip in June.
+- Read your category's ladder literally and plan for the rung you can prove, not the one you hope for.
+- Capture evidence the day it happens (the merged PR, the dashboard, the maintainer's comment, the partner's email) and link it from `docs/shipped.md`.
+
 ## Some Truths About Shipping
 
 - The last 10% is not 10%. Teams that plan "build until May, ship in June" are describing a plan to hit the 70 rung.
@@ -126,4 +136,12 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 - "The partner will deploy it after the course ends" is the consultancy ladder's 80 rung wearing a 100 rung's costume. If it is not in their environment by spring, it is not shipped.
 - Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not APIs with SLAs. Being early, polite, and responsive is a technical skill.
 - If your Definition of Shipped contains no date earlier than March, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
-- Evidence collected in the moment costs minutes; evidence reconstructed in June costs points. Screenshot the milestone the day it happens.
+- Evidence collected in the moment costs minutes; evidence reconstructed in June is the kind the [Release and Metrics](/assignments/release/) page cannot credit. Screenshot the milestone the day it happens.
+
+## Shipping in Industry and Academia
+
+Industry spent two decades removing the ceremony between a commit and production. Continuous delivery, trunk-based development, and feature flags exist so that "shipped" is a daily event rather than a quarterly one, and companies such as Etsy and Amazon made deploying many times a day the norm well before it was fashionable. Google's site reliability teams run a production readiness review before a service goes live, which is the consultancy ladder's top rung with a checklist attached. The pattern is the same at every scale: the thing that is hard is not building, it is the last mile into someone else's environment.
+
+Open-source maintainers judge contributors by merged pull requests, and the first merge is the hard one, which is why "good first issue" labels and onboarding programs exist. In research, the reproducibility crisis produced artifact evaluation: ACM conferences award badges for artifacts that are available, evaluated, and reproduced, and a paper with a reproduced artifact is worth more than one without. The research ladder's top rung is written with that bar in mind.
+
+The common thread is that every field has learned, expensively, that working software nobody can run is not a result. The ladders on this page are the course's version of that lesson.
