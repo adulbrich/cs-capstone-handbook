@@ -22,93 +22,108 @@
 //      backward from a rubric finds the activity, and how a future editor
 //      tells whether the activity still earns its tier.
 //
-//   5. Every activity carries an audience badge ("Individual Activity",
-//      "Team Activity", or both when it genuinely works either way) and a
-//      closing "A good output is..." line. The deliverable line is the only
-//      quality signal an activity has, and it is what lets a student
-//      self-check.
+//   5. Every activity carries a closing "A good output is..." line. The
+//      deliverable line is the only quality signal an activity has, and it is
+//      what lets a student self-check. The audience badge itself cannot be
+//      required here, because it is the definition of an activity: a `##`
+//      section without one is prose. What can be caught is the near miss, a
+//      section that carries a tier badge (Workshop or Recommended) and no
+//      audience badge, which is an activity someone forgot to label. Those
+//      are reported instead of being skipped as prose.
 //
 // Workshop-tier activities are exempt from rule 2: they are assigned centrally
 // through assignments/workshop-activities.mdx, not per assignment page.
 //
-// Run: node scripts/validate-activity-tiers.mjs
+// Run: node scripts/validate-activities.mjs
 
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 
-const ASSIGNMENTS_DIR = 'src/content/docs/assignments';
-const ACTIVITIES_DIR = 'src/content/docs/activities';
-const SECTION_HEADING = '## Activities That Prepare This';
+const ASSIGNMENTS_DIR = "src/content/docs/assignments";
+const ACTIVITIES_DIR = "src/content/docs/activities";
+const SECTION_HEADING = "## Activities That Prepare This";
 
 // GitHub-style slugger, matching how Starlight derives heading anchors.
 function slugify(heading) {
   return heading
     .trim()
     .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+// The badges belong on the line right after the heading. The scan window is
+// wider than that one line only so a badge pushed down by a blank line or an
+// MDX comment is still found (and, from the same window, reported).
+const BADGE_WINDOW_LINES = 4;
+const AUDIENCE_BADGE_RE =
+  /<Badge[^>]*text="(Individual Activity|Team Activity)"/g;
+const TIER_BADGE_RE = /<Badge[^>]*text="(Workshop|Recommended)"/;
+
+// The section body runs to the next h2 or end of file.
+function sectionEnd(lines, start) {
+  for (let j = start + 1; j < lines.length; j += 1) {
+    if (lines[j].startsWith("## ")) {
+      return j;
+    }
+  }
+  return lines.length;
+}
+
+function readSection(page, lines, i) {
+  const heading = lines[i].slice(3).trim();
+  const badgeWindow = lines.slice(i + 1, i + 1 + BADGE_WINDOW_LINES).join("\n");
+  const body = lines.slice(i + 1, sectionEnd(lines, i)).join("\n");
+  return {
+    audience: [...badgeWindow.matchAll(AUDIENCE_BADGE_RE)].length,
+    hasFeeds: /^\*\*Feeds:\*\*/m.test(body),
+    hasOutput: /^A good output/m.test(body),
+    heading,
+    page,
+    tier: badgeWindow.match(TIER_BADGE_RE)?.[1] ?? null,
+  };
 }
 
 // Collect every activity: page, heading, slug, and its tier badge (if any).
+// Also collect the near misses: sections with a tier badge and no audience
+// badge, which rule 5 reports.
 function readActivities() {
-  const activities = new Map(); // "page#slug" -> { page, heading, tier }
+  const activities = new Map(); // "page#slug" -> { page, heading, tier, ... }
+  const unlabeled = [];
   for (const file of readdirSync(ACTIVITIES_DIR)) {
-    if (!file.endsWith('.mdx') || file === 'introduction.mdx') {
+    if (!file.endsWith(".mdx") || file === "introduction.mdx") {
       continue;
     }
     const page = file.slice(0, -4);
-    const lines = readFileSync(join(ACTIVITIES_DIR, file), 'utf8').split('\n');
-    for (let i = 0; i < lines.length; i++) {
-      if (!lines[i].startsWith('## ')) {
+    const lines = readFileSync(join(ACTIVITIES_DIR, file), "utf8").split("\n");
+    for (let i = 0; i < lines.length; i += 1) {
+      if (!lines[i].startsWith("## ")) {
         continue;
       }
-      const heading = lines[i].slice(3).trim();
-      // The badge line is within the next few lines, before any prose.
-      const window = lines.slice(i + 1, i + 5).join('\n');
-      const audience = [
-        ...window.matchAll(/<Badge[^>]*text="(Individual Activity|Team Activity)"/g),
-      ].length;
-      // No audience badge means this is page prose, not an activity.
-      if (audience === 0) {
-        continue;
-      }
-      let tier = null;
-      if (/<Badge[^>]*text="Workshop"/.test(window)) {
-        tier = 'Workshop';
-      } else if (/<Badge[^>]*text="Recommended"/.test(window)) {
-        tier = 'Recommended';
-      }
-      // The section body runs to the next h2 or end of file.
-      let end = lines.length;
-      for (let j = i + 1; j < lines.length; j++) {
-        if (lines[j].startsWith('## ')) {
-          end = j;
-          break;
+      const section = readSection(page, lines, i);
+      // No audience badge means this is page prose, not an activity, unless
+      // a tier badge says otherwise.
+      if (section.audience === 0) {
+        if (section.tier) {
+          unlabeled.push(section);
         }
+        continue;
       }
-      const body = lines.slice(i + 1, end).join('\n');
-      activities.set(`${page}#${slugify(heading)}`, {
-        page,
-        heading,
-        tier,
-        audience,
-        hasFeeds: /^\*\*Feeds:\*\*/m.test(body),
-        hasOutput: /^A good output/m.test(body),
-      });
+      activities.set(`${page}#${slugify(section.heading)}`, section);
     }
   }
-  return activities;
+  return { activities, unlabeled };
 }
 
 // Collect every activity link inside an "Activities That Prepare This" section.
 function readAssignmentLinks() {
   const links = new Map(); // "page#slug" -> Set of assignment filenames
   for (const file of readdirSync(ASSIGNMENTS_DIR)) {
-    if (!file.endsWith('.mdx')) {
+    if (!file.endsWith(".mdx")) {
       continue;
     }
-    const source = readFileSync(join(ASSIGNMENTS_DIR, file), 'utf8');
+    const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
     const start = source.indexOf(SECTION_HEADING);
     if (start === -1) {
       continue;
@@ -125,16 +140,25 @@ function readAssignmentLinks() {
   return links;
 }
 
-const activities = readActivities();
+const { activities, unlabeled } = readActivities();
 const links = readAssignmentLinks();
 const problems = [];
+
+// Rule 5, the audience half: a tier badge with no audience badge.
+for (const section of unlabeled) {
+  problems.push(
+    `no audience badge: "${section.heading}" (${section.page}) carries a ${section.tier} badge but no Individual or Team Activity badge, so it is not counted as an activity`
+  );
+}
 
 // Rule 3, then rule 1.
 for (const [key, sources] of links) {
   const activity = activities.get(key);
-  const from = [...sources].join(', ');
+  const from = [...sources].join(", ");
   if (!activity) {
-    problems.push(`broken anchor: /activities/${key} linked from ${from} matches no heading`);
+    problems.push(
+      `broken anchor: /activities/${key} linked from ${from} matches no heading`
+    );
     continue;
   }
   if (!activity.tier) {
@@ -156,7 +180,7 @@ for (const [key, activity] of activities) {
       `missing deliverable: "${activity.heading}" (${activity.page}) has no closing "A good output is..." line`
     );
   }
-  if (activity.tier === 'Recommended' && !links.has(key)) {
+  if (activity.tier === "Recommended" && !links.has(key)) {
     problems.push(
       `unearned badge: "${activity.heading}" (${activity.page}) is marked Recommended but no assignment page links to it`
     );
@@ -168,12 +192,12 @@ for (const [key, activity] of activities) {
   }
 }
 
-const counts = { Workshop: 0, Recommended: 0, Library: 0 };
+const counts = { Library: 0, Recommended: 0, Workshop: 0 };
 for (const activity of activities.values()) {
-  counts[activity.tier ?? 'Library']++;
+  counts[activity.tier ?? "Library"] += 1;
 }
 
-console.log('Activity tiers:');
+console.log("Activity tiers:");
 console.log(`  Workshop:    ${counts.Workshop}`);
 console.log(`  Recommended: ${counts.Recommended}`);
 console.log(`  Library:     ${counts.Library}`);
@@ -184,7 +208,11 @@ if (problems.length > 0) {
   for (const problem of problems) {
     console.error(`  - ${problem}`);
   }
-  console.error('\nSee .claude/skills/cs46x-activities/SKILL.md for the tier rules.');
+  console.error(
+    "\nSee .claude/skills/cs46x-activities/SKILL.md for the tier rules."
+  );
   process.exit(1);
 }
-console.log('\nEvery linked activity is tiered, and every Recommended badge is earned.');
+console.log(
+  "\nEvery linked activity is tiered, and every Recommended badge is earned."
+);

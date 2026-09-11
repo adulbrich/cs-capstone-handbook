@@ -14,7 +14,9 @@ pre-commit:
           exit 1
         fi
     validate-outcomes:
-      glob: "src/content/docs/assignments/*.mdx"
+      # The script also reconciles the Canvas rubric TSVs against the pages,
+      # so a TSV-only commit must run it too.
+      glob: "{src/content/docs/assignments/*.mdx,canvas/assignments/*/*-rubric-details.tsv}"
       run: node scripts/validate-outcomes.mjs
     validate-activities:
       glob: "src/content/docs/{assignments,activities}/*.mdx"
@@ -22,3 +24,6 @@ pre-commit:
     validate-downloads:
       glob: "{public/*,src/content/docs/**/*.mdx}"
       run: node scripts/validate-downloads.mjs
+    biome:
+      glob: "{scripts/**/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
+      run: npx biome check {staged_files}

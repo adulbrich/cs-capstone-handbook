@@ -1,16 +1,17 @@
 ---
-import { Image } from 'astro:assets';
-import Spinner from './Spinner.astro';
-import NavigationButton from './NavigationButton.astro';
-import Indicators from './Indicator.astro';
+import { Image } from "astro:assets";
+import Indicators from "./Indicator.astro";
+import NavigationButton from "./NavigationButton.astro";
+import Spinner from "./Spinner.astro";
+
 interface IImage {
-  src: string;
   alt: string;
+  src: string;
 }
 
 interface Props {
-  images: IImage[];
   autoplayInterval?: number;
+  images: IImage[];
 }
 
 const { images, autoplayInterval = 3000 } = Astro.props;

@@ -1,18 +1,44 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
-  "extends": ["ultracite"],
+  "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
+  "extends": ["ultracite/biome/core"],
+  // Biome covers the code: the three validators, the Astro config and
+  // components, the content schema, and the JSON configs. Everything under
+  // canvas/ is HTML pasted into Canvas and public/ is served verbatim; neither
+  // is code, and reformatting them only makes the Canvas diff unreadable.
+  "files": {
+    "includes": ["!canvas", "!public", "!dist", "!.astro"]
+  },
   "overrides": [
     {
+      // Astro components are PascalCase by Astro's own convention, and an
+      // empty frontmatter fence is how a template-only component looks.
       "includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
       "linter": {
         "rules": {
           "style": {
             "useConst": "off",
-            "useImportType": "off"
+            "useImportType": "off",
+            "useFilenamingConvention": "off"
           },
           "correctness": {
             "noUnusedVariables": "off",
             "noUnusedImports": "off"
+          },
+          "suspicious": {
+            "noEmptySource": "off"
+          }
+        }
+      }
+    },
+    {
+      // The validators are one-shot CLI scripts over a few dozen files.
+      // Hoisting every regex out of its loop buys nothing and moves the
+      // pattern away from the line that explains it.
+      "includes": ["scripts/**"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "useTopLevelRegex": "off"
           }
         }
       }

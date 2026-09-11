@@ -15,15 +15,15 @@
 //
 // Run: node scripts/validate-downloads.mjs
 
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 
-const PUBLIC_DIR = 'public';
-const DOCS_DIR = 'src/content/docs';
+const PUBLIC_DIR = "public";
+const DOCS_DIR = "src/content/docs";
 
 // Build assets and site chrome, not student-facing downloads. Anything added
 // here is asserting "no page should link this", so keep the list short.
-const NOT_A_DOWNLOAD = new Set(['favicon.svg']);
+const NOT_A_DOWNLOAD = new Set(["favicon.svg"]);
 
 function collectMdx(dir) {
   const out = [];
@@ -31,7 +31,7 @@ function collectMdx(dir) {
     const path = join(dir, entry);
     if (statSync(path).isDirectory()) {
       out.push(...collectMdx(path));
-    } else if (entry.endsWith('.mdx') || entry.endsWith('.md')) {
+    } else if (entry.endsWith(".mdx") || entry.endsWith(".md")) {
       out.push(path);
     }
   }
@@ -39,15 +39,17 @@ function collectMdx(dir) {
 }
 
 const corpus = collectMdx(DOCS_DIR)
-  .map((f) => readFileSync(f, 'utf8'))
-  .join('\n');
+  .map((f) => readFileSync(f, "utf8"))
+  .join("\n");
 
 const downloads = readdirSync(PUBLIC_DIR).filter(
   (f) => statSync(join(PUBLIC_DIR, f)).isFile() && !NOT_A_DOWNLOAD.has(f)
 );
 
 if (downloads.length === 0) {
-  console.error('validate-downloads: no files found in public/; refusing to pass vacuously.');
+  console.error(
+    "validate-downloads: no files found in public/; refusing to pass vacuously."
+  );
   process.exit(1);
 }
 
@@ -63,4 +65,6 @@ if (orphans.length > 0) {
   process.exit(1);
 }
 
-console.log(`Downloads: ${downloads.length} in public/, every one linked from a handbook page.`);
+console.log(
+  `Downloads: ${downloads.length} in public/, every one linked from a handbook page.`
+);

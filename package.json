@@ -1,19 +1,18 @@
 {
   "name": "cs46x-handbook",
-  "type": "module",
   "version": "2026.SU.0",
-  "engines": {
-    "node": ">=24"
-  },
+  "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "astro": "astro",
     "build": "astro check && astro build",
-    "validate:outcomes": "node scripts/validate-outcomes.mjs",
+    "check": "biome check",
+    "dev": "astro dev",
+    "format": "biome check --write",
+    "preview": "astro preview",
+    "start": "astro dev",
     "validate:activities": "node scripts/validate-activities.mjs",
     "validate:downloads": "node scripts/validate-downloads.mjs",
-    "preview": "astro preview",
-    "astro": "astro"
+    "validate:outcomes": "node scripts/validate-outcomes.mjs"
   },
   "dependencies": {
     "@astrojs/check": "0.9.10",
@@ -38,5 +37,8 @@
     "@biomejs/biome": "2.5.8",
     "lefthook": "^2.1.9",
     "ultracite": "7.10.5"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }

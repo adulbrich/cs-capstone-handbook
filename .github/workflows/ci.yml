@@ -21,6 +21,8 @@ jobs:
       # has drifted from package.json. Never use `npm install` in CI: it is
       # allowed to rewrite the lockfile, so CI would stop testing what you ship.
       - run: npm ci
+      - name: Lint and format check (Biome via Ultracite)
+        run: npm run check
       - name: Validate ABET outcome coverage
         run: node scripts/validate-outcomes.mjs
       - name: Validate activity tiers

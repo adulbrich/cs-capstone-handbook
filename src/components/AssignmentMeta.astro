@@ -29,21 +29,21 @@
  * for a genuine qualifier; everything else belongs in the intro prose.
  */
 interface Props {
-  /** Who submits: "Team", "Individual", "Individual, held as a team session". */
-  submission: string;
   /** When it is due: "Winter, week 3", "Every term", "Fall and winter, weeks 5 and 10". */
   due: string;
+  /** Who submits: "Team", "Individual", "Individual, held as a team session". */
+  submission: string;
   /** What it is worth: "4% of the winter grade", "Complete/incomplete". */
   weight: string;
 }
 
 const { submission, due, weight } = Astro.props;
-const hasNote = Astro.slots.has('default');
+const hasNote = Astro.slots.has("default");
 
 const items = [
-  { label: 'Submission', value: submission },
-  { label: 'Due', value: due },
-  { label: 'Weight', value: weight },
+  { label: "Submission", value: submission },
+  { label: "Due", value: due },
+  { label: "Weight", value: weight },
 ];
 ---
 

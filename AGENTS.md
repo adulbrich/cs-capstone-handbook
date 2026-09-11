@@ -163,11 +163,13 @@ Changing one weight means re-cutting another, in all four places.
 
 ## Code style
 
-Biome (via Ultracite) formats and lints the small amount of JS/TS here. Run
-`npx ultracite format` to fix and `npx ultracite check` to check (there is no
-`lint` subcommand). The rules are
-enforced mechanically, so there is no need to memorize them; write ordinary
-modern JavaScript and let the formatter settle the rest.
+Biome (via Ultracite's `core` preset) formats and lints the code: the three
+validators, the Astro config and components, the content schema, and the JSON
+configs. `canvas/` and `public/` are excluded on purpose; they are pasted or
+served verbatim, not code. Run `npm run format` to fix and `npm run check` to
+check. The same check runs in CI and as a pre-commit hook on staged code
+files, so there is no need to memorize the rules; write ordinary modern
+JavaScript and let the formatter settle the rest.
 
 ## Skills
 
