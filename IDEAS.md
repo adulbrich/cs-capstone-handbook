@@ -204,7 +204,7 @@ Build on the existing generative-ai guide, which is already good, and make it op
 
 - **AI disclosure appendix on major deliverables**: tool, what it was used for, and, crucially, **what verification was performed**. Grade the verification, not the usage. (Superseded August 2026: disclosure is a compliance instrument and cannot measure skill, since a student who used AI well and one who used it recklessly write the same paragraph. Replaced by a delegation-and-validation criterion grading the fit between how far the student delegated and how strong a safety net they built.)
 - **Named team roles, rotating by term**: Project Manager (Harvey Mudd's formal role), AI Coordinator (owns the team's CLAUDE.md/context files, tool norms, and the confidentiality rules for what may be pasted where, per the partner agreement; the Hannover clients flagged exactly this risk), Quality/Release Owner. Roles give individuals visible, gradeable surface inside team work and give the partner a clear interface. Rotation means everyone carries a leadership outcome (L05) at least once.
-- **Adopt an LLM reviewer as formative infrastructure** (Melbourne model): a GitHub Action giving rubric-aligned feedback on PRs and RFC drafts, never fixing the work. At 2 instructors for 300 students, this is the only feedback channel that scales with enrollment for free, and it showcases the course's philosophy.
+- **Adopt an LLM reviewer as formative infrastructure** (deferred September 2026, see `IMPLEMENTED.md` §15) (Melbourne model): a GitHub Action giving rubric-aligned feedback on PRs and RFC drafts, never fixing the work. At 2 instructors for 300 students, this is the only feedback channel that scales with enrollment for free, and it showcases the course's philosophy.
 - **Teach the verification skills explicitly**: one lecture/workshop each on writing specs for agents, reviewing AI-generated diffs, and regression/property testing as the safety net. The testing-strategy guide already carries most of this content. This is also the answer to the README todo asking for more valuable lecture material.
 
 ### 3.6 Outcome, not output: the ship requirement
@@ -270,7 +270,7 @@ Two implementation notes that make this audit-proof rather than aspirational:
 The activities are currently worded as graded submissions ("Submit the original resume...") because they once were, and the handbook cannot decide if they are a menu or a syllabus. Proposed disposition, in order of preference:
 
 1. **Recast the best ones as practice companions to the guides.** Each guide gets a "Try it" section (or sidebar link) pointing at 2-3 rewritten activities in how-to voice ("How to run a Mom Test interview", not "Submit a one-page summary"). The activity content is good; only the imperative-submission framing is wrong. This also fixes the audience confusion for free.
-2. **Superseded August 2026, replaced by three-tier activity routing** (workshop activities recorded as zero-point complete/incomplete, recommended activities named per rubric criterion, the rest browsable). The original proposal: **keep a small curated subset as low-stakes extra credit**, selected per project category (the README todo already wants recommended-activities-by-category). Cap it (say two per term, a point or two each) so it stays a nudge, not a grading surface: at 300 students every extra-credit item is ~300 more things to check, so anything extra-credit must be pass/fail on submission or TA-checkable in under a minute.
+2. **Superseded August 2026, replaced by three-tier activity routing** (workshop activities graded complete/incomplete at 2% of fall, 1% of winter, 1% of spring; recommended activities named per rubric criterion; the rest browsable). The original proposal: **keep a small curated subset as low-stakes extra credit**, selected per project category (the README todo already wants recommended-activities-by-category). Cap it (say two per term, a point or two each) so it stays a nudge, not a grading surface: at 300 students every extra-credit item is ~300 more things to check, so anything extra-credit must be pass/fail on submission or TA-checkable in under a minute.
 3. **Mine the rest for lecture and workshop material.** The conflict, planning, and design pages are close to ready-made session plans, which answers the README todo asking for more valuable lecture time.
 4. Delete or archive what no assignment, guide, or session claims. An activity nothing points to is maintenance debt.
 
@@ -299,12 +299,12 @@ Deletions and merges that pay for the additions: Memo and Research Brief fold in
 Your README todo already names the right endgame: a **client-side instructor-tools page** in this Astro site (everything in-browser so no student data ever touches a server or the repo). At 300 students this is not a nicety; it is the thing that makes the rest of the redesign affordable. Port the R scripts to TypeScript:
 
 - Upload Qualtrics export + roster + Canvas gradebook CSV, get back computed scores, per-student feedback emails, and a Canvas-importable CSV.
-- One **term config** object (course ID, term dates, facet weights, Canvas assignment IDs, team-size range) replaces the per-term copy-paste scripts and the comment-toggling.
+- One **term config** object (deferred to #6, see `IMPLEMENTED.md` §15) (course ID, term dates, facet weights, Canvas assignment IDs, team-size range) replaces the per-term copy-paste scripts and the comment-toggling.
 - Email step: generate a Canvas-Inbox-ready batch or mail-merge file instead of the one-row-at-a-time VBA macro.
 - While porting, fix the found bugs: apply the peer-eval correction to the gradebook (or remove it from the student emails), the 3 vs 3.5 facet mapping in s2026, the 6-member ceiling (support 2 through 7+), and implement the Q7 individual-concern extraction that is stubbed everywhere (it feeds the corroboration review).
 - Add a **repo checkpoint mode**: paste the team-repo list, get each team's docs/, CI status, and PR-per-student counts rendered for fast review (see 3.1, 3.3). Track A teams only; the tool should track which teams are NDA (Track B) so their checkpoints are scheduled as walkthroughs instead of silently showing up as missing data.
 - This is also where **CATME-every-term** eventually unblocks: generate the per-team CATME item matrix for import, or run peer eval directly in the tools page and skip Qualtrics for it entirely. Parked, but the architecture should leave the door open.
-- Team formation (the MILP bids solver) can stay in R; it runs once a year. But parameterize it (project list, caps, forced teams as a config file, not code edits) and fix the mojibake.
+- Team formation (the MILP bids solver) can stay in R; it runs once a year. But parameterize it (deferred to before the fall 2027 bids run, see `IMPLEMENTED.md` §15) (project list, caps, forced teams as a config file, not code edits) and fix the mojibake.
 
 ### 4.2 Assignments into the handbook, Canvas as build target
 
@@ -316,10 +316,10 @@ Direction confirmed by the instructor: everything lives in the handbook, likely 
 
 ### 4.3 Repo hygiene and CI
 
-- GitHub Actions: build + `astro check` on PR, scheduled `linkinator` against production (your todo), and a secret/PII scanner.
+- GitHub Actions: build + `astro check` on PR (done), scheduled `linkinator` against production (your todo), and a secret/PII scanner (both deferred, see `IMPLEMENTED.md` §15; the `data/` guard covers the PII path).
 - Activate lefthook (installed, fully commented out) with a pre-commit guard blocking any path under `data/` and files matching student-ID or email patterns. The single-gitignore-line protection has held for 185 commits; make it structural.
 - Content sweep: publish `devops.mdx` and `documentation.mdx` (fixes the broken link from testing-strategy), delete `status.mdx.bak`, write or delete the rubrics stub, fill the `description: TBD`s, fix the typos, add alt text, link the eight orphaned `public/` templates from relevant pages, move commented-out backlogs into issues, state the team-size policy (aim 3-4, range 2-6) once and reference it everywhere.
-- Replace hardcoded term facts (dates, "fourteen reports", "September") with a data file rendered into pages or deliberately timeless phrasing.
+- Replace hardcoded term facts (dates, "fourteen reports", "September") with a data file rendered into pages or deliberately timeless phrasing. (Won't fix as a data file, September 2026: the revision chose one canonical page per fact plus validators that reconcile the restatements; see `IMPLEMENTED.md` §15.)
 
 ### 4.4 Sequencing
 

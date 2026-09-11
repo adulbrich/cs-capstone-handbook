@@ -2,7 +2,7 @@
 
 Date: 2026-08-17
 Branch: `revision-fall-2026`
-Status: approved design, not yet implemented
+Status: implemented 2026-08-19, all 15 plan tasks (see `IMPLEMENTED.md` §10 and the plan's Status table). §5 has a one-paragraph home on `learning-objectives/mapping.mdx`; §4.6 workshop decks remain unbuilt (#51).
 Companion documents: `IDEAS.md` (course assessment rationale), `IMPLEMENTED.md` (revision change log)
 
 ## 1. Context and Drivers
@@ -386,7 +386,7 @@ Recording these so implementation does not waste effort on them:
 
 - **`astro.config.mjs` sidebar.** The Activities group uses `autogenerate: { directory: 'activities' }`, so `ai.mdx` appears with no config change. (The file does need the §4.8 link-validator edit.)
 - **`scripts/validate-outcomes.mjs`.** The counting logic already handles multi-tag criteria and multi-term multiplication correctly. No script change; only its output numbers move.
-- **`canvas/assignments/` deprecated directories** (`memo`, `research-brief`, `progress-report`, `adr-code-review`, `requirements-update`, `technical-design-update`, `setup`, `retrospective-and-career`). Already marked deprecated and deliberately retained.
+- **`canvas/assignments/` deprecated directories** (`memo`, `research-brief`, `progress-report`, `adr-code-review`, `requirements-update`, `technical-design-update`, `setup`, `retrospective-and-career`). Already marked deprecated and retained until Canvas no longer holds live content from them, as `assignment-readme.md` says; the Canvas import package (`2026-08-19-canvas-import-package-design.md` §6) removes them at that point (#30).
 - **Package-manager references.** `README.md` and `IMPLEMENTED.md` already use `npm` and `npx` correctly; the `pnpm` strings remaining in `IMPLEMENTED.md:103-108` are historical narrative describing the migration and are accurate as written.
 
 ### 11.6 Closing check

@@ -125,7 +125,7 @@ Fall is short (800-1,500 words); winter is the WIC term with a 2,000-word floor 
 
 | Assignment | Activities | Browse |
 |---|---|---|
-| **Team Charter** | Thomas-Kilmann Conflict Mode Instrument (`conflict`) → conflict and inclusion (15); Responsibility Assignment Matrix RACI (`planning`) → roles (20) | `teamwork`, `conflict` |
+| **Team Charter** | Assess Your Team's Conflict Styles (`conflict`) → conflict and inclusion (15); Responsibility Assignment Matrix RACI (`planning`) → roles (20) | `teamwork`, `conflict` |
 | **Term Retrospective** (fall) | Learning Journal (`reflective`) → individual pages (25, L07); External Feedback Session (`reflective`) → evidence (20) | `reflective`, `teamwork` |
 | **Definition of Shipped** (winter) | Identify Success Metrics (`planning`) → metrics and instrumentation (25); Dependency Mapping or Critical Path Analysis (`planning`) → prerequisites and lead times (25) | `planning`, `user` |
 | **Incident Postmortem** (winter) | Fishbone Diagram (`planning`) → root cause (25); Performance Conversations (`conflict`) → blameless (15) | `planning`, `conflict` |
