@@ -16,11 +16,13 @@ labels: type:chore
 
 ## Canvas and surveys
 
-- [ ] Update the syllabus statements
-- [ ] Import rubric TSVs into Canvas (browser extension; sources in `canvas/assignments/`)
+- [ ] Verify the handbook's week numbers against the registrar's academic calendar for the term: holidays, and whether fall runs eleven instructional weeks (`IMPLEMENTED.md`, open item 5; the calendar check table in issue #21)
+- [ ] Update the syllabus statements, then re-paste the syllabus HTML from `canvas/syllabus/` into Canvas after any edit to it
+- [ ] Re-import every rubric TSV named in the re-import lists of `canvas/assignments/assignment-readme.md` (browser extension; sources in `canvas/assignments/`)
 - [ ] Create the Workshop Activities column for the term (complete/incomplete per item)
 - [ ] Update the Qualtrics surveys (peer evaluation, project partner evaluation)
-- [ ] Publish cohort assignments and the check-in schedule in Canvas (week 1)
+- [ ] Publish cohort assignments and the check-in grid in Canvas (week 1), with the sprint-week alignment stated in the Cohort Check-ins section of `src/content/docs/assignments/introduction.mdx`
+- [ ] Schedule the defense calibration hour before week 7 (`STAFF-RUNBOOK.md`, Defense Logistics)
 - [ ] Publish RFC cross-team review pairings in Canvas (start of week 5; fall and winter only)
 
 ## Repository
