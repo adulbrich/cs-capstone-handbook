@@ -62,6 +62,17 @@ The first four were written before the handbook rubrics were rewritten and were 
 
 The sprint-note case is the opposite error: the TSV claimed outcome tags that `sprint-notes.mdx` deliberately does not carry, those having been removed when the outcome claim was found to be over-reaching. Harmless for accreditation, since sprint notes are team-level and count zero either way, but it is Canvas asserting evidence the source of truth does not.
 
+## Rubric TSVs Requiring Re-Import (September 2026)
+
+Criterion text changed on the branch review (#40). Points and outcome tags are unchanged; the band descriptions are, so the TSVs must be re-imported:
+
+| File | What changed |
+|---|---|
+| `project-retrospective/` | Arc and pivots: rewritten as an observable check (dated, linked milestones; each pivot with decision, date, evidence) |
+| `project-landing-page/` | Value proposition: rewritten as an observable check (one sentence, user's terms, no course vocabulary) |
+
+The fall Term Retrospective's Writing criterion changed in the same way, but no TSV for it exists under `canvas/assignments/`; it needs one before the fall rubric is built in Canvas.
+
 ## Schedule
 
 ### CS 461 (Fall Term)

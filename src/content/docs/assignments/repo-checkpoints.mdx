@@ -75,6 +75,8 @@ Teams that discover in week 9 that their partner never intended to give them a p
 | Decision and risk hygiene: RFCs/ADRs recorded, single risk register alive and ranked | 15 | SO1 |
 | Contribution traceability and git hygiene: work is attributable per student (PRs authored and reviewed under real accounts, contribution lines in sprint notes matching the record), and the history is one a maintainer could inherit | 15 | SO5 |
 
+**AI use:** AI may draft and maintain the living docs from your code and history, and may write the CI configuration; the checkpoint grades the repository, not who typed it. What fails the checkpoint is evidence that is not real: a green badge from a workflow that runs nothing, a requirements document describing features the code does not have, or a PR history dressed up after the fact.
+
 Each criterion has one thing graders check first, so you can check it yourself:
 
 - **Living docs**: one recent feature, compared against `docs/design.md`. If the doc describes a system that no longer exists, this criterion is where it shows.
@@ -83,17 +85,7 @@ Each criterion has one thing graders check first, so you can check it yourself:
 - **Decision and risk hygiene**: does the risk register have owners and a ranking, and is there exactly one of it?
 - **Contribution traceability**: this grades whether the **infrastructure** for attribution exists, not whether every student contributed. Individual non-contribution is handled by the [individual modifier](/assignments/introduction/#individual-accountability-on-team-work) and never double-counted here.
 
-### Git hygiene: what "a history a maintainer could inherit" means
-
-Never enforced before this year, and the most common thing that makes an otherwise good project unpleasant to take over:
-
-- **Nothing lands on the default branch except through a pull request.** Turn on branch protection so this is structural rather than a promise.
-- **No secrets, no build artifacts, no dependency directories in the history.** A committed `.env` is a security incident even after you delete the file, because the history keeps it. Fix `.gitignore` before the first commit, not after.
-- **Commit messages say what changed and why.** "fix", "update", "asdf", and forty commits called "wip" are the failure mode. Squash noisy branches before merging.
-- **No force-pushing the default branch**, ever.
-- **Large binaries belong outside git** or in Git LFS.
-
-Your [git and GitHub guide](/guides/git-and-github/) covers the mechanics.
+What "a history a maintainer could inherit" means is spelled out in the [git and GitHub guide](/guides/git-and-github/#a-history-a-maintainer-could-inherit); the checkpoint checks the five items listed there.
 
 :::note[If your project is under NDA]
 The checkpoint is a 15-minute screen-shared walkthrough in your cohort check-in instead of an asynchronous review. A designated student drives; the TA follows the same checklist against the live repo, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing. Where the partner permits, a sanitized evidence pack (docs snapshot, redacted PR list, CI screenshots) supports the review. Identical criteria, identical points.
