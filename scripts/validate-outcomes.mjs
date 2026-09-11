@@ -387,6 +387,108 @@ for (const dir of readdirSync(CANVAS_DIR)) {
   }
 }
 
+// --- Page shape -------------------------------------------------------------
+// Three rules from the assignments skill that a review found broken by hand
+// on pages that otherwise validated. Each is a few lines and pays for itself
+// the first time it fires.
+//
+// Pages with no `## Rubric (100 points)` table, by decision, not omission:
+// the workshop rubric is pass/fail per item; the two survey instruments run
+// through Qualtrics and their tables carry weights; Sprint Notes is pass/fail
+// per item with no bands and no outcome tags (#29).
+const RUBRIC_EXCEPTIONS = new Set([
+  "workshop-activities",
+  "peer-evaluations",
+  "project-partner-evaluation",
+  "sprint-notes",
+]);
+const DELIVERABLE_HEADING_RE =
+  /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
+const AI_USE_RE = /^\*\*AI use:\*\*/m;
+const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
+
+// Sum of the Points column of the table(s) under `## Rubric`, or null when
+// the heading is absent. Rows are `| Criterion | Points | Outcome |`.
+function rubricTotal(body) {
+  const start = body.search(/^## Rubric/m);
+  if (start === -1) {
+    return null;
+  }
+  let total = 0;
+  for (const line of body.slice(start).split("\n").slice(1)) {
+    if (line.startsWith("## ")) {
+      break;
+    }
+    if (!line.trim().startsWith("|")) {
+      continue;
+    }
+    const points = line.split("|")[2]?.trim() ?? "";
+    if (/^\d+$/.test(points)) {
+      total += Number(points);
+    }
+  }
+  return total;
+}
+
+for (const file of files) {
+  const slug = file.replace(/\.mdx$/, "");
+  const assignment = pages.get(slug);
+  if (!assignment) {
+    continue;
+  }
+  const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
+  const body = source.slice(source.indexOf("---", 3) + 3);
+
+  // The AssignmentMeta weight text must state every percentage the
+  // frontmatter declares. Sprint Notes said "2% each" and never gave the
+  // term totals that every other page's meta states.
+  const meta = body.match(META_WEIGHT_RE);
+  const declared =
+    typeof assignment.weight === "number"
+      ? [assignment.weight]
+      : Object.values(assignment.weight ?? {});
+  if (meta) {
+    for (const w of new Set(declared)) {
+      if (!meta[1].includes(`${w}%`)) {
+        console.error(
+          `META ${file}: frontmatter declares ${w} but the AssignmentMeta weight text "${meta[1]}" never says ${w}%.`
+        );
+        failed = true;
+      }
+    }
+  } else {
+    console.error(`META ${file}: no <AssignmentMeta weight="..."> found.`);
+    failed = true;
+  }
+
+  // A page with a written deliverable carries the AI-use paragraph.
+  if (DELIVERABLE_HEADING_RE.test(body) && !AI_USE_RE.test(body)) {
+    console.error(
+      `AI USE ${file}: has a deliverable section but no "**AI use:**" paragraph naming what AI may do and what fails the assignment.`
+    );
+    failed = true;
+  }
+
+  // Rubric points total exactly 100.
+  if (!RUBRIC_EXCEPTIONS.has(slug)) {
+    const total = rubricTotal(body);
+    if (total === null) {
+      console.error(
+        `RUBRIC ${file}: no "## Rubric" heading and not in the documented exception list.`
+      );
+      failed = true;
+    } else if (total !== 100) {
+      console.error(`RUBRIC ${file}: rubric points total ${total}, not 100.`);
+      failed = true;
+    }
+  }
+}
+if (!failed) {
+  console.log(
+    "  Every page states its weight in the meta, carries AI use where it has a deliverable, and totals 100 or is a documented exception."
+  );
+}
+
 console.log(
   "Individual data points per student per year (from rubric tables):"
 );

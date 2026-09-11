@@ -150,17 +150,25 @@ guide. Word count is a diagnostic, not a target.
 ## What Guides Must Not Contain
 
 - Due dates, weights, point values, rubric criteria, or bands.
+  `validate-activities.mjs` fails on a point value or percentage within a few
+  words of "grade", "rubric" or "criterion" on any guide page; the rest of
+  this rule is on you.
 - Accreditation outcome tags (`SO1`-`SO6`, `L07`-`L10`). Those live only in
-  assignment rubric tables, where `validate-outcomes.mjs` reads them.
+  assignment rubric tables, where `validate-outcomes.mjs` reads them, and
+  `validate-activities.mjs` fails on one appearing in a guide.
 - Tool requirements presented as mandatory. Guides may show the current
   industry baseline; say what the substitute is for students without the tool.
-- Em dashes.
+- Em dashes. `validate-dashes.mjs` fails on one.
+
+Nothing checks the section skeleton, the length, or the opener rules; those
+are read for, not validated.
 
 ## Before Finishing
 
 1. Run `npm run build`. It compiles the MDX and validates every internal link
    and anchor, which is the only reliable check on the anchors you wrote.
-2. Confirm the final three sections are present: Best Practices, Some Truths,
+2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
+   covers outcome tags and grading language on guides, the second em dashes.
+3. Confirm the final three sections are present: Best Practices, Some Truths,
    and Industry and Academia. Their absence is the most common way a new guide
    fails to match the validated ones.
-3. Grep for em dashes.

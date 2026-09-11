@@ -24,6 +24,9 @@ pre-commit:
     validate-downloads:
       glob: "{public/*,src/content/docs/**/*.mdx}"
       run: node scripts/validate-downloads.mjs
+    validate-dashes:
+      glob: "{src,canvas,public,decks}/**/*"
+      run: node scripts/validate-dashes.mjs
     biome:
       glob: "{scripts/**/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
       run: npx biome check {staged_files}

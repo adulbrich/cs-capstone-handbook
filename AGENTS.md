@@ -19,9 +19,10 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
 | `canvas/` | Canvas-ready HTML and rubric TSVs. Mirrors the handbook; the handbook wins. |
 | `public/` | Templates and scoresheets students download. |
-| `scripts/validate-outcomes.mjs` | The outcome validator. Runs in CI and pre-commit. |
-| `scripts/validate-activities.mjs` | The activity tier validator. Runs in CI and pre-commit. |
+| `scripts/validate-outcomes.mjs` | The outcome validator, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals. Runs in CI and pre-commit. |
+| `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, and the no-outcome-tags, no-grading-language rules for activities and guides. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
+| `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -34,19 +35,23 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
    lockfile drift, so CI would stop testing what ships.
 3. **No em dashes in prose.** Use colons, semicolons, commas, or periods.
    This applies to handbook content, Canvas HTML, and repo docs alike.
+   `validate-dashes.mjs` checks the content directories; the root docs and
+   the skills are checked by hand.
 4. **The handbook outranks Canvas.** If a rubric TSV and a handbook rubric
    table disagree, the handbook is right and the TSV is the bug. Rubric point
    values must match exactly.
 
 ## Validation
 
-Run all four before considering any content change done:
+Run all of these before considering any content change done:
 
 ```sh
 npm run build            # astro check + astro build; fails on broken internal links
 npm run validate:outcomes
 npm run validate:activities
 npm run validate:downloads
+npm run validate:dashes
+npm run check            # Biome, for anything under scripts/ or src/ that is code
 ```
 
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build

@@ -48,7 +48,7 @@ a per-term map when it varies:
     spring: 4
 ```
 
-Four rules the validators enforce, all of which have been gotten wrong before:
+Seven rules the validators enforce, all of which have been gotten wrong before:
 
 1. **`outcomes` counts must equal the number of rubric criteria carrying that
    tag.** `scripts/validate-outcomes.mjs` parses the rubric table as the source
@@ -66,9 +66,19 @@ Four rules the validators enforce, all of which have been gotten wrong before:
    `assignments/introduction.mdx`. A scalar on a page whose weight varies by
    term is a hard failure, as is a declared term no table row links. See
    **Grade Weights** below.
+5. **The `<AssignmentMeta weight="...">` text states every percentage the
+   frontmatter declares.** A per-term map means every term's figure appears
+   in the text ("8% of the fall and winter grades, 4% of the spring grade").
+6. **A page with a deliverable section carries an `**AI use:**` paragraph.**
+   The deliverable headings the validator recognizes are the four listed
+   under **Section Skeleton** below.
+7. **Rubric points total exactly 100**, unless the page is on the exception
+   list in `validate-outcomes.mjs` (see **Rubric Rules**).
 
 A page with no `assignment:` block is skipped by the validator entirely. Only
-`introduction.mdx` should be in that state.
+`introduction.mdx` should be in that state. Not enforced, still required: the
+three bands, criteria written as observable checks, the section order, and the
+Canvas TSV band descriptions (only the tag sets are reconciled).
 
 ## Section Skeleton
 
@@ -141,11 +151,14 @@ Sections in **bold** are required.
 | Another criterion, dual-tagged where it genuinely evidences both | 20 | SO2, SO4 |
 ```
 
-- **Points total exactly 100.** Two documented exceptions: the pass/fail
-  workshop rubric (`canvas/assignments/workshop-activities/`), and the two
-  survey-based instruments, `peer-evaluations.mdx` and
-  `project-partner-evaluation.mdx`, which run through Qualtrics rather than a
-  banded rubric and whose tables carry weights instead of points.
+- **Points total exactly 100.** Three documented exceptions, listed in
+  `validate-outcomes.mjs` as `RUBRIC_EXCEPTIONS`: the pass/fail workshop
+  rubric (`workshop-activities.mdx`); the two survey-based instruments,
+  `peer-evaluations.mdx` and `project-partner-evaluation.mdx`, which run
+  through Qualtrics rather than a banded rubric and whose tables carry weights
+  instead of points; and `sprint-notes.mdx`, which is pass/fail per item with
+  no bands and no outcome tags by decision, and has a `## Grading` section
+  instead of a rubric table.
 - **Three or six criteria is the working range.** Fewer than three cannot
   discriminate; more than six is unaffordable at ~300 students and 6 TAs.
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
@@ -240,10 +253,12 @@ the student has to learn first.
 
 ## Before Finishing
 
-1. `npm run validate:outcomes` (frontmatter, rubric tags, weights, Canvas mirror).
+1. `npm run validate:outcomes` (frontmatter, rubric tags, weights, Canvas
+   mirror, AssignmentMeta weight text, AI-use paragraph, rubric totals).
 2. `npm run validate:activities` (every linked activity is tiered).
 3. `npm run validate:downloads` (every `public/` download has an owning page).
-4. `npm run build` (MDX, internal links, anchors).
-4. If you touched a weight, verify all three terms still sum to 25%.
-5. If you touched a rubric, update the Canvas TSV in the same commit.
-6. Grep for em dashes.
+4. `npm run validate:dashes` (no em dashes, literal or entity).
+5. `npm run build` (MDX, internal links, anchors).
+6. If you touched a weight, verify all three terms still sum to 25%.
+7. If you touched a rubric, update the Canvas TSV in the same commit and add
+   it to the re-import list in `canvas/assignments/assignment-readme.md`.

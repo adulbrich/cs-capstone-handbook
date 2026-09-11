@@ -71,15 +71,58 @@ function sectionEnd(lines, start) {
   return lines.length;
 }
 
+// The skill fixes the variant per audience; a Team badge in green reads as
+// an Individual one at a glance, which is the only reason the colours exist.
+const AUDIENCE_VARIANTS = {
+  "Individual Activity": "success",
+  "Team Activity": "note",
+};
+
+// Badges whose variant disagrees with AUDIENCE_VARIANTS, as "text (variant)".
+function badVariants(badgeWindow) {
+  const bad = [];
+  for (const [tag] of badgeWindow.matchAll(/<Badge\b[^>]*>/g)) {
+    const text = tag.match(/\btext="([^"]*)"/)?.[1];
+    const variant = tag.match(/\bvariant="([^"]*)"/)?.[1];
+    const expected = AUDIENCE_VARIANTS[text];
+    if (expected && variant !== expected) {
+      bad.push(`${text} (${variant ?? "no variant"}, expected ${expected})`);
+    }
+  }
+  return bad;
+}
+
+// True when the last "A good output" line is the final non-blank line of
+// the section, or is followed only by the Feeds line.
+function outputIsClosing(bodyLines) {
+  const at = bodyLines.findLastIndex((l) => l.startsWith("A good output"));
+  if (at === -1) {
+    return true; // reported separately as a missing deliverable
+  }
+  const after = bodyLines.slice(at + 1).filter((l) => l.trim() !== "");
+  return (
+    after.length === 0 ||
+    (after.length === 1 && after[0].startsWith("**Feeds:**"))
+  );
+}
+
 function readSection(page, lines, i) {
   const heading = lines[i].slice(3).trim();
   const badgeWindow = lines.slice(i + 1, i + 1 + BADGE_WINDOW_LINES).join("\n");
-  const body = lines.slice(i + 1, sectionEnd(lines, i)).join("\n");
+  const bodyLines = lines.slice(i + 1, sectionEnd(lines, i));
+  const body = bodyLines.join("\n");
   return {
     audience: [...badgeWindow.matchAll(AUDIENCE_BADGE_RE)].length,
+    // One badge line, on the line after the blank line after the heading.
+    badgesOnOneLine:
+      lines[i + 1] === "" &&
+      (lines[i + 2] ?? "").startsWith("<Badge") &&
+      bodyLines.filter((l) => l.startsWith("<Badge")).length === 1,
+    badVariants: badVariants(badgeWindow),
     hasFeeds: /^\*\*Feeds:\*\*/m.test(body),
     hasOutput: /^A good output/m.test(body),
     heading,
+    outputIsClosing: outputIsClosing(bodyLines),
     page,
     tier: badgeWindow.match(TIER_BADGE_RE)?.[1] ?? null,
   };
@@ -180,6 +223,21 @@ for (const [key, activity] of activities) {
       `missing deliverable: "${activity.heading}" (${activity.page}) has no closing "A good output is..." line`
     );
   }
+  if (!activity.outputIsClosing) {
+    problems.push(
+      `deliverable not last: "${activity.heading}" (${activity.page}) has prose after its "A good output" line; only the Feeds line may follow it`
+    );
+  }
+  for (const bad of activity.badVariants) {
+    problems.push(
+      `wrong badge variant: "${activity.heading}" (${activity.page}) has ${bad}`
+    );
+  }
+  if (!activity.badgesOnOneLine) {
+    problems.push(
+      `badge placement: "${activity.heading}" (${activity.page}) must carry all its badges on one line, two lines below the heading (blank line between)`
+    );
+  }
   if (activity.tier === "Recommended" && !links.has(key)) {
     problems.push(
       `unearned badge: "${activity.heading}" (${activity.page}) is marked Recommended but no assignment page links to it`
@@ -189,6 +247,45 @@ for (const [key, activity] of activities) {
     problems.push(
       `missing Feeds: "${activity.heading}" (${activity.page}) is ${activity.tier} tier but has no "**Feeds:**" line naming the criterion it prepares`
     );
+  }
+}
+
+// --- Activities and guides: no outcome tags, no grading language -------------
+// Outcome tags belong only in assignment rubric tables, where the outcomes
+// validator reads them; a tag anywhere else looks like coverage and counts
+// as nothing. Point values and percentages next to "grade", "rubric" or
+// "criterion" are assignment-page content. A bare "%" or "points" is not
+// flagged, because the gen-AI and sprint guides use both legitimately.
+const GUIDES_DIR = "src/content/docs/guides";
+const OUTCOME_TAG_RE = /\b(SO[1-6]|L0[7-9]|L10)\b/g;
+const GRADE_NUMBER_RE = /\b\d+(?:\.\d+)?(?:%| points?\b)/g;
+const GRADE_WORD_RE =
+  /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/i;
+const GRADE_CONTEXT_CHARS = 60;
+
+for (const dir of [ACTIVITIES_DIR, GUIDES_DIR]) {
+  for (const file of readdirSync(dir)) {
+    if (!file.endsWith(".mdx")) {
+      continue;
+    }
+    const source = readFileSync(join(dir, file), "utf8");
+    const where = `${dir.split("/").at(-1)}/${file}`;
+    for (const m of source.matchAll(OUTCOME_TAG_RE)) {
+      problems.push(
+        `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric tables`
+      );
+    }
+    for (const m of source.matchAll(GRADE_NUMBER_RE)) {
+      const context = source.slice(
+        Math.max(0, m.index - GRADE_CONTEXT_CHARS),
+        m.index + m[0].length + GRADE_CONTEXT_CHARS
+      );
+      if (GRADE_WORD_RE.test(context)) {
+        problems.push(
+          `grading language: ${where} says "${m[0]}" next to a grading word: ${JSON.stringify(context.replace(/\s+/g, " ").trim())}`
+        );
+      }
+    }
   }
 }
 

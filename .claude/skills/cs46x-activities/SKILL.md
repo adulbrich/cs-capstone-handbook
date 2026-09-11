@@ -82,6 +82,16 @@ linked activity carries no badge, if a Recommended badge has no assignment
 linking to it, or if an assignment links to an anchor matching no heading. It
 runs in CI and pre-commit.
 
+The same validator also enforces the section shape below: a tier badge with
+no audience badge; audience badge variants (Team is `note`, Individual is
+`success`); all badges on one line, two lines below the heading; the closing
+"A good output" line being last (only the Feeds line may follow); a Feeds line
+on every Workshop or Recommended activity; no outcome tags and no point values
+or percentages next to grading words, on activity and guide pages alike; and
+the "more than a hundred" library figure on the index and the workshop page.
+What it does not check: heading case, the `mb-6` class, the effort clause,
+the 400-word test, and the opener rules. Those are still on you.
+
 ## Required Section Shape
 
 Every activity is one `##` section with exactly this structure:
@@ -242,7 +252,8 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 ## Before Finishing
 
 1. Run `npm run validate:activities`. It reconciles badges against assignment
-   links and prints the tier counts.
+   links, checks the section shape, and prints the tier counts. Run
+   `npm run validate:dashes` too; it catches the em dashes the grep below would.
 2. Run `npm run build`. It runs `astro check`, compiles the MDX, and validates
    every internal link and anchor, which is the only reliable check of the
    anchors you just wrote.
