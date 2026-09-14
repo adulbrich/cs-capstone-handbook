@@ -17,7 +17,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
-| `canvas/` | Canvas-ready HTML and rubric TSVs. Mirrors the handbook; the handbook wins. |
+| `canvas/` | Rubric TSVs for the Canvas import extension, plus the three syllabus HTML bodies. Mirrors the handbook; the handbook wins. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals. Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, and the no-outcome-tags, no-grading-language rules for activities and guides. Runs in CI and pre-commit. |
