@@ -134,6 +134,7 @@ Current canonical homes:
 | Project category descriptions | `practicalities/categories.mdx` |
 | V&V outcome ladders | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
+| Week-by-week schedule, lecture slots, term dates | `introduction/series.mdx` |
 
 Before adding a paragraph that explains something, grep for it. If it already
 exists somewhere, link instead.

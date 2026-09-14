@@ -81,7 +81,7 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 
 ## Lecture Plan (Friday slot)
 
-With reports gone, the slot carries: demo days (2 per term), guest speakers, and workshops. Priority sessions to build before fall: writing specs for AI agents; reviewing AI-generated diffs; testing as the safety net; the outcome-critical-path calendar exercise (teams plot their Definition of Shipped prerequisites). The testing-strategy, generative-ai, and shipping guides carry most of the content already.
+With reports gone, the slot carries: demo days (2 per term), guest speakers, and workshops. The student-facing version is the week-by-week schedule on `introduction/series.mdx` (#55): it fixes the demo days (weeks 5 and 10), the eight in-class workshop activities in their published weeks, and the fall week 0 welcome deck (`decks/Fall.md`), and it marks every other Friday "announced in Canvas". Priority sessions to build (#51), with the weeks the schedule proposes for them: testing as the safety net (fall week 4, alongside Audit Your Safety Net); writing specs for AI agents (fall week 6); reviewing AI-generated diffs (fall week 7, before the defense window); the outcome-critical-path calendar exercise, teams plotting their Definition of Shipped prerequisites (winter week 1, two weeks before the DoS is due). The testing-strategy, generative-ai, and shipping guides carry most of the content already. Fall week 9 has no lecture (Thanksgiving Friday). Spring week 10 holds both the Expo and the second demo day; whether the Expo replaces that demo day is an open question the schedule flags rather than answers.
 
 ## TA-Hours Ledger (per TA, per term, at 6 TAs / ~14 teams / ~50 students)
 

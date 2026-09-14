@@ -393,7 +393,7 @@ Six commits after section 14 went unrecorded here, and the branch review (#21, 2
 
 ## 16. The p0 Batch (September 2026)
 
-Every open `p0-now` issue under #21, landed 2026-09-13, one commit per issue, in dependency order. Nothing is closed on GitHub; closure is the instructor's.
+Every open `p0-now` issue under #21, landed 2026-09-13, one commit per issue, in dependency order. All thirteen were closed on GitHub on 2026-09-14 with a comment naming the commit and any deviation.
 
 **Decided by the instructor 2026-09-11, implemented here:**
 
@@ -415,6 +415,14 @@ Every open `p0-now` issue under #21, landed 2026-09-13, one commit per issue, in
 - **#49** week numbers verified against the registrar; open item 5 above holds the answer.
 
 **Conflict resolved in favour of the later instruction.** #31 (2026-09-11, "lgtm on both") made the Expo mandatory through a zero-weight Canvas completion item stated on `expo.mdx`. #17's instruction (2026-09-14) says to present the Expo as an event with no mention of mandatory or not. The page follows #17; the Canvas completion item is therefore not written anywhere and waits on the instructor.
+
+## 17. The Week-by-Week Schedule (September 2026)
+
+`introduction/series.mdx` (#55, 2026-09-14) replaced its three prose course sections with a schedule: one table per term, fall week 0 through spring finals week, columns for the Friday lecture, what is due, what to read and what to do. Dates are the 2026-27 Mondays from the registrar calendar (open item 5); fall has a week 0 because classes start on a Wednesday. The Read and Do columns run one sprint ahead of the assignment they prepare and draw only on each assignment page's own recommendations, so promoting or demoting an activity does not need a schedule edit unless the page's list changes.
+
+Decisions recorded on #55, each vetoable alone: the runbook's four unbuilt priority workshops are placed at fall weeks 4, 6, 7 and winter week 1 as proposals, and the runbook's Lecture Plan now says so; check-in weeks are not placed per row while #23 is open; survey rows say only "open", with exact dates on #39; spring week 10 lists both the Expo and demo day 2 without resolving whether one replaces the other; due weeks are duplicated by design, downstream of the assignment tables, and a validator that reconciles them is a follow-up. `for-students.mdx` links the schedule from its lectures section, the term-setup template gains a fall-only date-refresh checkbox, and `AGENTS.md` lists the page as the canonical home for lecture slots and term dates.
+
+#25 was rewritten the same day around the corrected calendar: the three-day week is week 9 (Term Retrospective), and the recommendation on the issue is a stated Wednesday due date on the page. The student-perspective review of the 17 guides that #28 asked for before its decision is a comment on that issue.
 
 ## Build Status
 
