@@ -6,9 +6,11 @@ description: Use when creating or editing guide pages (MDX files in src/content/
 # Guide Style Guide
 
 This skill governs how guides are written for the CS capstone handbook
-(Astro/Starlight, MDX). The skeleton below is derived from the three guides the
-instructor has validated: `adr.mdx`, `requirements.mdx`, and
-`retrospectives.mdx`. When in doubt, open one of those three and follow it.
+(Astro/Starlight, MDX). The opening and the closing three sections below are
+what every guide on the branch does. The four artifact sections come from
+`adr.mdx` and `requirements.mdx`; `retrospectives.mdx` is the model for a
+practice guide and has none of them. When in doubt, open the one that matches
+your guide's kind and follow it.
 
 ## Writing Voice (applies to everything below)
 
@@ -41,10 +43,27 @@ Guides are also where explanatory bulk belongs when an activity starts growing
 one. An activity over roughly 400 words is usually a guide with an exercise
 attached: move the explanation here and leave the activity pointing at it.
 
+### Artifact guides and practice guides
+
+A guide is one of two kinds, and the kind decides which sections are required:
+
+- **Artifact guides** teach a document the team produces and keeps in the
+  repository: `adr.mdx`, `requirements.mdx`, `technical-design.mdx`,
+  `working-agreement.mdx`. They show the artifact.
+- **Practice guides** teach a way of working: everything else,
+  `documentation.mdx` included, because it covers several artifacts and none
+  of them is the guide's subject.
+
+A new guide that could be either is an artifact guide if a checkpoint or an
+assignment grades a file it describes.
+
 ## Section Skeleton
 
-Sections in **bold** are required. The middle of the guide flexes with the
-topic; the opening and the final three sections do not.
+Sections in **bold** are required for every guide. Sections marked *artifact*
+are required for artifact guides and optional for practice guides, which keep
+them only when they say something (`conflict.mdx` keeps Validation and
+Measuring Success because its signals are real). The middle flexes with the
+topic.
 
 1. **Opening (no heading).** Two to four paragraphs. Say what the thing is,
    link the authoritative external reference, and state what goes wrong without
@@ -59,35 +78,41 @@ topic; the opening and the final three sections do not.
    - Projects risk inconsistency, technical debt, or costly rework.
    ```
 
-2. **`## What is X?`** or an equivalent definition section. What the artifact or
-   practice contains, usually as a bulleted list of its parts.
+2. *Artifact:* `## What is X?` or an equivalent definition section. What the
+   artifact contains, usually as a bulleted list of its parts.
 
-3. **`## Addressing a Problem`** (or `## Addressing an Architectural Problem`,
-   matching the topic). The why. Good practice starts from a real problem
-   statement: what it is, who is affected, why it matters.
+3. *Artifact:* `## Addressing a Problem` (or `## Addressing an Architectural
+   Problem`, matching the topic). The why. Good practice starts from a real
+   problem statement: what it is, who is affected, why it matters.
 
-4. **`## What Makes a Good X?`** The quality bar, **with a concrete example in a
-   fenced code block**. All three validated guides do this and it is the single
-   most useful section on the page. Show the artifact, do not describe it.
+4. *Artifact:* `## What Makes a Good X?` The quality bar, **with the artifact
+   itself in a fenced code block**, under about 30 lines: an ADR, a
+   `docs/requirements.md`, a `docs/design.md`, a `docs/charter.md`. It is the
+   section students copy from and the one the fall workshops run on. Show the
+   artifact, do not describe it. `technical-design.mdx` names it "What Makes
+   a Good Design Document?"; `working-agreement.mdx` puts the file under
+   "Writing Your Agreement", which is where its reader is when they need it.
 
 5. *Topic-specific middle sections.* Flex freely. `retrospectives.mdx` uses
    `## Types`, `## Formats`, and `## Running a Good Retrospective` instead of
    steps 3 and 4, which is correct for that topic. Use `###` subsections for
    variants a reader picks between.
 
-6. **`## Validation`.** How you know the artifact is any good: who reviews it,
-   what they check, what a failed check looks like.
+6. *Artifact:* `## Validation`. How you know the artifact is any good: who
+   reviews it, what they check, what a failed check looks like.
 
-7. **`## Measuring Success`.** The signals that the practice is working in
-   real life, not the artifact's own quality.
+7. *Artifact:* `## Measuring Success`. The signals that the practice is
+   working in real life, not the artifact's own quality.
 
 8. **`## Best Practices for Writing X`.** A bulleted list of concrete,
    actionable rules. No hedging.
 
 9. **`## Some Truths about X`.** Required, and the section that gives these
-   guides their credibility. Open with "Let's be honest." and then say the
-   uncomfortable things: where the practice is busywork, where it goes stale,
-   where teams reasonably skip it. Then say when it genuinely does matter.
+   guides their credibility. Say the uncomfortable thing first: where the
+   practice is busywork, where it goes stale, where teams reasonably skip it.
+   Then say when it genuinely does matter. "Let's be honest." is an opener a
+   few guides use, not a rule; the rule is that the first bullet is the one
+   an advocate would leave out.
    A guide that only advocates is marketing. Students can tell.
 
 10. **`## X in Industry and Academia`.** Required. What this looks like in real
@@ -140,6 +165,20 @@ directions:
 Do not restate an assignment's requirements in a guide. Link to it. Two
 descriptions of the same requirement drift, and the assignment page wins.
 
+Three topics tempt every guide to restate them. Each has one owner; the
+others link:
+
+- **Performance conversations and escalation**: `conflict.mdx`.
+  `working-agreement.mdx` says only what the agreement contributes (hours,
+  blockers, the minimum deliverable) and links.
+- **AI norms**, split by concern rather than duplicated: individual habits and
+  tool setup in `generative-ai.mdx`; team process norms in
+  `working-agreement.mdx` under AI Tool Usage; architectural constraints in
+  `technical-design.mdx` under Technical Design in the Age of AI.
+- **CI and branch protection**: the workflow file in `devops.mdx`, the
+  repository settings in `git-and-github.mdx`. `testing-strategy.mdx` links
+  both and owns what to test.
+
 ## Length
 
 The validated guides run 950 to 1,750 words. `testing-strategy.mdx` at 4,000 is
@@ -171,4 +210,5 @@ are read for, not validated.
    covers outcome tags and grading language on guides, the second em dashes.
 3. Confirm the final three sections are present: Best Practices, Some Truths,
    and Industry and Academia. Their absence is the most common way a new guide
-   fails to match the validated ones.
+   fails to match the others. For an artifact guide, also confirm the fenced
+   artifact is there and still matches what the assignment page requires.

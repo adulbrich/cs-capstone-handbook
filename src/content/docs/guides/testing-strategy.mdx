@@ -38,6 +38,18 @@ Include your testing approach in the working agreement or `CONTRIBUTING.md`. Eve
   description="Where testing expectations and the Definition of Done live."
 />
 
+## Testing as the Safety Net
+
+Most of the code in a Capstone project is now written with AI tools, and the course grades how far you delegated against how much your automation would catch, never the tooling itself. That automation is your **safety net**, and testing is most of it. The net has five parts, and each is checkable:
+
+- **Tests that fail when behavior breaks**, on the paths that matter. A suite that passes after you delete a feature is not a net.
+- **CI on every pull request**, green, and required before merge.
+- **Review gates on the one-way doors**: schema, authentication, deployment, data migrations, anything you cannot walk back.
+- **A staging or preview environment**, so the first run of a change is not production.
+- **A rollback you have tried**, not one you believe in.
+
+You may delegate exactly as far as that net catches, and no further. If you want to hand more to the tools, add to the net first. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net), the fall workshop, measures the gap between the two on your own repository; the reasoning behind the rule is in the [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-net-that-lets-you-trust-the-rest). The rest of this guide is how to build the first part of the net well, and how to test the thing the net cannot: whether the product is worth building.
+
 ## Verification: Does the Code Work?
 
 Verification is about confirming that the system behaves as specified. This includes both automated tests (which run without human intervention) and manual checks (which require a person to interact with the system).
@@ -213,30 +225,7 @@ Write tests as you build features, not after. Whether the team practices test-dr
 
 ### In Continuous Integration
 
-Automated tests should run on every pull request. If tests fail, the PR does not merge. This is the single most effective quality gate a team can implement, and it is straightforward to set up with GitHub Actions or any CI provider.
-
-```yaml
-# Example GitHub Actions workflow
-name: Tests
-on: [pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
-```
-
-CI catches regressions early, before they compound with other changes. Combined with branch protection rules that require CI to pass before merging, it prevents broken code from reaching `main`.
-
-<LinkCard
-  title="Git and GitHub Essentials"
-  href="/guides/git-and-github/"
-  description="Branch protection and CI integration in your workflow."
-/>
+Automated tests should run on every pull request. If tests fail, the PR does not merge. This is the single most effective quality gate a team can implement. The workflow file and what else belongs in it are in the [DevOps guide](/guides/devops/#continuous-integration-ci); the branch protection that turns a red build into a blocked merge is in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch).
 
 ### Throughout the Sprint
 

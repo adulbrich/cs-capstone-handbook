@@ -100,7 +100,7 @@ This is called a **spike** in agile terminology. A spike is time-boxed (1 to 3 d
 
 The best technical designs are informed by spikes on the riskiest assumptions. If you have a component you have never built before, spike it first.
 
-## The Design Document
+## What Makes a Good Design Document?
 
 A design document is not a form to fill out. It is a narrative that helps someone understand how the system works (or will work) without reading the code. A good design document answers questions that the team and its project partner actually have, and it does so concisely enough that people will read it more than once.
 
@@ -109,6 +109,45 @@ In practice, most useful design documents cover a few recurring themes. They sta
 For a software project, this might mean a context diagram, an API specification, a database schema, and a list of technical unknowns. For a research project, the equivalent might be a computational workflow diagram, a description of the data pipeline stages and their input/output formats, a reproducibility plan, and a list of experimental assumptions that need validation. For a FOSS contribution, the focus shifts to understanding the existing architecture and explaining where and how the proposed change fits in.
 
 The design document should also reference the team's ADRs. Every significant "why" in the design (why this database, why this architecture, why this algorithm) should have a corresponding ADR that captures the alternatives considered and the reasoning. The design document shows the current state; the ADRs show how and why it got there.
+
+A `docs/design.md` that answers those questions in two pages looks like this:
+
+```md
+# Design
+
+## Overview
+Shift board for <partner>: a React front end, a Node API, and Postgres
+on Render. Coordinators and volunteers sign in with the partner's
+Google Workspace. Requirements: docs/requirements.md.
+
+## Architecture
+![C4 container diagram](./diagrams/containers.png)
+- Web app (React): the board, the claim and release flows.
+- API (Node, Express): auth check, shift rules, notifications.
+- Postgres, managed by Render: shifts, claims, users.
+- Email (Postmark), called from the API on release.
+
+## Interfaces
+- REST, JSON. Spec in docs/api/openapi.yaml; the client is generated
+  from it. POST /shifts/{id}/claims returns 409 when the shift is full.
+
+## Data
+- Entities: User, Shift, Claim (ERD in ./diagrams/erd.png).
+- One Claim per (shift, user), enforced by a database constraint.
+
+## Deployment
+- Render web service plus managed Postgres; a preview deploy per PR.
+- Rollback: redeploy the previous build from the Render dashboard
+  (tried once, works). Production target agreed with the partner: ADR-004.
+
+## Risks and open questions
+- Google Workspace SSO on the partner's tenant is unproven. Spike in
+  sprint 2; owner on the board.
+- Email deliverability from a new domain. Fallback: in-app notice only.
+
+## Decisions
+ADR-001 Postgres over SQLite. ADR-002 REST over GraphQL. ADR-004 Render.
+```
 
 If you want a template rather than a blank page, [arc42](https://arc42.org/overview) is the standard one: twelve sections covering goals, constraints, context, building blocks, runtime, deployment, cross-cutting concepts, decisions, quality, risks, and glossary. It prescribes structure, not notation, so C4 or UML diagrams drop into it unchanged. Take the sections you need and delete the rest; a Capstone design document that fills all twelve is padding.
 
@@ -120,16 +159,12 @@ If you want a template rather than a blank page, [arc42](https://arc42.org/overv
 
 UML (Unified Modeling Language) provides a standard vocabulary for describing software structure and behavior. Useful diagram types:
 
-- **Class diagram**: static structure of classes and their relationships.
-- **Sequence diagram**: how objects interact over time for a specific scenario or use case.
-- **State diagram**: lifecycle of an entity with distinct states and transitions.
-- **Activity diagram**: flow of control through a process or algorithm.
-- **Component diagram**: how components wire together into larger components or systems; the modular structure at a glance.
-- **Package diagram**: the codebase grouped into packages, with the dependencies between them. Useful for spotting a dependency cycle before it costs you a refactor.
-- **Deployment diagram**: physical or cloud topology of the running system, mapping artifacts (executables, containers, libraries) to nodes (servers, devices).
-- **Composite structure diagram**: the internal parts of one classifier and how they collaborate. Rarely worth drawing by hand.
+- **Sequence diagram**: how components interact over time for one scenario. The one most Capstone teams actually need, usually for the authentication or the main data flow.
+- **State diagram**: the lifecycle of an entity with distinct states (an order, a job, a claim).
+- **Class or entity-relationship diagram**: static structure; generate it from the code or the schema rather than drawing it.
+- **Deployment diagram**: what runs where, which the deployment section of your design document already needs.
 
-The [UML diagram reference](https://www.uml-diagrams.org/) covers the notation for each. Pick the diagrams that answer the questions your team is currently uncertain about. A sequence diagram for your authentication flow is more valuable than a complete UML suite nobody maintains. Never create a diagram just because a template requires it.
+Activity, component, package, and composite-structure diagrams exist too; the [UML diagram reference](https://www.uml-diagrams.org/) covers all of them. Pick the diagrams that answer the questions your team is currently uncertain about. A sequence diagram for your authentication flow is more valuable than a complete UML suite nobody maintains. Never create a diagram just because a template requires it.
 
 ## Validating Your Design
 
@@ -145,6 +180,15 @@ A design that has never been challenged is just an assumption. Validate it by:
   href="/activities/design/"
   description="Activities to help evaluate and validate design decisions."
 />
+
+## Measuring Success
+
+The design is working when the things it was supposed to prevent stop happening:
+
+- **Integration surprises**: two components built separately meet and work. If the sprint before a demo is spent reconciling interfaces, the interface section was not specific enough.
+- **Onboarding time**: a new teammate, a reviewer, or an AI tool with the document in context can find its way around the code without a walkthrough.
+- **Decisions stick**: an approach the team rejected does not get re-proposed, by a person or a tool, because the ADR says why.
+- **The diagram is still true**: if the architecture drawing and the code disagree at a checkpoint, the document has stopped being read.
 
 ## The Design Document Is a Living Artifact
 

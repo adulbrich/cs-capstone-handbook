@@ -188,12 +188,7 @@ Optional but valuable:
 
 ### CI and Branch Protection
 
-CI is most effective when combined with branch protection rules that require checks to pass before merging. In your repository's settings, under *Branches > Branch protection rules*, you can require:
-
-- Status checks (your CI workflow) to pass before merging.
-- At least one pull request review approval.
-
-This turns CI from an informational signal ("the build failed") into an enforced gate ("you cannot merge until the build passes"). It is the single most effective way to keep the main branch stable.
+CI is most effective when combined with branch protection rules that require checks to pass before merging. That turns CI from an informational signal ("the build failed") into an enforced gate ("you cannot merge until the build passes"), and it is the single most effective way to keep the main branch stable. The settings are in [Git and GitHub: Protecting the Main Branch](/guides/git-and-github/#protecting-the-main-branch).
 
 ## Continuous Deployment (CD)
 
@@ -242,6 +237,10 @@ If your project uses a database, you need somewhere to host it in production. Op
 - **Self-hosted on a VM**: Running PostgreSQL or MySQL on your own server gives full control but requires you to handle backups, updates, and security.
 
 For most Capstone projects, a managed service is the right choice: it removes operational burden you have no time for. **Check the current pricing page before you commit.** Free and hobby tiers appear and disappear on a timescale shorter than this course, so confirm what you are actually getting rather than trusting a recommendation from last year. If your partner already runs on a particular cloud, use theirs; matching the partner's stack is worth more than picking the nicest developer experience.
+
+:::note[Reviewed annually]
+The platform and database tables above date faster than anything else on this page. Last reviewed September 2026; reviewed each August.
+:::
 
 ## Environment Management
 
