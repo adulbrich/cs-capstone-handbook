@@ -424,6 +424,8 @@ Decisions recorded on #55, each vetoable alone: of the runbook's four unbuilt pr
 
 `validate-activities.mjs` rule 6 (#56) reconciles the schedule's activity links: every one must resolve and carry a Workshop or Recommended badge, so the schedule never sends a student to an activity no assignment page still recommends, and every Workshop activity must appear on the schedule. Pre-commit runs the validator on the series page too.
 
+Two more p0 issues the instructor answered the same day. **#27**: the assignments skill now says three to six criteria is the working range and more is allowed when each criterion is a separable observable check and the grading cost is accepted; the RFC (nine) and Charter (seven) rubrics stay as they are. **#39**: survey timing is stated once on each survey page's AssignmentMeta, and matched on the partner page, the runbook, the Canvas readme and the schedule: midterm sent week 5 and closed at the end of week 6, final sent week 9 and closed at the end of week 10, peer and partner alike.
+
 #25 was rewritten the same day around the corrected calendar: the three-day week is week 9 (Term Retrospective), and the recommendation on the issue is a stated Wednesday due date on the page. The student-perspective review of the 17 guides that #28 asked for before its decision is a comment on that issue.
 
 ## Build Status

@@ -16,11 +16,11 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 | Weeks | Staff activity |
 |---|---|
 | 1-2 | Cohorts formed; charters graded (TAs); Qualtrics contact lists built |
-| 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; NDA walkthroughs in check-ins); midterm surveys out |
+| 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; NDA walkthroughs in check-ins); midterm surveys out in week 5, closing end of week 6 |
 | 5 | All-hands demo day 1 (sampled lineup, ~15 teams in 110 minutes) |
 | 7-9 | Defenses inside check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
-| 9-10 | Term deliverable grading; checkpoint 2; final surveys out; demo day 2 |
+| 9-10 | Term deliverable grading; checkpoint 2; final surveys out in week 9, closing end of week 10; demo day 2 |
 
 ## Defense Logistics
 
@@ -75,7 +75,7 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 
 ## Partner Touchpoints
 
-- Two surveys per term (midterm pulse, final). Two sign-offs per year: Definition of Shipped (winter week 3) and Handoff confirmation (spring week 10).
+- Two surveys per term, peer and partner alike: the midterm pulse is sent week 5 and closes at the end of week 6; the final survey is sent week 9 and closes at the end of week 10. Two sign-offs per year: Definition of Shipped (winter week 3) and Handoff confirmation (spring week 10).
 - Canned emails for both sign-offs: state what the document is, that a reply-with-approval suffices, and the one-week window.
 - Non-responsive partner: after two documented attempts, mentor or instructor signs instead; the team is not penalized. This promise is in the handbook; honor it without friction.
 
