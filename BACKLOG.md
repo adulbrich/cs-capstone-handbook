@@ -10,10 +10,6 @@ This file collects content ideas that were moved out of handbook pages (for exam
 - Add FeedBias and AI in Psychology projects
 - Add app store links for Ephira
 
-## Engineering Expo (src/content/docs/practicalities/expo.mdx)
-
-- Review Expo assignments; maybe make attendance optional, favoring other marketing and communication activities that benefit the project
-
 ## Activities ideas (src/content/docs/activities/)
 
 Distinct future activity ideas removed from commented-out blocks in the activity pages.
