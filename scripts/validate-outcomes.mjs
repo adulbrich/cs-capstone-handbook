@@ -31,6 +31,8 @@ const CANVAS_TO_HANDBOOK = {
   defense: "defense",
   "definition-of-shipped": "definition-of-shipped",
   "incident-postmortem": "incident-postmortem",
+  // The individual half of the Sprint Notes points; one TSV per term, tagless.
+  "individual-contribution": "sprint-notes",
   "project-handoff": "project-handoff",
   "project-landing-page": "landing-page",
   "project-retrospective": "project-retrospective",
@@ -42,22 +44,9 @@ const CANVAS_TO_HANDBOOK = {
   "workshop-activities": "workshop-activities",
 };
 
-// Kept for reference, no longer assigned; see canvas/assignments/assignment-readme.md.
-const CANVAS_DEPRECATED = new Set([
-  "_template",
-  "adr-code-review",
-  "final-peer-evaluation",
-  "individual-contribution",
-  "memo",
-  "midterm-peer-evaluation",
-  "progress-report",
-  "requirements-update",
-  "research-brief",
-  "retrospective",
-  "retrospective-and-career",
-  "setup",
-  "technical-design-update",
-]);
+// Holds the extension's TSV template, not a rubric. The retired assignment
+// directories were removed under #30; see canvas/assignments/assignment-readme.md.
+const CANVAS_DEPRECATED = new Set(["_template"]);
 
 function parseFrontmatter(source) {
   const match = source.match(/^---\n([\s\S]*?)\n---/);

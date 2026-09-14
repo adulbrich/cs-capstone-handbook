@@ -386,7 +386,7 @@ Recording these so implementation does not waste effort on them:
 
 - **`astro.config.mjs` sidebar.** The Activities group uses `autogenerate: { directory: 'activities' }`, so `ai.mdx` appears with no config change. (The file does need the §4.8 link-validator edit.)
 - **`scripts/validate-outcomes.mjs`.** The counting logic already handles multi-tag criteria and multi-term multiplication correctly. No script change; only its output numbers move.
-- **`canvas/assignments/` deprecated directories** (`memo`, `research-brief`, `progress-report`, `adr-code-review`, `requirements-update`, `technical-design-update`, `setup`, `retrospective-and-career`). Already marked deprecated and retained until Canvas no longer holds live content from them, as `assignment-readme.md` says; the Canvas import package (`2026-08-19-canvas-import-package-design.md` §6) removes them at that point (#30).
+- **`canvas/assignments/` deprecated directories** (`memo`, `research-brief`, `progress-report`, `adr-code-review`, `requirements-update`, `technical-design-update`, `setup`, `retrospective-and-career`). Removed 2026-09-13 per #30 (decided 2026-09-11), together with every `*-assignment.html` and `*-rubrics.md`; the readme's deprecation table and git history record them. The Canvas import package spec §6 says the same.
 - **Package-manager references.** `README.md` and `IMPLEMENTED.md` already use `npm` and `npx` correctly; the `pnpm` strings remaining in `IMPLEMENTED.md:103-108` are historical narrative describing the migration and are accurate as written.
 
 ### 11.6 Closing check

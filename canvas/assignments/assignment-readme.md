@@ -1,9 +1,9 @@
 # Assignment README
 
-- Each assignment has its own directory under `canvas/assignments/`.
-- The current, validated artifact in each live directory is the `*-rubric-details.tsv` for the Canvas rubric-import browser extension. `scripts/validate-outcomes.mjs` reconciles every live TSV against the handbook rubric table it mirrors, in CI and pre-commit; `canvas/assignments/_template/` holds the TSV format the extension imports.
+- This directory holds one validated `*-rubric-details.tsv` per live assignment, for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
+- `scripts/validate-outcomes.mjs` reconciles every TSV against the handbook rubric table it mirrors, in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/superpowers/specs/2026-08-19-canvas-import-package-design.md` generates it (#5).
-- The `*-assignment.html` and `*-rubrics.md` files still present in some directories are pre-revision. Nothing reads them, they describe formats the handbook no longer states, and they must not be pasted into Canvas. Their disposition is decided in #30.
+- Two directories hold one TSV per term because the item count differs by term. `workshop-activities/`: `-fall-` (6 rows, CS 461) and `-term-` (1 row, CS 462 and CS 463; edit the Pass description to name that term's instrument). Each item is 10 points, so the Canvas totals are 60 / 10 / 10 and the percentage comes from the assignment-group weight, not the rubric. `individual-contribution/`: `-fall-` (4 x 25), `-winter-` (5 x 20), `-spring-` (34 / 33 / 33), one criterion per sprint scored Full / Half / Zero; the Half band is exactly half (12.5, 10, 17 / 16.5), which Canvas rubric ratings accept. The grader logic is in the Individual Contribution Modifier section of `STAFF-RUNBOOK.md`.
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is now the source of truth for all graded work.** Canvas mirrors the handbook; when in doubt, the handbook wins, and rubric points in the TSV files must match the handbook rubric tables exactly.
 
@@ -130,7 +130,7 @@ The fall Term Retrospective's Writing criterion changed in the same way, but no 
 
 ## Deprecated Assignments
 
-These directories are kept for reference but are no longer assigned:
+These assignments were retired in the revision. Their directories were removed under #30 (decided 2026-09-11, landed 2026-09-13); git history keeps the old bodies and rubrics:
 
 - `memo/`: folds into the fall RFC (the stakeholder context and constraints become the RFC's problem framing) and the early partner conversations.
 - `research-brief/`: folds into the RFC (the background research becomes the RFC's evidence and analysis).

@@ -183,7 +183,7 @@ Due dates compute as `week1_monday + (week - 1) * 7 days`, adjusted to the weekd
 
 `canvas/assignments/*/​*-rubric-details.tsv` stays. It is the rubric source and `validate-outcomes.mjs` already reconciles it against the handbook.
 
-Deprecated directories are retained until Canvas no longer holds live content from them (the readme and the four-skills spec §11.5 say the same); the generator removes them at that point, since their content is recorded in the deprecation table in `assignment-readme.md` and in git history. The interim handling of the stale bodies and Markdown rubric copies is #30.
+Deprecated directories, the stale `*-assignment.html` bodies and the `*-rubrics.md` copies were removed 2026-09-13 per #30 (decided 2026-09-11), ahead of the generator; their content is recorded in the deprecation table in `assignment-readme.md` and in git history. The four-skills spec §11.5 says the same.
 
 ## 7. Syllabi
 

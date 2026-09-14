@@ -52,6 +52,20 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
 - NDA teams: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
 
+**Where it lives in Canvas.** One Individual Contribution column per term holds the individual half of the Sprint Notes points, imported from `canvas/assignments/individual-contribution/` (one TSV per term, because the sprint counts differ: fall 4 x 25, winter 5 x 20, spring 34 / 33 / 33). One criterion per sprint, scored full, half, or zero. It defaults to full credit; there is no submission.
+
+**Per-sprint bands.** Every deduction needs an evidence note (what was checked, what was found) so the decision is reviewable.
+
+- **Full** (default): the contribution line lists reviewed PR(s) the student owned and the repo record corroborates it; or the PR norm was missed once with an explanation in the note.
+- **Half**: some activity is visible, but no owned, reviewed PR and no explanation in the note; or the contribution line is only weakly corroborated by the repo record (trivial commits; review-only activity not agreed as that student's contribution mode in the charter).
+- **Zero**: no meaningful contribution visible anywhere for the sprint (no contribution line, no PRs, no reviews, no traceable work) and no explanation; or the contribution line is contradicted by the repo record.
+
+**Evidence sources**, in the order to check them: the contribution lines in the team's sprint notes (PR titles or IDs; NDA teams list IDs only); the repository record (authored or driven PRs, review responses, merges); review activity over the sprint window; live spot-verification at the demo and the defense; partner or peer flags, which trigger the corroboration review on the partner evaluation page. Reviewed PRs are the default evidence, but any verifiable contribution counts if the charter and the sprint note make it traceable (substantial reviews, documentation, test or infrastructure work).
+
+**Appeals.** The student is shown the evidence note, has five business days to respond with evidence, and an instructor decides. TAs flag; instructors adjudicate.
+
+**No double jeopardy.** Non-contribution is penalized here and only here. The repo checkpoint's traceability criterion grades whether attribution infrastructure exists (team-level), and partner-evaluation facet adjustments are reserved for partner-originated flags.
+
 ## Surveys (per term: 4 processing runs)
 
 - Peer midterm, peer final, partner midterm, partner final. Scripts in `scripts/` until the instructor-tools page exists.
