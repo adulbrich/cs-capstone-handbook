@@ -300,7 +300,7 @@ A full content sweep. All three validators passed on entry, which was the useful
 
 **Canvas mirror.** Landing Page was week 8 in `cs463.html` and `assignment-readme.md` against week 7 in the handbook; the readme's CS 462 and CS 463 schedules carried no Workshop Activities row despite the same file's weights section adding them. `scripts/project-partner-end-of-term-surveys.R` pointed at `/project-evaluation/breakdown/#project-partner-assessment-facets`, whose redirect drops the anchor. Its facet weights match the handbook exactly; only the comment was stale.
 
-**Spring defense runs through week 10**, and here Canvas was right and the handbook was wrong. Expo is week 10 and Expo Q&A may substitute for the defense, so the spring window is weeks 7 to 10 where fall and winter are 7 to 9. `expo.mdx` now states the week instead of only "in June."
+**Spring defense runs through week 10**, and here Canvas was right and the handbook was wrong. Expo is week 10 and Expo Q&A may substitute for the defense, so the spring window is weeks 7 to 10 where fall and winter are 7 to 9. `expo.mdx` now states the week instead of only "in June." **Reversed 2026-09-11 (#31):** there is no substitution; the spring defense window is weeks 7 to 9 like every term, and the Expo is a separate event that the defense page does not mention.
 
 **All 13 Canvas rubric TSVs verified clean** on points, criterion order, and outcome tags, every total 100. `mapping.mdx` counts match validator output on all ten outcomes. The syllabi weights match the term tables. Pass 12's reconciliation held.
 

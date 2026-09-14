@@ -9,7 +9,7 @@
 
 ## Grade Architecture (every term)
 
-Four equal components (25% each): Project Partner Evaluation (midterm pulse 5% + final survey 20%), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall and winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense/Expo Q&A 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
+Four equal components (25% each): Project Partner Evaluation (midterm pulse 5% + final survey 20%), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall and winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
@@ -123,7 +123,7 @@ The fall Term Retrospective's Writing criterion changed in the same way, but no 
 | 4 | Sprint Note 2 |
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |
-| 7-10 | Defense (Expo Q&A may substitute, at the instructors' discretion) |
+| 7-9 | Defense (during cohort check-ins) |
 | 8 | Release and Metrics |
 | 9 | Project Retrospective; Career and Individual Retrospective |
 | 10 | Project Handoff |
