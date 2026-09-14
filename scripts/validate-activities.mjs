@@ -365,7 +365,9 @@ console.log(`  Workshop:    ${counts.Workshop}`);
 console.log(`  Recommended: ${counts.Recommended}`);
 console.log(`  Library:     ${counts.Library}`);
 console.log(`  Total:       ${activities.size}`);
-console.log(`Schedule:      ${scheduled.size} activity links on the week-by-week schedule`);
+console.log(
+  `Schedule:      ${scheduled.size} activity links on the week-by-week schedule`
+);
 
 if (problems.length > 0) {
   console.error(`\n${problems.length} problem(s):`);
