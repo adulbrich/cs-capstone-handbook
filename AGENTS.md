@@ -23,6 +23,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the no-outcome-tags, no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
+| `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -40,6 +41,13 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 4. **The handbook outranks Canvas.** If a rubric TSV and a handbook rubric
    table disagree, the handbook is right and the TSV is the bug. Rubric point
    values must match exactly.
+5. **Terms and weeks only. No calendar dates and no academic year anywhere
+   in the handbook** (#57): not "Fall 2026", not "September 23", not
+   "2026-27". Weekdays and named holidays are fine ("fall week 9, Wednesday
+   before Thanksgiving"). The handbook is reused every year and a date is a
+   fact that rots on a schedule. `validate-dates.mjs` checks the content
+   directories, the syllabi, and the runbook; the changelogs keep their
+   decision timestamps.
 
 ## Validation
 
@@ -51,6 +59,7 @@ npm run validate:outcomes
 npm run validate:activities
 npm run validate:downloads
 npm run validate:dashes
+npm run validate:dates
 npm run check            # Biome, for anything under scripts/ or src/ that is code
 ```
 

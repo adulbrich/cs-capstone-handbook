@@ -201,6 +201,8 @@ guide. Word count is a diagnostic, not a target.
 - Tool requirements presented as mandatory. Guides may show the current
   industry baseline; say what the substitute is for students without the tool.
 - Em dashes. `validate-dashes.mjs` fails on one.
+- Calendar dates or an academic year. Terms and weeks only; weekdays and
+  named holidays are fine. `validate-dates.mjs` fails on a date.
 
 Nothing checks the section skeleton, the length, or the opener rules; those
 are read for, not validated.

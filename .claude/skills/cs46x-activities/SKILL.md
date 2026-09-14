@@ -260,6 +260,8 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 - Tool requirements presented as mandatory when a cheaper substitute exists. If
   an activity assumes a capable AI agent, a paid service, or specific hardware,
   state the substitute for students who do not have it.
+- Calendar dates or an academic year. Terms and weeks only.
+  `validate-dates.mjs` fails on a date.
 
 ## Before Finishing
 

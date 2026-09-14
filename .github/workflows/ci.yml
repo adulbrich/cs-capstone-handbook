@@ -31,6 +31,8 @@ jobs:
         run: node scripts/validate-downloads.mjs
       - name: Validate no em dashes in content
         run: node scripts/validate-dashes.mjs
+      - name: Validate no calendar dates in content
+        run: node scripts/validate-dates.mjs
       - name: Build (includes astro check)
         run: npm run build
       - name: Guard against student data

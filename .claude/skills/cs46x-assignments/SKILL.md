@@ -250,6 +250,9 @@ the student has to learn first.
 ## What Assignment Pages Must Not Contain
 
 - Em dashes.
+- Calendar dates or an academic year. `due` is a term and a week, and may
+  add a weekday or a named holiday ("Fall, week 9, Wednesday before
+  Thanksgiving"), never a date. `validate-dates.mjs` fails on one.
 - A rubric that does not total 100, absent a documented exception.
 - Outcome tags whose counts disagree with the frontmatter.
 - Links to activities that carry no tier badge.

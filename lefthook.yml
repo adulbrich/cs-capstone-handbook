@@ -28,6 +28,9 @@ pre-commit:
     validate-dashes:
       glob: "{src,canvas,public,decks}/**/*"
       run: node scripts/validate-dashes.mjs
+    validate-dates:
+      glob: "{{src,canvas,public,decks}/**/*,STAFF-RUNBOOK.md}"
+      run: node scripts/validate-dates.mjs
     biome:
       glob: "{scripts/**/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
       run: npx biome check {staged_files}
