@@ -46,6 +46,7 @@ All three syllabi were updated to match.
 
 | Term | Changed |
 |---|---|
+| Winter | Sprint Notes 8% to 10% (a fifth note at week 10); Definition of Shipped 4% to 3%; Incident Postmortem 4% to 3% |
 | Spring | Sprint Notes 4% to 6% (3 notes at weeks 2, 4, 6 instead of 2 at weeks 3, 6); Release and Metrics 8% to 7%; Project Handoff 6% to 5% |
 
 ## Rubric TSVs Requiring Re-Import (August 2026)
@@ -76,6 +77,7 @@ Criterion text changed on the branch review (#40). Points and outcome tags are u
 | `project-retrospective/` | Arc and pivots: rewritten as an observable check (dated, linked milestones; each pivot with decision, date, evidence) |
 | `project-landing-page/` | Value proposition: rewritten as an observable check (one sentence, user's terms, no course vocabulary) |
 | `career-retrospective/` | PR portfolio: the retired track vocabulary replaced by "NDA teams", matching the handbook page (#33) |
+| `incident-postmortem/` | Corrective actions: "verifiable at the next repo checkpoint" became "at the week-10 repo checkpoint or in the week-10 sprint note", since a fifth winter note now exists at week 10 (#26) |
 
 The fall Term Retrospective's Writing criterion changed in the same way, but no TSV for it exists under `canvas/assignments/`; it needs one before the fall rubric is built in Canvas.
 
@@ -110,7 +112,7 @@ The fall Term Retrospective's Writing criterion changed in the same way, but no 
 | 7-9 | Defense (during cohort check-ins) |
 | 8 | Sprint Note 4; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
-| 10 | Repo Checkpoint 2 (release candidate gate) |
+| 10 | Sprint Note 5; Repo Checkpoint 2 (release candidate gate) |
 
 ### CS 463 (Spring Term)
 
