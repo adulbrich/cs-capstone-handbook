@@ -394,13 +394,13 @@ for (const dir of readdirSync(CANVAS_DIR)) {
 //
 // Pages with no `## Rubric (100 points)` table, by decision, not omission:
 // the workshop rubric is pass/fail per item; the two survey instruments run
-// through Qualtrics and their tables carry weights; Sprint Notes is pass/fail
-// per item with no bands and no outcome tags (#29).
+// through Qualtrics and their tables carry weights. Sprint Notes is not an
+// exception: its two-band `| Item | Pass (20) | Fail (0) |` table is totalled
+// below like any other (#29).
 const RUBRIC_EXCEPTIONS = new Set([
   "workshop-activities",
   "peer-evaluations",
   "project-partner-evaluation",
-  "sprint-notes",
 ]);
 const DELIVERABLE_HEADING_RE =
   /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
@@ -408,13 +408,16 @@ const AI_USE_RE = /^\*\*AI use:\*\*/m;
 const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
 
 // Sum of the Points column of the table(s) under `## Rubric`, or null when
-// the heading is absent. Rows are `| Criterion | Points | Outcome |`.
+// the heading is absent. Banded rows are `| Criterion | Points | Outcome |`.
+// A pass/fail table is `| Item | Pass (N) | Fail (0) |`: the header names the
+// points once and every row underneath is worth N.
 function rubricTotal(body) {
   const start = body.search(/^## Rubric/m);
   if (start === -1) {
     return null;
   }
   let total = 0;
+  let passPoints = null;
   for (const line of body.slice(start).split("\n").slice(1)) {
     if (line.startsWith("## ")) {
       break;
@@ -422,9 +425,19 @@ function rubricTotal(body) {
     if (!line.trim().startsWith("|")) {
       continue;
     }
-    const points = line.split("|")[2]?.trim() ?? "";
-    if (/^\d+$/.test(points)) {
-      total += Number(points);
+    const cell = line.split("|")[2]?.trim() ?? "";
+    const pass = cell.match(/^Pass \((\d+)\)$/);
+    if (pass) {
+      passPoints = Number(pass[1]);
+      continue;
+    }
+    if (/^-+$/.test(cell)) {
+      continue;
+    }
+    if (/^\d+$/.test(cell)) {
+      total += Number(cell);
+    } else if (passPoints !== null) {
+      total += passPoints;
     }
   }
   return total;

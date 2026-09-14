@@ -153,12 +153,14 @@ Sections in **bold** are required.
 
 - **Points total exactly 100.** Three documented exceptions, listed in
   `validate-outcomes.mjs` as `RUBRIC_EXCEPTIONS`: the pass/fail workshop
-  rubric (`workshop-activities.mdx`); the two survey-based instruments,
+  rubric (`workshop-activities.mdx`), and the two survey-based instruments,
   `peer-evaluations.mdx` and `project-partner-evaluation.mdx`, which run
   through Qualtrics rather than a banded rubric and whose tables carry weights
-  instead of points; and `sprint-notes.mdx`, which is pass/fail per item with
-  no bands and no outcome tags by decision, and has a `## Grading` section
-  instead of a rubric table.
+  instead of points. `sprint-notes.mdx` is not an exception: it uses a
+  two-band table, `| Item | Pass (20) | Fail (0) |`, with no Outcome column
+  by decision, and the validator totals it to 100 like any other. The band
+  text is lifted verbatim from the sprint-note TSV so the page and Canvas
+  agree row for row.
 - **Three or six criteria is the working range.** Fewer than three cannot
   discriminate; more than six is unaffordable at ~300 students and 6 TAs.
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
