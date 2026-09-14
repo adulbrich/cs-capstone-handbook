@@ -16,7 +16,7 @@ labels: type:chore
 
 ## Canvas and surveys
 
-- [ ] Verify the handbook's week numbers against the registrar's academic calendar for the term: holidays, and whether fall runs eleven instructional weeks (`IMPLEMENTED.md`, open item 5; the calendar check table in issue #21)
+- [ ] Verify the handbook's week numbers against the registrar's academic calendar for the term: holidays, and the fact that fall runs eleven instructional weeks with the partial first week as week 0 (`IMPLEMENTED.md`, open item 5, holds the 2026-27 answer; redo it every year because the registrar page refuses scripted fetches and the dates move)
 - [ ] Update the syllabus statements, then re-paste the syllabus HTML from `canvas/syllabus/` into Canvas after any edit to it
 - [ ] Set the Canvas grading standard by hand to the 11 cut points on `src/content/docs/learning-objectives/grading.mdx` (A 93, A- 90, B+ 87, B 83, B- 80, C+ 77, C 73, C- 70, D+ 67, D 60); the syllabi mirror the same table
 - [ ] Re-import every rubric TSV named in the re-import lists of `canvas/assignments/assignment-readme.md` (browser extension; sources in `canvas/assignments/`)
