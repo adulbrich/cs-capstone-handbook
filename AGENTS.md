@@ -187,6 +187,20 @@ carries the writing voice verbatim, so loading the skill is enough.
 | `cs46x-guides` | `src/content/docs/guides/` |
 | `cs46x-assignments` | `src/content/docs/assignments/` |
 
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `adulbrich/cs-capstone-handbook`, via `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical labels, unrenamed. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` and `docs/adr/` at the repo root, created lazily. See `docs/agents/domain.md`.
+
 ## Writing voice
 
 Lead with the point. Specific nouns and verbs. Cut every sentence that does not
