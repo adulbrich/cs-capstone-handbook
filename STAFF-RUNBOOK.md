@@ -30,6 +30,7 @@ Operational companion to the Fall 2026 course design. Staff-facing; the student-
 - **Anti-cueing protocol, mandatory.** Draw the speaking order at random in the room and never publish it in advance. Give each student a different artifact and a different "what breaks if X" question. The reviewer-side Communication question needs no variation: each student reviewed different work, so it is cueing-resistant by construction. Without this, whoever goes last has heard several rounds and is answering a question they have had ten minutes to prepare.
 - **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per cohort per term.
 - Two assessors split the students between them when both attend.
+- Fall week 9 is a three-day week (Thanksgiving): book no defenses on its Thursday or Friday. The window stays weeks 7 to 9.
 - Absences: rescheduled into another check-in that term if flagged before the session; unexcused no-show scores zero (the TSV has a zero band).
 - Scores and notes entered into Canvas after each session; sheets are the live instrument, Canvas is the retention record for program assessment.
 
