@@ -42,6 +42,12 @@ Points are unchanged in every case; only labels and band descriptions moved. The
 
 All three syllabi were updated to match.
 
+**Re-cut again in September 2026** (#24, #26), still 25% per term. Only Canvas assignment-group weights move; no rubric TSV changes points:
+
+| Term | Changed |
+|---|---|
+| Spring | Sprint Notes 4% to 6% (3 notes at weeks 2, 4, 6 instead of 2 at weeks 3, 6); Release and Metrics 8% to 7%; Project Handoff 6% to 5% |
+
 ## Rubric TSVs Requiring Re-Import (August 2026)
 
 **Release and Metrics changed format** (instructor decision, 2026-08-18). The 8-to-12-minute video plus one-page notes became a **3-minute trailer plus a 2-page report**. A twelve-minute video is not an artifact anyone watches to the end, and measured results belong in text where they can be checked and quoted. Criteria and points both changed, so `spring-release/` must be re-imported. Total is still 100, and the outcome tags are unchanged (SO2 x2, SO3, SO6, L08).
@@ -110,9 +116,10 @@ The fall Term Retrospective's Writing criterion changed in the same way, but no 
 
 | Week | Due |
 |------|-----|
+| 2 | Sprint Note 1 |
 | 2-3 | Workshop Activities (1 item, complete/incomplete) |
-| 3 | Sprint Note 1 |
-| 6 | Sprint Note 2 |
+| 4 | Sprint Note 2 |
+| 6 | Sprint Note 3 |
 | 7 | Landing Page |
 | 7-10 | Defense (Expo Q&A may substitute, at the instructors' discretion) |
 | 8 | Release and Metrics |

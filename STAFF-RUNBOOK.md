@@ -76,14 +76,14 @@ The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 | Activity | Fall | Winter | Spring |
 |---|---|---|---|
 | Bi-weekly check-ins (incl. demos) | ~35 h | ~35 h | ~35 h |
-| Sprint notes (pass/fail, ~5 min each) | ~5 h | ~5 h | ~2.5 h |
+| Sprint notes (pass/fail, ~5 min each) | ~5 h | ~5 h | ~3.5 h |
 | Repo checkpoints (~12 min per team, x2) | ~6 h | ~6 h | n/a |
 | RFCs (~50 x ~10 min) | ~8 h | ~8 h | n/a |
 | Defense scoring, follow-ups + Canvas entry (replaces check-ins) | ~2 h | ~2 h | ~2 h |
 | Term deliverable (charter / DoS + postmortem / spring set incl. release trailers) | ~5 h | ~5 h | ~7 h |
 | Career retrospectives (~50 x ~10 min) | n/a | n/a | ~8 h |
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
-| **Total** | **~62 h (~6.2 h/wk)** | **~62 h** | **~56 h** |
+| **Total** | **~62 h (~6.2 h/wk)** | **~62 h** | **~57 h** |
 
 The check-ins row is 14 teams x 5 bi-weekly cycles x 30 minutes. The defense row dropped from ~4 h to ~2 h when session length became 6 minutes per student plus buffer rather than a flat 40 minutes: at an average team size of 3.5 the sessions now roughly match the check-ins they replace, so the row is mostly Canvas entry and follow-ups. **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
 
