@@ -5,13 +5,19 @@ sidebar:
   order: 3
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import { Badge, LinkCard } from '@astrojs/starlight/components';
 
 {/* > "Perhaps imagination is only intelligence having fun." -- George Scialabba */}
 
 The goal of creative activities is to generate ideas and help you figure out what to build. We encourage you to frame and re-frame the problem as much as needed, then come up with as many solutions as possible before converging. This cycle of diverging/converging is often referred to as [double diamond](https://www.designcouncil.org.uk/our-resources/the-double-diamond/) process.
 
 > "You can't use up creativity. The more you use, the more you have." -- Maya Angelou
+
+<LinkCard
+  title="Planning and Prioritization guide"
+  href="/guides/planning/#ideation-techniques"
+  description="The brainstorming rules and the four techniques (6-3-5 brainwriting, Crazy 8s, rolestorming, reverse brainstorming) explained."
+/>
 
 ## The Mom Test
 
@@ -89,68 +95,12 @@ A good output is a written pass under each of the six hats on one real decision,
 
 <Badge text="Team Activity" variant="note" class="mb-6" />
 
-Brainstorming encourages creative thinking and collaboration by generating a large number of ideas quickly. It helps overcome mental blocks and fosters an open environment where all ideas are welcome, leading to innovative solutions.
+Generate more candidate ideas than you need, then narrow to a shortlist you can defend. Thirty to sixty minutes as a team, once per open question.
 
-[IDEO's seven rules of brainstorming](https://www.ideou.com/blogs/inspiration/7-simple-rules-of-brainstorming), which extend the four Alex Osborn published in 1953:
-
-1. Defer Judgment: No criticism of ideas during brainstorming.
-2. Encourage Wild Ideas: Even unrealistic ideas can spark creativity.
-3. Build on Ideas: Collaborate and improve on others' ideas.
-4. Stay Focused on the Topic: Keep the discussion relevant.
-5. Quantity over Quality: Aim for many ideas.
-6. One Conversation at a Time: Avoid interruptions.
-7. Be Visual: Sketch, do not only describe.
-
-Osborn's original four are the first three plus quantity; the last three are IDEO's additions for running the session well.
-
-Tight on schedule? Consider [How to Brainstorm -- Remotely](https://hbr.org/2020/07/how-to-brainstorm-remotely).
-
-Whatever methodology you select, capture a summary of the most promising ideas or solutions.
-
-### 6-3-5 Brainwriting
-
-The [6-3-5 Brainwriting](https://zapier.com/blog/brainwriting/) technique is a structured brainstorming method that generates a large number of ideas quickly.
-
-The name is the recipe: **6** participants, **3** ideas, **5** minutes. Each participant starts with a blank sheet, and you iterate for 6 rounds:
-
-1. Each participant adds 3 ideas (within 5 minutes) to the sheet in front of them, building on what is already written.
-2. Pass sheets one step around the circle.
-
-Six rounds of six people produces 108 ideas in half an hour. Adjust the numbers to your team size; keep the structure.
-
-### Crazy 8s
-
-[Crazy 8s](https://blog.prototypr.io/how-to-run-a-crazy-eights-workshop-60d0a67b29a) is a fast-paced ideation method designed to generate a variety of ideas in a short time.
-
-1. Setup: Give each participant a sheet of paper divided into eight sections.
-2. Set a Timer: Set an 8-minute timer.
-3. Brainstorm: Each participant sketches 8 different ideas (one per section) within the 8 minutes -- 1 minute per idea. Consider writing a caption for each sketch to remember your idea and explain it later.
-4. Review: After time is up, participants share their ideas with the group. You could put all the sheets on the table, wall, or whiteboard for example. 
-
-You can let everyone vote for their favorite ideas, for example by putting stickers on them. 
-
-Here's a description on [how to do the Crazy8s remotely](https://uxdesign.cc/how-to-do-crazy-8s-remotely-223d7fbd5e98).
-
-### Rolestorming
-
-[Rolestorming](https://business.tutsplus.com/tutorials/what-is-rolestorming-group-brainstorming-method--cms-27245) is a brainstorming technique where participants assume different roles or perspectives (e.g., customer, competitor, or end-user) to generate fresh ideas. By stepping into someone else's shoes, participants break free from their usual mindset and consider new angles or approaches.
-
-1. Assign Roles: Each participant takes on a specific role (e.g., the user, the CEO, the critic, etc.)
-2. Brainstorm: Generate ideas from your assigned role's perspective.
-3. Group Discussion: Share ideas and refine them based on all perspectives.
-
-You can also rotate roles (similarly to the Six Thinking Hats) and do it again.
-
-Here's a [more exhaustive article](https://fourweekmba.com/rolestorming/).
-
-### Reverse Brainstorming
-
-[Reverse Brainstorming](https://online.visual-paradigm.com/knowledge/brainstorming/what-is-reverse-brainstorming/) is a technique where, instead of generating solutions, participants think about how to cause the problem or make it worse. By identifying ways to worsen the situation, it becomes easier to flip those ideas into solutions.
-
-1. Identify the Problem: Define the challenge or problem.
-2. Reverse the Problem: Brainstorm ways to make the problem worse.
-3. Flip the Ideas: Take the “worsened” ideas and reverse them to discover potential solutions.
-4. Discuss: Refine the flipped ideas into actionable strategies.
+- **Frame the question**: write the problem as one sentence at the top of the board. A [How Might We](/activities/planning/#how-might-we-questions) question works well.
+- **Pick one technique** from the [guide](/guides/planning/#ideation-techniques): 6-3-5 brainwriting when a few voices dominate, Crazy 8s for interface ideas, rolestorming for stakeholder perspectives, reverse brainstorming for risks.
+- **Run it under the rules**: defer judgment, quantity over quality, one conversation at a time, build on each other, be visual. IDEO's [seven rules](https://www.ideou.com/blogs/inspiration/7-simple-rules-of-brainstorming) are the full list.
+- **Converge**: agree on two or three criteria, dot-vote, and keep the top handful. Record why the rest were dropped.
 
 A good output is the raw idea list, the criteria you used to narrow it, and the shortlist you kept.
 
