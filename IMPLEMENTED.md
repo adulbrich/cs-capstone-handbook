@@ -391,17 +391,42 @@ Six commits after section 14 went unrecorded here, and the branch review (#21, 2
 
 **Found while fixing, still open:** the fall Term Retrospective has no Canvas TSV directory at all (`retrospective/` is the deprecated old form), so its rewritten Writing criterion is not mirrored; the readme records it. Decision issues #22 to #31 and #39 (survey dates) remain the instructor's, except that #29 was decided by #40 and #48 (Sprint Notes is a documented rubric exception and its meta states the term totals); #32 (syllabi), #36, #42 and #44 are agent-ready and untouched here, except that #48 replaced the nine `&mdash;` entities in the syllabi so the new check could land green.
 
+## 16. The p0 Batch (September 2026)
+
+Every open `p0-now` issue under #21, landed 2026-09-13, one commit per issue, in dependency order. Nothing is closed on GitHub; closure is the instructor's.
+
+**Decided by the instructor 2026-09-11, implemented here:**
+
+- **#22** grade scale: the three syllabi mirror the 11-band handbook scale (A 93) row for row. The Canvas grading standard must be rebuilt by hand; the term-setup template carries the step.
+- **#24** spring cadence: three two-week sprints, notes at weeks 2, 4, 6, 6% (Release 8 to 7, Handoff 6 to 5). Weeks 7 to 10 carry no note, and the overview says why.
+- **#26** winter cadence: a fifth note at week 10, 10% (Definition of Shipped 4 to 3, Incident Postmortem 4 to 3). The year is fall 4, winter 5, spring 3. The postmortem's corrective action is verifiable at the week-10 checkpoint or sprint note; `incident-postmortem/` needs re-importing. Deviation from the issue text: the runbook's per-note grading row moves to ~6 h in winter and ~3.5 h in spring, because it is priced per note; the check-in row is unchanged.
+- **#29** Sprint Notes has a two-band `| Item | Pass (20) | Fail (0) |` rubric table, band text lifted verbatim from the TSV. `validate-outcomes.mjs` totals a `Pass (N)` table like any other, so Sprint Notes left `RUBRIC_EXCEPTIONS`; negative-tested.
+- **#31** no Expo Q&A substitution anywhere; the spring defense window is weeks 7 to 9 like every term.
+- **#30** `canvas/assignments/` holds only the rubric TSVs: 40 tracked files removed (18 HTML bodies, 17 Markdown rubrics, 5 retired TSVs). `individual-contribution/` keeps one Full / Half / Zero TSV per term (4 x 25, 5 x 20, 34 / 33 / 33); its grader logic moved into the runbook. `CANVAS_DEPRECATED` is `_template` only.
+
+**Agent-ready fixes:**
+
+- **#32** syllabi: Winter 2027 and Spring 2027 labels; the late-policy block is a two-sentence summary linking the handbook. All three bodies need re-pasting.
+- **#36** the spring charter refresh closes the Team Health Assessment workshop item; both pages say so.
+- **#17** the Expo page is the end-of-spring event: no alternatives section, no infomercial, no mandatory-or-not language; the booth section and the presentations guide lead with the running demo. The BACKLOG Expo item is resolved.
+- **#42** four oversized activities lost their explanation to guides: the architecture catalog into `guides/technical-design.mdx`, and the prioritization methods, brainstorming techniques and metric frameworks into a new `guides/planning.mdx`. Activities are 215, 198, 151 and 515 words; the last keeps its four per-category instrument sections.
+- **#44** content skills: "three to six" criteria, "rubric point values", and heading case plus step-bullet style stated as targets for new activities only. Left out pending #28: the guides skill's derivation sentence.
+- **#11** recent founders wanted in the mentor pool, alumni founders in the speaker mix, one clause on the homepage.
+- **#49** week numbers verified against the registrar; open item 5 above holds the answer.
+
+**Conflict resolved in favour of the later instruction.** #31 (2026-09-11, "lgtm on both") made the Expo mandatory through a zero-weight Canvas completion item stated on `expo.mdx`. #17's instruction (2026-09-14) says to present the Expo as an event with no mention of mandatory or not. The page follows #17; the Canvas completion item is therefore not written anywhere and waits on the instructor.
+
 ## Build Status
 
-Verified 2026-09-11, all gates green.
+Verified 2026-09-13, all gates green (section 16 landed).
 
 `npm run build` passes: `astro check` reports **0 errors**, warnings only (the pre-existing `z` deprecation in `content.config.ts`). 66 pages built. Internal link validation is running: `starlightLinksValidator()` reports "All internal links are valid," and CI gates on it because CI runs `npm run build`.
 
-`node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5, L07-L10 at 2 each, zero frontmatter drift. All three Team Deliverables tables sum to exactly 25%, every page's `assignment.weight` reconciles with the row that links it, every AssignmentMeta states its declared percentages, every deliverable page carries an AI-use paragraph, and every rubric totals 100 or is a documented exception.
+`node scripts/validate-outcomes.mjs` passes with rubric tables as source of truth: SO1: 7, SO2: 6, SO3: 10, SO4: 8, SO5: 9, SO6: 5, L07-L10 at 2 each, zero frontmatter drift. All three Team Deliverables tables sum to exactly 25%, every page's `assignment.weight` reconciles with the row that links it, every AssignmentMeta states its declared percentages, every deliverable page carries an AI-use paragraph, and every rubric totals 100 or is a documented exception (Sprint Notes now totals via its Pass (20) table).
 
 `node scripts/validate-activities.mjs` passes: 8 Workshop, 53 Recommended, 57 Library, 118 total, every linked activity tiered, every Recommended badge earned, every badge line well-formed, every deliverable line closing its section, no outcome tags or grading language on activity or guide pages, and the library figure true.
 
-`node scripts/validate-dashes.mjs` passes: no em dashes in 150 text files under `src/`, `canvas/`, `public/`, `decks/`.
+`node scripts/validate-dashes.mjs` passes: no em dashes in 114 text files under `src/`, `canvas/`, `public/`, `decks/` (37 fewer after #30).
 
 `npm run check` (Biome via Ultracite core) passes on 22 code files.
 
