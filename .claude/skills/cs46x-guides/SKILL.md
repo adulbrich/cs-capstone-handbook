@@ -83,7 +83,10 @@ topic.
 
 3. *Artifact:* `## Addressing a Problem` (or `## Addressing an Architectural
    Problem`, matching the topic). The why. Good practice starts from a real
-   problem statement: what it is, who is affected, why it matters.
+   problem statement: what it is, who is affected, why it matters. Known
+   exception: `technical-design.mdx` has no such section, because its
+   opening failure list and "What Is Technical Design?" already carry the
+   why; do not add one there.
 
 4. *Artifact:* `## What Makes a Good X?` The quality bar, **with the artifact
    itself in a fenced code block**, under about 30 lines: an ADR, a
