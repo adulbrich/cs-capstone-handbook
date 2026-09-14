@@ -84,7 +84,10 @@ badge that no assignment references is a lie to the student.
 This is enforced, not merely requested. `npm run validate:activities` fails if a
 linked activity carries no badge, if a Recommended badge has no assignment
 linking to it, or if an assignment links to an anchor matching no heading. It
-runs in CI and pre-commit.
+also reconciles the week-by-week schedule on `introduction/series.mdx`: every
+activity it links must be Workshop or Recommended, and every Workshop
+activity must appear on it. Demoting an activity therefore means removing it
+from the schedule in the same commit. It runs in CI and pre-commit.
 
 The same validator also enforces the section shape below: a tier badge with
 no audience badge; audience badge variants (Team is `note`, Individual is

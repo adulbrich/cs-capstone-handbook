@@ -20,7 +20,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `canvas/` | Rubric TSVs for the Canvas import extension, plus the three syllabus HTML bodies. Mirrors the handbook; the handbook wins. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals. Runs in CI and pre-commit. |
-| `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, and the no-outcome-tags, no-grading-language rules for activities and guides. Runs in CI and pre-commit. |
+| `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the no-outcome-tags, no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
@@ -134,7 +134,7 @@ Current canonical homes:
 | Project category descriptions | `practicalities/categories.mdx` |
 | V&V outcome ladders | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
-| Week-by-week schedule, lecture slots, term dates | `introduction/series.mdx` |
+| Week-by-week schedule and lecture slots | `introduction/series.mdx` |
 
 Before adding a paragraph that explains something, grep for it. If it already
 exists somewhere, link instead.

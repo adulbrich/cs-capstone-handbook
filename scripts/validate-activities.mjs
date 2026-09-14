@@ -31,6 +31,13 @@
 //      audience badge, which is an activity someone forgot to label. Those
 //      are reported instead of being skipped as prose.
 //
+//   6. The week-by-week schedule on introduction/series.mdx links activities
+//      directly, outside any assignment page. Every one of those links must
+//      resolve and carry a Workshop or Recommended badge, so the schedule
+//      never sends a student to an activity no assignment page still
+//      recommends; and every Workshop activity must appear on the schedule,
+//      so a workshop cannot exist without a week.
+//
 // Workshop-tier activities are exempt from rule 2: they are assigned centrally
 // through assignments/workshop-activities.mdx, not per assignment page.
 //
@@ -42,6 +49,8 @@ import { join } from "node:path";
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
 const SECTION_HEADING = "## Activities That Prepare This";
+const SCHEDULE_PAGE = "src/content/docs/introduction/series.mdx";
+const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/g;
 
 // GitHub-style slugger, matching how Starlight derives heading anchors.
 function slugify(heading) {
@@ -172,7 +181,7 @@ function readAssignmentLinks() {
       continue;
     }
     const section = source.slice(start);
-    for (const m of section.matchAll(/\/activities\/([a-z-]+)\/#([\w-]+)/g)) {
+    for (const m of section.matchAll(ACTIVITY_LINK_RE)) {
       const key = `${m[1]}#${m[2]}`;
       if (!links.has(key)) {
         links.set(key, new Set());
@@ -183,8 +192,17 @@ function readAssignmentLinks() {
   return links;
 }
 
+// Collect every activity link on the schedule page, wherever it sits.
+function readScheduleLinks() {
+  const source = readFileSync(SCHEDULE_PAGE, "utf8");
+  return new Set(
+    [...source.matchAll(ACTIVITY_LINK_RE)].map((m) => `${m[1]}#${m[2]}`)
+  );
+}
+
 const { activities, unlabeled } = readActivities();
 const links = readAssignmentLinks();
+const scheduled = readScheduleLinks();
 const problems = [];
 
 // Rule 5, the audience half: a tier badge with no audience badge.
@@ -246,6 +264,29 @@ for (const [key, activity] of activities) {
   if (activity.tier && !activity.hasFeeds) {
     problems.push(
       `missing Feeds: "${activity.heading}" (${activity.page}) is ${activity.tier} tier but has no "**Feeds:**" line naming the criterion it prepares`
+    );
+  }
+}
+
+// Rule 6: the schedule links only tiered activities, and every workshop.
+for (const key of scheduled) {
+  const activity = activities.get(key);
+  if (!activity) {
+    problems.push(
+      `broken anchor: /activities/${key} linked from the week-by-week schedule matches no heading`
+    );
+    continue;
+  }
+  if (!activity.tier) {
+    problems.push(
+      `schedule drift: "${activity.heading}" (${activity.page}) is on the week-by-week schedule but no assignment page recommends it and it is not a workshop activity`
+    );
+  }
+}
+for (const [key, activity] of activities) {
+  if (activity.tier === "Workshop" && !scheduled.has(key)) {
+    problems.push(
+      `unscheduled workshop: "${activity.heading}" (${activity.page}) is Workshop tier but the week-by-week schedule never links it`
     );
   }
 }
@@ -324,6 +365,7 @@ console.log(`  Workshop:    ${counts.Workshop}`);
 console.log(`  Recommended: ${counts.Recommended}`);
 console.log(`  Library:     ${counts.Library}`);
 console.log(`  Total:       ${activities.size}`);
+console.log(`Schedule:      ${scheduled.size} activity links on the week-by-week schedule`);
 
 if (problems.length > 0) {
   console.error(`\n${problems.length} problem(s):`);
