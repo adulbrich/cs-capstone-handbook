@@ -9,7 +9,11 @@ This skill governs how activities are written for the CS capstone handbook
 (Astro/Starlight, MDX). It exists because the activity library grew to 100-plus
 entries across twelve pages without a written format, and pages added later
 drifted from the ones added first. **The format below is the format. Bring
-non-conforming activities into line rather than adding a second convention.**
+non-conforming activities into line rather than adding a second convention**,
+with two exceptions marked below as targets for new activities only: heading
+case and step-bullet style. Both are followed by a minority of the library,
+and "fixing" the majority would rename about 110 headings and break every
+inbound anchor for no reader benefit.
 
 ## Writing Voice (applies to everything below)
 
@@ -114,8 +118,11 @@ A good output is <the concrete artifact, described so a student knows whether th
 
 Line by line:
 
-**Heading.** Sentence case, no trailing punctuation. See **Heading Rules**
-below; they are load-bearing.
+**Heading.** No trailing punctuation, and see **Heading Rules** below; they
+are load-bearing. Sentence case is the target for **new** activities only:
+about 110 of the 118 existing headings are Title Case and stay that way,
+because renaming a heading breaks every inbound anchor. Never re-case an
+existing heading.
 
 **Badge line.** Always present, always immediately after the heading, always
 one blank line below it. The audience badge comes first and is mandatory. There
@@ -154,7 +161,9 @@ useful thing a student weighing an activity wants to know, and a wrong estimate
 is worse than none, so omit it rather than guess.
 
 **Body.** A bulleted list of steps is the default and fits most activities. Use
-`- **Step name**: description.` so the list scans. Prose paragraphs are
+`- **Step name**: description.` so the list scans; this is the target for
+**new** activities, and the many existing activities that use plain
+`- Name: text` bullets or numbered lists are left as they are. Prose paragraphs are
 acceptable when the activity is genuinely a discussion or a judgment exercise
 rather than a procedure, but prose is the exception and should not run past
 three short paragraphs. Sub-headings (`###`) are allowed only for activities

@@ -161,8 +161,11 @@ Sections in **bold** are required.
   by decision, and the validator totals it to 100 like any other. The band
   text is lifted verbatim from the sprint-note TSV so the page and Canvas
   agree row for row.
-- **Three or six criteria is the working range.** Fewer than three cannot
+- **Three to six criteria is the working range.** Fewer than three cannot
   discriminate; more than six is unaffordable at ~300 students and 6 TAs.
+  Two pages currently exceed it (`rfc.mdx` with nine, `team-charter.mdx`
+  with seven); whether the range bends or the rubrics consolidate is open
+  on #27.
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
   copy-pasteable, and actually verified by a fresh run" tells a grader what to
   do. "High-quality documentation" does not.
@@ -251,7 +254,8 @@ the student has to learn first.
 - Explanations that belong in a guide. Link to the guide instead; two
   descriptions of one practice drift, and students read the assignment.
 - Grading language on any page other than an assignment page. This section is
-  the only place point values live.
+  the only place rubric point values live; the points-to-letter table lives
+  in `learning-objectives/grading.mdx`.
 
 ## Before Finishing
 
