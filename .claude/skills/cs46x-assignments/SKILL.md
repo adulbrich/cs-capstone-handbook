@@ -162,10 +162,12 @@ Sections in **bold** are required.
   text is lifted verbatim from the sprint-note TSV so the page and Canvas
   agree row for row.
 - **Three to six criteria is the working range.** Fewer than three cannot
-  discriminate; more than six is unaffordable at ~300 students and 6 TAs.
-  Two pages currently exceed it (`rfc.mdx` with nine, `team-charter.mdx`
-  with seven); whether the range bends or the rubrics consolidate is open
-  on #27.
+  discriminate. More is allowed when each criterion is a separable
+  observable check and the grading cost is accepted: at ~300 students and
+  6 TAs every criterion is a line a grader reads on every submission, so
+  say in the commit why the extra ones earn it. `rfc.mdx` (nine) and
+  `team-charter.mdx` (seven) are the standing examples (#27, decided
+  2026-09-14).
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
   copy-pasteable, and actually verified by a fresh run" tells a grader what to
   do. "High-quality documentation" does not.
