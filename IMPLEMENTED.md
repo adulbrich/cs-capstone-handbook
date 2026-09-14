@@ -141,7 +141,7 @@ would break `astro check`. Revisit when `@astrojs/check` widens its peer range.
 
 ## Decisions That Need Your Confirmation
 
-1. **Letter scale changed** (A at 93, added B+/C+/C-/D+ granularity). Check against department norms.
+1. ~~**Letter scale changed** (A at 93, added B+/C+/C-/D+ granularity). Check against department norms.~~ **Decided 2026-09-11** (#22): 11 bands, handbook scale; syllabi resynced 2026-09-13.
 2. **Sprint note count and weeks** (fall 4/winter 4/spring 2, listed in introduction.mdx) assume the usual term calendar; adjust week numbers to the real academic calendar.
 3. **RFC peer feedback is cross-team.** For NDA-heavy cohorts, an RFC may reveal partner context; the pages tell students on NDA teams to sanitize, but you may prefer within-team review for NDA teams.
 4. **Defense inside cohort check-ins** assumes check-ins are at least 40 minutes and TAs can score live. The printable scoresheet is in `public/defense-scoresheet.md`.
