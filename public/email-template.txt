@@ -24,7 +24,7 @@ A few quick questions to help us prepare:
 3. Any early constraints (timeline, tech stack, data access) we should note?
 4. Is there a “definition of success” you’d like us to target for the next checkpoint?
 
-Thank you — we’re looking forward to collaborating!
+Thank you, we’re looking forward to collaborating!
 
 Best,
 

@@ -129,6 +129,18 @@ export default defineConfig({
     }),
   ],
 
+  // The Project Evaluation section was dissolved into Assignments and Learning
+  // Objectives. These URLs were live and linked from elsewhere, so they
+  // redirect rather than 404.
+  redirects: {
+    "/project-evaluation/assignments": "/assignments/introduction/",
+    "/project-evaluation/breakdown": "/assignments/introduction/",
+    "/project-evaluation/conversion": "/learning-objectives/grading/",
+    "/project-evaluation/peer-evaluations": "/assignments/peer-evaluations/",
+    "/project-evaluation/project-partner-evaluation":
+      "/assignments/project-partner-evaluation/",
+    "/project-evaluation/rubrics": "/assignments/introduction/",
+  },
   site: "https://capstone.alexulbrich.com",
 
   vite: {

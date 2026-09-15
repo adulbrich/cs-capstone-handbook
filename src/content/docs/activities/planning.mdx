@@ -5,61 +5,76 @@ sidebar:
   order: 6
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import { Badge, LinkCard } from '@astrojs/starlight/components';
 
 Planning activities are designed to help you figure out your timeline and deliverables. They work best if combined with requirements and design. Be transparent about things you don't know yet (risks) and how you will get those answers.
 
-> "Plans are nothing; planning is everything." -- Dwight D. Eisenhower
+> "Plans are worthless, but planning is everything." -- Dwight D. Eisenhower, National Defense Executive Reserve Conference, 1957
+
+<LinkCard
+  title="Planning and Prioritization guide"
+  href="/guides/planning/"
+  description="The prioritization methods (MoSCoW, the three matrices, Scrum ordering, MIT) and the success-metric frameworks (PMF, AARRR, HEART) explained."
+/>
 
 ## Identify Success Metrics
 
-<Badge text="Team Activity" variant="note" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Especially for New Product or Game projects, it can be important to select and define the success metrics. 
+Decide what "it worked" will mean, in numbers, while you are still far enough from the deadline to be honest about it. One to two hours as a team in fall, revisited when you write your [Definition of Shipped](/assignments/definition-of-shipped/).
 
-Here are some common metrics:
+Every project commits to 2 or 3 metrics, and what makes a good one differs by category, so start with your own subsection below. Product and game teams can borrow from the PMF question, AARRR, and HEART in the [guide](/guides/planning/#success-metric-frameworks).
 
-- Number of Downloads or Sign Ups
-- Monthly Active Users (MAU)
-- Churn Rate
-- Average Session Duration
-- Net Promoter Score (NPS)
-- Positive Mentions / Up-votes
-- Research Citations
+Four rules hold whatever you build:
 
-Choose [success metrics relevant to your project](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf). Be careful with "vanity" metrics, e.g., the number of downloads is meaningless if nobody can run the software or everybody stops using it after the first use. Think about how meaningful your metrics are. Use multiple metrics if the need arises (see below for frameworks). 
+- **Write the metric and the decision rule together**: which value is success, which is failure, and what you do in each case.
+- **Commit it, dated, before you measure.** Choosing the metric after seeing results is how honest people mislead themselves.
+- **Name the instrument**: analytics (Plausible, Google Analytics, Hotjar), database counts, benchmark output, interviews, surveys.
+- **Beware vanity metrics.** Downloads mean nothing if nobody comes back. Ask what number would make your partner call it a success.
 
-Depending on your project category, metrics can be quantitative (large surveys or web analytics) or qualitative (for example based on one-on-one interviews) in nature.
+### New Product or Game
 
-In addition to choosing the metrics, research and document how you will collect them. Consider using web analytics tools (Google Analytics, Plausible, Hotjar, ...), various tracking methods (database counts), interviews, surveys, etc.
+Usage and retention are the point, so measure people, not code:
 
-### Product-Market Fit (PMF) Question
+- Downloads or sign-ups, monthly active users, churn rate
+- Average session duration, task success rate
+- Net Promoter Score, positive mentions or up-votes
 
-The PMF question asks, “How would you feel if you could no longer use this product?” Users typically respond with options like “Very disappointed,” “Somewhat disappointed,” or “Not disappointed.” A high percentage of “Very disappointed” responses (typically 40% or more) indicates strong product-market fit, showing that the product is essential to its users.
+AARRR's activation and retention and HEART's task success are the usual picks; ProductPlan's [metrics list](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf) has more.
 
-### Pirate Metrics (AAARR)
+### Research
 
-The [Pirate Metrics (AARRR) Framework](https://www.productplan.com/glossary/aarrr-framework/) is used for tracking customer behavior and business growth, consisting of five stages:
+Your metric decides what counts as a result, so it is a one-way door: change it late and every earlier run stops being comparable.
 
-- Acquisition (or awareness): How are people discovering our product?
-- Activation: Are these people taking the actions we want them to? For example, signing up or downloading your app.
-- Retention: Are our activated users continuing to engage with the product? Do they return after using it the first time?
-- Referral: Do users like the product enough to tell others about it?
-- Revenue: Are our users willing to pay for this product? 
+- **The primary metric**, and why it is right for the question rather than easiest to compute.
+- **The comparison**: against which baseline, on which data split, over how many runs, with which seeds.
+- **The decision rule**: what value supports the hypothesis, what value refutes it.
+- **Secondary metrics you will report regardless of outcome**, including the ones that could make you look bad.
 
-These metrics help businesses identify strengths and weaknesses in the customer journey to optimize growth strategies.
+Pair this with [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline); a metric only means something next to a number you have reproduced.
 
-### HEART Framework
+### FOSS
 
-The [HEART Framework](https://www.heartframework.com/) is a user experience (UX) measurement framework developed by Google. It consists of five key metrics:
+Your success is measured in someone else's repository, so read what the project itself tracks:
 
-- Happiness: Measures user satisfaction (e.g., surveys, ratings).
-- Engagement: Tracks how often and intensely users interact with the product.
-- Adoption: Measures how many new users begin using the product over time.
-- Retention: Tracks how many users return to the product.
-- Task Success: Measures the effectiveness and efficiency of completing core tasks (e.g., task completion rates).
+- Patches submitted, reviewed, merged, and still merged a month later
+- Review turnaround, and whether maintainers start assigning you work
+- Issues closed, and whether your changes appear in a tagged release
 
-The HEART Framework helps teams evaluate UX impact and improve product design.
+A trivial patch merged in fall is a stronger signal than a large one unmerged in spring; it proves the pipeline works.
+
+### Consultancy
+
+Your top rungs describe actions the **partner** takes, so measure their adoption rather than your output:
+
+- Is it running in their environment, and whose environment is it
+- How many of their people use it, and for what task
+- Has it cleared their security or IT review, and when
+- What would have to be true for them to call it production
+
+A good output is 2 or 3 metrics with their decision rules and a named instrumentation method for at least one, committed and dated.
+
+**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) metrics-and-instrumentation criterion, and the spring [Release and Metrics](/assignments/release/) evidence.
 
 ## Weekly Work Intensity
 
@@ -69,9 +84,11 @@ Rate each week of the term as low, medium, or high based on the effort you expec
 
 Discuss your weekly work intensity with your team and align expectations.
 
+A good output is your predicted intensity per week next to your actual tracked effort, with a short reflection on the gap.
+
 ## Plan Prototype
 
-<Badge text="Team Activity" variant="note" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Your project might have a lot of unknowns, either on the technical feasibility side or on the user side (value or usability).
 
@@ -92,7 +109,9 @@ On the user side, low-fidelity prototypes are interactive wireframes that only f
 
 Finally, there's the live-data prototype. Consider it a substantially smaller implementation of the eventual product. The quality, performance, and functionality are very limited, but it runs well enough to collect data for specific use cases. This is the type of prototype you can start iterating on, so figure out feasibility first.
 
-Submit a plan with the types of prototypes you will build, in what order, and in what time frame, and indicate what concerns they will tackle. 
+A good output is a plan with the types of prototypes you will build, in what order, and in what time frame, indicating which concerns each one tackles.
+
+**Feeds:** the fall week 10 [repo checkpoint](/assignments/repo-checkpoints/) term gate.
 
 ## Gantt Chart
 
@@ -104,13 +123,15 @@ A [Gantt chart](https://www.atlassian.com/agile/project-management/gantt-chart) 
 This activity is easier to complete if you've already worked on the requirements and know what you need to build. You should anyway plan contingencies.
 :::
 
-For this activity, define your tasks, set the timeline (for all three terms), and create a visually appealing Gantt chart. You could use the Roadmap view on GitHub Projects for that purpose. 
+For this activity, define your tasks, set the timeline (for all three terms), and create a readable Gantt chart. You could use the Roadmap view on GitHub Projects for that purpose.
 
-Submit the Gantt chart at the start, mid-point, and deadline of the assignment, along with a reflection on how well you adhered to your plan and any changes made along the way.
+Revisit the chart at mid-term and at the end of the term, and reflect on how well you adhered to your plan and any changes made along the way.
+
+A good output is a Gantt chart showing tasks, durations, and dependencies, with the critical path visible.
 
 ## Dependency Mapping or Critical Path Analysis
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Map task dependencies and identify the critical path to ensure efficient project scheduling and resource management.
 
@@ -119,123 +140,29 @@ Map task dependencies and identify the critical path to ensure efficient project
 3. Create a Critical Path Diagram: Map out the sequence of dependent tasks and identify the longest path (critical path) that determines the project timeline.
 4. Analyze and Adjust: Identify potential bottlenecks and adjust timelines accordingly.
 
-Provide a dependency map and critical path analysis, including identified bottlenecks and adjustments.
+A good output is a dependency map and critical path analysis, including identified bottlenecks and adjustments.
+
+**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites-and-lead-times criterion, which teams most often underestimate.
 
 ## Prioritization
 
-<Badge text="Team Activity" variant="note" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Prioritization is a key component of any planning. The goal is to identify what to work on first and why. Here's a list of a few methodologies to help you prioritize tasks or requirements.
+Turn your backlog of requirements or tasks into a ranked list with a reason next to each rank, so that sprint planning pulls from the top instead of re-arguing the order. Forty-five minutes as a team, then a few minutes after every project partner meeting.
 
-For this activity, submit your list of requirements or tasks, prioritized and explain why each item received the priority it got.
+- **Pick one method** from the [guide](/guides/planning/#prioritization-methods): MoSCoW for a first pass, impact-effort or cost-value when the argument is about return on time, Eisenhower for tasks rather than features.
+- **Estimate before you plot**: put a rough effort in hours on each item first, or the matrix becomes a vote on enthusiasm.
+- **Apply it to the whole backlog**: every item gets a bucket or a quadrant, including the ones you would rather not discuss.
+- **Check dependencies**: an item is only ready when nothing above it blocks it. Move blocked items down.
+- **Write the reason**: one line per item explaining its rank, readable by a teammate who was not in the room.
 
-{/* TODO: Add RICE and WSJF */}
+A good output is your prioritized list of requirements or tasks, the method you used named, and a stated reason for each item's rank.
 
-### MoSCoW
-
-- M (Must Have): Essential features or tasks that are critical for the project's success.
-- S (Should Have): Important but not crucial; can be delayed if needed.
-- C (Could Have): Desirable but not necessary; adds value but isn't essential.
-- W (Won't Have): Items that are out of scope for now, but might be included later.
-
-### Impact-Effort Matrix
-
-The Impact-Effort Matrix helps teams evaluate tasks or features based on their potential impact and the effort required to implement them. It consists of four quadrants:
-
-1. High Effort, High Impact: Major projects that require planning but are worth pursuing.
-2. High Effort, Low Impact: Usually not worth pursuing.
-3. Low Effort, Low Impact: Low-priority tasks, tackle if time permits.
-4. Low Effort, High Impact: **Quick wins that should be prioritized.**
-
-```mermaid
-quadrantChart
-  title Impact-Effort Matrix
-  x-axis Low Impact --> High Impact
-  y-axis Low Effort --> High Effort
-  quadrant-1 1 
-  quadrant-2 2 
-  quadrant-3 3 
-  quadrant-4 4
-  Major projects that require planning: [0.75, 0.75] radius: 0
-  but are worth pursuing: [0.75, 0.70] radius: 0
-  Usually not worth pursuing: [0.25, 0.75] radius: 0
-  Low-priority tasks, tackle if time permits: [0.25, 0.25] radius: 0
-  Quick wins that should be prioritized: [0.75, 0.25] radius: 0
-```
-
-This matrix helps focus on tasks that provide the most value with the least effort.
-
-### Eisenhower Matrix
-
-The Eisenhower Matrix helps prioritize tasks based on urgency and importance. It consists of four quadrants:
-
-1. Important and Urgent: **Do these tasks immediately**.
-2. Important but Not Urgent: Schedule these tasks for later.
-3. Not Important and Not Urgent: Consider eliminating these tasks.
-4. Not Important but Urgent: Delegate these tasks if possible.
-
-```mermaid
-quadrantChart
-  title Eisenhower Matrix
-  x-axis Not Urgent --> Urgent
-  y-axis Not Important --> Important
-  quadrant-1 1 
-  quadrant-2 2 
-  quadrant-3 3 
-  quadrant-4 4
-  Do these tasks immediately: [0.75, 0.75] radius: 0
-  Schedule these tasks for later: [0.25, 0.75] radius: 0
-  Consider eliminating these tasks: [0.25, 0.25] radius: 0
-  Delegate these tasks if possible: [0.75, 0.25] radius: 0
-```
-
-This matrix helps focus on what truly matters, improving productivity and decision-making.
-
-### Cost-Value Matrix
-
-The Cost-Value Matrix is used to prioritize tasks, features, or projects based on their cost (time, money, effort) and the value or benefit they provide. It consists of four quadrants:
-
-1. High Value, High Cost: Worth investing in if resources allow.
-2. High Value, Low Cost: **Prioritize these quick wins.**
-3. Low Value, Low Cost: Consider doing if time permits.
-4. Low Value, High Cost: Generally avoid or minimize these tasks.
-
-```mermaid
-quadrantChart
-  title Cost-Value Matrix
-  x-axis Low Cost --> High Cost
-  y-axis Low Value --> High Value
-  quadrant-1 1 
-  quadrant-2 2 
-  quadrant-3 3 
-  quadrant-4 4
-  Worth investing in if resources allow: [0.75, 0.75] radius: 0
-  Prioritize these quick wins: [0.25, 0.75] radius: 0
-  Consider doing if time permits: [0.25, 0.25] radius: 0
-  Generally avoid or minimize these tasks: [0.75, 0.25] radius: 0
-```
-
-This matrix helps focus on efforts that offer the best return on investment. In the context of your Capstone project, cost will mostly be time.
-
-### SCRUM or Agile Prioritization
-
-The SCRUM prioritization method uses a combination of techniques like the Product Backlog and Sprint Planning to prioritize tasks based on sequence, value, urgency, and complexity. It can employ some of the methods above to prioritize the backlog.
-
-Key Elements:
-
-- Product Backlog: A dynamic list of features, tasks, or bugs sequenced and prioritized by the product owner, product manager, or project manager.
-- Sprint Planning: The team selects the highest-priority items to complete within a sprint (2-4 weeks).
-- Value-Driven: Tasks that deliver the most value to the user(s) are prioritized.
-
-It's important here to consider dependencies. A good product backlog will only allow you to work on tasks that won't be blocked by other ones needing completion.
-
-### Most-Important Task (MIT)
-
-The Most-Important Task (MIT) is a productivity technique where you identify the single most crucial task to complete each day. By focusing on this top-priority task first, you ensure that even if nothing else gets done, you've made significant progress. This approach helps maintain clarity, prioritize effectively, and prevent getting overwhelmed by less important activities. The MIT method encourages starting each day with a clear intention, driving meaningful productivity and progress toward your goals.
+**Feeds:** the [sprint note](/assignments/sprint-notes/) top-risk-and-decision item.
 
 ## Risk Management Plan
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Develop a risk management plan to identify and mitigate potential project risks.
 
@@ -244,7 +171,9 @@ Develop a risk management plan to identify and mitigate potential project risks.
 3. Develop Mitigation Strategies: Create contingency plans to address each risk, minimizing its impact.
 4. Monitor and Review: Establish a system for tracking risks and updating the plan as the project progresses.
 
-Provide a risk management plan detailing risks, their categorization (impact/likelihood), and mitigation strategies.
+A good output is a risk management plan detailing risks, their categorization (impact/likelihood), and mitigation strategies. The external-world risks you surface here (approvals, reviews, recruitment) belong in your [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) decision-and-risk-hygiene criterion.
 
 ## SWOT Analysis
 
@@ -257,11 +186,13 @@ Conduct a SWOT (Strengths, Weaknesses, Opportunities, Threats) analysis to ident
 - Opportunities: Explore external opportunities that could benefit your project (e.g., new technologies, partnerships).
 - Threats: Identify external risks or challenges (e.g., competitors, regulatory issues).
 
-Provide a report outlining the SWOT analysis and how these factors will influence project planning and decisions. Consider creating a matrix with four quadrants.
+Write up the SWOT analysis and how these factors will influence project planning and decisions. Consider creating a matrix with four quadrants.
+
+A good output is a completed SWOT grid with at least one concrete action drawn from it.
 
 ## Kanban Board Setup
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Set up a Kanban board to visualize and manage your project's workflow effectively.
 
@@ -271,11 +202,13 @@ Set up a Kanban board to visualize and manage your project's workflow effectivel
 4. Limit Work in Progress (WIP): Set WIP limits to avoid overloading team members.
 5. Team Agreement: Discuss the process and tool with your team and ensure everyone agrees.
 
-Provide a screenshot of your Kanban board and a brief explanation of its structure.
+A good output is your live Kanban board and a brief explanation of its structure. A well-kept board makes writing your [Sprint Notes](/assignments/sprint-notes/) almost mechanical.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) term gate, and every [sprint note](/assignments/sprint-notes/) after it.
 
 ## Responsibility Assignment Matrix (RACI)
 
-<Badge text="Team Activity" variant="note" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 A [RACI matrix](https://en.wikipedia.org/wiki/Responsibility_assignment_matrix) is a project management tool that clarifies roles and responsibilities for tasks or deliverables. RACI stands for:
 
@@ -288,16 +221,18 @@ Here's an example of a RACI matrix:
 
 | Task/Deliverable | Team Member A | Team Member B | ... | TA/Instructor | Project Partner |
 |:-----------------|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
-| Stakeholder Interview | R | A | C | I |
+| Stakeholder Interview | R | A |  | C | I |
 | Figma: User Login | R | C |  | I | I |
 | Compare Databases Technology |  | R |  | I | C |
 | Testing | R | R | R | I | A |
 
-Provide a RACI matrix for your project, detailing roles and responsibilities for key tasks or deliverables.
+A good output is a RACI matrix for your project, detailing roles and responsibilities for key tasks or deliverables.
+
+**Feeds:** the [Team Charter](/assignments/team-charter/) roles criterion.
 
 ## Stakeholder Mapping
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Identify and categorize project stakeholders to ensure effective communication and alignment of expectations.
 
@@ -306,11 +241,13 @@ Identify and categorize project stakeholders to ensure effective communication a
 - Define Communication Strategies: Establish how and when to communicate with each stakeholder category (e.g., regular updates, feedback sessions).
 - Review and Update: Regularly reassess the stakeholder map as the project evolves.
 
-Provide a stakeholder map and a plan outlining communication strategies for each group.
+A good output is a stakeholder map and a plan outlining communication strategies for each group.
+
+**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites criterion, and the [RFC](/assignments/rfc/) constraints criterion.
 
 ## Definition of Done
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 The [Definition of Done (DoD)](https://www.atlassian.com/agile/project-management/definition-of-done) establishes clear criteria for when tasks, features, or the overall project can be considered complete.
 
@@ -318,7 +255,9 @@ The [Definition of Done (DoD)](https://www.atlassian.com/agile/project-managemen
 2. Include Quality Standards: Ensure the criteria cover quality aspects like performance benchmarks, usability, or security.
 3. Team Agreement: Discuss the definition with your team and ensure everyone agrees.
 
-Provide a document outlining the agreed-upon Definition of Done for your project.
+A good output is a short document outlining the agreed-upon Definition of Done for your project. It is the task-level sibling of the project-level [Definition of Shipped](/assignments/definition-of-shipped/) you write in winter; practicing on tasks makes the project-level version much easier.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health criterion, and every [sprint note](/assignments/sprint-notes/) after it.
 
 ## How Might We Questions
 
@@ -330,11 +269,11 @@ The ["How Might We" (HMW) technique](https://www.nngroup.com/articles/how-might-
 2. Reframe it as one or more "How might we..." questions.
 3. Use these questions to guide ideation sessions or team discussions.
 
-Submit a list of at least three "How might we..." questions relevant to your project, along with a brief explanation of the challenge each question addresses.
+A good output is a list of at least three "How might we..." questions relevant to your project, along with a brief explanation of the challenge each question addresses.
 
 ## Fishbone Diagram
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known as an Ishikawa or Cause-and-Effect Diagram) is a visual tool for identifying, exploring, and displaying the possible causes of a specific problem or effect. It helps teams systematically analyze root causes rather than just symptoms.
 
@@ -343,11 +282,13 @@ A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known
 3. Identify major categories of causes (e.g., People, Process, Tools, Environment) and draw "bones" branching off the spine.
 4. Brainstorm and list possible causes under each category.
 
-Provide a completed Fishbone Diagram (hand-drawn and scanned, or created with a diagramming tool) for a key problem in your project, along with a short summary of the main causes identified.
+A good output is a completed Fishbone Diagram (hand-drawn or created with a diagramming tool) for a key problem in your project, along with a short summary of the main causes identified. This is also a useful tool when analyzing root causes for your [Incident Postmortem](/assignments/incident-postmortem/).
+
+**Feeds:** the [Incident Postmortem](/assignments/incident-postmortem/) root-cause criterion, and the [repo checkpoint](/assignments/repo-checkpoints/) risk hygiene.
 
 ## Software Release and Versioning
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Plan the release process for your software, including version control and deployment strategies.
 
@@ -356,9 +297,11 @@ Plan the release process for your software, including version control and deploy
 3. Plan Deployment: Identify how and where the software will be deployed or accessed (e.g., cloud platform, local servers, GitHub repository assets).
 4. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
-Submit a release plan document that includes versioning details and deployment steps.
+A good output is a release plan document that includes versioning details and deployment steps. It prepares you for the spring [Release and Metrics](/assignments/release/) assignment, and the [Shipping guide](/guides/shipping/) lists the lead times your release path involves.
 
-##  Software Development Process
+**Feeds:** the fall week 10 [repo checkpoint](/assignments/repo-checkpoints/) term gate, and the spring [Release and Metrics](/assignments/release/).
+
+## Software Development Process
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/>
 
@@ -370,4 +313,23 @@ Define and plan the software development process for your project to ensure clea
 4. Assign Roles: Clarify team roles and responsibilities at each stage.
 5. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
-Provide a document outlining the chosen process, phases, milestones, and team roles.
+A good output is a document outlining the chosen process, phases, milestones, and team roles. Much of this belongs in your [Team Charter](/assignments/team-charter/).
+
+## Map Your External Approvals
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Find every approval your project needs from someone outside your team, and start the slowest one this week. Ninety minutes in fall weeks 1 to 2, then a standing agenda item.
+
+Research and consultancy projects fail on calendars far more often than on code. IRB review takes weeks even for an exempt determination, data use agreements between institutions can take a full term, and an enterprise security review is measured in months. None of those clocks run faster because you started late.
+
+- **Ask directly** in your first partner or faculty meeting: what approvals does this project need, who files them, and how long do they usually take?
+- **List every clock**: [IRB or human-subjects review](/activities/user/#complete-an-irb-application), data use agreements, security or IT review, vendor onboarding, account provisioning, CLA signing for FOSS, license review, export control.
+- **For each, record** who owns it, when it starts, how long it historically takes, and what is blocked until it lands.
+- **Start the longest one now**, even from an incomplete application, if the process allows amendment later.
+- **Put them in `docs/risks.md`** with owners and dates, and review them at every checkpoint.
+
+A good output is a dated table of every external approval with an owner and an expected duration, living in your risk register, with the longest clock already started.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) decision-and-risk-hygiene criterion, and the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites-and-lead-times criterion.
+

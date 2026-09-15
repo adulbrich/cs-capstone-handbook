@@ -24,7 +24,7 @@ dt[Q1 == 5, Reflection := 7.5]
 dt[Q2 == 1, Requirements := 5]
 dt[Q2 == 2, Requirements := 4.5]
 dt[Q2 == 3, Requirements := 4]
-dt[Q2 == 4, Requirements := 3]
+dt[Q2 == 4, Requirements := 3.5]
 dt[Q2 == 5, Requirements := 2.5]
 
 # Q3: Rate the team's ability to ship a functional project. (Design, Implementation, and Deployment facet)

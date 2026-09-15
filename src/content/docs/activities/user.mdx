@@ -12,14 +12,14 @@ User activities help incorporate user feedback and needs into your project, enha
 > "You are not your user."  -- Many People
 
 :::note
-For New Product or Game, you will need to show that you have active users or a rigorous user study. To achieve either one, you will need to combine many of the activities below.
+These activities are direct preparation for graded work. Your [Definition of Shipped](/assignments/definition-of-shipped/) requires a **user access plan**: who your real users or evaluators are and how you will reach them by the **winter real-user gate**. Recruiting users takes weeks, not days; the [Shipping guide](/guides/shipping/) explains the lead times. Start these activities in fall.
 
-User activities are useful for all project categories.
+Whenever an activity below involves talking to users, run the conversation with the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md) in hand: ask about their life and past behavior, not about whether they like your idea.
 :::
 
 ## Ideate About User Activities
 
-<Badge text="Team Activity" variant="success" class="mb-6" />
+<Badge text="Team Activity" variant="note" class="mb-6" />
 
 Generate a list of 5-10 ideas for user activities that you might do at some future point. For each kind of activity, generate at least one (but preferably two or three) different ways in which you might apply that activity in your project. For example, there are multiple ways one might use A/B testing.
 
@@ -34,14 +34,15 @@ Here are some more in-depth guides:
 
 Consider splitting the readings between team members.
 
+A good output is 5 to 10 candidate user activities, each with at least one concrete way you would apply it to your project.
+
 ## Do a User Activity
 
-<Badge text="Individual Activity" variant="success" class="mb-6" />
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<Badge text="Individual Activity" variant="success" class="mb-6" /> <Badge text="Team Activity" variant="note" class="mb-6" />
 
-There are dozens of activities that you can do with *real* users (see previous section). Select one that is relevant for your project at this point in time and do it. 
+There are dozens of activities that you can do with *real* users (see previous section). Select one that is relevant for your project at this point in time and do it. This is exactly the kind of evidence the winter real-user gate and your [Definition of Shipped](/assignments/definition-of-shipped/) ask for.
 
-Write a report with:
+A good write-up includes:
 
 - the type of activity,
 - the goal of the activity or hypothesis being tested, 
@@ -49,6 +50,8 @@ Write a report with:
 - key findings, data, or patterns observed,
 - an analysis of what the results mean for the project, and
 - actionable changes or decisions based on the findings.
+
+A good output is the write-up described above: activity type, goal or hypothesis, how you ran it, what you found, and what changes because of it.
 
 ## Define your Personas
 
@@ -62,51 +65,79 @@ Some ideas to define personas:
 - What do they want to achieve? 
 - Define the demographic profiles, goals, and a scenario use case.
 
+A good output is 2 to 3 personas with demographics, goals, and behaviors, plus a note on which features they caused you to prioritize or drop.
+
 ## Find Users
 
-<Badge text="Individual Activity" variant="success" class="mb-6" />
+<Badge text="Individual Activity" variant="success" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
 Once you have created your user profile, you can now find places they are present. The internet has communities for every niche; try searching for communities relevant to your product on Reddit, Twitter/X, Hacker News, and other forums. Post on these platforms and engage with potential users. There are also many modern platforms that product and technology enthusiasts browse to discover new solutions to their problems, such as Product Hunt, Beta List, and Indie Hackers. Finally, you can reach out to your local community (fellow students, friends, clubs, etc.) as well.
 
 Consider reading [You Are Not the User: The False-Consensus Effect](https://www.nngroup.com/articles/false-consensus/).
 
-Write a summary of the outreach you've done and the mediums you've used, and the returns, e.g., people who have agreed to do user activities with you. Consider the following marketing activities:
+Keep a running summary of the outreach you've done, the mediums you've used, and the returns, e.g., people who have agreed to do user activities with you. This list of reachable people *is* the user access plan your [Definition of Shipped](/assignments/definition-of-shipped/) requires. Consider the following marketing activities:
 
 - Post a demo on Reddit, Twitter/X, [Hacker News](https://news.ycombinator.com/) (or similar)
 - Launch on Product Hunt or Beta List
 - Distribute cookies for trying your software (or similar)
 - Present at a conference or workshop
 
+A good output is a written list of the communities and platforms where your users actually are, with the outreach you have already made.
+
+**Feeds:** the winter [repo checkpoint](/assignments/repo-checkpoints/) real-user gate, and the [Definition of Shipped](/assignments/definition-of-shipped/) user access plan.
+
 ## Engage Users
 
-<Badge text="Individual Activity" variant="success" class="mb-6" />
+<Badge text="Individual Activity" variant="success" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Once you've found a good pool of users, engage them to gather feedback on your product. This can be done through social media posts, emails, surveys, demos, a public Discord/Slack channel, etc. 
+Once you've found a good pool of users, engage them to gather feedback on your product. This can be done through social media posts, emails, surveys, demos, a public Discord/Slack channel, etc. Interview-style conversations should follow the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md).
 
-Write a report of the outreach you've done, the mediums you've used, and the feedback you've received from users. 
+Write up the outreach you've done, the mediums you've used, and the feedback you've received from users.
+
+A good output is a write-up of the outreach, the mediums used, and the feedback received.
+
+**Feeds:** the winter [repo checkpoint](/assignments/repo-checkpoints/) real-user gate.
+
+## Test with an Assistive Technology User
+
+<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Run one task-based session with someone who uses assistive technology (a screen reader, voice control, switch access, or magnification) as part of their normal day. Use the same structure as any other usability session: pick two or three real tasks, watch, and do not help.
+
+Expect to be surprised. Daily users navigate far faster and in different patterns than you will when simulating, and they routinely find in two minutes what a checklist misses entirely. Campus disability services, local accessibility meetups, and your project partner's own users are the usual ways to recruit.
+
+If that is not feasible in your timeline, the honest substitute is a session under simulated constraint: a teammate who did not build the feature completes the flow keyboard-only or with a screen reader on. Say plainly in your writeup that it was simulated. Simulation finds broken things; it does not tell you what daily use feels like.
+
+See [testing with assistive technology users](/guides/testing-strategy/#testing-with-assistive-technology-users) for how this fits your wider testing strategy, and [Designing for Accessibility](/activities/design/#designing-for-accessibility) for what to fix before you get here.
+
+A good output is a list of observed failures with the task each one blocked, prioritized by whether it stops a user or merely slows them.
+
+**Feeds:** the winter week 10 [repo checkpoint](/assignments/repo-checkpoints/) real-user evidence.
 
 ## UX Design Maturity
 
 <Badge text="Individual Activity" variant="success" class="mb-6" />
 
-Read [The 5 Levels of UX Maturity](https://www.nngroup.com/articles/ux-maturity-model/) and complete the [UX Maturity Quiz](https://forms.nngroup.com/s3/Maturity-Quiz).
+Read [The 6 Levels of UX Maturity](https://www.nngroup.com/articles/ux-maturity-model/) (Absent, Limited, Emergent, Structured, Integrated, User-Driven) and complete the [UX Maturity Quiz](https://forms.nngroup.com/s3/Maturity-Quiz).
 
-Write what needs to happen for you to move to the next stage. If your project involves user experience and no other significant technical elements, then your team is expected to rise to at least UX Maturity Level 5.
+Write what needs to happen for you to move to the next stage. If your project involves user experience and no other significant technical elements, aim to reach at least Level 5, Integrated, by the end of the year.
+
+A good output is your quiz result plus a written list of what has to happen to reach the next level.
 
 ## Complete an IRB Application
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-:::caution
-Tackle the IRB application early. It is a lengthy process.
-:::
+Get human-subjects approval filed while there is still a year left to use it. A few hours to draft, then weeks of review you do not control, so start in fall week 1.
 
-If you are doing a research project with faculty, and you plan to do user testing, you will need to get [IRB approval](https://research.oregonstate.edu/ori/irb).
+If your project involves faculty research and any kind of user testing, you need [IRB approval](https://research.oregonstate.edu/ori/irb). "User testing" is broader than students expect: interviews, surveys, and usability sessions can all count.
 
-{/* ## Apply Universal Design for Accessibility
+- **Ask your faculty partner who files it.** Usually they do, or their graduate student does, and they have done it before. This is not a form you should be discovering alone.
+- **Determine the review level**: exempt, expedited, or full board. Exempt still takes weeks, and it is a determination someone else makes, not one you can assume.
+- **Draft the protocol**: what you will ask, of whom, how you recruit, what data you keep, how you store it, and how you anonymize it.
+- **File it, then keep working.** Design and build against synthetic or public data while review runs.
+- **Record the filing date and expected turnaround** in `docs/risks.md` alongside your other [approval clocks](/activities/planning/#map-your-external-approvals).
 
-https://universaldesign.ie/ */}
+A good output is a filed application with a dated confirmation, and a line in your risk register naming who owns it and what is blocked until it lands.
 
-{/* ## UI/UX Design Review
-
-Similar to the technical design review. */}
+**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites-and-lead-times criterion.

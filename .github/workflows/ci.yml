@@ -23,6 +23,8 @@ jobs:
       - run: npm ci
       - name: Lint and format check (Biome via Ultracite)
         run: npm run check
+      - name: Validate ABET outcome coverage
+        run: node scripts/validate-outcomes.mjs
       - name: Build (includes astro check)
         run: npm run build
       - name: Guard against student data

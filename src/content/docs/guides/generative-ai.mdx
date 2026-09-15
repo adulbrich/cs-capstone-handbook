@@ -40,39 +40,37 @@ Understanding what AI tools are good at and where they fall short helps you use 
 - Over-reliance leading to lack of understanding: if you cannot explain what the code does, you should not commit it
 - Privacy and intellectual property issues (be careful about what you paste into AI tools, especially if your project involves NDA-protected or sensitive data)
 
-## AI Coding Tools
+## Using AI Effectively
 
-The landscape changes rapidly. Rather than an exhaustive list, here are the categories of tools and some current options in each.
+The difference between productive AI usage and frustrating AI usage usually comes down to a few habits.
 
-:::tip[GitHub Copilot Pro for Students]
-All students with a GitHub Education account get **GitHub Copilot Pro for free**. Activate it at [GitHub Education](https://github.com/education). This gives you AI-assisted code completion, chat, and agent capabilities in VS Code, JetBrains, and other editors. If you do not have another preferred tool, Copilot is a solid default.
-:::
+### Start with clear intent
 
-### Chat-Based Assistants
+Before asking an AI tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the AI enough context to produce something useful. The clearer your intent, the less time you spend correcting the output.
 
-General-purpose AI models you interact with through conversation. Useful for brainstorming, explaining concepts, drafting documentation, debugging, and exploring design alternatives.
+### Verify what matters, and build the net that lets you trust the rest
 
-- **ChatGPT** (OpenAI): strong general reasoning and code generation.
-- **Claude** (Anthropic): strong at long-context analysis, writing, and careful reasoning.
-- **Gemini** (Google): tightly integrated with Google's ecosystem.
+AI-generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. The obvious response is "read everything it writes", and that advice fails in practice for the same reason a tech lead does not read every line their team ships. It does not scale, so people stop doing it, and then they have no strategy at all.
 
-### AI Code Editors and Agents
+The strategy that does scale has two parts.
 
-Tools that integrate directly into your editor or terminal and can read, write, and modify your codebase. These range from autocomplete assistants to fully agentic tools that can execute multi-step tasks.
+**Spend your attention where mistakes are expensive to undo.** Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are one-way doors: getting them wrong costs far more than the review would have. Most feature code is a two-way door, cheap to fix once something tells you it is broken. Validate hard at the doors; delegate freely elsewhere.
 
-- **GitHub Copilot**: code completion, chat, and agent mode in VS Code and JetBrains. Free for students.
-- **Cursor**: AI-native code editor built on VS Code with strong multi-file editing.
-- **Claude Code** and **ChatGPT Codex**: terminal-based agentic coding tools.
+**Make "elsewhere" safe by building the net.** You may reasonably delegate exactly as far as your safety net catches: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without a net is recklessness. Trust with one is ordinary engineering. If you want to hand off more, improve the net first rather than reading harder.
 
-The distinction between "autocomplete" and "agent" matters. Autocomplete tools suggest the next few lines as you type. Agentic tools can plan multi-step changes, read multiple files, run commands, and modify your codebase autonomously. Agentic tools are more powerful but require more oversight, especially on a team where multiple people are using them simultaneously.
+This is why the course grades the *fit* between how far you delegated and how strong your net is, rather than how much AI you used or how good your tools are. A weaker model simply means tighter gates and more checking of your own, which is more work, not less.
 
-### Image and Design Tools
+You still own the result. If you cannot explain why the code works when your project partner asks, no tool and no net will cover for that.
 
-- **Midjourney**, **Stable Diffusion**, **DALL-E**: image generation for mockups, assets, or diagrams. Check licenses before using generated assets in your project.
+The [AI practice activities](/activities/ai/) turn all of this into exercises you can run on your own repository this week.
 
-### AI Search Tools
+### Use AI to learn, not just to produce
 
-- **Perplexity**, **ChatGPT Search**: research and summarization with source citations. Always verify the facts and check that cited sources actually exist.
+When the AI generates code you do not understand, ask it to explain. Use it as a learning tool, not just a production tool. The goal of Capstone is to grow as an engineer. Shipping code you cannot maintain or debug is not growth; it is debt.
+
+### Know when to stop prompting
+
+If you have gone back and forth with an AI tool more than a few times on the same problem and the output is still wrong, step back. Read the documentation. Look at examples. Ask a teammate. Sometimes the fastest path is not through the AI.
 
 ## Setting Up AI Tools for Your Project
 
@@ -82,11 +80,14 @@ The difference between a helpful AI assistant and a frustrating one is almost en
 
 Most AI coding tools support some form of project-level configuration that persists across sessions:
 
-- **Claude Code**: `CLAUDE.md` file in your repository root.
-- **Cursor**: `.cursor/rules/` directory or `.cursorrules` file.
-- **GitHub Copilot**: `.github/copilot-instructions.md` file.
+- **`AGENTS.md`** in your repository root: the cross-tool convention, read by a growing number of agents and the right default when your team does not all use the same tool.
+- **Claude Code**: `CLAUDE.md` in your repository root.
+- **Cursor**: `.mdc` files in the `.cursor/rules/` directory. Cursor also reads `AGENTS.md`. A top-level `.cursorrules` file is the legacy format; do not start a new project with it.
+- **GitHub Copilot**: `.github/copilot-instructions.md`.
 
 These files are checked into version control, which means the entire team shares the same AI context. This is one of the most effective ways to keep AI-generated code consistent across team members.
+
+Write the content once, in `AGENTS.md`, and have any per-tool file point at it. Two instruction files that disagree with each other are worse than none: whichever one your teammate's tool reads is the one that wins, and nobody will notice they have drifted until the suggestions stop matching the code.
 
 What to include in project-level instructions:
 
@@ -96,6 +97,44 @@ What to include in project-level instructions:
 - Architectural constraints ("we use a monolith, not microservices"; "all data access goes through the repository layer").
 - Testing expectations (what to test, which framework, where tests live).
 - Anything the AI should *not* do (e.g., "do not add new dependencies without discussion"; "do not refactor code outside the scope of the current task").
+
+Kept to that list, the file is short:
+
+```md
+# AGENTS.md
+
+## Project
+Shift board for <partner>: coordinators post shifts, volunteers claim
+them. Read docs/requirements.md and docs/design.md before changing
+behavior; decisions and their reasons are in docs/adr/.
+
+## Stack
+TypeScript, React 19, Express, Postgres via Prisma, Vitest, Playwright.
+
+## Conventions
+- All data access goes through src/server/repos/. No SQL in routes.
+- Errors: throw AppError with a code; routes map codes to HTTP status.
+- Tests live next to the code as *.test.ts. Run `npm test` before a PR.
+
+## Do not
+- Add a dependency without an issue that says why.
+- Change the Prisma schema, auth, or deployment config without a human
+  review. These are one-way doors.
+- Paste partner data, user emails, or .env contents into any tool.
+```
+
+The last line is the part your [Team Charter](/assignments/team-charter/) calls the AI and confidentiality one-pager, spelled out for the tools. The human-readable version is a section of the charter itself and says the same thing in the partner's terms:
+
+```md
+## AI and confidentiality (in docs/charter.md)
+
+Any tool: our own code, our docs, synthetic test data.
+Partner-approved tools only (see list): the partner's API docs and
+  sample exports.
+Never: production data, volunteer names and emails, credentials, the
+  partner's internal designs. Redact first; when unsure, ask the AI
+  Coordinator before pasting.
+```
 
 ### MCP Servers
 
@@ -109,7 +148,7 @@ Many other MCP servers exist and new ones appear frequently. Explore what is ava
 
 ### Skills
 
-[Skills](https://skills.sh/) (sometimes called slash commands, custom commands, or agent skills) are reusable prompts or workflows that you define once and invoke repeatedly. They let you encode team-specific processes into your AI tool so that common tasks are performed consistently.
+Agent skills (sometimes called slash commands or custom commands) are reusable prompts or workflows that you define once and invoke repeatedly. They let you encode team-specific processes into your AI tool so that common tasks are performed consistently. A skill is a directory containing a `SKILL.md` file: Markdown instructions with YAML frontmatter naming and describing the skill, optionally alongside scripts and reference files. [skills.sh](https://skills.sh/) is a public directory of published ones.
 
 For example, a team might define skills for:
 
@@ -120,51 +159,26 @@ For example, a team might define skills for:
 
 Skills are particularly valuable on a team because they standardize how the AI performs recurring tasks. Without them, each team member prompts the AI differently and gets different results. With a shared set of skills checked into the repository, everyone gets the same behavior.
 
-How skills are defined depends on the tool:
+`SKILL.md` is now close to a cross-tool convention, so where you put the directory matters more than which tool you use:
 
-- **Claude Code**: skills are Markdown files in `.claude/skills/<skill-name>/SKILL.md`, each in its own directory. They can be invoked as slash commands.
-- **Cursor**: custom commands or notepad entries that encode reusable prompts.
-- **GitHub Copilot**: reusable prompts configured through the Copilot instructions file or VS Code tasks.
+- **Claude Code**: `.claude/skills/<skill-name>/SKILL.md`. Invoke with `/<skill-name>`.
+- **Cursor**: `.cursor/skills/<skill-name>/SKILL.md`, also `.agents/skills/`. Pick one from the `/` menu.
+- **GitHub Copilot**: `.github/skills/<skill-name>/SKILL.md`, and it also reads `.claude/skills/` and `.agents/skills/`. Copilot separately supports single-file prompt files at `.github/prompts/<name>.prompt.md`, invoked as `/<name>` in Copilot Chat.
 
 Like project-level instructions, skills should be version-controlled so the whole team benefits from improvements.
+
+**Published collections worth reading.** You do not have to invent these from scratch, and reading a well-built skill is the fastest way to learn what a good one looks like:
+
+- **[obra's Superpowers](https://github.com/obra/superpowers)**: brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development. It also includes skills for writing and testing new skills.
+- **[Matt Pocock's skills](https://github.com/mattpocock/skills)**: spec and ticket flows, TDD, code review, domain modelling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
+
+Several of these are not conveniences but **safety-net components**: a separate architectural-review pass, a code-review pass, and a plan-before-you-build step are exactly the gates that make delegating the rest reasonable. Run the hands-on version in [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills).
+
+One warning: a skill is someone else's opinion, executed automatically. Read one before you install it, because your team owns whatever it produces.
 
 ### Memory and Context
 
 Some tools support persistent memory across sessions. Use this to store project-specific knowledge that the AI should retain: architectural decisions, common patterns, known gotchas, or recurring instructions you find yourself repeating.
-
-## Using AI Effectively
-
-The difference between productive AI usage and frustrating AI usage usually comes down to a few habits.
-
-### Start with clear intent
-
-Before asking an AI tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the AI enough context to produce something useful. The clearer your intent, the less time you spend correcting the output.
-
-### Verify, do not trust
-
-AI-generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Read what the AI produces. Run it. Test the edge cases. If you cannot explain why the code works, you do not understand it well enough to commit it.
-
-### Use AI to learn, not just to produce
-
-When the AI generates code you do not understand, ask it to explain. Use it as a learning tool, not just a production tool. The goal of Capstone is to grow as an engineer. Shipping code you cannot maintain or debug is not growth; it is debt.
-
-### Know when to stop prompting
-
-If you have gone back and forth with an AI tool more than a few times on the same problem and the output is still wrong, step back. Read the documentation. Look at examples. Ask a teammate. Sometimes the fastest path is not through the AI.
-
-## Choosing the Right Tool
-
-Things change rapidly in the AI space. New models are released frequently, each with different strengths. Rather than chasing benchmarks, consider what matters for your workflow:
-
-- **Context window**: how much of your codebase can the tool see at once? Larger context windows help with multi-file tasks.
-- **Speed vs. quality**: faster models are better for autocomplete; slower, more capable models are better for complex reasoning and multi-step changes.
-- **Integration**: does the tool work with your editor, terminal, and version control? The best tool is the one you actually use.
-- **Cost**: many tools have free tiers or student pricing. GitHub Copilot Pro is free with GitHub Education.
-
-If you want to compare models, these resources track current benchmarks:
-
-- [AI Benchmarking Hub](https://epoch.ai/benchmarks)
-- [LiveBench](https://livebench.ai/)
 
 ## AI on a Team
 
@@ -184,6 +198,86 @@ This is covered in detail in the technical design and working agreement guides:
   description="Team norms for coordinating AI tool usage."
 />
 
+## What You Can Automate
+
+When you ask "what can I hand off?", this is the index. Each entry links to the guide that owns the topic; nothing is restated here, so the owning guide stays the single source of truth.
+
+| Automatable | Where it is covered |
+|---|---|
+| Test generation across the pyramid (unit, integration, end-to-end) | [Testing strategy](/guides/testing-strategy/#automated-testing) |
+| Browser-driven exercising of real user flows | [End-to-end tests](/guides/testing-strategy/#end-to-end-tests), and [Playwright MCP](https://github.com/microsoft/playwright-mcp) above |
+| Accessibility auditing (axe-core, Lighthouse, lint-level rules) | [Automated accessibility testing](/guides/testing-strategy/#automated-accessibility-testing) |
+| Lint and format gates | Your repo's configuration, checked in and enforced in CI |
+| CI pipeline construction and gate configuration | [DevOps](/guides/devops/) |
+| Self-audit and adversarial review passes | [Run a self-audit and an architectural review pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass) |
+| Architectural review as a distinct step | [Technical design](/guides/technical-design/) |
+| Security scanning (dependency audit, secret scanning) | [Security](/guides/security/) |
+| Documentation and changelog generation | [Documentation](/guides/documentation/) |
+
+**What stays human.** Whether the product is actually good for the person using it. Which decisions are one-way doors. The tradeoffs your users and your project partner will feel. And whether an automated finding actually matters, which is a judgment no tool makes for you: a report with forty findings is not forty problems.
+
+:::note[Reviewed annually]
+This section and the tool names throughout this guide are the fastest-moving content in the handbook. Reviewed each August. The judgment they support (spend attention where mistakes are expensive, build the net that covers the rest) has been stable much longer than any of these tools have existed, which is why the course's rubrics assess the judgment and never the tooling.
+:::
+
+## AI Coding Tools
+
+The landscape changes rapidly. Rather than an exhaustive list, here are the categories of tools and some current options in each.
+
+:::tip[Free GitHub Copilot for Students]
+Verified students get the free **GitHub Copilot Student** plan. Activate it at [GitHub Education](https://github.com/education). It gives you unlimited code completions plus limited chat and agent usage in VS Code, JetBrains, and other editors, with an allowance of AI credits and automatic model selection rather than a model picker. GitHub re-checks your eligibility every month. This replaced the older "free Copilot Pro for students" offer; verified teachers and open-source maintainers still get Copilot Pro. If you do not have another preferred tool, Copilot is a solid default.
+:::
+
+### Chat-Based Assistants
+
+General-purpose AI models you interact with through conversation. Useful for brainstorming, explaining concepts, drafting documentation, debugging, and exploring design alternatives.
+
+- **ChatGPT** (OpenAI): strong general reasoning and code generation.
+- **Claude** (Anthropic): strong at long-context analysis, writing, and careful reasoning.
+- **Gemini** (Google): tightly integrated with Google's ecosystem.
+
+### AI Code Editors and Agents
+
+Tools that integrate directly into your editor or terminal and can read, write, and modify your codebase. These range from autocomplete assistants to fully agentic tools that can execute multi-step tasks.
+
+- **GitHub Copilot**: code completion, chat, and agent mode in VS Code and JetBrains. Free for students.
+- **Cursor**: AI-native code editor built on VS Code with strong multi-file editing.
+- **Claude Code** and **OpenAI Codex**: agentic coding tools that started in the terminal and now also run as desktop apps, web apps, and IDE extensions.
+
+The distinction between "autocomplete" and "agent" matters. Autocomplete tools suggest the next few lines as you type. Agentic tools can plan multi-step changes, read multiple files, run commands, and modify your codebase autonomously. Agentic tools are more powerful but require more oversight, especially on a team where multiple people are using them simultaneously.
+
+### Image and Design Tools
+
+- **Midjourney**, **Stable Diffusion**, **GPT Image** (the model behind ChatGPT Images, which replaced DALL-E), **Google Gemini image generation**: image generation for mockups, assets, or diagrams. Check licenses before using generated assets in your project.
+
+### AI Search Tools
+
+- **Perplexity**, **ChatGPT Search**: research and summarization with source citations. Always verify the facts and check that cited sources actually exist.
+
+## Choosing the Right Tool
+
+Things change rapidly in the AI space. New models are released frequently, each with different strengths. Rather than chasing benchmarks, consider what matters for your workflow:
+
+- **Context window**: how much of your codebase can the tool see at once? Larger context windows help with multi-file tasks.
+- **Speed vs. quality**: faster models are better for autocomplete; slower, more capable models are better for complex reasoning and multi-step changes.
+- **Integration**: does the tool work with your editor, terminal, and version control? The best tool is the one you actually use.
+- **Cost**: many tools have free tiers or student pricing. GitHub Copilot Student is free with GitHub Education.
+
+If you want to compare models, these resources track current benchmarks:
+
+- [AI Benchmarking Hub](https://epoch.ai/benchmarks)
+- [LiveBench](https://livebench.ai/)
+
+## Best Practices for Using AI Tools
+
+- Write the project-level context file first. Everything a tool produces is bounded by what it knows about your repository; [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills) is the hour that pays for itself.
+- Decide the one-way doors yourself and delegate the two-way doors freely. If you cannot tell which is which, [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors) before delegating anything.
+- Build the safety net before scaling delegation: tests, CI, review gates, a staging environment, a rollback path. The net is what makes a large delegation reasonable; without it, the same delegation is a gamble.
+- Review a generated diff the way you would review a stranger's pull request, because that is what it is.
+- Keep the confidentiality boundary in the team charter and in the tool configuration, not in people's memory.
+- Prefer the cheapest tool that does the job. Every workflow in this guide has a free or student-tier substitute.
+- When a tool misleads you, write down what happened and what caught it. That record is how your judgment improves, and it is the story the [Career and Individual Retrospective](/assignments/career-retrospective/) asks for.
+
 ## Some Truths About AI Tools
 
 - AI tools make fast developers faster and careless developers more dangerous. The bottleneck is judgment, not typing speed.
@@ -192,3 +286,11 @@ This is covered in detail in the technical design and working agreement guides:
 - If you find yourself unable to debug or modify AI-generated code, you have a problem. You should understand everything in your codebase.
 - AI tools are evolving rapidly. What is true today may not be true next term. Stay curious and adapt.
 - The teams that use AI most effectively are not the ones that generate the most code. They are the ones that generate the *right* code and catch the wrong code early.
+
+## AI Tools in Industry and Academia
+
+AI-assisted coding is the default at most software companies now. Google said in late 2024 that more than a quarter of its new code was generated by AI and then reviewed by engineers, and the second half of that sentence is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without a net, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this course grades the fit between delegation and safety net rather than the tool.
+
+The open-source world is more divided. Several projects, including Gentoo and NetBSD, banned AI-generated contributions in 2024, and the curl maintainers have written publicly about bug reports generated by AI that waste reviewer time. If your project is FOSS, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
+
+In academia, the major publishers and the ACM set the same rule in 2023: an AI tool cannot be an author, and its use must be disclosed. Research code is held to the reproducibility bar regardless of who or what wrote it. Universities differ on classroom policy, which is why this course states its own once, on the [assignments overview](/assignments/introduction/#ai-policy-applies-to-every-assignment).

@@ -1,0 +1,151 @@
+---
+title: AI Practice Activities
+description: "Exercises in working with AI tools the way practitioners actually do: deciding where your attention is worth spending, building a safety net that makes delegation reasonable, and doing the judgment work no tool can do for you."
+sidebar:
+  order: 5
+---
+
+import { Badge } from '@astrojs/starlight/components';
+
+Most advice about AI tools is some version of "check the output carefully." That advice does not survive contact with how software is actually built now. Nobody reads every line an agent writes, any more than a tech lead reads every line their team writes. What experienced engineers do instead is decide **where their attention is worth spending**, and build enough automated safety that everywhere else can run without them.
+
+That is a real skill, it is learnable, and it is what these activities practice. Three ideas organize them:
+
+1. **Some decisions are one-way doors.** Undoing them costs far more than getting them right. Those deserve your attention. Most other work does not.
+2. **You may delegate only as far as your net catches.** Trust without a safety net is recklessness. Trust with one is ordinary engineering. If you want to delegate more, build a better net first.
+3. **Some work cannot be delegated at all.** Whether the product is actually good is a judgment call, and it stays yours.
+
+:::note[Your tools do not have to be the best ones]
+This page teaches the current industry baseline, including things that need a capable agent. That is deliberate: this is a software engineering course, and you should know what the state of practice looks like even if you are not running it yourself.
+
+**No graded criterion in this course requires any of these tools.** What is assessed is the fit between how far you delegated and how strong a net you built. A student on a free tier who gates tightly and validates carefully is doing the harder work. Every activity below states its substitute for more limited tooling.
+:::
+
+## Map Your One-Way Doors
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+
+Sort your team's upcoming decisions into the ones that deserve your attention and the ones that do not, so you stop spending equal care on a database schema and a button color. Thirty minutes as a team, once a term.
+
+- **List ten decisions**: the next ten your team expects to make, written down before you classify any of them.
+- **Classify each**: a **one-way door** is expensive or impossible to undo; a **two-way door** is cheap to change once you learn something. Typical one-way doors are database schema, authentication and authorization, deployment topology, data migrations, public API shape, licensing, third-party commitments, and anything touching user data you cannot regenerate. Typical two-way doors are most feature code, UI layout, internal module boundaries, and any library you could swap in a week.
+- **Assign a validator**: for each one-way door, name who checks it and what they check before the team commits.
+- **Revisit at the end of the term**: which classifications were wrong? Treating a two-way door as one-way costs you time. The other error is how teams lose a week to a migration they cannot roll back.
+
+A good output is a list where the one-way doors are genuinely few. If you classified eight of ten as one-way, you have not made the distinction, you have just labeled everything important.
+
+**Feeds:** your [RFC](/assignments/rfc/) topic, which must be a decision that is hard to reverse, and the [defense](/assignments/defense/) judgment criterion.
+
+## Audit Your Safety Net
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+
+Measure the gap between how much you delegate and how much your automation would catch, which is your team's actual risk. One hour as a team.
+
+- **State your delegation honestly**: roughly how much of your code is currently written by AI tools.
+- **Inventory what would catch it**: do tests exist for the paths that matter, and would they fail if the behavior broke? Does CI run on every pull request, and is it green? Are the hard-to-undo paths gated by review, or can anything merge? Is there a staging or preview environment? Can you roll back, and have you ever tried?
+- **Name the gap**: the distance between those two lists.
+- **Close it from the top**: the highest-value net is always the one guarding the door you cannot walk back through.
+
+A good output is one specific named gap and the smallest change that closes it. "We have no tests" is not an answer; "nothing stops a schema change from merging without review" is.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion, the [RFC](/assignments/rfc/) delegation criterion, and the [defense](/assignments/defense/) ownership criterion.
+
+## Set Up Your Repository's Skills
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+
+Install a shared set of agent workflows so that a task like "review this pull request" runs the same way every time, instead of depending on how each teammate happens to phrase a prompt. One to two hours, once.
+
+- **Read two published collections**: [obra's Superpowers](https://github.com/obra/superpowers) covers brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development, and it teaches how to write and test new skills. [Matt Pocock's skills](https://github.com/mattpocock/skills) cover spec and ticket flows, TDD, code review, domain modeling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
+- **Install one and run it** against your own repository on real work.
+- **Compare**: write down what changed in the output versus prompting freehand.
+- **Commit the choice**: skills belong in the repository so everyone gets the same behavior. Your [AI Coordinator](/assignments/team-charter/) owns which ones the team standardizes on.
+
+Several of these *are* the net rather than a convenience: a separate architectural-review pass and a code-review pass are safety-net components, and a plan-before-you-build skill is what turns "make it do X" into the kind of specification the [RFC](/assignments/rfc/) grades you on.
+
+:::caution[A skill is someone else's opinion, executed automatically]
+Read a skill before you install it. Some encode strong workflow opinions that may not suit your project, and you own whatever they produce: the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) does not care that a skill wrote it.
+:::
+
+**If your tooling cannot load skills:** the invariant is that recurring work happens the same way regardless of who does it. The substitute is a written checklist in `CONTRIBUTING.md` that a human follows. This is more work, not less.
+
+A good output is at least one skill committed to your repository and a short note on what its output changed.
+
+**Feeds:** the [Team Charter](/assignments/team-charter/) AI context file, and the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion.
+
+## Put a Browser Agent on Your Critical Flow
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Get your most important user flow exercised continuously instead of whenever someone remembers, so demo-day failures are caught by a robot at 3am rather than by your project partner on a call. Two to three hours to set up, minutes per run after.
+
+- **Pick the flow** your users care about most, end to end.
+- **Have an agent drive it** in a real browser with [Playwright](https://playwright.dev/) and report what it finds.
+- **Keep the run as a test**: convert the session into an end-to-end test so it runs on every change. See [end-to-end testing](/guides/testing-strategy/#end-to-end-tests) for how it fits the wider suite.
+
+The point is not that a machine clicks faster than you. It is that the class of failure that embarrasses teams at demos (routing broken, environment variable missing, the login page white-screens) stops depending on anyone's memory.
+
+**If your tools cannot drive a browser:** the invariant is that the critical flow is exercised before every demo. The substitute is a written manual smoke script that a human runs and initials, plus a recorded end-to-end test added when tooling allows.
+
+A good output is a committed end-to-end test that runs in CI and fails when the flow breaks.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion.
+
+## Wire an Accessibility Audit Into CI
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Get automated accessibility checks running on every change, then practice the judgment of telling a real finding from noise. One to two hours.
+
+- **Add [axe-core](https://github.com/dequelabs/axe-core)** to your test suite so a rendered component fails a test when it violates an accessibility rule, and add a page-level check to CI.
+- **Have an agent triage the first report**, then go through it yourself: which findings are real, which are noise, which need a human looking at the actual screen.
+- **Follow up manually**: the [manual pass](/guides/testing-strategy/#manual-accessibility-testing) covers keyboard only, screen reader, and 200% zoom.
+
+The triage is the exercise. Automated tools catch roughly a third to a half of real defects, and learning to tell "this input has no label, so screen reader users cannot fill this form" from "this decorative divider lacks a role" is judgment you build by doing it once with attention. The defects the tools miss are the ones that make software unusable rather than merely imperfect.
+
+**If your project has no user interface:** the equivalent is your output formats and documentation. Can someone consume your API errors, your CSV exports, or your README with a screen reader?
+
+A good output is a CI job that fails on accessibility violations, plus a short triage note naming which findings you fixed and which you dismissed and why.
+
+**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion, and the spring [Landing Page](/assignments/landing-page/) accessibility criterion.
+
+## Run a Self-Audit and an Architectural Review Pass
+
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Catch the problems that a feature's own author, human or agent, is structurally unable to see, by running two separate review passes after the work is already passing. Thirty minutes per pass.
+
+- **Self-audit**: ask the agent to critique its own work adversarially. What did it get wrong, what did it guess at, what did it assume about the rest of the system that it never checked?
+- **Architectural review**: ask specifically whether the change fits the system's existing shape, or whether it quietly introduced a second way of doing something the codebase already does one way.
+- **Keep them separate** from the build step, and from each other.
+
+Separation is the whole trick. An agent asked to "build X and make sure it is good" produces a defense of its own work. The same agent asked afterwards to find what is wrong with a diff finds real problems, because you changed what it is optimizing for. The architectural pass is the one teams skip, and it is where drift accumulates: every individual change looks reasonable, and six weeks later there are three competing patterns for the same job.
+
+**If your tooling cannot run separate passes:** ask a teammate who did not write the change to answer the same two questions. This is what code review was always for.
+
+A good output is a list of findings from each pass and a note on which ones you acted on.
+
+**Feeds:** the [RFC](/assignments/rfc/) delegation-and-validation criterion, and the [defense](/assignments/defense/) ownership criterion.
+
+## Run an Acceptance Pass
+
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+
+Decide whether your product is actually good, which is the one part of the work that does not delegate. Thirty minutes before each demo or release.
+
+- **Use your own product** the way a real user would, on a real task.
+- **Judge the experience**, not the tests: would a person trying to get something done succeed and feel fine about it?
+- **Write two lists**: what you would fix, and what you decided to live with.
+
+The second list matters as much as the first. Shipping means choosing what is good enough and being able to say why. An agent can drive the browser, run the suite, and audit the markup, and none of that tells you the flow feels wrong, the empty state is demoralizing, or the thing your partner actually needs is two clicks deeper than it should be.
+
+A good output is those two lists, dated, with the second one justified.
+
+**Feeds:** the [Release and Metrics](/assignments/release/) Honest outcomes criterion.
+
+## Why This Matters Beyond the Course
+
+The engineers whose value is going up are not the ones who type fastest or who refuse to use these tools. They are the ones who can look at a problem and say: this part I will hand off and this part I will not, here is what will catch it if I am wrong, and here is how I will know it actually worked.
+
+That judgment is what your project partner is relying on, and it is what the [defense](/assignments/defense/) is built to surface.

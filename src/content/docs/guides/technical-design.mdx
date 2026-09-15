@@ -42,16 +42,29 @@ Technical design operates at several levels of abstraction. Most projects benefi
 
 The highest-level view: what are the major subsystems, services, or modules, and how do they communicate? The C4 model provides a useful framework for thinking about this at different levels of zoom:
 
-- **Context diagram** (C4 Level 1): your system as a black box, showing who and what interacts with it (users, external services, data sources, hardware).
-- **Container diagram** (C4 Level 2): the major deployable or runnable units. For a web application, these might be a frontend, an API server, and a database. For a data pipeline, they might be an ingestion service, a processing framework, and a storage layer. For an embedded project, they might be firmware modules and a host application.
-- **Component diagram** (C4 Level 3): the internal structure of a single container.
+- **Context diagram** (C4 Level 1): your system as a black box, showing who and what interacts with it (users, external services, data sources, hardware). This is the diagram for your project partner and for anyone non-technical.
+- **Container diagram** (C4 Level 2): the major deployable or runnable units and how they communicate. For a web application, these might be a frontend, an API server, and a database. For a data pipeline, they might be an ingestion service, a processing framework, and a storage layer. For an embedded project, they might be firmware modules and a host application.
+- **Component diagram** (C4 Level 3): the internal structure of a single container, for the developers working inside it.
+- **Code diagram** (C4 Level 4): the implementation details of one component, usually a UML class diagram or an entity-relationship diagram. Treat it as optional; an IDE can generate it on demand, and hand-drawn copies go stale within a sprint.
 
-You do not need all three levels. A context diagram plus one level of decomposition is sufficient for most Capstone projects. The goal is to give any reader, including your project partner, a mental model of the system without reading the code.
+You do not need all four levels. A context diagram plus one level of decomposition is sufficient for most Capstone projects. The goal is to give any reader, including your project partner, a mental model of the system without reading the code. The [C4 model](https://c4model.com/) is a way to structure diagrams, not a notation; draw the boxes in whatever tool your team already uses.
+
+#### The 4+1 View Model
+
+Philippe Kruchten's [4+1 Architectural View Model](https://en.wikipedia.org/wiki/4%2B1_architectural_view_model) predates C4 and answers a different question: not "how far do we zoom in" but "whose concerns does this view address". It splits the description into five concurrent views:
+
+1. **Logical view**: the functionality the end user sees, usually class or state diagrams.
+2. **Process view**: the runtime behavior, including concurrency, communication between processes, and performance.
+3. **Development view**: the codebase from the programmer's side; package diagrams showing how modules are organized.
+4. **Physical view**: the deployment onto hardware; the UML deployment diagram.
+5. **Scenarios (the +1)**: a handful of use cases traced through the other four views. They validate the design and act as a consistency check.
+
+Use 4+1 when your readers have distinct concerns (a partner who cares about deployment, a maintainer who cares about module boundaries). Use C4 when the question is depth. Do not produce both for a Capstone project.
 
 <LinkCard
-  title="C4 Model Activity"
-  href="/activities/design/#c4-model"
-  description="Hands-on activity for describing your architecture using the C4 model."
+  title="Describe your Architecture"
+  href="/activities/design/#describe-your-architecture"
+  description="The workshop activity that produces the architecture diagram for docs/design.md and your RFC."
 />
 
 ### Interface Design
@@ -83,11 +96,11 @@ For projects with a database, this means entity-relationship diagrams, table sch
 
 Sometimes the right approach is to build a small, throwaway prototype to answer a specific question before committing to a design: *Can we integrate with this third-party API? Is this library fast enough for our use case? Does this algorithm generalize to real data?*
 
-This is called a **spike** in agile terminology. A spike is time-boxed (1–3 days) and produces a finding, not production code. Document what you learned in an ADR and discard the prototype code.
+This is called a **spike** in agile terminology. A spike is time-boxed (1 to 3 days) and produces a finding, not production code. Document what you learned in an ADR and discard the prototype code.
 
 The best technical designs are informed by spikes on the riskiest assumptions. If you have a component you have never built before, spike it first.
 
-## The Design Document
+## What Makes a Good Design Document?
 
 A design document is not a form to fill out. It is a narrative that helps someone understand how the system works (or will work) without reading the code. A good design document answers questions that the team and its project partner actually have, and it does so concisely enough that people will read it more than once.
 
@@ -97,6 +110,47 @@ For a software project, this might mean a context diagram, an API specification,
 
 The design document should also reference the team's ADRs. Every significant "why" in the design (why this database, why this architecture, why this algorithm) should have a corresponding ADR that captures the alternatives considered and the reasoning. The design document shows the current state; the ADRs show how and why it got there.
 
+A `docs/design.md` that answers those questions in two pages looks like this:
+
+```md
+# Design
+
+## Overview
+Shift board for <partner>: a React front end, a Node API, and Postgres
+on Render. Coordinators and volunteers sign in with the partner's
+Google Workspace. Requirements: docs/requirements.md.
+
+## Architecture
+![C4 container diagram](./diagrams/containers.png)
+- Web app (React): the board, the claim and release flows.
+- API (Node, Express): auth check, shift rules, notifications.
+- Postgres, managed by Render: shifts, claims, users.
+- Email (Postmark), called from the API on release.
+
+## Interfaces
+- REST, JSON. Spec in docs/api/openapi.yaml; the client is generated
+  from it. POST /shifts/{id}/claims returns 409 when the shift is full.
+
+## Data
+- Entities: User, Shift, Claim (ERD in ./diagrams/erd.png).
+- One Claim per (shift, user), enforced by a database constraint.
+
+## Deployment
+- Render web service plus managed Postgres; a preview deploy per PR.
+- Rollback: redeploy the previous build from the Render dashboard
+  (tried once, works). Production target agreed with the partner: ADR-004.
+
+## Risks and open questions
+- Google Workspace SSO on the partner's tenant is unproven. Spike in
+  sprint 2; owner on the board.
+- Email deliverability from a new domain. Fallback: in-app notice only.
+
+## Decisions
+ADR-001 Postgres over SQLite. ADR-002 REST over GraphQL. ADR-004 Render.
+```
+
+If you want a template rather than a blank page, [arc42](https://arc42.org/overview) is the standard one: twelve sections covering goals, constraints, context, building blocks, runtime, deployment, cross-cutting concepts, decisions, quality, risks, and glossary. It prescribes structure, not notation, so C4 or UML diagrams drop into it unchanged. Take the sections you need and delete the rest; a Capstone design document that fills all twelve is padding.
+
 :::tip[Diagramming Tools]
 [Excalidraw](https://excalidraw.com/) is excellent for quick, hand-drawn-style diagrams. [draw.io / diagrams.net](https://app.diagrams.net/) supports formal UML and exports cleanly. [Mermaid](https://mermaid.js.org/) lets you write diagrams as code inside Markdown files, keeping them version-controlled. The [C4 Model](https://c4model.com/) provides a lightweight framework for structuring architecture diagrams at different levels of detail.
 :::
@@ -105,19 +159,12 @@ The design document should also reference the team's ADRs. Every significant "wh
 
 UML (Unified Modeling Language) provides a standard vocabulary for describing software structure and behavior. Useful diagram types:
 
-- **Class diagram**: static structure of classes and their relationships.
-- **Sequence diagram**: how objects interact over time for a specific scenario or use case.
-- **State diagram**: lifecycle of an entity with distinct states and transitions.
-- **Activity diagram**: flow of control through a process or algorithm.
-- **Deployment diagram**: physical or cloud topology of the running system.
+- **Sequence diagram**: how components interact over time for one scenario. The one most Capstone teams actually need, usually for the authentication or the main data flow.
+- **State diagram**: the lifecycle of an entity with distinct states (an order, a job, a claim).
+- **Class or entity-relationship diagram**: static structure; generate it from the code or the schema rather than drawing it.
+- **Deployment diagram**: what runs where, which the deployment section of your design document already needs.
 
-Pick the diagrams that answer the questions your team is currently uncertain about. A sequence diagram for your authentication flow is more valuable than a complete UML suite nobody maintains. Never create a diagram just because a template requires it.
-
-<LinkCard
-  title="UML Diagrams Activity"
-  href="/activities/design/#unified-modeling-language-uml-diagrams"
-  description="Hands-on activity for using UML diagrams to describe your architecture."
-/>
+Activity, component, package, and composite-structure diagrams exist too; the [UML diagram reference](https://www.uml-diagrams.org/) covers all of them. Pick the diagrams that answer the questions your team is currently uncertain about. A sequence diagram for your authentication flow is more valuable than a complete UML suite nobody maintains. Never create a diagram just because a template requires it.
 
 ## Validating Your Design
 
@@ -133,6 +180,15 @@ A design that has never been challenged is just an assumption. Validate it by:
   href="/activities/design/"
   description="Activities to help evaluate and validate design decisions."
 />
+
+## Measuring Success
+
+The design is working when the things it was supposed to prevent stop happening:
+
+- **Integration surprises**: two components built separately meet and work. If the sprint before a demo is spent reconciling interfaces, the interface section was not specific enough.
+- **Onboarding time**: a new teammate, a reviewer, or an AI tool with the document in context can find its way around the code without a walkthrough.
+- **Decisions stick**: an approach the team rejected does not get re-proposed, by a person or a tool, because the ADR says why.
+- **The diagram is still true**: if the architecture drawing and the code disagree at a checkpoint, the document has stopped being read.
 
 ## The Design Document Is a Living Artifact
 

@@ -249,6 +249,16 @@ Set these up in the repository settings under *Branches > Branch protection rule
 - Never commit secrets. API keys, passwords, and tokens do not belong in the repository. Use environment variables and add sensitive files to `.gitignore`.
 - Use `.gitignore` from the start. Ignoring build artifacts, IDE configuration files, and OS-specific files keeps the repository clean.
 
+### A History a Maintainer Could Inherit
+
+The habits above are for you. These five are for whoever takes the repository over, and they are the most common thing that makes an otherwise good project unpleasant to inherit. The [Repo Checkpoints](/assignments/repo-checkpoints/) check them.
+
+- **Nothing lands on the default branch except through a pull request.** Turn on branch protection so this is structural rather than a promise.
+- **No secrets, no build artifacts, no dependency directories in the history.** A committed `.env` is a security incident even after you delete the file, because the history keeps it. Fix `.gitignore` before the first commit, not after.
+- **Commit messages say what changed and why.** "fix", "update", "asdf", and forty commits called "wip" are the failure mode. Squash noisy branches before merging.
+- **No force-pushing the default branch**, ever.
+- **Large binaries belong outside git** or in Git LFS.
+
 :::tip[gitignore Templates]
 GitHub provides `.gitignore` templates for most languages and frameworks at [github.com/github/gitignore](https://github.com/github/gitignore). Start with the one that matches your stack and customize it.
 :::

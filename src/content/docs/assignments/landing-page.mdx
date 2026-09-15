@@ -1,0 +1,62 @@
+---
+title: Landing Page
+description: A public, findable entry point to your project, written for a real audience, submitted as a URL and screenshot.
+sidebar:
+  order: 10
+assignment:
+  level: team
+  terms: [spring]
+  weight: 3
+  outcomes:
+    SO2: 1
+    SO3: 2
+    SO4: 1
+---
+
+import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+
+<AssignmentMeta submission="Team" due="Spring, week 7" weight="3% of the spring grade">
+  One page per team, not per student.
+</AssignmentMeta>
+
+Your project needs a front door: the page a recruiter, a future user, or your project partner's boss lands on and understands in thirty seconds what this is and why it matters. Building one is product communication, a skill now expected of engineers alongside technical ability, and it gives every team member a link that belongs on a resume and in the [Career and Individual Retrospective](/assignments/career-retrospective/).
+
+This is a **team submission**. One page, built together, crediting everyone. Individual portfolio pages are encouraged but are not this assignment.
+
+## What You Must Produce
+
+A **public URL** plus a **full-page screenshot** (the screenshot is the graded snapshot; the URL proves it is live). Pick the format that fits your project:
+
+- A dedicated landing or product page (GitHub Pages, Vercel, Netlify, itch.io)
+- A polished repository README with structure, visuals, and a user-facing description
+- For research and R&D projects: a results page, preprint link, or published paper page, **or a repository README a stranger can actually run**. That means what the work shows, a figure or result table, and a worked example with the exact commands and the output to expect. For a research project the README usually is the front door, because the people who find your work arrive at the repository, and a README nobody can run is the research equivalent of a demo that crashes. [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible) is the activity that gets you there.
+
+Talk to your partner first: they may have an existing page to update rather than replace. Multi-year projects credit past contributors and may build on a previous team's page.
+
+## Required Content (any format)
+
+1. **Description and value proposition**: one sentence saying what it is and who it is for; the problem it solves and why that matters; the "so what" that makes it notable. Written for the audience, not the grader.
+2. **Highlights**: 3 to 5 features, findings, or capabilities from the audience's perspective, with at least one real screenshot, figure, or demo clip showing the project in action.
+3. **How to try it**: a clear call to action (Download, Play, Try it, View on GitHub, Read the paper) with brief prerequisites or platform notes.
+4. **Credits and contact**: all current team members, past contributors on multi-year projects, and a feedback channel (issues, email, or a form).
+
+## Rubric (100 points)
+
+| Criterion | Points | Outcome |
+|---|---|---|
+| Value proposition: one sentence says what it is and for whom, the problem is stated in the user's terms, and no course vocabulary (capstone, team, partner, sprint, rubric) appears on the page | 30 | SO3 |
+| Highlights and access: 3 to 5 audience-perspective highlights, at least one real visual of the project in action, and a working call to action | 35 | SO2 |
+| Credits and contact: everyone credited, past contributors acknowledged where applicable, feedback channel present | 15 | SO4 |
+| Polish and accessibility: intentional visual hierarchy, alt text, sufficient contrast, descriptive link text, no broken anything | 20 | SO3 |
+
+**AI use:** AI may write copy and code for the page. Every claim about features, capabilities, and results must be accurate; a landing page that oversells what exists is graded as inaccurate, not ambitious.
+
+:::note[When a public page is not possible]
+NDA and some research projects cannot publish. The alternative ladder, in order of preference: a **redacted public page** describing the problem domain, approach, and lessons in partner-approved terms; a **private or password-protected page** shared with the instructor; or a **polished PDF** (README-style document, blog post, or paper) submitted on Canvas. Agree the redaction boundary with your partner before writing, and confirm the option with your instructor before the deadline. Identical rubric either way.
+:::
+
+## Activities That Prepare This
+
+[Designing for Accessibility](/activities/design/#designing-for-accessibility) for the polish-and-accessibility criterion, which is 20 of the 100 points here, and [The Mom Test](/activities/creative/#the-mom-test) for the value proposition. [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci) automates the mechanical half of the accessibility check.
+
+Browse [communication](/activities/communication/) and [design](/activities/design/) when these run out.
