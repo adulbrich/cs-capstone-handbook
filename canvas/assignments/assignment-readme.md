@@ -85,6 +85,13 @@ The fall Term Retrospective's Writing criterion changed in the same way, but no 
 
 **All three syllabus bodies need re-pasting into Canvas** from `canvas/syllabus/` (2026-09-13, #22 and #32; the Term cells lost their year under #57): the grade table is the 11-band handbook scale, the term labels read Fall 2026, Winter 2027 and Spring 2027, and the late-policy paragraph is a summary that links the handbook instead of a second full statement.
 
+## Rubric TSVs Requiring Re-Import (WIC remap, September 2026)
+
+The WIC outcomes changed (#59) and every tag was re-derived from the new wording. Points are unchanged; tags and one band description moved, so these must be re-imported:
+
+- `rfc/`: `L07` moved from Feedback given to Technical tradeoff analysis, whose Exceeds band now asks for cited sources.
+- `spring-release/`, `project-landing-page/`, `project-retrospective/`: the writing-quality criterion is tagged `SO3` instead of `L08`.
+
 ## Schedule
 
 ### CS 461 (Fall Term)

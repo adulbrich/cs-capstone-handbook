@@ -37,7 +37,7 @@ What staying on the current path actually costs, and when that cost arrives.
 
 ## Analysis
 
-The technical tradeoffs that matter for this decision: performance, complexity, maintainability, security, cost. Argue with evidence (benchmarks, prototypes, documentation, prior art), not vibes. Acknowledge what you are uncertain about.
+The technical tradeoffs that matter for this decision: performance, complexity, maintainability, security, cost. Argue with evidence (benchmarks, prototypes, documentation, prior art), not vibes, and cite what you relied on so a reviewer can check it. Acknowledge what you are uncertain about.
 
 ## Recommendation and Verification Plan
 

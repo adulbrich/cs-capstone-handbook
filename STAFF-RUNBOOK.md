@@ -90,6 +90,26 @@ An item fails for the team because the note is wrong or missing. An individual's
 - Grading: TAs grade their cohort's RFCs (~50 each per term in fall and winter, ~10 minutes each against the rubric; budget ~8 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
 - Reviewer no-shows: the author is held harmless (revision graded on self-identified improvements or staff feedback); the no-show reviewer loses the feedback points.
 
+## WIC Compliance (CS 462)
+
+CS 462 is the certified Writing Intensive Curriculum course. This table holds the WIC office's criteria (https://wic.oregonstate.edu/propose-assess-wic-courses/wic-learning-outcomes-criteria-and-rationale) against the course as it runs; the student-facing outcomes are on the handbook's WIC page.
+
+| Criterion | How the course meets it | Status |
+|---|---|---|
+| 3 or more credits | CS 462 is 3 credits | Met |
+| 300 or 400 level, juniors and seniors | 462, capstone standing | Met |
+| Regular departmental number | 462 | Met |
+| 4,000 words per student, 1,500 of them low-stakes, one formal piece of 1,500+ words with sources, 35% of the grade from writing | Formal piece: the winter RFC, 2,000+ words revised, cited sources. Low-stakes: two written peer reviews, five contribution lines, a share of five judgment layers, the postmortem, with no length guideline today. Grade from writing: RFC 15 + sprint notes 10 + Definition of Shipped 3 + postmortem 3 = 31%, or 39% if repo checkpoints (docs graded in place) count | Open: #60 |
+| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final only | Open: #60, waiting on the WIC director |
+| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback | Partial, depends on the row above |
+| Student-to-instructor ratio of 25 to 1 or better | One instructor, six TAs, about 300 students; whether GTAs count is the WIC office's call | Confirm with the WIC office |
+| Instructor of record is not a graduate student | Faculty instructor | Met |
+| WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open: #60 |
+| Two distinct audiences and two writing types, one formal, with discipline-specific examples | RFC (formal, technical peers and staff); sprint notes and postmortem (informal, staff and partner); Definition of Shipped (partner contract). Examples: the RFC template, the ADR and requirements guides | Met |
+| Students evaluate and integrate multiple sources with citations | RFC analysis argued from cited sources; the winter literature review activity | Met |
+| The course addresses AI tools and disciplinary norms | The AI policy on the assignments overview, the generative AI guide, the delegation criterion on the RFC and the defense | Met |
+| Writing Elevation prerequisite | Catalog, not the handbook | Confirm with the WIC office |
+
 ## Repo Checkpoints
 
 - Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist; leave feedback as issues where useful. Checkpoint 1 is graded in week 5; checkpoint 2 in finals week, after the week-10 check-ins, so that week stays at check-in load.

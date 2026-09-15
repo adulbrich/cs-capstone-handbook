@@ -5,7 +5,7 @@
 // The frontmatter `assignment.outcomes` block must reconcile with the
 // rubric tags exactly, so neither can silently drift. Coverage minimums:
 //   - every ABET outcome (SO1-SO6): >= 2 individual-level data points
-//   - every WIC / Beyond OSU outcome (L07-L10): >= 1 individual-level point
+//   - every WIC (L07-L09) and Beyond OSU (L10) outcome: >= 1 individual-level point
 // It also checks that each term's Team Deliverables table sums to exactly 25%,
 // and that every Canvas rubric TSV tags the same outcomes as the handbook page
 // it mirrors.
@@ -18,6 +18,7 @@ import { join } from "node:path";
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
 const ABET_OUTCOMES = ["SO1", "SO2", "SO3", "SO4", "SO5", "SO6"];
+// WIC (L07-L09) and Beyond OSU (L10); the IDs follow LEARNING_OUTCOMES.json.
 const OTHER_OUTCOMES = ["L07", "L08", "L09", "L10"];
 const MIN_ABET = 2;
 const TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;
