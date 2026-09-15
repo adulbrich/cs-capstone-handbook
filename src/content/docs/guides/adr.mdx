@@ -7,7 +7,7 @@ sidebar:
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-[Architecture Decision Records (ADRs)](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record) are the backbone of a well-documented software project. They capture the key decisions that shape your system's architecture, technology choices, and design patterns, ensuring everyone—developers, stakeholders, and future maintainers—understands why things are the way they are. Without clear ADRs:
+[Architecture Decision Records (ADRs)](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record) are the backbone of a well-documented software project. They capture the key decisions that shape your system's architecture, technology choices, and design patterns, so that developers, stakeholders, and future maintainers all understand why things are the way they are. Without clear ADRs:
 
 - Teams forget why decisions were made, leading to repeated debates or mistakes.
 - New contributors struggle to understand the rationale behind the architecture.
@@ -43,7 +43,6 @@ Just as with requirements, the problem statement in an ADR is a living document.
 
 Good ADRs are clear, concise, and justified. Use simple, unambiguous language. Avoid jargon or vague terms. Document the alternatives considered and the reasoning behind your choice. For example:
 
-{/* TODO: change decision to use Supabase */}
 ```md
 # ADR-001: Use PostgreSQL for the main database
 
@@ -70,7 +69,7 @@ PostgreSQL offers strong ACID guarantees, advanced query capabilities, and is we
 
 **References:**
 - [PostgreSQL documentation](https://www.postgresql.org/docs/)
-- Team discussion notes (2025-09-01)
+- Team discussion notes, fall week 3
 ```
 
 > Add the date and author to the ADR if not in version control.
@@ -118,9 +117,9 @@ Success for an ADR means the decision leads to positive outcomes: improved syste
 
 ## Some Truths about ADRs
 
-- They can be busywork if not focused—keep them short and easy to skim.
+- They can be busywork if not focused: keep them short and easy to skim.
 - They are quickly outdated if not maintained.
-- They are often based on assumptions until validated—make uncertainties explicit.
+- They are often based on assumptions until validated: make uncertainties explicit.
 - They may be superseded as the project evolves; that's normal.
 - They are most valuable when they capture reasoning, not just outcomes.
 

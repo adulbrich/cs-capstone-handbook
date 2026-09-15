@@ -1,14 +1,66 @@
 ---
 title: Acknowledgements
-description: TBD
+description: Who writes this handbook, who helped review it, and the sources, tools, and people behind it.
 sidebar:
   order: 1
 ---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 This handbook is the work of [Alexander Ulbrich](https://engineering.oregonstate.edu/people/alexander-ulbrich) in his capacity of instructor at Oregon State University, School of Electrical Engineering and Computer Science.
 
 Many thanks to [Kirsten Winters](https://engineering.oregonstate.edu/people/kirsten-winters) and [Bill Pfeil](https://engineering.oregonstate.edu/people/william-pfeil) for their input and their help reviewing the contents.
 
-This handbook is inspired by the [Software Engineering Capstone Design Project Handbook](https://ece.uwaterloo.ca/~se_capstone/se-capstone-handbook.pdf) from the University of Waterloo.
+Thanks also to the people who shaped this course without ever reading a draft: the project partners and industry mentors whose evaluations and debriefs told us what graduates were missing, the teaching assistants whose grading capacity is the real constraint on every instrument here, and every student cohort that has run a project through CS 461/462/463 and said afterwards what was and was not worth the hours.
 
-We use LLMs to review the contents for typos and grammar issues, as well as generating meta descriptions and ideas. The handbook uses [Astro Starlight](https://starlight.astro.build/) to generate the static site. The source is [available on GitHub](https://github.com/adulbrich/cs-capstone-handbook).
+## Sources
+
+Course design, assessment, and rubrics here draw on the handbooks, programs, research, and industry write-ups below. None of them reviewed or endorsed this handbook.
+
+- [Software Engineering Capstone Design Project Handbook](https://ece.uwaterloo.ca/~se_capstone/se-capstone-handbook.pdf), University of Waterloo. The handbook this one was originally modeled on.
+- MSU Capstone and Design Day. The scale-comparable model: high enrollment, a client fee, a judged expo.
+- [Georgia Tech CS Junior Design](https://sites.gatech.edu/csjuniordesigncapstone/). Deliverables double-counted for communication credit, at scale.
+- [ANU ENGN4300](https://eng.anu.edu.au/courses/engn4300/students/assessment/). Individual multipliers and shadow-team reviews.
+- UC Berkeley CS169L. Large-cohort client projects, automation-first.
+- [Rose-Hulman CSSE 497-499](https://www.rose-hulman.edu/academics/course-catalog/current/programs/Computer%20Science/csse-497.html). A three-quarter client capstone running two tracks.
+- [Harvey Mudd Clinic](https://www.hmc.edu/clinic/), [Olin SCOPE](https://www.olin.edu/academics-capstone-programs/scope), [Stanford CS210](http://web.stanford.edu/class/cs210/), [CMU 17-356](https://cmu-17-356.github.io/), [Cornell Tech Startup Studio](https://tech.cornell.edu/studio/curriculum/startup-studio/), and the [WPI Major Qualifying Project](https://www.wpi.edu/project-based-learning/project-based-education/major-qualifying-project), for how they structure sponsored and year-long project work.
+- [Criteria for Accrediting Computing Programs](https://www.abet.org/accreditation/accreditation-criteria/criteria-for-accrediting-computing-programs-2025-2026/), ABET. The student outcomes every rubric criterion is tagged against.
+- [Sampling](https://assessment.abet.org/planning_article/sampling/), ABET. Why outcome coverage is argued from sampled evidence.
+- [A systematic literature review of capstone courses in software engineering](https://arxiv.org/abs/2301.03554). Tenhunen, Männistö, Luukkainen, and Ihantola, 2023.
+- [Using CATME to Document and Improve the Effectiveness of Teamwork in Capstone Courses](https://peer.asee.org/using-catme-to-document-and-improve-the-effectiveness-of-teamwork-in-capstone-courses). Beigpourian, Ferguson, Berry, Ohland, and Wei, ASEE 2019. Behind the peer evaluation instrument.
+- [Tools for Comprehensive Assessment of the 7 ABET Student Outcomes in Mechanical Engineering, with Application to Capstone Design](https://peer.asee.org/tools-for-comprehensive-assessment-of-the-7-abet-student-outcomes-in-mechanical-engineering-with-application-to-capstone-design). Szatmary, ASEE 2023. Behind the requirement for signature individual contributions.
+- [How Do Software Engineering Students Use Generative AI in Real-World Capstone Projects?](https://arxiv.org/abs/2604.24521) Mircea, Schmid, Droste, and Schneider, 2026.
+- [The Conversational Exam: A Scalable Assessment Design for the AI Era](https://arxiv.org/abs/2601.10691). Barba and Stegner, 2026. Behind the live defense.
+- [Ensuring Computer Science Learning in the AI Era](https://arxiv.org/abs/2601.17024). Chung, 2026.
+- [AI-Assisted Code Review as a Scaffold for Code Quality and Self-Regulated Learning](https://arxiv.org/abs/2604.23251). Oliveira, Fu, Thongtanunam, López-Pernas, and Saqr, 2026.
+- [Building Software Engineering Capacity through a University Open Source Program Office](https://arxiv.org/abs/2406.08679). Holdener and Shown, 2024. Behind the pull-request-per-student cadence.
+- [The Rise of AI-Native Software Engineering](https://arxiv.org/abs/2606.12986). Alenezi, 2026.
+- [RFCs and design docs](https://blog.pragmaticengineer.com/rfcs-and-design-docs/), The Pragmatic Engineer. The shape of the RFC assignment.
+- [The power of "Yes, if"](https://engineering.squarespace.com/blog/2019/the-power-of-yes-if), Squarespace Engineering. How cross-team RFC feedback is scored.
+
+## How We Use AI
+
+This course grades you on deliberate AI delegation and on the safety net around it, so the same standard applies here.
+
+Large language models draft and rewrite page content, review it for typos and grammar, generate meta descriptions, audit the site for contradictions between pages, and write the validation scripts that guard grade weights, outcome tags, activity tiers, and downloadable templates in CI. The work runs through [Claude Code](https://claude.com/claude-code) against a repository-level `AGENTS.md`, custom repository skills that encode the page contracts for activities, guides, and assignments, and written plan and specification documents. Two published skill collections shaped that workflow: [obra's Superpowers](https://github.com/obra/superpowers) and [Matt Pocock's skills](https://github.com/mattpocock/skills).
+
+<Aside type="caution" title="Who owns the output">
+A skill is someone else's opinion, executed automatically. Every page, rubric, and script here is reviewed and owned by the instructor, regardless of what drafted it. Errors are his.
+</Aside>
+
+## Tools
+
+This site is a static [Astro](https://astro.build/) build using the [Starlight](https://starlight.astro.build/) documentation theme, styled with [Tailwind CSS](https://tailwindcss.com/), diagrammed with [Mermaid](https://mermaid.js.org/), linted and formatted with [Biome](https://biomejs.dev/) via [Ultracite](https://www.ultracite.ai/), hosted on [Vercel](https://vercel.com/), and measured with [Plausible Analytics](https://plausible.io/privacy-focused-web-analytics), whose dashboard is [public](/about/analytics/). Course operations run on [Canvas](https://canvas.oregonstate.edu/) and [Qualtrics](https://oregonstate.qualtrics.com/).
+
+<CardGrid>
+  <LinkCard
+    title="Source on GitHub"
+    description="Every page here, plus the scripts, rubrics, and design records."
+    href="https://github.com/adulbrich/cs-capstone-handbook"
+  />
+  <LinkCard
+    title="License"
+    description="CC BY-SA 4.0. Reuse it, adapt it, credit it, share alike."
+    href="/about/license/"
+  />
+</CardGrid>

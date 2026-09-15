@@ -1,9 +1,8 @@
 ---
 title: DevOps and Deployment
 description: How to deploy your Capstone project reliably, from local development to production, using CI/CD pipelines and modern hosting platforms.
-draft: true
 sidebar:
-  order: 12
+  order: 13
 ---
 
 import { LinkCard, CardGrid } from '@astrojs/starlight/components';
@@ -35,7 +34,7 @@ Your repository's README should include a "Getting Started" section that covers:
 ## Getting Started
 
 ### Prerequisites
-- Node.js 20+ (recommend using [nvm](https://github.com/nvm-sh/nvm))
+- Node.js 24+ (recommend using [nvm](https://github.com/nvm-sh/nvm))
 - PostgreSQL 16+
 - A `.env` file (copy `.env.example` and fill in values)
 
@@ -113,12 +112,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -143,12 +142,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -171,7 +170,7 @@ At minimum, CI should run:
 Optional but valuable:
 
 - **Type checking** (TypeScript's `tsc`, Python's `mypy` or `pyright`). Catches type errors before runtime.
-- **Security audits** (`npm audit`, `pip audit`). Flags known vulnerabilities in dependencies.
+- **Security audits** (`npm audit`, `pip-audit`). Flags known vulnerabilities in dependencies.
 - **Preview deployments.** Some platforms (Vercel, Netlify) automatically deploy every PR to a unique URL so reviewers can see the changes live.
 
 <CardGrid>
@@ -189,12 +188,7 @@ Optional but valuable:
 
 ### CI and Branch Protection
 
-CI is most effective when combined with branch protection rules that require checks to pass before merging. In your repository's settings, under *Branches > Branch protection rules*, you can require:
-
-- Status checks (your CI workflow) to pass before merging.
-- At least one pull request review approval.
-
-This turns CI from an informational signal ("the build failed") into an enforced gate ("you cannot merge until the build passes"). It is the single most effective way to keep the main branch stable.
+CI is most effective when combined with branch protection rules that require checks to pass before merging. That turns CI from an informational signal ("the build failed") into an enforced gate ("you cannot merge until the build passes"), and it is the single most effective way to keep the main branch stable. The settings are in [Git and GitHub: Protecting the Main Branch](/guides/git-and-github/#protecting-the-main-branch).
 
 ## Continuous Deployment (CD)
 
@@ -237,11 +231,16 @@ A VM deployment is more work to set up and maintain, but it teaches skills that 
 
 If your project uses a database, you need somewhere to host it in production. Options:
 
-- **Managed database services**: Supabase (PostgreSQL), PlanetScale (MySQL), MongoDB Atlas (MongoDB), Neon (PostgreSQL). These handle backups, scaling, and security patches.
-- **Platform-provided databases**: Railway, Render, and Heroku offer database add-ons that integrate with the application deployment.
+- **Managed database services**: [Supabase](https://supabase.com/) (PostgreSQL), [Neon](https://neon.com/) (serverless PostgreSQL), [PlanetScale](https://planetscale.com/) (MySQL and PostgreSQL), [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) (MongoDB), [Turso](https://turso.tech/) (SQLite), [Upstash](https://upstash.com/) (Redis). These handle backups, scaling, and security patches.
+- **Platform-provided databases**: [Railway](https://railway.com/), [Render](https://render.com/), [Fly.io](https://fly.io/), and [Heroku](https://www.heroku.com/) offer database add-ons that integrate with the application deployment.
+- **Cloud provider services**: [AWS RDS](https://aws.amazon.com/rds/), [Google Cloud SQL](https://cloud.google.com/sql), and [Azure Database](https://azure.microsoft.com/en-us/products/category/databases) if your partner already runs on that cloud, which is often the deciding factor.
 - **Self-hosted on a VM**: Running PostgreSQL or MySQL on your own server gives full control but requires you to handle backups, updates, and security.
 
-For most Capstone projects, a managed service is the right choice. It removes operational burden and provides a reliable free tier for small workloads.
+For most Capstone projects, a managed service is the right choice: it removes operational burden you have no time for. **Check the current pricing page before you commit.** Free and hobby tiers appear and disappear on a timescale shorter than this course, so confirm what you are actually getting rather than trusting a recommendation from last year. If your partner already runs on a particular cloud, use theirs; matching the partner's stack is worth more than picking the nicest developer experience.
+
+:::note[Reviewed annually]
+The platform and database tables above date faster than anything else on this page. Reviewed each August.
+:::
 
 ## Environment Management
 
