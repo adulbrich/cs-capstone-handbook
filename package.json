@@ -31,7 +31,7 @@
     "starlight-image-zoom": "^0.16.0",
     "starlight-links-validator": "^0.26.0",
     "starlight-page-actions": "^0.7.1",
-    "starlight-scroll-to-top": "^1.0.1",
+    "starlight-scroll-to-top": "^2.0.0",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3"
   },
