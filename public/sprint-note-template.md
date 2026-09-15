@@ -21,7 +21,7 @@ For a sprint with no live demo slot, the video is one file, timestamped, one seg
 ## 2. What Got Done
 
 Everything the team finished this sprint. Each item concrete (someone could go look at it) and consequential
-(the project is meaningfully further along). It does not have to be code. Activity without a result does not
+(the project is meaningfully further along). It does not have to be code; non-code work counts when it landed in the repository as a written PR someone can open. Activity without a result does not
 belong here: "worked on the API" and "researched options" are not done things.
 
 - Board link:

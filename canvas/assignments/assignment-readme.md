@@ -78,6 +78,7 @@ Criterion text changed on the branch review (#40). Points and outcome tags are u
 | `project-landing-page/` | Value proposition: rewritten as an observable check (one sentence, user's terms, no course vocabulary) |
 | `career-retrospective/` | PR portfolio: the retired track vocabulary replaced by "NDA teams", matching the handbook page (#33) |
 | `incident-postmortem/` | Corrective actions: "verifiable at the next repo checkpoint" became "at the week-10 repo checkpoint or in the week-10 sprint note", since a fifth winter note now exists at week 10 (#26) |
+| `sprint-note/` | Contribution lines (all three term files): the Pass band now says the owned PR is a real change that landed this sprint and graders open one per student; the Fail band names an owned PR that does not open, did not land this sprint, or is mechanical, with no explanation (#23) |
 | `individual-contribution/` | **New**, three files (`-fall-`, `-winter-`, `-spring-`): one Full / Half / Zero criterion per sprint for the Individual Contribution column of each term; create the rubric in Canvas from the term's file (#30) |
 
 The fall Term Retrospective's Writing criterion changed in the same way, but no TSV for it exists under `canvas/assignments/`; it needs one before the fall rubric is built in Canvas.
