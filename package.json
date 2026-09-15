@@ -33,7 +33,7 @@
     "starlight-page-actions": "^0.7.1",
     "starlight-scroll-to-top": "^2.0.0",
     "tailwindcss": "^4.3.2",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.13",
