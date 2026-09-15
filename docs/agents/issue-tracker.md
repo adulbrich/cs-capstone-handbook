@@ -23,7 +23,7 @@ Infer the repo from `git remote -v`; `gh` does this automatically when run insid
   body with a plain heredoc first.
 - Planning work lands as **sub-issues of a parent**: create decision issues
   first, then dependents with `--parent <n> --blocked-by <n,m>`. The fall 2026
-  review is parent #21; new review-cycle issues attach there until a new parent
+  review was parent #21, closed by the merge; the post-merge cycle is parent #61, and new review-cycle issues attach there until a new parent
   opens.
 - Priority labels are `p0-now`, `p1-next`, `p2-later`. Every actionable
   issue carries one. `founders` marks course-design issues against #8.

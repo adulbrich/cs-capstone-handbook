@@ -19,7 +19,7 @@ labels: type:chore
 - [ ] Verify the handbook's week numbers against the registrar's academic calendar for the term: holidays, and the fact that fall runs eleven instructional weeks with the partial first week as week 0 (the Term Calendar section of `STAFF-RUNBOOK.md` holds the last verified answer as weeks and holidays; redo it every year because the registrar page refuses scripted fetches and the dates move)
 - [ ] Fall only: confirm the week-by-week schedule in `src/content/docs/introduction/series.mdx` still holds for the year (a holiday that removes a Friday lecture, a workshop moved to another week)
 - [ ] Update the syllabus statements, then re-paste the syllabus HTML from `canvas/syllabus/` into Canvas after any edit to it
-- [ ] Set the Canvas grading standard by hand to the 11 cut points on `src/content/docs/learning-objectives/grading.mdx` (A 93, A- 90, B+ 87, B 83, B- 80, C+ 77, C 73, C- 70, D+ 67, D 60); the syllabi mirror the same table
+- [ ] Set the Canvas grading standard by hand to the cut points on `src/content/docs/learning-objectives/grading.mdx`; the syllabi mirror the same table
 - [ ] Re-import every rubric TSV named in the re-import lists of `canvas/assignments/assignment-readme.md` (browser extension; sources in `canvas/assignments/`)
 - [ ] Create the Workshop Activities column for the term (complete/incomplete per item)
 - [ ] Update the Qualtrics surveys (peer evaluation, project partner evaluation)
@@ -31,6 +31,6 @@ labels: type:chore
 
 - [ ] Bump the version in `package.json` (format: `YYYY.TT.N`, e.g. `2026.FA.0`)
 - [ ] Install git hooks in each clone: `npx lefthook install`
-- [ ] Fall only: re-read `src/content/docs/activities/career.mdx` (job-market framing and external links date fastest; the page carries a dated review marker at the top, so update it)
+- [ ] Fall only: re-read `src/content/docs/activities/career.mdx` (job-market framing and external links date fastest)
 - [ ] Confirm `npm run validate:activities` is green and the tier counts still look right
 - [ ] Confirm `npm run build` and `npm run validate:outcomes` are green on `main`

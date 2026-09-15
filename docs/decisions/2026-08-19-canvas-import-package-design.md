@@ -3,7 +3,7 @@
 Date: 2026-08-19
 Branch: `revision-fall-2026`
 Status: design record, not yet implemented (#5). Section 4 resolved; no open decisions remain.
-Companion documents: `AGENTS.md` (repository rules), `canvas/assignments/assignment-readme.md` (the Canvas mirror it replaces)
+Companion documents: `AGENTS.md` (repository rules), `canvas/assignments/assignment-readme.md` (the Canvas mirror it replaces). References below to `IMPLEMENTED.md` are historical: the journal was retired in #75, and its open item 5 now lives in the Term Calendar section of `STAFF-RUNBOOK.md`.
 
 ## 1. Why
 

@@ -209,7 +209,7 @@ The five canonical labels, unrenamed. See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
-Single-context: `CONTEXT.md` and `docs/adr/` at the repo root, created lazily. See `docs/agents/domain.md`.
+Single-context: `CONTEXT.md` and `docs/adr/` at the repo root, created lazily by the domain-modeling skill for glossary terms and architecture decisions. See `docs/agents/domain.md`. Design records for course-design changes live in `docs/decisions/` (next section); the two do not overlap.
 
 ## Where decisions are recorded
 
