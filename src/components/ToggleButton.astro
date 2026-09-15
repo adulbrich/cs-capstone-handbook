@@ -1,8 +1,8 @@
 ---
 interface Props {
+  class?: string; // Optional class prop
   id: string;
   label?: string; // Optional
-  class?: string; // Optional class prop
 }
 
 const { id, label, class: additionalClass } = Astro.props;

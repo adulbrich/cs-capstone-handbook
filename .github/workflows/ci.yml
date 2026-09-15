@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      # npm ci installs strictly from package-lock.json and fails if the lock
+      # has drifted from package.json. Never use `npm install` in CI: it is
+      # allowed to rewrite the lockfile, so CI would stop testing what you ship.
+      - run: npm ci
+      - name: Lint and format check (Biome via Ultracite)
+        run: npm run check
+      - name: Build (includes astro check)
+        run: npm run build
+      - name: Guard against student data
+        run: |
+          if git ls-files | grep -E '^data/'; then
+            echo "Tracked files under data/ detected. Student data must never be committed."
+            exit 1
+          fi
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Verifies every installed package against the registry's signing keys,
+      # catching tampered tarballs that a version check would not.
+      - name: Verify registry signatures
+        run: npm audit signatures
+      - name: Audit for known vulnerabilities
+        run: npm audit --audit-level=high

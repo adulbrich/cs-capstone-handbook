@@ -10,7 +10,6 @@ const {
 } = Astro.props;
 
 const html = katex.renderToString(formula, {
-  throwOnError: false,
   displayMode: !inline,
   strict: (errorCode) => {
     if (errorCode === "newLineInDisplayMode") {
@@ -18,6 +17,7 @@ const html = katex.renderToString(formula, {
     }
     return "warn";
   },
+  throwOnError: false,
 });
 
 const eqLabel = numbered ? label || "" : "";
@@ -31,7 +31,7 @@ const eqLabel = numbered ? label || "" : "";
     // Display formulas: allow horizontal scrolling for long formulas and
     // show a right-aligned equation number outside the scroll area.
     <div class="relative block my-4 w-full">
-      {/* Scroll container (makes long formulas scrollable) — add right padding so
+      {/* Scroll container (makes long formulas scrollable): add right padding so
         the absolute eq-number doesn't overlap the formula */}
       <div
         class="max-w-full overflow-x-auto overflow-y-hidden pr-4 md:pr-16"
@@ -58,7 +58,7 @@ const eqLabel = numbered ? label || "" : "";
 
       {numbered && eqLabel && (
         // Absolute-position the equation number to the right on md+ screens and
-        // vertically center it — hidden on small screens where we show the inline label.
+        // vertically center it, hidden on small screens where we show the inline label.
         <span class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 ml-4 shrink-0 text-sm text-gray-600 whitespace-nowrap">
           {eqLabel}
         </span>
