@@ -20,7 +20,7 @@ pre-commit:
       run: node scripts/validate-outcomes.mjs
     validate-activities:
       # The script also reconciles the week-by-week schedule's activity links.
-      glob: "{src/content/docs/{assignments,activities}/*.mdx,src/content/docs/introduction/series.mdx}"
+      glob: "{src/content/docs/{assignments,activities,guides}/*.mdx,src/content/docs/introduction/series.mdx}"
       run: node scripts/validate-activities.mjs
     validate-downloads:
       glob: "{public/*,src/content/docs/**/*.mdx}"
@@ -29,7 +29,7 @@ pre-commit:
       glob: "{src,canvas,public,decks}/**/*"
       run: node scripts/validate-dashes.mjs
     validate-dates:
-      glob: "{{src,canvas,public,decks}/**/*,STAFF-RUNBOOK.md}"
+      glob: "{src/**/*,canvas/**/*,public/**/*,decks/**/*,STAFF-RUNBOOK.md}"
       run: node scripts/validate-dates.mjs
     biome:
       glob: "{scripts/**/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
