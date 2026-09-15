@@ -1,135 +1,146 @@
 ---
 title: Project Requirements
-description: Understanding the importance of requirements in software development, how to gather and write them effectively, and their role in project success.
+description: What a requirement is, how to write one a teammate can test, and how to keep docs/requirements.md honest as the project changes.
 sidebar:
   order: 2
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-Requirements are the foundation of any successful project. They define what the product should do, how it should perform, and who it serves, ensuring everyone—developers, stakeholders, and users—has a shared understanding. Without clear requirements:
+Requirements say what the product must do and how well, in language a teammate can test. They live in your repository as `docs/requirements.md`, graded in place at every [repo checkpoint](/assignments/repo-checkpoints/), and they are the file your AI tools read before they build anything. Without clear requirements:
 
-- Developers waste time building the wrong features.
-- Projects exceed budgets or timelines due to scope creep.
-- The final product may fail to meet user needs or stakeholder expectations. 
+- Developers build the wrong feature well.
+- Scope grows in every partner meeting because nothing was written down to push back against.
+- "Done" is argued at the demo instead of settled at the start of the sprint.
+- The winter [Definition of Shipped](/assignments/definition-of-shipped/) has no target to point at.
 
-Requirements are **specific**, **measurable statements** about what a product must do or how it must behave. They bridge the gap between an idea and its implementation. In a product requirements document, requirements detail the product's features, performance, and constraints, serving as a blueprint for development.
+A requirement is a **specific, testable statement** about the product. It is not a wish ("the app should be fast"), a task ("build the login page"), or a design decision ("use PostgreSQL"). Tasks go on the board; decisions go in an [ADR](/guides/adr/).
 
-Requirements can take many forms, including:
+## What Is a Requirement?
 
-- **Functional** requirements describe what the system does: specific behaviors or features. They answer, “What actions or capabilities must the system provide?” For example, "The app must allow users to log in" or "The app must send a notification."
-- **Non-functional** requirements (NFRs, also called quality attributes) describe how the system performs or the qualities it must have: performance, usability, reliability, etc. They answer, “How well must the system work?” For example, "The app must load within 3 seconds" or "The app must support 100 simultaneous users."
-- **User** requirements reflect needs from the end-user perspective (e.g., "Users want to customize their dashboard", but be specific about what customize means). They can be functional ("Users want to send messages") or non-functional ("Users want the app to feel intuitive").
-- **System** requirements specify the technical environment or platform constraints (e.g., "The app must run on iOS 15+"). They can lean functional or non-functional depending on phrasing and intent.
-- **Business** requirements describe goals tied to organizational needs (e.g., "Increase user retention by 20%").
-- **Constraints** are limits on the project (e.g., "Must be built within 3 months using Python").
+Three kinds cover almost everything a Capstone project needs:
 
-Gathering requirements involves talking to stakeholders, users, and developers to understand their needs and constraints. Techniques like **interviews**, **surveys**, **workshops**, and **researching competitors** can help elicit requirements. Once gathered, requirements must be documented, validated, and managed throughout the project lifecycle. 
+- **Functional**: what the system does. "A user can reset their password by email." "The pipeline rejects a record whose timestamp is missing."
+- **Non-functional**: how well it does it, with a number. "The dashboard loads in under 3 seconds on a campus connection." "A fresh clone runs the full pipeline in one documented command."
+- **Constraints**: limits you did not choose. "Must run on the partner's existing Postgres 14." "No personal data leaves the partner's network." "Ships under the upstream project's license."
+
+The longer taxonomies in textbooks (user, system, business, domain) are ways of asking whose requirement it is. Useful in an interview, not as headings in your document.
+
+Requirements come from talking to people: your partner, the people who will use the thing, the maintainers whose project you are joining. Interviews, a few observed sessions, and a look at what competitors already do cover most of it. Then write them down, get them checked, and expect them to change.
 
 <LinkCard
   title="Requirements Activities"
   href="/activities/requirements/"
-  description="Activities to help figure out and structure requirements."
+  description="Canvases, user stories, story mapping, and research questions."
 />
-
-This means the *requirements document will evolve* as students learn more about the project throughout the academic year. 
 
 ## Addressing a Problem
 
-Even though any project or product can be built for sheer fun, curiosity, or learning, we argue that the best projects are those **that address a  problem**.
+The best projects address a problem for a group of people you can name. A clear problem gives you a reason for every requirement and a way to say no to the ones that do not serve it.
 
-When you address a problem facing a group of people, you are more likely to have a clear vision of what you want to build, why you want to build it, and who you are building it for. This clarity will help you define your requirements more effectively.
+So the document opens with a **problem statement**: what the problem is, who has it, why it matters, and what evidence you have that it is real. One paragraph. It is the most-read part of the document and the one that changes most often: strong teams re-frame the problem as they learn, and say so in the file's history.
 
-A key aspect of an effective requirements document is to write a **problem statement**. This statement should be clear, concise, and specific. It should describe the problem you are trying to solve, who is affected by the problem, and why it is important to solve it.
-
-Many would argue that the problem statement is the most important part of the requirements document. It sets the stage for the rest of the document and helps ensure that everyone involved in the project has a shared understanding of what you are trying to achieve. 
-
-We could even go as far as saying that the **highest performing team re-frame the problem constantly**, and that the problem statement is a living document that evolves as the team learns more about the problem and the solution space. **Complex problems are rarely understood fully at the beginning of a project.**
-
+<LinkCard
+  title="Problem Statement Template"
+  href="/problem-statement-template.md"
+  description="One-sentence statement, affected roles, evidence, and the lenses you framed it through."
+/>
 <LinkCard
   title="Creative Activities"
   href="/activities/creative/"
-  description="Activities to help uncover, frame, and re-frame problems to solve."
+  description="Activities to uncover, frame, and re-frame the problem."
 />
 
-## What Are Good Requirements?
+## What Makes a Good Requirement?
 
-Good requirements are clear, concise, and testable (and in the end, validated). They should support solving the problem. Use simple, unambiguous language to describe what the product should do. Avoid vague terms ("fast", "easy"), jargon, or technical terms that may confuse stakeholders.
+A good requirement is one a teammate could mark passed or failed without asking you. That means specific nouns, a measurable bar for anything about quality, and an acceptance criterion wherever the behavior is not obvious. This is the shape of a `docs/requirements.md` that survives a checkpoint:
 
-For functional requirements, writing a user story of the form "As a [user], I want to [do something] so that [benefit]" can help clarify the requirement. For example, "As a user, I want to log in to the app so that I can access my account." You don't have to write user stories for every requirement. For example, "The system must allow users to reset their password via email" would be a perfectly acceptable requirement.
+```md
+# Requirements
 
-Functional requirements can be accompanied by an acceptance criteria that defines how the requirement will be tested. For example, "User receives an email with a reset link within 10 seconds."
+## Problem statement
+Volunteer coordinators at <partner> schedule about 40 shifts a week in
+a spreadsheet and email; double-bookings happen weekly (three last
+month, per the coordinator). We are building a shift board that
+prevents them.
 
-Non-functional requirements should be quantifiable and measurable. For example, "The app must load in under 3 seconds" is better than "The app must load quickly."
+## Functional requirements
+- FR-1: A coordinator can create a shift with a date, time range,
+  location, and headcount. Acceptance: a shift whose end time is
+  before its start is rejected with a message.
+- FR-2: A volunteer can claim an open shift. Acceptance: a second
+  claim on a full shift fails, and the shift shows as full within 5 s.
+- FR-3: A coordinator is emailed when a claimed shift is released
+  within 24 hours of its start.
 
-Requirements should be **prioritized** based on their importance to the project. This helps developers focus on the most critical features first and ensures the project stays on track.
+## Non-functional requirements
+- NFR-1: The board loads in under 2 s on the partner's office Wi-Fi.
+- NFR-2: Usable with a keyboard alone; axe-core reports no serious
+  violations (WCAG 2.2 AA).
 
-:::tip[Managing Requirements]
-Using a spreadsheet or a requirements management tool can help organize and track requirements throughout the project lifecycle. [GitHub Projects](https://github.com/features/issues) or [Linear](https://linear.app/) are great options. There's also Jira, Trello, Notion, Asana, Airtable, and many others.
-:::
+## Constraints
+- C-1: Sign-in through the partner's existing Google Workspace; no
+  new accounts.
+- C-2: Volunteer names and emails never leave the partner's tenant.
+
+## Non-goals (this year)
+- Payroll or hours export.
+- A native mobile app; the board is responsive web.
+
+## Open questions
+- Does v1 need recurring shifts? Owner: PM, before sprint 2.
+```
+
+Number the requirements so a pull request, a test, or a sprint note can cite one. Write a functional requirement as a user story ("As a coordinator, I want to... so that...") where the *why* is not obvious, and as a plain statement where it is. Give every non-functional requirement a number and a way to measure it, or it is a wish.
+
+Rank them. MoSCoW or an impact-effort pass ([Planning guide](/guides/planning/#prioritization-methods)) is enough; the point is that the top of the list is what the next sprint pulls. The **non-goals** section is the cheapest scope control you have: it turns "we did not think of that" into "we decided against that", which is a different conversation with a partner.
+
+Track the list on your board, not in a second document. [GitHub Projects](https://github.com/features/issues) is enough; Linear, Jira, and Notion also work.
+
+## Story Mapping
+
+A [user story map](https://www.nngroup.com/articles/user-story-mapping/) lays the user's activities left to right in the order they happen, and the stories that serve each activity top to bottom by priority. A horizontal line through the map is a release: everything above it ships, everything below waits. It is the fastest way to turn a pile of stories into a `docs/requirements.md` with a defensible "this year" line, which is why [User Story Mapping](/activities/requirements/#user-story-mapping) is a fall workshop. The stories above the line become your functional requirements; the line itself is the first draft of your Definition of Shipped target.
 
 <LinkCard
   title="Planning Activities"
   href="/activities/planning/"
-  description="Activities to help figure out your scope, timeline, and deliverables. This include prioritization, risk management, and project planning."
+  description="Prioritization, risk, and scheduling exercises for the ranked list."
 />
 
 ## Validation
 
-Validated requirements should roughly meet the following criteria:
+A requirement is validated when someone other than the author has confirmed it. The cheap confirmations:
 
-- Is is **valuable** to the user?
-- Is it **usable** by the user?
-- Is it technically **feasible** to build?
-- Is it **viable** for the **business**?
+- **The partner read it.** Review the document with your project partner or mentor before the first repo checkpoint and after any re-framing. Misunderstandings surface here every year; the review costs an hour and the misunderstanding costs a term.
+- **A prototype hit it.** A clickable mockup or a walking-skeleton slice tests a requirement faster than another meeting, and tells you whether the thing is feasible at the same time.
+- **A test names it.** When FR-2 has a test called `test_second_claim_on_full_shift_fails`, the requirement is re-validated every time CI runs.
 
-The quickest way to validate requirements would be a build a prototype and test it with users. In addition to getting feedback on something tangible, it will also help figure out technical feasibility. 
-
-In addition, **reviewing requirements with the project partner, mentor, or other stakeholders** can help catch any misunderstandings or ambiguities early on. This happens more often than not. We have seen it happen many times: in academia, in industry, and in previous Capstone projects. 
+Four questions per requirement: is it valuable to the user, usable by them, feasible to build, and viable for the partner? A no on any of them means cut or rewrite, not keep out of politeness.
 
 ## Measuring Success
 
-After writing a clear problem statement and requirements that support it, we have to define what success looks like. This is where **success metrics** come in.
-
-Based on the project category, teams will have different success metrics. For example, a team building a game might measure success by the number of downloads, the average time spent playing, or the number of in-app purchases. If the team is building a new product, they might measure success by the number of active users, the number of paying customers, or the revenue generated. In a research project, the definition success is based on the research questions the team or student is trying to answer. For open-source contributions, success might be measured by the number of issues closed or the number of pull requests merged.
-
-<LinkCard
-  title="Planning Activities"
-  href="/activities/planning/"
-  description="Activities to help define success metrics."
-/>
+The problem statement says what you are fixing; success metrics say how you will know. Two or three, each with a number, a decision rule, and a collection method, written before you look at any data. What they count depends on the [project category](/practicalities/categories/): a product counts strangers who came back, a consultancy counts the partner's people using it, a FOSS contribution counts merges, a research project answers its questions. The [Planning guide](/guides/planning/#success-metric-frameworks) has the frameworks; [Identify Success Metrics](/activities/planning/#identify-success-metrics) is the exercise, and the result goes into your Definition of Shipped.
 
 ## Best Practices for Writing Requirements
 
-In addition to what was mentioned above, here are some best practices for writing requirements:
-
-- Back your requirements with research. Use data, user feedback, or market research to support your requirements. This will help justify your decisions and ensure you're building something users want.
-- Involve stakeholders in the requirements process. Get feedback from users, developers, and other stakeholders to ensure requirements are clear, feasible, and valuable.
-- Use visuals to clarify requirements. Diagrams, wireframes, or mockups can help stakeholders visualize the product and understand how it works.
-- Keep requirements up-to-date. As the project progresses, requirements may change. Regularly review and update requirements to reflect new information or changes in scope.
-- Be open to feedback. Requirements are not set in stone. Be willing to revise requirements based on feedback from stakeholders, users, or team members.
-- Be specific. Avoid vague or ambiguous language in requirements. Use clear, unambiguous terms to describe what the product should do.
-- Prioritize. Focus on the most critical features first to ensure the project stays on track and delivers value to users.
-- Separate your decisions from your explanations.
-- Consider a list of non-requirements / non-goals to clarify what the project will not do. This can help manage scope and expectations, and let people know you did not forget anything.
-- If your requirement has "and" in it, break it down.
-
-When writing your requirements document, there might be gaps or areas that need further clarification. This is normal. The requirements document is a living document that will evolve as you learn more about the project. Be clear about what needs further investigation and how you plan to address it.
+- Back each requirement with something: a partner quote, an observed session, a competitor that does it, a number. "The coordinator asked for it" is evidence; "it seemed useful" is not.
+- Use a picture where a paragraph struggles. A wireframe or a flow diagram next to FR-3 saves three rounds of clarification.
+- Update the file when the requirement changes, in the same pull request as the code. A requirements document that lags the code is read once and never again.
+- Keep the problem statement and the non-goals at the top. They are what a reviewer, a new teammate, and your AI tool need first.
+- Prioritize, and write the reason next to the rank.
+- Separate requirements from decisions. "Must store data durably" is a requirement; "use PostgreSQL" is an ADR.
+- Split any requirement with "and" in it.
+- Say what you do not know. An open-questions section with owners is honest; a confident requirement you never checked is a bug waiting for a checkpoint.
 
 ## Some Truths about Software Requirements
 
-Let's be honest.
-
-- They can be busywork. Keep them short and easy to skim. Focus on decisions.
-- They are quickly outdated. Some might even discard them after everyone is on the same page in favor of the design document, UX/UI wireframes, or the code itself. An agile approach might be more effective.
-- They are often wrong or incomplete. They are based on assumptions and guesses until validated. Make uncertainties explicit and collaborative decision-making key.
-
-While the points above are true for many software projects, hardware projects, or projects with strict requirements (e.g., safety-critical systems), might require more detailed and formal requirements documentation. In these cases, the requirements document serves as a contract between stakeholders and developers, ensuring **compliance with regulations and standards**.
+- A requirements document can be busywork. Keep it short, ranked, and in the repository next to the code, or it will be abandoned within a month.
+- It goes stale. Some teams stop maintaining the list once the board and the tests carry the same information. That is fine as long as the problem statement, the non-goals, and the non-functional bars stay current, because those are what the board does not hold.
+- Most of it is wrong at first. Requirements are guesses until a user or a partner confirms them, so mark the unconfirmed ones and go confirm them.
+- Safety-critical, regulated, and hardware projects are the exception. There the document is a contract and the formality is the point.
 
 ## Requirements in Industry and Academia
 
-In industry, requirements are typically documented in a **product requirements document** or **PRD**. This document outlines the product's features, functionality, and constraints, serving as a roadmap for development. PRDs are used to communicate requirements to developers, designers, and other stakeholders, ensuring everyone has a shared understanding of the project.
+In industry the artifact is the **product requirements document** (PRD): features, behavior, constraints, and success metrics, kept by a product manager and read by engineers, designers, and leadership. Amazon starts earlier still, with a **PR/FAQ**: a one-page press release written as if the product had already shipped, followed by the questions a skeptical customer or executive would ask. Both exist for the same reason your problem statement does: to force agreement on what is being built before anyone builds it.
 
-PRDs can be for a brand new product, a feature update, or a redesign. They can be detailed or high-level, depending on the project's complexity.
-
-Amazon for example uses PR/FAQ (Press Release and Frequently Asked Questions) in early stages. The PR/FAQ is a narrative document that describes the product from the customer's perspective. It outlines the problem the product solves, how it solves it, and why it's valuable to customers. The FAQ section answers common questions about the product, such as how it works, who it's for, and how it's different from competitors.
+In research the equivalent is the research question and the pre-registered analysis plan; in open source it is the issue discussion that precedes a substantial pull request. Every mature field has learned to write the requirement down before the work, because the alternative is discovering it at the demo.

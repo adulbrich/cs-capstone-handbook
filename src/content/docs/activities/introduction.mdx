@@ -1,29 +1,63 @@
 ---
 title: Introduction
-description: Discover a variety of activities designed for your Capstone projects, covering requirements, creative thinking, teamwork, career preparation, and reflective practices. These activities provide structure and inspiration to help students succeed in their projects.
+description: A practice library covering AI practice, requirements, creative thinking, design, planning, teamwork, communication, conflict resolution, user research, career preparation, and reflection. Eight workshop activities are done by everyone; the rest are the cheapest route to the graded work they prepare.
 sidebar:
   order: 0
 ---
 
-During the course of the year, you will be judged on different facets. These will demonstrate your mastery of the course learning objectives.
+import { Badge } from '@astrojs/starlight/components';
 
-This section lists different activities that you can do with your team or individually. They are intended to help you achieve intended learning outcomes, prepare for project evaluations, but more importantly **to deliver a high quality project**. 
+This section is a **practice library**: a collection of well-crafted exercises you can run with your team or on your own. They exist to help you execute your project well and to prepare you for the [graded assignments](/assignments/introduction/), which are the source of truth for what is due and when.
 
-**You are encouraged to email your instruction team to receive early feedback on your progress.**
+The activities are organized by theme:
+
+- [AI Practice](/activities/ai/): one-way doors, safety nets, agent-driven testing, acceptance judgment.
+- [Career Preparation](/activities/career/): resumes, portfolios, interviews, networking.
+- [Communication](/activities/communication/): presenting, writing, accessibility.
+- [Conflict Resolution](/activities/conflict/): conflict styles, performance conversations, escalation paths. The explanation lives in the [conflict guide](/guides/conflict/).
+- [Creative](/activities/creative/): ideation, brainstorming, design sprints.
+- [Design](/activities/design/): architecture, prototypes, technology evaluation, security.
+- [Planning](/activities/planning/): metrics, prioritization, risk, scheduling.
+- [Reflective](/activities/reflective/): reading, watching, journaling, external feedback.
+- [Requirements](/activities/requirements/): canvases, user stories, research questions.
+- [Teamwork](/activities/teamwork/): stand-ups, team health, dysfunction assessments.
+- [User](/activities/user/): finding real users, interviews, personas, UX maturity.
+
+## Three Tiers
+
+Activities carry a badge telling you how much attention each deserves.
+
+<Badge text="Workshop" variant="caution" class="mb-6"/> **Eight activities everyone does: six in fall, one in winter, one in spring.** These run as workshops in class and are graded [complete/incomplete](/assignments/workshop-activities/); the weights and the item list live on that page. There is no quality bar and no rubric. Submit the output and you get the credit.
+
+| Workshop activity | When | What it makes easier |
+|---|---|---|
+| [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills) | Fall, weeks 1-2 | Your [Team Charter](/assignments/team-charter/) AI context file and confidentiality one-pager |
+| [User Story Mapping](/activities/requirements/#user-story-mapping) | Fall, weeks 2-3 | `docs/requirements.md` for every [repo checkpoint](/assignments/repo-checkpoints/), and the winter [Definition of Shipped](/assignments/definition-of-shipped/) |
+| [Describe your Architecture](/activities/design/#describe-your-architecture) | Fall, weeks 3-4 | `docs/design.md`, your [RFC](/assignments/rfc/), and the [defense](/assignments/defense/) technical-depth question |
+| [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors) | Fall, weeks 3-4 | Choosing an RFC topic at all, since the RFC must now be a decision that is hard to reverse |
+| [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) | Fall, weeks 4-5 | Four criteria across the checkpoints, the RFC, and the defense. The highest-leverage hour in this library |
+| A teamwork assessment, rotating | Once per term | [Charter](/assignments/team-charter/) conflict and inclusion, and the defense role question |
+
+The rotating teamwork slot is [Team Formation Strategies](/activities/teamwork/#team-formation-strategies-assessment) in fall, [Team Dysfunctions](/activities/teamwork/#team-dysfunctions-assessment) in winter, and [Team Health](/activities/teamwork/#team-health-assessment) in spring, so it tells you something new each time.
+
+<Badge text="Recommended" variant="tip" class="mb-6"/> **The cheapest route to a specific rubric criterion.** Every graded assignment page names the recommended activities that prepare it, and says which criterion each one serves. If you are staring at a rubric wondering where to start, start there. Repeated assignments (sprint notes, repo checkpoints) name different activities for different instances, so you are never asked to redo the same exercise.
+
+**Everything else is the library.** More than a hundred further exercises, kept because they are good and because your project may need exactly one of them. Nobody expects you to do most of them. Each assignment page also names one or two activity **categories** worth browsing when the specific recommendations run out.
+
+## Your Project Category Changes the Answer
+
+A team contributing patches upstream, a team running experiments with a professor, a team building software for an external partner, and a team inventing a product do not need the same preparation, and pretending otherwise wastes everyone's time. Most assignment pages carry a **By project category** table naming the activities your [category](/practicalities/categories/) specifically needs, alongside the ones everybody does.
+
+If your project is research or R&D, the ones worth knowing about early are [Define Your Research Questions](/activities/requirements/#define-your-research-questions), [Map Your External Approvals](/activities/planning/#map-your-external-approvals) and [Complete an IRB Application](/activities/user/#complete-an-irb-application) (both in fall week 1, because neither clock runs faster for starting late), [Identify Success Metrics](/activities/planning/#identify-success-metrics), [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline), [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible), and [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log).
+
+## How to Use This Library
+
+**Follow the rubric, not the whole list.** The fastest path: read the rubric for what is due next, do the recommended activities it names, and ignore the rest until you need them. Every activity ends with what a good output looks like, and most state the effort involved, so you can judge the investment before starting.
+
+**Do the eight workshop activities regardless.** They are the ones that pay off more than once.
+
+**You are encouraged to email your instruction team for early feedback on your progress.**
 
 :::note
-If you or your project partner have other ideas of what could be good activities for your project, [ping the instructors](mailto:cs-46x-help@oregonstate.edu) with the proposed activity name and description.
+If you or your project partner have other ideas for good activities, [ping the instructors](mailto:cs-46x-help@oregonstate.edu) with the proposed activity name and description.
 :::
-
-Typical assignments are project presentations, demonstrations, project documentation, and retrospectives. For each of these assignments, you *may* need to complete a choice of activities. For more information, check the [assignments](/project-evaluation/assignments/) or refer to the assignments in Canvas.
-
-{/* TODO: move this to a decicated guide or page about entrepreneurship */}
-### The YC Startup School Curriculum
-
-[Startup School](https://www.startupschool.org/) is a free online course on how to start a startup, by the world's top startup accelerator: Y Combinator.
-
-It did not fit in any specific category because it touches on many different aspects of building a product and creating a company, so we've decided to list it here!
-
-This activity is useful both as a career skill-building tool and as a way to succeed with your New Product or Game project!
-
-If you are interested in commercializing your project, consider joining a startup accelerator program. [OSU has one](https://advantage.oregonstate.edu/advantage-accelerator). Other famous ones include [Station F](https://stationf.co/) in Paris (France) and [Y Combinator](https://www.ycombinator.com/) in the San Francisco Bay Area.
