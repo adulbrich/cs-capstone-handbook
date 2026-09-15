@@ -1,21 +1,20 @@
 ---
 title: Documentation
 description: What to document, how to document it, and why good documentation is a core engineering skill.
-draft: true
 sidebar:
   order: 7
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-Documentation is the infrastructure of knowledge transfer. It is what lets someone else — a new team member, your project partner, a future maintainer, or your future self — understand and use your work without having to ask you. Without it:
+Documentation is the infrastructure of knowledge transfer. It is what lets someone else (a new team member, your project partner, a future maintainer, or your future self) understand and use your work without having to ask you. Without it:
 
 - Onboarding new contributors takes days instead of hours.
 - Project partners cannot evaluate or use the system you built.
 - Work that is not documented effectively ceases to exist after you graduate.
 - Code review becomes harder because reviewers lack context.
 
-The goal of documentation is not to document everything — it is to document the right things at the right level of detail, kept close to the work it describes.
+The goal of documentation is not to document everything. It is to document the right things at the right level of detail, kept close to the work it describes.
 
 ## Repository Documentation
 
@@ -58,7 +57,7 @@ Explains how to contribute to the project. This is the technical expression of y
 
 ### LICENSE
 
-Every project should have a license — even if it is the team's own product. Without a license, default copyright rules apply, meaning no one else can legally use or build on your work.
+Every project should have a license, even if it is the team's own product. Without a license, default copyright rules apply, meaning no one else can legally use or build on your work.
 
 If your project is open-source, choose a license. If it is closed-source (proprietary or under NDA), include a copyright notice. If you are contributing to an existing FOSS project, inherit its license.
 
@@ -66,7 +65,7 @@ Common choices:
 
 - **MIT**: permissive, minimal restrictions. A good default for open-source projects.
 - **Apache 2.0**: permissive, with explicit patent grants. Preferred by many companies.
-- **GPL v3**: copyleft — derivatives must also be open-source. Good for projects that want to stay open.
+- **GPL v3**: copyleft, meaning derivatives must also be open-source. Good for projects that want to stay open.
 
 [choosealicense.com](https://choosealicense.com/) is the best resource for making this decision.
 
@@ -115,7 +114,7 @@ For REST APIs, [OpenAPI (Swagger)](https://swagger.io/specification/) is the ind
 
 ## User Documentation
 
-User documentation explains how to use the software — not how it was built. It is written for end users, not engineers. For a Capstone project, this might be:
+User documentation explains how to use the software, not how it was built. It is written for end users, not engineers. For a Capstone project, this might be:
 
 - A user guide or wiki explaining how to complete key workflows.
 - In-app help text or tooltips.
@@ -160,12 +159,16 @@ Tag releases in your repository (`git tag v1.0.0`). This makes it easy to identi
 | Diagrams as code | [Mermaid](https://mermaid.js.org/), [PlantUML](https://plantuml.com/) |
 | Changelog | [Keep a Changelog](https://keepachangelog.com/) convention |
 
+:::note[Reviewed annually]
+The tool names above date faster than anything else on this page. Reviewed each August.
+:::
+
 ## Best Practices
 
 - Write documentation when you build the feature, not at the end of the term.
 - Keep documentation close to the code. Documentation that lives far from what it describes becomes stale quickly.
 - Treat README setup instructions as a test: run them on a fresh machine or in a clean environment.
-- Delete documentation that is wrong. Outdated docs are worse than no docs — they actively mislead.
+- Delete documentation that is wrong. Outdated docs are worse than no docs: they actively mislead.
 - Use diagrams. A system diagram in the README is worth three paragraphs of prose.
 - Review documentation in code review. Do not merge PRs that introduce undocumented public APIs.
 
@@ -173,13 +176,13 @@ Tag releases in your repository (`git tag v1.0.0`). This makes it easy to identi
 
 - No one enjoys writing documentation. Everyone appreciates having it.
 - The best time to write documentation was when you built the feature. The second-best time is now.
-- Outdated documentation is worse than no documentation — it actively misleads readers.
+- Outdated documentation is worse than no documentation: it actively misleads readers.
 - Engineers who write clearly advance faster. Documentation is a career skill, not a chore.
 
 ## Documentation in Industry and Academia
 
 At Google, documentation is treated as a first-class engineering deliverable. The [Software Engineering at Google](https://abseil.io/resources/swe-book/html/ch10.html) book dedicates an entire chapter to it. Engineers who write clear internal design documents, maintainable READMEs, and useful code comments are recognized as making the whole organization more effective.
 
-In open-source projects, documentation quality is often the difference between a project that gets adopted and one that gets ignored — regardless of the underlying code quality.
+In open-source projects, documentation quality is often the difference between a project that gets adopted and one that gets ignored, regardless of the underlying code quality.
 
 In academic research, documentation ensures reproducibility: another researcher should be able to run your code and reproduce your results using only your documentation. This standard is a useful benchmark for Capstone projects as well.

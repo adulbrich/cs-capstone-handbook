@@ -1,7 +1,7 @@
 ---
 interface Props {
-  direction: 'prev' | 'next';
   class?: string; // Optional class prop
+  direction: "prev" | "next";
 }
 
 const { direction, class: additionalClass, ...rest } = Astro.props;
