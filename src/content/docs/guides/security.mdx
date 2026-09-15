@@ -72,9 +72,9 @@ Do a lightweight threat modeling session early, ideally when the technical desig
 
 ## The OWASP Top 10: Common Vulnerabilities
 
-The [OWASP Top 10](https://owasp.org/www-project-top-ten/) is a regularly updated list of the most critical security risks in web applications. Not every item applies to every project, but knowing the list helps you recognize common mistakes before you make them.
+The [OWASP Top 10](https://owasp.org/www-project-top-ten/) is a periodically updated list of the most critical security risks in web applications. The current edition is [Top 10:2025](https://owasp.org/Top10/2025/). Not every item applies to every project, but knowing the list helps you recognize common mistakes before you make them.
 
-Here are the ones most relevant to Capstone projects:
+Here are the ones most relevant to Capstone projects. Note where they rank: Broken Access Control is first and Security Misconfiguration second, ahead of Injection at fifth. The ranking is itself a lesson, because the top of the list is permissions and configuration rather than exotic attacks.
 
 ### Injection
 
@@ -92,7 +92,15 @@ The principle applies everywhere input meets an interpreter: SQL queries, shell 
 
 If you are using an ORM (like SQLAlchemy, Prisma, or Django's ORM), you are largely protected from SQL injection for standard queries. But be cautious with raw query methods or string-based filters, which bypass the ORM's built-in protections.
 
-### Broken Authentication and Session Management
+#### Cross-Site Scripting (XSS)
+
+The browser is an interpreter too, which is why XSS belongs here. An attacker injects a script into a page other users will view; if your application renders user-generated content without escaping it, that script runs with your site's privileges and can steal cookies, redirect users, or rewrite the page.
+
+Modern frontend frameworks (React, Vue, Svelte, Angular) escape output by default, which prevents most XSS. The risk surfaces when you use escape hatches that bypass this protection, such as React's `dangerouslySetInnerHTML`, Vue's `v-html`, or Svelte's `{@html}` directive. These should only be used with content you fully control or have sanitized with a library like [DOMPurify](https://github.com/cure53/DOMPurify).
+
+The same risk applies when rendering user input in contexts that frameworks do not protect: URLs, CSS values, and inline JavaScript.
+
+### Authentication Failures
 
 Authentication is how the system verifies who a user is. Session management is how it remembers that identity across requests. Common mistakes:
 
@@ -106,14 +114,6 @@ For most Capstone projects, the best approach is to *not build your own authenti
 - **Passport.js** (Node.js), **Django's auth system** (Python), or **NextAuth.js** (Next.js) for library-based approaches.
 
 If you must implement authentication yourself, treat it as a high-risk component and test it thoroughly.
-
-### Cross-Site Scripting (XSS)
-
-XSS attacks inject malicious scripts into web pages viewed by other users. If your application displays user-generated content without escaping it, an attacker can inject JavaScript that steals cookies, redirects users, or modifies the page.
-
-Modern frontend frameworks (React, Vue, Svelte, Angular) escape output by default, which prevents most XSS. The risk surfaces when you use escape hatches that bypass this protection, such as React's `dangerouslySetInnerHTML`, Vue's `v-html`, or Svelte's `{@html}` directive. These should only be used with content you fully control or have sanitized with a library like [DOMPurify](https://github.com/cure53/DOMPurify).
-
-The same risk applies when rendering user input in contexts that frameworks do not protect: URLs, CSS values, and inline JavaScript.
 
 ### Broken Access Control
 
@@ -176,11 +176,11 @@ Your project depends on dozens or hundreds of open-source packages. Any of them 
 ```bash
 # Check for known vulnerabilities
 npm audit              # Node.js
-pip audit              # Python (requires pip-audit)
+pip-audit              # Python (install with: pip install pip-audit)
 cargo audit            # Rust
 ```
 
-GitHub's **Dependabot** can automatically open pull requests when a dependency has a known vulnerability. Enable it in your repository settings under *Security > Dependabot alerts*. It is free for public repositories and requires minimal configuration.
+GitHub's **Dependabot** can automatically open pull requests when a dependency has a known vulnerability. Enable it under *Settings > Advanced Security > Dependabot alerts*. It is free on every plan, for public and private repositories alike, and requires minimal configuration.
 
 Not every vulnerability alert is urgent. Read the advisory, understand whether the vulnerable code path is actually reachable in your project, and prioritize accordingly. But do not ignore alerts indefinitely. Unpatched known vulnerabilities are one of the most common ways real systems get compromised.
 
