@@ -8,7 +8,7 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 - **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint. The TA picks the artifact each student demos, from that student's previous contribution line; the student does not choose (see Check-in Format).
 - The defense is a **separate session in week 7 or 9**, the weeks with no check-ins, so the week-8 demo stays live (see Defense Logistics). An NDA checkpoint walkthrough, when a team needs one, takes that team's nearest check-in and displaces the demo; the team attaches a timestamped video with one segment per student to that sprint's note instead. Check the timestamps exist: an untimestamped team video is not a per-student demo and should be sent back.
 - A student who misses their demo slot sends a timestamped video of their segment within 48 hours. Do not reschedule demos into another check-in: every check-in now carries its own, so there is no spare slot, and the video already exists as a mechanism.
-- Cohort assignments and meeting grids are built in week 0 from the team-assignment sheet and published in Canvas week 1.
+- Cohort assignments and meeting grids are built in week 0 from the cohort sheet and published in Canvas week 1.
 - The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
 
 ## Check-in Format (25 to 30 minutes, the same script in every cohort)
@@ -16,6 +16,8 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 The check-in verifies the sprint note; it is not a status meeting. One script for every TA, because the detection failures we have had were TAs watching a demo the student chose: the same broken page at four check-ins running, "still working on it". The rule that closes that: **you pick what each student demos, from their previous contribution line, and nothing to open means nothing was done.**
 
 **Before, five minutes.** Read the previous note's contribution lines and pick one artifact per student: the PR or the written document they listed as owned (for the first check-in of a term, pick from the board and the merged PRs). Open the board and the repository's merged PRs for the sprint window; note any student with none. Note the previous "decision needed".
+
+**Note-less check-ins** keep the script with a different demo. Fall week 2 is the kickoff: charter, roles, repository, and the first sprint's plan, one student each. Spring weeks 8 and 10 demo the release and the handoff, by student. The record gets its per-student line either way.
 
 **Agenda.**
 
@@ -53,10 +55,10 @@ The rubric on the assignment page is the rule; these are the clicks that produce
 1. **Working software evidence**: the link opens and the CI run is there; or a plain statement of why nothing works. That statement is fine once; at the third consecutive sprint it is a note in the record.
 2. **What got done**: the board link opens, and each item is something you could go and look at. "Worked on X" fails the item.
 3. **Top risk and one decision needed**: one risk, one decision, with a from-whom.
-4. **Contribution lines**: one line per student. Open one owned artifact per student: it exists, it landed in the sprint window (check the merge date), and it is a real change, not mechanical. The review part names a change asked for. The shipped sentence is human-written and specific. A missing PR with an explanation on the line passes; a line whose artifact does not open, did not land this sprint, or is mechanical, with no explanation, is incomplete and the item fails.
+4. **Contribution lines**: one line per student. Open one owned artifact per student: it exists, it landed in the sprint window (check the merge date), and it is a real change, not mechanical. The review part names a change asked for. The shipped sentence is human-written and specific. A missing PR with an explanation on the line passes; a line whose artifact does not open, did not land this sprint, or is mechanical, with no explanation, misrepresents the sprint, and the item fails on that. The item grades whether the note is true; who contributed is the modifier's question.
 5. **Judgment layer**: about five lines, specific to this sprint, not last sprint's text.
 
-An item fails for the team. An individual's zero-work sprint goes through the modifier, which is where it is penalized and the only place.
+An item fails for the team because the note is wrong or missing. An individual's zero-work sprint goes through the modifier, which is where it is penalized and the only place.
 
 ## Term Rhythm (staff view)
 
@@ -113,7 +115,7 @@ An item fails for the team. An individual's zero-work sprint goes through the mo
 
 **Appeals.** The student is shown the evidence note, has five business days to respond with evidence, and an instructor decides. TAs flag; instructors adjudicate.
 
-**No double jeopardy.** Non-contribution is penalized here and only here. The repo checkpoint's traceability criterion grades whether attribution infrastructure exists (team-level), and partner-evaluation facet adjustments are reserved for partner-originated flags.
+**No double jeopardy.** Non-contribution is penalized here and only here. The sprint note's Contribution lines item grades whether the note is true, never who contributed; the check-in record and the tells feed this decision and carry no points of their own. The repo checkpoint's traceability criterion grades whether attribution infrastructure exists (team-level), and partner-evaluation facet adjustments are reserved for partner-originated flags.
 
 ## Surveys (per term: 4 processing runs)
 
@@ -163,4 +165,5 @@ Instructors carry no cohort: calibration samples (RFC, defense, checkpoints), mo
 - [ ] Both sprint-note Canvas columns (team + individual) created; together they equal the Sprint Notes weight
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
-- [ ] NDA teams identified and flagged in the tracking sheet
+- [ ] Cohort sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)
+- [ ] NDA teams identified and flagged in the cohort sheet
