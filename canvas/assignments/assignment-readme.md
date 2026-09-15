@@ -85,7 +85,7 @@ The fall Term Retrospective's Writing criterion changed in the same way, but no 
 
 **All three syllabus bodies need re-pasting into Canvas** from `canvas/syllabus/` (2026-09-13, #22 and #32; the Term cells lost their year under #57): the grade table is the 11-band handbook scale, the term labels read Fall 2026, Winter 2027 and Spring 2027, and the late-policy paragraph is a summary that links the handbook instead of a second full statement.
 
-## Rubric TSVs Requiring Re-Import (WIC remap, September 2026)
+## Rubric TSVs Requiring Re-Import After the WIC Remap (#59)
 
 The WIC outcomes changed (#59) and every tag was re-derived from the new wording. Points are unchanged; tags and one band description moved, so these must be re-imported:
 

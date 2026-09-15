@@ -102,9 +102,9 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 | 4,000 words per student across assignments | Unmeasured beyond the RFC | Open (#60) |
 | 1,500 words of low-stakes writing per student | Two written peer reviews, five contribution lines, a share of five judgment layers; no length guideline today | Open (#60) |
 | One formal piece of 1,500 or more words using disciplinary sources | The winter RFC: its length floor (on the RFC page) clears this, and its analysis is argued from cited sources | Met |
-| 35% of the grade from writing assignments | Writing assignments are 31% of the winter grade, 39% if repo checkpoints (docs graded in place) count; the weights are the Winter Team Deliverables table on the assignments overview | Open (#60) |
-| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final only. Waiting on the WIC director | Open (#60) |
-| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback; instructor feedback is the row above | Partial (#60) |
+| 35% of the grade from writing assignments | Writing assignments are 31% of the winter grade, 39% if repo checkpoints (docs graded in place) count; the weights are on the assignments overview, the RFC under Individual Evidence and the rest in the Winter Team Deliverables table | Open (#60) |
+| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final, plus a substitute review when a peer reviewer no-shows. Waiting on the WIC director | Open (#60) |
+| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback; revision after instructor feedback waits on the draft-feedback decision in #60 | Partial (#60) |
 | Student-to-instructor ratio of 25 to 1 or better | Two instructors, six TAs, about 300 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
 | Instructor of record is not a graduate student | Faculty instructors | Met |
 | WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open (#60) |
