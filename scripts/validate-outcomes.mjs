@@ -37,6 +37,7 @@ const CANVAS_TO_HANDBOOK = {
   "project-landing-page": "landing-page",
   "project-retrospective": "project-retrospective",
   "repo-checkpoint": "repo-checkpoints",
+  "resume-and-intent": "resume-and-intent",
   rfc: "rfc",
   "spring-release": "release",
   "sprint-note": "sprint-notes",

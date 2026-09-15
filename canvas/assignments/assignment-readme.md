@@ -9,7 +9,7 @@
 
 ## Grade Architecture (every term)
 
-Four equal components (25% each): Project Partner Evaluation (midterm pulse 5% + final survey 20%), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall and winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
+Four equal components (25% each): Project Partner Evaluation (midterm pulse 5% + final survey 20%), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: RFC 15% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close at the end of week 6; final surveys are sent week 9 and close at the end of week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
@@ -92,6 +92,12 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 - `rfc/`: `L07` moved from Feedback given to Technical tradeoff analysis, whose Exceeds band now asks for cited sources.
 - `spring-release/`, `project-landing-page/`, `project-retrospective/`: the writing-quality criterion is tagged `SO3` instead of `L08`.
 
+## Rubric TSVs Requiring Import: Resume and Intent (#73)
+
+| File | What changed |
+|---|---|
+| `resume-and-intent/` | **New**, fall only: three pass/fail criteria (resume attached 30, three intent lines 40, cohort meeting attended 30). Create the assignment in the fall Individual Evidence group at 2% and import this rubric. The Defense stays at its rubric points; its fall group weight drops from 10% to 8% |
+
 ## Schedule
 
 ### CS 461 (Fall Term)
@@ -99,7 +105,8 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 | Week | Due |
 |------|-----|
 | 1-5 | Workshop Activities (6 items, complete/incomplete) |
-| 2 | Team Charter |
+| 2 | Team Charter; Resume and Intent |
+| 3-5 | Resume and Intent cohort meetings (instructor) |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback |
 | 6 | Sprint Note 2 |
