@@ -6,6 +6,8 @@
     "astro": "astro",
     "build": "astro check && astro build",
     "check": "biome check",
+    "check:commits": "node scripts/check-commit-message.mjs",
+    "check:prose": "node scripts/check-prose.mjs --all",
     "dev": "astro dev",
     "format": "biome check --write",
     "preview": "astro preview",

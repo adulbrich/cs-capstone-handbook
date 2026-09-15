@@ -1,8 +1,17 @@
 # Git hooks via lefthook (https://lefthook.dev)
 # Install hooks once with: npx lefthook install
+# LEFTHOOK=0 or --no-verify skips; CI and the .claude/hooks catch the skip.
 
 pre-commit:
   commands:
+    branch:
+      # Never commit on main; branch first.
+      run: test "$(git branch --show-current)" != main
+      fail_text: "never commit on main; branch first (AGENTS.md)"
+    prose:
+      # No em dash (literal or entity), no emoji, in the staged text files.
+      glob: "*.{md,mdx,astro,ts,tsx,js,mjs,cjs,json,jsonc,yml,yaml,css,html,tsv,txt,sh}"
+      run: node scripts/check-prose.mjs {staged_files}
     block-student-data:
       # data/ holds rosters, grades, and survey exports with student PII.
       # It is gitignored; this guard makes the protection structural.
@@ -32,5 +41,29 @@ pre-commit:
       glob: "{src/**/*,canvas/**/*,public/**/*,decks/**/*,STAFF-RUNBOOK.md}"
       run: node scripts/validate-dates.mjs
     biome:
-      glob: "{scripts/**/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
+      glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
       run: npx biome check {staged_files}
+
+commit-msg:
+  commands:
+    message:
+      # Conventional subject, lowercase imperative, no em dash, no emoji,
+      # never a claude.ai/code/session link.
+      run: node scripts/check-commit-message.mjs {1}
+
+pre-push:
+  commands:
+    # Everything CI runs, once per push rather than once per commit.
+    validate-outcomes:
+      run: node scripts/validate-outcomes.mjs
+    validate-activities:
+      run: node scripts/validate-activities.mjs
+    validate-downloads:
+      run: node scripts/validate-downloads.mjs
+    validate-dashes:
+      run: node scripts/validate-dashes.mjs
+    validate-dates:
+      run: node scripts/validate-dates.mjs
+    build:
+      # astro check + astro build; fails on a broken internal link or anchor.
+      run: npm run build

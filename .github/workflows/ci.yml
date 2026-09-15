@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The commit-message step walks every commit the PR adds, so the
+          # base branch has to be reachable from the checkout.
+          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -21,6 +25,16 @@ jobs:
       # has drifted from package.json. Never use `npm install` in CI: it is
       # allowed to rewrite the lockfile, so CI would stop testing what you ship.
       - run: npm ci
+      # Every commit a pull request adds gets the commit-msg check: Conventional
+      # subject, lowercase imperative, no em dash, no emoji, no session link.
+      # Dependabot is skipped: its bodies embed upstream release notes.
+      - name: Check commit messages
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: node scripts/check-commit-message.mjs --range "origin/$BASE_REF..HEAD"
+      - name: Check prose in tracked text files
+        run: npm run check:prose
       - name: Lint and format check (Biome via Ultracite)
         run: npm run check
       - name: Validate ABET outcome coverage
