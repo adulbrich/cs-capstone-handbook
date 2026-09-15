@@ -33,6 +33,7 @@ export default defineConfig({
       lastUpdated: true,
       plugins: [
         starlightLinksValidator(),
+        starlightScrollToTop(),
         // starlightPageActions({
         //   baseUrl: "https://engr103.alexulbrich.com",
         //   actions: {
@@ -144,7 +145,7 @@ export default defineConfig({
   site: "https://capstone.alexulbrich.com",
 
   vite: {
-    plugins: [tailwindcss(), starlightScrollToTop()],
+    plugins: [tailwindcss()],
     ssr: {
       noExternal: ["zod"],
     },
