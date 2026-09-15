@@ -24,8 +24,7 @@ skills under `.claude/skills/`.
 4. **The hard rules where scripts cannot see.** Validators catch em dashes,
    emoji, calendar dates, weights, tags, and links. The reviewer catches the
    rest: month names standing in for a term week, "academic year" phrasing, a
-   date in a code comment, an em dash entity in an HTML attribute, grading language
-   on an activity or guide page.
+   date in a code comment, grading language on an activity or guide page.
 5. **The Canvas mirror.** A rubric, weight, or syllabus change carries the
    matching change under `canvas/` and the PR body says a re-import is needed.
 6. **Section contracts.** Each content skill defines the section skeleton for

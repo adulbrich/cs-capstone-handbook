@@ -35,10 +35,9 @@ claim it         docs/ feat/ ...    commit message                           rec
 4. **Push and open a pull request.** The template asks for the closing issue,
    what changed from the reader's side, what ran locally, whether Canvas needs
    a re-import, the review loop, and the docs touched.
-5. **Run the review loop.** `mattpocock-skills:code-review` until a pass raises
-   nothing unanswered: every finding fixed, or declined with one line. Record
-   the pass count and the declines in the PR body. A declined finding that is
-   real work becomes an issue, not silence.
+5. **Run the review loop.** `mattpocock-skills:code-review`, with the brief and
+   the end condition in `docs/agents/code-review.md`. Record the passes and the
+   declines in the PR body.
 6. **Merge.** Squash. The `main` ruleset requires a pull request with green
    `build` and `audit` checks and blocks force pushes and deletion. No approving
    review is required by GitHub, so the review loop is the review. During the
@@ -64,12 +63,12 @@ first column is what stops you locally; the last is what stops the merge.
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files | `after-edit.mjs` | `build`: `npm run check` |
-| No session link in PR or issue text; PR title is a Conventional subject | | `guard-gh.mjs` refuses the command | (the PR title becomes the squash subject) |
+| No session link in inline PR or issue text; PR title is a Conventional subject | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`; a `--body-file` is the reviewer's to read) | (the PR title becomes the squash subject) |
 | Dependencies audit clean and signed | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code
 hooks and CI catch what was skipped, so skipping moves the failure rather than
-removing it. Install the hooks once with `npx lefthook install`.
+removing it. `npm install` installs the hooks through the `prepare` script.
 
 The ruleset that blocks a merge:
 
@@ -79,15 +78,14 @@ gh api repos/adulbrich/cs-capstone-handbook/rulesets --jq '.[] | {id, name, enfo
 
 ## The Canvas mirror
 
-Canvas mirrors the handbook and the handbook wins. A change to a rubric table,
-a weight, a due week, or a syllabus statement changes the TSV or HTML under
-`canvas/` in the same PR, and the PR says a re-import is needed. The re-import
-lists live in `canvas/assignments/assignment-readme.md`; the term-setup issue
-template is where the re-import actually gets scheduled.
+A change to a rubric table, a weight, a due week, or a syllabus statement
+changes the TSV or HTML under `canvas/` in the same PR (`AGENTS.md`, hard rule
+4), and the PR says a re-import is needed. The re-import lists live in
+`canvas/assignments/assignment-readme.md`; the term-setup issue template is
+where the re-import gets scheduled.
 
 ## Where things are recorded
 
-There is no journal file. A decision lives in the issue (what and why, with
-the Acceptance list), the pull request body (what changed, what ran, the
-review loop), or a design record under `docs/decisions/` when the change sets
-a rule the handbook will live by. `AGENTS.md`, "Where decisions are recorded".
+In the issue, the pull request body, or a design record under
+`docs/decisions/`, never a journal file: `AGENTS.md`, "Where decisions are
+recorded".

@@ -1,5 +1,5 @@
 # Git hooks via lefthook (https://lefthook.dev)
-# Install hooks once with: npx lefthook install
+# npm install installs the hooks through the prepare script; npx lefthook install also works.
 # LEFTHOOK=0 or --no-verify skips; CI and the .claude/hooks catch the skip.
 
 pre-commit:
@@ -54,6 +54,12 @@ commit-msg:
 pre-push:
   commands:
     # Everything CI runs, once per push rather than once per commit.
+    commits:
+      run: node scripts/check-commit-message.mjs --range origin/main..HEAD
+    prose:
+      run: npm run check:prose
+    biome:
+      run: npm run check
     validate-outcomes:
       run: node scripts/validate-outcomes.mjs
     validate-activities:
