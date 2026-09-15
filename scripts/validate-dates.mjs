@@ -14,8 +14,8 @@
 // project years on the showcase page, which are history rather than the
 // course calendar. Fenced blocks are checked: the example artifacts in the
 // guides are handbook content and follow the rule like the prose. The
-// changelogs (IMPLEMENTED.md, the Canvas readme) and the skills are out of
-// scope: their decision timestamps are provenance.
+// Canvas readme and the skills are out of scope: their decision timestamps
+// are provenance.
 //
 // Run: node scripts/validate-dates.mjs
 

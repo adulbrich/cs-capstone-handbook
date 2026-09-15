@@ -25,7 +25,7 @@ const TEXT_EXTENSIONS = new Set([
   ".yml",
   ".yaml",
 ]);
-const EM_DASH_RE = /—|&mdash;|&#8212;|&#x2014;/gi;
+const EM_DASH_RE = /\u2014|&mdash;|&#8212;|&#x2014;/gi;
 
 function* walk(dir) {
   for (const name of readdirSync(dir)) {
@@ -59,7 +59,7 @@ if (hits.length > 0) {
     console.error(`  - ${hit}`);
   }
   console.error(
-    "\nUse a colon, semicolon, comma, or period instead (AGENTS.md, writing rule 3)."
+    "\nUse a colon, semicolon, comma, or period instead (AGENTS.md, hard rule 3)."
   );
   process.exit(1);
 }

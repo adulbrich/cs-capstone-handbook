@@ -129,9 +129,6 @@ export default defineConfig({
     }),
   ],
 
-  // The Project Evaluation section was dissolved into Assignments and Learning
-  // Objectives (2026-08-18). These URLs were live and linked from elsewhere, so
-  // they redirect rather than 404.
   site: "https://capstone.alexulbrich.com",
 
   vite: {
