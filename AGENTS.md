@@ -197,6 +197,15 @@ carries the writing voice verbatim, so loading the skill is enough.
 | `cs46x-guides` | `src/content/docs/guides/` |
 | `cs46x-assignments` | `src/content/docs/assignments/` |
 
+## Git and pull requests
+
+The process for a person is `CONTRIBUTING.md`; the rules an agent must not
+break are enforced by the hooks under `.claude/hooks/`, `lefthook.yml`, and the
+`main` ruleset, and are listed in the CONTRIBUTING gates table. In short: branch
+from a fresh `origin/main`, never commit on `main`, stage by name, Conventional
+Commits with a lowercase imperative, no em dash, emoji, or session link in a
+commit message or PR text, one PR per issue, squash merge after the review loop.
+
 ## Agent skills
 
 ### Issue tracker
@@ -206,6 +215,12 @@ GitHub Issues on `adulbrich/cs-capstone-handbook`, via `gh`. See `docs/agents/is
 ### Triage labels
 
 The five canonical labels, unrenamed. See `docs/agents/triage-labels.md`.
+
+### Code review
+
+`mattpocock-skills:code-review` on every pull request, until a pass raises
+nothing unanswered; the pass count and the declines go in the PR body. The
+handbook-specific brief the Standards axis reads is `docs/agents/code-review.md`.
 
 ### Domain docs
 
