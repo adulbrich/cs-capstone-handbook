@@ -16,9 +16,9 @@ State who is affected, what breaks, where/when it occurs, and why it matters. Av
 
 3-5 bullets
 
-- [Timestamp — Role] Key insight 1
-- [Timestamp — Role] Key insight 2
-- [Timestamp — Role] Key insight 3
+- [Timestamp, Role] Key insight 1
+- [Timestamp, Role] Key insight 2
+- [Timestamp, Role] Key insight 3
 
 Redact PII; keep concise
 
@@ -26,18 +26,18 @@ Redact PII; keep concise
 
 Per teammate
 
-- **Lens A (e.g., 5 Whys)** — [1 short paragraph: main finding]
-- **Lens B (e.g., Is/Is-Not)** — [finding]
-- **Lens C (e.g., JTBD forces / HMW / fishbone / workflow-as-is)** — [finding]
+- **Lens A (e.g., 5 Whys)**: [1 short paragraph: main finding]
+- **Lens B (e.g., Is/Is-Not)**: [finding]
+- **Lens C (e.g., JTBD forces / HMW / fishbone / workflow-as-is)**: [finding]
 
 ## Current vs. Ideal
 
 Choose one.
 
-**Option A — Current Workflow & Pain Points:**  
+**Option A, Current Workflow & Pain Points:**  
 [Short bullet flow + where pain occurs]  
 **OR**  
-**Option B — Before/After Scenario:**  
+**Option B, Before/After Scenario:**  
 **Before:** [user’s current experience]  
 **After:** [what “better” looks like without naming a solution]
 
@@ -57,7 +57,7 @@ Choose one.
 
 ## Partner Feedback & Edits
 
-- Meeting date: [YYYY-MM-DD] — [decisions, owners]
+- Meeting date: [YYYY-MM-DD]: [decisions, owners]
 - Edits made: [what changed in sections 1–7]
 
 ## Traceability Mini-Table
@@ -83,8 +83,8 @@ Paste image, ASCII diagram, or public link
 
 Maximum 2 bullets
 
-- R1: [risk] — Trigger: [X]; Mitigation: [Y]
-- R2: [risk] — Trigger: [X]; Mitigation: [Y]
+- R1: [risk]. Trigger: [X]; Mitigation: [Y]
+- R2: [risk]. Trigger: [X]; Mitigation: [Y]
 
 ### One-Slide Elevator Pitch
 

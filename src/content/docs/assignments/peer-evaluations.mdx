@@ -1,0 +1,110 @@
+---
+title: Peer Evaluations
+description: How students evaluate their teammates each term, how scores are computed, and how CATME is used in spring.
+sidebar:
+  order: 15
+assignment:
+  level: individual
+  terms: [fall, winter, spring]
+  weight: 25
+  outcomes:
+    SO5: 2
+---
+
+import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import Latex from '../../../components/Latex.astro';
+
+<AssignmentMeta submission="Individual, one survey per teammate" due="Midterm survey sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
+  Anonymous. Results go to instructors only.
+</AssignmentMeta>
+
+Peer evaluations are how students evaluate the contributions of their team members. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
+
+## The Two Instruments
+
+| Instrument | Share of term grade | Outcome |
+|---|---|---|
+| Midterm survey: four criteria plus the point distribution | 5% | SO5 |
+| End-of-term survey: the same instrument, plus CATME in spring | 20% | SO5 |
+
+These two are the course's standing per-student evidence for SO5, six data points a year. They are scored per student rather than banded, so the usual three-band rubric convention does not apply.
+
+:::caution
+A failure to complete a peer evaluation results in a 50/100 on the corresponding assignment for the student who did not complete the survey (12.5/25 for the midterm).
+:::
+
+Peer evaluations are done through a Qualtrics survey sent by email; it closes on the schedule above and is not reopened. All answers are anonymous; results are shared with instructors only. Questions about grades go to the instructors directly.
+
+## The Per-Term Instrument
+
+Each term (midterm and final), students assess themselves and their teammates on four criteria, then allocate 100 points across all team members including themselves, and finally provide qualitative feedback.
+
+### Quantitative Questions
+
+The **first task** is to rate each member of the team, including yourself, on four criteria:
+
+| Criteria | Description |
+|----------|-------------|
+| 1       | Did the member do an appropriate quantity of work? |
+| 2       | How about the quality of the member's work? |
+| 3       | Rate the member's attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.). |
+| 4       | Rate the overall value of the member's technical contribution. |
+
+Each rating uses a 1 to 5 scale:
+
+- 1 = Better off without member, in this regard
+- 2 = Some obvious shortcomings
+- 3 = OK, but nothing special
+- 4 = Good solid effort; took initiative
+- 5 = Outstanding! Super asset to team
+
+For the **second task**, students distribute 100 points among team members, including themselves. Each member can receive between 0 and 100, but the total must equal 100. One must give oneself at least 100/N points, where N is the number of team members, to avoid an unrealistic "self-incrimination" requirement (on teams of two, this rule is relaxed and the distribution task carries less signal; the four criteria dominate).
+
+### Qualitative Feedback
+
+Students are also asked for comments, which help instructors understand team dynamics:
+
+- For particularly high or low allocations, provide concrete examples. Which behaviors were particularly valuable or detrimental?
+- Overall, how effectively is your team working? Explain.
+- What did you learn about working in a team that you will carry forward?
+
+## CATME in Spring
+
+At the end of spring, the final peer evaluation additionally uses the [CATME Five Teamwork Dimensions](https://info.catme.org/features/catme-five-dimensions/) (contributing to the team's work, interacting with teammates, keeping the team on track, expecting quality, and having relevant knowledge, skills, and abilities), a behaviorally anchored instrument with a strong validity literature [1]. It provides the year's summative teamwork evidence. The per-term four-criteria instrument above is intentionally simpler so it can run six times a year without survey fatigue.
+
+## Team Sizes
+
+We aim for teams of 3 to 4 students, but real teams range from 2 to 5 or more. The score calculation below is normalized around a team of five and explicitly corrects for team size; it is applied identically to all team sizes that occur.
+
+## Grade Calculation
+
+For the **four criteria**:
+
+1. Convert ratings to a 50-100 scale: 1 = 50, 2 = 62.5, 3 = 75, 4 = 87.5, 5 = 100.
+2. Average the ratings each member received, **excluding** self-ratings.
+
+For the **100-point distribution**:
+
+1. Verify that self-evaluation is at least 100/N points and that each survey's total is 100.
+2. Average the points each member received, **excluding** self-allocation.
+3. Normalize for team size: multiply the average by N, divide by 5.
+4. Clamp the result to [10, 40].
+5. Apply <Latex formula="0.65 + 0.0225\cdot x - 0.00025\cdot x^2"/>, where <Latex formula="x"/> is the clamped average.
+
+The formula's output is a multiplier bounded between 0.85 and 1.15; **multiply it by 100 to get the distribution score** (85 to 115). Scoring over 100 means teammates rated your contribution above an equal share, and you are rewarded for it.
+
+**The final peer score is the average of five numbers: the four criteria scores and the distribution score.**
+
+Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four criteria, converting to 87.5, 87.5, 100, 87.5. On the distribution, teammates gave the student an average of 28 points; normalized for team size (× 4 ÷ 5) that is 22.4, within the [10, 40] clamp; the formula gives 0.65 + 0.0225(22.4) − 0.00025(22.4²) = 1.03, so the distribution score is 103. Final peer score: (87.5 + 87.5 + 100 + 87.5 + 103) / 5 = **93.1**.
+
+Survey validation issues (self-rating below the floor, totals that do not sum to 100, out-of-range ratings) each deduct from the rater's own score; these deductions are reflected in the posted grade, not just in the feedback email.
+
+## Teams of Two
+
+On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. Two protections apply: the self-allocation floor is relaxed, and **any two-person team where the received ratings average below 3 (or the two teammates' ratings of each other diverge sharply) is reviewed by an instructor against the repo record and partner feedback before the score stands.** A single teammate's ratings never finalize a low score on a team of two without corroboration.
+
+## References
+
+[1] M. W. Ohland et al., "The Comprehensive Assessment of Team Member Effectiveness: Development of a Behaviorally Anchored Rating Scale for Self- and Peer Evaluation," AMLE, vol. 11, no. 4, pp. 609--630, Dec. 2012, doi: [10.5465/amle.2010.0177](https://doi.org/10.5465/amle.2010.0177).
+
+[2] "Fairly Assessing Individual Contributions to Group Software Projects." Accessed: Mar. 31, 2025. [Online]. Available: https://www.cs.ubc.ca/wccce/Program03/papers/Gardner-Group/Gardner-Group.htm

@@ -1,6 +1,6 @@
 ---
-title: The Capstone Series
-description: What is being covered in the three courses of the CS Capstone series?
+title: Introduction and Schedule
+description: What the three courses cover, how the grade works, and the week-by-week schedule.
 sidebar:
   order: 1
 ---
@@ -17,7 +17,7 @@ Spring | CS 463   | Senior Software Engineering Project III | 2
 
 This three-course sequence transforms aspiring developers into industry-ready software engineers through real-world project experience and professional collaboration.
 
-Students work in teams (generally 3-4 students) to design, develop, and deliver software solutions for real-world clients, gaining hands-on experience that bridges the gap between academic learning and professional practice.
+Students work in [teams](/practicalities/teams/) (generally 3-4 students) to design, develop, and deliver software solutions for real-world clients, gaining hands-on experience that bridges the gap between academic learning and professional practice.
 
 <CardGrid> 
   <LinkCard
@@ -34,33 +34,75 @@ Students work in teams (generally 3-4 students) to design, develop, and deliver 
 
 ## How We Measure Success
 
-Our evaluation framework ensures accountability and growth across multiple dimensions. Students receive feedback from project partners or mentors (25%), peers (25%), and instructors (50%) across these critical areas:
+Each term, the grade combines four equal components: your project partner's evaluation, your teammates' peer evaluations, individual evidence that nobody can produce for you, and the team's deliverables. The [assignments overview](/assignments/introduction/#grade-architecture) has the breakdown, and the emphasis evolves across the series to mirror how a real project progresses.
 
-- Reflection
-- Requirements and Specifications
-- Design, Implementation, and Deployment
-- Verification and Validation
-- Teamwork
-- Communication
+<CardGrid>
+  <LinkCard
+    title="Assignments Overview"
+    description="The full assignment architecture: grade weights, cadence, and term-by-term deliverables."
+    href="/assignments/introduction/"
+  />
+  <LinkCard
+    title="Learn more about the grade distribution"
+    description="See how evaluation criteria change as students progress through the series."
+    href="/assignments/introduction/#grade-architecture"
+  />
+</CardGrid>
 
-The emphasis on each area evolves throughout the series to mirror real-world project progression and professional development.
+## Schedule
 
-<LinkCard
-  title="Learn more about the grade distribution"
-  description="See how evaluation criteria change as students progress through the series."
-  href="/project-evaluation/breakdown/"
-/>
+Week by week, term by term. Fall has a **week 0** because the term starts midweek; winter and spring start at week 1. Sprints are two weeks long everywhere. Your cohort [check-in](/assignments/introduction/#cohort-check-ins) with your TA falls in every sprint-note week, on the day your TA sets, plus fall week 2 and spring weeks 8 and 10; the defense is a separate session in week 7 or 9.
 
-## CS 461: Foundation & Planning
+The **Read** and **Do** columns run about one sprint ahead of what they prepare. The assignment pages are the [source of truth](/assignments/introduction/) for what is due, when, and how it is scored; this schedule only lays them out in time. "Announced in Canvas" is a guest speaker or a workshop, decided closer to the date.
 
-Students are matched with projects and teams, launching their capstone journey with a focus on **requirements gathering and specifications**. This foundational course emphasizes understanding stakeholder needs and translating them into technical requirements. Students deliver an **initial working prototype** that demonstrates core functionality and validates key assumptions.
+### Fall (CS 461, 3 credits)
 
-## CS 462: Development & Iteration
+Discover, specify, walking skeleton.
 
-The heart of the development cycle. Students dive deep into **design, implementation, and deployment** while refining their understanding of project requirements. Through iterative development cycles and robust project management practices, teams build toward a production-ready solution.
+| Week | Friday lecture | Due | Read | Do |
+|---|---|---|---|---|
+| 0 | Welcome; project bidding opens | Bidding survey | [For Students](/introduction/for-students/), [Assignments Overview](/assignments/introduction/), [Project Categories](/practicalities/categories/) | |
+| 1 | Workshop: [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills); teams announced | | [Shipping](/guides/shipping/), [Sprint: Preparing for Your First Sprint](/guides/sprint/#preparing-for-your-first-sprint) | Meet your project partner |
+| 2 | Workshops: [User Story Mapping](/activities/requirements/#user-story-mapping), [Team Formation Strategies Assessment](/activities/teamwork/#team-formation-strategies-assessment) | [Team Charter](/assignments/team-charter/) | [Working Agreement](/guides/working-agreement/), [Requirements](/guides/requirements/) | [Kanban Board Setup](/activities/planning/#kanban-board-setup), [Definition of Done](/activities/planning/#definition-of-done) |
+| 3 | Workshops: [Describe your Architecture](/activities/design/#describe-your-architecture), [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors) | | [Technical Design](/guides/technical-design/), [Git and GitHub](/guides/git-and-github/) | [Evaluate Different Technologies](/activities/design/#evaluate-different-technologies) |
+| 4 | Workshop: [Audit Your Safety Net](/activities/ai/#audit-your-safety-net); lecture: testing as the safety net | [RFC](/assignments/rfc/) draft, [Sprint Note](/assignments/sprint-notes/) 1 | [Testing Strategy](/guides/testing-strategy/), [Generative AI](/guides/generative-ai/) | [Six Thinking Hats](/activities/creative/#six-thinking-hats) |
+| 5 | Demo day 1 | [Repo Checkpoint](/assignments/repo-checkpoints/) 1, RFC feedback, midterm surveys open | [DevOps](/guides/devops/), [Documentation](/guides/documentation/) | [Deployment Plan](/activities/design/#deployment-plan), [Plan Prototype](/activities/planning/#plan-prototype) |
+| 6 | Announced in Canvas | Sprint Note 2, midterm surveys close | [Presentations](/guides/presentations/), [Security](/guides/security/) | [Software Release and Versioning](/activities/planning/#software-release-and-versioning) |
+| 7 | Announced in Canvas | [Defense](/assignments/defense/) sessions (weeks 7 and 9) | [Conflict and Performance Conversations](/guides/conflict/) | [Learning Journal](/activities/reflective/#learning-journal) |
+| 8 | Announced in Canvas | RFC final, Sprint Note 3 | [Retrospectives](/guides/retrospectives/) | [External Feedback Session](/activities/reflective/#external-feedback-session) |
+| 9 | No lecture (Thanksgiving) | [Term Retrospective](/assignments/term-retrospective/), final surveys open | | |
+| 10 | Demo day 2 | Sprint Note 4, Repo Checkpoint 2, final surveys close | | |
 
-## CS 463: Delivery & Validation
+### Winter (CS 462, 3 credits)
 
-The final course focuses on **verification, validation, and project outcomes**. Students polish their solutions, conduct thorough testing, and prepare comprehensive documentation. This 2-credit course emphasizes delivering professional-quality results and demonstrating measurable project success.
+Build, verify, real users.
 
-Most technical development is completed in CS 462, allowing CS 463 to focus on refinement and validation.
+| Week | Friday lecture | Due | Read | Do |
+|---|---|---|---|---|
+| 1 | Workshop: the outcome-critical-path calendar exercise | | [Shipping](/guides/shipping/), [Planning](/guides/planning/) | [Identify Success Metrics](/activities/planning/#identify-success-metrics), [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis) |
+| 2 | Workshop: [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment) | Sprint Note 1 | [Working Agreement: Keeping It Alive](/guides/working-agreement/#keeping-it-alive) | [Find Users](/activities/user/#find-users) |
+| 3 | Announced in Canvas | [Definition of Shipped](/assignments/definition-of-shipped/) | [Testing Strategy: Validation](/guides/testing-strategy/#validation-does-the-product-solve-the-right-problem) | [Write a Literature Review](/activities/creative/#write-a-literature-review) |
+| 4 | Announced in Canvas | RFC draft, Sprint Note 2 | [ADR](/guides/adr/) | [Test Plan](/activities/design/#test-plan), [Engage Users](/activities/user/#engage-users) |
+| 5 | Demo day 1 | Repo Checkpoint 1, RFC feedback, midterm surveys open | [Security](/guides/security/) | [Risk Management Plan](/activities/planning/#risk-management-plan) |
+| 6 | Announced in Canvas | Sprint Note 3, midterm surveys close | [Documentation](/guides/documentation/) | [Proof-of-Concept](/activities/design/#proof-of-concept), [Peer Technical Design Review](/activities/design/#peer-technical-design-review) |
+| 7 | Announced in Canvas | Defense sessions (weeks 7 and 9) | [Presentations](/guides/presentations/) | [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass) |
+| 8 | Announced in Canvas | RFC final, Sprint Note 4 | [Retrospectives: Post-Mortem Format](/guides/retrospectives/#post-mortem-format) | [Fishbone Diagram](/activities/planning/#fishbone-diagram) |
+| 9 | Announced in Canvas | [Incident Postmortem](/assignments/incident-postmortem/), final surveys open | [DevOps: Rollbacks](/guides/devops/#rollbacks) | [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass) |
+| 10 | Demo day 2 | Sprint Note 5, Repo Checkpoint 2, final surveys close | | |
+
+### Spring (CS 463, 2 credits)
+
+Ship, prove, hand off.
+
+| Week | Friday lecture | Due | Read | Do |
+|---|---|---|---|---|
+| 1 | Welcome back; [Expo](/practicalities/expo/) registration opens | | [Shipping](/guides/shipping/) | [Identify Success Metrics](/activities/planning/#identify-success-metrics) |
+| 2 | Workshop: [Team Health Assessment](/activities/teamwork/#team-health-assessment), with the charter refresh | Sprint Note 1 | [Retrospectives](/guides/retrospectives/) | [Learning Journal](/activities/reflective/#learning-journal) |
+| 3 | Announced in Canvas | | [Planning: Prioritization Methods](/guides/planning/#prioritization-methods) | [Prioritization](/activities/planning/#prioritization) |
+| 4 | Announced in Canvas | Sprint Note 2 | [Testing Strategy: Beta Testing and Feedback](/guides/testing-strategy/#beta-testing-and-feedback) | [The Mom Test](/activities/creative/#the-mom-test), [Designing for Accessibility](/activities/design/#designing-for-accessibility) |
+| 5 | Demo day 1 | Midterm surveys open | [Presentations: Public Demonstrations](/guides/presentations/#public-demonstrations) | [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci) |
+| 6 | Announced in Canvas | Sprint Note 3, midterm surveys close | [Documentation: User Documentation](/guides/documentation/#user-documentation) | [Resume Building](/activities/career/#resume-building) |
+| 7 | Announced in Canvas | [Landing Page](/assignments/landing-page/); defense sessions (weeks 7 and 9) | | [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass), [Learn from Patrick Winston](/activities/communication/#learn-from-patrick-winston) |
+| 8 | Announced in Canvas | [Release and Metrics](/assignments/release/) | [Documentation: Developer Documentation](/guides/documentation/#developer-documentation) | [Portfolio Development](/activities/career/#portfolio-development) |
+| 9 | Expo preparation | [Project Retrospective](/assignments/project-retrospective/), [Career and Individual Retrospective](/assignments/career-retrospective/), final surveys open | [Presentations: Delivering a Demo](/guides/presentations/#delivering-a-demo) | [Planning for Maintenance and Long-Term Support](/activities/design/#planning-for-maintenance-and-long-term-support) |
+| 10 | Demo day 2 | [Project Handoff](/assignments/project-handoff/), Expo, final surveys close | | |

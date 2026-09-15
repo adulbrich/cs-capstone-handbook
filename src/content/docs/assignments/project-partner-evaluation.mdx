@@ -1,23 +1,43 @@
 ---
 title: Project Partner Evaluation
-description: Rubrics for project partner evaluations and progress assessments.
+description: Rubrics for project partner evaluations, the facet weights per term, and the corroboration process for individual adjustments.
 sidebar:
-  order: 4
+  order: 14
+assignment:
+  level: team
+  terms: [fall, winter, spring]
+  weight: 25
 ---
 
+import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import { Badge } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-This page covers **project partner evaluations**, which account for 25% of student's total grade. Project partners will assess their team(s) once or twice each term:
+<AssignmentMeta submission="Completed by your project partner, not by you" due="Midterm pulse sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
+  Team-level by default, with individual adjustment where a partner flags a specific student.
+</AssignmentMeta>
 
-1. A short **Midterm Evaluation** (0-5% of total grade) focusing on responsiveness, professionalism, and delivery quality.
-2. The **Final Evaluation** (20-25% of total grade) uses the six facets described below to assess overall project progress and outcomes.
+Partner evaluations account for 25% of each student's grade each term, split as follows:
 
-Project partner assessments use different approaches depending on the term. In Fall and Winter, the evaluation is **progress-focused** using adapted criteria that assess development milestones and learning growth. In Spring, the evaluation shifts to **an outcome-focused approach** that assesses final deliverables and project outcomes. Each facet will have a different weight depending on the term, see the [grade distribution](/project-evaluation/breakdown).
+1. A short **Midterm Evaluation** (5% of the term grade) focusing on responsiveness, professionalism, and delivery quality. It is a pulse check: light for the partner, early warning for the team.
+2. The **Final Evaluation** (20% of the term grade) uses the six facets described below to assess overall project progress and outcomes.
+
+Fall and winter are **progress-focused**, assessing development milestones and learning growth. Spring shifts to **outcomes**, assessing what was actually delivered. Each of the six facets carries a different weight depending on the term:
+
+| Facet | CS 461 | CS 462 | CS 463 |
+|---|---|---|---|
+| Reflection (learning outcomes, feedback, impact, IP) | 15% | 15% | 15% |
+| Requirements and Specifications | **40%** | 15% | 5% |
+| Design, Implementation, and Deployment | 15% | **40%** | 20% |
+| Verification and Validation (outcome) | 5% | 10% | **40%** |
+| Teamwork | 15% | 10% | 10% |
+| Communication (abstract, demo, presentation) | 10% | 10% | 10% |
+
+The migration tells the year's story: fall is won on requirements, winter on building, spring on the shipped outcome. If a team changes projects mid-series the weights do not change, and catching up takes extra effort.
 
 **Students should discuss expectations with their project partner or mentor at the beginning of each term and review progress regularly.**
 
-The evaluation will be colletected **through survey sent to each project partner**. The end-of-term survey will include the six facets below, each with its own rubric.
+The evaluation is collected **through a survey sent to each project partner**. The end-of-term survey includes the six facets below, each with its own rubric, plus an explicit question letting the partner flag concerns about a specific student (which triggers the corroboration review described at the bottom of this page).
 
 :::note[Individual Accountability]
 Project partner evaluations are team-level assessments by default. However, if a project partner flags that a specific student did not contribute meaningfully, the instructor may apply **individual grade adjustments** to any or all of the six facets below. See [Individual Accountability](#individual-accountability) for details.
@@ -106,7 +126,13 @@ We use the term "deployment" very loosely here. If you have a research project, 
 
 The Verification and Validation facet looks at the **outcome** of your Capstone project, not just the output.
 
-In Spring, the grading scale is different depending on the project **category**. If your project does not fit any category or if your project partner has other expectations, they will be able to provide a custom grade on the scale [50,100]. **Please set expectations with your project partner at the beginning of each term.**
+In spring, the scale depends on your project **category**, and the ladders below are the course default for every project.
+
+**Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete.** "Prototype works on reasonable inputs" and "system is in production" are written generally because they have to cover every project in the cohort. Your Definition of Shipped says what that rung means for your project: which inputs, which environment, which users, measured how. That is what your partner scores against in spring, and it is why you write it in winter, while there is still time to act on it.
+
+**Custom grading is for genuine deviation, not for restating the ladder.** If your project fits no category, or your partner's expectations differ from the ladder in kind rather than in detail, they can score on a custom scale of [50,100]. Agree that in the Definition of Shipped in winter, not in June.
+
+Each ladder below belongs to one [project category](/practicalities/categories/). Read them literally. Every top rung describes software that reached somebody: merged upstream, running in production, used by people you do not know, results a stranger can reproduce. **Code that works but that nobody ever ran is not a high rung in any category.** That is the whole reason this course is arranged the way it is: getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it is what the [Shipping guide](/guides/shipping/) maps out for each category.
 
 ### Fall & Winter Terms
 
@@ -120,8 +146,6 @@ Points | Criteria
 
 ### FOSS
 
-This category involves contributing patches to an existing **Free and Open-Source Software** project. Examples include writing patches for the Rust compiler, the Xen hypervisor, the Habitica todo-list game, or the OSU Open Source Lab repositories.
-
 Points | Criteria
 -------|---------
 100    | Patches accepted, positive mentions in press/release.
@@ -134,8 +158,6 @@ Points | Criteria
 
 ### Research
 
-Collaborate with a professor on a research topic, aiming to publish a small paper with your findings.
-
 Points | Criteria
 -------|---------
 100    | Novel results or context or paper published, etc.
@@ -145,8 +167,6 @@ Points | Criteria
 50     | Prototype is vaporware.
 
 ### Consultancy
-
-Develop software for a specific external project partner.
 
 Points | Criteria
 -------|---------
@@ -158,11 +178,9 @@ Points | Criteria
 
 ### New Product or Game
 
-This category involves creating a new product or game, which may or may not become a viable business.
-
 Points | Criteria
 -------|---------
-100    | Hundreds of light users or tens of heavy users or positive mention in mainstream/industry press or winning a reputable startup/gaming pitch competition.
+100    | Hundreds of light users or tens of heavy users or positive mention in mainstream/industry press.
 90     | Two dozens users you don't know or rigorous user study.
 80     | A dozen users you don't know or user study.
 70     | Friends have tried your software.
@@ -180,20 +198,11 @@ Points | Criteria
 70     | Achieves partial goals with some cohesion, but limited by unresolved issues or workload inefficiencies.
 50     | Fails goals due to poor collaboration, absent leadership, or unmanaged conflicts overwhelming adaptation.
 
-{/* Alternative that is more team-focused.
-Points | Criteria
--------|---------
-100    | Excellent team collaboration and communication. Clear role distribution and conflict resolution.
-90     | Good team dynamics with effective collaboration. Roles mostly clear with good communication.
-80     | Adequate teamwork. Basic collaboration with some communication issues.
-70     | Limited teamwork effectiveness. Unclear roles or communication problems.
-50     | Poor team dynamics. Significant collaboration or communication issues. */}
-
-In addition to the general rubric for teamwork, we're also using the Comprehensive Assessment of Team Member Effectiveness (CATME). The [CATME Five Teamwork Dimensions](https://info.catme.org/features/catme-five-dimensions/) will only be used for intra-groups peer reviews.
+In addition to the partner's view of teamwork, students evaluate each other directly every term, and the end-of-spring survey uses the CATME Five Teamwork Dimensions. See [Peer Evaluations](/assignments/peer-evaluations/).
 
 ## Communication
 
-The Communication facet evaluates sudents' ability to effectively convey ideas, progress, and outcomes through various means such as email updates, presentations, documentation, and discussions.
+The Communication facet evaluates students' ability to effectively convey ideas, progress, and outcomes through various means such as email updates, demos, presentations, documentation, and discussions.
 
 Points | Criteria
 -------|---------
@@ -218,15 +227,15 @@ When a project partner flags an individual student, the instructor will cross-re
 | Source | What it shows |
 |--------|---------------|
 | Peer evaluation scores and comments | Teammates' direct assessment of contribution, work quality, and attitude |
-| Individual work log sections in progress reports | Self-reported and team-reported sprint-by-sprint contributions with links |
-| Repository activity | Commits, pull requests, code reviews, and issue ownership |
-| Assignment attributions | Authorship of individual sections in submitted documents |
+| Contribution lines in [sprint notes](/assignments/sprint-notes/) | The reviewed PR(s) each student owned, sprint by sprint |
+| Repository activity | Commits, pull requests, code reviews, and issue ownership (NDA teams: verified live at the walkthrough or [defense](/assignments/defense/)) |
+| Individual assignments | The student's RFCs, defense performance, and career retrospective |
 
 A flag that is **corroborated by two or more of these sources** is treated as strong evidence of non-contribution. A flag that is not corroborated may still result in a minor adjustment but will be given more benefit of the doubt, since project partners do not always have visibility into all aspects of individual work.
 
 ### How Adjustments Are Applied
 
-Adjustments are applied at the **facet level**, based on what the corroborated evidence shows about the student's individual contribution to each area. All six facets are susceptible to individual downgrading; none is protected by default.
+Adjustments are applied at the **facet level**, based on what the corroborated evidence shows about the student's individual contribution to each area. Facet adjustments are reserved for partner-originated flags; routine non-contribution already handled by the sprint-note individual modifier is not penalized a second time here. All six facets are susceptible to individual downgrading; none is protected by default.
 
 For each facet, the instructor asks: does the evidence show that this student meaningfully contributed to this area? If the answer is no, the facet is graded at a level that reflects the student's actual contribution rather than the team's. A student with no traceable contribution across all areas may receive 50% on every facet. A student who communicated but did not produce output may receive a lower score on Teamwork and Design/Implementation while retaining the team's score on Communication. The adjustment is always proportionate to what the evidence shows, facet by facet.
 
@@ -235,7 +244,7 @@ For each facet, the instructor asks: does the evidence show that this student me
 The best protection is **visible, traceable contribution throughout the term**:
 
 - A student should commit code to their own branches and open or close their own issues; work should not be committed by a teammate on their behalf.
-- Each student should author their own sections in progress reports and other documents; having a teammate write their contributions for them undermines the traceability that protects them.
+- Each student should author their own contribution lines in sprint notes and their own individual assignments; having a teammate write their contributions for them undermines the traceability that protects them.
 - All contributions should be measurable and attributable to the student. If a student is doing work that is not easily traceable (e.g., design discussions, testing, documentation), they should make sure to document it in a way that can be corroborated (e.g., meeting notes, issue comments, pull request reviews).
 - If a student is blocked, they should communicate early with their team and their project partner. A student who raises a blocker and adapts is treated very differently from one who goes quiet.
 - Peer evaluations reflect teammates' real-time view of a student's work. A student who is having a difficult term should address it in their individual retrospective section and discuss it with the instructor proactively; waiting until grades are posted is too late.

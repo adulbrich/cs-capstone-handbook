@@ -1,4 +1,4 @@
-# The Mom Test — 1-Page Interview Cheat Sheet
+# The Mom Test: 1-Page Interview Cheat Sheet
 
 *Based on Rob Fitzpatrick’s book. Use this to run evidence-gathering customer conversations that avoid fluff and false positives.*
 

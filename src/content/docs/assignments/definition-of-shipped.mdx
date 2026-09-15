@@ -1,0 +1,69 @@
+---
+title: Definition of Shipped
+description: A one-to-two page contract with your project partner defining what "shipped" means for this project, with metrics and lead times.
+sidebar:
+  order: 7
+assignment:
+  level: team
+  terms: [winter]
+  weight: 3
+  outcomes:
+    SO1: 1
+    SO2: 2
+    SO3: 2
+---
+
+import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+
+<AssignmentMeta submission="Team" due="Winter, week 3 (v1, partner-agreed)" weight="3% of the winter grade">
+  A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).
+</AssignmentMeta>
+
+Your spring grade's largest partner-evaluation facet (Verification and Validation, 40%) is scored against **outcomes**: is the thing in production, merged upstream, reproducible, in real use? Those bars are hard, on purpose. This document is how you stop them from being a surprise: a short, explicit agreement with your project partner about what "shipped" means for **this** project, written while there is still time to act on it.
+
+The core insight, and the thing this course most wants you to internalize: with AI tools, building is rarely the long pole anymore. **The external world is**: maintainer review latency, app store review, IRB and data access, partner IT security review, real-user recruitment. Every one of those clocks is measured in weeks. This document plots them on the calendar.
+
+## What It Must Contain (1 to 2 pages, in `docs/shipped.md`)
+
+1. **The target rung**: which outcome level on your [category's V&V ladder](/assignments/project-partner-evaluation/) you are committing to, in your own words, specific to your project.
+2. **Success metrics**: 2 or 3 measurable signals of "it worked" (users completing a task, benchmark result, uptime, merged PRs), and how at least one will be instrumented for real before the final release.
+3. **Prerequisites and lead times**: everything the target rung requires that your team does not control (accounts, reviews, approvals, recruitment), each with an owner and a start-by date. See the [Shipping guide](/guides/shipping/) for your category's known lead-time bombs.
+4. **User access plan**: who the real users or evaluators are and how you will reach them by the winter real-user gate.
+5. **Partner agreement**: evidence the partner has seen and agreed to this definition (meeting note, email, or survey confirmation).
+
+Start from the [Definition of Shipped template](/definition-of-shipped-template.md).
+
+:::note[Unresponsive partner]
+A non-responsive partner does not tank your grade. If the partner has not engaged after two documented attempts (email plus your regular meeting channel), tell your TA: your mentor or an instructor reviews and signs the definition instead, and the partner-agreement criterion is scored on your documented attempts.
+:::
+
+## Rubric (100 points)
+
+| Criterion | Points | Outcome |
+|---|---|---|
+| Target rung explicit, project-specific, and honest about ambition | 25 | SO2 |
+| Metrics measurable, with a concrete instrumentation plan for at least one | 25 | SO2 |
+| Prerequisites and lead times complete, owned, and dated (nothing discoverable in week 8 of spring should be missing) | 25 | SO1 |
+| Partner agreement evidenced | 15 | SO3 |
+| Writing: brief, unambiguous, usable as a checklist | 10 | SO3 |
+
+**AI use:** AI may draft the document from your Lean Canvas, your requirements, and the Shipping guide's lead-time tables. It must not invent the partner agreement, a named user, or a lead time nobody checked. A fabricated partner confirmation or a made-up start-by date fails the assignment, because this document is a commitment other people will hold you to.
+
+:::caution[Renegotiation is allowed; surprise is not]
+Projects change. If the target rung becomes unreachable for reasons you can document, renegotiate with your partner and update `docs/shipped.md` (git history is the record). Spring partner evaluations go badly when the partner and the team discover in June that they had different definitions all along. That failure mode is the only one this assignment exists to kill.
+:::
+
+## Activities That Prepare This
+
+[Identify Success Metrics](/activities/planning/#identify-success-metrics) for the metrics and instrumentation criterion, and [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis) for prerequisites and lead times, which is the criterion teams most often underestimate. [User Story Mapping](/activities/requirements/#user-story-mapping) from fall feeds the target rung.
+
+**By project category**, because what "shipped" costs in lead time differs completely:
+
+| Category | Activities |
+|---|---|
+| FOSS | [Analyze a FOSS Project](/activities/reflective/#analyze-a-foss-project) to find out what this project's maintainers actually require before a merge |
+| Research | [Identify Success Metrics](/activities/planning/#identify-success-metrics) for the target rung; [Map Your External Approvals](/activities/planning/#map-your-external-approvals) and [Complete an IRB Application](/activities/user/#complete-an-irb-application) for prerequisites and lead times |
+| Consultancy | [Map Your External Approvals](/activities/planning/#map-your-external-approvals) and [Stakeholder Mapping](/activities/planning/#stakeholder-mapping): your top rungs describe actions the partner takes, so the prerequisites are mostly theirs |
+| New Product or Game | [Hypothesis Testing](/activities/requirements/#hypothesis-testing) and [Find Users](/activities/user/#find-users), since strangers take weeks to recruit and the channel must exist by winter |
+
+Browse [planning](/activities/planning/) and [user](/activities/user/) when these run out.

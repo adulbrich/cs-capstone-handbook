@@ -19,7 +19,7 @@ filename_input <- "data/2026-06-15-pp-survey-values.csv"
 course_id <- "CS463"
 
 # Weights for each facet by course
-# Must align with https://capstone.alexulbrich.com/project-evaluation/breakdown/#project-partner-assessment-facets
+# Must align with https://capstone.alexulbrich.com/assignments/project-partner-evaluation/
 facet_weights <- data.table(
     Facet = c(
         "Reflection",

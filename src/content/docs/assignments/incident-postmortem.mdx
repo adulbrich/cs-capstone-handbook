@@ -1,0 +1,64 @@
+---
+title: Incident Postmortem
+description: A blameless analysis of a real setback your project experienced, written the way engineering teams write them.
+sidebar:
+  order: 8
+assignment:
+  level: team
+  terms: [winter]
+  weight: 3
+  outcomes:
+    SO2: 1
+    SO3: 2
+    SO4: 1
+    SO6: 1
+---
+
+import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+
+<AssignmentMeta submission="Team" due="Winter, week 9" weight="3% of the winter grade">
+  Replaces the winter retrospective.
+</AssignmentMeta>
+
+By week 9 of winter, something real has gone wrong: an outage, a bad merge that cost a weekend, a dependency or platform surprise, a security scare, a missed commitment, a partner miscommunication that burned a sprint. Pick the most instructive one and write the document engineering teams write when it happens to them: a **blameless postmortem**.
+
+Blameless means the unit of analysis is the system, not the person. "Alex broke the deploy" is banned; "the deploy process allowed an untested migration to reach production because nothing checked for it" is the genre. The test of blamelessness: every person involved would happily co-sign the document.
+
+:::note[If nothing went wrong]
+Some terms really are quiet. If your team cannot name an incident, write the postmortem on a **near miss**: something that would have caused real damage and did not, because a test failed, a review comment landed, someone noticed in time, or you got lucky. Near-miss analysis is standard practice in industries where waiting for real incidents is too expensive to be a learning strategy, and the document is identical except that the impact section becomes what the impact **would** have been and how close it came.
+
+If you cannot name a near miss either, that is your finding, and it is a real one: nothing in your process is currently surfacing problems early enough to see them. Write that up instead, using the same structure, with the timeline tracing how a plausible failure would travel through your system undetected and the corrective actions aimed at detection. Tell your TA in week 7 rather than week 9, so there is time to scope it properly.
+:::
+
+## Structure (2 to 3 pages, in `docs/postmortems/`)
+
+1. **Summary and impact**: what happened, when, who and what was affected, in factual, measurable terms.
+2. **Timeline**: the sequence of events, decisions, and signals (including missed ones), timestamped where possible.
+3. **Root cause analysis**: why it happened, past the first answer (five-whys or contributing-factors style). Include what made detection slow, if it was.
+4. **What went well**: what limited the damage; honest credit.
+5. **Corrective actions**: 3 to 5 specific changes with owners and dates, distinguishing "prevent recurrence" from "detect faster". At least one must be verifiable at the [week-10 repo checkpoint](/assignments/repo-checkpoints/) or in the [week-10 sprint note](/assignments/sprint-notes/).
+6. **AI involvement, if any**: if AI-generated code or advice contributed to the incident or to the recovery, say so plainly; both are normal and instructive.
+
+Start from the [postmortem template](/postmortem-template.md).
+
+## Rubric (100 points)
+
+| Criterion | Points | Outcome |
+|---|---|---|
+| Impact and timeline factual, specific, and honest | 25 | SO3 |
+| Root cause analysis reaches systemic causes, not first answers or scapegoats | 25 | SO6 |
+| Blameless throughout: systems language, co-signable by everyone involved | 15 | SO4 |
+| Corrective actions specific, owned, dated, and at least one verifiable at the week-10 checkpoint or sprint note | 25 | SO2 |
+| Writing: clear, structured, appropriately brief | 10 | SO3 |
+
+**AI use:** AI may reconstruct the timeline from logs, commits, and chat history, and draft the write-up. It must not invent events or timestamps, or supply a tidier root cause than the evidence supports. A fabricated timeline, or a corrective action with no real owner, fails the assignment. Section 6 asks you to say when AI contributed to the incident; the same honesty applies to the document.
+
+:::tip[Why this replaces a retrospective]
+A retrospective asks "how do we feel about how we work"; a postmortem asks "what does this specific failure teach us about our system". Teams consistently report the second conversation is the one that changes behavior. You still get a term-story retrospective in fall and a full project retrospective in spring.
+:::
+
+## Activities That Prepare This
+
+[Fishbone Diagram](/activities/planning/#fishbone-diagram) for reaching systemic root causes rather than first answers, and [Rehearse a Performance Conversation](/activities/conflict/#rehearse-a-performance-conversation) for the blameless criterion, which is largely a matter of language discipline. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) helps make corrective actions specific and verifiable.
+
+Browse [planning](/activities/planning/) and [conflict resolution](/activities/conflict/) when these run out.

@@ -1,0 +1,68 @@
+---
+title: Workshop Activities
+description: A small set of practice activities run as in-class workshops and graded complete/incomplete, because each one makes several later rubric criteria easier.
+sidebar:
+  order: 8
+assignment:
+  level: team
+  terms: [fall, winter, spring]
+  weight:
+    fall: 2
+    winter: 1
+    spring: 1
+---
+
+import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+
+<AssignmentMeta submission="Team, graded complete/incomplete" due="Fall weeks 1 to 5; winter and spring weeks 2 to 3" weight="Fall 2% (6 items), winter and spring 1% (1 item)" />
+
+Eight activities from the [practice library](/activities/introduction/) are run as workshops in class: six in fall, one in winter, and one in spring. They are graded, but only on whether you did them: there is no quality bar, no bands, and no rubric. Submit the output and you get the points.
+
+They are graded at all for one reason: each one makes several later rubric criteria substantially easier, and every year some teams skip the cheap preparation and pay for it in week 8. The points are small enough that they are not worth optimizing and large enough that skipping them is a visible choice.
+
+## Fall (6 items, 2%)
+
+| Activity | Week | What it makes easier |
+|---|---|---|
+| [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills) | 1-2 | [Team Charter](/assignments/team-charter/) AI context file and confidentiality one-pager |
+| [User Story Mapping](/activities/requirements/#user-story-mapping) | 2-3 | `docs/requirements.md` at every [repo checkpoint](/assignments/repo-checkpoints/); the winter [Definition of Shipped](/assignments/definition-of-shipped/) |
+| [Describe your Architecture](/activities/design/#describe-your-architecture) | 3-4 | `docs/design.md`, your [RFC](/assignments/rfc/), and the [defense](/assignments/defense/) technical-depth question |
+| [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors) | 3-4 | Choosing an RFC topic at all, since the RFC must be a decision that is hard to reverse |
+| [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) | 4-5 | Four criteria across the checkpoints, the RFC, and the defense |
+| [Team Formation Strategies Assessment](/activities/teamwork/#team-formation-strategies-assessment) | 2-3 | Charter conflict and inclusion section; the defense role question |
+
+One of these must land before the RFC draft at the end of week 4: **Map Your One-Way Doors**, because it is what picks your RFC topic. Without it you will be choosing a topic without the vocabulary the rubric expects. **Audit Your Safety Net** follows in weeks 4 to 5 and pays off at the checkpoints and the defense, not the draft.
+
+## Winter (1 item, 1%)
+
+| Activity | Week | What it makes easier |
+|---|---|---|
+| [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment) | 2-3 | The [defense](/assignments/defense/) role and collaboration question; early warning before the [postmortem](/assignments/incident-postmortem/) |
+
+## Spring (1 item, 1%)
+
+| Activity | Week | What it makes easier |
+|---|---|---|
+| [Team Health Assessment](/activities/teamwork/#team-health-assessment) | 2-3 | [Project Retrospective](/assignments/project-retrospective/) team-dynamics criterion; the spring [charter](/assignments/team-charter/) refresh |
+
+The spring assessment closes with the charter refresh: update `docs/charter.md` with what it surfaced (roles for the final term, the decision process, anything the winter postmortem changed) and commit it. Spring has no repo checkpoint to carry the refresh, so this workshop is where it lives.
+
+The teamwork slot rotates through three different instruments so it tells you something new each term rather than asking you to retake the same survey.
+
+## Grading
+
+One Canvas column per term, scored as complete/incomplete per item: 6 checkboxes in fall, 1 in winter and spring. Submit the activity's output, whatever the activity says a good output is. A grader spends seconds per item confirming something real was submitted.
+
+There is no partial credit within an item and no quality judgment. An output that is obviously not the activity (a blank file, an unrelated document) does not count, but a genuine attempt always does.
+
+**Late work:** these are workshop activities tied to a week, so the standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies with one relaxation: a workshop item submitted any time before the end of the term still earns its points. Doing it late costs you the benefit, not the mark.
+
+**Missed the workshop session?** The activity pages are public and self-contained. Read the page, do the activity, submit it.
+
+:::note[NDA teams]
+Every workshop activity produces output that stays inside your repository or your team's own documents. Submit a sanitized note confirming what you did, or tell your TA and cover it in your next check-in. No partner-confidential material needs to leave your boundary for these.
+:::
+
+:::tip[Why these eight and not others]
+They were chosen because each feeds multiple rubric criteria across multiple assignments, works for every project category, and takes about an hour. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) alone feeds four criteria across three assignments and two terms. The more than a hundred other activities in the library are genuinely optional; these eight are the ones that pay off more than once.
+:::
