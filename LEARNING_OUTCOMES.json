@@ -32,18 +32,18 @@
     },
     {
       "id": "L07",
-      "outcome": "Develop and articulate content knowledge and critical thinking in the discipline through frequent practice of informal and formal writing.",
+      "outcome": "Analyze disciplinary concepts through writing.",
       "cognitive_level": "Analyze"
     },
     {
       "id": "L08",
-      "outcome": "Demonstrate knowledge/understanding of audience expectations, genres, and conventions appropriate to communicating in the discipline.",
-      "cognitive_level": "Understand"
+      "outcome": "Create at least one original, extensive, and meaningful written work that adheres to disciplinary norms including specified audience, purpose, and genre.",
+      "cognitive_level": "Create"
     },
     {
       "id": "L09",
-      "outcome": "Demonstrate the ability to compose a document of at least 2000 words through multiple aspects of writing, including brainstorming, drafting, using sources appropriately, and revising comprehensively after receiving feedback on a draft.",
-      "cognitive_level": "Create"
+      "outcome": "Integrate feedback after critical evaluation during the revision process of written work.",
+      "cognitive_level": "Evaluate"
     },
     {
       "id": "L10",
