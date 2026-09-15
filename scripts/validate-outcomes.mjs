@@ -18,7 +18,6 @@ import { join } from "node:path";
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
 const ABET_OUTCOMES = ["SO1", "SO2", "SO3", "SO4", "SO5", "SO6"];
-// WIC (L07-L09) and Beyond OSU (L10); the IDs follow LEARNING_OUTCOMES.json.
 const OTHER_OUTCOMES = ["L07", "L08", "L09", "L10"];
 const MIN_ABET = 2;
 const TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;

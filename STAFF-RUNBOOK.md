@@ -99,16 +99,19 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 | 3 or more credits | CS 462 is 3 credits | Met |
 | 300 or 400 level, juniors and seniors | 462, capstone standing | Met |
 | Regular departmental number | 462 | Met |
-| 4,000 words per student, 1,500 of them low-stakes, one formal piece of 1,500+ words with sources, 35% of the grade from writing | Formal piece: the winter RFC, 2,000+ words revised, cited sources. Low-stakes: two written peer reviews, five contribution lines, a share of five judgment layers, the postmortem, with no length guideline today. Grade from writing: RFC 15 + sprint notes 10 + Definition of Shipped 3 + postmortem 3 = 31%, or 39% if repo checkpoints (docs graded in place) count | Open: #60 |
-| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final only | Open: #60, waiting on the WIC director |
-| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback | Partial, depends on the row above |
-| Student-to-instructor ratio of 25 to 1 or better | One instructor, six TAs, about 300 students; whether GTAs count is the WIC office's call | Confirm with the WIC office |
-| Instructor of record is not a graduate student | Faculty instructor | Met |
-| WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open: #60 |
-| Two distinct audiences and two writing types, one formal, with discipline-specific examples | RFC (formal, technical peers and staff); sprint notes and postmortem (informal, staff and partner); Definition of Shipped (partner contract). Examples: the RFC template, the ADR and requirements guides | Met |
+| 4,000 words per student across assignments | Unmeasured beyond the RFC | Open (#60) |
+| 1,500 words of low-stakes writing per student | Two written peer reviews, five contribution lines, a share of five judgment layers; no length guideline today | Open (#60) |
+| One formal piece of 1,500 or more words using disciplinary sources | The winter RFC: its length floor (on the RFC page) clears this, and its analysis is argued from cited sources | Met |
+| 35% of the grade from writing assignments | Writing assignments are 31% of the winter grade, 39% if repo checkpoints (docs graded in place) count; the weights are the Winter Team Deliverables table on the assignments overview | Open (#60) |
+| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final only. Waiting on the WIC director | Open (#60) |
+| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback; instructor feedback is the row above | Partial (#60) |
+| Student-to-instructor ratio of 25 to 1 or better | Two instructors, six TAs, about 300 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
+| Instructor of record is not a graduate student | Faculty instructors | Met |
+| WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open (#60) |
+| Two distinct audiences and two writing types, one formal, with discipline-specific examples | RFC (formal, technical peers and staff); sprint notes (informal, staff); Definition of Shipped (partner contract). Examples: the RFC template, the ADR and requirements guides | Met |
 | Students evaluate and integrate multiple sources with citations | RFC analysis argued from cited sources; the winter literature review activity | Met |
 | The course addresses AI tools and disciplinary norms | The AI policy on the assignments overview, the generative AI guide, the delegation criterion on the RFC and the defense | Met |
-| Writing Elevation prerequisite | Catalog, not the handbook | Confirm with the WIC office |
+| Writing Elevation prerequisite | Catalog, not the handbook | Confirm (WIC office) |
 
 ## Repo Checkpoints
 
