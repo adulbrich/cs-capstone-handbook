@@ -4,8 +4,8 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 
 ## Cohort Operations
 
-- Each TA owns a cohort of ~14 teams. Check-ins are **in every sprint-note week, Monday to Thursday, before the note is due on Friday**, plus fall week 2 and spring weeks 8 and 10, which have no note: five check-in weeks a term, 14 meetings at 25 to 30 minutes in each, about 7 hours, and none in the week between. The average is the same 3.5 hours a week; the shape is lumpy on purpose, so that every team demos the sprint it just finished and the TA grades the note against a demo seen that week (#23). Weekly per-team check-ins do not fit at 6 TAs; do not promise them.
-- **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint. The TA picks the artifact each student demos, from that student's previous contribution line; the student does not choose (see Check-in Format).
+- Each TA owns a cohort of ~14 teams. Check-ins are **in every sprint-note week, on the day the TA sets**, plus fall week 2 and spring weeks 8 and 10, which have no note: five check-in weeks a term, 14 meetings at 25 to 30 minutes in each, about 7 hours, and none in the week between. The average is the same 3.5 hours a week; the shape is lumpy on purpose, so that every team demos the sprint it just finished and the TA grades the note against a demo seen that week (#23). Weekly per-team check-ins do not fit at 6 TAs; do not promise them.
+- **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint. The TA picks the artifact each student demos, from that student's latest contribution line; the student does not choose (see Check-in Format).
 - The defense is a **separate session in week 7 or 9**, the weeks with no check-ins, so the week-8 demo stays live (see Defense Logistics). An NDA checkpoint walkthrough, when a team needs one, takes that team's nearest check-in and displaces the demo; the team attaches a timestamped video with one segment per student to that sprint's note instead. Check the timestamps exist: an untimestamped team video is not a per-student demo and should be sent back.
 - A student who misses their demo slot sends a timestamped video of their segment within 48 hours. Do not reschedule demos into another check-in: every check-in now carries its own, so there is no spare slot, and the video already exists as a mechanism.
 - Cohort assignments and meeting grids are built in week 0 from the cohort sheet and published in Canvas week 1.
@@ -13,19 +13,19 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 
 ## Check-in Format (25 to 30 minutes, the same script in every cohort)
 
-The check-in verifies the sprint note; it is not a status meeting. One script for every TA, because the detection failures we have had were TAs watching a demo the student chose: the same broken page at four check-ins running, "still working on it". The rule that closes that: **you pick what each student demos, from their previous contribution line, and nothing to open means nothing was done.**
+The check-in verifies the sprint note; it is not a status meeting. One script for every TA, because the detection failures we have had were TAs watching a demo the student chose: the same broken page at four check-ins running, "still working on it". The rule that closes that: **you pick what each student demos, from their latest contribution line, and nothing to open means nothing was done.**
 
-**Before, five minutes.** Read the previous note's contribution lines and pick one artifact per student: the PR or the written document they listed as owned (for the first check-in of a term, pick from the board and the merged PRs). Open the board and the repository's merged PRs for the sprint window; note any student with none. Note the previous "decision needed".
+**Before, five minutes.** Read the latest note's contribution lines (this week's if it is in, otherwise the previous one) and pick one artifact per student: the PR or the written document they listed as owned (for the first check-in of a term, pick from the board and the merged PRs). Open the board and the repository's merged PRs for the sprint window; note any student with none. Note the previous "decision needed".
 
 **Note-less check-ins** keep the script with a different demo. Fall week 2 is the kickoff: charter, roles, repository, and the first sprint's plan, one student each. Spring weeks 8 and 10 demo the release and the handoff, by student. The record gets its per-student line either way.
 
-**Agenda.**
+**Agenda**, in this order, inside 25 to 30 minutes.
 
-- 0 to 2: last time's decision needed. Decided or not, and by whom.
-- 2 to 14: demos, one student at a time, in an order you choose. Name the student and the artifact: "open PR 42, show me the diff, run it." For a written artifact: "open the findings and walk me through what changed the plan." One probe each.
-- 14 to 20: top risk and the one decision the team needs now. Everything else goes async.
-- 20 to 26: your challenge.
-- 26 to 30: actions with an owner and a week. Write the per-student lines before the next team arrives.
+1. Last time's decision needed. Decided or not, and by whom.
+2. Demos, two to three minutes per student, in an order you choose. Name the student and the artifact: "open PR 42, show me the diff, run it." For a written artifact: "open the findings and walk me through what changed the plan." One probe each.
+3. Top risk and the one decision the team needs now. Everything else goes async.
+4. Your challenge.
+5. Actions with an owner and a week. Write the per-student lines before the next team arrives.
 
 **Probes**, one per student, varied across the team: show me the diff, and which lines are yours; what did your reviewer ask you to change, and what changed; what breaks if X (pick X from their diff); where did you stop to check the AI's output, and what did you find; run the tests for this; for a findings document, what did you learn that changed the plan.
 
@@ -50,7 +50,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 
 ## Sprint Note Checks (about 5 minutes per note)
 
-The rubric on the assignment page is the rule; these are the clicks that produce the pass or fail, so that a pass means the same thing in every cohort. Grade the note against the demo you saw that week.
+The rubric on the assignment page is the rule; these are the clicks that produce the pass or fail, so that a pass means the same thing in every cohort. The note and the check-in land in the same week in either order: a note read before the check-in is its agenda, and a demo seen before the note is what the note is checked against.
 
 1. **Working software evidence**: the link opens and the CI run is there; or a plain statement of why nothing works. That statement is fine once; at the third consecutive sprint it is a note in the record.
 2. **What got done**: the board link opens, and each item is something you could go and look at. "Worked on X" fails the item.
@@ -64,7 +64,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 
 | Weeks | Staff activity |
 |---|---|
-| 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings Monday to Thursday, notes graded from Friday against the demos (fall 2 and spring 8 and 10 have no note) |
+| 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings on the TA's day, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
 | 1-2 | Cohorts formed; charters graded (TAs); Qualtrics contact lists built |
 | 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; NDA walkthroughs in check-ins); midterm surveys out in week 5, closing end of week 6 |
 | 5 | All-hands demo day 1 (sampled lineup, ~15 teams in 110 minutes) |
