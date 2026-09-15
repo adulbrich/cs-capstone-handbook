@@ -1,6 +1,6 @@
 ---
 title: Project Partner Evaluation
-description: Rubrics for project partner evaluations, the facet weights per term, and the corroboration process for individual adjustments.
+description: What your project partner scores each term, written as behaviors you can practice and they can observe, plus the corroboration process for individual adjustments.
 sidebar:
   order: 14
 assignment:
@@ -10,139 +10,164 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
-import { Badge } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 <AssignmentMeta submission="Completed by your project partner, not by you" due="Midterm pulse sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
   Team-level by default, with individual adjustment where a partner flags a specific student.
 </AssignmentMeta>
 
-Partner evaluations account for 25% of each student's grade each term, split as follows:
+Your project partner scores 25% of your grade every term, in two surveys:
 
-1. A short **Midterm Evaluation** (5% of the term grade) focusing on responsiveness, professionalism, and delivery quality. It is a pulse check: light for the partner, early warning for the team.
-2. The **Final Evaluation** (20% of the term grade) uses the six facets described below to assess overall project progress and outcomes.
+1. The **Midterm Pulse** (5% of the term grade): three statements about how the team works with them, answered in two minutes.
+2. The **Final Evaluation** (20% of the term grade): the six facets below, each on a 50 to 100 scale.
 
-Fall and winter are **progress-focused**, assessing development milestones and learning growth. Spring shifts to **outcomes**, assessing what was actually delivered. Each of the six facets carries a different weight depending on the term:
+Fall and winter are **progress-focused**; spring scores **outcomes**. The facet weights move with the year:
 
 | Facet | CS 461 | CS 462 | CS 463 |
 |---|---|---|---|
-| Reflection (learning outcomes, feedback, impact, IP) | 15% | 15% | 15% |
+| Reflection | 15% | 15% | 15% |
 | Requirements and Specifications | **40%** | 15% | 5% |
 | Design, Implementation, and Deployment | 15% | **40%** | 20% |
-| Verification and Validation (outcome) | 5% | 10% | **40%** |
+| Verification and Validation | 5% | 10% | **40%** |
 | Teamwork | 15% | 10% | 10% |
-| Communication (abstract, demo, presentation) | 10% | 10% | 10% |
+| Communication | 10% | 10% | 10% |
 
-The migration tells the year's story: fall is won on requirements, winter on building, spring on the shipped outcome. If a team changes projects mid-series the weights do not change, and catching up takes extra effort.
+Fall is won on requirements, winter on building, spring on the shipped outcome. If a team changes projects mid-year the weights do not change.
 
-**Students should discuss expectations with their project partner or mentor at the beginning of each term and review progress regularly.**
+## How the scoring works
 
-The evaluation is collected **through a survey sent to each project partner**. The end-of-term survey includes the six facets below, each with its own rubric, plus an explicit question letting the partner flag concerns about a specific student (which triggers the corroboration review described at the bottom of this page).
+Every facet has three written anchors, at **100**, **80**, and **50**. A partner scores **90** or **70** when the team sits between two anchors. The spring Verification and Validation ladders keep their own rungs.
 
-:::note[Individual Accountability]
-Project partner evaluations are team-level assessments by default. However, if a project partner flags that a specific student did not contribute meaningfully, the instructor may apply **individual grade adjustments** to any or all of the six facets below. See [Individual Accountability](#individual-accountability) for details.
-:::
+Under each facet is a short list headed **What it looks like**. It is the same list for both readers: for you, it is what to do every week; for your partner, it is what to look for before choosing an anchor. Nothing on the lists needs a rubric to be understood, and nothing on them is optional in a professional engagement. Discuss the lists with your partner in the first meeting of every term.
+
+The survey also asks the partner to flag any specific student who did not contribute; that flag starts the corroboration review at the bottom of this page.
+
+## Midterm Pulse (5%)
+
+Three statements, each answered from Strongly disagree to Strongly agree. Sent week 5, closes end of week 6. Each draws on the facet lists below, so the way to score well in week 6 is the way to score well in week 10.
+
+| Item | Statement your partner rates | Drawn from |
+|---|---|---|
+| Responsiveness | The team answers my messages within one working day, and a question I raise comes back with an answer or a date. | Communication |
+| Professionalism | The team arrives prepared, every student speaks in our meetings, and notes with decisions and next steps reach me within a day. | Communication, Teamwork |
+| Delivery quality | What the team has shown me runs, and it matches what we agreed. | Requirements, Design and Implementation |
 
 ## Reflection
 
-The purpose of the Reflection facet is to evaluate your ability to critically analyze learnings and project experiences.
+Whether the team learns from each sprint and shows it.
+
+**What it looks like**
+
+- The team can say, without being asked, what the last sprint taught them and what they changed because of it.
+- Feedback you gave appears in the next iteration, or the team tells you why not.
+- Retrospective outcomes reach you as changed behavior (a new meeting rhythm, a different demo format), not as a document.
+- The team states the project's impact and its intellectual-property terms in their own words.
 
 <Tabs syncKey="terms">
   <TabItem label="Fall & Winter">
-    Points | Criteria
+    Points | Anchor
     -------|---------
-    100    | Demonstrates clear learning progression and applies insights to improve team processes. Regular reflection evident.
-    90     | Shows good learning progression with some application of insights. Regular reflection with minor gaps.
-    80     | Adequate learning progression. Basic reflection on experiences with some insights.
-    70     | Limited learning progression. Minimal reflection with general observations.
-    50     | No clear learning progression. Lacks meaningful reflection.
+    100    | Every sprint the team names one thing it learned and one process change it made because of it; your feedback shows up in the next sprint's work, or you are told why not.
+    80     | The team reflects when asked and has acted on some of your feedback; the changes are sporadic.
+    50     | No reflection you can point to; the same feedback is given twice with no visible effect.
   </TabItem>
   <TabItem label="Spring">
-    Points | Criteria
+    Points | Anchor
     -------|---------
-    100    | Demonstrates deep critical thinking, learning, and insight with specific examples. Identifies future improvements.
-    90     | Shows clear critical thinking, learning, and insight. Provides some specific examples and suggestions for improvement.
-    80     | Reflects on learning and experiences with general insights. May lack specific examples or suggestions.
-    70     | Basic reflection on experiences. Limited insights and general observations.
-    50     | Minimal reflection. Lacks depth, examples, and insights.
+    100    | The team explains, with named examples, what worked, what did not, and what it would do differently, and the handoff reflects it.
+    80     | General lessons with few specifics; the handoff does not show them.
+    50     | No lessons the team can articulate.
   </TabItem>
 </Tabs>
 
 ## Requirements and Specifications
 
-The purpose of the Requirements and Specifications facet is to evaluate your ability to gather, document, and prioritize project requirements.
+Whether the team knows what it is building, in terms you agreed to.
+
+**What it looks like**
+
+- Goals are written down, stated so they can be measured, and you have agreed to them.
+- The team asks before assuming; an unclear item comes back as a question within the week, not as a surprise in a demo.
+- Priorities are explicit: the team can tell you what is in, what is out, and what is next.
+- The requirements (a document or the board) change as understanding changes, and you can see the history.
 
 <Tabs syncKey="terms">
   <TabItem label="Fall & Winter">
-    Points | Criteria
+    Points | Anchor
     -------|---------
-    100    | Requirements gathering shows clear progress and stakeholder engagement. Well-documented evolution of understanding.
-    90     | Good progress in requirements gathering. Most stakeholder needs identified with documentation improving.
-    80     | Adequate progress in requirements. Basic stakeholder engagement with some documentation.
-    70     | Limited progress in requirements gathering. Minimal stakeholder engagement.
-    50     | No clear progress in requirements. Stakeholder needs remain unclear.
+    100    | Written, measurable goals you agreed to; a prioritized backlog you have seen; questions arrive before the work starts.
+    80     | Goals are written but some are vague or unprioritized; you sometimes learn of an assumption after the fact.
+    50     | No written goals you have seen; the team builds on assumptions you never confirmed.
   </TabItem>
   <TabItem label="Spring">
-    Points | Criteria
+    Points | Anchor
     -------|---------
-    100    | Requirements are comprehensive, well-documented, and prioritized. Stakeholder needs are thoroughly addressed.
-    90     | Requirements are detailed and mostly well-documented. Stakeholder needs are largely addressed.
-    80     | Requirements are clear but may lack some detail or prioritization. Stakeholder needs are generally addressed.
-    70     | Basic requirements documented. Some stakeholder needs may be overlooked.
-    50     | Minimal requirements documented. Many stakeholder needs are missing or unclear.
+    100    | Requirements are complete, prioritized, and current; what shipped matches them, or the difference was negotiated with you.
+    80     | Requirements are mostly documented; there is drift between the document and what shipped.
+    50     | Requirements are missing or stale; the delivered work does not map to them.
   </TabItem>
 </Tabs>
 
-Stakeholders refers to the project partners, which can be faculty members, students, industry partners, or else. Make sure that the goals of the project are stated, clear, and measurable. We can't evaluate requirements otherwise.
+Goals that are not stated and measurable cannot be evaluated; that is the first conversation of fall.
 
 ## Design, Implementation, and Deployment
 
-This rubric is very broad and we don't expect to hit a hundred points before Winter or Spring. Fall term does not put a lot of weight on this rubric, but your goal is still to get the implementation and deployment under way to hit the ground running in Winter.
+Whether working software exists, advances, and can be run by someone other than the team. Fall carries little weight here; the goal is to have the implementation and a deployment path under way so winter starts at speed.
+
+**What it looks like**
+
+- You can run or see the current version at any time (a URL, a build, a branch), not only at demos.
+- Milestones you were told about are met, or renegotiated before they slip.
+- Design decisions that affect you (data, integrations, hosting, cost) are explained before they are made.
+- Documentation exists for whoever runs this after the team is gone.
 
 <Tabs syncKey="terms">
   <TabItem label="Fall & Winter">
-    Points | Criteria
+    Points | Anchor
     -------|---------
-    100    | Significant progress in design and implementation. Clear development milestones achieved with good documentation.
-    90     | Good progress with most milestones met. Implementation advancing steadily with adequate documentation.
-    80     | Adequate progress with some milestones met. Basic implementation progress.
-    70     | Limited progress. Few milestones achieved with minimal implementation.
-    50     | No clear progress. Implementation has not advanced meaningfully.
+    100    | Working software you can access every sprint; milestones met or renegotiated ahead of time; decisions that affect you explained first.
+    80     | Progress is visible most sprints; some milestones slip without warning.
+    50     | Nothing runnable to show; progress is described, not demonstrated.
   </TabItem>
   <TabItem label="Spring">
-    Points | Criteria
+    Points | Anchor
     -------|---------
-    100    | Solution design is innovative, well-thought-out, and thoroughly implemented. Deployment is smooth and well-documented.
-    90     | Design is solid and implementation is mostly complete. Deployment is successful with minor issues.
-    80     | Design is adequate and implementation is functional. Deployment is successful but may have some issues.
-    70     | Basic design and implementation. Deployment is functional but with notable issues.
-    50     | Minimal design and incomplete implementation. Deployment is problematic or incomplete.
+    100    | Deployed where it needs to run, documented for its successor, and you or your users have used it.
+    80     | Deployed and functional, with known gaps the team has named.
+    50     | Not deployed, or deployed but unusable without the team present.
   </TabItem>
 </Tabs>
 
-We use the term "deployment" very loosely here. If you have a research project, this means that your code or artifacts are well-documented (think reusable/reproducible). If you have a FOSS project, it means your patches include all the necessary changes (incl. to documentation) and successfully works within the existing codebase with no regression.
+"Deployment" is read loosely: for a research project it means the code and artifacts are documented and reproducible; for a FOSS project it means the patches include every necessary change, documentation included, and work in the existing codebase without regression.
 
 ## Verification and Validation
 
-The Verification and Validation facet looks at the **outcome** of your Capstone project, not just the output.
+The **outcome** of the project, not only the output.
 
-In spring, the scale depends on your project **category**, and the ladders below are the course default for every project.
+**What it looks like**
+
+- Tests run automatically on every change, and the team can show you the last run.
+- Feedback from you or from users is collected every sprint, and you can see where it went.
+- The team states, in writing, what "verified" means for this project and against which expectations of yours.
+- In spring, the team can name the rung of the ladder it is on and the evidence for it.
+
+### Fall & Winter Terms
+
+Points | Anchor
+-------|---------
+100    | A written test and validation approach you have seen; tests run automatically; feedback from you or from users is collected every sprint and visibly acted on.
+80     | Some tests and occasional feedback collection; not yet systematic.
+50     | No tests you know of; no feedback collected.
+
+### Spring
+
+In spring the scale depends on the project **category**, and the ladders below are the course default for every project.
 
 **Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete.** "Prototype works on reasonable inputs" and "system is in production" are written generally because they have to cover every project in the cohort. Your Definition of Shipped says what that rung means for your project: which inputs, which environment, which users, measured how. That is what your partner scores against in spring, and it is why you write it in winter, while there is still time to act on it.
 
 **Custom grading is for genuine deviation, not for restating the ladder.** If your project fits no category, or your partner's expectations differ from the ladder in kind rather than in detail, they can score on a custom scale of [50,100]. Agree that in the Definition of Shipped in winter, not in spring week 10.
 
-Each ladder below belongs to one [project category](/practicalities/categories/). Read them literally. Every top rung describes software that reached somebody: merged upstream, running in production, used by people you do not know, results a stranger can reproduce. **Code that works but that nobody ever ran is not a high rung in any category.** That is the whole reason this course is arranged the way it is: getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it is what the [Shipping guide](/guides/shipping/) maps out for each category.
-
-### Fall & Winter Terms
-
-Points | Criteria
--------|---------
-100    | Clear testing and validation strategy in place. Regular feedback collection and incorporation.
-90     | Good validation approach developing. Some testing and feedback collection evident.
-80     | Basic validation planning. Limited testing or feedback collection.
-70     | Minimal validation planning. Little evidence of testing approach.
-50     | No clear validation strategy. No testing or feedback collection.
+Each ladder belongs to one [project category](/practicalities/categories/). Read them literally. Every top rung describes software that reached somebody: merged upstream, running in production, used by people you do not know, results a stranger can reproduce. **Code that works but that nobody ever ran is not a high rung in any category.** Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it is what the [Shipping guide](/guides/shipping/) maps out for each category.
 
 ### FOSS
 
@@ -188,29 +213,48 @@ Points | Criteria
 
 ## Teamwork
 
-Capstone is fundamentally a team effort.
+Whether the team works as one unit in front of you.
 
-Points | Criteria
+**What it looks like**
+
+- The same people show up; an absence is announced to you in advance, with a stand-in named.
+- Any team member can answer for the project, not only the one who did the work.
+- Disagreements surface as decisions the team brings to you, not as silence or as one person's version.
+- Work is visibly shared: over a term, the demos and the questions come from different people.
+
+Points | Anchor
 -------|---------
-100    | Excels in shared leadership, seamless collaboration, proactive conflict resolution, and innovative contributions exceeding goals, adapting effectively to participation variances.
-90     | Achieves goals via robust collaboration, balanced leadership, and constructive resolution, driven by active contributions.
-80     | Meets core goals with adequate collaboration and basic leadership/conflict management, sustaining momentum despite uneven participation.
-70     | Achieves partial goals with some cohesion, but limited by unresolved issues or workload inefficiencies.
-50     | Fails goals due to poor collaboration, absent leadership, or unmanaged conflicts overwhelming adaptation.
+100    | Whole team present and prepared; anyone can speak to the project; disagreements are resolved and reported to you; work is visibly spread across members.
+80     | Mostly present; one or two members carry the meetings; some friction is visible but managed.
+50     | Members missing without notice; one person does the talking and the work; conflict visible and unmanaged.
 
-In addition to the partner's view of teamwork, students evaluate each other directly every term, and the end-of-spring survey uses the CATME Five Teamwork Dimensions. See [Peer Evaluations](/assignments/peer-evaluations/).
+Students also evaluate each other directly every term, and the end-of-spring survey adds the CATME instrument. See [Peer Evaluations](/assignments/peer-evaluations/).
 
 ## Communication
 
-The Communication facet evaluates students' ability to effectively convey ideas, progress, and outcomes through various means such as email updates, demos, presentations, documentation, and discussions.
+Whether you always know where the project stands without asking.
 
-Points | Criteria
+**What it looks like**
+
+- Every student speaks at every meeting.
+- The team arrives with a written agenda or status, and sends notes with decisions and next steps within a day.
+- Demos show working software, not slides about it.
+- A question gets an answer or an "I will find out by X", and X holds.
+- Written updates arrive on the cadence you agreed, without being chased.
+
+Points | Anchor
 -------|---------
-100    | Clear, concise, and effective communication. Excellent presentations and well-structured documentation.
-90     | Good communication skills. Effective presentations and documentation with minor issues.
-80     | Adequate communication. Presentations and documentation are clear but may lack polish.
-70     | Basic communication skills. Presentations and documentation are understandable but with notable issues.
-50     | Poor communication. Presentations and documentation are unclear or ineffective.
+100    | All of the above, every time: agenda before, every voice during, notes after, working demos, updates on cadence.
+80     | Meetings are prepared and followed up most of the time; one or two students rarely speak; you occasionally have to chase an update.
+50     | Meetings without an agenda or notes; the same one or two people speak; you chase for updates; demos are slides.
+
+## Activities That Prepare This
+
+- [Regular Stand-Up Meetings](/activities/teamwork/#regular-stand-up-meetings): the Teamwork and Communication lists; the habit of every voice, every time.
+- [User Story Mapping](/activities/requirements/#user-story-mapping): the Requirements list; written, prioritized goals your partner has seen.
+- [External Feedback Session](/activities/reflective/#external-feedback-session): the Reflection and Verification lists; feedback collected and visibly acted on.
+
+Browse Teamwork and Communication activities when these run out.
 
 ## Individual Accountability
 
