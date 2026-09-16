@@ -64,7 +64,7 @@ npm run validate:downloads
 npm run validate:dashes
 npm run validate:dates
 npm run check            # Biome, for anything under scripts/ or src/ that is code
-npm run check:prose      # no em dash or emoji in any tracked text file
+npm run check:prose      # no em dash, emoji, or glossary-rejected synonym
 npm run check:commits    # Conventional Commits over origin/main..HEAD
 ```
 
@@ -135,7 +135,8 @@ edited in three. The rule:
 **One canonical statement; everywhere else links to it.** A page may state the
 single number its own reader needs (a project partner needs to know their
 evaluation is 25% without clicking), but no page other than the canonical one
-re-tabulates the whole thing.
+re-tabulates the whole thing. Use the glossary's word for each concept
+(`about/glossary.mdx`); `check-prose` rejects the synonyms it rules out.
 
 Current canonical homes:
 
@@ -149,7 +150,7 @@ Current canonical homes:
 | V&V outcome ladder (one ladder, every outcome type) | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
 | Week-by-week schedule and lecture slots | `introduction/series.mdx` |
-| The handbook's vocabulary and the synonyms it rejects | `about/glossary.mdx` (mirrored for agents in `CONTEXT.md`) |
+| The handbook's vocabulary and the synonyms it rejects | `about/glossary.mdx` (`CONTEXT.md` points agents there) |
 
 Before adding a paragraph that explains something, grep for it. If it already
 exists somewhere, link instead.

@@ -18,6 +18,7 @@
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import nodePath from "node:path";
 
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
@@ -82,21 +83,22 @@ const EXCLUDED_FILES = new Set([
 const HARNESS_FOOTER = /\u{1F916} Generated with \[Claude Code\]\([^)]*\)/gu;
 
 /**
- * The glossary's avoid-list (`src/content/docs/about/glossary.mdx`, mirrored
- * in `CONTEXT.md`). Each entry is the synonym the handbook does not use and
- * the word it uses instead. Checked only under VOCABULARY_PATHS, outside
- * fenced code blocks and inline code, and never on the two pages that list
- * or quote the words themselves.
+ * The glossary's avoid-list (`src/content/docs/about/glossary.mdx`): each
+ * entry is a synonym the handbook does not use and the word it uses instead.
+ * Checked only under VOCABULARY_PATHS, outside fenced code, inline code, and
+ * double-quoted phrases (someone else's word, cited), and never on the
+ * glossary page itself, which lists the words. `glossaryDrift()` keeps this
+ * list and the page's "Not:" items equal in both directions.
  */
 const VOCABULARY = [
   {
     avoid: /\bcohorts?\b/i,
-    use: "TA check-in, resume meeting, the class, or grading sheet",
+    use: "TA check-in, resume meeting, the class, or check-in sheet",
   },
   { avoid: /\bsponsors?\b/i, use: "project partner" },
   {
     allow:
-      /(?:api|http|oauth|mcp|thin|graphql|grpc|generated) clients?\b|clients?[- ](?:side|librar|sdk|code|credential|secret|id\b|app\b|application|generation)|the client is generated|on the client\b|client and (?:the )?server/gi,
+      /\b(?:api|http|oauth|mcp|thin|graphql|grpc|generated|email|desktop|mobile|web|native|git|ssh|database|db) clients?\b|\bclients?[- ](?:side|server|component|librar|sdk|code|credential|secret|id\b|app\b|application|generation)|\bthe client is generated\b|\bon the client\b(?!'s)/gi,
     avoid: /\bclients?\b/i,
     use: "project partner",
   },
@@ -107,7 +109,8 @@ const VOCABULARY = [
     use: "outcome type or project type",
   },
   { avoid: /\bV&V ladders?\b|\bcategory ladders?\b/i, use: "outcome ladder" },
-  { avoid: /\blegacy projects?\b|\bbrownfield\b/i, use: "existing codebase" },
+  { avoid: /\blegacy projects?\b/i, use: "existing codebase" },
+  { avoid: /\bstudent-driven\b/i, use: "student-proposed" },
   { avoid: /\bTrack [AB]\b/, use: "NDA project, with a local note" },
 ];
 const VOCABULARY_PATHS = [
@@ -117,21 +120,61 @@ const VOCABULARY_PATHS = [
   "decks/",
   "STAFF-RUNBOOK.md",
 ];
-const VOCABULARY_EXEMPT = new Set([
-  "src/content/docs/about/glossary.mdx",
-  "src/content/docs/about/acknowledgments.mdx",
-]);
+const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 
-function vocabularyApplies(path) {
-  if (!path || VOCABULARY_EXEMPT.has(path)) {
-    return false;
-  }
-  return VOCABULARY_PATHS.some((prefix) => path.startsWith(prefix));
+/** A path as `git ls-files` prints it, whatever form the caller passed. */
+function repoRelative(filePath) {
+  const rel = nodePath.isAbsolute(filePath)
+    ? nodePath.relative(process.cwd(), filePath)
+    : filePath.replace(/^\.\//, "");
+  return rel.split(nodePath.sep).join("/");
 }
 
-/** The line with inline code removed, so `client.post` is not prose. */
+function vocabularyApplies(filePath) {
+  if (!filePath) {
+    return false;
+  }
+  const rel = repoRelative(filePath);
+  if (rel === GLOSSARY_PATH) {
+    return false;
+  }
+  return VOCABULARY_PATHS.some((prefix) => rel.startsWith(prefix));
+}
+
+/**
+ * The line with inline code and double-quoted phrases removed: `client.post`
+ * is not prose, and a quoted "client fee" is someone else's word, cited.
+ */
 function stripInlineCode(line) {
-  return line.replace(/`[^`]*`/g, " ");
+  return line.replace(/`[^`]*`/g, " ").replace(/"[^"]*"/g, " ");
+}
+
+/**
+ * The glossary's "Not:" items and VOCABULARY must agree in both directions,
+ * or the page promises a check that does not run (or the check rejects a
+ * word the page never explains). Returns the mismatches.
+ */
+export function glossaryDrift() {
+  const text = readFileSync(GLOSSARY_PATH, "utf8");
+  const items = [...text.matchAll(/Not: ([^.\n]+)\./g)].flatMap((m) =>
+    m[1].split(",").map((item) => item.trim())
+  );
+  const problems = [];
+  for (const item of items) {
+    if (!VOCABULARY.some((rule) => rule.avoid.test(item))) {
+      problems.push(
+        `glossary lists "${item}" but check-prose does not reject it`
+      );
+    }
+  }
+  for (const rule of VOCABULARY) {
+    if (!items.some((item) => rule.avoid.test(item))) {
+      problems.push(
+        `check-prose rejects ${rule.avoid} but the glossary has no such "Not:" item`
+      );
+    }
+  }
+  return problems;
 }
 
 /** The vocabulary hits on one prose line (inline code already stripped). */
@@ -246,6 +289,11 @@ function main(argv) {
     report("text", violations);
   } else if (mode === "--all") {
     failed = checkFiles(gitLines(["ls-files"]).filter(isCheckedPath));
+    const drift = glossaryDrift();
+    for (const problem of drift) {
+      process.stderr.write(`${GLOSSARY_PATH}: ${problem}\n`);
+    }
+    failed = failed || drift.length > 0;
   } else {
     failed = checkFiles(argv.filter(isCheckedPath));
   }
