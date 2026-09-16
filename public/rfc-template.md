@@ -53,8 +53,6 @@ Licensing, data use, IP, and the partner confidentiality boundary as they bear o
 - **What safety net made that reasonable**: tests, CI, review gates, a staging environment, a rollback path. Name the ones that actually exist in your repo, not the ones you intend to build.
 - **Where you stopped and validated the result yourself, and why those points.** If this decision is hard to reverse, say what you personally checked before committing to it.
 
-What is assessed is the fit between how far you delegated and how strong your net is, not how sophisticated your tooling is.
-
 ## Response to Feedback
 
 Written at revision time, after the week 5 cross-team review. One short paragraph per reviewer:
