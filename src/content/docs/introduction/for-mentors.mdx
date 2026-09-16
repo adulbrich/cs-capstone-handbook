@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import { LinkCard, CardGrid, LinkButton } from '@astrojs/starlight/components';
+import { portal } from '/src/site';
 
 You are an industry professional, founder, or recent alumnus without a project to hand over. Many of our students propose their own projects (portfolio products, open-source contributions, startup ideas), and every one of those teams must have an approved mentor: someone who validates the direction, keeps scope from creeping, shares career judgment, and opens doors to users, collaborators, or employers.
 
@@ -52,7 +53,7 @@ Submit it. If you are unsure it fits, we help refine it; the [Projects and Teams
 
 <div class="cta text-center">
   <LinkButton
-    href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/"
+    href={portal.home}
     variant="primary"
     icon="external"
     iconPlacement="start"

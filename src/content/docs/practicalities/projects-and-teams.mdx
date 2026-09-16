@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import { LinkCard, LinkButton } from '@astrojs/starlight/components';
+import { portal } from '/src/site';
 
 Every capstone team works one project for three terms with one project partner or mentor. This page covers how that project and that team come to exist, and what happens if either has to change.
 
@@ -15,7 +16,7 @@ Project partners (industry, faculty, staff, entrepreneurs) and students submit p
 
 <div class="cta text-center">
   <LinkButton
-    href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/"
+    href={portal.home}
     variant="primary"
     icon="external"
     iconPlacement="start"
