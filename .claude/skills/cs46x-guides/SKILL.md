@@ -123,6 +123,10 @@ topic.
     Google's postmortem culture). This is what makes the practice feel like
     professional preparation rather than a course invention.
 
+### Purpose line
+
+Every guide opens, after the imports and before any heading or paragraph, with one sentence under 30 words in the form "Read this when ...; it gives you ...". It is the only thing a student reads before deciding whether the page is for them now, so it names the moment and the payoff, nothing else. The guides index is exempt.
+
 ## Frontmatter
 
 ```yaml
