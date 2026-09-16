@@ -73,10 +73,10 @@ An item fails for the team because the note is wrong or missing. An individual's
 | 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings on the TA's day, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
 | 1-2 | Cohorts formed; charters graded (TAs); Qualtrics contact lists built |
 | 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; NDA walkthroughs in check-ins); midterm surveys out in week 5, closing end of week 6 |
-| 5 | All-hands demo day 1 (sampled lineup, ~15 teams in 110 minutes) |
+| 5 | All-hands demo day 1 (sampled lineup, ~15 teams in the hour) |
 | 7 and 9 | Defense sessions, separate from check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
-| 9-10 | Term deliverable grading; checkpoint 2 (graded in finals week); final surveys out in week 9, closing end of week 10; demo day 2 |
+| 9-10 | Term deliverable grading; checkpoint 2 (graded in finals week); final surveys out in week 9, closing end of week 10; demo day 2 (fall and winter) |
 
 ## Defense Logistics
 
