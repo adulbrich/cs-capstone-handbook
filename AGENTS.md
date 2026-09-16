@@ -150,7 +150,7 @@ Current canonical homes:
 | Project types: the four outcome types, origin, starting code, constraints, and the inherited-codebase audit | `practicalities/types.mdx` |
 | V&V outcome ladder (one ladder, every outcome type) | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
-| Week-by-week schedule and lecture slots | `introduction/series.mdx` |
+| Week-by-week schedule | `introduction/schedule.mdx` |
 | The handbook's vocabulary and the synonyms it rejects | `about/glossary.mdx` (`CONTEXT.md` points agents there) |
 
 Before adding a paragraph that explains something, grep for it. If it already

@@ -49,8 +49,14 @@ export default defineConfig({
       ],
       sidebar: [
         {
-          label: "Schedule",
-          link: "/introduction/series/",
+          items: [
+            {
+              autogenerate: {
+                directory: "introduction",
+              },
+            },
+          ],
+          label: "Overview",
         },
         {
           items: [
@@ -71,16 +77,6 @@ export default defineConfig({
             },
           ],
           label: "Learning Objectives and Grading",
-        },
-        {
-          items: [
-            {
-              autogenerate: {
-                directory: "introduction",
-              },
-            },
-          ],
-          label: "Start Here",
         },
         {
           items: [
