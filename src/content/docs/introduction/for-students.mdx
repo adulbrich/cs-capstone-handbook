@@ -1,48 +1,15 @@
 ---
 title: For Students
-description: Learn about project selection, team formation, evaluation criteria, and available project categories. Start planning your Capstone journey with clear objectives and expectations.
+description: What the capstone series asks of you each term, and the five pages you will use every week.
 sidebar:
   order: 2
 ---
 
-import { LinkCard, LinkButton } from '@astrojs/starlight/components';
+import { LinkCard, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
-Welcome to the CS Capstone Handbook! This handbook is a work in progress covering the contents of the CS 461, 462, and 463 classes at Oregon State University.
+You are enrolled in CS 461, 462, and 463, the on-campus, three-term computer science capstone. One team, one project partner or mentor, one project for the whole year. This handbook is the source of truth for everything graded; Canvas mirrors it.
 
-We cover:
-
-- your learning objectives, 
-- project selection, 
-- team formation,
-- project management,
-- various project-related activities,
-- graded assignments,
-- peer and project partner evaluations,
-- the engineering guides,
-- intellectual property,
-- and many other items.
-
-Use the sidebar to navigate the handbook.
-
-## What Are My Capstone Course Options?
-
-:::note
-Hopefully, you ended up on this page because you are already enrolled in CS46X On Campus. But just in case, we list other Capstone options here. The rest of this handbook refers to CS 46X (461/462/463) On Campus 9 Months.
-:::
-
-We have different Capstone options:
-
-- Computer Science (CS)
-  - **CS 461/462/463 on campus 3 terms** (this handbook)
-  - CS 461/462/463 online 3 terms
-  - CS 467 online 1 term (post-bacc only)
-  - Cybersecurity Practicums and Capstone Project (ORTSOC)
-- Electrical and Computer Engineering (ECE)
-  - ECE 441/442/443 on campus 3 terms
-- Multidisciplinary
-  - ENGR 415/416 on Campus 2 terms
-
-It's easy to switch from CS to ECE or ENGR and vice versa. The on-campus lectures happen at the same time. You can browse all the projects by clicking the button below (excluding the ORTSOC Practicum).
+Other capstone options (online CS 46X, the one-term CS 467, ECE 441/442/443, ENGR 415/416) are separate sections. The on-campus lectures share a time slot, so switching between CS, ECE, and ENGR is easy. The portal lists every project across them.
 
 <div class="cta text-center">
   <LinkButton
@@ -56,102 +23,41 @@ It's easy to switch from CS to ECE or ENGR and vice versa. The on-campus lecture
   </LinkButton>
 </div>
 
-## What Kinds of Projects Are Available?
+## What You Do Each Term
 
-We have four possible project categories:
+- **Fall:** bid on a project, meet your partner, write the team charter, and build a walking skeleton. You defend your own contributions live, and you write an RFC.
+- **Winter:** build and verify against real users; define what "shipped" means for your project and run an incident postmortem. Another RFC, another defense.
+- **Spring:** release, measure, publish a landing page, hand the project off, and present at the Engineering Expo. A career retrospective closes the year.
 
-- Free and Open Source Software (FOSS): contribute meaningful patches to an existing FOSS project
-- Consultancy: develop a software solution for a client (company, faculty, etc.) that will be deployed to production
-- New Product or Game: create a product or game and gather actual users (entrepreneurial spirit required)
-- Research: work on a research hypothesis with the goal of publishing a paper
+Every term, your grade is four equal components, none of which can be crammed in week 10. The [assignments overview](/assignments/introduction/) has the components, weights, and due weeks.
 
-We've had some projects in the past that started as a new product then turned research, or consultancy that turned into a FOSS project. 
+## Lectures
 
-Sometimes, projects don't fit neatly into one category. In that case, you'll have to set custom expectations for the project outcome with your project partner and instructors.
+Fridays, 10:00 to 11:50 (10:50 in spring). Each week's slot is a workshop, a guest speaker (industry, faculty, alumni who shipped something), or a demo day, and the [schedule](/introduction/series/#schedule) says which, what is due, and what to read first.
 
-<LinkCard
-  title="Project Categories"
-  description="Learn more about their benefits, challenges, and requirements."
-  href="/practicalities/categories/"
-/>
+## The Pages You Need
 
-We reach out to external parties to find enough consultancy and research projects for the next academic year.
+<CardGrid>
+  <LinkCard title="Schedule" description="Week by week: what happens on Friday, what is due, what to read." href="/introduction/series/#schedule" />
+  <LinkCard title="Assignments Overview" description="Every graded deliverable, its weight, and its due week." href="/assignments/introduction/" />
+  <LinkCard title="Projects and Teams" description="Bidding, team formation, IP and NDA, and how a project or team changes mid-year." href="/practicalities/projects-and-teams/" />
+  <LinkCard title="Project Categories" description="FOSS, Consultancy, New Product or Game, Research: what each one asks for." href="/practicalities/categories/" />
+  <LinkCard title="Guides" description="How to do the engineering work the assignments assess." href="/guides/introduction/" />
+</CardGrid>
 
-If you have your own project idea (it can be of any category, but you need a project partner or mentor), you can submit the project for review before the end of August. If accepted, you'll be able to work on that project with some of your peers.
+## Three Questions Students Ask
 
-<div class="cta text-center">
-  <LinkButton
-    href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/"
-    variant="primary"
-    icon="external"
-    iconPlacement="start"
-    target="_blank"
-  >
-    Submit Your Own Project
-  </LinkButton>
-</div>
+**Could this become a company?** Then build it in the open and ship it. You [hold the IP](/practicalities/projects-and-teams/#ip-nda-and-licensing) by default, you may keep the code closed, and the [Project Handoff](/assignments/project-handoff/) lets the successor be you. The [New Product or Game](/practicalities/categories/#new-product-or-game) category rewards a deployed product with users you do not know, not a secret.
 
-Please note that [each category will be graded differently](/assignments/project-partner-evaluation/#verification-and-validation), and some projects require more effort than others. Expectations can also be customized with your project partner.
+**Can I reuse my honors thesis?** Probably not. Ask the instructors if you think there is a match.
 
-## When Can I Choose a Project and Whom Will I Be Paired With?
+**Are there resources?** Yes, see below.
 
-The list of approved projects will be published in September, right before the start of Fall term. You'll be able to submit your preferences at the start of the term and we will pair you up with like-minded peers.
+## Resources
 
-<LinkCard
-  title="Project Selection"
-  description="Learn more about selecting a project."
-  href="/practicalities/selection/"
-/>
-<LinkCard
-  title="Team Formation"
-  description="Learn more about the different ways of collaborating with others."
-  href="/practicalities/teams/"
-/>
+Project funds and cloud access go through the instruction team; the request form is on Canvas.
 
-If you submitted a project and it was approved, you will be assigned to it automatically. It might not even show up in our project list if you already have a team.
-
-## Are There Lectures?
-
-Lectures are on Fridays from 10:00 AM to 11:50 AM (10:50 AM in Spring). This is an opportunity to connect with your team and instructors in person. What happens in each Friday slot, what is due that week, and what to read and do before it are on the [week-by-week schedule](/introduction/series/#schedule).
-
-We also have guest speakers from the industry, alumni, or faculty members, and alumni who started companies are part of the mix. Our speakers will show up during lecture time, so you can ask them questions and learn from their experience. We prefer in-person speakers where possible; some sessions are online.
-
-## What Kind of Class is This?
-
-Compared to previous classes, the Capstone series is a medium-term team project. You will have to plan and execute work over the course of 9 months (starting in Fall term and ending in Spring term).
-
-You *cannot* approach this class as a regular, assignment-based class. If you tackle assignments last minute, you *will not excel in this class*. Each term, your grade combines four equal components, none of which you can leave until the last week. All graded work, with the weights and the due weeks, is in the [Assignments section](/assignments/introduction/) of this handbook, which Canvas mirrors.
-
-You haven't done much in terms of longer-term team projects, up to now. The Capstone series aims to address this shortcoming and give you the necessary skills to plan and strive under uncertainty. Depending on the project category, your success will depend solely on your capacity to adapt and deliver.
-
-## What is IP/NDA?
-
-IP stands for Intellectual Property. By default, you have the rights to the work you produce during Capstone. Some projects might require you to hand over the IP to your project partner or their company (and will be labeled as such). 
-
-We encourage you to discuss IP with your project partner early in the academic year, even if the project will be open-source (see licensing below).
-
-NDA stands for Non-Disclosure Agreement. It means that some or all of the work you'll be doing or information you will get access to cannot be shared outside of the boundaries set by the agreement. Some project partners or companies might require you to sign an NDA if you are working on proprietary or closed-source code. 
-
-Projects have to specify if they require IP agreements or NDAs.
-
-Instructors cannot sign an IP agreement or NDA. If your project is under NDA, we'll adjust how we assess your work: instead of reading your repository directly, the teaching staff will grade through live screen-shared walkthroughs and sanitized evidence. See the [assignments overview](/assignments/introduction/#nda-projects) for how this works.
-
-## What About Licensing?
-
-Licensing broadly refers to what people can do with your code or work. 
-
-It's a good idea to discuss with your team and project partner the type of license you want for your open-source project if you are not under specific IP or NDA requirements. 
-
-Check [choose a license](https://choosealicense.com/) for more information. You could come up with your own licensing terms. 
-
-If you want to keep your project closed-source (because you want to commercialize it for example), discuss that as well.
-
-## My Project Might Become a Company. Should I Keep the Idea to Myself?
-
-No. A great idea is not worth much if you cannot execute it, and execution is what this course is for. A deployed product that strangers use is worth more to you than a secret, and it is also what the [New Product or Game](/practicalities/categories/#new-product-or-game) ladder rewards.
-
-The path already exists in this handbook. You hold the IP by default (see above). You can keep the project closed-source if you intend to commercialize it (see licensing, above). And the [Project Handoff](/assignments/project-handoff/) allows the successor to be you. If you want help turning the project into a company, the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator) is the campus resource; its [Iterate workshop](/activities/requirements/#osu-advantage-accelerators-iterate-program) is in the activity library. None of that replaces a deployed URL and a dozen users you do not know.
-
-## Can I do my Capstone Project on The Same Subject as my Honors Thesis Project?
-
-Probably not. Reach out to instructors if you think there could be a match.
+- Hardware, software licenses, user research, and light marketing: a small budget plus a hardware inventory, all subject to approval.
+- AWS: shared accounts with a budget cap, wiped at the end of the year, on request.
+- Azure: some OSU departments host projects built for them; the department, not the instruction team, decides.
+- [HPC](https://it.engineering.oregonstate.edu/hpc) and [iLabs](https://engineering.oregonstate.edu/tools-services/iLabs): open to every engineering student after the mandatory training.

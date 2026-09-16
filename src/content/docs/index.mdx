@@ -1,6 +1,6 @@
 ---
 title: CS Capstone Handbook
-description: Your one-stop shop for everything related to your Computer Science Senior Design Project (on-campus CS Capstone) at Oregon State University
+description: The handbook for the Computer Science Senior Design Project (on-campus CS capstone) at Oregon State University
 template: splash
 hero:
   title: |
@@ -13,11 +13,11 @@ hero:
       >
         Capstone
       </span> Handbook
-  tagline: Transform ideas into reality through student-industry and student-faculty partnerships that drive innovation
+  tagline: Three terms, one team, one real project shipped to real users, with an industry or faculty partner.
   image:
     file: ../../assets/hero.jpg
   actions:
-    - text: Discover Capstone
+    - text: Schedule
       link: /introduction/series/
       icon: right-arrow
       variant: primary
@@ -26,7 +26,7 @@ hero:
       icon: list-format
       variant: secondary
     - text: Partner with Us
-      link: "#partner-benefits"
+      link: "#partner-with-us"
       icon: heart
       variant: secondary
 ---
@@ -34,20 +34,18 @@ hero:
 import { LinkCard, CardGrid, Card, LinkButton } from '@astrojs/starlight/components';
 
 <CardGrid>
-  <LinkCard title="For Students" description="Master the skills you need to excel in your capstone journey and launch your career." href="/introduction/for-students/" />
-  <LinkCard title="For Project Partners" description="Discover how to collaborate with talented students on meaningful projects that drive real impact." href="/introduction/for-partners/" />
-  <LinkCard title="For Mentors" description="No project idea? Our students benefit from your guidance for their own projects." href="/introduction/for-mentors/" />
+  <LinkCard title="For Students" description="What each term asks of you, and the five pages you will use every week." href="/introduction/for-students/" />
+  <LinkCard title="For Project Partners" description="Give a team of seniors a real project for three terms; it costs an hour a week." href="/introduction/for-partners/" />
+  <LinkCard title="For Mentors" description="No project idea? Student-proposed teams need an industry guide." href="/introduction/for-mentors/" />
 </CardGrid>
 
 <h2 id="what-students-learn" class="text-center">What Students Learn</h2>
 
-<p>Students spend nine months taking one real project from a problem statement to a released artifact with real users, backed by <a href="/guides/introduction/">engineering guides</a> on requirements, design, testing, security, and deployment. Along the way they build the four things partners tell us they hire for, which are also what founding a company takes: <span class="font-bold">critical thinking</span>, sharp enough to argue a hard technical decision in writing and defend it live; <span class="font-bold">AI literacy</span>, which here means knowing how far to delegate and what safety net makes that reasonable; <span class="font-bold">leadership</span>, measured by decisions actually driven to a conclusion; and <span class="font-bold">collaboration</span>, proven across three terms on the same team. Each one is assessed per student, not inferred from the team's output.</p>
+<p>Students take one project from a problem statement to a released artifact with real users, backed by <a href="/guides/introduction/">engineering guides</a> on requirements, design, testing, security, and deployment. Each student is assessed on four things partners hire for: <span class="font-bold">critical thinking</span>, arguing a hard technical decision in writing and defending it live; <span class="font-bold">AI literacy</span>, knowing how far to delegate and what safety net makes that reasonable; <span class="font-bold">leadership</span>, measured by decisions driven to a conclusion; and <span class="font-bold">collaboration</span>, proven across three terms on the same team.</p>
 
-<h2 id="partner-benefits" class="text-center">Why Partner with Us?</h2>
+<h2 id="partner-with-us" class="text-center">Partner with Us</h2>
 
-<p class="text-center">Join <span class="font-bold">100+ companies and faculty</span> who've accelerated innovation through strategic student partnerships.</p>
-
-<p class="text-center">Our project partners play a crucial role in the success of our students and the CS Capstone program.</p>
+<p class="text-center">Companies, faculty, and founders bring the projects. A project costs you about an hour a week and an evaluation each term.</p>
 
 <div class="cta text-center">
   <LinkButton
@@ -63,25 +61,15 @@ import { LinkCard, CardGrid, Card, LinkButton } from '@astrojs/starlight/compone
 
 <CardGrid>
   <Card title="Technology Exploration" icon="rocket">
-    Experiment with new tools, frameworks, or methodologies through student-led projects without risking core resources.
-  </Card>
-  <Card title="Showcase Leadership" icon="star">
-    Demonstrate your commitment to education and innovation by supporting student-driven projects.
-  </Card>
-  <Card title="Cost-Effective Development" icon="puzzle">
-    Gain high-quality project deliverables at a fraction of the cost of professional development, maximizing your budget.
-  </Card>
-  <Card title="Modern Engineering Practices" icon="seti:eslint">
-    Students apply the latest software engineering best practices, with GenAI-assisted development encouraged throughout the project lifecycle.
-  </Card>
-  <Card title="Mentorship Opportunities" icon="heart">
-    Faculty and industry leaders can mentor the next generation of engineers, fostering professional growth and networking.
-  </Card>
-  <Card title="Early Recruitment Pipeline" icon="seti:pipeline">
-    Identify and engage with top talent for internships or full-time roles before they enter the job market.
+    Try a new tool, framework, or approach through a student project without risking core resources.
   </Card>
   <Card title="Prototype Development" icon="approve-check-circle">
-    Obtain functional prototypes or minimum viable products (MVPs) to accelerate your development timeline.
+    Get a working prototype or MVP that moves your own timeline forward.
+  </Card>
+  <Card title="Early Recruitment Pipeline" icon="seti:pipeline">
+    Work with seniors for nine months before they enter the job market.
+  </Card>
+  <Card title="Mentorship" icon="heart">
+    Guide the next generation of engineers, with or without a project of your own.
   </Card>
 </CardGrid>
-
