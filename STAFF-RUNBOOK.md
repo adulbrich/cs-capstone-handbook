@@ -13,9 +13,9 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 
 ## Resume Cohort Meetings (fall, instructor-run)
 
-- Separate from the TA cohorts. Every student meets an instructor once in fall weeks 3 to 5, in groups of eight for thirty minutes, to react to the three intent lines from the Resume and Intent assignment. At ~250 students that is about 32 meetings, all run by one instructor; the second Friday hour and two fixed office blocks a week absorb them. Slots are published in Canvas in week 2 from the roster.
-- Attendance is the third rubric criterion; the instructor records it in Canvas the same day. A student who misses is rescheduled under the absence policy, not excused.
-- The same instructor meets the same cohorts again by spring week 8 for the Career and Individual Retrospective; keep the cohort list.
+- Separate from the TA cohorts. Every student meets an instructor once in fall weeks 3 to 5, in groups of eight for thirty minutes, to react to the three intent lines from the Resume and Intent assignment. One instructor runs all of them: about six hours per hundred students; the second Friday hour and two fixed office blocks a week absorb them. Slots are published in Canvas in week 2 from the roster.
+- Attendance is the third rubric criterion; the instructor records it in Canvas the same day. A student who asks before the slot is rescheduled; a no-show is not excused.
+- The same instructor meets the same cohorts again in spring, by week 8, for the Career and Individual Retrospective; keep the cohort list and the fall submissions, since the fall Canvas course closes.
 
 ## Check-in Format (25 to 30 minutes, the same script in every cohort)
 
