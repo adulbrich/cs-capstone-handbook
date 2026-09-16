@@ -23,13 +23,13 @@ Everything lives in the handbook: **capstone.alexulbrich.com**
 
 ---
 
-# Project Categories
+# Project Types
 
 | Consultancy | New Product or Game | Research | FOSS |
 |---|---|---|---|
 | Build for a partner | Build for users | Build for knowledge | Build for a community |
 
-Each category has its own definition of "shipped" and its own path there.
+Each outcome type has its own definition of "shipped" and its own path there.
 See the Shipping guide in the handbook.
 
 ---

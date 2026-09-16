@@ -201,19 +201,21 @@ and assignment pages link to activities by anchor. So:
    commit. The build will catch what you miss, which is the point of not
    guessing.
 
-## Project Categories
+## Outcome Types
 
-Projects fall into four categories (see `/practicalities/categories/`): **FOSS**,
-**Research**, **Consultancy**, and **New Product or Game**. Assignment pages
-offer activity options keyed to these categories, because an activity that is
+Every project has one of four **outcome types** (see `/practicalities/types/`):
+**FOSS**, **Research**, **Consultancy**, and **New Product or Game**. The
+outcome type is guidance: it says how the outcome ladder's rungs read for a
+project and which shipping playbook applies. Assignment pages offer activity
+options keyed to it in a **By outcome type** table, because an activity that is
 central for a new product is often meaningless for a team contributing upstream
 to someone else's repository.
 
-When an activity is materially category-specific, say so in the opening
-sentences rather than adding a badge for it. When an activity is general, do not
-mention categories at all. Do not write an activity that silently assumes a
-category: "deploy your app" is unwritable for a FOSS team and "get a PR merged
-upstream" is unwritable for a greenfield product.
+When an activity is materially specific to one outcome type, say so in the
+opening sentences rather than adding a badge for it. When an activity is
+general, do not mention outcome types at all. Do not write an activity that
+silently assumes one: "deploy your app" is unwritable for a FOSS team and "get
+a PR merged upstream" is unwritable for a greenfield product.
 
 ## Page-Level Structure
 

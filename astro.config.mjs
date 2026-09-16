@@ -142,6 +142,7 @@ export default defineConfig({
   // merged into Projects and Teams, and Resource Requests folded into the
   // students page (#69).
   redirects: {
+    "/practicalities/categories": "/practicalities/types/",
     "/practicalities/change": "/practicalities/projects-and-teams/",
     "/practicalities/resources": "/introduction/for-students/#resources",
     "/practicalities/selection": "/practicalities/projects-and-teams/",
