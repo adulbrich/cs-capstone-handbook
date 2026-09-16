@@ -146,7 +146,7 @@ Current canonical homes:
 | Rubric bands, missing-is-zero, evidence rules | `assignments/introduction.mdx` |
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
 | Project category descriptions | `practicalities/categories.mdx` |
-| V&V outcome ladders | `assignments/project-partner-evaluation.mdx` |
+| V&V outcome ladder (one ladder, every category) | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
 | Week-by-week schedule and lecture slots | `introduction/series.mdx` |
 
