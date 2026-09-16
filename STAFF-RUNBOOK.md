@@ -86,7 +86,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 - **Anti-cueing protocol, mandatory.** Draw the speaking order at random in the room and never publish it in advance. Give each student a different artifact and a different "what breaks if X" question. The reviewer-side Communication question needs no variation: each student reviewed different work, so it is cueing-resistant by construction. Without this, whoever goes last has heard several rounds and is answering a question they have had ten minutes to prepare.
 - **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per group per term.
 - Two assessors split the students between them when both attend.
-- Fall week 9 is short: book no defenses on its Thursday or Friday.
+- Fall week 9 is short (see Term Calendar): book no defenses on its Thursday or Friday.
 - Absences: rescheduled within the window, or into a later check-in, if flagged before the session; unexcused no-show scores zero (the TSV has a zero band).
 - Scores and notes entered into Canvas after each session; sheets are the live instrument, Canvas is the retention record for program assessment.
 

@@ -4,17 +4,23 @@
 // a date is a fact that rots on a schedule. Weeks, terms, weekdays and named
 // holidays are fine ("fall week 9, Wednesday before Thanksgiving").
 //
-// Flagged: a term with a year ("Fall 2026"), a month with a year ("August
-// 2026"), a month with a day ("Sep 23", "23 September"), an ISO date, an
-// academic-year range ("2026-27", "2026/27", "AY 2026"), and a bare month
-// name ("reviewed each August", "the Expo is in June"), which is a calendar
-// fact the same way a date is. "May" is excluded from the bare-month rule
-// and from it alone: it is a modal verb on almost every page, and every
-// calendar use of it carries a year or a day, which the rules above catch.
+// Flagged: a month name, bare or abbreviated ("reviewed each August", "the
+// Expo is in June"), which is a calendar fact the same way a date is; a term
+// with a year ("Fall 2026"); an ISO date; and an academic-year range
+// ("2026-27", "2026/27", "AY 2026").
+//
+// "May" and "Mar" are the two exceptions, and only to the bare-name rule:
+// "may" is a modal verb on almost every page and "Mar" is a fragment of
+// ordinary words. Both are still flagged next to a year or a day, which is
+// how a calendar writes them, so nothing is lost. Every other month is
+// capitalized only as a month, so the bare name is enough and a separate
+// month-with-a-year rule would only report the same line twice.
 //
 // Allowed: bare years in history prose ("around 2014"); URLs; inline code
 // spans, because a file name such as `2026-08-17-four-skills.md` is a path,
-// not a date; citation lines carrying an access date ("Accessed:"); and the
+// not a date; reference-list entries, both the numbered line ("[1] M. W.
+// Ohland et al., ... Dec. 2012") and the access date ("Accessed: Mar. 31"),
+// because a source's own publication date is not the course calendar; and the
 // project years on the showcase page, which are history rather than the
 // course calendar. Fenced blocks are checked: the example artifacts in the
 // guides are handbook content and follow the rule like the prose. The
@@ -46,34 +52,68 @@ const TEXT_EXTENSIONS = new Set([
   ".yaml",
 ]);
 
-const MONTHS =
-  "January|February|March|April|May|June|July|August|September|October|November|December";
-const MONTH_ABBR = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
-const MONTHS_NOT_MAY = MONTHS.split("|")
-  .filter((month) => month !== "May")
-  .join("|");
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+// "Sept" precedes "Sep" so the longer abbreviation wins the alternation.
+const MONTH_ABBR = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sept",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const AMBIGUOUS = ["May", "Mar"];
+const bare = [...MONTHS, ...MONTH_ABBR].filter(
+  (name) => !AMBIGUOUS.includes(name)
+);
+const ambiguous = AMBIGUOUS.join("|");
+const DAY = String.raw`\.?\s+\d{1,2}(st|nd|rd|th)?\b(?!:\d)`;
+
 const PATTERNS = [
   [
     "term with a year",
     /\b(Fall|Winter|Spring|Summer|Autumn)\s+(of\s+)?20\d{2}\b/g,
   ],
-  ["month with a year", new RegExp(`\\b(${MONTHS})\\s+20\\d{2}\\b`, "g")],
+  ["month name", new RegExp(String.raw`\b(${bare.join("|")})\b`, "g")],
   [
-    "month with a day",
-    new RegExp(
-      `\\b(${MONTHS}|${MONTH_ABBR})\\.?\\s+\\d{1,2}(st|nd|rd|th)?\\b(?!:\\d)`,
-      "g"
-    ),
+    "ambiguous month with a year",
+    new RegExp(String.raw`\b(${ambiguous})\s+20\d{2}\b`, "g"),
   ],
-  ["day with a month", new RegExp(`\\b\\d{1,2}\\s+(${MONTHS})\\b`, "g")],
+  [
+    "ambiguous month with a day",
+    new RegExp(String.raw`\b(${ambiguous})${DAY}`, "g"),
+  ],
+  [
+    "day with an ambiguous month",
+    new RegExp(String.raw`\b\d{1,2}\s+(${ambiguous})\b`, "g"),
+  ],
   ["ISO date", /\b20\d{2}-\d{2}-\d{2}\b/g],
   ["academic-year range", /\b20\d{2}\s*[-/–]\s*(20)?\d{2}\b/g],
   ["academic year", /\b(AY|academic year)\s+20\d{2}\b/gi],
-  ["month name", new RegExp(`\\b(${MONTHS_NOT_MAY})\\b`, "g")],
 ];
 const URL_RE = /https?:\/\/\S+/g;
 const CODE_SPAN_RE = /`[^`\n]*`/g;
-const CITATION_RE = /\bAccessed:/;
+const CITATION_RE = /\bAccessed:|^\s*(\*\*)?\[\d+\]/;
 
 function* walk(path) {
   if (statSync(path).isDirectory()) {
