@@ -209,7 +209,9 @@ outcome type is guidance: it says how the outcome ladder's rungs read for a
 project and which shipping playbook applies. Assignment pages offer activity
 options keyed to it in a **By outcome type** table, because an activity that is
 central for a new product is often meaningless for a team contributing upstream
-to someone else's repository.
+to someone else's repository. "Project type" is the wider word: the Project
+Types page also covers where a project comes from, where its code starts, and
+what constrains it.
 
 When an activity is materially specific to one outcome type, say so in the
 opening sentences rather than adding a badge for it. When an activity is

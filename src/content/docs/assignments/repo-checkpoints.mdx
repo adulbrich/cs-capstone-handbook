@@ -52,7 +52,7 @@ Each term's second checkpoint carries a gate that pulls the year's risk forward:
 
 | Checkpoint | Gate |
 |---|---|
-| Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real, **and the week 10 production target is written down and agreed with your partner** |
+| Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real, **and the week 10 production target is written down and agreed with your partner**; teams starting in an existing codebase also have their inherited-codebase audit written ([Project Types](/practicalities/types/#where-the-code-starts) says what it covers) |
 | Fall, week 10 | **"Hello, production"**: a [walking skeleton](/walking-skeleton-prototype-template.md) (the thinnest end-to-end slice of your system that actually runs) deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
 | Winter, week 5 | Integration health: the skeleton has organs; CI meaningful; real-user session scheduled |
 | Winter, week 10 | **Release candidate**: installable/deployable by a stranger, plus evidence of at least one real-user session |
@@ -80,7 +80,7 @@ Teams that discover in week 9 that their partner never intended to give them a p
 Each criterion has one thing graders check first, so you can check it yourself:
 
 - **Living docs**: one recent feature, compared against `docs/design.md`. If the doc describes a system that no longer exists, this criterion is where it shows.
-- **Term gate**: met or not met, judged against the table above and nothing else.
+- **Term gate**: met or not met, judged against the table above and nothing else. For a team starting in an existing codebase, the fall week 5 gate includes the inherited-codebase audit: present, and covering what runs, what does not, tests and CI, dependencies, and open risks.
 - **Build health**: the safety net is judged **relative to how your team works**, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team writing most code by hand, and neither approach is penalized: what is graded is whether the net catches what your way of working lets through. Gates belong on the changes that are expensive to undo (schema, authentication, deployment, migrations), not spread uniformly. A team with no CI that hand-merges agent output to production fails this regardless of whether anything has broken yet.
 - **Decision and risk hygiene**: does the risk register have owners and a ranking, and is there exactly one of it?
 - **Contribution traceability**: this grades whether the **infrastructure** for attribution exists, not whether every student contributed. Individual non-contribution is handled by the [individual modifier](/assignments/introduction/#individual-accountability-on-team-work) and never double-counted here.
@@ -95,7 +95,7 @@ The checkpoint is a 15-minute screen-shared walkthrough in your cohort check-in 
 
 Checkpoints happen four times across fall and winter, and each gate needs different preparation, so the recommendations are grouped by gate rather than offered as one list.
 
-**Fall week 5, rails stood up:** [Describe your Architecture](/activities/design/#describe-your-architecture) and [User Story Mapping](/activities/requirements/#user-story-mapping) for the living docs; [Kanban Board Setup](/activities/planning/#kanban-board-setup) and [Definition of Done](/activities/planning/#definition-of-done) once, for the gate and build health; [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) for the safety-net half.
+**Fall week 5, rails stood up:** [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase) for the inherited-codebase audit if you start in someone else's code; [Describe your Architecture](/activities/design/#describe-your-architecture) and [User Story Mapping](/activities/requirements/#user-story-mapping) for the living docs; [Kanban Board Setup](/activities/planning/#kanban-board-setup) and [Definition of Done](/activities/planning/#definition-of-done) once, for the gate and build health; [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) for the safety-net half.
 
 **Fall week 10, "hello, production":** [Deployment Plan](/activities/design/#deployment-plan), [Plan Prototype](/activities/planning/#plan-prototype), and [Software Release and Versioning](/activities/planning/#software-release-and-versioning) for the gate; [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow) for build health.
 
@@ -107,7 +107,7 @@ Checkpoints happen four times across fall and winter, and each gate needs differ
 
 | Outcome type | Activities |
 |---|---|
-| FOSS | [Analyze a FOSS Project](/activities/reflective/#analyze-a-foss-project) before the fall week 5 gate, to learn the upstream review culture while the stakes are low; [Software Release and Versioning](/activities/planning/#software-release-and-versioning) for upstream conventions |
+| FOSS | [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase) before the fall week 5 gate, to learn the upstream review culture while the stakes are low; [Software Release and Versioning](/activities/planning/#software-release-and-versioning) for upstream conventions |
 | Research | [Define Your Research Questions](/activities/requirements/#define-your-research-questions) and [Map Your External Approvals](/activities/planning/#map-your-external-approvals) in fall weeks 1 to 2; [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline) before winter week 5; [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible) and [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log) for winter week 10 |
 | Consultancy | [Map Your External Approvals](/activities/planning/#map-your-external-approvals) for the partner's IT and security review, which is the single most common reason a consultancy project misses its gate; [Stakeholder Mapping](/activities/planning/#stakeholder-mapping); [Deployment Plan](/activities/design/#deployment-plan) for the staging instance in the partner's environment |
 | New Product or Game | [Lean Canvas](/activities/requirements/#lean-canvas) and [Hypothesis Testing](/activities/requirements/#hypothesis-testing) in fall; [Plan Prototype](/activities/planning/#plan-prototype) for the week 10 gate; [Find Users](/activities/user/#find-users) then [Engage Users](/activities/user/#engage-users) for the winter real-user gate |
