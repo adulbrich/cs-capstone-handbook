@@ -105,6 +105,17 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 | `career-retrospective/` | Resume criterion split into Resume (10) and Intent versus outcome (10), the read-back of the fall intent lines (#74); re-import before spring |
 | `resume-and-intent/` | **New**, fall only: three pass/fail criteria (resume attached 30, three intent lines 40, cohort meeting attended 30). Create the assignment in the fall Individual Evidence group at 2% and import this rubric. The Defense stays at its rubric points; its fall group weight drops from 10% to 8% |
 
+## Rubric TSVs Requiring Re-Import: Criteria as Checks (#84)
+
+Points and tags unchanged; criterion names and band descriptions changed, so re-import:
+
+| File | What changed |
+|---|---|
+| `rfc/` | Writing: length, sections in order, sourced claims |
+| `incident-postmortem/` | Impact and timeline: numbers, timestamps, missed signals; Writing: length, sections, facts |
+| `team-charter/` | Writing: length, sections, quotable commitments |
+| `project-retrospective/` | Forward-looking section: three first actions, linked |
+
 ## Schedule
 
 ### CS 461 (Fall Term)
