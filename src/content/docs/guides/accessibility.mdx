@@ -1,17 +1,25 @@
 ---
 title: Accessibility Testing
-description: "Automated gates, the manual pass, and a session with someone who uses assistive technology: three layers, cheapest first."
+description: "Automated gates, the manual pass, and a session with someone who uses assistive technology: three checks that answer different questions."
 sidebar:
   order: 5
 ---
 
-Read this in the sprint where a real interface first exists, not in the one before the Expo. Accessibility work is cheap while the markup is still being written and expensive once a layout is finished.
+import { LinkCard } from '@astrojs/starlight/components';
+
+Read this when a real interface first exists; it gives you the three checks that find what a working mouse and a working pair of eyes never will.
 
 If people will use your software, some of them will use it with a screen reader, a keyboard only, at 200% zoom, or with low vision. Accessibility is not a polish task for the last sprint; it is a correctness property, and like every other correctness property it belongs in CI.
 
+Without it:
+
+- A critical flow turns out to be uncompletable without a mouse, discovered the week of the Expo.
+- A partner in the public sector cannot accept the software, because the institution procures against a standard the team never read.
+- The automated score is green and the product is still unusable, because nobody ever tried it with the keyboard.
+
 The reference standard is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA. That gives you a target instead of a vibe, and it is the level most institutions and public-sector partners require.
 
-Three layers of work sit behind that target, and they answer different questions. Automated rules tell you whether the mechanical requirements are met. Your own manual pass tells you whether the software is usable without a mouse or without sight. A session with someone who relies on assistive technology every day tells you whether it is any good. The first two find broken things; only the third tells you what daily use feels like.
+Three kinds of check sit behind that target, and they answer different questions. Automated rules tell you whether the mechanical requirements are met. Your own manual pass tells you whether the software is usable without a mouse or without sight. A session with someone who relies on assistive technology every day tells you whether it is any good. The first two find broken things; only the third tells you what daily use feels like.
 
 The [Testing Strategy guide](/guides/testing-strategy/) has the rest of the testing picture, and these checks belong in the same CI run and the same pre-demo routine as everything there.
 
@@ -46,9 +54,20 @@ Where feasible, recruit one participant who uses a screen reader, voice control,
 
 Where that is not feasible in your timeline, the honest substitute is a task-based session under simulated constraint: a teammate who did not build the feature completes the flow keyboard-only or with a screen reader on. State plainly in your writeup that this was simulated. Simulation finds broken things; it does not tell you what daily use feels like, and pretending otherwise is the mistake worth avoiding.
 
+<LinkCard
+  title="Designing for Accessibility"
+  href="/activities/design/#designing-for-accessibility"
+  description="The design-time version: what to get right in the markup before any of these checks run."
+/>
+
+<LinkCard
+  title="Test with an Assistive Technology User"
+  href="/activities/user/#test-with-an-assistive-technology-user"
+  description="The session itself: recruiting, the task list, and what to write down."
+/>
+
 ## Best Practices for Accessibility Testing
 
-- **Gate in CI, not before the deadline.** A violation caught in a pull request costs minutes. The same violation found the week before the Expo costs a redesign.
 - **Start at the lint layer.** It is the cheapest rule set you will ever add and it catches the most common defects before a browser is involved.
 - **Do the keyboard pass on every flow you demo.** It takes two minutes and it is the check that most often finds something.
 - **Write down what was simulated.** A teammate with a screen reader on is a useful test and a different test from a daily user. Say which one you ran.
@@ -59,7 +78,7 @@ Where that is not feasible in your timeline, the honest substitute is a task-bas
 
 Most capstone teams do none of this and nothing visible happens, because the graders, the partners and the teammates all use a mouse and a screen. That is exactly why it gets skipped: the cost of skipping it lands on people who are not in the room.
 
-Automated tools are oversold and still worth running. [Deque's own audit data](https://www.deque.com/automated-accessibility-coverage-report/) puts axe-core at 57% of issues by volume, and counting WCAG success criteria instead gives a lower figure. A green automated run is not an accessible product; it is the mechanical half done.
+Automated tools are oversold and still worth running. A green automated run is not an accessible product; it is the mechanical half of one, and the [coverage figures above](#manual-accessibility-testing) are the reason the manual pass is not optional.
 
 The manual pass is the highest-yield thing on this page and takes the least equipment. Unplugging a mouse costs nothing and finds real defects in most student projects on the first try.
 

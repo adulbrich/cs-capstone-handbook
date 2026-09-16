@@ -25,6 +25,7 @@ Different projects need different confidence, so decide what yours needs before 
 - **Who uses it, and when do they first touch it?** Software handed to non-technical users after the year ends makes usability testing mandatory. A pipeline whose only user is a data scientist makes reproducibility the thing to test.
 - **Where would a failure be most expensive?** A payment flow or an authentication path earns rigorous automated coverage; an about page does not. A model pipeline earns validation against a known baseline.
 - **Which sprints include real users?** User testing is planned or it does not happen. Put the sessions on the board in the sprint you intend to run them.
+- **What does your Definition of Done already promise?** If it requires green tests in CI, you need the pipeline before you need more test types. If it requires partner sign-off, you need a demo and feedback loop on the board.
 
 Write the answers into your working agreement or `CONTRIBUTING.md`, in a few lines: which kinds of testing the team does, when automated tests are required, and when users are involved.
 

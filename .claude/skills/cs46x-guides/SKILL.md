@@ -186,18 +186,24 @@ others link:
 - **CI and branch protection**: the workflow file in `devops.mdx`, the
   repository settings in `git-and-github.mdx`. `testing-strategy.mdx` links
   both and owns what to test.
-- **Accessibility**: `accessibility.mdx` owns all three layers.
-  `testing-strategy.mdx` says only that it belongs in CI and links.
+- **Accessibility**: `accessibility.mdx` owns all three checks.
+  `testing-strategy.mdx` keeps one short pointer under Verification and
+  another under Validation, each naming what its check is for, and links.
 
 ## Length
 
 The validated guides run 950 to 1,750 words. If a guide passes about 3,000
-words, look for a section that wants to be its own guide: that is where
-`accessibility.mdx` and `ai-project-setup.mdx` came from (#113).
-`testing-strategy.mdx` sits just over the line and earns it by covering
-several distinct testing layers, from unit tests through partner demos to
-research reproducibility. Word count is a diagnostic, not a target: trimming a
-working section to hit a number makes the page worse.
+words, look for a section that wants to be its own guide.
+
+**The test is the reader.** If you can name someone who reads the candidate
+section *instead of* the rest of the page, it is a split; `accessibility.mdx`
+and `ai-project-setup.mdx` both came out that way (#113). If everyone who
+reads one reads the other, it is not a split, and the fix is to cut whatever
+dates fastest, which is almost always a tool catalog.
+
+Word count is a diagnostic, not a target. A page that genuinely covers several
+distinct layers can sit over the line; when one does, write the reason on the
+issue that measured it rather than trimming a working section to hit a number.
 
 ## What Guides Must Not Contain
 

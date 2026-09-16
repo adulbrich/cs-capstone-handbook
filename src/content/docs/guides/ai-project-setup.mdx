@@ -7,13 +7,13 @@ sidebar:
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-Read this in the first sprint, once the repository exists and before the team has written much code with AI help. It is configuration, not practice: the [Generative AI guide](/guides/generative-ai/) has the habits, and this page has the files that make those habits cheap to follow.
+Read this in the first sprint, once the repository exists; it gives you the four files that make an AI tool understand your project instead of guessing at it.
 
-The difference between a helpful AI assistant and a frustrating one is almost entirely about context. A tool with no knowledge of your project produces generic suggestions: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. The same tool, given your architecture, your conventions and your constraints, produces suggestions that fit.
+A tool with no knowledge of your project produces generic suggestions: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. The same tool, given your architecture, your conventions and your constraints, produces suggestions that fit. This page is the configuration; the [Generative AI guide](/guides/generative-ai/) is the practice.
 
-Four things carry that context, and all four are files in your repository, which is the point: they are reviewed, versioned, and shared, so every teammate's tool behaves the same way. [agents.md](https://agents.md/) is the cross-tool convention for the first, and the [Model Context Protocol](https://modelcontextprotocol.io/) is the open standard behind the second.
+Three of the four things that carry that context are files you commit, which is the point: they are reviewed, versioned and shared, so every teammate's tool behaves the same way on the same code. [agents.md](https://agents.md/) is the cross-tool convention for the instructions, and the [Model Context Protocol](https://modelcontextprotocol.io/) is the open standard behind the servers. The fourth, your tool's own memory, is none of those things, which is the point of the last section.
 
-Without them, each teammate prompts differently, gets different answers, and the codebase drifts toward inconsistency that nobody can point at a commit for.
+Without them, each teammate prompts differently, gets different answers, and the codebase drifts toward an inconsistency nobody can point at a commit for.
 
 ## Project-Level Instructions
 
@@ -83,7 +83,9 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) allows AI t
 - **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**: allows your AI tool to interact with a browser for testing and debugging web applications.
 - **Database MCP servers**: let your AI tool query your database schema directly rather than guessing at table structures.
 
-Many other MCP servers exist and new ones appear frequently. Explore what is available for your stack and tell your AI tool how and when to use them.
+Which servers a tool loads is itself configuration, and it belongs in the repository with everything else: most tools read a JSON file at a known path (`.mcp.json` at the root, `.cursor/mcp.json`, `.vscode/mcp.json`), so commit it and every teammate gets the same servers. Keep credentials out of it and reference environment variables instead.
+
+Many other servers exist and new ones appear frequently. Explore what is available for your stack and tell your tool when to use them.
 
 ## Skills
 
@@ -111,13 +113,21 @@ Like project-level instructions, skills should be version-controlled so the whol
 - **[obra's Superpowers](https://github.com/obra/superpowers)**: brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development. It also includes skills for writing and testing new skills.
 - **[Matt Pocock's skills](https://github.com/mattpocock/skills)**: spec and ticket flows, TDD, code review, domain modelling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
 
-Several of these are not conveniences but **safety-net components**: a separate architectural-review pass, a code-review pass, and a plan-before-you-build step are exactly the gates that make delegating the rest reasonable. Run the hands-on version in [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills).
+Several of these are not conveniences but **safety-net components**: a separate architectural-review pass, a code-review pass, and a plan-before-you-build step are exactly the gates that make delegating the rest reasonable.
+
+<LinkCard
+  title="Set Up Your Repository's Skills"
+  href="/activities/ai/#set-up-your-repositorys-skills"
+  description="The hands-on version: pick the skills your team will actually run and commit them."
+/>
 
 One warning: a skill is someone else's opinion, executed automatically. Read one before you install it, because your team owns whatever it produces.
 
 ## Memory and Context
 
-Some tools support persistent memory across sessions. Use this to store project-specific knowledge that the AI should retain: architectural decisions, common patterns, known gotchas, or recurring instructions you find yourself repeating.
+Some tools keep memory across sessions: things the assistant noticed or was told once and retains. It is useful for the small stuff you keep repeating, such as a command that always needs a flag or a directory that is generated and should never be edited.
+
+It is also the one item on this page that is **not** shared. Memory lives on one person's machine, in one tool, and your teammates never see it, so anything that would change how another person's tool behaves belongs in `AGENTS.md` instead. Treat memory as a convenience for you and the committed files as the team's contract. A team that puts an architectural constraint in memory has written it down in the one place nobody else can read.
 
 ## Best Practices for AI Project Setup
 
