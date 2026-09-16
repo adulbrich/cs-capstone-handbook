@@ -1,0 +1,2 @@
+Team Health Assessment		true	10	Pass	The assessment is completed and docs/charter.md is refreshed with what it surfaced.	0	Fail	Item missing, or the charter is not refreshed.
+Identify Success Metrics		true	10	Pass	A short list of metrics that would prove the project worked for its users, each with how it will be measured and where it will be shown.	0	Fail	Item missing, or metrics with no measurement plan.

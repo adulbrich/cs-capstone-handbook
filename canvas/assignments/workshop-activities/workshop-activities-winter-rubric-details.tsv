@@ -1,0 +1,3 @@
+Dependency Mapping or Critical Path Analysis		true	10	Pass	A critical path from today to the Definition of Shipped rung, with every external clock (review, approval, access, recruiting) named and its start set.	0	Fail	Item missing, or no external clock named.
+Team Dysfunctions Assessment		true	10	Pass	The assessment is completed and the team records what it surfaced.	0	Fail	Item missing.
+Test Plan		true	10	Pass	A test plan naming what is tested at which level before real users arrive, with success criteria per item.	0	Fail	Item missing, or no success criteria.

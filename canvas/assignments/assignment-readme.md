@@ -3,7 +3,7 @@
 - This directory holds one validated `*-rubric-details.tsv` per live assignment, for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
 - `scripts/validate-outcomes.mjs` reconciles every TSV against the handbook rubric table it mirrors, in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
-- Two directories hold one TSV per term because the item count differs by term. `workshop-activities/`: `-fall-` (6 rows, CS 461) and `-term-` (1 row, CS 462 and CS 463; edit the Pass description to name that term's instrument). Each item is 10 points, so the Canvas totals are 60 / 10 / 10 and the percentage comes from the assignment-group weight, not the rubric. `individual-contribution/`: `-fall-` (4 x 25), `-winter-` (5 x 20), `-spring-` (34 / 33 / 33), one criterion per sprint scored Full / Half / Zero; the Half band is exactly half (12.5, 10, 17 / 16.5), which Canvas rubric ratings accept. The grader logic is in the Individual Contribution Modifier section of `STAFF-RUNBOOK.md`.
+- Two directories hold one TSV per term because the item count differs by term. `workshop-activities/`: `-fall-` (4 rows, CS 461), `-winter-` (3 rows, CS 462), `-spring-` (2 rows, CS 463). Each item is 10 points, so the Canvas totals are 40 / 30 / 20 and the percentage comes from the assignment-group weight, not the rubric. `individual-contribution/`: `-fall-` (4 x 25), `-winter-` (5 x 20), `-spring-` (34 / 33 / 33), one criterion per sprint scored Full / Half / Zero; the Half band is exactly half (12.5, 10, 17 / 16.5), which Canvas rubric ratings accept. The grader logic is in the Individual Contribution Modifier section of `STAFF-RUNBOOK.md`.
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is now the source of truth for all graded work.** Canvas mirrors the handbook; when in doubt, the handbook wins, and rubric points in the TSV files must match the handbook rubric tables exactly.
 
@@ -30,7 +30,7 @@ Points are unchanged in every case; only labels and band descriptions moved. The
 
 **AI policy changed in all three syllabi.** "Briefly disclose any AI use" is gone. The policy is now: state what you delegated, what safety net made that reasonable, and where you validated yourself, with grading on the fit rather than on tool sophistication.
 
-**New Canvas item to create:** one **Workshop Activities** column per term, graded complete/incomplete per item. Fall is 2% across 6 items, winter 1% across 1 item, spring 1% across 1 item. See [Workshop Activities](https://capstone.alexulbrich.com/assignments/workshop-activities/) for the item list and timing. Grading is confirming something real was submitted; there is no quality bar and no rubric, so a grader spends seconds per item. **The old extra-credit activity items are retired.**
+**New Canvas item to create:** one **Workshop Activities** column per term, graded complete/incomplete per item. Fall is 2% across 4 items, winter 1% across 3 items, spring 1% across 2 items. See [Workshop Activities](https://capstone.alexulbrich.com/assignments/workshop-activities/) for the item list and timing. Grading is confirming something real was submitted; there is no quality bar and no rubric, so a grader spends seconds per item. **The old extra-credit activity items are retired.**
 
 **Team Deliverables weights were re-cut to fund this**, keeping every term at 25%. Sprint Notes and Repo Checkpoints are untouched, because they carry the individual contribution modifier and the living-docs gate respectively:
 
@@ -92,6 +92,12 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 - `rfc/`: `L07` moved from Feedback given to Technical tradeoff analysis, whose Exceeds band now asks for cited sources.
 - `spring-release/`, `project-landing-page/`, `project-retrospective/`: the writing-quality criterion is tagged `SO3` instead of `L08`.
 
+## Rubric TSVs Requiring Re-Import: Workshops Re-Selected (#68)
+
+| File | What changed |
+|---|---|
+| `workshop-activities/` | `-fall-` now 4 rows (Team Formation, User Story Mapping, Describe your Architecture, Audit Your Safety Net); `-term-` replaced by `-winter-` (3 rows: Dependency Mapping, Team Dysfunctions, Test Plan) and `-spring-` (2 rows: Team Health, Identify Success Metrics). Re-create all three columns |
+
 ## Rubric TSVs Requiring Import: Resume and Intent (#73)
 
 | File | What changed |
@@ -105,7 +111,7 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 
 | Week | Due |
 |------|-----|
-| 1-5 | Workshop Activities (6 items, complete/incomplete) |
+| 1-3 | Workshop Activities (4 items, complete/incomplete) |
 | 2 | Team Charter; Resume and Intent |
 | 3-5 | Resume and Intent cohort meetings (instructor) |
 | 4 | Sprint Note 1; RFC draft |
@@ -121,7 +127,7 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 | Week | Due |
 |------|-----|
 | 2 | Sprint Note 1 |
-| 2-3 | Workshop Activities (1 item, complete/incomplete) |
+| 1-3 | Workshop Activities (3 items, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
 | 4 | Sprint Note 2; RFC draft |
 | 5 | Repo Checkpoint 1 (integration health); RFC cross-team feedback |
@@ -136,7 +142,7 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 | Week | Due |
 |------|-----|
 | 2 | Sprint Note 1 |
-| 2-3 | Workshop Activities (1 item, complete/incomplete) |
+| 2-3 | Workshop Activities (2 items, complete/incomplete) |
 | 4 | Sprint Note 2 |
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |

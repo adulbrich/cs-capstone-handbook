@@ -1,6 +1,4 @@
-Set Up Your Repository's Skills		true	10	Pass	A skill collection is installed and the team reports what changed in the output compared with prompting freehand; or an equivalent CONTRIBUTING.md checklist if tooling cannot load skills.	0	Fail	Not submitted, or the submission is not this activity.
+Team Formation Strategies Assessment		true	10	Pass	The assessment is completed and the team records what it surfaced.	0	Fail	Not submitted, or the submission is not this activity.
 User Story Mapping		true	10	Pass	A story map exists covering the current scope, and docs/requirements.md reflects it.	0	Fail	Not submitted, or the submission is not this activity.
 Describe your Architecture		true	10	Pass	An architecture diagram plus a brief explanation of each component, committed to docs/design.md.	0	Fail	Not submitted, or the submission is not this activity.
-Map Your One-Way Doors		true	10	Pass	The team's next ten decisions are classified one-way or two-way, with a validator named for each one-way door. A list where nearly everything is one-way has not made the distinction.	0	Fail	Not submitted, or the submission is not this activity.
 Audit Your Safety Net		true	10	Pass	Honest statement of how much is delegated to AI tools, what would catch it if wrong, and one named gap with the smallest change that closes it.	0	Fail	Not submitted, or the submission is not this activity.
-Team Formation Strategies Assessment		true	10	Pass	The assessment is completed and the team records what it surfaced.	0	Fail	Not submitted, or the submission is not this activity.
