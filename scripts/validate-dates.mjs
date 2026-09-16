@@ -5,8 +5,12 @@
 // holidays are fine ("fall week 9, Wednesday before Thanksgiving").
 //
 // Flagged: a term with a year ("Fall 2026"), a month with a year ("August
-// 2026"), a month with a day ("Sep 23", "23 September"), an ISO date, and an
-// academic-year range ("2026-27", "2026/27", "AY 2026").
+// 2026"), a month with a day ("Sep 23", "23 September"), an ISO date, an
+// academic-year range ("2026-27", "2026/27", "AY 2026"), and a bare month
+// name ("reviewed each August", "the Expo is in June"), which is a calendar
+// fact the same way a date is. "May" is excluded from the bare-month rule
+// and from it alone: it is a modal verb on almost every page, and every
+// calendar use of it carries a year or a day, which the rules above catch.
 //
 // Allowed: bare years in history prose ("around 2014"); URLs; inline code
 // spans, because a file name such as `2026-08-17-four-skills.md` is a path,
@@ -45,6 +49,9 @@ const TEXT_EXTENSIONS = new Set([
 const MONTHS =
   "January|February|March|April|May|June|July|August|September|October|November|December";
 const MONTH_ABBR = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
+const MONTHS_NOT_MAY = MONTHS.split("|")
+  .filter((month) => month !== "May")
+  .join("|");
 const PATTERNS = [
   [
     "term with a year",
@@ -62,6 +69,7 @@ const PATTERNS = [
   ["ISO date", /\b20\d{2}-\d{2}-\d{2}\b/g],
   ["academic-year range", /\b20\d{2}\s*[-/–]\s*(20)?\d{2}\b/g],
   ["academic year", /\b(AY|academic year)\s+20\d{2}\b/gi],
+  ["month name", new RegExp(`\\b(${MONTHS_NOT_MAY})\\b`, "g")],
 ];
 const URL_RE = /https?:\/\/\S+/g;
 const CODE_SPAN_RE = /`[^`\n]*`/g;
