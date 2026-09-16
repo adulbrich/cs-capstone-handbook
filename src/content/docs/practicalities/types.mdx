@@ -5,8 +5,6 @@ sidebar:
   order: 1
 ---
 
-import { LinkCard } from '@astrojs/starlight/components';
-
 Your project is several types at once: a student-proposed consultancy project in an existing codebase under NDA, say. Each type below changes something concrete for you and names the page that owns the rule. The [week 1 questions](#week-1-questions) at the end cover all of them.
 
 ## Who Runs the Result: the Outcome Type
@@ -15,42 +13,50 @@ Every project has one of four **outcome types**. The outcome type says how the [
 
 ### FOSS
 
-Contribute patches to an existing Free and Open-Source Software project: the Rust compiler, the Xen hypervisor, the Habitica todo-list game, the OSU Open Source Lab repositories. The work is earning a maintainer's review and approval, which is a relationship, not a step. You need a project mentor, a working build of the upstream for every member, and the project's contribution workflow (CLA or DCO, style, CI) followed from the first pull request.
+Contribute patches to an existing Free and Open-Source Software project: the Rust compiler, the Xen hypervisor, the Habitica todo-list game, the OSU Open Source Lab repositories. The work is earning a maintainer's review and approval, which is a relationship, not a step.
+
+**What you need:** a project mentor; the upstream building for every member; its contribution workflow followed from the first pull request.
 
 ### Research
 
-Collaborate with a professor on a research question, aiming for results someone else can reproduce and, when they hold up, a paper. Ideal if you are considering graduate school; the teamwork component can be met through significant interaction with the professor's research group. You need a faculty partner, data you are allowed to use (often an IRB determination or a data use agreement, filed in fall), and a reproducible artifact from the first run onward.
+Collaborate with a professor on a research question, aiming for results someone else can reproduce and, when they hold up, a paper. Ideal if you are considering graduate school; the teamwork component can be met through significant interaction with the professor's research group.
+
+**What you need:** a faculty partner; data you are allowed to use; a reproducible artifact from the first run onward.
 
 ### Consultancy
 
-Build software for a specific external partner: a citizen-science app for a nonprofit, a study tool for a professor in another department, an internal tool for a company. At the top of the ladder the partner runs the system in their own environment, so the hardest prerequisites are theirs: IT and security review, accounts, a handoff their people can operate. You need a partner who can accept and run the deliverable, acceptance criteria they endorsed before you built, and their approval path mapped in fall with dates.
+Build software for a specific external partner: a citizen-science app for a nonprofit, a study tool for a professor in another department, an internal tool for a company. At the top of the ladder the partner runs the system in their own environment, so the hardest prerequisites are theirs.
+
+**What you need:** a partner who can accept and run the deliverable; acceptance criteria they endorsed before you built; their approval path mapped in fall.
 
 ### New Product or Game
 
-Create something new, which may or may not become a viable business. The ladder counts people who do not know you using the thing, and strangers take months to find, so the recruitment channel (a subreddit, a Discord, a campus group, an itch.io page) is a workstream from fall. You need a project mentor, a deployed walking skeleton by the fall week 10 gate, and telemetry collecting before you need it. [Startup School](https://www.startupschool.org/) and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator) (its [Iterate workshop](/activities/requirements/#osu-advantage-accelerators-iterate-program) is in the activity library) take the product further; neither replaces a dozen strangers using it.
+Create something new, which may or may not become a viable business. The ladder counts people who do not know you using the thing, and strangers take months to find.
+
+**What you need:** a project mentor; a recruitment channel with its own backlog items by winter; telemetry collecting before you need it. [Startup School](https://www.startupschool.org/) and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator) (its [Iterate workshop](/activities/requirements/#osu-advantage-accelerators-iterate-program) is in the activity library) take the product further; neither replaces a dozen strangers using it.
 
 ## Where It Comes From
 
 - **Partner-proposed.** A company, a nonprofit, a faculty member, or staff submitted it through the portal. The partner owns the problem, you own the plan, and the partner completes the [partner evaluations](/assignments/project-partner-evaluation/).
-- **Student-proposed.** A student submitted it with a project partner or a mentor attached ([Projects and Teams](/practicalities/projects-and-teams/) has the submission rules). The assigned mentor, or the instructor acting as mentor when there is no outside one, is your project partner for every purpose on this site, including the partner evaluations. Scope is yours to define and yours to defend, in the Definition of Shipped like every other team.
+- **Student-proposed.** A student submitted it with a project partner or a mentor attached; [Projects and Teams](/practicalities/projects-and-teams/) has the rules, including who acts as your project partner. Scope is yours to define and yours to defend, in the Definition of Shipped like every other team.
 - **Several teams on one project.** Some partners take more than one team. The split is negotiated with the partner in week 1, not assumed: which team owns which interface, repository, or milestone, and how the teams talk. Each team writes its part into its own Definition of Shipped and [charter](/assignments/team-charter/) and is evaluated on that part.
 
 ## Where the Code Starts
 
 - **From scratch.** Nothing exists yet, so the first weeks are the walking skeleton: the thinnest end-to-end slice, running somewhere real by the fall week 10 [repo checkpoint](/assignments/repo-checkpoints/#term-gates). Decide where it will run at the week 5 checkpoint, not in week 9.
-- **An existing codebase.** Three origins, one situation: a predecessor capstone team's repository (their [handoff document](/assignments/project-handoff/), project retrospective, and `docs/risks.md` are your first reading; the portal lists archived projects), a partner's codebase (their conventions, CI, review process, and hosting bind you from day one, the [RFC](/assignments/rfc/) page's "your partner already decided" case), or an upstream FOSS project (their CONTRIBUTING file, review culture, and release cadence bind you). In all three, someone else's decisions, tests, debt, and review process are yours before you write a line, and the first thing that breaks is usually something the previous owners knew and never wrote down. **Audit what you inherited in fall weeks 1 to 5**: what runs and how, what does not, the state of tests and CI, dependencies and their age, open risks and known debt, the predecessor's handoff and retrospective if there is one, the upstream's contribution rules if there are any, and what you will change first. One page in `docs/requirements.md` under Constraints, or `docs/inherited.md` if longer. The fall week 5 repo checkpoint gate checks it for every team that starts in an existing codebase; [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase) is the exercise.
+- **An existing codebase.** Three origins, one situation: a predecessor capstone team's repository (their [handoff document](/assignments/project-handoff/), project retrospective, and `docs/risks.md` are your first reading), a partner's codebase (their conventions, CI, review process, and hosting bind you from day one, the [RFC](/assignments/rfc/) page's "your partner already decided" case), or an upstream FOSS project (their CONTRIBUTING file, review culture, and release cadence bind you). In all three, someone else's decisions, tests, debt, and review process are yours before you write a line. **Audit what you inherited in fall weeks 1 to 5**: what runs and how, what does not, the state of tests and CI, dependencies and their age, open risks and known debt, the predecessor's handoff and retrospective if there is one, the upstream's contribution rules if there are any, and what you will change first. One page in `docs/requirements.md` under Constraints, or `docs/inherited.md` if longer. The fall week 5 repo checkpoint gate checks it for every team that starts in an existing codebase; [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase) is the exercise.
 
 ## What Constrains It
 
 - **A mandated stack, hosting, or review process.** Record each one under Constraints in `docs/requirements.md` (the [Requirements guide](/guides/requirements/) says how) and write your RFCs inside them, not around them.
-- **Data and approvals.** Real data can mean an IRB determination or a data use agreement, clocks measured in weeks that start only when you file. File in fall week 1; [Map Your External Approvals](/activities/planning/#map-your-external-approvals) is the exercise.
+- **Data and approvals.** An IRB determination or a data use agreement is a clock measured in weeks that starts only when you file, so file in fall week 1; [Map Your External Approvals](/activities/planning/#map-your-external-approvals) is the exercise.
 - **NDA or IP.** [IP, NDA, and Licensing](/practicalities/projects-and-teams/#ip-nda-and-licensing) has the rules; assignment pages carry a short note wherever an NDA team does something differently.
-- **Hardware or a physical deliverable.** Parts, lab access, and inventory requests through the portal all have lead times. Each goes on the prerequisites table of your Definition of Shipped with an owner and a start-by date.
-- **No production environment you control.** Some partners never intended to give you one. Say so at the fall week 5 checkpoint, where you agree what "deployed" will mean for this project, so staff can agree an equivalent gate while there is still time to hit it.
+- **Hardware or a physical deliverable.** Parts, lab access, and inventory requests through the portal all have lead times. Each goes on the prerequisites list of your Definition of Shipped with an owner and a start-by date.
+- **No production environment you control.** Some partners never intended to give you one. Say so at the fall week 5 checkpoint, where you [agree what "deployed" will mean](/assignments/repo-checkpoints/#term-gates) for this project.
 
 ## Week 1 Questions
 
-Ask your project partner or mentor these in the first meeting and record the answers under Constraints in `docs/requirements.md`; the fall week 5 checkpoint reads them.
+Ask your project partner or mentor these in the first meeting and record the answers under Constraints in `docs/requirements.md`.
 
 1. Which outcome type are we, and which rung of the ladder are we aiming for?
 2. Who completes our partner evaluations: you, a mentor, or the instructor?
