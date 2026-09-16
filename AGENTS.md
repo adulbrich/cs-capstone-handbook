@@ -145,6 +145,7 @@ Current canonical homes:
 | The four-component grade split | `assignments/introduction.mdx` |
 | Per-term Team Deliverables weights | `assignments/introduction.mdx` |
 | Rubric bands, missing-is-zero, evidence rules | `assignments/introduction.mdx` |
+| The AI policy and what it assesses | `assignments/introduction.mdx` |
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
 | Project types: the four outcome types, origin, starting code, constraints, and the inherited-codebase audit | `practicalities/types.mdx` |
 | V&V outcome ladder (one ladder, every outcome type) | `assignments/project-partner-evaluation.mdx` |
