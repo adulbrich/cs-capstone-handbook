@@ -11,7 +11,7 @@
 
 ## 1. Target Rung
 
-Which outcome level on your category's V&V ladder you are committing to, in your own words and specific to your project. "Merged upstream" or "in production" means what, exactly, here? Be honest about ambition: a defended 90 beats a fantasy 100.
+Which rung of the outcome ladder you are committing to, in your own words and specific to your project. "Merged upstream" or "in production" means what, exactly, here? Be honest about ambition: a defended 90 beats a fantasy 100.
 
 ## 2. Success Metrics
 

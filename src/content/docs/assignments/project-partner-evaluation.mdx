@@ -19,7 +19,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 Your project partner scores 25% of your grade every term, in two surveys:
 
 1. The **Midterm Pulse** (5% of the term grade): three statements about how the team works with them, answered in two minutes.
-2. The **Final Evaluation** (20% of the term grade): the six facets below, each scored 100, 90, 80, 70, or 50.
+2. The **Final Evaluation** (20% of the term grade): the six facets below, each scored 100, 90, 80, 70, or 50; spring Verification and Validation adds a 60 rung.
 
 Fall and winter are **progress-focused**; spring scores **outcomes**. The facet weights move with the year:
 
@@ -36,7 +36,7 @@ Fall is won on requirements, winter on building, spring on the shipped outcome. 
 
 ## How the scoring works
 
-Every facet has three written anchors, at **100**, **80**, and **50**. A partner scores **90** or **70** when the team sits between two anchors. The spring Verification and Validation ladders keep their own rungs.
+Every facet has three written anchors, at **100**, **80**, and **50**. A partner scores **90** or **70** when the team sits between two anchors. The spring Verification and Validation ladder has six rungs of its own.
 
 Under each facet is a short list headed **What it looks like**. It is the same list for both readers: for the student, it is what to do every week; for the partner, it is what to look for before choosing an anchor. In the lists and the anchors, "you" is the partner. Nothing on the lists needs a rubric to be understood, and nothing on them is optional in a professional engagement. Discuss the lists with your partner in the first meeting of every term.
 
@@ -161,55 +161,20 @@ Points | Anchor
 
 ### Spring
 
-In spring the scale depends on the project **category**, and the ladders below are the course default for every project.
+In spring the scale is one ladder for every project: **who ran the software**. Read it literally. Every rung above 50 describes someone outside the team running your work, and the top rung describes people who depend on it. **Code that works but that nobody ever ran is not a high rung.** Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it is what the [Shipping guide](/guides/shipping/) maps out for each [project category](/practicalities/categories/). The category is a label and a playbook; it does not change the scale.
 
-**Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete.** "Prototype works on reasonable inputs" and "system is in production" are written generally because they have to cover every project in the cohort. Your Definition of Shipped says what that rung means for your project: which inputs, which environment, which users, measured how. That is what your partner scores against in spring, and it is why you write it in winter, while there is still time to act on it.
-
-**Custom grading is for genuine deviation, not for restating the ladder.** If your project fits no category, or your partner's expectations differ from the ladder in kind rather than in detail, they can score on a custom scale of [50,100]. Agree that in the Definition of Shipped in winter, not in spring week 10.
-
-Each ladder belongs to one [project category](/practicalities/categories/). Read them literally. Every top rung describes software that reached somebody: merged upstream, running in production, used by people you do not know, results a stranger can reproduce. **Code that works but that nobody ever ran is not a high rung in any category.** Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it is what the [Shipping guide](/guides/shipping/) maps out for each category.
-
-#### FOSS
-
-Points | Criteria
+Points | What is true about who ran the software
 -------|---------
-100    | Patches accepted, positive mentions in press/release.
-90     | Patches accepted.
-85     | Patches accepted but then reverted due to bug/issue.
-80     | Patches submitted and reviewed.
-75     | Patches submitted.
-70     | Patch appears to work on student computers.
-50     | Patch is vaporware.
+100    | **People outside the team depend on it.** Consultancy: the partner runs it in operations. FOSS: patches shipped in an upstream release. Research: a stranger reproduced the result from the published artifact. New Product or Game: sustained use by strangers (tens of heavy or hundreds of light users).
+90     | **Someone outside the team runs it in their own environment.** Consultancy: the partner is integrating it into production. FOSS: patches merged. Research: a person outside the team reran the pipeline on real data and got the numbers. New Product or Game: two dozen strangers used it.
+80     | **An outsider ran it and the team acted on what they found.** Consultancy: your feedback on a prototype addressed in a newer version. FOSS: a pull request reviewed and revised. Research: your group ran it on real data and the issues were fixed. New Product or Game: a dozen strangers, or a completed user study.
+70     | **An outsider ran it once.** Consultancy: you tried a prototype. FOSS: a pull request submitted. Research: a real-data run shown to you. New Product or Game: friends tried a deployed build.
+60     | **You watched it run on your real inputs** (a live demo or a recording) **but nobody outside the team has operated it.**
+50     | **Nobody outside the team has run it.**
 
-#### Research
+**Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete.** The rungs are written generally because they have to cover every project in the cohort. Your Definition of Shipped says what your target rung means for your project: which environment, which users, which upstream, measured how. That is what your partner scores against in spring, and it is why you write it in winter, while there is still time to act on it.
 
-Points | Criteria
--------|---------
-100    | Novel results or context or paper published, etc.
-90     | Prototype works on a wide range of reasonable inputs and some challenging ones.
-80     | Prototype works on reasonable inputs.
-70     | Prototype works on trivial inputs.
-50     | Prototype is vaporware.
-
-#### Consultancy
-
-Points | Criteria
--------|---------
-100    | System is in production and is public-facing or part of critical operations.
-90     | Project partner is actively working to integrate system into production, and system is public-facing or part of critical operations.
-80     | Project partner feedback on an earlier prototype; concerns have been addressed in newer version.
-70     | Project partner feedback on an earlier prototype.
-50     | System diverges significantly from Project partner requirements; project partner does not intend to use the system; team has stopped speaking to project partner.
-
-#### New Product or Game
-
-Points | Criteria
--------|---------
-100    | Hundreds of light users or tens of heavy users or positive mention in mainstream/industry press.
-90     | Two dozens users you don't know or rigorous user study.
-80     | A dozen users you don't know or user study.
-70     | Friends have tried your software.
-50     | No users, nor user testing.
+**Custom scoring is for genuine deviation, not for restating the ladder.** If your partner's expectations differ from the ladder in kind rather than in detail, they can score on a custom scale of [50,100]. The standing example is a project whose right outcome is zero users yet, such as a tool that must not reach patients or operators before a certification the course cannot wait for; it is scored on the user activities it did run, such as supervised trials and reproduced results. Agree that in the Definition of Shipped in winter, not in spring week 10.
 
 ## Teamwork
 

@@ -9,29 +9,29 @@ import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 Read this in fall week one, before you pick your spring rung; it gives you each category's path up the outcome ladder and the clocks to start now.
 
-Your spring grade's largest partner-evaluation facet, Verification and Validation, is scored against **outcomes**: merged upstream, in production, reproducible, in real use. Each project category has its own [outcome ladder](/assignments/project-partner-evaluation/#verification-and-validation), and the top rungs are hard on purpose.
+Your spring grade's largest partner-evaluation facet, Verification and Validation, is scored against **outcomes**: merged upstream, in production, reproducible, in real use. Every project is scored on the same [outcome ladder](/assignments/project-partner-evaluation/#spring), who ran the software, from nobody outside the team to people who depend on it, and the top rungs are hard on purpose. The bottom two rungs read the same for every category: your partner watched it run, or nobody outside the team ran it. Everything above them is category-specific, and that is what the sections below map out.
 
 Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in spring week 8. The only move that works is starting the clocks early. That means planning backward from the spring rung you want, and starting in fall week one.
 
-This guide is the playbook, one section per [project category](/practicalities/categories/). Each section names the rungs of its ladder (the partner evaluation page holds the ladders themselves), walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence you should be collecting for the partner survey. Your [Definition of Shipped](/assignments/definition-of-shipped/) turns this playbook into a signed agreement; the [Repo Checkpoint gates](/assignments/repo-checkpoints/) enforce the intermediate milestones.
+This guide is the playbook, one section per [project category](/practicalities/categories/). Each section says what each rung means for that category (the partner evaluation page holds the ladder itself), walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence you should be collecting for the partner survey. Your [Definition of Shipped](/assignments/definition-of-shipped/) turns this playbook into a signed agreement; the [Repo Checkpoint gates](/assignments/repo-checkpoints/) enforce the intermediate milestones.
 
 ## FOSS
 
-**The ladder:** from the bottom, a patch that works on your machines, patches submitted, submitted and reviewed, accepted, and accepted with a positive mention in press or release notes ([the FOSS ladder](/assignments/project-partner-evaluation/#verification-and-validation)). Note what separates submitted from accepted: not your code, but a maintainer's attention and approval. That is a resource you must cultivate, not a step you execute.
+**On the ladder:** for FOSS the rungs read, from the bottom, a pull request submitted; reviewed and revised; merged; shipped in an upstream release. Note what separates submitted from merged: not your code, but a maintainer's attention and approval. That is a resource you must cultivate, not a step you execute.
 
 **Rung-by-rung prerequisites:**
 
 - **Submitted:** a working development setup for the upstream project, their contribution workflow understood (CLA or DCO signed, style and commit conventions followed, tests passing in their CI).
 - **Reviewed:** a maintainer chose to spend time on your PR. Review latency on large projects is commonly 2 to 8 weeks per round, and most substantive PRs take multiple rounds.
-- **Accepted:** every review round addressed, rebased onto a moving main branch, and the change judged worth maintaining forever by people who will own it after you graduate.
+- **Merged:** every review round addressed, rebased onto a moving main branch, and the change judged worth maintaining forever by people who will own it after you graduate.
 
-The single highest-leverage move: **get a trivial PR merged by the end of fall.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero. It is also how FOSS teams clear the [fall week 10 gate](/assignments/repo-checkpoints/#term-gates).
+The [fall week 10 gate](/assignments/repo-checkpoints/#term-gates) for FOSS teams is a first upstream pull request submitted. Aim past it: **get a trivial PR merged by the end of fall.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero.
 
 Communication norms matter as much as code. Read the project's CONTRIBUTING file and recent merged PRs before writing anything. Discuss substantial changes in an issue or mailing list **before** building them; an unsolicited large PR is the most-rejected artifact in open source. Be responsive when review arrives: maintainers deprioritize contributors who take weeks to respond.
 
 | Term | What must be true |
 |---|---|
-| Fall | Upstream builds and tests locally for every member; CLA/DCO done; trivial PR merged; target issues discussed with maintainers |
+| Fall | Upstream builds and tests locally for every member; CLA/DCO done; first PR submitted, ideally a trivial one merged; target issues discussed with maintainers |
 | Winter | Substantive PR(s) submitted and in active review; at least one review round addressed |
 | Spring | PRs merged; follow-up fixes handled; contribution noted in changelog or release notes if possible |
 
@@ -41,7 +41,7 @@ Communication norms matter as much as code. Read the project's CONTRIBUTING file
 
 ## New Product or Game
 
-**The ladder:** from the bottom, friends have tried it; a dozen users you don't know, or a user study; two dozen strangers, or a rigorous study; hundreds of light users, tens of heavy users, or press ([the New Product or Game ladder](/assignments/project-partner-evaluation/#verification-and-validation)). The jump from friends to a dozen strangers is the hard one: strangers cannot try software that is not deployed, and they will not arrive the week you need them.
+**On the ladder:** for a new product or game the rungs read, from the bottom, friends tried a deployed build; a dozen strangers, or a completed user study; two dozen strangers; sustained use by tens of heavy or hundreds of light users. The jump from friends to a dozen strangers is the hard one: strangers cannot try software that is not deployed, and they will not arrive the week you need them.
 
 **Rung-by-rung prerequisites:**
 
@@ -67,13 +67,13 @@ Add an **analytics or telemetry starter in fall**, not spring: a privacy-respect
 
 ## Research
 
-**The ladder:** from the bottom, a prototype that works on trivial inputs; on reasonable inputs; on a wide range including challenging ones; and novel results or a published paper ([the Research ladder](/assignments/project-partner-evaluation/#verification-and-validation)). Underneath every rung sits an unstated prerequisite: **data you are allowed to use** and **results someone else can reproduce**.
+**On the ladder:** for research the rungs read, from the bottom, a real-data run shown to your partner; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; a stranger reproduced the result from the published artifact, which is what a paper is for. Underneath every rung sits an unstated prerequisite: **data you are allowed to use** and **results someone else can reproduce**.
 
 **Rung-by-rung prerequisites:**
 
-- **Trivial inputs:** a pipeline that runs end to end, on any data at all.
-- **Reasonable inputs:** the real dataset, which means data access agreements and possibly IRB approval, both of which are clocks you do not control.
-- **Challenging inputs and novelty:** a reproduced baseline to compare against, compute for larger runs, and enough calendar time to iterate after the first results disappoint you (they will).
+- **A pipeline first:** it runs end to end on sample data, which is the fall week 10 gate.
+- **A real-data run:** the real dataset, which means data access agreements and possibly IRB approval, both of which are clocks you do not control.
+- **Reran by others, then reproduced by a stranger:** the reproducible artifact described below, a reproduced baseline to compare against, compute for larger runs, and enough calendar time to iterate after the first results disappoint you (they will).
 
 **Start the IRB and data-access clocks in fall week one.** IRB review at OSU takes weeks even for exempt determinations, and longer if revisions are requested; data use agreements between institutions can take a full term. Your faculty partner knows these processes: ask in your first meeting what approvals the project needs and who files them. If human subjects are even plausibly involved (user studies count), ask explicitly.
 
@@ -93,7 +93,7 @@ Research teams have their own [fall week 10 gate](/assignments/repo-checkpoints/
 
 ## Consultancy
 
-**The ladder:** from the bottom, partner feedback on a prototype; that feedback addressed in a newer version; the partner actively integrating a public-facing or operations-critical system into production; and that system in production ([the Consultancy ladder](/assignments/project-partner-evaluation/#verification-and-validation)). Read the top rungs carefully: they describe actions the **partner** takes, not you. Your job is to make those actions easy, safe, and early.
+**On the ladder:** for consultancy the rungs read, from the bottom, the partner tried a prototype; their feedback addressed in a newer version; the partner integrating it into production; the partner running it in operations. Read the top rungs carefully: they describe actions the **partner** takes, not you. Your job is to make those actions easy, safe, and early.
 
 **Rung-by-rung prerequisites:**
 
@@ -103,7 +103,7 @@ Research teams have their own [fall week 10 gate](/assignments/repo-checkpoints/
 
 **Ask about IT and security review in your first fall meeting.** "Who has to approve software running in your environment, and how long does that take?" At small nonprofits the answer may be "the director, tomorrow." At hospitals, school districts, government agencies, and large companies, the answer is a formal review measured in **months**, sometimes with penetration tests, data protection assessments, or vendor onboarding forms. Whatever the answer, put it in your Definition of Shipped with an owner and a start-by date.
 
-**Agree on acceptance criteria early and in writing.** The "concerns addressed" rung is only checkable against criteria the partner endorsed before you built. Vague scope is how consultancy projects hit spring with a partner who feels the system "isn't what we asked for."
+**Agree on acceptance criteria early and in writing.** The "feedback addressed" rung is only checkable against criteria the partner endorsed before you built. Vague scope is how consultancy projects hit spring with a partner who feels the system "isn't what we asked for."
 
 Stage the deployment: your own hosting first (fast iteration, demos), then a **staging instance in the partner's environment** in winter, then production in spring. The staging step is the one teams skip and regret; it is where authentication schemes, network policies, and data access rules surface.
 
@@ -126,24 +126,24 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 - Instrument before you need the numbers. Analytics wired in fall is evidence in spring; analytics wired in spring week 8 is a screenshot of an empty chart.
 - Treat recruiting strangers as a workstream: an owner, a channel that exists, backlog items, starting in winter.
 - Put dates earlier than winter week 10 in your Definition of Shipped, and renegotiate the rung in the open when they slip rather than discovering the slip in spring week 10.
-- Read your category's ladder literally and plan for the rung you can prove, not the one you hope for.
+- Read the ladder literally and plan for the rung you can prove, not the one you hope for.
 - Capture evidence the day it happens (the merged PR, the dashboard, the maintainer's comment, the partner's email) and link it from `docs/shipped.md`.
 
 ## Some Truths About Shipping
 
-- The last 10% is not 10%. Teams that plan "build until spring week 8, ship in week 10" are describing a plan for the lowest rung that is not vaporware.
+- The last 10% is not 10%. Teams that plan "build until spring week 8, ship in week 10" are describing a plan for the bottom of the ladder.
 - Every external clock starts later than you think and runs longer than they told you. The only defense is starting it before you need it.
 - A trivial thing shipped in fall beats an impressive thing shipped never. The walking skeleton, the typo PR, the sample-data pipeline: none of them is the point, and all of them are the point.
 - Strangers are not friends who haven't heard of you yet. Recruiting users you don't know is a project workstream with its own backlog items, not a tweet you send in week 9.
-- "The partner will deploy it after the course ends" is the consultancy ladder's "concerns addressed" rung wearing the "in production" rung's costume. If it is not in their environment by spring, it is not shipped.
+- "The partner will deploy it after the course ends" is "feedback addressed" wearing "in operations" as a costume. If it is not in their environment by spring, it is not shipped.
 - Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not APIs with SLAs. Being early, polite, and responsive is a technical skill.
 - If your Definition of Shipped contains no date earlier than winter week 10, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
 - Evidence collected in the moment costs minutes; evidence reconstructed in spring week 10 is the kind the [Release and Metrics](/assignments/release/) page cannot credit. Screenshot the milestone the day it happens.
 
 ## Shipping in Industry and Academia
 
-Industry spent two decades removing the ceremony between a commit and production. Continuous delivery, trunk-based development, and feature flags exist so that "shipped" is a daily event rather than a quarterly one, and companies such as Etsy and Amazon made deploying many times a day the norm well before it was fashionable. Google's site reliability teams run a production readiness review before a service goes live, which is the consultancy ladder's top rung with a checklist attached. The pattern is the same at every scale: the thing that is hard is not building, it is the last mile into someone else's environment.
+Industry spent two decades removing the ceremony between a commit and production. Continuous delivery, trunk-based development, and feature flags exist so that "shipped" is a daily event rather than a quarterly one, and companies such as Etsy and Amazon made deploying many times a day the norm well before it was fashionable. Google's site reliability teams run a production readiness review before a service goes live, which is the top consultancy rung with a checklist attached. The pattern is the same at every scale: the thing that is hard is not building, it is the last mile into someone else's environment.
 
-Open-source maintainers judge contributors by merged pull requests, and the first merge is the hard one, which is why "good first issue" labels and onboarding programs exist. In research, the reproducibility crisis produced artifact evaluation: ACM conferences award badges for artifacts that are available, evaluated, and reproduced, and a paper with a reproduced artifact is worth more than one without. The research ladder's top rung is written with that bar in mind.
+Open-source maintainers judge contributors by merged pull requests, and the first merge is the hard one, which is why "good first issue" labels and onboarding programs exist. In research, the reproducibility crisis produced artifact evaluation: ACM conferences award badges for artifacts that are available, evaluated, and reproduced, and a paper with a reproduced artifact is worth more than one without. The top research rung is written with that bar in mind.
 
-The common thread is that every field has learned, expensively, that working software nobody can run is not a result. The ladders on this page are the course's version of that lesson.
+The common thread is that every field has learned, expensively, that working software nobody can run is not a result. The ladder is the course's version of that lesson.

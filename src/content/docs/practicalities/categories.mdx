@@ -1,128 +1,49 @@
 ---
 title: Project Categories
-description: Classifying Capstone projects based on outcomes.
+description: The four project labels, what each one asks of the team, and why none of them changes the grade.
 sidebar:
   order: 1
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
-import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-In classifying capstone projects, there are various perspectives one could adopt. In this handbook, and throughout our discussions, we'll primarily categorize projects based on the outcomes they aim to achieve. 
+Every project carries one of four labels. The label says what kind of work it is, who stands behind it, and which shipping playbook applies. It does not change the grade: every project is scored on the same outcome ladder, who ran the software, and the category only says what each rung looks like for you.
 
 <LinkCard
-  title="How will these categories be graded?"
-  description="Learn about the different outcomes."
-  href="/assignments/project-partner-evaluation/#verification-and-validation"
+  title="How is the outcome scored?"
+  description="One ladder for every project, with what each rung means per category."
+  href="/assignments/project-partner-evaluation/#spring"
 />
 <LinkCard
-  title="What does 'shipped' mean for your category?"
-  description="The per-category path to a shipped project, from FOSS patches to published research."
+  title="What does 'shipped' take for your category?"
+  description="The per-category path up the ladder, with the clocks that start in fall week one."
   href="/guides/shipping/"
 />
 
-Presently, we recognize four main categories. 
-
-:::note
-Some projects may not fit neatly into these categories. Hence, students and their project partners or mentors can set custom expectations for the project outcomes.
-:::
+A project that fits no label still has a partner or mentor and a target rung. Your [Definition of Shipped](/assignments/definition-of-shipped/) is where you write down what that rung means for it.
 
 ## FOSS
 
-This category involves contributing patches to an existing Free and Open-Source Software (FOSS) project. Examples include writing patches for the Rust compiler, the Xen hypervisor, the Habitica todo-list game, or the OSU Open Source Lab repositories.
+Contribute patches to an existing Free and Open-Source Software project. Examples include patches for the Rust compiler, the Xen hypervisor, the Habitica todo-list game, or the OSU Open Source Lab repositories. Established projects publish the features and fixes they want help with, so the opportunity is already defined; the work is earning a maintainer's review and approval, which is a relationship, not a step.
 
-Established FOSS projects typically have a list of features they need help implementing, thus defining the opportunities.
-
-You need to find a project mentor to work on such a project.
-
-<Tabs syncKey="trio">
-  <TabItem label="Benefits" icon="rocket">
-    - **Hands-On Experience:** Jump into real-world software projects and see how big programs are pieced together and maintained.
-    - **Network and Collaborate:** Connect with developers around the world, gaining invaluable networking and teamwork skills.
-    - **Skill Building:** Get better at coding and solving problems by adding new features or improving existing software.
-  </TabItem>
-  <TabItem label="Challenges" icon="puzzle">
-    - **Complex Environments:** These large and complex codebases can be tough to get your head around at first.
-    - **Navigating Community Rules:** Every community has its own way of doing things, and you'll need to adapt and learn how to fit in.
-    - **High Skill Demands:** You'll need strong technical skills to make meaningful contributions.
-  </TabItem>
-  <TabItem label="Requirements" icon="approve-check-circle">
-    - **Coding Proficiency:** You should be comfortable with the programming languages and tools used in your chosen project.
-    - **Communication Skills:** Be ready to engage with the community effectively, manage version control, and write clear documentation.
-    - **Determination:** Tackle tasks head-on, seek help when needed, and keep at it, even when things get tough.
-  </TabItem>
-</Tabs>
+**What you need:** a project mentor (required for FOSS); a working build of the upstream project for every member; the project's contribution workflow (CLA or DCO, style, commit conventions, CI) followed from the first pull request.
 
 ## Research
 
-Collaborate with a professor on a research topic, aiming to publish a small paper with your findings. This type of project is ideal for those considering graduate school. It's worth noting that you can fulfill the teamwork component of the capstone outside of class through significant interactions with the professor's research group.
+Collaborate with a professor on a research question, aiming for results someone else can reproduce and, when they hold up, a small paper. Ideal if you are considering graduate school; the teamwork component can be met through significant interaction with the professor's research group. The professor owns the question and knows the approvals it needs; your team owns the pipeline, the reproduced baseline, and the artifact.
 
-Professors are often aware of potential research opportunities. Remember, an opportunity is something that someone else cares about. In this case, the professor will have insights into what the research community might find valuable.
-
-<Tabs syncKey="trio">
-  <TabItem label="Benefits" icon="rocket">
-    - **Deep Dive into Academia:** Work on cutting-edge topics that could lead to publishing your findings.
-    - **Prep for Grad School:** This experience is perfect if you're thinking about further studies; it's like a test drive of graduate-level research.
-    - **Guidance from Experts:** Learn directly from professors and their teams, gaining insights and mentorship that's hard to find elsewhere.
-  </TabItem>
-  <TabItem label="Challenges" icon="puzzle">
-    - **Academic Intensity:** The level of detail and rigor in research can be much higher than what you're used to.
-    - **Specialized Topics:** You might need to quickly ramp up on a very specific area of study.
-    - **Pressure to Publish:** There's often a push to achieve publishable results, which can be quite stressful.
-  </TabItem>
-  <TabItem label="Requirements" icon="approve-check-circle">
-    - **Research Abilities:** Know how to gather information, analyze data, and contribute innovative ideas.
-    - **Analytical Thinking:** Be sharp in processing and interpreting information.
-    - **Time Management Skills:** Balance your research with other courses and commitments effectively.
-  </TabItem>
-</Tabs>
+**What you need:** a faculty partner; data you are allowed to use, which can mean an IRB determination or a data use agreement filed in fall; a reproducible artifact from the first run onward.
 
 ## Consultancy
 
-Develop software for a specific external project partner. Examples include creating a citizen-science hive-tracking app for a non-profit or collaborating with a professor from the School of Psychological Science at Oregon State University.
+Build software for a specific external partner: a citizen-science hive-tracking app for a nonprofit, a study tool for a professor in the School of Psychological Science, an internal tool for a company. The partner defines success and, at the top of the ladder, runs the system in their own environment, so the hardest prerequisites are theirs: IT and security review, accounts, a handoff their people can operate.
 
-<Tabs syncKey="trio">
-  <TabItem label="Benefits" icon="rocket">
-    - **Real-World Client Experience:** Tackle genuine problems for external partners, simulating a real consultant's job.
-    - **Manage Projects End-to-End:** From planning to delivery, handle all aspects of a project, enhancing your organizational skills.
-    - **Apply Your Knowledge:** Use what you've learned in previous classes to solve practical problems, seeing firsthand how your studies translate into action.
-  </TabItem>
-  <TabItem label="Challenges" icon="puzzle">
-    - **Meeting Professional Standards:** It can be tough to meet the high expectations of real clients.
-    - **Keeping Projects On Track:** You need to manage project scope carefully to prevent projects from growing out of control.
-    - **Communicating Across Fields:** Often, you'll need to explain technical details to partners who might not be tech-savvy.
-  </TabItem>
-  <TabItem label="Requirements" icon="approve-check-circle">
-    - **Project Management Know-How:** Be able to organize, execute, and finalize projects within set deadlines.
-    - **Strong People Skills:** Handle communications and negotiations smoothly with all stakeholders.
-    - **Technical Chops:** Bring enough tech skills to the table to develop effective solutions.
-  </TabItem>
-</Tabs>
+**What you need:** a project partner who can accept and run the deliverable; acceptance criteria the partner endorsed before you built; the partner's approval path mapped in fall, with dates.
 
 ## New Product or Game
 
-This category involves creating a new product, which may or may not become a viable business.
+Create something new, which may or may not become a viable business. You define the opportunity, which is exciting and uncertain in equal measure. The ladder counts people who do not know you using the thing, and strangers take months to find, so the recruitment channel is a workstream from fall, not a spring task.
 
-Here, you define the opportunity. While exciting, this also entails some degree of uncertainty and requires *significant* effort.
-
-You need to find a project mentor to work on such a project.
-
-<Tabs syncKey="trio">
-  <TabItem label="Benefits" icon="rocket">
-    - **Real users:** The ladder for this category counts people who do not know you using the thing, and nothing teaches faster than watching a stranger hit your onboarding flow.
-    - **Creative Freedom:** Push the boundaries of your creativity to develop a new product.
-    - **Iteration on evidence:** The top rungs are retention, which means fixing what the first dozen users hit. You learn what to build from what they do, not from what they say.
-  </TabItem>
-  <TabItem label="Challenges" icon="puzzle">
-    - **Market Uncertainty:** There's a significant risk of failure due to unpredictable market forces.
-    - **Resource Limits:** You often have to make do with what you have, which can be challenging.
-    - **Validating Your Idea:** It's tough to prove your concept and attract initial users or customers.
-  </TabItem>
-  <TabItem label="Requirements" icon="approve-check-circle">
-    - **Entrepreneurial Spirit:** Embrace risk and navigate the uncertainties of launching a new product.
-    - **Resourcefulness:** Find innovative ways to use limited resources to achieve your goals.
-    - **A recruitment channel by winter:** Strangers take months to find. The channel (a subreddit, a Discord, a campus group, an itch.io page) is a workstream with its own backlog items, not a message you send in week 9. The [Shipping guide](/guides/shipping/#new-product-or-game) maps the whole year.
-  </TabItem>
-</Tabs>
+**What you need:** a project mentor (required for New Product or Game); a deployed walking skeleton by the fall week 10 gate; a recruitment channel (a subreddit, a Discord, a campus group, an itch.io page) with its own backlog items by winter; telemetry that has been quietly collecting since before you needed it.
 
 If you want to take the product further than the course, [Startup School](https://www.startupschool.org/) is a free curriculum from Y Combinator, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator) is the campus program; its [Iterate workshop](/activities/requirements/#osu-advantage-accelerators-iterate-program) is in the activity library. Neither replaces a deployed URL and a dozen strangers using it.

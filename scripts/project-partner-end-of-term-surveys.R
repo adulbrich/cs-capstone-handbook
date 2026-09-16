@@ -109,24 +109,23 @@ if (course_id == "CS461" || course_id == "CS462") {
     dt[Q6 == 4, Verification := coeff * 70]
     dt[Q6 == 5, Verification := coeff * 50]
 } else {
-    # Q6: What type of project is the team working on? This will change the way you evaluate its outcome. Unsure? Check the description of our categories.
-    # Option 1: Free and Open-Source Software (FOSS)
-    # Option 2: Research
-    # Option 3: Consultancy
-    # Option 6: New Product or Game
-    # Option 7: Other [50-100]
+    ### Q6 (CS463): Which rung of the outcome ladder is the team on? One item for every project category (#70).
+    # Option 1: People outside the team depend on it (100)
+    # Option 2: Someone outside the team runs it in their own environment (90)
+    # Option 3: An outsider ran it and the team acted on what they found (80)
+    # Option 4: An outsider ran it once (70)
+    # Option 5: You watched it run on your real inputs but nobody outside the team has operated it (60)
+    # Option 6: Nobody outside the team has run it (50)
+    # Option 7: Custom scale agreed in the Definition of Shipped, value 50 to 100 in the text entry (out-of-range entries are clamped).
+    # The text-entry column name comes from the Qualtrics export; confirm it against the first CS463 export after the item is rebuilt.
 
-    dt[Q6 == 1, Q6_Consolidated := `Q6 FOSS`]
-    dt[Q6 == 2, Q6_Consolidated := `Q6 Research`]
-    dt[Q6 == 3, Q6_Consolidated := `Q6 Consultant`]
-    dt[Q6 == 6, Q6_Consolidated := `Q6 New Product`]
-    dt[Q6 == 7, Verification := coeff * as.numeric(`Q6 Custom_4`)]
-
-    dt[Q6_Consolidated == 1, Verification := coeff * 100]
-    dt[Q6_Consolidated == 2, Verification := coeff * 90]
-    dt[Q6_Consolidated == 3, Verification := coeff * 80]
-    dt[Q6_Consolidated == 4, Verification := coeff * 70]
-    dt[Q6_Consolidated == 5, Verification := coeff * 50]
+    dt[Q6 == 1, Verification := coeff * 100]
+    dt[Q6 == 2, Verification := coeff * 90]
+    dt[Q6 == 3, Verification := coeff * 80]
+    dt[Q6 == 4, Verification := coeff * 70]
+    dt[Q6 == 5, Verification := coeff * 60]
+    dt[Q6 == 6, Verification := coeff * 50]
+    dt[Q6 == 7, Verification := coeff * pmin(pmax(as.numeric(Q6_7_TEXT), 50), 100)]
 }
 
 # Team Total Score Output
