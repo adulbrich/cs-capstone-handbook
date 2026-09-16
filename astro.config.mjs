@@ -49,14 +49,18 @@ export default defineConfig({
       ],
       sidebar: [
         {
+          label: "Schedule",
+          link: "/introduction/series/",
+        },
+        {
           items: [
             {
               autogenerate: {
-                directory: "introduction",
+                directory: "assignments",
               },
             },
           ],
-          label: "Introduction",
+          label: "Assignments",
         },
         {
           items: [
@@ -72,11 +76,11 @@ export default defineConfig({
           items: [
             {
               autogenerate: {
-                directory: "assignments",
+                directory: "introduction",
               },
             },
           ],
-          label: "Assignments",
+          label: "Start Here",
         },
         {
           items: [
@@ -133,7 +137,15 @@ export default defineConfig({
   // The Project Evaluation section was dissolved into Assignments and Learning
   // Objectives. These URLs were live and linked from elsewhere, so they
   // redirect rather than 404.
+  //
+  // Project Selection, Team Formation, and Changing or Pivoting Projects were
+  // merged into Projects and Teams, and Resource Requests folded into the
+  // students page (#69).
   redirects: {
+    "/practicalities/change": "/practicalities/projects-and-teams/",
+    "/practicalities/resources": "/introduction/for-students/#resources",
+    "/practicalities/selection": "/practicalities/projects-and-teams/",
+    "/practicalities/teams": "/practicalities/projects-and-teams/",
     "/project-evaluation/assignments": "/assignments/introduction/",
     "/project-evaluation/breakdown": "/assignments/introduction/",
     "/project-evaluation/conversion": "/learning-objectives/grading/",
