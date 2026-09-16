@@ -50,7 +50,7 @@ Half your grade is individually determined. Weights, weeks and policies: the han
 # The Cadence
 
 - Two-week sprints; a one-page **sprint note** each sprint (15 minutes if your repo is in order)
-- **Live demos** in cohort check-ins; two all-hands demo days
+- **Live demos** in TA check-ins; two all-hands demo days
 - Each of you owns **at least one reviewed PR per sprint**
 - Twice a term we review your **repository**, not a PDF of it
 
@@ -84,7 +84,7 @@ The bottleneck is judgment, not typing speed.
 | 2 | Team charter (roles, norms, AI and confidentiality) |
 | 4 | RFC draft; sprint note 1 |
 | 5 | Repo checkpoint 1: rails stood up; RFC peer feedback |
-| 7-9 | Defense in cohort check-ins |
+| 7-9 | Defense in TA check-ins |
 | 8 | RFC final |
 | 9 | Term retrospective |
 | 10 | Repo checkpoint 2: **"hello, production"** + Definition of Shipped v0 |

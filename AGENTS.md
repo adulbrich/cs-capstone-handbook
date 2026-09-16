@@ -24,7 +24,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
-| `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file. Runs in CI, pre-commit, and the `after-edit` hook. |
+| `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule. Runs at `commit-msg`, in the `guard-git` hook, and in CI over the PR range. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
@@ -149,6 +149,7 @@ Current canonical homes:
 | V&V outcome ladder (one ladder, every outcome type) | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
 | Week-by-week schedule and lecture slots | `introduction/series.mdx` |
+| The handbook's vocabulary and the synonyms it rejects | `about/glossary.mdx` (mirrored for agents in `CONTEXT.md`) |
 
 Before adding a paragraph that explains something, grep for it. If it already
 exists somewhere, link instead.

@@ -1,6 +1,8 @@
 /**
  * The prose rule from AGENTS.md (hard rule 3), as a check over named files:
- * no em dash, literal or as an HTML entity, and no emoji.
+ * no em dash, literal or as an HTML entity, and no emoji. Under the content
+ * paths it also rejects the synonyms the glossary (`about/glossary.mdx`,
+ * mirrored in `CONTEXT.md`) rules out.
  *
  * `validate-dashes.mjs` walks the content directories whole and runs in CI
  * and pre-commit. This script takes a file list instead, so lefthook can run
@@ -80,14 +82,94 @@ const EXCLUDED_FILES = new Set([
 const HARNESS_FOOTER = /\u{1F916} Generated with \[Claude Code\]\([^)]*\)/gu;
 
 /**
+ * The glossary's avoid-list (`src/content/docs/about/glossary.mdx`, mirrored
+ * in `CONTEXT.md`). Each entry is the synonym the handbook does not use and
+ * the word it uses instead. Checked only under VOCABULARY_PATHS, outside
+ * fenced code blocks and inline code, and never on the two pages that list
+ * or quote the words themselves.
+ */
+const VOCABULARY = [
+  {
+    avoid: /\bcohorts?\b/i,
+    use: "TA check-in, resume meeting, the class, or grading sheet",
+  },
+  { avoid: /\bsponsors?\b/i, use: "project partner" },
+  {
+    allow:
+      /(?:api|http|oauth|mcp|thin|graphql|grpc|generated) clients?\b|clients?[- ](?:side|librar|sdk|code|credential|secret|id\b|app\b|application|generation)|the client is generated|on the client\b|client and (?:the )?server/gi,
+    avoid: /\bclients?\b/i,
+    use: "project partner",
+  },
+  { avoid: /\bstandups?\b/i, use: "stand-up" },
+  { avoid: /\bsprint reports?\b|\bprogress reports?\b/i, use: "sprint note" },
+  {
+    avoid: /\bproject categor(?:y|ies)\b/i,
+    use: "outcome type or project type",
+  },
+  { avoid: /\bV&V ladders?\b|\bcategory ladders?\b/i, use: "outcome ladder" },
+  { avoid: /\blegacy projects?\b|\bbrownfield\b/i, use: "existing codebase" },
+  { avoid: /\bTrack [AB]\b/, use: "NDA project, with a local note" },
+];
+const VOCABULARY_PATHS = [
+  "src/content/docs/",
+  "canvas/",
+  "public/",
+  "decks/",
+  "STAFF-RUNBOOK.md",
+];
+const VOCABULARY_EXEMPT = new Set([
+  "src/content/docs/about/glossary.mdx",
+  "src/content/docs/about/acknowledgments.mdx",
+]);
+
+function vocabularyApplies(path) {
+  if (!path || VOCABULARY_EXEMPT.has(path)) {
+    return false;
+  }
+  return VOCABULARY_PATHS.some((prefix) => path.startsWith(prefix));
+}
+
+/** The line with inline code removed, so `client.post` is not prose. */
+function stripInlineCode(line) {
+  return line.replace(/`[^`]*`/g, " ");
+}
+
+/** The vocabulary hits on one prose line (inline code already stripped). */
+function vocabularyViolations(line, lineNumber) {
+  const prose = stripInlineCode(line);
+  const hits = [];
+  for (const rule of VOCABULARY) {
+    const cleaned = rule.allow ? prose.replace(rule.allow, " ") : prose;
+    const hit = cleaned.match(rule.avoid);
+    if (hit) {
+      hits.push({
+        kind: `vocabulary: "${hit[0]}" is not a handbook word; use ${rule.use}`,
+        line: lineNumber,
+        snippet: line.trim(),
+      });
+    }
+  }
+  return hits;
+}
+
+/**
  * Every hit in `text`, as `{ line, kind, snippet }`. `kind` is `em dash` or
  * `emoji`. Exported for the commit-message check, which adds its own rules on
  * top; the CLI below is the same function with a report.
  */
-export function findProseViolations(text) {
+export function findProseViolations(text, path) {
   const violations = [];
   const lines = text.replaceAll(HARNESS_FOOTER, "").split("\n");
+  const checkVocabulary = vocabularyApplies(path);
+  let inFence = false;
   for (const [index, line] of lines.entries()) {
+    if (checkVocabulary) {
+      if (/^\s*(?:```|~~~)/.test(line)) {
+        inFence = !inFence;
+      } else if (!inFence) {
+        violations.push(...vocabularyViolations(line, index + 1));
+      }
+    }
     if (line.includes(EMDASH) || EMDASH_ENTITY.test(line)) {
       violations.push({
         kind: "em dash",
@@ -144,7 +226,7 @@ function checkFiles(paths) {
       // Deleted in the index but still listed, or unreadable. Not a violation.
       continue;
     }
-    const violations = findProseViolations(text);
+    const violations = findProseViolations(text, path);
     if (violations.length > 0) {
       failed = true;
       report(path, violations);
@@ -170,7 +252,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity) and no emoji. Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3).\n"
     );
     process.exit(1);
   }

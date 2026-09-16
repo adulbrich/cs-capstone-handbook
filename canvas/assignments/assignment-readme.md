@@ -103,13 +103,13 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 | File | What changed |
 |---|---|
 | `career-retrospective/` | Resume criterion split into Resume (10) and Intent versus outcome (10), the read-back of the fall intent lines (#74); re-import before spring |
-| `resume-and-intent/` | **New**, fall only: three pass/fail criteria (resume attached 30, three intent lines 40, cohort meeting attended 30). Create the assignment in the fall Individual Evidence group at 2% and import this rubric. The Defense stays at its rubric points; its fall group weight drops from 10% to 8% |
+| `resume-and-intent/` | **New**, fall only: three pass/fail criteria (resume attached 30, three intent lines 40, resume meeting attended 30). Create the assignment in the fall Individual Evidence group at 2% and import this rubric. The Defense stays at its rubric points; its fall group weight drops from 10% to 8% |
 
 ## Rubric TSVs Requiring Re-Import: One Outcome Ladder (#70)
 
 | File | What changed |
 |---|---|
-| `definition-of-shipped/` | Target rung bands say "the outcome ladder" instead of "the category's V&V ladder", and the lead-times band says "the project's outcome type"; re-import before winter |
+| `definition-of-shipped/` | Target rung bands say "the outcome ladder" instead of the old per-category wording, and the lead-times band says "the project's outcome type"; re-import before winter |
 | `spring-release/` | Honest outcomes band text says "the target rung" instead of "the category's target rung"; re-import before spring |
 
 ## Rubric TSVs Requiring Re-Import: Criteria as Checks (#84)
@@ -131,11 +131,11 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 |------|-----|
 | 1-3 | Workshop Activities (4 items, complete/incomplete) |
 | 2 | Team Charter; Resume and Intent |
-| 3-5 | Resume and Intent cohort meetings (instructor) |
+| 3-5 | Resume meetings (instructor) |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback |
 | 6 | Sprint Note 2 |
-| 7-9 | Defense (during cohort check-ins) |
+| 7-9 | Defense (during TA check-ins) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
 | 9 | Term Retrospective |
 | 10 | Sprint Note 4; Repo Checkpoint 2 ("hello, production" gate) |
@@ -150,7 +150,7 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 | 4 | Sprint Note 2; RFC draft |
 | 5 | Repo Checkpoint 1 (integration health); RFC cross-team feedback |
 | 6 | Sprint Note 3 |
-| 7-9 | Defense (during cohort check-ins) |
+| 7-9 | Defense (during TA check-ins) |
 | 8 | Sprint Note 4; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
 | 10 | Sprint Note 5; Repo Checkpoint 2 (release candidate gate) |
@@ -164,7 +164,7 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 | 4 | Sprint Note 2 |
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |
-| 7-9 | Defense (during cohort check-ins) |
+| 7-9 | Defense (during TA check-ins) |
 | 8 | Release and Metrics |
 | 9 | Project Retrospective; Career and Individual Retrospective |
 | 10 | Project Handoff |
