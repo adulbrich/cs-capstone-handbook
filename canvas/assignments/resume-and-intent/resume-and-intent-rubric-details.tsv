@@ -1,0 +1,3 @@
+Resume attached		true	30	Pass	A readable PDF that is a resume, in any state.	0	Fail	No PDF, not a resume, or unreadable.
+Three intent lines [L10]		true	40	Pass	Three lines, each naming the resume line intended by spring week 10 and the student's own part of the project work that earns it.	0	Fail	Fewer than three lines; a line missing either half; a line naming only a technology; a line describing the project rather than the student's part in it.
+Cohort meeting attended		true	30	Pass	Present at the cohort meeting per the instructor's record; a slot rescheduled before it was missed counts.	0	Fail	Absent without a rescheduled slot.
