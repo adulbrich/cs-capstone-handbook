@@ -102,7 +102,7 @@ Get automated accessibility checks running on every change, then practice the ju
 
 - **Add [axe-core](https://github.com/dequelabs/axe-core)** to your test suite so a rendered component fails a test when it violates an accessibility rule, and add a page-level check to CI.
 - **Have an agent triage the first report**, then go through it yourself: which findings are real, which are noise, which need a human looking at the actual screen.
-- **Follow up manually**: the [manual pass](/guides/testing-strategy/#manual-accessibility-testing) covers keyboard only, screen reader, and 200% zoom.
+- **Follow up manually**: the [manual pass](/guides/accessibility/#manual-accessibility-testing) covers keyboard only, screen reader, and 200% zoom.
 
 The triage is the exercise. Automated tools catch roughly a third to a half of real defects, and learning to tell "this input has no label, so screen reader users cannot fill this form" from "this decorative divider lacks a role" is judgment you build by doing it once with attention. The defects the tools miss are the ones that make software unusable rather than merely imperfect.
 

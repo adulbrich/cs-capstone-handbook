@@ -178,20 +178,26 @@ others link:
 - **Performance conversations and escalation**: `conflict.mdx`.
   `working-agreement.mdx` says only what the agreement contributes (hours,
   blockers, the minimum deliverable) and links.
-- **AI norms**, split by concern rather than duplicated: individual habits and
-  tool setup in `generative-ai.mdx`; team process norms in
-  `working-agreement.mdx` under AI Tool Usage; architectural constraints in
-  `technical-design.mdx` under Technical Design in the Age of AI.
+- **AI norms**, split by concern rather than duplicated: individual habits in
+  `generative-ai.mdx`; the configuration files in `ai-project-setup.mdx`;
+  team process norms in `working-agreement.mdx` under AI Tool Usage;
+  architectural constraints in `technical-design.mdx` under Technical Design
+  in the Age of AI.
 - **CI and branch protection**: the workflow file in `devops.mdx`, the
   repository settings in `git-and-github.mdx`. `testing-strategy.mdx` links
   both and owns what to test.
+- **Accessibility**: `accessibility.mdx` owns all three layers.
+  `testing-strategy.mdx` says only that it belongs in CI and links.
 
 ## Length
 
-The validated guides run 950 to 1,750 words. `testing-strategy.mdx` at 4,000 is
-the outlier and only earns it by covering several distinct testing layers. If a
-guide passes about 3,000 words, look for a section that wants to be its own
-guide. Word count is a diagnostic, not a target.
+The validated guides run 950 to 1,750 words. If a guide passes about 3,000
+words, look for a section that wants to be its own guide: that is where
+`accessibility.mdx` and `ai-project-setup.mdx` came from (#113).
+`testing-strategy.mdx` sits just over the line and earns it by covering
+several distinct testing layers, from unit tests through partner demos to
+research reproducibility. Word count is a diagnostic, not a target: trimming a
+working section to hit a number makes the page worse.
 
 ## What Guides Must Not Contain
 

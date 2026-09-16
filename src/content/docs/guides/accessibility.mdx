@@ -1,0 +1,80 @@
+---
+title: Accessibility Testing
+description: "Automated gates, the manual pass, and a session with someone who uses assistive technology: three layers, cheapest first."
+sidebar:
+  order: 5
+---
+
+Read this in the sprint where a real interface first exists, not in the one before the Expo. Accessibility work is cheap while the markup is still being written and expensive once a layout is finished.
+
+If people will use your software, some of them will use it with a screen reader, a keyboard only, at 200% zoom, or with low vision. Accessibility is not a polish task for the last sprint; it is a correctness property, and like every other correctness property it belongs in CI.
+
+The reference standard is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA. That gives you a target instead of a vibe, and it is the level most institutions and public-sector partners require.
+
+Three layers of work sit behind that target, and they answer different questions. Automated rules tell you whether the mechanical requirements are met. Your own manual pass tells you whether the software is usable without a mouse or without sight. A session with someone who relies on assistive technology every day tells you whether it is any good. The first two find broken things; only the third tells you what daily use feels like.
+
+The [Testing Strategy guide](/guides/testing-strategy/) has the rest of the testing picture, and these checks belong in the same CI run and the same pre-demo routine as everything there.
+
+## Automated Accessibility Testing
+
+Three layers, cheapest first:
+
+- **Lint level**: rules like [`eslint-plugin-jsx-a11y`](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y) catch missing alt text, unlabeled inputs, and click handlers on non-interactive elements before a browser is ever involved.
+- **Component and page level**: [axe-core](https://github.com/dequelabs/axe-core) runs inside your existing test suite and fails a test when a rendered component violates a rule. Wiring it into the tests you already have is usually a few lines.
+- **Whole-page budgets**: [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [pa11y](https://pa11y.org/) score a running page and can fail the build below a threshold.
+
+Run these as a CI gate, not as a pre-release scramble. An accessibility violation caught in a pull request costs minutes; the same violation found the week before the Expo costs a redesign.
+
+## Manual Accessibility Testing
+
+Automated tools catch roughly a third to a half of real accessibility defects. [Deque's audit data](https://www.deque.com/automated-accessibility-coverage-report/) puts axe-core at 57% of issues by volume; counting WCAG success criteria instead gives a lower figure. They are excellent at the mechanical rules (is there alt text, is the contrast ratio sufficient) and blind to the ones that require judgment: whether focus order makes sense, whether a label is *meaningful* rather than merely present, whether the flow is completable at all without a mouse.
+
+Four checks, none of which need special equipment:
+
+- **Keyboard only.** Unplug your mouse and complete your critical flow with Tab, Shift-Tab, Enter, and Escape. If you get stuck or cannot see where focus is, so will your users.
+- **Screen reader pass.** VoiceOver ships with macOS (Cmd-F5), [NVDA](https://www.nvaccess.org/) is free on Windows, Orca ships with most Linux desktops. Ten minutes on your main flow is enough to find the worst problems.
+- **Zoom to 200%.** Text should reflow rather than clip or overlap.
+- **Contrast.** Browser devtools report contrast ratios directly in the element inspector.
+
+Do this before demos and before releases, alongside your smoke test.
+
+## Testing with Assistive Technology Users
+
+Automated rules and your own keyboard pass tell you whether the software is *usable*. Only someone who relies on assistive technology daily can tell you whether it is *good*. They navigate at speeds and in patterns you will not think to try, and they will find in two minutes what your checklist missed entirely.
+
+Where feasible, recruit one participant who uses a screen reader, voice control, or switch access as part of their normal day, and run the same task-based session you would run with any other user. Campus disability services, local accessibility meetups, and your project partner's own user base are the usual routes.
+
+Where that is not feasible in your timeline, the honest substitute is a task-based session under simulated constraint: a teammate who did not build the feature completes the flow keyboard-only or with a screen reader on. State plainly in your writeup that this was simulated. Simulation finds broken things; it does not tell you what daily use feels like, and pretending otherwise is the mistake worth avoiding.
+
+## Best Practices for Accessibility Testing
+
+- **Gate in CI, not before the deadline.** A violation caught in a pull request costs minutes. The same violation found the week before the Expo costs a redesign.
+- **Start at the lint layer.** It is the cheapest rule set you will ever add and it catches the most common defects before a browser is involved.
+- **Do the keyboard pass on every flow you demo.** It takes two minutes and it is the check that most often finds something.
+- **Write down what was simulated.** A teammate with a screen reader on is a useful test and a different test from a daily user. Say which one you ran.
+- **Fix the flow, not the score.** A page that passes every automated rule can still be uncompletable without a mouse.
+- **Treat a violation as a bug.** Put it on the board with the others rather than in a separate accessibility backlog nobody prioritizes.
+
+## Some Truths About Accessibility Testing
+
+Most capstone teams do none of this and nothing visible happens, because the graders, the partners and the teammates all use a mouse and a screen. That is exactly why it gets skipped: the cost of skipping it lands on people who are not in the room.
+
+Automated tools are oversold and still worth running. [Deque's own audit data](https://www.deque.com/automated-accessibility-coverage-report/) puts axe-core at 57% of issues by volume, and counting WCAG success criteria instead gives a lower figure. A green automated run is not an accessible product; it is the mechanical half done.
+
+The manual pass is the highest-yield thing on this page and takes the least equipment. Unplugging a mouse costs nothing and finds real defects in most student projects on the first try.
+
+Recruiting a daily assistive-technology user inside a ten-week term is genuinely hard, and the honest answer is often that you could not. Saying so in your writeup is worth more than a simulated session described as a real one.
+
+Retrofitting is the expensive path and it is the one most teams take. The work is mostly in the markup: semantic elements, labels, focus order. Getting it right while the component is being written is nearly free, and the same fix after a design is finished can mean rebuilding the component.
+
+## Accessibility Testing in Industry and Academia
+
+For a large part of the industry this is a legal requirement rather than a quality preference. In the United States, Section 508 governs federal procurement and the Americans with Disabilities Act has been read to cover commercial websites; the European Accessibility Act imposes comparable obligations. Public universities, including this one, procure against those standards, which is why a partner in the public sector will often name WCAG 2.2 AA in a contract before they name a framework.
+
+Companies that take it seriously put it where it cannot be skipped: axe or Lighthouse in the pipeline, an accessibility item in the definition of done, and a design system whose components are accessible once so that product teams inherit it. Microsoft, Apple and Google all publish accessibility guidelines for their platforms, and each runs an internal certification or review step before release.
+
+In research software the pressure is weaker and the gap is wider. Tools built for a lab are rarely tested with assistive technology at all, which becomes a real problem the moment the artifact is published and a stranger is expected to reproduce the result with it.
+
+:::note[Reviewed annually]
+The tool names on this page date faster than the practice. Checked at the annual review.
+:::
