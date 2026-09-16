@@ -263,7 +263,8 @@ for (const [, term, table] of termSections) {
 // in the term tables; the four 25% components (RFC, Defense, Career
 // Retrospective, and the two evaluation instruments) are stated in the Grade
 // Architecture table instead and are skipped here deliberately, not by
-// accident. Their weights are uniform across terms and have never drifted.
+// accident. Their weights are checked by hand against that table; the Defense
+// varies by term since the fall Resume and Intent took 2% of it.
 for (const [slug, assignment] of pages) {
   const inTables = [...tableWeights.entries()].filter(([, m]) => m.has(slug));
   if (inTables.length === 0) {
