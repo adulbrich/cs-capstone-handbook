@@ -6,7 +6,10 @@ sidebar:
 assignment:
   level: individual
   terms: [fall, winter, spring]
-  weight: 10
+  weight:
+    fall: 8
+    winter: 10
+    spring: 10
   outcomes:
     SO1: 1
     SO2: 1
@@ -18,7 +21,7 @@ assignment:
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 
-<AssignmentMeta submission="Individual, held as a team session" due="Week 7 or 9, every term" weight="10% of the term grade" />
+<AssignmentMeta submission="Individual, held as a team session" due="Week 7 or 9, every term" weight="8% of the fall grade, 10% of the winter and spring grades" />
 
 Once per term, in week 7 or 9 (your TA publishes the schedule), your team meets your TA for a defense session separate from your [cohort check-ins](/assignments/introduction/#cohort-check-ins), during which **each student** walks through something they own and answers live questions. The session is **six minutes per student plus about ten minutes for setup and wrap**, so a team of three runs a little under half an hour and a team of five runs about forty minutes. Per-student time does not shrink on a larger team; the session simply runs longer. Sick or absent that week? Tell your TA before the session and you will be rescheduled, per the [absence policy](/assignments/introduction/#late-work-absence-and-makeup).
 

@@ -11,6 +11,12 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 - Cohort assignments and meeting grids are built in week 0 from the cohort sheet and published in Canvas week 1.
 - The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
 
+## Resume Cohort Meetings (fall, instructor-run)
+
+- Separate from the TA cohorts. Every student meets an instructor once in fall weeks 3 to 5, in groups of eight for thirty minutes, to react to the three intent lines from the Resume and Intent assignment. One instructor runs all of them: about six hours per hundred students; the second Friday hour and two fixed office blocks a week absorb them. Slots are published in Canvas in week 2 from the roster.
+- Attendance is the third rubric criterion; the instructor records it in Canvas the same day. A student who asks before the slot is rescheduled; a no-show is not excused.
+- The same instructor meets the same cohorts again in spring, by week 8, for the Career and Individual Retrospective; keep the cohort list and the fall submissions, since the fall Canvas course closes.
+
 ## Check-in Format (25 to 30 minutes, the same script in every cohort)
 
 The check-in verifies the sprint note; it is not a status meeting. One script for every TA, because the detection failures we have had were TAs watching a demo the student chose: the same broken page at four check-ins running, "still working on it". The rule that closes that: **you pick what each student demos, from their latest contribution line, and nothing to open means nothing was done.**

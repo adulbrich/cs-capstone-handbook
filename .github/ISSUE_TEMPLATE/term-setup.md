@@ -22,6 +22,7 @@ labels: type:chore
 - [ ] Set the Canvas grading standard by hand to the cut points on `src/content/docs/learning-objectives/grading.mdx`; the syllabi mirror the same table
 - [ ] Re-import every rubric TSV named in the re-import lists of `canvas/assignments/assignment-readme.md` (browser extension; sources in `canvas/assignments/`)
 - [ ] Create the Workshop Activities column for the term (complete/incomplete per item)
+- [ ] Fall only: create the Resume and Intent assignment (PDF plus text box, due week 2) in the Individual Evidence group, import `canvas/assignments/resume-and-intent/`, and publish the cohort meeting slots in Canvas in week 2 (`STAFF-RUNBOOK.md`, Resume Cohort Meetings)
 - [ ] Update the Qualtrics surveys (peer evaluation, project partner evaluation)
 - [ ] Publish cohort assignments and the check-in grid in Canvas (week 1), with the sprint-week alignment stated in the Cohort Check-ins section of `src/content/docs/assignments/introduction.mdx`
 - [ ] Schedule the defense calibration hour before week 7 (`STAFF-RUNBOOK.md`, Defense Logistics)
