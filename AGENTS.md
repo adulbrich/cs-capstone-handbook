@@ -23,6 +23,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the no-outcome-tags, no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
+| `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. Runs in CI and pre-commit. |
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule. Runs at `commit-msg`, in the `guard-git` hook, and in CI over the PR range. |
@@ -63,6 +64,7 @@ npm run validate:activities
 npm run validate:downloads
 npm run validate:dashes
 npm run validate:dates
+npm run validate:sidebar
 npm run check            # Biome, for anything under scripts/ or src/ that is code
 npm run check:prose      # no em dash, emoji, or glossary-rejected synonym
 npm run check:commits    # Conventional Commits over origin/main..HEAD
