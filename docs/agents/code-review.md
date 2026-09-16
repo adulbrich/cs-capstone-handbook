@@ -12,7 +12,12 @@ skills under `.claude/skills/`.
 1. **Audience first.** A student in week 3, under deadline, can act on the
    page without asking staff. Findings: a rule stated without the action it
    implies; a term used before it is defined or linked; a page whose first
-   lines do not say what it is for and who it is for.
+   lines do not say what it is for and who it is for. On an assignment page,
+   any sentence about course design is a hard finding: why the assignment
+   exists, what it replaced, what past cohorts did, "by design", "on
+   purpose", "in this course there is no". The page talks to the student
+   about the student's work; rationale lives in `STAFF-RUNBOOK.md` or the
+   issue tracker.
 2. **One purpose per page, one home per fact.** `AGENTS.md` lists the canonical
    home of each shared fact. A second statement of a weight, a week, a scale,
    or a policy is a finding; the fix is a link. A page may state the single

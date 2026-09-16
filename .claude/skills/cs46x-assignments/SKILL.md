@@ -105,9 +105,15 @@ Sections in **bold** are required.
 
    Self-close it (`/>`) when there is no note.
 
-2. **Intro prose.** One to three paragraphs on why the assignment exists and
-   what it is really testing. This is where you are allowed to argue. Say what
-   the failure mode is that the assignment kills.
+2. **Intro prose.** One to three paragraphs, in second person, on what the
+   student produces, by when, and what makes it good. Say why it matters **to
+   the student** (an interviewer can ask about it, the partner will expect it)
+   and stop there. **Never explain the course's design on an assignment
+   page**: no "this assignment exists because", "this replaces X", "most
+   teams used to", "by design", "on purpose", "in this course there is no",
+   or any sentence whose subject is the course, the staff, or a past cohort.
+   Students read the page to find out what to do; design rationale belongs in
+   `STAFF-RUNBOOK.md`, `docs/agents/`, or the issue that made the decision.
 
 3. **The deliverable section.** Heading names the artifact and, where it
    applies, its length and repository path:
@@ -128,10 +134,11 @@ Sections in **bold** are required.
    "fabricating demo footage, metrics, findings, or user feedback fails the
    assignment; a smaller true number always beats a bigger invented one."
 
-6. *Admonitions.* Optional, but two patterns recur and are worth reusing:
-   `:::note[If your project is under NDA]` for the local NDA variation, and
-   `:::tip[Why this replaces X]` for defending a design choice students will
-   question. Keep each to one idea.
+6. *Admonitions.* Optional. The pattern worth reusing is
+   `:::note[If your project is under NDA]` for the local NDA variation. Do not
+   write a `Why this replaces X` or `Why we do it this way` admonition; that
+   is course design talking to itself on a student page. Keep each to one
+   idea.
 
 7. **`## Activities That Prepare This`.** The shared recommendations first,
    naming the criterion each one serves. Then, where categories genuinely
@@ -249,6 +256,9 @@ the student has to learn first.
 
 ## What Assignment Pages Must Not Contain
 
+- Course design rationale, history, or description: why the assignment
+  exists, what it replaced, what past cohorts did, what "this course" does or
+  does not have. The page addresses the student about their work.
 - Em dashes.
 - Calendar dates or an academic year. `due` is a term and a week, and may
   add a weekday or a named holiday ("Fall, week 9, Wednesday before
