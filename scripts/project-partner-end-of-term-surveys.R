@@ -116,7 +116,7 @@ if (course_id == "CS461" || course_id == "CS462") {
     # Option 4: An outsider ran it once (70)
     # Option 5: You watched it run on your real inputs but nobody outside the team has operated it (60)
     # Option 6: Nobody outside the team has run it (50)
-    # Option 7: Custom scale agreed in the Definition of Shipped, value 50 to 100 in the text entry.
+    # Option 7: Custom scale agreed in the Definition of Shipped, value 50 to 100 in the text entry (out-of-range entries are clamped).
     # The text-entry column name comes from the Qualtrics export; confirm it against the first CS463 export after the item is rebuilt.
 
     dt[Q6 == 1, Verification := coeff * 100]

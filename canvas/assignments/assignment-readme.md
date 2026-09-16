@@ -109,6 +109,7 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 
 | File | What changed |
 |---|---|
+| `definition-of-shipped/` | Target rung bands say "the outcome ladder" instead of "the category's V&V ladder"; re-import before winter |
 | `spring-release/` | Honest outcomes band text says "the target rung" instead of "the category's target rung"; re-import before spring |
 
 ## Rubric TSVs Requiring Re-Import: Criteria as Checks (#84)
