@@ -9,21 +9,21 @@ import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 Your spring grade's largest partner-evaluation facet, Verification and Validation, is scored against **outcomes**: merged upstream, in production, reproducible, in real use. Each project category has its own [outcome ladder](/assignments/project-partner-evaluation/#verification-and-validation), and the top rungs are hard on purpose.
 
-Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in May. The only move that works is starting the clocks early. That means planning backward from the spring rung you want, and starting in fall week one.
+Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in spring week 8. The only move that works is starting the clocks early. That means planning backward from the spring rung you want, and starting in fall week one.
 
-This guide is the playbook, one section per [project category](/practicalities/categories/). Each section restates the ladder in brief (the [partner evaluation page](/assignments/project-partner-evaluation/#verification-and-validation) is the canonical version, and wins if they ever disagree), walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence you should be collecting for the partner survey. Your [Definition of Shipped](/assignments/definition-of-shipped/) turns this playbook into a signed agreement; the [Repo Checkpoint gates](/assignments/repo-checkpoints/) enforce the intermediate milestones.
+This guide is the playbook, one section per [project category](/practicalities/categories/). Each section names the rungs of its ladder (the partner evaluation page holds the ladders themselves), walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence you should be collecting for the partner survey. Your [Definition of Shipped](/assignments/definition-of-shipped/) turns this playbook into a signed agreement; the [Repo Checkpoint gates](/assignments/repo-checkpoints/) enforce the intermediate milestones.
 
 ## FOSS
 
-**The ladder:** 75 is patches submitted; 80 is submitted and reviewed; 90 is patches accepted; 100 adds a positive mention in press or release notes. Note what separates 75 from 90: not your code, but a maintainer's attention and approval. That is a resource you must cultivate, not a step you execute.
+**The ladder:** from the bottom, a patch that works on your machines, patches submitted, submitted and reviewed, accepted, and accepted with a positive mention in press or release notes ([the FOSS ladder](/assignments/project-partner-evaluation/#verification-and-validation)). Note what separates submitted from accepted: not your code, but a maintainer's attention and approval. That is a resource you must cultivate, not a step you execute.
 
 **Rung-by-rung prerequisites:**
 
-- **Submitted (75):** a working development setup for the upstream project, their contribution workflow understood (CLA or DCO signed, style and commit conventions followed, tests passing in their CI).
-- **Reviewed (80):** a maintainer chose to spend time on your PR. Review latency on large projects is commonly 2 to 8 weeks per round, and most substantive PRs take multiple rounds.
-- **Accepted (90):** every review round addressed, rebased onto a moving main branch, and the change judged worth maintaining forever by people who will own it after you graduate.
+- **Submitted:** a working development setup for the upstream project, their contribution workflow understood (CLA or DCO signed, style and commit conventions followed, tests passing in their CI).
+- **Reviewed:** a maintainer chose to spend time on your PR. Review latency on large projects is commonly 2 to 8 weeks per round, and most substantive PRs take multiple rounds.
+- **Accepted:** every review round addressed, rebased onto a moving main branch, and the change judged worth maintaining forever by people who will own it after you graduate.
 
-The single highest-leverage move: **get a trivial PR merged by the end of fall.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero. This is the fall week-10 gate for FOSS teams.
+The single highest-leverage move: **get a trivial PR merged by the end of fall.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero. It is also how FOSS teams clear the [fall week 10 gate](/assignments/repo-checkpoints/#term-gates).
 
 Communication norms matter as much as code. Read the project's CONTRIBUTING file and recent merged PRs before writing anything. Discuss substantial changes in an issue or mailing list **before** building them; an unsolicited large PR is the most-rejected artifact in open source. Be responsive when review arrives: maintainers deprioritize contributors who take weeks to respond.
 
@@ -39,15 +39,15 @@ Communication norms matter as much as code. Read the project's CONTRIBUTING file
 
 ## New Product or Game
 
-**The ladder:** 70 is friends have tried it; 80 is a dozen users you don't know, or a user study; 90 is two dozen strangers or a rigorous study; 100 is hundreds of light users, tens of heavy users, or press. The jump from 70 to 80 is the hard one: strangers cannot try software that is not deployed, and they will not arrive the week you need them.
+**The ladder:** from the bottom, friends have tried it; a dozen users you don't know, or a user study; two dozen strangers, or a rigorous study; hundreds of light users, tens of heavy users, or press ([the New Product or Game ladder](/assignments/project-partner-evaluation/#verification-and-validation)). The jump from friends to a dozen strangers is the hard one: strangers cannot try software that is not deployed, and they will not arrive the week you need them.
 
 **Rung-by-rung prerequisites:**
 
-- **Friends tried it (70):** a deployed URL or installable build. Nothing more, but nothing less: "clone the repo and run it" does not count as trying your product.
-- **A dozen strangers (80):** a production URL with a real domain and TLS, an onboarding flow a stranger survives without you on a call, a recruitment channel (subreddit, Discord, campus group, itch.io page), and telemetry so you can prove they came.
-- **The top rungs (90 to 100):** retention, which means fixing what the first dozen users hit, which means having had those users early enough to iterate.
+- **Friends tried it:** a deployed URL or installable build. Nothing more, but nothing less: "clone the repo and run it" does not count as trying your product.
+- **A dozen strangers:** a production URL with a real domain and TLS, an onboarding flow a stranger survives without you on a call, a recruitment channel (subreddit, Discord, campus group, itch.io page), and telemetry so you can prove they came.
+- **Two dozen strangers, and beyond:** retention, which means fixing what the first dozen users hit, which means having had those users early enough to iterate.
 
-**Deploy the walking skeleton to a production URL by the end of fall.** This is the fall week-10 gate. It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing) while there is nothing to lose. See the [DevOps guide](/guides/devops/) for how.
+**Deploy the walking skeleton to a production URL by the end of fall.** This is the [fall week 10 gate](/assignments/repo-checkpoints/#term-gates). It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing) while there is nothing to lose. See the [DevOps guide](/guides/devops/) for how.
 
 Know your **store clocks** if you are distributing through one. Apple: developer account approval can take days, and [Apple reviews about 90% of submissions in under 24 hours](https://developer.apple.com/app-store/review/), but that is the clock on one round. Rejections and resubmission loops are routine, first submissions get extra scrutiny, and review slows near holidays. Google Play: new personal accounts face a testing requirement (a closed test with a dozen testers over two weeks) before production access. For games, **itch.io is the fast path**: no review queue, upload and publish the same day. Ship on itch.io early even if a store launch is the end goal.
 
@@ -65,17 +65,17 @@ Add an **analytics or telemetry starter in fall**, not spring: a privacy-respect
 
 ## Research
 
-**The ladder:** 70 is a prototype that works on trivial inputs; 80 works on reasonable inputs; 90 works on a wide range including challenging ones; 100 is novel results or a published paper. Underneath every rung sits an unstated prerequisite: **data you are allowed to use** and **results someone else can reproduce**.
+**The ladder:** from the bottom, a prototype that works on trivial inputs; on reasonable inputs; on a wide range including challenging ones; and novel results or a published paper ([the Research ladder](/assignments/project-partner-evaluation/#verification-and-validation)). Underneath every rung sits an unstated prerequisite: **data you are allowed to use** and **results someone else can reproduce**.
 
 **Rung-by-rung prerequisites:**
 
-- **Trivial inputs (70):** a pipeline that runs end to end, on any data at all.
-- **Reasonable inputs (80):** the real dataset, which means data access agreements and possibly IRB approval, both of which are clocks you do not control.
-- **Challenging inputs and novelty (90 to 100):** a reproduced baseline to compare against, compute for larger runs, and enough calendar time to iterate after the first results disappoint you (they will).
+- **Trivial inputs:** a pipeline that runs end to end, on any data at all.
+- **Reasonable inputs:** the real dataset, which means data access agreements and possibly IRB approval, both of which are clocks you do not control.
+- **Challenging inputs and novelty:** a reproduced baseline to compare against, compute for larger runs, and enough calendar time to iterate after the first results disappoint you (they will).
 
 **Start the IRB and data-access clocks in fall week one.** IRB review at OSU takes weeks even for exempt determinations, and longer if revisions are requested; data use agreements between institutions can take a full term. Your faculty partner knows these processes: ask in your first meeting what approvals the project needs and who files them. If human subjects are even plausibly involved (user studies count), ask explicitly.
 
-The fall week-10 gate for research teams: **the pipeline runs end to end on sample data.** Synthetic or public data is fine; the point is that ingestion, processing, evaluation, and output all connect, so that when real data arrives, you are debugging science instead of plumbing.
+Research teams have their own [fall week 10 gate](/assignments/repo-checkpoints/#term-gates), and the CI requirement on the same page says what "runs" means. Synthetic or public data is fine; the point is that ingestion, processing, evaluation, and output all connect, so that when real data arrives, you are debugging science instead of plumbing.
 
 **Reproducibility is the bar.** A result that only exists on one student's laptop is a rumor. A reproducible artifact means: pinned dependencies (a lock file or container), versioned or precisely referenced data, seeded runs, one documented command from clean checkout to result table, and a README a stranger can follow. The test is literal: another team member, or your professor's grad student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt novelty**: if you cannot reproduce the published number you are comparing against, you cannot claim to beat it.
 
@@ -91,17 +91,17 @@ The fall week-10 gate for research teams: **the pipeline runs end to end on samp
 
 ## Consultancy
 
-**The ladder:** 70 is partner feedback on a prototype; 80 is that feedback addressed in a newer version; 90 is the partner actively integrating the system into production; 100 is the system in production, public-facing or part of critical operations. Read the top rungs carefully: they describe actions the **partner** takes, not you. Your job is to make those actions easy, safe, and early.
+**The ladder:** from the bottom, partner feedback on a prototype; that feedback addressed in a newer version; the partner actively integrating the system into production; and the system in production, public-facing or part of critical operations ([the Consultancy ladder](/assignments/project-partner-evaluation/#verification-and-validation)). Read the top rungs carefully: they describe actions the **partner** takes, not you. Your job is to make those actions easy, safe, and early.
 
 **Rung-by-rung prerequisites:**
 
-- **Feedback on a prototype (70 to 80):** something deployed where the partner can click it, early enough that their feedback can shape the next version.
-- **Partner integrating (90):** the system running in the **partner's** environment, which means their IT department has said yes: accounts provisioned, security review passed, data handling approved.
-- **In production (100):** all of the above plus a handoff the partner's people can operate without you.
+- **Feedback on a prototype, then addressed:** something deployed where the partner can click it, early enough that their feedback can shape the next version.
+- **Partner integrating:** the system running in the **partner's** environment, which means their IT department has said yes: accounts provisioned, security review passed, data handling approved.
+- **In production:** all of the above plus a handoff the partner's people can operate without you.
 
 **Ask about IT and security review in your first fall meeting.** "Who has to approve software running in your environment, and how long does that take?" At small nonprofits the answer may be "the director, tomorrow." At hospitals, school districts, government agencies, and large companies, the answer is a formal review measured in **months**, sometimes with penetration tests, data protection assessments, or vendor onboarding forms. Whatever the answer, put it in your Definition of Shipped with an owner and a start-by date.
 
-**Agree on acceptance criteria early and in writing.** The 80-rung says "concerns have been addressed": that is only checkable against criteria the partner endorsed before you built. Vague scope is how consultancy projects hit spring with a partner who feels the system "isn't what we asked for."
+**Agree on acceptance criteria early and in writing.** The "concerns addressed" rung is only checkable against criteria the partner endorsed before you built. Vague scope is how consultancy projects hit spring with a partner who feels the system "isn't what we asked for."
 
 Stage the deployment: your own hosting first (fast iteration, demos), then a **staging instance in the partner's environment** in winter, then production in spring. The staging step is the one teams skip and regret; it is where authentication schemes, network policies, and data access rules surface.
 
@@ -121,22 +121,22 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 
 - Start every external clock in fall: domain, TLS, hosting, store accounts, CLA, IRB, partner IT access. None of them runs faster for being started late.
 - Deploy the walking skeleton while there is nothing to lose. A production URL with a placeholder page flushes out the whole dependency chain at zero risk.
-- Instrument before you need the numbers. Analytics wired in fall is evidence in spring; analytics wired in May is a screenshot of an empty chart.
+- Instrument before you need the numbers. Analytics wired in fall is evidence in spring; analytics wired in spring week 7 is a screenshot of an empty chart.
 - Treat recruiting strangers as a workstream: an owner, a channel that exists, backlog items, starting in winter.
-- Put dates earlier than March in your Definition of Shipped, and renegotiate the rung in the open when they slip rather than discovering the slip in June.
+- Put dates earlier than winter week 10 in your Definition of Shipped, and renegotiate the rung in the open when they slip rather than discovering the slip in spring week 10.
 - Read your category's ladder literally and plan for the rung you can prove, not the one you hope for.
 - Capture evidence the day it happens (the merged PR, the dashboard, the maintainer's comment, the partner's email) and link it from `docs/shipped.md`.
 
 ## Some Truths About Shipping
 
-- The last 10% is not 10%. Teams that plan "build until May, ship in June" are describing a plan to hit the 70 rung.
+- The last 10% is not 10%. Teams that plan "build until spring week 8, ship in week 10" are describing a plan for the lowest rung that is not vaporware.
 - Every external clock starts later than you think and runs longer than they told you. The only defense is starting it before you need it.
 - A trivial thing shipped in fall beats an impressive thing shipped never. The walking skeleton, the typo PR, the sample-data pipeline: none of them is the point, and all of them are the point.
 - Strangers are not friends who haven't heard of you yet. Recruiting users you don't know is a project workstream with its own backlog items, not a tweet you send in week 9.
-- "The partner will deploy it after the course ends" is the consultancy ladder's 80 rung wearing a 100 rung's costume. If it is not in their environment by spring, it is not shipped.
+- "The partner will deploy it after the course ends" is the consultancy ladder's "concerns addressed" rung wearing the "in production" rung's costume. If it is not in their environment by spring, it is not shipped.
 - Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not APIs with SLAs. Being early, polite, and responsive is a technical skill.
-- If your Definition of Shipped contains no date earlier than March, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
-- Evidence collected in the moment costs minutes; evidence reconstructed in June is the kind the [Release and Metrics](/assignments/release/) page cannot credit. Screenshot the milestone the day it happens.
+- If your Definition of Shipped contains no date earlier than winter week 10, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
+- Evidence collected in the moment costs minutes; evidence reconstructed in spring week 10 is the kind the [Release and Metrics](/assignments/release/) page cannot credit. Screenshot the milestone the day it happens.
 
 ## Shipping in Industry and Academia
 
