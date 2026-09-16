@@ -1,0 +1,54 @@
+name: Task
+description: A change to the handbook, written so an agent can take it without a triage session.
+labels: ["needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Describe what the reader should see afterwards, not how to edit the
+        files. Page paths are welcome where they are the grep target. Say each
+        fact once: if the handbook already states it, link to the page rather
+        than restating it here. See `docs/agents/issue-tracker.md`.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why this change, and who it is for (student, project partner, TA, instructor). Link the page or the earlier issue that raised it.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance
+      description: Each item independently checkable. The review checks against this list.
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: pages
+    attributes:
+      label: Pages touched
+      description: The handbook pages under src/content/docs/ this change edits or adds, one per line. Include any public/ download it owns.
+      placeholder: src/content/docs/assignments/example.mdx
+  - type: dropdown
+    id: canvas
+    attributes:
+      label: Canvas mirror
+      description: Does a rubric TSV or a syllabus under canvas/ change with this, so a re-import is needed?
+      options:
+        - "no"
+        - "yes"
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: p0-now blocks the running term, p1-next is the current review cycle, p2-later waits.
+      options:
+        - p1-next
+        - p0-now
+        - p2-later
+    validations:
+      required: true

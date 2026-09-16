@@ -24,6 +24,8 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
+| `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file. Runs in CI, pre-commit, and the `after-edit` hook. |
+| `scripts/check-commit-message.mjs` | Conventional Commits subject rule. Runs at `commit-msg`, in the `guard-git` hook, and in CI over the PR range. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -36,8 +38,9 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
    lockfile drift, so CI would stop testing what ships.
 3. **No em dashes in prose.** Use colons, semicolons, commas, or periods.
    This applies to handbook content, Canvas HTML, and repo docs alike.
-   `validate-dashes.mjs` checks the content directories; the root docs and
-   the skills are checked by hand.
+   `validate-dashes.mjs` checks the content directories and
+   `scripts/check-prose.mjs` checks every tracked text file, root docs and
+   skills included, in CI and at pre-commit.
 4. **The handbook outranks Canvas.** If a rubric TSV and a handbook rubric
    table disagree, the handbook is right and the TSV is the bug. Rubric point
    values must match exactly.
@@ -61,6 +64,8 @@ npm run validate:downloads
 npm run validate:dashes
 npm run validate:dates
 npm run check            # Biome, for anything under scripts/ or src/ that is code
+npm run check:prose      # no em dash or emoji in any tracked text file
+npm run check:commits    # Conventional Commits over origin/main..HEAD
 ```
 
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build
@@ -197,6 +202,15 @@ carries the writing voice verbatim, so loading the skill is enough.
 | `cs46x-guides` | `src/content/docs/guides/` |
 | `cs46x-assignments` | `src/content/docs/assignments/` |
 
+## Git and pull requests
+
+The rules, which the hooks under `.claude/hooks/`, `lefthook.yml`, and the
+`main` ruleset enforce (the gates table in `CONTRIBUTING.md` shows where each
+one stops you): branch
+from a fresh `origin/main`, never commit on `main`, stage by name, Conventional
+Commits with a lowercase imperative, no em dash, emoji, or session link in a
+commit message or PR text, one PR per issue, squash merge after the review loop.
+
 ## Agent skills
 
 ### Issue tracker
@@ -206,6 +220,12 @@ GitHub Issues on `adulbrich/cs-capstone-handbook`, via `gh`. See `docs/agents/is
 ### Triage labels
 
 The five canonical labels, unrenamed. See `docs/agents/triage-labels.md`.
+
+### Code review
+
+`mattpocock-skills:code-review` on every pull request. The brief the
+Standards axis reads, and the rule for when the loop ends, are in
+`docs/agents/code-review.md`.
 
 ### Domain docs
 
