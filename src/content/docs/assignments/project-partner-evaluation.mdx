@@ -19,7 +19,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 Your project partner scores 25% of your grade every term, in two surveys:
 
 1. The **Midterm Pulse** (5% of the term grade): three statements about how the team works with them, answered in two minutes.
-2. The **Final Evaluation** (20% of the term grade): the six facets below, each on a 50 to 100 scale.
+2. The **Final Evaluation** (20% of the term grade): the six facets below, each scored 100, 90, 80, 70, or 50.
 
 Fall and winter are **progress-focused**; spring scores **outcomes**. The facet weights move with the year:
 
@@ -38,19 +38,19 @@ Fall is won on requirements, winter on building, spring on the shipped outcome. 
 
 Every facet has three written anchors, at **100**, **80**, and **50**. A partner scores **90** or **70** when the team sits between two anchors. The spring Verification and Validation ladders keep their own rungs.
 
-Under each facet is a short list headed **What it looks like**. It is the same list for both readers: for you, it is what to do every week; for your partner, it is what to look for before choosing an anchor. Nothing on the lists needs a rubric to be understood, and nothing on them is optional in a professional engagement. Discuss the lists with your partner in the first meeting of every term.
+Under each facet is a short list headed **What it looks like**. It is the same list for both readers: for the student, it is what to do every week; for the partner, it is what to look for before choosing an anchor. In the lists and the anchors, "you" is the partner. Nothing on the lists needs a rubric to be understood, and nothing on them is optional in a professional engagement. Discuss the lists with your partner in the first meeting of every term.
 
 The survey also asks the partner to flag any specific student who did not contribute; that flag starts the corroboration review at the bottom of this page.
 
 ## Midterm Pulse (5%)
 
-Three statements, each answered from Strongly disagree to Strongly agree. Sent week 5, closes end of week 6. Each draws on the facet lists below, so the way to score well in week 6 is the way to score well in week 10.
+Three statements, each answered from Strongly disagree to Strongly agree. Each is one behavior from the facet lists below, so the way to score well in week 6 is the way to score well in week 10.
 
 | Item | Statement your partner rates | Drawn from |
 |---|---|---|
-| Responsiveness | The team answers my messages within one working day, and a question I raise comes back with an answer or a date. | Communication |
-| Professionalism | The team arrives prepared, every student speaks in our meetings, and notes with decisions and next steps reach me within a day. | Communication, Teamwork |
-| Delivery quality | What the team has shown me runs, and it matches what we agreed. | Requirements, Design and Implementation |
+| Responsiveness | The team answers my messages within one working day, with an answer or a date. | Communication |
+| Professionalism | The team arrives at our meetings with a written agenda or status, and every student speaks. | Communication |
+| Delivery quality | What the team has shown me so far matches what we agreed and works as demonstrated. | Requirements and Specifications; Design, Implementation, and Deployment |
 
 ## Reflection
 
@@ -60,7 +60,7 @@ Whether the team learns from each sprint and shows it.
 
 - The team can say, without being asked, what the last sprint taught them and what they changed because of it.
 - Feedback you gave appears in the next iteration, or the team tells you why not.
-- Retrospective outcomes reach you as changed behavior (a new meeting rhythm, a different demo format), not as a document.
+- Retrospective outcomes reach you as changed behavior (a new meeting rhythm, a different demo format).
 - The team states the project's impact and its intellectual-property terms in their own words.
 
 <Tabs syncKey="terms">
@@ -68,7 +68,7 @@ Whether the team learns from each sprint and shows it.
     Points | Anchor
     -------|---------
     100    | Every sprint the team names one thing it learned and one process change it made because of it; your feedback shows up in the next sprint's work, or you are told why not.
-    80     | The team reflects when asked and has acted on some of your feedback; the changes are sporadic.
+    80     | The team reflects when asked and has acted on some of your feedback; some sprints show a change, most do not.
     50     | No reflection you can point to; the same feedback is given twice with no visible effect.
   </TabItem>
   <TabItem label="Spring">
@@ -88,15 +88,15 @@ Whether the team knows what it is building, in terms you agreed to.
 
 - Goals are written down, stated so they can be measured, and you have agreed to them.
 - The team asks before assuming; an unclear item comes back as a question within the week, not as a surprise in a demo.
-- Priorities are explicit: the team can tell you what is in, what is out, and what is next.
-- The requirements (a document or the board) change as understanding changes, and you can see the history.
+- Priorities are explicit: the team can tell you what is in, what is out, and what is next, and you have seen the list.
+- The written requirements change as understanding changes, and you can see what changed.
 
 <Tabs syncKey="terms">
   <TabItem label="Fall & Winter">
     Points | Anchor
     -------|---------
-    100    | Written, measurable goals you agreed to; a prioritized backlog you have seen; questions arrive before the work starts.
-    80     | Goals are written but some are vague or unprioritized; you sometimes learn of an assumption after the fact.
+    100    | Written, measurable goals you agreed to; a prioritized list you have seen; questions arrive before the work starts.
+    80     | Goals are written but some cannot be measured as written or carry no priority; you sometimes learn of an assumption after the fact.
     50     | No written goals you have seen; the team builds on assumptions you never confirmed.
   </TabItem>
   <TabItem label="Spring">
@@ -116,7 +116,7 @@ Whether working software exists, advances, and can be run by someone other than 
 
 **What it looks like**
 
-- You can run or see the current version at any time (a URL, a build, a branch), not only at demos.
+- You can open the current version at any time (a link, a build, or a branch you can run), not only at demos.
 - Milestones you were told about are met, or renegotiated before they slip.
 - Design decisions that affect you (data, integrations, hosting, cost) are explained before they are made.
 - Documentation exists for whoever runs this after the team is gone.
@@ -132,8 +132,8 @@ Whether working software exists, advances, and can be run by someone other than 
   <TabItem label="Spring">
     Points | Anchor
     -------|---------
-    100    | Deployed where it needs to run, documented for its successor, and you or your users have used it.
-    80     | Deployed and functional, with known gaps the team has named.
+    100    | Deployed where it needs to run, documented for its successor, used by you or your users, and no gap you raised remains open.
+    80     | Deployed and functional, with gaps the team has named and not yet closed.
     50     | Not deployed, or deployed but unusable without the team present.
   </TabItem>
 </Tabs>
@@ -146,7 +146,7 @@ The **outcome** of the project, not only the output.
 
 **What it looks like**
 
-- Tests run automatically on every change, and the team can show you the last run.
+- Tests exist, and the team can show you the latest run.
 - Feedback from you or from users is collected every sprint, and you can see where it went.
 - The team states, in writing, what "verified" means for this project and against which expectations of yours.
 - In spring, the team can name the rung of the ladder it is on and the evidence for it.
@@ -155,8 +155,8 @@ The **outcome** of the project, not only the output.
 
 Points | Anchor
 -------|---------
-100    | A written test and validation approach you have seen; tests run automatically; feedback from you or from users is collected every sprint and visibly acted on.
-80     | Some tests and occasional feedback collection; not yet systematic.
+100    | A written test and validation approach you have seen; tests run on every change; feedback from you or from users is collected every sprint and visibly acted on.
+80     | Tests cover some parts and run when someone remembers; feedback is collected some sprints.
 50     | No tests you know of; no feedback collected.
 
 ### Spring
@@ -169,7 +169,7 @@ In spring the scale depends on the project **category**, and the ladders below a
 
 Each ladder belongs to one [project category](/practicalities/categories/). Read them literally. Every top rung describes software that reached somebody: merged upstream, running in production, used by people you do not know, results a stranger can reproduce. **Code that works but that nobody ever ran is not a high rung in any category.** Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it is what the [Shipping guide](/guides/shipping/) maps out for each category.
 
-### FOSS
+#### FOSS
 
 Points | Criteria
 -------|---------
@@ -181,7 +181,7 @@ Points | Criteria
 70     | Patch appears to work on student computers.
 50     | Patch is vaporware.
 
-### Research
+#### Research
 
 Points | Criteria
 -------|---------
@@ -191,7 +191,7 @@ Points | Criteria
 70     | Prototype works on trivial inputs.
 50     | Prototype is vaporware.
 
-### Consultancy
+#### Consultancy
 
 Points | Criteria
 -------|---------
@@ -201,7 +201,7 @@ Points | Criteria
 70     | Project partner feedback on an earlier prototype.
 50     | System diverges significantly from Project partner requirements; project partner does not intend to use the system; team has stopped speaking to project partner.
 
-### New Product or Game
+#### New Product or Game
 
 Points | Criteria
 -------|---------
@@ -217,15 +217,15 @@ Whether the team works as one unit in front of you.
 
 **What it looks like**
 
-- The same people show up; an absence is announced to you in advance, with a stand-in named.
+- The same people show up; an absence is announced to you in advance.
 - Any team member can answer for the project, not only the one who did the work.
-- Disagreements surface as decisions the team brings to you, not as silence or as one person's version.
+- Disagreements reach you as decisions the team made together, with the options it weighed.
 - Work is visibly shared: over a term, the demos and the questions come from different people.
 
 Points | Anchor
 -------|---------
 100    | Whole team present and prepared; anyone can speak to the project; disagreements are resolved and reported to you; work is visibly spread across members.
-80     | Mostly present; one or two members carry the meetings; some friction is visible but managed.
+80     | Mostly present; one or two members carry the meetings; disagreements show in a meeting and are settled by the next one.
 50     | Members missing without notice; one person does the talking and the work; conflict visible and unmanaged.
 
 Students also evaluate each other directly every term, and the end-of-spring survey adds the CATME instrument. See [Peer Evaluations](/assignments/peer-evaluations/).
@@ -240,7 +240,8 @@ Whether you always know where the project stands without asking.
 - The team arrives with a written agenda or status, and sends notes with decisions and next steps within a day.
 - Demos show working software, not slides about it.
 - A question gets an answer or an "I will find out by X", and X holds.
-- Written updates arrive on the cadence you agreed, without being chased.
+- Written updates arrive on the cadence you agreed, without being chased, and a message gets an answer within one working day.
+- Documents you receive are short, current, and answer the question they were sent for.
 
 Points | Anchor
 -------|---------
@@ -254,7 +255,7 @@ Points | Anchor
 - [User Story Mapping](/activities/requirements/#user-story-mapping): the Requirements list; written, prioritized goals your partner has seen.
 - [External Feedback Session](/activities/reflective/#external-feedback-session): the Reflection and Verification lists; feedback collected and visibly acted on.
 
-Browse Teamwork and Communication activities when these run out.
+Browse [teamwork](/activities/teamwork/) and [communication](/activities/communication/) when these run out.
 
 ## Individual Accountability
 
