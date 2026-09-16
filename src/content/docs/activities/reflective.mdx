@@ -12,15 +12,20 @@ The goal of reflective activities is to give you an opportunity to apply learnin
 
 > "The unexamined life is not worth living" -- Socrates
 
-## Analyze a FOSS Project
+## Analyze an Existing Codebase
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Find a FOSS project on GitHub or another publicly available repository, ideally of some relevance to your project. Analyze what the maintainers have put in place to manage and organize the project (processes, etc.), and write a summary of what you learned that could or should be applied to your project. Include specifics. Share it with your team.
+Learn how the code you are inheriting or contributing to is actually built, tested, and reviewed before you change any of it: a predecessor team's repository, your partner's codebase, or the upstream FOSS project. Two to three hours, once, in fall weeks 1 to 5: alone to learn a project, as a team when the audit is due. If your project starts from scratch, run it on a FOSS project close to yours instead; the practices you find are the ones to adopt.
 
-A good output is a written summary naming the specific practices you found and which ones you will adopt in your own repository.
+- **Run it**: fresh clone, follow their README or handoff document to a working build and a passing test run, and write down every step that failed or was undocumented.
+- **Read the process**: CONTRIBUTING file, review rules, CI configuration, branch and release conventions, issue templates; for a predecessor team, their handoff document, project retrospective, and risk register.
+- **Map the state**: which tests exist and pass, how old the dependencies are, what the last ten merged changes touched and who reviewed them, where the known debt sits.
+- **Decide first moves**: what you adopt as is, what you change first and why, and what you will not touch this year.
 
-**Feeds:** the fall week 5 [repo checkpoint](/assignments/repo-checkpoints/) gate, the [Definition of Shipped](/assignments/definition-of-shipped/) target rung, and your [RFC](/assignments/rfc/) options, since upstream conventions constrain them hard.
+A good output is a one-page write-up covering what [Project Types](/practicalities/types/#where-the-code-starts) lists for the inherited-codebase audit, ending with your first three changes; for an existing-codebase team it is the audit the fall week 5 checkpoint reads.
+
+**Feeds:** the fall week 5 [repo checkpoint](/assignments/repo-checkpoints/) gate, the [Definition of Shipped](/assignments/definition-of-shipped/) target rung, and your [RFC](/assignments/rfc/) options, since inherited conventions constrain them hard.
 
 ## Read ACM Queue Articles
 
