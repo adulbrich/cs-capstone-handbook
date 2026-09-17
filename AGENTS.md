@@ -26,6 +26,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. Runs in CI and pre-commit. |
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. Runs in CI, pre-commit, and the `after-edit` hook. |
+| `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule. Runs at `commit-msg`, in the `guard-git` hook, and in CI over the PR range. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
@@ -68,6 +69,7 @@ npm run validate:sidebar
 npm run check            # Biome, for anything under scripts/ or src/ that is code
 npm run check:prose      # no em dash, emoji, or glossary-rejected synonym
 npm run check:commits    # Conventional Commits over origin/main..HEAD
+npm run test:hooks       # cases for the git guard hook
 ```
 
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build
