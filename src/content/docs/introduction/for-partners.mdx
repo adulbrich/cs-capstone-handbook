@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import { LinkCard, CardGrid, LinkButton } from '@astrojs/starlight/components';
+import { portal } from '/src/site';
 
 You are an industry professional, founder, or faculty or staff member with a project a team of 3 to 4 seniors can work on for three terms. It costs you an hour a week per team and an evaluation each term.
 
@@ -15,7 +16,7 @@ The [Projects and Teams](/practicalities/projects-and-teams/#how-projects-are-pr
 
 <div class="cta text-center">
   <LinkButton
-    href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/"
+    href={portal.home}
     variant="primary"
     icon="external"
     iconPlacement="start"

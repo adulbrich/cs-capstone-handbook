@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import { LinkCard, CardGrid, LinkButton } from '@astrojs/starlight/components';
+import { portal } from '/src/site';
 
 You are enrolled in CS 461, 462, and 463, the on-campus, three-term computer science capstone. One team, one project partner or mentor, one project for the whole year. This handbook is the source of truth for everything graded; Canvas mirrors it.
 
@@ -13,7 +14,7 @@ Other capstone options (online CS 46X, the one-term CS 467, ECE 441/442/443, ENG
 
 <div class="cta text-center">
   <LinkButton
-    href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/browseProjects.php"
+    href={portal.browse}
     variant="secondary"
     icon="external"
     iconPlacement="start"
