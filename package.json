@@ -17,7 +17,8 @@
     "validate:dashes": "node scripts/validate-dashes.mjs",
     "validate:dates": "node scripts/validate-dates.mjs",
     "validate:downloads": "node scripts/validate-downloads.mjs",
-    "validate:outcomes": "node scripts/validate-outcomes.mjs"
+    "validate:outcomes": "node scripts/validate-outcomes.mjs",
+    "validate:sidebar": "node scripts/validate-sidebar.mjs"
   },
   "dependencies": {
     "@astrojs/check": "0.9.10",

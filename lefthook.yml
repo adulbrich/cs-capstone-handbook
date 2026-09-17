@@ -40,6 +40,11 @@ pre-commit:
     validate-dates:
       glob: "{src/**/*,canvas/**/*,public/**/*,decks/**/*,STAFF-RUNBOOK.md}"
       run: node scripts/validate-dates.mjs
+    validate-sidebar:
+      # A duplicate sidebar.order is silent: the build and the link validator
+      # both pass and the group renders in an order nobody chose.
+      glob: "src/content/docs/**/*.mdx"
+      run: node scripts/validate-sidebar.mjs
     biome:
       glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
       run: npx biome check {staged_files}
@@ -70,6 +75,8 @@ pre-push:
       run: node scripts/validate-dashes.mjs
     validate-dates:
       run: node scripts/validate-dates.mjs
+    validate-sidebar:
+      run: node scripts/validate-sidebar.mjs
     build:
       # astro check + astro build; fails on a broken internal link or anchor.
       run: npm run build
