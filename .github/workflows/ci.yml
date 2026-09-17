@@ -49,6 +49,8 @@ jobs:
         run: node scripts/validate-dates.mjs
       - name: Validate sidebar order
         run: node scripts/validate-sidebar.mjs
+      - name: Test the git guard hook
+        run: node scripts/test-guard-git.mjs
       - name: Build (includes astro check)
         run: npm run build
       - name: Guard against student data

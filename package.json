@@ -13,6 +13,7 @@
     "prepare": "lefthook install || true",
     "preview": "astro preview",
     "start": "astro dev",
+    "test:hooks": "node scripts/test-guard-git.mjs",
     "validate:activities": "node scripts/validate-activities.mjs",
     "validate:dashes": "node scripts/validate-dashes.mjs",
     "validate:dates": "node scripts/validate-dates.mjs",

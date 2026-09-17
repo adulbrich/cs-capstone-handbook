@@ -77,6 +77,8 @@ pre-push:
       run: node scripts/validate-dates.mjs
     validate-sidebar:
       run: node scripts/validate-sidebar.mjs
+    test-hooks:
+      run: node scripts/test-guard-git.mjs
     build:
       # astro check + astro build; fails on a broken internal link or anchor.
       run: npm run build
