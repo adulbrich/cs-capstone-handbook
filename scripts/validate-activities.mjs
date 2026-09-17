@@ -31,7 +31,7 @@
 //      audience badge, which is an activity someone forgot to label. Those
 //      are reported instead of being skipped as prose.
 //
-//   6. The week-by-week schedule on introduction/series.mdx links activities
+//   6. The week-by-week schedule on introduction/schedule.mdx links activities
 //      directly, outside any assignment page. Every one of those links must
 //      resolve and carry a Workshop or Recommended badge, so the schedule
 //      never sends a student to an activity no assignment page still
@@ -49,7 +49,7 @@ import { join } from "node:path";
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
 const SECTION_HEADING = "## Activities That Prepare This";
-const SCHEDULE_PAGE = "src/content/docs/introduction/series.mdx";
+const SCHEDULE_PAGE = "src/content/docs/introduction/schedule.mdx";
 const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/g;
 
 // GitHub-style slugger, matching how Starlight derives heading anchors.

@@ -29,7 +29,7 @@ pre-commit:
       run: node scripts/validate-outcomes.mjs
     validate-activities:
       # The script also reconciles the week-by-week schedule's activity links.
-      glob: "{src/content/docs/{assignments,activities,guides}/*.mdx,src/content/docs/introduction/series.mdx}"
+      glob: "{src/content/docs/{assignments,activities,guides}/*.mdx,src/content/docs/introduction/schedule.mdx}"
       run: node scripts/validate-activities.mjs
     validate-downloads:
       glob: "{public/*,src/content/docs/**/*.mdx}"
