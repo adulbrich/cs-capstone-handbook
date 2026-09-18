@@ -20,9 +20,16 @@ what survives is the punchline. The result reads as confident and teaches
 nothing, because a reader who already agreed nods and a reader who did not has
 been given no argument and no source to check.
 
-Measured against the same instructor's unaided course material, handbook prose
+Measured against the same instructor's unaided lecture notes, handbook prose
 made short standalone assertions at roughly twice the rate and cited sources at
 roughly half the rate. Both numbers are symptoms of the same edit.
+
+The comparison holds for **guides**, which are explanatory pages like lecture
+notes. It does not transfer to assignments or activities: a lower-division
+programming assignment is a different artifact from a term-long team
+deliverable, so nothing here imports a number from one to the other. Where a
+register still lacks a real capstone example, the skill says so rather than
+borrowing one.
 
 > **Aphorism.** The pyramid is a guideline, not a rule.
 >

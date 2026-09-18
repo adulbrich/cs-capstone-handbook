@@ -98,7 +98,7 @@ option is the marketing the Some Truths section is supposed to prevent.
 Link the authoritative reference the first time a concept appears in the body:
 official documentation, an RFC, a standard, a paper, the author who named the
 thing. Roughly six external links per 1,000 words is the target, measured from
-the same instructor's unaided course material, which runs 7.4.
+the same instructor's unaided lecture notes, which run 7.4.
 
 This is not decoration. An unsourced claim makes verification the reader's
 problem; a sourced one hands them the door. It is also the cheapest defense
@@ -276,7 +276,7 @@ The old band of 950 to 1,750 never described this corpus: the guides already
 had a median of 2,605 words and a maximum of 4,265 when it was written, so its
 only real effect was compression pressure on every page that tried to explain
 something. The new band is anchored on two numbers: what the guides already
-are, and the same instructor's unaided course material, which runs a 4,795-word
+are, and the same instructor's unaided lecture notes, which run a 4,795-word
 median for a comparable explanatory page.
 
 Explanation costs words. A guide that hits 2,500 by cutting the reason for

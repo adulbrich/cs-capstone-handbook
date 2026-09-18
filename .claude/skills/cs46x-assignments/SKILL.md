@@ -52,12 +52,15 @@ technique.** If the assignment says "follow conventional commits", link the
 specification. If it says "WCAG AA", link the standard. If it says "use a
 lockfile", link the tool's documentation on lockfiles.
 
-Target roughly four external links per 1,000 words. The current assignment
-pages sit at 0.2, which is effectively zero, against 4.2 on the same
-instructor's unaided assignment pages. That gap is the single largest
-difference between the two, and it matters more here than anywhere else in the
-handbook: a student who cannot find the standard you are grading against will
-guess at it.
+There is no numeric target here yet. The current assignment pages sit at 0.2
+external links per 1,000 words, which is effectively zero, and that is the
+defect. The right rate is not borrowed from another course: capstone
+assignments are a different kind of artifact from a lower-division programming
+assignment, where a single function under test can carry four references. Fix
+the zero, then let the corpus tell us the rate.
+
+What does not depend on a number: a student who cannot find the standard you
+are grading against will guess at it, and then contest the grade.
 
 A link is not course-design rationale and does not violate the rule below. "Use
 [conventional commits](https://www.conventionalcommits.org/)" is a
@@ -321,14 +324,13 @@ the student has to learn first.
 Same requirement, same budget. The difference is whether the student can act
 without guessing.
 
-**The anchor, from the instructor's own CS 362 assignment.** A single
-assignment page there links the Vitest docs, RFC 5322, the O'Reilly regex
-reference the pattern came from, and regex101, so a student who wants to
-understand the thing they are being graded on has four doors out. That is the
-4.2 links per 1,000 words this section is asking for, and none of it is course
-design: every link specifies the deliverable.
-
-The pairs below are constructed to the rule.
+The pairs below are constructed to the rule. They are not drawn from capstone
+pages, and they are not drawn from other courses either, because assignments in
+this program's lower-division courses are a different kind of artifact: a
+scoped exercise against a known function, not a term-long team deliverable for
+an external partner. Replace these with real capstone examples when good ones
+exist. Until then, treat them as illustrations of the rule and let
+`docs/agents/voice.md` be the register model.
 
 **A deliverable line.**
 
