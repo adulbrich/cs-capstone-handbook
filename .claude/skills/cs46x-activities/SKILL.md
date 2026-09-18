@@ -284,6 +284,9 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 
 ### Worked examples
 
+These are constructed to the rule rather than quoted. The register model is
+`docs/agents/voice.md`.
+
 **Opening sentences.**
 
 > Before: Map your one-way doors. Know what you cannot undo.

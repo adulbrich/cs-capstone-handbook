@@ -26,10 +26,14 @@ Students read these pages under deadline pressure. Length is a cost they pay.
 
 ## The Task Register
 
-An assignment page is **how-to and reference**, not explanation. It speaks to a
-student who has already decided to do the work and needs to know what to
-produce, by when, and what good looks like. Second person, task first: "In this
-assignment you will build ...".
+An assignment page is **reference**, not explanation and not how-to. It is the
+contract: what is due, when, and how it is scored. It speaks to a student who
+has already decided to do the work, in second person and task first: "In this
+assignment you will build ...". The procedure for producing the artifact lives
+in the paired activity; the reason the practice exists lives in the guide.
+
+This matches the three-way split in `cs46x-guides` and `cs46x-activities`.
+Guides explain, activities are how-to, assignments are reference.
 
 **Do not import the guides' explanation register.** Guides explain why a
 practice exists; assignments say what is due. A page that opens by teaching the
@@ -316,6 +320,15 @@ the student has to learn first.
 
 Same requirement, same budget. The difference is whether the student can act
 without guessing.
+
+**The anchor, from the instructor's own CS 362 assignment.** A single
+assignment page there links the Vitest docs, RFC 5322, the O'Reilly regex
+reference the pattern came from, and regex101, so a student who wants to
+understand the thing they are being graded on has four doors out. That is the
+4.2 links per 1,000 words this section is asking for, and none of it is course
+design: every link specifies the deliverable.
+
+The pairs below are constructed to the rule.
 
 **A deliverable line.**
 

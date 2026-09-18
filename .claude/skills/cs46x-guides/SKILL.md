@@ -1,6 +1,6 @@
 ---
 name: cs46x-guides
-description: Use when creating or editing guide pages (MDX files in src/content/docs/guides/) for the CS 461/462/463 capstone handbook. Defines the section skeleton, the required honest-caveats and industry sections, and the line between a guide and an assignment. Always load this skill before writing or editing any guide file.
+description: Use when creating or editing guide pages (MDX files in src/content/docs/guides/) for the CS 461/462/463 capstone handbook. Defines the explanation register, the section skeleton including the required Some Truths, Industry and Academia, and Additional Readings sections, the sourcing rule, the word band, and the line between a guide and an assignment. Always load this skill before writing or editing any guide file.
 ---
 
 # Guide Style Guide
@@ -313,21 +313,28 @@ are read for, not validated.
 
 ## Worked Examples
 
-Each pair is the same content at the same length budget. The first is what the
-old compression rule produced; the second is what this skill asks for. The
-difference is never brevity, it is whether the mechanism survived.
+The anchor pair is real: the same topic written both ways, in this repository
+and in the same instructor's CS 362 lecture notes. The constructed pairs after
+it are illustrations of the rule, not quotations. When in doubt about the
+register, read `docs/agents/voice.md` and the CS 362 lectures, not these.
 
-**Opening a section.**
+**The anchor: the testing pyramid, same topic, two treatments.**
 
-> Before: Retrospectives fail for one reason: nothing changes. The team meets,
-> complains, leaves, repeats.
+> Before, from `guides/testing-strategy.mdx`: "The pyramid is a guideline, not
+> a rule." Eight words, no source, nothing to follow.
 >
-> After: A retrospective fails when it produces feelings instead of a change
-> anyone can point at next sprint. The usual mechanism is that the meeting ends
-> with a list of complaints and no owner, so nothing enters the next sprint's
-> plan, and by the third one the team has learned that the hour is theater.
-> [Fowler's write-up](https://martinfowler.com/bliki/RetrospectiveMeeting.html)
-> is blunt about this: the output is an experiment, not a mood.
+> After, the shape the CS 362 lecture uses: name the model and link
+> [Fowler](https://martinfowler.com/bliki/TestPyramid.html), then name the
+> competing model and link
+> [Kent C. Dodds](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests),
+> explain what its proponents argue and why better tooling made the argument
+> viable, and close by saying the right balance depends on how expensive your
+> integration tests actually are.
+
+The second is four times longer and it is the only one of the two a student can
+act on or disagree with. That is the trade this skill is making.
+
+The remaining pairs are constructed to the rule.
 
 **A Some Truths entry.**
 

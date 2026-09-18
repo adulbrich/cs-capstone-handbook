@@ -70,25 +70,36 @@ The page sounds like a knowledgeable colleague who respects the reader's
 intelligence. Direct, not formal. Unhurried. It states an opinion and says what
 the opinion rests on.
 
-**Good.** Arch Linux is excellent for understanding Linux because it exposes
-more of the system directly and assumes less. That same quality makes it less
-forgiving operationally. On a production server the question is not "can Arch
-do this?" but "do you want this server to require constant careful attention?"
-Usually the answer is no.
+**Good.** This is the instructor's own prose, from the CS 362 lecture on
+testing fundamentals. It is the target register:
 
-**Too formal.** Arch Linux provides an educational environment but is not
-recommended for production deployments due to its rolling-release model and
-lack of stability guarantees.
+> Tests that behave unpredictably, sometimes passing and sometimes failing
+> without any changes to the code or test, are referred to as **flaky tests**.
+> These tests can erode developers' confidence in the test suite and waste
+> valuable time as they try to diagnose the cause of the failures. [...] That
+> said, some degree of test flakiness may be unavoidable in specific scenarios.
+> For example, a test that relies on a network service might fail due to
+> uncontrollable factors like network instability. In such cases, the impact of
+> flakiness can be minimized by automatically rerunning any failing tests.
 
-**Too casual.** Arch is cool for learning stuff but you probably do not want it
-on a real server.
+Four things happen there in six sentences: the term is defined, the cost is
+named and it is a human cost rather than a technical one, the limit of the
+advice is admitted, and a mitigation is given. Nothing is asserted that is not
+also explained.
 
-**Too compressed, the failure this file targets.** Arch teaches. Arch does not
-operate. Pick one.
+**Too formal.** Test flakiness constitutes a significant impediment to suite
+reliability and should be mitigated through appropriate remediation strategies.
 
-The fourth is the one to watch for. It reads like craft and it is the least
-useful of the four, because it has removed the mechanism that makes the claim
-checkable.
+**Too casual.** Flaky tests are super annoying and everyone just reruns them
+until they go green.
+
+**Too compressed, the failure this file targets.** A flaky test is not a test.
+Delete it.
+
+The fourth is the one to watch for. It is the shortest, it sounds the most like
+craft, and it is the least useful of the four: it has removed the cost, the
+limit, and the mitigation, so a reader who disagrees has nothing to argue with
+and a reader who agrees has learned nothing to do.
 
 ## What this file does not cover
 
