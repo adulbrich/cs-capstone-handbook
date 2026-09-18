@@ -1,19 +1,17 @@
 ---
 title: AI Project Setup
-description: "Project-level instructions, MCP servers, and skills: the configuration that decides whether an AI tool is useful on your codebase or generic."
+description: "Instructions, hooks, MCP servers, and skills: the committed configuration that decides whether an AI tool is useful on your codebase, and what stops it doing damage."
 sidebar:
   order: 11
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-Read this in the first sprint, once the repository exists; it gives you the four files that make an AI tool understand your project instead of guessing at it.
+Read this in the first sprint, once the repository exists; it gives you the configuration that makes an AI tool understand your project, and the hooks that constrain it.
 
-A tool with no knowledge of your project produces generic suggestions: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. The same tool, given your architecture, your conventions and your constraints, produces suggestions that fit. This page is the configuration; the [Generative AI guide](/guides/generative-ai/) is the practice.
+A tool that knows nothing about your project produces generic suggestions: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. Given your architecture, your conventions and your constraints, the same tool produces suggestions that fit. This page is the configuration; the [Generative AI guide](/guides/generative-ai/) is the practice.
 
-Three of the four things that carry that context are files you commit, which is the point: they are reviewed, versioned and shared, so every teammate's tool behaves the same way on the same code. [agents.md](https://agents.md/) is the cross-tool convention for the instructions, and the [Model Context Protocol](https://modelcontextprotocol.io/) is the open standard behind the servers. The fourth, your tool's own memory, is none of those things, which is the point of the last section.
-
-Without them, each teammate prompts differently, gets different answers, and the codebase drifts toward an inconsistency nobody can point at a commit for.
+Almost all of it is a file you commit, which is the point: reviewed, versioned and shared, so every teammate's tool behaves the same way on the same code. [agents.md](https://agents.md/) is the cross-tool convention for the instructions, and the [Model Context Protocol](https://modelcontextprotocol.io/) is the open standard behind the servers. Without them, each teammate prompts differently, gets different answers, and the codebase drifts toward an inconsistency nobody can point at a commit for.
 
 ## Project-Level Instructions
 
@@ -23,8 +21,6 @@ Most AI coding tools support some form of project-level configuration that persi
 - **Claude Code**: `CLAUDE.md` in your repository root.
 - **Cursor**: `.mdc` files in the `.cursor/rules/` directory. Cursor also reads `AGENTS.md`. A top-level `.cursorrules` file is the legacy format; do not start a new project with it.
 - **GitHub Copilot**: `.github/copilot-instructions.md`.
-
-These files are checked into version control, which means the entire team shares the same AI context. This is one of the most effective ways to keep AI-generated code consistent across team members.
 
 Write the content once, in `AGENTS.md`, and have any per-tool file point at it. Two instruction files that disagree with each other are worse than none: whichever one your teammate's tool reads is the one that wins, and nobody will notice they have drifted until the suggestions stop matching the code.
 
@@ -75,6 +71,78 @@ Never: production data, volunteer names and emails, credentials, the
   Coordinator before pasting.
 ```
 
+## Hooks and Gates
+
+Everything above is a request. The model reads `AGENTS.md`, usually follows it, and sometimes does not, because "do not change the Prisma schema" is one line competing with everything else in a long context window. A hook is not a request. A hook is a script your tool runs on an event, and it runs whether or not the model was paying attention.
+
+Most agent tools support them now, and the configuration is committed like everything else:
+
+- **Claude Code**: `.claude/settings.json`, with `SessionStart`, `PreToolUse` and `PostToolUse` events matched against a tool name.
+- **Cursor**: `.cursor/hooks.json`, with `preToolUse`, `beforeShellExecution`, `afterFileEdit` and others.
+- **GitHub Copilot CLI**: `.github/hooks/*.json`, with `sessionStart`, `userPromptSubmitted`, `preToolUse` and `postToolUse`.
+
+The names differ; the shape does not. A pre-tool hook inspects the call the agent is about to make and can refuse it:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-git.mjs"],
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+The guard itself is short: read the command off standard input, exit non-zero with a message when it matches something you never want, such as a force push or a commit straight to `main`. The agent reads the message and takes another route. The hooks worth writing on a student project are the dull ones: block commits to the default branch, block edits to a generated directory, run your formatter after every edit so the diff is never noise, and print the current branch and build state at the start of a session so the agent does not start from a stale assumption.
+
+Most tools also take a plain allow and deny list for commands and paths. Start there, and write a hook when the decision needs logic.
+
+### Three layers, and which one actually holds
+
+A hook is one layer of three. Each catches what the one before it misses:
+
+| Layer | Runs | Bypassed by |
+| --- | --- | --- |
+| Agent hook | When the agent calls a tool | Working outside that agent |
+| Git hook (`lefthook`, `husky`) | On commit and push | `git commit --no-verify` |
+| CI and branch protection | On the pull request | Nothing |
+
+Checks a human should also pass belong in the git layer, because it fires for typed commands and agent commands alike:
+
+```yaml
+# lefthook.yml
+pre-commit:
+  commands:
+    branch:
+      run: test "$(git branch --show-current)" != main
+      fail_text: "never commit on main; branch first"
+    lint:
+      glob: "*.{ts,tsx}"
+      run: npx biome check {staged_files}
+```
+
+Anyone can skip that with `--no-verify`, which is the reason for the third layer: the same checks run in CI, where nobody can skip them, and branch protection turns a red build into a blocked merge. The [workflow file](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch) are covered in those guides.
+
+Read the three as a trade between speed and authority. The agent hook is instant and advisory. CI is slow and final. Put the fast feedback where it saves you a round trip and the real gate where it cannot be skipped, and do not mistake one for the other.
+
+None of this requires a tool that supports hooks. The git and CI layers work with any assistant, or with none, and they are the two that hold.
+
+<LinkCard
+  title="Audit Your Safety Net"
+  href="/activities/ai/#audit-your-safety-net"
+  description="Measure the gap between how much your team delegates and how much your gates would actually catch."
+/>
+
 ## MCP Servers
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) allows AI tools to connect to external data sources and services. Some useful MCP servers:
@@ -85,20 +153,16 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) allows AI t
 
 Which servers a tool loads is itself configuration, and it belongs in the repository with everything else: most tools read a JSON file at a known path (`.mcp.json` at the root, `.cursor/mcp.json`, `.vscode/mcp.json`), so commit it and every teammate gets the same servers. Keep credentials out of it and reference environment variables instead.
 
-Many other servers exist and new ones appear frequently. Explore what is available for your stack and tell your tool when to use them.
-
 ## Skills
 
-Agent skills (sometimes called slash commands or custom commands) are reusable prompts or workflows that you define once and invoke repeatedly. They let you encode team-specific processes into your AI tool so that common tasks are performed consistently. A skill is a directory containing a `SKILL.md` file: Markdown instructions with YAML frontmatter naming and describing the skill, optionally alongside scripts and reference files. [skills.sh](https://skills.sh/) is a public directory of published ones.
+Agent skills (sometimes called slash commands or custom commands) are reusable prompts you define once and invoke repeatedly, so a recurring task runs the same way regardless of who asks for it. A skill is a directory containing a `SKILL.md` file: Markdown instructions with YAML frontmatter naming and describing the skill, optionally alongside scripts and reference files. [skills.sh](https://skills.sh/) is a public directory of published ones.
 
-For example, a team might define skills for:
+Skills a team actually uses:
 
-- **Code review**: a skill that checks a pull request against the team's coding standards and architectural constraints.
-- **Commit messages**: a skill that generates commit messages following the team's convention.
-- **Test generation**: a skill that writes tests matching the project's testing patterns and framework.
-- **Documentation**: a skill that generates or updates documentation in the team's preferred format.
-
-Skills are particularly valuable on a team because they standardize how the AI performs recurring tasks. Without them, each team member prompts the AI differently and gets different results. With a shared set of skills checked into the repository, everyone gets the same behavior.
+- **Code review**: check a pull request against the team's coding standards and architectural constraints.
+- **Commit messages**: follow the team's convention without anyone rereading it.
+- **Test generation**: write tests that match the project's existing patterns and framework.
+- **Documentation**: update the docs in the team's format rather than inventing one.
 
 `SKILL.md` is now close to a cross-tool convention, so where you put the directory matters more than which tool you use:
 
@@ -106,14 +170,12 @@ Skills are particularly valuable on a team because they standardize how the AI p
 - **Cursor**: `.cursor/skills/<skill-name>/SKILL.md`, also `.agents/skills/`. Pick one from the `/` menu.
 - **GitHub Copilot**: `.github/skills/<skill-name>/SKILL.md`, and it also reads `.claude/skills/` and `.agents/skills/`. Copilot separately supports single-file prompt files at `.github/prompts/<name>.prompt.md`, invoked as `/<name>` in Copilot Chat.
 
-Like project-level instructions, skills should be version-controlled so the whole team benefits from improvements.
-
-**Published collections worth reading.** You do not have to invent these from scratch, and reading a well-built skill is the fastest way to learn what a good one looks like:
+**Published collections worth reading.** Reading a well-built skill is the fastest way to learn what a good one looks like:
 
 - **[obra's Superpowers](https://github.com/obra/superpowers)**: brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development. It also includes skills for writing and testing new skills.
 - **[Matt Pocock's skills](https://github.com/mattpocock/skills)**: spec and ticket flows, TDD, code review, domain modelling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
 
-Several of these are not conveniences but **safety-net components**: a separate architectural-review pass, a code-review pass, and a plan-before-you-build step are exactly the gates that make delegating the rest reasonable.
+A separate architectural-review pass, a code-review pass and a plan-before-you-build step are not conveniences. They are the same net the [hooks and gates](#hooks-and-gates) above build, one layer earlier. The difference is that a skill runs when someone invokes it and a hook runs on its own, so a check you would be sorry to forget belongs in a hook.
 
 <LinkCard
   title="Set Up Your Repository's Skills"
@@ -132,11 +194,13 @@ It is also the one item on this page that is **not** shared. Memory lives on one
 ## Best Practices for AI Project Setup
 
 - **One source of truth.** Write the content in `AGENTS.md` and have every per-tool file point at it. Two instruction files that disagree are worse than none.
-- **Commit all of it.** Instructions, skills and MCP configuration belong in the repository, not in one person's editor settings.
+- **A rule the model can ignore is not a rule.** `AGENTS.md` is where you explain a constraint; a hook or a CI check is where you enforce it. Anything you would be angry to find in a diff belongs in the second place as well as the first.
+- **Gate the one-way doors first.** Schema changes, auth, deployment config and credentials are where a blocked action is worth an inconvenience. Everything else can stay advisory.
+- **Commit all of it.** Instructions, hooks, skills and MCP configuration belong in the repository, not in one person's editor settings.
 - **Keep instructions short.** A file nobody reads is a file the tool half-follows. The list above fits on a page; anything longer belongs in `docs/`.
 - **Write the "do not" section first.** It is the part that prevents damage, and it is the part teams forget.
+- **Test a gate by trying to break it.** Run the command the hook should block. A gate nobody has tripped on purpose is an assumption.
 - **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it at every checkpoint.
-- **Read a skill before you install it.** It is someone else's opinion, executed automatically, and your team owns what it produces.
 
 ## Some Truths About AI Project Setup
 
@@ -144,20 +208,24 @@ Most teams never write any of this, ship anyway, and the cost shows up somewhere
 
 The instruction file rots faster than the code. It is written in week 2 and describes the architecture of week 2 forever, and a confidently wrong instruction is worse than a missing one, because the tool follows it.
 
+Hooks are the highest-leverage item on this page and the one teams reach for last. Three of them cover most of the damage a delegated agent can do to a repository. Past that the returns fall off fast: teams write elaborate policy hooks, trip over them twenty times a day, and quietly disable the lot in week 6. A gate that fires constantly gets removed, and then you have no gate.
+
+Gates also fail quietly. Cursor's hooks fail open by default, so a script that crashes waves the action through unless you set `failClosed`, and a git hook is one `--no-verify` from irrelevant. A gate you believe in and have never tripped is worse than no gate, because you delegate as though it were there.
+
 Skills are oversold. A skill that encodes a process your team actually follows is leverage; a skill collected because it looked impressive is a prompt you now maintain. The ones that earn their keep on a student project are usually the boring ones: the review pass, the commit message, the test generator.
 
 MCP servers are the least load-bearing thing on this page. A documentation server meaningfully reduces hallucinated API calls; most of the rest are conveniences you can live without, and each one is another moving part between your tool and your data.
 
-None of this requires a paid tool. Every file described here is plain Markdown in your repository, and a free-tier assistant reads `AGENTS.md` exactly as well as an expensive one.
+None of this requires a paid tool. Every file described here is plain Markdown or JSON in your repository, and a free-tier assistant reads `AGENTS.md` exactly as well as an expensive one.
 
 ## AI Project Setup in Industry and Academia
 
-The convention layer is young and it is consolidating in public. `AGENTS.md` emerged from several vendors converging on one filename rather than from a standards body, and the major tools now read it alongside their own. MCP went the same way: published by Anthropic, then adopted broadly enough to become the default way a tool reaches a database, a browser, or a documentation index.
+The convention layer is young and it is consolidating in public. `AGENTS.md` emerged from several vendors converging on one filename rather than from a standards body, and the major tools now read it alongside their own. MCP went the same way: published by Anthropic, then adopted broadly enough to become the default way a tool reaches a database, a browser, or a documentation index. Hooks are repeating the pattern a year behind, with three vendors shipping near-identical event models under different names.
 
-Inside companies, the shared instruction file is now an ordinary part of a repository's furniture, reviewed in pull requests like any other config, and often generated from the same architecture documents the team already maintains. Platform teams increasingly own a house set of skills the way they own a house linter: the point is not cleverness, it is that everyone's tool behaves the same way on the same repository.
+The gating layer is where the change is sharpest, and the reason is arithmetic. When most code was typed, review was the gate and it scaled with the typing. When most code arrives from an agent, review is the bottleneck, and organizations respond by moving the load onto checks a machine enforces: required status checks, protected branches, policy hooks that block a class of command outright instead of trusting a reviewer to notice it. Platform teams increasingly ship the hook configuration alongside the linter config, for the same reason they own the linter: the point is not cleverness, it is that everyone's tool behaves the same way on the same repository.
 
-In research groups the pattern is younger and the pressure is different: reproducibility, not consistency. An instruction file that names the data layout, the environment, and which steps must never be regenerated is doing the same job a good README does, one layer closer to the tool.
+In research groups the pattern is younger and the pressure is different: reproducibility, not consistency. An instruction file that names the data layout, the environment, and which steps must never be regenerated is doing the same job a good README does, one layer closer to the tool. A hook that refuses to overwrite a published result is doing the job a lab notebook cannot.
 
 :::note[Reviewed annually]
-The tool names and file paths on this page are among the fastest-moving content in the handbook. Checked at the annual review. What does not move is the shape of the thing: project context in a versioned file, a standard protocol for reaching external data, and reusable prompts checked in beside the code.
+The tool names and file paths on this page are among the fastest-moving content in the handbook. Checked at the annual review. What does not move is the shape of the thing: project context in a versioned file, gates that run without being remembered, a standard protocol for reaching external data, and reusable prompts checked in beside the code.
 :::
