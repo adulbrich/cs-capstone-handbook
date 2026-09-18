@@ -14,11 +14,15 @@ your guide's kind and follow it.
 
 ## Writing Voice (applies to everything below)
 
-Lead with the point. Specific nouns and verbs. Cut every sentence that does not
-change what the reader will do or understand. No "it's worth noting,"
-rule-of-three padding, or vague intensifiers. Opinion is preferred when a
-recommendation is required. Code stays exact. For prose, never use emdashes but
-use proper punctuation instead.
+**Read `docs/agents/voice.md` first.** It is the single home for document
+voice and this skill does not restate it. The short version: every claim a
+reader could doubt carries its reason, every named tool or standard carries a
+link to its authoritative source on first mention, and no em dashes.
+
+Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
+compression in the terminal, where the reader can ask a follow-up. That rule
+applied to a handbook page deletes the why, and what survives is an aphorism
+the student cannot check or argue with.
 
 ## What a Guide Is
 
@@ -56,6 +60,50 @@ A guide is one of two kinds, and the kind decides which sections are required:
 
 A new guide that could be either is an artifact guide if a checkpoint or an
 assignment grades a file it describes.
+
+## The Explanation Register
+
+A guide is **explanation** in the Diataxis sense: understanding-oriented
+material that permits reflection. It is not a tutorial (step by step), not a
+how-to (task oriented, which is what activities are), and not reference (a dry
+enumeration, which is what assignment rubrics are). Its job is to leave the
+reader with a web of connections: why things are the way they are, how they
+relate, what the tradeoffs are.
+
+That job sets the register, and the register has four rules.
+
+**Define, explain, show, then say why it matters.** Every term, tool, or
+mechanism gets all four on first use. Define it in plain language, explain how
+it works at the level this course needs, give one concrete example, and say
+what breaks if you get it wrong. A definition without the "what breaks" is
+trivia.
+
+**Prose over lists.** Favor paragraphs. Use a list only for genuinely discrete
+parallel items, a side-by-side comparison, or an end-of-section checklist. A
+list of five bolded fragments is the most common way a guide looks finished
+while explaining nothing: the bolding carries the claim and the prose that
+would have justified it was never written. When a concept can be a flowing
+paragraph, make it one.
+
+**Never open a section with a list, table, code block, or component.** Lead
+with prose that says what the section covers and why it matters here.
+
+**Give the reader the alternative.** Where a real disagreement exists, name the
+competing position, link whoever argues for it, and then say what you
+recommend and on what grounds. A guide that presents one option as the only
+option is the marketing the Some Truths section is supposed to prevent.
+
+### Sourcing
+
+Link the authoritative reference the first time a concept appears in the body:
+official documentation, an RFC, a standard, a paper, the author who named the
+thing. Roughly six external links per 1,000 words is the target, measured from
+the same instructor's unaided course material, which runs 7.4.
+
+This is not decoration. An unsourced claim makes verification the reader's
+problem; a sourced one hands them the door. It is also the cheapest defense
+against a confidently wrong page, because writing the link means checking the
+claim.
 
 ## Section Skeleton
 
@@ -113,15 +161,42 @@ topic.
 9. **`## Some Truths about X`.** Required, and the section that gives these
    guides their credibility. Say the uncomfortable thing first: where the
    practice is busywork, where it goes stale, where teams reasonably skip it.
-   Then say when it genuinely does matter. "Let's be honest." is an opener a
-   few guides use, not a rule; the rule is that the first bullet is the one
-   an advocate would leave out.
-   A guide that only advocates is marketing. Students can tell.
+   Then say when it genuinely does matter. A guide that only advocates is
+   marketing, and students can tell.
+
+   **Every truth carries its reason, and a source where one exists.**
+   One-sentence truths are banned. This section is where the compression
+   failure concentrates, because an uncomfortable claim compresses into a
+   memorable line more easily than any other kind, and the line is the part
+   that teaches nothing. "Most teams skip this" is a rumor. "Most teams skip
+   this because the cost is diffuse and shows up three sprints later as two
+   people solving the same problem twice" is a claim a student can weigh.
+   Where a named source disagrees with the guide, link it and say why you
+   still recommend what you recommend.
 
 10. **`## X in Industry and Academia`.** Required. What this looks like in real
     organizations, with named examples where you have them (Amazon's PR/FAQ,
     Google's postmortem culture). This is what makes the practice feel like
     professional preparation rather than a course invention.
+
+11. **`## Additional Readings`.** Required, and always last. Two groups, in
+    this order, each a plain bulleted list:
+
+    - **Sources and further reading.** External links only: official
+      documentation, standards, papers, books, conference talks, and the
+      authors who coined the terms the guide uses. Five to twelve per guide.
+      Titles carry the author or publisher so the reader can judge before
+      clicking. Do not annotate every entry; if an entry needs a sentence to
+      justify it, it probably belonged in the body.
+    - **Activities that exercise this.** Every `/activities/` page that puts
+      the guide's practice into a student's hands, as markdown links. This is
+      the guide's exit into the hands-on work and it replaces scattering
+      LinkCards down the page. A guide whose practice has no activity says so
+      in one line rather than leaving the group out.
+
+    This section is not a dumping ground for links already used in the body.
+    A reference cited inline stays inline; this list is where a reader goes
+    next, not a bibliography of what was already said.
 
 ### Purpose line
 
@@ -147,9 +222,11 @@ of a mapping entry`, which does not point at the description.
 import { LinkCard, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 ```
 
-- **LinkCard**: the standard way to route a reader onward, especially to the
-  activities that exercise the practice. Place one directly after the section
-  it belongs to, not in a pile at the bottom.
+- **LinkCard**: routes a reader onward mid-page, when one specific section
+  has one specific destination. Place it directly after that section. The
+  page's full set of onward links belongs in `## Additional Readings`, so a
+  LinkCard is now the exception rather than the default: use one when leaving
+  the link to the bottom would strand a reader who needs it right there.
 - **Aside** / `:::note`, `:::tip`, `:::caution`: short, immediate, one idea.
   Always give a title. Do not use an aside to smuggle in a section you did not
   want to write.
@@ -192,8 +269,19 @@ others link:
 
 ## Length
 
-The validated guides run 950 to 1,750 words. If a guide passes about 3,000
-words, look for a section that wants to be its own guide.
+**Typical band: 2,500 to 5,000 words. Split-check at 6,000.** Section
+overview and index pages are exempt and run short.
+
+The old band of 950 to 1,750 never described this corpus: the guides already
+had a median of 2,605 words and a maximum of 4,265 when it was written, so its
+only real effect was compression pressure on every page that tried to explain
+something. The new band is anchored on two numbers: what the guides already
+are, and the same instructor's unaided course material, which runs a 4,795-word
+median for a comparable explanatory page.
+
+Explanation costs words. A guide that hits 2,500 by cutting the reason for
+every claim is worse than one that reaches 4,500 by keeping them. If a guide
+passes 6,000, look for a section that wants to be its own guide.
 
 **The test is the reader.** If you can name someone who reads the candidate
 section *instead of* the rest of the page, it is a split; `accessibility.mdx`
@@ -223,13 +311,67 @@ issue that measured it rather than trimming a working section to hit a number.
 Nothing checks the section skeleton, the length, or the opener rules; those
 are read for, not validated.
 
+## Worked Examples
+
+Each pair is the same content at the same length budget. The first is what the
+old compression rule produced; the second is what this skill asks for. The
+difference is never brevity, it is whether the mechanism survived.
+
+**Opening a section.**
+
+> Before: Retrospectives fail for one reason: nothing changes. The team meets,
+> complains, leaves, repeats.
+>
+> After: A retrospective fails when it produces feelings instead of a change
+> anyone can point at next sprint. The usual mechanism is that the meeting ends
+> with a list of complaints and no owner, so nothing enters the next sprint's
+> plan, and by the third one the team has learned that the hour is theater.
+> [Fowler's write-up](https://martinfowler.com/bliki/RetrospectiveMeeting.html)
+> is blunt about this: the output is an experiment, not a mood.
+
+**A Some Truths entry.**
+
+> Before: Most teams never write an ADR. The cost is diffuse, which is why it
+> keeps not getting written.
+>
+> After: Most teams never write an ADR, and they ship anyway. The cost is real
+> but diffuse: six months later someone reverses a decision without knowing it
+> was a decision, and the rework is charged to that sprint instead of to the
+> missing record. That is why it keeps not getting written. It is also why the
+> teams that do write them tend to be the ones who have already paid once.
+
+**Defining a term.**
+
+> Before: **Flaky tests** are tests that pass and fail without code changes.
+> Fix them or delete them.
+>
+> After: A **flaky test** passes and fails on the same code and the same
+> inputs, usually because it depends on timing, ordering, or a network it does
+> not control. The cost is not the failing run, it is that the team learns to
+> rerun red builds without reading them, which is the same as having no test
+> suite. Quarantine a flaky test the day you find it, then fix or delete it,
+> because a quarantined test at least does not train anyone to ignore red.
+
+**What the "before" column has in common:** each one is shorter, sounds more
+confident, and has deleted the causal clause that made it checkable. That is
+the failure this skill exists to prevent.
+
 ## Before Finishing
 
 1. Run `npm run build`. It compiles the MDX and validates every internal link
    and anchor, which is the only reliable check on the anchors you wrote.
 2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
    covers outcome tags and grading language on guides, the second em dashes.
-3. Confirm the final three sections are present: Best Practices, Some Truths,
-   and Industry and Academia. Their absence is the most common way a new guide
-   fails to match the others. For an artifact guide, also confirm the fenced
-   artifact is there and still matches what the assignment page requires.
+3. Confirm the final four sections are present and in order: Best Practices,
+   Some Truths, Industry and Academia, Additional Readings. Their absence is
+   the most common way a new guide fails to match the others. For an artifact
+   guide, also confirm the fenced artifact is there and still matches what the
+   assignment page requires.
+4. Read the Some Truths section back and check that no entry is a single
+   sentence and that each one says why. This is where compression re-enters.
+5. Count external links against the body's word count. Under roughly four per
+   1,000 words means the guide is asserting where it should be citing; find
+   the claims that need a source and give them one.
+6. Check the Additional Readings activity list against
+   `src/content/docs/activities/`. An activity that exercises this practice and
+   is not listed is a dead end for the reader.

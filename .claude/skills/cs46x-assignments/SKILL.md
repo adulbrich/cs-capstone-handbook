@@ -12,13 +12,53 @@ why more of this skill is mechanical than the guide or activity skills.
 
 ## Writing Voice (applies to everything below)
 
-Lead with the point. Specific nouns and verbs. Cut every sentence that does not
-change what the reader will do or understand. No "it's worth noting,"
-rule-of-three padding, or vague intensifiers. Opinion is preferred when a
-recommendation is required. Code stays exact. For prose, never use emdashes but
-use proper punctuation instead.
+**Read `docs/agents/voice.md` first.** It is the single home for document
+voice and this skill does not restate it. The short version: every claim a
+reader could doubt carries its reason, every named tool or standard carries a
+link to its authoritative source on first mention, and no em dashes.
+
+Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
+compression in the terminal, where the reader can ask a follow-up. That rule
+applied to a handbook page deletes the why, and what survives is an aphorism
+the student cannot check or argue with.
 
 Students read these pages under deadline pressure. Length is a cost they pay.
+
+## The Task Register
+
+An assignment page is **how-to and reference**, not explanation. It speaks to a
+student who has already decided to do the work and needs to know what to
+produce, by when, and what good looks like. Second person, task first: "In this
+assignment you will build ...".
+
+**Do not import the guides' explanation register.** Guides explain why a
+practice exists; assignments say what is due. A page that opens by teaching the
+reader about the value of retrospectives has taken space from the deliverable
+and broken the rule below about course design. The guide is one link away and
+that is where the why lives.
+
+Length is not the reason to compress, though. A rubric criterion a student
+misreads costs them a grade, so an extra clause that removes the ambiguity is
+cheap. Cut restatement, not precision.
+
+### Sourcing
+
+**Name the source the first time the page names a tool, standard, format, or
+technique.** If the assignment says "follow conventional commits", link the
+specification. If it says "WCAG AA", link the standard. If it says "use a
+lockfile", link the tool's documentation on lockfiles.
+
+Target roughly four external links per 1,000 words. The current assignment
+pages sit at 0.2, which is effectively zero, against 4.2 on the same
+instructor's unaided assignment pages. That gap is the single largest
+difference between the two, and it matters more here than anywhere else in the
+handbook: a student who cannot find the standard you are grading against will
+guess at it.
+
+A link is not course-design rationale and does not violate the rule below. "Use
+[conventional commits](https://www.conventionalcommits.org/)" is a
+specification of the deliverable. "We adopted conventional commits in 2024
+because the previous convention drifted" is course design and stays out.
 
 ## Frontmatter Contract
 
@@ -271,6 +311,42 @@ the student has to learn first.
 - Grading language on any page other than an assignment page. This section is
   the only place rubric point values live; the points-to-letter table lives
   in `learning-objectives/grading.mdx`.
+
+## Worked Examples
+
+Same requirement, same budget. The difference is whether the student can act
+without guessing.
+
+**A deliverable line.**
+
+> Before: Commit history should be clean and conventional.
+>
+> After: Every commit follows
+> [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): a
+> type, an optional scope, and an imperative subject under 72 characters, for
+> example `fix(auth): reject expired refresh tokens`. History is squashed per
+> pull request, so the merge commit is the one that has to read well.
+
+**A rubric criterion.**
+
+> Before: Documentation: thorough and professional.
+>
+> After: Documentation: `README.md` states what the project does, how to run it
+> locally, and how to run the tests, and a new reader can follow it without
+> asking the team a question.
+
+**An intro paragraph.**
+
+> Before: This assignment is where the real engineering starts. Ship something
+> that works.
+>
+> After: In this assignment you will take the design from the previous
+> checkpoint and ship a working vertical slice: one user-facing flow that runs
+> end to end against real data. Your partner will see this running, and it is
+> the artifact an interviewer is most likely to ask you to walk through.
+
+**What the "before" column has in common:** each one sounds decisive and leaves
+the student to guess the standard they will be graded against.
 
 ## Before Finishing
 

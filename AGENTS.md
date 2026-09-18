@@ -201,7 +201,8 @@ JavaScript and let the formatter settle the rest.
 ## Skills
 
 Required reading before touching the matching content directory. Each one
-carries the writing voice verbatim, so loading the skill is enough.
+references `docs/agents/voice.md` rather than restating it, so read that file
+too when the work is prose.
 
 | Skill | Load before editing |
 |---|---|
@@ -250,10 +251,14 @@ Do not create running logs, change logs, or idea files at the root. If a fact is
 
 ## Writing voice
 
-Lead with the point. Specific nouns and verbs. Cut every sentence that does not
-change what the reader will do or understand. No "it's worth noting,"
-rule-of-three padding, or vague intensifiers. Opinion is preferred when a
-recommendation is required. Code stays exact. For prose, never use emdashes but
-use proper punctuation instead.
+The single home is `docs/agents/voice.md`. It covers the floor that holds in
+every register: claims carry their reason, named tools and standards carry a
+link to the authoritative source, no em dashes, active voice, second person,
+precise nouns, exact code.
 
-Students read these pages under deadline pressure; length is a cost they pay.
+Document voice is not chat voice. A maintainer's `CLAUDE.md` governs the
+terminal and is left alone; applying its compression rule to a handbook page
+is what produced the aphorism problem `docs/agents/voice.md` exists to correct.
+
+Students read these pages under deadline pressure, so length is a cost they
+pay. Pay it on the reason and the source, not on restating the point.
