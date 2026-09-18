@@ -115,7 +115,7 @@ A hook is one layer of three. Each catches what the one before it misses:
 | --- | --- | --- |
 | Agent hook | When the agent calls a tool | Working outside that agent |
 | Git hook (`lefthook`, `husky`) | On commit and push | `git commit --no-verify` |
-| CI and branch protection | On the pull request | Nothing |
+| CI and branch protection | On the pull request | Nothing, once you turn off admin bypass |
 
 Checks a human should also pass belong in the git layer, because it fires for typed commands and agent commands alike:
 
@@ -131,9 +131,9 @@ pre-commit:
       run: npx biome check {staged_files}
 ```
 
-Anyone can skip that with `--no-verify`, which is the reason for the third layer: the same checks run in CI, where nobody can skip them, and branch protection turns a red build into a blocked merge. The [workflow file](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch) are covered in those guides.
+Anyone can skip that with `--no-verify`, which is the reason for the third layer: the same checks run in CI, where nobody can skip them, and branch protection turns a red build into a blocked merge. One setting decides whether that last layer is real. Protection lets administrators bypass it by default, and on a student repository everyone is usually an administrator, so turn that off or the gate is a suggestion with extra steps. The [workflow file](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch) are covered in those guides.
 
-Read the three as a trade between speed and authority. The agent hook is instant and advisory. CI is slow and final. Put the fast feedback where it saves you a round trip and the real gate where it cannot be skipped, and do not mistake one for the other.
+Read the three as a trade between speed and reach. The agent hook is instant and narrow: it stops that agent, in that session, and nothing else. CI is slow and total. Put the fast feedback where it saves you a round trip and the real gate where nobody can route around it, and do not mistake one for the other.
 
 None of this requires a tool that supports hooks. The git and CI layers work with any assistant, or with none, and they are the two that hold.
 
@@ -199,7 +199,7 @@ It is also the one item on this page that is **not** shared. Memory lives on one
 - **Commit all of it.** Instructions, hooks, skills and MCP configuration belong in the repository, not in one person's editor settings.
 - **Keep instructions short.** A file nobody reads is a file the tool half-follows. The list above fits on a page; anything longer belongs in `docs/`.
 - **Write the "do not" section first.** It is the part that prevents damage, and it is the part teams forget.
-- **Test a gate by trying to break it.** Run the command the hook should block. A gate nobody has tripped on purpose is an assumption.
+- **Trip every gate once, on purpose.** Run the command the hook should block and try the merge protection should stop.
 - **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it at every checkpoint.
 
 ## Some Truths About AI Project Setup
@@ -208,7 +208,7 @@ Most teams never write any of this, ship anyway, and the cost shows up somewhere
 
 The instruction file rots faster than the code. It is written in week 2 and describes the architecture of week 2 forever, and a confidently wrong instruction is worse than a missing one, because the tool follows it.
 
-Hooks are the highest-leverage item on this page and the one teams reach for last. Three of them cover most of the damage a delegated agent can do to a repository. Past that the returns fall off fast: teams write elaborate policy hooks, trip over them twenty times a day, and quietly disable the lot in week 6. A gate that fires constantly gets removed, and then you have no gate.
+Hooks are the highest-leverage item on this page and the one teams reach for last. Two or three cover most of the damage a delegated agent can do to a repository: no commits on the default branch, no edits to generated files, formatter on save. Past that the returns fall off fast: teams write elaborate policy hooks, trip over them twenty times a day, and quietly disable the lot in week 6. A gate that fires constantly gets removed, and then you have no gate.
 
 Gates also fail quietly. Cursor's hooks fail open by default, so a script that crashes waves the action through unless you set `failClosed`, and a git hook is one `--no-verify` from irrelevant. A gate you believe in and have never tripped is worse than no gate, because you delegate as though it were there.
 
