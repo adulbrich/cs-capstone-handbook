@@ -1,0 +1,163 @@
+---
+title: AI Project Setup
+description: "Project-level instructions, MCP servers, and skills: the configuration that decides whether an AI tool is useful on your codebase or generic."
+sidebar:
+  order: 11
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Read this in the first sprint, once the repository exists; it gives you the four files that make an AI tool understand your project instead of guessing at it.
+
+A tool with no knowledge of your project produces generic suggestions: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. The same tool, given your architecture, your conventions and your constraints, produces suggestions that fit. This page is the configuration; the [Generative AI guide](/guides/generative-ai/) is the practice.
+
+Three of the four things that carry that context are files you commit, which is the point: they are reviewed, versioned and shared, so every teammate's tool behaves the same way on the same code. [agents.md](https://agents.md/) is the cross-tool convention for the instructions, and the [Model Context Protocol](https://modelcontextprotocol.io/) is the open standard behind the servers. The fourth, your tool's own memory, is none of those things, which is the point of the last section.
+
+Without them, each teammate prompts differently, gets different answers, and the codebase drifts toward an inconsistency nobody can point at a commit for.
+
+## Project-Level Instructions
+
+Most AI coding tools support some form of project-level configuration that persists across sessions:
+
+- **`AGENTS.md`** in your repository root: the cross-tool convention, read by a growing number of agents and the right default when your team does not all use the same tool.
+- **Claude Code**: `CLAUDE.md` in your repository root.
+- **Cursor**: `.mdc` files in the `.cursor/rules/` directory. Cursor also reads `AGENTS.md`. A top-level `.cursorrules` file is the legacy format; do not start a new project with it.
+- **GitHub Copilot**: `.github/copilot-instructions.md`.
+
+These files are checked into version control, which means the entire team shares the same AI context. This is one of the most effective ways to keep AI-generated code consistent across team members.
+
+Write the content once, in `AGENTS.md`, and have any per-tool file point at it. Two instruction files that disagree with each other are worse than none: whichever one your teammate's tool reads is the one that wins, and nobody will notice they have drifted until the suggestions stop matching the code.
+
+What to include in project-level instructions:
+
+- A brief project overview (what it does, who it is for).
+- The technology stack (languages, frameworks, key libraries).
+- Coding conventions (naming, file structure, error handling patterns).
+- Architectural constraints ("we use a monolith, not microservices"; "all data access goes through the repository layer").
+- Testing expectations (what to test, which framework, where tests live).
+- Anything the AI should *not* do (e.g., "do not add new dependencies without discussion"; "do not refactor code outside the scope of the current task").
+
+Kept to that list, the file is short:
+
+```md
+# AGENTS.md
+
+## Project
+Shift board for <partner>: coordinators post shifts, volunteers claim
+them. Read docs/requirements.md and docs/design.md before changing
+behavior; decisions and their reasons are in docs/adr/.
+
+## Stack
+TypeScript, React 19, Express, Postgres via Prisma, Vitest, Playwright.
+
+## Conventions
+- All data access goes through src/server/repos/. No SQL in routes.
+- Errors: throw AppError with a code; routes map codes to HTTP status.
+- Tests live next to the code as *.test.ts. Run `npm test` before a PR.
+
+## Do not
+- Add a dependency without an issue that says why.
+- Change the Prisma schema, auth, or deployment config without a human
+  review. These are one-way doors.
+- Paste partner data, user emails, or .env contents into any tool.
+```
+
+The last line is the part your [Team Charter](/assignments/team-charter/) calls the AI and confidentiality one-pager, spelled out for the tools. The human-readable version is a section of the charter itself and says the same thing in the partner's terms:
+
+```md
+## AI and confidentiality (in docs/charter.md)
+
+Any tool: our own code, our docs, synthetic test data.
+Partner-approved tools only (see list): the partner's API docs and
+  sample exports.
+Never: production data, volunteer names and emails, credentials, the
+  partner's internal designs. Redact first; when unsure, ask the AI
+  Coordinator before pasting.
+```
+
+## MCP Servers
+
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) allows AI tools to connect to external data sources and services. Some useful MCP servers:
+
+- **[Context7](https://context7.com/)**: provides up-to-date library and framework documentation to your AI tool, reducing hallucinated API calls.
+- **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**: allows your AI tool to interact with a browser for testing and debugging web applications.
+- **Database MCP servers**: let your AI tool query your database schema directly rather than guessing at table structures.
+
+Which servers a tool loads is itself configuration, and it belongs in the repository with everything else: most tools read a JSON file at a known path (`.mcp.json` at the root, `.cursor/mcp.json`, `.vscode/mcp.json`), so commit it and every teammate gets the same servers. Keep credentials out of it and reference environment variables instead.
+
+Many other servers exist and new ones appear frequently. Explore what is available for your stack and tell your tool when to use them.
+
+## Skills
+
+Agent skills (sometimes called slash commands or custom commands) are reusable prompts or workflows that you define once and invoke repeatedly. They let you encode team-specific processes into your AI tool so that common tasks are performed consistently. A skill is a directory containing a `SKILL.md` file: Markdown instructions with YAML frontmatter naming and describing the skill, optionally alongside scripts and reference files. [skills.sh](https://skills.sh/) is a public directory of published ones.
+
+For example, a team might define skills for:
+
+- **Code review**: a skill that checks a pull request against the team's coding standards and architectural constraints.
+- **Commit messages**: a skill that generates commit messages following the team's convention.
+- **Test generation**: a skill that writes tests matching the project's testing patterns and framework.
+- **Documentation**: a skill that generates or updates documentation in the team's preferred format.
+
+Skills are particularly valuable on a team because they standardize how the AI performs recurring tasks. Without them, each team member prompts the AI differently and gets different results. With a shared set of skills checked into the repository, everyone gets the same behavior.
+
+`SKILL.md` is now close to a cross-tool convention, so where you put the directory matters more than which tool you use:
+
+- **Claude Code**: `.claude/skills/<skill-name>/SKILL.md`. Invoke with `/<skill-name>`.
+- **Cursor**: `.cursor/skills/<skill-name>/SKILL.md`, also `.agents/skills/`. Pick one from the `/` menu.
+- **GitHub Copilot**: `.github/skills/<skill-name>/SKILL.md`, and it also reads `.claude/skills/` and `.agents/skills/`. Copilot separately supports single-file prompt files at `.github/prompts/<name>.prompt.md`, invoked as `/<name>` in Copilot Chat.
+
+Like project-level instructions, skills should be version-controlled so the whole team benefits from improvements.
+
+**Published collections worth reading.** You do not have to invent these from scratch, and reading a well-built skill is the fastest way to learn what a good one looks like:
+
+- **[obra's Superpowers](https://github.com/obra/superpowers)**: brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development. It also includes skills for writing and testing new skills.
+- **[Matt Pocock's skills](https://github.com/mattpocock/skills)**: spec and ticket flows, TDD, code review, domain modelling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
+
+Several of these are not conveniences but **safety-net components**: a separate architectural-review pass, a code-review pass, and a plan-before-you-build step are exactly the gates that make delegating the rest reasonable.
+
+<LinkCard
+  title="Set Up Your Repository's Skills"
+  href="/activities/ai/#set-up-your-repositorys-skills"
+  description="The hands-on version: pick the skills your team will actually run and commit them."
+/>
+
+One warning: a skill is someone else's opinion, executed automatically. Read one before you install it, because your team owns whatever it produces.
+
+## Memory and Context
+
+Some tools keep memory across sessions: things the assistant noticed or was told once and retains. It is useful for the small stuff you keep repeating, such as a command that always needs a flag or a directory that is generated and should never be edited.
+
+It is also the one item on this page that is **not** shared. Memory lives on one person's machine, in one tool, and your teammates never see it, so anything that would change how another person's tool behaves belongs in `AGENTS.md` instead. Treat memory as a convenience for you and the committed files as the team's contract. A team that puts an architectural constraint in memory has written it down in the one place nobody else can read.
+
+## Best Practices for AI Project Setup
+
+- **One source of truth.** Write the content in `AGENTS.md` and have every per-tool file point at it. Two instruction files that disagree are worse than none.
+- **Commit all of it.** Instructions, skills and MCP configuration belong in the repository, not in one person's editor settings.
+- **Keep instructions short.** A file nobody reads is a file the tool half-follows. The list above fits on a page; anything longer belongs in `docs/`.
+- **Write the "do not" section first.** It is the part that prevents damage, and it is the part teams forget.
+- **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it at every checkpoint.
+- **Read a skill before you install it.** It is someone else's opinion, executed automatically, and your team owns what it produces.
+
+## Some Truths About AI Project Setup
+
+Most teams never write any of this, ship anyway, and the cost shows up somewhere other than the setup: two people solving the same problem two different ways, a dependency that arrived without a discussion, a schema change nobody reviewed. That is a real cost, but it is diffuse, which is why the file keeps not getting written.
+
+The instruction file rots faster than the code. It is written in week 2 and describes the architecture of week 2 forever, and a confidently wrong instruction is worse than a missing one, because the tool follows it.
+
+Skills are oversold. A skill that encodes a process your team actually follows is leverage; a skill collected because it looked impressive is a prompt you now maintain. The ones that earn their keep on a student project are usually the boring ones: the review pass, the commit message, the test generator.
+
+MCP servers are the least load-bearing thing on this page. A documentation server meaningfully reduces hallucinated API calls; most of the rest are conveniences you can live without, and each one is another moving part between your tool and your data.
+
+None of this requires a paid tool. Every file described here is plain Markdown in your repository, and a free-tier assistant reads `AGENTS.md` exactly as well as an expensive one.
+
+## AI Project Setup in Industry and Academia
+
+The convention layer is young and it is consolidating in public. `AGENTS.md` emerged from several vendors converging on one filename rather than from a standards body, and the major tools now read it alongside their own. MCP went the same way: published by Anthropic, then adopted broadly enough to become the default way a tool reaches a database, a browser, or a documentation index.
+
+Inside companies, the shared instruction file is now an ordinary part of a repository's furniture, reviewed in pull requests like any other config, and often generated from the same architecture documents the team already maintains. Platform teams increasingly own a house set of skills the way they own a house linter: the point is not cleverness, it is that everyone's tool behaves the same way on the same repository.
+
+In research groups the pattern is younger and the pressure is different: reproducibility, not consistency. An instruction file that names the data layout, the environment, and which steps must never be regenerated is doing the same job a good README does, one layer closer to the tool.
+
+:::note[Reviewed annually]
+The tool names and file paths on this page are among the fastest-moving content in the handbook. Checked at the annual review. What does not move is the shape of the thing: project context in a versioned file, a standard protocol for reaching external data, and reusable prompts checked in beside the code.
+:::
