@@ -17,11 +17,36 @@ inbound anchor for no reader benefit.
 
 ## Writing Voice (applies to everything below)
 
-Lead with the point. Specific nouns and verbs. Cut every sentence that does not
-change what the reader will do or understand. No "it's worth noting,"
-rule-of-three padding, or vague intensifiers. Opinion is preferred when a
-recommendation is required. Code stays exact. For prose, never use emdashes but
-use proper punctuation instead.
+**Read `docs/agents/voice.md` first.** It is the single home for document
+voice and this skill does not restate it. The short version: every claim a
+reader could doubt carries its reason, every named tool or standard carries a
+link to its authoritative source on first mention, and no em dashes.
+
+Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
+compression in the terminal, where the reader can ask a follow-up. That rule
+applied to a handbook page deletes the why, and what survives is an aphorism
+the student cannot check or argue with.
+
+## The How-To Register
+
+An activity is **how-to** in the Diataxis sense: task-oriented procedure for a
+reader who has already decided to do the thing. It is the third of the
+handbook's three registers, and keeping them apart is what keeps each page
+short.
+
+| Page type | Register | Answers |
+|---|---|---|
+| Guide | Explanation | Why does this practice exist, and what does good look like? |
+| Activity | How-to | What do I run, right now, to produce it? |
+| Assignment | Reference | What is due, when, and how is it scored? |
+
+The consequence for voice: **an activity does not argue.** It does not need the
+causal clause a guide owes its reader, because the guide already carried it and
+is one link away. Terseness here is correct, where in a guide it is the failure
+mode. What an activity still owes is precision: a step a team can misread is a
+step that wastes their hour.
+
+`docs/agents/voice.md` holds the floor that applies to all three.
 
 ## What an Activity Is
 
@@ -251,6 +276,40 @@ Ordering within a page is by rough sequence of use, not alphabetical.
   no "it's worth noting".
 - Do not explain concepts at length. Link to the relevant page in
   `src/content/docs/guides/` and move on. Guides explain; activities exercise.
+- **Name the paired guide.** Every activity links the guide whose practice it
+  exercises, in the opening sentences or the first step. Guides now close with
+  an `## Additional Readings` section listing the activities that exercise
+  them, so the link runs both ways; an activity with no named guide is either
+  missing its link or exercising a practice the handbook never explained.
+
+### Worked examples
+
+These are constructed to the rule rather than quoted. The register model is
+`docs/agents/voice.md`.
+
+**Opening sentences.**
+
+> Before: Map your one-way doors. Know what you cannot undo.
+>
+> After: List the decisions your team cannot cheaply reverse, then mark which
+> ones are already made. One hour as a team, once a term.
+
+The first sounds like a slogan and leaves the team guessing at scope, output,
+and cost. The second names the artifact and the time.
+
+**Effort clause.**
+
+> Before: Budget some time for this one.
+>
+> After: Two to three hours to set up, minutes per run after.
+
+**A step.**
+
+> Before: **Audit your tests**: check they are meaningful.
+>
+> After: **Pick three critical paths**: for each, break the behavior on purpose
+> and confirm a test goes red. A path where nothing fails has no test, whatever
+> coverage reports.
 
 ## What Activities Must Not Contain
 
