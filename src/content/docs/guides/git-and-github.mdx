@@ -239,6 +239,7 @@ GitHub allows you to add **branch protection rules** to prevent direct pushes to
 - **Require pull request reviews**: at least one approval before merging.
 - **Require status checks to pass**: CI tests must pass before the merge button is available.
 - **Restrict who can push**: prevent accidental direct pushes to `main`.
+- **Do not allow bypassing the above settings**: without this, administrators skip every rule above, and on a student repository everyone is usually an administrator.
 
 Set these up in the repository settings under *Branches > Branch protection rules*. These protections codify your team's working agreement into the repository itself, so the rules are enforced automatically rather than depending on everyone remembering to follow them.
 
