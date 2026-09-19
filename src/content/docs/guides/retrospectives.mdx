@@ -98,7 +98,9 @@ Open with a brief check-in. Ask each person a low-stakes question ("One word for
 
 ### Psychological Safety First
 
-People will not share real observations if they fear embarrassment or retaliation. Ground rules:
+People will not share real observations if they fear embarrassment or retaliation, which is the practical face of the [psychological safety](https://amycedmondson.com/psychological-safety/) research: teams where people can admit a mistake without being penalized surface more problems, not fewer, and are better for it. A retrospective where everyone says things went fine is not evidence that they did.
+
+The oldest convention here is Norm Kerth's [Prime Directive](https://retrospectivewiki.org/index.php?title=The_Prime_Directive), read aloud at the start of many retrospectives: everyone did the best job they could given what they knew at the time. It sounds like a platitude and it does real work, because it moves the question from who failed to what made failure likely, which is the only version anyone can act on. Ground rules:
 
 - What is said in the retrospective stays in the retrospective, unless the team decides to document it.
 - Observations are about systems and processes, not about individuals.
@@ -148,10 +150,40 @@ The [5 Whys](https://en.wikipedia.org/wiki/Five_whys) technique is useful for ro
 
 ## Some Truths About Retrospectives
 
-- The first retrospective is usually awkward. Run them anyway; they improve with practice.
-- Teams that feel things are going fine often discover in a retrospective that individuals feel very differently.
-- Action items get dropped. Build a habit of reviewing them at the start of the next retrospective.
-- Written retrospectives are harder to produce than they look. Starting from meeting notes and a few themes is far easier than writing from scratch.
+The retrospective is the ceremony teams drop first, and it is worth being precise
+about why. Planning and review produce something you can point at, so skipping
+them feels like skipping work. A retrospective produces a conversation, so
+skipping it feels like reclaiming an hour. What you actually lose is the only
+scheduled moment when a process problem can be raised by the person experiencing
+it, rather than by whoever happens to be annoyed enough to bring it up unprompted.
+A team that has quietly stopped running retros almost always has an unspoken
+problem; the retro is how it would have surfaced while it was still small.
+
+The failure mode that kills retrospectives is not awkwardness, it is action items
+that go nowhere. A team generates six improvements, does none of them, and by the
+third retro everyone understands the meeting is theater and stops offering real
+observations. The fix is unglamorous and it works: leave with at most two actions,
+each with a named owner and a date, and start the next retrospective by reading
+last time's actions out loud. Two completed actions beat six aspirational ones,
+because the second retro's honesty depends entirely on whether the first one
+changed anything.
+
+Expect a gap between the team's mood and individual experience. Teams that feel
+things are going fine routinely discover that one person has been quietly
+carrying a problem for weeks, and the reason is structural rather than personal:
+the people most likely to speak up in an unstructured discussion are the ones
+already comfortable, so an unfacilitated retro systematically samples the wrong
+end of the team. This is what the formats are for. A round where everyone
+contributes before discussion opens is not ceremony, it is how you hear from
+someone who would not have interrupted.
+
+Finally, a written retrospective is harder than it looks, and it is worth knowing
+that in advance so you do not start from a blank page in the last week of the
+term. The effort is in reconstructing what happened, not in the writing. Teams
+that keep a running note through the term, even a short one per sprint, produce a
+better document in a fraction of the time, which is the argument for the
+[Learning Journal](/activities/reflective/#learning-journal) habit rather than a
+retrospective-shaped memory exercise in week 10.
 
 ## Retrospectives in Industry and Academia
 
@@ -160,3 +192,28 @@ Retrospectives are a core practice in Scrum, but the concept predates agile. NAS
 Google's Site Reliability Engineering (SRE) culture has formalized the blameless post-mortem as a standard practice, documented in detail in the [SRE Book](https://sre.google/sre-book/postmortem-culture/). Atlassian, GitHub, and Stripe publish public post-mortems as a transparency and trust-building practice.
 
 In academic settings, retrospectives build the metacognitive habit of reflecting on your own process, a skill that distinguishes strong engineers throughout their careers regardless of the tools or methodologies they work with.
+
+## Additional Readings
+
+Retrospectives have one canonical book and a large body of practitioner material
+of varying quality. The incident-review sources are worth reading even if you
+never have an incident, because the blameless postmortem is the most developed
+version of the idea this whole practice rests on: that you learn more from
+studying the conditions than from identifying the culprit.
+
+**Sources and further reading**
+
+- [Agile Retrospectives](https://www.pragprog.com/titles/dlret/agile-retrospectives/), Esther Derby and Diana Larsen: the standard book, and the source of the five-stage structure most formats follow.
+- [The Prime Directive](https://retrospectivewiki.org/index.php?title=The_Prime_Directive), Norm Kerth: one paragraph, read at the start of a great many retrospectives.
+- [Retromat](https://retromat.org/): a searchable collection of retrospective activities, for when Start-Stop-Continue has gone stale.
+- [Postmortem Culture](https://sre.google/sre-book/postmortem-culture/), Google SRE book: how blameless incident review actually works in an organization that depends on it.
+- [Blameless postmortems](https://www.atlassian.com/incident-management/postmortem/blameless), Atlassian: a shorter practical treatment, with a usable template.
+- [A list of post-mortems](https://github.com/danluu/post-mortems), Dan Luu: real published incident reports, which are more instructive than any template.
+- [Psychological Safety](https://amycedmondson.com/psychological-safety/), Amy Edmondson: the research behind why some teams can say the difficult thing.
+
+**Activities that exercise this**
+
+- [Team Health Assessment](/activities/teamwork/#team-health-assessment): the structured check that gives a retrospective something concrete to discuss.
+- [Learning Journal](/activities/reflective/#learning-journal): the running note that makes the written retrospective tractable.
+- [External Feedback Session](/activities/reflective/#external-feedback-session): the same reflective habit, with an outside perspective.
+- [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment): useful when a retrospective keeps surfacing the same unresolved thing.
