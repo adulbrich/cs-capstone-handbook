@@ -201,7 +201,7 @@ The general principle behind most web vulnerabilities is the same: untrusted inp
 - **Validate input**: check that incoming data matches expected formats, types, lengths, and ranges *before* processing it. Reject anything that does not conform. Do this on the server, even if you also validate on the client.
 - **Encode output**: when displaying user-supplied data, ensure it is treated as data, not as executable code. This means HTML-encoding for web pages, parameterizing for SQL, and escaping for shell commands.
 
-Validation on the client (in the browser) improves user experience but provides no security. A user can bypass any client-side check by sending requests directly to the API. Server-side validation is the real boundary.
+Validation in the browser improves user experience but provides no security. A user can bypass any client-side check by sending requests directly to the API. Server-side validation is the real boundary.
 
 ## Security for Research and Data Projects
 
@@ -229,12 +229,45 @@ If your project involves human subjects data or personally identifiable informat
 
 ## Some Truths About Security
 
-- Most security breaches exploit simple, well-known vulnerabilities, not sophisticated zero-day attacks. The basics matter more than the advanced stuff.
-- Security is a spectrum, not a binary. You will not make your project perfectly secure. You can make it meaningfully harder to exploit.
-- The earlier you think about security, the cheaper it is to address. Retrofitting authentication or access control into a system that was not designed for it is painful.
-- Teams that never think about security are not building insecure software on purpose. They just do not realize they are making decisions with security implications.
-- Using a framework's defaults is often more secure than customizing. Frameworks encode years of security lessons into their defaults. Override them only when you understand why they exist.
-- If you leak a credential, rotating it immediately is the only reliable fix. Deleting the commit is not enough.
+Almost nothing that will go wrong with your project is interesting. The
+[OWASP Top 10](https://owasp.org/www-project-top-ten/) and the
+[CWE Top 25](https://cwe.mitre.org/top25/) are both, in effect, lists of the same
+mistakes people keep making: broken access control, injection, misconfiguration,
+outdated dependencies. Zero-days are what security looks like in films; this list
+is what it looks like in incident reports. The practical consequence is that
+reading one of those two lists carefully is a better use of an afternoon than any
+amount of cryptography you are tempted to implement yourself.
+
+Security is a spectrum and treating it as a binary causes a specific failure: a
+team decides it "cannot really secure" a student project and therefore does
+nothing, when the distance between nothing and the basics is most of the
+available benefit. You will not make your project unbreakable. You can make it
+uninteresting to the kind of automated scanning that finds exposed databases
+within hours of them appearing, and that is a real and achievable goal.
+
+The one genuinely expensive mistake on this page is architectural. Retrofitting
+authentication and access control into a system that assumed neither is not a
+patch, it is a rewrite of every data path, because the question "who is allowed
+to see this row" has to be answered everywhere at once. This is the argument for
+deciding your authorization model during design rather than when a partner asks
+whether volunteers can see each other's details. Everything else on this page can
+be fixed later at moderate cost. This cannot.
+
+Use the framework's defaults, and understand that this advice is unusual: almost
+everywhere else this handbook tells you to make a deliberate choice. Here the
+default encodes years of incident response by people who specialize in this, and
+your override encodes an afternoon. Session handling, password storage, cookie
+flags, and CSRF protection are all places where the framework is right and you
+are guessing. If you need to deviate, write the reason in an
+[ADR](/guides/adr/) so the next person can evaluate it.
+
+Finally, the credential thing, because it happens every year. A secret that
+reached a public repository is compromised the moment it was pushed, not when
+someone notices. Automated scanners watch public commits continuously, and
+deleting the commit does not help because the object is still reachable and very
+likely already copied. Rotate the credential. Rewriting history is cleanup, not
+remediation, and treating it as remediation is how a leaked key stays live for
+the rest of the term.
 
 ## Security in Industry and Academia
 
@@ -245,3 +278,32 @@ Security certifications and compliance frameworks (SOC 2, HIPAA, GDPR, PCI-DSS) 
 In academia, security concerns increasingly intersect with research ethics, especially in projects involving human subjects data, machine learning models that affect people, or systems deployed in sensitive environments. Responsible data handling and privacy-preserving techniques are becoming standard expectations in computational research.
 
 The security habits you build now (thinking about threats early, managing secrets properly, validating input, keeping dependencies updated) transfer directly to professional practice. They are not overhead. They are part of building software that works reliably in the real world.
+
+## Additional Readings
+
+Application security is one of the best-documented areas in this handbook, and
+almost all of it is free. OWASP in particular publishes both the "what goes
+wrong" lists and the "how to do it right" cheat sheets, which between them cover
+nearly everything a capstone project needs.
+
+**Sources and further reading**
+
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/): the ten categories that account for most real incidents, updated periodically with data.
+- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/): concrete, per-topic guidance on authentication, session management, input validation, and much else.
+- [CWE Top 25](https://cwe.mitre.org/top25/), MITRE: the same territory from the weakness side, useful when triaging a scanner finding.
+- [STRIDE threats](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats), Microsoft: the threat-modeling taxonomy this guide uses, from its source.
+- [Digital Identity Guidelines](https://pages.nist.gov/800-63-3/sp800-63b.html), NIST SP 800-63B: the authoritative modern answer on passwords, including why rotation requirements were dropped.
+- [CVSS](https://www.first.org/cvss/), FIRST: how severity scores are calculated, for reading advisories rather than guessing at them.
+- [About Dependabot alerts](https://docs.github.com/en/code-security/dependabot/dependabot-alerts/about-dependabot-alerts), GitHub: the dependency half, which is free to turn on.
+- [About secret scanning](https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning), GitHub: the check that catches a committed credential, ideally before a scanner elsewhere does.
+- [Have I Been Pwned](https://haveibeenpwned.com/), Troy Hunt: useful for showing a skeptical teammate what a breach corpus actually looks like.
+- [DevSecOps Guideline](https://owasp.org/www-project-devsecops-guideline/), OWASP: where each of these checks belongs in a pipeline.
+
+**Activities that exercise this**
+
+- [Describe your Architecture](/activities/design/#describe-your-architecture): the diagram a threat model is drawn on top of.
+- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): whether your gates would catch a bad change before it merges.
+- [Risk Management Plan](/activities/planning/#risk-management-plan): where a security risk gets an owner and a date.
+- [Complete an IRB Application](/activities/user/#complete-an-irb-application): for projects handling human-subjects data, where the security question becomes a compliance question.
+- [Designing for System Security](/activities/design/#designing-for-system-security): the design-time version of this guide.
+- [Apply the Privacy by Design (PbD) Guidelines](/activities/design/#apply-the-privacy-by-design-pbd-guidelines): privacy decided up front rather than retrofitted.

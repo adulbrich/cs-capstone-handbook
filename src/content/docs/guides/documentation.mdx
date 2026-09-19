@@ -18,6 +18,12 @@ Documentation is the infrastructure of knowledge transfer. It is what lets someo
 
 The goal of documentation is not to document everything. It is to document the right things at the right level of detail, kept close to the work it describes.
 
+The most useful idea for deciding what "the right things" means is [Diataxis](https://diataxis.fr/), Daniele Procida's framework, which observes that documentation serves four distinct needs and that most bad documentation is two of them mashed together. A **tutorial** takes a beginner through a first success and is learning-oriented. A **how-to guide** helps someone who already knows the system accomplish a specific task. **Reference** describes what exists, precisely and without narrative. **Explanation** covers why things are the way they are. The reason this matters practically is that the needs conflict: a tutorial that pauses to explain every design decision loses the beginner, and a reference that tells a story is useless to someone scanning for a function signature. When a page feels wrong and you cannot say why, it is usually serving two of these at once.
+
+This handbook is itself an instance of the framework: guides are explanation, activities are how-to, and assignment rubrics are reference.
+
+For this course, the documents in your repository are checked at every [repo checkpoint](/assignments/repo-checkpoints/), and the [Project Handoff](/assignments/project-handoff/) is where their quality is finally tested, because a successor team audits what you left behind. That audit is the real reader to write for.
+
 ## Repository Documentation
 
 Every project repository should contain a standard set of documents. These files live in the root of the repository and are rendered automatically by GitHub, GitLab, and most hosting platforms.
@@ -152,6 +158,8 @@ Tag releases in your repository (`git tag v1.0.0`). This makes it easy to identi
 
 ## Documentation Tools
 
+Nothing in this table is required, and a project documented entirely in Markdown files in the repository is a perfectly good outcome. Reach for a tool when the manual version has started to drift: generated API documentation cannot fall out of step with the code the way a hand-written list can, and a documentation site earns its keep once you have more pages than a reader can navigate by filename.
+
 | Need | Tool |
 |------|------|
 | Project documentation site | [Docusaurus](https://docusaurus.io/), [MkDocs](https://www.mkdocs.org/) |
@@ -176,10 +184,43 @@ The tool names above date faster than anything else on this page. Checked at the
 
 ## Some Truths About Documentation
 
-- No one enjoys writing documentation. Everyone appreciates having it.
-- The best time to write documentation was when you built the feature. The second-best time is now.
-- Outdated documentation is worse than no documentation: it actively misleads readers.
-- Engineers who write clearly advance faster. Documentation is a career skill, not a chore.
+Documentation rots, and it rots faster than code because nothing fails when it is
+wrong. A broken function breaks a test; a README describing a setup procedure
+that changed four months ago passes every check in your repository and costs the
+next person an afternoon. This asymmetry is the whole problem, and it is why the
+only documentation that reliably stays current is documentation something else
+depends on: a README whose commands you actually run, a generated API reference,
+a changelog your release process reads.
+
+That gives a sharper rule than "keep it updated", which no team has ever managed
+by willpower. Prefer documentation that is executed or generated over
+documentation that is merely written. If your setup instructions are a script
+someone runs, they cannot silently drift. If they are prose, they will. Where
+prose is unavoidable, put it in the repository next to what it describes and
+change it in the same pull request, because a document in a separate wiki is one
+nobody will remember to open.
+
+Stale documentation being worse than none is stated often enough to have become a
+slogan, so it is worth saying what the actual cost is. Missing documentation
+makes the reader ask someone, which is slow but ends with a correct answer. Wrong
+documentation makes them confident, and they discover the error somewhere
+downstream, usually after building on it. This is why deleting a section you know
+is obsolete is a legitimate act of maintenance, not a failure to do the real work.
+
+The honest thing about writing it: almost nobody enjoys it, and the advice to
+document as you build is correct and also very hard to follow when a deadline is
+close. What works better than resolve is making the moment specific. Attach it to
+something you already do, such as the pull request that adds a feature or the
+checkpoint that reviews your `docs/` directory, so the question is never "should
+I write documentation today" but "does this change alter anything a reader was
+told".
+
+Finally, this is a career skill rather than a chore, and the claim is more
+concrete than it sounds. Almost every senior engineering role is partly a writing
+job: design documents, incident reports, proposals, review comments that change
+someone's mind. The people who advance are disproportionately the ones who can
+make a technical argument in prose, and a capstone project is one of the few
+low-stakes places left to practice on something real.
 
 ## Documentation in Industry and Academia
 
@@ -188,3 +229,26 @@ At Google, documentation is treated as a first-class engineering deliverable. Th
 In open-source projects, documentation quality is often the difference between a project that gets adopted and one that gets ignored, regardless of the underlying code quality.
 
 In academic research, documentation ensures reproducibility: another researcher should be able to run your code and reproduce your results using only your documentation. This standard is a useful benchmark for Capstone projects as well.
+
+## Additional Readings
+
+Diataxis is the single most useful thing on this list: it takes about twenty
+minutes and it will change how you structure every document you write afterwards.
+The style guides are worth skimming once and then keeping open while you write.
+
+**Sources and further reading**
+
+- [Diataxis](https://diataxis.fr/), Daniele Procida: the four-quadrant framework for what a document is actually for.
+- [Write the Docs guide](https://www.writethedocs.org/guide/): a practitioner community's accumulated advice on documenting software.
+- [Google developer documentation style guide](https://developers.google.com/style): the conventions most technical writing converges on, and a good tiebreaker.
+- [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/): the two conventions that make a release history readable.
+- [Choose a License](https://choosealicense.com/), GitHub: what each license actually permits, in plain language.
+- [Contributor Covenant](https://www.contributor-covenant.org/): the code of conduct most open-source projects adopt, and what adopting it commits you to.
+- [OpenAPI Specification](https://swagger.io/specification/): the standard behind generated REST API documentation.
+
+**Activities that exercise this**
+
+- [User Manual](/activities/requirements/#user-manual): writing the manual is the fastest way to find out what your system actually requires of a user.
+- [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase): the receiving end of someone else's documentation, which is the best argument for writing yours.
+- [Describe your Architecture](/activities/design/#describe-your-architecture): the diagram that belongs in your developer documentation.
+- [Write for Accessibility and ESL](/activities/communication/#write-for-accessibility-and-esl): clarity discipline, applied to the documents here.

@@ -245,6 +245,8 @@ Most applications behave differently in development, staging, and production. En
 
 ### The Three Environments
 
+Environments exist so that a change can be observed somewhere it cannot hurt anyone before it reaches somewhere it can. The three below differ in who is affected when something breaks, which is the only distinction that matters when deciding what belongs where.
+
 - **Development (local).** Runs on each developer's machine. Uses local databases, mock services, verbose logging, and debug tools.
 - **Staging (optional).** A deployed version that mirrors production but is not public. Useful for testing deployments and integrations before they reach real users.
 - **Production.** The live system that users interact with. Uses real databases, real API keys, minimal logging, and error tracking.
@@ -358,12 +360,52 @@ A deployment process without a rollback plan is incomplete. The first time a dep
 
 ## Some Truths About DevOps
 
-- The first deployment is the hardest. Every one after that is routine, provided you automate it.
-- Teams that delay deployment until "the code is ready" inevitably discover deployment problems at the worst possible time: right before a demo or handoff.
-- A deployment that takes 30 minutes of manual steps will eventually be done incorrectly. Automation is not a luxury. It is how you prevent mistakes.
-- Most production outages in student projects are caused by configuration errors (wrong environment variable, missing database migration, debug mode on), not by code bugs. The deployment checklist exists for this reason.
-- You do not need Kubernetes. For a Capstone project, a PaaS with automatic deployments is almost certainly sufficient. Choose the simplest infrastructure that meets your needs.
-- Containers are powerful but optional. If `npm install && npm start` works reliably for your team, you do not need Docker. Add it when environment inconsistency becomes a real problem, not as a resume-driven decision.
+The first deployment is disproportionately hard and every one after it is
+routine, which has a consequence most teams get backwards. Because the first one
+is hard, teams postpone it until there is something worth deploying, and so they
+meet the hard part at the moment they can least afford it: the week of a demo,
+with a partner watching. Deploying an empty page in week two is not premature
+optimization. It is moving the expensive, unpredictable work to the point in the
+term where failure costs nothing, which is why the walking skeleton appears in
+[Shipping](/guides/shipping/) as a fall deadline.
+
+Most outages on student projects are configuration, not code. A missing
+environment variable, a migration that never ran, debug mode left on, a secret
+that exists locally and not in the deployment platform. This is predictable
+enough to design against, and the best-known articulation is the
+[Twelve-Factor App](https://12factor.net/), whose central move is to keep
+configuration in the environment rather than in the code, so that the same
+artifact runs in development and production with different settings. Read at
+least factors 3 (config), 10 (dev/prod parity), and 11 (logs); they account for
+most of what goes wrong here.
+
+You almost certainly do not need Kubernetes, and the reason is worth stating
+rather than asserting. Kubernetes solves scheduling containers across many
+machines with automated failover, which is a real problem for organizations
+running hundreds of services and not a problem you have. What it costs is a large
+operational surface that someone has to understand, and on a student team that
+someone becomes a bus factor of one. A platform-as-a-service that deploys on push
+gives you the part you need for a fraction of the attention. If you want
+Kubernetes on your resume, that is a legitimate goal, but name it as a learning
+goal rather than an architectural requirement, and say so in your design
+document.
+
+Containers are the same trade at smaller scale. [Docker](https://docs.docker.com/get-started/)
+genuinely solves "works on my machine" and genuinely costs build time, image
+management, and a layer of indirection when debugging. If `npm install && npm start`
+works reliably for everyone on your team, you do not yet have the problem Docker
+solves. Adopt it when environment drift actually bites, when you need to match a
+production runtime exactly, or when your deployment target requires an image.
+
+The uncomfortable one: most of what is called DevOps in industry is a full-time
+role, and you are doing it in the margins of a course. The honest scope for a
+capstone team is a CI pipeline that runs tests on every pull request, a
+deployment that happens on merge, secrets kept out of the repository, and a
+documented way to roll back. That is a small fraction of the discipline and it is
+the fraction that pays. Resist the pull toward observability stacks and
+infrastructure-as-code frameworks unless something in your project actually
+demands them, because every one of them is a system your team now maintains
+instead of building the thing your partner asked for.
 
 ## DevOps in Industry and Academia
 
@@ -374,3 +416,29 @@ The "you build it, you run it" philosophy (attributed to Amazon's Werner Vogels)
 In research settings, reproducibility is the equivalent of reliable deployment. A research project that cannot be set up and run by someone other than the original author has limited scientific value. Docker, dependency pinning, and clear setup instructions serve the same purpose in academia as deployment pipelines serve in industry: they make the work reproducible by others.
 
 The deployment skills you develop during Capstone transfer directly. Every professional software project needs to go from code to running system, and the team that understands that pipeline has a significant advantage over one that treats deployment as someone else's problem.
+
+## Additional Readings
+
+DevOps has an unusually strong evidence base for a practice area, because the
+DORA program has spent a decade measuring which behaviors actually correlate with
+delivery performance. Start with the research if you want to know what matters,
+and with the Twelve-Factor App if you want to know what to do on Monday.
+
+**Sources and further reading**
+
+- [The Twelve-Factor App](https://12factor.net/): the configuration and parity discipline that prevents most deployment surprises.
+- [Continuous Integration](https://martinfowler.com/articles/continuousIntegration.html), Martin Fowler: what CI actually requires, which is more than having a pipeline.
+- [Accelerate](https://itrevolution.com/product/accelerate/), Forsgren, Humble, and Kim: the research behind the four delivery metrics, in book form.
+- [DORA](https://dora.dev/), Google Cloud: the ongoing version of that research, updated yearly.
+- [The Site Reliability Engineering book](https://sre.google/sre-book/table-of-contents/), Google: free online, and the standard reference for running things in production.
+- [Get started with Docker](https://docs.docker.com/get-started/): the official tutorial, for when containers become worth the cost.
+- [BlueGreenDeployment](https://martinfowler.com/bliki/BlueGreenDeployment.html), Martin Fowler: the deployment pattern behind zero-downtime releases and instant rollback.
+- [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions): how credentials reach your pipeline without entering your repository.
+- [DevSecOps Guideline](https://owasp.org/www-project-devsecops-guideline/), OWASP: where the security checks belong in the pipeline.
+
+**Activities that exercise this**
+
+- [Deployment Plan](/activities/design/#deployment-plan): the environments, the promotion path, and the rollback, written down.
+- [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): a concrete second check to add to the pipeline.
+- [Software Release and Versioning](/activities/planning/#software-release-and-versioning): what a release means once deployment is automatic.
+- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): the CI layer as the gate that nobody can skip.

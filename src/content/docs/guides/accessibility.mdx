@@ -76,7 +76,7 @@ Where that is not feasible in your timeline, the honest substitute is a task-bas
 
 ## Some Truths About Accessibility Testing
 
-Most capstone teams do none of this and nothing visible happens, because the graders, the partners and the teammates all use a mouse and a screen. That is exactly why it gets skipped: the cost of skipping it lands on people who are not in the room.
+Most capstone teams do none of this and nothing visible happens, because the readers, the partners and the teammates all use a mouse and a screen. That is exactly why it gets skipped: the cost of skipping it lands on people who are not in the room. The scale is not marginal. WebAIM's annual [accessibility analysis of the top million home pages](https://webaim.org/projects/million/) has found detectable failures on well over ninety percent of them every year it has run, which tells you both that this is normal and that normal is not an excuse.
 
 Automated tools are oversold and still worth running. A green automated run is not an accessible product; it is the mechanical half of one, and the [coverage figures above](#manual-accessibility-testing) are the reason the manual pass is not optional.
 
@@ -97,3 +97,32 @@ In research software the pressure is weaker and the gap is wider. Tools built fo
 :::note[Reviewed annually]
 The tool names on this page date faster than the practice. Checked at the annual review.
 :::
+
+## Additional Readings
+
+The W3C material is the authoritative source and is written for practitioners
+rather than standards lawyers, so start there rather than with a blog summary.
+The pattern libraries are what you will actually consult while building a
+component, because most accessibility defects are markup decisions made in the
+first ten minutes.
+
+**Sources and further reading**
+
+- [Introduction to Web Accessibility](https://www.w3.org/WAI/fundamentals/accessibility-intro/), W3C WAI: the orientation to read before the guidelines themselves.
+- [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/), W3C: the reference for building a component that behaves correctly with assistive technology.
+- [Easy Checks](https://www.w3.org/WAI/test-evaluate/preliminary/), W3C WAI: a first review you can run in about an hour with no special tooling.
+- [The WebAIM Million](https://webaim.org/projects/million/): the annual survey of how common these failures actually are.
+- [Designing with screen readers in mind](https://webaim.org/techniques/screenreader/), WebAIM: what the experience is actually like, which makes the rules make sense.
+- [The A11Y Project checklist](https://www.a11yproject.com/checklist/): a practical, plain-language working checklist.
+- [Inclusive Components](https://inclusive-components.design/), Heydon Pickering: worked examples of accessible versions of the components you are probably building.
+- [Guidance on Web Accessibility and the ADA](https://www.ada.gov/resources/web-guidance/), US Department of Justice: the legal dimension, which is why industry treats this as a requirement rather than a preference.
+
+**Activities that exercise this**
+
+- [Designing for Accessibility](/activities/design/#designing-for-accessibility): the design-side workshop, which is also where the [Landing Page](/assignments/landing-page/) polish criterion is earned.
+- [Test with an Assistive Technology User](/activities/user/#test-with-an-assistive-technology-user): the highest-value and hardest-to-arrange check on this page.
+- [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half, running on every pull request.
+- [Write for Accessibility and ESL](/activities/communication/#write-for-accessibility-and-esl): the content half, which automated tools do not check at all.
+- [Apply the GenderMag Method](/activities/design/#apply-the-gendermag-method): inclusive design for cognitive style, which the same walkthrough habit supports.
+- [UI Design Guidelines](/activities/design/#ui-design-guidelines): the conventions that prevent most defects before testing finds them.
+- [UX Design Maturity](/activities/user/#ux-design-maturity): where your team currently sits, and what the next step costs.

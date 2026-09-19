@@ -26,15 +26,11 @@ Three kinds cover almost everything a Capstone project needs:
 - **Non-functional**: how well it does it, with a number. "The dashboard loads in under 3 seconds on a campus connection." "A fresh clone runs the full pipeline in one documented command."
 - **Constraints**: limits you did not choose. "Must run on the partner's existing Postgres 14." "No personal data leaves the partner's network." "Ships under the upstream project's license."
 
-The longer taxonomies in textbooks (user, system, business, domain) are ways of asking whose requirement it is. Useful in an interview, not as headings in your document.
+The longer taxonomies in textbooks (user, system, business, domain) are ways of asking whose requirement it is. Useful in an interview, not as headings in your document. If you want the formal version, [ISO/IEC/IEEE 29148](https://standards.ieee.org/ieee/29148/6937/) is the international standard for requirements engineering, and it is a useful thing to have looked at once: it shows you what full rigor costs, which is the context you need to understand why almost nobody outside safety-critical work pays it.
+
+Your `docs/requirements.md` is checked at every [repo checkpoint](/assignments/repo-checkpoints/), and [User Story Mapping](/activities/requirements/#user-story-mapping) is the fall workshop that produces its first real version. The winter [Definition of Shipped](/assignments/definition-of-shipped/) is scoped against it, so this is not a document you write once for credit.
 
 Requirements come from talking to people: your partner, the people who will use the thing, the maintainers whose project you are joining. Interviews, a few observed sessions, and a look at what competitors already do cover most of it. Then write them down, get them checked, and expect them to change.
-
-<LinkCard
-  title="Requirements Activities"
-  href="/activities/requirements/"
-  description="Canvases, user stories, story mapping, and research questions."
-/>
 
 ## Addressing a Problem
 
@@ -55,7 +51,9 @@ So the document opens with a **problem statement**: what the problem is, who has
 
 ## What Makes a Good Requirement?
 
-A good requirement is one a teammate could mark passed or failed without asking you. That means specific nouns, a measurable bar for anything about quality, and an acceptance criterion wherever the behavior is not obvious. This is the shape of a `docs/requirements.md` that survives a checkpoint:
+A good requirement is one a teammate could mark passed or failed without asking you. That means specific nouns, a measurable bar for anything about quality, and an acceptance criterion wherever the behavior is not obvious. This single property, testability, does more work than any template: "the system should be fast" cannot be checked and so cannot be finished, while "the dashboard loads in under three seconds on a campus connection" can be both.
+
+Two conventions are worth knowing because you will meet them. [User stories](https://www.mountaingoatsoftware.com/agile/user-stories) in the "as a, I want, so that" form are popular because the third clause forces you to state the benefit, which is where vague requirements usually collapse; the [INVEST](https://en.wikipedia.org/wiki/INVEST_%28mnemonic%29) mnemonic is the usual checklist for whether a story is well formed. [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html), formalized in [Gherkin](https://cucumber.io/docs/gherkin/reference/), is the same instinct applied to acceptance criteria, and it has the pleasant property of translating almost directly into a test. Neither is required here. Both are better than prose when a requirement has conditions. This is the shape of a `docs/requirements.md` that survives a checkpoint:
 
 ```md
 # Requirements
@@ -103,12 +101,6 @@ Track the list on your board, not in a second document. [GitHub Projects](https:
 
 A [user story map](https://www.nngroup.com/articles/user-story-mapping/) lays the user's activities left to right in the order they happen, and the stories that serve each activity top to bottom by priority. A horizontal line through the map is a release: everything above it ships, everything below waits. It is the fastest way to turn a pile of stories into a `docs/requirements.md` with a defensible "this year" line, which is why [User Story Mapping](/activities/requirements/#user-story-mapping) is a fall workshop. The stories above the line become your functional requirements; the line itself is the first draft of your Definition of Shipped target.
 
-<LinkCard
-  title="Planning Activities"
-  href="/activities/planning/"
-  description="Prioritization, risk, and scheduling exercises for the ranked list."
-/>
-
 ## Validation
 
 A requirement is validated when someone other than the author has confirmed it. The cheap confirmations:
@@ -136,13 +128,73 @@ The problem statement says what you are fixing; success metrics say how you will
 
 ## Some Truths about Software Requirements
 
-- A requirements document can be busywork. Keep it short, ranked, and in the repository next to the code, or it will be abandoned within a month.
-- It goes stale. Some teams stop maintaining the list once the board and the tests carry the same information. That is fine as long as the problem statement, the non-goals, and the non-functional bars stay current, because those are what the board does not hold.
-- Most of it is wrong at first. Requirements are guesses until a user or a partner confirms them, so mark the unconfirmed ones and go confirm them.
-- Safety-critical, regulated, and hardware projects are the exception. There the document is a contract and the formality is the point.
+A requirements document can absolutely be busywork, and the version that becomes
+busywork is recognizable: long, unranked, written once, stored somewhere other
+than the repository. It gets abandoned within a month because nothing in the
+team's daily work touches it. The version that survives is short, ranked, and
+sitting next to the code, where a pull request can change it in the same commit
+that changes the behavior.
+
+Expect most of it to be wrong at first, and treat that as the normal condition
+rather than a failure of analysis. Requirements are guesses about what people
+need until a user or a partner confirms them, and the guesses made in fall week 3
+are made by a team that has not yet watched anyone use anything. This is why the
+document needs a way to mark which items are confirmed and which are assumed; an
+unconfirmed requirement that looks identical to a confirmed one is how teams
+build the wrong thing with total confidence.
+
+The staleness question deserves a straight answer, because teams ask it every
+year and the usual advice dodges. Once your board holds the current work and your
+tests encode the acceptance criteria, the functional list genuinely does become
+redundant, and maintaining it in parallel is duplicated effort that will drift.
+What does not become redundant is the part the board never holds: the problem
+statement, the non-goals, the non-functional bars, and the open questions. If you
+let the functional list lag behind the board, that is a defensible trade. If you
+let those four go stale, you have lost the only record of what you decided not to
+do and how good it has to be, and both will be asked about in spring.
+
+Safety-critical, regulated, and hardware projects are the real exception, and it
+is worth understanding why rather than filing it as a caveat. When the cost of a
+late change is enormous, moving discovery earlier is worth almost any amount of
+paperwork, so the document becomes a contract and the formality is the point.
+Your project is almost certainly not in that category. If it is, your partner will
+tell you, and the standard above stops being background reading.
 
 ## Requirements in Industry and Academia
 
 In industry the artifact is the **product requirements document** (PRD): features, behavior, constraints, and success metrics, kept by a product manager and read by engineers, designers, and leadership. Amazon starts earlier still, with a **PR/FAQ**: a one-page press release written as if the product had already shipped, followed by the questions a skeptical customer or executive would ask. Both exist for the same reason your problem statement does: to force agreement on what is being built before anyone builds it.
 
 In research the equivalent is the research question and the pre-registered analysis plan; in open source it is the issue discussion that precedes a substantial pull request. Every mature field has learned to write the requirement down before the work, because the alternative is discovering it at the demo.
+
+## Additional Readings
+
+Requirements writing has a formal tradition and an agile reaction to it, and the
+useful position for a capstone team is somewhere between. The standard is here so
+you know what full rigor looks like; the story and acceptance-criteria references
+are what you will actually use.
+
+**Sources and further reading**
+
+- [ISO/IEC/IEEE 29148](https://standards.ieee.org/ieee/29148/6937/): the international standard for requirements engineering, worth seeing once.
+- [User Stories](https://www.mountaingoatsoftware.com/agile/user-stories), Mike Cohn: the format, what it is for, and its limits.
+- [INVEST](https://en.wikipedia.org/wiki/INVEST_%28mnemonic%29): the checklist for whether a story is well formed.
+- [GivenWhenThen](https://martinfowler.com/bliki/GivenWhenThen.html), Martin Fowler, and the [Gherkin reference](https://cucumber.io/docs/gherkin/reference/): acceptance criteria in a form that becomes a test.
+- [User Story Mapping](https://www.nngroup.com/articles/user-story-mapping/), Nielsen Norman Group: the technique behind the fall workshop.
+- [Writing requirements](https://www.jamasoftware.com/requirements-management-guide/writing-requirements/), Jama Software: practical guidance on phrasing, from a requirements tooling vendor.
+
+**Activities that exercise this**
+
+- [User Story Mapping](/activities/requirements/#user-story-mapping): the fall workshop that produces the first real version of this document.
+- [User Manual](/activities/requirements/#user-manual): writing the manual first surfaces requirements you had not noticed.
+- [Prioritization](/activities/planning/#prioritization): the ranking this document depends on.
+- [Define your Personas](/activities/user/#define-your-personas) and [Find Users](/activities/user/#find-users): how an assumed requirement becomes a confirmed one.
+- [Definition of Done](/activities/planning/#definition-of-done): the bar a requirement has to clear to count as met.
+- [Domain Model](/activities/requirements/#domain-model): the shared vocabulary your requirements are written in.
+- [Lean Canvas](/activities/requirements/#lean-canvas) and [Jobs to Be Done Theory](/activities/requirements/#jobs-to-be-done-theory): framing what the product is for before listing what it does.
+- [Current vs Ideal Workflow](/activities/requirements/#current-vs-ideal-workflow) and [Is / Is-Not](/activities/requirements/#is--is-not): two fast ways to bound scope with a partner.
+- [User's Emotional Objectives](/activities/requirements/#users-emotional-objectives): the requirements people do not state directly.
+- [Low or Medium Fidelity Prototype](/activities/requirements/#low-or-medium-fidelity-prototype): the cheapest way to confirm a requirement before building it.
+- [High Fidelity Prototype](/activities/design/#high-fidelity-prototype): the same check once the shape has settled.
+- [Create Good Survey or Interview Questions](/activities/design/#create-good-survey-or-interview-questions): how you avoid leading the partner to the answer you wanted.
+- [Define your Research Questions](/activities/requirements/#define-your-research-questions), [Collect Data Sources](/activities/requirements/#collect-data-sources), [Define the Data to Collect](/activities/requirements/#define-the-data-to-collect), and [Hypothesis Testing](/activities/requirements/#hypothesis-testing): the research project's equivalents of a requirements list.
+- [Ideate About User Activities](/activities/user/#ideate-about-user-activities) and [Do a User Activity](/activities/user/#do-a-user-activity): requirements found by watching rather than asking.

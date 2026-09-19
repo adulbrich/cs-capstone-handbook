@@ -256,13 +256,54 @@ The tool names above date faster than anything else on this page. Checked at the
 
 ## Some Truths About Testing
 
-- Teams that skip testing move faster for a few weeks and then spend the rest of the project debugging regressions they could have prevented.
-- Writing testable code forces better design. If a function is hard to test, it is usually doing too many things.
-- The first time you catch a real bug with an automated test, the investment pays for itself. Every time after that is free.
-- Perfect test coverage is neither achievable nor necessary. Thoughtful coverage of critical paths and edge cases is far more valuable.
-- Automated tests verify that the code works. Only humans can verify that the product is worth using. You need both.
-- Teams that never test with real users ship features that make sense to the team and confuse everyone else.
-- Testing research outputs is harder than testing application code, but reproducibility checks and data validation are not optional. Results you cannot reproduce are not results.
+The pyramid this guide opens with is a guideline, and it is worth knowing that
+it is also contested. Mike Cohn's original shape assumed integration tests were
+slow and brittle, which was true of the tooling in 2009. Kent C. Dodds argues for
+a [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests)
+instead: more integration tests than unit tests, on the grounds that integration
+tests buy more confidence per test and that modern tooling has made them fast
+enough to write in bulk. Google's testing team reached a related conclusion from
+the opposite end, arguing you should
+[say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
+because they are slow and flaky at scale. Which shape fits depends on how
+expensive your integration tests actually are, so measure before you commit to
+one.
+
+Coverage percentage is the metric most likely to mislead you, and the reason is
+mechanical: coverage records which lines executed, not whether anything was
+checked. A test suite that calls every function and asserts nothing reports
+excellent coverage. This is why a coverage target set as a team goal tends to
+produce tests written to raise the number rather than tests that would catch a
+regression. Use coverage to find code nobody tested at all, which it is good at,
+and not as a quality score, which it cannot be.
+
+Flaky tests deserve more attention than they get, because they fail in a way that
+destroys the value of everything around them. A test that passes and fails
+without the code changing teaches the team to ignore red builds, and once that
+habit forms a real failure gets ignored too. Google has
+[written about the scale of this](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html):
+a meaningful fraction of their test failures are flakes, which is why they invest
+in detecting and quarantining them. On a student project the correct response is
+usually to fix it the day it appears or delete it, because a quarantine you never
+revisit is just a deleted test with extra steps. Some flakiness is genuinely
+unavoidable, such as a test that depends on a network service, and automatic
+reruns are a reasonable mitigation there.
+
+Writing testable code does tend to improve design, but the claim is often stated
+too strongly. What testing pressure actually rewards is separating decisions from
+side effects, because a function that only computes is trivial to test and a
+function that computes and writes to a database is not. That is a real design
+improvement most of the time. It is not a universal law: tests can also push you
+toward over-abstraction, adding interfaces that exist only so a mock can be
+injected. If a change makes the code harder to read and easier to test, that is a
+trade to make deliberately, not an automatic win.
+
+Finally, automated tests answer whether the code does what you specified. They
+cannot tell you whether you specified the right thing. A suite that is entirely
+green on a feature nobody wants is a well-tested waste of a term, which is why
+this guide keeps sending you back to real users and why research projects need
+reproducibility checks rather than just passing tests. Results you cannot
+reproduce are not results, and software nobody can use is not shipped.
 
 ## Testing in Industry and Academia
 
@@ -273,3 +314,28 @@ The testing pyramid (or variations like the [testing trophy](https://kentcdodds.
 In academia, reproducibility serves the same purpose as automated testing: it allows others to verify that results are valid. Journals increasingly require that computational results be backed by public code and data, with clear instructions for reproducing the findings. A well-tested research codebase is publishable; an untested one is a liability.
 
 The habit of testing holistically, through automated suites, manual exploration, reproducibility checks, and user validation, is one of the most transferable skills a Capstone project can develop.
+
+## Additional Readings
+
+The testing literature is opinionated and the disagreements are real, so read at
+least two of the first three entries and notice where they conflict. The tooling
+links are here because the practical question, how expensive your integration
+tests are, is answered by which tools you pick.
+
+**Sources and further reading**
+
+- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html), Ham Vocke on Martin Fowler's site: the most thorough treatment of the shape and what each layer is actually for.
+- [Static vs Unit vs Integration vs E2E Testing](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests), Kent C. Dodds: the testing trophy, and the argument against the pyramid's proportions.
+- [Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html), Google Testing Blog: the same argument from the other direction.
+- [Flaky Tests at Google](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html): how big the flakiness problem gets and what to do about it.
+- [Eradicating Non-Determinism in Tests](https://martinfowler.com/articles/nonDeterminism.html), Martin Fowler: the specific causes of flaky tests and how to remove each one.
+- [Hypothesis](https://hypothesis.works/): property-based testing, for when example-based tests keep missing the edge case.
+- [Playwright](https://playwright.dev/): browser automation for the end-to-end layer, including accessibility assertions.
+- [Test and evaluate](https://www.w3.org/WAI/test-evaluate/), W3C Web Accessibility Initiative: the accessibility half, which automated tools only partly cover.
+
+**Activities that exercise this**
+
+- [Test Plan](/activities/design/#test-plan): the fall workshop that turns this guide into your project's plan.
+- [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half of the accessibility check.
+- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checking work against what was asked, which tests cannot do for you.
+- [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log): the research equivalent of a test record.

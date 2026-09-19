@@ -19,6 +19,8 @@ Understanding what AI tools are good at and where they fall short helps you use 
 
 ### What AI helps with
 
+The pattern across these is that the model is good where the space of acceptable answers is wide, where you can recognize a good answer faster than you could produce one, and where being wrong is cheap to detect. Brainstorming fits all three; a security-critical authentication flow fits none of them.
+
 - Brainstorming ideas and exploring alternatives
 - Drafting code, tests, documentation, and plans
 - Explaining unfamiliar topics, APIs, or code snippets
@@ -28,6 +30,8 @@ Understanding what AI tools are good at and where they fall short helps you use 
 
 ### What AI cannot do well
 
+These are not temporary gaps waiting for a better model, at least not all of them. A model cannot apply your partner's unstated preference because nobody wrote it down, and it cannot make an ethical call on your behalf because that call is yours to own. **Hallucination** deserves a definition rather than a bullet: the model produces fluent, confident text that is not grounded in anything real, including libraries that do not exist, API methods that were never written, and citations to papers nobody published. It is not lying, because it has no model of truth to violate; it is generating plausible continuations, and plausible is not the same as correct. The practical consequence is that any specific factual claim (a function signature, a flag, a citation) needs checking against a source, and the cost of checking is the real price of the speedup.
+
 - Exercise engineering judgment
 - Apply your project's specific constraints (your team's architecture, your project partner's requirements, your deployment environment)
 - Produce secure, efficient, or trustworthy code without oversight
@@ -36,6 +40,8 @@ Understanding what AI tools are good at and where they fall short helps you use 
 - Make ethical decisions
 
 ### Risks
+
+The risks below share a structure worth naming: each one is invisible at the moment it occurs and expensive later. Nobody notices the over-reliance in week 3; they notice it in week 18 when a bug lands in code no one on the team can read.
 
 - Incorrect or misleading information presented confidently
 - Insecure or poorly optimized code
@@ -152,9 +158,13 @@ The distinction between "autocomplete" and "agent" matters. Autocomplete tools s
 
 ### Image and Design Tools
 
+Generated images are most useful for placeholder assets and mockups, where the alternative is a grey rectangle. The licensing question is the one to settle before you ship anything: terms differ by tool and by plan, and a generated asset in a public repository is a licensing decision whether or not anyone made it deliberately.
+
 - **Midjourney**, **Stable Diffusion**, **GPT Image** (the model behind ChatGPT Images, which replaced DALL-E), **Google Gemini image generation**: image generation for mockups, assets, or diagrams. Check licenses before using generated assets in your project.
 
 ### AI Search Tools
+
+These sit between a search engine and a chat assistant, returning prose answers with citations attached. The citations are the reason to prefer them for research and also the thing to check: a fabricated or misattributed source is the characteristic failure here, and it is invisible unless you open the link.
 
 - **Perplexity**, **ChatGPT Search**: research and summarization with source citations. Always verify the facts and check that cited sources actually exist.
 
@@ -184,17 +194,86 @@ If you want to compare models, these resources track current benchmarks:
 
 ## Some Truths About AI Tools
 
-- AI tools make fast developers faster and careless developers more dangerous. The bottleneck is judgment, not typing speed.
-- The quality of AI output is proportional to the quality of context you provide. Invest in good project-level instructions.
-- AI-generated code is not inherently better or worse than human-written code. It still needs review, testing, and maintenance.
-- If you find yourself unable to debug or modify AI-generated code, you have a problem. You should understand everything in your codebase.
-- AI tools are evolving rapidly. What is true today may not be true next term. Stay curious and adapt.
-- The teams that use AI most effectively are not the ones that generate the most code. They are the ones that generate the *right* code and catch the wrong code early.
+Start with the finding that should unsettle anyone confident about this,
+including the author of this page. METR ran a
+[randomized controlled trial](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
+with sixteen experienced open-source maintainers working on 246 real issues in
+repositories they already knew well. Developers allowed to use AI tools took
+**19% longer** to complete their issues. The part that matters more than the
+headline: those developers had predicted a 24% speedup beforehand, and after
+finishing they still believed AI had sped them up by about 20%. They were wrong
+in the same direction, by a similar margin, before and after the evidence.
+
+Read that carefully before generalizing it. It is one study, on a specific
+population (expert maintainers in mature codebases they know intimately), with
+tools from early 2025, and it does not say AI tools are useless. It does say
+that your sense of being faster is not evidence that you are, which is a
+different and more durable claim. You are not in that population: you are mostly
+working in unfamiliar territory on new code, which is closer to where these tools
+demonstrably help. But the perception gap probably still applies to you, and the
+only defense is measuring something rather than trusting the feeling.
+
+The security version of the same result is sharper. In
+[Do Users Write More Insecure Code with AI Assistants?](https://arxiv.org/abs/2211.03622),
+Perry, Srivastava, Kumar, and Boneh found participants with an AI assistant wrote
+*less* secure code and were *more* confident it was secure. The same study found
+the participants who did better were the ones who distrusted the output and
+iterated on their prompts. Confidence is the failure mode; skepticism is the
+skill.
+
+The bottleneck has moved, and this is the part that should change what you do.
+When most code was typed, your throughput was limited by how fast you could write
+correct code. When most code arrives from a model, throughput is limited by how
+fast you can verify it, and verification does not get faster just because
+generation did. A team that doubles its output and keeps the same review capacity
+has not doubled its velocity; it has built a queue. This is why the gates in
+[AI project setup](/guides/ai-project-setup/) matter more than prompt technique.
+
+If you cannot debug or modify code in your repository, you do not own it, and
+that is true whether a model wrote it or a teammate did. The difference is that a
+teammate can explain their reasoning next week and a model cannot reconstruct
+reasoning it never had. Code you accepted without understanding is a debt that
+comes due during your first hard bug, usually in spring, usually near a deadline.
+
+Finally, everything specific on this page has a short shelf life. Model names,
+capabilities, and prices move faster than this handbook is revised, and advice
+tuned to a 2025 tool may be wrong for the one you use. What does not move is the
+shape: state intent clearly, verify what matters, build a net for the rest, and
+keep the ability to work without the tool.
 
 ## AI Tools in Industry and Academia
 
-AI-assisted coding is the default at most software companies now. Google said in late 2024 that more than a quarter of its new code was generated by AI and then reviewed by engineers, and the second half of that sentence is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without a net, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this course grades the fit between delegation and safety net rather than the tool.
+AI-assisted coding is the default at most software companies now. Google said on its late-2024 earnings call that more than a quarter of its new code was generated by AI and then reviewed by engineers, and the second half of that sentence is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without a net, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this course cares about the fit between delegation and safety net rather than the tool. The [DORA research program](https://dora.dev/research/2025/dora-report/) has been measuring what AI adoption actually does to delivery performance across thousands of organizations, and its findings are more nuanced than either the marketing or the backlash: adoption is near-universal, the effects depend heavily on the surrounding practices, and teams with weak delivery pipelines get worse outcomes rather than better ones.
 
-The open-source world is more divided. Several projects, including Gentoo and NetBSD, banned AI-generated contributions in 2024, and the curl maintainers have written publicly about bug reports generated by AI that waste reviewer time. If your project is FOSS, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
+The open-source world is more divided. Several projects banned AI-generated contributions outright: [Gentoo's council policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy) forbids them, and [NetBSD's commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html) presume LLM output to be tainted code that must not be committed without prior written approval from core. Daniel Stenberg of curl has written bluntly about [AI-generated security reports](https://daniel.haxx.se/blog/2024/01/02/the-i-in-llm-stands-for-intelligence/) that consume maintainer time without containing a real bug. If your project is FOSS, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
 
-In academia, the major publishers and the ACM set the same rule in 2023: an AI tool cannot be an author, and its use must be disclosed. Research code is held to the reproducibility bar regardless of who or what wrote it. Universities differ on classroom policy, which is why this course states its own once, on the [assignments overview](/assignments/introduction/#ai-policy-applies-to-every-assignment).
+In academia, the major publishers converged on the same rule in 2023: an AI tool cannot be an author, because authorship carries accountability a tool cannot hold, and its use must be disclosed. [Nature's policy](https://www.nature.com/nature-portfolio/editorial-policies/ai) states both halves plainly, and the ACM's is equivalent. Research code is held to the reproducibility bar regardless of who or what wrote it. Universities differ on classroom policy, which is why this course states its own once, on the [assignments overview](/assignments/introduction/#ai-policy-applies-to-every-assignment).
+
+## Additional Readings
+
+The evidence on whether these tools actually help is thinner and stranger than
+the volume of writing about them suggests, so the first three entries are
+studies rather than opinion. Read at least the METR summary: it is the single
+most useful corrective to your own sense of how much faster you are going.
+The vendor documentation is here because prompting technique is genuinely
+tool-specific and changes with each release.
+
+**Sources and further reading**
+
+- [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/), METR: the randomized trial that found a 19% slowdown alongside a perceived speedup.
+- [Do Users Write More Insecure Code with AI Assistants?](https://arxiv.org/abs/2211.03622), Perry, Srivastava, Kumar, and Boneh: less secure code, more confidence that it was secure.
+- [DORA research](https://dora.dev/research/2025/dora-report/), Google Cloud: what AI adoption does to delivery performance when measured across organizations rather than anecdotes.
+- [Here's how I use LLMs to help me write code](https://simonwillison.net/2025/Mar/11/using-llms-for-code/), Simon Willison: the most practical working description of a verification-first habit.
+- [Exploring Generative AI](https://martinfowler.com/articles/exploring-gen-ai.html), Thoughtworks: a long-running field report from people deploying this on real engagements.
+- [Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview), Anthropic: the techniques that actually move output quality, from the vendor.
+- [AI policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy), Gentoo, and [commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html), NetBSD: two upstream projects that say no, and their reasoning.
+- [Artificial Intelligence editorial policy](https://www.nature.com/nature-portfolio/editorial-policies/ai), Nature: the disclosure and authorship rule your research partner is working under.
+- [Stack Overflow Developer Survey: AI](https://survey.stackoverflow.co/2025/ai): what practitioners report about adoption and trust, useful as a sanity check on your own bubble.
+
+**Activities that exercise this**
+
+- [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors): decide what you will never delegate before you are tired.
+- [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass): the verification half, run on your own repository.
+- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checking generated work against what was actually asked for.
+- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure delegation against the gates that would catch it.
+- [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): delegation where the failure is visible.
