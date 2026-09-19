@@ -43,17 +43,17 @@ Several well-known workflows exist. Each makes different tradeoffs between simpl
 
 ### GitHub Flow
 
-**GitHub Flow** is the simplest workflow that supports team collaboration. It has one rule: the `main` branch is always in a deployable (or at least stable) state. All work happens on short-lived feature branches that are merged back through pull requests.
+[**GitHub Flow**](https://docs.github.com/en/get-started/using-github/github-flow) is the simplest workflow that supports team collaboration. It has one rule: the `main` branch is always in a deployable (or at least stable) state. All work happens on short-lived feature branches that are merged back through pull requests.
 
 This is the recommended workflow for most Capstone projects. It is easy to learn, works well for small teams, and enforces code review without adding ceremony.
 
 ### Git Flow
 
-**Git Flow** uses long-lived `develop` and `main` branches, plus dedicated branches for releases and hotfixes. It provides more structure for projects with formal release cycles but adds complexity that most Capstone projects do not need. It is common in enterprise environments where multiple versions are maintained simultaneously.
+[**Git Flow**](https://nvie.com/posts/a-successful-git-branching-model/), described by Vincent Driessen in 2010, uses long-lived `develop` and `main` branches, plus dedicated branches for releases and hotfixes. Driessen has since added a note to that post recommending against it for teams shipping continuously, which is worth reading as an example of an influential idea whose author narrowed its scope later. It provides more structure for projects with formal release cycles but adds complexity that most Capstone projects do not need. It is common in enterprise environments where multiple versions are maintained simultaneously.
 
 ### Trunk-Based Development
 
-In **trunk-based development**, everyone commits directly to `main` (or to very short-lived branches that are merged within hours). This requires strong CI, comprehensive test coverage, and high team discipline. It is used by large engineering organizations (Google, for example) but is difficult to adopt without mature testing infrastructure.
+In [**trunk-based development**](https://trunkbaseddevelopment.com/), everyone commits directly to `main` (or to very short-lived branches that are merged within hours). This requires strong CI, comprehensive test coverage, and high team discipline. It is used by large engineering organizations (Google, for example) and the [DORA research](https://dora.dev/) consistently finds it associated with better delivery performance, but it is difficult to adopt without mature testing infrastructure. The disagreement between this row and the one above is real, and it is mostly about how good your tests are: trunk-based development without a trustworthy test suite is just committing to `main`.
 
 :::tip[Which Workflow Should We Use?]
 For most Capstone teams, **GitHub Flow** is the right choice. It is simple enough that the team will actually follow it, and it enforces the two practices that matter most: working on branches and reviewing each other's code before merging. If you find you need more structure later, you can adopt elements of Git Flow. Start simple.
@@ -103,7 +103,9 @@ git add src/auth/login.py src/auth/tests/test_login.py
 git commit -m "Add login endpoint with email/password validation"
 ```
 
-Write commit messages that explain *what* changed and *why*. A reviewer reading the commit history should be able to follow the progression of your work.
+Write commit messages that explain *what* changed and *why*. A reviewer reading the commit history should be able to follow the progression of your work. Chris Beams's [seven rules of a great commit message](https://cbea.ms/git-commit/) is the short version most teams converge on, and the rule that matters most is the one people skip: the body explains why, because the diff already shows what.
+
+If your team wants machine-readable history, [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) adds a `type(scope): subject` prefix that tools can parse to generate changelogs and pick version numbers. It costs a small amount of discipline per commit and pays off only if you actually run those tools, so adopt it if you plan to automate releases and skip it if you do not.
 
 Good commit messages:
 
@@ -123,7 +125,7 @@ update files
 
 ### 4. Push your branch to GitHub
 
-Push your branch to the remote repository so others can see your work and so it is backed up.
+Push your branch to the remote repository so others can see your work and so it is backed up. Until you push, the only copy of your work is on one laptop, which is a risk the rest of this page cannot protect you from.
 
 ```bash
 git push origin feature/add-login-endpoint
@@ -209,7 +211,9 @@ This prevents your branch from diverging too far from `main`, which makes mergin
 
 ## Handling Merge Conflicts
 
-Merge conflicts happen when two branches modify the same lines in the same file. Git cannot decide which version to keep, so it asks you to resolve the conflict manually.
+Merge conflicts happen when two branches modify the same lines in the same file. Git cannot decide which version to keep, so it asks you to resolve the conflict manually. They are not errors and they are not emergencies: they are Git declining to guess, which is the correct behavior. The reason they feel alarming the first time is that the repository enters a state where the working tree contains markers that are not valid code, and nothing tells you that this state is normal and reversible. It is, and `git merge --abort` returns you to where you started.
+
+The real lesson conflicts teach is about batch size. Two people editing the same file for a week will conflict; two people merging daily rarely do. If your team hits painful conflicts repeatedly, the fix is smaller and more frequent pull requests, not better conflict-resolution skills. If you find yourself resolving the same conflict on every rebase, [`git rerere`](https://git-scm.com/docs/git-rerere) records your resolution and replays it.
 
 When a conflict occurs (either during `git merge` or when merging a PR on GitHub), Git marks the conflicting sections in the file:
 
@@ -234,7 +238,7 @@ The best way to handle merge conflicts is to avoid them. Keep branches short-liv
 
 ## Protecting the Main Branch
 
-GitHub allows you to add **branch protection rules** to prevent direct pushes to `main` and enforce quality checks before merging. For a Capstone project, useful protections include:
+GitHub allows you to add branch protection rules, now offered as [repository rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets), to prevent direct pushes to `main` and enforce quality checks before merging. Rulesets are the newer mechanism and the one to prefer on a new repository, because they can be layered and their enforcement status is visible. For a Capstone project, useful protections include:
 
 - **Require pull request reviews**: at least one approval before merging.
 - **Require status checks to pass**: CI tests must pass before the merge button is available.
@@ -268,11 +272,46 @@ GitHub provides `.gitignore` templates for most languages and frameworks at [git
 
 ## Some Truths About Git
 
-- Git is confusing at first. That is normal. The commands become muscle memory after a few weeks of regular use.
-- Most Git disasters are recoverable. `git reflog` shows a history of every state your repository has been in, even after a bad reset or a dropped branch.
-- Merge conflicts are not emergencies. They are a normal part of collaboration. The first time is stressful; by the fifth, it is routine.
-- Teams that skip code review move faster in the short term and slower in the long term. Review catches bugs, spreads knowledge, and keeps the codebase coherent.
-- The branching workflow matters less than actually following one. A simple workflow followed consistently beats a sophisticated one that half the team ignores.
+Git is genuinely confusing, and it is worth knowing that this is not a failure
+of yours. The command-line interface grew over years without a consistent
+design, so the same word means different things in different commands and the
+mental model you need (a directed graph of commits, with branches as movable
+labels) is not the model the commands present. The fastest way through is to
+learn the model rather than memorizing commands, which is what the first three
+chapters of [Pro Git](https://git-scm.com/book/en/v2) are for. After that most
+commands become obvious and the rest are lookups.
+
+Almost every Git disaster you can create locally is recoverable, and not knowing
+this causes more damage than the original mistake. [`git reflog`](https://git-scm.com/docs/git-reflog)
+records every state `HEAD` has been in, including states no branch points at any
+more, so a bad reset, a dropped branch, or a botched rebase is usually one
+`git reset --hard HEAD@{n}` away from being undone. The exception is work you
+never committed, which is why the advice to commit early and often is about
+safety rather than tidiness. Panic and improvisation are what turn a recoverable
+mistake into a lost afternoon: stop, read the message, and look at the reflog.
+
+Code review is where the short-term and long-term incentives diverge most
+sharply on a student team. Skipping it genuinely is faster this sprint, and the
+cost arrives later as a codebase nobody but the author understands, which turns
+into a bus factor of one right when that person has three finals. Google's
+[engineering practices documentation](https://google.github.io/eng-practices/review/)
+is the most useful public description of what reviewers should actually look for,
+and its central principle is worth adopting directly: approve a change once it
+definitely improves the codebase, rather than holding out for the version you
+would have written.
+
+The branching workflow matters far less than following one consistently, and
+teams spend a surprising amount of time debating this. All three workflows above
+work. What does not work is a team where two people open pull requests, one
+pushes to `main`, and nobody is sure which branch is current. Pick GitHub Flow,
+write it in the working agreement, and enforce it with a ruleset so the decision
+does not depend on memory.
+
+One thing this page cannot teach you is when to break the rules. A one-character
+typo fix on a docs page does not need a review round, and a team that insists it
+does will quietly start batching unrelated changes into bigger pull requests to
+avoid the ceremony, which is worse. Set the protections, and treat the rare
+override as a decision someone announces rather than one they hide.
 
 ## Git and GitHub in Industry and Academia
 
@@ -281,3 +320,28 @@ Git is the dominant version control system in software engineering. GitHub, GitL
 In open-source communities, the pull request model (fork, branch, PR, review, merge) is the standard contribution mechanism. Understanding this workflow is essential for contributing to FOSS projects, which many Capstone teams do.
 
 In research settings, version control is increasingly recognized as essential for reproducibility. Journals and conferences expect computational work to be backed by a public repository with clear commit history. Git enables this, and platforms like GitHub and GitLab provide the infrastructure for sharing and collaborating on research code.
+
+## Additional Readings
+
+Git's own documentation is unusually good and unusually free, so the first two
+entries below should be your default reference rather than a search-engine
+result of unknown vintage. The rest are the specific conventions and review
+practices that teams adopt on top of Git itself.
+
+**Sources and further reading**
+
+- [Pro Git](https://git-scm.com/book/en/v2), Scott Chacon and Ben Straub: the free official book. Chapters 2, 3, and 7 cover almost everything a capstone team needs.
+- [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow), GitHub: the workflow this guide recommends, in its authoritative form.
+- [A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/), Vincent Driessen: the original Git Flow post, including the author's later note about when not to use it.
+- [How to Write a Git Commit Message](https://cbea.ms/git-commit/), Chris Beams: seven rules, widely adopted, worth following.
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): the structured commit format that changelog and versioning tools read.
+- [Google Engineering Practices: Code Review](https://google.github.io/eng-practices/review/): what reviewers should look for and how fast they should respond, from a company that reviews everything.
+- [How to write the perfect pull request](https://github.blog/2015-01-21-how-to-write-the-perfect-pull-request/), GitHub: short, and mostly about tone.
+- [About rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets), GitHub: the current mechanism for protecting a branch, replacing classic protection rules.
+- [git reflog](https://git-scm.com/docs/git-reflog) and [git rerere](https://git-scm.com/docs/git-rerere): the two commands most worth knowing before you need them.
+
+**Activities that exercise this**
+
+- [Regular Stand-Up Meetings](/activities/teamwork/#regular-stand-up-meetings): where branch and review status actually gets surfaced.
+- [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase): reading history is the fastest way to learn what a repository's conventions really are.
+- [Software Release and Versioning](/activities/planning/#software-release-and-versioning): what your branching model has to support at release time.
