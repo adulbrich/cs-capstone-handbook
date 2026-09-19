@@ -245,6 +245,8 @@ Most applications behave differently in development, staging, and production. En
 
 ### The Three Environments
 
+Environments exist so that a change can be observed somewhere it cannot hurt anyone before it reaches somewhere it can. The three below differ in who is affected when something breaks, which is the only distinction that matters when deciding what belongs where.
+
 - **Development (local).** Runs on each developer's machine. Uses local databases, mock services, verbose logging, and debug tools.
 - **Staging (optional).** A deployed version that mirrors production but is not public. Useful for testing deployments and integrations before they reach real users.
 - **Production.** The live system that users interact with. Uses real databases, real API keys, minimal logging, and error tracking.
