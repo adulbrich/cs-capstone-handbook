@@ -27,7 +27,7 @@ Teams that have no way to handle it pay for that in predictable ways:
 
 ## What Kind of Conflict Is This?
 
-Diagnosing the type first tells you what to do about it. Three kinds show up in student teams:
+Diagnosing the type first tells you what to do about it, because the three kinds call for opposite responses: one you want less of, one you want more of, and one you want to settle in writing so it stops recurring. The distinction comes from organizational psychology, where [Karen Jehn's work](https://www.jstor.org/stable/2393638) on intragroup conflict established that task conflict and relationship conflict have different effects on team performance, which is why lumping them together as "conflict" leads teams astray. Three kinds show up in student teams:
 
 - **Relationship conflict** comes from interpersonal differences: clashing personalities, egos, values. It damages morale and rarely resolves itself.
 - **Task conflict** is about the work: goals, priorities, what to build. Handled respectfully it is **productive**, and a team with none of it is usually a team where people have stopped saying what they think.
@@ -40,7 +40,7 @@ The common mistake is treating task conflict as relationship conflict. "Sam keep
 Five sources account for most of it:
 
 - **Value asymmetry**: teammates want different things from the project. One wants an A, one wants a portfolio piece, one wants to learn Rust, one wants to graduate. All legitimate, all pulling different directions if never said out loud.
-- **Social loafing**: unequal contribution, in quality or quantity. The most common serious problem in capstone.
+- **[Social loafing](https://en.wikipedia.org/wiki/Social_loafing)**: unequal contribution, in quality or quantity. The most common serious problem in capstone, and a well-documented group phenomenon rather than a character flaw peculiar to your teammate: effort per person tends to fall as group size rises, particularly when individual contributions are hard to identify. That last clause is the lever. Visible individual ownership on the board is what makes loafing hard.
 - **Ego and personality clashes**: usually a symptom of low trust rather than a cause.
 - **Poor communication**: unclear roles, misaligned expectations, decisions made in a channel half the team does not read.
 - **Ineffective project management**: vague goals and unrealistic timelines manufacture conflict out of nothing.
@@ -75,7 +75,7 @@ The goal is not to win a disagreement. It is to surface the gap between what was
 
 ### Situation, Behavior, Impact
 
-Structure what you say around three elements: the **situation** (when, where, which task), the **behavior** you actually observed rather than the motive you inferred, and the **impact** on the team.
+Structure what you say around three elements: the **situation** (when, where, which task), the **behavior** you actually observed rather than the motive you inferred, and the **impact** on the team. The [SBI model](https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-sbii/) comes from the Center for Creative Leadership, and its value is almost entirely in the middle term: describing behavior rather than motive is what keeps the other person able to respond to what you said instead of defending against what you implied. "You do not care about this project" is a motive and cannot be answered. "The auth task has been in progress for eleven days" is a behavior and can.
 
 ```text
 "During the last sprint you were assigned the API integration. It's been
@@ -158,7 +158,7 @@ Most people have one default mode they use everywhere. Knowing yours, and your t
 
 ## Personality and Working Styles
 
-There is no single correct way to classify personality, and the popular models vary a lot in rigor. This course prefers trait-based models, specifically the [Big Five](https://en.wikipedia.org/wiki/Big_Five_personality_traits), which measures openness, conscientiousness, extraversion, agreeableness, and neuroticism (often reported as its inverse, emotional stability) as spectra rather than types. You will meet MBTI and DISC in industry; treat their outputs with more caution than they are usually given.
+There is no single correct way to classify personality, and the popular models vary a lot in rigor. This course prefers trait-based models, specifically the [Big Five](https://en.wikipedia.org/wiki/Big_Five_personality_traits), which measures openness, conscientiousness, extraversion, agreeableness, and neuroticism (often reported as its inverse, emotional stability) as spectra rather than types. You will meet MBTI and DISC in industry; treat their outputs with more caution than they are usually given. The [American Psychological Association's summary](https://www.apa.org/monitor/2012/03/mbti) of the research on MBTI is a fair place to see why: the instrument sorts people into types on dimensions that are actually continuous, and retest reliability is poor enough that a meaningful share of people get a different type weeks later. It is not useless as shared vocabulary. It is not evidence about what a colleague will do.
 
 You can [take a Big Five test free](https://bigfive-test.com/); it is built on the IPIP-NEO items from the International Personality Item Pool, a public-domain collection hosted by the Oregon Research Institute, and the site itself is [open source](https://github.com/rubynor/bigfive-web).
 
@@ -210,3 +210,30 @@ Every mature engineering organization has a version of this machinery, usually m
 The blameless discipline you practice in the [Incident Postmortem](/assignments/incident-postmortem/) comes from operations culture, popularized by Google's Site Reliability Engineering practice and Etsy's engineering blog: analyze the system, never the person, because teams that punish individuals for failures simply stop reporting them. The same logic applies to team problems. A team where raising a concern is expensive is a team that runs on incomplete information.
 
 Academic research groups have the same dynamics with worse structure, because supervision is informal and power is unequal. The habits here transfer directly, and the escalation path matters more, not less.
+
+## Additional Readings
+
+Conflict is the area of this handbook where the gap between popular material and
+researched material is widest, so the entries below are labeled accordingly. The
+first group has evidence behind it. The books in the second are practitioner
+frameworks: useful scripts, weaker claims. Read them for the language, not for
+the science.
+
+**Sources and further reading**
+
+- [Psychological Safety](https://amycedmondson.com/psychological-safety/), Amy Edmondson, and [What Is Psychological Safety?](https://hbr.org/2023/02/what-is-psychological-safety), Harvard Business Review: why some teams can raise a problem and others cannot.
+- [Understanding team effectiveness](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness), Google re:Work: the Project Aristotle findings, with the team survey instruments.
+- [The Mismeasure of Men and Women](https://www.apa.org/monitor/2012/03/mbti), American Psychological Association: the research case against reading much into MBTI results.
+- [Thomas-Kilmann Conflict Mode Instrument](https://kilmanndiagnostics.com/brief-overview-of-the-tki-assessment/), Kilmann Diagnostics: the five-mode model this guide uses, from its source.
+- [The Five Dysfunctions of a Team](https://www.tablegroup.com/topics-and-resources/teamwork-5-dysfunctions/), Patrick Lencioni: the ladder the winter workshop runs on.
+- [Crucial Conversations](https://cruciallearning.com/crucial-conversations-book/), Patterson and colleagues: the standard practitioner script for a high-stakes conversation.
+- [Radical Candor](https://www.radicalcandor.com/), Kim Scott: caring personally while challenging directly, and the three failure modes when you drop one half.
+- [Nonviolent Communication](https://www.nonviolentcommunication.com/), Marshall Rosenberg: observation, feeling, need, request, which is SBI with the feelings restored.
+- [Questions for your first one-on-one](https://larahogan.me/blog/first-one-on-one-questions/), Lara Hogan: worth stealing for the conversation you have before there is a problem.
+
+**Activities that exercise this**
+
+- [Assess Your Team's Conflict Styles](/activities/conflict/#assess-your-teams-conflict-styles): the TKI modes, run on your own team.
+- [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment): Lencioni's ladder as the winter workshop.
+- [Team Health Assessment](/activities/teamwork/#team-health-assessment): the periodic check that surfaces a problem before it needs escalating.
+- [External Feedback Session](/activities/reflective/#external-feedback-session): practice receiving criticism when the stakes are low.
