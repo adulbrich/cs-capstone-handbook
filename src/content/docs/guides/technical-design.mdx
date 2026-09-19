@@ -242,10 +242,49 @@ The design document addresses the *architectural* side of AI coordination: what 
 
 ## Some Truths About Technical Design
 
-- No design survives contact with implementation unchanged. That is expected; the value is in the thinking, not the document.
-- Over-designed systems are a form of technical debt. Design what you need now.
-- Teams that skip design often move fast in Fall, then spend Winter untangling integration problems and redoing work.
-- A diagram drawn in a 20-minute meeting can prevent days of rework.
+No design survives contact with implementation, and the honest version of that
+is stronger than it sounds: the document will be wrong, and its value is almost
+entirely in what the team understood while writing it. This has a practical
+implication people miss. If the value is in the thinking, then a design document
+written by one person the night before it is due has produced almost none of the
+benefit, however good the document is. The artifact is evidence of a
+conversation, and a team that skips the conversation and produces the artifact
+has optimized for the wrong thing.
+
+Over-design is the more common failure on capstone teams, not under-design, and
+it has a recognizable shape: a plugin architecture for the one plugin that
+exists, an abstraction layer over a database you will never swap, microservices
+for a system four people are building. Fowler's
+[YAGNI](https://martinfowler.com/bliki/Yagni.html) is the argument to read, and
+his [MonolithFirst](https://martinfowler.com/bliki/MonolithFirst.html) is the
+specific version for the decision you are most likely to get wrong. Both make the
+same point: speculative generality costs you now and pays off only in a future
+that usually does not arrive.
+
+There is a real disagreement here worth naming, because this guide takes a side.
+The "big design up front" tradition says decide the architecture before you
+build; the agile reaction says let it emerge from the code. Neither works
+unmodified for a project with a nine-month clock and a partner. What this guide
+recommends is narrow: decide in advance only the things that are expensive to
+change later (data model, authorization boundaries, deployment topology,
+integration contracts), and let everything else emerge. The test for the list is
+not importance but reversibility.
+
+A diagram drawn in twenty minutes genuinely does prevent days of rework, and the
+reason is that it makes disagreement visible. Four people can say "the API talks
+to the database" and hold four different pictures of what that means, and the
+words will not surface the difference. A boxes-and-arrows sketch will, usually
+within a minute, because someone points at a box and says that is not where that
+lives. The [C4 model](https://c4model.com/) is worth adopting if you want a
+convention rather than inventing one per meeting, and its main contribution is
+insisting that you say which level of zoom a diagram is at.
+
+The last one is uncomfortable and worth saying anyway. Your architecture will
+come to resemble your team's communication structure whether you plan it or not,
+which is [Conway's law](https://en.wikipedia.org/wiki/Conway%27s_law). On a
+four-person team where two people never talk, you will get a seam exactly there,
+and it will not be the seam the design document specified. If the design assumes
+coordination your team does not actually do, the code will follow the team.
 
 ## Technical Design in Industry and Academia
 
@@ -254,3 +293,27 @@ In industry, technical design documents go by many names: **Tech Spec**, **RFC (
 Amazon's Working Backwards methodology starts with the customer (the press release and FAQ) before the design. The design document is where the "how" is evaluated before engineering investment is committed.
 
 In research settings, the closest equivalent is the **methods section** of a paper, describing the approach in enough detail for replication. For computational research, this includes architectural and algorithmic decisions sufficient to reproduce results.
+
+## Additional Readings
+
+Architecture writing skews heavily toward systems far larger than yours, so the
+entries below are chosen for a small team with a fixed deadline. The C4 model and
+arc42 are the two conventions worth knowing; the Fowler pieces are the arguments
+against building more than you need.
+
+**Sources and further reading**
+
+- [The C4 model](https://c4model.com/), Simon Brown: context, container, component, and code, and why saying which level you are drawing matters more than notation.
+- [arc42](https://arc42.org/): a proven template for architecture documentation, if you want more structure than this guide's outline.
+- [Software Architecture Guide](https://martinfowler.com/architecture/), Martin Fowler: what architecture means and why it is worth deciding deliberately.
+- [Yagni](https://martinfowler.com/bliki/Yagni.html) and [MonolithFirst](https://martinfowler.com/bliki/MonolithFirst.html), Martin Fowler: the two arguments most likely to save your team from over-design.
+- [Conway's law](https://en.wikipedia.org/wiki/Conway%27s_law): why your system's seams end up where your team's communication gaps are.
+- [Architecture Decision Records](https://adr.github.io/): the companion artifact, for the decisions this document leaves out.
+- [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/guide/), Microsoft: reference architectures and patterns, useful as a catalog of what a shape is called.
+
+**Activities that exercise this**
+
+- [Describe your Architecture](/activities/design/#describe-your-architecture): the fall workshop that produces the diagram this guide is about.
+- [Deployment Plan](/activities/design/#deployment-plan): the runtime half of the design.
+- [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase): reverse-engineering a design when you inherit one.
+- [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis): the build order your architecture implies.
