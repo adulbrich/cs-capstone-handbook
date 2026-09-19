@@ -5,8 +5,6 @@ sidebar:
   order: 16
 ---
 
-import { LinkCard, CardGrid } from '@astrojs/starlight/components';
-
 Read this in fall week one, before you pick your spring rung; it gives you each outcome type's path up the outcome ladder and the clocks to start now.
 
 Your spring grade's largest partner-evaluation facet, Verification and Validation, is scored against **outcomes**: merged upstream, in production, reproducible, in real use. Every project is scored on the same [outcome ladder](/assignments/project-partner-evaluation/#spring), who ran the software, from nobody outside the team to people who depend on it, and the top rungs are hard on purpose. The bottom two rungs read the same for every outcome type: your partner watched it run, or nobody outside the team ran it. Everything above them depends on the outcome type, and that is what the sections below map out.
@@ -21,13 +19,13 @@ This guide is the playbook, one section per [outcome type](/practicalities/types
 
 **Rung-by-rung prerequisites:**
 
-- **Submitted:** a working development setup for the upstream project, their contribution workflow understood (CLA or DCO signed, style and commit conventions followed, tests passing in their CI).
+- **Submitted:** a working development setup for the upstream project, their contribution workflow understood (a Contributor License Agreement or the lighter-weight [Developer Certificate of Origin](https://developercertificate.org/) signed, style and commit conventions followed, tests passing in their CI).
 - **Reviewed:** a maintainer chose to spend time on your PR. Review latency on large projects is commonly 2 to 8 weeks per round, and most substantive PRs take multiple rounds.
 - **Merged:** every review round addressed, rebased onto a moving main branch, and the change judged worth maintaining forever by people who will own it after you graduate.
 
 The [fall week 10 gate](/assignments/repo-checkpoints/#term-gates) for FOSS teams is a first upstream pull request submitted. Aim past it: **get a trivial PR merged by the end of fall.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero.
 
-Communication norms matter as much as code. Read the project's CONTRIBUTING file and recent merged PRs before writing anything. Discuss substantial changes in an issue or mailing list **before** building them; an unsolicited large PR is the most-rejected artifact in open source. Be responsive when review arrives: maintainers deprioritize contributors who take weeks to respond.
+Communication norms matter as much as code. Read the project's [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and recent merged PRs before writing anything. GitHub's [Open Source Guides](https://opensource.guide/how-to-contribute/) cover the etiquette in more detail than most projects write down. Discuss substantial changes in an issue or mailing list **before** building them; an unsolicited large PR is the most-rejected artifact in open source. Be responsive when review arrives: maintainers deprioritize contributors who take weeks to respond.
 
 | Term | What must be true |
 |---|---|
@@ -51,9 +49,9 @@ Communication norms matter as much as code. Read the project's CONTRIBUTING file
 
 **Deploy the walking skeleton to a production URL by the end of fall.** This is the [fall week 10 gate](/assignments/repo-checkpoints/#term-gates). It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing) while there is nothing to lose. See the [DevOps guide](/guides/devops/) for how.
 
-Know your **store clocks** if you are distributing through one. Apple: developer account approval can take days, and [Apple reviews about 90% of submissions in under 24 hours](https://developer.apple.com/app-store/review/), but that is the clock on one round. Rejections and resubmission loops are routine, first submissions get extra scrutiny, and review slows near holidays. Google Play: new personal accounts face a testing requirement (a closed test with a dozen testers over two weeks) before production access. For games, **itch.io is the fast path**: no review queue, upload and publish the same day. Ship on itch.io early even if a store launch is the end goal.
+Know your **store clocks** if you are distributing through one. Apple: developer account approval can take days, and [Apple reviews about 90% of submissions in under 24 hours](https://developer.apple.com/app-store/review/), but that is the clock on one round. Rejections and resubmission loops are routine, first submissions get extra scrutiny, and review slows near holidays. Google Play: new personal accounts face a testing requirement (a closed test with a dozen testers over two weeks) before production access, and the [test tracks](https://developer.android.com/distribute/best-practices/launch/test-tracks) are worth understanding before you need them. For games, **[itch.io](https://itch.io/developers) is the fast path**: no review queue, upload and publish the same day. Ship on itch.io early even if a store launch is the end goal.
 
-Add an **analytics or telemetry starter in fall**, not spring: a privacy-respecting page-view and event counter (Plausible, Umami, PostHog) or a simple event log. Your Definition of Shipped requires metrics; metrics require instrumentation that has been quietly collecting since before you needed it.
+Add an **analytics or telemetry starter in fall**, not spring: a privacy-respecting page-view and event counter ([Plausible](https://plausible.io/), [Umami](https://umami.is/), [PostHog](https://posthog.com/)) or a simple event log. Your Definition of Shipped requires metrics; metrics require instrumentation that has been quietly collecting since before you needed it.
 
 | Term | What must be true |
 |---|---|
@@ -75,11 +73,11 @@ Add an **analytics or telemetry starter in fall**, not spring: a privacy-respect
 - **A real-data run:** the real dataset, which means data access agreements and possibly IRB approval, both of which are clocks you do not control.
 - **Reran by others, then reproduced by a stranger:** the reproducible artifact described below, a reproduced baseline to compare against, compute for larger runs, and enough calendar time to iterate after the first results disappoint you (they will).
 
-**Start the IRB and data-access clocks in fall week one.** IRB review at OSU takes weeks even for exempt determinations, and longer if revisions are requested; data use agreements between institutions can take a full term. Your faculty partner knows these processes: ask in your first meeting what approvals the project needs and who files them. If human subjects are even plausibly involved (user studies count), ask explicitly.
+**Start the IRB and data-access clocks in fall week one.** [Institutional Review Board review at OSU](https://research.oregonstate.edu/irb) takes weeks even for exempt determinations, and longer if revisions are requested; data use agreements between institutions can take a full term. Your faculty partner knows these processes: ask in your first meeting what approvals the project needs and who files them. If human subjects are even plausibly involved (user studies count), ask explicitly.
 
 Research teams have their own [fall week 10 gate](/assignments/repo-checkpoints/#term-gates). Meeting it in fall means that when real data arrives, you are debugging science instead of plumbing.
 
-**Reproducibility is the bar.** A result that only exists on one student's laptop is a rumor. A reproducible artifact means: pinned dependencies (a lock file or container), versioned or precisely referenced data, seeded runs, one documented command from clean checkout to result table, and a README a stranger can follow. The test is literal: another team member, or your professor's grad student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt novelty**: if you cannot reproduce the published number you are comparing against, you cannot claim to beat it.
+**Reproducibility is the bar.** A result that only exists on one student's laptop is a rumor. This is not a course affectation: a [Nature survey of 1,576 researchers](https://www.nature.com/articles/533452a) found that more than 70% had tried and failed to reproduce another scientist's experiment, and the response across computing has been to make the artifact, not just the paper, the reviewable object. A reproducible artifact means: pinned dependencies (a lock file or container), versioned or precisely referenced data, seeded runs, one documented command from clean checkout to result table, and a README a stranger can follow. The test is literal: another team member, or your professor's grad student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt novelty**: if you cannot reproduce the published number you are comparing against, you cannot claim to beat it.
 
 | Term | What must be true |
 |---|---|
@@ -142,8 +140,38 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 
 ## Shipping in Industry and Academia
 
-Industry spent two decades removing the ceremony between a commit and production. Continuous delivery, trunk-based development, and feature flags exist so that "shipped" is a daily event rather than a quarterly one, and companies such as Etsy and Amazon made deploying many times a day the norm well before it was fashionable. Google's site reliability teams run a production readiness review before a service goes live, which is the top consultancy rung with a checklist attached. The pattern is the same at every scale: the thing that is hard is not building, it is the last mile into someone else's environment.
+Industry spent two decades removing the ceremony between a commit and production. [Continuous delivery](https://continuousdelivery.com/), [trunk-based development](https://trunkbaseddevelopment.com/), and [feature flags](https://martinfowler.com/articles/feature-toggles.html) exist so that "shipped" is a daily event rather than a quarterly one, and companies such as Etsy and Amazon made deploying many times a day the norm well before it was fashionable. The [DORA research program](https://dora.dev/) has spent a decade measuring which practices actually correlate with delivery performance, and deployment frequency is one of its four headline metrics. Google's site reliability teams run a [launch coordination checklist](https://sre.google/sre-book/launch-checklist/) before a service goes live, which is the top consultancy rung with a checklist attached. The pattern is the same at every scale: the thing that is hard is not building, it is the last mile into someone else's environment.
 
-Open-source maintainers judge contributors by merged pull requests, and the first merge is the hard one, which is why "good first issue" labels and onboarding programs exist. In research, the reproducibility crisis produced artifact evaluation: ACM conferences award badges for artifacts that are available, evaluated, and reproduced, and a paper with a reproduced artifact is worth more than one without. The top research rung is written with that bar in mind.
+Open-source maintainers judge contributors by merged pull requests, and the first merge is the hard one, which is why "good first issue" labels and onboarding programs exist. In research, the reproducibility crisis produced [artifact evaluation](https://www.artifact-eval.org/): ACM conferences award badges for artifacts that are available, evaluated, and reproduced, and a paper with a reproduced artifact is worth more than one without. The [artifact evaluation process](https://ctuning.org/ae/) is now routine at systems and programming-language conferences, and the [Center for Open Science badges](https://www.cos.io/initiatives/badges) apply the same idea across other fields. The top research rung is written with that bar in mind.
 
 The common thread is that every field has learned, expensively, that working software nobody can run is not a result. The ladder is the course's version of that lesson.
+
+## Additional Readings
+
+The clocks this page tells you to start are run by other people, and most of
+them publish their own rules. Read the ones that apply to your outcome type
+early, because the cost of learning a requirement late is measured in weeks.
+The remaining entries are the industry and research background for why the
+ladder is written the way it is.
+
+**Sources and further reading**
+
+- [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/), GitHub Open Source Guides: the contribution etiquette that decides whether your first pull request gets read.
+- [Developer Certificate of Origin](https://developercertificate.org/): the one-paragraph alternative to a CLA that many projects use instead.
+- [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/), Apple: the rules your submission is actually judged against.
+- [Test tracks](https://developer.android.com/distribute/best-practices/launch/test-tracks), Android Developers: internal, closed, and open testing before production.
+- [Continuous Delivery](https://continuousdelivery.com/), Jez Humble and David Farley: the book-length case for making release a non-event.
+- [Trunk Based Development](https://trunkbaseddevelopment.com/), Paul Hammant: the branching model that makes daily deployment practical.
+- [DORA](https://dora.dev/), Google Cloud: a decade of research on what actually predicts software delivery performance.
+- [The SRE Book](https://sre.google/sre-book/table-of-contents/), Google: production readiness, launch coordination, and what operating a service really costs.
+- [1,500 scientists lift the lid on reproducibility](https://www.nature.com/articles/533452a), Monya Baker, Nature: the survey behind the reproducibility crisis.
+- [Artifact Evaluation](https://www.artifact-eval.org/): how computing conferences review the code behind a paper, and the badges they award.
+- [Human Research Protection Program](https://research.oregonstate.edu/irb), Oregon State University: the IRB process, forms, and timelines for OSU projects.
+
+**Activities that exercise this**
+
+- [Software Release and Versioning](/activities/planning/#software-release-and-versioning): decide what a release means for your project before you need to cut one.
+- [Deployment Plan](/activities/design/#deployment-plan): the environment chain from your hosting to the partner's.
+- [Find Users](/activities/user/#find-users) and [Engage Users](/activities/user/#engage-users): the recruiting workstream that the stranger rungs depend on.
+- [Complete an IRB Application](/activities/user/#complete-an-irb-application): for research and any project running a user study.
+- [Definition of Done](/activities/planning/#definition-of-done): the standard a demo has to meet before it counts.
