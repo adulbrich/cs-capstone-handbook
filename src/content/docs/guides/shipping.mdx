@@ -5,13 +5,19 @@ sidebar:
   order: 16
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 Read this in fall week one, before you pick your spring rung; it gives you each outcome type's path up the outcome ladder and the clocks to start now.
 
-Your spring grade's largest partner-evaluation facet, Verification and Validation, is scored against **outcomes**: merged upstream, in production, reproducible, in real use. Every project is scored on the same [outcome ladder](/assignments/project-partner-evaluation/#spring), who ran the software, from nobody outside the team to people who depend on it, and the top rungs are hard on purpose. The bottom two rungs read the same for every outcome type: your partner watched it run, or nobody outside the team ran it. Everything above them depends on the outcome type, and that is what the sections below map out.
+<Aside title="Where this helps">
+This guide supports the [Definition of Shipped](/assignments/definition-of-shipped/), the term gates in the [Repo Checkpoints](/assignments/repo-checkpoints/), the [Release and Metrics](/assignments/release/) submission, and the outcome ladder in the [Project Partner Evaluation](/assignments/project-partner-evaluation/#spring).
+</Aside>
 
-Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in spring week 8. The only move that works is starting the clocks early. That means planning backward from the spring rung you want, and starting in fall week one.
+"Shipped" is not a single state, and the most useful way to think about it is as a ladder measured by one question: who ran the software. At the bottom, nobody outside the team ran it. One rung up, your partner watched it run. Above that the rungs depend on what kind of project you have, and the top of the ladder always means the same thing in different words: people who are not you depend on it. The top rungs are hard, and they are hard for reasons that have little to do with how good your code is.
 
-This guide is the playbook, one section per [outcome type](/practicalities/types/). Each section says what each rung means for that type (the partner evaluation page holds the ladder itself), walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence you should be collecting for the partner survey. Your [Definition of Shipped](/assignments/definition-of-shipped/) turns this playbook into a signed agreement; the [Repo Checkpoint gates](/assignments/repo-checkpoints/) enforce the intermediate milestones.
+Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in spring week 8. The only move that works is starting the clocks early. That means choosing the rung you are aiming for at the very beginning, planning backward from it, and starting the slow external processes in your first week rather than when you feel ready for them.
+
+This guide is the playbook, one section per [outcome type](/practicalities/types/). Each section says what each rung means for that type, walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence worth collecting as you go. Evidence is the part teams leave until last and regret: a merged pull request, a dashboard, a maintainer's comment and a partner's email are all trivial to capture the day they happen and painful to reconstruct afterwards.
 
 ## FOSS
 
@@ -23,7 +29,7 @@ This guide is the playbook, one section per [outcome type](/practicalities/types
 - **Reviewed:** a maintainer chose to spend time on your PR. Review latency on large projects is commonly 2 to 8 weeks per round, and most substantive PRs take multiple rounds.
 - **Merged:** every review round addressed, rebased onto a moving main branch, and the change judged worth maintaining forever by people who will own it after you graduate.
 
-The [fall week 10 gate](/assignments/repo-checkpoints/#term-gates) for FOSS teams is a first upstream pull request submitted. Aim past it: **get a trivial PR merged by the end of fall.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero.
+Aim to have a first upstream pull request submitted by the end of fall, and aim past that: **get a trivial PR merged in the same term.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero.
 
 Communication norms matter as much as code. Read the project's [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and recent merged PRs before writing anything. GitHub's [Open Source Guides](https://opensource.guide/how-to-contribute/) cover the etiquette in more detail than most projects write down. Discuss substantial changes in an issue or mailing list **before** building them; an unsolicited large PR is the most-rejected artifact in open source. Be responsive when review arrives: maintainers deprioritize contributors who take weeks to respond.
 
@@ -47,7 +53,7 @@ Communication norms matter as much as code. Read the project's [CONTRIBUTING fil
 - **A dozen strangers:** a production URL with a real domain and TLS, an onboarding flow a stranger survives without you on a call, a recruitment channel (subreddit, Discord, campus group, itch.io page), and telemetry so you can prove they came.
 - **Two dozen strangers, and beyond:** retention, which means fixing what the first dozen users hit, which means having had those users early enough to iterate.
 
-**Deploy the walking skeleton to a production URL by the end of fall.** This is the [fall week 10 gate](/assignments/repo-checkpoints/#term-gates). It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing) while there is nothing to lose. See the [DevOps guide](/guides/devops/) for how.
+**Deploy the walking skeleton to a production URL by the end of fall.** It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing) while there is nothing to lose. See the [DevOps guide](/guides/devops/) for how.
 
 Know your **store clocks** if you are distributing through one. Apple: developer account approval can take days, and [Apple reviews about 90% of submissions in under 24 hours](https://developer.apple.com/app-store/review/), but that is the clock on one round. Rejections and resubmission loops are routine, first submissions get extra scrutiny, and review slows near holidays. Google Play: new personal accounts face a testing requirement (a closed test with a dozen testers over two weeks) before production access, and the [test tracks](https://developer.android.com/distribute/best-practices/launch/test-tracks) are worth understanding before you need them. For games, **[itch.io](https://itch.io/developers) is the fast path**: no review queue, upload and publish the same day. Ship on itch.io early even if a store launch is the end goal.
 
@@ -75,7 +81,7 @@ Add an **analytics or telemetry starter in fall**, not spring: a privacy-respect
 
 **Start the IRB and data-access clocks in fall week one.** [Institutional Review Board review at OSU](https://research.oregonstate.edu/irb) takes weeks even for exempt determinations, and longer if revisions are requested; data use agreements between institutions can take a full term. Your faculty partner knows these processes: ask in your first meeting what approvals the project needs and who files them. If human subjects are even plausibly involved (user studies count), ask explicitly.
 
-Research teams have their own [fall week 10 gate](/assignments/repo-checkpoints/#term-gates). Meeting it in fall means that when real data arrives, you are debugging science instead of plumbing.
+Get the pipeline running end to end on sample data in fall. Clearing that bar early means that when real data arrives, you are debugging science instead of plumbing.
 
 **Reproducibility is the bar.** A result that only exists on one student's laptop is a rumor. This is not a course affectation: a [Nature survey of 1,576 researchers](https://www.nature.com/articles/533452a) found that more than 70% had tried and failed to reproduce another scientist's experiment, and the response across computing has been to make the artifact, not just the paper, the reviewable object. A reproducible artifact means: pinned dependencies (a lock file or container), versioned or precisely referenced data, seeded runs, one documented command from clean checkout to result table, and a README a stranger can follow. The test is literal: another team member, or your professor's grad student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt novelty**: if you cannot reproduce the published number you are comparing against, you cannot claim to beat it.
 
@@ -138,7 +144,7 @@ Everything below follows from one fact stated at the top of this page: the long 
 - "The partner will deploy it after the course ends" is "feedback addressed" wearing "in operations" as a costume. If it is not in their environment by spring, it is not shipped.
 - Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not APIs with SLAs. Being early, polite, and responsive is a technical skill.
 - If your Definition of Shipped contains no date earlier than winter week 10, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
-- Evidence collected in the moment costs minutes; evidence reconstructed in spring week 10 is the kind the [Release and Metrics](/assignments/release/) page cannot credit. Screenshot the milestone the day it happens.
+- Evidence collected in the moment costs minutes; evidence reconstructed at the end of the year is thin, undated and unconvincing. Screenshot the milestone the day it happens.
 
 ## Shipping in Industry and Academia
 

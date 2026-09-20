@@ -5,7 +5,14 @@ sidebar:
   order: 11
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 Read this in the first sprint, once the repository exists; it gives you the configuration that makes an AI tool understand your project, and the hooks that constrain it.
+
+<Aside title="Where this helps">
+This guide supports the AI and confidentiality section of the [Team Charter](/assignments/team-charter/).
+</Aside>
+
 
 A tool that knows nothing about your project produces generic suggestions: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. Given your architecture, your conventions and your constraints, the same tool produces suggestions that fit. This page is the configuration; the [Generative AI guide](/guides/generative-ai/) is the practice.
 
@@ -56,7 +63,7 @@ TypeScript, React 19, Express, Postgres via Prisma, Vitest, Playwright.
 - Paste partner data, user emails, or .env contents into any tool.
 ```
 
-The last line is the part your [Team Charter](/assignments/team-charter/) calls the AI and confidentiality one-pager, spelled out for the tools. The human-readable version is a section of the charter itself and says the same thing in the partner's terms:
+The last line is your confidentiality rule, spelled out for the tools. The human-readable version belongs in the team's charter and says the same thing in the partner's terms:
 
 ```md
 ## AI and confidentiality (in docs/charter.md)
@@ -186,7 +193,7 @@ It is also the one item on this page that is **not** shared. Memory lives on one
 - **Keep instructions short.** A file nobody reads is a file the tool half-follows. The list above fits on a page; anything longer belongs in `docs/`.
 - **Write the "do not" section first.** It is the part that prevents damage, and it is the part teams forget.
 - **Trip every gate once, on purpose.** Run the command the hook should block and try the merge protection should stop.
-- **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it at every checkpoint.
+- **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it whenever the architecture moves.
 
 ## Some Truths About AI Project Setup
 

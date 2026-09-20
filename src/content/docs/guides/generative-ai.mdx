@@ -66,7 +66,7 @@ The strategy that does scale has two parts.
 
 **Make "elsewhere" safe by building the net.** You may reasonably delegate exactly as far as your safety net catches: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without a net is recklessness. Trust with one is ordinary engineering. If you want to hand off more, improve the net first rather than reading harder.
 
-This is what the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) assesses.
+That is the standard worth holding yourself to, whatever any policy says.
 
 You still own the result. If you cannot explain why the code works when your project partner asks, no tool and no net will cover for that.
 
@@ -190,7 +190,7 @@ If you want to compare models, these resources track current benchmarks:
 - Review a generated diff the way you would review a stranger's pull request, because that is what it is.
 - Keep the confidentiality boundary in the team charter and in the tool configuration, not in people's memory.
 - Prefer the cheapest tool that does the job. Every workflow in this guide has a free or student-tier substitute.
-- When a tool misleads you, write down what happened and what caught it. That record is how your judgment improves, and it is the story the [Career and Individual Retrospective](/assignments/career-retrospective/) asks for.
+- When a tool misleads you, write down what happened and what caught it. That record is how your judgment improves, and it is the only evidence you will have later that it did.
 
 ## Some Truths About AI Tools
 
@@ -247,7 +247,7 @@ AI-assisted coding is the default at most software companies now. Google said on
 
 The open-source world is more divided. Several projects banned AI-generated contributions outright: [Gentoo's council policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy) forbids them, and [NetBSD's commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html) presume LLM output to be tainted code that must not be committed without prior written approval from core. Daniel Stenberg of curl has written bluntly about [AI-generated security reports](https://daniel.haxx.se/blog/2024/01/02/the-i-in-llm-stands-for-intelligence/) that consume maintainer time without containing a real bug. If your project is FOSS, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
 
-In academia, the major publishers converged on the same rule in 2023: an AI tool cannot be an author, because authorship carries accountability a tool cannot hold, and its use must be disclosed. [Nature's policy](https://www.nature.com/nature-portfolio/editorial-policies/ai) states both halves plainly, and the ACM's is equivalent. Research code is held to the reproducibility bar regardless of who or what wrote it. Universities differ on classroom policy, which is why this course states its own once, on the [assignments overview](/assignments/introduction/#ai-policy-applies-to-every-assignment).
+In academia, the major publishers converged on the same rule in 2023: an AI tool cannot be an author, because authorship carries accountability a tool cannot hold, and its use must be disclosed. [Nature's policy](https://www.nature.com/nature-portfolio/editorial-policies/ai) states both halves plainly, and the ACM's is equivalent. Research code is held to the reproducibility bar regardless of who or what wrote it. Universities differ on classroom policy, so read the one that governs you rather than assuming it matches the last course you took.
 
 ## Additional Readings
 

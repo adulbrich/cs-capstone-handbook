@@ -258,7 +258,7 @@ Set these up in the repository settings under *Branches > Branch protection rule
 
 ### A History a Maintainer Could Inherit
 
-The habits above are for you. These five are for whoever takes the repository over, and they are the most common thing that makes an otherwise good project unpleasant to inherit. The [Repo Checkpoints](/assignments/repo-checkpoints/) check them.
+The habits above are for you. These five are for whoever takes the repository over, and they are the most common thing that makes an otherwise good project unpleasant to inherit.
 
 - **Nothing lands on the default branch except through a pull request.** Turn on branch protection so this is structural rather than a promise.
 - **No secrets, no build artifacts, no dependency directories in the history.** A committed `.env` is a security incident even after you delete the file, because the history keeps it. Fix `.gitignore` before the first commit, not after.

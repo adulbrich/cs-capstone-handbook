@@ -5,7 +5,13 @@ sidebar:
   order: 9
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 Read this when your team is about to make a technical choice it will live with; it gives you the ADR format and the habit of recording why.
+
+<Aside title="Where this helps">
+This guide supports the [RFC](/assignments/rfc/) and the `docs/adr/` directory reviewed at the [Repo Checkpoints](/assignments/repo-checkpoints/).
+</Aside>
 
 [Architecture Decision Records (ADRs)](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record) are the backbone of a well-documented software project. They capture the key decisions that shape your system's architecture, technology choices, and design patterns, so that developers, stakeholders, and future maintainers all understand why things are the way they are. Without clear ADRs:
 
@@ -17,7 +23,7 @@ ADRs are concise, focused documents that bridge the gap between architectural id
 
 The format comes from [Michael Nygard's 2011 post](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions), which is worth reading in full because it is about two pages and makes the case better than any summary. His observation was that architecture documents go stale because they describe a system that keeps changing, while decisions do not change: a decision made in fall week 4 was still made in fall week 4, even after you reverse it in winter. So record the decisions, timestamped and immutable, and let the current state of the system be read from the code. That reframing is the whole idea.
 
-For this course, ADRs are not optional bookkeeping. Your `docs/adr/` directory is checked at the [repo checkpoints](/assignments/repo-checkpoints/), and your [RFC](/assignments/rfc/) has its second life here: the proposal argues for a decision, and once the team makes it, the record of what was decided and why belongs in an ADR.
+An ADR is also the natural second life of a proposal. A document that argues for a decision does its job once, at the moment of the argument; the record of what was decided and why outlives it, and the two are different artifacts even when they start from the same draft.
 
 ## What is an ADR?
 
@@ -112,7 +118,7 @@ Success for an ADR means the decision leads to positive outcomes: improved syste
 ## Some Truths about ADRs
 
 The honest version first: most student teams write their ADRs in a batch, the
-week a checkpoint is due, about decisions they made months earlier. Those
+week a deadline arrives, about decisions they made long before. Those
 documents are archaeology, not records, and they are noticeably worse than the
 real thing, because the alternatives have been forgotten and the rationale gets
 reconstructed to justify what was already built. Everyone involved can tell. If

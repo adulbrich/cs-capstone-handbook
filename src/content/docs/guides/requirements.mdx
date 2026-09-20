@@ -5,16 +5,20 @@ sidebar:
   order: 7
 ---
 
-import { LinkCard } from '@astrojs/starlight/components';
+import { Aside, LinkCard } from '@astrojs/starlight/components';
 
 Read this before writing `docs/requirements.md` and whenever scope grows in a partner meeting; it gives you the shape of a requirement a teammate can test.
 
-Requirements say what the product must do and how well, in language a teammate can test. They live in your repository as `docs/requirements.md`, graded in place at every [repo checkpoint](/assignments/repo-checkpoints/), and they are the file your AI tools read before they build anything. Without clear requirements:
+<Aside title="Where this helps">
+This guide supports the `docs/requirements.md` reviewed at the [Repo Checkpoints](/assignments/repo-checkpoints/) and the scope your [Definition of Shipped](/assignments/definition-of-shipped/) commits to.
+</Aside>
+
+Requirements say what the product must do and how well, in language a teammate can test. They live in your repository as `docs/requirements.md`, next to the code rather than in a separate document nobody opens, and they are the file your AI tools read before they build anything. Without clear requirements:
 
 - Developers build the wrong feature well.
 - Scope grows in every partner meeting because nothing was written down to push back against.
 - "Done" is argued at the demo instead of settled at the start of the sprint.
-- The winter [Definition of Shipped](/assignments/definition-of-shipped/) has no target to point at.
+- There is no agreed target to measure "shipped" against, so nobody can say whether the project succeeded.
 
 A requirement is a **specific, testable statement** about the product. It is not a wish ("the app should be fast"), a task ("build the login page"), or a design decision ("use PostgreSQL"). Tasks go on the board; decisions go in an [ADR](/guides/adr/).
 
@@ -28,7 +32,7 @@ Three kinds cover almost everything a Capstone project needs:
 
 The longer taxonomies in textbooks (user, system, business, domain) are ways of asking whose requirement it is. Useful in an interview, not as headings in your document. If you want the formal version, [ISO/IEC/IEEE 29148](https://standards.ieee.org/ieee/29148/6937/) is the international standard for requirements engineering, and it is a useful thing to have looked at once: it shows you what full rigor costs, which is the context you need to understand why almost nobody outside safety-critical work pays it.
 
-Your `docs/requirements.md` is checked at every [repo checkpoint](/assignments/repo-checkpoints/), and [User Story Mapping](/activities/requirements/#user-story-mapping) is the fall workshop that produces its first real version. The winter [Definition of Shipped](/assignments/definition-of-shipped/) is scoped against it, so this is not a document you write once for credit.
+[User Story Mapping](/activities/requirements/#user-story-mapping) is the fastest way to produce a first real version of the file, and the rest of this guide is about keeping it worth reading afterwards.
 
 Requirements come from talking to people: your partner, the people who will use the thing, the maintainers whose project you are joining. Interviews, a few observed sessions, and a look at what competitors already do cover most of it. Then write them down, get them checked, and expect them to change.
 
@@ -53,7 +57,7 @@ So the document opens with a **problem statement**: what the problem is, who has
 
 A good requirement is one a teammate could mark passed or failed without asking you. That means specific nouns, a measurable bar for anything about quality, and an acceptance criterion wherever the behavior is not obvious. This single property, testability, does more work than any template: "the system should be fast" cannot be checked and so cannot be finished, while "the dashboard loads in under three seconds on a campus connection" can be both.
 
-Two conventions are worth knowing because you will meet them. [User stories](https://www.mountaingoatsoftware.com/agile/user-stories) in the "as a, I want, so that" form are popular because the third clause forces you to state the benefit, which is where vague requirements usually collapse; the [INVEST](https://en.wikipedia.org/wiki/INVEST_%28mnemonic%29) mnemonic is the usual checklist for whether a story is well formed. [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html), formalized in [Gherkin](https://cucumber.io/docs/gherkin/reference/), is the same instinct applied to acceptance criteria, and it has the pleasant property of translating almost directly into a test. Neither is required here. Both are better than prose when a requirement has conditions. This is the shape of a `docs/requirements.md` that survives a checkpoint:
+Two conventions are worth knowing because you will meet them. [User stories](https://www.mountaingoatsoftware.com/agile/user-stories) in the "as a, I want, so that" form are popular because the third clause forces you to state the benefit, which is where vague requirements usually collapse; the [INVEST](https://en.wikipedia.org/wiki/INVEST_%28mnemonic%29) mnemonic is the usual checklist for whether a story is well formed. [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html), formalized in [Gherkin](https://cucumber.io/docs/gherkin/reference/), is the same instinct applied to acceptance criteria, and it has the pleasant property of translating almost directly into a test. Neither is required here. Both are better than prose when a requirement has conditions. This is the shape of a `docs/requirements.md` that stays worth reading:
 
 ```md
 # Requirements
@@ -99,13 +103,13 @@ Track the list on your board, not in a second document. [GitHub Projects](https:
 
 ## Story Mapping
 
-A [user story map](https://www.nngroup.com/articles/user-story-mapping/) lays the user's activities left to right in the order they happen, and the stories that serve each activity top to bottom by priority. A horizontal line through the map is a release: everything above it ships, everything below waits. It is the fastest way to turn a pile of stories into a `docs/requirements.md` with a defensible "this year" line, which is why [User Story Mapping](/activities/requirements/#user-story-mapping) is a fall workshop. The stories above the line become your functional requirements; the line itself is the first draft of your Definition of Shipped target.
+A [user story map](https://www.nngroup.com/articles/user-story-mapping/) lays the user's activities left to right in the order they happen, and the stories that serve each activity top to bottom by priority. A horizontal line through the map is a release: everything above it ships, everything below waits. It is the fastest way to turn a pile of stories into a `docs/requirements.md` with a defensible "this year" line, which is why [User Story Mapping](/activities/requirements/#user-story-mapping) is worth running as a team rather than reading about. The stories above the line become your functional requirements; the line itself is the first draft of your Definition of Shipped target.
 
 ## Validation
 
 A requirement is validated when someone other than the author has confirmed it. The cheap confirmations:
 
-- **The partner read it.** Review the document with your project partner or mentor before the first repo checkpoint and after any re-framing. Misunderstandings surface here every year; the review costs an hour and the misunderstanding costs a term.
+- **The partner read it.** Review the document with your project partner or mentor early, and again after any re-framing. Misunderstandings surface here every year; the review costs an hour and the misunderstanding costs a term.
 - **A prototype hit it.** A clickable mockup or a walking-skeleton slice tests a requirement faster than another meeting, and tells you whether the thing is feasible at the same time.
 - **A test names it.** When FR-2 has a test called `test_second_claim_on_full_shift_fails`, the requirement is re-validated every time CI runs.
 
@@ -124,7 +128,7 @@ The problem statement says what you are fixing; success metrics say how you will
 - Prioritize, and write the reason next to the rank.
 - Separate requirements from decisions. "Must store data durably" is a requirement; "use PostgreSQL" is an ADR.
 - Split any requirement with "and" in it.
-- Say what you do not know. An open-questions section with owners is honest; a confident requirement you never checked is a bug waiting for a checkpoint.
+- Say what you do not know. An open-questions section with owners is honest; a confident requirement you never checked is a bug waiting to be discovered by someone else.
 
 ## Some Truths about Software Requirements
 
@@ -179,12 +183,12 @@ are what you will actually use.
 - [User Stories](https://www.mountaingoatsoftware.com/agile/user-stories), Mike Cohn: the format, what it is for, and its limits.
 - [INVEST](https://en.wikipedia.org/wiki/INVEST_%28mnemonic%29): the checklist for whether a story is well formed.
 - [GivenWhenThen](https://martinfowler.com/bliki/GivenWhenThen.html), Martin Fowler, and the [Gherkin reference](https://cucumber.io/docs/gherkin/reference/): acceptance criteria in a form that becomes a test.
-- [User Story Mapping](https://www.nngroup.com/articles/user-story-mapping/), Nielsen Norman Group: the technique behind the fall workshop.
+- [User Story Mapping](https://www.nngroup.com/articles/user-story-mapping/), Nielsen Norman Group: the technique, and how a horizontal line through the map becomes a release.
 - [Writing requirements](https://www.jamasoftware.com/requirements-management-guide/writing-requirements/), Jama Software: practical guidance on phrasing, from a requirements tooling vendor.
 
 **Activities that exercise this**
 
-- [User Story Mapping](/activities/requirements/#user-story-mapping): the fall workshop that produces the first real version of this document.
+- [User Story Mapping](/activities/requirements/#user-story-mapping): produces the first real version of this document in a single session.
 - [User Manual](/activities/requirements/#user-manual): writing the manual first surfaces requirements you had not noticed.
 - [Prioritization](/activities/planning/#prioritization): the ranking this document depends on.
 - [Define your Personas](/activities/user/#define-your-personas) and [Find Users](/activities/user/#find-users): how an assumed requirement becomes a confirmed one.

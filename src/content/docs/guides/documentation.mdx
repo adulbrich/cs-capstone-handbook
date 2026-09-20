@@ -5,9 +5,13 @@ sidebar:
   order: 17
 ---
 
-import { LinkCard } from '@astrojs/starlight/components';
+import { Aside, LinkCard } from '@astrojs/starlight/components';
 
 Read this when someone other than you needs to run or understand your system; it gives you which documents to write and how much detail each needs.
+
+<Aside title="Where this helps">
+This guide supports the [Project Handoff](/assignments/project-handoff/) and the living documents reviewed at the [Repo Checkpoints](/assignments/repo-checkpoints/).
+</Aside>
 
 Documentation is the infrastructure of knowledge transfer. It is what lets someone else (a new team member, your project partner, a future maintainer, or your future self) understand and use your work without having to ask you. Without it:
 
@@ -22,7 +26,7 @@ The most useful idea for deciding what "the right things" means is [Diataxis](ht
 
 This handbook is itself an instance of the framework: guides are explanation, activities are how-to, and assignment rubrics are reference.
 
-For this course, the documents in your repository are checked at every [repo checkpoint](/assignments/repo-checkpoints/), and the [Project Handoff](/assignments/project-handoff/) is where their quality is finally tested, because a successor team audits what you left behind. That audit is the real reader to write for.
+The reader who tests your documentation hardest is the one who inherits the project after you leave: someone who cannot ask you anything and has to get the system running from what is written down. Write for that person and the rest takes care of itself.
 
 ## Repository Documentation
 
@@ -211,7 +215,7 @@ The honest thing about writing it: almost nobody enjoys it, and the advice to
 document as you build is correct and also very hard to follow when a deadline is
 close. What works better than resolve is making the moment specific. Attach it to
 something you already do, such as the pull request that adds a feature or the
-checkpoint that reviews your `docs/` directory, so the question is never "should
+review that looks over your `docs/` directory, so the question is never "should
 I write documentation today" but "does this change alter anything a reader was
 told".
 

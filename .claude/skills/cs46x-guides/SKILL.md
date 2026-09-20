@@ -1,6 +1,6 @@
 ---
 name: cs46x-guides
-description: Use when creating or editing guide pages (MDX files in src/content/docs/guides/) for the CS 461/462/463 capstone handbook. Defines the explanation register, the section skeleton including the required Some Truths, Industry and Academia, and Additional Readings sections, the sourcing rule, the word band, and the line between a guide and an assignment. Always load this skill before writing or editing any guide file.
+description: Use when creating or editing guide pages (MDX files in src/content/docs/guides/) for the CS 461/462/463 capstone handbook. Defines the explanation register, the rule that guides are standalone and never reference assignments or workshops outside one opening aside, the section skeleton including the required Some Truths, Industry and Academia, and Additional Readings sections, the sourcing rule, and the word band. Always load this skill before writing or editing any guide file.
 ---
 
 # Guide Style Guide
@@ -38,10 +38,11 @@ The three-way split in this handbook is load-bearing, so keep it clean:
 | **Activities** | "What exercise do I run to produce this?" | Workshop tier only |
 | **Assignments** | "What is due, when, and how is it scored?" | Yes, and they are the source of truth |
 
-A guide **never** states due dates, point values, rubric criteria, or weights.
-If you find yourself writing one, it belongs on the assignment page and the
-guide should link to it instead. Guides may aspire beyond what assessment
-requires; that is their job. Assignments accommodate.
+A guide **never** states due dates, point values, rubric criteria, or weights,
+and beyond that it does not reference assignments, workshops, or checkpoints in
+its body at all. See [Guides Are Standalone](#guides-are-standalone) for the one
+permitted exception. Guides may aspire beyond what assessment requires; that is
+their job. Assignments accommodate.
 
 Guides are also where explanatory bulk belongs when an activity starts growing
 one. An activity over roughly 400 words is usually a guide with an exercise
@@ -113,9 +114,10 @@ them only when they say something (`conflict.mdx` keeps Validation and
 Measuring Success because its signals are real). The middle flexes with the
 topic.
 
-1. **Opening (no heading).** Two to four paragraphs. Say what the thing is,
-   link the authoritative external reference, and state what goes wrong without
-   it. `adr.mdx` and `requirements.mdx` both use a short bulleted list of
+1. **Opening (no heading).** The purpose line, then optionally the single
+   `<Aside>` naming what this guide supports (the only place an assignment may
+   appear), then two to four paragraphs. Say what the thing is, link the
+   authoritative external reference, and state what goes wrong without it. `adr.mdx` and `requirements.mdx` both use a short bulleted list of
    failure modes here, which works well and is worth copying:
 
    ```md
@@ -235,19 +237,52 @@ import { LinkCard, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/compon
 
 Import only what you use.
 
+## Guides Are Standalone
+
+**A guide teaches a practice to someone who might not be taking this course.**
+It never tells the reader to do something because an assignment requires it.
+This is the rule that keeps guides reusable term to term and readable by a
+student who arrives at the page from a search engine, and it is the rule most
+often broken by an author trying to be helpful.
+
+Concretely, the body of a guide does not mention assignments, workshops,
+checkpoints, grades, terms, or weeks of the course. Not "your
+`docs/requirements.md` is checked at every repo checkpoint", not "this is the
+fall workshop", not "deploy the walking skeleton by the end of fall". Say what
+the practice is and why it matters, and let the reader decide when to apply it.
+
+There is exactly one exception. **A guide may open with a single aside, before
+the first heading, naming what it supports.** That aside may link specific
+assignment pages. It is the only place in the guide where an assignment appears.
+
+```mdx
+<Aside title="Where this helps">
+This guide supports the [Team Charter](/assignments/team-charter/). The
+[Sprint Notes](/assignments/sprint-notes/) are where a contribution problem
+becomes observable.
+</Aside>
+```
+
+Keep it to a sentence or two. It names the pages and stops; it does not explain
+requirements, due weeks, or how anything is scored.
+
+**Activities are different and are welcome anywhere.** A guide may recommend an
+activity in the body and lists them in `## Additional Readings`, because an
+activity is an exercise the reader may choose to run, not an obligation the
+course imposes. Describe what the activity does, not its place in the course
+calendar: write "runs Lencioni's five-dysfunction ladder over your team", never
+"the winter workshop".
+
+If you find yourself needing a course fact to make a sentence work, the sentence
+belongs on the assignment page instead. Do not restate an assignment's
+requirements in a guide. Two descriptions of the same requirement drift, and the
+assignment page wins.
+
 ## Cross-Linking
 
-Guides sit in the middle of the handbook's graph and should be linked in both
-directions:
-
-- Link **out** to the activities that exercise the practice (`/activities/...`)
-  and to the assignment where it is graded (`/assignments/...`).
-- Expect links **in** from assignment pages. Renaming a heading in a guide
-  breaks those, so grep `src/content/docs/**` for the old anchor before you
-  rename, and let `npm run build` confirm.
-
-Do not restate an assignment's requirements in a guide. Link to it. Two
-descriptions of the same requirement drift, and the assignment page wins.
+Expect links **in** from assignment pages. Renaming a heading in a guide breaks
+those, so grep `src/content/docs/**` for the old anchor before you rename, and
+let `npm run build` confirm.
 
 Three topics tempt every guide to restate them. Each has one owner; the
 others link:
@@ -369,16 +404,20 @@ the failure this skill exists to prevent.
    and anchor, which is the only reliable check on the anchors you wrote.
 2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
    covers outcome tags and grading language on guides, the second em dashes.
-3. Confirm the final four sections are present and in order: Best Practices,
+3. Confirm the guide is standalone: `grep -n '/assignments/\|[Ww]orkshop\|checkpoint' `
+   on the file should return nothing outside the opening aside. A hit in the
+   body, including inside an activity's description in Additional Readings, is
+   the rule above being broken.
+4. Confirm the final four sections are present and in order: Best Practices,
    Some Truths, Industry and Academia, Additional Readings. Their absence is
    the most common way a new guide fails to match the others. For an artifact
    guide, also confirm the fenced artifact is there and still matches what the
    assignment page requires.
-4. Read the Some Truths section back and check that no entry is a single
+5. Read the Some Truths section back and check that no entry is a single
    sentence and that each one says why. This is where compression re-enters.
-5. Count external links against the body's word count. Under roughly four per
+6. Count external links against the body's word count. Under roughly four per
    1,000 words means the guide is asserting where it should be citing; find
    the claims that need a source and give them one.
-6. Check the Additional Readings activity list against
+7. Check the Additional Readings activity list against
    `src/content/docs/activities/`. An activity that exercises this practice and
    is not listed is a dead end for the reader.

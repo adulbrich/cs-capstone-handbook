@@ -37,7 +37,7 @@ Write the answers into your working agreement or `CONTRIBUTING.md`, in a few lin
 
 ## Testing as the Safety Net
 
-Most of the code in a Capstone project is now written with AI tools, which is why the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) turns on what your automation would catch. That automation is your **safety net**, and testing is most of it. The net has five parts, and each is checkable:
+Most of the code in a Capstone project is now written with AI tools, which is why the useful question is not how much you delegated but what your automation would catch when the delegation goes wrong. That automation is your **safety net**, and testing is most of it. The net has five parts, and each is checkable:
 
 - **Tests that fail when behavior breaks**, on the paths that matter. A suite that passes after you delete a feature is not a net.
 - **CI on every pull request**, green, and required before merge.
@@ -45,7 +45,7 @@ Most of the code in a Capstone project is now written with AI tools, which is wh
 - **A staging or preview environment**, so the first run of a change is not production.
 - **A rollback you have tried**, not one you believe in.
 
-You may delegate exactly as far as that net catches, and no further. If you want to hand more to the tools, add to the net first. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net), the fall workshop, measures the gap between the two on your own repository; the reasoning behind the rule is in the [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-net-that-lets-you-trust-the-rest). The rest of this guide is how to build the first part of the net well, and how to test the thing the net cannot: whether the product is worth building.
+You may delegate exactly as far as that net catches, and no further. If you want to hand more to the tools, add to the net first. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap between the two on your own repository; the reasoning behind the rule is in the [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-net-that-lets-you-trust-the-rest). The rest of this guide is how to build the first part of the net well, and how to test the thing the net cannot: whether the product is worth building.
 
 ## Verification: Does the Code Work?
 
@@ -335,7 +335,7 @@ tests are, is answered by which tools you pick.
 
 **Activities that exercise this**
 
-- [Test Plan](/activities/design/#test-plan): the fall workshop that turns this guide into your project's plan.
+- [Test Plan](/activities/design/#test-plan): turns this guide into a plan specific to your project.
 - [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half of the accessibility check.
 - [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checking work against what was asked, which tests cannot do for you.
 - [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log): the research equivalent of a test record.
