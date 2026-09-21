@@ -12,6 +12,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/resume-and-intent/resume-and-intent-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Individual" due="Fall, week 2; resume meeting by week 5" weight="2% of the fall grade">
   The spring [Career and Individual Retrospective](/assignments/career-retrospective/) asks what happened to each intent line.
@@ -23,7 +25,7 @@ Written now, the lines steer a year of work toward things an interviewer can ask
 
 ## What You Must Produce (one PDF and one text box, in Canvas)
 
-1. **Your current resume**, as a PDF. Whatever state it is in; it is not graded on quality.
+1. **Your current resume**, as a PDF. Whatever state it is in; it is not graded on quality. [OSU Career Development](https://career.oregonstate.edu/) runs reviews if you want one before the meeting, but that is optional.
 2. **Three intent lines**, in the Canvas text box. Each names the resume line you intend to write by spring week 10 and the project work that will earn it: "By spring week 10 my resume says: ... It will be true because: ...". A technology alone ("learned React") is not project work; name the thing you will have built, shipped, measured, or run.
 3. **Your resume meeting** with an instructor, by week 5; check Canvas for your slot. Bring the three lines; you leave with them sharper or replaced. There is no written feedback; the meeting is the feedback. If you cannot make your slot, tell the instructor before it and you will be rescheduled.
 
@@ -33,11 +35,7 @@ Keep a copy of what you submit. The spring retrospective asks what happened to e
 
 Each criterion is all or nothing, the second exception to the [three bands](/assignments/introduction/#rubric-conventions).
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Resume attached: a readable PDF | 30 | |
-| Three intent lines, each naming a resume line and your own part of the project work that earns it | 40 | L10 |
-| Resume meeting attended | 30 | |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/resume-and-intent/resume-and-intent-rubric-details.tsv" />
 
 Grading notes, in rubric order:
 

@@ -13,10 +13,12 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/sprint-note/sprint-note-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team, with the individual contribution modifier" due="Fall weeks 4, 6, 8, 10; winter weeks 2, 4, 6, 8, 10; spring weeks 2, 4, 6" weight="2% each: 8% of the fall grade, 10% of the winter grade, 6% of the spring grade; pass/fail per item" />
 
-At the end of every two-week sprint (the [sprint guide](/guides/sprint/) covers the cadence itself), the team submits a **one-page** sprint note and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
+At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html) (the [sprint guide](/guides/sprint/) covers the cadence itself), the team submits a **one-page** sprint note and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
 
 **AI use:** you may generate the evidence with AI from your own repo history and board. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and the one sentence in each contribution line saying what you shipped and how you know it works. Start from the [sprint note template](/sprint-note-template.md).
 
@@ -46,6 +48,8 @@ One line per student, three parts:
 2. **Whose work you reviewed, and the one change you asked for.** Name it specifically: "asked Priya to handle the empty-cart case in checkout" is a review; "LGTM" is not, and neither is a comment that names no line and requests no change.
 3. **The most consequential thing you shipped this sprint, in one sentence, and how the team knows it works.** This is the part with judgment in it, and it is the part that is read.
 
+[Google's code review standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is worth reading on where that bar sits: approve once the change improves the overall code health of the system, even when it is not perfect, and say what would need to change if it does not.
+
 Also name **who chaired a decision** this sprint and which decision they drove to a conclusion. Over a term every student should appear here at least once. This is the record your [defense](/assignments/defense/) role criterion is checked against, so it saves you reconstructing your own leadership from memory in week 8.
 
 :::note[How the numbers are read]
@@ -53,7 +57,7 @@ Pull request and review counts are evidence where "everyone contributed" is not.
 
 **Mechanical changes are not evidence.** A formatter run, a lockfile bump, a bulk rename, a generated file, a dependency update: all normal work, none of it a signal about contribution. Do not pad your line with them, and staff will not count them. Lines of code are not counted either: a lint pass can move ten thousand lines and mean nothing.
 
-**The numbers are only ever read as a pattern.** One sprint where you shipped little, with an explanation, is ordinary life. Four sprints of nothing with no explanation is the thing the modifier exists for. No single sprint's count decides anything.
+**The numbers are only ever read as a pattern.** One sprint where you shipped little, with an explanation, is ordinary life. Four sprints of nothing with no explanation is what costs you points. No single sprint's count decides anything.
 
 **The sentence outranks the counts.** A student with one pull request who can say what it made possible and how they know it works is contributing more than a student with six and nothing to say about any of them.
 :::
@@ -72,15 +76,9 @@ The **all-hands demo days** (the [schedule](/introduction/schedule/) has the wee
 
 Each note is checked pass/fail per item, 20 points each; the [rubric conventions](/assignments/introduction/#rubric-conventions) say why sprint notes have two bands instead of three. The note is a professional habit, not an essay.
 
-| Item | Pass (20) | Fail (0) |
-|---|---|---|
-| Working software evidence | A URL, tagged release, or demo video is provided (link the CI run when one exists); or the note says plainly that nothing works yet and why. Where the video substitutes for a live demo slot, it is timestamped with one segment per student. | Item missing: no evidence and no plain statement of why nothing works yet. |
-| What got done | Links to the board and lists what the team finished, each item concrete and consequential. Non-code work counts. Activity without a result ("worked on the API", "researched options") does not. | Item missing: no board link, or the list describes how time was spent rather than what now exists. |
-| Top risk and one decision needed | Names the single biggest threat to shipping (the Definition of Shipped once it exists; the term gate in fall) and one concrete decision the team needs from the partner, the staff, or itself. | Item missing: no top risk, or no concrete decision needed. |
-| Contribution lines | One line per student with all three parts: PR(s) owned (titles or IDs; NDA teams list IDs only), whose work they reviewed and the specific change they asked for, and a human-written sentence on the most consequential thing they shipped and how the team knows it works. A missed PR norm is explained on that student's line. The owned PR is a real change that landed this sprint; graders open one per student. | Item missing: contribution lines absent or incomplete (students unaccounted for, or an owned PR that does not open, did not land this sprint, or is mechanical, with no explanation on the line). |
-| Judgment layer | About five human-written lines on what the team learned this sprint and what it changes about the plan; any genuine, sprint-specific content passes. | Item missing: judgment layer absent, or the same text reused across sprints. |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/sprint-note/sprint-note-rubric-details.tsv" />
 
-**Individual contribution modifier:** half of each sprint note's points are individual and default to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the team's TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/assignments/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note is normal life; a pattern with no explanation is what this modifier exists for.
+**Individual contribution modifier:** half of each sprint note's points are individual and default to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the team's TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/assignments/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note costs you nothing; a pattern with no explanation is what reduces your individual half.
 
 A report can be embellished; a demo cannot, and partners trust the teams that demo often.
 

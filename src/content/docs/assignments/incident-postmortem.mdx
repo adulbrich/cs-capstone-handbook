@@ -15,6 +15,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/incident-postmortem/incident-postmortem-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Winter, week 9" weight="3% of the winter grade">
   Winter's retrospective, in the form of one analyzed failure.
@@ -22,22 +24,19 @@ import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 
 By week 9 of winter, something real has gone wrong: an outage, a bad merge that cost a weekend, a dependency or platform surprise, a security scare, a missed commitment, a partner miscommunication that burned a sprint. Pick the most instructive one and write the document engineering teams write when it happens to them: a **blameless postmortem**.
 
-Blameless means the unit of analysis is the system, not the person. "Alex broke the deploy" is banned; "the deploy process allowed an untested migration to reach production because nothing checked for it" is the genre. The test of blamelessness: every person involved would happily co-sign the document.
+Blameless means the unit of analysis is the system, not the person. "Alex broke the deploy" is banned; "the deploy process allowed an untested migration to reach production because nothing checked for it" is the genre. The test of blamelessness: every person involved would happily co-sign the document. [Google's SRE book chapter on postmortem culture](https://sre.google/sre-book/postmortem-culture/) is the reference text for the practice, and the Retrospectives guide covers [what a blameless postmortem costs when it is not](/guides/retrospectives/#psychological-safety-first). **Write to the six sections below**, which are what the rubric checks: the guide's [five-area sketch](/guides/retrospectives/#post-mortem-format) is the industry shape, not this assignment's.
 
 :::note[If nothing went wrong]
-Some terms really are quiet. If your team cannot name an incident, write the postmortem on a **near miss**: something that would have caused real damage and did not, because a test failed, a review comment landed, someone noticed in time, or you got lucky. Near-miss analysis is standard practice in industries where waiting for real incidents is too expensive to be a learning strategy, and the document is identical except that the impact section becomes what the impact **would** have been and how close it came.
+Some terms really are quiet. If your team cannot name an incident, write the postmortem on a **near miss**: something that would have caused real damage and did not, because a test failed, a review comment landed, someone noticed in time, or you got lucky. [Near-miss analysis](https://en.wikipedia.org/wiki/Near_miss_(safety)) is standard practice in aviation, medicine and industrial safety, where waiting for real incidents is too expensive to be a learning strategy. The document is identical except that the impact section becomes what the impact **would** have been and how close it came.
 
 If you cannot name a near miss either, that is your finding, and it is a real one: nothing in your process is currently surfacing problems early enough to see them. Write that up instead, using the same structure, with the timeline tracing how a plausible failure would travel through your system undetected and the corrective actions aimed at detection. Tell your Teaching Assistant (TA) in week 7 rather than week 9, so there is time to scope it properly.
 :::
 
 ## Structure (2 to 3 pages, in `docs/postmortems/`)
 
-The [Retrospectives guide](/guides/retrospectives/#post-mortem-format) has the same structure with a worked example and the blameless-writing rules behind it.
-
-
 1. **Summary and impact**: what happened, when, who and what was affected, in factual, measurable terms.
 2. **Timeline**: the sequence of events, decisions, and signals (including missed ones), timestamped where possible.
-3. **Root cause analysis**: why it happened, past the first answer (five-whys or contributing-factors style). Include what made detection slow, if it was.
+3. **Root cause analysis**: why it happened, past the first answer ([five whys](https://en.wikipedia.org/wiki/Five_whys) or contributing-factors style). Include what made detection slow, if it was.
 4. **What went well**: what limited the damage; honest credit.
 5. **Corrective actions**: 3 to 5 specific changes with owners and dates, distinguishing "prevent recurrence" from "detect faster". At least one must be verifiable at the [week-10 repo checkpoint](/assignments/repo-checkpoints/) or in the [week-10 sprint note](/assignments/sprint-notes/).
 6. **AI involvement, if any**: if AI-generated code or advice contributed to the incident or to the recovery, say so plainly; both are normal and instructive.
@@ -46,13 +45,7 @@ Start from the [postmortem template](/postmortem-template.md).
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Impact and timeline: states what happened, when, and who or what was affected; sequences events, decisions, and signals with the times the record has; names at least one missed signal or says there was none | 25 | SO3 |
-| Root cause analysis reaches systemic causes, not first answers or scapegoats | 25 | SO6 |
-| Blameless throughout: systems language, co-signable by everyone involved | 15 | SO4 |
-| Corrective actions specific, owned, dated, and at least one verifiable at the week-10 checkpoint or sprint note | 25 | SO2 |
-| Writing: 2 to 3 pages in `docs/postmortems/`, the required sections present and in order, and every stated cause or fix tied to an event in the timeline | 10 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/incident-postmortem/incident-postmortem-rubric-details.tsv" />
 
 **AI use:** AI may reconstruct the timeline from logs, commits, and chat history, and draft the write-up. It must not invent events or timestamps, or supply a tidier root cause than the evidence supports. A fabricated timeline, or a corrective action with no real owner, fails the assignment. Section 6 asks you to say when AI contributed to the incident; the same honesty applies to the document.
 

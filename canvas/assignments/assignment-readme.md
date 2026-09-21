@@ -1,11 +1,47 @@
 # Assignment README
 
 - This directory holds one validated `*-rubric-details.tsv` per live assignment, for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
-- `scripts/validate-outcomes.mjs` reconciles every TSV against the handbook rubric table it mirrors, in CI and pre-commit.
+- `scripts/validate-outcomes.mjs` reads every TSV as the rubric: it reconciles the outcome tags in field 1 against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own assignment's TSV. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
 - Two directories hold one TSV per term because the item count differs by term. `workshop-activities/`: `-fall-` (4 rows, CS 461), `-winter-` (3 rows, CS 462), `-spring-` (2 rows, CS 463). Each item is 10 points, so the Canvas totals are 40 / 30 / 20 and the percentage comes from the assignment-group weight, not the rubric. `individual-contribution/`: `-fall-` (4 x 25), `-winter-` (5 x 20), `-spring-` (34 / 33 / 33), one criterion per sprint scored Full / Half / Zero; the Half band is exactly half (12.5, 10, 17 / 16.5), which Canvas rubric ratings accept. The grader logic is in the Individual Contribution Modifier section of `STAFF-RUNBOOK.md`.
 
-**The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is now the source of truth for all graded work.** Canvas mirrors the handbook; when in doubt, the handbook wins, and rubric points in the TSV files must match the handbook rubric tables exactly.
+**The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is the source of truth for all graded work, and each rubric here is the source of truth for itself.** Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
+
+## Re-import Required: 11 Rubrics, 1 New (#144)
+
+Since #144 the handbook page renders this directory's TSV, so a rubric exists
+once. Populating **field 2**, Canvas's criterion description column, moved the
+sentence the handbook rubric table used to carry after the criterion name
+("Setup: complete, copy-pasteable, and actually verified by a fresh run" becomes
+the criterion `Setup` with that sentence as its description). Canvas graders now
+see the check rather than only the label.
+
+**Points, band descriptions and outcome tags are byte-identical in every file.**
+Only field 2 changed, so no score moves and no gradebook is affected.
+
+**Re-import these 11:**
+
+`career-retrospective`, `defense`, `definition-of-shipped`, `incident-postmortem`,
+`project-handoff`, `project-landing-page`, `project-retrospective`,
+`repo-checkpoint`, `resume-and-intent`, `rfc`, `spring-release`.
+
+**Create this one in Canvas:** `term-retrospective`. The fall Term Retrospective
+had a handbook rubric and no TSV, which this file recorded as owed. Five
+criteria at 25/20/20/25/10, three bands.
+
+**Do nothing for these two:** `sprint-note` and `team-charter` are unchanged.
+Every one of their handbook criterion clauses only restated its own Exceeds
+band, so field 2 stayed empty rather than printing the same sentence twice in
+one row. 23 of the 68 descriptions produced were dropped: 18 for restating their
+own band, three that restated it less exactly, and two from `repo-checkpoint`
+that described the page rather than the work ("(see table above)" and a
+parenthetical grader note, neither of which means anything in Canvas).
+**45 of the 75 criterion rows across the 14 rendered TSVs carry a
+description.**
+
+**Not rubrics students are shown, unchanged and not re-imported:**
+`individual-contribution` and `workshop-activities`. Both are tagless, both hold
+one TSV per term, and no handbook page renders either.
 
 ## Grade Architecture (every term)
 

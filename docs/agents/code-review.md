@@ -43,7 +43,8 @@ skills under `.claude/skills/`.
 
 - Prose taste: synonyms, comma placement, reflowed paragraphs, sentence rhythm.
 - The Fowler smell baseline, except on `scripts/*.mjs`, `.claude/hooks/*.mjs`,
-  `astro.config.mjs`, and `src/components/*.astro`. MDX is not code.
+  `astro.config.mjs`, `src/lib/*.mjs`, and `src/components/*.astro`. MDX is not
+  code.
 - Anything a validator, Biome, or the commit-message check already enforces.
   Do not re-report a passing check.
 - Intermediate states inside a stacked PR sequence when the PR body discloses

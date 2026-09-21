@@ -99,8 +99,8 @@ Criteria and points are identical either way, and the pages that follow simply n
 
 Generative AI tools may be used on any assignment unless a page says otherwise. Three standing rules:
 
-1. **You own the result.** Correctness, security, licensing, and professionalism of anything you submit are your responsibility, whatever produced it.
-2. **Delegate deliberately, and build the net that makes it reasonable.** Major deliverables ask what you handed to AI tools, what safety net made that reasonable (tests, CI, review gates, staging, a rollback path), and where you stopped to validate the result yourself. Validate hard at decisions that are hard to reverse: architecture, database schema, authentication, deployment, data migrations, licensing. Delegate freely where your net catches mistakes cheaply. What is graded is the fit between how far you delegated and how strong your net is, never how sophisticated your tooling is, so a weaker model or a tighter budget is not a disadvantage: it simply means tighter gates and more validation of your own.
+1. **You own the result.** Correctness, security, licensing, and professionalism of anything you submit are your responsibility, whatever produced it. [choosealicense.com](https://choosealicense.com/) summarises what the common licenses permit and require, which is where to start when a dependency carries one you do not recognise.
+2. **Delegate deliberately, and build the net that makes it reasonable.** Major deliverables ask what you handed to AI tools, what safety net made that reasonable (tests, CI, review gates, staging, a rollback path), and where you stopped to validate the result yourself. Validate hard at decisions that are hard to reverse, the ones that are not [two-way doors](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders): architecture, database schema, authentication, deployment, data migrations, licensing. Delegate freely where your net catches mistakes cheaply. What is graded is the fit between how far you delegated and how strong your net is, never how sophisticated your tooling is, so a weaker model or a tighter budget is not a disadvantage: it simply means tighter gates and more validation of your own.
 3. **Respect the confidentiality boundary.** What may be pasted into which tools is defined in your Team Charter's AI and confidentiality section, per your partner agreement. See the [Generative AI guide](/guides/generative-ai/).
 
 The [AI practice activities](/activities/ai/) teach all three of these, including how to tell a one-way door from a two-way door and how to build a safety net you can actually trust.
@@ -137,17 +137,17 @@ Put it in your `CONTRIBUTING.md` as a make target or a shell alias so nobody has
 
 ## Rubric Conventions
 
-Every rubric uses three bands per criterion:
+Most rubrics use three bands per criterion:
 
 - **Exceeds**: full points. The work does what the criterion asks, verifiably, and shows judgment beyond the mechanical minimum.
 - **Meets**: partial points. The work substantially does what the criterion asks, with gaps that do not undermine it.
 - **Does Not Meet**: low points. The work attempts the criterion but falls short in ways that matter.
 
-**Missing is not a band.** Work that is not submitted, is off-topic, or is inaccessible to graders (broken links, private documents, videos that do not play) scores **zero** on the affected criteria. "Does Not Meet" describes submitted work that falls short; it is not a floor for absent work. Check every link from a logged-out browser before you submit.
+**Missing is not a band on a submitted artifact.** Work that is not submitted, is off-topic, or is inaccessible to graders (broken links, private documents, videos that do not play) scores **zero** on the affected criteria. "Does Not Meet" describes submitted work that falls short; it is not a floor for absent work. The [Defense](/assignments/defense/) is the one rubric that carries an explicit **Missing** rating at zero, because it is scored live and an unexcused no-show has to be recorded in the room rather than inferred from an empty submission. Check every link from a logged-out browser before you submit.
 
 **Evidence, not prose about evidence.** Criteria are written to be verifiable: commit hashes, CI runs, URLs, PR IDs, measured numbers. Describing the evidence does not substitute for linking it.
 
-**Sprint notes are the exception to three bands.** Each [sprint note](/assignments/sprint-notes/) item is present and real (Pass, full points) or it is not (Fail, zero). The fall [Resume and Intent](/assignments/resume-and-intent/) is the other: three all-or-nothing checks. Rubric energy is reserved for term deliverables and individual evidence.
+**Sprint notes are the exception to three bands.** Each [sprint note](/assignments/sprint-notes/) item is present and real (Pass, full points) or it is not (Fail, zero). The fall [Resume and Intent](/assignments/resume-and-intent/) is the same shape: three all-or-nothing checks. Rubric energy is reserved for term deliverables and individual evidence.
 
 Formatting expectations, unless a page overrides them: PDF or Markdown, linkable evidence, readable structure with headings, alt text on images, and no links graders cannot open (exceptions for NDA teams are noted per assignment).
 
