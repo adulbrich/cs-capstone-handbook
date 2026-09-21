@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 // Validates learning-outcome coverage from the assignment pages.
 //
-// Source of truth: the Outcome column of each page's rubric table(s).
-// The frontmatter `assignment.outcomes` block must reconcile with the
-// rubric tags exactly, so neither can silently drift. Coverage minimums:
+// Source of truth: the Canvas rubric TSV each page renders (#144). Since the
+// handbook no longer holds a second copy of the rubric, there is no mirror to
+// reconcile; the file the page renders is the file Canvas imports.
+//
+// The frontmatter `assignment.outcomes` block must reconcile with the tags in
+// that TSV exactly, so neither can silently drift. Coverage minimums:
 //   - every ABET outcome (SO1-SO6): >= 2 individual-level data points
 //   - every WIC (L07-L09) and Beyond OSU (L10) outcome: >= 1 individual-level point
 // It also checks that each term's Team Deliverables table sums to exactly 25%,
-// and that every Canvas rubric TSV tags the same outcomes as the handbook page
-// it mirrors.
+// and that each page imports the TSV that belongs to it rather than another
+// assignment's, which Vite cannot catch because both paths resolve.
 //
 // Run: node scripts/validate-outcomes.mjs
 
@@ -31,8 +34,6 @@ const CANVAS_TO_HANDBOOK = {
   defense: "defense",
   "definition-of-shipped": "definition-of-shipped",
   "incident-postmortem": "incident-postmortem",
-  // The individual half of the Sprint Notes points; one TSV per term, tagless.
-  "individual-contribution": "sprint-notes",
   "project-handoff": "project-handoff",
   "project-landing-page": "landing-page",
   "project-retrospective": "project-retrospective",
@@ -42,11 +43,29 @@ const CANVAS_TO_HANDBOOK = {
   "spring-release": "release",
   "sprint-note": "sprint-notes",
   "team-charter": "team-charter",
-  "workshop-activities": "workshop-activities",
+  "term-retrospective": "term-retrospective",
 };
 
-// Holds the extension's TSV template, not a rubric. The retired assignment
-// directories were removed under #30; see canvas/assignments/assignment-readme.md.
+// Canvas rubrics with no handbook counterpart, by decision rather than
+// omission. Both are tagless, both hold one TSV per term because the item
+// count differs by term, and neither is a rubric a student is shown on the
+// page: `individual-contribution` is the individual half of the Sprint Notes
+// points and is described in prose on that page, and `workshop-activities` is
+// scored complete/incomplete per item. Rendering either would add tables to a
+// page that deliberately has none.
+const CANVAS_ONLY = new Set(["individual-contribution", "workshop-activities"]);
+
+// Pages with no `## Rubric (100 points)` table, by decision, not omission:
+// the workshop rubric is pass/fail per item; the two survey instruments run
+// through Qualtrics and their tables carry weights. Sprint Notes is not an
+// exception: its two-band `| Item | Pass (20) | Fail (0) |` table is totalled
+// below like any other (#29).
+const RUBRIC_EXCEPTIONS = new Set([
+  "workshop-activities",
+  "peer-evaluations",
+  "project-partner-evaluation",
+]);
+
 const CANVAS_DEPRECATED = new Set(["_template"]);
 
 function parseFrontmatter(source) {
@@ -113,8 +132,32 @@ function parseAssignment(frontmatter) {
   return assignment;
 }
 
-// Extract outcome tags from rubric tables: rows whose LAST cell is a
-// comma-separated list of outcome IDs (the "Outcome" column).
+// Outcome tags, read from field 1 of a rubric TSV ("Blameless throughout
+// [SO4]"). A row with no bracket contributes nothing, which is how the
+// pass/fail rubrics and two of the three Resume and Intent rows are scored.
+function parseTsvTags(tsvText) {
+  const tags = {};
+  for (const line of tsvText.split("\n")) {
+    if (!line.trim()) {
+      continue;
+    }
+    const inBrackets = line.split("\t")[0].match(/\[([^\]]+)\]\s*$/);
+    if (!inBrackets) {
+      continue;
+    }
+    for (const part of inBrackets[1].split(",").map((s) => s.trim())) {
+      if (TAG_RE.test(part)) {
+        tags[part] = (tags[part] || 0) + 1;
+      }
+    }
+  }
+  return tags;
+}
+
+// The Markdown fallback, for the three pages that keep a hand-written table:
+// the two Qualtrics instruments, whose tables carry weights rather than
+// points, and the pass/fail workshop page. Rows whose LAST cell is a
+// comma-separated list of outcome IDs.
 function parseRubricTags(body) {
   const tags = {};
   for (const line of body.split("\n")) {
@@ -139,6 +182,20 @@ function parseRubricTags(body) {
     }
   }
   return tags;
+}
+
+// The TSV a page renders, from its `<RubricTable tsv={...} />` and the
+// matching `?raw` import. Returns null for a page that renders none.
+const RUBRIC_TABLE_RE = /<RubricTable\s[^>]*\btsv=\{(\w+)\}/;
+function rubricTsvPath(source) {
+  const used = source.match(RUBRIC_TABLE_RE);
+  if (!used) {
+    return null;
+  }
+  const imported = source.match(
+    new RegExp(`^import\\s+${used[1]}\\s+from\\s+['"]/([^'"?]+)\\?raw['"]`, "m")
+  );
+  return imported ? imported[1] : { missingImport: used[1] };
 }
 
 const counts = {};
@@ -166,9 +223,38 @@ for (const file of files) {
   parsed += 1;
   pages.set(file.replace(/\.mdx$/, ""), assignment);
   const body = source.slice(source.indexOf("---", 3) + 3);
-  const rubricTags = parseRubricTags(body);
+  const slug = file.replace(/\.mdx$/, "");
+  const tsvPath = rubricTsvPath(source);
+  let rubricTags;
+  if (tsvPath === null) {
+    // A page that keeps a hand-written table: the documented exceptions.
+    if (!RUBRIC_EXCEPTIONS.has(slug)) {
+      console.error(
+        `NO RUBRIC TABLE ${file}: renders no <RubricTable> and is not a documented exception. Import its TSV from canvas/assignments/ and render it.`
+      );
+      failed = true;
+    }
+    rubricTags = parseRubricTags(body);
+  } else if (typeof tsvPath === "string") {
+    // The page must import its own assignment's TSV. Vite resolves any real
+    // path, so nothing else catches a page rendering a neighbour's rubric.
+    const [, , dir] = tsvPath.split("/");
+    if (CANVAS_TO_HANDBOOK[dir] !== slug) {
+      console.error(
+        `RUBRIC IMPORT ${file}: imports ${tsvPath}, which belongs to ${CANVAS_TO_HANDBOOK[dir] ?? "no mapped page"}, not ${slug}.`
+      );
+      failed = true;
+    }
+    rubricTags = parseTsvTags(readFileSync(tsvPath, "utf8"));
+  } else {
+    console.error(
+      `RUBRIC IMPORT ${file}: <RubricTable tsv={${tsvPath.missingImport}}> has no matching \`import ${tsvPath.missingImport} from '/...tsv?raw'\`.`
+    );
+    failed = true;
+    rubricTags = {};
+  }
 
-  // Reconcile: frontmatter must equal the rubric-table tags exactly.
+  // Reconcile: frontmatter must equal the rubric tags exactly.
   const keys = new Set([
     ...Object.keys(rubricTags),
     ...Object.keys(assignment.outcomes),
@@ -319,60 +405,34 @@ if (!failed) {
   console.log("  Frontmatter weights reconcile with the term tables.");
 }
 
-// --- Canvas mirror reconciliation -------------------------------------------
-// The set of outcomes tagged in a Canvas rubric TSV must equal the set tagged
-// in the handbook rubric table it mirrors.
-function canvasTags(dir) {
-  const tags = new Set();
-  const path = join(CANVAS_DIR, dir);
-  for (const file of readdirSync(path)) {
-    if (!file.endsWith("rubric-details.tsv")) {
-      continue;
-    }
-    for (const line of readFileSync(join(path, file), "utf8").split("\n")) {
-      const [criterion] = line.split("\t");
-      for (const m of criterion.matchAll(/\b(SO[1-6]|L0[789]|L10)\b/g)) {
-        tags.add(m[1]);
-      }
-    }
-  }
-  return tags;
-}
-
+// --- Canvas directory coverage ----------------------------------------------
+// There is no mirror left to reconcile: the file a page renders is the file
+// Canvas imports. What still needs checking is that no directory has appeared
+// claiming outcomes with nothing rendering it, which is how a retired
+// assignment's rubric would keep counting toward accreditation coverage.
 for (const dir of readdirSync(CANVAS_DIR)) {
   if (
     !statSync(join(CANVAS_DIR, dir)).isDirectory() ||
-    CANVAS_DEPRECATED.has(dir)
+    CANVAS_DEPRECATED.has(dir) ||
+    CANVAS_ONLY.has(dir) ||
+    CANVAS_TO_HANDBOOK[dir]
   ) {
     continue;
   }
-  const page = CANVAS_TO_HANDBOOK[dir];
-  const tags = canvasTags(dir);
-  if (!page) {
-    // An unmapped directory is fine until it starts claiming outcomes.
-    if (tags.size > 0) {
-      console.error(
-        `UNMAPPED canvas/assignments/${dir}: tags ${[...tags].sort().join(", ")} but no handbook page mapped. Add it to CANVAS_TO_HANDBOOK or CANVAS_DEPRECATED.`
-      );
-      failed = true;
+  const tags = new Set();
+  for (const f of readdirSync(join(CANVAS_DIR, dir))) {
+    if (!f.endsWith("rubric-details.tsv")) {
+      continue;
     }
-    continue;
+    for (const tag of Object.keys(
+      parseTsvTags(readFileSync(join(CANVAS_DIR, dir, f), "utf8"))
+    )) {
+      tags.add(tag);
+    }
   }
-  const source = readFileSync(join(ASSIGNMENTS_DIR, `${page}.mdx`), "utf8");
-  const handbook = new Set(
-    Object.keys(parseRubricTags(source.slice(source.indexOf("---", 3) + 3)))
-  );
-  const onlyCanvas = [...tags].filter((t) => !handbook.has(t)).sort();
-  const onlyHandbook = [...handbook].filter((t) => !tags.has(t)).sort();
-  if (onlyCanvas.length > 0) {
+  if (tags.size > 0) {
     console.error(
-      `MIRROR DRIFT canvas/assignments/${dir}: tags ${onlyCanvas.join(", ")} that ${page}.mdx does not. Canvas mirrors the handbook; remove the tag from the TSV.`
-    );
-    failed = true;
-  }
-  if (onlyHandbook.length > 0) {
-    console.error(
-      `MIRROR DRIFT canvas/assignments/${dir}: ${page}.mdx tags ${onlyHandbook.join(", ")} that the TSV does not. Add it to the TSV.`
+      `UNMAPPED canvas/assignments/${dir}: tags ${[...tags].sort().join(", ")} but no handbook page renders it. Add it to CANVAS_TO_HANDBOOK, CANVAS_ONLY or CANVAS_DEPRECATED.`
     );
     failed = true;
   }
@@ -383,53 +443,30 @@ for (const dir of readdirSync(CANVAS_DIR)) {
 // on pages that otherwise validated. Each is a few lines and pays for itself
 // the first time it fires.
 //
-// Pages with no `## Rubric (100 points)` table, by decision, not omission:
-// the workshop rubric is pass/fail per item; the two survey instruments run
-// through Qualtrics and their tables carry weights. Sprint Notes is not an
-// exception: its two-band `| Item | Pass (20) | Fail (0) |` table is totalled
-// below like any other (#29).
-const RUBRIC_EXCEPTIONS = new Set([
-  "workshop-activities",
-  "peer-evaluations",
-  "project-partner-evaluation",
-]);
 const DELIVERABLE_HEADING_RE =
   /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
 const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
 
-// Sum of the Points column of the table(s) under `## Rubric`, or null when
-// the heading is absent. Banded rows are `| Criterion | Points | Outcome |`.
-// A pass/fail table is `| Item | Pass (N) | Fail (0) |`: the header names the
-// points once and every row underneath is worth N.
-function rubricTotal(body) {
-  const start = body.search(/^## Rubric/m);
-  if (start === -1) {
-    return null;
-  }
+// Sum of each criterion's highest rating, read from the TSV the page renders.
+// Rating groups repeat in threes from field 4 (points, name, description), so
+// the same function totals a nine-field pass/fail rubric, the usual twelve-field
+// three-band one, and `defense`, which carries a fourth `Missing` band.
+function rubricTotal(tsvPath) {
   let total = 0;
-  let passPoints = null;
-  for (const line of body.slice(start).split("\n").slice(1)) {
-    if (line.startsWith("## ")) {
-      break;
-    }
-    if (!line.trim().startsWith("|")) {
+  for (const line of readFileSync(tsvPath, "utf8").split("\n")) {
+    if (!line.trim()) {
       continue;
     }
-    const cell = line.split("|")[2]?.trim() ?? "";
-    const pass = cell.match(/^Pass \((\d+)\)$/);
-    if (pass) {
-      passPoints = Number(pass[1]);
-      continue;
+    const cells = line.split("\t");
+    let max = 0;
+    for (let i = 3; i < cells.length; i += 3) {
+      const points = Number(cells[i]);
+      if (Number.isFinite(points)) {
+        max = Math.max(max, points);
+      }
     }
-    if (/^-+$/.test(cell)) {
-      continue;
-    }
-    if (/^\d+$/.test(cell)) {
-      total += Number(cell);
-    } else if (passPoints !== null) {
-      total += passPoints;
-    }
+    total += max;
   }
   return total;
 }
@@ -473,16 +510,23 @@ for (const file of files) {
     failed = true;
   }
 
-  // Rubric points total exactly 100.
+  // Rubric points total exactly 100, summed from the rendered TSV.
   if (!RUBRIC_EXCEPTIONS.has(slug)) {
-    const total = rubricTotal(body);
-    if (total === null) {
+    const tsvPath = rubricTsvPath(source);
+    if (typeof tsvPath !== "string") {
+      // Already reported as NO RUBRIC TABLE or RUBRIC IMPORT above.
+    } else if (/^## Rubric/m.test(body)) {
+      const total = rubricTotal(tsvPath);
+      if (total !== 100) {
+        console.error(
+          `RUBRIC ${file}: ${tsvPath} totals ${total} points, not 100.`
+        );
+        failed = true;
+      }
+    } else {
       console.error(
-        `RUBRIC ${file}: no "## Rubric" heading and not in the documented exception list.`
+        `RUBRIC ${file}: renders a <RubricTable> but has no "## Rubric" heading above it.`
       );
-      failed = true;
-    } else if (total !== 100) {
-      console.error(`RUBRIC ${file}: rubric points total ${total}, not 100.`);
       failed = true;
     }
   }

@@ -14,6 +14,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/term-retrospective/term-retrospective-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team, with one individual page per student" due="Fall, week 9, Wednesday before Thanksgiving" weight="3% of the fall grade">
   Week 9 is a three-day week, and the sprint this reflects on closed with Sprint Note 3 in week 8, so Monday to Wednesday is enough for a 60-to-90-minute session and a short write-up.
@@ -54,13 +56,7 @@ The individual page is graded on specificity and honesty, not on how flattering 
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Themes: 2 or 3 genuine patterns with plausible causes, synthesized from the 4Ls rather than a status list | 25 | SO5 |
-| Evidence: each theme backed by at least one relevant artifact with a caption saying what it shows | 20 | SO3 |
-| Team actions: three, each owned, time-bound, with a recognition cue, and traceable to a theme | 20 | SO2 |
-| Individual pages: wins and gaps tied to concrete examples, plus one checkable commitment, per student | 25 | SO3 |
-| Writing: within 2 pages of team content, headed by section, and no claim without a named example | 10 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/term-retrospective/term-retrospective-rubric-details.tsv" />
 
 The individual-pages criterion is scored per student; a missing or generic individual page costs that student, not the team.
 

@@ -14,6 +14,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/project-landing-page/project-landing-page-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Spring, week 7" weight="3% of the spring grade">
   One page per team, not per student.
@@ -42,12 +44,7 @@ Talk to your partner first: they may have an existing page to update rather than
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Value proposition: one sentence says what it is and for whom, the problem is stated in the user's terms, and no course vocabulary (capstone, team, partner, sprint, rubric) appears on the page | 30 | SO3 |
-| Highlights and access: 3 to 5 audience-perspective highlights, at least one real visual of the project in action, and a working call to action | 35 | SO2 |
-| Credits and contact: everyone credited, past contributors acknowledged where applicable, feedback channel present | 15 | SO4 |
-| Polish and accessibility: intentional visual hierarchy, alt text, sufficient contrast, descriptive link text, no broken anything | 20 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/project-landing-page/project-landing-page-rubric-details.tsv" />
 
 For the **polish and accessibility** criterion, the standard being graded is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) level AA: [text alternatives](https://www.w3.org/WAI/tutorials/images/) on meaningful images, 4.5:1 contrast on body text, and link text whose purpose is clear from the link and its surrounding text. Run [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [axe](https://github.com/dequelabs/axe-core) first, then do a manual pass, because automation covers only part of it: the [accessibility guide](/guides/accessibility/#manual-accessibility-testing) has the coverage figures and the manual checks, and no tool will tell you that your alt text describes the wrong thing.
 

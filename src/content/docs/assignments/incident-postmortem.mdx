@@ -15,6 +15,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/incident-postmortem/incident-postmortem-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Winter, week 9" weight="3% of the winter grade">
   Winter's retrospective, in the form of one analyzed failure.
@@ -43,13 +45,7 @@ Start from the [postmortem template](/postmortem-template.md).
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Impact and timeline: states what happened, when, and who or what was affected; sequences events, decisions, and signals with the times the record has; names at least one missed signal or says there was none | 25 | SO3 |
-| Root cause analysis reaches systemic causes, not first answers or scapegoats | 25 | SO6 |
-| Blameless throughout: systems language, co-signable by everyone involved | 15 | SO4 |
-| Corrective actions specific, owned, dated, and at least one verifiable at the week-10 checkpoint or sprint note | 25 | SO2 |
-| Writing: 2 to 3 pages in `docs/postmortems/`, the required sections present and in order, and every stated cause or fix tied to an event in the timeline | 10 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/incident-postmortem/incident-postmortem-rubric-details.tsv" />
 
 **AI use:** AI may reconstruct the timeline from logs, commits, and chat history, and draft the write-up. It must not invent events or timestamps, or supply a tidier root cause than the evidence supports. A fabricated timeline, or a corrective action with no real owner, fails the assignment. Section 6 asks you to say when AI contributed to the incident; the same honesty applies to the document.
 

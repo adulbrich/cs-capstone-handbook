@@ -15,6 +15,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Fall and winter, weeks 5 and 10" weight="4% each, 8% per term" />
 
@@ -67,20 +69,14 @@ Teams that discover in week 9 that their partner never intended to give them a p
 
 ## Rubric (100 points per checkpoint)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Living docs current and consistent with the code (spot-checked: does `docs/design.md` describe the system that exists?) | 25 | SO2 |
-| Term gate met (see table above) | 25 | SO2 |
-| Build health and safety net: CI green, tests exist and test something real, quickstart works, and the net matches how much the team delegates (review gates on the paths that are hard to undo, a staging or preview environment, a documented rollback path) | 20 | SO6 |
-| Decision and risk hygiene: RFCs/ADRs recorded, single risk register alive and ranked | 15 | SO1 |
-| Contribution traceability and git hygiene: work is attributable per student (PRs authored and reviewed under real accounts, contribution lines in sprint notes matching the record), and the history is one a maintainer could inherit | 15 | SO5 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-rubric-details.tsv" />
 
 **AI use:** AI may draft and maintain the living docs from your code and history, and may write the CI configuration; the checkpoint grades the repository, not who typed it. What fails the checkpoint is evidence that is not real: a green badge from a workflow that runs nothing, a requirements document describing features the code does not have, or a PR history dressed up after the fact.
 
 Each criterion has one thing graders check first, so you can check it yourself:
 
 - **Living docs**: one recent feature, compared against `docs/design.md`. If the doc describes a system that no longer exists, this criterion is where it shows.
-- **Term gate**: met or not met, judged against the table above and nothing else. For a team starting in an existing codebase, the fall week 5 gate includes the inherited-codebase audit, present and covering what [Project Types](/practicalities/types/#where-the-code-starts) lists.
+- **Term gate**: met or not met, judged against the [Term Gates](#term-gates) table and nothing else. For a team starting in an existing codebase, the fall week 5 gate includes the inherited-codebase audit, present and covering what [Project Types](/practicalities/types/#where-the-code-starts) lists.
 - **Build health**: the safety net is judged **relative to how your team works**, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team writing most code by hand, and neither approach is penalized: what is graded is whether the net catches what your way of working lets through. Gates belong on the changes that are expensive to undo (schema, authentication, deployment, migrations), not spread uniformly. A team with no CI that hand-merges agent output to production fails this regardless of whether anything has broken yet.
 - **Decision and risk hygiene**: does the risk register have owners and a ranking, and is there exactly one of it?
 - **Contribution traceability**: this grades whether the **infrastructure** for attribution exists, not whether every student contributed. Individual non-contribution is handled by the [individual modifier](/assignments/introduction/#individual-accountability-on-team-work) and never double-counted here.

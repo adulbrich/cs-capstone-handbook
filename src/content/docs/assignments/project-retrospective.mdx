@@ -15,6 +15,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/project-retrospective/project-retrospective-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Spring, week 9" weight="3% of the spring grade" />
 
@@ -48,14 +50,7 @@ Include **at least two lightweight artifacts** across the document (a pivotal PR
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Arc and pivots: each term's milestones dated and linked to their artifacts; each pivot names what was decided, when, and the evidence that prompted it | 20 | SO3 |
-| Delivered versus shipped: specific, numbers-consistent comparison against the Definition of Shipped, gap explained | 20 | SO2 |
-| Decisions and consequences: 3 to 5 decisions traced from RFC to outcome, honest about debt, at least one that did not pan out | 25 | SO6 |
-| Team dynamics: role evolution, communication patterns, and conflict handled with critical honesty, tied to examples | 15 | SO5 |
-| Forward-looking section: names what a successor must understand first, links the live risks in `docs/risks.md`, and lists the first three actions to take | 10 | SO2 |
-| Writing and evidence: structured, within length, at least two captioned artifacts | 10 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/project-retrospective/project-retrospective-rubric-details.tsv" />
 
 **AI use:** AI may help synthesize and draft from your own repo history, notes, and sprint records; that is a legitimate use of the paper trail you built. It must not invent events, soften consequences, or manufacture artifacts. Graders have read your sprint notes all year and will notice a story that does not match them.
 

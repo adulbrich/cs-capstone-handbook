@@ -14,6 +14,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/spring-release/spring-release-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Spring, week 8" weight="7% of the spring grade" />
 
@@ -46,13 +48,7 @@ This is the graded evidence and the durable artifact. Convert it from Markdown w
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Trailer: one complete flow shown end to end from a realistic entry point, within 3 minutes, captioned, honest about partial features | 20 | SO2 |
-| Problem and scope: concrete, audience-appropriate, with the cost to the user and what was deliberately left out | 15 | SO3 |
-| Metrics evidence: metrics match `docs/shipped.md`, at least one reported with a real measured value and embedded instrumentation evidence | 30 | SO2 |
-| Honest outcomes: delivered versus the Definition of Shipped with concrete numbers, lessons, and a prioritized next step | 25 | SO6 |
-| Report quality: within 2 pages, structured, every link tested and working | 10 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/spring-release/spring-release-rubric-details.tsv" />
 
 **AI use:** AI may help with scripting, editing, and drafting the report. Fabricating demo footage, metrics, findings, or user feedback fails the assignment; a smaller true number always beats a bigger invented one. The outcomes section is graded on honesty, and "we did not reach the bar, here is exactly how far we got and why" scores well.
 

@@ -2,7 +2,7 @@
 
 Date: 2026-09-20
 Branch: `docs/rubric-single-source`
-Status: design record, not yet implemented (#144). Section 6 holds the two open decisions.
+Status: implemented in #144. Section 6's open decisions are resolved; the resolutions are recorded inline.
 Companion documents: `AGENTS.md` hard rule 4 (which this design inverts), `canvas/assignments/assignment-readme.md`, `.claude/skills/cs46x-assignments/SKILL.md`, `scripts/validate-outcomes.mjs`.
 
 ## 1. Why
@@ -80,16 +80,25 @@ The validator currently parses the MDX rubric table as the source of truth (`ext
 
 ## 6. Open decisions
 
-**6.1 The four pages with no TSV.** Fourteen of eighteen assignment pages have one.
+**6.1 The four pages with no TSV. Resolved.** Fourteen of eighteen assignment pages had one.
 
 | Page | State | Proposal |
 |---|---|---|
-| `term-retrospective.mdx` | Has a rubric, no TSV. `canvas/assignments/assignment-readme.md:84` already records this as owed. | Author the TSV as part of the implementation. Blocks nothing else. |
-| `peer-evaluations.mdx` | Qualtrics instrument, table carries weights not points. One of three `RUBRIC_EXCEPTIONS`. | Stays hand written. Decide whether the component gets a weights mode or the page keeps a plain Markdown table. |
+| `term-retrospective.mdx` | Had a rubric, no TSV. | **Done.** Authored 12-field, three bands at 25/20/20/25/10, tags `SO5, SO3, SO2, SO3, SO3` matching the frontmatter. Needs creating in Canvas. |
+| `peer-evaluations.mdx` | Qualtrics instrument, table carries weights not points. One of three `RUBRIC_EXCEPTIONS`. | **Stays hand written, no weights mode.** A weights mode would be a second rendering path serving two pages, and their tables are not rubrics: they carry no bands and no points. The validator reads their tags from the Markdown table, as before. |
 | `project-partner-evaluation.mdx` | Same. | Same. |
+| `workshop-activities.mdx` | Three tagless pass/fail TSVs, and the page has no rubric section at all. | **Canvas only.** Rendering them would add three tables to a page that deliberately has none. Listed in the validator's `CANVAS_ONLY`. |
 | `introduction.mdx` | No rubric, correctly. | No change. |
 
-**6.2 One page, several TSVs.** `workshop-activities` and `individual-contribution` hold one TSV per term because the item count differs by term, and `sprint-notes.mdx` is mapped from two directories at once (`sprint-note` and `individual-contribution`). The component takes a single `tsv` string, so either the page renders three `<RubricTable>` blocks with per-term captions, or the component grows a multi-file mode. Three blocks is the smaller change and reads better on the page, since the terms differ in item count anyway.
+**6.2 One page, several TSVs. Resolved: neither is rendered.** `workshop-activities` and `individual-contribution` hold one TSV per term because the item count differs by term, and `sprint-notes.mdx` was mapped from two directories at once. Both turned out to be Canvas-only: the workshop page has no rubric section, and the individual contribution modifier is described in prose on the Sprint Notes page rather than shown as a table. So the component keeps its single `tsv` prop, `sprint-notes.mdx` renders `sprint-note/` only, and the validator's new `CANVAS_ONLY` set holds the two directories so the unmapped-directory guard does not fire on them.
+
+## 9. What implementation changed about this design
+
+Two things the record did not anticipate, both found by reading the rendered output:
+
+**Descriptions that only restate the top band were dropped.** Moving every handbook criterion clause into field 2 produced 68 descriptions, of which **18 were near-identical to their own Exceeds band** (`incident-postmortem` row 1 was a character-for-character match). Rendered, the row said the same sentence twice. Those 18 are empty; the remaining 50 add something the bands do not.
+
+**Code spans were stripped.** Four descriptions inherited backticks from the MDX (`docs/design.md`). No band description anywhere in the corpus uses them and Canvas renders a backtick literally, so they were removed rather than teaching the component Markdown for four rows.
 
 ## 7. What this inverts
 

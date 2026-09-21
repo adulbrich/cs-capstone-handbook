@@ -17,9 +17,9 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
-| `canvas/` | Rubric TSVs for the Canvas import extension, plus the three syllabus HTML bodies. Mirrors the handbook; the handbook wins. Assignment bodies are pasted from the built handbook page, not stored here. |
+| `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per assignment, rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
-| `scripts/validate-outcomes.mjs` | The outcome validator, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals. Runs in CI and pre-commit. |
+| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric TSV, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, and that each page renders its own TSV. Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the no-outcome-tags, no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
@@ -43,9 +43,12 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
    `validate-dashes.mjs` checks the content directories and
    `scripts/check-prose.mjs` checks every tracked text file, root docs and
    skills included, in CI and at pre-commit.
-4. **The handbook outranks Canvas.** If a rubric TSV and a handbook rubric
-   table disagree, the handbook is right and the TSV is the bug. Rubric point
-   values must match exactly.
+4. **One rubric per assignment, and it lives in the TSV.** Every rubric is
+   `canvas/assignments/<dir>/*-rubric-details.tsv`, rendered on the handbook
+   page by `src/components/RubricTable.astro` and imported into Canvas by the
+   rubric-import extension. There is no second copy to disagree with. Edit the
+   TSV, and re-import it into Canvas (#144). The handbook still outranks what
+   is *in* Canvas, because the TSV goes one way and is never read back out.
 5. **Terms and weeks only. No calendar dates and no academic year anywhere
    in the handbook** (#57): not "Fall 2026", not "September 23", not
    "2026-27". Weekdays and named holidays are fine ("fall week 9, Wednesday

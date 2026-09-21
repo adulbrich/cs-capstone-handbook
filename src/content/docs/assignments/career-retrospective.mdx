@@ -15,6 +15,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/career-retrospective/career-retrospective-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Individual" due="Spring, week 9" weight="15% of the spring grade">
   The spring counterpart of the [RFC](/assignments/rfc/), and the close of the fall [Resume and Intent](/assignments/resume-and-intent/).
@@ -50,14 +52,7 @@ A reflection on how your engineering judgment developed, grounded in specifics r
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| PR portfolio: 3 to 5 contributions, verifiable against the repo record, each with a caption that demonstrates a specific skill an interviewer would care about | 30 | SO2 |
-| Judgment and responsible practice: specific, honest, includes a real AI-misled episode with the verification that caught it, and a real responsibility constraint | 25 | SO4 |
-| Resume: capstone entry honest and impact-oriented, quantified where the numbers are real, professionally formatted, linked | 10 | L10 |
-| Intent versus outcome: the three fall lines quoted, each marked earned, changed, or dropped, with evidence for the earned ones and one sentence for the others | 10 | L10 |
-| Peer review: the review you gave is specific and actionable; the one you received produced a visible revision | 15 | L10 |
-| Writing: precise, professional, within 2 to 3 pages, claims stated in verifiable language | 10 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/career-retrospective/career-retrospective-rubric-details.tsv" />
 
 **AI use:** AI may draft prose and polish resume bullets; disclose tools and verification as usual. Fabricated contributions, inflated metrics, or an invented AI-misled anecdote are academic dishonesty on the one assignment explicitly about honest self-assessment. Everything here is checkable, and it will be checked.
 

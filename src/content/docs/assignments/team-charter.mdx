@@ -15,6 +15,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/team-charter/team-charter-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Fall, week 2" weight="4% of the fall grade">
   Winter's charter refresh is part of the first [Repo Checkpoint](/assignments/repo-checkpoints/) of the term, and spring's closes the [Team Health Assessment workshop](/assignments/workshop-activities/#spring-2-items-1) in week 2; neither is a separate assignment.
@@ -84,15 +86,7 @@ For NDA teams, this one-pager is the difference between normal tool use and a br
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Roles: all three concerns owned by a named person, a rotation schedule, a clear decision process, and what each owner owes the team | 20 | SO5 |
-| Conflict and inclusion: restorative stepwise path with measurable triggers, evidence-based accountability, and concrete inclusion norms | 15 | SO5 |
-| Cadence and tools: meetings, channels, and where decisions are recorded, unambiguous | 10 | SO3 |
-| Definition of Done: specific checks tied to CI gates that actually exist | 15 | SO2 |
-| CONTRIBUTING.md and AI context file: published, complete, and followable, including the PR-per-sprint norm and review expectations | 15 | SO3 |
-| AI and confidentiality one-pager: explicit about which data and code may enter which tools, consistent with the partner agreement | 15 | SO4 |
-| Writing: 2 to 4 pages, headed by the required sections, and every commitment a single sentence a teammate could quote back | 10 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric-details.tsv" />
 
 **AI use:** AI may draft any of this; the agreement must be yours. A charter your team has not actually agreed to is worse than none, because it tells you nothing when you need it.
 

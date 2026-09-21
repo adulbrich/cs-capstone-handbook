@@ -19,6 +19,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Individual" due="Fall and winter: draft week 4, final week 8" weight="15% of the term grade" />
 
@@ -65,17 +67,7 @@ Feedback is structured: for each draft you review, answer four questions in writ
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Problem framing and context: a newcomer understands the decision and the stakes | 15 | SO1 |
-| Options: three or more credible options including "do nothing", with honest costs | 10 | SO1 |
-| Technical tradeoff analysis: argued from cited sources and evidence specific to this project, acknowledges uncertainty | 15 | SO6, L07 |
-| Recommendation with a concrete verification plan | 15 | SO2 |
-| Constraints: licensing, data use, IP, confidentiality boundary addressed | 10 | SO4 |
-| Delegation and validation: what you handed to AI tools, the safety net that made that reasonable, and the points where you validated yourself | 10 | SO4 |
-| Writing: within the term's length band (800 to 1,500 words in fall, 1,500 to 2,500 in winter), headed by the required sections in order, and every claim about the system names a file, a pull request, or a measurement | 10 | SO3, L08 |
-| Revision: substantive response to feedback, with a response note | 10 | SO3, L09 |
-| Feedback given: your written reviews of two peer drafts are specific and useful | 5 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-rubric-details.tsv" />
 
 Non-submission of the draft forfeits the revision points (there is nothing to revise); non-submission of peer feedback forfeits those 5 points and is visible to the affected teams. If your assigned reviewer no-shows, flag it to your TA: you will not be penalized for feedback you never received, and staff will supply a review. The standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies.
 
