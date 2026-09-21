@@ -32,8 +32,11 @@ criteria at 25/20/20/25/10, three bands.
 **Do nothing for these two:** `sprint-note` and `team-charter` are unchanged.
 Every one of their handbook criterion clauses only restated its own Exceeds
 band, so field 2 stayed empty rather than printing the same sentence twice in
-one row. 18 of the 68 descriptions produced were dropped for that reason; 50 of
-the 75 criterion rows across all 14 rendered TSVs carry a description.
+one row. 22 of the 68 descriptions produced were dropped: 18 for restating their
+own band, three that restated it less exactly, and `repo-checkpoint` row 2,
+which read "(see table above)" and so said nothing at all in Canvas, where
+nothing is above it. **46 of the 75 criterion rows across the 14 rendered TSVs
+carry a description.**
 
 **Not rubrics students are shown, unchanged and not re-imported:**
 `individual-contribution` and `workshop-activities`. Both are tagless, both hold

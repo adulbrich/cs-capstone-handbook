@@ -104,6 +104,6 @@ After #140 and #143 merge. Both touch assignment pages, and #143 rewrites prose 
 
 Two things the record did not anticipate, both found by reading the rendered output:
 
-**Descriptions that only restate the top band were dropped.** Moving every handbook criterion clause into field 2 produced 68 descriptions, of which **18 were near-identical to their own Exceeds band** (`incident-postmortem` row 1 was a character-for-character match). Rendered, the row said the same sentence twice. Those 18 are empty; the remaining 50 add something the bands do not.
+**Descriptions that only restate the top band were dropped.** Moving every handbook criterion clause into field 2 produced 68 descriptions, of which **18 were near-identical to their own Exceeds band** (`incident-postmortem` row 1 was a character-for-character match). Rendered, the row said the same sentence twice. Review dropped four more: three that restated a band less exactly, and one reading "(see table above)", which means nothing in Canvas. **46 of the 75 criterion rows carry a description**; the other 29 are the 22 dropped plus 7 whose criterion name already said everything.
 
 **Code spans were stripped.** Four descriptions inherited backticks from the MDX (`docs/design.md`). No band description anywhere in the corpus uses them and Canvas renders a backtick literally, so they were removed rather than teaching the component Markdown for four rows.
