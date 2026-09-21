@@ -59,11 +59,11 @@ const CANVAS_TO_HANDBOOK = {
 // page that deliberately has none.
 const CANVAS_ONLY = new Set(["individual-contribution", "workshop-activities"]);
 
-// The three pages that keep a hand-written Markdown table and render no
-// <RubricTable>, by decision rather than omission: the workshop page is scored
-// complete/incomplete per item and has no rubric section at all, and the two
-// survey instruments run through Qualtrics, so their tables carry weights
-// rather than points. Sprint Notes is not an exception: its rubric is the
+// The three pages that render no <RubricTable>, by decision rather than
+// omission. `workshop-activities` has no rubric section at all, being scored
+// complete/incomplete per item. The two survey instruments run through
+// Qualtrics and are the only pages still holding a hand-written Markdown
+// table, because theirs carry weights rather than points. Sprint Notes is not an exception: its rubric is the
 // nine-field pass/fail TSV and totals 100 like any other (#29, #144).
 const RUBRIC_EXCEPTIONS = new Set([
   "workshop-activities",

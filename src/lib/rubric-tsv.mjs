@@ -56,10 +56,14 @@ function readRatings(cells, row, sourceLabel) {
     if (!(rawPoints || name || description)) {
       break;
     }
+    // A band that exists must carry a number. An empty cell is the likeliest
+    // typo and the most dangerous: `Number("")` is 0, so it would parse as a
+    // zero-point band, and in any band but the top one the rubric would still
+    // total 100 with nothing to catch it.
     const points = Number(rawPoints);
-    if (!Number.isFinite(points) || points < 0) {
+    if (rawPoints === "" || !Number.isFinite(points) || points < 0) {
       throw new Error(
-        `rubric TSV ${sourceLabel} row ${row}, band "${name || "(unnamed)"}": points cell is "${rawPoints}". A typo here scores zero silently and, in any band but the top one, still totals 100.`
+        `rubric TSV ${sourceLabel} row ${row}, band "${name || "(unnamed)"}": points cell is "${rawPoints}", which is not a points value. Every band with a name or a description needs one.`
       );
     }
     ratings.push({ description, name, points });
@@ -83,9 +87,15 @@ function parseRow(line, row, sourceLabel) {
   const tags = readTags(rawTitle);
   const ratings = readRatings(cells, row, sourceLabel);
 
+  if (ratings.length === 0) {
+    throw new Error(
+      `rubric TSV ${sourceLabel} row ${row}: no rating bands. A criterion nothing can be scored against is not a criterion.`
+    );
+  }
+
   return {
     description: (cells[1] ?? "").trim(),
-    maxPoints: Math.max(0, ...ratings.map((r) => r.points)),
+    maxPoints: Math.max(...ratings.map((r) => r.points)),
     ratings,
     tags: tags ?? [],
     title: tags ? rawTitle.replace(TRAILING_BRACKET_RE, "") : rawTitle,

@@ -43,27 +43,22 @@ import { parseRubricTsv, rubricTotal } from "../lib/rubric-tsv.mjs";
  * which is a page importing a TSV that belongs to a different assignment.
  */
 interface Props {
-  /** Overrides the default caption. Rarely needed. */
-  caption?: string;
   /** Repository-relative path, used in error messages and checked by the validator. */
   sourceLabel: string;
   /** The TSV file's contents, imported with `?raw`. */
   tsv: string;
 }
 
-const { tsv, sourceLabel, caption } = Astro.props;
+const { tsv, sourceLabel } = Astro.props;
 
 const criteria = parseRubricTsv(tsv, sourceLabel);
 const totalPoints = rubricTotal(criteria);
-/** Every band is a whole number except the Half band of the sprint modifier. */
-const formatPoints = (n: number) =>
-  Number.isInteger(n) ? `${n}` : n.toFixed(1);
 ---
 
 <div class="rubric not-content">
   <table>
     <caption>
-      {caption ?? "Rubric"}: {formatPoints(totalPoints)} points across {
+      Rubric: {totalPoints} points across {
         criteria.length
       } criteria
     </caption>
@@ -83,7 +78,7 @@ const formatPoints = (n: number) =>
                 <span class="rubric__description">{c.description}</span>
               )}
               <span class="rubric__points">
-                {formatPoints(c.maxPoints)} points
+                {c.maxPoints} points
               </span>
               {c.tags.length > 0 && (
                 <span class="rubric__tags">
@@ -97,7 +92,7 @@ const formatPoints = (n: number) =>
                 {c.ratings.map((r) => (
                   <li>
                     <span class="rubric__band">
-                      {r.name} ({formatPoints(r.points)})
+                      {r.name} ({r.points})
                     </span>
                     {r.description && (
                       <span class="rubric__band-description">

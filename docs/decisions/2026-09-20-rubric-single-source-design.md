@@ -30,8 +30,8 @@ which is the reference implementation this design ports.
 The TSV is the source. The MDX page imports it as a raw string and renders it:
 
 ```mdx
-import RubricTable from '../../../components/RubricTable.astro';
-import rubricTsv from '../../../../canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
 
 ## Rubric
 
