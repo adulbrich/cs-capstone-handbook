@@ -81,6 +81,27 @@ Criterion text changed on the branch review (#40). Points and outcome tags are u
 | `sprint-note/` | Contribution lines: the Pass band now says the owned PR is a real change that landed this sprint and graders open one per student; the Fail band names an owned PR that does not open, did not land this sprint, or is mechanical, with no explanation (#23) |
 | `individual-contribution/` | **New**, three files (`-fall-`, `-winter-`, `-spring-`): one Full / Half / Zero criterion per sprint for the Individual Contribution column of each term; create the rubric in Canvas from the term's file (#30) |
 
+## Roles Counted Per Concern, Not Per Person
+
+The Team Charter roles criterion asked for "three named rotating roles", which
+only works cleanly on a team of three. Teams run from two to five. The criterion
+now asks that all three concerns (schedule and partner relationship, AI
+configuration and confidentiality, definition of done and build health) each
+have exactly one named owner, whatever the headcount: on a team of two one
+person owns two of them, on a team of five the remaining students name an
+ownership area instead.
+
+Points and outcome tags are unchanged (20, SO5). Both band descriptions changed,
+so the TSV must be re-imported:
+
+| File | What changed |
+|---|---|
+| `team-charter/` | Roles: "three named rotating roles" became all three concerns owned by a named person; the Meets band now names an unowned concern as the failure |
+
+`defense/` is **not** affected: its rubric already read "named role ... or
+comparable ownership area", which is the same rule, and its band descriptions are
+unchanged.
+
 The fall Term Retrospective's Writing criterion changed in the same way, but no TSV for it exists under `canvas/assignments/`; it needs one before the fall rubric is built in Canvas.
 
 **All three syllabus bodies need re-pasting into Canvas** from `canvas/syllabus/` (2026-09-13, #22 and #32; the Term cells lost their year under #57): the grade table is the 11-band handbook scale, the Term cells read Fall, Winter and Spring with no year, and the late-policy paragraph is a summary that links the handbook instead of a second full statement.

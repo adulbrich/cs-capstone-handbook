@@ -5,9 +5,8 @@ sidebar:
   order: 11
 ---
 
-import { LinkCard } from '@astrojs/starlight/components';
-
 Read this in the first sprint, once the repository exists; it gives you the configuration that makes an AI tool understand your project, and the hooks that constrain it.
+
 
 A tool that knows nothing about your project produces generic suggestions: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. Given your architecture, your conventions and your constraints, the same tool produces suggestions that fit. This page is the configuration; the [Generative AI guide](/guides/generative-ai/) is the practice.
 
@@ -20,7 +19,7 @@ Most AI coding tools support some form of project-level configuration that persi
 - **`AGENTS.md`** in your repository root: the cross-tool convention, read by a growing number of agents and the right default when your team does not all use the same tool.
 - **Claude Code**: `CLAUDE.md` in your repository root.
 - **Cursor**: `.mdc` files in the `.cursor/rules/` directory. Cursor also reads `AGENTS.md`. A top-level `.cursorrules` file is the legacy format; do not start a new project with it.
-- **GitHub Copilot**: `.github/copilot-instructions.md`.
+- **GitHub Copilot**: `.github/copilot-instructions.md`, documented under [repository custom instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions).
 
 Write the content once, in `AGENTS.md`, and have any per-tool file point at it. Two instruction files that disagree with each other are worse than none: whichever one your teammate's tool reads is the one that wins, and nobody will notice they have drifted until the suggestions stop matching the code.
 
@@ -58,7 +57,7 @@ TypeScript, React 19, Express, Postgres via Prisma, Vitest, Playwright.
 - Paste partner data, user emails, or .env contents into any tool.
 ```
 
-The last line is the part your [Team Charter](/assignments/team-charter/) calls the AI and confidentiality one-pager, spelled out for the tools. The human-readable version is a section of the charter itself and says the same thing in the partner's terms:
+The last line is your confidentiality rule, spelled out for the tools. The human-readable version belongs in the team's charter and says the same thing in the partner's terms:
 
 ```md
 ## AI and confidentiality (in docs/charter.md)
@@ -77,8 +76,8 @@ Everything above is a request. The model reads `AGENTS.md`, usually follows it, 
 
 Most agent tools support them now, and the configuration is committed like everything else:
 
-- **Claude Code**: `.claude/settings.json`, with `SessionStart`, `PreToolUse` and `PostToolUse` events matched against a tool name.
-- **Cursor**: `.cursor/hooks.json`, with `preToolUse`, `beforeShellExecution`, `afterFileEdit` and others.
+- **Claude Code**: `.claude/settings.json`, with `SessionStart`, `PreToolUse` and `PostToolUse` events matched against a tool name. The [hooks reference](https://docs.anthropic.com/en/docs/claude-code/hooks) lists every event and the JSON each one receives.
+- **Cursor**: [`.cursor/hooks.json`](https://docs.cursor.com/agent/hooks), with `preToolUse`, `beforeShellExecution`, `afterFileEdit` and others.
 - **GitHub Copilot CLI**: `.github/hooks/*.json`, with `sessionStart`, `userPromptSubmitted`, `preToolUse` and `postToolUse`.
 
 The names differ; the shape does not. A pre-tool hook inspects the call the agent is about to make and can refuse it:
@@ -114,7 +113,7 @@ A hook is one layer of three. Each catches what the one before it misses:
 | Layer | Runs | Bypassed by |
 | --- | --- | --- |
 | Agent hook | When the agent calls a tool | Working outside that agent |
-| Git hook (`lefthook`, `husky`) | On commit and push | `git commit --no-verify` |
+| Git hook ([`lefthook`](https://github.com/evilmartians/lefthook), `husky`) | On commit and push | `git commit --no-verify` |
 | CI and branch protection | On the pull request | Nothing, once you turn off admin bypass |
 
 Checks a human should also pass belong in the git layer, because it fires for typed commands and agent commands alike:
@@ -131,17 +130,11 @@ pre-commit:
       run: npx biome check {staged_files}
 ```
 
-Anyone can skip that with `--no-verify`, which is the reason for the third layer: the same checks run in CI, where nobody can skip them, and branch protection turns a red build into a blocked merge. One setting decides whether that last layer is real. Protection lets administrators bypass it by default, and on a student repository everyone is usually an administrator, so turn that off or the gate is a suggestion with extra steps. The [workflow file](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch) are covered in those guides.
+Anyone can skip that with `--no-verify`, which is the reason for the third layer: the same checks run in CI, where nobody can skip them, and [branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) turns a red build into a blocked merge. One setting decides whether that last layer is real. Protection lets administrators bypass it by default, and on a student repository everyone is usually an administrator, so turn that off or the gate is a suggestion with extra steps. The [workflow file](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch) are covered in those guides.
 
 Read the three as a trade between speed and reach. The agent hook is instant and narrow: it stops that agent, in that session, and nothing else. CI is slow and total. Put the fast feedback where it saves you a round trip and the real gate where nobody can route around it, and do not mistake one for the other.
 
 None of this requires a tool that supports hooks. The git and CI layers work with any assistant, or with none, and they are the two that hold.
-
-<LinkCard
-  title="Audit Your Safety Net"
-  href="/activities/ai/#audit-your-safety-net"
-  description="Measure the gap between how much your team delegates and how much your gates would actually catch."
-/>
 
 ## MCP Servers
 
@@ -149,13 +142,13 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) allows AI t
 
 - **[Context7](https://context7.com/)**: provides up-to-date library and framework documentation to your AI tool, reducing hallucinated API calls.
 - **[Playwright MCP](https://github.com/microsoft/playwright-mcp)**: allows your AI tool to interact with a browser for testing and debugging web applications.
-- **Database MCP servers**: let your AI tool query your database schema directly rather than guessing at table structures.
+- **Database MCP servers**: let your AI tool query your database schema directly rather than guessing at table structures. The [reference server collection](https://github.com/modelcontextprotocol/servers) is the place to look before writing your own.
 
 Which servers a tool loads is itself configuration, and it belongs in the repository with everything else: most tools read a JSON file at a known path (`.mcp.json` at the root, `.cursor/mcp.json`, `.vscode/mcp.json`), so commit it and every teammate gets the same servers. Keep credentials out of it and reference environment variables instead.
 
 ## Skills
 
-Agent skills (sometimes called slash commands or custom commands) are reusable prompts you define once and invoke repeatedly, so a recurring task runs the same way regardless of who asks for it. A skill is a directory containing a `SKILL.md` file: Markdown instructions with YAML frontmatter naming and describing the skill, optionally alongside scripts and reference files. [skills.sh](https://skills.sh/) is a public directory of published ones.
+Agent skills (sometimes called slash commands or custom commands) are reusable prompts you define once and invoke repeatedly, so a recurring task runs the same way regardless of who asks for it. A skill is a directory containing a `SKILL.md` file: Markdown instructions with YAML frontmatter naming and describing the skill, optionally alongside scripts and reference files. The [Agent Skills documentation](https://docs.anthropic.com/en/docs/agents-and-tools/agent-skills/overview) specifies the frontmatter fields and how a tool decides a skill is relevant. [skills.sh](https://skills.sh/) is a public directory of published ones.
 
 Skills a team actually uses:
 
@@ -177,12 +170,6 @@ Skills a team actually uses:
 
 A separate architectural-review pass, a code-review pass and a plan-before-you-build step are not conveniences. They are the same net the [hooks and gates](#hooks-and-gates) above build, one layer earlier. The difference is that a skill runs when someone invokes it and a hook runs on its own, so a check you would be sorry to forget belongs in a hook.
 
-<LinkCard
-  title="Set Up Your Repository's Skills"
-  href="/activities/ai/#set-up-your-repositorys-skills"
-  description="The hands-on version: pick the skills your team will actually run and commit them."
-/>
-
 One warning: a skill is someone else's opinion, executed automatically. Read one before you install it, because your team owns whatever it produces.
 
 ## Memory and Context
@@ -200,7 +187,7 @@ It is also the one item on this page that is **not** shared. Memory lives on one
 - **Keep instructions short.** A file nobody reads is a file the tool half-follows. The list above fits on a page; anything longer belongs in `docs/`.
 - **Write the "do not" section first.** It is the part that prevents damage, and it is the part teams forget.
 - **Trip every gate once, on purpose.** Run the command the hook should block and try the merge protection should stop.
-- **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it at every checkpoint.
+- **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it whenever the architecture moves.
 
 ## Some Truths About AI Project Setup
 
@@ -229,3 +216,28 @@ In research groups the pattern is younger and the pressure is different: reprodu
 :::note[Reviewed annually]
 The tool names and file paths on this page are among the fastest-moving content in the handbook. Checked at the annual review. What does not move is the shape of the thing: project context in a versioned file, gates that run without being remembered, a standard protocol for reaching external data, and reusable prompts checked in beside the code.
 :::
+
+## Additional Readings
+
+The configuration formats on this page move faster than almost anything else in
+the handbook, so the vendor documentation is the only reliable source for the
+current shape of a file. The rest of this list is for the judgment calls: what
+to delegate, what to gate, and how other people have answered those questions.
+
+**Sources and further reading**
+
+- [Claude Code settings reference](https://docs.anthropic.com/en/docs/claude-code/settings), Anthropic: every key in `settings.json`, including the permission allow and deny lists.
+- [Claude Code best practices](https://www.anthropic.com/engineering/claude-code-best-practices), Anthropic Engineering: how the team that builds the tool configures it.
+- [Model Context Protocol specification](https://modelcontextprotocol.io/specification/2025-06-18): the protocol itself, for when you want to know what a server can and cannot do.
+- [About workflows](https://docs.github.com/en/actions/using-workflows/about-workflows), GitHub: the CI layer that the third row of the gating table depends on.
+- [pre-commit](https://pre-commit.com/): the framework to reach for when your git hooks need to run tools from several languages.
+- [awesome-copilot](https://github.com/github/awesome-copilot), GitHub: instruction, prompt, and chat-mode files to read before writing your own.
+- [Exploring Generative AI](https://martinfowler.com/articles/exploring-gen-ai.html), Birgitta Boeckeler and colleagues at Thoughtworks: a long-running field report on where these tools help and where they do not.
+- [AI-assisted programming](https://simonwillison.net/tags/ai-assisted-programming/), Simon Willison: sustained practical writing on delegation, verification, and the failure modes worth knowing.
+
+**Activities that exercise this**
+
+- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure the gap between how much your team delegates and how much your gates would actually catch.
+- [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): pick the skills your team will actually run and commit them.
+- [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors): decide which actions get a gate before you delegate anything.
+- [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): the MCP section made concrete against your own application.

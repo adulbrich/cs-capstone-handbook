@@ -54,6 +54,14 @@ Capstone begins at week 0 of Fall term, but teams are not assigned until the end
 
 ## The Sprint Cycle
 
+The vocabulary on this page comes from Scrum, and where this guide and the
+[Scrum Guide](https://scrumguides.org/scrum-guide.html) disagree, it is because
+a capstone team is not a full-time product team: you have four other courses,
+your sprints are two weeks because the term is ten, and nobody is a dedicated
+Scrum Master. Read the Scrum Guide once anyway. It is short, it is the
+authoritative definition of the terms your future colleagues will use, and it
+is explicit that the framework is deliberately incomplete.
+
 Each sprint follows the same four-phase cycle:
 
 ```
@@ -147,7 +155,9 @@ A simple approach: estimate each task as **small** (a few hours), **medium** (1-
 
 **Capacity** is how much time the team actually has this sprint, accounting for classes, assignments in other courses, interviews, and other commitments. Be honest about this during planning. Under-promising and over-delivering is better than the reverse.
 
-After a few sprints, the team will have a sense of its **velocity**: roughly how many tasks it completes per sprint. Use this to calibrate future planning.
+After a few sprints, the team will have a sense of its **velocity**: roughly how many tasks it completes per sprint. Use this to calibrate future planning, and only for that. Velocity is a measurement of one team's throughput in that team's own units, so it does not compare across teams and it is not a productivity number. Martin Fowler's argument that [software productivity cannot be measured](https://martinfowler.com/bliki/CannotMeasureProductivity.html) is worth reading before anyone proposes tracking it.
+
+There is a real disagreement here worth knowing about. Ron Jeffries, who helped invent story points, has since written that [he may have invented them and is sorry](https://ronjeffries.com/articles/019-01ff/story-points/Index.html), on the grounds that estimates get used as commitments and then as performance measures no matter how carefully you say they are not. The small/medium/large scheme above is deliberately coarse for that reason: it is precise enough to catch a task that will not fit in a sprint and too vague to be weaponized.
 
 ## Managing Scope Mid-Sprint
 
@@ -169,7 +179,7 @@ Not every team thrives with strict time-boxed sprints. **Kanban** is an alternat
 The core mechanics of Kanban are simple:
 
 1. **Visualize the workflow.** Use a board with columns representing stages of work (e.g., Backlog → In Progress → In Review → Done).
-2. **Limit work in progress (WIP).** Set a cap on how many items can be in each column at the same time. If the "In Progress" column has a WIP limit of 3, nobody starts a new task until one moves forward. This prevents the team from having ten things started and nothing finished.
+2. **Limit work in progress (WIP).** Set a cap on how many items can be in each column at the same time. If the "In Progress" column has a WIP limit of 3, nobody starts a new task until one moves forward. This prevents the team from having ten things started and nothing finished, and it is the mechanic that makes Kanban work: [WIP limits](https://www.atlassian.com/agile/kanban/wip-limits) are what convert a board from a to-do list into a system that surfaces bottlenecks. The [Kanban Guide](https://kanbanguides.org/) is the short authoritative description.
 3. **Pull, don't push.** Team members pull work when they have capacity rather than having work assigned at the start of a sprint.
 
 ### When Kanban Works Well
@@ -187,7 +197,7 @@ A common failure mode: a team adopts Kanban and one or more members stop contrib
 
 ### Scrumban: The Hybrid
 
-Many Capstone teams land somewhere in between, and that is fine. **Scrumban** combines the sprint cadence (for planning and demo checkpoints) with Kanban-style flow (WIP limits, continuous pulling) during the sprint itself. In practice this looks like:
+Many Capstone teams land somewhere in between, and that is fine. **Scrumban** combines the sprint cadence (for planning and demos) with Kanban-style flow (WIP limits, continuous pulling) during the sprint itself. In practice this looks like:
 
 - The team still plans every two weeks and runs a sprint review and retrospective.
 - During the sprint, work flows continuously rather than being frozen into a fixed commitment.
@@ -219,6 +229,8 @@ The difference is usually not raw effort: it is planning fidelity, stand-up hone
 
 ## Tools
 
+Every tool below is replaceable and none of them will save a team that does not maintain its board. Pick the smallest set that covers planning, a visible board, and a record of what happened, and treat anything beyond that as optional.
+
 | Need | Options |
 |------|---------|
 | Sprint board / backlog | GitHub Projects (recommended), Linear, Jira, Trello, Notion |
@@ -227,7 +239,7 @@ The difference is usually not raw effort: it is planning fidelity, stand-up hone
 | Notebooks / experiments | Jupyter, Google Colab, Observable |
 | CI for sprint proof | GitHub Actions, CircleCI, GitLab CI |
 
-Choose tools your team will actually use. A simple GitHub Projects board maintained diligently beats a sophisticated Jira setup that nobody updates.
+Choose tools your team will actually use. A simple GitHub Projects board maintained diligently beats a sophisticated Jira setup that nobody updates, and the maintenance discipline, not the feature set, is what decides whether the board tells you the truth at planning time.
 
 :::note[Reviewed annually]
 The tool names above date faster than anything else on this page. Checked at the annual review.
@@ -243,14 +255,49 @@ The tool names above date faster than anything else on this page. Checked at the
 
 ## Some Truths About Sprints
 
-- The first sprint is always messy. Calibration takes two or three sprints, and that is fine.
-- The Pre-Sprint is not optional. Teams that skip setup and jump straight into feature work tend to rebuild their infrastructure mid-term under pressure.
-- Teams that delay hands-on work until they have a "complete" plan, whether that is a full design document or a comprehensive literature review, almost always deliver less. Start building or experimenting early, even if it is rough.
-- Velocity is a planning tool, not a performance metric. Using it to compare individuals or teams destroys the honesty it depends on.
-- Sprints do not work well without a maintained backlog. If you have nothing planned going into sprint planning, the meeting will be painful.
-- Kanban is not "sprints without deadlines." It requires its own discipline: WIP limits, continuous prioritization, and rigorous board maintenance. Adopting Kanban to avoid sprint commitments is a red flag, not a strategy.
-- Skipping the retrospective is the first sign a team is in trouble. The retro is not optional.
-- Agile is a mindset, not a checklist. The ceremonies are tools; adapt them to your team's needs rather than following them dogmatically.
+Start with the uncomfortable one: a two-week sprint on a capstone team is a
+simulation of a practice designed for people who work on one thing full time.
+Your sprint contains four other courses, two midterms, and a week where nobody
+is available. Real teams have variable capacity too, but not by a factor of
+three. This matters because the ceremony most likely to feel like theater,
+sprint planning, is the one that becomes genuinely useful only when capacity is
+stable enough to learn from. Expect the first two or three sprints to be
+calibration rather than prediction, and do not conclude that the practice is
+worthless when sprint one overruns.
+
+Velocity is where this goes wrong most often. It is a planning aid measured in
+one team's own arbitrary units, and the moment anyone compares it between teams
+or uses it to assess an individual, the people producing the estimates start
+protecting themselves and the numbers stop meaning anything. This is not a
+hypothetical failure: it is common enough in industry that Jeffries, who helped
+popularize the unit, now argues against it. If you track velocity at all, track
+it to answer "did we take on too much" and nothing else.
+
+Kanban is frequently adopted for the wrong reason. It is a genuine alternative
+with its own literature and its own discipline, but on a student team the
+proposal to switch usually arrives right after a sprint the team failed to
+finish, and what is actually being proposed is the removal of the deadline that
+exposed the problem. Kanban without WIP limits and without continuous
+prioritization is not Kanban, it is an untracked to-do list. Switch because
+your work genuinely arrives unpredictably, which is true for some consultancy
+and FOSS teams, not because committing to a sprint goal turned out to be
+uncomfortable.
+
+The ceremony teams drop first is the retrospective, and it is the one with the
+best return. Planning and review produce visible artifacts, so skipping them
+feels like skipping work; the retro produces a conversation, so skipping it
+feels like saving an hour. What you actually lose is the only scheduled moment
+where a process problem can be named by the person experiencing it. A team that
+has quietly stopped running retros usually has an unspoken problem, and the retro
+is how it would have surfaced.
+
+Finally, the whole framework is a means. The [Agile Manifesto](https://agilemanifesto.org/)
+is twelve principles and four value statements, and it is worth reading precisely
+because it is so much smaller than the industry built on top of it. Its
+[principles](https://agilemanifesto.org/principles.html) say nothing about story
+points, burndown charts, or two-week iterations. Adapt the ceremonies to your
+team; keep the goal, which is a working increment and an honest conversation
+about it, every two weeks.
 
 ## Sprints in Industry and Academia
 
@@ -258,7 +305,7 @@ Sprints originated in Scrum, formalized in the early 1990s by Ken Schwaber and J
 
 In practice, industry teams customize heavily: some use one-week sprints, others four-week cycles; some run pure Kanban with no iteration boundaries; many land on a hybrid. The underlying principle (short iterations, frequent feedback, continuous improvement) is nearly universal.
 
-In academic capstone projects, the sprint cadence serves an additional purpose: it creates a documented record of contributions over time, which is exactly what peer evaluations and sprint notes are designed to capture. Even teams that prefer Kanban-style flow should maintain regular demo and retrospective checkpoints to satisfy this need.
+In academic capstone projects, the sprint cadence serves an additional purpose: it creates a documented record of contributions over time, which is the fairest basis anyone has for judging who did what. Even teams that prefer Kanban-style flow should keep regular demos and retrospectives to satisfy this need.
 
 :::note[Process Overhead]
 Sprint ceremonies take time, and it is worth knowing roughly how much. For a two-week sprint, the approximate per-person overhead averages out to:
@@ -275,3 +322,31 @@ That totals roughly **1.5 to 2.5 hours per week** on process, leaving the majori
 
 These are averages. Some weeks will be heavier (planning week, demo prep) and others lighter. The workload also shifts across terms: Fall has more ramp-up overhead, Winter is the most build-intensive, and Spring (at 2 credits) focuses on refinement with naturally lighter sprints. If your process overhead starts crowding out build time, simplify your ceremonies rather than skipping them.
 :::
+
+## Additional Readings
+
+Scrum, Kanban, and the agile literature around them are unusually
+well-documented at the primary-source level, and the primary sources are short.
+Read the Scrum Guide and the Kanban Guide before reading anything written about
+them; almost every disagreement you will encounter is about material those two
+documents do not actually contain.
+
+**Sources and further reading**
+
+- [The Scrum Guide](https://scrumguides.org/scrum-guide.html), Ken Schwaber and Jeff Sutherland: the authoritative definition, about thirteen pages.
+- [The Kanban Guide](https://kanbanguides.org/): the equivalent short definition for flow-based work.
+- [Manifesto for Agile Software Development](https://agilemanifesto.org/) and its [twelve principles](https://agilemanifesto.org/principles.html): the original document, much smaller than the industry built on it.
+- [Story Points Revisited](https://ronjeffries.com/articles/019-01ff/story-points/Index.html), Ron Jeffries: one of the inventors arguing against the practice, and why.
+- [Cannot Measure Productivity](https://martinfowler.com/bliki/CannotMeasureProductivity.html), Martin Fowler: the argument to have ready when someone proposes velocity as a performance metric.
+- [Agile Fluency Model](https://martinfowler.com/articles/agileFluency.html), Diana Larsen and James Shore: what improving at this actually looks like over years, rather than ceremonies adopted at once.
+- [Work in Progress limits](https://www.atlassian.com/agile/kanban/wip-limits), Atlassian: the practical mechanics of setting and tuning WIP limits.
+- [LeSS](https://less.works/less/framework/index): how Scrum is adapted when several teams work on one product, useful context for how much of the framework is negotiable.
+
+**Activities that exercise this**
+
+- [Software Development Process](/activities/planning/#software-development-process): choose and document the process your team will actually run.
+- [Kanban Board Setup](/activities/planning/#kanban-board-setup): build the board and set the WIP limits.
+- [Definition of Done](/activities/planning/#definition-of-done): write the standard this guide keeps referring to.
+- [Regular Stand-Up Meetings](/activities/teamwork/#regular-stand-up-meetings): the daily loop inside the sprint.
+- [Weekly Work Intensity](/activities/planning/#weekly-work-intensity): the capacity honesty that sprint planning depends on.
+- [Prioritization](/activities/planning/#prioritization): how the backlog gets ordered before planning starts.
