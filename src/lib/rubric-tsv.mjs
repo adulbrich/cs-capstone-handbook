@@ -47,12 +47,16 @@ function readTags(rawTitle) {
 function readRatings(cells) {
   const ratings = [];
   for (let i = FIRST_RATING; i < cells.length; i += RATING_GROUP_WIDTH) {
-    const points = Number((cells[i] ?? "").trim());
+    const rawPoints = (cells[i] ?? "").trim();
     const name = (cells[i + 1] ?? "").trim();
     const description = (cells[i + 2] ?? "").trim();
-    if (!(name || description || Number.isFinite(points))) {
+    // Stop at the first wholly empty group, testing the raw points cell rather
+    // than Number(): `Number("")` is 0, which is finite, so a trailing tab run
+    // would otherwise be pushed as a nameless zero-point band and rendered.
+    if (!(rawPoints || name || description)) {
       break;
     }
+    const points = Number(rawPoints);
     ratings.push({
       description,
       name,
