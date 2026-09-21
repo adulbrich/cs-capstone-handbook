@@ -49,7 +49,7 @@ Talk to your partner first: they may have an existing page to update rather than
 | Credits and contact: everyone credited, past contributors acknowledged where applicable, feedback channel present | 15 | SO4 |
 | Polish and accessibility: intentional visual hierarchy, alt text, sufficient contrast, descriptive link text, no broken anything | 20 | SO3 |
 
-For the **polish and accessibility** criterion, the [accessibility guide](/guides/accessibility/) says which checks a tool can run for you and which ones only a manual pass catches. Run both before you submit: the automated pass will not tell you that your alt text describes the wrong thing.
+For the **polish and accessibility** criterion, the standard being graded is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) level AA: [text alternatives](https://www.w3.org/WAI/tutorials/images/) on meaningful images, 4.5:1 contrast on body text, and link text that makes sense out of context. Run [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [axe](https://github.com/dequelabs/axe-core) first, then do a manual pass: automated tools catch roughly a third of the issues ([W3C's evaluation guidance](https://www.w3.org/WAI/test-evaluate/) says why), and none of them will tell you that your alt text describes the wrong thing. The [accessibility guide](/guides/accessibility/) covers both halves.
 
 **AI use:** AI may write copy and code for the page. Every claim about features, capabilities, and results must be accurate; a landing page that oversells what exists is graded as inaccurate, not ambitious.
 

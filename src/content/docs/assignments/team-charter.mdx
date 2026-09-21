@@ -20,7 +20,7 @@ import AssignmentMeta from '/src/components/AssignmentMeta.astro';
   Winter's charter refresh is part of the first [Repo Checkpoint](/assignments/repo-checkpoints/) of the term, and spring's closes the [Team Health Assessment workshop](/assignments/workshop-activities/#spring-2-items-1) in week 2; neither is a separate assignment.
 </AssignmentMeta>
 
-Every functioning engineering team runs on an agreement about how it works, whether or not anyone wrote it down. Teams that write it down early move faster, argue better, and survive their first bad week. Teams that do not spend winter discovering their agreement by collision. The charter is that agreement: short, specific, and written before you need it.
+In this assignment you will write your team's operating agreement: who owns what, how decisions get made, what has to be true before code merges, and what happens when the team is not working. It is due in week 2, before you have had the arguments it settles. The [Working Agreement guide](/guides/working-agreement/) explains why teams write one and has patterns to steal; this page says what you submit.
 
 The charter lives in your repository as `docs/charter.md`. Git history is the change log; there is no separate revision table to maintain. When the charter changes (and it should, as your retrospectives teach you things), change the file and commit.
 
@@ -29,8 +29,8 @@ The charter lives in your repository as `docs/charter.md`. Git history is the ch
 Three artifacts, all in the repository:
 
 1. **`docs/charter.md`**: the charter itself, 2 to 4 pages of focused, scannable policy (sections below).
-2. **`CONTRIBUTING.md`**: setup steps a new contributor can follow, local commands for tests and linting, the branch and PR workflow, code review expectations, and where to ask for help. Start from the [CONTRIBUTING template](/CONTRIBUTING-template.md).
-3. **The AI context file** (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. `AGENTS.md` is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
+2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**: setup steps a new contributor can follow, local commands for tests and linting, the branch and PR workflow, code review expectations, and where to ask for help. Start from the [CONTRIBUTING template](/CONTRIBUTING-template.md).
+3. **The AI context file** (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
 
 Submit the repository link on Canvas. NDA teams submit a PDF export of all three files.
 
@@ -52,7 +52,7 @@ Commit to a rotation such that **every student chairs at least one decision per 
 
 ### 2. Decision Process
 
-How choices are proposed, decided, and escalated: your decision rule (consent, majority, PM tie-break), where decisions get recorded (see the [ADR guide](/guides/adr/)), and at least one explicit escalation or override rule for when you are stuck.
+How choices are proposed, decided, and escalated: your decision rule (consent, majority, PM tie-break), where decisions get recorded (see the [ADR guide](/guides/adr/), and [adr.github.io](https://adr.github.io/) for templates), and at least one explicit escalation or override rule for when you are stuck.
 
 ### 3. Cadence and Tools
 
@@ -64,7 +64,7 @@ A restorative, stepwise conflict path: name it early, talk directly, involve the
 
 ### 5. Definition of Done
 
-The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI gates that enforce them. Point at the actual CI configuration; a Definition of Done that nothing enforces is a wish.
+The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the actual CI configuration; a Definition of Done that nothing enforces is a wish.
 
 ### 6. Inclusion Norms
 

@@ -1,6 +1,6 @@
 ---
 title: Repo Checkpoints
-description: Twice-a-term review of the living repository, replacing standalone requirements and technical design documents.
+description: Twice-a-term staff review of your requirements, design, decision and risk documents in the repository, graded in place.
 sidebar:
   order: 10
 assignment:
@@ -26,12 +26,12 @@ Your requirements and design documents live in your repository under `docs/`, st
 - `docs/design.md`: the system view someone would need to contribute safely: context, key diagrams, interfaces and contracts, deployment shape. The [technical design guide](/guides/technical-design/) says what the document must decide and how to keep it current.
 - `docs/rfcs/` or `docs/adr/`: recorded decisions. Either directory is fine, and so is both; several published agent skill sets write to `docs/adr/` by default, and fighting your tooling over a directory name is a waste of a term. See the [ADR guide](/guides/adr/).
 - `docs/risks.md`: **one** risk register for the whole project (process, product, and technical risks together), ranked, with owners. This is the only risk register; do not maintain copies elsewhere.
-- `README.md`: an honest quickstart that a new contributor (or grader) can actually follow.
-- `CONTRIBUTING.md` and the AI context file (`AGENTS.md`, `CLAUDE.md`, or your tool's equivalent) from your [Team Charter](/assignments/team-charter/). `AGENTS.md` is the cross-tool convention and the safest default; per-tool files should point at it rather than duplicate it, because two instruction files disagreeing with each other is worse than none.
+- `README.md`: an honest quickstart that a new contributor (or grader) can actually follow. [makeareadme.com](https://www.makeareadme.com/) lists what a reader looks for.
+- [`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and the AI context file (`AGENTS.md`, `CLAUDE.md`, or your tool's equivalent) from your [Team Charter](/assignments/team-charter/). [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default; per-tool files should point at it rather than duplicate it, because two instruction files disagreeing with each other is worse than none.
 
 ## What CI Must Do
 
-Every outcome type needs continuous integration, but "have a GitHub Actions workflow" is the wrong requirement: a team contributing upstream to someone else's repository cannot satisfy it, and a research team can satisfy it while testing nothing. The minimum is stated as outcomes:
+Every outcome type needs [continuous integration](https://martinfowler.com/articles/continuousIntegration.html), but "have a GitHub Actions workflow" is the wrong requirement: a team contributing upstream to someone else's repository cannot satisfy it, and a research team can satisfy it while testing nothing. The minimum is stated as outcomes:
 
 1. **Every change reaches the default branch through a pull request** that someone other than the author approved.
 2. **An automated check runs on every pull request, and it can actually fail.** A check that passes unconditionally is not a check. Break something on a branch once and watch it go red, so you know.
@@ -42,7 +42,7 @@ What that looks like depends on your outcome type:
 
 | Outcome type | Realization |
 |---|---|
-| New Product or Game, Consultancy | A workflow that installs from a lockfile, builds, lints, and runs the test suite on every pull request |
+| New Product or Game, Consultancy | A workflow that installs from a [lockfile](https://docs.npmjs.com/cli/v10/configuring-npm/package-lock-json), builds, lints, and runs the test suite on every pull request |
 | FOSS | Upstream's CI passes on your pull request, and your fork documents the build-and-test command a maintainer expects you to have run before submitting |
 | Research | The pipeline runs end to end on a small sample dataset in CI, with at least one test asserting a known result rather than the pipeline merely exiting zero |
 
@@ -53,7 +53,7 @@ Each term's second checkpoint carries a gate that pulls the year's risk forward:
 | Checkpoint | Gate |
 |---|---|
 | Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real, **and the week 10 production target is written down and agreed with your partner**; teams starting in an existing codebase also have their inherited-codebase audit written ([Project Types](/practicalities/types/#where-the-code-starts) says what it covers) |
-| Fall, week 10 | **"Hello, production"**: a [walking skeleton](/walking-skeleton-prototype-template.md) (the thinnest end-to-end slice of your system that actually runs) deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
+| Fall, week 10 | **"Hello, production"**: a [walking skeleton](/walking-skeleton-prototype-template.md) ([the thinnest end-to-end slice of your system that actually runs](https://wiki.c2.com/?WalkingSkeleton)) deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
 | Winter, week 5 | Integration health: the skeleton has organs; CI meaningful; real-user session scheduled |
 | Winter, week 10 | **Release candidate**: installable/deployable by a stranger, plus evidence of at least one real-user session |
 
