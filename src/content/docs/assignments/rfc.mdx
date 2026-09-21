@@ -19,13 +19,15 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Individual" due="Fall and winter: draft week 4, final week 8" weight="15% of the term grade" />
 
-An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. You write one per term, in fall and winter, about a **real decision your team currently faces that is hard to reverse**. Not a hypothetical and not a retrospective justification of something already built: a live decision where your document should change what the team does.
+An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. The name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), which is how the internet's protocols are still specified; the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). You write one per term, in fall and winter, about a **real decision your team currently faces that is hard to reverse**. Not a hypothetical and not a retrospective justification of something already built: a live decision where your document should change what the team does.
 
 :::note[Picking a decision that is actually yours]
-One-way doors are typically architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments: undoing them costs far more than getting them right now. Most feature code is a two-way door. Telling one from the other is itself part of the exercise, and it is the judgment that matters most when much of the building is delegated.
+One-way doors are typically architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments: undoing them costs far more than getting them right now. Most feature code is a two-way door. The distinction comes from Amazon's [shareholder letter on two-way doors](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders), which argues that using a heavyweight process on a reversible decision is its own failure. Telling one from the other is itself part of the exercise, and it is the judgment that matters most when much of the building is delegated.
 
 Two situations make the choice harder, and both are ordinary:
 
@@ -65,17 +67,7 @@ Feedback is structured: for each draft you review, answer four questions in writ
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Problem framing and context: a newcomer understands the decision and the stakes | 15 | SO1 |
-| Options: three or more credible options including "do nothing", with honest costs | 10 | SO1 |
-| Technical tradeoff analysis: argued from cited sources and evidence specific to this project, acknowledges uncertainty | 15 | SO6, L07 |
-| Recommendation with a concrete verification plan | 15 | SO2 |
-| Constraints: licensing, data use, IP, confidentiality boundary addressed | 10 | SO4 |
-| Delegation and validation: what you handed to AI tools, the safety net that made that reasonable, and the points where you validated yourself | 10 | SO4 |
-| Writing: within the term's length band (800 to 1,500 words in fall, 1,500 to 2,500 in winter), headed by the required sections in order, and every claim about the system names a file, a pull request, or a measurement | 10 | SO3, L08 |
-| Revision: substantive response to feedback, with a response note | 10 | SO3, L09 |
-| Feedback given: your written reviews of two peer drafts are specific and useful | 5 | SO3 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-rubric-details.tsv" />
 
 Non-submission of the draft forfeits the revision points (there is nothing to revise); non-submission of peer feedback forfeits those 5 points and is visible to the affected teams. If your assigned reviewer no-shows, flag it to your TA: you will not be penalized for feedback you never received, and staff will supply a review. The standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies.
 

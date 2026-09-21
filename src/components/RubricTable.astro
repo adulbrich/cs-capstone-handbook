@@ -1,0 +1,244 @@
+---
+import { parseRubricTsv, rubricTotal } from "../lib/rubric-tsv.mjs";
+
+/**
+ * RubricTable: renders an assignment's rubric from the Canvas rubric TSV.
+ *
+ * The TSV under `canvas/assignments/<dir>/` is the single source of truth for
+ * every rubric (#144). It is what the Canvas rubric-import browser extension
+ * consumes, and this component renders the same file on the handbook page, so
+ * the two cannot drift. Nothing here is hand-maintained alongside it.
+ *
+ * The format is Canvas's own rubric import ordering, headerless:
+ *
+ *   0: criterion title, with its outcome tags in brackets ("Blameless [SO4]")
+ *   1: criterion description (the sentence saying what is being judged)
+ *   2: use_range ("true"/"false"); Canvas reads it, the handbook does not
+ *   3+: repeating rating groups of three (points, title, description)
+ *
+ * Reading the rating groups as a repeating triple rather than a fixed count is
+ * what lets one component serve every shape in this repository: nine fields
+ * for a pass/fail rubric, twelve for the usual three bands, and fifteen for
+ * `defense`, which carries a fourth `Missing` band.
+ *
+ * Accessibility notes:
+ * - A real <table> with a <caption> and header cells, so a screen reader can
+ *   announce the criterion a rating belongs to instead of reading loose text.
+ * - Each rating's points and band name are text, never conveyed by color or
+ *   position alone.
+ * - Colors come from Starlight's custom properties, so both themes and their
+ *   contrast ratios are inherited rather than re-invented.
+ * - Outcome tags are rendered as text in their own labelled cell. They are the
+ *   accreditation record and must survive being read aloud.
+ *
+ * Usage in MDX:
+ *
+ *   import RubricTable from '/src/components/RubricTable.astro';
+ *   import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
+ *
+ *   <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-rubric-details.tsv" />
+ *
+ * `?raw` is a Vite feature and needs no Astro configuration. A missing file
+ * fails the build; `scripts/validate-outcomes.mjs` catches the other half,
+ * which is a page importing a TSV that belongs to a different assignment.
+ */
+interface Props {
+  /** Repository-relative path, used in error messages and checked by the validator. */
+  sourceLabel: string;
+  /** The TSV file's contents, imported with `?raw`. */
+  tsv: string;
+}
+
+const { tsv, sourceLabel } = Astro.props;
+
+const criteria = parseRubricTsv(tsv, sourceLabel);
+const totalPoints = rubricTotal(criteria);
+---
+
+<div class="rubric not-content">
+  <table>
+    <caption>
+      Rubric: {totalPoints} points across {
+        criteria.length
+      } criteria
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col" class="rubric__criterion-col">Criterion</th>
+        <th scope="col">Ratings</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        criteria.map((c) => (
+          <tr>
+            <th scope="row">
+              <span class="rubric__title">{c.title}</span>
+              {c.description && (
+                <span class="rubric__description">{c.description}</span>
+              )}
+              <span class="rubric__points">
+                {c.maxPoints} points
+              </span>
+              {c.tags.length > 0 && (
+                <span class="rubric__tags">
+                  <span class="rubric__tags-label">Outcomes: </span>
+                  {c.tags.join(", ")}
+                </span>
+              )}
+            </th>
+            <td>
+              <ul class="rubric__ratings">
+                {c.ratings.map((r) => (
+                  <li>
+                    <span class="rubric__band">
+                      {r.name} ({r.points})
+                    </span>
+                    {r.description && (
+                      <span class="rubric__band-description">
+                        {r.description}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .rubric {
+    margin-block: 1.5rem;
+    /* The bands are wide; let the table use the full content column. */
+    overflow-x: auto;
+  }
+
+  .rubric table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sl-text-sm);
+  }
+
+  .rubric caption {
+    caption-side: top;
+    text-align: start;
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sl-color-gray-3);
+    padding-block-end: 0.5rem;
+  }
+
+  .rubric th,
+  .rubric td {
+    text-align: start;
+    vertical-align: top;
+    padding: 0.75rem;
+    border-block-start: 1px solid var(--sl-color-gray-5);
+  }
+
+  .rubric thead th {
+    font-size: var(--sl-text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sl-color-gray-3);
+    border-block-start: 0;
+    padding-block-end: 0.35rem;
+  }
+
+  .rubric__criterion-col {
+    width: 30%;
+    min-width: 11rem;
+  }
+
+  .rubric tbody th {
+    font-weight: 400;
+  }
+
+  .rubric__title,
+  .rubric__description,
+  .rubric__points,
+  .rubric__tags {
+    display: block;
+  }
+
+  .rubric__title {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .rubric__description {
+    margin-block-start: 0.35rem;
+    color: var(--sl-color-gray-2);
+  }
+
+  .rubric__points {
+    margin-block-start: 0.5rem;
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .rubric__tags {
+    margin-block-start: 0.2rem;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+
+  /*
+   * Bands sit side by side only where each one has room to read. `auto-fit`
+   * with a floor measures the cell rather than the viewport, which matters
+   * because Starlight's content column is far narrower than the window: a
+   * viewport media query put four bands into a 30rem column and wrapped every
+   * label onto three lines.
+   */
+  .rubric__ratings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rubric__band,
+  .rubric__band-description {
+    display: block;
+  }
+
+  .rubric__band {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .rubric__band-description {
+    margin-block-start: 0.2rem;
+    color: var(--sl-color-gray-2);
+  }
+
+  @media (prefers-contrast: more) {
+    .rubric th,
+    .rubric td {
+      border-block-start-width: 2px;
+    }
+    .rubric__description,
+    .rubric__band-description,
+    .rubric__tags {
+      color: var(--sl-color-white);
+    }
+  }
+
+  @media print {
+    .rubric {
+      overflow-x: visible;
+    }
+    .rubric th,
+    .rubric td {
+      border-block-start: 1px solid #000;
+    }
+  }
+</style>

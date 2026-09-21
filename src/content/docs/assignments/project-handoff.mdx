@@ -16,6 +16,8 @@ assignment:
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricTsv from '/canvas/assignments/project-handoff/project-handoff-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Spring, week 10" weight="5% of the spring grade">
   The last thing your team ships.
@@ -37,7 +39,7 @@ What the project is and what problem it solves; the current deployment or delive
 
 ### 2. Setup a Stranger Can Follow
 
-From nothing to running: prerequisites with versions, copy-pasteable install and build commands, how to run the tests, how to run a local development environment, how to deploy (or a pointer to the runbook), and the pitfalls you know about with their fixes. This should largely already exist in `README.md` and `CONTRIBUTING.md`; the handoff points at it and fills gaps rather than duplicating it. **Verify it**: have the team member who least knows the setup path (or your partner) execute it clean and fix what breaks.
+From nothing to running: prerequisites with versions, copy-pasteable install and build commands, how to run the tests, how to run a local development environment, how to deploy (or a pointer to the runbook), and the pitfalls you know about with their fixes. This should largely already exist in [`README.md`](https://www.makeareadme.com/) and [`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors); the handoff points at it and fills gaps rather than duplicating it. **Verify it**: have the team member who least knows the setup path (or your partner) execute it clean and fix what breaks.
 
 ### 3. Known Issues, Limitations, and Future Work
 
@@ -45,7 +47,7 @@ An honest, prioritized accounting: open bugs with severities (link the tracker),
 
 ### 4. The Living Docs
 
-Links into the repository's living documentation, each confirmed current as of handoff: `docs/requirements.md`, `docs/design.md`, `docs/shipped.md`, and `docs/risks.md`, plus `docs/rfcs/` for the decision record. The successor team's first task is an audit of what you left behind ([Project Types](/practicalities/types/#where-the-code-starts) lists what it covers), so write the handoff to answer that audit. The [Repo Checkpoints](/assignments/repo-checkpoints/) kept them honest, and the forward-looking section of your [Project Retrospective](/assignments/project-retrospective/) tells the successor how to read them. See the [Documentation guide](/guides/documentation/).
+Links into the repository's living documentation, each confirmed current as of handoff: `docs/requirements.md`, `docs/design.md`, `docs/shipped.md`, and `docs/risks.md`, plus `docs/rfcs/` for the decision record. The successor team's first task is an audit of what you left behind ([Project Types](/practicalities/types/#where-the-code-starts) lists what it covers), so write the handoff to answer that audit. The [Repo Checkpoints](/assignments/repo-checkpoints/) kept them honest, and the forward-looking section of your [Project Retrospective](/assignments/project-retrospective/) tells the successor how to read them. See the [Documentation guide](/guides/documentation/), and [Diataxis](https://diataxis.fr/) if you are unsure whether a given page should be a tutorial, a how-to, a reference, or an explanation.
 
 ### 5. Handoff Checklist and Partner Confirmation
 
@@ -66,13 +68,7 @@ The school may share project archives with future students and project partners 
 
 ## Rubric (100 points)
 
-| Criterion | Points | Outcome |
-|---|---|---|
-| Overview and status: a newcomer is oriented in half a page, exclusions and contacts explicit | 15 | SO3 |
-| Setup: complete, copy-pasteable, and actually verified by a fresh run | 30 | SO2 |
-| Known issues and future work: prioritized, severities and credential transfer covered, honest tone | 20 | SO6 |
-| Living docs: all four linked and current, decision record reachable | 10 | SO1 |
-| Checklist, written partner confirmation, and release-consent declaration all complete | 25 | SO4 |
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/project-handoff/project-handoff-rubric-details.tsv" />
 
 **AI use:** AI may draft and assemble from your repository; that is what the living docs were for. Do not let it invent steps, links, or artifact locations: every command and URL in this document must work, because the person who discovers otherwise cannot ask you anymore.
 
