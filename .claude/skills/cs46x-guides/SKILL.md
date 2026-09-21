@@ -1,6 +1,6 @@
 ---
 name: cs46x-guides
-description: Use when creating or editing guide pages (MDX files in src/content/docs/guides/) for the CS 461/462/463 capstone handbook. Defines the explanation register, the rule that guides are standalone and never reference assignments or workshops outside one opening aside, the section skeleton including the required Some Truths, Industry and Academia, and Additional Readings sections, the sourcing rule, and the word band. Always load this skill before writing or editing any guide file.
+description: Use when creating or editing guide pages (MDX files in src/content/docs/guides/) for the CS 461/462/463 capstone handbook. Defines the explanation register, the rule that guides are standalone and never reference assignments or workshops at all, the section skeleton including the required Some Truths, Industry and Academia, and Additional Readings sections, the sourcing rule, and the word band. Always load this skill before writing or editing any guide file.
 ---
 
 # Guide Style Guide
@@ -39,9 +39,9 @@ The three-way split in this handbook is load-bearing, so keep it clean:
 | **Assignments** | "What is due, when, and how is it scored?" | Yes, and they are the source of truth |
 
 A guide **never** states due dates, point values, rubric criteria, or weights,
-and beyond that it does not reference assignments, workshops, or checkpoints in
-its body at all. See [Guides Are Standalone](#guides-are-standalone) for the one
-permitted exception. Guides may aspire beyond what assessment requires; that is
+and beyond that it does not reference assignments, workshops, or checkpoints
+anywhere. See [Guides Are Standalone](#guides-are-standalone): the link runs
+from the assignment to the guide, never back. Guides may aspire beyond what assessment requires; that is
 their job. Assignments accommodate.
 
 Guides are also where explanatory bulk belongs when an activity starts growing
@@ -114,9 +114,7 @@ them only when they say something (`conflict.mdx` keeps Validation and
 Measuring Success because its signals are real). The middle flexes with the
 topic.
 
-1. **Opening (no heading).** The purpose line, then optionally the single
-   `<Aside>` naming what this guide supports (the only place an assignment may
-   appear), then two to four paragraphs. Say what the thing is, link the
+1. **Opening (no heading).** The purpose line, then two to four paragraphs. Say what the thing is, link the
    authoritative external reference, and state what goes wrong without it. `adr.mdx` and `requirements.mdx` both use a short bulleted list of
    failure modes here, which works well and is worth copying:
 
@@ -251,20 +249,19 @@ checkpoints, grades, terms, or weeks of the course. Not "your
 fall workshop", not "deploy the walking skeleton by the end of fall". Say what
 the practice is and why it matters, and let the reader decide when to apply it.
 
-There is exactly one exception. **A guide may open with a single aside, before
-the first heading, naming what it supports.** That aside may link specific
-assignment pages. It is the only place in the guide where an assignment appears.
+There is no exception, including an aside at the top. **The link between a
+guide and an assignment runs one way: the assignment points at the guide.**
 
-```mdx
-<Aside title="Where this helps">
-This guide supports the [Team Charter](/assignments/team-charter/). The
-[Sprint Notes](/assignments/sprint-notes/) are where a contribution problem
-becomes observable.
-</Aside>
-```
+The reason is maintenance, not purity. Assignments change every year: they get
+renamed, split, retired, reweighted. A guide that names one has to be revisited
+whenever that happens, and in practice it is not, so the handbook accumulates
+guides that point at pages which have moved. Keeping the reference on the
+assignment side means the page that changes is the page that carries the link,
+and a guide is only ever edited when the practice it teaches changes.
 
-Keep it to a sentence or two. It names the pages and stops; it does not explain
-requirements, due weeks, or how anything is scored.
+So: no `/assignments/` link anywhere in a guide, and no prose that assumes the
+reader is enrolled. If a reader needs to know that a practice is assessed, they
+are already on the assignment page, and that page links here.
 
 **Activities are different and are welcome anywhere.** A guide may recommend an
 activity in the body and lists them in `## Additional Readings`, because an
@@ -280,9 +277,13 @@ assignment page wins.
 
 ## Cross-Linking
 
-Expect links **in** from assignment pages. Renaming a heading in a guide breaks
-those, so grep `src/content/docs/**` for the old anchor before you rename, and
-let `npm run build` confirm.
+Every link between a guide and an assignment points **in**, from the assignment.
+Renaming a heading in a guide breaks those inbound links, so grep
+`src/content/docs/**` for the old anchor before you rename, and let
+`npm run build` confirm.
+
+Guides link **out** freely to other guides, to activities, and to external
+sources. Those are the three destinations a guide may name.
 
 Three topics tempt every guide to restate them. Each has one owner; the
 others link:
@@ -404,10 +405,11 @@ the failure this skill exists to prevent.
    and anchor, which is the only reliable check on the anchors you wrote.
 2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
    covers outcome tags and grading language on guides, the second em dashes.
-3. Confirm the guide is standalone: `grep -n '/assignments/\|[Ww]orkshop\|checkpoint' `
-   on the file should return nothing outside the opening aside. A hit in the
-   body, including inside an activity's description in Additional Readings, is
-   the rule above being broken.
+3. Confirm the guide is standalone: `grep -n '/assignments/\|[Ww]orkshop\|checkpoint'`
+   on the file must return nothing at all. Any hit, including one inside an
+   activity's description in Additional Readings, is the rule above being
+   broken. The only tolerated match is a third-party URL whose slug happens to
+   contain one of those words.
 4. Confirm the final four sections are present and in order: Best Practices,
    Some Truths, Industry and Academia, Additional Readings. Their absence is
    the most common way a new guide fails to match the others. For an artifact
