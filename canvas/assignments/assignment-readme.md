@@ -7,22 +7,37 @@
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is the source of truth for all graded work, and each rubric here is the source of truth for itself.** Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
 
-## Re-import Required: All Rubrics (#144)
+## Re-import Required: 11 Rubrics, 1 New (#144)
 
-Every TSV in this directory gained a **criterion description** in field 2, which
-was empty before. The description is the sentence the handbook rubric table used
-to carry after the criterion name ("Setup: complete, copy-pasteable, and
-actually verified by a fresh run" becomes the criterion `Setup` with that
-sentence as its description). Canvas shows it under the criterion name, so
-graders now see the check rather than only the label.
+Since #144 the handbook page renders this directory's TSV, so a rubric exists
+once. Populating **field 2**, Canvas's criterion description column, moved the
+sentence the handbook rubric table used to carry after the criterion name
+("Setup: complete, copy-pasteable, and actually verified by a fresh run" becomes
+the criterion `Setup` with that sentence as its description). Canvas graders now
+see the check rather than only the label.
 
-**Points, band descriptions, and outcome tags are unchanged in every file.** Only
-field 2 moved, and 18 descriptions that merely restated their own Exceeds band
-were left empty rather than doubling the row.
+**Points, band descriptions and outcome tags are byte-identical in every file.**
+Only field 2 changed, so no score moves and no gradebook is affected.
 
-`term-retrospective/` is new: the fall Term Retrospective had a handbook rubric
-and no TSV, which this file recorded as owed. It needs creating in Canvas, not
-re-importing.
+**Re-import these 11:**
+
+`career-retrospective`, `defense`, `definition-of-shipped`, `incident-postmortem`,
+`project-handoff`, `project-landing-page`, `project-retrospective`,
+`repo-checkpoint`, `resume-and-intent`, `rfc`, `spring-release`.
+
+**Create this one in Canvas:** `term-retrospective`. The fall Term Retrospective
+had a handbook rubric and no TSV, which this file recorded as owed. Five
+criteria at 25/20/20/25/10, three bands.
+
+**Do nothing for these two:** `sprint-note` and `team-charter` are unchanged.
+Every one of their handbook criterion clauses only restated its own Exceeds
+band, so field 2 stayed empty rather than printing the same sentence twice in
+one row. 18 of the 68 descriptions produced were dropped for that reason; 50 of
+the 75 criterion rows across all 14 rendered TSVs carry a description.
+
+**Not rubrics students are shown, unchanged and not re-imported:**
+`individual-contribution` and `workshop-activities`. Both are tagless, both hold
+one TSV per term, and no handbook page renders either.
 
 ## Grade Architecture (every term)
 

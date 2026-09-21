@@ -67,7 +67,7 @@ Port `RubricTable.astro` from cs312 into `src/components/`. Three changes for th
 2. **Render the outcome tags as their own column or badge.** The capstone's field 1 carries `[SO2, SO4]`; cs312's does not use tags. Parse them out of the title so the page keeps the accreditation record visible rather than burying it in a bracket.
 3. **Keep the variable-width rating-group loop unchanged.** It reads repeating three-column groups until an empty one, which is why `defense` (four bands, 15 fields, with a `Missing` band at 0) works with no special case, alongside the twelve-field three-band rubrics and the nine-field pass/fail ones.
 
-Tailwind v4 is already a dependency (`@tailwindcss/vite`, `astro.config.mjs:157`), so the component's utility classes port as written.
+Tailwind v4 is a dependency (`@tailwindcss/vite`, `astro.config.mjs:157`), so cs312's utility classes would port as written. **Superseded in implementation, see section 9:** they were not used. Every component in `src/components/` styles itself with a scoped `<style>` block over Starlight's custom properties, and a single Tailwind-styled component would have been the odd one out.
 
 ## 5. What `validate-outcomes.mjs` becomes
 
@@ -92,14 +92,6 @@ The validator currently parses the MDX rubric table as the source of truth (`ext
 
 **6.2 One page, several TSVs. Resolved: neither is rendered.** `workshop-activities` and `individual-contribution` hold one TSV per term because the item count differs by term, and `sprint-notes.mdx` was mapped from two directories at once. Both turned out to be Canvas-only: the workshop page has no rubric section, and the individual contribution modifier is described in prose on the Sprint Notes page rather than shown as a table. So the component keeps its single `tsv` prop, `sprint-notes.mdx` renders `sprint-note/` only, and the validator's new `CANVAS_ONLY` set holds the two directories so the unmapped-directory guard does not fire on them.
 
-## 9. What implementation changed about this design
-
-Two things the record did not anticipate, both found by reading the rendered output:
-
-**Descriptions that only restate the top band were dropped.** Moving every handbook criterion clause into field 2 produced 68 descriptions, of which **18 were near-identical to their own Exceeds band** (`incident-postmortem` row 1 was a character-for-character match). Rendered, the row said the same sentence twice. Those 18 are empty; the remaining 50 add something the bands do not.
-
-**Code spans were stripped.** Four descriptions inherited backticks from the MDX (`docs/design.md`). No band description anywhere in the corpus uses them and Canvas renders a backtick literally, so they were removed rather than teaching the component Markdown for four rows.
-
 ## 7. What this inverts
 
 `AGENTS.md` hard rule 4 reads "The handbook outranks Canvas. If a rubric TSV and a handbook rubric table disagree, the handbook is right and the TSV is the bug." After this change there is no handbook rubric table to disagree with, and the TSV is the rubric. The rule needs rewriting rather than deleting: the handbook still outranks what is *in* Canvas, because the TSV is imported into Canvas and never read back out. The `cs46x-assignments` skill's **Canvas Mirroring** section needs the same treatment, and its "twelve fields" claim is already wrong for `defense`.
@@ -107,3 +99,11 @@ Two things the record did not anticipate, both found by reading the rendered out
 ## 8. Sequencing
 
 After #140 and #143 merge. Both touch assignment pages, and #143 rewrites prose on all eighteen of them; landing a structural change to the same files underneath an in-flight prose migration buys nothing and costs a merge.
+
+## 9. What implementation changed about this design
+
+Two things the record did not anticipate, both found by reading the rendered output:
+
+**Descriptions that only restate the top band were dropped.** Moving every handbook criterion clause into field 2 produced 68 descriptions, of which **18 were near-identical to their own Exceeds band** (`incident-postmortem` row 1 was a character-for-character match). Rendered, the row said the same sentence twice. Those 18 are empty; the remaining 50 add something the bands do not.
+
+**Code spans were stripped.** Four descriptions inherited backticks from the MDX (`docs/design.md`). No band description anywhere in the corpus uses them and Canvas renders a backtick literally, so they were removed rather than teaching the component Markdown for four rows.
