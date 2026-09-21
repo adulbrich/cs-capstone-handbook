@@ -51,7 +51,7 @@ Communication norms matter as much as code. Read the project's [CONTRIBUTING fil
 
 Know your **store clocks** if you are distributing through one. Apple: developer account approval can take days, and [Apple reviews about 90% of submissions in under 24 hours](https://developer.apple.com/app-store/review/), but that is the clock on one round. Rejections and resubmission loops are routine, first submissions get extra scrutiny, and review slows near holidays. Google Play: new personal accounts face a testing requirement (a closed test with a dozen testers over two weeks) before production access, and the [test tracks](https://developer.android.com/distribute/best-practices/launch/test-tracks) are worth understanding before you need them. For games, **[itch.io](https://itch.io/developers) is the fast path**: no review queue, upload and publish the same day. Ship on itch.io early even if a store launch is the end goal.
 
-Add an **analytics or telemetry starter in fall**, not spring: a privacy-respecting page-view and event counter ([Plausible](https://plausible.io/), [Umami](https://umami.is/), [PostHog](https://posthog.com/)) or a simple event log. Your Definition of Shipped requires metrics; metrics require instrumentation that has been quietly collecting since before you needed it.
+Add an **analytics or telemetry starter in fall**, not spring: a privacy-respecting page-view and event counter ([Plausible](https://plausible.io/), [Umami](https://umami.is/), [PostHog](https://posthog.com/)) or a simple event log. Any credible claim about use requires metrics, and metrics require instrumentation that has been quietly collecting since before you needed it.
 
 | Term | What must be true |
 |---|---|
@@ -99,7 +99,7 @@ Get the pipeline running end to end on sample data in fall. Clearing that bar ea
 - **Partner integrating:** the system running in the **partner's** environment, which means their IT department has said yes: accounts provisioned, security review passed, data handling approved.
 - **In production:** all of the above plus a handoff the partner's people can operate without you.
 
-**Ask about IT and security review in your first fall meeting.** "Who has to approve software running in your environment, and how long does that take?" At small nonprofits the answer may be "the director, tomorrow." At hospitals, school districts, government agencies, and large companies, the answer is a formal review measured in **months**, sometimes with penetration tests, data protection assessments, or vendor onboarding forms. Whatever the answer, put it in your Definition of Shipped with an owner and a start-by date.
+**Ask about IT and security review in your first fall meeting.** "Who has to approve software running in your environment, and how long does that take?" At small nonprofits the answer may be "the director, tomorrow." At hospitals, school districts, government agencies, and large companies, the answer is a formal review measured in **months**, sometimes with penetration tests, data protection assessments, or vendor onboarding forms. Whatever the answer, write it into your plan with an owner and a start-by date.
 
 **Agree on acceptance criteria early and in writing.** The "feedback addressed" rung is only checkable against criteria the partner endorsed before you built. Vague scope is how consultancy projects hit spring with a partner who feels the system "isn't what we asked for."
 
@@ -123,7 +123,7 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 - Deploy the walking skeleton while there is nothing to lose. A production URL with a placeholder page flushes out the whole dependency chain at zero risk.
 - Instrument before you need the numbers. Analytics wired in fall is evidence in spring; analytics wired in spring week 8 is a screenshot of an empty chart.
 - Treat recruiting strangers as a workstream: an owner, a channel that exists, backlog items, starting in winter.
-- Put dates earlier than winter week 10 in your Definition of Shipped, and renegotiate the rung in the open when they slip rather than discovering the slip in spring week 10.
+- Put dates in the first half of the project, not the second, and renegotiate the rung in the open when they slip rather than discovering the slip at the end.
 - Read the ladder literally and plan for the rung you can prove, not the one you hope for.
 - Capture evidence the day it happens (the merged PR, the dashboard, the maintainer's comment, the partner's email) and link it from `docs/shipped.md`.
 
@@ -137,7 +137,7 @@ Everything below follows from one fact stated at the top of this page: the long 
 - Strangers are not friends who haven't heard of you yet. Recruiting users you don't know is a project workstream with its own backlog items, not a tweet you send in week 9.
 - "The partner will deploy it after the course ends" is "feedback addressed" wearing "in operations" as a costume. If it is not in their environment by spring, it is not shipped.
 - Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not APIs with SLAs. Being early, polite, and responsive is a technical skill.
-- If your Definition of Shipped contains no date earlier than winter week 10, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
+- If your shipping plan contains no date in the first half of the project, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
 - Evidence collected in the moment costs minutes; evidence reconstructed at the end of the year is thin, undated and unconvincing. Screenshot the milestone the day it happens.
 
 ## Shipping in Industry and Academia

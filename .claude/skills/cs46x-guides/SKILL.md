@@ -405,11 +405,27 @@ the failure this skill exists to prevent.
    and anchor, which is the only reliable check on the anchors you wrote.
 2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
    covers outcome tags and grading language on guides, the second em dashes.
-3. Confirm the guide is standalone: `grep -n '/assignments/\|[Ww]orkshop\|checkpoint'`
-   on the file must return nothing at all. Any hit, including one inside an
-   activity's description in Additional Readings, is the rule above being
-   broken. The only tolerated match is a third-party URL whose slug happens to
-   contain one of those words.
+3. Confirm the guide is standalone. Two greps, because a link check alone
+   misses an assignment named in plain prose:
+
+   ```bash
+   grep -nE '/assignments/|[Ww]orkshop|checkpoint' <file>
+   grep -nE 'Definition of Shipped|Team Charter|Sprint Notes?|Peer Evaluations?|Repo Checkpoints?|Project Handoff|Landing Page|Project Partner Evaluation' <file>
+   ```
+
+   The first must return nothing. The second returns false positives and needs
+   a human: it is the capitalized, course-specific use that is the violation,
+   not the ordinary English phrase. Known-good cases that will match and should
+   be left alone: "the defense" meaning defense in depth (`security.mdx`), "your
+   public landing page" as a web term (`planning.mdx`), and "a working agreement
+   (sometimes called a team charter)" as a synonym for the artifact
+   (`working-agreement.mdx`). A third-party URL whose slug contains one of these
+   words is also fine.
+
+   The test when you are unsure: would this sentence still be true and useful
+   for a reader who is not enrolled in the course? If yes, it is ordinary
+   English. If it only makes sense to someone holding a syllabus, it is a
+   violation.
 4. Confirm the final four sections are present and in order: Best Practices,
    Some Truths, Industry and Academia, Additional Readings. Their absence is
    the most common way a new guide fails to match the others. For an artifact
