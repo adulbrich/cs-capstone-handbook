@@ -207,11 +207,11 @@ The rules below are about its content.
 
 - **Points total exactly 100**, summed as each criterion's highest band.
   Three documented exceptions, listed in `validate-outcomes.mjs` as
-  `RUBRIC_EXCEPTIONS`, and these are the only three pages that still keep a
-  hand-written Markdown table: the pass/fail workshop page
-  (`workshop-activities.mdx`), and the two survey instruments,
-  `peer-evaluations.mdx` and `project-partner-evaluation.mdx`, which run
-  through Qualtrics and whose tables carry weights instead of points.
+  `RUBRIC_EXCEPTIONS`. `workshop-activities.mdx` has no rubric section at all:
+  it is scored complete/incomplete per item, and its three per-term TSVs are
+  Canvas-only. The two survey instruments, `peer-evaluations.mdx` and
+  `project-partner-evaluation.mdx`, are the only pages that still hold a
+  hand-written Markdown table, because theirs carry weights rather than points.
   `sprint-notes.mdx` is not an exception: its TSV is the two-band pass/fail
   shape and totals 100 like any other.
 - **Three to six criteria is the working range.** Fewer than three cannot

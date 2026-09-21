@@ -224,7 +224,12 @@ for (const file of files) {
     // `sourceLabel` is what parse errors name, so a stale one sends the next
     // reader to the wrong file. Nothing else compares it to the real import.
     const label = source.match(/<RubricTable[^>]*\ssourceLabel="([^"]*)"/);
-    if (label && label[1] !== tsvPath) {
+    if (!label) {
+      console.error(
+        `RUBRIC IMPORT ${file}: <RubricTable> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
+      );
+      failed = true;
+    } else if (label[1] !== tsvPath) {
       console.error(
         `RUBRIC IMPORT ${file}: sourceLabel="${label[1]}" but the import reads ${tsvPath}.`
       );

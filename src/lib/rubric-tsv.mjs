@@ -44,7 +44,7 @@ function readTags(rawTitle) {
 }
 
 /** The repeating three-field rating groups, in order. */
-function readRatings(cells) {
+function readRatings(cells, row, sourceLabel) {
   const ratings = [];
   for (let i = FIRST_RATING; i < cells.length; i += RATING_GROUP_WIDTH) {
     const rawPoints = (cells[i] ?? "").trim();
@@ -57,11 +57,12 @@ function readRatings(cells) {
       break;
     }
     const points = Number(rawPoints);
-    ratings.push({
-      description,
-      name,
-      points: Number.isFinite(points) ? points : 0,
-    });
+    if (!Number.isFinite(points) || points < 0) {
+      throw new Error(
+        `rubric TSV ${sourceLabel} row ${row}, band "${name || "(unnamed)"}": points cell is "${rawPoints}". A typo here scores zero silently and, in any band but the top one, still totals 100.`
+      );
+    }
+    ratings.push({ description, name, points });
   }
   return ratings;
 }
@@ -80,7 +81,7 @@ function parseRow(line, row, sourceLabel) {
 
   const rawTitle = (cells[0] ?? "").trim();
   const tags = readTags(rawTitle);
-  const ratings = readRatings(cells);
+  const ratings = readRatings(cells, row, sourceLabel);
 
   return {
     description: (cells[1] ?? "").trim(),
@@ -108,9 +109,6 @@ export function parseRubricTsv(tsvText, sourceLabel) {
     .filter((line) => line.trim().length > 0)
     .map((line, index) => parseRow(line, index + 1, sourceLabel));
 
-  if (criteria.length === 0) {
-    throw new Error(`rubric TSV ${sourceLabel} has no criterion rows.`);
-  }
   return criteria;
 }
 

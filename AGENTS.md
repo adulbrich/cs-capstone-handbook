@@ -48,11 +48,11 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
    page by `src/components/RubricTable.astro` and imported into Canvas by the
    rubric-import extension. Edit the TSV, and re-import it into Canvas (#144).
    The handbook still outranks what is *in* Canvas, because the TSV goes one
-   way and is never read back out. Three pages are documented exceptions and
-   keep a hand-written table, listed as `RUBRIC_EXCEPTIONS` in
-   `validate-outcomes.mjs`: `workshop-activities` is scored
-   complete/incomplete per item, and the two Qualtrics instruments carry
-   weights rather than points.
+   way and is never read back out. Three pages are documented exceptions,
+   listed as `RUBRIC_EXCEPTIONS` in `validate-outcomes.mjs`:
+   `workshop-activities` has no rubric section at all, being scored
+   complete/incomplete per item, and the two Qualtrics instruments keep a
+   hand-written table because theirs carries weights rather than points.
 5. **Terms and weeks only. No calendar dates and no academic year anywhere
    in the handbook** (#57): not "Fall 2026", not "September 23", not
    "2026-27". Weekdays and named holidays are fine ("fall week 9, Wednesday
