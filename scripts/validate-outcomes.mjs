@@ -17,18 +17,22 @@
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import {
+  OUTCOME_TAG_RE,
+  parseRubricTsv,
+  rubricTagCounts,
+  rubricTotal,
+} from "../src/lib/rubric-tsv.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
 const ABET_OUTCOMES = ["SO1", "SO2", "SO3", "SO4", "SO5", "SO6"];
 const OTHER_OUTCOMES = ["L07", "L08", "L09", "L10"];
 const MIN_ABET = 2;
-const TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;
 
-// Canvas rubric TSV directory -> the handbook page it mirrors.
-// Canvas is a mirror; the handbook wins. A TSV that tags an outcome the
-// handbook rubric does not claims accreditation evidence that does not exist,
-// and nothing else in the toolchain reads Canvas, so it drifts silently.
+// Canvas rubric TSV directory -> the handbook page that renders it. The TSV is
+// the rubric (#144), so this is not a mirror table: it is how the validator
+// tells whether a page imported its own assignment's rubric or a neighbour's.
 const CANVAS_TO_HANDBOOK = {
   "career-retrospective": "career-retrospective",
   defense: "defense",
@@ -133,28 +137,6 @@ function parseAssignment(frontmatter) {
   return assignment;
 }
 
-// Outcome tags, read from field 1 of a rubric TSV ("Blameless throughout
-// [SO4]"). A row with no bracket contributes nothing, which is how the
-// pass/fail rubrics and two of the three Resume and Intent rows are scored.
-function parseTsvTags(tsvText) {
-  const tags = {};
-  for (const line of tsvText.split("\n")) {
-    if (!line.trim()) {
-      continue;
-    }
-    const inBrackets = line.split("\t")[0].match(/\[([^\]]+)\]\s*$/);
-    if (!inBrackets) {
-      continue;
-    }
-    for (const part of inBrackets[1].split(",").map((s) => s.trim())) {
-      if (TAG_RE.test(part)) {
-        tags[part] = (tags[part] || 0) + 1;
-      }
-    }
-  }
-  return tags;
-}
-
 // The Markdown fallback, for the three pages that keep a hand-written table:
 // the two Qualtrics instruments, whose tables carry weights rather than
 // points, and the pass/fail workshop page. Rows whose LAST cell is a
@@ -176,7 +158,7 @@ function parseRubricTags(body) {
       .at(-1)
       .split(",")
       .map((p) => p.trim());
-    if (parts.length > 0 && parts.every((p) => TAG_RE.test(p))) {
+    if (parts.length > 0 && parts.every((p) => OUTCOME_TAG_RE.test(p))) {
       for (const p of parts) {
         tags[p] = (tags[p] || 0) + 1;
       }
@@ -239,6 +221,15 @@ for (const file of files) {
   } else if (typeof tsvPath === "string") {
     // The page must import its own assignment's TSV. Vite resolves any real
     // path, so nothing else catches a page rendering a neighbour's rubric.
+    // `sourceLabel` is what parse errors name, so a stale one sends the next
+    // reader to the wrong file. Nothing else compares it to the real import.
+    const label = source.match(/<RubricTable[^>]*\ssourceLabel="([^"]*)"/);
+    if (label && label[1] !== tsvPath) {
+      console.error(
+        `RUBRIC IMPORT ${file}: sourceLabel="${label[1]}" but the import reads ${tsvPath}.`
+      );
+      failed = true;
+    }
     const [, , dir] = tsvPath.split("/");
     if (CANVAS_TO_HANDBOOK[dir] !== slug) {
       console.error(
@@ -246,7 +237,9 @@ for (const file of files) {
       );
       failed = true;
     }
-    rubricTags = parseTsvTags(readFileSync(tsvPath, "utf8"));
+    rubricTags = rubricTagCounts(
+      parseRubricTsv(readFileSync(tsvPath, "utf8"), tsvPath)
+    );
   } else {
     console.error(
       `RUBRIC IMPORT ${file}: <RubricTable tsv={${tsvPath.missingImport}}> has no matching \`import ${tsvPath.missingImport} from '/...tsv?raw'\`.`
@@ -425,8 +418,9 @@ for (const dir of readdirSync(CANVAS_DIR)) {
     if (!f.endsWith("rubric-details.tsv")) {
       continue;
     }
+    const path = join(CANVAS_DIR, dir, f);
     for (const tag of Object.keys(
-      parseTsvTags(readFileSync(join(CANVAS_DIR, dir, f), "utf8"))
+      rubricTagCounts(parseRubricTsv(readFileSync(path, "utf8"), path))
     )) {
       tags.add(tag);
     }
@@ -448,29 +442,6 @@ const DELIVERABLE_HEADING_RE =
   /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
 const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
-
-// Sum of each criterion's highest rating, read from the TSV the page renders.
-// Rating groups repeat in threes from field 4 (points, name, description), so
-// the same function totals a nine-field pass/fail rubric, the usual twelve-field
-// three-band one, and `defense`, which carries a fourth `Missing` band.
-function rubricTotal(tsvPath) {
-  let total = 0;
-  for (const line of readFileSync(tsvPath, "utf8").split("\n")) {
-    if (!line.trim()) {
-      continue;
-    }
-    const cells = line.split("\t");
-    let max = 0;
-    for (let i = 3; i < cells.length; i += 3) {
-      const points = Number(cells[i]);
-      if (Number.isFinite(points)) {
-        max = Math.max(max, points);
-      }
-    }
-    total += max;
-  }
-  return total;
-}
 
 for (const file of files) {
   const slug = file.replace(/\.mdx$/, "");
@@ -517,7 +488,9 @@ for (const file of files) {
     if (typeof tsvPath !== "string") {
       // Already reported as NO RUBRIC TABLE or RUBRIC IMPORT above.
     } else if (/^## Rubric/m.test(body)) {
-      const total = rubricTotal(tsvPath);
+      const total = rubricTotal(
+        parseRubricTsv(readFileSync(tsvPath, "utf8"), tsvPath)
+      );
       if (total !== 100) {
         console.error(
           `RUBRIC ${file}: ${tsvPath} totals ${total} points, not 100.`

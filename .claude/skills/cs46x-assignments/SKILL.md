@@ -173,7 +173,10 @@ Sections in **bold** are required.
    Prefer a numbered list when the artifact has named parts a grader will look
    for one by one. State the format, the length, and where it lives.
 
-4. **`## Rubric (100 points)`**, holding a `<RubricTable>` and nothing else.
+4. **`## Rubric (100 points)`**, whose table is a `<RubricTable>` rather than
+   Markdown. Prose belongs under it: the `**AI use:**` paragraph, per-criterion
+   grading notes, and any late or non-submission rule. One sentence may precede
+   the component where it frames the whole rubric, as on `resume-and-intent`.
    See **The Rubric Lives in the TSV** and **Rubric Rules**.
 
 5. **`**AI use:**` paragraph**, required on any assignment whose deliverable is
@@ -263,7 +266,10 @@ The TSV is headerless and tab separated. Fields, in order:
    the text that used to follow the criterion name in the MDX table. Leave it
    empty when the name already says it, or when it would only restate the
    Exceeds band; a row that says the same thing twice is a row students read
-   twice.
+   twice. **Plain text only.** Both destinations render it verbatim: the
+   component escapes it, and Canvas shows a backtick as a backtick. No
+   Markdown, no code spans, and nothing referring to the page's layout, since
+   in Canvas there is no page.
 3. `true` (Canvas's `use_range`; the handbook ignores it).
 4. Onwards, **repeating groups of three**: points, band name, band description.
 

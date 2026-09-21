@@ -43,12 +43,16 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
    `validate-dashes.mjs` checks the content directories and
    `scripts/check-prose.mjs` checks every tracked text file, root docs and
    skills included, in CI and at pre-commit.
-4. **One rubric per assignment, and it lives in the TSV.** Every rubric is
+4. **One rubric per assignment, and it lives in the TSV.** A rubric is
    `canvas/assignments/<dir>/*-rubric-details.tsv`, rendered on the handbook
    page by `src/components/RubricTable.astro` and imported into Canvas by the
-   rubric-import extension. There is no second copy to disagree with. Edit the
-   TSV, and re-import it into Canvas (#144). The handbook still outranks what
-   is *in* Canvas, because the TSV goes one way and is never read back out.
+   rubric-import extension. Edit the TSV, and re-import it into Canvas (#144).
+   The handbook still outranks what is *in* Canvas, because the TSV goes one
+   way and is never read back out. Three pages are documented exceptions and
+   keep a hand-written table, listed as `RUBRIC_EXCEPTIONS` in
+   `validate-outcomes.mjs`: `workshop-activities` is scored
+   complete/incomplete per item, and the two Qualtrics instruments carry
+   weights rather than points.
 5. **Terms and weeks only. No calendar dates and no academic year anywhere
    in the handbook** (#57): not "Fall 2026", not "September 23", not
    "2026-27". Weekdays and named holidays are fine ("fall week 9, Wednesday
