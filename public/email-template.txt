@@ -19,10 +19,10 @@ Preferred channel for follow-ups: <Teams/Slack/Email/other>. <Name> will drive t
 
 A few quick questions to help us prepare:
 
-1. Are there must-read docs or environments we should access beforehand?
-2. What’s the preferred meeting cadence and communication channel?
-3. Any early constraints (timeline, tech stack, data access) we should note?
-4. Is there a “definition of success” you’d like us to target for the next checkpoint?
+1. What already exists that we should build on or work inside, and where does its documentation live?
+2. What is already decided and not ours to change: stack, hosting, data access, or review process?
+3. What’s the preferred meeting cadence and communication channel?
+4. What would a successful outcome look like to you, and who needs to be able to use the result?
 
 Thank you, we’re looking forward to collaborating!
 

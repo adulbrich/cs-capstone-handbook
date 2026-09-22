@@ -155,6 +155,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 
 ## Partner Touchpoints
 
+- The team's first email of every term Bccs `cs-46x-help@oregonstate.edu` (it is in the template), so a partner nobody contacted is visible in week 2 rather than week 9. Term Startup is the assignment that prompts it.
 - Two surveys per term, peer and partner alike: the midterm pulse is sent week 5 and closes at the end of week 6; the final survey is sent week 9 and closes at the end of week 10. Two sign-offs per year: Definition of Shipped (winter week 3) and Handoff confirmation (spring week 10).
 - Canned emails for both sign-offs: state what the document is, that a reply-with-approval suffices, and the one-week window.
 - Non-responsive partner: after two documented attempts, mentor or instructor signs instead; the team is not penalized. This promise is in the handbook; honor it without friction.
@@ -199,6 +200,7 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 - [ ] Check-in sheet current; TA assignments made
 - [ ] Canvas shells: assignments imported from `canvas/assignments/` TSVs (rubric browser extension), weights checked against the handbook tables
 - [ ] Both sprint-note Canvas columns (team + individual) created; together they equal the Sprint Notes weight
+- [ ] Term Startup created by hand: 0 points, omit from final grade, text entry, group submission, due end of week 1. It has no rubric and no TSV, so nothing imports it
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)

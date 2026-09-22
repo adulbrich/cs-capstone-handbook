@@ -122,8 +122,13 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
 7. **Rubric points total exactly 100**, unless the page is on the exception
    list in `validate-outcomes.mjs` (see **Rubric Rules**).
 
-A page with no `assignment:` block is skipped by the validator entirely. Only
-`introduction.mdx` should be in that state. Not enforced, still required: the
+A page with no `assignment:` block is skipped by the validator entirely: no
+rubric TSV, no weight, no AI-use paragraph, no outcome tags. Two pages are in
+that state deliberately, `introduction.mdx` and `term-startup.mdx`, and a third
+needs a reason. **This is the supported shape for an ungraded item**, paired
+with a Canvas item at 0 points with `omit_from_final_grade`; see
+`canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
+passes Zod but keeps the block and so re-arms the rubric and AI-use checks. Not enforced, still required: the
 three bands, criteria written as observable checks, the section order, and the
 Canvas TSV band descriptions (only the tag sets are reconciled).
 
@@ -293,8 +298,10 @@ per item). Both are tagless and both hold one TSV per term. They are listed in
 
 ## What Does Not Belong Here
 
-Assignment pages hold **assignments**: things submitted, evaluated, and carrying
-a weight. Two neighbours are deliberately elsewhere:
+Assignment pages hold **assignments**: things submitted and evaluated. Almost
+all carry a weight; `term-startup.mdx` is the exception, because students do not
+act on what Canvas does not put in their to-do list and the schedule cannot do
+that. Two neighbours are deliberately elsewhere:
 
 - **Grading policy** (points to letter grade, what each letter means, how
   outcome tags work) lives in `learning-objectives/grading.mdx`, because every
