@@ -158,7 +158,11 @@ Current canonical homes:
 | Rubric bands, missing-is-zero, evidence rules | `assignments/introduction.mdx` |
 | The AI policy and what it assesses | `assignments/introduction.mdx` |
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
-| Project types: the four outcome types, origin, starting code, constraints, and the inherited-codebase audit | `practicalities/types.mdx` |
+| The four outcome types and each one's path up the ladder | `guides/shipping.mdx` |
+| Who agrees the outcome type, and where it is recorded | `assignments/definition-of-shipped.mdx` |
+| The inherited-codebase audit and what it covers | `assignments/repo-checkpoints.mdx` |
+| IP, NDA, and licensing policy | `introduction/ip-nda-and-licensing.mdx` |
+| How projects are proposed, how teams form, how either changes | `introduction/for-students.mdx` |
 | V&V outcome ladder (one ladder, every outcome type) | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
 | Week-by-week schedule | `introduction/schedule.mdx` |
@@ -166,6 +170,30 @@ Current canonical homes:
 
 Before adding a paragraph that explains something, grep for it. If it already
 exists somewhere, link instead.
+
+## Audience pages are orientation, not a course index
+
+`introduction/for-students.mdx`, `for-partners.mdx`, and `for-mentors.mdx`
+answer "what is this and what does it ask of me" for one reader each. They are
+FAQ, not instruction, and their value is being short enough to read in one
+sitting before the term starts.
+
+**An audience page does not become a second table of contents.** Link an
+assignment, a guide, or an activity only where that page is the answer to the
+question being asked, and state the fact the reader needs rather than sending
+them somewhere to look it up. The closing `## The Pages You Need` card grid is
+the page's index; the body is not a second one.
+
+This is the same rule `cs46x-guides` states for guides, arrived at the same
+way. `practicalities/` had no such rule and grew 24 outbound links into
+assignments, guides, and activities before it was dissolved into these pages
+(#162). The check is a count: run
+`grep -oE '\(/(assignments|guides|activities)/[^)]*\)' <page>` and ask whether
+each one is load-bearing for that reader's question.
+
+Policy is the other half of the same rule. A rule with two audiences and a
+legal edge, such as IP and NDA terms, gets its own page under `introduction/`
+and every audience page links it rather than restating it.
 
 ## Grade weight arithmetic
 

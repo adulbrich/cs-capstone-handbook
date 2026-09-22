@@ -39,3 +39,7 @@ Who the real users or evaluators are, and how you will reach them by the winter 
 ## 5. Partner Agreement
 
 Evidence the partner has seen and agreed to this definition: a meeting note with date and attendees, an email confirmation, or a survey confirmation. Link or quote it here.
+
+## 6. Multi-Team Split (only if other teams work on this project)
+
+What your team owns, agreed with the project partner rather than assumed: which interface, repository, or milestone is yours, and how the teams talk to each other. Delete this section if your team is the only one on the project.

@@ -82,16 +82,6 @@ export default defineConfig({
           items: [
             {
               autogenerate: {
-                directory: "practicalities",
-              },
-            },
-          ],
-          label: "Practicalities",
-        },
-        {
-          items: [
-            {
-              autogenerate: {
                 directory: "activities",
               },
             },
@@ -130,19 +120,32 @@ export default defineConfig({
     }),
   ],
 
-  // The Project Evaluation section was dissolved into Assignments and Learning
-  // Objectives. These URLs were live and linked from elsewhere, so they
-  // redirect rather than 404.
+  // Two sections have been dissolved and their URLs were live, so they redirect
+  // rather than 404.
   //
-  // Project Selection, Team Formation, and Changing or Pivoting Projects were
-  // merged into Projects and Teams, and Resource Requests folded into the
-  // students page (#69).
+  // Project Evaluation went into Assignments and Learning Objectives. Project
+  // Selection, Team Formation, and Changing or Pivoting Projects merged into
+  // Projects and Teams, and Resource Requests folded into the students page
+  // (#69).
+  //
+  // Practicalities itself was then dissolved (#162): orientation to the three
+  // audience pages, IP and NDA policy to its own page, the Expo to an ungraded
+  // assignment, and the four outcome types to the Shipping guide. The five
+  // redirects above chained through pages that no longer exist, so they now
+  // point at the surviving destination directly.
   redirects: {
-    "/practicalities/categories": "/practicalities/types/",
-    "/practicalities/change": "/practicalities/projects-and-teams/",
+    "/practicalities/categories": "/guides/shipping/",
+    "/practicalities/change":
+      "/introduction/for-students/#if-the-project-or-the-team-has-to-change",
+    "/practicalities/expo": "/assignments/expo/",
+    "/practicalities/projects-and-teams":
+      "/introduction/for-students/#how-you-get-your-project-and-team",
     "/practicalities/resources": "/introduction/for-students/#resources",
-    "/practicalities/selection": "/practicalities/projects-and-teams/",
-    "/practicalities/teams": "/practicalities/projects-and-teams/",
+    "/practicalities/selection":
+      "/introduction/for-students/#how-you-get-your-project-and-team",
+    "/practicalities/teams":
+      "/introduction/for-students/#how-you-get-your-project-and-team",
+    "/practicalities/types": "/guides/shipping/",
     "/project-evaluation/assignments": "/assignments/introduction/",
     "/project-evaluation/breakdown": "/assignments/introduction/",
     "/project-evaluation/conversion": "/learning-objectives/grading/",

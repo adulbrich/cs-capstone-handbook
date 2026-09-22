@@ -201,6 +201,7 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 - [ ] Canvas shells: assignments imported from `canvas/assignments/` TSVs (rubric browser extension), weights checked against the handbook tables
 - [ ] Both sprint-note Canvas columns (team + individual) created; together they equal the Sprint Notes weight
 - [ ] Term Startup created by hand: 0 points, omit from final grade, text entry, group submission, due end of week 1. It has no rubric and no TSV, so nothing imports it
+- [ ] Spring only: Engineering Expo created by hand, same shape as Term Startup (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric, no TSV. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)
