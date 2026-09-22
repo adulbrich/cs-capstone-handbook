@@ -237,7 +237,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback; Demo Day session 1 |
 | 6 | Sprint Note 2 |
-| 7-9 | Defense (during TA check-ins) |
+| 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
 | 9 | Term Retrospective |
 | 10 | Sprint Note 4; Repo Checkpoint 2 ("hello, production" gate); Demo Day session 2 |
@@ -253,7 +253,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 4 | Sprint Note 2; RFC draft |
 | 5 | Repo Checkpoint 1 (integration health); RFC cross-team feedback; Demo Day session 3 |
 | 6 | Sprint Note 3 |
-| 7-9 | Defense (during TA check-ins) |
+| 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 4; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
 | 10 | Sprint Note 5; Repo Checkpoint 2 (release candidate gate); Demo Day session 4 |
@@ -269,7 +269,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 5 | Demo Day session 5 |
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |
-| 7-9 | Defense (during TA check-ins) |
+| 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Release and Metrics |
 | 9 | Project Retrospective; Career and Individual Retrospective |
 | 10 | Engineering Expo (0 points, omit from final grade) |
