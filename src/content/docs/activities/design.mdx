@@ -9,7 +9,7 @@ import { Badge, LinkCard } from '@astrojs/starlight/components';
 
 Design activities focus on both the technical and visual aspects. Activities tackle either one or the other. These activities will help you figure out what you need to implement and how you will make your software available (deployment).
 
-The technical design activities on this page are direct preparation for your [RFC](/assignments/rfc/): architecture descriptions, technology evaluations, and design reviews are exactly the reasoning an RFC asks you to write down and defend.
+The technical design activities on this page are direct preparation for writing an RFC: architecture descriptions, technology evaluations, and design reviews are exactly the reasoning an RFC asks you to write down and defend.
 
 > "Design is not just what it looks like and feels like. Design is how it works." -- Steve Jobs
 
@@ -78,15 +78,13 @@ Compare and assess multiple technologies (e.g., languages, frameworks, libraries
 - Compare Performance and Compatibility: Evaluate how well each technology integrates with your existing project and meets performance goals.
 - Security and Support: Consider security features and available community support for each option.
 
-A good output is a comparison matrix and a justification for the chosen technology; this maps directly onto the alternatives section of your [RFC](/assignments/rfc/).
-
-**Feeds:** the [RFC](/assignments/rfc/) options and technical-tradeoff criteria.
+A good output is a comparison matrix and a justification for the chosen technology; this maps directly onto the alternatives section of an RFC.
 
 ## Describe your Architecture
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Draw the system your team is about to build, at the level of zoom your project partner can follow, and write one paragraph per box. One to two hours as a team, once in fall, then updated when the architecture changes.
+Draw the system your team is about to build, at the level of zoom your project partner can follow, and write one paragraph per box. One to two hours as a team, once at the start, then updated when the architecture changes.
 
 - **Pick a notation**: a C4 context plus container diagram fits most projects; use 4+1 views only if your readers have distinct concerns. The [Technical Design guide](/guides/technical-design/#system-level-design-architecture) explains the options.
 - **Identify core components**: list the major pieces (frontend, backend, database, external APIs, pipeline stages, data sources, firmware modules).
@@ -96,9 +94,7 @@ Draw the system your team is about to build, at the level of zoom your project p
 
 Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
-A good output is a diagram of the architecture and a brief explanation of each component and its role in the system. This diagram belongs in your repository docs, and it anchors your [RFC](/assignments/rfc/).
-
-**Feeds:** `docs/design.md` for every [repo checkpoint](/assignments/repo-checkpoints/), your [RFC](/assignments/rfc/) framing, and the [defense](/assignments/defense/) technical-depth question.
+A good output is a diagram of the architecture and a brief explanation of each component and its role in the system. This diagram belongs in your repository docs, and it anchors the design section of an RFC.
 
 ## High-Fidelity Prototype
 
@@ -126,8 +122,6 @@ Build a small-scale prototype or demo to test the feasibility of a specific idea
 
 A good output is the proof-of-concept itself and a brief write-up on its feasibility, challenges encountered, and potential next steps.
 
-**Feeds:** the [RFC](/assignments/rfc/) recommendation-and-verification-plan criterion.
-
 ## Test Plan
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
@@ -139,11 +133,9 @@ Develop a comprehensive [test plan](https://en.wikipedia.org/wiki/Test_plan) to 
 3. Determine Test Methods: Choose manual or automated testing.
 4. Set Success Criteria: Define what constitutes a pass/fail result.
 
-In the workshop's second half, produce the same test plan with an AI agent (a skill or a structured prompt) and set it beside yours; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
 A good output is a test plan document outlining test cases, methods, and criteria.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion.
 
 ## Deployment Plan
 
@@ -164,8 +156,6 @@ That means:
 
 A good output is a deployment plan detailing environment, steps, and rollback procedures. See the [Shipping guide](/guides/shipping/) for the lead times your deployment path involves.
 
-**Feeds:** the fall week 10 [repo checkpoint](/assignments/repo-checkpoints/) "hello, production" gate.
-
 ## Describe your API Reference
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
@@ -177,8 +167,6 @@ Develop a comprehensive API reference to document the functions, endpoints, and 
 3. Document Error Handling: Include examples of error messages and how to handle them.
 
 A good output is the complete API reference document and a sample request/response for each endpoint, living alongside the code in your repository.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) living-docs criterion, and the [Project Handoff](/assignments/project-handoff/).
 
 ## Apply the Privacy by Design (PbD) Guidelines
 
@@ -199,8 +187,6 @@ The [seven foundational principles](https://www.ietf.org/ietf-ftp/slides/slides-
 Read the principles in detail, then write a report that explains how your software implements each one, or what needs to be done to get there. 
 
 A good output is your project assessed against the seven principles, naming which already hold, which you will implement, and which do not apply and why.
-
-**Feeds:** the [RFC](/assignments/rfc/) constraints criterion.
 
 ## UI Design Guidelines
 
@@ -253,7 +239,7 @@ As the reviewing team, your job is to think critically about the other team's de
 - Are there design alternatives that should be considered?
 - Are there coding issues that should be addressed?
 
-Write your report (see below) and your consolidated reviews (from each member of the team), and share your review with the corresponding team. This activity can either be individual (one person from each team) or team (everyone on the team reviews both other teams). Both giving and receiving this kind of review is excellent rehearsal for your [RFC](/assignments/rfc/) and its review round.
+Write your report (see below) and your consolidated reviews (from each member of the team), and share your review with the corresponding team. This activity can either be individual (one person from each team) or team (everyone on the team reviews both other teams). Both giving and receiving this kind of review is excellent rehearsal for a formal RFC review round.
 
 Your report should be a one page diagram and one page of text covering the following three issues:
 
@@ -284,8 +270,6 @@ A rationale for why this design meets the requirements/specification.
 Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
 A good output is the written review you gave each of the two teams, plus a note on what you changed in your own design after receiving theirs.
-
-**Feeds:** the [RFC](/assignments/rfc/) feedback-given and revision criteria, and the [defense](/assignments/defense/) technical-depth criterion.
 
 ## Read a Book on Approaches to Software Design
 
@@ -327,9 +311,7 @@ Instructions:
 - Support Structure: Identify the team or resources responsible for providing user support and resolving issues.
 - Create Documentation: Develop a plan for user manuals, FAQs, and support guides.
 
-A good output is a detailed plan addressing maintenance, scalability, and user support; it becomes raw material for your spring [Project Handoff](/assignments/project-handoff/).
-
-**Feeds:** the [Project Handoff](/assignments/project-handoff/) known-issues-and-future-work criterion.
+A good output is a detailed plan addressing maintenance, scalability, and user support; it becomes raw material for the handoff package you leave the next maintainer.
 
 ## Optimizing System Performance
 
@@ -375,8 +357,6 @@ If your project has no user interface, the equivalent targets are your error mes
 
 A good output is a marked-up screenshot or a short list of specific fixes, each tied to the guideline it addresses.
 
-**Feeds:** the [Landing Page](/assignments/landing-page/) polish-and-accessibility criterion.
-
 ## Reproduce Your Baseline
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
@@ -390,8 +370,6 @@ Get the number you intend to beat running on your own machine, before you try to
 - **If you cannot reproduce it, say so explicitly** and choose a baseline you can. A number you could not reproduce is not a number you can claim to beat.
 
 A good output is your reproduced number next to the published one, with a written explanation of any gap, committed to the repository.
-
-**Feeds:** the winter [repo checkpoint](/assignments/repo-checkpoints/) term gate, and the [RFC](/assignments/rfc/) technical-tradeoff criterion.
 
 ## Make Your Artifact Reproducible
 
@@ -408,8 +386,6 @@ Get your project to the state where a stranger runs one command and gets your nu
 That last step is the activity. A pipeline that only runs on the machine of the person who wrote it has not been reproduced, it has been remembered.
 
 A good output is a repository tag plus a README command that a teammate ran on a different machine and got your result table from.
-
-**Feeds:** the winter [repo checkpoint](/assignments/repo-checkpoints/) term gate and build-health criterion, and the spring [Project Handoff](/assignments/project-handoff/).
 
 ## MDA Framework
 

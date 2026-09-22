@@ -18,7 +18,7 @@ That is a real skill, it is learnable, and it is what these activities practice.
 :::note[Your tools do not have to be the best ones]
 This page teaches the current industry baseline, including things that need a capable agent. That is deliberate: this is a software engineering course, and you should know what the state of practice looks like even if you are not running it yourself.
 
-**You are never required to use any of these tools.** The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is looked at instead, and a student on a free tier who gates tightly and validates carefully is doing the harder work. Every activity below states its substitute for more limited tooling.
+**You are never required to use any of these tools.** What matters is your judgment about where to delegate and how you verified the result, not which subscription you hold, and a student on a free tier who gates tightly and validates carefully is doing the harder work. Every activity below states its substitute for more limited tooling.
 :::
 
 ## Map Your One-Way Doors
@@ -36,8 +36,6 @@ Run this a second time with an AI agent and set the two outputs side by side; th
 
 A good output is a list where the one-way doors are genuinely few. If you classified eight of ten as one-way, you have not made the distinction, you have just labeled everything important.
 
-**Feeds:** your [RFC](/assignments/rfc/) topic, which must be a decision that is hard to reverse, and the [defense](/assignments/defense/) judgment criterion.
-
 ## Audit Your Safety Net
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
@@ -49,11 +47,9 @@ Measure the gap between how much you delegate and how much your automation would
 - **Name the gap**: the distance between those two lists.
 - **Close it from the top**: the highest-value net is always the one guarding the door you cannot walk back through.
 
-In the workshop's second half, produce the same audit with an AI agent (a skill or a structured prompt) and set it beside yours; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
 A good output is one specific named gap and the smallest change that closes it. "We have no tests" is not an answer; "nothing stops a schema change from merging without review" is.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion, the [RFC](/assignments/rfc/) delegation criterion, and the [defense](/assignments/defense/) ownership criterion.
 
 ## Set Up Your Repository's Skills
 
@@ -64,19 +60,17 @@ Install a shared set of agent workflows so that a task like "review this pull re
 - **Read two published collections**: [obra's Superpowers](https://github.com/obra/superpowers) covers brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development, and it teaches how to write and test new skills. [Matt Pocock's skills](https://github.com/mattpocock/skills) cover spec and ticket flows, TDD, code review, domain modeling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
 - **Install one and run it** against your own repository on real work.
 - **Compare**: write down what changed in the output versus prompting freehand.
-- **Commit the choice**: skills belong in the repository so everyone gets the same behavior. Your [AI Coordinator](/assignments/team-charter/) owns which ones the team standardizes on.
+- **Commit the choice**: skills belong in the repository so everyone gets the same behavior. Your team's AI coordinator owns which ones the team standardizes on.
 
-Several of these *are* the net rather than a convenience: a separate architectural-review pass and a code-review pass are safety-net components, and a plan-before-you-build skill is what turns "make it do X" into the kind of specification the [RFC](/assignments/rfc/) grades you on.
+Several of these *are* the net rather than a convenience: a separate architectural-review pass and a code-review pass are safety-net components, and a plan-before-you-build skill is what turns "make it do X" into the kind of specification a design document can be written from.
 
 :::caution[A skill is someone else's opinion, executed automatically]
-Read a skill before you install it. Some encode strong workflow opinions that may not suit your project, and you own whatever they produce: the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) does not care that a skill wrote it.
+Read a skill before you install it. Some encode strong workflow opinions that may not suit your project, and you own whatever they produce, and nobody reviewing it will care that a skill wrote it.
 :::
 
 **If your tooling cannot load skills:** the invariant is that recurring work happens the same way regardless of who does it. The substitute is a written checklist in `CONTRIBUTING.md` that a human follows. This is more work, not less.
 
 A good output is at least one skill committed to your repository and a short note on what its output changed.
-
-**Feeds:** the [Team Charter](/assignments/team-charter/) AI context file, and the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion.
 
 ## Put a Browser Agent on Your Critical Flow
 
@@ -94,8 +88,6 @@ The point is not that a machine clicks faster than you. It is that the class of 
 
 A good output is a committed end-to-end test that runs in CI and fails when the flow breaks.
 
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion.
-
 ## Wire an Accessibility Audit Into CI
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
@@ -111,8 +103,6 @@ The triage is the exercise. Automated tools catch roughly a third to a half of r
 **If your project has no user interface:** the equivalent is your output formats and documentation. Can someone consume your API errors, your CSV exports, or your README with a screen reader?
 
 A good output is a CI job that fails on accessibility violations, plus a short triage note naming which findings you fixed and which you dismissed and why.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health-and-safety-net criterion, and the spring [Landing Page](/assignments/landing-page/) accessibility criterion.
 
 ## Run a Self-Audit and an Architectural Review Pass
 
@@ -130,8 +120,6 @@ Separation is the whole trick. An agent asked to "build X and make sure it is go
 
 A good output is a list of findings from each pass and a note on which ones you acted on.
 
-**Feeds:** the [RFC](/assignments/rfc/) delegation-and-validation criterion, and the [defense](/assignments/defense/) ownership criterion.
-
 ## Run an Acceptance Pass
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
@@ -146,10 +134,8 @@ The second list matters as much as the first. Shipping means choosing what is go
 
 A good output is those two lists, dated, with the second one justified.
 
-**Feeds:** the [Release and Metrics](/assignments/release/) Honest outcomes criterion.
-
 ## Why This Matters Beyond the Course
 
 The engineers whose value is going up are not the ones who type fastest or who refuse to use these tools. They are the ones who can look at a problem and say: this part I will hand off and this part I will not, here is what will catch it if I am wrong, and here is how I will know it actually worked.
 
-That judgment is what your project partner is relying on, and it is what the [defense](/assignments/defense/) is built to surface.
+That judgment is what your project partner is relying on, and it is the first thing an experienced reviewer probes for.
