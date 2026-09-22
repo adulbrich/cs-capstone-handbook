@@ -44,6 +44,11 @@
 //      an icebreaker will never earn a tier because no assignment prepares
 //      from it.
 //
+//   7a. Every guide is scheduled at least once. Nothing used to fail when a
+//      guide was read in no term, and two were: accessibility and
+//      ai-project-setup, 4,843 words nobody was ever asked to read. This is
+//      the guide half of rule 6, with one deliberate exemption.
+//
 //   7. Every Workshop activity sits in a Lecture row, in the same term and
 //      week that assignments/workshop-activities.mdx gives it, and every row
 //      on that page points at an activity badged Workshop. The schedule, the
@@ -63,10 +68,12 @@ import { join } from "node:path";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
+const GUIDES_DIR = "src/content/docs/guides";
 const SECTION_HEADING = "## Activities That Prepare This";
 const SCHEDULE_PAGE = "src/content/docs/introduction/schedule.mdx";
 const WORKSHOP_PAGE = "src/content/docs/assignments/workshop-activities.mdx";
 const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/g;
+const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
 // Both pages head their term sections the same way: "## Fall (CS 461)" on the
 // schedule, "## Fall (4 items, 2%)" on the assignment page.
 const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
@@ -386,6 +393,39 @@ for (const [key, activity] of activities) {
   }
 }
 
+// Rule 7a: every guide is read in some week. Only Read rows count, because a
+// guide named in passing in a Lecture cell is not assigned reading.
+const GUIDES_NEVER_SCHEDULED = new Set([
+  // The section index, not a guide.
+  "introduction",
+  // Deliberately unscheduled: students are expected to arrive knowing git, and
+  // the guide is kept as reference. Removing it from fall week 3 is what took
+  // that week from 11,145 words to about 7,800, in the week before the RFC
+  // draft.
+  "git-and-github",
+]);
+const scheduledGuides = new Set();
+for (const line of readFileSync(SCHEDULE_PAGE, "utf8").split("\n")) {
+  if (line.match(ROW_LABEL_RE)?.[1] !== "Read") {
+    continue;
+  }
+  for (const m of line.matchAll(GUIDE_LINK_RE)) {
+    scheduledGuides.add(m[1]);
+  }
+}
+for (const file of readdirSync(GUIDES_DIR)) {
+  if (!file.endsWith(".mdx")) {
+    continue;
+  }
+  const guide = file.slice(0, -4);
+  if (GUIDES_NEVER_SCHEDULED.has(guide) || scheduledGuides.has(guide)) {
+    continue;
+  }
+  problems.push(
+    `unscheduled guide: guides/${file} is in no Read row on the week-by-week schedule, so nobody is ever asked to read it`
+  );
+}
+
 for (const [key, row] of workshopWeeks) {
   const activity = activities.get(key);
   if (!activity) {
@@ -463,7 +503,6 @@ for (const file of readdirSync(ACTIVITIES_DIR)) {
 // as nothing. Point values and percentages next to "grade", "rubric" or
 // "criterion" are assignment-page content. A bare "%" or "points" is not
 // flagged, because the gen-AI and sprint guides use both legitimately.
-const GUIDES_DIR = "src/content/docs/guides";
 const OUTCOME_TAG_RE = /\b(SO[1-6]|L0[7-9]|L10)\b/g;
 const GRADE_NUMBER_RE = /\b\d+(?:\.\d+)?(?:%| points?\b)/g;
 const GRADE_WORD_RE =
