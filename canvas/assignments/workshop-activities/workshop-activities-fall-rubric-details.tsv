@@ -1,4 +1,5 @@
-Team Formation Strategies Assessment		true	10	Pass	The assessment is completed and the team records what it surfaced.	0	Fail	Not submitted, or the submission is not this activity.
 User Story Mapping		true	10	Pass	A story map exists covering the current scope, and docs/requirements.md reflects it.	0	Fail	Not submitted, or the submission is not this activity.
-Describe your Architecture		true	10	Pass	An architecture diagram plus a brief explanation of each component, committed to docs/design.md.	0	Fail	Not submitted, or the submission is not this activity.
+Map Your One-Way Doors		true	10	Pass	A list of the team's upcoming decisions sorted into one-way and two-way doors, with a validator named for each one-way door.	0	Fail	Not submitted, or the submission is not this activity.
 Audit Your Safety Net		true	10	Pass	Honest statement of how much is delegated to AI tools, what would catch it if wrong, and one named gap with the smallest change that closes it.	0	Fail	Not submitted, or the submission is not this activity.
+Peer Technical Design Review		true	10	Pass	The written review given to each of the two other teams, plus a note on what changed in your own design after receiving theirs.	0	Fail	Not submitted, or the submission is not this activity.
+Identify Success Metrics		true	10	Pass	A short list of metrics that would prove the project worked for its users, each with how it will be measured and where it will be shown.	0	Fail	Not submitted, or the submission is not this activity.

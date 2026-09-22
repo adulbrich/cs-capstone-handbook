@@ -153,7 +153,7 @@ The WIC outcomes changed (#59) and every tag was re-derived from the new wording
 
 | File | What changed |
 |---|---|
-| `workshop-activities/` | `-fall-` now 4 rows (Team Formation, User Story Mapping, Describe your Architecture, Audit Your Safety Net); `-term-` replaced by `-winter-` (3 rows: Dependency Mapping, Team Dysfunctions, Test Plan) and `-spring-` (2 rows: Team Health, Identify Success Metrics). Re-create all three columns |
+| `workshop-activities/` | `-fall-` now 5 rows (User Story Mapping, Map Your One-Way Doors, Audit Your Safety Net, Peer Technical Design Review, Identify Success Metrics); `-term-` replaced by `-winter-` (3 rows: Dependency Mapping, Team Dysfunctions, Test Plan) and `-spring-` (1 row: Team Health). Re-create all three columns |
 
 ## Rubric TSVs Requiring Import: Resume and Intent (#73)
 
@@ -219,7 +219,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | Week | Due |
 |------|-----|
 | 1 | Term Startup (0 points, omit from final grade) |
-| 1-3 | Workshop Activities (4 items, complete/incomplete) |
+| 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
 | 2 | Team Charter; Resume and Intent |
 | 3-5 | Resume meetings (instructor) |
 | 4 | Sprint Note 1; RFC draft |
@@ -252,7 +252,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 |------|-----|
 | 1 | Term Startup (0 points, omit from final grade) |
 | 2 | Sprint Note 1 |
-| 2-3 | Workshop Activities (2 items, complete/incomplete) |
+| 2 | Workshop Activities (1 item, complete/incomplete) |
 | 4 | Sprint Note 2 |
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |
