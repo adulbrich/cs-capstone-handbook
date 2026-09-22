@@ -7,6 +7,8 @@ export const portal = {
   browse: "https://capstone.eecs.oregonstate.edu/projects",
   /** The project portal home: catalog, proposals, archived projects. */
   home: "https://capstone.eecs.oregonstate.edu/",
+  /** The hardware inventory teams borrow from. */
+  inventory: "https://capstone.eecs.oregonstate.edu/inventory",
   /** Propose a project. */
   submit: "https://capstone.eecs.oregonstate.edu/projects/new",
 } as const;
