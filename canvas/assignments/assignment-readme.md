@@ -180,9 +180,9 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 | `team-charter/` | Writing: length, sections, quotable commitments |
 | `project-retrospective/` | Forward-looking section: three first actions, linked |
 
-## Canvas Items Without a Rubric: Term Startup (#157) and Expo (#162)
+## Canvas Items Without a Rubric: Term Startup (#157), Demo Day (#172) and Expo (#162)
 
-Two assignment pages carry no points and no rubric, so there is no TSV here to import for either. Create them by hand.
+Three assignment pages carry no points and no rubric, so there is no TSV here to import for any of them. Create them by hand.
 
 **Term Startup**, once per term:
 
@@ -196,6 +196,18 @@ Two assignment pages carry no points and no rubric, so there is no TSV here to i
 | Due | end of week 1, all three terms |
 | Group assignment | yes, one submission per team |
 
+**Demo Day**, once for the year. One Canvas item carrying the five sessions as a sign-up, so that each team's slot is recorded and staff can see every team has taken one:
+
+| Field | Value |
+|---|---|
+| Title | Demo Day |
+| Points possible | 0 |
+| `omit_from_final_grade` | true |
+| Group | any; it contributes nothing, so the group choice does not affect the grade |
+| Submission type | none; use a sign-up so teams pick their session |
+| Due | fall weeks 5 and 10, winter weeks 5 and 10, spring week 5 |
+| Group assignment | yes, one slot per team |
+
 **Engineering Expo**, spring only:
 
 | Field | Value |
@@ -208,7 +220,7 @@ Two assignment pages carry no points and no rubric, so there is no TSV here to i
 | Due | end of spring week 10 |
 | Group assignment | yes, one submission per team |
 
-The zero points are the point: the item exists so the work reaches the student's Canvas to-do list and calendar, which the handbook schedule cannot do. Do not give either a rubric and do not put either in a weighted group's point total.
+The zero points are the point: the item exists so the work reaches the student's Canvas to-do list and calendar, which the handbook schedule cannot do. Do not give any of them a rubric and do not put any of them in a weighted group's point total.
 
 The Expo has real external deadlines that land well before its Canvas due date: registration opens in early spring and poster printing closes before week 10. Both are set by the College of Engineering, so announce them from the Expo website at term setup rather than encoding them here.
 
@@ -223,12 +235,12 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 2 | Team Charter; Resume and Intent |
 | 3-5 | Resume meetings (instructor) |
 | 4 | Sprint Note 1; RFC draft |
-| 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback |
+| 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback; Demo Day session 1 |
 | 6 | Sprint Note 2 |
 | 7-9 | Defense (during TA check-ins) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
 | 9 | Term Retrospective |
-| 10 | Sprint Note 4; Repo Checkpoint 2 ("hello, production" gate) |
+| 10 | Sprint Note 4; Repo Checkpoint 2 ("hello, production" gate); Demo Day session 2 |
 
 ### CS 462 (Winter Term)
 
@@ -239,12 +251,12 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 1-3 | Workshop Activities (3 items, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
 | 4 | Sprint Note 2; RFC draft |
-| 5 | Repo Checkpoint 1 (integration health); RFC cross-team feedback |
+| 5 | Repo Checkpoint 1 (integration health); RFC cross-team feedback; Demo Day session 3 |
 | 6 | Sprint Note 3 |
 | 7-9 | Defense (during TA check-ins) |
 | 8 | Sprint Note 4; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
-| 10 | Sprint Note 5; Repo Checkpoint 2 (release candidate gate) |
+| 10 | Sprint Note 5; Repo Checkpoint 2 (release candidate gate); Demo Day session 4 |
 
 ### CS 463 (Spring Term)
 
@@ -254,6 +266,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 2 | Sprint Note 1 |
 | 2 | Workshop Activities (1 item, complete/incomplete) |
 | 4 | Sprint Note 2 |
+| 5 | Demo Day session 5 |
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |
 | 7-9 | Defense (during TA check-ins) |
