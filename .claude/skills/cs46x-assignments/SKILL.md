@@ -197,8 +197,8 @@ Sections in **bold** are required.
    idea.
 
 7. **`## Activities That Prepare This`.** The shared recommendations first,
-   naming the criterion each one serves. Then, where outcome types genuinely
-   differ, a **By outcome type** table. Then a `Browse ... when these run
+   naming the criterion each one serves. Then, where projects genuinely
+   differ, an **Examples** table whose first column reads "If your project is". Then a `Browse ... when these run
    out.` line naming one or two activity categories.
 
    Every activity you link here must carry a `Recommended` or `Workshop` badge;

@@ -7,11 +7,11 @@
      v1 (partner-agreed) is due winter week 3. If the target becomes unreachable,
      renegotiate and update this file; git history is the record. -->
 
-**Team:** | **Project partner:** | **Outcome type:** FOSS / New Product or Game / Research / Consultancy | **Version:** | **Date:**
+**Team:** | **Project partner:** | **Version:** | **Date:**
 
-## 1. Target Rung
+## 1. What Shipped Means Here
 
-Which rung of the outcome ladder you are committing to, in your own words and specific to your project. "Merged upstream" or "in production" means what, exactly, here? Be honest about ambition: a defended 90 beats a fantasy 100.
+What you and your project partner agreed shipped means for this project, and which rung of the outcome ladder you are committing to, in your own words. "Merged upstream" or "in production" means what, exactly, here? Be honest about ambition: a defended 90 beats a fantasy 100.
 
 ## 2. Success Metrics
 
@@ -24,7 +24,7 @@ Which rung of the outcome ladder you are committing to, in your own words and sp
 
 ## 3. Prerequisites and Lead Times
 
-Everything the target rung requires that your team does not control: accounts, reviews, approvals, recruitment. Each row needs an owner and a start-by date. The test: nothing discoverable in week 8 of spring should be missing from this table. See the Shipping guide for your outcome type's known lead-time bombs.
+Everything the target rung requires that your team does not control: accounts, reviews, approvals, recruitment. Each row needs an owner and a start-by date. The test: nothing discoverable in week 8 of spring should be missing from this table. See the Shipping guide for the lead-time bombs each path involves.
 
 | Prerequisite | Estimated lead time | Owner | Start by | Status |
 | --- | --- | --- | --- | --- |

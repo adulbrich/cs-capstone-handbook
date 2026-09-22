@@ -33,16 +33,16 @@ Your requirements and design documents live in your repository under `docs/`, st
 
 ## What CI Must Do
 
-Every outcome type needs [continuous integration](https://martinfowler.com/articles/continuousIntegration.html), but "have a GitHub Actions workflow" is the wrong requirement: a team contributing upstream to someone else's repository cannot satisfy it, and a research team can satisfy it while testing nothing. The minimum is stated as outcomes:
+Every project needs [continuous integration](https://martinfowler.com/articles/continuousIntegration.html), but "have a GitHub Actions workflow" is the wrong requirement: a team contributing upstream to someone else's repository cannot satisfy it, and a research team can satisfy it while testing nothing. The minimum is stated as outcomes:
 
 1. **Every change reaches the default branch through a pull request** that someone other than the author approved.
 2. **An automated check runs on every pull request, and it can actually fail.** A check that passes unconditionally is not a check. Break something on a branch once and watch it go red, so you know.
 3. **The check runs your tests**, and at least one test fails if the behavior it covers breaks.
 4. **A stranger can go from a clean clone to a running system using only the README.**
 
-What that looks like depends on your outcome type:
+What that looks like depends on the project:
 
-| Outcome type | Realization |
+| If your project is | Realization |
 |---|---|
 | New Product or Game, Consultancy | A workflow that installs from a [lockfile](https://docs.npmjs.com/cli/v10/configuring-npm/package-lock-json), builds, lints, and runs the test suite on every pull request |
 | FOSS | Upstream's CI passes on your pull request, and your fork documents the build-and-test command a maintainer expects you to have run before submitting |
@@ -59,7 +59,7 @@ Each term's second checkpoint carries a gate that pulls the year's risk forward:
 | Winter, week 5 | Integration health: the skeleton has organs; CI meaningful; real-user session scheduled |
 | Winter, week 10 | **Release candidate**: installable/deployable by a stranger, plus evidence of at least one real-user session |
 
-The spring outcome bar is won or lost on lead times that start now, and the gates make you start them. See the [Shipping guide](/guides/shipping/) for your outcome type's path.
+The spring outcome bar is won or lost on lead times that start now, and the gates make you start them. See the [Shipping guide](/guides/shipping/) for the path closest to your project.
 
 :::caution[Agree the production target in week 5, not week 9]
 "Hello, production" is the one gate your team may not be able to meet alone: it can need an account, a hosting decision, a security review, or a maintainer's willingness to look at your pull request, and every one of those is somebody else's calendar. So the week 5 checkpoint asks you to **record what "deployed" will mean for this project**, in `docs/design.md` under deployment: where the skeleton will run, who owns the account or infrastructure, what approval is needed, and who is asking for it. One paragraph, agreed with your partner or mentor.
@@ -115,9 +115,9 @@ Checkpoints happen four times across fall and winter, and each gate needs differ
 
 **Winter week 10, release candidate:** [Test with an Assistive Technology User](/activities/user/#test-with-an-assistive-technology-user) and [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass) for the real-user evidence; [Describe your API Reference](/activities/design/#describe-your-api-reference) for the living docs; [Fishbone Diagram](/activities/planning/#fishbone-diagram) for risk hygiene.
 
-**By outcome type.** The gate lists above are the same for everyone; these are the ones your outcome type specifically needs.
+**Examples.** The gate lists above are the same for everyone; these are the ones a project like yours usually needs.
 
-| Outcome type | Activities |
+| If your project is | Activities |
 |---|---|
 | FOSS | [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase) for the inherited-codebase audit the fall week 5 gate checks, and to learn the upstream review culture while the stakes are low; [Software Release and Versioning](/activities/planning/#software-release-and-versioning) for upstream conventions |
 | Research | [Define Your Research Questions](/activities/requirements/#define-your-research-questions) and [Map Your External Approvals](/activities/planning/#map-your-external-approvals) in fall weeks 1 to 2; [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline) before winter week 5; [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible) and [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log) for winter week 10 |

@@ -109,7 +109,7 @@ if (course_id == "CS461" || course_id == "CS462") {
     dt[Q6 == 4, Verification := coeff * 70]
     dt[Q6 == 5, Verification := coeff * 50]
 } else {
-    ### Q6 (CS463): Which rung of the outcome ladder is the team on? One item for every outcome type (#70).
+    ### Q6 (CS463): Which rung of the outcome ladder is the team on? One item for every project (#70).
     # Option 1: People outside the team depend on it (100)
     # Option 2: Someone outside the team runs it in their own environment (90)
     # Option 3: An outsider ran it and the team acted on what they found (80)
