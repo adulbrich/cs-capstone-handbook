@@ -13,7 +13,7 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 
 ## Resume Meetings (fall, instructor-run)
 
-- Separate from the TA check-ins. Every student meets an instructor once in fall weeks 3 to 5, in groups of eight for thirty minutes, to react to the three intent lines from the Resume and Intent assignment. One instructor runs all of them: about six hours per hundred students; the second Friday hour and two fixed office blocks a week absorb them. Slots are published in Canvas in week 2 from the roster.
+- Separate from the TA check-ins. Every student meets an instructor once in fall weeks 3 to 5, in groups of eight for thirty minutes, to react to the three intent lines from the Resume and Intent assignment. Each student reads their lines aloud and names the resume line each one would add or replace; the group and the instructor react, and the student leaves with the lines sharper or replaced. Resumes are not reviewed line by line in the session, because thirty minutes does not hold eight resume reviews. One instructor runs all of them: about six hours per hundred students; the second Friday hour and two fixed office blocks a week absorb them. Slots are published in Canvas in week 2 from the roster.
 - Attendance is the third rubric criterion; the instructor records it in Canvas the same day. A student who asks before the slot is rescheduled; a no-show is not excused.
 - The same instructor meets the same groups again in spring, by week 8, for the Career and Individual Retrospective; keep the group list and the fall submissions, since the fall Canvas course closes.
 
