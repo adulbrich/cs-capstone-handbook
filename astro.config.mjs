@@ -130,7 +130,7 @@ export default defineConfig({
   //
   // Practicalities itself was then dissolved (#162): orientation to the three
   // audience pages, IP and NDA policy to its own page, the Expo to an ungraded
-  // assignment, and the four outcome types to the Shipping guide. The five
+  // assignment, and the four example shipping paths to the Shipping guide. The five
   // redirects above chained through pages that no longer exist, so they now
   // point at the surviving destination directly.
   redirects: {

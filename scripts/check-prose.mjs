@@ -105,8 +105,12 @@ const VOCABULARY = [
   { avoid: /\bstandups?\b/i, use: "stand-up" },
   { avoid: /\bsprint reports?\b|\bprogress reports?\b/i, use: "sprint note" },
   {
-    avoid: /\bproject categor(?:y|ies)\b/i,
-    use: "outcome type or project type",
+    // The handbook named a four-way taxonomy for a year and students kept
+    // asking which one they were. It shows examples now and names no category,
+    // so all three words for the category are retired together.
+    avoid:
+      /\boutcome types?\b|\bproject types?\b|\bproject categor(?:y|ies)\b/i,
+    use: "what shipped means for the project, or the closest path in the Shipping guide",
   },
   { avoid: /\bV&V ladders?\b|\bcategory ladders?\b/i, use: "outcome ladder" },
   { avoid: /\blegacy projects?\b/i, use: "existing codebase" },

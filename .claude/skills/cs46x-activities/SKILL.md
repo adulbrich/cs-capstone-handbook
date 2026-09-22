@@ -241,21 +241,27 @@ and assignment pages link to activities by anchor. So:
    commit. The build will catch what you miss, which is the point of not
    guessing.
 
-## Outcome Types
+## Different Projects Need Different Preparation
 
-Four **outcome types** cover most projects (see `/guides/shipping/`), and some fit none of them:
-**FOSS**, **Research**, **Consultancy**, and **New Product or Game**. The
-outcome type is guidance: it says how the outcome ladder's rungs read for a
-project and which shipping playbook applies. Assignment pages offer activity
-options keyed to it in a **By outcome type** table, because an activity that is
-central for a new product is often meaningless for a team contributing upstream
-to someone else's repository. "Project type" is the wider word: the Project
-Types page also covers where a project comes from, where its code starts, and
-what constrains it.
+**FOSS**, **Research**, **Consultancy** and **New Product or Game** are the
+paths projects have most often taken (see `/guides/shipping/`), and plenty of
+projects look like none of them.
 
-When an activity is materially specific to one outcome type, say so in the
+**Never name a category.** The words "outcome type", "project type" and
+"project category" are retired, and `check-prose` rejects all three under the
+content paths. The handbook presented a four-way taxonomy for a year and
+students spent it asking which one they were, rather than agreeing expectations
+with their partner. Refer to the four by name, as examples, or say what the
+project is.
+
+Assignment pages offer activity options in an **Examples** table whose first
+column reads "If your project is", because an activity that is central for a
+new product is often meaningless for a team contributing upstream to someone
+else's repository.
+
+When an activity is materially specific to one kind of project, say so in the
 opening sentences rather than adding a badge for it. When an activity is
-general, do not mention outcome types at all. Do not write an activity that
+general, do not raise the question at all. Do not write an activity that
 silently assumes one: "deploy your app" is unwritable for a FOSS team and "get
 a PR merged upstream" is unwritable for a greenfield product.
 

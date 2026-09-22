@@ -158,12 +158,12 @@ Current canonical homes:
 | Rubric bands, missing-is-zero, evidence rules | `assignments/introduction.mdx` |
 | The AI policy and what it assesses | `assignments/introduction.mdx` |
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
-| The four outcome types and each one's path up the ladder | `guides/shipping.mdx` |
-| Who agrees the outcome type, and where it is recorded | `assignments/definition-of-shipped.mdx` |
+| The four example paths up the ladder, and that a project may match none | `guides/shipping.mdx` |
+| What shipped means for a project, agreed with the partner and recorded | `assignments/definition-of-shipped.mdx` |
 | The inherited-codebase audit and what it covers | `assignments/repo-checkpoints.mdx` |
 | IP, NDA, and licensing policy | `introduction/ip-nda-and-licensing.mdx` |
 | How projects are proposed, how teams form, how either changes | `introduction/for-students.mdx` |
-| V&V outcome ladder (one ladder, every outcome type) | `assignments/project-partner-evaluation.mdx` |
+| V&V outcome ladder (one ladder, every project) | `assignments/project-partner-evaluation.mdx` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
 | Week-by-week schedule | `introduction/schedule.mdx` |
 | The handbook's vocabulary and the synonyms it rejects | `about/glossary.mdx` (`CONTEXT.md` points agents there) |

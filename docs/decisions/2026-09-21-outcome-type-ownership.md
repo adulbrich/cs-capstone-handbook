@@ -2,7 +2,7 @@
 
 Date: 2026-09-21
 Branch: `fix/outcome-type-ownership`
-Status: implemented; the canonical statement moved in #162 when `practicalities/` was dissolved. It now lives in `assignments/definition-of-shipped.mdx` under What It Must Contain, which is the artifact the partner signs. `guides/shipping.mdx` carries the standalone half (the type is agreed, not assigned) because a guide may not name an assignment. Every other page carries a short form and links to one of the two.
+Status: the rule stands, the vocabulary does not. The words "outcome type", "project type" and "project category" were retired on 2026-09-22 (see `2026-09-22-retiring-the-category.md`); what survives is that the team and the project partner agree what shipped means, and nobody assigns it. Read the argument below with that substitution. Originally: implemented; the canonical statement moved in #162 when `practicalities/` was dissolved. It now lives in `assignments/definition-of-shipped.mdx` under What It Must Contain, which is the artifact the partner signs. `guides/shipping.mdx` carries the standalone half (the type is agreed, not assigned) because a guide may not name an assignment. Every other page carries a short form and links to one of the two.
 Companion documents: `AGENTS.md` (canonical homes), `about/glossary.mdx`, `assignments/definition-of-shipped.mdx`, `docs/decisions/2026-09-21-dissolving-practicalities.md`.
 
 ## 1. Why

@@ -23,14 +23,16 @@ Everything lives in the handbook: **capstone.alexulbrich.com**
 
 ---
 
-# Project Types
+# What "Shipped" Means
 
 | Consultancy | New Product or Game | Research | FOSS |
 |---|---|---|---|
 | Build for a partner | Build for users | Build for knowledge | Build for a community |
 
-Each outcome type has its own definition of "shipped" and its own path there.
-See the Shipping guide in the handbook.
+Four paths other teams have taken, each with its own definition of "shipped"
+and its own way there. Plenty of projects look like none of them. You and your
+project partner agree what shipped means for yours, and write it down. See the
+Shipping guide in the handbook.
 
 ---
 
@@ -38,7 +40,7 @@ See the Shipping guide in the handbook.
 
 | Component | Weight |
 |---|---|
-| Project partner evaluation | 25% |
+| Project partner interactions | 25% |
 | Peer evaluation | 25% |
 | Individual evidence (RFC + Defense) | 25% |
 | Team deliverables | 25% |
