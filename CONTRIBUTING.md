@@ -55,7 +55,7 @@ first column is what stops you locally; the last is what stops the merge.
 | No em dash, emoji, or glossary-rejected synonym in tracked text | `pre-commit`, staged files | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
 | Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths | `after-edit.mjs` | `build`: `validate-dates` |
 | Outcome coverage, per-term weights sum, Canvas TSV parity, assignment page shape | `pre-commit` on assignment and TSV paths; `pre-push` | | `build`: `validate-outcomes` |
-| Activity tiers, badges, Feeds lines, schedule links, no grading language in activities or guides | `pre-commit` on activity, assignment, guide, schedule paths; `pre-push` | | `build`: `validate-activities` |
+| Activity tiers, badges, the standalone rule, schedule links by week, no grading language in activities or guides | `pre-commit` on activity, assignment, guide, schedule paths; `pre-push` | | `build`: `validate-activities` |
 | Every download in `public/` has an owning page | `pre-commit`; `pre-push` | | `build`: `validate-downloads` |
 | Every internal link and anchor resolves | `pre-push`: `npm run build` | | `build`: the Astro build with the links validator |
 | Never commit anything under `data/` | `pre-commit` | `guard-edits.mjs` refuses the write | `build`: tracked-files guard |

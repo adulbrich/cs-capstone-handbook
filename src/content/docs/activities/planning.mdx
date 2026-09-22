@@ -21,7 +21,7 @@ Planning activities are designed to help you figure out your timeline and delive
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
-Decide what "it worked" will mean, in numbers, while you are still far enough from the deadline to be honest about it. One to two hours as a team, first in winter before your Definition of Shipped and again in the spring workshop, when you write your [Definition of Shipped](/assignments/definition-of-shipped/).
+Decide what "it worked" will mean, in numbers, while you are still far enough from the deadline to be honest about it. One to two hours as a team, once when you first commit to what shipping will mean, and again when the deadline is close enough to check the number honestly.
 
 Every project commits to 2 or 3 metrics, and what makes a good one differs by outcome type, so start with your own subsection below. Product and game teams can borrow from the PMF question, AARRR, and HEART in the [guide](/guides/planning/#success-metric-frameworks).
 
@@ -61,7 +61,7 @@ Your success is measured in someone else's repository, so read what the project 
 - Review turnaround, and whether maintainers start assigning you work
 - Issues closed, and whether your changes appear in a tagged release
 
-A trivial patch merged in fall is a stronger signal than a large one unmerged in spring; it proves the pipeline works.
+A trivial patch merged early is a stronger signal than a large one still unmerged at the end; it proves the pipeline works.
 
 ### Consultancy
 
@@ -72,11 +72,9 @@ Your top rungs describe actions the **partner** takes, so measure their adoption
 - Has it cleared their security or IT review, and when
 - What would have to be true for them to call it production
 
-In the workshop's second half, produce the same metrics list with an AI agent (a skill or a structured prompt) and set it beside yours; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
 A good output is 2 or 3 metrics with their decision rules and a named instrumentation method for at least one, committed and dated.
-
-**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) metrics-and-instrumentation criterion, and the spring [Release and Metrics](/assignments/release/) evidence.
 
 ## Weekly Work Intensity
 
@@ -113,8 +111,6 @@ Finally, there's the live-data prototype. Consider it a substantially smaller im
 
 A good output is a plan with the types of prototypes you will build, in what order, and in what time frame, indicating which concerns each one tackles.
 
-**Feeds:** the fall week 10 [repo checkpoint](/assignments/repo-checkpoints/) term gate.
-
 ## Gantt Chart
 
 <Badge text="Team Activity" variant="note" class="mb-6"/>
@@ -142,11 +138,9 @@ Map task dependencies and identify the critical path to ensure efficient project
 3. Create a Critical Path Diagram: Map out the sequence of dependent tasks and identify the longest path (critical path) that determines the project timeline.
 4. Analyze and Adjust: Identify potential bottlenecks and adjust timelines accordingly.
 
-In the workshop's second half, produce the same critical path with an AI agent (a skill or a structured prompt) and set it beside yours; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
 A good output is a dependency map and critical path analysis, including identified bottlenecks and adjustments.
-
-**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites-and-lead-times criterion, which teams most often underestimate.
 
 ## Prioritization
 
@@ -162,8 +156,6 @@ Turn your backlog of requirements or tasks into a ranked list with a reason next
 
 A good output is your prioritized list of requirements or tasks, the method you used named, and a stated reason for each item's rank.
 
-**Feeds:** the [sprint note](/assignments/sprint-notes/) top-risk-and-decision item.
-
 ## Risk Management Plan
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
@@ -175,9 +167,7 @@ Develop a risk management plan to identify and mitigate potential project risks.
 3. Develop Mitigation Strategies: Create contingency plans to address each risk, minimizing its impact.
 4. Monitor and Review: Establish a system for tracking risks and updating the plan as the project progresses.
 
-A good output is a risk management plan detailing risks, their categorization (impact/likelihood), and mitigation strategies. The external-world risks you surface here (approvals, reviews, recruitment) belong in your [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) decision-and-risk-hygiene criterion.
+A good output is a risk management plan detailing risks, their categorization (impact/likelihood), and mitigation strategies. The external-world risks you surface here (approvals, reviews, recruitment) belong in your prerequisites list, because they are the ones whose lead times you do not control.
 
 ## SWOT Analysis
 
@@ -206,9 +196,7 @@ Set up a Kanban board to visualize and manage your project's workflow effectivel
 4. Limit Work in Progress (WIP): Set WIP limits to avoid overloading team members.
 5. Team Agreement: Discuss the process and tool with your team and ensure everyone agrees.
 
-A good output is your live Kanban board and a brief explanation of its structure. A well-kept board makes writing your [Sprint Notes](/assignments/sprint-notes/) almost mechanical.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) term gate, and every [sprint note](/assignments/sprint-notes/) after it.
+A good output is your live Kanban board and a brief explanation of its structure. A well-kept board makes writing your sprint notes almost mechanical.
 
 ## Responsibility Assignment Matrix (RACI)
 
@@ -232,8 +220,6 @@ Here's an example of a RACI matrix:
 
 A good output is a RACI matrix for your project, detailing roles and responsibilities for key tasks or deliverables.
 
-**Feeds:** the [Team Charter](/assignments/team-charter/) roles criterion.
-
 ## Stakeholder Mapping
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
@@ -247,8 +233,6 @@ Identify and categorize project stakeholders to ensure effective communication a
 
 A good output is a stakeholder map and a plan outlining communication strategies for each group.
 
-**Feeds:** the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites criterion, and the [RFC](/assignments/rfc/) constraints criterion.
-
 ## Definition of Done
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
@@ -259,9 +243,7 @@ The [Definition of Done (DoD)](https://www.atlassian.com/agile/project-managemen
 2. Include Quality Standards: Ensure the criteria cover quality aspects like performance benchmarks, usability, or security.
 3. Team Agreement: Discuss the definition with your team and ensure everyone agrees.
 
-A good output is a short document outlining the agreed-upon Definition of Done for your project. It is the task-level sibling of the project-level [Definition of Shipped](/assignments/definition-of-shipped/) you write in winter; practicing on tasks makes the project-level version much easier.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) build-health criterion, and every [sprint note](/assignments/sprint-notes/) after it.
+A good output is a short document outlining the agreed-upon Definition of Done for your project. It is the task-level sibling of a project-level definition of shipped; practicing on tasks makes the project-level version much easier.
 
 ## How Might We Questions
 
@@ -286,9 +268,7 @@ A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known
 3. Identify major categories of causes (e.g., People, Process, Tools, Environment) and draw "bones" branching off the spine.
 4. Brainstorm and list possible causes under each category.
 
-A good output is a completed Fishbone Diagram (hand-drawn or created with a diagramming tool) for a key problem in your project, along with a short summary of the main causes identified. This is also a useful tool when analyzing root causes for your [Incident Postmortem](/assignments/incident-postmortem/).
-
-**Feeds:** the [Incident Postmortem](/assignments/incident-postmortem/) root-cause criterion, and the [repo checkpoint](/assignments/repo-checkpoints/) risk hygiene.
+A good output is a completed Fishbone Diagram (hand-drawn or created with a diagramming tool) for a key problem in your project, along with a short summary of the main causes identified. This is also a useful tool when analyzing root causes for an incident postmortem.
 
 ## Software Release and Versioning
 
@@ -301,9 +281,7 @@ Plan the release process for your software, including version control and deploy
 3. Plan Deployment: Identify how and where the software will be deployed or accessed (e.g., cloud platform, local servers, GitHub repository assets).
 4. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
-A good output is a release plan document that includes versioning details and deployment steps. It prepares you for the spring [Release and Metrics](/assignments/release/) assignment, and the [Shipping guide](/guides/shipping/) lists the lead times your release path involves.
-
-**Feeds:** the fall week 10 [repo checkpoint](/assignments/repo-checkpoints/) term gate, and the spring [Release and Metrics](/assignments/release/).
+A good output is a release plan document that includes versioning details and deployment steps. It prepares you for an actual release, and the [Shipping guide](/guides/shipping/) lists the lead times your release path involves.
 
 ## Software Development Process
 
@@ -317,13 +295,13 @@ Define and plan the software development process for your project to ensure clea
 4. Assign Roles: Clarify team roles and responsibilities at each stage.
 5. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
-A good output is a document outlining the chosen process, phases, milestones, and team roles. Much of this belongs in your [Team Charter](/assignments/team-charter/).
+A good output is a document outlining the chosen process, phases, milestones, and team roles. Much of this belongs in your team charter.
 
 ## Map Your External Approvals
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Find every approval your project needs from someone outside your team, and start the slowest one this week. Ninety minutes in fall weeks 1 to 2, then a standing agenda item.
+Find every approval your project needs from someone outside your team, and start the slowest one this week. Ninety minutes in the first fortnight, then a standing agenda item.
 
 Research and consultancy projects fail on calendars far more often than on code. IRB review takes weeks even for an exempt determination, data use agreements between institutions can take a full term, and an enterprise security review is measured in months. None of those clocks run faster because you started late.
 
@@ -334,6 +312,4 @@ Research and consultancy projects fail on calendars far more often than on code.
 - **Put them in `docs/risks.md`** with owners and dates, and review them at every checkpoint.
 
 A good output is a dated table of every external approval with an owner and an expected duration, living in your risk register, with the longest clock already started.
-
-**Feeds:** the [repo checkpoint](/assignments/repo-checkpoints/) decision-and-risk-hygiene criterion, and the [Definition of Shipped](/assignments/definition-of-shipped/) prerequisites-and-lead-times criterion.
 

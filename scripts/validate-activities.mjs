@@ -17,10 +17,14 @@
 //   3. Every anchor an assignment links to must resolve to a real heading.
 //      (The Starlight link validator also catches this at build time; this
 //      check runs without a build and names the activity, not the URL.)
-//   4. Every Workshop or Recommended activity carries a "Feeds:" line naming
-//      the rubric criterion it prepares. That line is how a student working
-//      backward from a rubric finds the activity, and how a future editor
-//      tells whether the activity still earns its tier.
+//   4. An activity page is standalone. It never links an assignment page, never
+//      says "workshop", and never places itself in a term, a week, or a half
+//      of a class session. The guides directory has held this line by
+//      convention since it was written (zero assignment links across nineteen
+//      files); activities had drifted to sixty-one backlinks and ten sessions
+//      described by the clock. A reader who is not enrolled should be able to
+//      run any activity on these pages. Guide links and external sources stay,
+//      and the direction of travel is one way: assignments link to activities.
 //
 //   5. Every activity carries a closing "A good output is..." line. The
 //      deliverable line is the only quality signal an activity has, and it is
@@ -119,18 +123,15 @@ function badVariants(badgeWindow) {
   return bad;
 }
 
-// True when the last "A good output" line is the final non-blank line of
-// the section, or is followed only by the Feeds line.
+// True when the last "A good output" line is the final non-blank line of the
+// section. Nothing may follow it: the Feeds line used to be the one exception
+// and no longer exists.
 function outputIsClosing(bodyLines) {
   const at = bodyLines.findLastIndex((l) => l.startsWith("A good output"));
   if (at === -1) {
     return true; // reported separately as a missing deliverable
   }
-  const after = bodyLines.slice(at + 1).filter((l) => l.trim() !== "");
-  return (
-    after.length === 0 ||
-    (after.length === 1 && after[0].startsWith("**Feeds:**"))
-  );
+  return bodyLines.slice(at + 1).every((l) => l.trim() === "");
 }
 
 function readSection(page, lines, i) {
@@ -146,7 +147,6 @@ function readSection(page, lines, i) {
       (lines[i + 2] ?? "").startsWith("<Badge") &&
       bodyLines.filter((l) => l.startsWith("<Badge")).length === 1,
     badVariants: badVariants(badgeWindow),
-    hasFeeds: /^\*\*Feeds:\*\*/m.test(body),
     hasOutput: /^A good output/m.test(body),
     heading,
     outputIsClosing: outputIsClosing(bodyLines),
@@ -307,7 +307,7 @@ for (const [key, activity] of activities) {
   }
   if (!activity.outputIsClosing) {
     problems.push(
-      `deliverable not last: "${activity.heading}" (${activity.page}) has prose after its "A good output" line; only the Feeds line may follow it`
+      `deliverable not last: "${activity.heading}" (${activity.page}) has prose after its "A good output" line, which has to close the section`
     );
   }
   for (const bad of activity.badVariants) {
@@ -323,11 +323,6 @@ for (const [key, activity] of activities) {
   if (activity.tier === "Recommended" && !links.has(key)) {
     problems.push(
       `unearned badge: "${activity.heading}" (${activity.page}) is marked Recommended but no assignment page links to it`
-    );
-  }
-  if (activity.tier && !activity.hasFeeds) {
-    problems.push(
-      `missing Feeds: "${activity.heading}" (${activity.page}) is ${activity.tier} tier but has no "**Feeds:**" line naming the criterion it prepares`
     );
   }
 }
@@ -406,6 +401,59 @@ for (const [key, row] of workshopWeeks) {
     problems.push(
       `workshop not badged: "${activity.heading}" (${activity.page}) is the ${row.term} week ${row.week} workshop on assignments/workshop-activities.mdx but carries ${carries}`
     );
+  }
+}
+
+// --- Rule 4: activity pages are standalone -----------------------------------
+// Each pattern is something a reader outside this course cannot resolve. The
+// two exemptions are real external events, not sessions of this course, and
+// they are listed rather than pattern-matched so that adding a third is a
+// deliberate act.
+const STANDALONE_RULES = [
+  [/\]\(\/assignments\//, "links an assignment page"],
+  [/\b(?:first|second) half\b/i, "describes half of a class session"],
+  [/\bworkshops?\b/i, 'says "workshop"'],
+  [/\bweeks? \d/i, "names a week number"],
+  [/\bin (?:the )?(?:fall|winter|spring)\b/i, "places itself in a term"],
+  [
+    /\b(?:fall|winter|spring) (?:week|term|session|workshop)/i,
+    "places itself in a term",
+  ],
+];
+const STANDALONE_EXEMPT = new Set([
+  // The OSU Advantage Accelerator's Iterate program is an external event the
+  // team registers for, and calling it anything but a workshop would be wrong.
+  "requirements#osu-advantage-accelerators-iterate-program",
+  // "Present at a conference or workshop" is an outreach channel.
+  "user#find-users",
+]);
+
+for (const file of readdirSync(ACTIVITIES_DIR)) {
+  // The index is the page that explains what a Workshop badge means, so it is
+  // the one activity page allowed to use the word and to link the assignment
+  // that owns the tier.
+  if (!file.endsWith(".mdx") || file === "introduction.mdx") {
+    continue;
+  }
+  const page = file.slice(0, -4);
+  let section = null;
+  for (const line of readFileSync(join(ACTIVITIES_DIR, file), "utf8").split(
+    "\n"
+  )) {
+    if (line.startsWith("## ")) {
+      section = `${page}#${slugify(line.slice(3).trim())}`;
+    }
+    // The tier badge carries the word "Workshop" as markup, not as prose.
+    if (line.startsWith("<Badge") || STANDALONE_EXEMPT.has(section)) {
+      continue;
+    }
+    for (const [pattern, what] of STANDALONE_RULES) {
+      if (pattern.test(line)) {
+        problems.push(
+          `not standalone: activities/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
+        );
+      }
+    }
   }
 }
 

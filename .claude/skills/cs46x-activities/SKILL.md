@@ -62,6 +62,25 @@ not a lecture, and not an assignment. Three properties define it:
 - **Attached to graded work.** Every activity should be traceable to a rubric
   criterion it prepares. Activities that prepare nothing are library filler.
 
+### Standalone
+
+**An activity page never refers to this course.** No link to an assignment
+page, no mention of a workshop, no week number, no term, no half of a class
+session. A reader who is not enrolled should be able to run any activity here.
+The `guides/` directory has held this line since it was written and has zero
+assignment links across nineteen files; activities had drifted to sixty-one
+`Feeds:` backlinks and ten activities describing their slot by the clock.
+
+The direction of travel is one way. **Assignments link to activities**, in
+their "Activities That Prepare This" section, and that link is what earns a
+Recommended badge. An activity does not link back. What stays: guide links,
+LinkCards, and external sources, which should grow rather than shrink.
+
+`validate-activities.mjs` enforces this per line, with two exemptions listed in
+the script for genuinely external events. `activities/introduction.mdx` is
+exempt as a whole, because it is the page that explains what a Workshop badge
+means.
+
 **Mechanically, an activity is a `##` section carrying an audience badge.**
 That is the definition the validator uses, and it is why the badge is
 load-bearing rather than decorative. Page framing and closing prose also use
@@ -109,18 +128,21 @@ badge that no assignment references is a lie to the student.
 This is enforced, not merely requested. `npm run validate:activities` fails if a
 linked activity carries no badge, if a Recommended badge has no assignment
 linking to it, or if an assignment links to an anchor matching no heading. It
-also reconciles the week-by-week schedule on `introduction/series.mdx`: every
-activity it links must be Workshop or Recommended, and every Workshop
-activity must appear on it. Demoting an activity therefore means removing it
-from the schedule in the same commit. It runs in CI and pre-commit.
+also reconciles the week-by-week schedule on `introduction/schedule.mdx`,
+reading it by term, week and row label: an activity in a **Recommended** row
+must be Workshop or Recommended tier, a **Lecture** row may link an untiered
+activity, and every Workshop activity must sit in a Lecture row in the same
+week `assignments/workshop-activities.mdx` gives it. Demoting an activity
+therefore means removing it from the schedule in the same commit. It runs in
+CI and pre-commit.
 
 The same validator also enforces the section shape below: a tier badge with
 no audience badge; audience badge variants (Team is `note`, Individual is
 `success`); all badges on one line, two lines below the heading; the closing
-"A good output" line being last (only the Feeds line may follow); a Feeds line
-on every Workshop or Recommended activity; no outcome tags and no point values
-or percentages next to grading words, on activity and guide pages alike; and
-the "more than a hundred" library figure on the index and the workshop page.
+"A good output" line being last, with nothing after it; the standalone rule
+above; no outcome tags and no point values or percentages next to grading
+words, on activity and guide pages alike; and the "more than a hundred"
+library figure on the index and the workshop page.
 What it does not check: heading case, the `mb-6` class, the effort clause,
 the 400-word test, and the opener rules. Those are still on you.
 
@@ -140,8 +162,6 @@ One or two sentences saying what this produces and why it is worth the time.
 - **Step name**: what to do.
 
 A good output is <the concrete artifact, described so a student knows whether they have it>.
-
-**Feeds:** the [assignment](/assignments/slug/) criterion-name criterion.
 ````
 
 Line by line:
@@ -197,18 +217,13 @@ rather than a procedure, but prose is the exception and should not run past
 three short paragraphs. Sub-headings (`###`) are allowed only for activities
 with genuinely distinct phases, and they create anchors, so name them carefully.
 
-**"A good output is..." line.** Mandatory, always the closing line of the body,
+**"A good output is..." line.** Mandatory, always the closing line of the body
+with nothing after it,
 always starting with that exact phrase (or "A good output shows/details/is"
 where the verb reads better). This is the only quality signal in the activity,
 and its job is to let a student self-check. Be concrete: "a comparison matrix
 and a justification for the chosen technology" is useful; "a thoughtful
 analysis" is not.
-
-**"Feeds:" line.** Required for Workshop and Recommended tier, optional for
-Library tier. Names the assignment and the specific rubric criterion this
-activity prepares, with a link. This is what lets a student working backward
-from a rubric find the activity, and what lets a future editor tell whether the
-activity still earns its tier.
 
 ## Heading Rules
 
@@ -313,6 +328,8 @@ and cost. The second names the artifact and the time.
 
 ## What Activities Must Not Contain
 
+- Links to assignment pages, the word "workshop", week numbers, term names, or
+  any other reference to this course's calendar. See **Standalone** above.
 - Point values, rubric bands, or any grading language.
 - Submission mechanics ("upload to Canvas"). The one exception is the Workshop
   tier, and even there the mechanics live on the assignment page, not here.
