@@ -270,10 +270,9 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |
 | 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
-| 8 | Release and Metrics |
+| 8 | Release and Metrics; Project Handoff |
 | 9 | Project Retrospective; Career and Individual Retrospective |
 | 10 | Engineering Expo (0 points, omit from final grade) |
-| 10 | Project Handoff |
 
 ## Deprecated Assignments
 
