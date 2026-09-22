@@ -11,9 +11,13 @@ Read this in fall week one, before you agree your spring rung with your project 
 
 Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in spring week 8. The only move that works is starting the clocks early. That means choosing the rung you are aiming for at the very beginning, planning backward from it, and starting the slow external processes in your first week rather than when you feel ready for them.
 
-This guide is the playbook, one section per [outcome type](/practicalities/types/). Each section says what each rung means for that type, walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence worth collecting as you go. Evidence is the part teams leave until last and regret: a merged pull request, a dashboard, a maintainer's comment and a partner's email are all trivial to capture the day they happen and painful to reconstruct afterwards.
+This guide is the playbook, one section per outcome type. Each section says what each rung means for that type, walks the prerequisites rung by rung, gives a term-by-term timeline, names the common blockers, and lists the evidence worth collecting as you go. Evidence is the part teams leave until last and regret: a merged pull request, a dashboard, a maintainer's comment and a partner's email are all trivial to capture the day they happen and painful to reconstruct afterwards.
+
+There are four outcome types, and **yours is something you and your project partner or mentor agree**, not a label anyone assigns you. It selects your playbook and says how the ladder's rungs read for your project; it changes nothing about the standard you are held to. Plenty of projects fit none of the four cleanly, and that costs nothing: a project that is half consultancy and half research still has a partner and a rung it is aiming at. Read the section closest to your project, then take the others as a menu, because the lead times in one section routinely bite a project in another.
 
 ## FOSS
+
+**What it is:** you contribute patches to an existing free and open-source project rather than starting your own: the [Rust compiler](https://github.com/rust-lang/rust), the [Xen hypervisor](https://xenproject.org/), the [Habitica](https://habitica.com/) todo-list game, a repository from the [OSU Open Source Lab](https://osuosl.org/). The real work is earning a maintainer's review and approval, and that is a relationship you build rather than a step you execute.
 
 **On the ladder:** for FOSS the rungs read, from the bottom, a pull request submitted; reviewed and revised; merged; shipped in an upstream release. Note what separates submitted from merged: not your code, but a maintainer's attention and approval. That is a resource you must cultivate, not a step you execute.
 
@@ -39,6 +43,8 @@ Communication norms matter as much as code. Read the project's [CONTRIBUTING fil
 
 ## New Product or Game
 
+**What it is:** you create something that did not exist, which may or may not turn into a viable business. The distinguishing feature is that the people at the top of your ladder do not know you, and strangers take months to find rather than weeks.
+
 **On the ladder:** for a new product or game the rungs read, from the bottom, friends tried a deployed build; a dozen strangers, or a completed user study; two dozen strangers; sustained use by tens of heavy or hundreds of light users. The jump from friends to a dozen strangers is the hard one: strangers cannot try software that is not deployed, and they will not arrive the week you need them.
 
 **Rung-by-rung prerequisites:**
@@ -53,6 +59,8 @@ Know your **store clocks** if you are distributing through one. Apple: developer
 
 Add an **analytics or telemetry starter in fall**, not spring: a privacy-respecting page-view and event counter ([Plausible](https://plausible.io/), [Umami](https://umami.is/), [PostHog](https://posthog.com/)) or a simple event log. Any credible claim about use requires metrics, and metrics require instrumentation that has been quietly collecting since before you needed it.
 
+If the venture question interests you beyond the software, [Y Combinator's Startup School](https://www.startupschool.org/) is a free, self-paced course on taking a product to a market, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator) runs programs for student founders. Neither is a substitute for a dozen strangers using the thing: they help you decide what to build next, and the ladder only counts what someone actually ran.
+
 | Term | What must be true |
 |---|---|
 | Fall | Production URL live (walking skeleton); domain, TLS, hosting sorted; analytics wired; store accounts created if relevant |
@@ -64,6 +72,8 @@ Add an **analytics or telemetry starter in fall**, not spring: a privacy-respect
 **Evidence to collect:** the production URL and uptime history, analytics screenshots with dates, user counts and testimonials, store listing links and review correspondence, user study protocol and results, and retention evidence: repeat-use counts or week-over-week active users, which is what separates the top rungs from a launch spike.
 
 ## Research
+
+**What it is:** you collaborate with a professor on a research question, aiming at a result someone else can reproduce and, when it holds up, a paper. It is the natural path if you are considering graduate school, and the teamwork you need can come from sustained contact with the professor's research group rather than only from your own team.
 
 **On the ladder:** for research the rungs read, from the bottom, a real-data run shown to your partner; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; a stranger reproduced the result from the published artifact, which is what a paper is for. Underneath every rung sits an unstated prerequisite: **data you are allowed to use** and **results someone else can reproduce**.
 
@@ -90,6 +100,8 @@ Get the pipeline running end to end on sample data in fall. Clearing that bar ea
 **Evidence to collect:** approval letters and agreement dates, the reproducible artifact itself (repo tag plus instructions), baseline reproduction numbers next to published ones, experiment logs, your partner's written confirmation that results are novel or submission-worthy, and the paper draft or preprint link.
 
 ## Consultancy
+
+**What it is:** you build software for one specific external partner: a citizen-science application for a nonprofit, a study tool for a professor in another department, an internal tool for a company. At the top of the ladder the partner runs the system in their own environment, which means the hardest prerequisites on your list are theirs to satisfy, not yours.
 
 **On the ladder:** for consultancy the rungs read, from the bottom, the partner tried a prototype; their feedback addressed in a newer version; the partner integrating it into production; the partner running it in operations. Read the top rungs carefully: they describe actions the **partner** takes, not you. Your job is to make those actions easy, safe, and early.
 
@@ -179,3 +191,4 @@ ladder is written the way it is.
 - [Definition of Done](/activities/planning/#definition-of-done): the standard a demo has to meet before it counts.
 - [Map Your External Approvals](/activities/planning/#map-your-external-approvals): every clock on this page, with an owner and a start date.
 - [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible) and [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline): the two research rungs, made concrete.
+- [OSU Advantage Accelerator's Iterate Program](/activities/requirements/#osu-advantage-accelerators-iterate-program): pressure-tests a new product idea as a venture before you commit a year to it.

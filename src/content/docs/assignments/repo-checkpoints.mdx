@@ -54,7 +54,7 @@ Each term's second checkpoint carries a gate that pulls the year's risk forward:
 
 | Checkpoint | Gate |
 |---|---|
-| Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real, **and the week 10 production target is written down and agreed with your partner**; teams starting in an existing codebase also have their inherited-codebase audit written ([Project Types](/practicalities/types/#where-the-code-starts) says what it covers) |
+| Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real, **and the week 10 production target is written down and agreed with your partner**; teams starting in an existing codebase also have their [inherited-codebase audit](#the-inherited-codebase-audit) written |
 | Fall, week 10 | **"Hello, production"**: a [walking skeleton](/walking-skeleton-prototype-template.md) ([the thinnest end-to-end slice of your system that actually runs](https://wiki.c2.com/?WalkingSkeleton)) deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
 | Winter, week 5 | Integration health: the skeleton has organs; CI meaningful; real-user session scheduled |
 | Winter, week 10 | **Release candidate**: installable/deployable by a stranger, plus evidence of at least one real-user session |
@@ -67,6 +67,22 @@ The spring outcome bar is won or lost on lead times that start now, and the gate
 Teams that discover in week 9 that their partner never intended to give them a production environment do not fail because they built badly. They fail because nobody asked in week 5. If the answer is "there will be no deployment", that is a fine answer, and it needs to be written down then, so staff can agree an equivalent gate while there is still time to hit it.
 :::
 
+### The Inherited-Codebase Audit
+
+Some teams do not start from scratch. Three origins, one situation: a predecessor capstone team's repository (their [handoff document](/assignments/project-handoff/), project retrospective, and `docs/risks.md` are your first reading), a project partner's codebase (their conventions, CI, review process, and hosting bind you from day one, which is the [RFC](/assignments/rfc/) page's "your partner already decided" case), or an upstream open-source project (their [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), review culture, and release cadence bind you). In all three, someone else's decisions, tests, debt, and review process are yours before you write a line.
+
+**Audit what you inherited in fall weeks 1 to 5.** The fall week 5 gate checks it for every team that starts in an existing codebase, and it covers:
+
+- what runs and how, and what does not;
+- the state of the tests and the CI;
+- the dependencies and their age;
+- the open risks and the known debt;
+- the predecessor team's handoff document and retrospective, if there is one;
+- the upstream project's contribution rules, if there are any;
+- what you will change first.
+
+One page in `docs/requirements.md` under Constraints, or `docs/inherited.md` if it runs longer. [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase) is the exercise that produces it.
+
 ## Rubric (100 points per checkpoint)
 
 <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-rubric-details.tsv" />
@@ -76,7 +92,7 @@ Teams that discover in week 9 that their partner never intended to give them a p
 Each criterion has one thing graders check first, so you can check it yourself:
 
 - **Living docs**: one recent feature, compared against `docs/design.md`. If the doc describes a system that no longer exists, this criterion is where it shows.
-- **Term gate**: met or not met, judged against the [Term Gates](#term-gates) table and nothing else. For a team starting in an existing codebase, the fall week 5 gate includes the inherited-codebase audit, present and covering what [Project Types](/practicalities/types/#where-the-code-starts) lists.
+- **Term gate**: met or not met, judged against the [Term Gates](#term-gates) table and nothing else. For a team starting in an existing codebase, the fall week 5 gate includes the [inherited-codebase audit](#the-inherited-codebase-audit), present and covering everything listed there.
 - **Build health**: the safety net is judged **relative to how your team works**, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team writing most code by hand, and neither approach is penalized: what is graded is whether the net catches what your way of working lets through. Gates belong on the changes that are expensive to undo (schema, authentication, deployment, migrations), not spread uniformly. A team with no CI that hand-merges agent output to production fails this regardless of whether anything has broken yet.
 - **Decision and risk hygiene**: does the risk register have owners and a ranking, and is there exactly one of it?
 - **Contribution traceability**: this grades whether the **infrastructure** for attribution exists, not whether every student contributed. Individual non-contribution is handled by the [individual modifier](/assignments/introduction/#individual-accountability-on-team-work) and never double-counted here.

@@ -228,7 +228,7 @@ and assignment pages link to activities by anchor. So:
 
 ## Outcome Types
 
-Four **outcome types** cover most projects (see `/practicalities/types/`), and some fit none of them:
+Four **outcome types** cover most projects (see `/guides/shipping/`), and some fit none of them:
 **FOSS**, **Research**, **Consultancy**, and **New Product or Game**. The
 outcome type is guidance: it says how the outcome ladder's rungs read for a
 project and which shipping playbook applies. Assignment pages offer activity

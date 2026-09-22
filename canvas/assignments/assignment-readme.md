@@ -180,9 +180,11 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 | `team-charter/` | Writing: length, sections, quotable commitments |
 | `project-retrospective/` | Forward-looking section: three first actions, linked |
 
-## Canvas Items Without a Rubric: Term Startup (#157)
+## Canvas Items Without a Rubric: Term Startup (#157) and Expo (#162)
 
-Term Startup is an assignment page with no points and no rubric, so there is no TSV here to import. Create it by hand once per term:
+Two assignment pages carry no points and no rubric, so there is no TSV here to import for either. Create them by hand.
+
+**Term Startup**, once per term:
 
 | Field | Value |
 |---|---|
@@ -194,7 +196,21 @@ Term Startup is an assignment page with no points and no rubric, so there is no 
 | Due | end of week 1, all three terms |
 | Group assignment | yes, one submission per team |
 
-The zero points are the point: the item exists so the checklist reaches the student's Canvas to-do list and calendar, which the handbook schedule cannot do. Do not give it a rubric and do not put it in a weighted group's point total.
+**Engineering Expo**, spring only:
+
+| Field | Value |
+|---|---|
+| Title | Engineering Expo |
+| Points possible | 0 |
+| `omit_from_final_grade` | true |
+| Group | any; it contributes nothing, so the group choice does not affect the grade |
+| Submission type | text entry |
+| Due | end of spring week 10 |
+| Group assignment | yes, one submission per team |
+
+The zero points are the point: the item exists so the work reaches the student's Canvas to-do list and calendar, which the handbook schedule cannot do. Do not give either a rubric and do not put either in a weighted group's point total.
+
+The Expo has real external deadlines that land well before its Canvas due date: registration opens in early spring and poster printing closes before week 10. Both are set by the College of Engineering, so announce them from the Expo website at term setup rather than encoding them here.
 
 ## Schedule
 
@@ -243,6 +259,7 @@ The zero points are the point: the item exists so the checklist reaches the stud
 | 7-9 | Defense (during TA check-ins) |
 | 8 | Release and Metrics |
 | 9 | Project Retrospective; Career and Individual Retrospective |
+| 10 | Engineering Expo (0 points, omit from final grade) |
 | 10 | Project Handoff |
 
 ## Deprecated Assignments

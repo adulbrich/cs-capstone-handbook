@@ -123,9 +123,9 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
    list in `validate-outcomes.mjs` (see **Rubric Rules**).
 
 A page with no `assignment:` block is skipped by the validator entirely: no
-rubric TSV, no weight, no AI-use paragraph, no outcome tags. Two pages are in
-that state deliberately, `introduction.mdx` and `term-startup.mdx`, and a third
-needs a reason. **This is the supported shape for an ungraded item**, paired
+rubric TSV, no weight, no AI-use paragraph, no outcome tags. Three pages are in
+that state deliberately: `introduction.mdx`, `term-startup.mdx`, and `expo.mdx`.
+A fourth needs a reason. **This is the supported shape for an ungraded item**, paired
 with a Canvas item at 0 points with `omit_from_final_grade`; see
 `canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
 passes Zod but keeps the block and so re-arms the rubric and AI-use checks. Not enforced, still required: the
