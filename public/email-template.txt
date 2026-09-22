@@ -2,7 +2,6 @@ Subject: OSU CS Capstone - <Project Name> - Team Intro & Meeting
 
 To: <Partner/Mentor Name>
 Cc: <Teammate 1 Name>, <Teammate 2 Name>, <Teammate 3 Name>
-Bcc: cs-46x-help@oregonstate.edu
 
 Hi <Partner/Mentor Name>,
 

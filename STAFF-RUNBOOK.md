@@ -155,7 +155,8 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 
 ## Partner Touchpoints
 
-- The team's first email of every term Bccs `cs-46x-help@oregonstate.edu` (it is in the template), so a partner nobody contacted is visible in week 2 rather than week 9. Term Startup is the assignment that prompts it.
+- The intro email runs in **fall only**: the partner and mentor do not change during the year, so winter and spring ask for a short kickoff note instead, confirming the cadence and naming the term's goal. Term Startup is the assignment that prompts both.
+- The Bcc to `cs-46x-help@oregonstate.edu` is gone from the template. It produced 70-plus untracked messages a term and nobody read them. Fall now takes a screenshot of the sent email with the Canvas confirmation. What is lost from winter onward is the **independent** signal, not all signal: the Canvas confirmation still runs every term and still carries the email date and the first meeting date, so a partner nobody contacted is still visible in week 2, on the team's own word rather than on ours.
 - Two surveys per term, peer and partner alike: the midterm pulse is sent week 5 and closes at the end of week 6; the final survey is sent week 9 and closes at the end of week 10. Two sign-offs per year: Definition of Shipped (winter week 3) and Handoff confirmation (spring week 10).
 - Canned emails for both sign-offs: state what the document is, that a reply-with-approval suffices, and the one-week window.
 - Non-responsive partner: after two documented attempts, mentor or instructor signs instead; the team is not penalized. This promise is in the handbook; honor it without friction.
