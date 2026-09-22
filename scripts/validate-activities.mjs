@@ -33,10 +33,21 @@
 //
 //   6. The week-by-week schedule on introduction/schedule.mdx links activities
 //      directly, outside any assignment page. Every one of those links must
-//      resolve and carry a Workshop or Recommended badge, so the schedule
-//      never sends a student to an activity no assignment page still
-//      recommends; and every Workshop activity must appear on the schedule,
-//      so a workshop cannot exist without a week.
+//      resolve. A link in a **Recommended** row must carry a Workshop or
+//      Recommended badge, so the schedule never offers a student an activity
+//      no assignment page still recommends. A **Lecture** row may link an
+//      untiered activity: a class session can run something unassessed, and
+//      an icebreaker will never earn a tier because no assignment prepares
+//      from it.
+//
+//   7. Every Workshop activity sits in a Lecture row, in the same term and
+//      week that assignments/workshop-activities.mdx gives it, and every row
+//      on that page points at an activity badged Workshop. The schedule, the
+//      assignment page, and the badge are three records of one fact, and
+//      before this check they disagreed about fall week 3 for weeks: the
+//      schedule prose named one activity, its link named another, and the
+//      badges sided with the prose. Reading the page as one flat set of links
+//      could not see it.
 //
 // Workshop-tier activities are exempt from rule 2: they are assigned centrally
 // through assignments/workshop-activities.mdx, not per assignment page.
@@ -50,7 +61,14 @@ const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
 const SECTION_HEADING = "## Activities That Prepare This";
 const SCHEDULE_PAGE = "src/content/docs/introduction/schedule.mdx";
+const WORKSHOP_PAGE = "src/content/docs/assignments/workshop-activities.mdx";
 const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/g;
+// Both pages head their term sections the same way: "## Fall (CS 461)" on the
+// schedule, "## Fall (4 items, 2%)" on the assignment page.
+const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
+const WEEK_HEADING_RE = /^### Week (\d+)\b/;
+// A schedule row is labelled in its first cell: Lecture, Due, Read, Recommended.
+const ROW_LABEL_RE = /^\|\s*\*\*([A-Za-z][A-Za-z -]*)\*\*\s*\|/;
 
 // GitHub-style slugger, matching how Starlight derives heading anchors.
 function slugify(heading) {
@@ -192,17 +210,63 @@ function readAssignmentLinks() {
   return links;
 }
 
-// Collect every activity link on the schedule page, wherever it sits.
-function readScheduleLinks() {
-  const source = readFileSync(SCHEDULE_PAGE, "utf8");
-  return new Set(
-    [...source.matchAll(ACTIVITY_LINK_RE)].map((m) => `${m[1]}#${m[2]}`)
-  );
+// Collect every activity link on the schedule page with the term, week, and
+// row label it sits under. A flat set of links cannot tell a Lecture row from
+// a Recommended one, which is how the fall week 3 contradiction survived CI.
+function readSchedulePlacements() {
+  const placements = [];
+  let term = null;
+  let week = null;
+  for (const line of readFileSync(SCHEDULE_PAGE, "utf8").split("\n")) {
+    if (line.startsWith("## ")) {
+      term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
+      week = null;
+      continue;
+    }
+    const weekHeading = line.match(WEEK_HEADING_RE);
+    if (weekHeading) {
+      week = Number(weekHeading[1]);
+      continue;
+    }
+    const row = line.match(ROW_LABEL_RE)?.[1];
+    if (!row) {
+      continue;
+    }
+    for (const m of line.matchAll(ACTIVITY_LINK_RE)) {
+      placements.push({ key: `${m[1]}#${m[2]}`, row, term, week });
+    }
+  }
+  return placements;
+}
+
+// The week each workshop runs, as the assignment page records it: one row per
+// item under a term heading, with the activity link first and the week second.
+function readWorkshopWeeks() {
+  const weeks = new Map(); // "page#slug" -> { term, week }
+  let term = null;
+  for (const line of readFileSync(WORKSHOP_PAGE, "utf8").split("\n")) {
+    if (line.startsWith("## ")) {
+      term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
+      continue;
+    }
+    if (!(term && line.startsWith("|"))) {
+      continue;
+    }
+    const [, activityCell = "", weekCell = ""] = line.split("|");
+    const [link] = [...activityCell.matchAll(ACTIVITY_LINK_RE)];
+    const week = Number(weekCell.trim());
+    if (!(link && Number.isInteger(week))) {
+      continue;
+    }
+    weeks.set(`${link[1]}#${link[2]}`, { term, week });
+  }
+  return weeks;
 }
 
 const { activities, unlabeled } = readActivities();
 const links = readAssignmentLinks();
-const scheduled = readScheduleLinks();
+const placements = readSchedulePlacements();
+const workshopWeeks = readWorkshopWeeks();
 const problems = [];
 
 // Rule 5, the audience half: a tier badge with no audience badge.
@@ -268,25 +332,79 @@ for (const [key, activity] of activities) {
   }
 }
 
-// Rule 6: the schedule links only tiered activities, and every workshop.
-for (const key of scheduled) {
-  const activity = activities.get(key);
+// Rule 6: every scheduled link resolves, and a Recommended row offers only
+// tiered activities. A Lecture row may link an untiered one.
+for (const placement of placements) {
+  const activity = activities.get(placement.key);
+  const where = `${placement.term} week ${placement.week}`;
   if (!activity) {
     problems.push(
-      `broken anchor: /activities/${key} linked from the week-by-week schedule matches no heading`
+      `broken anchor: /activities/${placement.key} linked from the week-by-week schedule (${where}) matches no heading`
     );
     continue;
   }
-  if (!activity.tier) {
+  if (!(activity.tier || placement.row === "Lecture")) {
     problems.push(
-      `schedule drift: "${activity.heading}" (${activity.page}) is on the week-by-week schedule but no assignment page recommends it and it is not a workshop activity`
+      `schedule drift: "${activity.heading}" (${activity.page}) is in the ${placement.row} row of ${where} but no assignment page recommends it and it is not a workshop activity`
     );
   }
 }
+
+// Rule 7: the schedule, the assignment page, and the badge agree on every
+// workshop. Each direction fails differently, so each is reported separately.
+const lectureWeeks = new Map(); // "page#slug" -> [{ term, week }]
+for (const placement of placements) {
+  if (placement.row !== "Lecture") {
+    continue;
+  }
+  if (!lectureWeeks.has(placement.key)) {
+    lectureWeeks.set(placement.key, []);
+  }
+  lectureWeeks.get(placement.key).push(placement);
+}
+
 for (const [key, activity] of activities) {
-  if (activity.tier === "Workshop" && !scheduled.has(key)) {
+  if (activity.tier !== "Workshop") {
+    continue;
+  }
+  const lectures = lectureWeeks.get(key) ?? [];
+  const assigned = workshopWeeks.get(key);
+  if (lectures.length === 0) {
     problems.push(
-      `unscheduled workshop: "${activity.heading}" (${activity.page}) is Workshop tier but the week-by-week schedule never links it`
+      `unscheduled workshop: "${activity.heading}" (${activity.page}) is Workshop tier but no Lecture row on the week-by-week schedule links it`
+    );
+  }
+  if (!assigned) {
+    problems.push(
+      `unassigned workshop: "${activity.heading}" (${activity.page}) is Workshop tier but assignments/workshop-activities.mdx has no row giving it a week`
+    );
+    continue;
+  }
+  if (
+    lectures.length > 0 &&
+    !lectures.some((l) => l.term === assigned.term && l.week === assigned.week)
+  ) {
+    const found = lectures.map((l) => `${l.term} week ${l.week}`).join(", ");
+    problems.push(
+      `workshop week mismatch: "${activity.heading}" (${activity.page}) runs in ${assigned.term} week ${assigned.week} on assignments/workshop-activities.mdx, but the schedule's Lecture rows put it in ${found}`
+    );
+  }
+}
+
+for (const [key, row] of workshopWeeks) {
+  const activity = activities.get(key);
+  if (!activity) {
+    problems.push(
+      `broken anchor: /activities/${key} listed as the ${row.term} week ${row.week} workshop matches no heading`
+    );
+    continue;
+  }
+  if (activity.tier !== "Workshop") {
+    const carries = activity.tier
+      ? `a ${activity.tier} badge`
+      : "no tier badge";
+    problems.push(
+      `workshop not badged: "${activity.heading}" (${activity.page}) is the ${row.term} week ${row.week} workshop on assignments/workshop-activities.mdx but carries ${carries}`
     );
   }
 }
@@ -366,7 +484,7 @@ console.log(`  Recommended: ${counts.Recommended}`);
 console.log(`  Library:     ${counts.Library}`);
 console.log(`  Total:       ${activities.size}`);
 console.log(
-  `Schedule:      ${scheduled.size} activity links on the week-by-week schedule`
+  `Schedule:      ${new Set(placements.map((p) => p.key)).size} activities across ${placements.length} links on the week-by-week schedule`
 );
 
 if (problems.length > 0) {
