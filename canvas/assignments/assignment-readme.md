@@ -180,12 +180,29 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 | `team-charter/` | Writing: length, sections, quotable commitments |
 | `project-retrospective/` | Forward-looking section: three first actions, linked |
 
+## Canvas Items Without a Rubric: Term Startup (#157)
+
+Term Startup is an assignment page with no points and no rubric, so there is no TSV here to import. Create it by hand once per term:
+
+| Field | Value |
+|---|---|
+| Title | Term Startup |
+| Points possible | 0 |
+| `omit_from_final_grade` | true |
+| Group | any; it contributes nothing, so the group choice does not affect the grade |
+| Submission type | text entry |
+| Due | end of week 1, all three terms |
+| Group assignment | yes, one submission per team |
+
+The zero points are the point: the item exists so the checklist reaches the student's Canvas to-do list and calendar, which the handbook schedule cannot do. Do not give it a rubric and do not put it in a weighted group's point total.
+
 ## Schedule
 
 ### CS 461 (Fall Term)
 
 | Week | Due |
 |------|-----|
+| 1 | Term Startup (0 points, omit from final grade) |
 | 1-3 | Workshop Activities (4 items, complete/incomplete) |
 | 2 | Team Charter; Resume and Intent |
 | 3-5 | Resume meetings (instructor) |
@@ -201,6 +218,7 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 
 | Week | Due |
 |------|-----|
+| 1 | Term Startup (0 points, omit from final grade) |
 | 2 | Sprint Note 1 |
 | 1-3 | Workshop Activities (3 items, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
@@ -216,6 +234,7 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 
 | Week | Due |
 |------|-----|
+| 1 | Term Startup (0 points, omit from final grade) |
 | 2 | Sprint Note 1 |
 | 2-3 | Workshop Activities (2 items, complete/incomplete) |
 | 4 | Sprint Note 2 |
