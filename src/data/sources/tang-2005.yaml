@@ -1,0 +1,34 @@
+authors:
+  - Tang, A.
+  - Babar, M. A.
+  - Gorton, I.
+  - Han, J.
+year: 2005
+title: A Survey of the Use and Documentation of Architecture Design Rationale
+venue: Proceedings of the 5th Working IEEE/IFIP Conference on Software Architecture (WICSA)
+kind: peer-reviewed
+url: https://figshare.com/articles/conference_contribution/A_survey_of_the_use_and_documentation_of_architecture_design_rationale/26246840
+doi: 10.1109/WICSA.2005.7
+# Read in full from the published version on Swinburne's figshare. The
+# 81 respondents were mostly in the Asia-Pacific region (Section 6).
+verified: full-text
+claims:
+  - claim: >-
+      In a survey of 81 practitioners with architecture design experience,
+      lack of time or budget was the most common reason given for not
+      documenting design rationale (60.5 percent), ahead of the lack of
+      standards (42 percent); 9.9 percent said documenting it is not useful.
+    locator: Section 4.5.1, Barriers to Documenting DR; Table 8
+  - claim: >-
+      About 36 percent of respondents said they do not document discarded
+      design decisions.
+    locator: Section 4.5, Documenting Design Rationale; Table 6
+  - claim: >-
+      The authors observe that the reasons why a design is chosen and why it
+      is better than the alternatives appear usually not to be documented.
+    locator: Section 4.5, Documenting Design Rationale
+  - claim: >-
+      27.2 percent of respondents never or seldom document a design's
+      weaknesses, and the authors suspect a tendency to present good news
+      rather than bad news during design.
+    locator: Section 4.5, Table 7; Section 5, Designers' Attitude

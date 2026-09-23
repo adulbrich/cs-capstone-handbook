@@ -1,0 +1,20 @@
+authors:
+  - Jansen, A.
+  - Bosch, J.
+year: 2005
+title: Software Architecture as a Set of Architectural Design Decisions
+venue: Proceedings of the 5th Working IEEE/IFIP Conference on Software Architecture (WICSA)
+kind: peer-reviewed
+url: https://gradius.home.fmf.nl/research/papers/conference/wicsa2005_final.pdf
+doi: 10.1109/WICSA.2005.61
+# Read in full from the authors' copy. A position paper: the claims below are
+# the authors' argument, not an empirical result.
+verified: full-text
+claims:
+  - claim: >-
+      The authors argue that knowledge about the design decisions behind an
+      architecture is implicitly embedded in it without a first-class
+      representation and so is lost, which they call knowledge vaporization,
+      and they believe it is partly responsible for high costs of change and
+      design erosion.
+    locator: Abstract; Section 3, Problems of software architecture

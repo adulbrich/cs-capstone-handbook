@@ -1,0 +1,38 @@
+authors:
+  - Buchgeher, G.
+  - Schöberl, S.
+  - Geist, V.
+  - Dorninger, B.
+  - Haindl, P.
+  - Weinreich, R.
+year: 2023
+title: "Using Architecture Decision Records in Open Source Projects: An MSR Study on GitHub"
+venue: IEEE Access
+kind: peer-reviewed
+url: https://ieeexplore.ieee.org/document/10155430
+doi: 10.1109/ACCESS.2023.3287654
+# Open access; read in full.
+verified: full-text
+claims:
+  - claim: >-
+      The study found 921 public GitHub repositories that recorded at least
+      one architectural decision as an ADR; more than half of them contain
+      between one and five ADRs, and for many of those the authors assume
+      the practice was tried and not further adopted.
+    locator: Section IV-B, RQ2.1, p. 63732, Figure 5; Section V, RQ1.1
+  - claim: >-
+      Of 6,362 ADR files, about half were committed once and never modified
+      again, which the authors read as reflecting that ADRs are not meant to
+      be modified often; the intended approach is append-only, with obsolete
+      decisions marked superseded and kept.
+    locator: Section V, RQ2.3
+  - claim: >-
+      Among repositories with at least 10 ADRs, 84 percent (165 of 198) had
+      ADRs written by more than one contributor, and the authors conclude
+      that in projects where ADRs are adopted, recording decisions is done by
+      the team rather than by a single person.
+    locator: Section V, RQ2.2
+  - claim: >-
+      Nygard's template was the most used, in 723 of the 921 repositories,
+      followed by MADR in 129.
+    locator: Section IV-B, RQ2.5, Figure 10
