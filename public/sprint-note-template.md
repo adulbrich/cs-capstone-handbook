@@ -12,10 +12,10 @@
 ## 1. Working Software Evidence
 
 A URL, tagged release, or demo video link, plus a link to the CI run. If nothing works yet, say so plainly and say why.
-For a sprint with no live demo slot, the video is one file, timestamped, one segment per student.
+If a video replaced the live demo (a missed check-in, or a TA who could not meet), link it here: media.oregonstate.edu, unlisted, captions on, one timestamp per student.
 
 - Deployed URL / release tag / demo video:
-- Video timestamps (one per student), if applicable:
+- Demo video timestamps (one per student), only if a video replaced the live demo:
 - CI run:
 
 ## 2. What Got Done

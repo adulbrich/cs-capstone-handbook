@@ -37,7 +37,13 @@ import CanvasEntries from '/src/components/CanvasEntries.astro';
 
 <CanvasEntries />
 
-At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html) (the [sprint guide](/guides/sprint/) covers the cadence itself), the team submits a one-page sprint note, as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)), and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
+At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html), the team submits a one-page sprint note, as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)), and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes. The [sprint guide](/guides/sprint/) covers how to plan, run, and review a sprint; the windows below are when this course's sprints fall.
+
+| Term | Sprint windows (note due in the second week) |
+|---|---|
+| Fall | Weeks 3 to 4, 5 to 6, 7 to 8, 9 to 10 |
+| Winter | Weeks 1 to 2, 3 to 4, 5 to 6, 7 to 8, 9 to 10 |
+| Spring | Weeks 1 to 2, 3 to 4, 5 to 6 |
 
 **AI use:** you may generate the evidence with AI from your own repo history and board. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and the one sentence in each contribution line saying what you shipped and how you know it works. Start from the [sprint note template](/sprint-note-template.md).
 
@@ -83,25 +89,27 @@ The sentence outranks the counts. A student with one pull request who can say wh
 
 ## Demo Cadence
 
-Every sprint, your team demos to your Teaching Assistant (TA) in your TA check-in, and every student demos the part they owned. The check-in falls in the sprint-note week; check Canvas for the schedule. One team, one TA, nobody else's team in the room. **Your TA picks what you demo, from your latest sprint note's contribution line** (from the board, for the first one): open the PR or the document you listed, show the change, run it. Showing the same artifact at two check-ins running counts as no contribution that sprint. Two to three minutes each, so 6 to 12 minutes of a 25-to-30-minute check-in for a team of three or four. The rest of the check-in is your top risk and the decision you need; anything that would have been open-ended TA coaching happens async between check-ins.
+Every sprint, your team demos live to your Teaching Assistant (TA) in a check-in during the sprint-note week, in person or over Zoom, at a time your team and your TA agree. One team, one TA, nobody else's team in the room. Every student demos their own work: pick one artifact from your contribution line for this sprint (the PR or the document you listed as owned), open it, show the change, and run it. It can't be the artifact you showed at the last check-in: nothing new to show means nothing was done that sprint. Your TA follows up with a question about what you showed, such as which lines are yours or what your reviewer asked you to change.
 
-Your demo makes the same claim as your contribution line, out loud, in front of the people who would know if it weren't true.
+Two to three minutes each, so 6 to 12 minutes of a 25-to-30-minute check-in for a team of three or four. The rest of the check-in is your top risk and the decision you need; anything that would have been open-ended TA coaching happens async between check-ins. Your demo makes the same claim as your contribution line, out loud, in front of the people who would know if it weren't true.
 
-When the check-in is taken by a checkpoint walkthrough (NDA projects), attach a demo video to the sprint note instead: one video, timestamped, one segment per student. The timestamps make each student's segment findable and scoreable on its own, which is what lets the video stand in for the live slot.
+A video replaces the live demo in two cases only: you miss the check-in, or your TA cannot meet your team that week. Record it on [media.oregonstate.edu](https://media.oregonstate.edu/) with captions on, share it unlisted, and give one timestamp per student so each segment can be found and scored on its own (a student who missed alone records only their own segment). Link it in the sprint note, or in a comment on the Canvas submission if the note is already in, within 48 hours of the check-in.
 
 The all-hands [demo days](/assignments/demo-day/) are a different thing from this cadence: the whole class in one room, partners invited, and your team takes one of the five across the year.
 
-## Rubric (100 points)
+## Rubrics (100 points each)
+
+### Sprint Notes N
 
 Each note is checked pass/fail per item, 20 points each; the [rubric conventions](/assignments/introduction/#rubric-conventions) say why sprint notes have two bands instead of three.
 
 <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/sprint-note/sprint-note-rubric-details.tsv" />
 
-### Individual Contribution (100 points each)
+### Sprint Notes N: Individual Contribution
 
 <RubricTable tsv={contributionTsv} sourceLabel="canvas/assignments/individual-contribution/individual-contribution-rubric-details.tsv" />
 
-**Individual contribution modifier:** half of each sprint's weight is individual, graded as its own Canvas entry, and defaults to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the team's TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/assignments/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note costs you nothing; a pattern with no explanation is what reduces your individual half.
+**Individual contribution modifier:** half of each sprint's weight is individual, graded as its own Canvas entry beside the note, with no submission, and defaults to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the team's TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/assignments/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note costs you nothing; a pattern with no explanation is what reduces your individual half.
 
 ## Activities That Prepare This
 
