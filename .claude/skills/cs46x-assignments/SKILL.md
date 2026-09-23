@@ -94,7 +94,7 @@ assignment:
       weeks: { fall: [4, 8] }
       weight: <the family's percent of the term grade>
       points: 100
-      submission: pdf | video | url | survey | none, or a list
+      submission: pdf | video | url | image | survey | none, or a list
       rubric: <dir>/<name>-rubric-details.tsv
 ---
 ```

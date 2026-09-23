@@ -40,7 +40,7 @@ const termWeight = () =>
       .strict(),
   ]);
 const weekList = () => z.array(z.number().int().min(1).max(11)).min(1);
-const SUBMISSIONS = ["pdf", "video", "url", "survey", "none"] as const;
+const SUBMISSIONS = ["pdf", "video", "url", "image", "survey", "none"] as const;
 
 const sources = defineCollection({
   loader: glob({ base: "./src/data/sources", pattern: "*.yaml" }),
