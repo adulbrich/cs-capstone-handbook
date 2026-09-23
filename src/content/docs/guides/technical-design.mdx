@@ -20,11 +20,9 @@ You're about to write `docs/design.md` for a system that barely exists yet, or y
 - Give the design document to every teammate's AI tool and review generated code against it, not only against the tests.
 :::
 
-Technical design is deciding *how* the system will be built, before or alongside building it. It sits between the requirements, which say what the system must do, and the implementation, which is what it actually does. The [SWEBOK Guide](https://www.computer.org/education/bodies-of-knowledge/software-engineering) treats architecture and design as separate knowledge areas; this page covers the part of both that a small team needs written down.
-
 ## What Is Technical Design?
 
-Technical design answers three questions:
+Technical design is deciding *how* the system will be built, before or alongside building it, between the requirements (what the system must do) and the implementation. The [SWEBOK Guide](https://www.computer.org/education/bodies-of-knowledge/software-engineering) treats architecture and design as separate knowledge areas. The part a small team needs written down answers three questions:
 
 1. What are the major components, and how do they interact? (Architecture)
 2. What are the interfaces and contracts between them? (Interface design)
@@ -33,12 +31,6 @@ Technical design answers three questions:
 The answers go into a design document: a written artifact that captures the structure, the diagrams, and the reasoning. Write only what a new contributor needs to change the system without breaking it, because every section you add is one more thing someone has to keep true.
 
 The design document holds the big picture. Individual decisions along the way ([PostgreSQL](https://www.postgresql.org/) over [MongoDB](https://www.mongodb.com/), a monolith instead of microservices, one data pipeline shape over another) go into Architecture Decision Records (ADRs). The design document shows *what* the system looks like; the ADRs explain *why* it looks that way and what else was on the table.
-
-<LinkCard
-  title="Architecture Decision Records"
-  href="/guides/adr/"
-  description="ADRs document individual design decisions and their rationale."
-/>
 
 ## Levels of Design
 
@@ -53,19 +45,21 @@ The highest-level view names the major subsystems, services, or modules and how 
 - **Component diagram** (C4 level 3): the internal structure of a single container, for the developers working inside it.
 - **Code diagram** (C4 level 4): the implementation details of one component, usually a UML class diagram or an entity-relationship diagram. Generate it from the code or the schema when you need it, because a hand-drawn copy goes stale as soon as the code changes.
 
-Draw the context diagram and one level below it, and stop there unless a reader has a question only a deeper level answers. That gives anyone, your project partner included, a mental model of the system without reading the code. C4 structures diagrams rather than prescribing a notation, so draw the boxes in whatever tool your team already uses.
+Draw the context diagram and one level below it, and stop there unless a reader has a question only a deeper level answers. That gives anyone, your project partner included, a mental model of the system without reading the code. C4 doesn't prescribe a notation, so draw the boxes in whatever tool your team already uses; what it does ask is that every diagram say which level of zoom it's at, so nobody argues about a component while looking at a container.
 
-Draw the first version together, because a diagram surfaces disagreements that words hide. Four people can agree that "the API talks to the database" while holding four different pictures of what that means, and the sentence won't show the difference. A boxes-and-arrows sketch will, as soon as someone points at a box and says that's not where that lives. C4 adds one discipline to the sketch: every diagram says which level of zoom it's at, so nobody argues about a component while looking at a container.
+Draw the first version together, because a diagram surfaces disagreements that words hide. Four people can agree that "the API talks to the database" while holding four different pictures of what that means, and the sentence won't show the difference. A boxes-and-arrows sketch will, as soon as someone points at a box and says that's not where that lives.
 
 #### The 4+1 View Model
 
 Philippe Kruchten's [4+1 View Model](https://doi.org/10.1109/52.469759) predates C4 and answers a different question: not how far to zoom in, but whose concerns a view addresses. It splits the description into five concurrent views:
 
-1. **Logical view**: the functionality the end user sees, usually class or state diagrams.
-2. **Process view**: the runtime behavior, including concurrency, communication between processes, and performance.
-3. **Development view**: the codebase from the programmer's side, as package diagrams showing how modules are organized.
-4. **Physical view**: the deployment onto hardware, the UML deployment diagram.
-5. **Scenarios** (the +1): a handful of use cases traced through the other four views, which validate the design and check that the views agree.
+1. **Logical view**: the object model of the design, which serves the functionality end users see.
+2. **Process view**: the concurrency and synchronization aspects of the design.
+3. **Development view**: the static organization of the software in its development environment, as modules and subsystems arranged in layers.
+4. **Physical view**: the mapping of the software onto the hardware, which reflects how the system is distributed.
+5. **Scenarios** (the +1): a few selected use cases traced through the other four views, which illustrate the design and check that the views agree.
+
+Kruchten gave each view its own notation, mostly derived from Booch's. If you draw them in UML today, the closest equivalents are class diagrams for the logical view, sequence or activity diagrams for the process view, package diagrams for the development view, and deployment diagrams for the physical view.
 
 Use 4+1 when your readers have distinct concerns (a partner who cares about deployment, a maintainer who cares about module boundaries), and C4 when the question is depth. Pick one, because two sets of diagrams describing the same system double the upkeep and start disagreeing with each other.
 
@@ -108,23 +102,17 @@ Spike the riskiest assumption first. If the design depends on a component or an 
 
 Write the design document as an explanation of how the system works (or will work) for someone who hasn't read the code. It's tempting to treat it as a template to fill in, section by section, but a filled-in template answers the template's questions. A useful design document answers the questions your team and your project partner actually have, briefly enough that people read it more than once.
 
-The useful ones cover the same ground: what the system does, the architecture as one or two diagrams, the interfaces between components (where misunderstandings do the most damage), the data and how it flows, how the system deploys and rolls back, and the parts uncertain enough to be a risk. The document below shows all of it in about a page.
-
-What that ground contains depends on the project. For a software project, it means a context diagram, an API specification, a database schema, and a list of technical unknowns. For a research project, the equivalent is a computational workflow diagram, the data pipeline's stages with their input and output formats, a reproducibility plan, and the experimental assumptions that still need testing. For a contribution to an open source project, the focus shifts to the existing architecture and where your change fits into it.
-
-Link your ADRs from the design document. Every significant "why" in the design (why this database, why this architecture, why this algorithm) should point to an ADR that records the alternatives and the reasoning, so the design document can stay short and describe only the current state.
-
-A `docs/design.md` that answers those questions looks like this:
+The `docs/design.md` below is for a web application, and it links an ADR for every significant "why" instead of arguing it inline. A research project swaps in a workflow diagram, the pipeline's stage formats, and a reproducibility plan; a contribution to an open source project describes the existing architecture and where your change fits into it.
 
 ```md
 # Design
 
 ## Overview
-Shift board for <partner>: a React front end, a Node API, and Postgres
-on Render, behind the partner's Google Workspace sign-in.
-Requirements: docs/requirements.md.
+Shift board for <partner> (requirements: docs/requirements.md): a React
+front end, a Node API, and Postgres on Render, behind Google Workspace SSO.
 
 ## Architecture
+![C4 context diagram](./diagrams/context.png)
 ![C4 container diagram](./diagrams/containers.png)
 - Web app (React): the board, the claim and release flows.
 - API (Node, Express): auth check, shift rules, notifications.
@@ -141,43 +129,44 @@ Requirements: docs/requirements.md.
 
 ## Deployment
 - Render web service plus managed Postgres; a preview deploy per PR.
-- Rollback: redeploy the previous build (tried once, works). ADR-004.
+- Production: the partner's Render account, owned by their IT lead.
+  Needs their security sign-off; Sam asked for it. ADR-004.
+- Rollback: redeploy the previous build (tried once, works).
 
 ## Risks and open questions
-- SSO on the partner's Workspace tenant is unproven. Spike it first.
+- SSO on the partner's Workspace tenant is unproven; Priya spikes it first.
 - Email deliverability from a new domain. Fallback: in-app notice only.
 
 ## Decisions
 ADR-001 Postgres over SQLite. ADR-002 REST over GraphQL. ADR-004 Render.
 ```
 
-If you want a template rather than a blank page, [arc42](https://arc42.org/overview) is the established one: twelve sections covering goals, constraints, context, building blocks, runtime, deployment, cross-cutting concepts, decisions, quality, risks, and a glossary. It prescribes structure, not notation, so C4 or UML diagrams drop into it unchanged. Keep the sections you need and delete the rest, because a small system described in all twelve is mostly empty headings a reader has to skip.
+If you want a template rather than a blank page, [arc42](https://arc42.org/overview) is the established one: twelve sections covering goals, constraints, context, solution strategy, building blocks, runtime, deployment, cross-cutting concepts, decisions, quality, risks, and a glossary. It prescribes structure, not notation, so C4 or UML diagrams drop into it unchanged. Keep the sections you need and delete the rest, because a small system described in all twelve is mostly empty headings a reader has to skip.
 
 :::tip[Diagramming Tools]
 [Excalidraw](https://excalidraw.com/) makes quick, hand-drawn-style diagrams. [draw.io / diagrams.net](https://app.diagrams.net/) supports formal UML and exports cleanly. [Mermaid](https://mermaid.js.org/) lets you write diagrams as code inside Markdown files, so they're versioned and reviewed with everything else.
 :::
 
-## UML: Use It, Don't Worship It
+## Choosing UML Diagrams
 
 The [Unified Modeling Language](https://www.omg.org/spec/UML/) (UML) gives you a standard vocabulary for software structure and behavior. Pick the diagrams that answer a question your team is uncertain about right now, and skip the rest:
 
 - **Sequence diagram**: how components interact over time for one scenario. Draw one for your authentication flow or your main data flow, because that's where the most components hand work to each other.
 - **State diagram**: the lifecycle of an entity with distinct states (an order, a job, a claim).
-- **Class or entity-relationship diagram**: static structure. Generate it from the code or the schema rather than drawing it.
+- **Class or entity-relationship diagram**: static structure.
 - **Deployment diagram**: what runs where, which the deployment section of your design document already needs.
 
-Activity, component, package, and composite-structure diagrams exist too; the [UML diagram reference](https://www.uml-diagrams.org/) covers all of them. Don't draw a diagram because a template has a slot for it, because a diagram that answers nobody's question is one nobody will update.
+Activity, component, package, and composite-structure diagrams exist too; the [UML diagram reference](https://www.uml-diagrams.org/) covers all of them.
 
 Professional practice uses far less of UML than the full diagram catalog implies. <Cite id="petre-2013" /> interviewed 50 professional software engineers from 50 companies: 35 didn't use UML at all, and 11 used it selectively and informally, keeping a diagram only as long as it was useful and then discarding it (Section IV). The engineers who didn't use it had typically tried it on a project or two and found no advantage over what they already did (Section V). The selective users reached most often for class, sequence, and activity diagrams, and reported using sequence diagrams to elicit requirements and behaviors (Table II).
 
 ## Validating Your Design
 
-Check the design with someone other than its authors before you build on it, because the people who wrote it share its blind spots. Run four checks:
+Check the design with someone other than its authors before you build on it, because the people who wrote it share its blind spots. Run three checks:
 
 - Review it with your project partner: does the architecture support their use cases and their deployment constraints?
 - Walk one key scenario end to end: trace a representative workflow (a user action, a data processing run, an experimental trial) through every component in your diagram, and note each place where the diagram doesn't say what happens next.
 - Ask what happens when each component fails, and whether the rest of the system degrades or stops.
-- Spike the riskiest assumption: if a component or an integration is high-risk, build a throwaway prototype before committing to it.
 
 A [peer technical design review](/activities/design/#peer-technical-design-review) puts your design in front of other teams, who ask whether it's fit for purpose, whether it can grow, and whether the code implements it. Reviewers from outside the team are useful precisely because they don't share your assumptions.
 
@@ -200,24 +189,14 @@ Decisions made at a whiteboard are easy to lose. <Cite id="cherubini-2007" /> in
 
 AI coding tools have changed how individuals write software without removing the need for technical design; on a team, they raise it. Working alone, a design document can feel unnecessary: the tool reads the codebase, infers the patterns, and generates code that fits, so the codebase acts as the design.
 
-Three or four people, each with their own tool, is a different problem. Every assistant works in its own local context: the files it was shown, the conversation it had, the instructions it was given. It doesn't know what a teammate's tool suggested yesterday, what the team agreed in a meeting, or which approach was considered and rejected. Each person-and-tool pair can drift toward its own reading of how the system should work, and the codebase grows fast and incoherent: one member's tool adds an abstraction layer where another's used a utility function, names diverge, error handling multiplies. It compiles and the tests pass, so the inconsistency is often embedded by the time anyone notices it.
+Three or four people, each with their own tool, is a different problem. Every assistant works in its own local context: the files it was shown, the conversation it had, the instructions it was given. It doesn't know what a teammate's tool suggested yesterday, what the team agreed in a meeting, or which approach was considered and rejected. Each person-and-tool pair can drift toward its own reading of how the system should work, and the codebase grows fast and incoherent: one member's tool adds an abstraction layer where another's used a utility function, names diverge, error handling multiplies. It compiles and the tests pass, so the inconsistency is often embedded by the time anyone notices it, and a tool repeats an inconsistent pattern as quickly as a good one.
 
-The design document counters that drift by giving every teammate and every tool the same account of how the system is structured and which boundaries to respect. Four practices put it to work:
+The design document counters that drift by giving every teammate and every tool the same account of how the system is structured and which boundaries to respect. Two practices put it to work:
 
-- Distill the design into your project-level instructions, so every suggestion starts from your architecture, naming, and interface contracts. [AI Project Setup](/guides/ai-project-setup/#project-level-instructions) has the files and what belongs in them.
+- Give the design to your AI tools the way you'd brief a new teammate: distill it into your project-level instructions, so every suggestion starts from your architecture, naming, and interface contracts. [AI Project Setup](/guides/ai-project-setup/#project-level-instructions) has the files and what belongs in them.
 - Use ADRs to record what was rejected, not only what was chosen. An AI tool has no memory of your team's discussions, so without an ADR recording that microservices were considered and rejected for their deployment complexity, it may suggest exactly that approach again.
-- Review AI-generated code against the design as well as for correctness. Code that works but breaks the agreed architecture still needs changes before it merges, and the design document gives the reviewer something specific to point at.
-- Give your AI tools the design the way you'd give it to a new teammate, before they start contributing. The more explicit and accessible the design is, the more closely the suggestions follow it.
 
-None of this applies to a spike. A prototype exists to try things, learn fast, and be thrown away, so let the tool run. The discipline is for code meant to last (merged to main, deployed, or built on by someone else), and it matters more there with AI tools than without them, because a tool repeats an inconsistent pattern as quickly as it repeats a good one.
-
-The design document covers the architectural side of coordinating AI tools: which constraints and patterns to enforce. The process side (which tools the team uses, how AI-generated code is reviewed, how AI-suggested changes are evaluated) belongs in the team's working agreement.
-
-<LinkCard
-  title="Team Working Agreement: AI Tool Usage"
-  href="/guides/working-agreement/#ai-tool-usage"
-  description="Team norms for coordinating AI tool usage across the team."
-/>
+Review is where drift gets caught, and the design document is the reference that review checks generated code against. How the team reviews AI-generated code, and how loosely it treats spikes and prototypes, is team process, which the [working agreement](/guides/working-agreement/#ai-tool-usage) covers.
 
 <LinkCard
   title="Generative AI"
@@ -231,8 +210,7 @@ The design document covers the architectural side of coordinating AI tools: whic
 - Make implicit dependencies explicit. If service A only works when service B is running, say so, because the unwritten dependency is the one that breaks a deploy.
 - Treat interface definitions as more stable than implementations. Change an implementation freely; change a contract only with the people on both sides, because a contract change breaks code you didn't write.
 - Include a section on what you deliberately didn't design: out-of-scope components and deferred decisions. A reader can then tell a deliberate gap from an oversight.
-- Write for the next person joining the project cold, not for the team that already knows everything, because the team isn't the reader who needs the document.
-- Keep the document short enough to reread. If a section only restates what an ADR or the OpenAPI file already says, link that instead.
+- Write for the next person joining the project cold, who can't tell which unstated assumptions the rest of the team shares.
 
 ## Some Truths About Technical Design
 
@@ -244,13 +222,13 @@ There's a real disagreement about when to design. The "big design up front" trad
 
 The diagrams in your design document will go out of date. <Cite id="cherubini-2007" /> found diagrams in documentation were often out of date, because keeping them in sync with the code was costly (p. 564). That's the case for drawing few of them: a context diagram and a container diagram change only when the architecture does, while a class diagram changes every time someone adds a field. Treat a hand-drawn diagram that nobody has updated in months as a question for the team.
 
-Your architecture will tend to mirror your team's communication structure, whether you plan it or not. Mel Conway made that argument in ["How Do Committees Invent?"](https://www.melconway.com/Home/Committees_Paper.html), and it's now known as Conway's law. <Cite id="maccormack-2012" /> tested a version of it on five matched pairs of software products with the same function, each built once by a commercial firm and once by an open source community: in every pair, the product from the more loosely coupled organization was significantly more modular (Abstract; Table 2). On a four-person team where two people rarely talk, expect a seam between their parts of the code, whether or not the design document put one there. If the design needs those two people to share a module, either change who works on it or write the interface between them down first.
+Your architecture will tend to mirror your team's communication structure, whether you plan it or not. Mel Conway made that argument in ["How Do Committees Invent?"](https://www.melconway.com/Home/Committees_Paper.html), and it's now known as Conway's law. <Cite id="maccormack-2012" /> tested a version of it on five matched pairs of software products with the same function, each built once by a commercial firm and once by an open source community: in every pair, the product from the more loosely coupled organization was significantly more modular (Abstract; Table 4). On a four-person team where two people rarely talk, expect a seam between their parts of the code, whether or not the design document put one there. If the design needs those two people to share a module, either change who works on it or write the interface between them down first.
 
 ## Technical Design in Industry and Academia
 
 In industry, design documents go by many names: tech spec, RFC (request for comments), design doc, TDD (technical design document). Malte Ubl's account of [design docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/) describes them as relatively informal documents written before coding starts, covering the context and scope, the goals and non-goals, the design, the alternatives considered, and cross-cutting concerns such as security and privacy. Open source projects formalize the same idea: [PEP 1](https://peps.python.org/pep-0001/) defines a Python Enhancement Proposal as a design document, and the [Rust RFC process](https://github.com/rust-lang/rfcs) asks for a written proposal before any substantial change to the language.
 
-Amazon's [Working Backwards](https://www.allthingsdistributed.com/2006/11/working_backwards.html) process, as Werner Vogels describes it, starts from the documents needed at launch (the press release and the FAQ) and works toward documents closer to the implementation. The design document comes after the team agrees what the product is for, which is where the "how" gets evaluated before engineering time is spent on it.
+Amazon's [Working Backwards](https://www.allthingsdistributed.com/2006/11/working_backwards.html) process, as Werner Vogels describes it, starts from the documents needed at launch (the press release and the FAQ) and works toward documents closer to the implementation.
 
 In research, the closest equivalent is the methods section of a paper, which describes the approach in enough detail for someone else to replicate it. For computational research, that includes the architectural and algorithmic decisions needed to reproduce the results.
 

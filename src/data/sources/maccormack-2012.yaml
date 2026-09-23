@@ -10,13 +10,15 @@ venue: Research Policy
 kind: peer-reviewed
 url: https://dash.harvard.edu/handle/1/34403525
 doi: 10.1016/j.respol.2012.04.011
-# Read from the accepted manuscript in Harvard's DASH repository.
+# Read from the accepted manuscript in Harvard's DASH repository. The
+# manuscript's abstract gives the largest difference as a factor of eight and
+# the published abstract as six, so the claim states no multiple.
 verified: full-text
 claims:
   - claim: >-
       Comparing five matched pairs of software products with the same
       function, each built once by a commercial firm and once by an open
       source community, the product from the loosely coupled organization was
-      significantly more modular in every pair, by up to a factor of eight in
-      how far a change in one component could propagate to others.
-    locator: Abstract; Table 2
+      significantly more modular in every pair, measured by how far a change
+      in one component could propagate to others.
+    locator: Abstract; Table 4
