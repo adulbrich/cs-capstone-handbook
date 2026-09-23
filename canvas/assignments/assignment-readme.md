@@ -9,7 +9,7 @@
 
 ## Re-import Required: Team Charter (#263)
 
-`team-charter/team-charter-rubric-details.tsv`: Exceeds on the Definition of Done now accepts a gate that is not built yet if the charter names the sprint it lands in and its owner. Exceeds on CONTRIBUTING.md and the AI context file accepts an AI context file that lists what gets added once code exists, with an owner. The Meets bands change to match. Points and tags are unchanged.
+`team-charter/team-charter-rubric-details.tsv`: Exceeds on the Definition of Done now accepts a gate that is not built yet if the charter names the sprint it lands in and its owner. Exceeds on CONTRIBUTING.md and the AI context file accepts an AI context file whose parts that cannot be written before there is code are listed with an owner. The Meets bands change to match. Points and tags are unchanged.
 
 ## Re-import Required: RFC Final (#262)
 
