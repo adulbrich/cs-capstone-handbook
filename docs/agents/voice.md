@@ -108,8 +108,9 @@ disagree with.
   "students will configure".
 - The handbook never says "I". It's a professional handbook with more than
   one instructor, and it outlives any one of them.
-- The people who run the course are "the instruction team". Use it in place
-  of "teaching staff", "the instructors", and similar.
+- The people who run the course, instructors and TAs together, are "the
+  instruction team". Use it in place of "teaching staff" and similar. When
+  only the instructors or only a TA is meant, say so.
 - "We" appears only on the three audience pages (for students, partners,
   mentors) and in the syllabi, where the team speaks directly to someone
   before the term starts. Everywhere else, name the instruction team or say

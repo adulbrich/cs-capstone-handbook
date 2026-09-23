@@ -5,6 +5,8 @@ sidebar:
   order: 12
 ---
 
+{/* check-prose: legacy-opener */}
+
 import { LinkCard } from '@astrojs/starlight/components';
 
 Read this when you decide what to test and how far to go; it gives you the layers of automated testing and the user validation that complements them.
@@ -150,7 +152,7 @@ Plan usability sessions deliberately. Decide which tasks to test, recruit partic
 
 ### Testing with Assistive Technology Users
 
-Only someone who relies on assistive technology daily can tell you whether the software is good rather than merely compliant. [Accessibility Testing](/guides/accessibility/#testing-with-assistive-technology-users) covers how to recruit for that session and what the honest substitute is when you cannot.
+Only someone who relies on assistive technology daily can tell you whether the software is good rather than merely compliant. [Accessibility Testing](/guides/accessibility/#testing-with-assistive-technology-users) covers how to recruit for that session and what the closest substitute is when you cannot.
 
 ### Beta Testing and Feedback
 
@@ -285,7 +287,7 @@ habit forms a real failure gets ignored too. Google has
 a meaningful fraction of their test failures are flakes, which is why they invest
 in detecting and quarantining them. On a student project the correct response is
 usually to fix it the day it appears or delete it, because a quarantine you never
-revisit is just a deleted test with extra steps. Some flakiness is genuinely
+revisit is just a deleted test with extra steps. Some flakiness is
 unavoidable, such as a test that depends on a network service, and automatic
 reruns are a reasonable mitigation there.
 

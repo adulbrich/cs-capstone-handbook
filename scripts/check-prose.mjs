@@ -4,6 +4,23 @@
  * paths it also rejects the synonyms the glossary (`about/glossary.mdx`,
  * mirrored in `CONTEXT.md`) rules out.
  *
+ * Under `src/content/docs/` it also rejects the voice tells a pattern can see
+ * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
+ * every page, and the two banned openers ("Without it:" and "X is the
+ * backbone of") in a guide's opening, the text before its first `## `
+ * heading. These run only on handbook pages, never on `--text` or `--stdin`
+ * (a PR body may discuss a banned word) and never on `docs/`, `AGENTS.md`,
+ * or `.claude/skills/`, which quote the patterns to teach them.
+ *
+ * The opener check is waived on a page containing the MDX comment in
+ * `LEGACY_OPENER_MARKER` (below). The marker may sit anywhere in the file;
+ * by convention it is the first line after the frontmatter. Fourteen guides
+ * opened that way when the check landed (#207), and each is rewritten by its
+ * own sweep PR. A marker in the page, rather than an allowlist here, lets
+ * those PRs land in any order without all editing one array. A marker with
+ * nothing to waive fails, so a sweep PR that fixes the opener must delete
+ * its marker too, and a marker outside `guides/` always fails.
+ *
  * `validate-dashes.mjs` walks the content directories whole and runs in CI
  * and pre-commit. This script takes a file list instead, so lefthook can run
  * it on the staged files, CI over every tracked text file (`--all`), and the
@@ -110,6 +127,16 @@ const VOCABULARY = [
   { avoid: /\blegacy projects?\b/i, use: "existing codebase" },
   { avoid: /\bstudent-driven\b/i, use: "student-proposed" },
   { avoid: /\bTrack [AB]\b/, use: "NDA project, with a local note" },
+  {
+    // Literal multiword phrases for instructors and TAs together. "The
+    // instructors" stays legal, because a sentence about the faculty alone
+    // (grade questions, late-work exceptions) must not widen to the TAs, and
+    // so do the singletons: the glossary's own Instructor entry, "staff
+    // mentor", and the co-instructor on the two Canvas-owned stubs.
+    avoid:
+      /\bteaching staff\b|\bcourse staff\b|\bteaching team\b|\binstruction staff\b/i,
+    use: "the instruction team, or the instructors or a TA when only they are meant",
+  },
 ];
 const VOCABULARY_PATHS = [
   "src/content/docs/",
@@ -119,6 +146,69 @@ const VOCABULARY_PATHS = [
   "STAFF-RUNBOOK.md",
 ];
 const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
+
+/**
+ * The voice rules reach handbook pages only. Canvas files, the runbook, and
+ * the downloads keep the vocabulary check alone: the rubric TSVs still name
+ * criteria such as "Honest outcomes", and renaming a criterion means a Canvas
+ * re-import that needs the instructor.
+ */
+const VOICE_PATH = "src/content/docs/";
+
+/**
+ * The banned words from `docs/agents/voice.md`, matched on the prose line
+ * (inline code and double-quoted phrases removed, so a page can still name a
+ * rubric criterion in quotes). Each is a tell of the generated voice the
+ * handbook drifted into, and each has a plain word that says what it means.
+ * "One-way door" and "the net" join this list with the PR that rewords the
+ * AI policy they sit in.
+ */
+const BANNED_WORDS = [
+  {
+    avoid: /\b(?<!\bacademic\s)honest(?:y|ly)?\b/i,
+    use: 'the word the sentence means, or nothing; "academic honesty" stays, and a rubric criterion name may be quoted',
+  },
+  { avoid: /\bgenuinely\b/i, use: "nothing; delete it" },
+  { avoid: /\bworth stealing\b/i, use: '"worth adopting", or say why' },
+];
+
+/**
+ * A bolded whole sentence: a `**...**` span that starts the line (after any
+ * indentation or blockquote marker) or follows sentence-ending punctuation,
+ * and ends in `.`, `!`, or `?` inside the bold or right after it. The
+ * lookbehind keeps a numbered-list marker (`1. **Step.**`) from counting as
+ * sentence-ending punctuation, and a bullet (`- **Step.**`) never matches, so
+ * a list item's bold lead-in stays legal; so does a bold term or phrase
+ * inside a sentence, and a colon label (`**AI use:**`). The lookahead
+ * requires a space inside the span, so a one-word bold (`**e.g.**`,
+ * `**Why?**`, `**Examples.**`) is a label, not a sentence. Table cells start
+ * with `|` and are not checked.
+ */
+const BOLD_SENTENCE =
+  /(?:^\s*(?:>\s*)?|(?<!^\s*\d+)[.!?]["')]?\s+)\*\*(?=[^*\n]*?\s[^*\n]*?\*\*)[^*\n]+?(?:[.!?]\*\*|\*\*[.!?])/;
+
+/**
+ * The two openers `docs/agents/voice.md` bans: a "Without it:" lead-in to a
+ * list of failure modes, and a claim that the topic is the backbone of
+ * something. The second also catches "are the backbone of" and "form the
+ * backbone of", which is how two of the guides phrased it. Checked only in a
+ * guide's opening (GUIDES_PATH, before the first `## ` heading): both are
+ * rules about how a guide opens, and "Without X:" is ordinary English in the
+ * body of a page.
+ */
+const GUIDES_PATH = "src/content/docs/guides/";
+const BANNED_OPENERS = [
+  {
+    avoid: /Without [^.:]{0,60}:\s*$/,
+    use: "open on the reader's situation and what the page covers",
+  },
+  {
+    avoid:
+      /\b(?:is|are|forms?) the (?:backbone|foundation|fundamental unit) of\b/i,
+    use: "say what the thing does for the reader, not how important it is",
+  },
+];
+const LEGACY_OPENER_MARKER = "{/* check-prose: legacy-opener */}";
 
 /** A path as `git ls-files` prints it, whatever form the caller passed. */
 function repoRelative(filePath) {
@@ -137,6 +227,13 @@ function vocabularyApplies(filePath) {
     return false;
   }
   return VOCABULARY_PATHS.some((prefix) => rel.startsWith(prefix));
+}
+
+function voiceApplies(filePath) {
+  if (!filePath) {
+    return false;
+  }
+  return repoRelative(filePath).startsWith(VOICE_PATH);
 }
 
 /**
@@ -193,22 +290,117 @@ function vocabularyViolations(line, lineNumber) {
   return hits;
 }
 
+/** A line that opens or closes a fenced code block. */
+const FENCE = /^\s*(?:```|~~~)/;
+
 /**
- * Every hit in `text`, as `{ line, kind, snippet }`. `kind` is `em dash` or
- * `emoji`. Exported for the commit-message check, which adds its own rules on
- * top; the CLI below is the same function with a report.
+ * The banned-opener hits in a guide's opening: every prose line before the
+ * first `## ` heading. Empty for any page outside GUIDES_PATH.
+ */
+function openingHits(lines, path) {
+  const hits = [];
+  if (!repoRelative(path).startsWith(GUIDES_PATH)) {
+    return hits;
+  }
+  let inFence = false;
+  for (const [index, line] of lines.entries()) {
+    // Fence state first: a "## " line inside a code block is not the
+    // page's first section heading.
+    if (FENCE.test(line)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) {
+      continue;
+    }
+    if (line.startsWith("## ")) {
+      break;
+    }
+    const prose = stripInlineCode(line);
+    for (const rule of BANNED_OPENERS.filter((r) => r.avoid.test(prose))) {
+      hits.push({
+        kind: `voice: a banned opener; ${rule.use}`,
+        line: index + 1,
+        snippet: line.trim(),
+      });
+    }
+  }
+  return hits;
+}
+
+/**
+ * The opener hits, waived by LEGACY_OPENER_MARKER. A marker with nothing to
+ * waive is itself the hit: the opener was fixed and the marker left behind,
+ * or the marker sits on a page the opener check never reads.
+ */
+function openerViolations(lines, path) {
+  const hits = openingHits(lines, path);
+  const markerIndex = lines.findIndex((line) =>
+    line.includes(LEGACY_OPENER_MARKER)
+  );
+  if (markerIndex === -1) {
+    return hits;
+  }
+  if (hits.length > 0) {
+    return [];
+  }
+  return [
+    {
+      kind: "voice: a stale legacy-opener marker; nothing on this page needs it, so delete it",
+      line: markerIndex + 1,
+      snippet: lines[markerIndex].trim(),
+    },
+  ];
+}
+
+/** The voice hits on one prose line of a handbook page, openers aside. */
+function voiceViolations(line, lineNumber) {
+  const hits = [];
+  const hit = (kind) =>
+    hits.push({ kind, line: lineNumber, snippet: line.trim() });
+  const prose = stripInlineCode(line);
+  for (const rule of BANNED_WORDS) {
+    const match = prose.match(rule.avoid);
+    if (match) {
+      hit(`voice: "${match[0]}" is a banned word; use ${rule.use}`);
+    }
+  }
+  // Inline code only: stripping quoted phrases would cut a bold span in two.
+  if (BOLD_SENTENCE.test(line.replace(/`[^`]*`/g, " "))) {
+    hit(
+      "voice: a bolded whole sentence; unbold it, or bold only the defined term"
+    );
+  }
+  return hits;
+}
+
+/**
+ * Every hit in `text`, as `{ line, kind, snippet }`. `kind` is `em dash`,
+ * `emoji`, or a vocabulary or voice message. Exported for the commit-message
+ * check, which adds its own rules on top; the CLI below is the same function
+ * with a report. Without a `path`, only the em dash and emoji rules run.
  */
 export function findProseViolations(text, path) {
   const violations = [];
   const lines = text.split("\n");
-  const checkVocabulary = vocabularyApplies(path);
+  // The checks that read prose, and so skip fenced code.
+  const proseChecks = [];
+  if (vocabularyApplies(path)) {
+    proseChecks.push(vocabularyViolations);
+  }
+  if (voiceApplies(path)) {
+    proseChecks.push(voiceViolations);
+    violations.push(...openerViolations(lines, path));
+  }
   let inFence = false;
   for (const [index, line] of lines.entries()) {
-    if (checkVocabulary) {
-      if (/^\s*(?:```|~~~)/.test(line)) {
+    if (proseChecks.length > 0) {
+      if (FENCE.test(line)) {
         inFence = !inFence;
       } else if (!inFence) {
-        violations.push(...vocabularyViolations(line, index + 1));
+        for (const check of proseChecks) {
+          violations.push(...check(line, index + 1));
+        }
       }
     }
     if (line.includes(EMDASH) || EMDASH_ENTITY.test(line)) {
@@ -298,7 +490,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener (docs/agents/voice.md).\n"
     );
     process.exit(1);
   }

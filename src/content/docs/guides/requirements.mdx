@@ -1,9 +1,11 @@
 ---
 title: Project Requirements
-description: What a requirement is, how to write one a teammate can test, and how to keep docs/requirements.md honest as the project changes.
+description: What a requirement is, how to write one a teammate can test, and how to keep docs/requirements.md accurate as the project changes.
 sidebar:
   order: 7
 ---
+
+{/* check-prose: legacy-opener */}
 
 import { LinkCard } from '@astrojs/starlight/components';
 
@@ -124,7 +126,7 @@ The problem statement says what you are fixing; success metrics say how you will
 - Prioritize, and write the reason next to the rank.
 - Separate requirements from decisions. "Must store data durably" is a requirement; "use PostgreSQL" is an ADR.
 - Split any requirement with "and" in it.
-- Say what you do not know. An open-questions section with owners is honest; a confident requirement you never checked is a bug waiting to be discovered by someone else.
+- Say what you do not know. An open-questions section with owners tells the reader what is still unknown; a confident requirement you never checked is a bug waiting to be discovered by someone else.
 
 ## Some Truths about Software Requirements
 
@@ -145,7 +147,7 @@ build the wrong thing with total confidence.
 
 The staleness question deserves a straight answer, because teams always ask it
 and the usual advice dodges. Once your board holds the current work and your
-tests encode the acceptance criteria, the functional list genuinely does become
+tests encode the acceptance criteria, the functional list does become
 redundant, and maintaining it in parallel is duplicated effort that will drift.
 What does not become redundant is the part the board never holds: the problem
 statement, the non-goals, the non-functional bars, and the open questions. If you

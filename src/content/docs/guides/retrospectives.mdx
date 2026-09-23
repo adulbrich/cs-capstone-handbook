@@ -5,6 +5,8 @@ sidebar:
   order: 4
 ---
 
+{/* check-prose: legacy-opener */}
+
 import { LinkCard } from '@astrojs/starlight/components';
 
 Read this before your first retrospective and whenever they have become a formality; it gives you the formats that produce actions instead of complaints.
@@ -45,7 +47,7 @@ Run at the end of the project. Covers the full lifecycle from initial requiremen
 When something breaks (or nearly breaks) in production, run a targeted retrospective focused on root cause analysis. The output is a post-mortem document. The goal is systemic improvement, not assigning blame.
 
 :::tip[Blameless Culture]
-Effective post-mortems are blameless. Assume everyone involved acted with good intent and the best information available at the time. The question is "what system or process failed?", not "who failed?" Teams that punish honest post-mortems get dishonest ones.
+Effective post-mortems are blameless. Assume everyone involved acted with good intent and the best information available at the time. The question is "what system or process failed?", not "who failed?" A team that blames people teaches them to leave their own mistakes out of the next post-mortem, and a post-mortem missing the mistake cannot find the cause.
 :::
 
 ## Formats
@@ -165,7 +167,7 @@ third retro everyone understands the meeting is theater and stops offering real
 observations. The fix is unglamorous and it works: leave with at most two actions,
 each with a named owner and a date, and start the next retrospective by reading
 last time's actions out loud. Two completed actions beat six aspirational ones,
-because the second retro's honesty depends entirely on whether the first one
+because the second retro's candor depends entirely on whether the first one
 changed anything.
 
 Expect a gap between the team's mood and individual experience. Teams that feel

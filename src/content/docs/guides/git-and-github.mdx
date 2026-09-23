@@ -5,6 +5,8 @@ sidebar:
   order: 6
 ---
 
+{/* check-prose: legacy-opener */}
+
 import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 Read this when your team sets up its repository or hits its first merge conflict; it gives you the branching workflow and the settings that protect main.
@@ -272,7 +274,7 @@ GitHub provides `.gitignore` templates for most languages and frameworks at [git
 
 ## Some Truths About Git
 
-Git is genuinely confusing, and it is worth knowing that this is not a failure
+Git is confusing, and it is worth knowing that this is not a failure
 of yours. The command-line interface grew over years without a consistent
 design, so the same word means different things in different commands and the
 mental model you need (a directed graph of commits, with branches as movable
@@ -291,7 +293,7 @@ safety rather than tidiness. Panic and improvisation are what turn a recoverable
 mistake into a lost afternoon: stop, read the message, and look at the reflog.
 
 Code review is where the short-term and long-term incentives diverge most
-sharply on a student team. Skipping it genuinely is faster this sprint, and the
+sharply on a student team. Skipping it is faster this sprint, and the
 cost arrives later as a codebase nobody but the author understands, which turns
 into a bus factor of one right when that person has three finals. Google's
 [engineering practices documentation](https://google.github.io/eng-practices/review/)
