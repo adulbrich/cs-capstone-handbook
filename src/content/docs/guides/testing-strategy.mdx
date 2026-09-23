@@ -5,61 +5,58 @@ sidebar:
   order: 12
 ---
 
-{/* check-prose: legacy-opener */}
-
 import { LinkCard } from '@astrojs/starlight/components';
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
-Read this when you decide what to test and how far to go; it gives you the layers of automated testing and the user validation that complements them.
+Your team has code merging every week, some of it written by AI tools, and a project partner who will judge the result by whether it does what they need. This page covers what to test automatically and in what proportion, how to keep the suite trustworthy, and how to check with real users that you're building the right thing. It doesn't cover the CI workflow file (see [DevOps](/guides/devops/)), branch protection (see [Git and GitHub](/guides/git-and-github/)), or accessibility testing (see [Accessibility](/guides/accessibility/)).
 
-Testing is how a team builds confidence that the software works, keeps working, and solves the right problem. It is not a phase that happens at the end. It is a continuous activity woven into every sprint, every pull request, and every conversation with a project partner. Without a deliberate approach to testing:
+:::note[tl;dr]
+- Test first the paths where a failure would cost the most (authentication, payments, the core data flow), not the code that's easiest to test.
+- Run the suite in CI on every pull request and block the merge when it's red.
+- Test behavior rather than implementation, and start at the boundaries: empty input, maximum values, invalid data.
+- Use coverage to find code no test runs, never as a target: it correlates only weakly to moderately with whether a suite catches faults.
+- Quarantine a flaky test the day it appears, then find the cause before you delete it; some flaky tests are reporting a real bug.
+- Put the product in front of real users in planned sessions of a few people each, and run several small rounds rather than one large one.
+- In research code, validate the input data and sanity-check the outputs; treat a sudden near-perfect score as leakage until you've ruled it out.
+:::
 
-- Bugs accumulate silently until they surface in a demo or a deployment.
-- Refactoring becomes terrifying because nobody knows what might break.
-- The team cannot tell whether a feature actually meets the acceptance criteria or just appears to.
-- The project partner receives software that technically runs but does not behave the way they expected.
-
-Testing answers two distinct questions. The first is **does the code work?** This is the domain of automated tests and manual verification: unit tests, integration tests, CI pipelines, exploratory testing, and regression checks. The second is **does the product solve the right problem?** This is the domain of user testing and validation: usability studies, beta feedback, A/B experiments, and structured conversations with the people who will actually use what you build. A complete testing strategy addresses both. A team that writes excellent unit tests but never puts the product in front of a real user can ship something that works perfectly and is completely useless.
+Testing answers two questions. **Verification** asks whether the code does what you specified: unit tests, integration tests, CI, exploratory testing. **Validation** asks whether what you specified solves the user's problem: usability sessions, beta feedback, experiments, and demos to the people who'll use the product.
 
 ## Thinking About Your Testing Strategy
 
-Different projects need different confidence, so decide what yours needs before choosing a framework. Three questions settle most of it:
+Decide what confidence your project needs before choosing a framework, because a data pipeline and a public web app need different tests. Four questions settle most of it:
 
-- **Who uses it, and when do they first touch it?** Software handed to non-technical users after the team leaves makes usability testing mandatory. A pipeline whose only user is a data scientist makes reproducibility the thing to test.
-- **Where would a failure be most expensive?** A payment flow or an authentication path earns rigorous automated coverage; an about page does not. A model pipeline earns validation against a known baseline.
-- **Which sprints include real users?** User testing is planned or it does not happen. Put the sessions on the board in the sprint you intend to run them.
-- **What does your Definition of Done already promise?** If it requires green tests in CI, you need the pipeline before you need more test types. If it requires partner sign-off, you need a demo and feedback loop on the board.
+- Who uses it, and when do they first touch it? Software handed to non-technical users after the team leaves needs usability testing. A pipeline whose only user is a data scientist needs reproducibility checks.
+- Where would a failure be most expensive? A payment flow or an authentication path earns rigorous automated tests; an about page doesn't. A model pipeline earns validation against a known baseline.
+- When will real users see it? Put user sessions on the board in the sprint you intend to run them, because work that isn't on the board has no owner and no time set aside for it.
+- What does your [Definition of Done](/activities/planning/#definition-of-done) already promise? If it requires green tests in CI (continuous integration), you need the pipeline before you need more kinds of test. If it requires sign-off from the project partner, you need a demo and a feedback loop.
 
-Write the answers into your working agreement or `CONTRIBUTING.md`, in a few lines: which kinds of testing the team does, when automated tests are required, and when users are involved.
+Write the answers into your [working agreement](/guides/working-agreement/) or `CONTRIBUTING.md` in a few lines: which kinds of testing the team does, when automated tests are required, and when users are involved.
 
-<LinkCard
-  title="Team Working Agreement"
-  href="/guides/working-agreement/"
-  description="Where testing expectations and the Definition of Done live."
-/>
+## Testing as Part of Your Checks
 
-## Testing as the Safety Net
+Your **checks** are everything that catches a bad change before it reaches a user:
 
-Most of the code in a capstone project is now written with AI tools, which is why the useful question is not how much you delegated but what your automation would catch when the delegation goes wrong. That automation is your **safety net**, and testing is most of it. It has five parts, and each is checkable:
+- tests that fail when behavior breaks, on the paths that matter;
+- CI on every pull request, required to pass before merge;
+- review gates on the hard-to-reverse decisions (schema, authentication, deployment, data migrations);
+- a staging or preview environment, so the first run of a change isn't in production;
+- a rollback path you've actually tried.
 
-- **Tests that fail when behavior breaks**, on the paths that matter. A suite that passes after you delete a feature is not a check.
-- **CI on every pull request**, green, and required before merge.
-- **Review gates on the hard-to-reverse decisions**: schema, authentication, deployment, data migrations, anything you cannot walk back.
-- **A staging or preview environment**, so the first run of a change is not production.
-- **A rollback you have tried**, not one you believe in.
-
-You may delegate exactly as far as those checks catch, and no further. If you want to hand more to the tools, add to the checks first. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap between the two on your own repository; the reasoning behind the rule is in the [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest). The rest of this guide is how to build the first of those checks well, and how to test the thing the checks cannot: whether the product is worth building.
+Delegate to AI tools only as far as those checks would catch a mistake, and strengthen the checks before you delegate more, because a tool's output can look right and still be wrong in ways nobody reads closely enough to see. The [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest) makes that argument in full, and [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap on your own repository. Tests are the part of the checks this page covers.
 
 ## Verification: Does the Code Work?
 
-Verification is about confirming that the system behaves as specified. This includes both automated tests (which run without human intervention) and manual checks (which require a person to interact with the system).
+Verification covers automated tests, which run without anyone watching, and manual checks, which need a person using the system.
 
 ### Automated Testing
 
-Automated tests are code that exercises your code. They run fast, repeat reliably, and catch regressions before anyone sees them.
+Automated tests are code that exercises your code. They run in seconds or minutes, give the same answer every time they run (when they're written well), and catch a regression before a user does.
 
 #### Unit Tests
 
-Unit tests verify that individual functions, methods, or components behave correctly in isolation. They are fast, cheap to write, and provide precise feedback when something breaks.
+A unit test checks one function, method, or component in isolation. It's fast, cheap to write, and when it fails it points at the line that broke.
 
 ```python
 def test_calculate_total_with_discount():
@@ -67,11 +64,11 @@ def test_calculate_total_with_discount():
     assert result == 80.0
 ```
 
-Unit tests are especially valuable for business logic, data transformations, and utility functions where the inputs and outputs are well-defined.
+Write unit tests for business logic, data transformations, and utility functions, where the inputs and outputs are well defined.
 
 #### Integration Tests
 
-Integration tests verify that multiple components work together correctly: a function that queries a database, an API endpoint that authenticates a user and returns data, or a data pipeline that reads from one source and writes to another.
+An integration test checks that several components work together: a function that queries a database, an API endpoint that authenticates a user and returns data, a pipeline that reads from one source and writes to another.
 
 ```python
 def test_create_user_stores_in_database(db_session):
@@ -80,23 +77,21 @@ def test_create_user_stores_in_database(db_session):
     assert db_session.query(User).filter_by(email="test@example.com").one()
 ```
 
-Integration tests are slower than unit tests but catch a class of bugs that unit tests cannot: configuration errors, schema mismatches, incorrect assumptions about how a library or service behaves.
+Integration tests are slower than unit tests, but they catch what a unit test can't see: a configuration error, a schema mismatch, a wrong assumption about how a library or service behaves.
 
 #### End-to-End Tests
 
-End-to-end (E2E) tests verify the system from the user's perspective: open a browser, click through a workflow, and assert that the expected result appears. For a web application, this might mean logging in, creating a resource, and verifying it appears on a dashboard. For a data pipeline, it might mean feeding raw data in and checking the final output.
+An end-to-end (E2E) test checks the system the way a user meets it: open a browser, click through a workflow, and assert that the expected result appears. For a web application, that might mean logging in, creating a resource, and finding it on a dashboard. For a data pipeline, it means feeding raw data in and checking the final output.
 
-E2E tests are the slowest and most brittle, but they catch problems that no other test type can: broken routing, missing environment variables, UI elements that fail to render, or workflows that break across service boundaries.
+E2E tests are the slowest and the most likely to break for reasons unrelated to your change, but they catch failures no other test reaches: broken routing, a missing environment variable, a UI element that never renders, a workflow that breaks across a service boundary.
 
 #### Contract Tests
 
-In systems with a clear API boundary (for example, a frontend consuming a backend API), contract tests verify that both sides agree on the shape of requests and responses. They catch breaking changes at the interface before they cause failures at runtime.
-
-If your project has a frontend and backend developed by different team members, even lightweight contract testing (such as validating API responses against an OpenAPI schema) can prevent a common class of integration failures.
+When a frontend consumes a backend API, a contract test checks that both sides agree on the shape of requests and responses, so a breaking change fails at the interface instead of at runtime. If different teammates own the two sides, even a light version (validating API responses against an [OpenAPI](https://spec.openapis.org/oas/latest.html) schema) catches the mismatch before it reaches a demo.
 
 #### The Testing Pyramid
 
-A useful mental model for balancing these test types is the **testing pyramid**: many fast, focused unit tests at the base; fewer integration tests in the middle; a small number of slow, broad E2E tests at the top.
+The **testing pyramid** is a model for balancing these types: many fast, focused unit tests at the base, fewer integration tests in the middle, and a few slow, broad E2E tests at the top. [Fowler traces it](https://martinfowler.com/bliki/TestPyramid.html) to Mike Cohn, who described it as the "Test Automation Pyramid" in *Succeeding with Agile* (2009).
 
 ```
     /   E2E   \        Few, slow, broad
@@ -106,239 +101,168 @@ A useful mental model for balancing these test types is the **testing pyramid**:
 /   Unit Tests    \    Many, fast, focused
 ```
 
-The pyramid is a guideline, not a rule. Some projects (especially UI-heavy ones) benefit from more integration and E2E tests. Research projects may have few unit tests but need strong reproducibility checks. The principle holds: invest more in tests that are fast and reliable, and use expensive tests selectively for what cheaper tests cannot cover.
+The pyramid has a competitor, and Fowler himself hedges it. He notes that it rests on the assumption that broad tests are slow, expensive, and brittle compared with focused ones, that this is usually true but has exceptions, and that if your high-level tests are fast, reliable, and cheap to change, lower-level tests aren't needed. Kent C. Dodds's [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests) gives integration tests the largest share of attention, on the principle that a test gives more confidence the more closely it resembles the way the software is used, and he points out that a unit test can't ensure you're calling a dependency correctly. Mike Wacker, on Google's Testing Blog, defends the pyramid and suggests a 70/20/10 split of unit, integration, and end-to-end tests as a first guess, arguing that you should [say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) because they give slow, flaky feedback and a failure is hard to trace to the code that caused it. Which shape fits depends on how expensive your integration tests actually are, so measure that before you commit to a shape.
 
 #### What to Test
 
-The most common testing mistake is testing the wrong things: writing tests for trivial code while leaving critical paths uncovered.
+Spend tests where a failure would hurt, not where tests are easiest to write:
 
-- **Test behavior, not implementation.** A test that asserts "the function calls `sort()` internally" is fragile; one that asserts "the output is sorted" is resilient. Tests tied to implementation details break every time the code is refactored, even when the behavior has not changed.
-- **Focus on critical paths.** Every application has a handful of workflows that must work: authentication, payment processing, the core data pipeline, the primary user interaction. These deserve thorough test coverage. Edge cases in a settings page are less urgent.
-- **Test the boundaries.** Boundary conditions (empty inputs, maximum values, invalid data, concurrent access) are where most bugs live. If a function accepts a list, test it with an empty list, a single item, and a very large list.
-- **Do not test framework code.** If a framework guarantees that a route returns a 404 for an unregistered path, you do not need to test that. Test *your* code, not the tools you are using.
-- **Do not chase coverage numbers.** Code coverage measures which lines were executed during testing, not whether the tests are meaningful. A test suite with 90% coverage that only tests happy paths is worse than one with 60% coverage that tests critical paths and edge cases thoroughly. Use coverage as a signal to find blind spots, not as a target to optimize.
+- Test behavior, not implementation. A test that asserts "the output is sorted" survives a refactor; one that asserts "the function calls `sort()` internally" breaks every time the code changes, even when the behavior hasn't.
+- Cover the critical paths thoroughly: authentication, payment processing, the core data pipeline, the primary user interaction. Edge cases in a settings page can wait.
+- Test the boundaries first (empty inputs, maximum values, invalid data, concurrent access), because a boundary is where a single wrong comparison flips the result, and it's the case a happy-path test never reaches. If a function accepts a list, test it with an empty list, one item, and a very large list.
+- Don't test framework code. If the framework guarantees a 404 for an unregistered route, test your code instead of theirs.
+- Don't chase a coverage number. Use coverage to find code no test executes; Some Truths below explains why a target backfires.
 
 ### Accessibility
 
-Accessibility is a correctness property and it belongs in the same CI run as the rest of your suite: lint rules, [axe-core](https://github.com/dequelabs/axe-core) inside the tests you already have, and a page-level budget that fails the build.
+Run automated accessibility checks in the same CI run as the rest of your suite, so a missing label or an unreachable button fails the build the way a broken function does.
 
 <LinkCard
   title="Accessibility Testing"
   href="/guides/accessibility/"
-  description="The three layers: automated gates, the keyboard and screen-reader pass, and a session with a daily assistive-technology user."
+  description="Which accessibility checks to run in CI, and what automated checks miss."
 />
 
 ### Manual and Exploratory Testing
 
-Automated tests verify that the system does what the team *told* it to do. Manual testing verifies that the system does what a human *expects* it to do. Both are necessary.
+Automated tests check what the team told them to check. A person using the system notices what nobody thought to write a test for: a button that works but is invisible on a dark background, a form that submits successfully and confuses every user, a workflow that's technically correct and takes twelve clicks instead of two.
 
-**Exploratory testing** is unscripted manual testing where a person uses the system without a predefined checklist, looking for anything that feels wrong: confusing workflows, unexpected states, visual glitches, performance issues. It is especially valuable after a major feature is complete and before a demo or release.
+**Exploratory testing** is unscripted manual testing: someone uses the system without a checklist, looking for anything that feels wrong, such as a confusing workflow, an unexpected state, a visual glitch, or a slow page. Run it after a major feature is complete and before a demo or release, when there's a whole workflow to explore.
 
-**Smoke testing** is a quick manual check that the most critical workflows still function after a deployment or significant change. It answers one question: "Is the system fundamentally broken?" before investing time in more detailed verification.
-
-Automated tests alone will never catch everything. A button that works perfectly but is invisible on a dark background, a form that submits successfully but confuses every user, a workflow that is technically correct but takes twelve clicks instead of two: these are problems that only a human will notice.
+**Smoke testing** is a quick manual check that the most critical workflows still function after a deployment or a significant change. It answers one question, whether the system is broken outright, before anyone spends time on more detailed verification.
 
 ## Validation: Does the Product Solve the Right Problem?
 
-Validation is about confirming that the system is *worth building* in its current form. Code can pass every automated test and still fail the people it was built for. Validation puts the product in front of real users and asks: does this actually work for you?
+The methods below differ mostly in how many users they need: a usability session needs a handful, a beta a small group, and an A/B test enough traffic for statistics. Pick the one your number of real users can support, and use sprint demos with the project partner whatever that number is.
 
 ### Usability Testing
 
-Watch real users (or reasonable proxies) attempt key tasks in your system. Note where they hesitate, make mistakes, or express confusion. Five users are enough to surface the most critical usability problems.
+Watch real users, or reasonable proxies, attempt key tasks in your system, and note where they hesitate, make mistakes, or say they're confused. Keep each round small and run several: <Cite id="nielsen-1993" /> modeled problem discovery across 11 studies and, for their medium example, estimated the best benefit-to-cost ratio at four evaluations. Nielsen later [argued for about five users per round](https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/), because each added user reveals less that's new and the budget is better spent testing the redesign.
 
-Usability testing does not require a finished product. Paper prototypes, clickable mockups, and partially implemented features are all testable. The earlier you test with users, the cheaper it is to fix what you learn.
+Test before the product is finished. Paper prototypes, clickable mockups, and half-built features are all testable, and a problem found in a mockup costs a redraw instead of a rewrite.
 
-Plan usability sessions deliberately. Decide which tasks to test, recruit participants, and prepare a script or task list. Unstructured "try it and tell me what you think" sessions produce less actionable feedback than specific task-based observations.
+Plan each session: pick the tasks to test, recruit the participants, and write a script. "Try it and tell me what you think" gets opinions; "book a room for Thursday" shows you where the user gets stuck.
 
 ### Testing with Assistive Technology Users
 
-Only someone who relies on assistive technology daily can tell you whether the software is good rather than merely compliant. [Accessibility Testing](/guides/accessibility/#testing-with-assistive-technology-users) covers how to recruit for that session and what the closest substitute is when you cannot.
+Only someone who relies on assistive technology daily can tell you whether the software is good rather than merely compliant. [Accessibility Testing](/guides/accessibility/#testing-with-assistive-technology-users) covers how to recruit for that session and what the closest substitute is when you can't.
 
 ### Beta Testing and Feedback
 
-Giving a working version of the software to a small group of users and collecting structured feedback is one of the most effective ways to validate that the system works in real conditions. Define what you want to learn before distributing the beta. Open-ended "let us know what you think" produces less useful feedback than specific questions tied to acceptance criteria.
+A beta gives a working version of the software to a small group of users and collects structured feedback on how it behaves in their real conditions. Decide what you want to learn before you distribute it, and ask specific questions tied to your acceptance criteria, because "let us know what you think" gets general impressions you can't act on.
 
 ### A/B Testing and Experiments
 
-For projects where success is measurable (conversion rates, task completion times, error rates), A/B testing compares two variations to determine which performs better. This requires enough users and enough traffic to be statistically meaningful, which limits its applicability in many capstone projects, but the thinking behind it (form a hypothesis, measure the outcome, decide based on evidence) applies universally.
+When success is measurable (conversion rates, task completion times, error rates), an [A/B test](https://experimentguide.com/) shows two variations to different users and compares the outcome. It needs enough users for the difference to be statistically meaningful, which a product with a few dozen users can't reach. The reasoning behind it still applies at any size: state a hypothesis, measure the outcome, and decide on the evidence.
 
 ### Project Partner Demos as Validation
 
-Sprint demos are not just presentations. They are validation opportunities. When the project partner watches a feature in action and says "that is not what I meant," that is testing. Treat every demo as a chance to confirm (or correct) the team's understanding of what the product should do.
+Treat every sprint demo as a test of whether you built the right thing. When the project partner watches a feature and says "that's not what I meant", you've found a requirements bug, and a demo finds it within a sprint of the code being written instead of at the end of the project. The [Presentations guide](/guides/presentations/) covers how to run a demo that gets that feedback.
 
-<LinkCard
-  title="User Activities"
-  href="/activities/user/"
-  description="UX research methods and activities for learning from users."
-/>
-
-<LinkCard
-  title="Presentations"
-  href="/guides/presentations/"
-  description="How sprint demos serve as feedback loops with stakeholders."
-/>
-
-:::note[IRB Approval]
-If your project involves faculty-led research and you plan to conduct user testing with human participants, you may need [IRB approval](https://research.oregonstate.edu/ori/irb). Check with your faculty advisor early, as the approval process takes time.
+:::note[Ethics Review]
+Testing with human participants as part of a research study usually needs ethics review, called an IRB (institutional review board) in the United States, before the first session. Ask whoever supervises the research early, because review takes weeks you don't control; [Complete an IRB Application](/activities/user/#complete-an-irb-application) walks through the filing.
 :::
 
 ## Testing Research Projects
 
-The primary question is not "does this code work?" but "are these results reproducible and trustworthy?" What reproducible means concretely, and why you reproduce the baseline before attempting novelty, is in the [Shipping guide](/guides/shipping/#research). Two checks are testing work rather than plumbing:
+In a research project, the question a test answers is whether the results are reproducible and trustworthy. The [Shipping guide](/guides/shipping/#research) covers what reproducible means and why you reproduce the baseline before attempting anything new. Two checks are testing work:
 
-- **Data validation.** Check that input data meets expected formats, ranges, and distributions before processing. A pipeline that silently drops malformed records or produces NaN without warning is a source of unreliable results.
-- **Sanity checks on outputs.** After a model trains or an analysis runs, verify the outputs fall in the expected range. A model that suddenly reports 99.9% accuracy is reporting a data-leakage bug, not a breakthrough.
+- Validate the input data. Check that it meets the expected formats, ranges, and distributions before processing, because a pipeline that silently drops malformed records or produces NaN without warning produces results nobody can trust.
+- Sanity-check the outputs. After a model trains or an analysis runs, verify that the outputs fall in the expected range. Treat a model that suddenly reports 99.9% accuracy as a data-leakage bug until you've ruled it out, because test data leaking into training makes a model look far better than it is.
 
-Research output that others will use (a tool, a dataset, a methodology) needs validation too: put it in front of the intended audience and watch whether it works for them.
+Research output that others will use (a tool, a dataset, a method) needs validation as well: put it in front of the intended audience and watch whether it works for them.
 
 ## When to Test
 
-Testing is woven into the workflow, not a phase at the end.
+Testing runs through the whole workflow:
 
-- **As you build.** Tests exist before the code merges, whether the team writes them first or alongside. Code merged without them works today and nobody knows about tomorrow.
-- **On every pull request.** Tests run in CI and a red build blocks the merge. This is the single most effective quality gate a team has. The workflow file is in the [DevOps guide](/guides/devops/#continuous-integration-ci); the branch protection that makes red mean blocked is in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch).
-- **In the sprint you planned it.** User testing appears on the board as work, or it happens "if we have time", which means never.
-- **Before every demo and release.** Full suite plus a manual smoke test. If a workflow matters enough to demo, it matters enough to have an end-to-end test.
-- **After every incident.** Write the test that reproduces the failure before you fix it. Over a year that builds a suite shaped by real problems rather than imagined ones.
+- As you build. Tests exist before the code merges, whether the team writes them first or alongside, because a change merged without them can break later without anyone noticing.
+- On every pull request. Tests run in CI and a red build blocks the merge, which makes the suite a gate instead of a suggestion. The workflow file is in the [DevOps guide](/guides/devops/#continuous-integration-ci); the branch protection that makes red mean blocked is in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch).
+- Before every demo and release. Run the full suite plus a manual smoke test. If a workflow matters enough to demo, give it an end-to-end test.
+- After every bug that reaches a user. Write a test that reproduces the failure before you fix it, so the test proves the fix and keeps the bug from coming back ([Fowler](https://martinfowler.com/bliki/TestPyramid.html) advises a unit test even when an end-to-end test found the bug). Over the project, that builds a suite shaped by real failures rather than imagined ones.
 
 ## Organizing and Maintaining Your Test Suite
 
-Consistent test organization makes it easier for the team to find, run, and maintain tests.
+Organize tests so any teammate can find, run, and change them:
 
-- **Keep tests close to the code they test.** Many frameworks support a `tests/` directory mirroring the source structure, or colocated test files (e.g., `login.test.ts` next to `login.ts`). Either is fine; pick one and be consistent.
-- **Name tests descriptively.** `test_login_with_invalid_password_returns_401` tells a reviewer exactly what is being verified without reading the test body.
-- **Use test data thoughtfully.** Hardcoded test data scattered across test files becomes a maintenance burden. Use fixtures, factories, or builder patterns to create test data in a central, reusable way.
+- Keep tests close to the code they test: a `tests/` directory mirroring the source tree, or colocated files (`login.test.ts` next to `login.ts`). Either works; pick one and use it everywhere.
+- Name tests descriptively. `test_login_with_invalid_password_returns_401` tells a reviewer what's verified without reading the body.
+- Build test data with fixtures, factories, or builders rather than hardcoding it in each file, so a schema change means one edit instead of forty.
 
-Document your testing conventions (framework, file organization, how to run tests) in `CONTRIBUTING.md` so that every team member and every AI coding tool follows the same patterns.
-
-<LinkCard
-  title="Documentation"
-  href="/guides/documentation/"
-  description="Where testing conventions belong in your repository documentation."
-/>
+Write the conventions (framework, file layout, how to run the suite) into `CONTRIBUTING.md`, so every teammate and every AI coding tool follows the same pattern. The [Documentation guide](/guides/documentation/) covers what else belongs there.
 
 ### Dealing with Flaky Tests
 
-A flaky test passes sometimes and fails other times with no code change. They are corrosive: they teach the team to ignore failures, which defeats the point of testing at all. Four causes cover almost all of them:
+A **flaky test** passes and fails on the same code. <Cite id="luo-2014" /> studied 201 commits that likely fixed flaky tests in 51 open-source Apache projects and classified the cause of 161: 45% were async waits, 20% concurrency, and 12% test order dependency, 77% together. Each of those has a fix, below, along with the one for tests that depend on the network, the clock, or random numbers:
 
-- **Timing.** A `sleep()` or an assumed duration. Poll or wait explicitly instead.
-- **Shared state.** A test that depends on what the previous one left behind. Each test sets up and tears down its own.
-- **External services.** A real API or database in the loop. Use a test double, or a local or containerized instance.
-- **Non-determinism.** Random data, concurrency, or the clock. Seed the generator, control the concurrency, freeze time.
+- **Async wait**: the test uses a result before an asynchronous call has produced it, sometimes hidden behind a `sleep()`. Wait explicitly for the condition instead.
+- **Concurrency**: threads interleave differently on different runs. Add the missing synchronization or make the code deterministic.
+- **Test order dependency**: a test relies on state a previous test left behind. Have each test set up and clean up its own state.
+- **Network, time, and randomness**: a real network, clock, or random generator in the loop. Use a test double or a local instance, freeze the time, and seed the generator.
 
-Fix a flaky test or delete it. A test you cannot trust is worse than no test.
+The same study found 78% of flaky tests were flaky from the day they were written <Cite id="luo-2014" form="parenthetical" />, so run a new test many times in a row before you merge it.
 
 ## Testing Tools
 
-The right tools depend on your stack. Here are common choices across popular frameworks:
+Pick the framework your stack's documentation uses, because that's the one its examples and tutorials assume. A short list of defaults:
 
-| Stack | Test Framework | E2E / Integration |
-|-------|---------------|-------------------|
-| Python | [pytest](https://docs.pytest.org/) | [Playwright](https://playwright.dev/python/), [httpx](https://www.python-httpx.org/) |
-| JavaScript / TypeScript | [Vitest](https://vitest.dev/), [Jest](https://jestjs.io/) | [Playwright](https://playwright.dev/), [Cypress](https://www.cypress.io/) |
-| React | [React Testing Library](https://testing-library.com/react) | [Playwright](https://playwright.dev/) |
-| Go | built-in `testing` package | [httptest](https://pkg.go.dev/net/http/httptest) |
-| Java | [JUnit](https://junit.org/) | [Selenium](https://www.selenium.dev/) |
-| Mobile (React Native) | [Jest](https://jestjs.io/) + [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) | [Detox](https://wix.github.io/Detox/) |
+- Python: [pytest](https://docs.pytest.org/en/stable/).
+- JavaScript and TypeScript: [Vitest](https://vitest.dev/) or [Jest](https://jestjs.io/), with [Testing Library](https://testing-library.com/) for UI components.
+- Java: [JUnit](https://junit.org/); Go: the built-in [`testing`](https://pkg.go.dev/testing) package.
+- End-to-end, any stack: [Playwright](https://playwright.dev/).
 
-For usability testing, screen and session recording tools like [Lookback](https://lookback.io/), [Hotjar](https://www.hotjar.com/), or even a simple Zoom recording can capture user interactions for later analysis.
-
-Choose tools your team will actually use. A simple pytest suite maintained diligently beats a sophisticated testing infrastructure that nobody runs.
-
-:::note[Reviewed annually]
-The tool names above date faster than anything else on this page. Checked at the annual review.
-:::
+Choose tools the team will run every day. A plain pytest suite that runs on every pull request catches more than an elaborate setup that only one person knows how to start.
 
 ## Best Practices
 
-- Treat test code with the same care as production code. Tests that are hard to read, poorly organized, or full of duplication become a burden rather than a safety net.
-- Fix broken tests immediately. A test suite that stays red for days loses all value as a quality signal.
-- Delete tests that no longer serve a purpose. Tests for removed features or deprecated code paths add noise and slow down the suite.
-- Keep tests fast. A test suite that takes ten minutes to run will not be run frequently. If the suite is slow, identify the bottleneck (usually a few slow integration or E2E tests) and optimize or isolate those tests.
+These keep a suite trustworthy once it's large enough that nobody remembers why each test exists:
+
+- Hold test code to the same standard as production code, because a test nobody can read is a test nobody fixes when it fails.
+- Fix a red suite the day it goes red; a suite that stays red for days teaches the team that red means nothing.
+- Delete tests for removed features and dead code paths, which slow the suite and test nothing anyone depends on.
+- Keep the suite fast enough to run before every push. When it slows down, find the few slow integration or E2E tests responsible and speed them up or move them to a separate job.
 
 ## Some Truths About Testing
 
-The pyramid this guide opens with is a guideline, and it is worth knowing that
-it is also contested. Mike Cohn's original shape assumed integration tests were
-slow and brittle, which was true of the tooling in 2009. Kent C. Dodds argues for
-a [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests)
-instead: more integration tests than unit tests, on the grounds that integration
-tests buy more confidence per test and that modern tooling has made them fast
-enough to write in bulk. Google's testing team reached a related conclusion from
-the opposite end, arguing you should
-[say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
-because they are slow and flaky at scale. Which shape fits depends on how
-expensive your integration tests actually are, so measure before you commit to
-one.
+Coverage is the metric most likely to mislead you, because it records which lines executed, not whether anything was checked; a suite that calls every function and asserts nothing reports excellent coverage. <Cite id="inozemtseva-2014" /> generated 31,000 test suites for five large Java systems and found only a low to moderate correlation between coverage and fault detection once suite size was controlled, and they suggest coverage should not be a quality target.
 
-Coverage percentage is the metric most likely to mislead you, and the reason is
-mechanical: coverage records which lines executed, not whether anything was
-checked. A test suite that calls every function and asserts nothing reports
-excellent coverage. This is why a coverage target set as a team goal tends to
-produce tests written to raise the number rather than tests that would catch a
-regression. Use coverage to find code nobody tested at all, which it is good at,
-and not as a quality score, which it cannot be.
+Mutation testing measures what coverage can't: whether the tests would notice a bug. Tools such as [PIT](https://pitest.org/) and [Stryker](https://stryker-mutator.io/) seed small faults into your code and count how many your tests catch, and <Cite id="just-2014" /> found that a suite's mutant detection correlates with its detection of real faults, independently of coverage. It reruns the suite once per seeded fault, so on a large codebase run it on the critical paths rather than everywhere.
 
-Flaky tests deserve more attention than they get, because they fail in a way that
-destroys the value of everything around them. A test that passes and fails
-without the code changing teaches the team to ignore red builds, and once that
-habit forms a real failure gets ignored too. Google has
-[written about the scale of this](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html):
-a meaningful fraction of their test failures are flakes, which is why they invest
-in detecting and quarantining them. On a student project the correct response is
-usually to fix it the day it appears or delete it, because a quarantine you never
-revisit is just a deleted test with extra steps. Some flakiness is
-unavoidable, such as a test that depends on a network service, and automatic
-reruns are a reasonable mitigation there.
+Flaky tests do damage beyond the test itself. On Google's Testing Blog, <Cite id="micco-2016" /> reports that about 1.5% of all test runs at Google are flaky, that almost 16% of their tests have some flakiness, and that 84% of the pass-to-fail transitions their CI sees involve a flaky test; with that many false alarms, people commonly ignore legitimate failures in those tests. Deleting the test is tempting, but <Cite id="luo-2014" /> found that 24% of flaky-test fixes changed the code under test, and 94% of those fixed a real bug, so they argue against simply removing flaky tests. Quarantine a flaky test the day you find it, so it stops training the team to ignore red, then read the failure before you decide between fixing and deleting.
 
-Writing testable code does tend to improve design, but the claim is often stated
-too strongly. What testing pressure actually rewards is separating decisions from
-side effects, because a function that only computes is trivial to test and a
-function that computes and writes to a database is not. That is a real design
-improvement most of the time. It is not a universal law: tests can also push you
-toward over-abstraction, adding interfaces that exist only so a mock can be
-injected. If a change makes the code harder to read and easier to test, that is a
-trade to make deliberately, not an automatic win.
+Testing pressure improves design only up to a point. What it rewards is separating decisions from side effects: a function that only computes is trivial to test, and one that computes and writes to a database is not, and the separated version is also easier to change. Past that point, David Heinemeier Hansson argues, the pressure does [test-induced design damage](https://dhh.dk/2014/test-induced-design-damage.html): indirection and extra layers added only so a unit test can run fast and in isolation, at the cost of clarity. When a change makes code easier to test and harder to read, prefer the readable version and test it at a higher level, because the reader pays for every extra layer and the test doesn't need it.
 
-Finally, automated tests answer whether the code does what you specified. They
-cannot tell you whether you specified the right thing. A suite that is entirely
-green on a feature nobody wants is a well-tested waste of months, which is why
-this guide keeps sending you back to real users and why research projects need
-reproducibility checks rather than just passing tests. Results you cannot
-reproduce are not results, and software nobody can use is not shipped.
+Verification is easier to invest in than validation, because a test suite gives a green or red answer on every push and a user session gives a page of notes once. That asymmetry is how a project ends up with a green suite on a feature nobody wants: nothing in CI checks the specification itself, so a wrong one stays green for as long as nobody puts it in front of a user.
 
 ## Testing in Industry and Academia
 
-In industry, both automated testing and user research are baseline expectations. Companies like Google require tests for virtually all production code; their internal testing culture is documented extensively in [Software Engineering at Google](https://abseil.io/resources/swe-book/html/ch11.html). At the same time, product teams at companies like Stripe, Airbnb, and Shopify run continuous user research to validate that what they build actually serves their customers. Neither discipline substitutes for the other.
+Google's testing culture turned on a failure. <Cite id="bender-2020" /> recounts that by 2005 the Google Web Server's releases were getting buggier, and at one point more than 80% of its production pushes contained user-affecting bugs that had to be rolled back; the tech lead then required tests with every new code change, run continuously, and within a year emergency pushes had dropped by half, despite a record number of changes.
 
-The testing pyramid (or variations like the [testing trophy](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications)) is a widely used heuristic for automated test strategy. Kent C. Dodds and Martin Fowler have written extensively about this, and their work is worth reading regardless of your stack.
+In academia, testing is also a research field. Testing research often measures a suite with mutation analysis, because the real faults in a program are usually unknowable in advance <Cite id="just-2014" form="parenthetical" />, and that's how the coverage study under Some Truths measured fault detection.
 
-In academia, reproducibility serves the same purpose as automated testing: it allows others to verify that results are valid. Journals increasingly require that computational results be backed by public code and data, with clear instructions for reproducing the findings. A well-tested research codebase is publishable; an untested one is a liability.
+When research depends on code, reproducibility plays the role a test suite plays in industry, and the failure it guards against has been documented at scale: <Cite id="kapoor-2023" /> surveyed the literature and found data leakage in 17 fields, affecting 294 papers and in some cases leading to wildly overoptimistic conclusions.
 
-The habit of testing holistically, through automated suites, manual exploration, reproducibility checks, and user validation, is one of the most transferable skills a capstone project can develop.
+## References
+
+<References />
 
 ## Additional Readings
 
-The testing literature is opinionated and the disagreements are real, so read at
-least two of the first three entries and notice where they conflict. The tooling
-links are here because the practical question, how expensive your integration
-tests are, is answered by which tools you pick.
-
 **Sources and further reading**
 
-- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html), Ham Vocke on Martin Fowler's site: the most thorough treatment of the shape and what each layer is actually for.
-- [Static vs Unit vs Integration vs E2E Testing](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests), Kent C. Dodds: the testing trophy, and the argument against the pyramid's proportions.
-- [Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html), Google Testing Blog: the same argument from the other direction.
-- [Flaky Tests at Google](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html): how big the flakiness problem gets and what to do about it.
-- [Eradicating Non-Determinism in Tests](https://martinfowler.com/articles/nonDeterminism.html), Martin Fowler: the specific causes of flaky tests and how to remove each one.
-- [Hypothesis](https://hypothesis.works/): property-based testing, for when example-based tests keep missing the edge case.
-- [Playwright](https://playwright.dev/): browser automation for the end-to-end layer, including accessibility assertions.
-- [Test and evaluate](https://www.w3.org/WAI/test-evaluate/), W3C Web Accessibility Initiative: the accessibility half, which automated tools only partly cover.
+- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html), Ham Vocke on Martin Fowler's site.
+- [The Testing Trophy and Testing Classifications](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications), Kent C. Dodds.
+- [Eradicating Non-Determinism in Tests](https://martinfowler.com/articles/nonDeterminism.html), Martin Fowler.
+- [Hypothesis](https://hypothesis.works/), a property-based testing library for Python, for when example-based tests keep missing the edge case.
+- [Test and Evaluate](https://www.w3.org/WAI/test-evaluate/), W3C Web Accessibility Initiative.
 
 **Activities that exercise this**
 
 - [Test Plan](/activities/design/#test-plan): turns this guide into a plan specific to your project.
-- [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half of the accessibility check.
-- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checking work against what was asked, which tests cannot do for you.
 - [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): turns the one flow users depend on into an end-to-end test that runs on every change.
-- [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log): the research equivalent of a test record.
+- [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half of the accessibility check.
+- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checks work against what was asked, which tests can't do for you.
+- [Do a User Activity](/activities/user/#do-a-user-activity): one validation session with real users, written up.
+- [Test with an Assistive Technology User](/activities/user/#test-with-an-assistive-technology-user): the session only a daily assistive-technology user can give you.
+- [Complete an IRB Application](/activities/user/#complete-an-irb-application): the approval a research study with human participants needs first.
+- [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline) and [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log): the research equivalents of a test and a test record.
