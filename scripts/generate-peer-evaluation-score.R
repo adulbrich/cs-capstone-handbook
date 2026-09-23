@@ -353,9 +353,9 @@ gradebook <- merge(
   all.x = TRUE
 )
 
+# Midterm: the entry is 100 points too (#300), so the same score goes in.
 # gradebook[,
-#   `Mid-Term Peer Evaluation Survey (10383695)` := PeerEvaluationScore /
-#     4
+#   `Mid-Term Peer Evaluation Survey (10383695)` := PeerEvaluationScore_Correction
 # ]
 gradebook[,
   `Final Peer Evaluation Survey (10383693)` := PeerEvaluationScore_Correction
@@ -364,7 +364,7 @@ gradebook[, PeerEvaluationScore := NULL]
 
 gradebook[
   is.na(`Final Peer Evaluation Survey (10383693)`),
-  # `Mid-Term Peer Evaluation Survey (10383695)` := 12.5
+  # `Mid-Term Peer Evaluation Survey (10383695)` := 50
   `Final Peer Evaluation Survey (10383693)` := 50
 ]
 

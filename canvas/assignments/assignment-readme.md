@@ -20,6 +20,18 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below this one predate the move and name the old `.tsv` files where they record history.
 
+## Canvas Changes: Survey Entries at 100 Points, with Rubrics (#300)
+
+The four survey entries each term now have rubrics. Each entry is 100 points in a group of its own, as the RFC split did, so a group's weight is its entry's weight.
+
+| Canvas before #300 | Change | Rubric |
+|---|---|---|
+| Peer Review group (25%): Midterm Survey 5 points, End-of-Term Survey 20 points | Split into **Peer Review Midterm** (5%) holding Midterm Survey and **Peer Review Final** (20%) holding End-of-Term Survey, 100 points each. | Import `peer-evaluation/peer-evaluation-rubric.csv` on both, every term. |
+| Project Partner group (25%): Midterm Pulse 5 points, End-of-Term Survey 20 points | Split into **Project Partner Midterm** (5%) holding Midterm Pulse and **Project Partner Final** (20%) holding End-of-Term Survey, 100 points each. | Import `project-partner-evaluation/partner-pulse-rubric.csv` on Midterm Pulse, every term. On End-of-Term Survey, import the term's own file: `partner-final-fall-rubric.csv` (CS 461), `partner-final-winter-rubric.csv` (CS 462), `partner-final-spring-rubric.csv` (CS 463). |
+
+- Change the points before any score is entered: Canvas does not rescale a score already in the gradebook.
+- Attach each rubric with "Use this rubric for assignment grading" off. The score comes from the Qualtrics export, out of 100: the peer script already writes it that way, and `generate-project-partner-midterm-score.R` now does too. A peer score above 100 (it can reach 103, when the point distribution earns more than its 20 points) is entered as is.
+
 ## Re-import Required: Team Charter (#263)
 
 `team-charter/team-charter-rubric.csv`: Exceeds on the Definition of Done now accepts a gate that is not built yet if the charter names the sprint it lands in and its owner. Exceeds on CONTRIBUTING.md and the AI context file accepts an AI context file whose parts that cannot be written before there is code are listed with an owner. The Meets bands change to match. Points and tags are unchanged.

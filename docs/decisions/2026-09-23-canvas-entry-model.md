@@ -2,7 +2,7 @@
 
 Date: 2026-09-23
 Branch: `feat/259-canvas-entry-model`
-Status: implemented in #259, part of the fall assignment feedback cycle (#258).
+Status: implemented in #259, part of the fall assignment feedback cycle (#258). Rules 3 and 4's survey exception was reversed by #300: every survey entry is 100 points in a group of its own, and names a rubric.
 Companion documents: `AGENTS.md` hard rule 6, `canvas/assignments/assignment-readme.md`, `.claude/skills/cs46x-assignments/SKILL.md`, `scripts/validate-outcomes.mjs`, `src/lib/canvas-entries.mjs`, `docs/decisions/2026-08-19-canvas-import-package-design.md` (whose one-assignment-per-page mapping this refines).
 
 ## 1. The rule

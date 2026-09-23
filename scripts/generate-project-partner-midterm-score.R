@@ -7,7 +7,7 @@ output_feedback_filename <- "data/2025-11-05-project-partner-midterm-feedback.cs
 output_score_filename <- "data/2025-11-05-project-partner-midterm-scores.csv"
 
 # Canvas points for the Midterm Pulse entry (project-partner-evaluation.mdx).
-canvas_points <- 5
+canvas_points <- 100
 
 # Needs the Qualtrics export with choice text ("Strongly agree"), not numeric
 # values: the answers are mapped by label below.
