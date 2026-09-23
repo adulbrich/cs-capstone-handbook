@@ -352,12 +352,17 @@ issue that measured it rather than trimming a working section to hit a number.
 - Em dashes. `validate-dashes.mjs` fails on one.
 - Calendar dates or an academic year. Weekdays and named holidays are fine.
   `validate-dates.mjs` fails on a date.
-- A term, a week number, the word "workshop", or a link to an assignment page.
-  `validate-activities.mjs` fails on any of them in a guide, with the same
-  patterns it applies to activities; a third-party URL is not read. A course
-  artifact named in plain prose ("Team Charter", "the Expo") passes the
-  pattern and is still a violation, which is what the greps under Before
-  Finishing are for.
+- A term, a week number, "first half" or "second half", the word "workshop",
+  or a link to an assignment page. `validate-activities.mjs` applies the
+  activity patterns to every guide: a week followed by a digit, "in the fall"
+  or "fall week" (and the same for winter and spring), either half, the word
+  "workshop", and a `](/assignments/` link. The target of a Markdown link to
+  another site is not read, so a third-party slug passes. The patterns are a
+  floor. A spelled-out week ("week two", "the fourth week"), a bare "term",
+  "Fall has", and a course artifact named in plain prose ("Team Charter", "the
+  Expo") all pass them and are still violations, which is what the greps under
+  Before Finishing are for. Write "before the midpoint", not "the first half of
+  the project".
 
 Nothing checks the section skeleton, the length, or the opener rules; those
 are read for, not validated.

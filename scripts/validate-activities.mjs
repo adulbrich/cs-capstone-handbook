@@ -18,15 +18,19 @@
 //      (The Starlight link validator also catches this at build time; this
 //      check runs without a build and names the activity, not the URL.)
 //   4. An activity or guide page is standalone. It never links an assignment
-//      page, never says "workshop", and never places itself in a term, a week,
-//      or a half of a class session. Activities had drifted to sixty-one
-//      backlinks and ten sessions described by the clock. Guides held the
-//      assignment-link half by convention (zero backlinks across nineteen
-//      files) and still carried about sixty term and week references, the
-//      shipping guide alone built on the course calendar, because nothing
-//      checked them. A reader who is not enrolled should be able to use any
-//      page in either directory. Guide links and external sources stay, and
-//      the direction of travel is one way: assignments link to both.
+//      page, never says "workshop", and never places itself in a term, a
+//      numbered week, or a "first half" or "second half" (of a class session
+//      on an activity page, of the project on a guide). The patterns are a
+//      floor: a spelled-out week or a bare "term" passes them and is still a
+//      violation the page's skill asks a human to read for. Activities had
+//      drifted to sixty-one backlinks and ten sessions described by the
+//      clock. Guides held the assignment-link half by convention (zero
+//      backlinks across nineteen files) and still carried about sixty term
+//      and week references, the shipping guide built on the course calendar,
+//      because nothing checked them. A reader who is not enrolled should be
+//      able to use any page in either directory. Guide links and external
+//      sources stay, and the direction of travel is one way: assignments link
+//      to both.
 //
 //   5. Every activity carries a closing "A good output is..." line. The
 //      deliverable line is the only quality signal an activity has, and it is
@@ -476,33 +480,44 @@ const STANDALONE_EXEMPT = new Set([
 // links are kept, because the assignment-link rule reads them.
 const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/g;
 
-// Each directory's index is exempt. The activities index is the page that
-// explains what a Workshop badge means, so it is the one activity page allowed
-// to use the word and to link the assignment that owns the tier; the guides
-// index only lists guides.
-for (const dir of [ACTIVITIES_DIR, GUIDES_DIR]) {
-  const kind = dir.split("/").at(-1);
-  for (const file of readdirSync(dir)) {
-    if (!file.endsWith(".mdx") || file === "introduction.mdx") {
+// Every MDX page in the two directories whose pages must stand alone, with the
+// directory's short name ("activities", "guides") for messages and keys.
+function* standalonePages() {
+  for (const [dir, kind] of [
+    [ACTIVITIES_DIR, "activities"],
+    [GUIDES_DIR, "guides"],
+  ]) {
+    for (const file of readdirSync(dir)) {
+      if (file.endsWith(".mdx")) {
+        yield { dir, file, kind };
+      }
+    }
+  }
+}
+
+for (const { dir, kind, file } of standalonePages()) {
+  // The activities index is the page that explains what a Workshop badge
+  // means, so it is the one page allowed to use the word and to link the
+  // assignment that owns the tier. The guides index gets no such pass.
+  if (dir === ACTIVITIES_DIR && file === "introduction.mdx") {
+    continue;
+  }
+  const page = `${kind}/${file.slice(0, -4)}`;
+  let section = null;
+  for (const line of readFileSync(join(dir, file), "utf8").split("\n")) {
+    if (line.startsWith("## ")) {
+      section = `${page}#${slugify(line.slice(3).trim())}`;
+    }
+    // The tier badge carries the word "Workshop" as markup, not as prose.
+    if (line.startsWith("<Badge") || STANDALONE_EXEMPT.has(section)) {
       continue;
     }
-    const page = `${kind}/${file.slice(0, -4)}`;
-    let section = null;
-    for (const line of readFileSync(join(dir, file), "utf8").split("\n")) {
-      if (line.startsWith("## ")) {
-        section = `${page}#${slugify(line.slice(3).trim())}`;
-      }
-      // The tier badge carries the word "Workshop" as markup, not as prose.
-      if (line.startsWith("<Badge") || STANDALONE_EXEMPT.has(section)) {
-        continue;
-      }
-      const prose = line.replace(EXTERNAL_LINK_TARGET_RE, "]()");
-      for (const [pattern, what] of STANDALONE_RULES) {
-        if (pattern.test(prose)) {
-          problems.push(
-            `not standalone: ${kind}/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
-          );
-        }
+    const prose = line.replace(EXTERNAL_LINK_TARGET_RE, "]()");
+    for (const [pattern, what] of STANDALONE_RULES) {
+      if (pattern.test(prose)) {
+        problems.push(
+          `not standalone: ${kind}/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
+        );
       }
     }
   }
@@ -520,28 +535,23 @@ const GRADE_WORD_RE =
   /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/i;
 const GRADE_CONTEXT_CHARS = 60;
 
-for (const dir of [ACTIVITIES_DIR, GUIDES_DIR]) {
-  for (const file of readdirSync(dir)) {
-    if (!file.endsWith(".mdx")) {
-      continue;
-    }
-    const source = readFileSync(join(dir, file), "utf8");
-    const where = `${dir.split("/").at(-1)}/${file}`;
-    for (const m of source.matchAll(OUTCOME_TAG_RE)) {
+for (const { dir, file, kind } of standalonePages()) {
+  const source = readFileSync(join(dir, file), "utf8");
+  const where = `${kind}/${file}`;
+  for (const m of source.matchAll(OUTCOME_TAG_RE)) {
+    problems.push(
+      `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric tables`
+    );
+  }
+  for (const m of source.matchAll(GRADE_NUMBER_RE)) {
+    const context = source.slice(
+      Math.max(0, m.index - GRADE_CONTEXT_CHARS),
+      m.index + m[0].length + GRADE_CONTEXT_CHARS
+    );
+    if (GRADE_WORD_RE.test(context)) {
       problems.push(
-        `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric tables`
+        `grading language: ${where} says "${m[0]}" next to a grading word: ${JSON.stringify(context.replace(/\s+/g, " ").trim())}`
       );
-    }
-    for (const m of source.matchAll(GRADE_NUMBER_RE)) {
-      const context = source.slice(
-        Math.max(0, m.index - GRADE_CONTEXT_CHARS),
-        m.index + m[0].length + GRADE_CONTEXT_CHARS
-      );
-      if (GRADE_WORD_RE.test(context)) {
-        problems.push(
-          `grading language: ${where} says "${m[0]}" next to a grading word: ${JSON.stringify(context.replace(/\s+/g, " ").trim())}`
-        );
-      }
     }
   }
 }

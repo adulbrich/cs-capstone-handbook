@@ -1,6 +1,6 @@
 ---
 title: Shipping
-description: The playbook for reaching the top rungs of the shipping ladder, planned backward from the end of the project and started in its first week.
+description: The playbook for reaching the top rungs of the outcome ladder, planned backward from the end of the project and started in its first week.
 sidebar:
   order: 16
 ---
@@ -9,7 +9,7 @@ Read this in your project's first week, before you agree a target with your part
 
 "Shipped" is not a single state, and the most useful way to think about it is as a ladder measured by one question: who ran the software. At the bottom, nobody outside the team ran it. One rung up, your partner watched it run. Above that the rungs depend on what kind of project you have, and the top of the ladder always means the same thing in different words: people who are not you depend on it. The top rungs are hard, and they are hard for reasons that have little to do with how good your code is.
 
-Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in the final month. The only move that works is starting the clocks early. That means choosing the rung you are aiming for at the very beginning, planning backward from it, and starting the slow external processes in your first week rather than when you feel ready for them.
+Here is the fact that should reorganize your plan: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in the final month. The only move that works is starting the clocks early. That means choosing the rung you are aiming for at the very beginning, planning backward from it, and starting the slow external processes in your first week rather than when you feel ready for them.
 
 This guide is the playbook. Each section below is a worked example of one path up the ladder: what each rung means for that kind of project, the prerequisites rung by rung, a timeline in three phases (early, middle, and late, each roughly a third of the project), the common blockers, and the evidence worth collecting as you go. Evidence is the part teams leave until last and regret: a merged pull request, a dashboard, a maintainer's comment and a partner's email are all trivial to capture the day they happen and painful to reconstruct afterwards.
 
@@ -37,7 +37,7 @@ Communication norms matter as much as code. Read the project's [CONTRIBUTING fil
 | Middle | Substantive PR(s) submitted and in active review; at least one review round addressed |
 | Late | PRs merged; follow-up fixes handled; contribution noted in changelog or release notes if possible |
 
-**Common blockers:** review latency (weeks per round, worse around releases); CLA requiring employer or university sign-off; a maintainer disagreeing with your approach after you built it (discuss first); the project migrating or freezing mid-year; your patch conflicting with a moving main branch.
+**Common blockers:** review latency (weeks per round, worse around releases); CLA requiring employer or university sign-off; a maintainer disagreeing with your approach after you built it (discuss first); the project migrating or freezing mid-project; your patch conflicting with a moving main branch.
 
 **Evidence to collect:** links to merged and in-review PRs, the review threads themselves (they prove engagement), issue discussions where maintainers endorsed your direction, changelog or release mentions, and any maintainer comments praising the work. Screenshot or archive these as they happen.
 
@@ -125,7 +125,7 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 | Middle | Security review in progress or passed; staging instance in the partner's environment; feedback rounds addressed against the criteria |
 | Late | Production deployment in partner environment; handoff package delivered; partner operating the system without you |
 
-**Common blockers:** security review dead time (weeks with no visible progress), a single overloaded partner IT contact, credential and access provisioning, data that cannot leave the partner's network (design for this early), and partner staff turnover mid-year.
+**Common blockers:** security review dead time (weeks with no visible progress), a single overloaded partner IT contact, credential and access provisioning, data that cannot leave the partner's network (design for this early), and partner staff turnover mid-project.
 
 **Evidence to collect:** the signed acceptance criteria, meeting notes and emails showing feedback rounds and sign-offs, security review correspondence, screenshots of the system running in the partner's environment, the handoff package, and the partner's written statement of production use.
 

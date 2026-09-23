@@ -233,7 +233,7 @@ A VM deployment is more work to set up and maintain, but it teaches skills that 
 
 **Use a managed service.** It handles backups, scaling, and security patches, which is operational burden you have no time for. [Supabase](https://supabase.com/) and [Neon](https://neon.com/) for PostgreSQL cover most projects, with [PlanetScale](https://planetscale.com/) for MySQL, [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) for MongoDB, [Turso](https://turso.tech/) for SQLite and [Upstash](https://upstash.com/) for Redis; the PaaS providers above also offer database add-ons that deploy alongside the application, and the big clouds offer [RDS](https://aws.amazon.com/rds/), [Cloud SQL](https://cloud.google.com/sql) and [Azure Database](https://azure.microsoft.com/en-us/products/category/databases) if your partner is already on one. Self-hosting on your own VM gives full control and hands you backups, updates and patching in return.
 
-Two things decide it faster than any comparison. **If your partner already runs on a cloud, use theirs**: matching their stack is worth more than the nicest developer experience. And **check the current pricing page before you commit**, because free and hobby tiers appear and disappear on a timescale shorter than this course.
+Two things decide it faster than any comparison. **If your partner already runs on a cloud, use theirs**: matching their stack is worth more than the nicest developer experience. And **check the current pricing page before you commit**, because free and hobby tiers appear and disappear on a timescale shorter than a year-long project.
 
 :::note[Reviewed annually]
 The platform table and the services named above date faster than anything else on this page. Checked at the annual review.
@@ -398,7 +398,7 @@ solves. Adopt it when environment drift actually bites, when you need to match a
 production runtime exactly, or when your deployment target requires an image.
 
 The uncomfortable one: most of what is called DevOps in industry is a full-time
-role, and you are doing it in the margins of a course. The honest scope for a
+role, and you are doing it in the margins of a full course load. The honest scope for a
 capstone team is a CI pipeline that runs tests on every pull request, a
 deployment that happens on merge, secrets kept out of the repository, and a
 documented way to roll back. That is a small fraction of the discipline and it is
