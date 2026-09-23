@@ -12,13 +12,13 @@ The usual advice about AI tools is to check the output carefully. That stops wor
 These activities practice that skill, organized around three ideas:
 
 1. **Hard-to-reverse decisions**: undoing them costs far more than getting them right, so they get your attention first; most other work can run with less of it.
-2. **Delegation limited by checks**: delegate only as far as your tests, CI, and review would catch a mistake. To delegate more, build better checks first.
+2. **Delegation limited by checks**: delegate only as far as your tests, CI, and review would catch its mistakes. To delegate more, build better checks first.
 3. **Work that can't be delegated**: whether the product is actually good is a judgment call, and it stays yours.
 
 :::note[Your tools don't have to be the best ones]
 This page teaches the current industry baseline, including practices that need a capable agent, so you know the state of practice even if you aren't running it yourself.
 
-You are never required to use any of these tools. What counts is your judgment about where to delegate and how you verified the result, not which subscription you hold. Every activity below states its substitute for more limited tooling.
+You are never required to use any of these tools. What matters is your judgment about where to delegate and how you verified the result, not which subscription you hold, and a student on a free tier who gates tightly and validates carefully is doing the harder work. Every activity below states its substitute for more limited tooling.
 :::
 
 ## Map Your Hard-to-Reverse Decisions
@@ -32,7 +32,7 @@ Sort your team's upcoming decisions into the ones that deserve your attention an
 - **Assign a validator**: for each hard-to-reverse decision, name who checks it and what they check before the team commits.
 - **Revisit at the end of the term**: which classifications were wrong? Treating an easy-to-reverse decision as hard to reverse costs you time; the opposite error costs you a week on a migration you can't roll back.
 
-Run this a second time with an AI agent and set the two outputs side by side, noting where they differ; either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is a list where the hard-to-reverse decisions are few; if eight of ten landed there, redo the classification.
 
@@ -47,7 +47,7 @@ Measure the gap between how much you delegate and how much your automation would
 - **Name the gap**: the distance between those two lists.
 - **Close it from the top**: the highest-value check is always the one guarding the decision you can't walk back.
 
-Run this a second time with an AI agent and set the two outputs side by side, noting where they differ; either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is one specific named gap and the smallest change that closes it, stated at the level of "nothing stops a schema change from merging without review" rather than "we have no tests".
 
@@ -98,7 +98,7 @@ Get automated accessibility checks running on every change, then practice the ju
 - **Have an agent triage the first report**, then go through it yourself: which findings are real, which are noise, which need a human looking at the actual screen.
 - **Follow up manually**: the [manual pass](/guides/accessibility/#manual-accessibility-testing) covers keyboard only, screen reader, and 200% zoom.
 
-Automated tools find more than half of the issues by volume but cover a minority of the WCAG criteria (the [accessibility guide](/guides/accessibility/#manual-accessibility-testing) has the numbers). Telling "this input has no label, so screen reader users can't fill this form" from "this decorative divider lacks a role" is judgment you build by doing it once with attention.
+Automated tools find more than half of the issues by volume but cover a minority of the WCAG (Web Content Accessibility Guidelines) criteria (the [accessibility guide](/guides/accessibility/#manual-accessibility-testing) has the numbers). Telling "this input has no label, so screen reader users can't fill this form" from "this decorative divider lacks a role" is judgment you build by doing it once with attention.
 
 **If your project has no user interface:** the equivalent is your output formats and documentation. Can someone consume your API errors, your CSV exports, or your README with a screen reader?
 
@@ -133,7 +133,3 @@ Decide whether your product is actually good, which is the one part of the work 
 The second list matters as much as the first, because shipping means choosing what's good enough and being able to say why. An agent can drive the browser, run the suite, and audit the markup, and none of that tells you the flow feels wrong, the empty state is demoralizing, or the thing your partner needs is two clicks deeper than it should be.
 
 A good output is those two lists, dated, with the second one justified.
-
-## Why This Matters Beyond the Course
-
-The judgment these activities practice is deciding which part of a problem to hand off and which to keep, naming what will catch a mistake, and knowing how you'll confirm the result worked. Your project partner relies on it, and an experienced reviewer probes for it first.
