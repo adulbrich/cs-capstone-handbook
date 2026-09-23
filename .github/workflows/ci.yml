@@ -33,7 +33,7 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
         run: node scripts/check-commit-message.mjs --range "origin/$BASE_REF..HEAD"
-      # The branch is type/issue-slug, the same check lefthook runs at
+      # The branch is type/slug, the same check lefthook runs at
       # pre-push. The script exempts Dependabot's own dependabot/ branches.
       - name: Check branch name
         if: github.event_name == 'pull_request'

@@ -65,7 +65,7 @@ pre-push:
   commands:
     # Everything CI runs, once per push rather than once per commit.
     branch:
-      # type/issue-slug. The app names a session branch claude/...; rename it.
+      # type/slug, issue number first when there is one. The app names a session branch claude/...; rename it.
       run: node scripts/check-branch-name.mjs
     commits:
       run: node scripts/check-commit-message.mjs --range origin/main..HEAD

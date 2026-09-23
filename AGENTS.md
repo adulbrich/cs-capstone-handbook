@@ -8,13 +8,14 @@ duplicate it.
 ## What this repository is
 
 The CS 461/462/463 capstone handbook: an Astro + Starlight documentation site
-that is the **source of truth for all graded work** in the course, except the
-two Canvas-owned assignments under hard rule 4. Canvas mirrors it. Content
-lives in `src/content/docs/**` as MDX.
+where **all graded work is authored**, except the two Canvas-owned assignments
+under hard rule 4. Assignment pages are exported to Canvas, and once imported,
+Canvas is authoritative for students; hard rule 7 governs how pages mention
+it. Content lives in `src/content/docs/**` as MDX.
 
 | Path | Holds |
 |---|---|
-| `src/content/docs/assignments/` | Graded work. Source of truth, except the two Canvas-owned stubs (hard rule 4). Every page's rubric table is machine-parsed. |
+| `src/content/docs/assignments/` | Graded work, authored here and exported to Canvas, except the two Canvas-owned stubs (hard rule 4). Every page's rubric table is machine-parsed. |
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
@@ -31,7 +32,7 @@ lives in `src/content/docs/**` as MDX.
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. On handbook pages, also no banned word, bolded whole sentence, or banned guide opener from `docs/agents/voice.md`, and no banned word in the rubric TSVs, the syllabi, or the Markdown downloads in `public/`; a guide carrying the legacy-opener marker skips the opener check until its sweep, and a marker with nothing to waive fails. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
-| `scripts/check-branch-name.mjs` | Branch rule, `<type>/<issue>-<slug>`. Runs at `pre-push` and in CI on the PR's head branch. |
+| `scripts/check-branch-name.mjs` | Branch rule, `<type>/<slug>`, with the issue number leading the slug when there is one. Runs at `pre-push` and in CI on the PR's head branch. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule, plus no em dash, emoji, or session link. Runs at `commit-msg`, in the `guard-git` hook, in CI over the PR range, and in the `pr-text` workflow over the PR title and body. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
@@ -53,8 +54,8 @@ lives in `src/content/docs/**` as MDX.
    `canvas/assignments/<dir>/*-rubric-details.tsv`, rendered on the handbook
    page by `src/components/RubricTable.astro` and imported into Canvas by the
    rubric-import extension. Edit the TSV, and re-import it into Canvas (#144).
-   The handbook still outranks what is *in* Canvas, because the TSV goes one
-   way and is never read back out. Two pages are documented exceptions,
+   The TSV goes one way and is never read back out, so a fix made only in
+   Canvas is lost at the next import. Two pages are documented exceptions,
    listed as `RUBRIC_EXCEPTIONS` in `validate-outcomes.mjs`: the Qualtrics
    instruments keep a hand-written table because theirs carries weights
    rather than points.
@@ -78,6 +79,14 @@ lives in `src/content/docs/**` as MDX.
    `<RubricTable>` per distinct rubric; `validate-outcomes.mjs` reconciles the list with the
    page weight, the rendered rubrics, and Canvas's per-group points. See
    `docs/decisions/2026-09-23-canvas-entry-model.md`.
+7. **Pages do not mention Canvas.** Assignment bodies are pasted into
+   Canvas, so a page that says "confirm in Canvas", "the handbook wins", or
+   "check Canvas" reads as a second authority once it is there. Only the
+   syllabi say which source wins: Canvas, once the assignments are in it.
+   Write "submit", "your submission", "the gradebook". Something that exists
+   only in Canvas, such as a registration link or a published schedule, is
+   "check announcements for the link". The two Canvas-owned stubs and the
+   Acknowledgments tools list are the only pages that name Canvas.
 
 ## Validation
 
@@ -95,7 +104,7 @@ npm run validate:sources
 npm run check            # Biome, for anything under scripts/ or src/ that is code
 npm run check:prose      # no em dash, emoji, glossary-rejected synonym, or voice tell
 npm run check:commits    # Conventional Commits over origin/main..HEAD
-npm run check:branch     # the current branch is <type>/<issue>-<slug>
+npm run check:branch     # the current branch is <type>/<slug>
 npm run test:hooks       # cases for the git guard hook
 ```
 
@@ -273,9 +282,9 @@ too when the work is prose.
 
 The rules, which the hooks under `.claude/hooks/`, `lefthook.yml`, and the
 `main` ruleset enforce (the gates table in `CONTRIBUTING.md` shows where each
-one stops you): branch from a fresh `origin/main` as `<type>/<issue>-<slug>`,
-renaming the app's `claude/` branch before the first push
-(`git branch -m <type>/<issue>-<slug>`), never commit on `main`, stage by
+one stops you): branch from a fresh `origin/main` as `<type>/<slug>`, leading
+the slug with the issue number when there is one (`fix/192-handoff-week`),
+renaming the app's `claude/` branch before the first push, never commit on `main`, stage by
 name, Conventional Commits with a lowercase imperative, no em dash, emoji, or
 session link in a commit message or PR text, one PR per issue, squash merge
 after the review loop.

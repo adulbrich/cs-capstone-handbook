@@ -15,7 +15,7 @@ Closes #
 
 ## Canvas mirror
 
-<!-- The handbook is the source of truth and Canvas mirrors it. If a rubric
+<!-- Graded work is authored here and exported to Canvas. If a rubric
      table, a weight or a syllabus changed, the TSV or HTML under canvas/
      changed with it and someone has to re-import. Keep one line. -->
 

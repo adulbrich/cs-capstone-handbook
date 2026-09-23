@@ -8,7 +8,7 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 - **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint. Each student picks the artifact they demo, from their own contribution line for the sprint, and it cannot be the one they showed last time (see Check-in Format).
 - The defense is a **separate session in week 7 or 9**, the weeks with no check-ins, so the week-8 demo stays live (see Defense Logistics). An NDA checkpoint walkthrough is its own 15-minute slot in the checkpoint week, scheduled with the team, and never displaces a demo.
 - Demos are live. A video replaces one only when the student missed the check-in or you could not meet the team that week: on media.oregonstate.edu, unlisted, captioned, one timestamp per student, within 48 hours. Send back a video with no timestamps or no captions; it is not a per-student demo. Do not reschedule demos into another check-in: every check-in carries its own, so there is no spare slot.
-- Team-to-TA assignments are built in week 0 from the check-in sheet and published in Canvas week 1; each TA agrees the check-in times with their teams in week 1.
+- Team-to-TA assignments are built in week 0 from the check-in sheet and announced in week 1; each TA agrees the check-in times with their teams in week 1.
 - The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
 
 ## Resume and Intent, Career Retrospective (co-instructor)
@@ -199,8 +199,10 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 
 - [ ] Check-in sheet current; TA assignments made
 - [ ] Canvas shells: assignments imported from `canvas/assignments/` TSVs (rubric browser extension), weights checked against the handbook tables
-- [ ] Every Canvas entry in each page's Canvas assignments table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
+- [ ] Every Canvas entry in each page's Submissions table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
 - [ ] Term Startup created by hand: 0 points, omit from final grade, text entry, group submission, due end of week 1. It has no rubric and no TSV, so nothing imports it
+- [ ] Fall only: Demo Day created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due end of fall week 3. Announce the registration link with the five sessions
+- [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1), the funds and cloud request form, and in fall the Workshop 4 triads with their discussions (start of week 6)
 - [ ] Spring only: Engineering Expo created by hand, same shape as Term Startup (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric, no TSV. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
