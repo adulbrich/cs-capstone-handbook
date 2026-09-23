@@ -1,0 +1,28 @@
+authors:
+  - Tannenbaum, S. I.
+  - Cerasoli, C. P.
+year: 2013
+title: >-
+  Do Team and Individual Debriefs Enhance Performance? A Meta-Analysis
+venue: >-
+  Human Factors: The Journal of the Human Factors and Ergonomics Society
+kind: peer-reviewed
+url: https://journals.sagepub.com/doi/10.1177/0018720812448394
+doi: 10.1177/0018720812448394
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Debriefs, or after-action reviews, have been used by the U.S. Army for
+      decades and increasingly in medical, aviation, and other communities.
+    locator: Abstract
+  - claim: >-
+      Across 46 samples (N = 2,136), debriefs improved effectiveness over a
+      control group by approximately 25% on average (d = .67), with similar
+      average effects for teams and individuals.
+    locator: Abstract
+  - claim: >-
+      The meta-analysis found a bolstering effect of alignment between
+      participants, focus and intent, and level of measurement, and the
+      potential impact of facilitation and structure.
+    locator: Abstract
