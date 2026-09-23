@@ -135,10 +135,10 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 **Per-sprint bands.** Every deduction needs an evidence note (what was checked, what was found) so the decision is reviewable.
 
 - **Full** (default): the contribution line lists one or more pieces of work the student owned that someone else accepted, and the record where they live corroborates it; or the norm was missed once with an explanation in the note.
-- **Half**: some activity is visible, but no owned, accepted work and no explanation in the note; or the contribution line is only weakly corroborated by the record (trivial changes; review-only activity not agreed as that student's contribution mode in the charter).
+- **Half**: some activity is visible, but no owned, accepted work and no explanation in the note; or the contribution line is only weakly corroborated by the record (trivial changes; review-only activity not agreed as that student's contribution mode in `CONTRIBUTING.md`).
 - **Zero**: no meaningful contribution visible anywhere for the sprint (no contribution line, no owned work, no reviews, no traceable work) and no explanation; or the contribution line is contradicted by the record.
 
-**Evidence sources**, in the order to check them: the contribution lines in the team's sprint notes (links or IDs; NDA teams list IDs only); the record where the work lives (authored or driven PRs, closed issues or tickets, approved documents, review responses); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which trigger the corroboration review on the partner evaluation page. Any owned, accepted work counts where the charter says it lives and the sprint note links it; a code change is its merged PR.
+**Evidence sources**, in the order to check them: the contribution lines in the team's sprint notes (links or IDs; NDA teams list IDs only); the record where the work lives (authored or driven PRs, closed issues or tickets, approved documents, review responses); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which trigger the corroboration review on the partner evaluation page. Any owned, accepted work counts where `CONTRIBUTING.md` says it lives and the sprint note links it; a code change is its merged PR.
 
 **Appeals.** The student is shown the evidence note, has five business days to respond with evidence, and an instructor decides. TAs flag; instructors adjudicate.
 

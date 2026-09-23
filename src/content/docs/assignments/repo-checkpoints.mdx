@@ -35,7 +35,7 @@ Your requirements and design documents live in your repository under `docs/`, st
 
 ## What the Repository Must Contain (the living docs)
 
-The repository holds what an AI tool or a successor needs to work on the product, and nothing about the team itself: your charter, retrospectives, and handoff document live elsewhere.
+The repository holds what an AI tool or a successor needs to work on the product, and nothing about the team itself, because your partner reads it and whoever continues the project inherits it. Your team's documents (the charter, the retrospectives, the Definition of Shipped, the handoff document, and a postmortem on anything but a technical incident) live where your team keeps its own files, such as a shared drive or wiki; each one is submitted as a PDF, so nobody else needs access.
 
 - `docs/requirements.md`: what the product must do and how you will know, with acceptance criteria for current priorities. Updated as scope changes; git history is the change log. The [requirements guide](/guides/requirements/) has the shape of a requirement a teammate can test.
 - `docs/design.md`: the system view someone would need to contribute safely: context, key diagrams, interfaces and contracts, deployment shape. The [technical design guide](/guides/technical-design/) says what the document must decide and how to keep it current.
@@ -88,7 +88,7 @@ If the answer is "there will be no deployment", that's a fine answer, and it nee
 
 ### The Inherited-Codebase Audit
 
-Some teams don't start from scratch. Three origins, one situation: a predecessor capstone team's repository (their `docs/risks.md`, and the [handoff document](/assignments/project-handoff/) and project retrospective your partner holds, are your first reading), a project partner's codebase (their conventions, CI, review process, and hosting bind you from day one, which is the [RFC](/assignments/rfc/) page's "your partner already decided" case), or an upstream open-source project (their [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), review culture, and release cadence bind you). In all three, someone else's decisions, tests, debt, and review process are yours before you write a line.
+Some teams don't start from scratch. Three origins, one situation: a predecessor capstone team's repository (read its `docs/risks.md` first, with the [handoff document](/assignments/project-handoff/) and the forward-looking section of the predecessor's project retrospective, which your partner holds), a project partner's codebase (their conventions, CI, review process, and hosting bind you from day one, which is the [RFC](/assignments/rfc/) page's "your partner already decided" case), or an upstream open-source project (their [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), review culture, and release cadence bind you). In all three, someone else's decisions, tests, debt, and review process are yours before you write a line.
 
 Audit what you inherited in fall weeks 1 to 5. The fall week 5 gate checks it for every team that starts in an existing codebase, and it covers:
 
@@ -96,7 +96,7 @@ Audit what you inherited in fall weeks 1 to 5. The fall week 5 gate checks it fo
 - the state of the tests and the CI;
 - the dependencies and their age;
 - the open risks and the known debt;
-- the predecessor team's handoff document and retrospective, if there is one;
+- the predecessor team's handoff document and the forward-looking section of their project retrospective, if there is one;
 - the upstream project's contribution rules, if there are any;
 - what you will change first.
 
@@ -119,7 +119,7 @@ Each criterion has one thing graders check first, so you can check it yourself:
 What "a history a maintainer could inherit" means is spelled out in the [git and GitHub guide](/guides/git-and-github/#a-history-a-maintainer-could-inherit); the checkpoint checks the five items listed there.
 
 :::note[If your project is under NDA]
-The checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your Teaching Assistant (TA) schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; it matches the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
+The checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your Teaching Assistant (TA) schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; its living docs match the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
 :::
 
 ## Activities That Prepare This
