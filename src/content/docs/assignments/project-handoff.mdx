@@ -20,12 +20,12 @@ assignment:
       weight: 5
       points: 100
       submission: pdf
-      rubric: project-handoff/project-handoff-rubric-details.tsv
+      rubric: project-handoff/project-handoff-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/project-handoff/project-handoff-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/project-handoff/project-handoff-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Spring, week 8" weight="5% of the spring grade">
   The last thing your team ships.
@@ -76,7 +76,7 @@ The school may share project archives with future students and project partners 
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/project-handoff/project-handoff-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/project-handoff/project-handoff-rubric.csv" />
 
 **AI use:** AI may draft and assemble from your repository; that is what the living docs were for. Do not let it invent steps, links, or artifact locations: every command and URL in this document must work, because the person who discovers otherwise cannot ask you anymore.
 

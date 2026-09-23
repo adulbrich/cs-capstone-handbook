@@ -10,7 +10,7 @@ pre-commit:
       fail_text: "never commit on main; branch first (AGENTS.md)"
     prose:
       # No em dash (literal or entity), no emoji, in the staged text files.
-      glob: "*.{md,mdx,astro,ts,tsx,js,mjs,cjs,json,jsonc,yml,yaml,css,html,tsv,txt,sh}"
+      glob: "*.{md,mdx,astro,ts,tsx,js,mjs,cjs,json,jsonc,yml,yaml,css,csv,html,txt,sh}"
       run: node scripts/check-prose.mjs {staged_files}
     block-student-data:
       # data/ holds rosters, grades, and survey exports with student PII.
@@ -23,9 +23,9 @@ pre-commit:
           exit 1
         fi
     validate-outcomes:
-      # The script also reconciles the Canvas rubric TSVs against the pages,
-      # so a TSV-only commit must run it too.
-      glob: "{src/content/docs/assignments/*.mdx,canvas/assignments/*/*-rubric-details.tsv}"
+      # The script also reconciles the Canvas rubric CSVs against the pages,
+      # so a CSV-only commit must run it too.
+      glob: "{src/content/docs/assignments/*.mdx,canvas/assignments/*/*-rubric.csv}"
       run: node scripts/validate-outcomes.mjs
     validate-activities:
       # The script also reconciles the week-by-week schedule's activity links.

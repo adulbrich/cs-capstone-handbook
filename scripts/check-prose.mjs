@@ -8,7 +8,7 @@
  * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
- * heading. The banned words alone also reach the Canvas rubric TSVs, the
+ * heading. The banned words alone also reach the Canvas rubric CSVs, the
  * syllabi, and the Markdown downloads in `public/` (BANNED_WORD_PATHS),
  * because students read those words in Canvas, in the templates and
  * scoresheet that quote the criteria, and, through `<RubricTable>`, on the
@@ -42,6 +42,7 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import nodePath from "node:path";
+import { RUBRIC_CSV_SUFFIX, readCsvRecords } from "../src/lib/rubric-csv.mjs";
 
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
@@ -73,6 +74,7 @@ const TEXT_EXTENSIONS = new Set([
   "astro",
   "cjs",
   "css",
+  "csv",
   "html",
   "js",
   "json",
@@ -82,7 +84,6 @@ const TEXT_EXTENSIONS = new Set([
   "mjs",
   "sh",
   "ts",
-  "tsv",
   "tsx",
   "txt",
   "yaml",
@@ -156,8 +157,8 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 /**
  * BOLD_AND_OPENER_PATH gates only the bolded-sentence and opener rules, which
  * are about how a handbook page is written. The banned words reach further:
- * the rubric TSVs and the syllabus bodies under `canvas/`, and the Markdown
- * downloads in `public/`. A TSV renders on its assignment page and imports
+ * the rubric CSVs and the syllabus bodies under `canvas/`, and the Markdown
+ * downloads in `public/`. A CSV renders on its assignment page and imports
  * into Canvas, a syllabus is pasted into Canvas, and the scoresheet and
  * templates quote the criteria, so a banned word in any of them reaches
  * students as surely as one on a page. The rest of `canvas/` and the runbook
@@ -166,7 +167,7 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 const BOLD_AND_OPENER_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
-  { prefix: "canvas/assignments/", suffix: ".tsv" },
+  { prefix: "canvas/assignments/", suffix: RUBRIC_CSV_SUFFIX },
   { prefix: "canvas/syllabus/", suffix: ".html" },
   { prefix: "public/", suffix: ".md" },
 ];
@@ -459,6 +460,52 @@ function proseChecksFor(path) {
 }
 
 /**
+ * A rubric CSV's fields as prose lines, each at the line its record starts
+ * on. The CSV quotes every field that holds a comma, and `stripInlineCode`
+ * drops a quoted span as someone else's words, so reading raw lines hid most
+ * band descriptions from the banned-word check. A phrase quoted inside a
+ * field is still a citation and is still skipped. Fields are checked one at a
+ * time, so a stray quote in one cannot hide text in the next. A file that
+ * does not parse falls back to raw lines; `validate-outcomes` reports the
+ * parse error.
+ */
+function csvProseLines(text, path) {
+  try {
+    return readCsvRecords(text, path).flatMap(({ cells, line }) =>
+      cells.map((prose) => ({ line, prose }))
+    );
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The lines the prose checks read, as `{ line, prose }`: a rubric CSV's
+ * records, or every line outside a fenced code block.
+ */
+function proseLines(text, lines, path, proseChecks) {
+  if (proseChecks.length === 0) {
+    return [];
+  }
+  const records = path.endsWith(RUBRIC_CSV_SUFFIX)
+    ? csvProseLines(text, path)
+    : null;
+  if (records) {
+    return records;
+  }
+  const out = [];
+  let inFence = false;
+  for (const [index, line] of lines.entries()) {
+    if (FENCE.test(line)) {
+      inFence = !inFence;
+    } else if (!inFence) {
+      out.push({ line: index + 1, prose: line });
+    }
+  }
+  return out;
+}
+
+/**
  * Every hit in `text`, as `{ line, kind, snippet }`. `kind` is `em dash`,
  * `emoji`, or a vocabulary or voice message. Exported for the commit-message
  * check, which adds its own rules on top; the CLI below is the same function
@@ -471,17 +518,12 @@ export function findProseViolations(text, path) {
   if (boldAndOpenerRulesApply(path)) {
     violations.push(...openerViolations(lines, path));
   }
-  let inFence = false;
-  for (const [index, line] of lines.entries()) {
-    if (proseChecks.length > 0) {
-      if (FENCE.test(line)) {
-        inFence = !inFence;
-      } else if (!inFence) {
-        for (const check of proseChecks) {
-          violations.push(...check(line, index + 1));
-        }
-      }
+  for (const { line, prose } of proseLines(text, lines, path, proseChecks)) {
+    for (const check of proseChecks) {
+      violations.push(...check(prose, line));
     }
+  }
+  for (const [index, line] of lines.entries()) {
     if (line.includes(EMDASH) || EMDASH_ENTITY.test(line)) {
       violations.push({
         kind: "em dash",
@@ -569,7 +611,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and in the rubric TSVs, syllabi, and public/ Markdown no banned word (docs/agents/voice.md).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and in the rubric CSVs, syllabi, and public/ Markdown no banned word (docs/agents/voice.md).\n"
     );
     process.exit(1);
   }

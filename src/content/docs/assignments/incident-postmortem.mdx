@@ -19,12 +19,12 @@ assignment:
       weight: 3
       points: 100
       submission: pdf
-      rubric: incident-postmortem/incident-postmortem-rubric-details.tsv
+      rubric: incident-postmortem/incident-postmortem-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/incident-postmortem/incident-postmortem-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/incident-postmortem/incident-postmortem-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Winter, week 9" weight="3% of the winter grade">
   Winter's retrospective, in the form of one analyzed failure.
@@ -53,7 +53,7 @@ Start from the [postmortem template](/postmortem-template.md).
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/incident-postmortem/incident-postmortem-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/incident-postmortem/incident-postmortem-rubric.csv" />
 
 **AI use:** AI may reconstruct the timeline from logs, commits, and chat history, and draft the write-up. It must not invent events or timestamps, or supply a tidier root cause than the evidence supports. A fabricated timeline, or a corrective action with no real owner, fails the assignment. Section 6 asks you to say when AI contributed to the incident; the same disclosure applies to the document.
 

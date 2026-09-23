@@ -35,7 +35,7 @@ body:
     id: canvas
     attributes:
       label: Canvas mirror
-      description: Does a rubric TSV or a syllabus under canvas/ change with this, so a re-import is needed?
+      description: Does a rubric CSV or a syllabus under canvas/ change with this, so a re-import is needed?
       options:
         - "no"
         - "yes"

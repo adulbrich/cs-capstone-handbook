@@ -1,6 +1,6 @@
 ---
 name: cs46x-assignments
-description: Use when creating or editing assignment pages (MDX files in src/content/docs/assignments/) for the CS 461/462/463 capstone handbook. Covers the frontmatter contract read by the validators, the section skeleton, rubric rules, the Canvas rubric TSV the page renders, and grade-weight arithmetic. Always load this skill before writing or editing any assignment file.
+description: Use when creating or editing assignment pages (MDX files in src/content/docs/assignments/) for the CS 461/462/463 capstone handbook. Covers the frontmatter contract read by the validators, the section skeleton, rubric rules, the Canvas rubric CSV the page renders, and grade-weight arithmetic. Always load this skill before writing or editing any assignment file.
 ---
 
 # Assignment Style Guide
@@ -97,7 +97,7 @@ assignment:
       weight: <the family's percent of the term grade>
       points: 100
       submission: pdf | video | url | image | survey | none, or a list
-      rubric: <dir>/<name>-rubric-details.tsv
+      rubric: <dir>/<name>-rubric.csv
 ---
 ```
 
@@ -120,8 +120,9 @@ has the model; `peer_review_week` marks an entry using Canvas's own peer review.
 
 Eight rules the validators enforce, all of which have been gotten wrong before:
 
-1. **`outcomes` counts must equal the number of TSV criteria carrying that
-   tag.** `scripts/validate-outcomes.mjs` parses field 1 of the rubric TSV as
+1. **`outcomes` counts must equal the number of CSV criteria carrying that
+   tag.** `scripts/validate-outcomes.mjs` parses the Criteria Name column of
+   the rubric CSV as
    the source of truth and fails on any disagreement. Tag a criterion, bump the
    count, in the same edit.
 2. **Only `level: individual` pages contribute accreditation data points.** A
@@ -143,16 +144,16 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
 6. **A page with a deliverable section carries an `**AI use:**` paragraph.**
    The deliverable headings the validator recognizes are the four listed
    under **Section Skeleton** below.
-7. **Rubric points total exactly 100** per TSV, unless the page is on the
+7. **Rubric points total exactly 100** per CSV, unless the page is on the
    exception list in `validate-outcomes.mjs` (see **Rubric Rules**).
 8. **The `canvas` entries reconcile.** Per term, family weights sum to the page
    weight; within one Canvas group, every entry carries the same weight per
    point (Canvas weights a group's entries by points); every family's rubric
-   is rendered on the page and every rendered TSV belongs to a family; a page
+   is rendered on the page and every rendered CSV belongs to a family; a page
    with more than one entry in a term renders `<CanvasEntries />`.
 
 A page with no `assignment:` block is skipped by the validator entirely: no
-rubric TSV, no weight, no AI-use paragraph, no outcome tags. Four ungraded pages
+rubric CSV, no weight, no AI-use paragraph, no outcome tags. Four ungraded pages
 are in that state deliberately: `introduction.mdx`, `term-startup.mdx`,
 `demo-day.mdx`, and `expo.mdx`. A fifth needs a reason. **This is the supported shape for an ungraded item**, paired
 with a Canvas item at 0 points with `omit_from_final_grade`; see
@@ -167,7 +168,7 @@ the Section Skeleton below does not apply to them. Do not rebuild them.
 
 Not enforced, still required: the
 three bands, criteria written as observable checks, the section order, and the
-Canvas TSV band descriptions (only the tag sets are reconciled).
+Canvas CSV band descriptions (only the tag sets are reconciled).
 
 ## Section Skeleton
 
@@ -228,7 +229,7 @@ Sections in **bold** are required.
    Markdown. Prose belongs under it: the `**AI use:**` paragraph, per-criterion
    grading notes, and any late or non-submission rule. One sentence may precede
    the component where it frames the whole rubric.
-   See **The Rubric Lives in the TSV** and **Rubric Rules**.
+   See **The Rubric Lives in the CSV** and **Rubric Rules**.
 
 5. **`**AI use:**` paragraph**, required on any assignment whose deliverable is
    a written document. State what AI may legitimately do here, and name the
@@ -253,7 +254,7 @@ Sections in **bold** are required.
 
 ## Rubric Rules
 
-The rubric is a TSV, not a Markdown table (see **The Rubric Lives in the TSV**).
+The rubric is a CSV, not a Markdown table (see **The Rubric Lives in the CSV**).
 The rules below are about its content.
 
 - **Points total exactly 100**, summed as each criterion's highest band.
@@ -261,8 +262,8 @@ The rules below are about its content.
   `RUBRIC_EXCEPTIONS`: the survey instruments, `peer-evaluations.mdx` and
   `project-partner-evaluation.mdx`, hold a hand-written Markdown table because
   theirs carry weights rather than points.
-- **One TSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
-  one TSV; every workshop shares one. The RFC's draft and final differ, so
+- **One CSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
+  one CSV; every workshop shares one. The RFC's draft and final differ, so
   they have two. A page with several renders each under a heading containing
   "Rubric" (the nearest `##` or `###`), and its outcome counts are the sum
   across them.
@@ -287,34 +288,46 @@ Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 adds a fourth. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
-## The Rubric Lives in the TSV
+## The Rubric Lives in the CSV
 
 **Do not write a rubric table in MDX.** Since #144 each assignment's rubric is
-`canvas/assignments/<dir>/*-rubric-details.tsv`, rendered on the page by
-`src/components/RubricTable.astro` and imported into Canvas by the rubric-import
-browser extension. One file, two destinations, nothing to keep in sync.
+`canvas/assignments/<dir>/<name>-rubric.csv`, rendered on the page by
+`src/components/RubricTable.astro` and imported through the Canvas Rubrics
+page. One file, two destinations, nothing to keep in sync.
 
 ```mdx
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/team-charter/team-charter-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/team-charter/team-charter-rubric.csv?raw';
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric.csv" />
 ```
 
 `?raw` is a Vite feature and needs no configuration. `validate-outcomes.mjs`
 fails the build if a page renders no `<RubricTable>` without being a documented
-exception, if the `tsv={...}` name has no matching import, or if a page imports
-a TSV belonging to a different assignment (Vite resolves any real path, so
+exception, if the `csv={...}` name has no matching import, or if a page imports
+a CSV belonging to a different assignment (Vite resolves any real path, so
 nothing else catches that).
 
-The TSV is headerless and tab separated. Fields, in order:
+The CSV is Canvas's rubric import template
+(`canvas/assignments/_template/import_rubric_template.csv`), parsed by
+`src/lib/rubric-csv.mjs`. It is real CSV: a field holding a comma, a quote, or
+a newline is wrapped in double quotes, and a quote inside it is doubled
+(`"students say ""it worked"""`). Edit it with a spreadsheet or a CSV-aware
+editor; a hand-typed comma in an unquoted field shifts every column after it.
 
-1. **Criterion name**, with its outcome tags in brackets: `Blameless throughout
+The first row is the header, `Rubric Name,Criteria Name,Criteria
+Description,Criteria Enable Range`, then `Rating Name,Rating
+Description,Rating Points` once per band of the widest criterion. The parser
+rejects any other header. Then one row per criterion, fields in order:
+
+1. **Rubric name**, the same on every row: one file is one rubric, and it is
+   the name Canvas lists it under. The validator fails two files sharing one.
+2. **Criterion name**, with its outcome tags in brackets: `Blameless throughout
    [SO4]`. A row with no bracket carries no tags, which is correct for the
    pass/fail rubrics.
-2. **Criterion description**: the sentence saying what is being judged. This is
+3. **Criterion description**: the sentence saying what is being judged. This is
    the text that used to follow the criterion name in the MDX table. Leave it
    empty when the name already says it, or when it would only restate the
    Exceeds band; a row that says the same thing twice is a row students read
@@ -322,23 +335,25 @@ The TSV is headerless and tab separated. Fields, in order:
    component escapes it, and Canvas shows a backtick as a backtick. No
    Markdown, no code spans, and nothing referring to the page's layout, since
    in Canvas there is no page.
-3. `true` (Canvas's `use_range`; the handbook ignores it).
-4. Onwards, **repeating groups of three**: points, band name, band description.
+4. `true` (Canvas's Criteria Enable Range; the handbook ignores it).
+5. Onwards, **repeating groups of three**: band name, band description,
+   points. Points come last.
 
-The group count is what varies, and the component reads groups until one is
-empty rather than assuming a number:
+The group count is what varies. Rows may stop short of the header, as in
+Canvas's template, and the parser reads groups until one is empty rather than
+assuming a number:
 
-- **Three bands, 12 fields.** The default: `Exceeds Expectations` /
+- **Three bands, 13 fields.** The default: `Exceeds Expectations` /
   `Meets Expectations` / `Does Not Meet Expectations`, at full / 80% / 20%.
-- **Two bands, 9 fields.** Pass/fail rubrics: `Pass` at full, `Fail` at 0.
-- **Four bands, 15 fields.** `defense` adds a `Missing` band at 0 for an
+- **Two bands, 10 fields.** Pass/fail rubrics: `Pass` at full, `Fail` at 0.
+- **Four bands, 16 fields.** `defense` adds a `Missing` band at 0 for an
   unexcused no-show, which the other rubrics state in prose instead.
 
 Every Canvas rubric directory is rendered by a page. `individual-contribution/`
 is rendered on Sprint Notes, `workshop-activities/` on Workshop Activities; both
 are tagless.
 
-**Changing a TSV means re-importing it into Canvas.** Say so in
+**Changing a CSV means re-importing it into Canvas.** Say so in
 `canvas/assignments/assignment-readme.md` in the same commit.
 
 ## What Does Not Belong Here
@@ -465,5 +480,5 @@ the student to guess the standard they will be graded against.
 4. `npm run validate:dashes` (no em dashes, literal or entity).
 5. `npm run build` (MDX, internal links, anchors).
 6. If you touched a weight, verify all three terms still sum to 25%.
-7. If you touched a rubric, you touched the TSV, so add it to the re-import
+7. If you touched a rubric, you touched the CSV, so add it to the re-import
    list in `canvas/assignments/assignment-readme.md` in the same commit.

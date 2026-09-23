@@ -85,7 +85,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 - **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per group per term.
 - **A team is assessed by a TA or instructor who is not its regular TA, and the regular TA does not attend.** Presence defeats the independence the session buys. Pair TAs and swap rosters for the cycle: the total hours per TA are unchanged, because each still assesses about the same number of teams, but booking becomes a cross-product rather than each TA working down their own list, so do the pairing before the slots go out. Where two assessors attend, split the students between them.
 - Fall week 9 is short (see Term Calendar): book no defenses on its Thursday or Friday.
-- Absences: rescheduled within the window, or into a later check-in, if flagged before the session; unexcused no-show scores zero (the TSV has a zero band).
+- Absences: rescheduled within the window, or into a later check-in, if flagged before the session; unexcused no-show scores zero (the rubric has a zero band).
 - Scores and notes entered into Canvas after each session; sheets are the live instrument, Canvas is the retention record for program assessment.
 
 ## RFC Machinery
@@ -130,7 +130,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
 - NDA teams: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
 
-**Where it lives in Canvas.** Each sprint note has a sibling entry, "Sprint Notes N: Individual Contribution", 100 points in the Sprint Notes group, so each is half the sprint's weight. One criterion, scored full, half, or zero, from `canvas/assignments/individual-contribution/individual-contribution-rubric-details.tsv`. It defaults to full credit through Set Default Grade; there is no submission. Grade it when you grade that sprint's note, so a deduction reaches the student in the sprint it concerns.
+**Where it lives in Canvas.** Each sprint note has a sibling entry, "Sprint Notes N: Individual Contribution", 100 points in the Sprint Notes group, so each is half the sprint's weight. One criterion, scored full, half, or zero, from `canvas/assignments/individual-contribution/individual-contribution-rubric.csv`. It defaults to full credit through Set Default Grade; there is no submission. Grade it when you grade that sprint's note, so a deduction reaches the student in the sprint it concerns.
 
 **Per-sprint bands.** Every deduction needs an evidence note (what was checked, what was found) so the decision is reviewable.
 
@@ -198,12 +198,12 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 ## Week 0 Checklist (per term)
 
 - [ ] Check-in sheet current; TA assignments made
-- [ ] Canvas shells: assignments imported from `canvas/assignments/` TSVs (rubric browser extension), weights checked against the handbook tables
+- [ ] Canvas shells: rubrics imported from the `canvas/assignments/` CSVs (Canvas Rubrics page, Import), weights checked against the handbook tables
 - [ ] Every Canvas entry in each page's Submissions table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
-- [ ] Term Startup created by hand: 0 points, omit from final grade, text entry, group submission, due end of week 2 in fall and end of week 1 in winter and spring. It has no rubric and no TSV, so nothing imports it
+- [ ] Term Startup created by hand: 0 points, omit from final grade, text entry, group submission, due end of week 2 in fall and end of week 1 in winter and spring. It has no rubric, so nothing imports it
 - [ ] Fall only: Demo Day created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due end of fall week 3. Announce the registration link with the five sessions
 - [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1), the funds and cloud request form, and in fall the Workshop 4 triads with their discussions (start of week 6)
-- [ ] Spring only: Engineering Expo created by hand, same shape as Term Startup (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric, no TSV. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
+- [ ] Spring only: Engineering Expo created by hand, same shape as Term Startup (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)

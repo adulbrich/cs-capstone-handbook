@@ -19,12 +19,12 @@ assignment:
       weight: 4
       points: 100
       submission: pdf
-      rubric: team-charter/team-charter-rubric-details.tsv
+      rubric: team-charter/team-charter-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/team-charter/team-charter-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/team-charter/team-charter-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Fall, week 2" weight="4% of the fall grade">
   Winter's charter refresh is part of the first [Repo Checkpoint](/assignments/repo-checkpoints/) of the term, and spring's closes the [Team Health Assessment workshop](/assignments/workshop-activities/#spring-1-item-1) in week 2; neither is a separate assignment.
@@ -94,7 +94,7 @@ For NDA teams, this one-pager is the difference between normal tool use and a br
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric.csv" />
 
 **AI use:** AI may draft any of this. Every student must have read, understood, and agreed to every commitment before the team submits it, and the instruction team will challenge any commitment the team cannot realistically keep.
 

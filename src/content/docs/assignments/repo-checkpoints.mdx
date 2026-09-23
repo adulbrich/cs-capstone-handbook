@@ -19,13 +19,13 @@ assignment:
       weight: 8
       points: 100
       submission: pdf
-      rubric: repo-checkpoint/repo-checkpoint-rubric-details.tsv
+      rubric: repo-checkpoint/repo-checkpoint-rubric.csv
 ---
 
 import CanvasEntries from '/src/components/CanvasEntries.astro';
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Fall and winter, weeks 5 and 10" weight="4% each, 8% per term" />
 
@@ -100,7 +100,7 @@ One page in `docs/requirements.md` under Constraints, or `docs/inherited.md` if 
 
 ## Rubric (100 points per checkpoint)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-rubric.csv" />
 
 **AI use:** AI may draft and maintain the living docs from your code and history, and may write the CI configuration; the checkpoint grades the repository, not who typed it. What fails the checkpoint is evidence that is not real: a green badge from a workflow that runs nothing, a requirements document describing features the code does not have, or a PR history dressed up after the fact.
 

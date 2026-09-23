@@ -17,20 +17,20 @@ assignment:
       weight: { fall: 4, winter: 5, spring: 3 }
       points: 100
       submission: pdf
-      rubric: sprint-note/sprint-note-rubric-details.tsv
+      rubric: sprint-note/sprint-note-rubric.csv
     - name: "Sprint Notes {n}: Individual Contribution"
       group: Sprint Notes
       weeks: { fall: [4, 6, 8, 10], winter: [2, 4, 6, 8, 10], spring: [2, 4, 6] }
       weight: { fall: 4, winter: 5, spring: 3 }
       points: 100
       submission: none
-      rubric: individual-contribution/individual-contribution-rubric-details.tsv
+      rubric: individual-contribution/individual-contribution-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/sprint-note/sprint-note-rubric-details.tsv?raw';
-import contributionTsv from '/canvas/assignments/individual-contribution/individual-contribution-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/sprint-note/sprint-note-rubric.csv?raw';
+import contributionCsv from '/canvas/assignments/individual-contribution/individual-contribution-rubric.csv?raw';
 import CanvasEntries from '/src/components/CanvasEntries.astro';
 
 <AssignmentMeta submission="Team, with the individual contribution modifier" due="Fall weeks 4, 6, 8, 10; winter weeks 2, 4, 6, 8, 10; spring weeks 2, 4, 6" weight="2% per sprint, half of it the individual contribution: 8% of the fall grade, 10% of the winter grade, 6% of the spring grade" />
@@ -101,7 +101,7 @@ The all-hands [demo days](/assignments/demo-day/) are a different thing from thi
 
 Each note is checked pass/fail per item, 20 points each; the [rubric conventions](/assignments/introduction/#rubric-conventions) say why sprint notes have two bands instead of three.
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/sprint-note/sprint-note-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/sprint-note/sprint-note-rubric.csv" />
 
 ## Sprint Notes N: Individual Contribution
 
@@ -111,7 +111,7 @@ A student's individual half is reduced when the sprint's evidence (contribution 
 
 ### Rubric (100 points each)
 
-<RubricTable tsv={contributionTsv} sourceLabel="canvas/assignments/individual-contribution/individual-contribution-rubric-details.tsv" />
+<RubricTable csv={contributionCsv} sourceLabel="canvas/assignments/individual-contribution/individual-contribution-rubric.csv" />
 
 ## Activities That Prepare This
 

@@ -23,7 +23,7 @@ assignment:
       weight: 5
       points: 100
       submission: pdf
-      rubric: rfc/rfc-draft-rubric-details.tsv
+      rubric: rfc/rfc-draft-rubric.csv
       peer_review_week: 5
     - name: "RFC Final Draft"
       group: RFC Final
@@ -31,13 +31,13 @@ assignment:
       weight: 10
       points: 100
       submission: pdf
-      rubric: rfc/rfc-final-rubric-details.tsv
+      rubric: rfc/rfc-final-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import draftRubricTsv from '/canvas/assignments/rfc/rfc-draft-rubric-details.tsv?raw';
-import finalRubricTsv from '/canvas/assignments/rfc/rfc-final-rubric-details.tsv?raw';
+import draftRubricCsv from '/canvas/assignments/rfc/rfc-draft-rubric.csv?raw';
+import finalRubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
 import CanvasEntries from '/src/components/CanvasEntries.astro';
 
 <AssignmentMeta submission="Individual" due="Fall and winter: draft week 4, peer reviews week 5, final week 8" weight="15% of the term grade: 5% for the draft and peer review, 10% for the final" />
@@ -100,7 +100,7 @@ Don't hand reviewers partner-confidential context. Submit your draft on this ent
 
 ### Rubric (100 points)
 
-<RubricTable tsv={draftRubricTsv} sourceLabel="canvas/assignments/rfc/rfc-draft-rubric-details.tsv" />
+<RubricTable csv={draftRubricCsv} sourceLabel="canvas/assignments/rfc/rfc-draft-rubric.csv" />
 
 ## RFC Final Draft
 
@@ -114,7 +114,7 @@ CS 462 is the writing intensive term: the winter RFC's revised version, includin
 
 ### Rubric (100 points)
 
-<RubricTable tsv={finalRubricTsv} sourceLabel="canvas/assignments/rfc/rfc-final-rubric-details.tsv" />
+<RubricTable csv={finalRubricCsv} sourceLabel="canvas/assignments/rfc/rfc-final-rubric.csv" />
 
 ## Activities That Prepare This
 

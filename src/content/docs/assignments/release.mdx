@@ -18,12 +18,12 @@ assignment:
       weight: 7
       points: 100
       submission: [video, pdf]
-      rubric: spring-release/spring-release-rubric-details.tsv
+      rubric: spring-release/spring-release-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/spring-release/spring-release-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/spring-release/spring-release-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Spring, week 8" weight="7% of the spring grade" />
 
@@ -56,7 +56,7 @@ This is the graded evidence and the durable artifact. Its first lines carry the 
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/spring-release/spring-release-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/spring-release/spring-release-rubric.csv" />
 
 **AI use:** AI may help with scripting, editing, and drafting the report. Fabricating demo footage, metrics, findings, or user feedback fails the assignment; a smaller true number always beats a bigger invented one. The outcomes section is graded under "Accurate outcomes", and "we did not reach the bar, here is exactly how far we got and why" scores well.
 
