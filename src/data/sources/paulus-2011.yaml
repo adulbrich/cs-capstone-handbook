@@ -1,0 +1,18 @@
+authors:
+  - Paulus, P. B.
+  - Kohn, N. W.
+  - Arditti, L. E.
+year: 2011
+title: Effects of Quantity and Quality Instructions on Brainstorming
+venue: The Journal of Creative Behavior
+kind: peer-reviewed
+url: https://doi.org/10.1002/j.2162-6057.2011.tb01083.x
+doi: 10.1002/j.2162-6057.2011.tb01083.x
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Of four instruction conditions (no specific focus, a quantity goal, a
+      quality goal, or both), the quantity goal led to more ideas and more
+      good ideas than the other three.
+    locator: Abstract

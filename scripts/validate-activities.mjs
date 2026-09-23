@@ -475,8 +475,8 @@ const STANDALONE_EXEMPT = new Set([
   // "Present at a conference or workshop" is an outreach channel.
   "activities/user#find-users",
 ]);
-// A third-party URL is someone else's slug, not this page's prose: the Crazy
-// 8s link in the planning guide ends in "crazy-eights-workshop". Internal
+// A third-party URL is someone else's slug, not this page's prose: a link
+// whose slug ends in "-workshop" is not the page saying "workshop". Internal
 // links are kept, because the assignment-link rule reads them.
 const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/g;
 

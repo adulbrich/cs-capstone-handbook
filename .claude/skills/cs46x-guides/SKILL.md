@@ -545,8 +545,8 @@ the failure this skill exists to prevent.
    positives ("long-term", "fall short", "in terms of", "the term comes
    from"); read each hit with the test below.
 
-   The first must return nothing but a third-party URL (the Crazy 8s link in
-   `planning.mdx` is one). The second returns false positives and needs
+   The first must return nothing but a third-party URL whose slug happens to
+   contain one of the words. The second returns false positives and needs
    a human: it is the capitalized, course-specific use that is the violation,
    not the ordinary English phrase. Known-good cases that will match and should
    be left alone: "the defense" meaning defense in depth (`security.mdx`), "your

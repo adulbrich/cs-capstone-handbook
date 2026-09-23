@@ -1,0 +1,24 @@
+authors:
+  - Beaty, R. E.
+  - Silvia, P. J.
+year: 2012
+title: >-
+  Why Do Ideas Get More Creative Across Time? An Executive Interpretation of
+  the Serial Order Effect in Divergent Thinking Tasks
+venue: Psychology of Aesthetics, Creativity, and the Arts
+kind: peer-reviewed
+url: https://doi.org/10.1037/a0029171
+doi: 10.1037/a0029171
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      The serial order effect, the tendency for later responses to a
+      divergent thinking task to be better than earlier ones, is one of the
+      oldest and most robust findings in creativity research.
+    locator: Abstract
+  - claim: >-
+      In a 10-minute unusual-uses task with 133 young adults, creativity
+      increased sharply with time, while fluency was highest in the first
+      minute and then dropped sharply.
+    locator: Abstract

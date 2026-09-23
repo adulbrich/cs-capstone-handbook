@@ -1,0 +1,20 @@
+authors:
+  - Zhu, M.
+  - Yang, Y.
+  - Hsee, C. K.
+year: 2018
+title: The Mere Urgency Effect
+venue: Journal of Consumer Research
+kind: peer-reviewed
+url: https://doi.org/10.1093/jcr/ucy008
+doi: 10.1093/jcr/ucy008
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Across five experiments, people were more likely to perform unimportant
+      tasks with objectively lower payoffs over important tasks with better
+      payoffs when the unimportant tasks carried merely spurious urgency,
+      such as an illusion of expiration, even with the normative reasons for
+      preferring urgent tasks controlled for.
+    locator: Abstract
