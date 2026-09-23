@@ -56,19 +56,19 @@ The difference between productive AI usage and frustrating AI usage usually come
 
 Before asking an AI tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the AI enough context to produce something useful. The clearer your intent, the less time you spend correcting the output.
 
-### Verify what matters, and build the net that lets you trust the rest
+### Verify what matters, and build the checks that let you trust the rest
 
 AI-generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. The obvious response is "read everything it writes", and that advice fails in practice for the same reason a tech lead does not read every line their team ships. It does not scale, so people stop doing it, and then they have no strategy at all.
 
 The strategy that does scale has two parts.
 
-First, spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are one-way doors: getting them wrong costs far more than the review would have. Most feature code is a two-way door, cheap to fix once something tells you it is broken. Validate hard at the doors; delegate freely elsewhere.
+First, spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are hard-to-reverse decisions: getting them wrong costs far more than the review would have. Most feature code is easy to reverse, cheap to fix once something tells you it is broken. Validate hard at those decisions; delegate freely elsewhere.
 
-Second, make "elsewhere" safe by building the net. You may reasonably delegate exactly as far as your safety net catches: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without a net is recklessness. Trust with one is ordinary engineering. If you want to hand off more, improve the net first rather than reading harder.
+Second, make "elsewhere" safe by building the checks. You may reasonably delegate exactly as far as your checks catch: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without checks is recklessness. Trust with them is ordinary engineering. If you want to hand off more, improve the checks first rather than reading harder.
 
 That is the standard worth holding yourself to, whatever any policy says.
 
-You still own the result. If you cannot explain why the code works when your project partner asks, no tool and no net will cover for that.
+You still own the result. If you cannot explain why the code works when your project partner asks, no tool and no check will cover for that.
 
 The [AI practice activities](/activities/ai/) turn all of this into exercises you can run on your own repository this week.
 
@@ -124,10 +124,10 @@ When you ask "what can I hand off?", this is the index. Each entry links to the 
 | Security scanning (dependency audit, secret scanning) | [Security](/guides/security/) |
 | Documentation and changelog generation | [Documentation](/guides/documentation/) |
 
-Four judgments stay human: whether the product is actually good for the person using it, which decisions are one-way doors, the tradeoffs your users and your project partner will feel, and whether an automated finding actually matters, which no tool decides for you: a report with forty findings is not forty problems.
+Four judgments stay human: whether the product is actually good for the person using it, which decisions are hard to reverse, the tradeoffs your users and your project partner will feel, and whether an automated finding actually matters, which no tool decides for you: a report with forty findings is not forty problems.
 
 :::note[Reviewed annually]
-This section and the tool names throughout this guide are the fastest-moving content in the handbook. It is checked once a year. The judgment they support (spend attention where mistakes are expensive, build the net that covers the rest) has been stable much longer than any of these tools have existed, which is why the judgment is the part worth learning and the tool names are not.
+This section and the tool names throughout this guide are the fastest-moving content in the handbook. It is checked once a year. The judgment they support (spend attention where mistakes are expensive, build the checks that cover the rest) has been stable much longer than any of these tools have existed, which is why the judgment is the part worth learning and the tool names are not.
 :::
 
 ## AI Coding Tools
@@ -185,8 +185,8 @@ If you want to compare models, these resources track current benchmarks:
 ## Best Practices for Using AI Tools
 
 - Write the project-level context file first. Everything a tool produces is bounded by what it knows about your repository; [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills) is the hour that pays for itself.
-- Decide the one-way doors yourself and delegate the two-way doors freely. If you cannot tell which is which, [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors) before delegating anything.
-- Build the safety net before scaling delegation: tests, CI, review gates, a staging environment, a rollback path. The net is what makes a large delegation reasonable; without it, the same delegation is a gamble.
+- Decide the hard-to-reverse decisions yourself and delegate the easy-to-reverse ones freely. If you cannot tell which is which, [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) before delegating anything.
+- Build the checks before scaling delegation: tests, CI, review gates, a staging environment, a rollback path. The checks are what make a large delegation reasonable; without them, the same delegation is a gamble.
 - Review a generated diff the way you would review a stranger's pull request, because that is what it is.
 - Keep the confidentiality boundary in the team's working agreement and in the tool configuration, not in people's memory.
 - Prefer the cheapest tool that does the job. Every workflow in this guide has a free or student-tier substitute.
@@ -238,12 +238,12 @@ comes due during your first hard bug, usually months later, usually near a deadl
 Finally, everything specific on this page has a short shelf life. Model names,
 capabilities, and prices move faster than this handbook is revised, and advice
 tuned to a 2025 tool may be wrong for the one you use. What does not move is the
-shape: state intent clearly, verify what matters, build a net for the rest, and
+shape: state intent clearly, verify what matters, build checks for the rest, and
 keep the ability to work without the tool.
 
 ## AI Tools in Industry and Academia
 
-AI-assisted coding is the default at most software companies now. Google said on its late-2024 earnings call that more than a quarter of its new code was generated by AI and then reviewed by engineers, and "reviewed by engineers" is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without a net, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this guide cares about the fit between delegation and safety net rather than the tool. The [DORA research program](https://dora.dev/research/2025/dora-report/) has been measuring what AI adoption actually does to delivery performance across thousands of organizations, and its findings are more nuanced than either the marketing or the backlash: adoption is near-universal, the effects depend heavily on the surrounding practices, and teams with weak delivery pipelines get worse outcomes rather than better ones.
+AI-assisted coding is the default at most software companies now. Google said on its late-2024 earnings call that more than a quarter of its new code was generated by AI and then reviewed by engineers, and "reviewed by engineers" is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without checks, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this guide cares about the fit between delegation and checks rather than the tool. The [DORA research program](https://dora.dev/research/2025/dora-report/) has been measuring what AI adoption actually does to delivery performance across thousands of organizations, and its findings are more nuanced than either the marketing or the backlash: adoption is near-universal, the effects depend heavily on the surrounding practices, and teams with weak delivery pipelines get worse outcomes rather than better ones.
 
 The open-source world is more divided. Several projects banned AI-generated contributions outright: [Gentoo's council policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy) forbids them, and [NetBSD's commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html) presume LLM output to be tainted code that must not be committed without prior written approval from core. Daniel Stenberg of curl has written bluntly about [AI-generated security reports](https://daniel.haxx.se/blog/2024/01/02/the-i-in-llm-stands-for-intelligence/) that consume maintainer time without containing a real bug. If your project is FOSS, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
 
@@ -272,7 +272,7 @@ tool-specific and changes with each release.
 
 **Activities that exercise this**
 
-- [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors): decide what you will never delegate before you are tired.
+- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): decide what you will never delegate before you are tired.
 - [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass): the verification half, run on your own repository.
 - [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checking generated work against what was actually asked for.
 - [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure delegation against the gates that would catch it.

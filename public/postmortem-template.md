@@ -29,7 +29,7 @@ Why it happened, past the first answer. Use five-whys or a contributing-factors 
 
 ## 4. What Went Well
 
-What limited the damage. Honest credit: the backup that existed, the teammate who noticed, the rollback that worked.
+What limited the damage. Specific credit: the backup that existed, the teammate who noticed, the rollback that worked.
 
 ## 5. Corrective Actions
 

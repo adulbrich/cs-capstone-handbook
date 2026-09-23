@@ -33,7 +33,7 @@ An ADR is a short Markdown file, usually under a page, recording one decision. T
 
 Of those five, **context** and **rationale** are the ones that decay if you skip them, and they are also the ones teams skip, because at the time of writing they feel obvious. They are obvious to you, this week. They are not obvious to the teammate who joins halfway through, to your successor team next year, or to you six months from now when someone asks why the database is Postgres and you cannot remember whether it was a considered choice or an accident.
 
-The hard part is deciding what deserves an ADR at all, and the most useful filter is how expensive the decision is to reverse. Jeff Bezos's [2016 letter to shareholders](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders) frames this as one-way and two-way doors: a two-way door can be walked back cheaply, so decide fast and do not ceremonially document it; a one-way door is expensive or impossible to undo, so it deserves deliberation and a record. Your database engine, your authentication approach, your data model, and your deployment target are one-way doors. Your logging library is not.
+The hard part is deciding what deserves an ADR at all, and the most useful filter is how expensive the decision is to reverse. Amazon's [2016 shareholder letter](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders) separates Type 1 decisions, which are expensive or impossible to undo, from Type 2 decisions, which you can walk back cheaply. A Type 2 decision can be made fast and does not need a ceremonial record; a Type 1 decision deserves deliberation and a record. Your database engine, your authentication approach, your data model, and your deployment target are hard-to-reverse decisions. Your logging library is not.
 
 ## Addressing an Architectural Problem
 
@@ -125,7 +125,7 @@ The busywork criticism is fair and worth meeting directly. An ADR for every
 library choice is a tax that produces a directory nobody reads, and teams that
 try it abandon the practice within a few months, which leaves them with no records at all.
 The failure is not documentation; it is the absence of a threshold. Use the
-one-way door test and expect a nine-month project to produce something in the
+reversibility test and expect a nine-month project to produce something in the
 range of five to fifteen ADRs. If you have forty, you are recording preferences.
 If you have one, you are not recording decisions.
 
@@ -174,12 +174,12 @@ are there so you can pick one rather than inventing your own.
 - [Architecture decision record collection](https://github.com/joelparkerhenderson/architecture-decision-record), Joel Parker Henderson: templates, examples, and a survey of the variants.
 - [Lightweight Architecture Decision Records](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records), Thoughtworks Technology Radar: the case for keeping them small, from the radar entry that popularized them.
 - [ADR process](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html), AWS Prescriptive Guidance: a full worked process, useful if you want more structure.
-- [2016 Letter to Shareholders](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders), Jeff Bezos: one-way and two-way doors, which is the threshold test this guide recommends.
+- [2016 Letter to Shareholders](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders), Jeff Bezos: Type 1 and Type 2 decisions, which is the threshold test this guide recommends.
 - [adr-tools](https://github.com/npryce/adr-tools), Nat Pryce: command-line tooling for numbering and superseding records.
 
 **Activities that exercise this**
 
 - [Describe your Architecture](/activities/design/#describe-your-architecture): the decisions this diagram implies are the ones worth recording.
-- [Deployment Plan](/activities/design/#deployment-plan): hosting and topology choices are usually one-way doors.
-- [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors): the threshold test, run against your own project.
+- [Deployment Plan](/activities/design/#deployment-plan): hosting and topology choices are usually hard-to-reverse decisions.
+- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): the threshold test, run against your own project.
 - [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase): what it feels like to inherit decisions nobody recorded.

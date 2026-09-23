@@ -196,8 +196,10 @@ have no citation duty, though they may link.
   per page.
 - Not allowed: deadpan one-word beats, staccato emphasis, sign-offs.
 - Banned words: "honest", "honesty", and "honestly" (except in "academic
-  honesty"), "genuinely", "worth stealing", "one-way door", "the net". Keep
-  "actually" and "evidence".
+  honesty"), "genuinely", "worth stealing", "one-way door" and "two-way door"
+  (say "hard-to-reverse decision" and "easy-to-reverse decision"), and "the
+  net" (say "the checks": tests, CI, review gates, staging, a rollback path).
+  Keep "actually" and "evidence".
 - Use American spelling. Keep "i.e.", "e.g.", parentheses, "Note that", and
   "make sure"; write "respectively", not "resp.". Fix calques ("consists in",
   "choose for") and typos.

@@ -39,15 +39,15 @@ Write the answers into your working agreement or `CONTRIBUTING.md`, in a few lin
 
 ## Testing as the Safety Net
 
-Most of the code in a capstone project is now written with AI tools, which is why the useful question is not how much you delegated but what your automation would catch when the delegation goes wrong. That automation is your **safety net**, and testing is most of it. The net has five parts, and each is checkable:
+Most of the code in a capstone project is now written with AI tools, which is why the useful question is not how much you delegated but what your automation would catch when the delegation goes wrong. That automation is your **safety net**, and testing is most of it. It has five parts, and each is checkable:
 
-- **Tests that fail when behavior breaks**, on the paths that matter. A suite that passes after you delete a feature is not a net.
+- **Tests that fail when behavior breaks**, on the paths that matter. A suite that passes after you delete a feature is not a check.
 - **CI on every pull request**, green, and required before merge.
-- **Review gates on the one-way doors**: schema, authentication, deployment, data migrations, anything you cannot walk back.
+- **Review gates on the hard-to-reverse decisions**: schema, authentication, deployment, data migrations, anything you cannot walk back.
 - **A staging or preview environment**, so the first run of a change is not production.
 - **A rollback you have tried**, not one you believe in.
 
-You may delegate exactly as far as that net catches, and no further. If you want to hand more to the tools, add to the net first. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap between the two on your own repository; the reasoning behind the rule is in the [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-net-that-lets-you-trust-the-rest). The rest of this guide is how to build the first part of the net well, and how to test the thing the net cannot: whether the product is worth building.
+You may delegate exactly as far as those checks catch, and no further. If you want to hand more to the tools, add to the checks first. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap between the two on your own repository; the reasoning behind the rule is in the [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest). The rest of this guide is how to build the first of those checks well, and how to test the thing the checks cannot: whether the product is worth building.
 
 ## Verification: Does the Code Work?
 

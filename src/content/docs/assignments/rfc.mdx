@@ -27,7 +27,7 @@ import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
 An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. The name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), which is how the internet's protocols are still specified; the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). You write one per term, in fall and winter, about a **real decision your team currently faces that is hard to reverse**. Not a hypothetical and not a retrospective justification of something already built: a live decision where your document should change what the team does.
 
 :::note[Picking a decision that is actually yours]
-One-way doors are typically architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments: undoing them costs far more than getting them right now. Most feature code is a two-way door. The distinction comes from Amazon's [shareholder letter on two-way doors](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders), which argues that using a heavyweight process on a reversible decision is its own failure. Telling one from the other is itself part of the exercise, and it is the judgment that matters most when much of the building is delegated.
+Hard-to-reverse decisions are typically architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments: undoing them costs far more than getting them right now. Most feature code is easy to reverse. The distinction comes from Amazon's [2016 shareholder letter](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders), which argues that using a heavyweight process on a reversible decision is its own failure. Telling one from the other is itself part of the exercise, and it is the judgment that matters most when much of the building is delegated.
 
 Two situations make the choice harder, and both are ordinary:
 
@@ -35,7 +35,7 @@ Your partner already decided. Many teams inherit the stack, the hosting, the dat
 
 Nothing hard to reverse is live in your four-week window. Write on the most consequential reversible decision you face, and say in the problem framing why it is reversible and what would make it not.
 
-Do not invent a one-way door you are not standing in front of.
+Do not invent a hard-to-reverse decision you are not actually facing.
 :::
 
 What you can direct an agent or a teammate to build is bounded by how precisely you can specify it. Write the RFC to that standard.
@@ -63,7 +63,7 @@ Feedback is structured: for each draft you review, answer four questions in writ
 3. **Analysis**: the technical tradeoffs that matter (performance, complexity, maintainability, security, cost), argued from cited sources and your own project evidence, not vibes.
 4. **Recommendation and verification plan**: what you propose and, concretely, how the team will know it worked (tests, metrics, acceptance criteria).
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
-6. **Delegation and validation**: what you handed to AI tools on this decision, what safety net made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
+6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
 ## Rubric (100 points)
 
@@ -85,7 +85,7 @@ Different activities suit the fall and winter RFCs, so you are not redoing the s
 
 | Term | Activity | Criterion it serves |
 |---|---|---|
-| Fall | [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors) | Choosing the topic, and problem framing |
+| Fall | [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) | Choosing the topic, and problem framing |
 | Fall | [Evaluate Different Technologies](/activities/design/#evaluate-different-technologies) | Options, and technical tradeoff analysis |
 | Fall | [Six Thinking Hats](/activities/creative/#six-thinking-hats) | Options, including "do nothing" |
 | Winter | [Write a Literature Review](/activities/creative/#write-a-literature-review) | Tradeoff analysis, and the 2,000-word source work |
@@ -99,7 +99,7 @@ Different activities suit the fall and winter RFCs, so you are not redoing the s
 | If your project is | Activities |
 |---|---|
 | FOSS | [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase). Upstream conventions constrain your options hard, and an RFC that reasons accurately inside them is stronger than one that ignores them |
-| Research | [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline) and [Identify Success Metrics](/activities/planning/#identify-success-metrics). Which baseline and which metric are both one-way doors: change either late and every earlier result stops being comparable |
+| Research | [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline) and [Identify Success Metrics](/activities/planning/#identify-success-metrics). Which baseline and which metric are both hard-to-reverse decisions: change either late and every earlier result stops being comparable |
 | Consultancy | [Stakeholder Mapping](/activities/planning/#stakeholder-mapping) and [Apply the Privacy by Design Guidelines](/activities/design/#apply-the-privacy-by-design-pbd-guidelines) for the constraints criterion |
 | New Product or Game | [Evaluate Different Technologies](/activities/design/#evaluate-different-technologies) and [The Mom Test](/activities/creative/#the-mom-test), which is a fast check on whether the decision matters to anyone outside the team |
 

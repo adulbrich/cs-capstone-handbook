@@ -55,7 +55,7 @@ first column is what stops you locally; the last is what stops the merge.
 | Rule | Local (lefthook) | Claude Code hook | CI |
 | --- | --- | --- | --- |
 | Conventional subject, lowercase imperative; no em dash, emoji, or session link in the message | `commit-msg` | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
-| No em dash, emoji, or glossary-rejected synonym in tracked text; no voice tell on handbook pages | `pre-commit`, staged files | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
+| No em dash, emoji, or glossary-rejected synonym in tracked text; no voice tell on handbook pages, and no banned word in rubric TSVs, syllabi, or `public/` Markdown | `pre-commit`, staged files | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
 | Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths | `after-edit.mjs` | `build`: `validate-dates` |
 | Outcome coverage, per-term weights sum, Canvas TSV parity, assignment page shape | `pre-commit` on assignment and TSV paths; `pre-push` | | `build`: `validate-outcomes` |
 | Activity tiers, badges, the standalone rule, schedule links by week, no grading language in activities or guides | `pre-commit` on activity, assignment, guide, schedule paths; `pre-push` | | `build`: `validate-activities` |
