@@ -1,0 +1,20 @@
+authors:
+  - Diehl, M.
+  - Stroebe, W.
+year: 1987
+title: >-
+  Productivity Loss in Brainstorming Groups: Toward the Solution of a Riddle
+venue: Journal of Personality and Social Psychology
+kind: peer-reviewed
+url: https://doi.org/10.1037/0022-3514.53.3.497
+doi: 10.1037/0022-3514.53.3.497
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Four experiments tested free riding, evaluation apprehension, and
+      production blocking as explanations of the productivity gap between
+      real and nominal brainstorming groups; manipulating blocking directly,
+      the authors found that production blocking accounted for most of the
+      productivity loss of real brainstorming groups.
+    locator: Abstract

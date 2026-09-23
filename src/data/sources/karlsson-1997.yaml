@@ -1,0 +1,18 @@
+authors:
+  - Karlsson, J.
+  - Ryan, K.
+year: 1997
+title: A Cost-Value Approach for Prioritizing Requirements
+venue: IEEE Software
+kind: peer-reviewed
+url: https://doi.org/10.1109/52.605933
+doi: 10.1109/52.605933
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      There are usually more requirements than can be implemented within
+      stakeholders' time and resource constraints; the authors developed a
+      cost-value approach for prioritizing requirements and applied it to two
+      commercial projects.
+    locator: Abstract

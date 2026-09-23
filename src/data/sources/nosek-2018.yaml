@@ -1,0 +1,33 @@
+authors:
+  - Nosek, B. A.
+  - Ebersole, C. R.
+  - DeHaven, A. C.
+  - Mellor, D. T.
+year: 2018
+title: The Preregistration Revolution
+venue: Proceedings of the National Academy of Sciences
+kind: peer-reviewed
+url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5856500/
+doi: 10.1073/pnas.1708274114
+verified: full-text
+claims:
+  - claim: >-
+      Preregistration is defining the research questions and analysis plan
+      before observing the research outcomes.
+    locator: Abstract
+  - claim: >-
+      Hindsight bias is the tendency to see outcomes as more predictable after
+      the fact than before they were observed; the observer uses the data to
+      generate an explanation and perceives that they would have anticipated
+      it in advance.
+    locator: Mental Constraints on Distinguishing Predictions and Postdictions
+  - claim: >-
+      Ordinary biases in human reasoning, such as hindsight bias, make it hard
+      to avoid mistaking postdictions for predictions, and preregistration is
+      an effective solution.
+    locator: Abstract
+  - claim: >-
+      Preregistration is required by US law for clinical trials and is
+      necessary to publish in journals that follow the International
+      Committee of Medical Journal Editors policy.
+    locator: Making Preregistration the Norm, Advancing the Motive for Preregistration

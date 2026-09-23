@@ -545,15 +545,13 @@ the failure this skill exists to prevent.
    positives ("long-term", "fall short", "in terms of", "the term comes
    from"); read each hit with the test below.
 
-   The first must return nothing but a third-party URL (the Crazy 8s link in
-   `planning.mdx` is one). The second returns false positives and needs
+   The first must return nothing. The second returns false positives and needs
    a human: it is the capitalized, course-specific use that is the violation,
    not the ordinary English phrase. Known-good cases that will match and should
-   be left alone: "the defense" meaning defense in depth (`security.mdx`), "your
-   public landing page" as a web term (`planning.mdx`), and "a working agreement
-   (sometimes called a team charter)" as a synonym for the artifact
-   (`working-agreement.mdx`). A third-party URL whose slug contains one of these
-   words is also fine.
+   be left alone: "the defense" meaning defense in depth (`security.mdx`), and
+   "a working agreement (sometimes called a team charter)" as a synonym for the
+   artifact (`working-agreement.mdx`). For both greps, a third-party URL whose
+   slug contains one of these words is fine.
 
    The test when you are unsure: would this sentence still be true and useful
    for a reader who is not enrolled in the course? If yes, it is ordinary

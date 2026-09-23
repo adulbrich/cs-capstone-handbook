@@ -1,113 +1,115 @@
 ---
 title: Planning and Prioritization
-description: "The three catalogs behind a plan: ideation techniques to widen the option set, prioritization methods to rank it, and success-metric frameworks to decide what counts as it worked."
+description: "The three catalogs behind a plan: ideation techniques to widen the option set, prioritization methods to rank it, and success-metric frameworks to decide in advance what counts as working."
 sidebar:
   order: 3
 ---
 
-{/* check-prose: legacy-opener */}
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
-import { LinkCard } from '@astrojs/starlight/components';
+Your team has a problem to solve, more candidate features than time to build them, and a meeting where everyone argues for a different first step. This page covers three sets of methods for that moment: ideation techniques to widen the options, prioritization methods to rank them, and success-metric frameworks to decide in advance what will count as working. It doesn't cover running the sprint that pulls from the ranked list (see [Sprints](/guides/sprint/)) or writing the requirements themselves (see [Requirements](/guides/requirements/)).
 
-Read this when the team has more ideas than time or no way to rank them; it gives you the methods for choosing what to build and measuring it.
+:::note[tl;dr]
+- Generate options before you rank them, and have everyone write ideas down alone before the group discusses any of them.
+- Ask for quantity first and judge later; the unusual ideas arrive after the obvious ones.
+- Rank the backlog with one method, chosen for the argument your team keeps having, and write the reason next to each rank.
+- Keep the Must Haves to a share of the effort the team is confident it can deliver, and write the Won't Haves down.
+- Protect important work that is never urgent (design, tests, documentation) with a rule you set in advance, such as a Definition of Done.
+- Commit two or three success metrics, each with a decision rule, a collection method, and a date, before you see any data.
+- Report ratios and per-user figures rather than raw totals, so a metric can go down when things get worse.
+:::
 
-Planning is deciding, in order, three things: what could we build, what do we build first, and how will we know it worked. Each question has a well-worn set of methods, and most of them fit on an index card. This guide is the catalog. The exercises that apply them to your project live in the [Creative](/activities/creative/) and [Planning](/activities/planning/) activities.
-
-Without deliberate planning:
-
-- The team builds the first idea anyone said out loud, because nobody generated a second one.
-- The backlog is ordered by who argued loudest, and the top item changes every stand-up.
-- "Success" gets defined after the results are in, which is how well-meaning people produce misleading work.
-- Status updates report activity instead of progress, because nothing was ranked and nothing was measured.
-
-None of the methods below is hard. The failure mode is not picking one.
+The exercises that apply these methods to your project are in the [Creative](/activities/creative/) and [Planning](/activities/planning/) activities.
 
 ## What Is a Plan?
 
-A capstone plan is small. It contains:
+A small team's plan is small. It contains:
 
-- **An option set**: the ideas you considered, including the ones you rejected and why. This is the raw material for any proposal you write later.
-- **A ranked backlog**: every item of work in order, with a reason for its rank that a teammate can read without you in the room. This is what [sprint planning](/guides/sprint/#sprint-planning) pulls from.
-- **Two or three success metrics**, each with a decision rule, a collection method, and a date. Without these, "did it work" has no answer.
-
-The three sections that follow give you a menu for each.
+- **Option set**: the ideas you considered, including the ones you rejected and why, so a later proposal can say what was ruled out and on what grounds.
+- **Ranked backlog**: every item of work in order, with a reason for its rank that a teammate can read without you in the room. It's what [sprint planning](/guides/sprint/#sprint-planning) pulls from.
+- **Success metrics**: two or three numbers, each with a decision rule, a collection method, and a date, so that "did it work" has an answer someone else can check.
 
 ## Ideation Techniques
 
-Brainstorming works when the rules are enforced and fails when they are not. [IDEO's seven rules](https://www.ideou.com/blogs/inspiration/7-simple-rules-of-brainstorming) extend the four Alex Osborn published in 1953:
+Brainstorming as a named method comes from Alex Osborn's [*Applied Imagination*](https://archive.org/details/appliedimaginati00osborich) (1953). Most formal sessions still run on his rules: go for quantity, say whatever comes to mind, don't criticize shared ideas, and build on them <Cite id="paulus-2018" form="parenthetical" />. [IDEO's seven rules](https://www.ideou.com/blogs/inspiration/7-simple-rules-of-brainstorming) restate Osborn's and add three for running the session well:
 
 1. Defer judgment: no criticism of ideas during the session.
 2. Encourage wild ideas: unrealistic ideas spark realistic ones.
 3. Build on the ideas of others.
 4. Stay focused on the topic.
-5. Quantity over quality.
-6. One conversation at a time.
-7. Be visual: sketch, do not only describe.
+5. One conversation at a time.
+6. Be visual: sketch, don't only describe.
+7. Go for quantity.
 
-Osborn's original four are the first three plus quantity; the last three are IDEO's additions for running the session well. The techniques below are structures that make the rules easier to keep. Pick one per session. If the team is remote, [How to Brainstorm Remotely](https://hbr.org/2020/07/how-to-brainstorm-remotely) covers the logistics.
+Of Osborn's rules, the best evidence is for focusing on quantity first rather than on quality <Cite id="paulus-2018" form="parenthetical" />. <Cite id="paulus-2011" /> compared four brainstorming instructions (no specific focus, a quantity goal, a quality goal, or both) and found that the quantity goal produced more ideas, and more good ideas, than any of the other three.
+
+The group format itself fares worse than its reputation. <Cite id="mullen-1991" /> pooled earlier studies and found brainstorming groups significantly less productive than nominal groups (the same number of people working alone, with their ideas pooled afterward), in both quantity and quality, and more so in larger groups. Groups of four tend to produce only about half as many ideas as four people working alone <Cite id="paulus-2018" form="parenthetical" />. In the last of four experiments, <Cite id="diehl-1987" /> manipulated blocking directly and found that **production blocking** accounted for most of the productivity loss of real brainstorming groups. In a talking group only one person can share an idea at a time, and the others have to hold theirs in mind while they wait <Cite id="paulus-2018" form="parenthetical" />.
+
+The techniques below are structures that work around that loss, mostly by having people generate ideas alone or on paper before the group discusses them. Pick one per session, because each technique is a different set of rules to learn, and a session spent switching between them is a session spent on instructions instead of ideas.
 
 ### 6-3-5 Brainwriting
 
-[Brainwriting](https://zapier.com/blog/brainwriting/) is brainstorming on paper, in silence, so the loudest person does not set the agenda. The name is the recipe: **6** participants, **3** ideas, **5** minutes.
+**Brainwriting** is brainstorming on paper, in silence, so the loudest person doesn't set the agenda. In the 6-3-5 variant the name is the recipe: 6 participants, 3 ideas, 5 minutes.
 
 1. Each participant writes 3 ideas on the sheet in front of them within 5 minutes, building on what is already written.
 2. Pass sheets one step around the circle.
 3. Repeat for 6 rounds.
 
-Six rounds of six people produces 108 ideas in half an hour. Adjust the numbers to your team size and keep the structure. This is the technique to reach for when one or two teammates dominate discussion.
+Six rounds of six people produce 108 ideas in half an hour. Adjust the numbers to your team size and keep the structure: write alone, read what came before, pass it on.
+
+Reach for brainwriting when one or two teammates dominate discussion. Research on passing slips of paper around a group suggests it can be quite effective, and in one short session, writing yielded twice as many ideas as talking <Cite id="paulus-2018" form="parenthetical" />. The meta-analysis points the same way: the group loss was stronger when contributions were spoken aloud than when they were written <Cite id="mullen-1991" form="parenthetical" />.
+
+If the team is remote, brainwrite in a shared document and then discuss the ideas live: <Cite id="paulus-2018" /> report that electronic idea exchange tends to generate more ideas than talking, but that evaluating ideas works better face to face.
 
 ### Crazy 8s
 
-[Crazy 8s](https://blog.prototypr.io/how-to-run-a-crazy-eights-workshop-60d0a67b29a) is a sketching sprint for interface or interaction ideas.
+Crazy 8s is a sketching exercise from the [Design Sprint](https://www.character.vc/guide/design-sprint), the five-day process Jake Knapp created at Google and published with John Zeratsky and Braden Kowitz in *Sprint* (2016). It's for interface and interaction ideas, and in the sprint it comes after each person has gathered notes and jotted rough ideas alone:
 
-1. Fold a sheet of paper into eight sections.
+1. Fold a sheet of paper into eight frames.
 2. Set an 8-minute timer.
-3. Each participant sketches 8 different ideas, one per section, one minute each. A caption per sketch helps you explain it later.
-4. Put every sheet on the wall and let everyone vote, for instance with stickers.
+3. Sketch a variation of one of your best ideas in each frame, one minute per sketch.
+4. Take the strongest variation into a solution sketch. In the Design Sprint that's a three-panel storyboard, kept anonymous and saved for the team to review the next day.
 
-The one-minute limit is the point: it forces breadth before anyone falls in love with a single design. Crazy 8s [works remotely](https://uxdesign.cc/how-to-do-crazy-8s-remotely-223d7fbd5e98) with a shared whiteboard.
+The one-minute limit forces breadth: you can't polish a sketch in a minute, so you move on to the next variation before committing to the first. The sketching is also done individually, which the authors call "work alone together": they give each person time to develop solutions on their own instead of brainstorming as a group.
+
+Crazy 8s works remotely with a shared whiteboard, or with paper held up to a camera.
 
 ### Rolestorming
 
-[Rolestorming](https://business.tutsplus.com/tutorials/what-is-rolestorming-group-brainstorming-method--cms-27245) has each participant generate ideas as someone else: the end user, the project partner's boss, a competitor, the person who has to maintain the code in two years.
+[Rolestorming](https://www.griggsachieve.com/Rolestorming/), which Rick Griggs published in *Training* magazine in 1985, has each participant generate ideas as someone else: the end user, your project partner's manager, a competitor, the person who has to maintain the code in two years.
 
 1. Assign a role to each participant.
 2. Generate ideas from that role's perspective.
 3. Share and refine across perspectives, then rotate roles and repeat.
 
-It shares a mechanism with [Six Thinking Hats](/activities/creative/#six-thinking-hats): stepping out of your own view surfaces the objections and wants you would otherwise miss. A [longer treatment](https://fourweekmba.com/rolestorming/) covers variants.
+Griggs combined role-playing with brainstorming to keep people on track and to spare them the fear of ridicule: an idea offered as the competitor isn't yours to defend. It shares a mechanism with [Six Thinking Hats](/activities/creative/#six-thinking-hats), since stepping out of your own view surfaces the objections and wants you'd otherwise miss.
 
 ### Reverse Brainstorming
 
-[Reverse brainstorming](https://online.visual-paradigm.com/knowledge/brainstorming/what-is-reverse-brainstorming/) asks how to cause the problem, or make it worse, then flips each answer.
+Reverse brainstorming asks how to cause the problem, or make it worse, then flips each answer.
 
 1. State the problem.
 2. List every way to make it worse.
 3. Reverse each item into a candidate solution.
 4. Refine the flipped list into actions.
 
-It is the fastest way to find failure modes for a risk register, and it is usually more fun than the forward version.
-
-<LinkCard
-  title="Brainstorming Ideas"
-  href="/activities/creative/#brainstorming-ideas"
-  description="Run one of these techniques on your project and keep the shortlist."
-/>
+Use it when you're building a risk register, because each way to make things worse is a concrete failure mode you can then plan against. Gary Klein's [premortem](https://hbr.org/2007/09/performing-a-project-premortem) applies the same inversion to a whole plan: the team imagines the project has already failed and lists why. Klein argues that the framing makes it safe for skeptics to voice doubts they'd otherwise keep to themselves during planning.
 
 ## Prioritization Methods
 
-Every method below answers the same question, "what first", with a different pair of axes. Pick the pair that matches the argument your team keeps having. Do not run three methods on the same backlog; the disagreements between them will eat the time you saved.
+Every method below answers the same question, "what first", with a different pair of axes. Pick the pair that matches the argument your team keeps having. Don't run three methods on the same backlog: each ranks a few items differently, and settling those differences takes the time the method was meant to save.
 
 ### MoSCoW
 
-Sort each item into one of four buckets:
+The [DSDM Agile Project Framework](https://www.agilebusiness.org/dsdm-project-framework/moscow-prioritisation.html) defines MoSCoW as four buckets:
 
-- **M (Must have)**: the project fails without it.
+- **M (Must have)**: the project fails without it. DSDM's test is to ask what happens if it isn't delivered; if the answer is to cancel the project, it's a Must.
 - **S (Should have)**: important, and can slip if it has to.
-- **C (Could have)**: adds value, cut first when time runs short.
-- **W (Won't have)**: out of scope for now, and written down so nobody re-proposes it next sprint.
+- **C (Could have)**: adds value, and is cut first when time runs short.
+- **W (Won't have this time)**: out of scope for now, and written down so nobody re-proposes it next sprint.
 
-MoSCoW is the fastest method and the easiest to game: if more than a third of the backlog is a Must, the sort has not happened yet.
+MoSCoW is easy to game, because nobody wants their item in Could. DSDM's guard is a cap: typically no more than 60% of the effort on Must Haves, and around 20% on Could Haves as contingency. If your Musts add up to more than that, the sort hasn't happened yet.
 
 ### Impact-Effort Matrix
 
@@ -115,8 +117,8 @@ Place each item on two axes, the impact it has if done and the effort it costs t
 
 1. High effort, high impact: major projects; plan them, then do them.
 2. High effort, low impact: usually not worth doing.
-3. Low effort, low impact: filler, for when you are blocked.
-4. Low effort, high impact: **quick wins, do these first.**
+3. Low effort, low impact: filler, for when you're blocked.
+4. Low effort, high impact: quick wins; do these first.
 
 ```mermaid
 quadrantChart
@@ -138,12 +140,14 @@ Estimate effort per item before you plot, or the matrix becomes a vote on enthus
 
 ### Eisenhower Matrix
 
-The same shape with urgency and importance as the axes. It ranks tasks better than features:
+The same shape, with urgency and importance as the axes. It carries Dwight Eisenhower's name because of a [1954 speech](https://www.presidency.ucsb.edu/documents/address-the-second-assembly-the-world-council-churches-evanston-illinois) in which he quoted a former college president: "I have two kinds of problems, the urgent and the important." Stephen Covey turned the distinction into a four-quadrant [time management matrix](https://www.franklincovey.com/courses/the-7-habits/habit-3/) in *The 7 Habits of Highly Effective People* (1989).
 
-1. Important and urgent: **do it now**.
+Use it on tasks rather than features, because urgency comes from a deadline, and a feature on a backlog rarely has one of its own:
+
+1. Important and urgent: do it now.
 2. Important, not urgent: schedule it.
-3. Not important, not urgent: drop it.
-4. Not important, urgent: delegate it if you can.
+3. Urgent, not important: delegate it if you can.
+4. Neither: drop it.
 
 ```mermaid
 quadrantChart
@@ -152,22 +156,22 @@ quadrantChart
   y-axis Not Important --> Important
   quadrant-1 1 
   quadrant-2 2 
-  quadrant-3 3 
-  quadrant-4 4
+  quadrant-3 4 
+  quadrant-4 3
   Do these tasks immediately: [0.75, 0.75] radius: 0
   Schedule these tasks for later: [0.25, 0.75] radius: 0
   Consider eliminating these tasks: [0.25, 0.25] radius: 0
   Delegate these tasks if possible: [0.75, 0.25] radius: 0
 ```
 
-The trap is quadrant 2. Design work, tests, and documentation are important and never urgent, which is why they get displaced by whatever is due Friday.
+Covey argues that quadrant 2, the important work that isn't urgent (planning, creative thinking, learning), is where time earns the best return. For a software team that's design, tests, and documentation; [Some Truths](#some-truths-about-planning) covers why it keeps losing to whatever is due Friday.
 
 ### Cost-Value Matrix
 
-Cost on one axis (for a student team, almost always time) and the value delivered on the other:
+<Cite id="karlsson-1997" /> developed a cost-value approach for the usual situation of more requirements than time, and applied it to two commercial projects. The informal version is a matrix with cost on one axis (for a small team, almost always time) and the value delivered on the other:
 
 1. High value, high cost: invest if the schedule allows.
-2. High value, low cost: **quick wins, first.**
+2. High value, low cost: quick wins; do these first.
 3. Low value, low cost: if time permits.
 4. Low value, high cost: avoid.
 
@@ -186,37 +190,33 @@ quadrantChart
   Generally avoid or minimize these tasks: [0.75, 0.25] radius: 0
 ```
 
-Cost-value is impact-effort with the value axis defined by your project partner rather than by the team. Use it when the two disagree.
+Let whoever the product is for (a project partner, a panel of users) set the value axis, and let the team set the cost. Use the matrix when the team and that person disagree about what matters, because it puts both judgments on one chart.
 
 ### Scrum Backlog Ordering
 
-Scrum does not prescribe a scoring method. It prescribes a single, ordered [product backlog](/guides/sprint/#sprint-planning), owned by one person, from which each sprint pulls the top items. The ordering can use any matrix above; what Scrum adds is:
+The [Scrum Guide](https://scrumguides.org/scrum-guide.html) doesn't prescribe a scoring method. It prescribes a single ordered Product Backlog, "the single source of work undertaken by the Scrum Team", with one Product Owner accountable for ordering it and each sprint pulling from the top. The ordering can use any matrix above; what Scrum adds is:
 
-- **One list, one owner.** Priorities are not renegotiated in every meeting.
-- **Value first.** The item that changes the most for the user goes to the top.
-- **Dependencies respected.** An item is only ready when nothing above it blocks it. A backlog that lets you pull a task you cannot finish is not ordered yet.
+- One list, one owner. The Product Owner is "one person, not a committee", and anyone who wants the order changed has to convince that person, so priorities aren't renegotiated in every meeting.
+- Value first. The Product Owner is accountable for maximizing the value of the product, so the item that changes the most for the user goes to the top.
+- Items small enough to finish. The Guide deems an item ready for selection when the team can get it Done within one sprint.
+
+Add one rule of your own: rank an item below anything that blocks it, because a task pulled into a sprint before its dependency is finished spends the sprint waiting.
 
 ### Most Important Task (MIT)
 
-A personal method, not a team one. Each morning name the single task that, if it were the only thing you finished today, would make the day worth it. Do it first. Everything else is a bonus. It is the cheapest defense against a day of Slack and ticket grooming that ends with no commit.
-
-<LinkCard
-  title="Prioritization"
-  href="/activities/planning/#prioritization"
-  description="Pick one method, apply it to your backlog, and produce the ranked list with a reason per rank."
-/>
+The MIT is a personal method, not a team one. [Leo Babauta](https://zenhabits.net/purpose-your-day-most-important-task/), who calls it "not an original concept", describes it as naming the task you most want or need to get done that day and doing it first thing (he picks three). Start with one: the task that would make the day worth it if it were the only thing you finished. Do it before you open chat or the ticket queue, because either can fill a whole day that ends without a commit.
 
 ## Success-Metric Frameworks
 
-A metric is a number plus a decision rule plus a collection method, committed before you look at the data. The frameworks below are for product and game teams, which have users to count. Research, FOSS, and consultancy teams measure different things; the [Identify Success Metrics](/activities/planning/#identify-success-metrics) activity has a subsection for each.
+A success metric is a number plus a decision rule plus a collection method, committed before you look at the data. The frameworks below are for product and game teams, which have users to count. Research, open-source, and consultancy teams measure different things; the [Identify Success Metrics](/activities/planning/#identify-success-metrics) activity has a subsection for each.
 
 ### The Product-Market Fit Question
 
-Sean Ellis's product-market fit survey asks users one question: "How would you feel if you could no longer use this product?" The answers are "Very disappointed", "Somewhat disappointed", and "Not disappointed". If two in five users or more answer "Very disappointed", the product has found its market. Below that, work on the product before working on growth. One question, one number, and it fits in a Google Form.
+Sean Ellis's product-market fit survey asks existing users how they would feel if they could no longer use the product, and counts the share who answer "Very disappointed". In [a post](https://web.archive.org/web/20110101140114/http://startup-marketing.com/the-startup-pyramid/), Ellis argues that product-market fit requires at least 40% of users saying they'd be very disappointed. He calls the threshold "a bit arbitrary" and says he set it after comparing results across nearly 100 startups. Below it, he advises keeping spending low and putting everything into raising that percentage.
 
 ### Pirate Metrics (AARRR)
 
-Dave McClure's [AARRR framework](https://www.productplan.com/glossary/aarrr-framework/) follows a user through five stages, and each stage is a place the funnel can leak:
+Dave McClure's [Startup Metrics for Pirates](https://www.slideshare.net/dmc500hats/startup-metrics-for-pirates-long-version) talk introduced AARRR, which follows a user through five stages. Each stage is a place the funnel can leak:
 
 - **Acquisition**: how do people find the product?
 - **Activation**: do they take the first meaningful action (sign up, install, complete a level)?
@@ -224,11 +224,11 @@ Dave McClure's [AARRR framework](https://www.productplan.com/glossary/aarrr-fram
 - **Referral**: do they tell anyone?
 - **Revenue**: will they pay?
 
-For a capstone project, activation and retention are the two that matter. Acquisition is mostly your public landing page, and revenue is usually out of scope.
+For a product with a few dozen users, measure activation and retention first. At that scale, acquisition is mostly the people you told and your public landing page, and revenue is usually out of scope.
 
 ### HEART
 
-Google's [HEART framework](https://www.heartframework.com/) measures user experience rather than the funnel:
+HEART comes from Google's user experience researchers. <Cite id="rodden-2010" /> describe it as five categories from which a team defines its own metrics. Where AARRR follows a funnel, HEART measures the user's experience:
 
 - **Happiness**: satisfaction, from surveys or ratings.
 - **Engagement**: how often and how deeply users interact.
@@ -236,64 +236,63 @@ Google's [HEART framework](https://www.heartframework.com/) measures user experi
 - **Retention**: how many keep using it.
 - **Task success**: completion rate, time on task, error rate for the core workflows.
 
-Pick the one or two letters that describe your product's job. A tool used once a quarter does not need an engagement metric; a game does not need task success.
+Pick the categories that describe your product's job, and decide explicitly to leave the others out. <Cite id="rodden-2010" /> note that not every category fits every product: Engagement may mean little for an enterprise tool that people use because their work requires it.
 
-<LinkCard
-  title="Identify Success Metrics"
-  href="/activities/planning/#identify-success-metrics"
-  description="Commit two or three metrics with decision rules and a collection method, dated."
-/>
+<Cite id="rodden-2010" /> pair the framework with a process, Goals-Signals-Metrics: state the goal, name the behavior or attitude that would show it was met, then turn that signal into a number you can track.
 
 ## Best Practices for Planning
 
-- Diverge before you converge. Run one ideation technique before the first prioritization pass, even if the answer seems obvious.
-- Write the reason next to the rank. A backlog order without reasons gets re-litigated every sprint.
-- Estimate effort before plotting a matrix, and estimate it in hours, not T-shirt sizes, for a nine-month project with a fixed end date.
-- Cap the Must-haves. If a third of the backlog is essential, nothing is.
-- Commit metrics with a date in the repository, then measure. Choosing the metric after seeing the results is the most common way to fool yourself.
-- Name the instrument. A metric with no collection plan (analytics, database count, benchmark script, survey) is a wish.
-- Re-rank after every project partner meeting, not at the start of every sprint. The backlog is a living document.
+- Diverge before you converge. Run one ideation technique before the first prioritization pass, even when the answer seems obvious, because the obvious answer is the one everyone already had.
+- Have people write ideas down alone before the group discusses them, so nobody spends the session waiting for a turn to speak.
+- Write the reason next to the rank, because a backlog order without reasons gets re-argued every sprint.
+- Estimate effort before you plot a matrix, and estimate it in hours rather than T-shirt sizes when the project has a fixed end date: hours add up against the hours you have left, and sizes don't.
+- Cap the Must Haves at the effort the team is confident it can deliver (DSDM's typical ceiling is 60%), because the Could Haves are the contingency that absorbs a bad estimate without breaking a promise.
+- Commit metrics with a date in the repository before you measure, so the results can't choose the metric for you.
+- Name the instrument for each metric (analytics, a database count, a benchmark script, a survey), because a metric with no collection plan never gets a number.
+- Re-rank when new information arrives rather than on a fixed schedule, because that's when an item's value changes. [Sprints](/guides/sprint/#sprint-planning) covers keeping the backlog current between plannings.
 
 ## Some Truths About Planning
 
-The uncomfortable part first: most of the prioritization methods on this page are the same two-by-two with different axis labels. Impact against effort, value against cost, urgent against important: each asks you to place an item on two scales nobody can measure precisely and then read off a quadrant. The value is not in where an item lands, because a teammate would plot it a square over. It is in the argument the team has while plotting, which surfaces the assumption one person held and nobody else shared, and that is why the reason written next to a rank matters more than the rank.
+The uncomfortable part first: most of the prioritization methods on this page are the same two-by-two with different axis labels. Impact against effort, value against cost, urgent against important: each asks you to place an item on two scales nobody can measure precisely and then read off a quadrant. The value isn't in where an item lands, since a teammate would plot it a square over. It's in the argument the team has while plotting, which surfaces the assumption one person held and nobody else shared, and that's why the reason written next to a rank is worth more than the rank.
 
-A plan made at the start of a project will be wrong within a month or two, and that is not a failure of planning. You wrote it with the least information you will ever have. The point of writing it down is that you notice when reality departs from it: the gap between what you expected and what happened is the most useful signal a team gets, and a team with no written expectation cannot see the gap at all.
+A plan made at the start of a project is written with the least information you'll ever have, so expect to rewrite much of it within a month or two. Write it down anyway, because the gap between what you expected and what happened tells you how far off your estimates run, and without a written expectation there's no gap to measure.
 
-The Eisenhower matrix names a trap it cannot fix. Design documents, tests, and documentation live in the important-but-not-urgent quadrant, and something urgent arrives every week to displace them. No prioritization method changes that, because the method only tells you what you already knew. What changes it is a commitment made in advance and written down, such as a [Definition of Done](/guides/sprint/#definition-of-done) that will not accept a merge without tests, so the decision is not re-made under deadline pressure each time.
+The Eisenhower matrix names a trap it can't fix. Design documents, tests, and documentation sit in the important-but-not-urgent quadrant, and something urgent keeps arriving to displace them. Across five experiments, <Cite id="zhu-2018" /> found that people were more likely to choose unimportant tasks with objectively lower payoffs over important ones when the unimportant tasks merely looked urgent, for instance through an illusion of expiration. Don't count on a re-ranking under deadline pressure to resist that pull. Make the commitment in advance and write it down, such as a [Definition of Done](/guides/sprint/#definition-of-done) that won't accept a merge without tests.
 
-Vanity metrics are seductive because they only go up. Downloads, page views, and stars accumulate whether or not anyone got value, so they reward activity rather than outcome; [Eric Ries named the problem](https://www.startuplessonslearned.com/2009/12/why-vanity-metrics-are-dangerous.html) in the lean-startup writing that popularized the term. A metric earns its place when a bad result would change what you do next, and a number that can only rise cannot tell you that.
+Vanity metrics are seductive because they only go up. Downloads, page views, and stars accumulate whether or not anyone got value. [Eric Ries argues](https://www.startuplessonslearned.com/2009/12/why-vanity-metrics-are-dangerous.html) that a vanity metric such as total hits is a gross number rather than a per-customer one, and carries no built-in measure of what caused it. <Cite id="rodden-2010" /> make the same point about seven-day active users: the count doesn't separate new users from returning ones, and with complete turnover of the user base every week it could still rise. They recommend normalizing raw counts, which go up as the user base grows, into ratios, percentages, or per-user averages.
 
-Small samples deserve the same suspicion. The product-market fit question is meaningful across dozens of respondents; with eight users, one answer moves the share by twelve percentage points, so 38 percent and 50 percent are one person apart. Report the count alongside the share, so a reader can see how much weight the number can bear.
+Small samples deserve the same suspicion. The product-market fit share is meaningful across dozens of respondents; with eight users, one answer moves it by twelve percentage points, so 38% and 50% are one person apart. Rahul Vohra, who ran the survey at Superhuman, [argues](https://review.firstround.com/how-superhuman-built-an-engine-to-find-product-market-fit/) that results start to be directionally correct around 40 respondents. Report the count alongside the share, so a reader can see how much weight the number can bear.
 
-Brainstorming sessions produce mostly bad ideas, and that is by design. The obvious ideas come out first because they are the ones everyone already had, and the less obvious ones surface only after those are on the wall. A session that stops at the first plausible idea has skipped the part it existed for, which is why the rules above insist on quantity before judgment.
+Brainstorming sessions produce mostly ordinary ideas at first, and that's expected. The **serial order effect**, the tendency for later ideas in a session to be more creative than earlier ones, is one of the oldest and most robust findings in modern creativity research <Cite id="beaty-2012" form="parenthetical" />; people retrieve the obvious, common ideas first and the rarer ones later <Cite id="paulus-2018" form="parenthetical" />. A session that stops at the first plausible idea has skipped the part it existed for, which is why the rules above put quantity before judgment.
 
-Teams skip prioritization when everything feels urgent, which is exactly when it matters most. Urgency makes every item feel like a Must, and a ranking is the only instrument a team has for saying no to something on purpose rather than by running out of time.
+Generating an original idea doesn't mean the team will pick it. <Cite id="paulus-2018" /> describe a feasibility bias in selection, and some evidence that groups that generate many ideas go on to select less original ones. Agree on the selection criteria before anyone votes, and make novelty one of them if the project needs it, because a vote with no stated criteria leaves that bias free to pick for you.
 
 ## Planning and Prioritization in Industry and Academia
 
-Product teams at companies like Atlassian, Spotify, and Intercom run some form of the impact-effort or cost-value plot every quarter, usually as a RICE score (reach, impact, confidence, effort) that adds a confidence term to the matrix. Amazon's Working Backwards starts from the press release and FAQ, which is reverse brainstorming applied to a launch. Google's HEART framework came out of its UX research team and is used alongside AARRR-style funnel dashboards in most consumer products. The PMF question is the standard growth-stage survey at venture-backed startups, and the two-in-five threshold is the number investors ask about.
+Product teams have their own variants of the matrices. Intercom's [RICE score](https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/) (reach, impact, confidence, effort) adds a confidence term to the impact-effort plot, which Sean McBride argues curbs enthusiasm for exciting but ill-defined ideas.
 
-In research, the equivalent of committing a metric with a date is pre-registration: stating the hypothesis, the primary measure, and the analysis plan before collecting data. Journals in psychology and medicine increasingly require it, and computational fields are adopting it through registered reports. The prioritization equivalent is the experiment plan: which runs first, which baselines, and what result would end the line of inquiry.
+Other companies decide what to build by writing first. Amazon's Working Backwards, as [Werner Vogels describes it](https://www.allthingsdistributed.com/2006/11/working_backwards.html), starts product definition from the documents needed at launch, the press release and the FAQ, and works back toward the implementation.
 
-In open source, prioritization is public. Maintainers triage issues with labels (`good first issue`, `help wanted`, `wontfix`) that are MoSCoW by another name, and roadmaps are ranked backlogs anyone can read. Reading how a project you contribute to ranks its work tells you where your patch will land.
+Metric frameworks come from practice too. <Cite id="rodden-2010" /> applied HEART and Goals-Signals-Metrics to more than 20 products and projects at Google. Vohra's account of Superhuman shows the product-market fit survey used to segment users: the people who answered "Very disappointed" narrowed down which users the product was for.
+
+In research, the equivalent of committing a metric with a date is **preregistration**: defining the research questions and analysis plan before observing the outcomes <Cite id="nosek-2018" form="parenthetical" />. Nosek and colleagues present it as an effective guard against mistaking an explanation found in the data for a prediction made beforehand, a mistake that hindsight bias (seeing an outcome as more predictable after the fact than before it) makes hard to avoid. They note that preregistration is required for clinical trials, both by US law and by journals that follow the International Committee of Medical Journal Editors policy. The Center for Open Science lists [over 300 journals](https://www.cos.io/initiatives/registered-reports) that offer Registered Reports, in which peer review of the question and method happens before data collection, among them PeerJ Computer Science and Frontiers in Computer Science. The ranked backlog has a research equivalent too: the experiment plan, which says which runs come first, which baselines they compare against, and what result would end the line of inquiry.
+
+In open source, prioritization is public. GitHub creates a set of [default labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels) in every new repository, including `good first issue`, `help wanted`, and `wontfix`, and `wontfix` does the job of MoSCoW's Won't Have, on the record. Before you contribute to a project, read how it labels and ranks its issues, because that tells you whether a patch will be reviewed soon or wait.
+
+## References
+
+<References />
 
 ## Additional Readings
 
-Most prioritization frameworks are the same small set of ideas with different
-labels, so the entries below are chosen for the ones that add something: a
-scoring model you can argue with, a mapping technique that produces a release
-line, and the product writing on what actually needs deciding first.
-
 **Sources and further reading**
 
-- [RICE scoring](https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/), Intercom: reach, impact, confidence, effort, and the caveat that confidence is the term doing the work.
-- [MoSCoW method](https://en.wikipedia.org/wiki/MoSCoW_method): must, should, could, will not, and why the last category is the useful one.
-- [User Story Mapping](https://www.nngroup.com/articles/user-story-mapping/), Nielsen Norman Group: how a horizontal line through a map of stories becomes a release.
-- [The Eisenhower matrix](https://www.eisenhower.me/eisenhower-matrix/): urgent against important, and the quadrant where design docs quietly die.
-- [The four big risks](https://www.svpg.com/four-big-risks/), Marty Cagan: value, usability, feasibility, and viability, which is a better checklist than any 2x2 on this page.
-- [Yagni](https://martinfowler.com/bliki/Yagni.html), Martin Fowler: the argument against building for a future you are guessing at.
-- [How Superhuman Built an Engine to Find Product/Market Fit](https://review.firstround.com/how-superhuman-built-an-engine-to-find-product-market-fit/), First Round Review: the source of the PMF survey question this guide uses, including its sample-size caveats.
+- [User Story Mapping](https://jpattonassociates.com/story-mapping/), Jeff Patton
+- [The Four Big Risks](https://www.svpg.com/four-big-risks/), Marty Cagan
+- [Yagni](https://martinfowler.com/bliki/Yagni.html), Martin Fowler
+- [Beyond Productivity Loss in Brainstorming Groups](https://doi.org/10.1016/S0065-2601%2810%2943004-X), Wolfgang Stroebe, Bernard Nijstad, and Eric Rietzschel
+- [HARKing: Hypothesizing After the Results Are Known](https://doi.org/10.1207/s15327957pspr0203_4), Norbert Kerr
+- [Trustworthy Online Controlled Experiments](https://experimentguide.com/), Ron Kohavi, Diane Tang, and Ya Xu
 
 **Activities that exercise this**
 

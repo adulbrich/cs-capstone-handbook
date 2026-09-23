@@ -1,0 +1,20 @@
+authors:
+  - Mullen, B.
+  - Johnson, C.
+  - Salas, E.
+year: 1991
+title: >-
+  Productivity Loss in Brainstorming Groups: A Meta-Analytic Integration
+venue: Basic and Applied Social Psychology
+kind: peer-reviewed
+url: https://doi.org/10.1207/s15324834basp1201_1
+doi: 10.1207/s15324834basp1201_1
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Brainstorming groups are generally significantly less productive than
+      nominal groups, in both quantity and quality, and the loss is stronger
+      in larger groups and when contributions are spoken aloud (tape-recorded)
+      rather than written.
+    locator: Abstract

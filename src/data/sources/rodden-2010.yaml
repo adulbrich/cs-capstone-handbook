@@ -1,0 +1,45 @@
+authors:
+  - Rodden, K.
+  - Hutchinson, H.
+  - Fu, X.
+year: 2010
+title: >-
+  Measuring the User Experience on a Large Scale: User-Centered Metrics for
+  Web Applications
+venue: Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI)
+kind: peer-reviewed
+url: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/36299.pdf
+doi: 10.1145/1753326.1753687
+# Read in full: the author's version, hosted by Google Research.
+verified: full-text
+claims:
+  - claim: >-
+      HEART (Happiness, Engagement, Adoption, Retention, and Task success) is
+      a set of categories from which a team defines the specific metrics it
+      uses to track progress toward its goals.
+    locator: HEART Metrics
+  - claim: >-
+      It is not always appropriate to use metrics from every category; the
+      framework helps a team decide explicitly to include or exclude one, and
+      Engagement may not be meaningful in an enterprise context where users
+      are expected to use the product as part of their work.
+    locator: HEART Metrics
+  - claim: >-
+      A count of seven-day active users gives no insight into commitment and
+      does not separate new from returning users; with 100% turnover in the
+      user base from week to week, it could still increase.
+    locator: PULSE Metrics
+  - claim: >-
+      The Goals-Signals-Metrics process steps a team through articulating the
+      goals of a product or feature, identifying the signals in user behavior
+      or attitudes that indicate success, and building specific metrics to
+      track.
+    locator: Goals - Signals - Metrics
+  - claim: >-
+      Raw counts go up as the user base grows and need to be normalized;
+      ratios, percentages, or averages per user are often more useful.
+    locator: Goals - Signals - Metrics, Metrics
+  - claim: >-
+      The authors applied HEART and the Goals-Signals-Metrics process to more
+      than 20 different products and projects within Google.
+    locator: Conclusions
