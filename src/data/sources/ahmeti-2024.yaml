@@ -1,0 +1,45 @@
+authors:
+  - Ahmeti, B.
+  - Linder, M.
+  - Groner, R.
+  - Wohlrab, R.
+year: 2024
+title: "Architecture Decision Records in Practice: An Action Research Study"
+venue: Software Architecture, 18th European Conference (ECSA), Lecture Notes in Computer Science
+kind: peer-reviewed
+url: https://rebekkaa.github.io/files/2024_ECSA.pdf
+doi: 10.1007/978-3-031-70797-1_22
+# Read in full as the accepted manuscript on the last author's site, so the
+# locators are section names rather than published page numbers.
+verified: full-text
+claims:
+  - claim: >-
+      In an action research study at one company whose teams develop a
+      microservice-based system (two teams), introducing ADRs addressed challenges of
+      documentation culture, knowledge transfer, and prioritizing what to
+      document, and the authors found that cooperation among the teams
+      improved.
+    locator: Abstract; Section 6.3, Documentation Culture
+  - claim: >-
+      Practitioners sometimes struggled to decide whether a decision was
+      architecturally significant and deserved an ADR, and the authors
+      conclude that clear guidelines on what to document are crucial; the
+      participants prioritized by the complexity of the logic, the impact of
+      the change on the system, and the number of developers or teams
+      affected.
+    locator: Section 6.3, Guidelines and Prioritization
+  - claim: >-
+      The guidelines introduced in the study had each ADR reviewed by another
+      developer before it was published, referenced in commit messages and
+      user stories, and labeled proposed, accepted, rejected, deprecated, or
+      superseded.
+    locator: Section 5, Research Method, Action Planning, guidelines G2, G4, and G6
+  - claim: >-
+      The authors found that the decision on where documentation is stored
+      has a strong influence on its perceived usefulness.
+    locator: Abstract; Section 6.3, Shared and Distributed System Parts
+  - claim: >-
+      The authors note that while much research has addressed documenting
+      architectural decisions, few approaches have empirical evidence on their
+      applicability and usefulness in practice.
+    locator: Abstract
