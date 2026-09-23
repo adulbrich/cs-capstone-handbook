@@ -71,7 +71,7 @@ If you built it and understood it, both are easy.
 
 - Use them. Professionals do.
 - **You own the result**: correctness, security, licensing.
-- **Delegate deliberately**: say what you handed to AI, what safety net made that reasonable, and where you validated yourself. Graded on the fit, not the tool.
+- **Delegate deliberately**: say what you handed to AI, what checks made that reasonable, and where you validated yourself. Graded on the fit, not the tool.
 - Your team charter defines what may enter which tools (NDA teams especially).
 
 The bottleneck is judgment, not typing speed.

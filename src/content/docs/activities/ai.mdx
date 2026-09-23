@@ -11,8 +11,8 @@ Most advice about AI tools is some version of "check the output carefully." That
 
 That is a real skill, it is learnable, and it is what these activities practice. Three ideas organize them:
 
-1. **Some decisions are one-way doors.** Undoing them costs far more than getting them right. Those deserve your attention. Most other work does not.
-2. **You may delegate only as far as your net catches.** Trust without a safety net is recklessness. Trust with one is ordinary engineering. If you want to delegate more, build a better net first.
+1. **Some decisions are hard to reverse.** Undoing them costs far more than getting them right. Those deserve your attention. Most other work does not.
+2. **You may delegate only as far as your checks catch.** Trust without checks is recklessness. Trust with them is ordinary engineering. If you want to delegate more, build better checks first.
 3. **Some work cannot be delegated at all.** Whether the product is actually good is a judgment call, and it stays yours.
 
 :::note[Your tools do not have to be the best ones]
@@ -21,20 +21,20 @@ This page teaches the current industry baseline, including things that need a ca
 You are never required to use any of these tools. What matters is your judgment about where to delegate and how you verified the result, not which subscription you hold, and a student on a free tier who gates tightly and validates carefully is doing the harder work. Every activity below states its substitute for more limited tooling.
 :::
 
-## Map Your One-Way Doors
+## Map Your Hard-to-Reverse Decisions
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
 Sort your team's upcoming decisions into the ones that deserve your attention and the ones that do not, so you stop spending equal care on a database schema and a button color. Thirty minutes as a team, once a term.
 
 - **List ten decisions**: the next ten your team expects to make, written down before you classify any of them.
-- **Classify each**: a **one-way door** is expensive or impossible to undo; a **two-way door** is cheap to change once you learn something. Typical one-way doors are database schema, authentication and authorization, deployment topology, data migrations, public API shape, licensing, third-party commitments, and anything touching user data you cannot regenerate. Typical two-way doors are most feature code, UI layout, internal module boundaries, and any library you could swap in a week.
-- **Assign a validator**: for each one-way door, name who checks it and what they check before the team commits.
-- **Revisit at the end of the term**: which classifications were wrong? Treating a two-way door as one-way costs you time. The other error is how teams lose a week to a migration they cannot roll back.
+- **Classify each**: a **hard-to-reverse decision** is expensive or impossible to undo; an **easy-to-reverse decision** is cheap to change once you learn something. Typical hard-to-reverse decisions are database schema, authentication and authorization, deployment topology, data migrations, public API shape, licensing, third-party commitments, and anything touching user data you cannot regenerate. Typical easy-to-reverse decisions are most feature code, UI layout, internal module boundaries, and any library you could swap in a week.
+- **Assign a validator**: for each hard-to-reverse decision, name who checks it and what they check before the team commits.
+- **Revisit at the end of the term**: which classifications were wrong? Treating an easy-to-reverse decision as hard to reverse costs you time. The other error is how teams lose a week to a migration they cannot roll back.
 
 Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
-A good output is a list where the one-way doors are few. If you classified eight of ten as one-way, you have not made the distinction, you have just labeled everything important.
+A good output is a list where the hard-to-reverse decisions are few. If you classified eight of ten as hard to reverse, you have not made the distinction, you have just labeled everything important.
 
 ## Audit Your Safety Net
 
@@ -45,7 +45,7 @@ Measure the gap between how much you delegate and how much your automation would
 - **State your delegation accurately**: roughly how much of your code is currently written by AI tools.
 - **Inventory what would catch it**: do tests exist for the paths that matter, and would they fail if the behavior broke? Does CI run on every pull request, and is it green? Are the hard-to-undo paths gated by review, or can anything merge? Is there a staging or preview environment? Can you roll back, and have you ever tried?
 - **Name the gap**: the distance between those two lists.
-- **Close it from the top**: the highest-value net is always the one guarding the door you cannot walk back through.
+- **Close it from the top**: the highest-value check is always the one guarding the decision you cannot walk back.
 
 Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
 
@@ -62,7 +62,7 @@ Install a shared set of agent workflows so that a task like "review this pull re
 - **Compare**: write down what changed in the output versus prompting freehand.
 - **Commit the choice**: skills belong in the repository so everyone gets the same behavior. Your team's AI coordinator owns which ones the team standardizes on.
 
-Several of these *are* the net rather than a convenience: a separate architectural-review pass and a code-review pass are safety-net components, and a plan-before-you-build skill is what turns "make it do X" into the kind of specification a design document can be written from.
+Several of these *are* checks rather than conveniences: a separate architectural-review pass and a code-review pass are checks in their own right, and a plan-before-you-build skill is what turns "make it do X" into the kind of specification a design document can be written from.
 
 :::caution[A skill is someone else's opinion, executed automatically]
 Read a skill before you install it. Some encode strong workflow opinions that may not suit your project, and you own whatever they produce, and nobody reviewing it will care that a skill wrote it.

@@ -64,7 +64,7 @@ Criterion renames that require re-importing rubric TSVs:
 
 Points are unchanged in every case; only labels and band descriptions moved. The Communication rename landed last (2026-08-19) and completes the pass: the criterion now also asks what the student told someone whose work they reviewed and what changed because of it, so all three band descriptions changed and `defense/` needs re-importing. In fall and winter that is the RFC cross-team review; in spring it is code review, because there is no RFC in spring. The **defense Ownership criterion is now dual-tagged `SO2, SO4`**, which is the course's fix for the SO4 concentration concern and the reason per-student defense scores must keep reaching Canvas as program assessment evidence.
 
-**AI policy changed in all three syllabi.** "Briefly disclose any AI use" is gone. The policy is now: state what you delegated, what safety net made that reasonable, and where you validated yourself, with grading on the fit rather than on tool sophistication.
+**AI policy changed in all three syllabi.** "Briefly disclose any AI use" is gone. The policy is now: state what you delegated, what checks made that reasonable, and where you validated yourself, with grading on the fit rather than on tool sophistication.
 
 **New Canvas item to create:** one **Workshop Activities** column per term, graded complete/incomplete per item. Fall is 2% across 4 items, winter 1% across 3 items, spring 1% across 2 items. See [Workshop Activities](https://capstone.alexulbrich.com/assignments/workshop-activities/) for the item list and timing. Grading is confirming something real was submitted; there is no quality bar and no rubric, so a grader spends seconds per item. **The old extra-credit activity items are retired.**
 
@@ -175,6 +175,21 @@ Points and tags unchanged; criterion names and band descriptions changed, so re-
 | `incident-postmortem/` | Impact and timeline: numbers, timestamps, missed signals; Writing: length, sections, facts |
 | `team-charter/` | Writing: length, sections, quotable commitments |
 | `project-retrospective/` | Forward-looking section: three first actions, linked |
+
+## Rubric TSVs Requiring Re-Import: Plain Words for the AI Policy (#207)
+
+The AI policy now says "checks" where it said "the net" or "safety net", and "hard-to-reverse decision" where it said "one-way door". "Honest" is gone from every criterion, replaced by the word each one means. Points and tags are unchanged; criterion names and band descriptions changed, so re-import all eight, and re-paste the three syllabus bodies from `canvas/syllabus/` (the AI policy paragraphs):
+
+| File | What changed |
+|---|---|
+| `defense/` | Ownership and delegation: "checks" for "safety net" in the description and all three bands; Judgment: "the actual reasons", and "hard to reverse" for "one-way doors"; Communication: "candid" for "honest" |
+| `repo-checkpoint/` | Living docs: "the quickstart is accurate"; Build health and safety net: "the checks match" in the description and bands (criterion name unchanged) |
+| `rfc/` | Options: "the real costs"; Delegation and validation: "checks" for "safety net" |
+| `definition-of-shipped/` | Criterion renamed `Target rung: explicit, project-specific, candid [SO2]`; description and Exceeds band say "candid about ambition" |
+| `project-handoff/` | Known issues: "candid tone", "candid rather than promotional" |
+| `project-retrospective/` | Decisions: "candid about the debt incurred"; Team dynamics: "discussed critically and candidly" |
+| `spring-release/` | Criterion renamed `Accurate outcomes [SO6]` (was Honest outcomes); Trailer description: "partial features named as partial" |
+| `workshop-activities/` | `-fall-` row renamed `Map Your Hard-to-Reverse Decisions` (was Map Your One-Way Doors), with its description; Audit Your Safety Net: "Accurate statement" |
 
 ## Canvas Items Without a Rubric: Term Startup (#157), Demo Day (#172) and Expo (#162)
 

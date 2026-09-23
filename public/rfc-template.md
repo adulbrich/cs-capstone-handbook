@@ -21,7 +21,7 @@ What decision is needed, why now, and what happens if the team does nothing. Wri
 
 ## Options
 
-At least three credible options, **including "do nothing"**. Give each option a short name and an honest account of its costs. An option you would be embarrassed to recommend is not credible; a strawman weakens the whole document.
+At least three credible options, **including "do nothing"**. Give each option a short name and an account of its real costs. An option you would be embarrassed to recommend is not credible; a strawman weakens the whole document.
 
 ### Option A: [Name]
 
@@ -50,7 +50,7 @@ Licensing, data use, IP, and the partner confidentiality boundary as they bear o
 ## Delegation and Validation
 
 - **What you handed to AI tools** on this decision, whether that was the analysis, the prototype, the tests, or the writing.
-- **What safety net made that reasonable**: tests, CI, review gates, a staging environment, a rollback path. Name the ones that actually exist in your repo, not the ones you intend to build.
+- **What checks made that reasonable**: tests, CI, review gates, a staging environment, a rollback path. Name the ones that actually exist in your repo, not the ones you intend to build.
 - **Where you stopped and validated the result yourself, and why those points.** If this decision is hard to reverse, say what you personally checked before committing to it.
 
 What is assessed is in the [AI policy](https://capstone.alexulbrich.com/assignments/introduction/#ai-policy-applies-to-every-assignment).

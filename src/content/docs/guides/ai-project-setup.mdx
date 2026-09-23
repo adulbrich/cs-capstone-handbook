@@ -53,7 +53,7 @@ TypeScript, React 19, Express, Postgres via Prisma, Vitest, Playwright.
 ## Do not
 - Add a dependency without an issue that says why.
 - Change the Prisma schema, auth, or deployment config without a human
-  review. These are one-way doors.
+  review. These are hard-to-reverse decisions.
 - Paste partner data, user emails, or .env contents into any tool.
 ```
 
@@ -168,7 +168,7 @@ Two published collections are worth reading, because reading a well-built skill 
 - **[obra's Superpowers](https://github.com/obra/superpowers)**: brainstorming, subagent-driven development with built-in code review, systematic debugging, and red/green test-driven development. It also includes skills for writing and testing new skills.
 - **[Matt Pocock's skills](https://github.com/mattpocock/skills)**: spec and ticket flows, TDD, code review, domain modelling, and a "grilling" skill that stress-tests a plan by arguing with you about it.
 
-A separate architectural-review pass, a code-review pass and a plan-before-you-build step are not conveniences. They are the same net the [hooks and gates](#hooks-and-gates) above build, one layer earlier. The difference is that a skill runs when someone invokes it and a hook runs on its own, so a check you would be sorry to forget belongs in a hook.
+A separate architectural-review pass, a code-review pass and a plan-before-you-build step are not conveniences. They are the same checks the [hooks and gates](#hooks-and-gates) above build, one layer earlier. The difference is that a skill runs when someone invokes it and a hook runs on its own, so a check you would be sorry to forget belongs in a hook.
 
 One warning: a skill is someone else's opinion, executed automatically. Read one before you install it, because your team owns whatever it produces.
 
@@ -182,7 +182,7 @@ It is also the one item on this page that is **not** shared. Memory lives on one
 
 - **One source of truth.** Write the content in `AGENTS.md` and have every per-tool file point at it. Two instruction files that disagree are worse than none.
 - **A rule the model can ignore is not a rule.** `AGENTS.md` is where you explain a constraint; a hook or a CI check is where you enforce it. Anything you would be angry to find in a diff belongs in the second place as well as the first.
-- **Gate the one-way doors first.** Schema changes, auth, deployment config and credentials are where a blocked action is worth an inconvenience. Everything else can stay advisory.
+- **Gate the hard-to-reverse decisions first.** Schema changes, auth, deployment config and credentials are where a blocked action is worth an inconvenience. Everything else can stay advisory.
 - **Commit all of it.** Instructions, hooks, skills and MCP configuration belong in the repository, not in one person's editor settings.
 - **Keep instructions short.** A file nobody reads is a file the tool half-follows. The list above fits on a page; anything longer belongs in `docs/`.
 - **Write the "do not" section first.** It is the part that prevents damage, and it is the part teams forget.
@@ -239,5 +239,5 @@ to delegate, what to gate, and how other people have answered those questions.
 
 - [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure the gap between how much your team delegates and how much your gates would actually catch.
 - [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): pick the skills your team will actually run and commit them.
-- [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors): decide which actions get a gate before you delegate anything.
+- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): decide which actions get a gate before you delegate anything.
 - [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): the MCP section made concrete against your own application.
