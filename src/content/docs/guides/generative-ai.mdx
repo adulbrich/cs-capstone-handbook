@@ -62,9 +62,9 @@ AI-generated code can look correct while being subtly wrong: off-by-one errors, 
 
 The strategy that does scale has two parts.
 
-**Spend your attention where mistakes are expensive to undo.** Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are one-way doors: getting them wrong costs far more than the review would have. Most feature code is a two-way door, cheap to fix once something tells you it is broken. Validate hard at the doors; delegate freely elsewhere.
+First, spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are one-way doors: getting them wrong costs far more than the review would have. Most feature code is a two-way door, cheap to fix once something tells you it is broken. Validate hard at the doors; delegate freely elsewhere.
 
-**Make "elsewhere" safe by building the net.** You may reasonably delegate exactly as far as your safety net catches: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without a net is recklessness. Trust with one is ordinary engineering. If you want to hand off more, improve the net first rather than reading harder.
+Second, make "elsewhere" safe by building the net. You may reasonably delegate exactly as far as your safety net catches: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without a net is recklessness. Trust with one is ordinary engineering. If you want to hand off more, improve the net first rather than reading harder.
 
 That is the standard worth holding yourself to, whatever any policy says.
 
@@ -124,7 +124,7 @@ When you ask "what can I hand off?", this is the index. Each entry links to the 
 | Security scanning (dependency audit, secret scanning) | [Security](/guides/security/) |
 | Documentation and changelog generation | [Documentation](/guides/documentation/) |
 
-**What stays human.** Whether the product is actually good for the person using it. Which decisions are one-way doors. The tradeoffs your users and your project partner will feel. And whether an automated finding actually matters, which is a judgment no tool makes for you: a report with forty findings is not forty problems.
+Four judgments stay human: whether the product is actually good for the person using it, which decisions are one-way doors, the tradeoffs your users and your project partner will feel, and whether an automated finding actually matters, which no tool decides for you: a report with forty findings is not forty problems.
 
 :::note[Reviewed annually]
 This section and the tool names throughout this guide are the fastest-moving content in the handbook. It is checked once a year. The judgment they support (spend attention where mistakes are expensive, build the net that covers the rest) has been stable much longer than any of these tools have existed, which is why the judgment is the part worth learning and the tool names are not.
@@ -255,7 +255,7 @@ The evidence on whether these tools actually help is thinner and stranger than
 the volume of writing about them suggests, so the first three entries are
 studies rather than opinion. Read at least the METR summary: it is the single
 most useful corrective to your own sense of how much faster you are going.
-The vendor documentation is here because prompting technique is genuinely
+The vendor documentation is here because prompting technique is
 tool-specific and changes with each release.
 
 **Sources and further reading**

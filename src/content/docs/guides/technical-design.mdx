@@ -5,6 +5,8 @@ sidebar:
   order: 8
 ---
 
+{/* check-prose: legacy-opener */}
+
 import { LinkCard } from '@astrojs/starlight/components';
 
 Read this before writing `docs/design.md` or when integration keeps surprising you; it gives you what a design document must decide and how to keep it current.
@@ -242,7 +244,7 @@ The design document addresses the *architectural* side of AI coordination: what 
 
 ## Some Truths About Technical Design
 
-No design survives contact with implementation, and the honest version of that
+No design survives contact with implementation, and the plain version of that
 is stronger than it sounds: the document will be wrong, and its value is almost
 entirely in what the team understood while writing it. This has a practical
 implication people miss. If the value is in the thinking, then a design document
@@ -270,7 +272,7 @@ change later (data model, authorization boundaries, deployment topology,
 integration contracts), and let everything else emerge. The test for the list is
 not importance but reversibility.
 
-A diagram drawn in twenty minutes genuinely does prevent days of rework, and the
+A diagram drawn in twenty minutes does prevent days of rework, and the
 reason is that it makes disagreement visible. Four people can say "the API talks
 to the database" and hold four different pictures of what that means, and the
 words will not surface the difference. A boxes-and-arrows sketch will, usually

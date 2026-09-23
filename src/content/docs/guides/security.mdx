@@ -5,6 +5,8 @@ sidebar:
   order: 14
 ---
 
+{/* check-prose: legacy-opener */}
+
 import { LinkCard } from '@astrojs/starlight/components';
 
 Read this before your system handles real users or real data; it gives you the threats worth your time and the baseline practices that close them.
@@ -28,7 +30,9 @@ The goal is not to enumerate every possible attack. It is to find the threats th
 
 For a capstone project, a full formal threat model is overkill. A lightweight version that the team can complete in a single session is far more valuable than a comprehensive one that never happens. Here is a practical approach:
 
-**1. Draw the system.** Start with a diagram of your architecture: the components, the data flows between them, and the trust boundaries (where data crosses from one security context to another). If you already have a C4 context or container diagram from your technical design, use that.
+#### 1. Draw the system
+
+Start with a diagram of your architecture: the components, the data flows between them, and the trust boundaries (where data crosses from one security context to another). If you already have a C4 context or container diagram from your technical design, use that.
 
 <LinkCard
   title="Technical Design"
@@ -36,11 +40,17 @@ For a capstone project, a full formal threat model is overkill. A lightweight ve
   description="Architecture diagrams that double as the starting point for threat modeling."
 />
 
-**2. Identify the assets.** What data or resources are valuable? User credentials, personal information, API keys, payment data, research datasets, administrative access. These are what an attacker wants.
+#### 2. Identify the assets
 
-**3. Identify the entry points.** Where can external input reach your system? Web forms, API endpoints, file uploads, URL parameters, WebSocket connections, environment variables read from external sources. Every entry point is a potential attack surface.
+What data or resources are valuable? User credentials, personal information, API keys, payment data, research datasets, administrative access. These are what an attacker wants.
 
-**4. Ask "what could go wrong?" at each entry point.** For each entry point and each asset, consider the common threat categories. The STRIDE model provides a useful checklist:
+#### 3. Identify the entry points
+
+Where can external input reach your system? Web forms, API endpoints, file uploads, URL parameters, WebSocket connections, environment variables read from external sources. Every entry point is a potential attack surface.
+
+#### 4. Ask "what could go wrong?" at each entry point
+
+For each entry point and each asset, consider the common threat categories. The STRIDE model provides a useful checklist:
 
 | Threat | Question | Example |
 |--------|----------|---------|
@@ -53,7 +63,9 @@ For a capstone project, a full formal threat model is overkill. A lightweight ve
 
 You do not need to address every cell in the matrix. Focus on the threats that are both likely and impactful for your specific project.
 
-**5. Decide what to do about each threat.** For each identified threat, the team has four options:
+#### 5. Decide what to do about each threat
+
+For each identified threat, the team has four options:
 
 - **Mitigate**: implement a control that reduces or eliminates the risk (input validation, authentication, encryption).
 - **Accept**: acknowledge the risk and document why it is acceptable for this project (low likelihood, low impact, out of scope).
@@ -245,7 +257,7 @@ available benefit. You will not make your project unbreakable. You can make it
 uninteresting to the kind of automated scanning that finds exposed databases
 within hours of them appearing, and that is a real and achievable goal.
 
-The one genuinely expensive mistake on this page is architectural. Retrofitting
+The one expensive mistake on this page is architectural. Retrofitting
 authentication and access control into a system that assumed neither is not a
 patch, it is a rewrite of every data path, because the question "who is allowed
 to see this row" has to be answered everywhere at once. This is the argument for

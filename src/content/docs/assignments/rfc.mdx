@@ -31,9 +31,9 @@ One-way doors are typically architecture, database schema, authentication and au
 
 Two situations make the choice harder, and both are ordinary:
 
-**Your partner already decided.** Many teams inherit the stack, the hosting, the database, and the review process, and find out in week 3 how little is genuinely theirs to choose. Write on a decision inside that constrained space, or on how to work within a constraint you were handed: how to verify against a system you cannot change, how to migrate data on a schedule someone else owns, what you would have to prove before asking your partner to reconsider. Naming a constraint accurately and reasoning inside it is real engineering, and it argues better than an invented choice.
+Your partner already decided. Many teams inherit the stack, the hosting, the database, and the review process, and find out in week 3 how little is theirs to choose. Write on a decision inside that constrained space, or on how to work within a constraint you were handed: how to verify against a system you cannot change, how to migrate data on a schedule someone else owns, what you would have to prove before asking your partner to reconsider. Naming a constraint accurately and reasoning inside it is real engineering, and it argues better than an invented choice.
 
-**Nothing hard to reverse is live in your four-week window.** Write on the most consequential reversible decision you face, and say in the problem framing why it is reversible and what would make it not.
+Nothing hard to reverse is live in your four-week window. Write on the most consequential reversible decision you face, and say in the problem framing why it is reversible and what would make it not.
 
 Do not invent a one-way door you are not standing in front of.
 :::
@@ -59,7 +59,7 @@ Feedback is structured: for each draft you review, answer four questions in writ
 ## What the RFC Must Contain
 
 1. **Problem and context**: what decision is needed, why now, what happens if the team does nothing.
-2. **Options**: at least three credible options including "do nothing", each with honest costs.
+2. **Options**: at least three credible options including "do nothing", each with its real costs.
 3. **Analysis**: the technical tradeoffs that matter (performance, complexity, maintainability, security, cost), argued from cited sources and your own project evidence, not vibes.
 4. **Recommendation and verification plan**: what you propose and, concretely, how the team will know it worked (tests, metrics, acceptance criteria).
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.

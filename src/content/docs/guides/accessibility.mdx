@@ -5,6 +5,8 @@ sidebar:
   order: 13
 ---
 
+{/* check-prose: legacy-opener */}
+
 import { LinkCard } from '@astrojs/starlight/components';
 
 Read this when a real interface first exists; it gives you the three checks that find what a working mouse and a working pair of eyes never will.
@@ -53,7 +55,7 @@ Automated rules and your own keyboard pass tell you whether the software is *usa
 
 Where feasible, recruit one participant who uses a screen reader, voice control, or switch access as part of their normal day, and run the same task-based session you would run with any other user. Campus disability services, local accessibility meetups, and your project partner's own user base are the usual routes.
 
-Where that is not feasible in your timeline, the honest substitute is a task-based session under simulated constraint: a teammate who did not build the feature completes the flow keyboard-only or with a screen reader on. State plainly in your writeup that this was simulated. Simulation finds broken things; it does not tell you what daily use feels like, and pretending otherwise is the mistake worth avoiding.
+Where that is not feasible in your timeline, the closest substitute is a task-based session under simulated constraint: a teammate who did not build the feature completes the flow keyboard-only or with a screen reader on. State plainly in your writeup that this was simulated. Simulation finds broken things; it does not tell you what daily use feels like, and pretending otherwise is the mistake worth avoiding.
 
 <LinkCard
   title="Designing for Accessibility"
@@ -83,7 +85,7 @@ Automated tools are oversold and still worth running. A green automated run is n
 
 The manual pass is the highest-yield thing on this page and takes the least equipment. Unplugging a mouse costs nothing and finds real defects in most student projects on the first try.
 
-Recruiting a daily assistive-technology user on a student timeline is genuinely hard, because the people you need are few, busy, and rightly wary of being a checkbox, and the honest answer is often that you could not. Saying so in your writeup is worth more than a simulated session described as a real one.
+Recruiting a daily assistive-technology user on a student timeline is hard, because the people you need are few, busy, and rightly wary of being a checkbox, and often the answer is that you could not. Saying so in your writeup is worth more than a simulated session described as a real one.
 
 Retrofitting is the expensive path and it is the one most teams take. The work is mostly in the markup: semantic elements, labels, focus order. Getting it right while the component is being written is nearly free, and the same fix after a design is finished can mean rebuilding the component.
 
