@@ -151,7 +151,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 - CATME, end of spring only, is read to corroborate the peer scores and is not scored.
 - Known issues fixed on this branch: peer-eval corrected score now posted to the gradebook; s2026 Requirements facet 3.5 mapping.
 - Known issues still open: team-size cap at 6 including self in the peer scripts (teams of 7+ break); Q7 individual-concern extraction stubbed in partner scripts (concerns must be read manually from the export until fixed).
-- Per run: export from Qualtrics (values), update filenames and Canvas assignment IDs at the top of the script, run, eyeball the distribution plot, import the updated gradebook CSV into Canvas, send feedback emails.
+- Per run: export from Qualtrics (values; choice text for the partner midterm run), update filenames and Canvas assignment IDs at the top of the script, run, eyeball the distribution plot, import the updated gradebook CSV into Canvas, send feedback emails.
 
 ## Partner Touchpoints
 
