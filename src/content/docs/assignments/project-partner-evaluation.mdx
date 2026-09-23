@@ -7,14 +7,30 @@ assignment:
   level: team
   terms: [fall, winter, spring]
   weight: 25
+  canvas:
+    - name: "Midterm Pulse"
+      group: Project Partner
+      weeks: { fall: [6], winter: [6], spring: [6] }
+      weight: 5
+      points: 5
+      submission: survey
+    - name: "End-of-Term Survey"
+      group: Project Partner
+      weeks: { fall: [10], winter: [10], spring: [10] }
+      weight: 20
+      points: 20
+      submission: survey
 ---
 
+import CanvasEntries from '/src/components/CanvasEntries.astro';
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 <AssignmentMeta submission="Completed by your project partner, not by you" due="Midterm pulse sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
   Team-level by default, with individual adjustment where a partner flags a specific student.
 </AssignmentMeta>
+
+<CanvasEntries />
 
 25% of your grade every term is based on your interactions with your project partner, scored by them in two surveys:
 

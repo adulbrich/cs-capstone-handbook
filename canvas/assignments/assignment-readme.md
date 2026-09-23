@@ -3,9 +3,21 @@
 - This directory holds one validated `*-rubric-details.tsv` per live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
 - `scripts/validate-outcomes.mjs` reads every TSV as the rubric: it reconciles the outcome tags in field 1 against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own assignment's TSV. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
-- Two directories hold one TSV per term because the item count differs by term. `workshop-activities/`: `-fall-` (4 rows, CS 461), `-winter-` (3 rows, CS 462), `-spring-` (2 rows, CS 463). Each item is 10 points, so the Canvas totals are 40 / 30 / 20 and the percentage comes from the assignment-group weight, not the rubric. `individual-contribution/`: `-fall-` (4 x 25), `-winter-` (5 x 20), `-spring-` (34 / 33 / 33), one criterion per sprint scored Full / Half / Zero; the Half band is exactly half (12.5, 10, 17 / 16.5), which Canvas rubric ratings accept. The grader logic is in the Individual Contribution Modifier section of `STAFF-RUNBOOK.md`.
+- One TSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the TSV. That list, rendered on the page as the Canvas assignments table, is what to create in Canvas. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is the source of truth for all graded work except the two owned in Canvas, and each rubric here is the source of truth for itself.** Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
+
+## Canvas Changes: One Entry per Due Date (#259)
+
+Each Canvas assignment has its own due date, late window, grade and submission, so none may hold several (`AGENTS.md` hard rule 6). The Canvas assignments table on each handbook page lists what to create. What changes from the current fall course:
+
+| Canvas today | Change | Rubric |
+|---|---|---|
+| RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due end of week 5, cross-team pairings assigned by staff. | Import `rfc/rfc-draft-rubric-details.tsv` (new) and `rfc/rfc-final-rubric-details.tsv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
+| Sprint Notes Individual Contributions, one 400-point entry | Delete it. Create **Sprint Notes 1: Individual Contribution** to **Sprint Notes 4: Individual Contribution**, 100 points each, in the Sprint Notes group, no submission, due with the matching note, full marks by Set Default Grade. Winter has 5, spring 3. | Import `individual-contribution/individual-contribution-rubric-details.tsv` (one criterion, Full 100 / Half 50 / Zero 0) on every one. The three per-term TSVs are deleted. |
+| Workshop 1 to Workshop 5, 100 points each | No change to the entries. | Import `workshop-activities/workshop-activities-rubric-details.tsv` (one criterion, Complete 100 / Incomplete 0) on every workshop entry, every term. The three per-term TSVs are deleted. |
+
+No other entry, weight, or rubric changes. The Sprint Notes group stays 8% in fall: 4 notes and 4 individual entries at 100 points each are 1% apiece.
 
 ## Re-import Required: 9 Rubrics, 1 New (#144)
 
@@ -40,8 +52,10 @@ parenthetical grader note, neither of which means anything in Canvas).
 description.**
 
 **Not rubrics students are shown, unchanged and not re-imported:**
-`individual-contribution` and `workshop-activities`. Both are tagless, both hold
-one TSV per term, and no handbook page renders either.
+`individual-contribution` and `workshop-activities`. Both are tagless, both held
+one TSV per term, and no handbook page rendered either. Superseded by #259: each
+is now one TSV, rendered on its page, and both must be imported (see the #259
+section above).
 
 ## Grade Architecture (every term)
 

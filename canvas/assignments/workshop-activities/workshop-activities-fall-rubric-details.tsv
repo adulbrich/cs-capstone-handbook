@@ -1,5 +1,0 @@
-User Story Mapping		true	10	Pass	A story map exists covering the current scope, and docs/requirements.md reflects it.	0	Fail	Not submitted, or the submission is not this activity.
-Map Your Hard-to-Reverse Decisions		true	10	Pass	A list of the team's upcoming decisions sorted into hard-to-reverse and easy-to-reverse, with a validator named for each hard-to-reverse decision.	0	Fail	Not submitted, or the submission is not this activity.
-Audit Your Safety Net		true	10	Pass	Accurate statement of how much is delegated to AI tools, what would catch it if wrong, and one named gap with the smallest change that closes it.	0	Fail	Not submitted, or the submission is not this activity.
-Peer Technical Design Review		true	10	Pass	The written review given to each of the two other teams, plus a note on what changed in your own design after receiving theirs.	0	Fail	Not submitted, or the submission is not this activity.
-Identify Success Metrics		true	10	Pass	A short list of metrics that would prove the project worked for its users, each with how it will be measured and where it will be shown.	0	Fail	Not submitted, or the submission is not this activity.

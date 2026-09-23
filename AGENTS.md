@@ -18,10 +18,10 @@ lives in `src/content/docs/**` as MDX.
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
-| `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per assignment except the two Canvas-owned ones (hard rule 4), rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
+| `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
-| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric TSV, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, and that each page renders its own TSV. Runs in CI and pre-commit. |
+| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric TSVs, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, that each page renders its own TSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
@@ -49,16 +49,15 @@ lives in `src/content/docs/**` as MDX.
    `validate-dashes.mjs` checks the content directories and
    `scripts/check-prose.mjs` checks every tracked text file, root docs and
    skills included, in CI and at pre-commit.
-4. **One rubric per assignment, and it lives in the TSV.** A rubric is
+4. **Each rubric lives once, in its TSV.** A rubric is
    `canvas/assignments/<dir>/*-rubric-details.tsv`, rendered on the handbook
    page by `src/components/RubricTable.astro` and imported into Canvas by the
    rubric-import extension. Edit the TSV, and re-import it into Canvas (#144).
    The handbook still outranks what is *in* Canvas, because the TSV goes one
-   way and is never read back out. Three pages are documented exceptions,
-   listed as `RUBRIC_EXCEPTIONS` in `validate-outcomes.mjs`:
-   `workshop-activities` has no rubric section at all, being scored
-   complete/incomplete per item, and the two Qualtrics instruments keep a
-   hand-written table because theirs carries weights rather than points.
+   way and is never read back out. Two pages are documented exceptions,
+   listed as `RUBRIC_EXCEPTIONS` in `validate-outcomes.mjs`: the Qualtrics
+   instruments keep a hand-written table because theirs carries weights
+   rather than points.
    Two graded pages have no rubric here at all: `resume-and-intent` and
    `career-retrospective` run entirely in Canvas under the co-instructor
    (#197). Their pages are stubs with no `assignment:` block; do not
@@ -70,6 +69,14 @@ lives in `src/content/docs/**` as MDX.
    fact that rots on a schedule. `validate-dates.mjs` checks the content
    directories, the syllabi, and the runbook; the changelogs keep their
    decision timestamps.
+6. **One Canvas entry per due date; never bundle.** Each Canvas assignment
+   has its own due date, late window, grade and submission, so four sprint
+   notes are four entries and a draft and a final are two, even when one
+   handbook page holds them all. The page lists its entries in
+   `assignment.canvas` frontmatter and renders one `<RubricTable>` per
+   distinct rubric; `validate-outcomes.mjs` reconciles the list with the
+   page weight, the rendered rubrics, and Canvas's per-group points. See
+   `docs/decisions/2026-09-23-canvas-entry-model.md`.
 
 ## Validation
 

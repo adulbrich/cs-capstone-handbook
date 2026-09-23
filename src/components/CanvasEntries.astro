@@ -1,0 +1,129 @@
+---
+import { canvasRows, rowName } from "../lib/canvas-entries.mjs";
+
+/**
+ * CanvasEntries: the Canvas assignments an assignment page owns, as a table.
+ *
+ * Reads the page's own `assignment.canvas` frontmatter, so the table cannot
+ * drift from what `scripts/validate-outcomes.mjs` checks or from what the
+ * Canvas import generates. Each row is one family in one term: "Sprint Notes
+ * 1 to 4" is four Canvas assignments, each with its own due date, grade and
+ * submission.
+ *
+ * Accessibility notes:
+ * - A real <table> with a <caption> and header cells.
+ * - Colors come from Starlight's custom properties, so both themes inherit
+ *   their contrast ratios.
+ *
+ * Usage in MDX, on any page that owns more than one Canvas entry in a term
+ * (the validator requires it there):
+ *
+ *   import CanvasEntries from '/src/components/CanvasEntries.astro';
+ *
+ *   <CanvasEntries />
+ */
+const { assignment } = Astro.locals.starlightRoute.entry.data;
+const rows = canvasRows(assignment?.canvas);
+
+const SUBMISSION_LABELS = {
+  none: "No submission",
+  pdf: "PDF",
+  survey: "Survey",
+  url: "URL",
+  video: "Video",
+};
+
+const title = (term: string) => term[0].toUpperCase() + term.slice(1);
+const percent = (n: number) => `${Number.parseFloat(n.toFixed(2))}%`;
+
+function due(weeks: number[], peerReviewWeek?: number) {
+  const unique = [...new Set(weeks)];
+  const last = unique.pop();
+  const list =
+    unique.length === 0
+      ? `Week ${last}`
+      : `Weeks ${unique.join(", ")} and ${last}`;
+  return peerReviewWeek ? `${list}; peer reviews week ${peerReviewWeek}` : list;
+}
+---
+
+<div class="canvas-entries not-content">
+  <table>
+    <caption>Canvas assignments</caption>
+    <thead>
+      <tr>
+        <th scope="col">Entry</th>
+        <th scope="col">Term</th>
+        <th scope="col">Due</th>
+        <th scope="col">Weight</th>
+        <th scope="col">Submission</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            <th scope="row">{rowName(row)}</th>
+            <td>{title(row.term)}</td>
+            <td>{due(row.weeks, row.family.peer_review_week)}</td>
+            <td>
+              {row.names.length > 1
+                ? `${percent(row.each)} each`
+                : percent(row.weight)}
+            </td>
+            <td>
+              {row.submissions
+                .map((s: keyof typeof SUBMISSION_LABELS) => SUBMISSION_LABELS[s])
+                .join(" and ")}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .canvas-entries {
+    margin-block: 1.5rem;
+    overflow-x: auto;
+  }
+
+  .canvas-entries table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sl-text-sm);
+  }
+
+  .canvas-entries caption {
+    text-align: start;
+    font-weight: 600;
+    color: var(--sl-color-white);
+    padding-block-end: 0.5rem;
+  }
+
+  .canvas-entries th,
+  .canvas-entries td {
+    border: 1px solid var(--sl-color-gray-5);
+    padding: 0.5rem 0.75rem;
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .canvas-entries thead th {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-white);
+  }
+
+  .canvas-entries tbody th {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  @media print {
+    .canvas-entries th,
+    .canvas-entries td {
+      border-color: #000;
+    }
+  }
+</style>

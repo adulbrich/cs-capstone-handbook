@@ -12,13 +12,24 @@ assignment:
     SO2: 2
     SO5: 1
     SO6: 1
+  canvas:
+    - name: "Repo Checkpoint {n}"
+      group: Repo Checkpoints
+      weeks: { fall: [5, 10], winter: [5, 10] }
+      weight: 8
+      points: 100
+      submission: pdf
+      rubric: repo-checkpoint/repo-checkpoint-rubric-details.tsv
 ---
 
+import CanvasEntries from '/src/components/CanvasEntries.astro';
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricTsv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-rubric-details.tsv?raw';
 
 <AssignmentMeta submission="Team" due="Fall and winter, weeks 5 and 10" weight="4% each, 8% per term" />
+
+<CanvasEntries />
 
 Your requirements and design documents live in your repository under `docs/`, stay current because your team (and your AI tools) need them current, and are graded in place. A checkpoint is the instruction team's review of the repository as it actually is: no export, no upload, no drift between the document and the code.
 
