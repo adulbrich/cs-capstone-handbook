@@ -1,0 +1,27 @@
+authors:
+  - Petre, M.
+year: 2013
+title: UML in Practice
+venue: 35th International Conference on Software Engineering (ICSE)
+kind: peer-reviewed
+url: https://oro.open.ac.uk/35805/
+doi: 10.1109/ICSE.2013.6606618
+# Read in full from the accepted manuscript on Open Research Online.
+verified: full-text
+claims:
+  - claim: >-
+      In interviews with 50 professional software engineers from 50 companies,
+      35 did not use UML, and 11 used it selectively and informally, for as
+      long as it was useful, after which it was discarded.
+    locator: Section IV; Table I
+  - claim: >-
+      The engineers who did not use UML had typically considered it, often
+      trying it on a project or two, and found it offered no advantage over
+      their current practices and representations.
+    locator: Section V
+  - claim: >-
+      Among the 11 selective users, the most used diagrams were class diagrams
+      (7), sequence diagrams (6), and activity diagrams (6); sequence diagrams
+      were reported as used for requirements elicitation and eliciting
+      behaviors.
+    locator: Table II

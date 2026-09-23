@@ -1,0 +1,30 @@
+authors:
+  - Cherubini, M.
+  - Venolia, G.
+  - DeLine, R.
+  - Ko, A. J.
+year: 2007
+title: "Let's Go to the Whiteboard: How and Why Software Developers Use Drawings"
+venue: Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI)
+kind: peer-reviewed
+url: https://dl.acm.org/doi/10.1145/1240624.1240714
+doi: 10.1145/1240624.1240714
+# Read in full from the authors' PDF of the CHI paper.
+verified: full-text
+claims:
+  - claim: >-
+      Interviews with Microsoft developers, validated by a survey with 427
+      responses, found that most diagrams were transient, and that diagrams
+      documenting design decisions were often drawn in these temporary
+      sketches and then lost.
+    locator: Abstract; p. 559
+  - claim: >-
+      For transient sketches, the value of the diagram was secondary to the
+      setting in which it was drawn, and dropped as soon as that setting ended.
+    locator: p. 563
+  - claim: >-
+      In peer meetings, developers drew informal boxes-and-arrows diagrams
+      and followed no graphical standard; UML use was very low, and diagrams
+      in documentation were often out of date because keeping them in sync
+      with the code was costly.
+    locator: p. 564
