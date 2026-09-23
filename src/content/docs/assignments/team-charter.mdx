@@ -22,9 +22,9 @@ import rubricTsv from '/canvas/assignments/team-charter/team-charter-rubric-deta
   Winter's charter refresh is part of the first [Repo Checkpoint](/assignments/repo-checkpoints/) of the term, and spring's closes the [Team Health Assessment workshop](/assignments/workshop-activities/#spring-1-item-1) in week 2; neither is a separate assignment.
 </AssignmentMeta>
 
-In this assignment you will write your team's operating agreement: who owns what, how decisions get made, what has to be true before code merges, and what happens when the team is not working. It is due in week 2, before you have had the arguments it settles. The [Working Agreement guide](/guides/working-agreement/) explains why teams write one and has patterns to steal; this page says what you submit.
+In this assignment you will write your team's operating agreement: who owns what, how decisions get made, what has to be true before code merges, and what happens when the team isn't working. It is due in week 2, before you have had the arguments it settles. The [Working Agreement guide](/guides/working-agreement/) explains why teams write one and has patterns you can adopt; this page says what you submit.
 
-The charter lives in your repository as `docs/charter.md`. Git history is the change log; there is no separate revision table to maintain. When the charter changes (and it should, as your retrospectives teach you things), change the file and commit.
+The charter lives in your repository as `docs/charter.md`. Git history is the change log; there's no separate revision table to maintain. When the charter changes (and it should, as your retrospectives teach you things), change the file and commit.
 
 ## What You Must Produce
 
@@ -40,11 +40,11 @@ Submit the repository link on Canvas. NDA teams submit a PDF export of all three
 
 ### 1. Roles
 
-Three concerns must each have exactly one named owner. The charter names the owner of each, and says when rotation happens (at minimum, once per term). These three names are the ones the [defense](/assignments/defense/) asks about; do not rename them in your charter, whatever the [working agreement guide](/guides/working-agreement/#roles-and-ownership) says about labels being optional. It is worth reading for what each of the three concerns covers:
+Three concerns must each have exactly one named owner. The charter names the owner of each, and says when rotation happens (at minimum, once per term). These three names are the ones the [defense](/assignments/defense/) asks about; do not rename them in your charter, whatever the [working agreement guide](/guides/working-agreement/#roles-and-ownership) says about labels being optional. The guide is worth reading for what each of the three concerns covers:
 
 - **Project Manager (PM)**: owns the board and the partner communication cadence; owes the team an accurate view of where the sprint actually stands.
 - **AI Coordinator**: owns the AI context file and the confidentiality boundary; owes the team current tooling guidance and a working answer to "can I paste this into that?"
-- **Quality Owner**: owns CI health, the Definition of Done, and releases; owes the team a repository that is always one step from demoable.
+- **Quality Owner**: owns CI health, the Definition of Done, and releases; owes the team a repository that's always one step from a demo.
 
 State what each role owes the team in your own words. A new member should be able to read this section and know who to ask about what.
 
@@ -62,11 +62,11 @@ Meeting times, communication channels, and core tools, including where decisions
 
 ### 4. Conflict and Accountability
 
-A restorative, stepwise conflict path: name it early, talk directly, involve the team, escalate to staff, with time bounds and measurable triggers (missed meetings, unreviewed PR backlog). Accountability ties to observable evidence (PRs, reviews, attendance), not testimony. The [Working Agreement guide](/guides/working-agreement/) has patterns that work; steal them.
+A restorative, stepwise conflict path: name it early, talk directly, involve the team, escalate to the instruction team, with time bounds and measurable triggers (missed meetings, unreviewed PR backlog). Accountability ties to observable evidence (PRs, reviews, attendance), not testimony. The [Working Agreement guide](/guides/working-agreement/) has conflict-path patterns you can adopt.
 
 ### 5. Definition of Done
 
-The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the actual CI configuration; a Definition of Done that nothing enforces is a wish.
+The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the actual CI configuration that enforces it.
 
 ### 6. Inclusion Norms
 

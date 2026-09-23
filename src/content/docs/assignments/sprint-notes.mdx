@@ -18,7 +18,7 @@ import rubricTsv from '/canvas/assignments/sprint-note/sprint-note-rubric-detail
 
 <AssignmentMeta submission="Team, with the individual contribution modifier" due="Fall weeks 4, 6, 8, 10; winter weeks 2, 4, 6, 8, 10; spring weeks 2, 4, 6" weight="2% each: 8% of the fall grade, 10% of the winter grade, 6% of the spring grade; pass/fail per item" />
 
-At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html) (the [sprint guide](/guides/sprint/) covers the cadence itself), the team submits a **one-page** sprint note and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
+At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html) (the [sprint guide](/guides/sprint/) covers the cadence itself), the team submits a one-page sprint note and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
 
 **AI use:** you may generate the evidence with AI from your own repo history and board. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and the one sentence in each contribution line saying what you shipped and how you know it works. Start from the [sprint note template](/sprint-note-template.md).
 
@@ -26,13 +26,13 @@ At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html) 
 
 1. **Working software evidence**: a URL, tagged release, or demo video, plus the CI run. If nothing works yet, say so plainly and say why.
 2. **What got done**: the things the team actually finished this sprint, each one concrete and consequential. Link the board.
-3. **Top risk and one decision needed**: the single biggest threat to shipping (in fall, before your [Definition of Shipped](/assignments/definition-of-shipped/) exists, the biggest threat to the term gate), and one concrete decision the team needs from the partner, the staff, or itself.
+3. **Top risk and one decision needed**: the single biggest threat to shipping (in fall, before your [Definition of Shipped](/assignments/definition-of-shipped/) exists, the biggest threat to the term gate), and one concrete decision the team needs from the partner, the instruction team, or itself.
 4. **Contribution lines**: one per student, in the shape below.
 5. **Judgment layer** (about five lines, human-written): what the team learned this sprint and what it changes about the plan.
 
 ### What counts as "done"
 
-Concrete means someone could go and look at it. Consequential means the project is meaningfully further along because of it. It does not have to be code. A partner agreement reached, a dataset cleared for use, a deployment pipeline that now works, a real-user session run and written up, a flaky test suite made reliable: all of these are done things worth naming. Work that is not code counts when it is measurable, which means it landed in the repository as a written PR someone can open: findings, interview notes, a requirements section, an RFC section. Research with nothing to open is activity.
+Concrete means someone could go and look at it. Consequential means the project is meaningfully further along because of it. It does not have to be code. A partner agreement reached, a dataset cleared for use, a deployment pipeline that now works, a real-user session run and written up, a flaky test suite made reliable: all of these are done things worth naming. Work that is not code counts when it is measurable, which means it landed in the repository as a written PR someone can open: findings, interview notes, a requirements section, an RFC section.
 
 What does not count is activity without a result. "Worked on the API", "researched options", "had meetings", and "made progress on the frontend" describe how time was spent, not what exists now that did not exist two weeks ago.
 
@@ -46,7 +46,7 @@ One line per student, three parts:
 
 1. **The pull request(s) you owned this sprint**, by title or ID. NDA teams list IDs only. Owning it means you authored or drove it, answered review, and merged it. A written artifact counts when it landed as a PR like anything else; a rename, a formatter run, a lockfile bump, or a status update does not.
 2. **Whose work you reviewed, and the one change you asked for.** Name it specifically: "asked Priya to handle the empty-cart case in checkout" is a review; "LGTM" is not, and neither is a comment that names no line and requests no change.
-3. **The most consequential thing you shipped this sprint, in one sentence, and how the team knows it works.** This is the part with judgment in it, and it is the part that is read.
+3. **The most consequential thing you shipped this sprint, in one sentence, and how the team knows it works.** This is the part with judgment in it, and it's the part that's read.
 
 [Google's code review standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is worth reading on where that bar sits: approve once the change improves the overall code health of the system, even when it is not perfect, and say what would need to change if it does not.
 
@@ -64,28 +64,26 @@ The sentence outranks the counts. A student with one pull request who can say wh
 
 ## Demo Cadence
 
-Every sprint, your team demos to your Teaching Assistant (TA) in your TA check-in, and every student demos the part they owned. The check-in falls in the sprint-note week; check Canvas for the schedule. One team, one TA, nobody else's team in the room. **Your TA picks what you demo, from your latest sprint note's contribution line** (from the board, for the first one): open the PR or the document you listed, show the change, run it. Showing the same artifact at two check-ins running is nothing new, and nothing new is no contribution that sprint. Two to three minutes each, so 6 to 12 minutes of a 25-to-30-minute check-in for a team of three or four. The rest of the check-in is your top risk and the decision you need; anything that would have been open-ended TA coaching happens async between check-ins.
+Every sprint, your team demos to your Teaching Assistant (TA) in your TA check-in, and every student demos the part they owned. The check-in falls in the sprint-note week; check Canvas for the schedule. One team, one TA, nobody else's team in the room. **Your TA picks what you demo, from your latest sprint note's contribution line** (from the board, for the first one): open the PR or the document you listed, show the change, run it. Showing the same artifact at two check-ins running counts as no new contribution that sprint. Two to three minutes each, so 6 to 12 minutes of a 25-to-30-minute check-in for a team of three or four. The rest of the check-in is your top risk and the decision you need; anything that would have been open-ended TA coaching happens async between check-ins.
 
-Demoing your own work every two weeks is the point. It is the same claim your contribution line makes, made out loud in front of the people who would know if it were not true, and it is twelve rehearsals before the Expo.
+Your demo makes the same claim as your contribution line, out loud, in front of the people who would know if it weren't true. Across the year, it's also twelve rehearsals before the Expo.
 
-**When the check-in is taken by a checkpoint walkthrough** (NDA projects), attach a demo video to the sprint note instead: **one video, timestamped, one segment per student**. Timestamps are not a formality. They are what makes each student's segment individually findable and scoreable, which is the whole reason the video substitutes for the live slot.
+When the check-in is taken by a checkpoint walkthrough (NDA projects), attach a demo video to the sprint note instead: **one video, timestamped, one segment per student**. The timestamps make each student's segment findable and scoreable on its own, which is what lets the video stand in for the live slot.
 
-The **all-hands [demo days](/assignments/demo-day/)** are a different thing from this cadence: the whole class in one room, partners invited, and your team takes one of the five across the year.
+The all-hands [demo days](/assignments/demo-day/) are a different thing from this cadence: the whole class in one room, partners invited, and your team takes one of the five across the year.
 
 ## Rubric (100 points)
 
-Each note is checked pass/fail per item, 20 points each; the [rubric conventions](/assignments/introduction/#rubric-conventions) say why sprint notes have two bands instead of three. The note is a professional habit, not an essay.
+Each note is checked pass/fail per item, 20 points each; the [rubric conventions](/assignments/introduction/#rubric-conventions) say why sprint notes have two bands instead of three.
 
 <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/sprint-note/sprint-note-rubric-details.tsv" />
 
 **Individual contribution modifier:** half of each sprint note's points are individual and default to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the team's TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/assignments/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note costs you nothing; a pattern with no explanation is what reduces your individual half.
 
-A report can be embellished; a demo cannot, and partners trust the teams that demo often.
-
 ## Activities That Prepare This
 
-Twelve sprint notes a year means per-note recommendations would be silly. Three activities are worth doing once, in fall, and then never again: [Kanban Board Setup](/activities/planning/#kanban-board-setup), [Definition of Done](/activities/planning/#definition-of-done), and [Regular Stand-Up Meetings](/activities/teamwork/#regular-stand-up-meetings). Get those right and the note takes fifteen minutes every time.
+Sprint notes repeat twelve times a year, so these recommendations aren't per note. Three activities are worth doing once, in fall: [Kanban Board Setup](/activities/planning/#kanban-board-setup), [Definition of Done](/activities/planning/#definition-of-done), and [Regular Stand-Up Meetings](/activities/teamwork/#regular-stand-up-meetings). Get those right and the note takes fifteen minutes every time.
 
-Two are worth repeating: [Prioritization](/activities/planning/#prioritization) for the top-risk-and-decision item, and [Learning Journal](/activities/reflective/#learning-journal) for the judgment layer, which is the part staff actually read.
+Two are worth repeating: [Prioritization](/activities/planning/#prioritization) for the top-risk-and-decision item, and [Learning Journal](/activities/reflective/#learning-journal) for the judgment layer, which is the part the instruction team reads.
 
 Browse [planning](/activities/planning/) for anything touching the board, estimates, or risk.
