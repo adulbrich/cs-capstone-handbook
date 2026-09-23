@@ -171,14 +171,14 @@ The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 |---|---|---|---|
 | Check-ins, five weeks a term (incl. demos) | ~35 h | ~35 h | ~35 h |
 | Sprint notes (pass/fail, ~5 min each) | ~5 h | ~6 h | ~3.5 h |
-| Repo checkpoints (~12 min per team, x2) | ~6 h | ~6 h | n/a |
+| Repo checkpoints (~12 min per team, x2; an NDA team's walkthrough is a separate 15-minute slot instead) | ~6 h | ~6 h | n/a |
 | RFCs (~50 x ~10 min) | ~8 h | ~8 h | n/a |
 | Defense sessions (weeks 7 and 9, in addition to check-ins) + scoring, follow-ups, Canvas entry | ~9 h | ~9 h | ~9 h |
 | Term deliverable (charter / DoS + postmortem / spring set incl. release trailers) | ~5 h | ~5 h | ~7 h |
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
 | **Total** | **~69 h (~6.9 h/wk)** | **~70 h** | **~56 h** |
 
-The check-ins row is 14 teams x 5 check-in weeks x 30 minutes, all of it in the sprint-note weeks (about 7 h in a check-in week, none in between), plus 15 minutes per NDA team for the walkthrough in each checkpoint week. The defense row is 14 sessions at 6 minutes per student plus buffer (about 7 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the 7 h is the price of keeping the week-8 demo live (#23). **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
+The check-ins row is 14 teams x 5 check-in weeks x 30 minutes, all of it in the sprint-note weeks (about 7 h in a check-in week, none in between). The defense row is 14 sessions at 6 minutes per student plus buffer (about 7 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the 7 h is the price of keeping the week-8 demo live (#23). **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
 
 The number that would break it is team size. At six or more students, 3 minutes each is 18 minutes and the rest of the agenda stops fitting. If a TA's teams are unusually large, either cap demo time at 2 minutes per student or extend those teams' slots and re-run this row.
 
