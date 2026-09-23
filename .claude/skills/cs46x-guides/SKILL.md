@@ -424,14 +424,23 @@ the failure this skill exists to prevent.
 1. Run `npm run build`. It compiles the MDX and validates every internal link
    and anchor, which is the only reliable check on the anchors you wrote.
 2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
-   covers outcome tags and grading language on guides, the second em dashes.
-3. Confirm the guide is standalone. Two greps, because a link check alone
-   misses an assignment named in plain prose:
+   covers the standalone patterns, outcome tags, and grading language on
+   guides, the second em dashes.
+3. Confirm the guide is standalone. Three greps, because the validator's
+   patterns are a floor and a link check misses an assignment named in plain
+   prose:
 
    ```bash
    grep -nE '/assignments/|[Ww]orkshop|checkpoint' <file>
-   grep -nE 'Definition of Shipped|Team Charter|Sprint Notes?|Peer Evaluations?|Repo Checkpoints?|Project Handoff|Landing Page|Project Partner Evaluation' <file>
+   grep -nE 'Definition of Shipped|Team Charter|Sprint Notes?|Peer Evaluations?|Repo Checkpoints?|Project Handoff|Landing Page|Project Partner Evaluation|Expo\b' <file>
+   grep -nEi '\b(fall|winter|spring)\b|\bterms?\b|\b(this|the) course\b|\bweek (one|two|three|four|five|six|seven|eight|nine|ten)\b|\b(second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) week\b|\b(mid-?year|all year|the year ends)\b' <file>
    ```
+
+   The third catches the time forms the validator misses: a spelled-out or
+   ordinal week, a bare "term", a term name used without "in" or "week", and
+   the school year standing in for the project. It returns many false
+   positives ("long-term", "fall short", "in terms of", "the term comes
+   from"); read each hit with the test below.
 
    The first must return nothing but a third-party URL (the Crazy 8s link in
    `planning.mdx` is one). The second returns false positives and needs

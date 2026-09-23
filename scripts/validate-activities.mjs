@@ -480,9 +480,10 @@ const STANDALONE_EXEMPT = new Set([
 // links are kept, because the assignment-link rule reads them.
 const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/g;
 
-// Every MDX page in the two directories whose pages must stand alone, with the
-// directory's short name ("activities", "guides") for messages and keys.
-function* standalonePages() {
+// Every MDX page under activities/ and guides/, with the directory's short
+// name for messages and keys. Rule 4 and the outcome-tag and grading-language
+// check below both read exactly these pages.
+function* activityAndGuidePages() {
   for (const [dir, kind] of [
     [ACTIVITIES_DIR, "activities"],
     [GUIDES_DIR, "guides"],
@@ -495,7 +496,7 @@ function* standalonePages() {
   }
 }
 
-for (const { dir, kind, file } of standalonePages()) {
+for (const { dir, kind, file } of activityAndGuidePages()) {
   // The activities index is the page that explains what a Workshop badge
   // means, so it is the one page allowed to use the word and to link the
   // assignment that owns the tier. The guides index gets no such pass.
@@ -535,7 +536,7 @@ const GRADE_WORD_RE =
   /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/i;
 const GRADE_CONTEXT_CHARS = 60;
 
-for (const { dir, file, kind } of standalonePages()) {
+for (const { dir, file, kind } of activityAndGuidePages()) {
   const source = readFileSync(join(dir, file), "utf8");
   const where = `${kind}/${file}`;
   for (const m of source.matchAll(OUTCOME_TAG_RE)) {
