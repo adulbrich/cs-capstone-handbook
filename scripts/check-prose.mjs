@@ -11,7 +11,7 @@
  * heading. The banned words and a percentage in a heading (Markdown or an
  * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the
  * syllabi, and the Markdown downloads in `public/` (BANNED_WORD_PATHS),
- * because students read those words in Canvas, in the templates and
+ * because students read those words and headings in Canvas, in the templates and
  * scoresheet that quote the criteria, and, through `<RubricTable>`, on the
  * pages. None of these run on `--text`
  * or `--stdin` (a PR body may discuss a banned word), and none run on
@@ -447,7 +447,7 @@ function boldSentenceViolations(line, lineNumber) {
 
 const PERCENT_HEADING = /^#{1,6}\s.*%|<h[1-6]\b[^>]*>[^<]*%/i;
 
-/** A heading carrying a percentage; the weight lives in frontmatter (#287). */
+/** A heading carrying a percentage; the number lives where the page states it (#287). */
 function percentHeadingViolations(line, lineNumber) {
   if (!PERCENT_HEADING.test(line)) {
     return [];
