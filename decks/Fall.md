@@ -53,7 +53,7 @@ Half your grade is individually determined. Weights, weeks and policies: the han
 
 - Two-week sprints; a one-page **sprint note** each sprint (15 minutes if your repo is in order)
 - **Live demos** in TA check-ins; two all-hands demo days
-- Each of you owns **at least one reviewed PR per sprint**
+- Each of you owns **at least one piece of accepted work per sprint**
 - Twice a term, the instruction team reviews your **repository** itself
 
 ---
