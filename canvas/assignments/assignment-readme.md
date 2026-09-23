@@ -185,7 +185,7 @@ The AI policy now says "checks" where it said "the net" or "safety net", and "ha
 | `defense/` | Ownership and delegation: "checks" for "safety net" in the description and all three bands; Judgment: "the actual reasons", and "hard to reverse" for "one-way doors"; Communication: "candid" for "honest" |
 | `repo-checkpoint/` | Living docs: "the quickstart is accurate"; Build health and safety net: "the checks match" in the description and bands (criterion name unchanged) |
 | `rfc/` | Options: "the real costs"; Delegation and validation: "checks" for "safety net" |
-| `definition-of-shipped/` | Criterion renamed `Target rung: explicit, project-specific, candid [SO2]`; description and Exceeds band say "candid about ambition" |
+| `definition-of-shipped/` | Criterion renamed `Target rung: explicit, project-specific, realistic [SO2]`; description and Exceeds band say "realistic about ambition" |
 | `project-handoff/` | Known issues: "candid tone", "candid rather than promotional" |
 | `project-retrospective/` | Decisions: "candid about the debt incurred"; Team dynamics: "discussed critically and candidly" |
 | `spring-release/` | Criterion renamed `Accurate outcomes [SO6]` (was Honest outcomes); Trailer description: "partial features named as partial" |

@@ -8,9 +8,11 @@
  * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
- * heading. The banned words alone also reach the Canvas rubric TSVs and the
- * syllabi (BANNED_WORD_PATHS), because students read those words in Canvas
- * and, through `<RubricTable>`, on the pages. None of these run on `--text`
+ * heading. The banned words alone also reach the Canvas rubric TSVs, the
+ * syllabi, and the Markdown downloads in `public/` (BANNED_WORD_PATHS),
+ * because students read those words in Canvas, in the templates and
+ * scoresheet that quote the criteria, and, through `<RubricTable>`, on the
+ * pages. None of these run on `--text`
  * or `--stdin` (a PR body may discuss a banned word), and none run on
  * `docs/`, `AGENTS.md`, `.claude/skills/`, or
  * `canvas/assignments/assignment-readme.md`, which quote the patterns to
@@ -152,19 +154,26 @@ const VOCABULARY_PATHS = [
 const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 
 /**
- * The bolded-sentence and opener rules reach handbook pages only. The banned
- * words also reach the rubric TSVs and the syllabus bodies under `canvas/`:
- * a TSV renders on its assignment page and imports into Canvas, and a
- * syllabus is pasted into Canvas, so a banned word there reaches students as
- * surely as one on a page. The rest of `canvas/`, the runbook, and the
- * downloads keep the vocabulary check alone.
+ * BOLD_AND_OPENER_PATH gates only the bolded-sentence and opener rules, which
+ * are about how a handbook page is written. The banned words reach further:
+ * the rubric TSVs and the syllabus bodies under `canvas/`, and the Markdown
+ * downloads in `public/`. A TSV renders on its assignment page and imports
+ * into Canvas, a syllabus is pasted into Canvas, and the scoresheet and
+ * templates quote the criteria, so a banned word in any of them reaches
+ * students as surely as one on a page. The rest of `canvas/` and the runbook
+ * keep the vocabulary check alone.
  */
-const VOICE_PATH = "src/content/docs/";
+const BOLD_AND_OPENER_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
   { prefix: "canvas/assignments/", suffix: ".tsv" },
   { prefix: "canvas/syllabus/", suffix: ".html" },
+  { prefix: "public/", suffix: ".md" },
 ];
+
+/** The senses of "net" that are arithmetic, not the AI policy (BANNED_WORDS). */
+const NET_SENSES =
+  "worth|present|positive|negative|zero|profit|margin|income|gain|loss|effect|result|promoter|cost|benefit|change";
 
 /**
  * The banned words from `docs/agents/voice.md`, matched on the prose line
@@ -172,10 +181,11 @@ const BANNED_WORD_PATHS = [
  * someone else's wording). Each is a tell of the generated voice the handbook
  * drifted into, and each has a plain word that says what it means. The door
  * metaphor and "the net" were the AI policy's own terms until #207 replaced
- * them with "hard-to-reverse decision" and "checks". "The net" skips its
- * money senses ("the net effect", "the Net Promoter Score"); "the network"
- * and "the .NET" never match, and "safety net" stays legal as an ordinary
- * phrase.
+ * them with "hard-to-reverse decision" and "checks". "The net", "your net",
+ * and "that net" skip their money and arithmetic senses (NET_SENSES: "the net
+ * effect", "your net worth", "the net present value", "the Net Promoter
+ * Score"); "the network" and "the .NET" never match, and "safety net" stays
+ * legal as an ordinary phrase.
  */
 const BANNED_WORDS = [
   {
@@ -193,8 +203,10 @@ const BANNED_WORDS = [
     use: '"easy-to-reverse decision"',
   },
   {
-    avoid:
-      /\bthe net\b(?!\s+(?:effect|result|gain|loss|income|cost|benefit|change|promoter)s?\b)/i,
+    avoid: new RegExp(
+      `\\b(?:the|your|that) net\\b(?!\\s+(?:${NET_SENSES})s?\\b)`,
+      "i"
+    ),
     use: '"the checks" or "your checks" (tests, CI, review gates, staging, a rollback path)',
   },
 ];
@@ -256,11 +268,11 @@ function vocabularyApplies(filePath) {
   return VOCABULARY_PATHS.some((prefix) => rel.startsWith(prefix));
 }
 
-function voiceApplies(filePath) {
+function boldAndOpenerRulesApply(filePath) {
   if (!filePath) {
     return false;
   }
-  return repoRelative(filePath).startsWith(VOICE_PATH);
+  return repoRelative(filePath).startsWith(BOLD_AND_OPENER_PATH);
 }
 
 function bannedWordsApply(filePath) {
@@ -309,19 +321,26 @@ export function glossaryDrift() {
   return problems;
 }
 
+/** One hit, in the shape `report()` prints. */
+function hit(kind, lineNumber, line) {
+  return { kind, line: lineNumber, snippet: line.trim() };
+}
+
 /** The vocabulary hits on one prose line (inline code already stripped). */
 function vocabularyViolations(line, lineNumber) {
   const prose = stripInlineCode(line);
   const hits = [];
   for (const rule of VOCABULARY) {
     const cleaned = rule.allow ? prose.replace(rule.allow, " ") : prose;
-    const hit = cleaned.match(rule.avoid);
-    if (hit) {
-      hits.push({
-        kind: `vocabulary: "${hit[0]}" is not a handbook word; use ${rule.use}`,
-        line: lineNumber,
-        snippet: line.trim(),
-      });
+    const match = cleaned.match(rule.avoid);
+    if (match) {
+      hits.push(
+        hit(
+          `vocabulary: "${match[0]}" is not a handbook word; use ${rule.use}`,
+          lineNumber,
+          line
+        )
+      );
     }
   }
   return hits;
@@ -397,11 +416,13 @@ function bannedWordViolations(line, lineNumber) {
   for (const rule of BANNED_WORDS) {
     const match = prose.match(rule.avoid);
     if (match) {
-      hits.push({
-        kind: `voice: "${match[0]}" is a banned word; use ${rule.use}`,
-        line: lineNumber,
-        snippet: line.trim(),
-      });
+      hits.push(
+        hit(
+          `voice: "${match[0]}" is a banned word; use ${rule.use}`,
+          lineNumber,
+          line
+        )
+      );
     }
   }
   return hits;
@@ -414,11 +435,11 @@ function boldSentenceViolations(line, lineNumber) {
     return [];
   }
   return [
-    {
-      kind: "voice: a bolded whole sentence; unbold it, or bold only the defined term",
-      line: lineNumber,
-      snippet: line.trim(),
-    },
+    hit(
+      "voice: a bolded whole sentence; unbold it, or bold only the defined term",
+      lineNumber,
+      line
+    ),
   ];
 }
 
@@ -431,7 +452,7 @@ function proseChecksFor(path) {
   if (bannedWordsApply(path)) {
     checks.push(bannedWordViolations);
   }
-  if (voiceApplies(path)) {
+  if (boldAndOpenerRulesApply(path)) {
     checks.push(boldSentenceViolations);
   }
   return checks;
@@ -447,7 +468,7 @@ export function findProseViolations(text, path) {
   const violations = [];
   const lines = text.split("\n");
   const proseChecks = proseChecksFor(path);
-  if (voiceApplies(path)) {
+  if (boldAndOpenerRulesApply(path)) {
     violations.push(...openerViolations(lines, path));
   }
   let inFence = false;
@@ -548,7 +569,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and in the rubric TSVs and syllabi no banned word (docs/agents/voice.md).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and in the rubric TSVs, syllabi, and public/ Markdown no banned word (docs/agents/voice.md).\n"
     );
     process.exit(1);
   }

@@ -11,7 +11,7 @@
 
 ## 1. What Shipped Means Here
 
-What you and your project partner agreed shipped means for this project, and which rung of the outcome ladder you are committing to, in your own words. "Merged upstream" or "in production" means what, exactly, here? Be candid about ambition: a defended 90 beats a fantasy 100.
+What you and your project partner agreed shipped means for this project, and which rung of the outcome ladder you are committing to, in your own words. "Merged upstream" or "in production" means what, exactly, here? Be realistic about ambition: a defended 90 beats a fantasy 100.
 
 ## 2. Success Metrics
 
