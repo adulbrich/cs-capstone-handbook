@@ -1,0 +1,22 @@
+authors:
+  - Potvin, R.
+  - Levenberg, J.
+year: 2016
+title: Why Google Stores Billions of Lines of Code in a Single Repository
+venue: Communications of the ACM
+kind: peer-reviewed
+url: https://cacm.acm.org/research/why-google-stores-billions-of-lines-of-code-in-a-single-repository/
+doi: 10.1145/2854146
+verified: full-text
+claims:
+  - claim: >-
+      Google practices trunk-based development: most engineers work at head,
+      development on branches is unusual and branches are mainly used for
+      releases, and new features sit behind flags instead of on development
+      branches.
+    locator: Trunk-based development
+  - claim: >-
+      To keep trunk from breaking, Google tests changes before they land
+      (presubmit), rebuilds affected dependencies on almost every commit, and
+      automatically rolls back a change that causes widespread breakage.
+    locator: Google workflow

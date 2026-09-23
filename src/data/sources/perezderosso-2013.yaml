@@ -1,0 +1,22 @@
+authors:
+  - Perez De Rosso, S.
+  - Jackson, D.
+year: 2013
+title: "What's Wrong with Git? A Conceptual Design Analysis"
+venue: >-
+  ACM International Symposium on New Ideas, New Paradigms, and Reflections on
+  Programming and Software (Onward!)
+kind: peer-reviewed
+url: https://spderosso.github.io/onward13.pdf
+doi: 10.1145/2509578.2509584
+verified: full-text
+claims:
+  - claim: >-
+      Git puzzles even experienced developers, and the authors attribute much
+      of its difficulty to flaws in its conceptual model.
+    locator: Abstract; Sec. 1, Introduction
+  - claim: >-
+      "Tracked" and "staged" files are subtly different concepts, and a
+      tracked file updated after it was added is committed in its older,
+      added version.
+    locator: Sec. 3, An Overview of Git

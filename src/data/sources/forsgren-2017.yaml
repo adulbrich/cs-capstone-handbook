@@ -1,0 +1,29 @@
+authors:
+  - Forsgren, N.
+  - Brown, A.
+  - Humble, J.
+  - Kersten, N.
+  - Kim, G.
+year: 2017
+title: 2017 State of DevOps Report
+venue: Puppet and DORA
+kind: industry-report
+url: https://services.google.com/fh/files/misc/state-of-devops-2017.pdf
+verified: full-text
+claims:
+  - claim: >-
+      The report restates the previous year's findings that merging into
+      trunk daily, keeping branches alive for less than a day, and having
+      fewer than three active branches contributed to higher software
+      delivery performance.
+    locator: Technical practices, Trunk-based development, p. 40
+  - claim: >-
+      New analysis confirmed those findings: high performers' branches
+      typically lived for hours and low performers' for days, a statistically
+      significant difference.
+    locator: Technical practices, p. 41
+  - claim: >-
+      The report addresses developers used to the GitHub-recommended workflow:
+      short-lived branches merged into trunk at least daily are consistent
+      with continuous integration.
+    locator: Technical practices, Trunk-based development, p. 40

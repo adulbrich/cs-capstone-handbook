@@ -1,0 +1,22 @@
+authors:
+  - McIntosh, S.
+  - Kamei, Y.
+  - Adams, B.
+  - Hassan, A. E.
+year: 2014
+title: >-
+  The Impact of Code Review Coverage and Code Review Participation on
+  Software Quality: A Case Study of the Qt, VTK, and ITK Projects
+venue: 11th Working Conference on Mining Software Repositories (MSR)
+kind: peer-reviewed
+url: https://rebels.cs.uwaterloo.ca/papers/msr2014_mcintosh.pdf
+doi: 10.1145/2597073.2597076
+verified: full-text
+claims:
+  - claim: >-
+      In the review participation analysis of Qt and ITK (VTK was omitted for
+      too few components), the proportion of changes merged without review
+      discussion was associated with more post-release defects in all three
+      release models; self-approved and hastily reviewed changes were
+      significant in one Qt release model each.
+    locator: Sec. 4, Case Study Results (RQ2); Table 4

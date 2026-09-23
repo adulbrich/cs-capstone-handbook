@@ -1,0 +1,22 @@
+authors:
+  - Stack Overflow
+year: 2022
+title: Stack Overflow Developer Survey
+venue: Stack Overflow
+kind: industry-report
+url: https://survey.stackoverflow.co/2022/
+verified: full-text
+claims:
+  - claim: >-
+      Of 71,379 respondents to the question, 93.87% used Git and 5.18% used
+      SVN.
+    locator: "Technology: Version control systems"
+  - claim: >-
+      GitHub was the most used hosting service for both personal (87%) and
+      professional (56%) use; GitLab, Bitbucket, and Azure Repos were used
+      more professionally than personally.
+    locator: "Technology: Version control platforms"
+  - claim: >-
+      Respondents were recruited primarily through Stack Overflow's own
+      channels, so highly engaged users were more likely to take part.
+    locator: "Methodology: General"
