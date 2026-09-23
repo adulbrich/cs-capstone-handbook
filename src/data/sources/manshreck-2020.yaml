@@ -11,8 +11,8 @@ verified: full-text
 claims:
   - claim: >-
       Documentation's benefits arrive downstream for readers rather than
-      immediately for its author, which is one reason engineers consider it
-      poor.
+      immediately for its author, while writing it requires more effort up
+      front, which is one reason engineers consider it poor.
     locator: Why Is Documentation Needed?
   - claim: >-
       Software engineers will always need to write most documentation
