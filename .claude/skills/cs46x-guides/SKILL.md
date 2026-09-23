@@ -98,7 +98,9 @@ option is the marketing the Some Truths section is supposed to prevent.
 Guides owe evidence. Sort every claim a reader could doubt into the three kinds
 under Claims in `docs/agents/voice.md` and give each what its kind needs. Of
 the three registers, the guide is the one where Evidence claims live, so this
-is where the sort does most of its work.
+is where the sort does most of its work. A Recommendation in a guide is an
+imperative with its reason, never "the instruction team recommends", because
+of [Guides Are Standalone](#guides-are-standalone).
 
 There is no link-count target. The old one (six per 1,000 words) was met by
 linking vendor docs and blog posts while the guides cited three peer-reviewed
@@ -286,6 +288,16 @@ For a guide, the situation is a moment in a project. "Sooner or later someone
 other than you needs to run your system" is one; "Documentation is the
 infrastructure of knowledge transfer" is a claim about importance. The tl;dr
 is not a table of contents and does not restate the situation.
+
+The tl;dr is a Starlight aside, so every guide's looks the same and a
+skimming reader finds it at once:
+
+```mdx
+:::note[tl;dr]
+- Write the agreement together, in one session with everyone present.
+- Write every norm with a trigger someone can observe.
+:::
+```
 
 The old form, a one-line "Read this when ...; it gives you ..." purpose line
 followed by a "Without X:" list of failure modes, was the same template on
