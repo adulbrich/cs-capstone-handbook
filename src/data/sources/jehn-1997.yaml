@@ -1,0 +1,16 @@
+authors:
+  - Jehn, K. A.
+year: 1997
+title: A Qualitative Analysis of Conflict Types and Dimensions in Organizational Groups
+venue: Administrative Science Quarterly
+kind: peer-reviewed
+url: https://www.jstor.org/stable/2393737
+doi: 10.2307/2393737
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      A qualitative study of six organizational work teams finding
+      relationship conflict detrimental to performance and satisfaction, and
+      process conflict detrimental to performance.
+    locator: Abstract

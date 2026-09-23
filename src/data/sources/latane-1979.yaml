@@ -1,0 +1,18 @@
+authors:
+  - Latané, B.
+  - Williams, K.
+  - Harkins, S.
+year: 1979
+title: "Many Hands Make Light the Work: The Causes and Consequences of Social Loafing"
+venue: Journal of Personality and Social Psychology
+kind: peer-reviewed
+url: https://doi.org/10.1037/0022-3514.37.6.822
+doi: 10.1037/0022-3514.37.6.822
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Names social loafing after two experiments in which people clapped and
+      shouted with less individual effort in groups than alone, a loss beyond
+      what faulty coordination explains.
+    locator: Abstract

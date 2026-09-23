@@ -1,0 +1,26 @@
+authors:
+  - Jehn, K. A.
+  - Mannix, E. A.
+year: 2001
+title: >-
+  The Dynamic Nature of Conflict: A Longitudinal Study of Intragroup Conflict
+  and Group Performance
+venue: Academy of Management Journal
+kind: peer-reviewed
+url: https://doi.org/10.2307/3069453
+doi: 10.2307/3069453
+# Read in the authors' accepted manuscript ("In Press - Academy of
+# Management Journal"), whose pagination differs from the published
+# pages 238-251, so the locators name sections.
+verified: full-text
+claims:
+  - claim: >-
+      Defines process conflict as an awareness of controversies about how task
+      accomplishment will proceed, such as who should do what and how much
+      each member gets, crediting Jehn (1997).
+    locator: Introduction, definitions of the three conflict types
+  - claim: >-
+      In 51 three-person teams followed through a semester-long project, task
+      conflict in the low-performing teams may have been misperceived as
+      personal criticism, so task and relationship conflict rose together.
+    locator: Method, Sample; Discussion
