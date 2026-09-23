@@ -1,0 +1,32 @@
+# The pull request's title and body get the commit-message check: a squash
+# merge turns them into the `main` subject and body. A separate workflow from
+# CI so that editing the description re-runs only this, not the build.
+#
+# guard-gh.mjs checks text an agent passes inline to `gh`; this catches a
+# `--body-file`, and a title or body written or edited in the GitHub UI.
+name: pr-text
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-text:
+    # Dependabot bodies embed upstream release notes.
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      # Title and body arrive through env, never interpolated into the script,
+      # so a body is data and cannot become shell.
+      - name: Check the PR title and body
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: printf '%s\n\n%s\n' "$PR_TITLE" "$PR_BODY" | node scripts/check-commit-message.mjs --stdin

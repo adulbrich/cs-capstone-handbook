@@ -67,7 +67,7 @@ first column is what stops you locally; the last is what stops the merge.
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files | `after-edit.mjs` | `build`: `npm run check` |
-| No session link in inline PR or issue text; PR title is a Conventional subject | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`; a `--body-file` is the reviewer's to read) | (the PR title becomes the squash subject) |
+| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`) | `pr-text`: the PR title and body, re-run on every edit |
 | Dependencies audit clean and signed | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code

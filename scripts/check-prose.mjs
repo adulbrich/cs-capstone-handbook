@@ -77,12 +77,6 @@ const EXCLUDED_FILES = new Set([
 ]);
 
 /**
- * The one line the harness appends to every PR body and nothing here can
- * change. Stripped before checking so the footer is not what fails the PR.
- */
-const HARNESS_FOOTER = /\u{1F916} Generated with \[Claude Code\]\([^)]*\)/gu;
-
-/**
  * The glossary's avoid-list (`src/content/docs/about/glossary.mdx`): each
  * entry is a synonym the handbook does not use and the word it uses instead.
  * Checked only under VOCABULARY_PATHS, outside fenced code, inline code, and
@@ -206,7 +200,7 @@ function vocabularyViolations(line, lineNumber) {
  */
 export function findProseViolations(text, path) {
   const violations = [];
-  const lines = text.replaceAll(HARNESS_FOOTER, "").split("\n");
+  const lines = text.split("\n");
   const checkVocabulary = vocabularyApplies(path);
   let inFence = false;
   for (const [index, line] of lines.entries()) {
