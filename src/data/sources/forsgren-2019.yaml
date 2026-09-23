@@ -1,0 +1,33 @@
+authors:
+  - Forsgren, N.
+  - Smith, D.
+  - Humble, J.
+  - Frazelle, J.
+year: 2019
+title: Accelerate State of DevOps 2019
+venue: DORA and Google Cloud
+kind: industry-report
+url: https://services.google.com/fh/files/misc/state-of-devops-2019.pdf
+verified: full-text
+claims:
+  - claim: >-
+      The report represents six years of research and data from over 31,000
+      professionals worldwide.
+    locator: Executive summary, p. 3
+  - claim: >-
+      Over six years the program developed and validated four metrics of
+      software delivery performance: lead time for changes, deployment
+      frequency, time to restore service, and change failure rate.
+    locator: How Do We Compare?, Software delivery and operational performance, pp. 15-16
+  - claim: >-
+      The elite group reported deploying on demand, multiple times per day,
+      while low performers reported deploying between once a month and once
+      every six months; the report adds that companies such as Amazon,
+      Google, and Netflix deploy thousands of times per day, aggregated over
+      the hundreds of services in their production environments.
+    locator: How Do We Compare?, Throughput, Deployment frequency, p. 22
+  - claim: >-
+      Respondents were recruited by snowball sampling through email lists,
+      online promotions, and social media, so the sample is likely limited to
+      organizations familiar with DevOps.
+    locator: Methodology, p. 77
