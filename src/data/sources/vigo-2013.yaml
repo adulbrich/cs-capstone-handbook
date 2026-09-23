@@ -1,0 +1,17 @@
+authors:
+  - Vigo, M.
+  - Brown, J.
+  - Conway, V. L.
+year: 2013
+title: "Benchmarking Web Accessibility Evaluation Tools: Measuring the Harm of Sole Reliance on Automated Tests"
+venue: Proceedings of the 10th International Cross-Disciplinary Conference on Web Accessibility (W4A)
+kind: peer-reviewed
+url: https://dl.acm.org/doi/10.1145/2461121.2461124
+doi: 10.1145/2461121.2461124
+verified: abstract
+claims:
+  - claim: >-
+      In an evaluation of six automated tools against WCAG 2.0, coverage was
+      at most 50% of the success criteria, and among the criteria analyzed,
+      only about 4 in 10 violations were caught (completeness 14% to 38%).
+    locator: Abstract

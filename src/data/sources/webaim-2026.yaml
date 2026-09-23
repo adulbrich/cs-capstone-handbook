@@ -1,0 +1,30 @@
+authors:
+  - WebAIM
+year: 2026
+title: "The WebAIM Million: The 2026 Report on the Accessibility of the Top 1,000,000 Home Pages"
+venue: WebAIM, Utah State University, industry report
+kind: industry-report
+url: https://webaim.org/projects/million/
+verified: full-text
+claims:
+  - claim: >-
+      Six error types (low contrast text, missing alternative text for
+      images, missing form input labels, empty links, empty buttons, and
+      missing document language) accounted for 96% of all detected errors;
+      low contrast text was found on 83.9% of home pages, missing alternative
+      text on 53.1%, and missing form input labels on 51%.
+    locator: WCAG Conformance, Percentage of pages with most common errors
+  - claim: >-
+      95.9% of home pages had detected WCAG 2 failures, up from 94.8% the
+      year before, reversing a trend of small improvements in each of the
+      previous six years.
+    locator: WCAG Conformance
+  - claim: >-
+      Because only automatically detectable failures were counted, the rate
+      of full WCAG 2 A/AA conformance was certainly lower than 4.1%.
+    locator: WCAG Conformance
+  - claim: >-
+      The evaluation ran the WAVE engine against the rendered DOM of each
+      home page, and WebAIM notes that automated tools cannot detect all
+      conformance failures.
+    locator: Methodology

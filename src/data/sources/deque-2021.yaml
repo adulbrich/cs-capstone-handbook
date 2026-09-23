@@ -1,0 +1,31 @@
+authors:
+  - Deque Systems
+year: 2021
+title: "The Automated Accessibility Coverage Report: Why We Need to Change How We View Accessibility Testing Coverage"
+venue: Deque Systems industry report
+kind: industry-report
+url: https://www.deque.com/automated-accessibility-coverage-report/
+verified: full-text
+claims:
+  - claim: >-
+      Across anonymized first-time audit data covering more than 13,000 pages
+      and page states and nearly 300,000 issues, automated tests using the
+      axe-core rules library identified 57.38% of the total issues.
+    locator: Accessibility audit data sample; Some key findings from our analysis
+  - claim: >-
+      Counted by WCAG success criteria, the analysis found automated issues
+      for 16 of the 50 WCAG 2.1 Level AA success criteria, which the report
+      says supports the commonly quoted 20 to 30% automated coverage figure.
+    locator: "Accessibility coverage: WCAG criteria vs. individual issues"
+  - claim: >-
+      The report sets out to argue that coverage should be counted by volume
+      of issues rather than by the number of success criteria.
+    locator: Introduction; In summary
+  - claim: >-
+      Of 9,412 issues against success criterion 2.1.1 Keyboard, 234 were
+      found by automated tests and 9,178 by manual testing.
+    locator: "Appendix, Table 2: Issue Counts by Success Criteria, row 21"
+  - claim: >-
+      Of 88,714 issues against success criterion 1.4.3 Contrast (Minimum),
+      14,981 (16.89%) were found by manual testing.
+    locator: "Table 1: WCAG Success Criteria with the Most Issues, row 1"
