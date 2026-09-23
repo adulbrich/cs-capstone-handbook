@@ -109,6 +109,16 @@ export const collections = {
                       z.enum(SUBMISSIONS),
                       z.array(z.enum(SUBMISSIONS)).min(1),
                     ]),
+                    // One title per week listed, per term, filling
+                    // "{title}" in the name: "Workshop {n}: {title}".
+                    titles: z
+                      .object({
+                        fall: z.array(text()).optional(),
+                        spring: z.array(text()).optional(),
+                        winter: z.array(text()).optional(),
+                      })
+                      .strict()
+                      .optional(),
                     // One entry per week listed, per term.
                     weeks: z
                       .object({

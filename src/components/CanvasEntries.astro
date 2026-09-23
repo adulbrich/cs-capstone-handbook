@@ -1,5 +1,5 @@
 ---
-import { canvasRows, rowName } from "../lib/canvas-entries.mjs";
+import { rowName, tableRows } from "../lib/canvas-entries.mjs";
 
 /**
  * CanvasEntries: the Canvas assignments an assignment page owns, as a table.
@@ -23,7 +23,7 @@ import { canvasRows, rowName } from "../lib/canvas-entries.mjs";
  *   <CanvasEntries />
  */
 const { assignment } = Astro.locals.starlightRoute.entry.data;
-const rows = canvasRows(assignment?.canvas);
+const rows = tableRows(assignment?.canvas);
 
 const SUBMISSION_LABELS = {
   image: "Screenshot",

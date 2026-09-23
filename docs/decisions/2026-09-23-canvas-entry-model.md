@@ -35,6 +35,8 @@ canvas:
     rubric: individual-contribution/individual-contribution-rubric-details.tsv
 ```
 
+A family whose entries differ by more than a number adds `titles`, one per week listed in each term, and puts `{title}` in its name: `"Workshop {n}: {title}"` gives "Workshop 2: Map Your Hard-to-Reverse Decisions" (#285). The page table then lists a titled family's entries one row each.
+
 `weight` is the whole family's share of the term grade, split evenly across its entries. Entries sharing a rubric share one TSV: the TSV is one per distinct rubric, not one per entry. `peer_review_week` marks an entry that uses Canvas's own peer review, so one entry legitimately carries two dates.
 
 `src/lib/canvas-entries.mjs` expands the list. `src/components/CanvasEntries.astro` renders it on the page, reading the page's own frontmatter, so the table students see is the list the validator checks.

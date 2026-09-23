@@ -6,7 +6,8 @@
 // A family is one frontmatter item: a name, a Canvas group, and the weeks it
 // is due in each term. It expands to one entry per week listed, because each
 // Canvas assignment has its own due date, late window, grade and submission.
-// "{n}" in the name numbers the entries 1, 2, ... within a term.
+// "{n}" in the name numbers the entries 1, 2, ... within a term, and
+// "{title}" takes the family's per-term `titles`, one per week listed.
 
 export const TERMS = ["fall", "winter", "spring"];
 
@@ -29,7 +30,11 @@ export function canvasRows(canvas) {
       rows.push({
         each: weight / weeks.length,
         family,
-        names: weeks.map((_, i) => family.name.replace("{n}", `${i + 1}`)),
+        names: weeks.map((_, i) =>
+          family.name
+            .replace("{n}", `${i + 1}`)
+            .replace("{title}", family.titles?.[term]?.[i] ?? "")
+        ),
         submissions: [family.submission].flat(),
         term,
         weeks,
@@ -38,6 +43,21 @@ export function canvasRows(canvas) {
     }
   }
   return rows;
+}
+
+// The rows the page table shows: a titled family gets one row per entry,
+// since "Workshop 1 to 5: {title}" names nothing.
+export function tableRows(canvas) {
+  return canvasRows(canvas).flatMap((row) =>
+    row.family.titles
+      ? row.names.map((name, i) => ({
+          ...row,
+          names: [name],
+          weeks: [row.weeks[i]],
+          weight: row.each,
+        }))
+      : [row]
+  );
 }
 
 // The name a row shows: "Sprint Notes 1 to 4" for a numbered family.

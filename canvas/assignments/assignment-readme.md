@@ -32,6 +32,12 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 `sprint-note/sprint-note-rubric.csv`: the Working software evidence Pass band now says when a video may replace the live demo (a missed check-in, or a TA who could not meet) and how it is recorded (media.oregonstate.edu, unlisted, captioned, one timestamp per student). Points and tags are unchanged. Re-import it on every Sprint Notes N entry.
 
+## Canvas Changes: Workshops Named and Due That Week (#285)
+
+- Rename every workshop entry to its page title: **Workshop N: Activity Name**, as the Workshop Activities page's entries table lists them (fall "Workshop 1: User Story Mapping" to "Workshop 5: Identify Success Metrics", winter three, spring one).
+- A workshop earns credit only in class or by the end of the week its class happened. Set each entry's due date and "until" date to the end of that week, so no late submission is accepted. The end-of-term allowance is gone.
+- The rubric is unchanged.
+
 ## Canvas Changes: One Entry per Due Date (#259)
 
 Each Canvas assignment has its own due date, late window, grade and submission, so none may hold several (`AGENTS.md` hard rule 6). The Submissions table on each handbook page lists what to create. What changes from the fall course as it stood before #259:

@@ -56,8 +56,8 @@
 //      the guide half of rule 6, with one deliberate exemption.
 //
 //   7. Every Workshop activity sits in a Lecture row, in the same term and
-//      week that assignments/workshop-activities.mdx gives it, and every row
-//      on that page points at an activity badged Workshop. The schedule, the
+//      week that assignments/workshop-activities.mdx gives it, and every
+//      workshop section on that page points at an activity badged Workshop. The schedule, the
 //      assignment page, and the badge are three records of one fact, and
 //      before this check they disagreed about fall week 3 for weeks: the
 //      schedule prose named one activity, its link named another, and the
@@ -71,6 +71,7 @@
 
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { parse } from "yaml";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
@@ -81,7 +82,7 @@ const WORKSHOP_PAGE = "src/content/docs/assignments/workshop-activities.mdx";
 const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/g;
 const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
 // Both pages head their term sections the same way: "## Fall (CS 461)" on the
-// schedule, "## Fall (4 items, 2%)" on the assignment page.
+// schedule, "## Fall" on the assignment page.
 const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
 const WEEK_HEADING_RE = /^### Week (\d+)\b/;
 // A schedule row is labelled in its first cell: Lecture, Due, Read, Recommended.
@@ -252,26 +253,35 @@ function readSchedulePlacements() {
   return placements;
 }
 
-// The week each workshop runs, as the assignment page records it: one row per
-// item under a term heading, with the activity link first and the week second.
+// The week each workshop runs, as the assignment page records it: a
+// "### Workshop N: ..." section under a term heading names the activity in its
+// first link, and entry N's week is the Nth week the frontmatter lists for
+// that term.
+const WORKSHOP_HEADING_RE = /^### Workshop (\d+):/;
 function readWorkshopWeeks() {
   const weeks = new Map(); // "page#slug" -> { term, week }
+  const source = readFileSync(WORKSHOP_PAGE, "utf8");
+  const [family] = parse(source.split(/^---$/m)[1]).assignment.canvas;
   let term = null;
-  for (const line of readFileSync(WORKSHOP_PAGE, "utf8").split("\n")) {
+  let entry = null;
+  for (const line of source.split("\n")) {
     if (line.startsWith("## ")) {
       term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
+      entry = null;
       continue;
     }
-    if (!(term && line.startsWith("|"))) {
+    const heading = line.match(WORKSHOP_HEADING_RE);
+    if (heading) {
+      entry = term ? Number(heading[1]) : null;
       continue;
     }
-    const [, activityCell = "", weekCell = ""] = line.split("|");
-    const [link] = [...activityCell.matchAll(ACTIVITY_LINK_RE)];
-    const week = Number(weekCell.trim());
-    if (!(link && Number.isInteger(week))) {
+    const [link] = [...line.matchAll(ACTIVITY_LINK_RE)];
+    const week = family.weeks[term]?.[entry - 1];
+    if (!(entry && link && Number.isInteger(week))) {
       continue;
     }
     weeks.set(`${link[1]}#${link[2]}`, { term, week });
+    entry = null; // only the section's first link names its activity
   }
   return weeks;
 }

@@ -555,6 +555,18 @@ for (const [slug, assignment] of pages) {
       failed = true;
       continue;
     }
+    const titles = family.titles?.[term];
+    if (Boolean(family.titles) !== family.name.includes("{title}")) {
+      console.error(
+        `CANVAS ${file}: entry "${family.name}" must use "{title}" in its name exactly when it declares titles.`
+      );
+      failed = true;
+    } else if (titles && titles.length !== row.weeks.length) {
+      console.error(
+        `CANVAS ${file}: entry "${family.name}" lists ${titles.length} ${term} titles for ${row.weeks.length} ${term} weeks.`
+      );
+      failed = true;
+    }
     if (
       family.peer_review_week &&
       row.weeks.some((w) => w >= family.peer_review_week)
