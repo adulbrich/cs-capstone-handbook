@@ -20,3 +20,9 @@ claims:
       scientist's experiments, and more than half had failed to reproduce
       their own.
     locator: Opening paragraphs
+  - claim: >-
+      The article notes that the survey, e-mailed to Nature readers and
+      advertised on affiliated websites and social media as being about
+      reproducibility, probably selected for respondents who are more
+      receptive to and aware of concerns about reproducibility.
+    locator: Final section, on approaches to improving reproducibility

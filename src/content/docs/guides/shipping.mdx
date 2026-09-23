@@ -13,22 +13,22 @@ Early in a project, you and your project partner or mentor agree what "shipped" 
 :::note[tl;dr]
 - Measure shipped by one question, who ran the software, and agree the rung you're aiming at with your partner in the first weeks.
 - Start every external clock in those weeks: store accounts, contributor agreements, IRB and data access, the partner's IT review, a channel for recruiting strangers.
-- Deploy a walking skeleton to a production URL in the early phase, while a failure costs nothing.
+- Deploy a walking skeleton to a production URL in the early phase.
 - On an open-source project, get a trivial pull request merged early, and discuss any substantial change with the maintainers before you build it.
 - Wire in analytics or telemetry early, so the numbers exist by the time you need them.
 - Capture evidence the day it happens: the merged pull request, the dashboard, the partner's email.
-- If your project matches none of the four paths, write your own expectations with your partner; the rung you commit to is what counts.
+- If your project matches none of the four paths, write your own expectations with your partner; the rung you both agree to is your target.
 :::
 
 ## The Ladder
 
 "Shipped" isn't a single state. The most useful way to think about it is as a ladder measured by one question: who ran the software? At the bottom, nobody outside the team ran it. One rung up, your partner watched it run. Above that, the rungs depend on the kind of project, and the top of the ladder always means the same thing in different words: people who aren't you depend on it.
 
-The top rungs wait on processes you don't control: maintainer review, app store review, IRB approval and data access, a partner's IT security review, and recruiting users who don't know you. Each one is someone else's queue. AI coding tools can speed up the part of the work you control, but they do nothing for those queues, and neither does working harder in the final month. So choose the rung you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them, because a queue you join late is one you're still standing in when the project ends.
+The top rungs wait on processes you don't control: maintainer review, app store review, IRB approval and data access, a partner's IT security review, and recruiting users who don't know you. AI coding tools can speed up the work you control, but not someone else's queue. Choose the rung you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them, because each one runs on someone else's schedule, not yours.
 
-What shipped means for your project is something you and your partner agree; nobody assigns it to you. The four paths below (FOSS, New Product or Game, Research, and Consultancy) are there to show you what to expect, not to sort you into a box. A project that looks like none of them is fine: write your own expectations with your partner, because what counts is a rung you committed to and a partner who agreed it, not which example you resemble. Read the section closest to your project, then skim the others, because the lead times in one can catch a project in another; a consultancy project that runs a user study needs the IRB clock from the research path.
+The four paths below (FOSS, New Product or Game, Research, and Consultancy) are there to show you what to expect, not to sort you into a box. A project that looks like none of them is fine: write your own expectations with your partner, because the rung you both agreed to is your target, whichever example your project resembles.
 
-Each path gives the rungs for that kind of project, the prerequisites rung by rung, a timeline in three phases (Early, Middle, and Late, each roughly a third of the project), the blockers that stall it, and the evidence to collect as you go.
+Each path gives the rungs for that kind of project, the prerequisites rung by rung, a timeline in three phases (Early, Middle, and Late, each roughly a third of the project), the blockers that stall it, and the evidence to collect as you go. Read the section closest to your project, then skim the others, because the lead times in one can catch a project in another; a consultancy project that runs a user study needs the IRB clock from the research path.
 
 ## FOSS
 
@@ -43,9 +43,9 @@ Each rung has its own prerequisites:
 - **Merged**: every round addressed, the branch rebased onto a moving main branch, and the change judged worth maintaining by the people who will own it after you leave.
 - **Shipped upstream**: the project cuts a release that includes your change, on its own release schedule.
 
-Submit a first pull request in the early phase, and aim past that: **get a trivial pull request merged in the same phase**. A typo fix, a docs clarification, or an issue carrying the [`good first issue` label](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/encouraging-helpful-contributions-to-your-project-with-labels) will do. The diff doesn't matter. The merge opens the channel to the maintainers, runs your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaches you this project's review culture while the stakes are near zero.
+Submit a first pull request in the early phase, and aim past that: **get a trivial pull request merged in the same phase**. A typo fix, a docs clarification, or an issue carrying the [`good first issue` label](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/encouraging-helpful-contributions-to-your-project-with-labels) will do, because the merge matters and the diff doesn't: it opens the channel to the maintainers, runs your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaches you this project's review culture while the stakes are near zero.
 
-Before writing anything substantial, read the project's [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and its recent merged pull requests; GitHub's [Open Source Guides](https://opensource.guide/how-to-contribute/) cover the etiquette most projects never write down. Then discuss the change in an issue or on the mailing list before you build it. In 21 popular GitHub projects, <Cite id="steinmacher-2018" /> found that the main reasons contributors gave for a pull request not being accepted were that it was superseded or duplicated and that the contributor's vision didn't match the team's, and about 30% of those surveyed said the rejection demotivated them or stopped them from placing another. A short discussion up front catches both: someone tells you the work is already in progress, or that the project wants it done another way.
+Before writing anything substantial, read the project's [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and its recent merged pull requests; GitHub's [Open Source Guides](https://opensource.guide/how-to-contribute/) cover the etiquette most projects never write down. Then discuss the change in an issue or on the mailing list before you build it, because a short discussion tells you whether someone is already doing the work and whether the project wants it done another way. Those match the two main reasons for rejection in a study of 21 popular GitHub projects: <Cite id="steinmacher-2018" /> found that contributors whose pull requests weren't accepted most often cited a superseded or duplicated pull request and a mismatch between their vision and the team's, and about 30% of those surveyed said the rejection demotivated them or stopped them from placing another.
 
 | Phase | What must be true |
 |---|---|
@@ -79,11 +79,11 @@ If you distribute through an app store, its review is another clock. Apple state
 
 Google Play has a fixed clock of its own. A newer personal developer account must [run a closed test with at least 12 testers](https://support.google.com/googleplay/android-developer/answer/14151465), opted in continuously for the preceding 14 days, before it can apply for production access. Recruit those testers before you need them, because the 14 days only count once all 12 are in.
 
-For games, [itch.io](https://itch.io/developers) is the fast path: you upload the build and create the page yourself, and itch.io describes that as instant distribution. Ship there early even if a store launch is the end goal.
+For games, [itch.io](https://itch.io/developers) is the fast path: you upload the build and create the page yourself, and itch.io describes that as instant distribution. Ship there early even if a store launch is the end goal, because players can try the build while the store clocks run, and their feedback reaches you before the store listing exists.
 
 Add analytics or telemetry in the early phase: a privacy-respecting page-view and event counter ([Plausible](https://plausible.io/), [Umami](https://umami.is/), [PostHog](https://posthog.com/)) or a simple event log. Any claim about use needs numbers, and the numbers exist only if the instrumentation was quietly collecting before you needed them.
 
-If the venture question interests you beyond the software, [Y Combinator's Startup School](https://www.startupschool.org/) is a free, self-paced online course on starting a startup, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator)'s Iterate program teaches a process for validating a business concept. Neither replaces a dozen strangers using the thing: they help you decide what to build next, and the ladder only counts what someone actually ran.
+If the venture question interests you beyond the software, [Y Combinator's Startup School](https://www.startupschool.org/) is a free, self-paced online course on starting a startup, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator)'s Iterate program teaches a process for validating a business concept. Neither replaces a dozen strangers using the thing: they help you decide what to build next, and the ladder asks who actually ran the software.
 
 | Phase | What must be true |
 |---|---|
@@ -103,21 +103,20 @@ Collect as you go: the production URL and its uptime history, dated analytics sc
 
 ## Research
 
-In a research project, you work with a professor on a research question, aiming at a result someone else can reproduce and, when it holds up, a paper. If you're considering graduate school, it's the path closest to what you'd do there, and the teamwork can come from working inside the professor's research group as well as with your own team.
+In a research project, you work with a professor on a research question, aiming at a result someone else can reproduce and, when it holds up, a paper. If you're considering graduate school, it's the path closest to what you'd do there, and the professor's research group, when there is one, gives you collaborators beyond your own team.
 
 For research the rungs read, from the bottom: a real-data run shown to your partner; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; a stranger reproduced the result from the published artifact, which is what a paper is for. Under every rung sit two prerequisites nobody states: data you're allowed to use, and results someone else can reproduce.
 
 Each rung has its own prerequisites:
 
-- **A pipeline first**: it runs end to end on sample data by the end of the early phase, the first gate the rest depends on.
-- **A real-data run**: the real dataset, which means data access agreements and possibly IRB approval, both of them clocks you don't control.
-- **Reran by others, then reproduced by a stranger**: the reproducible artifact described below, a reproduced baseline to compare against, compute for larger runs, and enough calendar time to iterate after the first results disappoint you.
+- **A real-data run shown to your partner**: a pipeline that runs end to end on sample data by the end of the early phase, so that when real data arrives you're debugging the science instead of the plumbing; then the real dataset, which means data access agreements and possibly IRB approval, both of them clocks you don't control.
+- **Your partner's group ran it**: instructions good enough for someone else to run the pipeline on their own machine, and time to fix what they find.
+- **Someone outside the team reran it**: the reproducible artifact described below, and a reproduced baseline to compare against.
+- **A stranger reproduced it**: the artifact published where a stranger can find it (with the paper, as a preprint, or in an archived repository), compute for larger runs, and enough calendar time to iterate after the first results disappoint you.
 
 Start the IRB and data-access clocks in your first week. An Institutional Review Board (IRB) reviews research that involves human subjects, and at Oregon State the [Human Research Protection Program](https://research.oregonstate.edu/ori/irb) requires IRB approval or an exempt determination before any study activity starts, including recruitment or the analysis of existing data. An exempt determination is still a review with a queue, a request for revisions adds a round, and a data use agreement between institutions goes through the legal office on each side. Ask your faculty partner in the first meeting which approvals the project needs and who files them, and if human subjects are even plausibly involved (a user study counts), ask explicitly.
 
-Get the pipeline running end to end on sample data in the early phase. Clearing that bar early means that when real data arrives, you're debugging the science instead of the plumbing.
-
-Reproducibility is the bar for every rung above the first, because a result that exists only on one laptop can't be checked by anyone, including you a month later. The problem reaches well past student projects. A news feature in Nature by <Cite id="baker-2016" /> reports the journal's own survey of 1,576 researchers: more than 70% had tried and failed to reproduce another scientist's experiments, and more than half had failed to reproduce their own. The figures come from a brief online questionnaire, so read them as a sign of how common the experience is, not as a failure rate for science.
+Reproducibility is the bar for every rung above the first, because a result that exists only on one laptop can't be checked by anyone, including you a month later. The problem reaches well past student projects. A news feature in Nature by <Cite id="baker-2016" /> reports the journal's own survey of 1,576 researchers: more than 70% had tried and failed to reproduce another scientist's experiments, and more than half had failed to reproduce their own. The article itself cautions that the survey, emailed to Nature readers and advertised as being about reproducibility, probably selected for respondents already receptive to and aware of the concern <Cite id="baker-2016" form="parenthetical" />, so read the figures as a sign of how common the experience is, not as a failure rate for science.
 
 A reproducible artifact has pinned dependencies (a lock file or a container), versioned or precisely referenced data, seeded runs, one documented command from a clean checkout to the result table, and a README a stranger can follow. The test is literal: another team member, or your professor's graduate student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt anything novel**, because if you can't reproduce the published number you're comparing against, you can't claim to beat it.
 
@@ -173,12 +172,10 @@ Collect as you go: the signed acceptance criteria, meeting notes and emails show
 
 ## Best Practices for Shipping
 
-- Start every external clock in the first weeks: domain, TLS, hosting, store accounts, CLA, IRB, the partner's IT access. None of them runs faster for being started late.
-- Deploy the walking skeleton while there's nothing to lose. A production URL with a placeholder page flushes out the whole dependency chain at no risk.
-- Instrument before you need the numbers. Analytics wired in the early phase is evidence by the late one; analytics wired a month before the end is a screenshot of an empty chart.
-- Treat recruiting strangers as a workstream, with an owner, a channel that exists, and backlog items, starting no later than the middle phase.
-- Read the ladder literally and plan for the rung you can show, not the one you hope for.
-- Capture evidence the day it happens (the merged pull request, the dashboard, the maintainer's comment, the partner's email) and link it from the document where you and your partner recorded the rung.
+- Give every external clock an owner and a start-by date in your plan, and check them at each planning meeting, because a request stalled in someone else's queue makes no noise until you go looking for it.
+- Treat recruiting strangers as a workstream, with an owner, a channel that exists, and backlog items, starting no later than the middle phase, because recruiting that is nobody's task waits until the week the users are needed.
+- Plan for the rung you can show someone running, not the one you hope to reach, because the ladder asks who ran the software, and a rung nobody outside the team has run is a rung you haven't reached.
+- Link each piece of evidence from the document where you and your partner recorded the rung as soon as you capture it, because that document is where anyone checking your progress, your partner included, looks first.
 
 ## Some Truths About Shipping
 
@@ -186,7 +183,7 @@ The last tenth of a project isn't a tenth of the work. A plan that says "build u
 
 Every external clock starts later than you think and runs longer than you were told. The estimate you get from an IT department, an IRB coordinator, or a maintainer is how long their step takes when nothing goes wrong. It leaves out the time your request sits in a queue before anyone reads it, and the revision round that follows. Nothing you do later makes someone else's queue move faster, so the only lever you have is when you join it.
 
-A trivial thing shipped early is worth more than an impressive thing that never ships. The walking skeleton, the typo pull request, and the sample-data pipeline have no value as features. Their value is that each one runs the whole external chain once (domain, TLS, contributor agreement, CI, review, data access) while failure is cheap, so the problems surface when you have months to fix them instead of days.
+A trivial thing shipped early is worth more than an impressive thing that never ships. The walking skeleton, the typo pull request, and the sample-data pipeline have no value as features. Their value is that each one runs the whole external chain once (domain, TLS, contributor agreement, CI, review, data access), so the problems surface when you have months to fix them instead of days.
 
 Strangers aren't friends who haven't heard of you yet. Friends try your software because they like you, and they forgive an onboarding flow that needs you on a call. Strangers owe you nothing, arrive slowly through channels that take time to build, and leave at the first confusing screen, so a post in a forum the week you need them brings you very few.
 
@@ -208,7 +205,7 @@ Deploying often doesn't make a launch trivial. Google's site reliability enginee
 
 In computing research, artifact evaluation committees review the code and data behind accepted papers. The [Artifact Evaluation](https://artifact-eval.org/) site lists committees going back to ESEC/FSE 2011, and the [cTuning foundation](https://ctuning.org/ae/) still supports the process at systems conferences. ACM's [artifact review and badging policy](https://www.acm.org/publications/policies/artifact-review-and-badging-current) defines three independent badges: Artifacts Evaluated (Functional or Reusable) for artifacts that passed an independent audit, Artifacts Available for artifacts placed in a permanent public archive, and Results Validated (Reproduced or Replicated) for main results that someone other than the authors obtained again. The top research rung is written with that bar in mind.
 
-Badges change how much data researchers share. <Cite id="kidwell-2016" /> found that after the journal Psychological Science began awarding open data badges, the share of its articles reporting open data rose from less than 3% to 23%, and to 39% in a later period, while data sharing stayed low and unchanged in comparison journals. Data reported as available was also more likely to be actually available, correct, usable, and complete when the article had earned a badge. The [Center for Open Science](https://www.cos.io/initiatives/badges) maintains those badges, and over 100 journals now offer them.
+At one psychology journal, badges changed how much data authors shared. <Cite id="kidwell-2016" /> found that after Psychological Science began awarding open data badges, the share of its articles reporting open data rose from less than 3% to 23%, and to 39% in a later period, while data sharing stayed low and unchanged in comparison journals. Data reported as available was also more likely to be actually available, correct, usable, and complete when the article had earned a badge. The [Center for Open Science](https://www.cos.io/initiatives/badges) maintains those badges, and over 100 journals now offer them.
 
 ## References
 
@@ -235,4 +232,4 @@ Badges change how much data researchers share. <Cite id="kidwell-2016" /> found 
 - [Find Users](/activities/user/#find-users) and [Engage Users](/activities/user/#engage-users): the recruiting workstream the stranger rungs depend on.
 - [Complete an IRB Application](/activities/user/#complete-an-irb-application): for research and any project running a user study.
 - [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible) and [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline): the two research rungs, made concrete.
-- [OSU Advantage Accelerator's Iterate Program](/activities/requirements/#osu-advantage-accelerators-iterate-program): pressure-tests a new product idea as a venture before you commit a year to it.
+- [OSU Advantage Accelerator's Iterate Program](/activities/requirements/#osu-advantage-accelerators-iterate-program): pressure-tests a new product idea as a venture before you commit the project to it.
