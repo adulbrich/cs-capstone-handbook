@@ -1,0 +1,18 @@
+authors:
+  - Mahnic, V.
+year: 2012
+title: A Capstone Course on Agile Software Development Using Scrum
+venue: IEEE Transactions on Education
+kind: peer-reviewed
+url: https://ieeexplore.ieee.org/document/5765710
+doi: 10.1109/TE.2011.2142311
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      The paper describes an undergraduate software engineering capstone in
+      which students work as Scrum Teams implementing user stories defined by
+      a domain expert playing the Product Owner, with project management data
+      collected to analyze work completed, compliance with plans, and
+      estimation ability; student surveys were overwhelmingly positive.
+    locator: Abstract

@@ -1,0 +1,24 @@
+authors:
+  - Buehler, R.
+  - Griffin, D.
+  - Ross, M.
+year: 1994
+title: >-
+  Exploring the "Planning Fallacy": Why People Underestimate Their Task
+  Completion Times
+venue: Journal of Personality and Social Psychology
+kind: peer-reviewed
+url: https://psycnet.apa.org/doi/10.1037/0022-3514.67.3.366
+doi: 10.1037/0022-3514.67.3.366
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      People's predictions of their own completion times were too optimistic
+      for a variety of academic and nonacademic tasks, and people focused on
+      future scenarios rather than relevant past experiences when predicting.
+    locator: Abstract
+  - claim: >-
+      In Study 4, the optimistic bias was eliminated for participants
+      instructed to connect relevant past experiences with their predictions.
+    locator: Abstract

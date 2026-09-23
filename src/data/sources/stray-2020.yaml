@@ -1,0 +1,31 @@
+authors:
+  - Stray, V.
+  - Moe, N. B.
+  - Sjøberg, D. I. K.
+year: 2020
+title: "Daily Stand-Up Meetings: Start Breaking the Rules"
+venue: IEEE Software
+kind: peer-reviewed
+url: https://ieeexplore.ieee.org/document/8501962
+doi: 10.1109/MS.2018.2875988
+# Read in full as the accepted manuscript on arXiv (1808.07650); the
+# locators are that version's section headings and tables.
+verified: full-text
+claims:
+  - claim: >-
+      When the facilitator's behavior made team members address the
+      facilitator, the stand-up often became a status-reporting meeting; when
+      the facilitator got members to talk to each other, it tended to become
+      a discussion meeting.
+    locator: Daily stand-ups, "How are the meetings facilitated?"
+  - claim: >-
+      The authors recommend omitting the question of what each person has
+      accomplished since the last meeting, to reduce status reporting, and
+      sharing status by other means such as a visual board, so the meeting
+      focuses on future work, dependencies, and obstacles.
+    locator: Recommendations, "Omit Question 1"; Table 3
+  - claim: >-
+      The authors recommend adapting the frequency: a well-communicating team
+      can stop meeting daily if three or four times a week is sufficient, and
+      members can post their answers electronically and meet less often.
+    locator: Recommendations, "Adapt the frequency"; Table 3

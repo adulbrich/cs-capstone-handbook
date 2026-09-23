@@ -1,0 +1,19 @@
+authors:
+  - Moløkken-Østvold, K.
+  - Haugen, N. C.
+year: 2007
+title: "Combining Estimates with Planning Poker: An Empirical Study"
+venue: Australian Software Engineering Conference (ASWEC)
+kind: peer-reviewed
+url: https://ieeexplore.ieee.org/document/4159687
+doi: 10.1109/ASWEC.2007.15
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Planning poker was introduced for half of the tasks in one software
+      project. Its group consensus estimates were less optimistic and more
+      accurate than the mechanical combination of the same people's
+      individual estimates, while control tasks estimated by individual
+      experts achieved similar accuracy to the planning poker tasks.
+    locator: Abstract
