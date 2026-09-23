@@ -1,0 +1,23 @@
+authors:
+  - Power, C.
+  - Freire, A.
+  - Petrie, H.
+  - Swallow, D.
+year: 2012
+title: "Guidelines Are Only Half of the Story: Accessibility Problems Encountered by Blind Users on the Web"
+venue: Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI)
+kind: peer-reviewed
+url: https://dl.acm.org/doi/10.1145/2207676.2207736
+doi: 10.1145/2207676.2207736
+verified: abstract
+claims:
+  - claim: >-
+      Task-based evaluations with 32 blind users on 16 websites yielded 1,383
+      instances of user problems, of which only 50.4% were covered by WCAG
+      2.0 success criteria.
+    locator: Abstract
+  - claim: >-
+      For problems covered by WCAG 2.0, 16.7% of websites implemented the
+      techniques WCAG 2.0 recommends, but the techniques did not solve the
+      problems.
+    locator: Abstract

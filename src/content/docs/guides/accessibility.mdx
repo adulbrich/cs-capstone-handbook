@@ -5,63 +5,63 @@ sidebar:
   order: 13
 ---
 
-{/* check-prose: legacy-opener */}
-
 import { LinkCard } from '@astrojs/starlight/components';
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
-Read this when a real interface first exists; it gives you the three checks that find what a working mouse and a working pair of eyes never will.
+Your team has a working interface: a form that submits, a dashboard that loads, a flow you can demo. Some of the people who use it will do so with a screen reader, with a keyboard and no mouse, with the browser zoomed to 200%, or with low vision. This page covers the three checks that find what a mouse and a good pair of eyes miss: automated rules, a manual pass you run yourself, and a session with someone who uses assistive technology every day. It doesn't teach you how to write accessible markup; the pattern libraries under Additional Readings do that.
 
+:::note[tl;dr]
+- Target WCAG 2.2 at level AA. Content that meets it also meets WCAG 2.0 and 2.1, the versions US law names.
+- Add an accessibility lint rule set and axe-core to your test suite, and run both in CI on every pull request.
+- Expect automated tools to find more than half of the issues by volume and to cover a minority of the WCAG criteria; a person has to check the rest.
+- Before every demo, complete your main flow keyboard-only, then with a screen reader on, then at 200% zoom.
+- Where you can, run one task-based session with a daily assistive-technology user. Where you can't, run a simulated one and say it was simulated.
+- File accessibility violations on the same board as every other bug.
+:::
 
-If people will use your software, some of them will use it with a screen reader, a keyboard only, at 200% zoom, or with low vision. Accessibility is not a polish task for the last sprint; it is a correctness property, and like every other correctness property it belongs in CI.
+Teams often leave accessibility to the last sprint, as polish. Treat it like any other correctness property instead: a missing form label breaks the page for a screen-reader user the same way a null pointer breaks it for everyone, so the check belongs in CI next to your tests.
 
-Without it:
+The reference standard is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) (Web Content Accessibility Guidelines) at level AA. Its success criteria turn "accessible" into statements you can test, such as a 4.5:1 contrast ratio for body text, a text alternative for every meaningful image, and every function operable from a keyboard, so a team checks its work against a list instead of an impression. Laws often name an older version, 2.0 or 2.1 ([Industry and Academia](#accessibility-testing-in-industry-and-academia) has which law names which), and the W3C states that content conforming to WCAG 2.2 also conforms to 2.0 and 2.1, so targeting 2.2 AA covers them.
 
-- A critical flow turns out to be uncompletable without a mouse, discovered the week of a public demo.
-- A partner in the public sector cannot accept the software, because the institution procures against a standard the team never read.
-- The automated score is green and the product is still unusable, because nobody ever tried it with the keyboard.
+Three kinds of check sit behind that target, and each answers a different question. Automated rules tell you whether the mechanical requirements are met. Your own manual pass tells you whether the software can be used without a mouse or without sight. A session with someone who relies on assistive technology every day tells you whether it works for the people who need it, which the first two can't, because both are run by people who don't depend on the tools they're trying out.
 
-The reference standard is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA. That gives you a target instead of a vibe, and it is the level most institutions and public-sector partners require.
-
-Three kinds of check sit behind that target, and they answer different questions. Automated rules tell you whether the mechanical requirements are met. Your own manual pass tells you whether the software is usable without a mouse or without sight. A session with someone who relies on assistive technology every day tells you whether it is any good. The first two find broken things; only the third tells you what daily use feels like.
-
-The [Testing Strategy guide](/guides/testing-strategy/) has the rest of the testing picture, and these checks belong in the same CI run and the same pre-demo routine as everything there.
+The [Testing Strategy guide](/guides/testing-strategy/) covers the rest of the testing picture, and these checks run in the same CI pipeline and the same pre-demo routine as everything there.
 
 ## Automated Accessibility Testing
 
-Three layers, cheapest first:
+Automated checks run on every pull request without anyone remembering to run them, which makes them the right home for the mechanical rules. They come in three layers, cheapest first, and each sees something the one before can't: source code, a rendered component, and a whole running page.
 
-- **Lint level**: rules like [`eslint-plugin-jsx-a11y`](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y) catch missing alt text, unlabeled inputs, and click handlers on non-interactive elements before a browser is ever involved.
-- **Component and page level**: [axe-core](https://github.com/dequelabs/axe-core) runs inside your existing test suite and fails a test when a rendered component violates a rule. Wiring it into the tests you already have is usually a few lines.
-- **Whole-page budgets**: [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [pa11y](https://pa11y.org/) score a running page and can fail the build below a threshold.
+- **Lint level.** [`eslint-plugin-jsx-a11y`](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y) reads your JSX before anything renders. Its rules flag missing alt text (`alt-text`), form inputs with no associated label (`label-has-associated-control`), links and headings with no content, a page with no `lang`, and click handlers with no keyboard equivalent (`click-events-have-key-events`). It runs in the editor, so it's the cheapest layer, but it sees only source: anything that depends on computed styles, such as contrast, is invisible to it.
+- **Component and page level.** [axe-core](https://github.com/dequelabs/axe-core) runs inside your existing test suite against the rendered DOM and fails a test when a component violates a rule. Its maintainers state that it reports no false positives, and it marks what it can't decide as "incomplete" for a person to review. Its color-contrast rule doesn't work under JSDOM, so check contrast in a real browser through an end-to-end test rather than in a JSDOM unit test.
+- **Whole-page budgets.** [Lighthouse](https://developer.chrome.com/docs/lighthouse/) and [pa11y](https://pa11y.org/) load a running page and report on it. Lighthouse's [accessibility score](https://developer.chrome.com/docs/lighthouse/accessibility/scoring) is a weighted average of pass-or-fail audits, weighted by axe's user-impact ratings. [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) can fail a build below a minimum score, and [pa11y-ci](https://github.com/pa11y/pa11y-ci) fails when the error count passes a threshold you set.
 
-Run these as a CI gate, not as a pre-release scramble. An accessibility violation caught in a pull request costs minutes; the same violation found the week before a public demo costs a redesign.
+Run these as a CI gate on every pull request. A violation caught in review touches one component while its author still has it open. The same violation found shortly before a demo has usually been copied into every screen that reused the component, and a one-attribute fix becomes a sweep across the codebase.
+
+The layers target the failures that are most common in practice. WebAIM's annual industry report on the top million home pages, which runs the [WAVE](https://wave.webaim.org/) engine against each rendered page, found that six error types made up 96% of everything it detected: low-contrast text (on 83.9% of home pages), missing alternative text for images (53.1%), missing form labels (51%), empty links, empty buttons, and a missing document language <Cite id="webaim-2026" form="parenthetical" />. All six are mechanical, and axe-core has a rule for each (see its [rule list](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md)).
 
 ## Manual Accessibility Testing
 
-Automated tools catch roughly a third to a half of real accessibility defects. [Deque's audit data](https://www.deque.com/automated-accessibility-coverage-report/) puts axe-core at 57% of issues by volume; counting WCAG success criteria instead gives a lower figure. They are excellent at the mechanical rules (is there alt text, is the contrast ratio sufficient) and blind to the ones that require judgment: whether focus order makes sense, whether a label is *meaningful* rather than merely present, whether the flow is completable at all without a mouse.
+Automated tools find a large share of the issues but cover a minority of the rules, and the figure you hear depends on which one is counted. Deque, the company that maintains axe-core, published an industry report on first-time audits covering more than 13,000 pages and page states and nearly 300,000 issues: axe-core's automated tests found 57.38% of the issues by volume <Cite id="deque-2021" form="parenthetical" />. Counted by WCAG success criteria instead, the same data had automated findings for 16 of the 50 WCAG 2.1 AA criteria, which the report acknowledges supports the widely quoted figure of 20 to 30% coverage. The report was written to argue for the by-volume count, so read it as the tool vendor's case. An independent benchmark of six tools against WCAG 2.0 by <Cite id="vigo-2013" /> found that they covered at most 50% of the success criteria and, on the ones they did test, caught only about four violations in ten.
 
-Four checks, none of which need special equipment:
+The split follows a pattern. Tools are reliable on rules a machine can decide (is there alt text, is the contrast ratio at least 4.5:1) and blind to rules that need judgment: whether the focus order makes sense, whether a label is *meaningful* rather than merely present, whether the flow can be completed at all without a mouse. Keyboard and focus problems show it most clearly in Deque's data. Automated tests found none of the 9,553 issues against Focus Order or the 7,312 against Focus Visible, and 234 of the 9,412 against Keyboard; manual testing found the rest <Cite id="deque-2021" form="parenthetical" />.
 
-- **Keyboard only.** Unplug your mouse and complete your critical flow with Tab, Shift-Tab, Enter, and Escape. If you get stuck or cannot see where focus is, so will your users.
-- **Screen reader pass.** VoiceOver ships with macOS (Cmd-F5), [NVDA](https://www.nvaccess.org/) is free on Windows, Orca ships with most Linux desktops. Ten minutes on your main flow is enough to find the worst problems.
-- **Zoom to 200%.** Text should reflow rather than clip or overlap.
-- **Contrast.** Browser devtools report contrast ratios directly in the element inspector.
+The manual pass is four checks, none of which needs special equipment. Run them before every demo and every release, next to your smoke test.
 
-Do this before demos and before releases, alongside your smoke test.
+- **Keyboard only.** Unplug your mouse and complete your main flow with Tab, Shift-Tab, Enter, Space, and Escape. Watch for two failures: a control you can't reach or operate, and a focus indicator you can't see. People who can't use a mouse, including screen-reader users on a desktop, move through the page this way, so a step you can't complete is a step they can't complete.
+- **Screen reader.** [VoiceOver](https://support.apple.com/guide/voiceover/welcome/mac) ships with macOS (Command-F5 turns it on), [NVDA](https://www.nvaccess.org/) is free on Windows, and [Orca](https://help.gnome.org/orca/) is the screen reader for the GNOME desktop on Linux. Spend ten minutes on your main flow listening to what it announces: a button with no accessible name is read as just "button", and an image with no alt text may be skipped or read out as its file name.
+- **Zoom to 200%.** Text should reflow rather than clip, overlap, or push content off-screen. WCAG's Resize Text success criterion requires text to scale to 200% without losing content or function.
+- **Contrast.** The element inspector in Chrome and Firefox shows a text element's contrast ratio. WCAG AA asks for 4.5:1 on body text and 3:1 on large text. Check text over images and gradients by eye, where a tool often can't compute a ratio; in Deque's data, about one contrast issue in six came from manual testing <Cite id="deque-2021" form="parenthetical" />.
 
 ## Testing with Assistive Technology Users
 
-Automated rules and your own keyboard pass tell you whether the software is *usable*. Only someone who relies on assistive technology daily can tell you whether it is *good*. They navigate at speeds and in patterns you will not think to try, and they will find in two minutes what your checklist missed entirely.
+The first two checks tell you whether the software can be used. A session with a daily assistive-technology user tests what they can't: whether the people who rely on those tools can finish their tasks. <Cite id="power-2012" /> ran task-based evaluations with 32 blind users on 16 websites and logged 1,383 problems; only 50.4% of them were covered by any WCAG 2.0 success criterion. For the problems WCAG did cover, 16.7% of the websites had implemented the technique WCAG recommends, and the technique didn't solve the problem.
 
-Where feasible, recruit one participant who uses a screen reader, voice control, or switch access as part of their normal day, and run the same task-based session you would run with any other user. Campus disability services, local accessibility meetups, and your project partner's own user base are the usual routes.
+A daily user brings what a teammate with a screen reader switched on doesn't have: shortcuts and navigation strategies learned over years, and a sense of how a well-built page behaves. They notice where yours departs from it, including problems that no success criterion names.
 
-Where that is not feasible in your timeline, the closest substitute is a task-based session under simulated constraint: a teammate who did not build the feature completes the flow keyboard-only or with a screen reader on. State plainly in your writeup that this was simulated. Simulation finds broken things; it does not tell you what daily use feels like, and pretending otherwise is the mistake worth avoiding.
+Where you can, recruit one participant who uses a screen reader, voice control, or switch access as part of their normal day, and run the same task-based session you'd run with any other user: a short list of realistic tasks, you watching and taking notes, nobody helping. Campus disability services, local accessibility meetups, and the organization you're building for are the usual routes to a participant.
 
-<LinkCard
-  title="Designing for Accessibility"
-  href="/activities/design/#designing-for-accessibility"
-  description="The design-time version: what to get right in the markup before any of these checks run."
-/>
+When that isn't possible on your timeline, the closest substitute is a task-based session under simulated constraint: a teammate who didn't build the feature completes the flow keyboard-only or with a screen reader on. A simulated session finds broken things, such as a focus trap or an unlabeled control, but its tester is learning the tool while testing, so it can't tell you what daily use is like.
 
 <LinkCard
   title="Test with an Assistive Technology User"
@@ -71,61 +71,63 @@ Where that is not feasible in your timeline, the closest substitute is a task-ba
 
 ## Best Practices for Accessibility Testing
 
-- **Start at the lint layer.** It is the cheapest rule set you will ever add and it catches the most common defects before a browser is involved.
-- **Do the keyboard pass on every flow you demo.** It takes two minutes and it is the check that most often finds something.
-- **Write down what was simulated.** A teammate with a screen reader on is a useful test and a different test from a daily user. Say which one you ran.
-- **Fix the flow, not the score.** A page that passes every automated rule can still be uncompletable without a mouse.
-- **Treat a violation as a bug.** Put it on the board with the others rather than in a separate accessibility backlog nobody prioritizes.
+- Start at the lint layer. It runs before a browser is involved and catches the missing alt text and missing labels that sit near the top of WebAIM's error counts.
+- Run axe-core in the tests you already have, and check contrast in a real browser rather than in JSDOM.
+- Do the keyboard pass on every flow you demo. It takes a few minutes, and keyboard failures are the ones automated tools almost never report.
+- Judge the work by whether the flow can be completed. A page can pass every automated rule and still be impossible to finish without a mouse.
+- File a violation as a bug on the same board as the others, so it's prioritized against the same deadlines as every other defect.
 
 ## Some Truths About Accessibility Testing
 
-Most capstone teams do none of this and nothing visible happens, because the readers, the partners and the teammates all use a mouse and a screen. That is exactly why it gets skipped: the cost of skipping it lands on people who are not in the room. The scale is not marginal. WebAIM's annual [accessibility analysis of the top million home pages](https://webaim.org/projects/million/) has found detectable failures on well over ninety percent of them every year it has run, which tells you both that this is normal and that normal is not an excuse.
+A team can skip all of this and see no consequence, because the people who build, review, and demo the software usually all use a mouse and a screen. That's why it gets skipped: the cost lands on people who aren't in the room.
 
-Automated tools are oversold and still worth running. A green automated run is not an accessible product; it is the mechanical half of one, and the [coverage figures above](#manual-accessibility-testing) are the reason the manual pass is not optional.
+It's also what most of the web looks like. WebAIM's million-home-page report found detectable WCAG failures on 95.9% of the pages, up from 94.8% the year before, which reversed six years of small improvements <Cite id="webaim-2026" form="parenthetical" />. Because only automatically detectable failures were counted, WebAIM notes that the rate of full WCAG A and AA conformance was therefore certainly lower than 4.1%.
 
-The manual pass is the highest-yield thing on this page and takes the least equipment. Unplugging a mouse costs nothing and finds real defects in most student projects on the first try.
+Automated tools are oversold and still worth running. A clean run means the mechanical rules pass, and the [coverage figures](#manual-accessibility-testing) show how much that leaves unchecked whichever way you count. Run them anyway, because they catch the most common failures on every pull request on every change, and the only human cost is reviewing what they flag as incomplete.
 
-Recruiting a daily assistive-technology user on a student timeline is hard, because the people you need are few, busy, and rightly wary of being a checkbox, and often the answer is that you could not. Saying so in your writeup is worth more than a simulated session described as a real one.
+If you run only one check on this page, make it the manual pass, because it costs nothing but the laptop you already have and it targets the failures automation misses, keyboard and focus above all. Put it on the pre-demo checklist where someone has to tick it, because unlike a CI gate, nothing turns red when nobody runs it.
 
-Retrofitting is the expensive path and it is the one most teams take. The work is mostly in the markup: semantic elements, labels, focus order. Getting it right while the component is being written is nearly free, and the same fix after a design is finished can mean rebuilding the component.
+Recruiting a daily assistive-technology user on a short project timeline is hard. The people you need are few, busy, and reasonably wary of being asked to sign off on someone else's product, and often the outcome is that you couldn't find one. Say so in your write-up: a reader can weigh a simulated session they know was simulated, but a simulated session described as a real one misleads them about what was tested.
+
+Retrofitting is the expensive path. The fixes for the most common failures are markup and styling: semantic elements, labels, focus order, color. Getting them right while a component is being written costs a few attributes; after the component has been styled, reused, and wrapped in others, the same fix can mean rebuilding it. The UK government's [Service Manual](https://www.gov.uk/service-manual/helping-people-to-use-your-service/testing-for-accessibility) gives its teams the same advice, telling them to test from the first production code because issues are much more expensive to unpick later.
 
 ## Accessibility Testing in Industry and Academia
 
-For a large part of the industry this is a legal requirement rather than a quality preference. In the United States, Section 508 governs federal procurement and the Americans with Disabilities Act has been read to cover commercial websites; the European Accessibility Act imposes comparable obligations. Public universities, including this one, procure against those standards, which is why a partner in the public sector will often name WCAG 2.2 AA in a contract before they name a framework.
+For much of the industry, accessibility is a legal requirement rather than a quality preference. In the United States, [Section 508](https://www.section508.gov/) of the Rehabilitation Act requires federal agencies' technology to be accessible, and the [Access Board's standards](https://www.access-board.gov/ict/) under it incorporate WCAG 2.0 AA. The Department of Justice's [guidance on web accessibility](https://www.ada.gov/resources/web-guidance/) states that the Americans with Disabilities Act (ADA) applies to the websites of state and local governments and of businesses open to the public, and its [rule for state and local governments](https://www.ada.gov/resources/2024-03-08-web-rule/) sets WCAG 2.1 AA as the standard for their web content and mobile apps, public universities included. In the European Union, the [European Accessibility Act](https://eur-lex.europa.eu/eli/dir/2019/882/oj) sets accessibility requirements for products and services that include e-commerce, banking services, e-books, and smartphones.
 
-Companies that take it seriously put it where it cannot be skipped: axe or Lighthouse in the pipeline, an accessibility item in the definition of done, and a design system whose components are accessible once so that product teams inherit it. Microsoft, Apple and Google all publish accessibility guidelines for their platforms, and each runs an internal certification or review step before release.
+Buyers bound by those laws need evidence that a product conforms, and the usual format is an Accessibility Conformance Report: the Information Technology Industry Council's [VPAT](https://www.itic.org/policy/accessibility/vpat) template, filled in with test results against Section 508, the European standard [EN 301 549](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf), and WCAG.
 
-In research software the pressure is weaker and the gap is wider. Tools built for a lab are rarely tested with assistive technology at all, which becomes a real problem the moment the artifact is published and a stranger is expected to reproduce the result with it.
+For native mobile apps, the platform owners publish their own guidance alongside WCAG: Apple's [Human Interface Guidelines on accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility) and Android's [guide to building accessible apps](https://developer.android.com/guide/topics/ui/accessibility).
+
+The UK government's Service Manual shows what making the checks hard to skip looks like. It sets WCAG 2.2 AA as the minimum for government services, requires both automated and manual testing because automated testing alone misses issues, asks teams to test with assistive technology and with disabled users, and requires an accessibility audit before a service moves into public beta. Its [Design System](https://design-system.service.gov.uk/accessibility/) supplies tested components and patterns and states plainly that using them doesn't make a service accessible on its own: teams still owe their own research, design, and testing.
+
+Research software built for one lab may fall under none of these rules. Run the lint layer and the keyboard pass on it anyway, because once the artifact is published, a stranger may need it to reproduce the result, using whatever assistive technology they rely on.
 
 :::note[Reviewed annually]
 The tool names on this page date faster than the practice. Checked at the annual review.
 :::
 
-## Additional Readings
+## References
 
-The W3C material is the authoritative source and is written for practitioners
-rather than standards lawyers, so start there rather than with a blog summary.
-The pattern libraries are what you will actually consult while building a
-component, because most accessibility defects are markup decisions made in the
-first ten minutes.
+<References />
+
+## Additional Readings
 
 **Sources and further reading**
 
 - [Introduction to Web Accessibility](https://www.w3.org/WAI/fundamentals/accessibility-intro/), W3C WAI: the orientation to read before the guidelines themselves.
-- [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/), W3C: the reference for building a component that behaves correctly with assistive technology.
-- [Easy Checks](https://www.w3.org/WAI/test-evaluate/preliminary/), W3C WAI: a first review you can run in about an hour with no special tooling.
-- [The WebAIM Million](https://webaim.org/projects/million/): the annual survey of how common these failures actually are.
-- [Designing with screen readers in mind](https://webaim.org/techniques/screenreader/), WebAIM: what the experience is actually like, which makes the rules make sense.
-- [The A11Y Project checklist](https://www.a11yproject.com/checklist/): a practical, plain-language working checklist.
-- [Inclusive Components](https://inclusive-components.design/), Heydon Pickering: worked examples of accessible versions of the components you are probably building.
-- [Guidance on Web Accessibility and the ADA](https://www.ada.gov/resources/web-guidance/), US Department of Justice: the legal dimension, which is why industry treats this as a requirement rather than a preference.
+- [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/), W3C WAI: how to build a component that behaves correctly with assistive technology.
+- [Easy Checks: A First Review of Web Accessibility](https://www.w3.org/WAI/test-evaluate/preliminary/), W3C WAI
+- [Designing for Screen Reader Compatibility](https://webaim.org/techniques/screenreader/), WebAIM
+- [Checklist](https://www.a11yproject.com/checklist/), The A11Y Project
+- [Inclusive Components](https://inclusive-components.design/), Heydon Pickering: worked examples of accessible versions of common interface components.
 
 **Activities that exercise this**
 
 - [Designing for Accessibility](/activities/design/#designing-for-accessibility): the design-side pass, run before the markup exists rather than after.
 - [Test with an Assistive Technology User](/activities/user/#test-with-an-assistive-technology-user): the highest-value and hardest-to-arrange check on this page.
 - [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half, running on every pull request.
-- [Write for Accessibility and ESL](/activities/communication/#write-for-accessibility-and-esl): the content half, which automated tools do not check at all.
+- [Write for Accessibility and ESL](/activities/communication/#write-for-accessibility-and-esl): the content half, which axe and Lighthouse don't check.
 - [Apply the GenderMag Method](/activities/design/#apply-the-gendermag-method): inclusive design for cognitive style, which the same walkthrough habit supports.
-- [UI Design Guidelines](/activities/design/#ui-design-guidelines): the conventions that prevent most defects before testing finds them.
+- [UI Design Guidelines](/activities/design/#ui-design-guidelines): the conventions that prevent common defects before testing finds them.
 - [UX Design Maturity](/activities/user/#ux-design-maturity): where your team currently sits, and what the next step costs.
