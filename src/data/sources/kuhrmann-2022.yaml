@@ -1,0 +1,70 @@
+authors:
+  - Kuhrmann, M.
+  - Tell, P.
+  - Hebig, R.
+  - Klünder, J.
+  - Münch, J.
+  - Linssen, O.
+  - Pfahl, D.
+  - Felderer, M.
+  - Prause, C. R.
+  - MacDonell, S. G.
+  - Nakatumba-Nabende, J.
+  - Raffo, D.
+  - Beecham, S.
+  - Tüzün, E.
+  - López, G.
+  - Paez, N.
+  - Fontdevila, D.
+  - Licorish, S. A.
+  - Küpper, S.
+  - Ruhe, G.
+  - Knauss, E.
+  - Özcan-Top, Ö.
+  - Clarke, P.
+  - McCaffery, F.
+  - Genero, M.
+  - Vizcaíno, A.
+  - Piattini, M.
+  - Kalinowski, M.
+  - Conte, T.
+  - Prikladnicki, R.
+  - Krusche, S.
+  - Coşkunçay, A.
+  - Scott, E.
+  - Calefato, F.
+  - Pimonova, S.
+  - Pfeiffer, R.-H.
+  - Schultz, U. P.
+  - Heldal, R.
+  - Fazal-Baqaie, M.
+  - Anslow, C.
+  - Nayebi, M.
+  - Schneider, K.
+  - Sauer, S.
+  - Winkler, D.
+  - Biffl, S.
+  - Bastarrica, M. C.
+  - Richardson, I.
+year: 2022
+title: What Makes Agile Software Development Agile?
+venue: IEEE Transactions on Software Engineering
+kind: peer-reviewed
+url: https://ieeexplore.ieee.org/document/9496156
+doi: 10.1109/TSE.2021.3099532
+# Read in full as the author version on arXiv (2109.11435).
+verified: full-text
+claims:
+  - claim: >-
+      In an international survey with 556 data points, only 83 (14.93%)
+      implemented all project disciplines consistently agile, consistently
+      traditional, or consistently balanced, and the per-discipline
+      histograms showed a general tendency toward a hybrid development
+      approach rather than a trend toward purely agile or traditional
+      development.
+    locator: Section 4.2, Figures 8 and 9, Finding 1b
+  - claim: >-
+      Compared to the selection of methods used, the selection of practices
+      used has a stronger effect on the degree of agility of a given
+      discipline.
+    locator: Section 4.3.1, Finding 2

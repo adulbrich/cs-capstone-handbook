@@ -1,0 +1,22 @@
+authors:
+  - Stray, V.
+  - Sjøberg, D. I. K.
+  - Dybå, T.
+year: 2016
+title: "The Daily Stand-Up Meeting: A Grounded Theory Study"
+venue: Journal of Systems and Software
+kind: peer-reviewed
+url: https://www.sciencedirect.com/science/article/pii/S0164121216000066
+doi: 10.1016/j.jss.2016.01.004
+# The open copy in the SINTEF archive could not be downloaded; only the
+# abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      In a grounded theory study of 12 software teams in three companies,
+      the factors contributing most to a positive attitude toward the daily
+      stand-up were information sharing with the team and the opportunity to
+      discuss and solve problems; those contributing most to a negative
+      attitude were status reporting to the manager and a frequency perceived
+      as too high and a duration as too long.
+    locator: Abstract
