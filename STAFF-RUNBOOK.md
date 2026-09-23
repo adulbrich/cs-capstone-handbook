@@ -11,11 +11,9 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 - Team-to-TA assignments and meeting grids are built in week 0 from the check-in sheet and published in Canvas week 1.
 - The TA is the team's first contact for everything operational: absences, NDA walkthrough scheduling, deduction flags, escalations. Between check-ins, teams reach their TA async; TAs batch async responses, they do not hold extra meetings.
 
-## Resume Meetings (fall, instructor-run)
+## Resume and Intent, Career Retrospective (co-instructor)
 
-- Separate from the TA check-ins. Every student meets an instructor once in fall weeks 3 to 5, in groups of eight for thirty minutes, to react to the three intent lines from the Resume and Intent assignment. Each student reads their lines aloud and names the resume line each one would add or replace; the group and the instructor react, and the student leaves with the lines sharper or replaced. Resumes are not reviewed line by line in the session, because thirty minutes does not hold eight resume reviews. One instructor runs all of them: about six hours per hundred students; the second Friday hour and two fixed office blocks a week absorb them. Slots are published in Canvas in week 2 from the roster.
-- Attendance is the third rubric criterion; the instructor records it in Canvas the same day. A student who asks before the slot is rescheduled; a no-show is not excused.
-- The same instructor meets the same groups again in spring, by week 8, for the Career and Individual Retrospective; keep the group list and the fall submissions, since the fall Canvas course closes.
+- The co-instructor runs both entirely in Canvas: the assignments, their rubrics, the grading, and the resume meetings. TAs do not grade them, and neither the handbook nor `canvas/assignments/` describes them (#197).
 
 ## Check-in Format (25 to 30 minutes, the same script for every TA)
 
@@ -177,9 +175,8 @@ The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 | RFCs (~50 x ~10 min) | ~8 h | ~8 h | n/a |
 | Defense sessions (weeks 7 and 9, in addition to check-ins) + scoring, follow-ups, Canvas entry | ~9 h | ~9 h | ~9 h |
 | Term deliverable (charter / DoS + postmortem / spring set incl. release trailers) | ~5 h | ~5 h | ~7 h |
-| Career retrospectives (~50 x ~10 min) | n/a | n/a | ~8 h |
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
-| **Total** | **~69 h (~6.9 h/wk)** | **~70 h** | **~64 h** |
+| **Total** | **~69 h (~6.9 h/wk)** | **~70 h** | **~56 h** |
 
 The check-ins row is 14 teams x 5 check-in weeks x 30 minutes, all of it in the sprint-note weeks (about 7 h in a check-in week, none in between). The defense row is 14 sessions at 6 minutes per student plus buffer (about 7 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the 7 h is the price of keeping the week-8 demo live (#23). **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
 

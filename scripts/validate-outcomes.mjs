@@ -8,7 +8,8 @@
 // The frontmatter `assignment.outcomes` block must reconcile with the tags in
 // that TSV exactly, so neither can silently drift. Coverage minimums:
 //   - every ABET outcome (SO1-SO6): >= 2 individual-level data points
-//   - every WIC (L07-L09) and Beyond OSU (L10) outcome: >= 1 individual-level point
+//   - every WIC (L07-L09) and Beyond OSU (L10) outcome: >= 1 individual-level point,
+//     except the outcomes in CANVAS_EVIDENCED below
 // It also checks that each term's Team Deliverables table sums to exactly 25%,
 // and that each page imports the TSV that belongs to it rather than another
 // assignment's, which Vite cannot catch because both paths resolve.
@@ -34,7 +35,6 @@ const MIN_ABET = 2;
 // the rubric (#144), so this is not a mirror table: it is how the validator
 // tells whether a page imported its own assignment's rubric or a neighbour's.
 const CANVAS_TO_HANDBOOK = {
-  "career-retrospective": "career-retrospective",
   defense: "defense",
   "definition-of-shipped": "definition-of-shipped",
   "incident-postmortem": "incident-postmortem",
@@ -42,7 +42,6 @@ const CANVAS_TO_HANDBOOK = {
   "project-landing-page": "landing-page",
   "project-retrospective": "project-retrospective",
   "repo-checkpoint": "repo-checkpoints",
-  "resume-and-intent": "resume-and-intent",
   rfc: "rfc",
   "spring-release": "release",
   "sprint-note": "sprint-notes",
@@ -72,6 +71,13 @@ const RUBRIC_EXCEPTIONS = new Set([
 ]);
 
 const CANVAS_DEPRECATED = new Set(["_template"]);
+
+// Outcomes evidenced outside the handbook, exempt from the individual floor.
+// L10 came only from Resume and Intent and the Career and Individual
+// Retrospective, which the co-instructor now runs entirely in Canvas, so no
+// rubric here carries it (#197). A stopgap until #196 decides how L10 is
+// recorded. A handbook criterion tagged L10 still counts normally.
+const CANVAS_EVIDENCED = new Map([["L10", "evidenced in Canvas, #196"]]);
 
 function parseFrontmatter(source) {
   const match = source.match(/^---\n([\s\S]*?)\n---/);
@@ -345,11 +351,12 @@ for (const [, term, table] of termSections) {
 // 4%, and Workshop Activities declared 2 while winter and spring are 1%.
 // `weight` may be a scalar when the page is worth the same in every term it
 // runs, or a per-term map when it varies. Only Team Deliverables pages appear
-// in the term tables; the four 25% components (RFC, Defense, Career
-// Retrospective, and the two evaluation instruments) are stated in the Grade
-// Architecture table instead and are skipped here deliberately, not by
-// accident. Their weights are checked by hand against that table; the Defense
-// varies by term since the fall Resume and Intent took 2% of it.
+// in the term tables; the four 25% components (RFC, Defense, and the two
+// evaluation instruments) are stated in the Grade Architecture table instead
+// and are skipped here deliberately, not by accident. Their weights are
+// checked by hand against that table; the Defense varies by term since the
+// fall Resume and Intent took 2% of it. Resume and Intent and the Career
+// Retrospective run in Canvas and declare no weight here at all (#197).
 for (const [slug, assignment] of pages) {
   const inTables = [...tableWeights.entries()].filter(([, m]) => m.has(slug));
   if (inTables.length === 0) {
@@ -532,10 +539,15 @@ for (const outcome of ABET_OUTCOMES) {
   }
 }
 for (const outcome of OTHER_OUTCOMES) {
-  const ok = counts[outcome] >= 1;
-  console.log(
-    `  ${outcome}: ${counts[outcome]} ${ok ? "ok" : "INSUFFICIENT (need 1)"}`
-  );
+  const exempt = CANVAS_EVIDENCED.has(outcome);
+  const ok = counts[outcome] >= 1 || exempt;
+  let status = "INSUFFICIENT (need 1)";
+  if (counts[outcome] >= 1) {
+    status = "ok";
+  } else if (exempt) {
+    status = `exempt (${CANVAS_EVIDENCED.get(outcome)})`;
+  }
+  console.log(`  ${outcome}: ${counts[outcome]} ${status}`);
   for (const src of sources[outcome]) {
     console.log(`      - ${src}`);
   }

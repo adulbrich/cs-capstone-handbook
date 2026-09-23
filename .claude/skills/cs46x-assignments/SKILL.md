@@ -5,7 +5,8 @@ description: Use when creating or editing assignment pages (MDX files in src/con
 
 # Assignment Style Guide
 
-Assignment pages are **the source of truth for all graded work in the course**.
+Assignment pages are **the source of truth for all graded work in the course**,
+except the two Canvas-owned stubs described under **Frontmatter Contract**.
 Canvas mirrors them, the syllabi mirror them, and two validators parse them. A
 mistake here propagates into student grades and accreditation evidence, which is
 why more of this skill is mechanical than the guide or activity skills.
@@ -106,7 +107,8 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
    carries. This is the rule most easily gotten wrong: a team page tagged `L07`
    looks like coverage and counts as nothing.
 3. **Every ABET outcome (SO1-SO6) needs two individual data points; WIC and
-   Beyond OSU (L07-L10) need one.** Removing a tagged criterion can drop an
+   Beyond OSU (L07-L10) need one.** L10 is exempt for now, because its only
+   criteria moved to Canvas (`CANVAS_EVIDENCED`, #196). Removing a tagged criterion can drop an
    outcome below its floor and fail CI. Run the validator before assuming a
    deletion is safe.
 4. **`weight` is reconciled against the term tables** in
@@ -123,12 +125,20 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
    list in `validate-outcomes.mjs` (see **Rubric Rules**).
 
 A page with no `assignment:` block is skipped by the validator entirely: no
-rubric TSV, no weight, no AI-use paragraph, no outcome tags. Three pages are in
-that state deliberately: `introduction.mdx`, `term-startup.mdx`, and `expo.mdx`.
-A fourth needs a reason. **This is the supported shape for an ungraded item**, paired
+rubric TSV, no weight, no AI-use paragraph, no outcome tags. Four ungraded pages
+are in that state deliberately: `introduction.mdx`, `term-startup.mdx`,
+`demo-day.mdx`, and `expo.mdx`. A fifth needs a reason. **This is the supported shape for an ungraded item**, paired
 with a Canvas item at 0 points with `omit_from_final_grade`; see
 `canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
-passes Zod but keeps the block and so re-arms the rubric and AI-use checks. Not enforced, still required: the
+passes Zod but keeps the block and so re-arms the rubric and AI-use checks.
+
+Two **graded** pages share the shape for a different reason:
+`resume-and-intent.mdx` and `career-retrospective.mdx` run entirely in Canvas
+under the co-instructor (#197), at their real weights, not at 0 points. Each
+shows only its `<AssignmentMeta>` and "Please check the Canvas assignment.", and
+the Section Skeleton below does not apply to them. Do not rebuild them.
+
+Not enforced, still required: the
 three bands, criteria written as observable checks, the section order, and the
 Canvas TSV band descriptions (only the tag sets are reconciled).
 
@@ -181,7 +191,7 @@ Sections in **bold** are required.
 4. **`## Rubric (100 points)`**, whose table is a `<RubricTable>` rather than
    Markdown. Prose belongs under it: the `**AI use:**` paragraph, per-criterion
    grading notes, and any late or non-submission rule. One sentence may precede
-   the component where it frames the whole rubric, as on `resume-and-intent`.
+   the component where it frames the whole rubric.
    See **The Rubric Lives in the TSV** and **Rubric Rules**.
 
 5. **`**AI use:**` paragraph**, required on any assignment whose deliverable is
@@ -312,7 +322,8 @@ that. Two neighbours are deliberately elsewhere:
 
 Peer evaluations and project partner evaluations **are** assignments, despite
 being completed by someone other than the student: together they are 50% of
-every term's grade, and this section is the source of truth for all graded work.
+every term's grade, and this section is the source of truth for all graded work
+apart from the two Canvas-owned stubs.
 
 ## Say Each Fact Once
 
@@ -333,7 +344,9 @@ weight appears in four places that must agree:
 4. `canvas/assignments/assignment-readme.md`.
 
 The validator reconciles the first two against each other. The last two it
-cannot see.
+cannot see. The two Canvas-owned stubs have no frontmatter weight: their copy
+is the `<AssignmentMeta>` text plus the Individual Evidence row on
+`assignments/introduction.mdx`, and no validator reads either.
 
 Raising one weight means cutting another. Verify the sums with a script, not by
 eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
