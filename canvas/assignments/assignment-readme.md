@@ -30,7 +30,7 @@ The four survey entries each term now have rubrics. Each entry is 100 points in 
 | Project Partner group (25%): Midterm Pulse 5 points, End-of-Term Survey 20 points | Split into **Project Partner Midterm** (5%) holding Midterm Pulse and **Project Partner Final** (20%) holding End-of-Term Survey, 100 points each. | Import `project-partner-evaluation/partner-pulse-rubric.csv` on Midterm Pulse, every term. On End-of-Term Survey, import the term's own file: `partner-final-fall-rubric.csv` (CS 461), `partner-final-winter-rubric.csv` (CS 462), `partner-final-spring-rubric.csv` (CS 463). |
 
 - Change the points before any score is entered: Canvas does not rescale a score already in the gradebook.
-- Attach each rubric with "Use this rubric for assignment grading" off. The score comes from the Qualtrics export, out of 100: the peer script already writes it that way, and `generate-project-partner-midterm-score.R` now does too. A peer score above 100 (the point distribution tops out at 115) is entered as is.
+- Attach each rubric with "Use this rubric for assignment grading" off. The score comes from the Qualtrics export, out of 100: the peer script already writes it that way, and `generate-project-partner-midterm-score.R` now does too. A peer score above 100 (it can reach 103, when the point distribution earns more than its 20 points) is entered as is.
 
 ## Re-import Required: Team Charter (#263)
 
