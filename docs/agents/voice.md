@@ -131,7 +131,10 @@ reader can tell which from the sentence.
    says. Link it on first mention.
 3. Recommendation: the instruction team's view, written as "The instruction
    team recommends X, because Y." Use "believes" only where the evidence is
-   mixed and you say so. A recommendation always carries its reason.
+   mixed and you say so. A recommendation always carries its reason. In a
+   guide, which never names the course or its staff, the same claim is an
+   imperative with its reason: "Keep the agreement to one page, because it's
+   read mid-disagreement."
 
 A practitioner essay is an argument, not evidence: "Fowler argues..." is
 right; "research shows" with a blog post behind it is wrong. An unsourced

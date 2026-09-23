@@ -98,7 +98,9 @@ option is the marketing the Some Truths section is supposed to prevent.
 Guides owe evidence. Sort every claim a reader could doubt into the three kinds
 under Claims in `docs/agents/voice.md` and give each what its kind needs. Of
 the three registers, the guide is the one where Evidence claims live, so this
-is where the sort does most of its work.
+is where the sort does most of its work. A Recommendation in a guide is an
+imperative with its reason, never "the instruction team recommends", because
+of [Guides Are Standalone](#guides-are-standalone).
 
 There is no link-count target. The old one (six per 1,000 words) was met by
 linking vendor docs and blog posts while the guides cited three peer-reviewed
