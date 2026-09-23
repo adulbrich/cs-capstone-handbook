@@ -111,9 +111,11 @@ The [AI practice activities](/activities/ai/) teach all three of these, includin
 
 Rubric criteria carry tags such as `SO1` through `SO6` and `L07` through `L10`. They document where each learning outcome is evidenced and change nothing about how you complete the work. See [grading](/learning-objectives/grading/#learning-outcome-tags) and the [outcome mapping](/learning-objectives/mapping/).
 
-## Submitting Markdown as PDF
+## Submitting Your Work
 
-Most of your writing lives in the repository as Markdown, and several assignments want a PDF. Convert it with one command rather than by hand, so the cover information is correct every time and nobody retypes it.
+Every document you submit in Canvas is one PDF. It opens with the document title, your project ID and name, every author's name and email, and the date: every team member on team work, only you on individual work. A repository link does not replace the PDF, even when the document also lives in your repository, because the PDF is the version graded and kept. Three submissions are exceptions and say so on their pages: the [Landing Page](/assignments/landing-page/) is a URL and a screenshot, the [Release and Metrics](/assignments/release/) trailer is a video beside its PDF report, and a [Repo Checkpoint](/assignments/repo-checkpoints/) PDF names the commit graders review rather than carrying the documents themselves.
+
+Most of your writing lives in the repository as Markdown, so convert it with one command rather than by hand. The cover information then comes out right every time and nobody retypes it.
 
 Once per project, put a `team-metadata.yml` at your repository root ([template](/team-metadata.yml)):
 
@@ -131,11 +133,13 @@ pandoc FILE.md -o FILE.pdf --metadata-file=team-metadata.yml --pdf-engine=typst 
   -M title="$(sed -n 's/^# //p' FILE.md | head -1)" -M date="$(date +%F)"
 ```
 
-The PDF opens with the document title (taken from the file's first `#` heading), your project ID and name, every team member with their email, and the date. Needs [pandoc](https://pandoc.org/installing.html) and [typst](https://github.com/typst/typst#installation), both single-binary installs on macOS, Linux, and Windows, and neither needs a LaTeX distribution.
+For individual work, add `-M author="Jane Doe <doej@oregonstate.edu>"` with your own name and email; a value given with `-M` overrides the team list. To combine several files into one PDF (the [Team Charter](/assignments/team-charter/) is three), list them all in order before `-o` and pass the title yourself with `-M title="..."`.
+
+The PDF opens with the document title (taken from the file's first `#` heading), your project ID and name, the authors with their emails, and the date. It needs [pandoc](https://pandoc.org/installing.html) and [typst](https://github.com/typst/typst#installation), both single-binary installs on macOS, Linux, and Windows, and neither needs a LaTeX distribution.
 
 Put it in your `CONTRIBUTING.md` as a make target or a shell alias so nobody has to remember it. If your file has no `#` heading the title comes out empty, so either add one or pass the title yourself.
 
-Can't install anything? Use the VS Code "Markdown PDF" extension, or open the rendered Markdown in a browser and print to PDF. Then put the project ID, the project name, and every team member with their email at the top of the document by hand. What graders need is the cover information; the tool that produced it is not graded.
+Can't install anything? Use the VS Code "Markdown PDF" extension, or open the rendered Markdown in a browser and print to PDF. Then put the project ID, the project name, and every author with their email at the top of the document by hand. What graders need is the cover information; the tool that produced it is not graded.
 
 ## Rubric Conventions
 
@@ -151,6 +155,6 @@ Criteria are written to be verifiable: commit hashes, CI runs, URLs, PR IDs, mea
 
 Sprint notes are the exception to three bands. Each [sprint note](/assignments/sprint-notes/) item is present and real (Pass, full points) or it is not (Fail, zero).
 
-Formatting expectations, unless a page overrides them: PDF or Markdown, linkable evidence, readable structure with headings, alt text on images, and no links graders cannot open (exceptions for NDA teams are noted per assignment).
+Formatting expectations, unless a page overrides them: one PDF as [Submitting Your Work](#submitting-your-work) describes, linkable evidence, readable structure with headings, alt text on images, and no links graders cannot open (exceptions for NDA teams are noted per assignment).
 
 Rubrics are authored here and imported into Canvas. If Canvas and this handbook disagree, the handbook wins; report the discrepancy. How points become a letter grade is on the [grading page](/learning-objectives/grading/).

@@ -2,7 +2,7 @@
 #
 # Put this at the root of your team's repository, fill it in once, and commit it.
 # It supplies the cover information for every Markdown file you convert to PDF.
-# See https://capstone.alexulbrich.com/assignments/introduction/#submitting-markdown-as-pdf
+# See https://capstone.alexulbrich.com/assignments/introduction/#submitting-your-work
 
 # Your project ID and name, exactly as they appear in Canvas.
 subtitle: "Project 00: Your Project Name"
