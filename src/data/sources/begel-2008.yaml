@@ -25,3 +25,9 @@ claims:
       in design meetings, at other times gave too little, and did not push
       for enough detail in the responses they got.
     locator: Section 4.2.1
+  - claim: >-
+      The authors conclude that university computer science curricula gave
+      the new developers adequate design and development skills, but did not
+      address their communication, collaboration, and orientation skills as
+      well.
+    locator: Section 6, Conclusions
