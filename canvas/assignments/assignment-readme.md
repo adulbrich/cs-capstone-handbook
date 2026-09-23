@@ -32,6 +32,10 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 `sprint-note/sprint-note-rubric.csv`: the Working software evidence Pass band now says when a video may replace the live demo (a missed check-in, or a TA who could not meet) and how it is recorded (media.oregonstate.edu, unlisted, captioned, one timestamp per student). Points and tags are unchanged. Re-import it on every Sprint Notes N entry.
 
+## Re-import Required: Checkpoint PDF Carries the Documents (#297)
+
+`repo-checkpoint/repo-checkpoint-rubric.csv`: the living-docs criterion now expects the documents in the PDF, rendered and matching the named commit; Meets names a document missing from the PDF or not rendered, and Does Not Meet a PDF whose content does not match. Points and tags are unchanged. Re-import on both Repo Checkpoint entries, and re-import this after #295 if both are pending.
+
 ## Re-import Required: Contribution Counts Any Accepted Work (#295)
 
 A contribution is owned work someone else accepted, wherever it lives: a merged PR, a closed issue or ticket in any tracker, an approved document. Re-import all four; points and tags are unchanged.
@@ -346,8 +350,8 @@ These assignments were retired in the revision. Their directories were removed u
 - `memo/`: folds into the fall RFC (the stakeholder context and constraints become the RFC's problem framing) and the early partner conversations.
 - `research-brief/`: folds into the RFC (the background research becomes the RFC's evidence and analysis).
 - `progress-report/`: replaced by Sprint Notes and Demos (one page, pass/fail per item, plus a live demo cadence).
-- `requirements-update/`: replaced by Repo Checkpoints (`docs/requirements.md` is graded in place, in the repository).
-- `technical-design-update/`: replaced by Repo Checkpoints (`docs/design.md` is graded in place, in the repository).
+- `requirements-update/`: replaced by Repo Checkpoints (`docs/requirements.md` is graded at each checkpoint, from the PDF since #297).
+- `technical-design-update/`: replaced by Repo Checkpoints (`docs/design.md` is graded at each checkpoint, from the PDF since #297).
 - `setup/`: replaced by the fall week 5 Repo Checkpoint ("rails stood up" gate).
 - `retrospective/`: replaced by the Term Retrospective (fall) and the Incident Postmortem (winter).
 - `retrospective-and-career/` (old form): replaced by the spring Career and Individual Retrospective and the Project Retrospective.

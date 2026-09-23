@@ -106,7 +106,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 | 4,000 words per student across assignments | Unmeasured beyond the RFC | Open (#60) |
 | 1,500 words of low-stakes writing per student | Two written peer reviews, five contribution lines, a share of five judgment layers; no length guideline today | Open (#60) |
 | One formal piece of 1,500 or more words using disciplinary sources | The winter RFC: its length floor (on the RFC page) clears this, and its analysis is argued from cited sources | Met |
-| 35% of the grade from writing assignments | Writing assignments are 31% of the winter grade, 39% if repo checkpoints (docs graded in place) count; the weights are on the assignments overview, the RFC under Individual Evidence and the rest in the Winter Team Deliverables table | Open (#60) |
+| 35% of the grade from writing assignments | Writing assignments are 31% of the winter grade, 39% if repo checkpoints (docs graded from the checkpoint PDF) count; the weights are on the assignments overview, the RFC under Individual Evidence and the rest in the Winter Team Deliverables table | Open (#60) |
 | Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final, plus a substitute review when a peer reviewer no-shows. Waiting on the WIC director | Open (#60) |
 | Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback; revision after instructor feedback waits on the draft-feedback decision in #60 | Partial (#60) |
 | Student-to-instructor ratio of 25 to 1 or better | Two instructors, six TAs, about 300 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
@@ -119,8 +119,8 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 
 ## Repo Checkpoints
 
-- Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist; leave feedback as issues where useful. Checkpoint 1 is graded in week 5; checkpoint 2 in finals week, after the week-10 check-ins, so that week stays at check-in load.
-- NDA teams: 15-minute walkthrough in its own slot in the checkpoint week, scheduled with the team, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing. It never displaces a demo.
+- Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist: the documents from the PDF, and the build, gate and history from the repository at the named commit. Spot-check one document against the commit; a PDF that does not match counts against the living-docs criterion. Leave feedback as issues where useful. Checkpoint 1 is graded in week 5; checkpoint 2 in finals week, after the week-10 check-ins, so that week stays at check-in load.
+- NDA teams: 15-minute walkthrough of the repository at the named commit, in its own slot in the checkpoint week, scheduled with the team, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing beyond the sanitized PDF the team submits where its partner permits. It never displaces a demo.
 - Consistency anchors live on the assignment page ("How Graders Review"). Calibrate by having all TAs review one volunteer staff-accessible repo together in week 4.
 
 ## Individual Contribution Modifier

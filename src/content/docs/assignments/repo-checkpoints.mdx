@@ -1,6 +1,6 @@
 ---
 title: Repo Checkpoints
-description: The instruction team's twice-a-term review of your requirements, design, decision and risk documents in the repository, graded in place.
+description: "The instruction team's twice-a-term review of your repository at a named commit: the living docs, submitted as a formatted PDF, and the build, gate, and history behind them."
 sidebar:
   order: 12
 assignment:
@@ -31,7 +31,7 @@ import rubricCsv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-rubri
 
 <CanvasEntries />
 
-Your requirements and design documents live in your repository under `docs/`, stay current because your team (and your AI tools) need them current, and are graded in place. A checkpoint is the instruction team's review of the repository as it actually is: no exported copies of the documents, no drift between the document and the code. Graders may leave issues or PR comments in your repository as feedback.
+Your requirements and design documents live in your repository under `docs/`, stay current because your team (and your AI tools) need them current, and are graded at the commit you name: the documents from the PDF you submit, and the build, the term gate, and the history from the repository at that commit. A checkpoint is the instruction team's review of the repository as it actually is, with no drift between the document and the code. Graders may leave issues or PR comments in your repository as feedback.
 
 ## What the Repository Must Contain (the living docs)
 
@@ -44,7 +44,9 @@ Your requirements and design documents live in your repository under `docs/`, st
 
 ## What You Submit
 
-One PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, naming the repository URL and the full hash of the commit you want graded. Graders review the repository at that commit, so push everything before you submit; the PDF carries no copies of the documents.
+One PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, that names the repository URL and the full hash of the commit you want graded, then carries every living doc at that commit, rendered, in this order: `docs/requirements.md` (and `docs/inherited.md` if your audit lives there), `docs/design.md`, each decision record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, the AI context file, and at fall week 10 the `docs/shipped.md` draft.
+
+Push everything before you submit: the PDF's content must match the named commit.
 
 ## What CI Must Do
 
@@ -106,7 +108,7 @@ One page in `docs/requirements.md` under Constraints, or `docs/inherited.md` if 
 
 Each criterion has one thing graders check first, so you can check it yourself:
 
-- **Living docs**: one recent feature, compared against `docs/design.md`. If the doc describes a system that no longer exists, this criterion is where it shows.
+- **Living docs**: one recent feature, compared against `docs/design.md` in the PDF, and one document compared against the named commit. If the doc describes a system that no longer exists, or the PDF is not the commit, this criterion is where it shows.
 - **Term gate**: met or not met, judged against the [Term Gates](#term-gates) table and nothing else. For a team starting in an existing codebase, the fall week 5 gate includes the [inherited-codebase audit](#the-inherited-codebase-audit), present and covering everything listed there.
 - **Build health**: the safety net is judged relative to how your team works, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team writing most code by hand, and neither approach is penalized: what is graded is whether the safety net catches what your way of working lets through. Gates belong on the changes that are expensive to undo (schema, authentication, deployment, migrations), not spread uniformly. A team with no CI that hand-merges agent output to production fails this regardless of whether anything has broken yet.
 - **Decision and risk hygiene**: does the risk register have owners and a ranking, and is there exactly one of it?
@@ -115,7 +117,7 @@ Each criterion has one thing graders check first, so you can check it yourself:
 What "a history a maintainer could inherit" means is spelled out in the [git and GitHub guide](/guides/git-and-github/#a-history-a-maintainer-could-inherit); the checkpoint checks the five items listed there.
 
 :::note[If your project is under NDA]
-The checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your Teaching Assistant (TA) schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the live repo, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing. Where your partner permits, a sanitized evidence pack (docs snapshot, redacted PR list, CI screenshots) supports the review. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
+The checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your Teaching Assistant (TA) schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; it matches the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
 :::
 
 ## Activities That Prepare This
