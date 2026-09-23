@@ -1,0 +1,44 @@
+authors:
+  - Gloaguen, T.
+  - Mündler, N.
+  - Müller, M.
+  - Raychev, V.
+  - Vechev, M.
+year: 2026
+title: >-
+  Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding
+  Agents?
+venue: arXiv
+kind: preprint
+url: https://arxiv.org/abs/2602.11988
+# Read in full, arXiv v2.
+verified: full-text
+claims:
+  - claim: >-
+      Across four agent and model pairings, context files did not
+      significantly change task success (developer-written files gained 2.4%
+      on average, generated ones lost 0.5% to 2%, neither significant), and
+      they raised inference cost: by over 20% on average for generated files,
+      and by up to 19% for developer-written ones.
+    locator: Abstract; Sec. 4.2, Tables 2 and 3; Sec. 6
+  - claim: >-
+      Agents followed the instructions in context files: a tool the file
+      named, such as uv, was used 1.6 times per task when mentioned and almost
+      never otherwise, and across all four pairings agents ran more tests and
+      explored more files when a context file was present.
+    locator: Sec. 4.3
+  - claim: >-
+      Repository overviews in context files did not help agents reach the
+      files relevant to a task any sooner.
+    locator: Sec. 4.3, Figure 4
+  - claim: >-
+      The authors recommend that human-written context files include only
+      instructions not already available in the codebase or README, such as
+      specific conventions or non-functional requirements.
+    locator: Sec. 1; Sec. 6
+  - claim: >-
+      The four pairings were Claude Code with Sonnet 4.5, Codex with GPT-5.2
+      and with GPT-5.1 mini, and Qwen Code with the open-weight
+      Qwen3-30B-Coder deployed locally; the evaluation covered Python
+      repositories only.
+    locator: Sec. 4.1; Sec. 5

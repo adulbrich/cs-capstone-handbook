@@ -1,0 +1,30 @@
+authors:
+  - dos Santos, H. V. F.
+  - Costa, V.
+  - Montandon, J. E.
+  - Silva, L. L.
+  - Valente, M. T.
+year: 2026
+title: >-
+  Configuration Smells in AGENTS.md Files: Common Mistakes in Configuring
+  Coding Agents
+venue: arXiv
+kind: preprint
+url: https://arxiv.org/abs/2606.15828
+# Accepted at the IEEE International Conference on Source Code Analysis and
+# Manipulation (SCAM), per its arXiv journal reference; no published version
+# or DOI yet, so it stays a preprint until one exists. Read in full, arXiv v5.
+verified: full-text
+claims:
+  - claim: >-
+      Of 100 agent configuration files (AGENTS.md or CLAUDE.md) from popular
+      open-source repositories, 62 were flagged (58 confirmed on manual
+      review) for restating rules that linters, formatters, or
+      other static analysis tools already check, which the authors call Lint
+      Leakage and argue adds little while enlarging the agent's context.
+    locator: Sec. IV.C; Sec. VI, Table II
+  - claim: >-
+      In the same 100 files, 42 ran to 200 lines or more (Context Bloat), and
+      24 had never been changed after the commit that created them (Init
+      Fossilization).
+    locator: Sec. V.A and V.C; Sec. VI, Table II

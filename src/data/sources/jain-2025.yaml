@@ -1,0 +1,25 @@
+authors:
+  - Jain, N.
+  - Kwiatkowski, R.
+  - Ray, B.
+  - Ramanathan, M. K.
+  - Kumar, V.
+year: 2025
+title: On Mitigating Code LLM Hallucinations with API Documentation
+venue: >-
+  IEEE/ACM International Conference on Software Engineering: Software
+  Engineering in Practice (ICSE-SEIP)
+kind: peer-reviewed
+url: https://arxiv.org/abs/2407.09726
+doi: 10.1109/ICSE-SEIP66354.2025.00027
+# The published version is paywalled; the full text read is arXiv v1, and
+# the claim uses only figures stated in its abstract.
+verified: full-text
+claims:
+  - claim: >-
+      Code models make more invalid calls to rarely seen APIs (GPT-4o made
+      valid invocations of 38.58% of low-frequency cloud APIs); retrieving
+      documentation at generation time raised that to 47.94%, but with a
+      sub-optimal retriever it cut performance on common APIs, which the
+      model already knew, by 39.02 points.
+    locator: Abstract; Sec. 1; Sec. 2.3; Sec. 3.2
