@@ -1,0 +1,49 @@
+authors:
+  - Méndez Fernández, D.
+  - Wagner, S.
+  - Kalinowski, M.
+  - Felderer, M.
+  - Mafra, P.
+  - Vetrò, A.
+  - Conte, T.
+  - Christiansson, M.-T.
+  - Greer, D.
+  - Lassenius, C.
+  - Männistö, T.
+  - Nayebi, M.
+  - Oivo, M.
+  - Penzenstadler, B.
+  - Pfahl, D.
+  - Prikladnicki, R.
+  - Ruhe, G.
+  - Schekelmann, A.
+  - Sen, S.
+  - Spinola, R.
+  - Tuzcu, A.
+  - de la Vara, J. L.
+  - Wieringa, R.
+year: 2017
+title: >-
+  Naming the Pain in Requirements Engineering: Contemporary Problems, Causes,
+  and Effects in Practice
+venue: Empirical Software Engineering
+kind: peer-reviewed
+url: https://doi.org/10.1007/s10664-016-9451-7
+doi: 10.1007/s10664-016-9451-7
+# Read in full as the authors' manuscript on arXiv (1611.10288). Its page
+# numbers differ from the journal's, so the locators name sections and tables.
+verified: full-text
+claims:
+  - claim: >-
+      Respondents from 228 companies in 10 countries each ranked the five most
+      critical of 21 requirements engineering problems. The most often named
+      were incomplete or hidden requirements (109, 48%), communication flaws
+      between the project team and the customer (93, 41%), moving targets,
+      meaning changing goals, business processes, or requirements (76, 33%),
+      and underspecified requirements that are too abstract (76, 33%).
+    locator: Abstract; Sec. 4.2, Table 9
+  - claim: >-
+      Stakeholders having difficulty separating requirements from known
+      solution designs was named by 56 respondents (25%), seventh of the ten
+      most-cited problems.
+    locator: Sec. 4.2, Table 9
