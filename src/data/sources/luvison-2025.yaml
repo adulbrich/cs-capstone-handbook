@@ -1,0 +1,21 @@
+authors:
+  - Luvison, D.
+  - Michel, J. W.
+year: 2025
+title: >-
+  Enhancing Student Team Effectiveness Through Team Charter Revision,
+  Feedback, and Coaching
+venue: Small Group Research
+kind: peer-reviewed
+url: https://journals.sagepub.com/doi/10.1177/10464964251350659
+doi: 10.1177/10464964251350659
+# Open access, but the publisher's bot check blocked every fetch of the full
+# text; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      In student project teams, revising the charter midway through, together
+      with feedback and coaching, produced significant increases in team
+      commitment, team satisfaction, and individual effectiveness over a
+      one-time charter written when the team formed.
+    locator: Abstract
