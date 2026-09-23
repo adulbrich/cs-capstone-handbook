@@ -37,11 +37,15 @@ What staying on the current path actually costs, and when that cost arrives.
 
 ## Analysis
 
-The technical tradeoffs that matter for this decision: performance, complexity, maintainability, security, cost. Argue with evidence (benchmarks, prototypes, documentation, prior art), not vibes, and cite what you relied on so a reviewer can check it. Acknowledge what you are uncertain about.
+The technical tradeoffs that matter for this decision: performance, complexity, maintainability, security, cost. Argue from evidence (benchmarks, prototypes, documentation, prior art) and cite what you relied on so a reviewer can check it. Acknowledge what you are uncertain about.
 
 ## Recommendation and Verification Plan
 
 Which option you propose and why it wins the analysis above. Then, concretely: how will the team know it worked? List the tests, metrics, or acceptance criteria that would detect failure, and when they will be checked.
+
+## Consequences
+
+What follows if the team adopts the recommendation: what gets easier, what gets harder or costs more, and what the team commits to maintaining. Write the costs as plainly as the benefits, because they're what a later reader needs to judge whether the decision still holds.
 
 ## Constraints
 
