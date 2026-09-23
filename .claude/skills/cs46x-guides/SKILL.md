@@ -36,7 +36,7 @@ The three-way split in this handbook is load-bearing, so keep it clean:
 |---|---|---|
 | **Guides** | "How does this practice work, and what does good look like?" | No |
 | **Activities** | "What exercise do I run to produce this?" | Workshop tier only |
-| **Assignments** | "What is due, when, and how is it scored?" | Yes, and they are the source of truth |
+| **Assignments** | "What is due, when, and how is it scored?" | Yes, and they are where graded work is authored |
 
 A guide **never** states due dates, point values, rubric criteria, or weights,
 and beyond that it does not reference assignments, workshops, or checkpoints

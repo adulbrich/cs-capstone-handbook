@@ -3,9 +3,9 @@
 - This directory holds one validated `*-rubric-details.tsv` per distinct rubric of every live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
 - `scripts/validate-outcomes.mjs` reads every TSV as the rubric: it reconciles the outcome tags in field 1 against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own TSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
-- One TSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the TSV. That list is what to create in Canvas: the page renders it for students as the Canvas assignments table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
+- One TSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the TSV. That list is what to create in Canvas: the page renders it for students as the Submissions table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
-**The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is the source of truth for all graded work except the two owned in Canvas, and each rubric here is the source of truth for itself.** Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
+**All graded work except the two assignments owned in Canvas is authored in the [course handbook](https://capstone.alexulbrich.com/assignments/introduction/), and each rubric here is the only copy of itself.** Once imported, Canvas is what students go by, as the syllabi say, so a fix made only in Canvas has to be made here too or the next import undoes it. Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
 
 ## Re-import Required: Team Charter (#263)
 
@@ -233,7 +233,7 @@ Three assignment pages carry no points and no rubric, so there is no TSV here to
 | Due | end of week 1, all three terms |
 | Group assignment | yes, one submission per team |
 
-**Demo Day**, once for the year. One Canvas item carrying the five sessions as a sign-up, so that each team's slot is recorded and staff can see every team has taken one:
+**Demo Day**, once for the year. One Canvas item taking each team's proof of registration, so staff can see every team has taken one of the five sessions. The registration link itself goes out in an announcement:
 
 | Field | Value |
 |---|---|
@@ -241,9 +241,9 @@ Three assignment pages carry no points and no rubric, so there is no TSV here to
 | Points possible | 0 |
 | `omit_from_final_grade` | true |
 | Group | any; it contributes nothing, so the group choice does not affect the grade |
-| Submission type | none; use a sign-up so teams pick their session |
-| Due | fall weeks 5 and 10, winter weeks 5 and 10, spring week 5 |
-| Group assignment | yes, one slot per team |
+| Submission type | file upload (screenshot of the registration confirmation) |
+| Due | end of fall week 3 |
+| Group assignment | yes, one submission per team |
 
 **Engineering Expo**, spring only:
 

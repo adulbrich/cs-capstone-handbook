@@ -4,7 +4,7 @@
 # It supplies the cover information for every Markdown file you convert to PDF.
 # See https://capstone.alexulbrich.com/assignments/introduction/#submitting-your-work
 
-# Your project ID and name, exactly as they appear in Canvas.
+# Your project ID and name, exactly as the instruction team assigned them.
 subtitle: "Project 00: Your Project Name"
 
 # Every team member, with the email a grader could reach them at.

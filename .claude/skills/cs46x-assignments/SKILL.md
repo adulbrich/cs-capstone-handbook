@@ -5,9 +5,11 @@ description: Use when creating or editing assignment pages (MDX files in src/con
 
 # Assignment Style Guide
 
-Assignment pages are **the source of truth for all graded work in the course**,
+Assignment pages are **where all graded work in the course is authored**,
 except the two Canvas-owned stubs described under **Frontmatter Contract**.
-Canvas mirrors them, the syllabi mirror them, and two validators parse them. A
+They are exported to Canvas, which students go by once imported, and the page
+body never names Canvas (AGENTS.md hard rule 7). The syllabi mirror them, and
+two validators parse them. A
 mistake here propagates into student grades and accreditation evidence, which is
 why more of this skill is mechanical than the guide or activity skills.
 
@@ -355,7 +357,7 @@ that. Two neighbours are deliberately elsewhere:
 
 Peer evaluations and project partner evaluations **are** assignments, despite
 being completed by someone other than the student: together they are 50% of
-every term's grade, and this section is the source of truth for all graded work
+every term's grade, and this section is where all graded work is authored,
 apart from the two Canvas-owned stubs.
 
 ## Say Each Fact Once

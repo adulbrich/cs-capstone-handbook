@@ -4,8 +4,8 @@ How work moves through this repository, for a person. `AGENTS.md` holds the
 rules that bind an agent on every turn; this file is the map of the process
 those rules sit in. `README.md` covers install and running the site.
 
-The handbook is student-facing documentation and the source of truth for all
-graded work, except the two Canvas-owned assignments named in `AGENTS.md`. Most changes are prose and tables, not code, and the review reads
+The handbook is student-facing documentation and where all graded work is
+authored, except the two Canvas-owned assignments named in `AGENTS.md`. Most changes are prose and tables, not code, and the review reads
 them that way: see `docs/agents/code-review.md`.
 
 ## The process
