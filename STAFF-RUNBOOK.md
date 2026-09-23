@@ -147,7 +147,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 ## Surveys (per term: 4 processing runs)
 
 - Peer midterm, peer final, partner midterm, partner final. Scripts in `scripts/` until the instructor-tools page exists.
-- Partner scoring rules the scripts must apply (#264): the Midterm Pulse converts Strongly agree to Strongly disagree as 100, 90, 80, 70, 50 and averages the three items (`generate-project-partner-midterm-score.R` does); a partner survey nobody answered scores the A lower bound in `learning-objectives/grading.mdx` for the whole team, never a zero or a blank. Confirm both before importing, and enter by hand where a script does not. Canvas holds the pulse at 5 points and the final at 20, so post each score scaled to those.
+- Partner scoring (#264): the Midterm Pulse rubric and the no-response rule are on the handbook's partner evaluation page. `generate-project-partner-midterm-score.R` applies the pulse rubric and writes the Canvas score; it needs the Qualtrics export with choice text, not numeric values, and stops on an answer it cannot map. Neither partner script sees a survey nobody answered: enter those teams by hand at the A lower bound, scaled to the entry's Canvas points, never as a zero or a blank.
 - CATME, end of spring only, is read to corroborate the peer scores and is not scored.
 - Known issues fixed on this branch: peer-eval corrected score now posted to the gradebook; s2026 Requirements facet 3.5 mapping.
 - Known issues still open: team-size cap at 6 including self in the peer scripts (teams of 7+ break); Q7 individual-concern extraction stubbed in partner scripts (concerns must be read manually from the export until fixed).

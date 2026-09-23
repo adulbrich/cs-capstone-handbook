@@ -6,6 +6,12 @@ filename_input_qualtrics <- "data/2025-11-05-project-partner-midterm-survey.csv"
 output_feedback_filename <- "data/2025-11-05-project-partner-midterm-feedback.csv"
 output_score_filename <- "data/2025-11-05-project-partner-midterm-scores.csv"
 
+# Canvas points for the Midterm Pulse entry (project-partner-evaluation.mdx).
+canvas_points <- 5
+
+# Needs the Qualtrics export with choice text ("Strongly agree"), not numeric
+# values: the answers are mapped by label below.
+
 input_qualtrics <- fread(filename_input_qualtrics, header = TRUE)
 
 # Extract question labels from the first row
@@ -73,6 +79,29 @@ input_qualtrics[,
   .SDcols = q1_cols
 ]
 
+# An answer that maps to nothing (a values export, a relabeled choice)
+# would otherwise drop silently out of the mean.
+unmapped <- 0
+for (i in seq_along(q1_cols)) {
+  raw <- input_qualtrics[[q1_cols[i]]]
+  unmapped <- unmapped +
+    sum(!is.na(raw) & raw != "" & is.na(input_qualtrics[[q1_numeric_cols[i]]]))
+}
+if (unmapped > 0) {
+  stop(unmapped, " answer(s) match no label in likert_scale; check the export")
+}
+
+# A team whose partner opened the survey but answered none of the three
+# items has no pulse score: treat it as unanswered and enter it by hand.
+unanswered <- input_qualtrics[
+  rowSums(!is.na(input_qualtrics[, ..q1_numeric_cols])) == 0, Team
+]
+if (length(unanswered) > 0) {
+  cat("No pulse answers, enter by hand at the A lower bound:",
+      paste(unanswered, collapse = ", "), "\n")
+}
+input_qualtrics <- input_qualtrics[!(Team %in% unanswered)]
+
 # The pulse score is the mean of the three items, out of 100. Qualtrics' own
 # SC0 score uses the survey's scoring weights, not this scale, so it is not
 # compared here.
@@ -81,12 +110,11 @@ input_qualtrics[,
   .SDcols = q1_numeric_cols
 ]
 
-# Canvas holds the Midterm Pulse at 5 points.
-input_qualtrics[, CanvasScore := ProjectPartnerMidtermScore * 5 / 100]
+input_qualtrics[, CanvasScore := ProjectPartnerMidtermScore * canvas_points / 100]
 
 # Teams whose partner never answered are not in this export: enter them by
 # hand at the A lower bound on the grading scale (learning-objectives/
-# grading.mdx), scaled to 5 points, never as a zero or a blank.
+# grading.mdx), scaled to canvas_points, never as a zero or a blank.
 
 # Prepare final output
 output <- input_qualtrics[,
@@ -95,7 +123,7 @@ output <- input_qualtrics[,
     `Professionalism` = Q1_2_numeric,
     `Delivery Quality` = Q1_3_numeric,
     `Score (/100)` = ProjectPartnerMidtermScore,
-    `Canvas (/5)` = CanvasScore,
+    `Canvas score` = CanvasScore,
     Comment = str_c("Responsiveness", Q1_1_numeric,
                     "Professionalism", Q1_2_numeric,
                     "Delivery Quality", Q1_3_numeric,
