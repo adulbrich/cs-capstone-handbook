@@ -44,14 +44,14 @@ Don't spend the preparation weeks only on plans and documents. Rough prototypes,
 :::
 
 :::note[Sprint 0]
-The time before the first real sprint is sometimes called Sprint 0. The term isn't in the Scrum Guide. Treat Sprint 0 as a sprint whose backlog is the preparation list above. It ends when the team can pull real work items into a sprint, and from then on every sprint should produce demonstrable progress: working software, experimental results, validated findings, or a combination.
+The time before the first real sprint is sometimes called Sprint 0. The term isn't in the Scrum Guide. Treat Sprint 0 as a sprint whose backlog is the preparation list above, because putting those items on the board gives the preparation an owner per item and makes a stalled item visible at the next stand-up. It ends when the team can pull real work items into a sprint.
 :::
 
 ## The Sprint Cycle
 
-Each sprint runs the same four phases: plan, build, review, reflect. The [Scrum Guide](https://scrumguides.org/scrum-guide.html) names them Sprint Planning, the Sprint itself with its Daily Scrum, the Sprint Review, and the Sprint Retrospective. Read it once, because it's the authoritative definition of the terms your future colleagues will use, and it's short. It also calls the framework "purposefully incomplete", so adapting it is expected rather than a deviation.
+Each sprint runs the same four phases: plan, build, review, reflect. The [Scrum Guide](https://scrumguides.org/scrum-guide.html) names them Sprint Planning, the Sprint itself with its Daily Scrum, the Sprint Review, and the Sprint Retrospective. Read it once, because it's the authoritative definition of the terms your future colleagues will use, and it's short. It also says Scrum is "immutable", and that while "implementing only parts of Scrum is possible, the result is not Scrum."
 
-This page adapts it in a few places, because a student team isn't a full-time product team. You have other courses, your sprint length is set by an academic calendar rather than by the product, and nobody is a dedicated Scrum Master. Each adaptation below says what the Scrum Guide prescribes and why this page changes it.
+This page departs from the Guide in a few places, so by the Guide's own definition what it describes isn't Scrum. Each departure below names what the Guide prescribes, and the reason behind them is the one [Some Truths](#some-truths-about-sprints) opens with.
 
 ### Sprint Planning
 
@@ -61,7 +61,7 @@ At the start of each sprint, the team meets to decide what it'll deliver by the 
 2. What work will you pull in? Specific items from the backlog (user stories, research questions, experiments, data pipeline steps), sized to fit the hours people have.
 3. Who owns what? Every item has one person responsible for finishing it.
 
-Keep planning to 30 to 60 minutes. The Scrum Guide allows up to eight hours for a one-month sprint and says the event is usually shorter for shorter sprints, but a team that spends only part of its week on the project can't give planning that share of it. If your planning runs long, look at the backlog first: a team writing and sizing items during planning is doing what the Scrum Guide calls Product Backlog refinement, "breaking down and further defining Product Backlog items into smaller more precise items", which belongs before planning.
+Keep planning to 30 to 60 minutes, which is enough when the backlog arrives ready and the meeting only has to choose, check sizes, and assign. The Scrum Guide allows up to eight hours for a one-month sprint and says the event is usually shorter for shorter sprints. If your planning runs long, look at the backlog first: a team writing and sizing items during planning is doing what the Scrum Guide calls Product Backlog refinement, "breaking down and further defining Product Backlog items into smaller more precise items", which belongs before planning.
 
 :::tip[The Backlog]
 A **backlog** is the ordered list of all the work the team intends to do. Keep it current between plannings rather than rebuilding it at each one: update it after every meeting with your project partner, so the top items are ready to pull into the next sprint without much discussion. The [planning guide](/guides/planning/) covers how to rank it.
@@ -73,7 +73,7 @@ During the sprint, the team builds. Two practices keep it coordinated without a 
 
 A **stand-up** is a short sync (10 to 15 minutes) where each person says what they did since the last one, what they'll do before the next one, and what's blocking them. Scrum's version, the Daily Scrum, is a 15-minute daily event. The 2020 edition of the Scrum Guide [dropped these three questions](https://scrumguides.org/revisions.html) and lets the team "select whatever structure and techniques they want", as long as the meeting focuses on progress toward the sprint goal.
 
-Hold stand-ups two or three times a week rather than daily, because when everyone spends most of the week on other work, a single day may not produce anything new to report. <Cite id="stray-2020" /> make a similar recommendation for teams that already communicate well: stop meeting daily if three or four times a week is enough. They also suggest posting the answers in writing and meeting less often, which is what an async stand-up does: a thread in the team's chat that everyone answers on the days between meetings, or instead of a meeting when schedules don't overlap.
+Hold stand-ups two or three times a week rather than daily, and adjust once you see what the team needs. <Cite id="stray-2020" /> recommend adapting the frequency in the same direction: a team that already communicates well can stop meeting daily if three or four times a week is enough. They also suggest posting the answers in writing and meeting less often, which is what an async stand-up does: a thread in the team's chat that everyone answers on the days between meetings, or instead of a meeting when schedules don't overlap.
 
 A stand-up can easily turn into a status report to whoever runs it; run it as coordination between peers instead. In a study of 12 software teams in three companies, the factors that did most to make people dislike the daily stand-up were status reporting to the manager and a meeting people felt was held too often and ran too long, while the factors that did most to make them value it were information sharing and the chance to discuss and solve problems <Cite id="stray-2016" form="parenthetical" />. <Cite id="stray-2020" /> observed that when the facilitator's behavior made members address the facilitator, the stand-up often became a status-reporting meeting, and when members talked to each other, it tended to become a discussion.
 
@@ -108,7 +108,7 @@ Sprint ceremonies take time, and it helps to know roughly how much. At the lengt
 | Retrospective | 30-45 min | ~15-22 min |
 | Board and backlog upkeep | ongoing | ~20-30 min |
 
-That's roughly 1.5 to 2.5 hours a week on process. For comparison, the Scrum Guide's maximums for a one-month sprint are eight hours of planning, four of review, three of retrospective, and a 15-minute Daily Scrum, with shorter events for shorter sprints. Some weeks run heavier (planning, demo preparation) and others lighter. If process starts crowding out build time, shorten the ceremonies rather than skipping them, because a skipped review or retrospective removes the feedback the sprint exists to produce.
+That's roughly 1.5 to 2.5 hours a week on process. For comparison, the Scrum Guide's maximums for a one-month sprint are eight hours of planning, four of review, and three of retrospective, events it says are "usually shorter" for shorter sprints, plus a 15-minute Daily Scrum every working day whatever the sprint's length. Some weeks run heavier (planning, demo preparation) and others lighter. If process starts crowding out build time, shorten the ceremonies rather than skipping them, because a skipped review or retrospective removes the feedback the sprint exists to produce.
 :::
 
 ## Definition of Done
@@ -143,15 +143,13 @@ Your project may sit in between, since research projects produce software and so
 
 Software estimates tend to be wrong, and in one direction. <Cite id="molokken-2003" /> reviewed surveys on software effort estimation and found that most projects (60 to 80%) overrun their effort or schedule. Estimate a sprint to keep the team from committing to more than it can finish, and when the estimate misses, expect it to have missed by planning too much.
 
-Estimate each task as **small** (a few hours), **medium** (one or two days), or **large** (more than two days), and split every large task before it enters a sprint. The scheme is deliberately coarse: precise enough to catch a task that won't fit in a sprint, and too vague to turn into a performance number, which is the failure [Some Truths](#some-truths-about-sprints) describes.
+Estimate each task as **small** (a few hours), **medium** (one or two days), or **large** (more than two days), and split every large task before it enters a sprint. The scheme only has to catch a task that won't fit in a sprint, and three sizes are enough for that.
 
-Estimate together, because a teammate may know why a task is harder than it looks. <Cite id="molokken-ostvold-2007" /> introduced [planning poker](https://www.mountaingoatsoftware.com/agile/story-points/planning-poker), in which the team discusses a task until it agrees on one estimate, for half the tasks in a software project. The group estimates were less optimistic and more accurate than a mechanical combination of the individual estimates for the same tasks, though control tasks estimated by individual experts came out about as accurate as the planning poker tasks.
+Estimate together, because a teammate may know why a task is harder than it looks. <Cite id="molokken-ostvold-2007" /> trialled [planning poker](https://www.mountaingoatsoftware.com/agile/story-points/planning-poker), in which the team discusses a task until it agrees on one estimate, in one software project, using it for half the tasks. The group estimates were less optimistic and more accurate than a mechanical combination of the individual estimates for the same tasks, though control tasks estimated by individual experts came out about as accurate as the planning poker tasks.
 
-**Capacity** is the time the team actually has this sprint, after classes, other coursework, interviews, and everything else. Count all of it during planning and plan to it, because people predict their own completion times optimistically. <Cite id="buehler-1994" /> found people's predictions too optimistic across a variety of academic and nonacademic tasks, and found that people predicting focused on future scenarios rather than on relevant past experience.
+**Capacity** is the time the team actually has this sprint, after every other commitment each member has. Count all of it during planning and plan to it, because people predict their own completion times optimistically. <Cite id="buehler-1994" /> found people's predictions too optimistic across a variety of academic and nonacademic tasks, and found that people predicting focused on future scenarios rather than on relevant past experience.
 
 The same study points at the fix: in its fourth experiment, the optimistic bias disappeared when participants were told to connect relevant past experiences to their predictions <Cite id="buehler-1994" form="parenthetical" />. A team's past experience is its **velocity**, roughly how many tasks it finishes per sprint, which you'll know after a few sprints. Start each plan from it.
-
-Use velocity for planning and nothing else. It counts one team's output in that team's own units, so it doesn't compare across teams, and it isn't a productivity measure. Martin Fowler argues that there's [no reasonable way to measure software productivity](https://martinfowler.com/bliki/CannotMeasureProductivity.html), because nobody can measure software's output, which is the argument to have ready when someone proposes tracking velocity as one.
 
 ## Managing Scope Mid-Sprint
 
@@ -166,23 +164,22 @@ If a task turns out much larger than estimated, raise it at the next stand-up, s
 
 ## Kanban: A Complementary Approach
 
-Sprints batch work into two-week commitments. **Kanban** is the alternative built around continuous flow: instead of committing to a batch every two weeks, the team pulls the next highest-priority item whenever someone has capacity. The [Kanban Guide](https://kanbanguides.org/) defines it as "a strategy for optimizing the flow of value through a process" and names three practices: defining and visualizing the workflow, actively managing the items in it, and improving it. For a small team, those come down to three mechanics:
+Sprints batch work into two-week commitments. **Kanban** is the alternative built around continuous flow: instead of committing to a batch every two weeks, the team pulls the next highest-priority item whenever someone has capacity. The [Kanban Guide](https://kanbanguides.org/the-kanban-guide/) defines it as "a strategy for optimizing the flow of value through a process" and names three practices: defining and visualizing the workflow, actively managing the items in it, and improving it. For a small team, those come down to three mechanics:
 
 1. Visualize the workflow. Use a board with a column for each stage of work (for example Backlog, In Progress, In Review, Done). The Kanban Guide leaves the board's design to the team.
-2. Limit work in progress (WIP). Cap how many items each column can hold; with a WIP limit of 3 on In Progress, nobody starts a new task until one moves on. The Kanban Guide requires it: members "must explicitly control the number of work items in a workflow" and start new work only when there's a clear signal of capacity. The cap stops the team from having ten things started and nothing finished, and a column that fills up and stays full shows you where the work is stuck. Atlassian's page on [WIP limits](https://www.atlassian.com/agile/kanban/wip-limits) covers setting and tuning them.
+2. Limit work in progress (WIP). The Kanban Guide says members "must explicitly control the number of work items in a workflow" and start new work only when there's a clear signal of capacity, and it leaves the method to the team. This page's method is a cap on each column: with a WIP limit of 3 on In Progress, nobody starts a new task until one moves on. The cap stops the team from having ten things started and nothing finished, and a column that fills up and stays full shows you where the work is stuck. Atlassian's page on [WIP limits](https://www.atlassian.com/agile/kanban/wip-limits) covers setting and tuning them.
 3. Pull, don't push. People pull work when they have capacity, instead of receiving assignments at the start of a sprint.
 
 ### When Kanban Works Well
 
 Consider Kanban when these hold for your team:
 
-- Everyone pulls work without being asked. In a sprint, planning assigns work explicitly; in Kanban, each person is responsible for finding and starting the next task, so it only works when every member takes that on.
+- Everyone pulls work without being asked.
 - The workload is unpredictable, for example partner feedback that reshuffles priorities every few days.
 - The team prefers a steady flow of small deliverables to a batch every two weeks.
-- Sprint boundaries don't match the rhythm of members' other commitments.
 
 :::caution[Kanban Requires More Initiative, Not Less]
-A Kanban team can quietly lose a member who says "there was nothing to do" or "I was waiting to be assigned something." In a pull system the backlog is the assignment: if the Backlog column has items and you're idle, pull the next one, because handing it to you is nobody else's job. If people on the team aren't yet comfortable taking that initiative, stay with sprint planning, where work is discussed and distributed explicitly.
+A Kanban team can quietly lose a member who says "there was nothing to do" or "I was waiting to be assigned something." In a pull system nobody assigns work: if the Backlog column has items and you're idle, pull the next one. If people on the team aren't yet comfortable taking that initiative, stay with sprint planning, where work is discussed and distributed explicitly.
 :::
 
 ### Scrumban: The Hybrid
@@ -219,7 +216,7 @@ When a sprint struggles, look at planning, stand-ups, and retrospective follow-t
 
 ## Tools
 
-Any board works if the team keeps it current, and none helps if the team doesn't. Pick the smallest set that covers planning, a visible board, and a record of what happened, and treat anything beyond that as optional.
+Pick the smallest set of tools that covers planning, a visible board, and a record of what happened, because every extra tool is one more place the team has to keep current. Treat anything beyond that as optional.
 
 | Need | Options |
 |------|---------|
@@ -237,20 +234,19 @@ The tool names above date faster than anything else on this page. Checked at the
 ## Best Practices
 
 - Commit to a sprint goal, not just a task list. The Scrum Guide lets the team renegotiate a sprint's scope "without affecting the Sprint Goal", so a goal survives a disruption that would break a fixed list.
-- Finish work in progress before starting something new, because five half-done tasks demo as nothing.
+- Finish work in progress before starting something new, because the review can show only finished work, and a teammate can build only on a finished piece.
 - Demo to your project partner every sprint, not only at milestones, because feedback on two weeks of work is cheaper to act on than feedback on two months.
-- Keep planning light: an hour spent perfecting the plan is an hour not spent building what it describes.
-- Timebox stand-ups, and move detailed discussion to a follow-up with only the people it concerns.
+- Timebox stand-ups, and move detailed discussion to a follow-up with only the people it concerns, because a stand-up that runs too long is among the things that most turn people against the meeting <Cite id="stray-2016" form="parenthetical" />.
 
 ## Some Truths About Sprints
 
 Start with the uncomfortable one: a two-week sprint on a student team simulates a practice built for people who work on one product full time. Your sprint shares its two weeks with other courses, exams, and a stretch when nobody's available, so your capacity swings from sprint to sprint in a way a full-time team's doesn't. That makes planning the ceremony most likely to feel like theater, because a plan only predicts well once capacity is stable enough to learn from. Expect the first two or three sprints to be calibration rather than prediction, and don't conclude the practice is worthless when the first one overruns.
 
-Estimates go wrong when they leave the team. Ron Jeffries, whose Extreme Programming team renamed its "ideal days" to points, writes that he ["may have invented story points, and if I did, I'm sorry now"](https://ronjeffries.com/articles/019-01ff/story-points/Index.html). He argues that tracking actuals against estimates is at best wasteful, that comparing teams on their estimates or velocity is harmful and, for many managers, an irresistible temptation, and that estimates are implicated in management pressure to do more. He would rather slice work small enough not to need estimating. If you track velocity at all, keep it inside the team and use it to answer "did we take on too much?", because once it's used to compare teams or assess individuals, the people producing the estimates have every reason to protect themselves instead of estimating accurately.
+Estimates go wrong when they leave the team. Ron Jeffries, whose Extreme Programming team renamed its "ideal days" to points, writes that he ["may have invented story points, and if I did, I'm sorry now"](https://ronjeffries.com/articles/019-01ff/story-points/Index.html). He argues that tracking actuals against estimates is at best wasteful, that comparing teams on their estimates or velocity is harmful and, for many managers, an irresistible temptation, and that estimates are implicated in management pressure to do more. He would rather slice work small enough not to need estimating. If you track velocity at all, keep it inside the team and use it to answer "did we take on too much?", because once it's used to compare teams or assess individuals, the people producing the estimates have every reason to protect themselves instead of estimating accurately. Velocity counts one team's output in that team's own units, so it doesn't compare across teams, and Martin Fowler argues that there's [no reasonable way to measure software productivity](https://martinfowler.com/bliki/CannotMeasureProductivity.html) at all, because nobody can measure software's output.
 
-Kanban can be proposed for the wrong reason. When a proposal to switch arrives right after a sprint the team failed to finish, ask whether what's really being proposed is the removal of the deadline that exposed the problem. The Kanban Guide requires teams to control work in progress and to manage the items in the workflow actively, so a board without WIP limits and without continuous prioritization is only a to-do list nobody tracks. Switch because your work arrives unpredictably, not because committing to a sprint goal turned out to be uncomfortable.
+Kanban can be proposed for the wrong reason. When a proposal to switch arrives right after a sprint the team failed to finish, ask whether what's really being proposed is the removal of the deadline that exposed the problem. If it might be, hold the retrospective on the missed sprint first, and decide on the switch only once you know what made the sprint miss.
 
-Of the four ceremonies, the retrospective is the easiest to drop. Planning and review produce visible artifacts, so skipping them feels like skipping work; the retrospective produces a conversation, so skipping it feels like saving an hour. Keep it anyway, because it's the only scheduled moment where the person experiencing a process problem can name it before it costs the team a demo.
+Of the four ceremonies, the retrospective is the one that feels cheapest to skip. Planning and review produce visible artifacts, so skipping them feels like skipping work; the retrospective produces a conversation, so skipping it feels like saving an hour. Keep it anyway, because it's the only scheduled moment where the person experiencing a process problem can name it before it costs the team a demo.
 
 Finally, the whole framework is a means. The [Agile Manifesto](https://agilemanifesto.org/) is four value statements and twelve [principles](https://agilemanifesto.org/principles.html), much smaller than the industry built on top of it. The principles say nothing about story points or burndown charts, and on iteration length they ask only for working software delivered "from a couple of weeks to a couple of months, with a preference to the shorter timescale." Adapt the ceremonies to your team, and keep what the principles do ask for: working software delivered often, and a regular moment when the team reflects on how to become more effective.
 
@@ -258,11 +254,9 @@ Finally, the whole framework is a means. The [Agile Manifesto](https://agilemani
 
 Scrum comes from Ken Schwaber and Jeff Sutherland, who first co-presented it at the OOPSLA conference in 1995, according to the Scrum Guide's own history. The Kanban Guide traces Kanban to the Toyota Production System and says the practices now called Kanban for knowledge work "mainly originated on a team at Corbis in 2006."
 
-Few organizations run a whole project in one consistent style. <Cite id="kuhrmann-2022" /> surveyed practitioners internationally and, of 556 data points, found only 83 (about 15%) that ran every project discipline consistently agile, consistently traditional, or consistently balanced; the rest reported different degrees of agility across disciplines, with a general tendency toward hybrid development. They also found that the practices a team selects have a stronger effect on how agile a discipline is than the methods it uses. Expect one-week sprints, four-week sprints, pure Kanban, and home-grown hybrids in industry, and judge each by the practices it runs rather than by its label.
+Few practitioners report running a whole project in one consistent style. <Cite id="kuhrmann-2022" /> surveyed practitioners internationally and, of 556 data points, found only 83 (about 15%) that ran every project discipline consistently agile, consistently traditional, or consistently balanced; the rest reported different degrees of agility across disciplines, with a general tendency toward hybrid development. They also found that the practices a team selects have a stronger effect on how agile a discipline is than the methods it uses. Expect one-week sprints, four-week sprints, pure Kanban, and home-grown hybrids in industry, and judge each by the practices it runs rather than by its label.
 
 <Cite id="mahnic-2012" /> describes an undergraduate capstone in which student teams worked as Scrum Teams, implementing user stories defined by a domain expert who played the Product Owner, with data collected on the work completed, adherence to plans, and estimation ability; student surveys were overwhelmingly positive.
-
-On any team whose work is assessed by someone outside it, such as a manager or an advisor, the sprint cadence also leaves a dated record of who built what, sprint by sprint. Keep regular demos and retrospectives for that reason even if the team prefers Kanban flow.
 
 ## References
 
