@@ -25,12 +25,12 @@ assignment:
       weight: { fall: 8, winter: 10, spring: 10 }
       points: 100
       submission: none
-      rubric: defense/defense-rubric-details.tsv
+      rubric: defense/defense-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/defense/defense-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/defense/defense-rubric.csv?raw';
 
 <AssignmentMeta submission="Individual, held as a team session" due="Week 7 or 9, every term" weight="8% of the fall grade, 10% of the winter and spring grades" />
 
@@ -58,7 +58,7 @@ TAs and instructors score each student live on a printed sheet (the [scoresheet]
 
 ## Rubric (100 points, per student)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/defense/defense-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/defense/defense-rubric.csv" />
 
 "Handles not-knowing gracefully" is real: "I don't know, but here is how I would find out" scores; bluffing does not.
 

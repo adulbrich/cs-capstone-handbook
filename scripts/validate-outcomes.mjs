@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 // Validates learning-outcome coverage from the assignment pages.
 //
-// Source of truth: the Canvas rubric TSV each page renders (#144). Since the
+// Source of truth: the Canvas rubric CSV each page renders (#144). Since the
 // handbook no longer holds a second copy of the rubric, there is no mirror to
 // reconcile; the file the page renders is the file Canvas imports.
 //
 // The frontmatter `assignment.outcomes` block must reconcile with the tags in
-// that TSV exactly, so neither can silently drift. Coverage minimums:
+// that CSV exactly, so neither can silently drift. Coverage minimums:
 //   - every ABET outcome (SO1-SO6): >= 2 individual-level data points
 //   - every WIC (L07-L09) and Beyond OSU (L10) outcome: >= 1 individual-level point,
 //     except the outcomes in CANVAS_EVIDENCED below
 // It also checks that each term's Team Deliverables table sums to exactly 25%,
-// that each page imports the TSVs that belong to it rather than another
+// that each page imports the CSVs that belong to it rather than another
 // assignment's, which Vite cannot catch because both paths resolve, and that
 // each page's `assignment.canvas` entries reconcile with its weight and the
 // rubrics it renders (the Canvas entry model record in docs/decisions/).
@@ -24,10 +24,10 @@ import { parse } from "yaml";
 import { canvasRows, termWeight } from "../src/lib/canvas-entries.mjs";
 import {
   OUTCOME_TAG_RE,
-  parseRubricTsv,
+  parseRubricCsv,
   rubricTagCounts,
   rubricTotal,
-} from "../src/lib/rubric-tsv.mjs";
+} from "../src/lib/rubric-csv.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
@@ -35,7 +35,7 @@ const ABET_OUTCOMES = ["SO1", "SO2", "SO3", "SO4", "SO5", "SO6"];
 const OTHER_OUTCOMES = ["L07", "L08", "L09", "L10"];
 const MIN_ABET = 2;
 
-// Canvas rubric TSV directory -> the handbook page that renders it. The TSV is
+// Canvas rubric CSV directory -> the handbook page that renders it. The CSV is
 // the rubric (#144), so this is not a mirror table: it is how the validator
 // tells whether a page imported its own assignment's rubric or a neighbour's.
 const CANVAS_TO_HANDBOOK = {
@@ -59,7 +59,7 @@ const CANVAS_TO_HANDBOOK = {
 // omission. The survey instruments run through Qualtrics and are the only
 // pages still holding a hand-written Markdown table, because theirs carry
 // weights rather than points; their Canvas entries declare no `rubric`.
-// Sprint Notes and Workshop Activities are not exceptions: their TSVs total
+// Sprint Notes and Workshop Activities are not exceptions: their CSVs total
 // 100 like any other (#29, #144, #259).
 const RUBRIC_EXCEPTIONS = new Set([
   "peer-evaluations",
@@ -126,14 +126,14 @@ function parseRubricTags(body) {
   return tags;
 }
 
-// Every TSV a page renders, one per `<RubricTable tsv={...} />`, resolved
+// Every CSV a page renders, one per `<RubricTable csv={...} />`, resolved
 // through the matching `?raw` import. A page owning several Canvas entries
 // renders one table per distinct rubric. `path` is null when the name has no
 // import; `index` is where the tag sits, for the heading check below.
 const RUBRIC_TABLE_RE = /<RubricTable\s[^>]*>/g;
 function rubricTables(source) {
   return [...source.matchAll(RUBRIC_TABLE_RE)].map((m) => {
-    const name = m[0].match(/\btsv=\{(\w+)\}/)?.[1];
+    const name = m[0].match(/\bcsv=\{(\w+)\}/)?.[1];
     const imported = name
       ? source.match(
           new RegExp(
@@ -189,7 +189,7 @@ for (const file of files) {
     // A page that keeps a hand-written table: the documented exceptions.
     if (!RUBRIC_EXCEPTIONS.has(slug)) {
       console.error(
-        `NO RUBRIC TABLE ${file}: renders no <RubricTable> and is not a documented exception. Import its TSV from canvas/assignments/ and render it.`
+        `NO RUBRIC TABLE ${file}: renders no <RubricTable> and is not a documented exception. Import its CSV from canvas/assignments/ and render it.`
       );
       failed = true;
     }
@@ -198,18 +198,18 @@ for (const file of files) {
   for (const table of tables) {
     if (!table.path) {
       console.error(
-        `RUBRIC IMPORT ${file}: <RubricTable tsv={${table.name}}> has no matching \`import ${table.name} from '/...tsv?raw'\`.`
+        `RUBRIC IMPORT ${file}: <RubricTable csv={${table.name}}> has no matching \`import ${table.name} from '/...csv?raw'\`.`
       );
       failed = true;
       continue;
     }
-    // The page must import its own assignment's TSVs. Vite resolves any real
+    // The page must import its own assignment's CSVs. Vite resolves any real
     // path, so nothing else catches a page rendering a neighbour's rubric.
     // `sourceLabel` is what parse errors name, so a stale one sends the next
     // reader to the wrong file. Nothing else compares it to the real import.
     if (!table.label) {
       console.error(
-        `RUBRIC IMPORT ${file}: <RubricTable tsv={${table.name}}> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
+        `RUBRIC IMPORT ${file}: <RubricTable csv={${table.name}}> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
       );
       failed = true;
     } else if (table.label !== table.path) {
@@ -229,7 +229,7 @@ for (const file of files) {
     // together are what the frontmatter declares.
     for (const [tag, n] of Object.entries(
       rubricTagCounts(
-        parseRubricTsv(readFileSync(table.path, "utf8"), table.path)
+        parseRubricCsv(readFileSync(table.path, "utf8"), table.path).criteria
       )
     )) {
       rubricTags[tag] = (rubricTags[tag] || 0) + n;
@@ -403,12 +403,12 @@ for (const dir of readdirSync(CANVAS_DIR)) {
   }
   const tags = new Set();
   for (const f of readdirSync(join(CANVAS_DIR, dir))) {
-    if (!f.endsWith("rubric-details.tsv")) {
+    if (!f.endsWith("-rubric.csv")) {
       continue;
     }
     const path = join(CANVAS_DIR, dir, f);
     for (const tag of Object.keys(
-      rubricTagCounts(parseRubricTsv(readFileSync(path, "utf8"), path))
+      rubricTagCounts(parseRubricCsv(readFileSync(path, "utf8"), path).criteria)
     )) {
       tags.add(tag);
     }
@@ -557,24 +557,49 @@ for (const [slug, assignment] of pages) {
     }
   }
 }
-// A TSV left in a mapped directory that no entry declares would still be
+// A CSV left in a mapped directory that no entry declares would still be
 // imported by hand and still look current. Every file must belong to a family.
-const declaredTsvs = new Set(
+const declaredCsvs = new Set(
   [...pages.values()].flatMap((a) =>
     (a.canvas ?? [])
       .filter((f) => f.rubric)
       .map((f) => `${CANVAS_DIR}/${f.rubric}`)
   )
 );
+// Canvas lists a course's rubrics by the Rubric Name column, so two files
+// sharing one import as two rubrics a grader cannot tell apart.
+const rubricNames = new Map();
 for (const dir of Object.keys(CANVAS_TO_HANDBOOK)) {
   for (const f of readdirSync(join(CANVAS_DIR, dir))) {
+    // The filesystem, not git: Finder drops a `.DS_Store` into any folder it
+    // opens, and a hook that blocks on that trains people to skip hooks.
+    if (f.startsWith(".")) {
+      continue;
+    }
     const path = `${CANVAS_DIR}/${dir}/${f}`;
-    if (f.endsWith("rubric-details.tsv") && !declaredTsvs.has(path)) {
+    // Anything else here, such as a pre-CSV `-rubric-details.tsv`, would be
+    // skipped by every check below and still look like a rubric to import.
+    if (!f.endsWith("-rubric.csv")) {
+      console.error(
+        `CANVAS ${path}: only <name>-rubric.csv files belong in a rubric directory.`
+      );
+      failed = true;
+      continue;
+    }
+    if (!declaredCsvs.has(path)) {
       console.error(
         `CANVAS ${path}: no Canvas entry on ${CANVAS_TO_HANDBOOK[dir]}.mdx uses this rubric. Declare it or delete it.`
       );
       failed = true;
     }
+    const { name } = parseRubricCsv(readFileSync(path, "utf8"), path);
+    if (rubricNames.has(name)) {
+      console.error(
+        `CANVAS ${path}: Rubric Name "${name}" is also ${rubricNames.get(name)}'s.`
+      );
+      failed = true;
+    }
+    rubricNames.set(name, path);
   }
 }
 if (!failed) {
@@ -632,14 +657,14 @@ for (const file of files) {
     failed = true;
   }
 
-  // Rubric points total exactly 100, summed from each rendered TSV, and
+  // Rubric points total exactly 100, summed from each rendered CSV, and
   // each table sits under a rubric heading: its nearest "##" or "###".
   for (const table of pageTables.get(slug)) {
     if (!table.path) {
       continue; // already reported as RUBRIC IMPORT above
     }
     const total = rubricTotal(
-      parseRubricTsv(readFileSync(table.path, "utf8"), table.path)
+      parseRubricCsv(readFileSync(table.path, "utf8"), table.path).criteria
     );
     if (total !== 100) {
       console.error(

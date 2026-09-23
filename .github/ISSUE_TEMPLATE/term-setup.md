@@ -20,7 +20,7 @@ labels: type:chore
 - [ ] Fall only: confirm the week-by-week schedule in `src/content/docs/introduction/series.mdx` still holds for the year (a holiday that removes a Friday lecture, a workshop moved to another week)
 - [ ] Update the syllabus statements, then re-paste the syllabus HTML from `canvas/syllabus/` into Canvas after any edit to it
 - [ ] Set the Canvas grading standard by hand to the cut points on `src/content/docs/learning-objectives/grading.mdx`; the syllabi mirror the same table
-- [ ] Re-import every rubric TSV named in the re-import lists of `canvas/assignments/assignment-readme.md` (browser extension; sources in `canvas/assignments/`)
+- [ ] Re-import every rubric CSV named in the re-import lists of `canvas/assignments/assignment-readme.md` (Canvas Rubrics page, Import; sources in `canvas/assignments/`)
 - [ ] Create the Workshop Activities column for the term (complete/incomplete per item)
 - [ ] Fall and spring: confirm the co-instructor has set up Resume and Intent (fall) or the Career and Individual Retrospective (spring) in Canvas, with the resume meetings; nothing to import from this repo (`STAFF-RUNBOOK.md`, Resume and Intent, Career Retrospective)
 - [ ] Update the Qualtrics surveys (peer evaluation, project partner evaluation)

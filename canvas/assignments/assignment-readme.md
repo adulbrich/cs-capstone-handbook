@@ -1,23 +1,54 @@
 # Assignment README
 
-- This directory holds one validated `*-rubric-details.tsv` per distinct rubric of every live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
-- `scripts/validate-outcomes.mjs` reads every TSV as the rubric: it reconciles the outcome tags in field 1 against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own TSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
+- This directory holds one validated `<name>-rubric.csv` per distinct rubric of every live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), in the format of Canvas's rubric import, plus Canvas's own template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
+- `scripts/validate-outcomes.mjs` reads every CSV as the rubric: it reconciles the outcome tags in the Criteria Name column against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own CSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
-- One TSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the TSV. That list is what to create in Canvas: the page renders it for students as the Submissions table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
+- One CSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the CSV. That list is what to create in Canvas: the page renders it for students as the Submissions table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
-**All graded work except the two assignments owned in Canvas is authored in the [course handbook](https://capstone.alexulbrich.com/assignments/introduction/), and each rubric here is the only copy of itself.** Once imported, Canvas is what students go by, as the syllabi say, so a fix made only in Canvas has to be made here too or the next import undoes it. Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
+**All graded work except the two assignments owned in Canvas is authored in the [course handbook](https://capstone.alexulbrich.com/assignments/introduction/), and each rubric here is the only copy of itself.** Once imported, Canvas is what students go by, as the syllabi say, so a fix made only in Canvas has to be made here too or the next import undoes it. Since #144 the handbook page renders this directory's CSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a CSV changes both the handbook page and what the next Canvas import carries.
+
+## Rubrics Moved to Canvas's Import Format
+
+Canvas now imports rubrics itself, from the Rubrics page of a course, using the template in `_template/import_rubric_template.csv`. Every rubric here was converted to that format, and the browser extension is retired. Each `*-rubric-details.tsv` became `<name>-rubric.csv` in the same directory:
+
+- CSV with a header row in place of headerless TSV. Fields holding a comma or a quote are quoted, so edit these in a spreadsheet or a CSV-aware editor.
+- A new first column, Rubric Name, the same on every row of a file. It is the name Canvas lists the rubric under, and the validator fails two files that share one.
+- Each rating group is now name, description, points. The TSV put points first.
+- Criteria Enable Range stays `true` on every criterion, as `use_range` was.
+
+**Nothing students or graders see changed.** Every criterion, description, band, point value and outcome tag was checked equal, file by file, between the old parser's reading of each TSV and the new parser's reading of its CSV. A rubric already in Canvas does not need re-importing for this change. The pending re-imports below now take the CSV named in each. Canvas creates a new rubric from each import rather than updating one of the same content, so before re-importing a rubric that is already in the course, delete the old one or check that its name matches the Rubric Name below, or the course ends up with two. Import `defense/defense-rubric.csv` first as the check that Canvas takes a fourth rating group and the quoted fields.
+
+| File | Rubric Name |
+|---|---|
+| `defense/defense-rubric.csv` | Individual Defense |
+| `definition-of-shipped/definition-of-shipped-rubric.csv` | Definition of Shipped |
+| `incident-postmortem/incident-postmortem-rubric.csv` | Incident Postmortem |
+| `individual-contribution/individual-contribution-rubric.csv` | Individual Contribution |
+| `project-handoff/project-handoff-rubric.csv` | Project Handoff |
+| `project-landing-page/project-landing-page-rubric.csv` | Landing Page |
+| `project-retrospective/project-retrospective-rubric.csv` | Project Retrospective |
+| `repo-checkpoint/repo-checkpoint-rubric.csv` | Repo Checkpoint |
+| `rfc/rfc-draft-rubric.csv` | RFC Draft |
+| `rfc/rfc-final-rubric.csv` | RFC Final |
+| `spring-release/spring-release-rubric.csv` | Release and Metrics |
+| `sprint-note/sprint-note-rubric.csv` | Sprint Notes |
+| `team-charter/team-charter-rubric.csv` | Team Charter |
+| `term-retrospective/term-retrospective-rubric.csv` | Term Retrospective |
+| `workshop-activities/workshop-activities-rubric.csv` | Workshop Activities |
+
+The sections below this one predate the move and name the old `.tsv` files where they record history.
 
 ## Re-import Required: Team Charter (#263)
 
-`team-charter/team-charter-rubric-details.tsv`: Exceeds on the Definition of Done now accepts a gate that is not built yet if the charter names the sprint it lands in and its owner. Exceeds on CONTRIBUTING.md and the AI context file accepts an AI context file whose parts that cannot be written before there is code are listed with an owner. The Meets bands change to match. Points and tags are unchanged.
+`team-charter/team-charter-rubric.csv`: Exceeds on the Definition of Done now accepts a gate that is not built yet if the charter names the sprint it lands in and its owner. Exceeds on CONTRIBUTING.md and the AI context file accepts an AI context file whose parts that cannot be written before there is code are listed with an owner. The Meets bands change to match. Points and tags are unchanged.
 
 ## Re-import Required: RFC Final (#262)
 
-`rfc/rfc-final-rubric-details.tsv`: the Problem framing bands no longer require a decision that is "currently live". Exceeds asks for a decision that is real and current: still open in fall; in winter, open or already being acted on, with the RFC still changing how it is verified, reversed, or continued. Does Not Meet now names an RFC that justifies a decision it no longer changes, in place of "a retrospective justification of work already built". Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms. Import this after the #259 split if both are pending.
+`rfc/rfc-final-rubric.csv`: the Problem framing bands no longer require a decision that is "currently live". Exceeds asks for a decision that is real and current: still open in fall; in winter, open or already being acted on, with the RFC still changing how it is verified, reversed, or continued. Does Not Meet now names an RFC that justifies a decision it no longer changes, in place of "a retrospective justification of work already built". Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms. Import this after the #259 split if both are pending.
 
 ## Re-import Required: Sprint Note (#260)
 
-`sprint-note/sprint-note-rubric-details.tsv`: the Working software evidence Pass band now says when a video may replace the live demo (a missed check-in, or a TA who could not meet) and how it is recorded (media.oregonstate.edu, unlisted, captioned, one timestamp per student). Points and tags are unchanged. Re-import it on every Sprint Notes N entry.
+`sprint-note/sprint-note-rubric.csv`: the Working software evidence Pass band now says when a video may replace the live demo (a missed check-in, or a TA who could not meet) and how it is recorded (media.oregonstate.edu, unlisted, captioned, one timestamp per student). Points and tags are unchanged. Re-import it on every Sprint Notes N entry.
 
 ## Canvas Changes: One Entry per Due Date (#259)
 
@@ -25,9 +56,9 @@ Each Canvas assignment has its own due date, late window, grade and submission, 
 
 | Canvas before #259 | Change | Rubric |
 |---|---|---|
-| RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due end of week 5, cross-team pairings assigned by staff. | Import `rfc/rfc-draft-rubric-details.tsv` (new) and `rfc/rfc-final-rubric-details.tsv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
-| Sprint Notes Individual Contributions, one 400-point entry | Delete it. Create **Sprint Notes 1: Individual Contribution** to **Sprint Notes 4: Individual Contribution**, 100 points each, in the Sprint Notes group, no submission, due with the matching note, full marks by Set Default Grade. Winter has 5, spring 3. | Import `individual-contribution/individual-contribution-rubric-details.tsv` (one criterion, Full 100 / Half 50 / Zero 0) on every one. The three per-term TSVs are deleted. |
-| Workshop 1 to Workshop 5, 100 points each | No change to the entries. | Import `workshop-activities/workshop-activities-rubric-details.tsv` (one criterion, Complete 100 / Incomplete 0) on every workshop entry, every term. The three per-term TSVs are deleted. |
+| RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due end of week 5, cross-team pairings assigned by staff. | Import `rfc/rfc-draft-rubric.csv` (new) and `rfc/rfc-final-rubric.csv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
+| Sprint Notes Individual Contributions, one 400-point entry | Delete it. Create **Sprint Notes 1: Individual Contribution** to **Sprint Notes 4: Individual Contribution**, 100 points each, in the Sprint Notes group, no submission, due with the matching note, full marks by Set Default Grade. Winter has 5, spring 3. | Import `individual-contribution/individual-contribution-rubric.csv` (one criterion, Full 100 / Half 50 / Zero 0) on every one. The three per-term TSVs are deleted. |
+| Workshop 1 to Workshop 5, 100 points each | No change to the entries. | Import `workshop-activities/workshop-activities-rubric.csv` (one criterion, Complete 100 / Incomplete 0) on every workshop entry, every term. The three per-term TSVs are deleted. |
 
 No other entry, weight, or rubric changes. The Sprint Notes group stays 8% in fall: 4 notes and 4 individual entries at 100 points each are 1% apiece.
 

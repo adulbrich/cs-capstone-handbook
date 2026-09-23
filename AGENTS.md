@@ -19,10 +19,10 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
-| `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
+| `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
-| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric TSVs, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, that each page renders its own TSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
+| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, that each page renders its own CSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
@@ -30,7 +30,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/validate-sources.mjs` | Every `<Cite id>` names a file in `src/data/sources/`, every registry entry has its claims with locators and a `verified` value and is cited by some page, no two entries cite the same, and a citing page has `## References` then `<References />` directly above Additional Readings. Runs in CI and pre-commit. |
 | `.github/workflows/links.yml` | Weekly lychee check of the external links on the built site, the doi.org links included; opens or updates one issue on failure. Not per PR, because an outside outage would fail unrelated PRs. |
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
-| `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. On handbook pages, also no banned word, bolded whole sentence, or banned guide opener from `docs/agents/voice.md`, and no banned word in the rubric TSVs, the syllabi, or the Markdown downloads in `public/`; a guide carrying the legacy-opener marker skips the opener check until its sweep, and a marker with nothing to waive fails. Runs in CI, pre-commit, and the `after-edit` hook. |
+| `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. On handbook pages, also no banned word, bolded whole sentence, or banned guide opener from `docs/agents/voice.md`, and no banned word in the rubric CSVs, the syllabi, or the Markdown downloads in `public/`; a guide carrying the legacy-opener marker skips the opener check until its sweep, and a marker with nothing to waive fails. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
 | `scripts/check-branch-name.mjs` | Branch rule, `<type>/<slug>`, with the issue number leading the slug when there is one. Runs at `pre-push` and in CI on the PR's head branch. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule, plus no em dash, emoji, or session link. Runs at `commit-msg`, in the `guard-git` hook, in CI over the PR range, and in the `pr-text` workflow over the PR title and body. |
@@ -50,11 +50,12 @@ it. Content lives in `src/content/docs/**` as MDX.
    `validate-dashes.mjs` checks the content directories and
    `scripts/check-prose.mjs` checks every tracked text file, root docs and
    skills included, in CI and at pre-commit.
-4. **Each rubric lives once, in its TSV.** A rubric is
-   `canvas/assignments/<dir>/*-rubric-details.tsv`, rendered on the handbook
-   page by `src/components/RubricTable.astro` and imported into Canvas by the
-   rubric-import extension. Edit the TSV, and re-import it into Canvas (#144).
-   The TSV goes one way and is never read back out, so a fix made only in
+4. **Each rubric lives once, in its CSV.** A rubric is
+   `canvas/assignments/<dir>/<name>-rubric.csv`, in the format of Canvas's
+   rubric import template (`canvas/assignments/_template/`), rendered on the
+   handbook page by `src/components/RubricTable.astro` and imported through
+   the Canvas Rubrics page. Edit the CSV, and re-import it into Canvas (#144).
+   The CSV goes one way and is never read back out, so a fix made only in
    Canvas is lost at the next import. Two pages are documented exceptions,
    listed as `RUBRIC_EXCEPTIONS` in `validate-outcomes.mjs`: the Qualtrics
    instruments keep a hand-written table because theirs carries weights
@@ -132,10 +133,10 @@ carries. This is the rule most easily gotten wrong: a team-level page tagged
 `src/content/docs/learning-objectives/mapping.mdx` is the human-readable view
 of the same map and is hand-maintained against this check. When you change a
 rubric criterion's tags, update the frontmatter, the mapping page, and the
-Canvas TSV in the same commit.
+Canvas CSV in the same commit.
 
 The same validator reconciles **Canvas against the handbook**: the set of
-outcome tags in each `canvas/assignments/*/​*-rubric-details.tsv` must equal the
+outcome tags in each `canvas/assignments/*/​*-rubric.csv` must equal the
 set in the handbook rubric table it mirrors. Nothing else in the toolchain reads
 Canvas, so without this it drifts silently, and it had. The directory-to-page
 map and the deprecated-directory list live at the top of the script; a Canvas

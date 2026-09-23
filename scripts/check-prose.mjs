@@ -8,7 +8,7 @@
  * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
- * heading. The banned words alone also reach the Canvas rubric TSVs, the
+ * heading. The banned words alone also reach the Canvas rubric CSVs, the
  * syllabi, and the Markdown downloads in `public/` (BANNED_WORD_PATHS),
  * because students read those words in Canvas, in the templates and
  * scoresheet that quote the criteria, and, through `<RubricTable>`, on the
@@ -73,6 +73,7 @@ const TEXT_EXTENSIONS = new Set([
   "astro",
   "cjs",
   "css",
+  "csv",
   "html",
   "js",
   "json",
@@ -82,7 +83,6 @@ const TEXT_EXTENSIONS = new Set([
   "mjs",
   "sh",
   "ts",
-  "tsv",
   "tsx",
   "txt",
   "yaml",
@@ -156,8 +156,8 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 /**
  * BOLD_AND_OPENER_PATH gates only the bolded-sentence and opener rules, which
  * are about how a handbook page is written. The banned words reach further:
- * the rubric TSVs and the syllabus bodies under `canvas/`, and the Markdown
- * downloads in `public/`. A TSV renders on its assignment page and imports
+ * the rubric CSVs and the syllabus bodies under `canvas/`, and the Markdown
+ * downloads in `public/`. A CSV renders on its assignment page and imports
  * into Canvas, a syllabus is pasted into Canvas, and the scoresheet and
  * templates quote the criteria, so a banned word in any of them reaches
  * students as surely as one on a page. The rest of `canvas/` and the runbook
@@ -166,7 +166,7 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 const BOLD_AND_OPENER_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
-  { prefix: "canvas/assignments/", suffix: ".tsv" },
+  { prefix: "canvas/assignments/", suffix: "-rubric.csv" },
   { prefix: "canvas/syllabus/", suffix: ".html" },
   { prefix: "public/", suffix: ".md" },
 ];
@@ -569,7 +569,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and in the rubric TSVs, syllabi, and public/ Markdown no banned word (docs/agents/voice.md).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and in the rubric CSVs, syllabi, and public/ Markdown no banned word (docs/agents/voice.md).\n"
     );
     process.exit(1);
   }

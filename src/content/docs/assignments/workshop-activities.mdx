@@ -17,13 +17,13 @@ assignment:
       weight: { fall: 2, winter: 1, spring: 1 }
       points: 100
       submission: pdf
-      rubric: workshop-activities/workshop-activities-rubric-details.tsv
+      rubric: workshop-activities/workshop-activities-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import CanvasEntries from '/src/components/CanvasEntries.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/workshop-activities/workshop-activities-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/workshop-activities/workshop-activities-rubric.csv?raw';
 
 <AssignmentMeta submission="Team, graded complete/incomplete" due="Fall weeks 2, 3, 7 and 8; winter weeks 1 to 3; spring week 2" weight="Fall 2% (5 items), winter 1% (3 items), spring 1% (1 item)" />
 
@@ -67,7 +67,7 @@ The spring assessment closes with the charter refresh: update `docs/charter.md` 
 
 Each workshop is its own entry, scored with this rubric; the tables above say what a complete submission shows for each.
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/workshop-activities/workshop-activities-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/workshop-activities/workshop-activities-rubric.csv" />
 
 Submit the activity's output as one PDF, whatever the activity says a good output is; a photo of a whiteboard or sticky notes goes inside the PDF. A grader spends seconds per item confirming something real was submitted.
 

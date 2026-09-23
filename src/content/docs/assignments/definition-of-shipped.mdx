@@ -18,12 +18,12 @@ assignment:
       weight: 3
       points: 100
       submission: pdf
-      rubric: definition-of-shipped/definition-of-shipped-rubric-details.tsv
+      rubric: definition-of-shipped/definition-of-shipped-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/definition-of-shipped/definition-of-shipped-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/definition-of-shipped/definition-of-shipped-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Winter, week 3 (v1, partner-agreed)" weight="3% of the winter grade">
   A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).
@@ -52,7 +52,7 @@ A non-responsive partner does not tank your grade. If the partner has not engage
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/definition-of-shipped/definition-of-shipped-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/definition-of-shipped/definition-of-shipped-rubric.csv" />
 
 **AI use:** AI may draft the document from your [Lean Canvas](/activities/requirements/#lean-canvas), your requirements, and the Shipping guide's lead-time tables. It must not invent the partner agreement, a named user, or a lead time nobody checked. A fabricated partner confirmation or a made-up start-by date fails the assignment, because this document is a commitment other people will hold you to.
 

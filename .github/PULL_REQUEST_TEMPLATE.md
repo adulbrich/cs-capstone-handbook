@@ -16,11 +16,11 @@ Closes #
 ## Canvas mirror
 
 <!-- Graded work is authored here and exported to Canvas. If a rubric
-     table, a weight or a syllabus changed, the TSV or HTML under canvas/
+     table, a weight or a syllabus changed, the CSV or HTML under canvas/
      changed with it and someone has to re-import. Keep one line. -->
 
-- TSV re-import needed: yes, for `canvas/assignments/<name>/...`
-- TSV re-import needed: no
+- CSV re-import needed: yes, for `canvas/assignments/<name>/...`
+- CSV re-import needed: no
 
 ## Review loop
 

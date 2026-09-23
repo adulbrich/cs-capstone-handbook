@@ -18,12 +18,12 @@ assignment:
       weight: 3
       points: 100
       submission: [url, image]
-      rubric: project-landing-page/project-landing-page-rubric-details.tsv
+      rubric: project-landing-page/project-landing-page-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/project-landing-page/project-landing-page-rubric-details.tsv?raw';
+import rubricCsv from '/canvas/assignments/project-landing-page/project-landing-page-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Spring, week 7" weight="3% of the spring grade">
   One page per team, not per student.
@@ -52,7 +52,7 @@ Talk to your partner first: they may have an existing page to update rather than
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/project-landing-page/project-landing-page-rubric-details.tsv" />
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/project-landing-page/project-landing-page-rubric.csv" />
 
 For the **polish and accessibility** criterion, the standard being graded is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) level AA: [text alternatives](https://www.w3.org/WAI/tutorials/images/) on meaningful images, 4.5:1 contrast on body text, and link text whose purpose is clear from the link and its surrounding text. Run [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [axe](https://github.com/dequelabs/axe-core) first, then do a manual pass, because automation covers only part of it: the [accessibility guide](/guides/accessibility/#manual-accessibility-testing) has the coverage figures and the manual checks, and no tool will tell you that your alt text describes the wrong thing.
 

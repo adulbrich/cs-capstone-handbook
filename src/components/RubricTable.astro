@@ -1,25 +1,19 @@
 ---
-import { parseRubricTsv, rubricTotal } from "../lib/rubric-tsv.mjs";
+import { parseRubricCsv, rubricTotal } from "../lib/rubric-csv.mjs";
 
 /**
- * RubricTable: renders an assignment's rubric from the Canvas rubric TSV.
+ * RubricTable: renders an assignment's rubric from the Canvas rubric CSV.
  *
- * The TSV under `canvas/assignments/<dir>/` is the single source of truth for
- * every rubric (#144). It is what the Canvas rubric-import browser extension
- * consumes, and this component renders the same file on the handbook page, so
- * the two cannot drift. Nothing here is hand-maintained alongside it.
+ * The CSV under `canvas/assignments/<dir>/` is the single source of truth for
+ * every rubric (#144). It is what Canvas's own rubric import reads, and this
+ * component renders the same file on the handbook page, so the two cannot
+ * drift. Nothing here is hand-maintained alongside it.
  *
- * The format is Canvas's own rubric import ordering, headerless:
- *
- *   0: criterion title, with its outcome tags in brackets ("Blameless [SO4]")
- *   1: criterion description (the sentence saying what is being judged)
- *   2: use_range ("true"/"false"); Canvas reads it, the handbook does not
- *   3+: repeating rating groups of three (points, title, description)
- *
- * Reading the rating groups as a repeating triple rather than a fixed count is
- * what lets one component serve every shape in this repository: nine fields
- * for a pass/fail rubric, twelve for the usual three bands, and fifteen for
- * `defense`, which carries a fourth `Missing` band.
+ * The format, Canvas's rubric import template, is documented and parsed in
+ * `src/lib/rubric-csv.mjs`. One file is one rubric; the parser returns its
+ * criteria, each with its outcome tags split out of the title, and any number
+ * of rating bands, so `defense` and its fourth `Missing` band need nothing
+ * special here.
  *
  * Accessibility notes:
  * - A real <table> with a <caption> and header cells, so a screen reader can
@@ -34,24 +28,24 @@ import { parseRubricTsv, rubricTotal } from "../lib/rubric-tsv.mjs";
  * Usage in MDX:
  *
  *   import RubricTable from '/src/components/RubricTable.astro';
- *   import rubricTsv from '/canvas/assignments/rfc/rfc-final-rubric-details.tsv?raw';
+ *   import rubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
  *
- *   <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-final-rubric-details.tsv" />
+ *   <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/rfc/rfc-final-rubric.csv" />
  *
  * `?raw` is a Vite feature and needs no Astro configuration. A missing file
  * fails the build; `scripts/validate-outcomes.mjs` catches the other half,
- * which is a page importing a TSV that belongs to a different assignment.
+ * which is a page importing a CSV that belongs to a different assignment.
  */
 interface Props {
+  /** The CSV file's contents, imported with `?raw`. */
+  csv: string;
   /** Repository-relative path, used in error messages and checked by the validator. */
   sourceLabel: string;
-  /** The TSV file's contents, imported with `?raw`. */
-  tsv: string;
 }
 
-const { tsv, sourceLabel } = Astro.props;
+const { csv, sourceLabel } = Astro.props;
 
-const criteria = parseRubricTsv(tsv, sourceLabel);
+const { criteria } = parseRubricCsv(csv, sourceLabel);
 const totalPoints = rubricTotal(criteria);
 ---
 
