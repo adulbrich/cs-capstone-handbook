@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your project runs on your laptop, and sooner or later it has to run somewhere else: on a teammate's machine, at a URL your project partner can open, on a server that stays up after you close the lid. This page covers that path, from a setup any teammate can reproduce, through a CI workflow that checks every pull request, to automatic deployment, environments, and a rollback plan. It doesn't cover the repository settings that make CI a required check, which are in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch), or keeping secrets out of your code, which is in [Security](/guides/security/).
+Your project runs on your laptop, and sooner or later it has to run somewhere else: on a teammate's machine, at a URL your project partner can open, on a server that stays up after you close the lid. This page covers that path, from a setup any teammate can reproduce, through a CI workflow that checks every pull request, to automatic deployment, environments, and a rollback plan. It doesn't cover the repository settings that make CI a required check, which are in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch), or the security side of a deployment (secrets management and the misconfiguration checklist), which is in [Security](/guides/security/).
 
 :::note[tl;dr]
 - Make setup a README section that takes a new teammate from `git clone` to a running app without asking anyone.
@@ -60,7 +60,7 @@ If the project has several services (a frontend, a backend, a database), documen
 [Docker](https://docs.docker.com/get-started/) packages an application with its runtime and system libraries into an image that runs the same way on every machine, and [Docker Compose](https://docs.docker.com/compose/) starts several containers together from one file. When a project depends on a specific database version, a message queue, or system libraries that are hard to install consistently, a Compose file gives the whole team the same stack:
 
 ```yaml
-# docker-compose.yml
+# compose.yaml
 services:
   app:
     build: .
@@ -69,13 +69,18 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/mydb
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   db:
     image: postgres:16
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=mydb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 5s
+      retries: 10
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -83,7 +88,7 @@ volumes:
   pgdata:
 ```
 
-With this file, `docker compose up` starts the whole stack on any machine with Docker installed, which matters most when teammates use different operating systems.
+With this file, `docker compose up` starts the whole stack on any machine with Docker installed, which matters most when teammates use different operating systems. The healthcheck makes the application wait until PostgreSQL accepts connections, rather than only until its container has started.
 
 Containers cost something too: build time, images to manage, and a layer between you and the process when you debug. If `npm install && npm start` works for everyone on the team, you don't yet have the problem Docker solves. Adopt it when environment differences start causing bugs, when you need to match a production runtime exactly, or when your deployment target requires an image.
 
@@ -93,7 +98,7 @@ CI runs your checks (tests, linting, type checking, a build) on every push and p
 
 ### GitHub Actions
 
-[GitHub Actions](https://docs.github.com/en/actions) is the CI service built into GitHub. Its minutes are free on public repositories, and private repositories get a monthly quota that depends on the account's plan; [GitHub's billing page](https://docs.github.com/en/billing/concepts/product-billing/github-actions) has the current numbers. A workflow is a YAML file in `.github/workflows/`, written in the [workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax):
+[GitHub Actions](https://docs.github.com/en/actions) is the CI service built into GitHub. Its minutes are free on public repositories that use standard GitHub-hosted runners, and private repositories get a monthly quota that depends on the account's plan; [GitHub's billing page](https://docs.github.com/en/billing/concepts/product-billing/github-actions) has the current numbers. A workflow is a YAML file in `.github/workflows/`, written in the [workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax):
 
 ```yaml
 # .github/workflows/ci.yml
@@ -127,9 +132,12 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Build
+        run: npm run build
 ```
 
-This workflow runs on every push to `main` and every pull request that targets `main`. If any step fails, the run fails and the pull request shows a red check.
+This workflow runs on every push to `main` and every pull request that targets `main`. Each `npm run` step assumes a script of that name in your `package.json`. If any step fails, the run fails and the pull request shows a red check.
 
 For a Python project, the same workflow swaps the setup step and the tools:
 
@@ -146,7 +154,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Lint
         run: ruff check .
@@ -154,6 +162,8 @@ jobs:
       - name: Run tests
         run: pytest
 ```
+
+It assumes [Ruff](https://docs.astral.sh/ruff/) and [pytest](https://docs.pytest.org/en/stable/) are listed in `requirements-dev.txt`, next to the application's own `requirements.txt`. Python has no compile step, so for an application the install and the tests stand in for the build: the dependencies resolve and every tested module imports. If you publish a package, add a step that runs `python -m build`.
 
 ### What to Run in CI
 
@@ -168,11 +178,11 @@ Add these when they fit your stack:
 - A type checker: `tsc` for TypeScript, [mypy](https://mypy-lang.org/) or [Pyright](https://github.com/microsoft/pyright) for Python.
 - A dependency audit, [`npm audit`](https://docs.npmjs.com/cli/commands/npm-audit/) or [pip-audit](https://github.com/pypa/pip-audit), which flags dependencies with known vulnerabilities.
 
-If you set up only one check, make it the tests. The 2017 State of DevOps Report, an industry report by Puppet and DORA, tested which practices contribute to continuous delivery and found that test automation, deployment automation, continuous integration with trunk-based development, comprehensive version control, and integrating security into delivery work all contributed, with test automation the biggest contributor <Cite id="forsgren-2017" form="parenthetical" />.
+If you set up only one check, make it the tests. The 2017 State of DevOps Report is an industry report by Puppet and DORA, based on a survey of about 3,200 people <Cite id="forsgren-2017" form="parenthetical" />. It recruited them by snowball sampling, promoting the survey online and asking respondents to pass it on to their networks, and notes that its sample is likely limited to organizations already familiar with DevOps <Cite id="forsgren-2017" form="parenthetical" />. Of the practices it tested, test automation, deployment automation, continuous integration with [trunk-based development](/guides/git-and-github/#trunk-based-development), comprehensive version control, and integrating security into delivery work all contributed to continuous delivery, with test automation the biggest contributor <Cite id="forsgren-2017" form="parenthetical" />.
 
 ### CI and Branch Protection
 
-A red run only reports a problem; on its own, it doesn't stop anyone from merging. A branch ruleset that requires the check to pass turns it into a gate. Turn one on as soon as the workflow passes on `main`, because until then a failing check is a warning anyone can merge past. The settings are in [Git and GitHub: Protecting the Main Branch](/guides/git-and-github/#protecting-the-main-branch).
+A red run only reports a problem; on its own, it doesn't stop anyone from merging. A branch ruleset that requires the check to pass turns it into a gate. Turn one on as soon as the workflow passes on `main`, because the longer the check stays optional, the more broken code you'll have to fix on `main` before you can require it. The settings are in [Git and GitHub: Protecting the Main Branch](/guides/git-and-github/#protecting-the-main-branch).
 
 ## Continuous Deployment (CD)
 
@@ -222,15 +232,14 @@ Environments exist so a change can be observed somewhere it can't hurt anyone be
 
 ### Environment Variables
 
-Store configuration that changes between environments (database URLs, API keys, feature flags, log levels) in environment variables, not in code:
+Store configuration that changes between environments (database URLs, API keys, feature flags, log levels) in environment variables, not in code, as the [Twelve-Factor App's config factor](https://12factor.net/config) argues:
 
 ```javascript
-// Good: reads from the environment
+// Reads the connection string from the environment
 const dbUrl = process.env.DATABASE_URL;
-
-// Bad: hardcoded connection string
-const dbUrl = "postgres://user:password@localhost:5432/mydb";
 ```
+
+The same line with `"postgres://user:password@localhost:5432/mydb"` written into the code would point every environment at your laptop's database and put the password in the repository.
 
 Each environment has its own set of variables:
 
@@ -260,12 +269,11 @@ Create each migration, run it locally, commit it, and let the deployment apply i
 
 ## Deployment Checklist
 
-Walk through this before your first production deployment and again whenever the setup changes. The [Security guide](/guides/security/) covers the security items in more depth.
+Walk through this before your first production deployment and again whenever the setup changes.
 
 ### Application
 - [ ] The application builds and starts with production configuration.
 - [ ] Environment variables are set for production (database URL, API keys, secrets).
-- [ ] Debug mode is off and error pages don't expose stack traces.
 - [ ] Logging captures errors without leaking sensitive data.
 
 ### Infrastructure
@@ -281,20 +289,13 @@ Walk through this before your first production deployment and again whenever the
 - [ ] The team can read production logs.
 
 ### Security
-- [ ] Secrets live in the platform's environment variables, not in code.
-- [ ] Default credentials have been changed.
-- [ ] [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) allows only the origins that need access.
-- [ ] `.gitignore` includes `.env` and other sensitive files.
+- [ ] The [security misconfiguration checklist](/guides/security/#security-misconfiguration) passes: debug mode, default credentials, secrets, CORS, and error pages.
 
 ## Monitoring and Error Tracking
 
 Once the application is live, you need to know when it breaks, ideally before a user tells you.
 
-An error tracker such as Sentry captures each unhandled exception with its stack trace, the request that triggered it, and the release that introduced it, which is more than a console log on the hosting platform gives you. At minimum, make sure the team can:
-
-- See errors that occur in production.
-- Identify which deployment introduced a regression.
-- Read application logs from the hosting platform.
+An error tracker such as Sentry captures each unhandled exception with its stack trace, the request that triggered it, and the release that introduced it, which is more than a console log on the hosting platform gives you. The release is what tells you which deployment to roll back.
 
 For a small team, an error tracker plus the platform's built-in logs is enough. A fuller monitoring stack is one more system you'd have to maintain.
 
@@ -318,23 +319,21 @@ Practice a rollback once on a quiet day, so the first real one isn't also the fi
 
 ## Some Truths About DevOps
 
-The first deployment is the hard one. It's where you meet DNS, TLS, the hosting account's limits, and the build that works locally and fails on the platform, and every deployment after it reuses that work. The asymmetry tempts you to wait until there's something worth deploying, which moves the hard part to the week of a demo, with a partner watching. Deploy an empty page in your first weeks instead. The cost is the same either way, but early in the project a failure costs a day of fiddling and nothing else, which is why the walking skeleton is one of the first clocks [Shipping](/guides/shipping/) starts.
+The first deployment is the hard one. It's where you meet DNS, TLS, the hosting account's limits, and the build that works locally and fails on the platform, and every deployment after it reuses that work. The asymmetry tempts you to wait until there's something worth deploying, which moves the hard part to the week of a demo, with a partner watching. Deploy an empty page in your first weeks instead. The cost is the same either way, but early in the project a failure costs a day of fiddling and nothing else. [Shipping](/guides/shipping/#new-product-or-game) calls this a walking skeleton, the thinnest version of the system that runs end to end on a production URL, and puts it in the early phase.
 
 When a deployment breaks, suspect the configuration before the code. <Cite id="oppenheimer-2003" /> studied user-visible failures at three large internet services and found operator error the leading cause in two of them. In all three, more than half of the operator errors behind those failures were configuration errors, and they generally arose while operators were changing the system, such as deploying or upgrading software. On a small team's project the same failure looks like a missing environment variable, a migration that never ran, debug mode left on, or a secret that exists on a laptop and not on the platform.
 
-[The Twelve-Factor App](https://12factor.net/), a methodology its authors drew from their work on the Heroku platform, argues for designing against those failures. Its central rule is to [keep configuration in the environment](https://12factor.net/config), strictly separate from the code, so the same build runs in development and production with different settings. Read at least factor III (config), factor X ([dev/prod parity](https://12factor.net/dev-prod-parity)), and factor XI ([logs](https://12factor.net/logs)): the first two prevent the failures listed above, and the third is how you find the ones they miss.
+[The Twelve-Factor App](https://12factor.net/), a methodology its authors drew from their work on the Heroku platform, argues for designing against those failures. Its central rule is to keep configuration in the environment, strictly separate from the code, so the same build runs in development and production with different settings. Read at least factor III (config), factor X ([dev/prod parity](https://12factor.net/dev-prod-parity)), and factor XI ([logs](https://12factor.net/logs)): the first two prevent the failures listed above, and the third is how you find the ones they miss.
 
-You almost certainly don't need [Kubernetes](https://kubernetes.io/docs/concepts/overview/). It schedules containers across many machines with automated failover, which is a real problem for organizations running hundreds of services and not a problem you have. What it costs is a large operational surface that someone has to understand, and on a small team that someone becomes the only person who can deploy. A platform-as-a-service that deploys on push gives you the part you need for a fraction of the attention. If you want Kubernetes experience for your resume, that's a legitimate goal; call it a learning goal rather than an architectural requirement, and say so in your design document.
-
-At a large company, DevOps can span platform engineering, on-call rotations, observability, and infrastructure as code, and you're doing it alongside everything else your project needs. The part that pays at your size is small: a CI workflow that runs the tests on every pull request, a deployment on every merge, secrets kept out of the repository, and a documented way to roll back. Add an observability stack or an infrastructure-as-code framework only when something in the project demands it, because each one is another system your team maintains instead of building what your partner asked for.
+Much of what DevOps means at a large company (platform teams, container clusters, multi-region failover) solves problems of scale your project doesn't have, and [Kubernetes](https://kubernetes.io/docs/concepts/overview/) is the clearest case: you almost certainly don't need it. It schedules containers across many machines with automated failover, which is a real problem for organizations running hundreds of services and not a problem you have. What it costs is a large operational surface that someone has to understand, and on a small team that someone becomes the only person who can deploy. A platform-as-a-service that deploys on push gives you the part you need for a fraction of the attention. If you want Kubernetes experience for your resume, that's a legitimate goal; call it a learning goal rather than an architectural requirement, and say so in your design document.
 
 ## DevOps in Industry and Academia
 
-The 2017 State of DevOps Report, an industry report by Puppet and DORA that surveyed about 3,200 people, found high performers deploying on demand, multiple times a day, and low performers deploying between once a week and once a month <Cite id="forsgren-2017" form="parenthetical" />. The report notes that its working figure of four deploys a day for high performers is conservative for companies like Etsy, which reports deploying 80 times a day, and Amazon and Netflix, which deploy thousands of times a day aggregated over the hundreds of services in their production environments <Cite id="forsgren-2017" form="parenthetical" />. The report recruited respondents by snowball sampling and notes that its sample is likely limited to organizations already familiar with DevOps.
+The 2017 State of DevOps Report [introduced above](#what-to-run-in-ci) also measured how often organizations deploy. It found high performers deploying on demand, multiple times a day, and low performers deploying between once a week and once a month <Cite id="forsgren-2017" form="parenthetical" />. The report notes that its working figure of four deploys a day for high performers is conservative for companies like Etsy, which reports deploying 80 times a day, and Amazon and Netflix, which deploy thousands of times a day aggregated over the hundreds of services in their production environments <Cite id="forsgren-2017" form="parenthetical" />.
 
-In a [2006 interview with ACM Queue](https://doi.org/10.1145/1142055.1142065), Werner Vogels, then Amazon's CTO, described each Amazon service's team as responsible for it from design through operation: "You build it, you run it." He argued that giving developers operational responsibility had improved the services' quality, because it put them in daily contact with their software in production and with its customers. Your team is in that position already, since nobody else will deploy your system or fix it when it breaks.
+In a [2006 interview with ACM Queue](https://queue.acm.org/doi/10.1145/1142055.1142065), Werner Vogels, then Amazon's CTO, described each Amazon service's team as responsible for it from design through operation: "You build it, you run it." He argued that giving developers operational responsibility had improved the services' quality, because it put them in daily contact with their software in production and with its customers. Your team is in that position already, since nobody else will deploy your system or fix it when it breaks.
 
-In research, the equivalent of a reliable deployment is code someone else can build and run. <Cite id="collberg-2016" /> tried to obtain and build the code behind 601 papers from ACM systems conferences and journals. Of the papers whose results were backed by code, research assistants built it within 30 minutes for 32.3%, and with unlimited time but without the lead developer's help for 48.3%; the study stopped at the build and didn't check the results. The authors found the lead developer often couldn't be reached, for reasons such as the student responsible for the code having graduated or the authors' email addresses no longer working. A pinned dependency list, a container image, and a setup section that works from a fresh clone address the same problem in both settings.
+In research, the equivalent of a reliable deployment is code someone else can build and run. <Cite id="collberg-2016" /> examined 601 papers from ACM systems conferences and journals and tried to build the code for those whose results were backed by it. Of those papers, research assistants built it within 30 minutes for 32.3%, and with unlimited time but without the lead developer's help for 48.3%; the study stopped at the build and didn't check the results. The authors found the lead developer often couldn't be reached, for reasons such as the student responsible for the code having graduated or the authors' email addresses no longer working. A pinned dependency list, a container image, and a setup section that works from a fresh clone address the same problem in both settings.
 
 ## References
 
@@ -344,7 +343,7 @@ In research, the equivalent of a reliable deployment is code someone else can bu
 
 **Sources and further reading**
 
-- [Accelerate](https://itrevolution.com/product/accelerate/), Nicole Forsgren, Jez Humble, and Gene Kim: the research book behind the four delivery metrics.
+- [Accelerate](https://itrevolution.com/product/accelerate/), Nicole Forsgren, Jez Humble, and Gene Kim: the research book behind DORA's four delivery metrics (deployment frequency, lead time for changes, time to restore service, and change failure rate).
 - [DORA](https://dora.dev/), Google Cloud: the same research program's current reports.
 - [Site Reliability Engineering](https://sre.google/sre-book/table-of-contents/), Google: free online.
 - [BlueGreenDeployment](https://martinfowler.com/bliki/BlueGreenDeployment.html), Martin Fowler: a deployment pattern for zero-downtime releases and instant rollback.

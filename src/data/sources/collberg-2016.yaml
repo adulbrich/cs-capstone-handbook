@@ -11,8 +11,9 @@ verified: full-text
 claims:
   - claim: >-
       The study examined 601 papers from ACM systems conferences and
-      journals, tried to locate the code backing their results, and tried to
-      build it, without checking whether the published results reproduced.
+      journals and tried to build the code for the papers whose results were
+      backed by code, without checking whether the published results
+      reproduced.
     locator: Introduction, The study; Study Process
   - claim: >-
       Excluding papers whose results were not backed by code, research
