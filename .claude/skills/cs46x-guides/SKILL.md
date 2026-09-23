@@ -289,6 +289,16 @@ other than you needs to run your system" is one; "Documentation is the
 infrastructure of knowledge transfer" is a claim about importance. The tl;dr
 is not a table of contents and does not restate the situation.
 
+The tl;dr is a Starlight aside, so every guide's looks the same and a
+skimming reader finds it at once:
+
+```mdx
+:::note[tl;dr]
+- Write the agreement together, in one session with everyone present.
+- Write every norm with a trigger someone can observe.
+:::
+```
+
 The old form, a one-line "Read this when ...; it gives you ..." purpose line
 followed by a "Without X:" list of failure modes, was the same template on
 every page, and it read as generated. Don't reintroduce it.
