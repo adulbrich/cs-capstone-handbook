@@ -9,6 +9,11 @@ doi: 10.2307/2393638
 verified: full-text
 claims:
   - claim: >-
+      Conflict is inevitable in groups and organizations, and has been broadly
+      defined as the perception by the parties involved that they hold
+      discrepant views or have interpersonal incompatibilities.
+    locator: pp. 256-257
+  - claim: >-
       Distinguishes relationship conflict (interpersonal incompatibilities,
       including tension, animosity, and annoyance) from task conflict
       (disagreements about the content of the tasks being performed, including
@@ -17,7 +22,8 @@ claims:
   - claim: >-
       Relationship conflict was associated with lower satisfaction, lower
       liking of other group members, and lower intent to remain in the group;
-      the survey did not support a negative effect on performance.
+      the survey did not support a negative effect on performance. Task
+      conflict was also negatively associated with satisfaction.
     locator: Abstract; p. 276
   - claim: >-
       In groups doing nonroutine tasks, task conflict was not detrimental and
@@ -30,3 +36,7 @@ claims:
       and more intense relationship conflicts without improving members'
       ability to deal with them constructively.
     locator: Abstract; p. 275
+  - claim: >-
+      Norms promoting openness enhanced the beneficial effects of task
+      conflict on performance.
+    locator: p. 274; p. 277
