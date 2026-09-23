@@ -53,6 +53,10 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
    `workshop-activities` has no rubric section at all, being scored
    complete/incomplete per item, and the two Qualtrics instruments keep a
    hand-written table because theirs carries weights rather than points.
+   Two graded pages have no rubric here at all: `resume-and-intent` and
+   `career-retrospective` run entirely in Canvas under the co-instructor
+   (#197). Their pages are stubs with no `assignment:` block; do not
+   rebuild them.
 5. **Terms and weeks only. No calendar dates and no academic year anywhere
    in the handbook** (#57): not "Fall 2026", not "September 23", not
    "2026-27". Weekdays and named holidays are fine ("fall week 9, Wednesday
@@ -92,7 +96,8 @@ rubric tables directly as the source of truth and fails if:
 
 - frontmatter counts and rubric-table tags disagree,
 - any ABET outcome (SO1-SO6) drops below **two individual data points**,
-- any WIC or Beyond OSU outcome (L07-L10) loses individual coverage entirely.
+- any WIC or Beyond OSU outcome (L07-L10) loses individual coverage entirely,
+  except L10, exempt while its only criteria live in Canvas (#196).
 
 Only pages with `level: individual` in their frontmatter contribute data
 points. A `level: team` page contributes **zero**, however many tags its rubric

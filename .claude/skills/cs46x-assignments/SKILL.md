@@ -106,7 +106,8 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
    carries. This is the rule most easily gotten wrong: a team page tagged `L07`
    looks like coverage and counts as nothing.
 3. **Every ABET outcome (SO1-SO6) needs two individual data points; WIC and
-   Beyond OSU (L07-L10) need one.** Removing a tagged criterion can drop an
+   Beyond OSU (L07-L10) need one.** L10 is exempt for now, because its only
+   criteria moved to Canvas (`CANVAS_EVIDENCED`, #196). Removing a tagged criterion can drop an
    outcome below its floor and fail CI. Run the validator before assuming a
    deletion is safe.
 4. **`weight` is reconciled against the term tables** in
@@ -123,9 +124,12 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
    list in `validate-outcomes.mjs` (see **Rubric Rules**).
 
 A page with no `assignment:` block is skipped by the validator entirely: no
-rubric TSV, no weight, no AI-use paragraph, no outcome tags. Three pages are in
-that state deliberately: `introduction.mdx`, `term-startup.mdx`, and `expo.mdx`.
-A fourth needs a reason. **This is the supported shape for an ungraded item**, paired
+rubric TSV, no weight, no AI-use paragraph, no outcome tags. Five pages are in
+that state deliberately. `introduction.mdx`, `term-startup.mdx`, and `expo.mdx`
+are ungraded. `resume-and-intent.mdx` and `career-retrospective.mdx` are graded
+but run entirely in Canvas under the co-instructor (#197), so each shows only
+its `<AssignmentMeta>` and "Please check the Canvas assignment."; do not
+rebuild them. A sixth needs a reason. **This is the supported shape for an ungraded item**, paired
 with a Canvas item at 0 points with `omit_from_final_grade`; see
 `canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
 passes Zod but keeps the block and so re-arms the rubric and AI-use checks. Not enforced, still required: the
@@ -181,7 +185,7 @@ Sections in **bold** are required.
 4. **`## Rubric (100 points)`**, whose table is a `<RubricTable>` rather than
    Markdown. Prose belongs under it: the `**AI use:**` paragraph, per-criterion
    grading notes, and any late or non-submission rule. One sentence may precede
-   the component where it frames the whole rubric, as on `resume-and-intent`.
+   the component where it frames the whole rubric.
    See **The Rubric Lives in the TSV** and **Rubric Rules**.
 
 5. **`**AI use:**` paragraph**, required on any assignment whose deliverable is
