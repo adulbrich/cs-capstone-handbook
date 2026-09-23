@@ -1,0 +1,28 @@
+authors:
+  - Just, R.
+  - Jalali, D.
+  - Inozemtseva, L.
+  - Ernst, M. D.
+  - Holmes, R.
+  - Fraser, G.
+year: 2014
+title: Are Mutants a Valid Substitute for Real Faults in Software Testing?
+venue: >-
+  22nd ACM SIGSOFT International Symposium on Foundations of Software
+  Engineering (FSE)
+kind: peer-reviewed
+url: https://homes.cs.washington.edu/~mernst/pubs/mutation-effectiveness-fse2014.pdf
+doi: 10.1145/2635868.2635929
+# The full text was downloaded; the claims below stay inside the abstract.
+verified: abstract
+claims:
+  - claim: >-
+      Testing research often uses mutants, artificial faults seeded into the
+      program, in place of real faults, because the real faults in a program
+      are usually unknowable.
+    locator: Abstract
+  - claim: >-
+      Using 357 real faults in 5 open-source applications, a test suite's
+      mutant detection was significantly correlated with its real fault
+      detection, independently of code coverage.
+    locator: Abstract

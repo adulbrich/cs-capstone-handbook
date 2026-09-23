@@ -1,0 +1,23 @@
+authors:
+  - Inozemtseva, L.
+  - Holmes, R.
+year: 2014
+title: Coverage Is Not Strongly Correlated with Test Suite Effectiveness
+venue: 36th International Conference on Software Engineering (ICSE)
+kind: peer-reviewed
+url: https://www.cs.ubc.ca/~rtholmes/papers/icse_2014_inozemtseva.pdf
+doi: 10.1145/2568225.2568271
+# The full text was downloaded; the claims below stay inside the abstract.
+verified: abstract
+claims:
+  - claim: >-
+      Across 31,000 test suites generated for five large Java systems, with
+      fault detection measured by mutation testing, coverage had a low to
+      moderate correlation with effectiveness once the number of test cases
+      was controlled for, and stronger forms of coverage gave no greater
+      insight.
+    locator: Abstract
+  - claim: >-
+      The authors suggest coverage is useful for identifying under-tested
+      parts of a program but should not be used as a quality target.
+    locator: Abstract

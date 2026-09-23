@@ -1,0 +1,30 @@
+authors:
+  - Luo, Q.
+  - Hariri, F.
+  - Eloussi, L.
+  - Marinov, D.
+year: 2014
+title: An Empirical Analysis of Flaky Tests
+venue: >-
+  22nd ACM SIGSOFT International Symposium on Foundations of Software
+  Engineering (FSE)
+kind: peer-reviewed
+url: https://mir.cs.illinois.edu/lamyaa/publications/fse14.pdf
+doi: 10.1145/2635868.2635920
+verified: full-text
+claims:
+  - claim: >-
+      The study examined 201 commits that likely fix flaky tests in 51
+      open-source Apache projects and classified the root cause of 161 of
+      them: 45% Async Wait, 20% Concurrency, and 12% Test Order Dependency,
+      together 77%.
+    locator: Sec. 2, Methodology; Sec. 3.1, Categories of Flakiness Root Causes
+  - claim: >-
+      Of the 161 classified flaky tests, 126 (78%) were flaky from the first
+      time they were written.
+    locator: Sec. 3.2, Flaky Test Introduction; Table 1, F.2
+  - claim: >-
+      24% of the fixes to flaky tests modified the code under test, and 94%
+      of those fixed a bug in it; the authors conclude flaky tests should not
+      simply be removed or disabled, because they can help uncover bugs.
+    locator: Table 1, F.12 and I.12

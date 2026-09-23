@@ -1,0 +1,19 @@
+authors:
+  - Bender, A.
+year: 2020
+title: Testing Overview
+venue: "Software Engineering at Google, edited by T. Winters, T. Manshreck, and H. Wright (O'Reilly), chapter 11"
+kind: essay
+url: https://abseil.io/resources/swe-book/html/ch11.html
+# A practitioner's account of Google's own practice, cited as the author's
+# account and never as Evidence. The section cited was read on abseil.io.
+verified: full-text
+claims:
+  - claim: >-
+      By 2005 the Google Web Server's releases were becoming buggier, and at
+      one point more than 80% of its production pushes contained
+      user-affecting bugs that had to be rolled back; its tech lead
+      then required tests with all new code changes, run continuously, and
+      within a year emergency pushes dropped by half despite a record number
+      of changes.
+    locator: The Story of Google Web Server
