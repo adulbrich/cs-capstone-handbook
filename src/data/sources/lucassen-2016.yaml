@@ -1,0 +1,33 @@
+authors:
+  - Lucassen, G.
+  - Dalpiaz, F.
+  - van der Werf, J. M. E. M.
+  - Brinkkemper, S.
+year: 2016
+title: The Use and Effectiveness of User Stories in Practice
+venue: >-
+  Requirements Engineering: Foundation for Software Quality (REFSQ 2016),
+  Lecture Notes in Computer Science 9619
+kind: peer-reviewed
+url: https://doi.org/10.1007/978-3-319-30282-9_14
+doi: 10.1007/978-3-319-30282-9_14
+# Read in full as the publisher version in the Utrecht University repository.
+verified: full-text
+claims:
+  - claim: >-
+      In a survey of 182 practitioners with 21 follow-up interviews, 59% of
+      respondents used the "As a role, I want goal, [so that benefit]"
+      template, and practitioners agreed that user stories, a template, and
+      quality guidelines such as INVEST improve their productivity and the
+      quality of their work.
+    locator: Abstract; Sec. 3.3, p. 209
+  - claim: >-
+      INVEST is the best-known set of quality guidelines for user stories,
+      but only 23.5% of respondents used it; 33% used self-defined guidelines
+      and 39.5% used none.
+    locator: Sec. 3.4, p. 210
+  - claim: >-
+      Interviewees called the "so that" clause, the why of a story, essential,
+      and attributed to it less confusion among stakeholders, less discussion,
+      and more autonomy for developers.
+    locator: Sec. 4.2, finding F7, p. 213

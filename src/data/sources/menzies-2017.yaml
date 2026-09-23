@@ -1,0 +1,30 @@
+authors:
+  - Menzies, T.
+  - Nichols, W.
+  - Shull, F.
+  - Layman, L.
+year: 2017
+title: >-
+  Are Delayed Issues Harder to Resolve? Revisiting Cost-to-Fix of Defects
+  throughout the Lifecycle
+venue: Empirical Software Engineering
+kind: peer-reviewed
+url: https://doi.org/10.1007/s10664-016-9469-x
+doi: 10.1007/s10664-016-9469-x
+# Read in full as the submitted version on arXiv (1609.04886). Its page
+# numbers differ from the journal's, so the locators name sections.
+verified: full-text
+claims:
+  - claim: >-
+      In 171 software projects, the effort to resolve an issue in a later
+      phase was not consistently or substantially greater than resolving it
+      soon after it was introduced, so the study found no evidence for the
+      delayed issue effect.
+    locator: Abstract; Sec. 8
+  - claim: >-
+      All 171 projects used the Team Software Process, a mature process built
+      around risk mitigation, and the authors do not claim the finding
+      generalizes beyond it; they suggest the effect may still hold in
+      high-assurance software and architecturally complex systems, while
+      saying they have no evidence for or against that.
+    locator: Sec. 6.4; Sec. 7
