@@ -230,7 +230,7 @@ Three assignment pages carry no points and no rubric, so there is no TSV here to
 | `omit_from_final_grade` | true |
 | Group | any; it contributes nothing, so the group choice does not affect the grade |
 | Submission type | text entry |
-| Due | end of week 1, all three terms |
+| Due | fall: end of week 2; winter and spring: end of week 1 |
 | Group assignment | yes, one submission per team |
 
 **Demo Day**, once for the year. One Canvas item taking each team's proof of registration, so staff can see every team has taken one of the five sessions. The registration link itself goes out in an announcement:
@@ -267,9 +267,9 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
-| 1 | Term Startup (0 points, omit from final grade) |
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
-| 2 | Team Charter; Resume and Intent |
+| 2 | Term Startup (0 points, omit from final grade); Team Charter; Resume and Intent |
+| 3 | Demo Day registration (0 points, omit from final grade) |
 | 3-5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback; Demo Day session 1 |
