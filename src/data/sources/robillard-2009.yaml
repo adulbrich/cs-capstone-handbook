@@ -1,0 +1,21 @@
+authors:
+  - Robillard, M. P.
+year: 2009
+title: "What Makes APIs Hard to Learn? Answers from Developers"
+venue: IEEE Software
+kind: peer-reviewed
+url: https://www.cs.mcgill.ca/~martin/papers/software2009a.pdf
+doi: 10.1109/MS.2009.193
+verified: full-text
+claims:
+  - claim: >-
+      A survey of professional developers at Microsoft (1,000 randomly
+      selected, 83 responses, 80 usable) found that 78 percent learned APIs
+      by reading documentation.
+    locator: pp. 28-29, Population and Sample; Survey Results
+  - claim: >-
+      Inadequate or absent learning resources topped the list of obstacles
+      to learning an API, named by 50 of the 74 respondents who reported an
+      obstacle; insufficient or inadequate examples was the largest
+      subcategory, with 20 respondents.
+    locator: p. 29, Survey Results; Table 1

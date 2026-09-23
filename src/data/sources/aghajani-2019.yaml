@@ -1,0 +1,40 @@
+authors:
+  - Aghajani, E.
+  - Nagy, C.
+  - Vega-Márquez, O. L.
+  - Linares-Vásquez, M.
+  - Moreno, L.
+  - Bavota, G.
+  - Lanza, M.
+year: 2019
+title: Software Documentation Issues Unveiled
+venue: Proceedings of the 41st International Conference on Software Engineering (ICSE)
+kind: peer-reviewed
+url: https://ieeexplore.ieee.org/document/8811931
+doi: 10.1109/ICSE.2019.00122
+verified: full-text
+claims:
+  - claim: >-
+      The study classified 878 documentation-related artifacts from mailing
+      lists, Stack Overflow discussions, issue trackers, and pull requests
+      into a taxonomy of 162 types of documentation issues.
+    locator: Abstract; Section I, Introduction
+  - claim: >-
+      Of the 485 artifacts about the information content of documentation,
+      completeness issues (missing information) accounted for 55 percent and
+      up-to-dateness issues for 39 percent.
+    locator: Section IV.A, Information Content (What), Completeness and Up-to-dateness
+  - claim: >-
+      API references and code comments were the documentation types most
+      affected by completeness issues.
+    locator: Section IV.A, Completeness
+  - claim: >-
+      Code examples were the documentation type most frequently affected by
+      correctness issues, and the authors recommend testing code examples as
+      production code is tested.
+    locator: Section IV.A, Discussion and Implications
+  - claim: >-
+      Some projects prevented outdated documentation by adding documentation
+      updates to the contribution checklist or by making a Javadoc update
+      mandatory for a pull request to be accepted.
+    locator: Section IV.A, Up-to-dateness

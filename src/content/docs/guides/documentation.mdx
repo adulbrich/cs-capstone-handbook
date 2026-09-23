@@ -1,48 +1,48 @@
 ---
 title: Documentation
-description: What to document, how to document it, and why good documentation is a core engineering skill.
+description: What to document in a software project, who each document is for, and how to keep documentation from going stale.
 sidebar:
   order: 17
 ---
 
-{/* check-prose: legacy-opener */}
-
 import { LinkCard } from '@astrojs/starlight/components';
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
-Read this when someone other than you needs to run or understand your system; it gives you which documents to write and how much detail each needs.
+Sooner or later someone other than you needs to run your system: a new teammate, your project partner, whoever maintains it after you graduate. This page covers which documents to write for each of them, from the README to the API reference, how much detail each one needs, and how to keep them accurate once the code starts moving. It doesn't cover the design document or the requirements, which have guides of their own.
 
-Documentation is the infrastructure of knowledge transfer. It is what lets someone else (a new team member, your project partner, a future maintainer, or your future self) understand and use your work without having to ask you. Without it:
+:::note[tl;dr]
+- Put a README, a `CONTRIBUTING.md`, and a `LICENSE` at the root of every repository, and test the README by having someone set up the project from it alone.
+- Comment why the code does something, not what it does.
+- Give every public function a docstring with a short example, and generate the API reference from the docstrings.
+- Tag releases with semantic versions and keep a changelog your project partner can read.
+- Keep documentation in the repository and change it in the same pull request as the code it describes.
+- Delete or fix stale setup steps and code examples first; a stale architecture overview can wait if you mark when it was last checked.
+:::
 
-- Onboarding new contributors takes days instead of hours.
-- Project partners cannot evaluate or use the system you built.
-- Work that is not documented effectively ceases to exist after you graduate.
-- Code review becomes harder because reviewers lack context.
+Before writing any of these, decide what each document is for. [Diátaxis](https://diataxis.fr/), a framework by Daniele Procida, sorts documentation by the reader's need into four kinds. A **tutorial** takes a beginner through a first success. A **how-to guide** helps someone who already knows the system finish a specific task. **Reference** describes what exists, precisely and without narrative. **Explanation** covers why things are the way they are.
 
-The goal of documentation is not to document everything. It is to document the right things at the right level of detail, kept close to the work it describes.
+The split matters because the four needs conflict. A tutorial that pauses to justify every design decision loses the beginner, and a reference that tells a story is slow for someone scanning for a function signature. Procida argues that [crossing or blurring the boundaries](https://diataxis.fr/start-here/) between the four is at the heart of a large share of documentation problems. When a page feels wrong and you can't say why, check whether it's trying to be two kinds at once; splitting it in two usually fixes it.
 
-The most useful idea for deciding what "the right things" means is [Diataxis](https://diataxis.fr/), Daniele Procida's framework, which observes that documentation serves four distinct needs and that most bad documentation is two of them mashed together. A **tutorial** takes a beginner through a first success and is learning-oriented. A **how-to guide** helps someone who already knows the system accomplish a specific task. **Reference** describes what exists, precisely and without narrative. **Explanation** covers why things are the way they are. The reason this matters practically is that the needs conflict: a tutorial that pauses to explain every design decision loses the beginner, and a reference that tells a story is useless to someone scanning for a function signature. When a page feels wrong and you cannot say why, it is usually serving two of these at once.
-
-This handbook is itself an instance of the framework: its guides are explanation and its activities are how-to.
-
-The reader who tests your documentation hardest is the one who inherits the project after you leave: someone who cannot ask you anything and has to get the system running from what is written down. Write for that person and the rest takes care of itself.
+Write for the reader with the least access to you: whoever inherits the project after you leave. That person can't ask you anything, so every gap in the README becomes an afternoon of guessing, and every undocumented decision is at risk of being reversed by someone who didn't know it was a decision. A document that gets that person running also serves the teammate who joins partway through and the project partner who wants to evaluate what you built.
 
 ## Repository Documentation
 
-Every project repository should contain a standard set of documents. These files live in the root of the repository and are rendered automatically by GitHub, GitLab, and most hosting platforms.
+Every repository should carry a standard set of files at its root, where GitHub, GitLab, and most other hosts render them automatically. Four of them do most of the work: the README, the contributing guide, the license, and the changelog.
 
 ### README
 
-The README is the front page of your project. Anyone encountering your repository for the first time will read it first. A good README answers:
+The README is the first thing anyone opening your repository reads, so it has to answer the questions they arrive with:
 
-- **What is this?** One paragraph describing the project and its purpose.
-- **Who is it for?** Who uses it, and what problem does it solve?
-- **How do I run it?** Step-by-step setup and run instructions, starting from a clean machine.
-- **How do I use it?** Basic usage examples with expected outputs.
-- **What is the status?** Is this a prototype? Production software? Actively maintained?
-- **How do I contribute?** Link to `CONTRIBUTING.md`.
-- **What is the license?** Link to `LICENSE`.
+- Purpose: one paragraph on what the project is and the problem it solves.
+- Audience: who uses it.
+- Setup: step-by-step instructions to install and run it, starting from a clean machine.
+- Usage: basic examples with their expected output.
+- Status: prototype, in production, actively maintained, or archived.
+- Contributing: a link to `CONTRIBUTING.md`.
+- License: a link to `LICENSE`.
 
-The test: can a new team member get the project running locally in under 30 minutes using only the README? If not, update it.
+The instruction team recommends testing the README the way you'd test code: have someone who hasn't set up the project get it running from the README alone, without asking you, and time it. Somewhere around half an hour is a reasonable target. When it takes much longer, the missing step is usually one the team does from memory, which is exactly the step a newcomer can't guess.
 
 :::tip[README Templates]
 [Make a README](https://www.makeareadme.com/) and [Awesome README](https://github.com/matiassingers/awesome-readme) have good examples and templates to start from.
@@ -50,14 +50,16 @@ The test: can a new team member get the project running locally in under 30 minu
 
 ### CONTRIBUTING.md
 
-Explains how to contribute to the project. This is the technical expression of your working agreement. It should include:
+`CONTRIBUTING.md` tells a new contributor how the team works, in the terms a repository can check. A working agreement records how the team decided to collaborate; this file is its technical side. It should cover:
 
 - Development setup (dependencies, environment variables, local services needed).
 - Branching strategy (e.g., feature branches off `main`, naming convention).
-- PR requirements (required reviewers, review checklist, CI must pass).
+- Pull request requirements (required reviewers, review checklist, CI must pass).
 - Coding standards (linter, formatter, style guide).
 - Definition of Done.
 - How to write and run tests.
+
+If the project accepts outside contributions, add a code of conduct next to it, because process documents shape who feels able to contribute. GitHub's Open Source Survey <Cite id="github-2017" form="parenthetical" />, an industry report GitHub designed with researchers from academia and the open-source community, sampled 5,500 respondents at random from over 3,800 open-source repositories. It found that documentation explaining a project's processes, such as contributing guides and codes of conduct, is valued more by groups underrepresented in open source, like women. The [Contributor Covenant](https://www.contributor-covenant.org/) is a ready-made code of conduct you can adopt.
 
 <LinkCard
   title="Team Working Agreement"
@@ -67,34 +69,38 @@ Explains how to contribute to the project. This is the technical expression of y
 
 ### LICENSE
 
-Every project should have a license, even if it is the team's own product. Without a license, default copyright rules apply, meaning no one else can legally use or build on your work.
+Every repository needs a license or an explicit copyright notice, including one only your team will ever use. Without a license, [default copyright law applies](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository): you keep all rights, and no one else may reproduce, distribute, or build on the work. That's rarely what an open-source project intends, and would-be users notice. In the same survey, 64% of respondents called a license very important when deciding whether to use a project, and 67% when deciding whether to contribute to one <Cite id="github-2017" form="parenthetical" />.
 
-If your project is open-source, choose a license. If it is closed-source (proprietary or under NDA), include a copyright notice. If you are contributing to an existing FOSS project, inherit its license.
+Which file you add depends on the project:
 
-Common choices:
+- For an open-source project, choose a license.
+- For a closed-source project (proprietary, or under an NDA), add a copyright notice.
+- For a contribution to an existing open-source project, inherit its license.
 
-- **MIT**: permissive, minimal restrictions. A good default for open-source projects.
-- **Apache 2.0**: permissive, with explicit patent grants. Preferred by many companies.
-- **GPL v3**: copyleft, meaning derivatives must also be open-source. Good for projects that want to stay open.
+The common open-source licenses differ mainly in what they ask of people who reuse the code:
 
-[choosealicense.com](https://choosealicense.com/) is the best resource for making this decision.
+- **MIT**: permissive, with minimal conditions. A reasonable default for an open-source project.
+- **Apache 2.0**: permissive, plus an explicit patent grant from contributors.
+- **GPL v3**: copyleft; anyone who distributes a derivative must release it under the same license, so pick it if you want every derivative to stay open.
+
+[Choose a License](https://choosealicense.com/), maintained by GitHub, compares these and the less common ones in plain language.
 
 ### CHANGELOG
 
-A changelog documents what changed between versions of the software. It is especially important for:
+A changelog records what changed between versions, written for the people who use the software rather than the people who wrote it. Two readers need it most:
 
-- Projects used by your project partner, who needs to know what to test after each release.
-- FOSS contributions, where maintainers and users follow releases closely.
+- A project partner, who needs to know what to test after each release.
+- Users and maintainers of an open-source project, who follow releases closely.
 
-Format: [Keep a Changelog](https://keepachangelog.com/) is the most widely used convention. Use [semantic versioning](https://semver.org/) for release tags.
+[Keep a Changelog](https://keepachangelog.com/) is a common convention: one section per release, newest first, with entries grouped as Added, Changed, Deprecated, Removed, Fixed, and Security. It argues against pasting the commit log into the changelog, because a commit log is organized by when work happened, while a user needs to know what changed for them. Tag each release with a [semantic version](https://semver.org/) so the changelog's headings match the tags; Versioning, below, covers the scheme.
 
 ## Code Documentation
 
-Code documentation lives alongside the code itself. Its purpose is to explain intent and context that the code alone cannot convey.
+Code documentation lives in the source files, next to what it describes. It carries what the code itself can't: the intent behind it, the assumptions it depends on, and the behavior a caller has to know about.
 
 ### Comments: When and How
 
-The most common documentation mistake is under-commenting complex logic and over-commenting obvious code.
+Comment the *why*, not the *what*. The code already says what it does. A comment earns its place by explaining why it's done this way, what assumption it relies on, or what subtle behavior a reader should watch for. A comment that repeats the code costs a line, and it goes stale the first time someone edits the code without editing the comment.
 
 Good comment:
 ```python
@@ -107,36 +113,39 @@ Unnecessary comment:
 i = 0  # initialize i to zero
 ```
 
-The rule: comment the *why*, not the *what*. The code already says what it does. The comment explains why it is done this way, what assumption it relies on, or what subtle behavior to watch for.
+The more common failure, though, is the comment that isn't there. <Cite id="aghajani-2019" /> classified 878 documentation-related artifacts from open-source mailing lists, Stack Overflow, issue trackers, and pull requests. Of the 485 about what the documentation said, 55% reported missing information, which made incompleteness the most frequent content problem, and API references and code comments were the documentation types it affected most.
 
 ### Docstrings and API Documentation
 
-Public functions, classes, and modules should have docstrings. At minimum, a docstring should describe:
+Give every public function, class, and module a docstring. At minimum, a docstring describes:
 
 - What the function does (not how).
 - Parameters and their types.
 - Return value.
 - Exceptions that may be raised.
+- A short example of a call and its result.
 
-Tools like [JSDoc](https://jsdoc.app/) (JavaScript), [Sphinx](https://www.sphinx-doc.org/) (Python), [TypeDoc](https://typedoc.org/) (TypeScript), and [Rustdoc](https://doc.rust-lang.org/rustdoc/) (Rust) can generate navigable API documentation from well-written docstrings.
+The example is the item readers miss most when it's absent. <Cite id="robillard-2009" /> surveyed developers at Microsoft about learning new APIs: 78% of the 80 respondents learned them by reading documentation, and inadequate learning resources topped the list of obstacles, named by 50 of the 74 who reported one. Insufficient or inadequate examples was the largest single category of those, named by 20.
 
-For REST APIs, [OpenAPI (Swagger)](https://swagger.io/specification/) is the industry standard. Defining your API in an OpenAPI spec gives you documentation, client code generation, and request validation for free.
+Tools like [JSDoc](https://jsdoc.app/) (JavaScript), [Sphinx](https://www.sphinx-doc.org/en/master/) (Python), [TypeDoc](https://typedoc.org/) (TypeScript), and [Rustdoc](https://doc.rust-lang.org/rustdoc/) (Rust) generate a navigable API reference from the docstrings, so the reference's list of functions and signatures can't fall out of step with the code. The examples inside it still can: <Cite id="aghajani-2019" /> found code examples were the documentation type most often affected by correctness issues, and recommend testing them the way production code is tested. Python's [doctest](https://docs.python.org/3/library/doctest.html) and Rust's [documentation tests](https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html) do exactly that, running the examples in your docstrings as part of the test suite.
+
+For REST APIs, the [OpenAPI Specification](https://spec.openapis.org/oas/latest.html), maintained by the OpenAPI Initiative, is the standard description format. One OpenAPI document can drive rendered documentation, generated client code, and request validation, so you write the description once and get all three from it.
 
 ## User Documentation
 
-User documentation explains how to use the software, not how it was built. It is written for end users, not engineers. For a capstone project, this might be:
+User documentation explains how to use the software, not how it was built, and its reader is an end user rather than an engineer. For a small project, it might be:
 
-- A user guide or wiki explaining how to complete key workflows.
-- In-app help text or tooltips.
-- A short video walkthrough.
+- A user guide or wiki page for each key workflow (a how-to guide, in Diátaxis terms).
+- Help text or tooltips in the app.
+- A short video walkthrough of a first session (a tutorial).
 
-User documentation is especially important for consultancy projects where the project partner will hand the software to non-technical users after the team leaves.
+User documentation matters most when your project partner will hand the software to non-technical users after the team leaves: those users will have questions, and without a guide, the only place to take them is the partner.
 
 ## Developer Documentation
 
-Developer documentation targets people who will build on, maintain, or deploy the system. It includes:
+Developer documentation targets the people who will build on, maintain, or deploy the system. It includes:
 
-- **Architecture overview**: a description of major components and how they fit together. Link to your design document.
+- **Architecture overview**: the major components and how they fit together. Link to your design document.
 - **Data model**: the schema and what each entity represents.
 - **Environment setup**: how to configure development, test, and production environments.
 - **Deployment guide**: how to deploy the system, including environment variables and infrastructure requirements.
@@ -153,20 +162,20 @@ Developer documentation targets people who will build on, maintain, or deploy th
 Use [semantic versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`) for releases:
 
 - **MAJOR**: breaking changes (old integrations may stop working).
-- **MINOR**: new features, backwards-compatible.
+- **MINOR**: new features, backward-compatible.
 - **PATCH**: bug fixes.
 
-Tag releases in your repository (`git tag v1.0.0`). This makes it easy to identify which version your project partner is running and to roll back if a release introduces a regression.
+Tag releases in your repository (`git tag v1.0.0`). A tag tells you which version your project partner is running, and gives you a known-good version to roll back to when a release introduces a regression.
 
 ## Documentation Tools
 
-Nothing in this table is required, and a project documented entirely in Markdown files in the repository is a perfectly good outcome. Reach for a tool when the manual version has started to drift: generated API documentation cannot fall out of step with the code the way a hand-written list can, and a documentation site earns its keep once you have more pages than a reader can navigate by filename.
+Nothing in this table is required, and a project documented entirely in Markdown files in the repository is a perfectly good outcome. Reach for a tool when the manual version has started to drift: a generated API reference can't list a function the code no longer has, the way a hand-written list can, and a documentation site pays for itself once you have more pages than a reader can navigate by filename.
 
 | Need | Tool |
 |------|------|
 | Project documentation site | [Docusaurus](https://docusaurus.io/), [MkDocs](https://www.mkdocs.org/) |
 | API documentation (REST) | [Swagger UI / OpenAPI](https://swagger.io/), [Redoc](https://redocly.com/) |
-| Python API docs | [Sphinx](https://www.sphinx-doc.org/), [pdoc](https://pdoc.dev/) |
+| Python API docs | [Sphinx](https://www.sphinx-doc.org/en/master/), [pdoc](https://pdoc.dev/) |
 | JavaScript / TypeScript | [TypeDoc](https://typedoc.org/), [JSDoc](https://jsdoc.app/) |
 | Diagrams as code | [Mermaid](https://mermaid.js.org/), [PlantUML](https://plantuml.com/) |
 | Changelog | [Keep a Changelog](https://keepachangelog.com/) convention |
@@ -177,80 +186,58 @@ The tool names above date faster than anything else on this page. Checked at the
 
 ## Best Practices
 
-- Write documentation when you build the feature, not at the end of the project.
-- Keep documentation close to the code. Documentation that lives far from what it describes becomes stale quickly.
-- Treat README setup instructions as a test: run them on a fresh machine or in a clean environment.
-- Delete documentation that is wrong. Outdated docs are worse than no docs: they actively mislead.
-- Use diagrams. A system diagram in the README is worth three paragraphs of prose.
-- Review documentation in code review. Do not merge PRs that introduce undocumented public APIs.
+- Write the documentation in the same pull request as the feature, while you still remember the decisions behind it.
+- Keep documentation in the repository, next to what it describes, so a reviewer sees the code change and the documentation change in one diff.
+- Run the README's setup steps on a fresh machine or in a clean container before each release.
+- Fix or delete stale setup steps and code examples as soon as you find them; Some Truths, below, explains why those come first.
+- Put a system diagram in the README or the architecture overview, because a newcomer can place a component in a diagram faster than they can reconstruct the system from paragraphs.
+- Review documentation in code review, and don't merge a change that adds a public API without its docstring. Some open-source projects make this a rule, adding documentation updates to the contribution checklist or requiring a Javadoc update before a pull request is accepted <Cite id="aghajani-2019" form="parenthetical" />.
 
 ## Some Truths About Documentation
 
-Documentation rots, and it rots faster than code because nothing fails when it is
-wrong. A broken function breaks a test; a README describing a setup procedure
-that changed four months ago passes every check in your repository and costs the
-next person an afternoon. This asymmetry is the whole problem, and it is why the
-only documentation that reliably stays current is documentation something else
-depends on: a README whose commands you actually run, a generated API reference,
-a changelog your release process reads.
+Documentation goes stale faster than code, because nothing fails when it's wrong. A broken function breaks a test; a README describing a setup procedure that changed months ago passes every check in your repository and costs the next person an afternoon. Studies of working engineers bear this out. <Cite id="lethbridge-2003" /> found that engineers rarely updated documentation other than test documents, and when they did, it was usually several weeks after the code changed; 68% of their survey respondents agreed at least somewhat that documentation is always outdated relative to the system. In open-source projects, outdated information accounted for 39% of the content problems <Cite id="aghajani-2019" /> classified.
 
-That gives a sharper rule than "keep it updated", which no team has ever managed
-by willpower. Prefer documentation that is executed or generated over
-documentation that is merely written. If your setup instructions are a script
-someone runs, they cannot silently drift. If they are prose, they will. Where
-prose is unavoidable, put it in the repository next to what it describes and
-change it in the same pull request, because a document in a separate wiki is one
-nobody will remember to open.
+The documentation that does stay current is the kind something else depends on. The engineers Lethbridge et al. studied updated documentation continually only when it was attached to the process for completing a change request, and the documents that stayed accurate were short and sat where the work happened: code comments, notes in the bug tracker, and test cases. That gives a sharper rule than "keep it updated". Prefer documentation that's executed or generated over documentation that's only written: setup instructions that are a script someone runs can't silently drift, and the same instructions as prose will. Where prose is unavoidable, keep it in the repository next to what it describes and change it in the same pull request, because a document outside the repository isn't in the diff a reviewer reads.
 
-Stale documentation being worse than none is stated often enough to have become a
-slogan, so it is worth saying what the actual cost is. Missing documentation
-makes the reader ask someone, which is slow but ends with a correct answer. Wrong
-documentation makes them confident, and they discover the error somewhere
-downstream, usually after building on it. This is why deleting a section you know
-is obsolete is a legitimate act of maintenance, not a failure to do the real work.
+"Outdated documentation is worse than none" is common advice, and the same study suggests it's only half right. Of Lethbridge et al.'s respondents, 81% agreed that documentation can be useful even when it isn't up to date, and the more abstract a document, the more likely engineers were to consider it accurate and useful. How much accuracy mattered depended on how close the document sat to the code: the link between a document's perceived accuracy and how often engineers consulted it was strongest for test documents and low-level design, weaker for requirements and architecture, and near zero for specifications.
 
-The truth about writing it: almost nobody enjoys it, and the advice to
-document as you build is correct and also very hard to follow when a deadline is
-close. What works better than resolve is making the moment specific. Attach it to
-something you already do, such as the pull request that adds a feature or the
-review that looks over your `docs/` directory, so the question is never "should
-I write documentation today" but "does this change alter anything a reader was
-told".
+That split tells you what to fix first. A stale setup step or code example sends the reader down a wrong path with confidence, and they find the error downstream, usually after building on it; fix it or delete it, and count the deletion as maintenance. A stale architecture overview still orients a newcomer if its major components are right, so mark when it was last checked instead of deleting it. Google does this at scale: Tom Manshreck, in the [documentation chapter](https://abseil.io/resources/swe-book/html/ch10.html) of *Software Engineering at Google*, describes documents that carry an owner and a "last reviewed" date, with a reminder sent when one hasn't been reviewed in a few months.
 
-Finally, this is a career skill rather than a chore, and the claim is more
-concrete than it sounds. Almost every senior engineering role is partly a writing
-job: design documents, incident reports, proposals, review comments that change
-someone's mind. The people who advance are disproportionately the ones who can
-make a technical argument in prose, and a capstone project is one of the few
-low-stakes places left to practice on something real.
+Writing documentation rarely pays off for the person writing it, which is why it loses to the deadline. Manshreck gives the structural reason: the benefits of documentation arrive downstream, for its readers, while the cost lands up front, on its author. Resolve doesn't fix that; making the moment specific does. Attach documentation to something you already do, such as the pull request that adds a feature or the review that looks over your `docs/` directory, so the question is never "should I write documentation today" but "does this change alter anything a reader was told".
+
+The instruction team recommends treating documentation as practice for the writing a senior engineering role involves, because much of that role's influence runs through writing: design documents, incident reports, proposals, and review comments that change someone's mind. Technical writers don't take this off an engineer's plate. Manshreck notes that at Google, engineers write most documentation themselves, and most of it takes the form of code comments, so the writing stays with the engineer even at a company that employs technical writers.
 
 ## Documentation in Industry and Academia
 
-At Google, documentation is treated as a first-class engineering deliverable. The [Software Engineering at Google](https://abseil.io/resources/swe-book/html/ch10.html) book dedicates an entire chapter to it. Engineers who write clear internal design documents, maintainable READMEs, and useful code comments are recognized as making the whole organization more effective.
+Google's own history is a case study in how documentation goes stale. Manshreck describes how the company's internal wiki, which anyone could edit and nobody owned, filled with obsolete and duplicated pages: at one point there were 7 to 10 documents on setting up Borg, Google's production compute environment, only a few of them maintained. Documentation quality became the number one developer complaint on Google's annual developer surveys, and when the wiki was retired, around 90% of its documents had had no views or updates in the previous few months. The fix was to treat documentation like code, with owners, canonical locations in source control, bug tracking, and code review, and Manshreck reports that the documents became better.
 
-In open-source projects, documentation quality is often the difference between a project that gets adopted and one that gets ignored, regardless of the underlying code quality.
+Open-source projects show the same pattern. In GitHub's survey, 93% of respondents had run into incomplete or outdated documentation, yet 60% of contributors said they rarely or never contribute to documentation <Cite id="github-2017" form="parenthetical" />. The report's recommendation to its readers follows from those two numbers: when you hit a documentation problem in someone else's project, open a pull request that fixes it.
 
-In academic research, documentation ensures reproducibility: another researcher should be able to run your code and reproduce your results using only your documentation. This standard is a useful benchmark for capstone projects as well.
+In research, the benchmark is reproducibility: another researcher should be able to run your code and reproduce your results from your documentation alone. The instruction team recommends borrowing that test for any project you hand over, because it's concrete where "well documented" isn't: either the successor gets the system running and producing the same results from what's written down, or they don't.
+
+## References
+
+<References />
 
 ## Additional Readings
 
-Diataxis is the single most useful thing on this list: it takes about twenty
-minutes and it will change how you structure every document you write afterwards.
-The style guides are worth skimming once and then keeping open while you write.
+The two style guides are worth skimming once and then keeping open while you write.
 
 **Sources and further reading**
 
-- [Diataxis](https://diataxis.fr/), Daniele Procida: the four-quadrant framework for what a document is actually for.
-- [Write the Docs guide](https://www.writethedocs.org/guide/): a practitioner community's accumulated advice on documenting software.
-- [Google developer documentation style guide](https://developers.google.com/style): the conventions most technical writing converges on, and a good tiebreaker.
-- [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/): the two conventions that make a release history readable.
-- [Choose a License](https://choosealicense.com/), GitHub: what each license actually permits, in plain language.
-- [Contributor Covenant](https://www.contributor-covenant.org/): the code of conduct most open-source projects adopt, and what adopting it commits you to.
-- [OpenAPI Specification](https://swagger.io/specification/): the standard behind generated REST API documentation.
+- [Write the Docs guide](https://www.writethedocs.org/guide/): a practitioner community's accumulated advice on documenting software, including its [docs as code](https://www.writethedocs.org/guide/docs-as-code/) page.
+- [Google developer documentation style guide](https://developers.google.com/style), Google: conventions for clear technical writing, and a good tiebreaker when the team disagrees.
+- [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/), Microsoft: a second style reference, with sections on voice and on writing for a global audience.
+- [Docs Like Code](https://www.docslikecode.com/book/), Anne Gentle: a book on running documentation through the same repository, review, and CI workflow as the code.
+- [Software Documentation: The Practitioners' Perspective](https://doi.org/10.1145/3377811.3380405), Aghajani et al., ICSE: two surveys of 146 practitioners on which documentation issues matter most to them and which kinds of documentation they need for which tasks.
 
 **Activities that exercise this**
 
 - [User Manual](/activities/requirements/#user-manual): writing the manual is the fastest way to find out what your system actually requires of a user.
-- [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase): the receiving end of someone else's documentation, which is the best argument for writing yours.
+- [Describe your API Reference](/activities/design/#describe-your-api-reference): the reference documentation for your endpoints, with a sample request and response for each.
 - [Describe your Architecture](/activities/design/#describe-your-architecture): the diagram that belongs in your developer documentation.
+- [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible): the one README command that takes a clean checkout to your results.
+- [Software Release and Versioning](/activities/planning/#software-release-and-versioning): the versioning scheme your tags and changelog follow.
+- [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase): the receiving end of someone else's documentation, which shows you what yours needs to do.
+- [Public Code Repository](/activities/career/#public-code-repository): a README and setup instructions verified from a clean clone.
 - [Write for Accessibility and ESL](/activities/communication/#write-for-accessibility-and-esl): clarity discipline, applied to the documents here.

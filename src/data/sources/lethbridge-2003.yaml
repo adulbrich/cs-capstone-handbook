@@ -1,0 +1,42 @@
+authors:
+  - Lethbridge, T. C.
+  - Singer, J.
+  - Forward, A.
+year: 2003
+title: "How Software Engineers Use Documentation: The State of the Practice"
+venue: IEEE Software
+kind: peer-reviewed
+url: https://ieeexplore.ieee.org/document/1241364
+doi: 10.1109/MS.2003.1241364
+verified: full-text
+claims:
+  - claim: >-
+      Except for testing and quality documents, software engineers rarely
+      updated documentation, and when they did it was usually several weeks
+      after the code changed; of 45 survey respondents, 44 percent somewhat
+      and 24 percent strongly agreed that documentation is always outdated
+      relative to the current state of a system.
+    locator: p. 36, Documentation maintenance and usefulness; Figure 1
+  - claim: >-
+      Software engineers updated documentation continually only when it was
+      attached to the process for completing a change request.
+    locator: p. 37, first paragraph
+  - claim: >-
+      Of 45 survey respondents, 53 percent somewhat and 28 percent strongly
+      agreed that software documentation can be useful even though it might
+      not always be the most up to date.
+    locator: p. 37, Documentation maintenance and usefulness
+  - claim: >-
+      The correlation between a document type's perceived accuracy and how
+      often engineers consulted it was highest for testing or quality
+      documents (0.67) and low-level design (0.58), lower for requirements,
+      architecture, and detailed design, and near zero for specifications;
+      the more abstract a document, the more likely engineers were to
+      consider it accurate and useful.
+    locator: p. 37, Table 1 and the paragraph after it
+  - claim: >-
+      Code comments, bug-tracker entries, and test cases stayed current
+      because they are short, sit right where the work happens, and take
+      little effort to maintain, while large requirements and specification
+      documents were considered less worth updating.
+    locator: p. 38, Judging value, the simple-and-powerful rule
