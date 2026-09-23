@@ -9,7 +9,7 @@
 
 ## Re-import Required: RFC Final (#262)
 
-`rfc/rfc-final-rubric-details.tsv`: the Problem framing bands no longer require a decision that is "currently live". The decision must be real and current: still open in fall, and in winter open or recently made and still shaping the work. Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms. Import this after the #259 split if both are pending.
+`rfc/rfc-final-rubric-details.tsv`: the Problem framing bands no longer require a decision that is "currently live". Exceeds asks for a decision that is real and current: still open in fall; in winter, open or already being acted on, with the RFC still changing how it is verified, reversed, or continued. Does Not Meet now names an RFC that justifies a decision it no longer changes, in place of "a retrospective justification of work already built". Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms. Import this after the #259 split if both are pending.
 
 ## Re-import Required: Sprint Note (#260)
 

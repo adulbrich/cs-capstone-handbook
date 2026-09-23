@@ -44,7 +44,7 @@ import CanvasEntries from '/src/components/CanvasEntries.astro';
 
 <CanvasEntries />
 
-An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. The name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), which is how the internet's protocols are still specified; the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). You write a different one each term, in fall and winter, about a **real decision your team faces that is hard to reverse**. In fall the decision is still open. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. Not a hypothetical, and not a justification written after the fact for a decision nobody questioned.
+An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. The name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), which is how the internet's protocols are still specified; the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). You write a different one each term, in fall and winter, about a **real decision your team faces that is hard to reverse**. In fall the decision is still open. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. Not a hypothetical, and not a justification written after the fact for a decision the RFC no longer changes.
 
 :::note[Picking a decision that is actually yours]
 Hard-to-reverse decisions are typically architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments: undoing them costs far more than getting them right now. Most feature code is easy to reverse. The distinction comes from Jeff Bezos's [2015 letter to Amazon shareholders](https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF), which calls them Type 1 and Type 2 decisions and warns that applying the heavyweight Type 1 process to reversible decisions makes an organization slow. Telling one from the other is itself part of the exercise, and it's the judgment that matters most when much of the building is delegated.
@@ -69,7 +69,7 @@ What you can direct an agent or a teammate to build is bounded by how precisely 
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
 6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-Write it in the format the [ADR guide](/guides/adr/) sets out, starting from the [RFC template](/rfc-template.md), and commit it to your repository under `docs/rfcs/` or `docs/adr/`. Both Canvas entries below take it as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)). The length is 800 to 1,500 words in fall and 1,500 to 2,500 in winter.
+Write it in the format the [ADR guide](/guides/adr/) sets out, starting from the [RFC template](/rfc-template.md), and commit it to your repository under `docs/rfcs/` or `docs/adr/`. Both Canvas entries below take it as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)). The length is 800 to 1,500 words in fall and 1,500 to 2,500 in winter, with a 2,000-word floor on the winter final (see [RFC Final Draft](#rfc-final-draft)).
 
 **AI use:** AI may research options, draft sections, and sharpen the argument; the Delegation and validation criterion is where you say what you handed off and how you checked it. Presenting a generated analysis you did not verify as your own judgment, or inventing evidence (benchmarks, quotes, references that do not exist), fails the assignment. The defense will ask you to explain the decision without the tool.
 
@@ -77,11 +77,11 @@ Write it in the format the [ADR guide](/guides/adr/) sets out, starting from the
 
 <AssignmentMeta submission="Individual" due="Draft end of week 4; peer reviews end of week 5" weight="5% of the term grade" />
 
-Submit a complete draft by the end of week 4: every section above, within the term's length band. The draft is graded for completeness, not for the quality of its reasoning, so there is no draft grade to wait for. Start revising as soon as your peer reviews arrive.
+Submit a complete draft by the end of week 4: every section above, within the term's length band. The draft is graded for completeness, not for the quality of its reasoning. You don't need its grade before revising: start as soon as your peer reviews arrive.
 
 ### The Peer Review
 
-In week 5 you review two drafts by students on other teams, and two students review yours. The review is the half of this entry that is graded on quality.
+In week 5 you review two drafts by students on other teams, and two students review yours. Your reviews carry most of this entry's points, and they are the part graded on quality.
 
 1. **Get your pairings.** At the start of week 5, Canvas assigns you two drafts through the peer review on this entry. The instruction team makes the pairings, always across teams.
 2. **Answer four questions for each draft**, in writing:
@@ -90,12 +90,12 @@ In week 5 you review two drafts by students on other teams, and two students rev
    3. Would the verification plan actually detect failure?
    4. What is the single strongest improvement?
 3. **Point at the draft.** Each answer names the passage it is about, so the author can find it.
-4. **Submit both reviews in Canvas** by the end of week 5.
+4. **Submit both reviews in Canvas** by the end of week 5, as a comment on each draft in its peer review.
 
 If an assigned reviewer does not submit, flag it to your Teaching Assistant (TA): you won't be penalized for feedback you never received, and the instruction team will supply a review. Not submitting your own reviews forfeits the review criteria below and is visible to the authors you were paired with.
 
 :::note[If your project is under NDA]
-Don't hand reviewers partner-confidential context. Write the review copy of your draft as a **decision skeleton**: keep the decision structure, options, tradeoff reasoning, and verification plan, and replace confidential specifics with neutral placeholders ("the partner's internal system", "the dataset"). If even that is not possible under your agreement, tell your TA by week 4 and the instruction team will review your draft instead. If the instruction team cannot review it either, it may ask your project partner for a review answering the same four questions. Your AI Coordinator's confidentiality one-pager governs what may leave the boundary.
+Don't hand reviewers partner-confidential context. Submit your draft on this entry as a **decision skeleton**, because Canvas hands that PDF to your reviewers; the full RFC stays in your repository. A decision skeleton keeps the decision structure, options, tradeoff reasoning, and verification plan, and replaces confidential specifics with neutral placeholders ("the partner's internal system", "the dataset"). If even that is not possible under your agreement, tell your TA by week 4 and the instruction team will review your draft instead. If the instruction team cannot review it either, it may ask your project partner for a review answering the same four questions. Your AI Coordinator's confidentiality one-pager governs what may leave the boundary.
 :::
 
 ### Rubric (100 points)
