@@ -101,7 +101,7 @@ The **testing pyramid** is a model for balancing these types: many fast, focused
 /   Unit Tests    \    Many, fast, focused
 ```
 
-The pyramid is one of two competing models. Fowler notes that it rests on the assumption that broad tests are slow, expensive, and brittle, and that if your high-level tests are fast, reliable, and cheap to change, lower-level tests aren't needed. Kent C. Dodds's [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests) argues for more integration tests than unit tests, on the grounds that the more a test resembles the way the software is used, the more confidence it gives, and that a unit test can't tell you whether you're calling a dependency correctly. Mike Wacker, on Google's Testing Blog, argues from the other end that you should [say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html), because they give slow, flaky feedback and a failure is hard to trace to the code that caused it. Which shape fits depends on how expensive your integration tests actually are, so measure that before you commit to a shape.
+The pyramid has a competitor, and Fowler himself hedges it. He notes that it rests on the assumption that broad tests are slow, expensive, and brittle compared with focused ones, that this is usually true but has exceptions, and that if your high-level tests are fast, reliable, and cheap to change, lower-level tests aren't needed. Kent C. Dodds's [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests) gives integration tests the largest share of attention, on the principle that a test gives more confidence the more closely it resembles the way the software is used, and he points out that a unit test can't ensure you're calling a dependency correctly. Mike Wacker, on Google's Testing Blog, defends the pyramid and suggests a 70/20/10 split of unit, integration, and end-to-end tests as a first guess, arguing that you should [say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) because they give slow, flaky feedback and a failure is hard to trace to the code that caused it. Which shape fits depends on how expensive your integration tests actually are, so measure that before you commit to a shape.
 
 #### What to Test
 
@@ -115,12 +115,12 @@ Spend tests where a failure would hurt, not where tests are easiest to write:
 
 ### Accessibility
 
-Accessibility checks belong in the same CI run as the rest of your suite: lint rules, [axe-core](https://github.com/dequelabs/axe-core) inside the tests you already have, and a page-level budget that fails the build.
+Run automated accessibility checks in the same CI run as the rest of your suite, so a missing label or an unreachable button fails the build the way a broken function does.
 
 <LinkCard
   title="Accessibility Testing"
   href="/guides/accessibility/"
-  description="The three layers: automated gates, the keyboard and screen-reader pass, and a session with a daily assistive-technology user."
+  description="Which accessibility checks to run in CI, and what automated checks miss."
 />
 
 ### Manual and Exploratory Testing
@@ -133,7 +133,7 @@ Automated tests check what the team told them to check. A person using the syste
 
 ## Validation: Does the Product Solve the Right Problem?
 
-Validation confirms that the system is worth building in its current form, which only the people it's built for can tell you. It puts the product in front of real users and asks whether it works for them.
+The methods below differ mostly in how many users they need: a usability session needs a handful, a beta a small group, and an A/B test enough traffic for statistics. Pick the one your number of real users can support, and use sprint demos with the project partner whatever that number is.
 
 ### Usability Testing
 
@@ -159,8 +159,8 @@ When success is measurable (conversion rates, task completion times, error rates
 
 Treat every sprint demo as a test of whether you built the right thing. When the project partner watches a feature and says "that's not what I meant", you've found a requirements bug, and a demo finds it within a sprint of the code being written instead of at the end of the project. The [Presentations guide](/guides/presentations/) covers how to run a demo that gets that feedback.
 
-:::note[IRB Approval]
-If your project is part of a research study and you plan to test with human participants, you may need [IRB (institutional review board) approval](https://research.oregonstate.edu/ori/irb). Ask your faculty advisor early, because review takes weeks you don't control.
+:::note[Ethics Review]
+Testing with human participants as part of a research study usually needs ethics review, called an IRB (institutional review board) in the United States, before the first session. Ask whoever supervises the research early, because review takes weeks you don't control; [Complete an IRB Application](/activities/user/#complete-an-irb-application) walks through the filing.
 :::
 
 ## Testing Research Projects
@@ -178,7 +178,6 @@ Testing runs through the whole workflow:
 
 - As you build. Tests exist before the code merges, whether the team writes them first or alongside, because a change merged without them can break later without anyone noticing.
 - On every pull request. Tests run in CI and a red build blocks the merge, which makes the suite a gate instead of a suggestion. The workflow file is in the [DevOps guide](/guides/devops/#continuous-integration-ci); the branch protection that makes red mean blocked is in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch).
-- In the sprint you planned it. User testing appears on the board as work with an owner.
 - Before every demo and release. Run the full suite plus a manual smoke test. If a workflow matters enough to demo, give it an end-to-end test.
 - After every bug that reaches a user. Write a test that reproduces the failure before you fix it, so the test proves the fix and keeps the bug from coming back ([Fowler](https://martinfowler.com/bliki/TestPyramid.html) advises a unit test even when an end-to-end test found the bug). Over the project, that builds a suite shaped by real failures rather than imagined ones.
 
@@ -231,15 +230,17 @@ Mutation testing measures what coverage can't: whether the tests would notice a 
 
 Flaky tests do damage beyond the test itself. On Google's Testing Blog, <Cite id="micco-2016" /> reports that about 1.5% of all test runs at Google are flaky, that almost 16% of their tests have some flakiness, and that 84% of the pass-to-fail transitions their CI sees involve a flaky test; with that many false alarms, people commonly ignore legitimate failures in those tests. Deleting the test is tempting, but <Cite id="luo-2014" /> found that 24% of flaky-test fixes changed the code under test, and 94% of those fixed a real bug, so they argue against simply removing flaky tests. Quarantine a flaky test the day you find it, so it stops training the team to ignore red, then read the failure before you decide between fixing and deleting.
 
-Testing pressure improves design only up to a point. What it rewards is separating decisions from side effects: a function that only computes is trivial to test, and one that computes and writes to a database is not, and the separated version is also easier to change. Past that point, tests push you toward over-abstraction, such as an interface that exists only so a mock can be injected, so when a change makes code easier to test and harder to read, make that trade deliberately.
+Testing pressure improves design only up to a point. What it rewards is separating decisions from side effects: a function that only computes is trivial to test, and one that computes and writes to a database is not, and the separated version is also easier to change. Past that point, David Heinemeier Hansson argues, the pressure does [test-induced design damage](https://dhh.dk/2014/test-induced-design-damage.html): indirection and extra layers added only so a unit test can run fast and in isolation, at the cost of clarity. When a change makes code easier to test and harder to read, prefer the readable version and test it at a higher level, because the reader pays for every extra layer and the test doesn't need it.
 
-Verification is easier to invest in than validation, because a test suite gives a green or red answer on every push and a user session gives a page of notes once. That asymmetry is how a project ends up with a green suite on a feature nobody wants: nothing in CI can tell you that you specified the wrong thing, and only a session with real users can.
+Verification is easier to invest in than validation, because a test suite gives a green or red answer on every push and a user session gives a page of notes once. That asymmetry is how a project ends up with a green suite on a feature nobody wants: nothing in CI checks the specification itself, so a wrong one stays green for as long as nobody puts it in front of a user.
 
 ## Testing in Industry and Academia
 
 Google's testing culture turned on a failure. <Cite id="bender-2020" /> recounts that by 2005 the Google Web Server's releases were getting buggier, and at one point more than 80% of its production pushes contained user-affecting bugs that had to be rolled back; the tech lead then required tests with every new code change, run continuously, and within a year emergency pushes had dropped by half, despite a record number of changes.
 
-In academia, testing is also a research field, and most of the studies on this page come from it. Testing research often measures a suite with mutation analysis, because the real faults in a program are usually unknowable in advance <Cite id="just-2014" form="parenthetical" />. When research depends on code, reproducibility plays the role a test suite plays in industry, and the failure it guards against has been documented at scale: <Cite id="kapoor-2023" /> surveyed the literature and found data leakage in 17 fields, affecting 294 papers and in some cases leading to wildly overoptimistic conclusions.
+In academia, testing is also a research field. Testing research often measures a suite with mutation analysis, because the real faults in a program are usually unknowable in advance <Cite id="just-2014" form="parenthetical" />, and that's how the coverage study under Some Truths measured fault detection.
+
+When research depends on code, reproducibility plays the role a test suite plays in industry, and the failure it guards against has been documented at scale: <Cite id="kapoor-2023" /> surveyed the literature and found data leakage in 17 fields, affecting 294 papers and in some cases leading to wildly overoptimistic conclusions.
 
 ## References
 

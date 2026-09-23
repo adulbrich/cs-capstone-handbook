@@ -12,7 +12,8 @@ verified: abstract
 claims:
   - claim: >-
       Across 11 studies, the detection of usability problems as a function of
-      the number of users tested is well modeled as a Poisson process, and
+      the number of users tested or heuristic evaluators employed is well
+      modeled as a Poisson process, and
       for a medium example the authors estimate the maximum benefit/cost
       ratio at four evaluations.
     locator: Abstract

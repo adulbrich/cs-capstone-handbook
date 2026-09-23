@@ -14,7 +14,7 @@ claims:
       result, almost 16% of tests have some level of flakiness, and about 84%
       of observed pass-to-fail transitions in post-submit CI involve a flaky
       test.
-    locator: Paragraphs 2 to 4
+    locator: Paragraphs 3 and 4
   - claim: >-
       Legitimate failures in flaky tests are commonly ignored because of the
       high number of false positives.
