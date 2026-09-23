@@ -38,10 +38,27 @@ skills under `.claude/skills/`.
 7. **Length.** Audience pages (students, partners, mentors) run about 400
    words. Guides and activities have ceilings in their skills. Over budget is a
    finding with the number, never a blocker on its own.
+8. **The reverse outline**, on every guide and audience page in the diff. For
+   each changed paragraph, write one line: the idea it carries and what it
+   contributes to the page. A paragraph with no contribution, or with two
+   ideas, is a hard finding. So is a paragraph whose last sentence restates
+   the paragraph instead of adding information. This is the review step from
+   the instructor's Writing 101; `docs/agents/voice.md` links it. Put the
+   outline in the review output, not the PR body.
+9. **Claims and voice**, on the same pages. Check the diff against the Claims,
+   Person, Structure, and Sentences and words sections of
+   `docs/agents/voice.md`, and cite the section in each finding. The findings
+   that recur: an unsourced "research shows" or "most teams", an Evidence
+   citation whose source doesn't say what the page says, "I", a "we" outside
+   the audience pages and syllabi, a "not A; it's B" that closes a paragraph,
+   and a bolded sentence beyond the one critical instruction a section may
+   carry. Each is a hard finding.
 
 ## What the Standards axis ignores
 
-- Prose taste: synonyms, comma placement, reflowed paragraphs, sentence rhythm.
+- Prose taste: synonyms, comma placement, reflowed paragraphs, sentence
+  rhythm. The reverse outline and the claims check above are not taste; they
+  are the voice rules, and they stay in.
 - The Fowler smell baseline, except on `scripts/*.mjs`, `.claude/hooks/*.mjs`,
   `astro.config.mjs`, `src/lib/*.mjs`, and `src/components/*.astro`. MDX is not
   code.
