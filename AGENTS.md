@@ -178,6 +178,7 @@ Current canonical homes:
 | Per-term Team Deliverables weights | `assignments/introduction.mdx` |
 | Rubric bands, missing-is-zero, evidence rules | `assignments/introduction.mdx` |
 | The AI policy and what it assesses | `assignments/introduction.mdx` |
+| How work is submitted: one PDF, every author named on the cover | `assignments/introduction.mdx` |
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
 | The four example paths up the ladder, and that a project may match none | `guides/shipping.mdx` |
 | What shipped means for a project, agreed with the partner and recorded | `assignments/definition-of-shipped.mdx` |
