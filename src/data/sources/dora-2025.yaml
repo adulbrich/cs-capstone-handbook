@@ -1,0 +1,33 @@
+authors:
+  - DORA
+year: 2025
+title: State of AI-assisted Software Development 2025
+venue: Google Cloud, industry report
+kind: industry-report
+url: https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf
+verified: full-text
+claims:
+  - claim: >-
+      Drawing on survey responses from nearly 5,000 technology professionals
+      and qualitative data, the report finds that AI acts as an amplifier: it
+      magnifies the strengths of high-performing organizations and the
+      dysfunctions of struggling ones.
+    locator: p. 3, Executive summary
+  - claim: >-
+      90% of survey respondents use AI as part of their work and more than
+      80% believe it has increased their productivity, yet 30% report little
+      or no trust in the code AI generates.
+    locator: p. 4, Key findings
+  - claim: >-
+      AI adoption now improves software delivery throughput but still
+      increases delivery instability, which the report reads as teams
+      adapting for speed while their underlying systems have not yet evolved
+      to safely manage AI-accelerated development.
+    locator: p. 4, Key findings
+  - claim: >-
+      In the presence of more frequent rollbacks, AI's positive influence on
+      team performance is amplified. The authors suspect this relates to the
+      importance of rapidly undoing changes when working with larger batches
+      of code, and hypothesize that AI's link to instability comes in part
+      from larger batches being harder to review.
+    locator: pp. 56-57, Strong version control practices; Figure 39

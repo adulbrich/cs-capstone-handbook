@@ -1,121 +1,106 @@
 ---
 title: Generative AI
-description: How to use AI coding tools effectively in your capstone project, from setup and configuration to team coordination and responsible use.
+description: "Individual habits for AI coding tools: where to spend your attention, what makes delegating the rest reasonable, what not to paste, and what the research says."
 sidebar:
   order: 10
 ---
 
-import { LinkCard } from '@astrojs/starlight/components';
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
-Read this when you start using AI tools on the project, and again when one burns you; it gives you the habits that keep you accountable for the output.
+You've started using an AI tool on a real project, or one has just handed you a confident answer that turned out to be wrong. This page covers the habits you bring to the tool as an individual: where to spend your attention, what makes delegating the rest reasonable, what not to paste into a tool, and what the research says about how much these tools help. It doesn't cover configuring the tools for a repository (instruction files, hooks, [MCP](https://modelcontextprotocol.io/) servers), which is [AI project setup](/guides/ai-project-setup/), or the norms a team agrees on, which belong in the [working agreement](/guides/working-agreement/#ai-tool-usage).
 
-Generative AI tools are now part of professional engineering work. Engineers use AI to brainstorm ideas, explore design options, write and review code, generate documentation, and accelerate analysis tasks.
+:::note[tl;dr]
+- Validate hard-to-reverse decisions yourself (database schema, authentication, deployment, data migrations, licensing, public interfaces) and delegate easy-to-reverse work freely.
+- Delegate only as far as your checks catch: tests, CI, review gates, staging, a rollback path.
+- Check every specific fact a tool gives you (a package name, a function signature, a flag, a citation) against its source before you rely on it.
+- Don't commit code you can't explain.
+- Before you paste partner data, credentials, or meeting content into a tool, check your team's confidentiality rule and the data-use terms of the plan you're on.
+- Measure whether a tool speeds you up instead of trusting the feeling: in one randomized trial, developers estimated that AI had cut their completion time by 20% when it had increased it by 19% <Cite id="becker-2025" form="parenthetical" />.
+:::
 
-But there is a catch: **you are still responsible for the correctness, safety, legality, and professionalism of anything the AI helps you create.** An AI tool can write code faster than you can type it. That does not mean the code is correct, secure, or appropriate for your project. Treat AI output the same way you would treat a suggestion from a junior colleague: consider it, verify it, and take ownership of the final result.
+You're responsible for the correctness, security, licensing, and professionalism of anything a tool helps you produce, whoever or whatever wrote the first draft. Treat its output the way you'd treat a pull request from a stranger: consider it, check it, and own what you merge.
 
 ## What AI Can and Cannot Do
 
-Understanding what AI tools are good at and where they fall short helps you use them effectively rather than fighting their limitations.
-
 ### What AI helps with
 
-The pattern across these is that the model is good where the space of acceptable answers is wide, where you can recognize a good answer faster than you could produce one, and where being wrong is cheap to detect. Brainstorming fits all three; a security-critical authentication flow fits none of them.
+The tools do well where the space of acceptable answers is wide, where you can recognize a good answer faster than you could produce one, and where a wrong answer is cheap to detect. Brainstorming fits all three; a security-critical authentication flow fits none of them.
 
 - Brainstorming ideas and exploring alternatives
 - Drafting code, tests, documentation, and plans
 - Explaining unfamiliar topics, APIs, or code snippets
 - Generating sample data, interaction flows, or boilerplate
 - Refactoring, debugging, and code review
-- Accelerating "first drafts" of writing or implementation
+- First drafts of writing or implementation
 
 ### What AI cannot do well
 
-These are not temporary gaps waiting for a better model, at least not all of them. A model cannot apply your partner's unstated preference because nobody wrote it down, and it cannot make an ethical call on your behalf because that call is yours to own. **Hallucination** deserves a definition rather than a bullet: the model produces fluent, confident text that is not grounded in anything real, including libraries that do not exist, API methods that were never written, and citations to papers nobody published. It is not lying, because it has no model of truth to violate; it is generating plausible continuations, and plausible is not the same as correct. The practical consequence is that any specific factual claim (a function signature, a flag, a citation) needs checking against a source, and the cost of checking is the real price of the speedup.
+Some of these limits won't close with a better model, because the information or the responsibility isn't the model's to have. A model cannot apply your project partner's unstated preference, because nobody wrote it down, and it cannot make an ethical call on your behalf, because that call is yours to own.
 
 - Exercise engineering judgment
 - Apply your project's specific constraints (your team's architecture, your project partner's requirements, your deployment environment)
 - Produce secure, efficient, or trustworthy code without oversight
-- Guarantee correctness: AI frequently **hallucinates** information, including fabricated libraries, nonexistent APIs, and incorrect citations
-- Understand the nuances of your capstone project's unique context
+- Guarantee correctness
 - Make ethical decisions
+
+A **hallucination** is fluent, confident output that isn't grounded in anything real: a library that doesn't exist, an API method nobody wrote, a citation to a paper nobody published. The model isn't lying. It generates a plausible continuation of the text so far, and nothing in that process checks the result against the world. Check every specific fact a tool gives you (a package, a function signature, a flag, a citation) against its source before you rely on it; that check is the price of the speedup.
+
+Package names are the best-measured case. <Cite id="spracklen-2025" /> generated 576,000 Python and JavaScript samples with 16 code-generating models and found that, on average, at least 5.2% of the packages recommended by commercial models and 21.7% of those recommended by open-source models didn't exist. That's a security problem as well as a correctness one, because an attacker can publish a malicious package under a name that models keep inventing, and the next person who trusts the suggestion installs it <Cite id="spracklen-2025" form="parenthetical" />.
 
 ### Risks
 
-The risks below share a structure worth naming: each one is invisible at the moment it occurs and expensive later. Nobody notices the over-reliance in the first month; they notice it five months later, when a bug lands in code no one on the team can read.
+Deal with each of these when the code is written, because none of them fails at the moment it happens. Over-reliance surfaces later as a bug in code nobody on the team can read, and a pasted credential surfaces when someone else uses it.
 
-- Incorrect or misleading information presented confidently
-- Insecure or poorly optimized code
-- Over-reliance leading to lack of understanding: if you cannot explain what the code does, you should not commit it
-- Privacy and intellectual property issues (be careful about what you paste into AI tools, especially if your project involves NDA-protected or sensitive data)
+- Incorrect or misleading information, stated confidently
+- Insecure or inefficient code
+- Over-reliance: code that nobody on the team can debug
+- Confidentiality and intellectual property: what you paste may be retained or used to train the vendor's models (see [Check what you paste](#check-what-you-paste))
 
 ## Using AI Effectively
 
-The difference between productive AI usage and frustrating AI usage usually comes down to a few habits.
-
 ### Start with clear intent
 
-Before asking an AI tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the AI enough context to produce something useful. The clearer your intent, the less time you spend correcting the output.
+Before asking a tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the tool enough context to produce something useful. Be this specific because the model fills every gap in your request with its most likely guess, and its most likely guess isn't your design.
 
 ### Verify what matters, and build the checks that let you trust the rest
 
-AI-generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. The obvious response is "read everything it writes", and that advice fails in practice for the same reason a tech lead does not read every line their team ships. It does not scale, so people stop doing it, and then they have no strategy at all.
+Generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Don't make "read everything it writes" your strategy, though. Generation outpaces careful reading, and a rule you can't keep leaves you with no rule at all once you drop it.
 
-The strategy that does scale has two parts.
+Spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are hard-to-reverse decisions: getting one wrong costs far more than the review would have. A feature behind a test suite is an easy-to-reverse decision, because once a test tells you it's broken, the fix is one more commit. Validate hard at the hard-to-reverse decisions and delegate freely elsewhere.
 
-First, spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are hard-to-reverse decisions: getting them wrong costs far more than the review would have. Most feature code is easy to reverse, cheap to fix once something tells you it is broken. Validate hard at those decisions; delegate freely elsewhere.
-
-Second, make "elsewhere" safe by building the checks. You may reasonably delegate exactly as far as your checks catch: tests that would actually fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, a rollback path you have actually tried. Trust without checks is recklessness. Trust with them is ordinary engineering. If you want to hand off more, improve the checks first rather than reading harder.
-
-That is the standard worth holding yourself to, whatever any policy says.
-
-You still own the result. If you cannot explain why the code works when your project partner asks, no tool and no check will cover for that.
-
-The [AI practice activities](/activities/ai/) turn all of this into exercises you can run on your own repository this week.
+Then make "elsewhere" safe by building the checks. Delegate exactly as far as your checks catch, and no further: tests that would fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, and a rollback path you've actually tried. To hand off more, improve the checks rather than reading harder. The industry report on AI-assisted development from DORA (DevOps Research and Assessment), Google Cloud's research program, found that AI's positive influence on team performance was amplified where developers used their version control's rollback features more often, and the authors suspect that's because undoing changes quickly matters more when work arrives in larger batches, which are harder to review <Cite id="dora-2025" form="parenthetical" />. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures that fit on your own repository.
 
 ### Use AI to learn, not just to produce
 
-When the AI generates code you do not understand, ask it to explain. Use it as a learning tool, not just a production tool. The goal of a capstone is to grow as an engineer. Shipping code you cannot maintain or debug is not growth; it is debt.
+When a tool generates code you don't understand, ask it to explain the code, then check the explanation against the documentation, because the explanation can be hallucinated as well. Don't commit code you can't debug or modify, whether a model wrote it or a teammate did. The difference between the two is that a teammate can explain their reasoning next week, while a model can't reconstruct reasoning it never had, so the first hard bug in code you accepted without understanding lands on you.
 
 ### Know when to stop prompting
 
-If you have gone back and forth with an AI tool more than a few times on the same problem and the output is still wrong, step back. Read the documentation. Look at examples. Ask a teammate. Sometimes the fastest path is not through the AI.
+If you've gone back and forth with a tool several times on the same problem and the output is still wrong, stop. Read the documentation, look at a working example, or ask a teammate, because another retry with the same context gives the model nothing new to work with, and the documentation or the teammate has what it's missing.
+
+### Check what you paste
+
+Decide what you're about to paste before you paste it, because a vendor's terms decide what happens to it next, and the terms differ by plan. On [OpenAI's plans for individuals](https://help.openai.com/en/articles/5722486-how-your-data-is-used-to-improve-model-performance), for example, ChatGPT conversations and Codex tasks may be used to train its models unless you turn that off in the data controls; its Business, Enterprise, and Edu plans and its API aren't used for training by default. Read the terms for the plan you're on, not just the tool's name.
+
+Sort what you handle into three groups: what may go into any tool, what may go only into tools your project partner has approved, and what never leaves the repository. Meeting recordings and transcripts belong in that sort as much as code and data do. The team writes that rule down once in its working agreement and encodes it for the tools, and [AI project setup](/guides/ai-project-setup/) shows both versions. Your part is to check it before you paste, because the check takes seconds and a leak can't be undone.
 
 ## Setting Up AI Tools for Your Project
 
-A tool that knows nothing about your project gives generic answers, and the fix is configuration rather than better prompting: project-level instructions, hooks, MCP servers, and skills, all committed so every teammate's tool behaves the same way. Set them up in the first sprint.
-
-<LinkCard
-  title="AI Project Setup"
-  href="/guides/ai-project-setup/"
-  description="AGENTS.md and its per-tool equivalents, the hooks that gate what an agent can do, MCP servers, and skills."
-/>
+Configure the tool for your repository before you rely on it, because a tool that knows nothing about your project gives generic answers: the wrong framework, a second way of doing something you already do one way, a dependency nobody agreed to. Project-level instructions, hooks, MCP servers, and skills, committed so every teammate's tool behaves the same way, are the subject of [AI project setup](/guides/ai-project-setup/).
 
 ## AI on a Team
 
-Using AI tools as an individual is straightforward. Using them on a team requires coordination, because each person's AI operates in its own context and has no awareness of what other team members (or their AI tools) are doing. Without shared norms, the codebase drifts toward inconsistency.
-
-This is covered in detail in the technical design and working agreement guides:
-
-<LinkCard
-  title="Technical Design in the Age of AI"
-  href="/guides/technical-design/#technical-design-in-the-age-of-ai"
-  description="How design documents help coordinate teams where everyone uses AI coding tools."
-/>
-
-<LinkCard
-  title="Team Working Agreement: AI Tool Usage"
-  href="/guides/working-agreement/#ai-tool-usage"
-  description="Team norms for coordinating AI tool usage."
-/>
+Each teammate's tool works in its own context, with no awareness of what the others' tools are doing, so a team without shared norms ends up with inconsistent patterns and code nobody fully understands. The norms (which configuration the team shares, what review generated code gets, how to handle a structural change a tool proposes) belong in the [working agreement](/guides/working-agreement/#ai-tool-usage). The architectural constraints every tool should respect belong in the design document, as [Technical Design in the Age of AI](/guides/technical-design/#technical-design-in-the-age-of-ai) describes.
 
 ## What You Can Automate
 
-When you ask "what can I hand off?", this is the index. Each entry links to the guide that owns the topic; nothing is restated here, so the owning guide stays the single source of truth.
+When you ask "what can I hand off?", use this table as the index. Each entry links to the guide that owns the topic, so the practice is described in one place.
 
 | Automatable | Where it is covered |
 |---|---|
 | Test generation across the pyramid (unit, integration, end-to-end) | [Testing strategy](/guides/testing-strategy/#automated-testing) |
-| Browser-driven exercising of real user flows | [End-to-end tests](/guides/testing-strategy/#end-to-end-tests), and [Playwright MCP](https://github.com/microsoft/playwright-mcp) above |
+| Browser-driven exercising of real user flows | [End-to-end tests](/guides/testing-strategy/#end-to-end-tests), and [Playwright MCP](https://github.com/microsoft/playwright-mcp), which lets an agent drive a real browser |
 | Accessibility auditing (axe-core, Lighthouse, lint-level rules) | [Automated accessibility testing](/guides/accessibility/#automated-accessibility-testing) |
 | Lint and format gates | Your repo's configuration, checked in and enforced in CI |
 | CI pipeline construction and gate configuration | [DevOps](/guides/devops/) |
@@ -124,156 +109,107 @@ When you ask "what can I hand off?", this is the index. Each entry links to the 
 | Security scanning (dependency audit, secret scanning) | [Security](/guides/security/) |
 | Documentation and changelog generation | [Documentation](/guides/documentation/) |
 
-Four judgments stay human: whether the product is actually good for the person using it, which decisions are hard to reverse, the tradeoffs your users and your project partner will feel, and whether an automated finding actually matters, which no tool decides for you: a report with forty findings is not forty problems.
-
-:::note[Reviewed annually]
-This section and the tool names throughout this guide are the fastest-moving content in the handbook. It is checked once a year. The judgment they support (spend attention where mistakes are expensive, build the checks that cover the rest) has been stable much longer than any of these tools have existed, which is why the judgment is the part worth learning and the tool names are not.
-:::
+Four judgments stay with you: whether the product is actually good for the person using it, which decisions are hard to reverse, the tradeoffs your users and your project partner will feel, and whether an automated finding matters. A scanner can count findings, but it can't tell you which of them affect your users.
 
 ## AI Coding Tools
 
-The landscape changes rapidly. Rather than an exhaustive list, here are the categories of tools and some current options in each.
+The tools change faster than any page about them, so this section names categories and a few current options in each rather than ranking them.
 
-:::tip[Free GitHub Copilot for Students]
-Verified students get the free **GitHub Copilot Student** plan. Activate it at [GitHub Education](https://github.com/education). It gives you unlimited code completions plus limited chat and agent usage in VS Code, JetBrains, and other editors, with an allowance of AI credits and automatic model selection rather than a model picker. GitHub re-checks your eligibility every month. This replaced the older "free Copilot Pro for students" offer; verified teachers and open-source maintainers still get Copilot Pro. If you do not have another preferred tool, Copilot is a solid default.
+:::tip[Free GitHub Copilot for students]
+Verified students get the free [Copilot Student](https://docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-students) plan through [GitHub Education](https://github.com/education). According to [GitHub's plan comparison](https://docs.github.com/en/copilot/get-started/plans), it includes Copilot Chat, agent mode, and an allowance of AI credits, with automatic model selection instead of a model picker, and GitHub re-checks your eligibility every month. If you don't have another preferred tool, it's a reasonable default.
 :::
 
 ### Chat-Based Assistants
 
-General-purpose AI models you interact with through conversation. Useful for brainstorming, explaining concepts, drafting documentation, debugging, and exploring design alternatives.
+General-purpose models you work with through conversation, useful for brainstorming, explaining concepts, drafting documentation, debugging, and exploring design alternatives.
 
-- **ChatGPT** (OpenAI): strong general reasoning and code generation.
-- **Claude** (Anthropic): strong at long-context analysis, writing, and careful reasoning.
-- **Gemini** (Google): tightly integrated with Google's ecosystem.
+- [ChatGPT](https://chatgpt.com) (OpenAI)
+- [Claude](https://claude.ai) (Anthropic)
+- [Gemini](https://gemini.google.com) (Google)
 
 ### AI Code Editors and Agents
 
-Tools that integrate directly into your editor or terminal and can read, write, and modify your codebase. These range from autocomplete assistants to fully agentic tools that can execute multi-step tasks.
+Tools that integrate into your editor or terminal and can read, write, and modify your codebase. They range from autocomplete assistants to agents that carry out multi-step tasks.
 
-- **GitHub Copilot**: code completion, chat, and agent mode in VS Code and JetBrains. Free for students.
-- **Cursor**: AI-native code editor built on VS Code with strong multi-file editing.
-- **Claude Code** and **OpenAI Codex**: agentic coding tools that started in the terminal and now also run as desktop apps, web apps, and IDE extensions.
+- [GitHub Copilot](https://github.com/features/copilot): code completion, chat, and agent mode in VS Code, JetBrains, and other editors.
+- [Cursor](https://cursor.com): a code editor built on VS Code around AI-assisted, multi-file editing.
+- [Claude Code](https://code.claude.com/docs/en/overview) and [OpenAI Codex](https://github.com/openai/codex): agentic coding tools that run in the terminal, with IDE and browser versions.
 
-The distinction between "autocomplete" and "agent" matters. Autocomplete tools suggest the next few lines as you type. Agentic tools can plan multi-step changes, read multiple files, run commands, and modify your codebase autonomously. Agentic tools are more powerful but require more oversight, especially on a team where multiple people are using them simultaneously.
+The distinction between autocomplete and agent matters. An autocomplete tool suggests the next few lines as you type, and you see each suggestion before it lands. An agent plans a multi-step change, reads several files, runs commands, and edits your codebase before you see any of it. Give an agent more oversight than autocomplete for that reason, and more again on a team where several people run agents against the same repository.
 
 ### Image and Design Tools
 
-Generated images are most useful for placeholder assets and mockups, where the alternative is a grey rectangle. The licensing question is the one to settle before you ship anything: terms differ by tool and by plan, and a generated asset in a public repository is a licensing decision whether or not anyone made it deliberately.
+Generated images are most useful for placeholder assets and mockups, where the alternative is a grey rectangle. Settle the licensing question before you ship one: read the tool's terms for the plan you're on, because a generated asset in a public repository is a licensing decision whether or not anyone made it deliberately.
 
-- **Midjourney**, **Stable Diffusion**, **GPT Image** (the model behind ChatGPT Images, which replaced DALL-E), **Google Gemini image generation**: image generation for mockups, assets, or diagrams. Check licenses before using generated assets in your project.
+- [Midjourney](https://www.midjourney.com), [Stable Diffusion](https://stability.ai), and the image generation built into [ChatGPT](https://chatgpt.com) and [Gemini](https://gemini.google.com): images for mockups, assets, or diagrams.
 
 ### AI Search Tools
 
-These sit between a search engine and a chat assistant, returning prose answers with citations attached. The citations are the reason to prefer them for research and also the thing to check: a fabricated or misattributed source is the characteristic failure here, and it is invisible unless you open the link.
+These sit between a search engine and a chat assistant, returning prose answers with citations attached. The citations are the reason to prefer them for research, and they're also what to check: open each cited link, because a citation can be fabricated, or attached to a source that doesn't say what the answer claims, and you won't see either unless you open it.
 
-- **Perplexity**, **ChatGPT Search**: research and summarization with source citations. Always verify the facts and check that cited sources actually exist.
+- [Perplexity](https://www.perplexity.ai) and ChatGPT's search mode: research and summarization with source citations.
 
 ## Choosing the Right Tool
 
-Things change rapidly in the AI space. New models are released frequently, each with different strengths. Rather than chasing benchmarks, consider what matters for your workflow:
+New models arrive often, each with different strengths, and a benchmark ranking tells you little about your own repository. Weigh what matters for your workflow instead:
 
-- **Context window**: how much of your codebase can the tool see at once? Larger context windows help with multi-file tasks.
-- **Speed vs. quality**: faster models are better for autocomplete; slower, more capable models are better for complex reasoning and multi-step changes.
-- **Integration**: does the tool work with your editor, terminal, and version control? The best tool is the one you actually use.
-- **Cost**: many tools have free tiers or student pricing. GitHub Copilot Student is free with GitHub Education.
+- Context window: how much of your codebase the tool can see at once. A larger window helps with changes that span many files.
+- Speed against quality: a fast model suits autocomplete; a slower, more capable one suits complex reasoning and multi-step changes.
+- Integration: whether the tool works with your editor, your terminal, and your version control.
+- Cost: many tools have free tiers or student pricing, including the Copilot Student plan above.
 
-If you want to compare models, these resources track current benchmarks:
-
-- [AI Benchmarking Hub](https://epoch.ai/benchmarks)
-- [LiveBench](https://livebench.ai/)
+If you want to compare models anyway, two public trackers publish current benchmark results: Epoch AI's [Benchmarking Hub](https://epoch.ai/benchmarks) and [LiveBench](https://livebench.ai/).
 
 ## Best Practices for Using AI Tools
 
-- Write the project-level context file first. Everything a tool produces is bounded by what it knows about your repository; [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills) is the hour that pays for itself.
-- Decide the hard-to-reverse decisions yourself and delegate the easy-to-reverse ones freely. If you cannot tell which is which, [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) before delegating anything.
-- Build the checks before scaling delegation: tests, CI, review gates, a staging environment, a rollback path. The checks are what make a large delegation reasonable; without them, the same delegation is a gamble.
-- Review a generated diff the way you would review a stranger's pull request, because that is what it is.
-- Keep the confidentiality boundary in the team's working agreement and in the tool configuration, not in people's memory.
-- Prefer the cheapest tool that does the job. Every workflow in this guide has a free or student-tier substitute.
-- When a tool misleads you, write down what happened and what caught it. That record is how your judgment improves, and it is the only evidence you will have later that it did.
+- Configure the tool for your repository before you rely on it, because everything it produces is bounded by what it knows about the project. [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills) walks through it.
+- Decide the hard-to-reverse decisions yourself and delegate the easy-to-reverse ones freely. If you can't tell which is which, [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) before delegating anything.
+- Build the checks before you scale delegation: tests, CI, review gates, staging, a rollback path. They're what make a large delegation reasonable instead of a gamble.
+- Check your team's confidentiality rule and your plan's data-use terms before you paste anything that isn't your own code.
+- Prefer the cheapest tool that does the job, because your checks, not the model, decide how far you can delegate.
+- When a tool misleads you, write down what happened and what caught it. The record shows you which of your checks work and where you still need to read.
 
 ## Some Truths About AI Tools
 
-Start with the finding that should unsettle anyone confident about this,
-including the author of this page. METR ran a
-[randomized controlled trial](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
-with sixteen experienced open-source maintainers working on 246 real issues in
-repositories they already knew well. Developers allowed to use AI tools took
-**19% longer** to complete their issues. The part that matters more than the
-headline: those developers had predicted a 24% speedup beforehand, and after
-finishing they still believed AI had sped them up by about 20%. They were wrong
-in the same direction, by a similar margin, before and after the evidence.
+Your sense of being faster isn't evidence that you are. In a randomized trial run by METR, an AI research organization, <Cite id="becker-2025" /> had 16 experienced open-source developers complete 246 tasks in mature projects they had worked on for five years on average, with each task randomly assigned to allow or disallow early-2025 AI tools. With AI allowed, tasks took 19% longer. Before starting, the developers forecast that AI would cut their completion time by 24%, and after finishing they estimated it had cut it by 20%. So measure something (time from starting an issue to merging it, the share of generated changes you later revert) instead of trusting the feeling.
 
-Read that carefully before generalizing it. It is one study, on a specific
-population (expert maintainers in mature codebases they know intimately), with
-tools from early 2025, and it does not say AI tools are useless. It does say
-that your sense of being faster is not evidence that you are, which is a
-different and more durable claim. You are not in that population: you are mostly
-working in unfamiliar territory on new code, which is closer to where these tools
-demonstrably help. But the perception gap probably still applies to you, and the
-only defense is measuring something rather than trusting the feeling.
+The speedup itself depends on who you are and what you're working on, and the evidence points both ways. The METR authors caution against generalizing from their result: their developers knew their large, mature repositories intimately, and the authors note their results are consistent with small greenfield projects or unfamiliar codebases seeing substantial speedup <Cite id="becker-2025" form="parenthetical" />. <Cite id="cui-2026" /> combined randomized field experiments at Microsoft, Accenture, and a Fortune 100 company, 4,867 developers in all, and found that an AI code-completion assistant increased completed tasks by about 26%, with less experienced developers adopting it more and gaining more; each experiment on its own was noisy, and results varied across them. METR has since [written](https://metr.org/blog/2026-02-24-uplift-update/) that it believes developers are likely more sped up in early 2026 than its 2025 estimate, while calling its newer data only very weak evidence for the size of the change, because many developers declined to submit tasks they didn't want to do without AI.
 
-The security version of the same result is sharper. In
-[Do Users Write More Insecure Code with AI Assistants?](https://arxiv.org/abs/2211.03622),
-Perry, Srivastava, Kumar, and Boneh found participants with an AI assistant wrote
-*less* secure code and were *more* confident it was secure. The same study found
-the participants who did better were the ones who distrusted the output and
-iterated on their prompts. Confidence is the failure mode; skepticism is the
-skill.
+A tool can make you more confident and less careful at the same time. In a user study published at the ACM Conference on Computer and Communications Security (CCS), <Cite id="perry-2023" /> gave 47 participants five security-related programming tasks in Python, JavaScript, and C. The 33 who had an assistant built on OpenAI's codex-davinci-002 model wrote insecure solutions more often on four of the five tasks than the 14 who didn't, and were more likely to believe their code was secure, which the authors suggest means such tools may lead users to be overconfident about security flaws. Participants with secure solutions reported less trust in the assistant than those with insecure ones, and participants who put more work into their prompts, such as supplying helper functions or adjusting parameters, were more likely to reach a secure solution <Cite id="perry-2023" form="parenthetical" />. That model is several generations old, so don't read the size of the gap as current.
 
-The bottleneck has moved, and this is the part that should change what you do.
-When most code was typed, your throughput was limited by how fast you could write
-correct code. When most code arrives from a model, throughput is limited by how
-fast you can verify it, and verification does not get faster just because
-generation did. A team that doubles its output and keeps the same review capacity
-has not doubled its velocity; it has built a queue. This is why the gates in
-[AI project setup](/guides/ai-project-setup/) matter more than prompt technique.
+The bottleneck moves from writing code to verifying it. When a model drafts the code, your throughput is limited by how fast you can check it, and checking doesn't get faster because generation did: a team that doubles its output with the same review capacity builds a queue of unreviewed changes. The DORA industry report found that AI adoption now improves software delivery throughput but still increases delivery instability, which the report reads as teams adapting for speed before their underlying systems can safely manage AI-accelerated development <Cite id="dora-2025" form="parenthetical" />. Put your effort into the gates in [AI project setup](/guides/ai-project-setup/#hooks-and-gates) before prompt technique.
 
-If you cannot debug or modify code in your repository, you do not own it, and
-that is true whether a model wrote it or a teammate did. The difference is that a
-teammate can explain their reasoning next week and a model cannot reconstruct
-reasoning it never had. Code you accepted without understanding is a debt that
-comes due during your first hard bug, usually months later, usually near a deadline.
-
-Finally, everything specific on this page has a short shelf life. Model names,
-capabilities, and prices move faster than this handbook is revised, and advice
-tuned to a 2025 tool may be wrong for the one you use. What does not move is the
-shape: state intent clearly, verify what matters, build checks for the rest, and
-keep the ability to work without the tool.
+Everything specific on this page will date quickly. Model names, capabilities, plans, and prices change faster than a guide is revised, and every study above measured tools that have since been replaced. Check the date on a finding before you lean on it, and keep the ability to work without the tool you use today.
 
 ## AI Tools in Industry and Academia
 
-AI-assisted coding is the default at most software companies now. Google said on its late-2024 earnings call that more than a quarter of its new code was generated by AI and then reviewed by engineers, and "reviewed by engineers" is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without checks, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this guide cares about the fit between delegation and checks rather than the tool. The [DORA research program](https://dora.dev/research/2025/dora-report/) has been measuring what AI adoption actually does to delivery performance across thousands of organizations, and its findings are more nuanced than either the marketing or the backlash: adoption is near-universal, the effects depend heavily on the surrounding practices, and teams with weak delivery pipelines get worse outcomes rather than better ones.
+Google's CEO told investors in late 2024 that [more than a quarter of all new code at Google](https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q3-2024/) was generated by AI, "then reviewed and accepted by engineers". The clause to copy is the last one: the generated code counts only after an engineer has accepted it.
 
-The open-source world is more divided. Several projects banned AI-generated contributions outright: [Gentoo's council policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy) forbids them, and [NetBSD's commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html) presume LLM output to be tainted code that must not be committed without prior written approval from core. Daniel Stenberg of curl has written bluntly about [AI-generated security reports](https://daniel.haxx.se/blog/2024/01/02/the-i-in-llm-stands-for-intelligence/) that consume maintainer time without containing a real bug. If your project is FOSS, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
+The DORA industry report surveyed nearly 5,000 technology professionals: 90% used AI as part of their work and more than 80% believed it had increased their productivity, yet 30% reported little or no trust in the code it generated <Cite id="dora-2025" form="parenthetical" />. Its central finding is that AI acts as an amplifier, magnifying the strengths of high-performing organizations and the dysfunctions of struggling ones <Cite id="dora-2025" form="parenthetical" />.
 
-In academia, the major publishers converged on the same rule in 2023: an AI tool cannot be an author, because authorship carries accountability a tool cannot hold, and its use must be disclosed. [Nature's policy](https://www.nature.com/nature-portfolio/editorial-policies/ai) states both halves plainly, and the ACM's is equivalent. Research code is held to the reproducibility bar regardless of who or what wrote it. Universities differ on classroom policy, so read the one that governs you rather than assuming it matches the last course you took.
+The open-source world is more divided. Some projects ban AI-generated contributions outright: [Gentoo's council policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy) forbids contributing content created with the assistance of AI tools, and [NetBSD's commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html#tainted) presume code generated by a large language model to be tainted and bar it from the repository without prior written approval from the core team. Daniel Stenberg, curl's lead developer, has written about [AI-generated security reports](https://daniel.haxx.se/blog/2024/01/02/the-i-in-llm-stands-for-intelligence/) to curl's bug bounty: they look plausible, so each takes longer to research and discard, and that time comes out of fixing real bugs. If your project contributes to an open-source project, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
+
+In academia, publishers keep the accountability with people but differ on disclosure. [Nature Portfolio's policy](https://www.nature.com/nature-portfolio/editorial-policies/ai) grades AI use by risk, does not permit assigning authorship or accountability to an AI tool, and asks authors to disclose their use of AI. The [ACM's policy on authorship](https://www.acm.org/publications/policies/new-acm-policy-on-authorship) requires every author to be an identifiable human being and requires AI used to conduct the research, including writing its code, to be described in detail in the paper's methods section, but it no longer requires disclosure of AI used only to help write the paper. If your project's code feeds a paper, record which parts a tool wrote as you go, because a methods section written from memory months later won't be accurate. Universities and employers set their own rules as well, so read the one that governs your work.
+
+## References
+
+<References />
 
 ## Additional Readings
 
-The evidence on whether these tools actually help is thinner and stranger than
-the volume of writing about them suggests, so the first three entries are
-studies rather than opinion. Read at least the METR summary: it is the single
-most useful corrective to your own sense of how much faster you are going.
-The vendor documentation is here because prompting technique is
-tool-specific and changes with each release.
-
 **Sources and further reading**
 
-- [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/), METR: the randomized trial that found a 19% slowdown alongside a perceived speedup.
-- [Do Users Write More Insecure Code with AI Assistants?](https://arxiv.org/abs/2211.03622), Perry, Srivastava, Kumar, and Boneh: less secure code, more confidence that it was secure.
-- [DORA research](https://dora.dev/research/2025/dora-report/), Google Cloud: what AI adoption does to delivery performance when measured across organizations rather than anecdotes.
-- [Here's how I use LLMs to help me write code](https://simonwillison.net/2025/Mar/11/using-llms-for-code/), Simon Willison: the most practical working description of a verification-first habit.
-- [Exploring Generative AI](https://martinfowler.com/articles/exploring-gen-ai.html), Thoughtworks: a long-running field report from people deploying this on real engagements.
-- [Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview), Anthropic: the techniques that actually move output quality, from the vendor.
-- [AI policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy), Gentoo, and [commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html), NetBSD: two upstream projects that say no, and their reasoning.
-- [Artificial Intelligence editorial policy](https://www.nature.com/nature-portfolio/editorial-policies/ai), Nature: the disclosure and authorship rule your research partner is working under.
-- [Stack Overflow Developer Survey: AI](https://survey.stackoverflow.co/2025/ai): what practitioners report about adoption and trust, useful as a sanity check on your own bubble.
+- [Here's how I use LLMs to help me write code](https://simonwillison.net/2025/Mar/11/using-llms-for-code/), Simon Willison
+- [Exploring Generative AI](https://martinfowler.com/articles/exploring-gen-ai.html), Birgitta Böckeler and colleagues at Thoughtworks
+- [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview), Anthropic
+- [Best practices for using GitHub Copilot](https://docs.github.com/en/copilot/get-started/best-practices), GitHub
+- [Stack Overflow Developer Survey 2025: AI](https://survey.stackoverflow.co/2025/ai), Stack Overflow
 
 **Activities that exercise this**
 
-- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): decide what you will never delegate before you are tired.
+- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): decide what you'll never delegate before you're tired.
+- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure your delegation against the checks that would catch a mistake.
+- [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): give the tool the project context and the confidentiality rule.
 - [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass): the verification half, run on your own repository.
-- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checking generated work against what was actually asked for.
-- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure delegation against the gates that would catch it.
+- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): check generated work against what was actually asked for.
 - [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): delegation where the failure is visible.

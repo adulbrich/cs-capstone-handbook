@@ -1,0 +1,27 @@
+authors:
+  - Cui, K. Z.
+  - Demirer, M.
+  - Jaffe, S.
+  - Musolff, L.
+  - Peng, S.
+  - Salz, T.
+year: 2026
+title: >-
+  The Effects of Generative AI on High-Skilled Work: Evidence from Three
+  Field Experiments with Software Developers
+venue: Management Science
+kind: peer-reviewed
+url: https://pubsonline.informs.org/doi/10.1287/mnsc.2025.00535
+doi: 10.1287/mnsc.2025.00535
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Randomized field experiments at Microsoft, Accenture, and an anonymous
+      Fortune 100 company gave a random subset of developers an AI coding
+      assistant that suggests code completions. Each experiment is noisy and
+      results vary across them; combined across 4,867 developers, the
+      assistant increased completed tasks by 26.08% (standard error 10.3%),
+      and less experienced developers had higher adoption rates and greater
+      productivity gains.
+    locator: Abstract
