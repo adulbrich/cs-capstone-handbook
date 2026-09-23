@@ -91,9 +91,10 @@ assignment:
     SO2: 1
     SO4: 2
   canvas:
-    - name: "<Exact Canvas name; {n} numbers a family>"
+    - name: "<Exact Canvas name; {n} numbers a family, {title} names each entry>"
       group: <Canvas assignment group>
       weeks: { fall: [4, 8] }
+      titles: { fall: [<one per week listed>] }  # only with {title} in the name
       weight: <the family's percent of the term grade>
       points: 100
       submission: pdf | video | url | image | survey | none, or a list

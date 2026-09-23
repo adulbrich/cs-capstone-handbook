@@ -1,5 +1,5 @@
 ---
-import { canvasRows, rowName } from "../lib/canvas-entries.mjs";
+import { rowName, tableRows } from "../lib/canvas-entries.mjs";
 
 /**
  * CanvasEntries: the Canvas assignments an assignment page owns, as a table.
@@ -8,7 +8,8 @@ import { canvasRows, rowName } from "../lib/canvas-entries.mjs";
  * drift from what `scripts/validate-outcomes.mjs` checks or from what the
  * Canvas import generates. Each row is one family in one term: "Sprint Notes
  * 1 to 4" is four Canvas assignments, each with its own due date, grade and
- * submission.
+ * submission. A titled family ("Workshop {n}: {title}") gets one row per
+ * entry instead, since its entries differ by name.
  *
  * Accessibility notes:
  * - A real <table> with a <caption> and header cells.
@@ -23,7 +24,7 @@ import { canvasRows, rowName } from "../lib/canvas-entries.mjs";
  *   <CanvasEntries />
  */
 const { assignment } = Astro.locals.starlightRoute.entry.data;
-const rows = canvasRows(assignment?.canvas);
+const rows = tableRows(assignment?.canvas);
 
 const SUBMISSION_LABELS = {
   image: "Screenshot",
