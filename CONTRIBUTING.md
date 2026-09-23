@@ -14,8 +14,8 @@ them that way: see `docs/agents/code-review.md`.
 pick up          branch             commit                push               pull request          merge
 --------         ------             ------                ----               ------------          -----
 GitHub issue     fetch, then        lefthook:             lefthook:          build and audit       squash
-ready-for-*      branch from        prose, branch,        five validators    required (ruleset)    one PR,
-p0/p1/p2         origin/main        validators, biome,    and the build      review loop           one issue
+ready-for-*      branch from        prose, not main,      branch name,       required (ruleset)    one PR,
+p0/p1/p2         origin/main        validators, biome,    validators, build  review loop           one issue
 claim it         type/issue-slug    commit message                           recorded in the PR
 ```
 
@@ -29,7 +29,7 @@ claim it         type/issue-slug    commit message                           rec
    Name it `<type>/<issue>-<slug>`: the commit type, the issue it closes, and
    a few lowercase words, as in `fix/192-handoff-week`. The desktop app names
    a session's worktree branch `claude/<slug>-<hash>` before any hook runs, so
-   rename it before the first push: `git branch -m feat/<issue>-<slug>`.
+   rename it before the first push: `git branch -m <type>/<issue>-<slug>`.
    `scripts/check-branch-name.mjs` is the rule.
 3. **Commit by name.** Stage paths, never `git add -A`. The subject is
    Conventional Commits with a lowercase imperative:

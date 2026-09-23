@@ -34,9 +34,9 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
         run: node scripts/check-commit-message.mjs --range "origin/$BASE_REF..HEAD"
       # The branch is type/issue-slug, the same check lefthook runs at
-      # pre-push. Dependabot names its own branches.
+      # pre-push. The script exempts Dependabot's own dependabot/ branches.
       - name: Check branch name
-        if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
+        if: github.event_name == 'pull_request'
         env:
           HEAD_REF: ${{ github.head_ref }}
         run: node scripts/check-branch-name.mjs --name "$HEAD_REF"

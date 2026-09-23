@@ -6,12 +6,14 @@
  *
  * One implementation, two callers. lefthook runs it at `pre-push` on the
  * current branch, and CI runs it on a pull request's head branch, which
- * catches a push made with the hooks skipped.
+ * catches a push made with the hooks skipped. The pre-push check reads the
+ * checked-out branch, not the pushed refspec, so `git push origin HEAD:<name>`
+ * or pushing another branch is left to CI.
  *
  * The check sits at the push, not at branch creation, because the desktop
  * app creates a session's worktree branch (`claude/<slug>-<hash>`) before any
  * hook runs. Rename it before the first push:
- * `git branch -m feat/<issue>-<slug>`.
+ * `git branch -m <type>/<issue>-<slug>`.
  *
  * Usage:
  *   node scripts/check-branch-name.mjs                the current branch
@@ -42,16 +44,17 @@ export function checkBranchName(name) {
 
 function main(argv) {
   const [mode, ...rest] = argv;
-  const name =
-    mode === "--name"
-      ? rest.join(" ")
-      : execFileSync("git", ["branch", "--show-current"], {
-          encoding: "utf8",
-        }).trim();
-
-  // A detached HEAD has no branch to name; the push names its own refspec.
-  if (name.length === 0) {
-    return;
+  let name;
+  if (mode === "--name") {
+    name = rest.join(" ");
+  } else {
+    name = execFileSync("git", ["branch", "--show-current"], {
+      encoding: "utf8",
+    }).trim();
+    // A detached HEAD has no branch to name; CI checks the PR's head branch.
+    if (name.length === 0) {
+      return;
+    }
   }
 
   const problems = checkBranchName(name);
