@@ -7,11 +7,11 @@ sidebar:
 
 import { Badge, LinkCard } from '@astrojs/starlight/components';
 
-Design activities focus on both the technical and visual aspects. Activities tackle either one or the other. These activities will help you figure out what you need to implement and how you will make your software available (deployment).
+Design activities cover the technical and the visual side of your project, one or the other per activity. They help you figure out what to implement and how you'll make your software available (deployment).
 
 The technical design activities on this page are direct preparation for writing an RFC: architecture descriptions, technology evaluations, and design reviews are exactly the reasoning an RFC asks you to write down and defend.
 
-> "Design is not just what it looks like and feels like. Design is how it works." -- Steve Jobs
+> "Design is not just what it looks like and feels like. Design is how it works." (Steve Jobs)
 
 <LinkCard
   title="Technical Design guide"
@@ -35,7 +35,7 @@ Gain hands-on experience and enhance your technical skills by completing a tutor
 Consider doing one or more "Quick Start" guides to compare different technologies instead of an in-depth tutorial, see the [Evaluate Different Technologies](#evaluate-different-technologies) activity.
 :::
 
-Write a summary of what you learned and how you will apply it to your project. Outline features, if any, that you learned about and how it will help with specific concerns or features.
+Write a summary of what you learned and how you'll apply it to your project. Outline features, if any, that you learned about and how it will help with specific concerns or features.
 
 A good output is a summary of what you learned and the specific features or concerns in your project it applies to.
 
@@ -89,12 +89,14 @@ Draw the system your team is about to build, at the level of zoom your project p
 - **Pick a notation**: a C4 context plus container diagram fits most projects; use 4+1 views only if your readers have distinct concerns. The [Technical Design guide](/guides/technical-design/#system-level-design-architecture) explains the options.
 - **Identify core components**: list the major pieces (frontend, backend, database, external APIs, pipeline stages, data sources, firmware modules).
 - **Define interactions**: show how components communicate (API calls, queues, file formats, data flows) and name the protocol on each edge.
-- **Mark the risky parts**: which component is new to the team, which integration is unproven, and what you will spike first.
+- **Mark the risky parts**: which component is new to the team, which integration is unproven, and what you'll spike first.
 - **State scalability, security, and performance assumptions**: one line each, or "not a concern for this project" with the reason.
 
-Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
-A good output is a diagram of the architecture and a brief explanation of each component and its role in the system. This diagram belongs in your repository docs, and it anchors the design section of an RFC.
+Keep the diagram in your repository docs; it anchors the design section of an RFC.
+
+A good output is a diagram of the architecture and a brief explanation of each component and its role in the system.
 
 ## High-Fidelity Prototype
 
@@ -133,7 +135,7 @@ Develop a comprehensive [test plan](https://en.wikipedia.org/wiki/Test_plan) to 
 3. Determine Test Methods: Choose manual or automated testing.
 4. Set Success Criteria: Define what constitutes a pass/fail result.
 
-Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is a test plan document outlining test cases, methods, and criteria.
 
@@ -141,7 +143,7 @@ A good output is a test plan document outlining test cases, methods, and criteri
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-[Software deployment](https://en.wikipedia.org/wiki/Software_deployment) is all the things that need to happen for a software system to be  available for use.
+[Software deployment](https://en.wikipedia.org/wiki/Software_deployment) is all the things that need to happen for a software system to be available for use.
 
 Outline the steps needed to either:
 
@@ -154,7 +156,9 @@ That means:
 2. Create a Deployment Checklist: Include steps like configuration, testing, build, integration, uploads, release, and backups. 
 3. Define Rollback Plan: Plan actions if deployment fails.
 
-A good output is a deployment plan detailing environment, steps, and rollback procedures. See the [Shipping guide](/guides/shipping/) for the lead times your deployment path involves.
+See the [Shipping guide](/guides/shipping/) for the lead times your deployment path involves.
+
+A good output is a deployment plan detailing environment, steps, and rollback procedures.
 
 ## Describe your API Reference
 
@@ -179,14 +183,14 @@ The [seven foundational principles](https://www.ietf.org/ietf-ftp/slides/slides-
 1. Proactive not reactive; preventive not remedial
 2. Privacy as the default setting
 3. Privacy embedded into Design
-4. Full functionality -- positive-sum, not zero-sum
-5. End-to-end security -- full lifecycle protection
-6. Visibility and transparency -- keep it open
-7. Respect for user privacy -- keep it user-centric
+4. Full functionality: positive-sum, not zero-sum
+5. End-to-end security: full lifecycle protection
+6. Visibility and transparency: keep it open
+7. Respect for user privacy: keep it user-centric
 
 Read the principles in detail, then write a report that explains how your software implements each one, or what needs to be done to get there. 
 
-A good output is your project assessed against the seven principles, naming which already hold, which you will implement, and which do not apply and why.
+A good output is your project assessed against the seven principles, naming which already hold, which you'll implement, and which don't apply and why.
 
 ## UI Design Guidelines
 
@@ -217,17 +221,15 @@ A good output is your updated UI wireframes or a demo of your updated software w
 
 The [GenderMag Method](https://gendermag.org/index.php) enables software practitioners (e.g., developers, managers, UX professionals) to find gender-inclusivity "bugs" in their software, and then fix the bugs they find.
 
-Apply the method and write a summary of your findings and what you will change in your software.
+Apply the method and write a summary of your findings and what you'll change in your software.
 
-A good output is a list of the inclusivity bugs you found and what you will change in the software because of them.
+A good output is a list of the inclusivity bugs you found and what you'll change in the software because of them.
 
 ## Peer Technical Design Review
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
 Two other teams review your technical design and you review theirs, over Zoom or in person. Two to three hours in total, once per RFC cycle.
-
-Your team will receive reviews from two other teams and will review these two teams. 
 
 As the reviewing team, your job is to think critically about the other team's design: 
 
@@ -245,7 +247,7 @@ Your report should be a one page diagram and one page of text covering the follo
 
 ### Explanation of the Design
 
-This exercise is focused on the internal design and architecture of the software -- not the user experience.
+This exercise covers the internal design and architecture of the software, not the user experience.
 
 - What are the components? 
 - What libraries and tools are used? 
@@ -267,7 +269,7 @@ A rationale for why this design meets the requirements/specification.
 - Does the design facilitate managing that change in a modular fashion? 
 - What are core assumptions that cannot be changed?
 
-Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is the written review you gave each of the two teams, plus a note on what you changed in your own design after receiving theirs.
 
@@ -275,9 +277,9 @@ A good output is the written review you gave each of the two teams, plus a note 
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
 
-Take a look at a book about software design, and discuss in the context of your project. One good approach is that each team member skims several chapters, so that collectively you have examined the entire book. The books listed here are a starting point; you might find other interesting books worth reading.
+Take a look at a book about software design, and discuss in the context of your project. One good approach is that each team member skims several chapters, so that collectively you've examined the entire book. The books listed here are a starting point; you might find other interesting books worth reading.
 
-Write up what you learned and how you will apply it to your project.
+Write up what you learned and how you'll apply it to your project.
 
 - [Clean Architecture](https://www.goodreads.com/book/show/18043011-clean-architecture) by Robert C. Martin
 - [Release It!: Design and Deploy Production-Ready Software](https://www.goodreads.com/book/show/1069827.Release_It_) by Michael T. Nygard
@@ -292,9 +294,9 @@ A good output is a written summary of what the team learned and the specific des
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/>
 
-If you are collecting data through surveys or interviews, write clear, unbiased, non-leading questions, i.e., [good questions](https://owl.purdue.edu/owl/research_and_citation/conducting_research/conducting_primary_research/interview_and_survey_questions.html). You'll also have to consider what type of data (qualitative, quantitative) you're collecting, their purpose, and how you are going to analyze the answers.
+If you're collecting data through surveys or interviews, write clear, unbiased, non-leading questions, i.e., [good questions](https://owl.purdue.edu/owl/research_and_citation/conducting_research/conducting_primary_research/interview_and_survey_questions.html). You'll also have to consider what type of data (qualitative, quantitative) you're collecting, their purpose, and how you're going to analyze the answers.
 
-For this activity, explain what medium you will use to collect the answers, write your survey or interview questions, the expected types of answers for each, and how you will use them for analysis and answering your research question(s).
+For this activity, explain what medium you'll use to collect the answers, write your survey or interview questions, the expected types of answers for each, and how you'll use them for analysis and answering your research question(s).
 
 A good output is your question set, with the data type and purpose of each question, and a note on how you removed leading or biased phrasing.
 
@@ -343,12 +345,12 @@ A good output is a security plan that details risks, countermeasures, and compli
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Review one screen or output of your system against accessibility basics, before it is built rather than after. Accessibility retrofitted at the end is a redesign; designed in from the start it is usually free.
+Review one screen or output of your system against accessibility basics before it's built, while a fix is a design change rather than a rebuild.
 
-- Contrast and color: text meets [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA contrast ratios, and no information is carried by color alone (a red border meaning "error" is invisible to some users; a red border plus the word "error" is not).
+- Contrast and color: text meets [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA contrast ratios, and no information is carried by color alone (a red border meaning "error" is invisible to some users; a red border plus the word "error" isn't).
 - Target size and spacing: interactive elements are large enough and far enough apart to hit reliably, including on a phone and for users with motor impairments.
 - Focus states: every interactive element shows clearly when it has keyboard focus, and the tab order follows the visual order.
-- Semantics before ARIA: a real `<button>` is accessible by default; a `<div>` with a click handler and four ARIA attributes usually is not. Reach for the correct element first.
+- Semantics before ARIA: a real `<button>` is accessible by default; a `<div>` with a click handler and four ARIA attributes usually isn't. Reach for the correct element first.
 - Labels: every input has a programmatically associated label, not just placeholder text.
 
 Then check your work with the [manual accessibility pass](/guides/accessibility/#manual-accessibility-testing): keyboard only, screen reader, 200% zoom. To automate the mechanical parts, see [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci).
@@ -361,13 +363,13 @@ A good output is a marked-up screenshot or a short list of specific fixes, each 
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Get the number you intend to beat running on your own machine, before you try to beat it. Budget a week of calendar time, because this takes longer than anyone expects.
+Get the number you intend to beat running on your own machine, before you try to beat it. Budget about a week of calendar time.
 
 - **Pick the specific published result**: paper, table, row, number.
 - **Get the authors' code running** if it exists. Expect broken dependencies, missing data, and undocumented preprocessing.
 - **Run it on the data it was published on**, and compare your number to theirs.
 - **Write down the gap and why it exists**: different hardware, a different data version, a preprocessing step the paper never mentioned, or a genuine failure to reproduce.
-- **If you cannot reproduce it, say so explicitly** and choose a baseline you can. A number you could not reproduce is not a number you can claim to beat.
+- **If you can't reproduce it, say so explicitly** and choose a baseline you can, since you can't claim to beat a number you couldn't reproduce.
 
 A good output is your reproduced number next to the published one, with a written explanation of any gap, committed to the repository.
 
@@ -375,15 +377,13 @@ A good output is your reproduced number next to the published one, with a writte
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Get your project to the state where a stranger runs one command and gets your numbers. Half a day, and it is the difference between a result and a rumor.
+Get your project to the state where a stranger runs one command and gets your numbers. Half a day.
 
 - **Pin your dependencies**: a lock file or a container image, not a list of package names.
 - **Version or precisely reference your data**, including which split and which preprocessing.
 - **Seed every run**, and record the seeds.
 - **Write the one command** that goes from clean checkout to result table, and put it in the README.
-- **Test it literally**: have a teammate who did not build it, or your partner's graduate student, run it fresh on a different machine and check that the numbers match.
-
-That last step is the activity. A pipeline that only runs on the machine of the person who wrote it has not been reproduced, it has been remembered.
+- **Test it literally**: have a teammate who didn't build it, or your partner's graduate student, run it fresh on a different machine and check that the numbers match.
 
 A good output is a repository tag plus a README command that a teammate ran on a different machine and got your result table from.
 
@@ -391,7 +391,7 @@ A good output is a repository tag plus a README command that a teammate ran on a
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
 
-For game projects. Write down the intended player experience, the mechanics that produce it, and the dynamics you expect to emerge, using the MDA (Mechanics, Dynamics, Aesthetics) framework, before development begins. Doing it early is what lets the team argue about design goals instead of about code. Split the three parts among team members.
+For game projects. Write down the intended player experience, the mechanics that produce it, and the dynamics you expect to emerge, using the [MDA (Mechanics, Dynamics, Aesthetics) framework](https://users.cs.northwestern.edu/~hunicke/MDA.pdf), before development begins. Doing it early is what lets the team argue about design goals instead of about code. Split the three parts among team members.
 
 A good output is your mechanics, dynamics, and aesthetics written out, with the intended player experience stated first and the mechanics justified against it.
 
@@ -399,7 +399,7 @@ A good output is your mechanics, dynamics, and aesthetics written out, with the 
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
 
-For game projects. Write down your team's hypotheses about what will make the game fun, each as a claim a playtest can confirm or refute. They are what you test first and what you cut when a playtest says otherwise.
+For game projects. Write down your team's hypotheses about what will make the game fun, each as a claim a playtest can confirm or refute. They're what you test first and what you cut when a playtest says otherwise.
 
 A good output is a written list of your fun hypotheses, each with how you plan to test it in playtesting.
 

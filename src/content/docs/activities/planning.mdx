@@ -7,9 +7,9 @@ sidebar:
 
 import { Badge, LinkCard } from '@astrojs/starlight/components';
 
-Planning activities are designed to help you figure out your timeline and deliverables. They work best if combined with requirements and design. Be transparent about things you don't know yet (risks) and how you will get those answers.
+Planning activities help you figure out your timeline and deliverables. They work best combined with the requirements and design activities. Say what you don't know yet (risks) and how you'll get those answers.
 
-> "Plans are worthless, but planning is everything." -- Dwight D. Eisenhower, National Defense Executive Reserve Conference, 1957
+> "Plans are worthless, but planning is everything." (Dwight D. Eisenhower, National Defense Executive Reserve Conference, 1957)
 
 <LinkCard
   title="Planning and Prioritization guide"
@@ -21,16 +21,16 @@ Planning activities are designed to help you figure out your timeline and delive
 
 <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
-Decide what "it worked" will mean, in numbers, while you are still far enough from the deadline that the result can't sway you. One to two hours as a team, once when you first commit to what shipping will mean, and again when the deadline is close enough to check the number.
+Decide what "it worked" will mean, in numbers, while you're still far enough from the deadline that the result can't sway you. One to two hours as a team, once when you first commit to what shipping will mean, and again when the deadline is close enough to check the number.
 
 Every project commits to 2 or 3 metrics, and what makes a good one differs by project, so start with the subsection closest to yours. Product and game teams can borrow from the PMF question, AARRR, and HEART in the [guide](/guides/planning/#success-metric-frameworks).
 
 Four rules hold whatever you build:
 
 - **Write the metric and the decision rule together**: which value is success, which is failure, and what you do in each case.
-- **Commit it, dated, before you measure.** Choosing the metric after seeing results is how well-meaning people mislead themselves.
+- **Commit it, dated, before you measure.** A metric chosen after seeing results can be picked, even unintentionally, to fit whatever the data already shows.
 - **Name the instrument**: analytics (Plausible, Google Analytics, Hotjar), database counts, benchmark output, interviews, surveys.
-- **Beware vanity metrics.** Downloads mean nothing if nobody comes back. Ask what number would make your partner call it a success.
+- **Beware vanity metrics.** Downloads count people who tried it once; retention counts the people who came back. Ask what number would make your partner call it a success.
 
 ### New Product or Game
 
@@ -40,18 +40,18 @@ Usage and retention are the point, so measure people, not code:
 - Average session duration, task success rate
 - Net Promoter Score, positive mentions or up-votes
 
-AARRR's activation and retention and HEART's task success are the usual picks; ProductPlan's [metrics list](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf) has more.
+AARRR's activation and retention and HEART's task success are good first picks; ProductPlan's [metrics list](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf) has more.
 
 ### Research
 
-Your metric decides what counts as a result, so it is a hard-to-reverse decision: change it late and every earlier run stops being comparable.
+Your metric decides what counts as a result, so it's a hard-to-reverse decision: change it late and every earlier run stops being comparable.
 
-- **The primary metric**, and why it is right for the question rather than easiest to compute.
+- **The primary metric**, and why it's right for the question rather than easiest to compute.
 - **The comparison**: against which baseline, on which data split, over how many runs, with which seeds.
 - **The decision rule**: what value supports the hypothesis, what value refutes it.
-- **Secondary metrics you will report regardless of outcome**, including the ones that could make you look bad.
+- **Secondary metrics you'll report regardless of outcome**, including the ones that could make you look bad.
 
-Pair this with [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline); a metric only means something next to a number you have reproduced.
+Pair this with [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline); a metric only means something next to a number you've reproduced.
 
 ### FOSS
 
@@ -65,14 +65,14 @@ A trivial patch merged early is a stronger signal than a large one still unmerge
 
 ### Consultancy
 
-Your top rungs describe actions the **partner** takes, so measure their adoption rather than your output:
+Your top rungs describe actions the partner takes, so measure their adoption rather than your output:
 
 - Is it running in their environment, and whose environment is it
 - How many of their people use it, and for what task
 - Has it cleared their security or IT review, and when
 - What would have to be true for them to call it production
 
-Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is 2 or 3 metrics with their decision rules and a named instrumentation method for at least one, committed and dated.
 
@@ -98,18 +98,18 @@ Here are common feasibility concerns:
 - Performance concerns
 - Scalability concerns
 - Fault tolerance concerns
-- Use of a technology the team has not used before
-- Use of a third-party component or service the team has not used before
-- Use of a legacy system the team has not used before
+- Use of a technology the team hasn't used before
+- Use of a third-party component or service the team hasn't used before
+- Use of a legacy system the team hasn't used before
 - Dependency on new or related changes by other teams
 
-The idea with a feasibility prototype is to write code, quick and dirty, generally, to tackle items listed above. You could for example build a basic app in a language you have never used before, compare different algorithms on a subset of data, or make sure you can compile legacy code. This code is most likely intended to be thrown away.
+The idea with a feasibility prototype is to write code, quick and dirty, generally, to tackle items listed above. You could for example build a basic app in a language you've never used before, compare different algorithms on a subset of data, or make sure you can compile legacy code. Expect to throw this code away.
 
-On the user side, low-fidelity prototypes are interactive wireframes that only focus on the information and workflow of your software, not the visual design nor differences in the actual data. High-fidelity prototypes are very similar but you'd have to look closer to figure out they're fake. The visual design and data are very realistic, but the data is not live. Consider [Figma](https://www.figma.com/) for your interactive use prototypes; you can also use pen and paper, PowerPoint, or anything else you feel comfortable with.
+On the user side, low-fidelity prototypes are interactive wireframes that only focus on the information and workflow of your software, not the visual design nor differences in the actual data. High-fidelity prototypes are very similar but you'd have to look closer to figure out they're fake. The visual design and data are very realistic, but the data isn't live. Consider [Figma](https://www.figma.com/) for your interactive use prototypes; you can also use pen and paper, PowerPoint, or anything else you feel comfortable with.
 
 Finally, there's the live-data prototype. Consider it a substantially smaller implementation of the eventual product. The quality, performance, and functionality are very limited, but it runs well enough to collect data for specific use cases. This is the type of prototype you can start iterating on, so figure out feasibility first.
 
-A good output is a plan with the types of prototypes you will build, in what order, and in what time frame, indicating which concerns each one tackles.
+A good output is a plan with the types of prototypes you'll build, in what order, and in what time frame, indicating which concerns each one tackles.
 
 ## Gantt Chart
 
@@ -118,7 +118,7 @@ A good output is a plan with the types of prototypes you will build, in what ord
 A [Gantt chart](https://www.atlassian.com/agile/project-management/gantt-chart) is a visual project management tool that displays tasks and timelines. It consists of a horizontal bar chart, where each bar represents a task, showing its start date, duration, and end date. The chart helps in tracking project progress, managing deadlines, and identifying dependencies between tasks, making it easier to plan and monitor the project's workflow.
 
 :::note
-This activity is easier to complete if you've already worked on the requirements and know what you need to build. You should anyway plan contingencies.
+This activity is easier to complete if you've already worked on the requirements and know what you need to build. Plan contingencies either way.
 :::
 
 For this activity, define your tasks, set the timeline (for all three terms), and create a readable Gantt chart. You could use the Roadmap view on GitHub Projects for that purpose.
@@ -138,7 +138,7 @@ Map task dependencies and identify the critical path to ensure efficient project
 3. Create a Critical Path Diagram: Map out the sequence of dependent tasks and identify the longest path (critical path) that determines the project timeline.
 4. Analyze and Adjust: Identify potential bottlenecks and adjust timelines accordingly.
 
-Run this a second time with an AI agent and set the two outputs side by side; the differences are the lesson, and either version can be the one you keep.
+Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is a dependency map and critical path analysis, including identified bottlenecks and adjustments.
 
@@ -150,9 +150,9 @@ Turn your backlog of requirements or tasks into a ranked list with a reason next
 
 - **Pick one method** from the [guide](/guides/planning/#prioritization-methods): MoSCoW for a first pass, impact-effort or cost-value when the argument is about return on time, Eisenhower for tasks rather than features.
 - **Estimate before you plot**: put a rough effort in hours on each item first, or the matrix becomes a vote on enthusiasm.
-- **Apply it to the whole backlog**: every item gets a bucket or a quadrant, including the ones you would rather not discuss.
+- **Apply it to the whole backlog**: every item gets a bucket or a quadrant, including the ones you'd rather not discuss.
 - **Check dependencies**: an item is only ready when nothing above it blocks it. Move blocked items down.
-- **Write the reason**: one line per item explaining its rank, readable by a teammate who was not in the room.
+- **Write the reason**: one line per item explaining its rank, readable by a teammate who wasn't in the room.
 
 A good output is your prioritized list of requirements or tasks, the method you used named, and a stated reason for each item's rank.
 
@@ -167,7 +167,9 @@ Develop a risk management plan to identify and mitigate potential project risks.
 3. Develop Mitigation Strategies: Create contingency plans to address each risk, minimizing its impact.
 4. Monitor and Review: Establish a system for tracking risks and updating the plan as the project progresses.
 
-A good output is a risk management plan detailing risks, their categorization (impact/likelihood), and mitigation strategies. The external-world risks you surface here (approvals, reviews, recruitment) belong in your prerequisites list, because they are the ones whose lead times you do not control.
+Put the external-world risks you surface here (approvals, reviews, recruitment) in your prerequisites list too, because you don't control their lead times.
+
+A good output is a risk management plan detailing risks, their categorization (impact/likelihood), and mitigation strategies.
 
 ## SWOT Analysis
 
@@ -196,7 +198,7 @@ Set up a Kanban board to visualize and manage your project's workflow effectivel
 4. Limit Work in Progress (WIP): Set WIP limits to avoid overloading team members.
 5. Team Agreement: Discuss the process and tool with your team and ensure everyone agrees.
 
-A good output is your live Kanban board and a brief explanation of its structure. A well-kept board makes writing your sprint notes almost mechanical.
+A good output is your live Kanban board and a brief explanation of its structure.
 
 ## Responsibility Assignment Matrix (RACI)
 
@@ -243,7 +245,9 @@ The [Definition of Done (DoD)](https://www.atlassian.com/agile/project-managemen
 2. Include Quality Standards: Ensure the criteria cover quality aspects like performance benchmarks, usability, or security.
 3. Team Agreement: Discuss the definition with your team and ensure everyone agrees.
 
-A good output is a short document outlining the agreed-upon Definition of Done for your project. It is the task-level sibling of a project-level definition of shipped; practicing on tasks makes the project-level version much easier.
+A Definition of Done is the task-level sibling of a project-level definition of shipped, and practicing on tasks makes the project-level version easier to write.
+
+A good output is a short document outlining the agreed-upon Definition of Done for your project.
 
 ## How Might We Questions
 
@@ -268,7 +272,9 @@ A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known
 3. Identify major categories of causes (e.g., People, Process, Tools, Environment) and draw "bones" branching off the spine.
 4. Brainstorm and list possible causes under each category.
 
-A good output is a completed Fishbone Diagram (hand-drawn or created with a diagramming tool) for a key problem in your project, along with a short summary of the main causes identified. This is also a useful tool when analyzing root causes for an incident postmortem.
+The same diagram works for the root-cause analysis of an incident postmortem.
+
+A good output is a completed Fishbone Diagram (hand-drawn or created with a diagramming tool) for a key problem in your project, along with a short summary of the main causes identified.
 
 ## Software Release and Versioning
 
@@ -281,7 +287,9 @@ Plan the release process for your software, including version control and deploy
 3. Plan Deployment: Identify how and where the software will be deployed or accessed (e.g., cloud platform, local servers, GitHub repository assets).
 4. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
-A good output is a release plan document that includes versioning details and deployment steps. It prepares you for an actual release, and the [Shipping guide](/guides/shipping/) lists the lead times your release path involves.
+The [Shipping guide](/guides/shipping/) lists the lead times your release path involves.
+
+A good output is a release plan document that includes versioning details and deployment steps.
 
 ## Software Development Process
 
@@ -295,7 +303,9 @@ Define and plan the software development process for your project to ensure clea
 4. Assign Roles: Clarify team roles and responsibilities at each stage.
 5. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
-A good output is a document outlining the chosen process, phases, milestones, and team roles. Much of this belongs in your team charter.
+Much of this belongs in your team charter.
+
+A good output is a document outlining the chosen process, phases, milestones, and team roles.
 
 ## Map Your External Approvals
 
@@ -303,7 +313,7 @@ A good output is a document outlining the chosen process, phases, milestones, an
 
 Find every approval your project needs from someone outside your team, and start the slowest one this week. Ninety minutes in the first fortnight, then a standing agenda item.
 
-Research and consultancy projects fail on calendars far more often than on code. IRB review takes weeks even for an exempt determination, data use agreements between institutions can take a full term, and an enterprise security review is measured in months. None of those clocks run faster because you started late.
+Research and consultancy projects depend on approval clocks the team doesn't control. IRB review takes weeks even for an exempt determination, data use agreements between institutions can take a full term, and an enterprise security review is measured in months.
 
 - **Ask directly** in your first partner or faculty meeting: what approvals does this project need, who files them, and how long do they usually take?
 - **List every clock**: [IRB or human-subjects review](/activities/user/#complete-an-irb-application), data use agreements, security or IT review, vendor onboarding, account provisioning, CLA signing for FOSS, license review, export control.
