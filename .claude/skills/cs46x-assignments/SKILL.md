@@ -356,6 +356,9 @@ assuming a number:
 - **Two bands, 10 fields.** Pass/fail rubrics: `Pass` at full, `Fail` at 0.
 - **Four bands, 16 fields.** `defense` adds a `Missing` band at 0 for an
   unexcused no-show, which the other rubrics state in prose instead.
+- **Five or six bands.** The surveys use the instrument's own scale: the
+  peer ratings and the Midterm Pulse have five, the partner's spring
+  Verification and Validation ladder six.
 
 Every Canvas rubric directory is rendered by a page. `individual-contribution/`
 is rendered on Sprint Notes, `workshop-activities/` on Workshop Activities; both
