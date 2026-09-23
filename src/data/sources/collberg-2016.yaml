@@ -1,0 +1,27 @@
+authors:
+  - Collberg, C.
+  - Proebsting, T. A.
+year: 2016
+title: Repeatability in Computer Systems Research
+venue: Communications of the ACM
+kind: peer-reviewed
+url: https://cacm.acm.org/research/repeatability-in-computer-systems-research/
+doi: 10.1145/2812803
+verified: full-text
+claims:
+  - claim: >-
+      The study examined 601 papers from ACM systems conferences and
+      journals, tried to locate the code backing their results, and tried to
+      build it, without checking whether the published results reproduced.
+    locator: Introduction, The study; Study Process
+  - claim: >-
+      Excluding papers whose results were not backed by code, research
+      assistants built the code within 30 minutes for 32.3% of papers
+      (weak repeatability A), and with unlimited time but without the lead
+      developer's help for 48.3% (weak repeatability B).
+    locator: Study Process; Study Results
+  - claim: >-
+      The lead developer was often unavailable, for reasons including the
+      student responsible for development having graduated and the authors'
+      email addresses no longer working.
+    locator: Study Results

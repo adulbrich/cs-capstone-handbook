@@ -27,3 +27,29 @@ claims:
       short-lived branches merged into trunk at least daily are consistent
       with continuous integration.
     locator: Technical practices, Trunk-based development, p. 40
+  - claim: >-
+      Test automation, deployment automation, continuous integration with
+      trunk-based development, comprehensive version control, and
+      integrating security into software delivery work all positively
+      affected continuous delivery; test automation was the biggest
+      contributor.
+    locator: Technical practices, p. 34
+  - claim: >-
+      About 3,200 people participated in the survey.
+    locator: Demographics and firmographics, p. 8
+  - claim: >-
+      High performers reported deploying on demand (multiple deploys per
+      day); low performers, between once per week and once per month.
+    locator: IT performance and organizational performance, Table 2, p. 23
+  - claim: >-
+      The report notes that its normalized figure of four deploys per day
+      for high performers is conservative for companies like Etsy, which
+      reports deploying 80 times per day, and Amazon and Netflix, which
+      deploy thousands of times per day aggregated over the hundreds of
+      services in their production environments.
+    locator: IT performance and organizational performance, Throughput, p. 24
+  - claim: >-
+      Respondents were recruited by snowball sampling, and the report notes
+      the sample is likely limited to organizations and teams familiar with
+      DevOps.
+    locator: Methodology, Target population and sampling method, p. 50

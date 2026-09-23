@@ -1,0 +1,22 @@
+authors:
+  - Oppenheimer, D.
+  - Ganapathi, A.
+  - Patterson, D. A.
+year: 2003
+title: Why Do Internet Services Fail, and What Can Be Done About It?
+venue: 4th USENIX Symposium on Internet Technologies and Systems (USITS '03)
+kind: peer-reviewed
+url: https://www.usenix.org/conference/usits-03/why-do-internet-services-fail-and-what-can-be-done-about-it
+verified: full-text
+claims:
+  - claim: >-
+      In a study of user-visible failures at three large-scale internet
+      services, operator error was the leading cause of service failure in
+      two of the three.
+    locator: Abstract; Analysis of failure causes, Service failure root cause
+  - claim: >-
+      In all three services, more than 50% of the operator errors that led
+      to service failures were configuration errors, and operator errors
+      generally arose when operators were making changes to the system, such
+      as deploying or upgrading software.
+    locator: Analysis of failure causes, Service failure root cause

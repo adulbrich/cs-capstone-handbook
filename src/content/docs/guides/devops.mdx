@@ -1,38 +1,40 @@
 ---
 title: DevOps and Deployment
-description: How to deploy your capstone project reliably, from local development to production, using CI/CD pipelines and modern hosting platforms.
+description: How to deploy your project reliably, from local development to production, using CI/CD pipelines and hosting platforms.
 sidebar:
   order: 15
 ---
 
-{/* check-prose: legacy-opener */}
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
-import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+Your project runs on your laptop, and sooner or later it has to run somewhere else: on a teammate's machine, at a URL your project partner can open, on a server that stays up after you close the lid. This page covers that path, from a setup any teammate can reproduce, through a CI workflow that checks every pull request, to automatic deployment, environments, and a rollback plan. It doesn't cover the repository settings that make CI a required check, which are in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch), or keeping secrets out of your code, which is in [Security](/guides/security/).
 
-Read this when you set up CI or deploy for the first time, ideally early; it gives you the pipeline shape, the environments, and a rollback plan.
+:::note[tl;dr]
+- Make setup a README section that takes a new teammate from `git clone` to a running app without asking anyone.
+- Add a CI workflow early that runs the tests, the linter, and the build on every pull request, then make it a required check.
+- Deploy a near-empty app to production in your first weeks, so the hardest deployment happens while nothing depends on it.
+- Deploy to a platform-as-a-service on every merge to `main`; move to a VM only for something the platform can't do.
+- Keep configuration in environment variables, commit a `.env.example`, and never commit `.env`.
+- Change the database schema only through migrations the deployment applies.
+- Before real users arrive, know where production errors show up and how to roll back.
+:::
 
-DevOps is the set of practices that bridges writing code and running it in production. Deployment is the act of getting your software from a repository to a place where users can actually use it. Without a deliberate approach to both:
-
-- Deployments happen manually and inconsistently, with each team member doing it slightly differently.
-- Bugs that the team caught locally slip through because the production environment behaves differently.
-- A deployment breaks the live system, and the team has no way to roll back quickly.
-- Setting up a development environment takes hours of tribal knowledge instead of a single command.
-
-The goal is not to become infrastructure experts. It is to reach a state where deploying is boring: predictable, repeatable, and recoverable when something goes wrong.
+[Continuous integration](https://martinfowler.com/articles/continuousIntegration.html) (CI) is, in Martin Fowler's definition, the practice of merging everyone's changes into the shared codebase at least daily and verifying each merge with an automated build that includes the tests. Continuous deployment (CD) takes the next step: every change that passes those checks goes to production automatically. Fowler [distinguishes it from continuous delivery](https://martinfowler.com/bliki/ContinuousDelivery.html), where every change could go to production but a person decides when. DevOps is the wider set of practices that connect writing code to running it, CI and CD included.
 
 ## Development Environment Setup
 
-Before the team can deploy anything, every member needs to be able to run the project locally. This sounds trivial, but "it works on my machine" is one of the most common sources of wasted time in team projects.
+Before anyone deploys, every teammate has to be able to run the project locally. Each difference between your machines (a Node version, a missing system library, a database at a different schema) becomes a bug someone debugs without knowing that's what it is.
 
-A good development setup has three properties:
+A good setup has three properties:
 
-1. **Documented.** A new team member (or an AI coding tool) can go from cloning the repository to running the application by following a README. No Slack messages, no "ask Jordan, they know how to set it up."
-2. **Reproducible.** Every team member runs the same versions of dependencies, the same database schema, and the same configuration. Differences between environments are a source of bugs that are painful to diagnose.
-3. **Fast.** Getting started should take minutes, not hours. If setup requires installing six tools and configuring three services manually, automate it.
+1. **Documented.** A new teammate (or an AI coding tool) goes from cloning the repository to a running application by following the README. No Slack messages, no "ask Jordan, they know how to set it up."
+2. **Reproducible.** Everyone runs the same dependency versions, the same database schema, and the same configuration, so a bug on one machine is a bug on all of them.
+3. **Fast.** Setup takes minutes. If it needs six tools installed and three services configured by hand, script it.
 
 ### The README as Setup Guide
 
-Your repository's README should include a "Getting Started" section that covers:
+Put a "Getting Started" section in your README that lists the prerequisites and the exact commands:
 
 ```markdown
 ## Getting Started
@@ -51,17 +53,11 @@ npm run db:migrate
 npm run dev                  # starts the dev server at localhost:3000
 ```
 
-If the project has multiple services (a frontend, a backend, a database), document how to start each one and in what order.
-
-<LinkCard
-  title="Documentation"
-  href="/guides/documentation/"
-  description="Writing effective README and CONTRIBUTING files."
-/>
+If the project has several services (a frontend, a backend, a database), document how to start each one and in what order. The [Documentation guide](/guides/documentation/) covers the rest of the README.
 
 ### Containers for Consistency
 
-If the project has complex dependencies (a specific database version, a message queue, system-level libraries), Docker and Docker Compose can standardize the environment across the team:
+[Docker](https://docs.docker.com/get-started/) packages an application with its runtime and system libraries into an image that runs the same way on every machine, and [Docker Compose](https://docs.docker.com/compose/) starts several containers together from one file. When a project depends on a specific database version, a message queue, or system libraries that are hard to install consistently, a Compose file gives the whole team the same stack:
 
 ```yaml
 # docker-compose.yml
@@ -87,21 +83,17 @@ volumes:
   pgdata:
 ```
 
-With this file, `docker compose up` starts the entire stack regardless of what is installed on each team member's machine. This is especially valuable when the team uses different operating systems.
+With this file, `docker compose up` starts the whole stack on any machine with Docker installed, which matters most when teammates use different operating systems.
 
-Containers are not required for every project. A simple frontend application or a Python script may not need them. Use containers when environment differences are causing problems or when the project has dependencies that are difficult to install consistently.
-
-:::tip[.env.example]
-Include a `.env.example` file in the repository with placeholder values for every required environment variable. This documents what configuration the application needs without exposing actual secrets. Each team member copies it to `.env` and fills in their own values.
-:::
+Containers cost something too: build time, images to manage, and a layer between you and the process when you debug. If `npm install && npm start` works for everyone on the team, you don't yet have the problem Docker solves. Adopt it when environment differences start causing bugs, when you need to match a production runtime exactly, or when your deployment target requires an image.
 
 ## Continuous Integration (CI)
 
-Continuous integration means automatically running checks (tests, linting, type checking, builds) on every push and pull request. CI catches problems before they reach the main branch, which means before they affect the rest of the team.
+CI runs your checks (tests, linting, type checking, a build) on every push and pull request, so a problem shows up on the pull request that caused it instead of on `main`, where it blocks everyone.
 
 ### GitHub Actions
 
-GitHub Actions is the most common CI platform for GitHub-hosted projects. It is free for public repositories and has generous limits for private ones. A basic workflow file lives in `.github/workflows/`:
+[GitHub Actions](https://docs.github.com/en/actions) is the CI service built into GitHub. Its minutes are free on public repositories, and private repositories get a monthly quota that depends on the account's plan; [GitHub's billing page](https://docs.github.com/en/billing/concepts/product-billing/github-actions) has the current numbers. A workflow is a YAML file in `.github/workflows/`, written in the [workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax):
 
 ```yaml
 # .github/workflows/ci.yml
@@ -137,9 +129,9 @@ jobs:
         run: npm test
 ```
 
-This workflow runs on every push to `main` and on every pull request targeting `main`. If any step fails, the workflow fails, and the PR is marked accordingly.
+This workflow runs on every push to `main` and every pull request that targets `main`. If any step fails, the run fails and the pull request shows a red check.
 
-For Python projects, the setup is similar:
+For a Python project, the same workflow swaps the setup step and the tools:
 
 ```yaml
 jobs:
@@ -165,97 +157,72 @@ jobs:
 
 ### What to Run in CI
 
-At minimum, CI should run:
+Run these on every pull request:
 
-- **Tests.** The automated test suite is the most important check. If tests pass locally but fail in CI, that is a signal that the test depends on local state, which is a bug in the test.
-- **Linting.** Enforces code style consistency without relying on everyone to remember to run the linter.
-- **Build.** Verifies that the project compiles and builds successfully. A PR that passes tests but breaks the build is still broken.
+- The test suite. If a test passes locally and fails in CI, treat it as a bug in the test: it depends on something on your machine that CI doesn't have.
+- The linter, so the pipeline enforces style instead of everyone remembering to run it.
+- The build, because a pull request that passes its tests and breaks the build is still broken.
 
-Optional but valuable:
+Add these when they fit your stack:
 
-- **Type checking** (TypeScript's `tsc`, Python's `mypy` or `pyright`). Catches type errors before runtime.
-- **Security audits** (`npm audit`, `pip-audit`). Flags known vulnerabilities in dependencies.
-- **Preview deployments.** Some platforms (Vercel, Netlify) automatically deploy every PR to a unique URL so reviewers can see the changes live.
+- A type checker: `tsc` for TypeScript, [mypy](https://mypy-lang.org/) or [Pyright](https://github.com/microsoft/pyright) for Python.
+- A dependency audit, [`npm audit`](https://docs.npmjs.com/cli/commands/npm-audit/) or [pip-audit](https://github.com/pypa/pip-audit), which flags dependencies with known vulnerabilities.
 
-<CardGrid>
-  <LinkCard
-    title="Testing Strategy"
-    href="/guides/testing-strategy/"
-    description="What to test and how to integrate testing into your workflow."
-  />
-  <LinkCard
-    title="Git and GitHub Essentials"
-    href="/guides/git-and-github/"
-    description="Branch protection rules that require CI to pass before merging."
-  />
-</CardGrid>
+If you set up only one check, make it the tests. The 2017 State of DevOps Report, an industry report by Puppet and DORA, tested which practices contribute to continuous delivery and found that test automation, deployment automation, continuous integration with trunk-based development, comprehensive version control, and integrating security into delivery work all contributed, with test automation the biggest contributor <Cite id="forsgren-2017" form="parenthetical" />.
 
 ### CI and Branch Protection
 
-CI is most effective when combined with branch protection rules that require checks to pass before merging. That turns CI from an informational signal ("the build failed") into an enforced gate ("you cannot merge until the build passes"), and it is the single most effective way to keep the main branch stable. The settings are in [Git and GitHub: Protecting the Main Branch](/guides/git-and-github/#protecting-the-main-branch).
+A red run only reports a problem; on its own, it doesn't stop anyone from merging. A branch ruleset that requires the check to pass turns it into a gate. Turn one on as soon as the workflow passes on `main`, because until then a failing check is a warning anyone can merge past. The settings are in [Git and GitHub: Protecting the Main Branch](/guides/git-and-github/#protecting-the-main-branch).
 
 ## Continuous Deployment (CD)
 
-Continuous deployment means automatically deploying the application when code is merged to `main`. For many capstone projects, this is the right approach: the main branch is always in a deployable state (because CI enforces that), so deploying it automatically is a natural extension.
+With CD, every merge to `main` deploys the application. It follows from CI and branch protection: if nothing reaches `main` without passing its checks, `main` is always deployable, and deploying it automatically removes the manual step where each teammate deploys a little differently.
 
 ### Platform-as-a-Service (PaaS)
 
-For most capstone projects, a platform-as-a-service provider is the right deployment target. These platforms handle server provisioning, HTTPS, scaling, and most infrastructure concerns so the team can focus on the application:
+A platform-as-a-service runs your application from your repository and handles the servers, HTTPS, and scaling. Each of these connects to GitHub: you point one at the repository, give it the build command and the output directory, and every push to `main` deploys. Pick by what you're deploying:
 
-| Platform | Good For | Free Tier |
-|----------|----------|-----------|
-| [Vercel](https://vercel.com) | Frontend apps, Next.js, static sites | Yes |
-| [Netlify](https://www.netlify.com) | Static sites, serverless functions | Yes |
-| [Railway](https://railway.app) | Full-stack apps, databases, background jobs | Trial credits |
-| [Render](https://render.com) | Web services, databases, cron jobs | Yes (limited) |
-| [Fly.io](https://fly.io) | Docker-based apps, globally distributed | Yes (limited) |
-| [Heroku](https://www.heroku.com) | Traditional web apps, add-on ecosystem | No (paid only) |
-| [GitHub Pages](https://pages.github.com) | Static sites, documentation | Yes |
+- A frontend, a static site, or a Next.js app: [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/).
+- A full-stack app with a database or background jobs: [Render](https://render.com/) or [Railway](https://railway.com/).
+- A Docker image: [Fly.io](https://fly.io/).
+- Documentation or a static site with no server: [GitHub Pages](https://pages.github.com/).
 
-Most of these platforms support automatic deployments from GitHub: connect the repository, specify the build command and output directory, and every push to `main` triggers a deployment.
+Check the current pricing page before you commit to one, because free and hobby tiers appear and disappear faster than a long project runs.
 
-:::tip[Preview Deployments]
-Vercel and Netlify automatically create preview deployments for every pull request. This lets reviewers see the changes running live before the PR is merged. It is an excellent addition to code review and costs nothing for public repositories.
-:::
+Vercel and Netlify also build a [preview deployment](https://vercel.com/docs/deployments/environments) for every pull request: a temporary URL where a reviewer can use the change before it merges (Netlify calls them [deploy previews](https://docs.netlify.com/deploy/deploy-types/deploy-previews/)). Turn them on, because a reviewer who can click through the change sees problems the diff doesn't show.
 
 ### Deploying to a VM or VPS
 
-Some projects need more control than a PaaS provides: custom system packages, GPU access, specific network configurations, or long-running background processes. In these cases, deploying to a virtual machine (DigitalOcean Droplet, AWS EC2, Google Compute Engine, OSU infrastructure) may be appropriate.
+Some projects need more control than a PaaS gives: custom system packages, GPU access, specific network configuration, or long-running background processes. For those, deploy to a virtual machine, rented from a cloud provider or provided by your partner, and take on its operation:
 
-Deploying to a VM involves more operational responsibility:
-
-- **SSH access and security.** Use SSH keys, not passwords. Disable root login. Keep the OS updated.
-- **Process management.** Use `systemd`, `pm2`, or `supervisor` to keep your application running and restart it if it crashes.
-- **Reverse proxy.** Use Nginx or Caddy in front of your application to handle HTTPS, static files, and request routing.
-- **Updates.** You are responsible for deploying new versions. Automate this with a GitHub Actions workflow that SSHs into the server and pulls the latest code, or use a tool like Ansible or Kamal.
-
-A VM deployment is more work to set up and maintain, but it teaches skills that are directly transferable to industry roles.
+- SSH access: use SSH keys, not passwords, disable root login, and keep the OS updated.
+- Process management: run the application under [systemd](https://systemd.io/) so it restarts when it crashes or the machine reboots.
+- A reverse proxy: put [Caddy](https://caddyserver.com/) or [Nginx](https://nginx.org/) in front of the application for HTTPS, static files, and routing.
+- Deployment: write a GitHub Actions workflow that connects over SSH, pulls the new version, and restarts the service, so deploying is still one merge.
 
 ### Database Hosting
 
-Use a managed service. It handles backups, scaling, and security patches, which is operational burden you have no time for. [Supabase](https://supabase.com/) and [Neon](https://neon.com/) for PostgreSQL cover most projects, with [PlanetScale](https://planetscale.com/) for MySQL, [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) for MongoDB, [Turso](https://turso.tech/) for SQLite and [Upstash](https://upstash.com/) for Redis; the PaaS providers above also offer database add-ons that deploy alongside the application, and the big clouds offer [RDS](https://aws.amazon.com/rds/), [Cloud SQL](https://cloud.google.com/sql) and [Azure Database](https://azure.microsoft.com/en-us/products/category/databases) if your partner is already on one. Self-hosting on your own VM gives full control and hands you backups, updates and patching in return.
+Use a managed database, because backups, upgrades, and security patches are operational work your team has no time for. If your partner already runs on a cloud, use their managed database ([Amazon RDS](https://aws.amazon.com/rds/), [Cloud SQL](https://cloud.google.com/sql), or [Azure's databases](https://azure.microsoft.com/en-us/products/category/databases)), because matching the stack they'll maintain after you is worth more than a nicer developer experience. Otherwise, pick one of these:
 
-Two things decide it faster than any comparison. **If your partner already runs on a cloud, use theirs**: matching their stack is worth more than the nicest developer experience. And **check the current pricing page before you commit**, because free and hobby tiers appear and disappear on a timescale shorter than a year-long project.
-
-:::note[Reviewed annually]
-The platform table and the services named above date faster than anything else on this page. Checked at the annual review.
-:::
+- (Preferred) The database add-on from your PaaS, since it deploys next to the application and needs no second account.
+- A managed PostgreSQL service such as [Supabase](https://supabase.com/) or [Neon](https://neon.com/), when your platform has no add-on for the database you need.
+- A database you run yourself on a VM, which gives you full control and hands you the backups and patching in return.
 
 ## Environment Management
 
-Most applications behave differently in development, staging, and production. Environment variables control these differences without changing code.
+An application behaves differently in development, staging, and production. Environment variables carry those differences, so the code stays the same in all three.
 
 ### The Three Environments
 
-Environments exist so that a change can be observed somewhere it cannot hurt anyone before it reaches somewhere it can. The three below differ in who is affected when something breaks, which is the only distinction that matters when deciding what belongs where.
+Environments exist so a change can be observed somewhere it can't hurt anyone before it reaches somewhere it can. They differ in who's affected when something breaks, so use that to decide what runs where.
 
-- **Development (local).** Runs on each developer's machine. Uses local databases, mock services, verbose logging, and debug tools.
-- **Staging (optional).** A deployed version that mirrors production but is not public. Useful for testing deployments and integrations before they reach real users.
-- **Production.** The live system that users interact with. Uses real databases, real API keys, minimal logging, and error tracking.
+- **Development (local).** Runs on each developer's machine, with local databases, mock services, verbose logging, and debug tools.
+- **Staging (optional).** A deployed copy that mirrors production but isn't public, for testing deployments and integrations before they reach real users.
+- **Production.** The live system users interact with, with real databases, real API keys, minimal logging, and error tracking.
 
 ### Environment Variables
 
-Configuration that changes between environments (database URLs, API keys, feature flags, log levels) should be stored in environment variables, not in code:
+Store configuration that changes between environments (database URLs, API keys, feature flags, log levels) in environment variables, not in code:
 
 ```javascript
 // Good: reads from the environment
@@ -267,19 +234,17 @@ const dbUrl = "postgres://user:password@localhost:5432/mydb";
 
 Each environment has its own set of variables:
 
-- **Local:** defined in `.env` (never committed).
-- **CI:** defined in GitHub Actions workflow files or repository secrets.
-- **Production:** defined in the hosting platform's settings (Vercel Environment Variables, Railway Variables, Heroku Config Vars).
+- Local: in `.env`, which is never committed.
+- CI: in the workflow file, or in repository secrets for anything sensitive.
+- Production: in the hosting platform's settings.
 
-<LinkCard
-  title="Security and Threat Modeling"
-  href="/guides/security/"
-  description="Why secrets must stay out of code and how to manage them."
-/>
+:::tip[.env.example]
+Commit a `.env.example` with a placeholder for every variable the application needs. It documents the configuration without exposing a secret, and each teammate copies it to `.env` and fills in their own values.
+:::
 
 ### Database Migrations
 
-Changes to the database schema should be managed through migration files, not manual SQL commands. Migrations are version-controlled scripts that transform the database from one state to the next:
+Change the database schema through migration files, never by hand. A migration is a version-controlled script that moves the database from one schema to the next:
 
 ```bash
 # Create a new migration
@@ -289,158 +254,107 @@ npx prisma migrate dev --name add-user-roles
 npx prisma migrate deploy
 ```
 
-Every ORM and database toolkit has a migration system: Prisma (JavaScript/TypeScript), Alembic (Python/SQLAlchemy), Django migrations (Python), Flyway (Java), golang-migrate (Go). Use whichever matches your stack.
+Use the migration tool that comes with your ORM or framework: [Prisma Migrate](https://www.prisma.io/docs/orm/migrations/how-migrations-work) for JavaScript and TypeScript, [Alembic](https://alembic.sqlalchemy.org/) for SQLAlchemy, [Django migrations](https://docs.djangoproject.com/en/stable/topics/migrations/) for Django.
 
-The key discipline is: *never modify the database schema by hand in production.* Always create a migration, test it locally, commit it, and apply it through the deployment pipeline. This ensures every environment has the same schema and that changes are reversible.
+Create each migration, run it locally, commit it, and let the deployment apply it to production. Every environment then has the same schema, and the migration history records each change, which is what you work from when one has to be undone.
 
 ## Deployment Checklist
 
-Before your first production deployment (and periodically after), walk through this checklist:
+Walk through this before your first production deployment and again whenever the setup changes. The [Security guide](/guides/security/) covers the security items in more depth.
 
 ### Application
-- [ ] The application builds and starts successfully with production configuration.
+- [ ] The application builds and starts with production configuration.
 - [ ] Environment variables are set for production (database URL, API keys, secrets).
-- [ ] Debug mode is off and error pages do not expose stack traces.
-- [ ] Logging is configured to capture errors without leaking sensitive data.
+- [ ] Debug mode is off and error pages don't expose stack traces.
+- [ ] Logging captures errors without leaking sensitive data.
 
 ### Infrastructure
 - [ ] HTTPS is enabled (most PaaS providers handle this automatically).
-- [ ] The database is hosted and accessible from the production environment.
-- [ ] Database migrations have been run against the production database.
-- [ ] DNS is configured if using a custom domain.
+- [ ] The database is hosted and reachable from the production environment.
+- [ ] Database migrations have run against the production database.
+- [ ] DNS is configured if you use a custom domain.
 
 ### Operations
-- [ ] The team knows how to trigger a deployment (automatic on merge, or manual steps).
-- [ ] The team knows how to roll back a deployment if something goes wrong.
-- [ ] Error tracking is set up (Sentry, LogRocket, or at minimum, centralized logging).
-- [ ] The team has access to production logs for debugging.
+- [ ] The team knows how a deployment is triggered (automatic on merge, or manual steps).
+- [ ] The team knows how to roll back a deployment.
+- [ ] Error tracking is set up ([Sentry](https://sentry.io/), or at minimum centralized logging).
+- [ ] The team can read production logs.
 
 ### Security
-- [ ] Secrets are stored in the platform's environment variable system, not in code.
+- [ ] Secrets live in the platform's environment variables, not in code.
 - [ ] Default credentials have been changed.
-- [ ] CORS is configured appropriately.
-- [ ] The `.gitignore` includes `.env` and other sensitive files.
-
-<LinkCard
-  title="Security and Threat Modeling"
-  href="/guides/security/"
-  description="Security misconfiguration checklist for deployments."
-/>
+- [ ] [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) allows only the origins that need access.
+- [ ] `.gitignore` includes `.env` and other sensitive files.
 
 ## Monitoring and Error Tracking
 
-Deploying the application is not the end. You need to know when something breaks in production, ideally before a user reports it.
+Once the application is live, you need to know when it breaks, ideally before a user tells you.
 
-**Error tracking services** like [Sentry](https://sentry.io/) (free tier available) capture unhandled exceptions with full stack traces, request context, and the release version that introduced the error. Setting up Sentry takes a few minutes and provides visibility that console logging cannot match.
-
-At minimum, ensure the team has a way to:
+An error tracker such as Sentry captures each unhandled exception with its stack trace, the request that triggered it, and the release that introduced it, which is more than a console log on the hosting platform gives you. At minimum, make sure the team can:
 
 - See errors that occur in production.
 - Identify which deployment introduced a regression.
-- Access application logs from the hosting platform.
+- Read application logs from the hosting platform.
 
-You do not need a sophisticated monitoring stack. For a capstone project, Sentry plus the hosting platform's built-in logs is sufficient. The important thing is that errors do not disappear silently.
+For a small team, an error tracker plus the platform's built-in logs is enough. A fuller monitoring stack is one more system you'd have to maintain.
 
 ## Rollbacks
 
-Every deployment should be reversible. When a deployment breaks something, the team needs to restore the previous working version quickly. How you roll back depends on your deployment approach:
+Make every deployment reversible, because when one breaks production, restoring the last working version is faster than debugging forward while users wait. How you roll back depends on how you deploy:
 
-- **PaaS platforms:** Vercel, Netlify, and Render allow instant rollbacks to any previous deployment through their dashboard. Learn where this button is before you need it.
-- **Container-based deployments:** Keep the previous container image tagged and ready. Rolling back means deploying the previous image.
-- **VM deployments:** If deploying via `git pull`, a rollback means checking out the previous commit and restarting the service. Automate this so it is a single command, not a scramble.
+- PaaS platforms: [Vercel](https://vercel.com/docs/instant-rollback), [Netlify](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview/), and [Render](https://render.com/docs/rollbacks) each roll back from the dashboard. Read your platform's page before you need it: on Vercel's Hobby plan you can roll back only to the immediately previous deployment, and on Netlify with auto publishing on, the next Git-triggered deploy replaces the version you rolled back to.
+- Containers: keep the previous image tagged. Rolling back means deploying it again.
+- VMs: if you deploy with `git pull`, roll back by checking out the previous commit and restarting the service. Script it, so it's one command.
 
-A deployment process without a rollback plan is incomplete. The first time a deploy goes wrong at 10 PM before a demo, you will be glad you thought about this in advance.
+Practice a rollback once on a quiet day, so the first real one isn't also the first time anyone on the team opens that screen.
 
 ## Best Practices
 
-- Automate everything you do more than twice. If you SSH into a server and run the same three commands on every deploy, put them in a script or a GitHub Actions workflow.
-- Deploy early and often. The first deployment should happen in the first or second sprint, even if the application does little. Deploying a "Hello World" page validates the entire pipeline. Waiting until the project is "ready" means debugging application bugs and infrastructure bugs simultaneously.
-- Keep the main branch deployable at all times. CI plus branch protection makes this achievable. If `main` is always in a working state, deploying from it is safe.
-- Use the same build process everywhere. If the application builds with `npm run build` locally, it should build with `npm run build` in CI and in production. Different build commands in different environments hide bugs.
-- Treat infrastructure configuration as code. Docker Compose files, GitHub Actions workflows, Nginx configs, and deployment scripts belong in the repository and go through the same review process as application code.
-- Document your deployment process. Even if it is automated, write down what happens when, how to trigger a deploy, and how to roll back. The team member who set it up will not always be available when something goes wrong.
+- Automate anything you do more than twice. If every deploy means SSHing into a server and running the same three commands, put them in a script or a workflow.
+- Keep `main` deployable at all times, with CI and branch protection doing the enforcing, so deploying from it is always safe.
+- Use the same build command everywhere. If the application builds with `npm run build` locally, CI and production should run `npm run build` too, because a different command in each place hides the bugs only one of them triggers.
+- Keep infrastructure configuration in the repository. Compose files, workflows, proxy configuration, and deploy scripts go through the same review as application code.
+- Write the deployment process down, even when it's automated: what happens when, how to trigger a deploy, and how to roll back. The teammate who set it up won't always be there when it breaks.
 
 ## Some Truths About DevOps
 
-The first deployment is disproportionately hard and every one after it is
-routine, which has a consequence most teams get backwards. Because the first one
-is hard, teams postpone it until there is something worth deploying, and so they
-meet the hard part at the moment they can least afford it: the week of a demo,
-with a partner watching. Deploying an empty page in your first days is not premature
-optimization. It is moving the expensive, unpredictable work to the point in the
-project where failure costs nothing, which is why the walking skeleton appears in
-[Shipping](/guides/shipping/) as one of the first clocks to start.
+The first deployment is the hard one. It's where you meet DNS, TLS, the hosting account's limits, and the build that works locally and fails on the platform, and every deployment after it reuses that work. The asymmetry tempts you to wait until there's something worth deploying, which moves the hard part to the week of a demo, with a partner watching. Deploy an empty page in your first weeks instead. The cost is the same either way, but early in the project a failure costs a day of fiddling and nothing else, which is why the walking skeleton is one of the first clocks [Shipping](/guides/shipping/) starts.
 
-Most outages on student projects are configuration, not code. A missing
-environment variable, a migration that never ran, debug mode left on, a secret
-that exists locally and not in the deployment platform. This is predictable
-enough to design against, and the best-known articulation is the
-[Twelve-Factor App](https://12factor.net/), whose central move is to keep
-configuration in the environment rather than in the code, so that the same
-artifact runs in development and production with different settings. Read at
-least factors 3 (config), 10 (dev/prod parity), and 11 (logs); they account for
-most of what goes wrong here.
+When a deployment breaks, suspect the configuration before the code. <Cite id="oppenheimer-2003" /> studied user-visible failures at three large internet services and found operator error the leading cause in two of them. In all three, more than half of the operator errors behind those failures were configuration errors, and they generally arose while operators were changing the system, such as deploying or upgrading software. On a small team's project the same failure looks like a missing environment variable, a migration that never ran, debug mode left on, or a secret that exists on a laptop and not on the platform.
 
-You almost certainly do not need Kubernetes, and the reason is worth stating
-rather than asserting. Kubernetes solves scheduling containers across many
-machines with automated failover, which is a real problem for organizations
-running hundreds of services and not a problem you have. What it costs is a large
-operational surface that someone has to understand, and on a student team that
-someone becomes a bus factor of one. A platform-as-a-service that deploys on push
-gives you the part you need for a fraction of the attention. If you want
-Kubernetes on your resume, that is a legitimate goal, but name it as a learning
-goal rather than an architectural requirement, and say so in your design
-document.
+[The Twelve-Factor App](https://12factor.net/), a methodology its authors drew from their work on the Heroku platform, argues for designing against those failures. Its central rule is to [keep configuration in the environment](https://12factor.net/config), strictly separate from the code, so the same build runs in development and production with different settings. Read at least factor III (config), factor X ([dev/prod parity](https://12factor.net/dev-prod-parity)), and factor XI ([logs](https://12factor.net/logs)): the first two prevent the failures listed above, and the third is how you find the ones they miss.
 
-Containers are the same trade at smaller scale. [Docker](https://docs.docker.com/get-started/)
-solves "works on my machine" and costs build time, image
-management, and a layer of indirection when debugging. If `npm install && npm start`
-works reliably for everyone on your team, you do not yet have the problem Docker
-solves. Adopt it when environment drift actually bites, when you need to match a
-production runtime exactly, or when your deployment target requires an image.
+You almost certainly don't need [Kubernetes](https://kubernetes.io/docs/concepts/overview/). It schedules containers across many machines with automated failover, which is a real problem for organizations running hundreds of services and not a problem you have. What it costs is a large operational surface that someone has to understand, and on a small team that someone becomes the only person who can deploy. A platform-as-a-service that deploys on push gives you the part you need for a fraction of the attention. If you want Kubernetes experience for your resume, that's a legitimate goal; call it a learning goal rather than an architectural requirement, and say so in your design document.
 
-The uncomfortable one: most of what is called DevOps in industry is a full-time
-role, and you are doing it in the margins of a full course load. The realistic scope for a
-capstone team is a CI pipeline that runs tests on every pull request, a
-deployment that happens on merge, secrets kept out of the repository, and a
-documented way to roll back. That is a small fraction of the discipline and it is
-the fraction that pays. Resist the pull toward observability stacks and
-infrastructure-as-code frameworks unless something in your project actually
-demands them, because every one of them is a system your team now maintains
-instead of building the thing your partner asked for.
+At a large company, DevOps can span platform engineering, on-call rotations, observability, and infrastructure as code, and you're doing it alongside everything else your project needs. The part that pays at your size is small: a CI workflow that runs the tests on every pull request, a deployment on every merge, secrets kept out of the repository, and a documented way to roll back. Add an observability stack or an infrastructure-as-code framework only when something in the project demands it, because each one is another system your team maintains instead of building what your partner asked for.
 
 ## DevOps in Industry and Academia
 
-In industry, DevOps is not a separate role for most organizations. It is a set of practices that every software engineer is expected to understand. CI/CD pipelines, containerized deployments, infrastructure as code, and monitoring are baseline skills for software engineering positions. Companies like Google, Netflix, and Amazon deploy hundreds or thousands of times per day, and their ability to do so reliably depends on the automation and practices described in this guide.
+The 2017 State of DevOps Report, an industry report by Puppet and DORA that surveyed about 3,200 people, found high performers deploying on demand, multiple times a day, and low performers deploying between once a week and once a month <Cite id="forsgren-2017" form="parenthetical" />. The report notes that its working figure of four deploys a day for high performers is conservative for companies like Etsy, which reports deploying 80 times a day, and Amazon and Netflix, which deploy thousands of times a day aggregated over the hundreds of services in their production environments <Cite id="forsgren-2017" form="parenthetical" />. The report recruited respondents by snowball sampling and notes that its sample is likely limited to organizations already familiar with DevOps.
 
-The "you build it, you run it" philosophy (attributed to Amazon's Werner Vogels) means that the team that writes the code is also responsible for deploying, monitoring, and supporting it. Capstone projects are a natural place to practice this: your team builds the software, and your team is responsible for getting it running and keeping it running.
+In a [2006 interview with ACM Queue](https://doi.org/10.1145/1142055.1142065), Werner Vogels, then Amazon's CTO, described each Amazon service's team as responsible for it from design through operation: "You build it, you run it." He argued that giving developers operational responsibility had improved the services' quality, because it put them in daily contact with their software in production and with its customers. Your team is in that position already, since nobody else will deploy your system or fix it when it breaks.
 
-In research settings, reproducibility is the equivalent of reliable deployment. A research project that cannot be set up and run by someone other than the original author has limited scientific value. Docker, dependency pinning, and clear setup instructions serve the same purpose in academia as deployment pipelines serve in industry: they make the work reproducible by others.
+In research, the equivalent of a reliable deployment is code someone else can build and run. <Cite id="collberg-2016" /> tried to obtain and build the code behind 601 papers from ACM systems conferences and journals. Of the papers whose results were backed by code, research assistants built it within 30 minutes for 32.3%, and with unlimited time but without the lead developer's help for 48.3%; the study stopped at the build and didn't check the results. The authors found the lead developer often couldn't be reached, for reasons such as the student responsible for the code having graduated or the authors' email addresses no longer working. A pinned dependency list, a container image, and a setup section that works from a fresh clone address the same problem in both settings.
 
-The deployment skills you develop during a capstone transfer directly. Every professional software project needs to go from code to running system, and the team that understands that pipeline has a significant advantage over one that treats deployment as someone else's problem.
+## References
+
+<References />
 
 ## Additional Readings
 
-DevOps has an unusually strong evidence base for a practice area, because the
-DORA program has spent a decade measuring which behaviors actually correlate with
-delivery performance. Start with the research if you want to know what matters,
-and with the Twelve-Factor App if you want to know what to do on Monday.
-
 **Sources and further reading**
 
-- [The Twelve-Factor App](https://12factor.net/): the configuration and parity discipline that prevents most deployment surprises.
-- [Continuous Integration](https://martinfowler.com/articles/continuousIntegration.html), Martin Fowler: what CI actually requires, which is more than having a pipeline.
-- [Accelerate](https://itrevolution.com/product/accelerate/), Forsgren, Humble, and Kim: the research behind the four delivery metrics, in book form.
-- [DORA](https://dora.dev/), Google Cloud: the ongoing version of that research, updated yearly.
-- [The Site Reliability Engineering book](https://sre.google/sre-book/table-of-contents/), Google: free online, and the standard reference for running things in production.
-- [Get started with Docker](https://docs.docker.com/get-started/): the official tutorial, for when containers become worth the cost.
-- [BlueGreenDeployment](https://martinfowler.com/bliki/BlueGreenDeployment.html), Martin Fowler: the deployment pattern behind zero-downtime releases and instant rollback.
-- [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions): how credentials reach your pipeline without entering your repository.
-- [DevSecOps Guideline](https://owasp.org/www-project-devsecops-guideline/), OWASP: where the security checks belong in the pipeline.
+- [Accelerate](https://itrevolution.com/product/accelerate/), Nicole Forsgren, Jez Humble, and Gene Kim: the research book behind the four delivery metrics.
+- [DORA](https://dora.dev/), Google Cloud: the same research program's current reports.
+- [Site Reliability Engineering](https://sre.google/sre-book/table-of-contents/), Google: free online.
+- [BlueGreenDeployment](https://martinfowler.com/bliki/BlueGreenDeployment.html), Martin Fowler: a deployment pattern for zero-downtime releases and instant rollback.
+- [Using secrets in GitHub Actions](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets), GitHub Docs.
+- [DevSecOps Guideline](https://owasp.org/projects/devsecops-guideline), OWASP: where the security checks belong in the pipeline.
 
 **Activities that exercise this**
 
 - [Deployment Plan](/activities/design/#deployment-plan): the environments, the promotion path, and the rollback, written down.
+- [Make Your Artifact Reproducible](/activities/design/#make-your-artifact-reproducible): someone other than the author runs the setup from a fresh clone.
 - [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): a concrete second check to add to the pipeline.
 - [Software Release and Versioning](/activities/planning/#software-release-and-versioning): what a release means once deployment is automatic.
 - [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): the CI layer as the gate that nobody can skip.
