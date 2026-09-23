@@ -1,0 +1,20 @@
+authors:
+  - McCrae, R. R.
+  - Costa, P. T.
+year: 1989
+title: >-
+  Reinterpreting the Myers-Briggs Type Indicator From the Perspective of the
+  Five-Factor Model of Personality
+venue: Journal of Personality
+kind: peer-reviewed
+url: https://doi.org/10.1111/j.1467-6494.1989.tb00759.x
+doi: 10.1111/j.1467-6494.1989.tb00759.x
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      In data from 468 adults, found no support for the view that the MBTI
+      measures dichotomous preferences or distinct types; it measures four
+      relatively independent dimensions, which correspond to four of the five
+      major dimensions of personality.
+    locator: Abstract

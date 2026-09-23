@@ -1,0 +1,20 @@
+authors:
+  - De Dreu, C. K. W.
+  - Weingart, L. R.
+year: 2003
+title: >-
+  Task Versus Relationship Conflict, Team Performance, and Team Member
+  Satisfaction: A Meta-Analysis
+venue: Journal of Applied Psychology
+kind: peer-reviewed
+url: https://doi.org/10.1037/0021-9010.88.4.741
+doi: 10.1037/0021-9010.88.4.741
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Contrary to what academic research and introductory textbooks suggest,
+      task conflict correlated strongly and negatively with team performance
+      and member satisfaction, and less negatively where task and relationship
+      conflict were weakly correlated.
+    locator: Abstract

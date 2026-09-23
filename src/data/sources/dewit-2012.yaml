@@ -1,0 +1,21 @@
+authors:
+  - de Wit, F. R. C.
+  - Greer, L. L.
+  - Jehn, K. A.
+year: 2012
+title: "The Paradox of Intragroup Conflict: A Meta-Analysis"
+venue: Journal of Applied Psychology
+kind: peer-reviewed
+url: https://doi.org/10.1037/a0024844
+doi: 10.1037/a0024844
+# Closed access; only the abstract (PubMed 21842974) was read.
+verified: abstract
+claims:
+  - claim: >-
+      Across 116 studies of 8,880 groups, relationship and process conflict
+      were stably and negatively related to group outcomes, while task
+      conflict showed no strong negative association with performance and was
+      more positively related to it where task and relationship conflict were
+      weakly associated and where performance was measured as decision
+      quality or financial performance.
+    locator: Abstract

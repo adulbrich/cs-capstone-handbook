@@ -1,0 +1,18 @@
+authors:
+  - Ozer, D. J.
+  - Benet-Martínez, V.
+year: 2006
+title: Personality and the Prediction of Consequential Outcomes
+venue: Annual Review of Psychology
+kind: peer-reviewed
+url: https://doi.org/10.1146/annurev.psych.57.102904.190127
+doi: 10.1146/annurev.psych.57.102904.190127
+# Closed access; only the abstract (OpenAlex, PubMed 16318601) was read.
+verified: abstract
+claims:
+  - claim: >-
+      Using the Big Five as the organizing framework, reviews research linking
+      personality to outcomes at the individual level (happiness, health), the
+      interpersonal level (relationships), and the institutional level
+      (occupational choice, satisfaction, and performance).
+    locator: Abstract

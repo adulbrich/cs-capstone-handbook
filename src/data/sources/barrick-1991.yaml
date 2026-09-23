@@ -1,0 +1,18 @@
+authors:
+  - Barrick, M. R.
+  - Mount, M. K.
+year: 1991
+title: "The Big Five Personality Dimensions and Job Performance: A Meta-Analysis"
+venue: Personnel Psychology
+kind: peer-reviewed
+url: https://doi.org/10.1111/j.1744-6570.1991.tb00688.x
+doi: 10.1111/j.1744-6570.1991.tb00688.x
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Conscientiousness showed consistent relations with every job
+      performance criterion in all five occupational groups studied, while
+      the other dimensions' relations varied by occupation and criterion and
+      some were small.
+    locator: Abstract

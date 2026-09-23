@@ -1,0 +1,16 @@
+authors:
+  - Pittenger, D. J.
+year: 2005
+title: Cautionary Comments Regarding the Myers-Briggs Type Indicator
+venue: "Consulting Psychology Journal: Practice and Research"
+kind: peer-reviewed
+url: https://doi.org/10.1037/1065-9293.57.3.210
+doi: 10.1037/1065-9293.57.3.210
+# Closed access; only the abstract (OpenAlex) was read.
+verified: abstract
+claims:
+  - claim: >-
+      The MBTI's psychometric limitations warrant considerable caution when
+      making inferences from its four-letter type, and it may not yet support
+      the claims its promoters make.
+    locator: Abstract
