@@ -17,7 +17,7 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 
 ## Check-in Format (25 to 30 minutes, the same script for every TA)
 
-The check-in verifies the sprint note; it is not a status meeting. One script for every TA, because the detection failures we have had were demos of nothing new: the same broken page at four check-ins running, "still working on it". The rule that closes that: **each student demos an artifact from their own contribution line for the sprint, never the one they showed last time, and nothing to open means nothing was done.**
+The check-in verifies the sprint note; it is not a status meeting. One script for every TA, because the detection failures we have had were TAs watching a demo the student chose: the same broken page at four check-ins running, "still working on it". Students still choose what they demo, so the rule that closes that now binds the choice: **each student demos an artifact from their own contribution line for the sprint, never the one they showed last time, and nothing to open means nothing was done.**
 
 **Before, five minutes.** Read the latest note's contribution lines (this week's if it is in, otherwise the previous one) so you know what each student can demo, and check your record for what each showed last time. Open the board and the repository's merged PRs for the sprint window; note any student with none. Note the previous "decision needed".
 
@@ -50,7 +50,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 
 **What to do.** In the room, ask the direct question once ("which part of this is yours?"), record the answer, and move on; do not argue it in front of the team. Afterwards, write an evidence note (what was checked, what was found) into the individual contribution modifier process below. The check-in feeds that one process and is never a deduction of its own. A flag at two consecutive check-ins goes to the instructors with the notes.
 
-**Record.** One line per student per check-in in the check-in sheet: demoed own work (yes or no), artifact verified (yes or no), note or flag, one phrase. Two minutes. It is the evidence the modifier asks for, and it is what makes TAs' grading comparable.
+**Record.** One line per student per check-in in the check-in sheet: the artifact demoed (PR number or document), demoed own work (yes or no), artifact verified (yes or no), note or flag, one phrase. The artifact column is what the next check-in's no-repeat check reads. Two minutes. It is the evidence the modifier asks for, and it is what makes TAs' grading comparable.
 
 ## Sprint Note Checks (about 5 minutes per note)
 
@@ -68,7 +68,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 
 | Weeks | Staff activity |
 |---|---|
-| 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings on the TA's day, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
+| 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
 | 1-2 | Team-to-TA assignments made; charters graded (TAs); Qualtrics contact lists built |
 | 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
 | 5 | All-hands demo day 1 (sampled lineup, ~15 teams in the hour) |
@@ -178,7 +178,7 @@ The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
 | **Total** | **~69 h (~6.9 h/wk)** | **~70 h** | **~56 h** |
 
-The check-ins row is 14 teams x 5 check-in weeks x 30 minutes, all of it in the sprint-note weeks (about 7 h in a check-in week, none in between). The defense row is 14 sessions at 6 minutes per student plus buffer (about 7 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the 7 h is the price of keeping the week-8 demo live (#23). **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
+The check-ins row is 14 teams x 5 check-in weeks x 30 minutes, all of it in the sprint-note weeks (about 7 h in a check-in week, none in between), plus 15 minutes per NDA team for the walkthrough in each checkpoint week. The defense row is 14 sessions at 6 minutes per student plus buffer (about 7 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the 7 h is the price of keeping the week-8 demo live (#23). **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
 
 The number that would break it is team size. At six or more students, 3 minutes each is 18 minutes and the rest of the agenda stops fitting. If a TA's teams are unusually large, either cap demo time at 2 minutes per student or extend those teams' slots and re-run this row.
 
