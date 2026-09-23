@@ -644,14 +644,38 @@ if (!failed) {
 }
 
 // --- Page shape -------------------------------------------------------------
-// Three rules from the assignments skill that a review found broken by hand
-// on pages that otherwise validated. Each is a few lines and pays for itself
+// Rules from the assignments skill that a review found broken by hand on
+// pages that otherwise validated. Each is a few lines and pays for itself
 // the first time it fires.
 //
 const DELIVERABLE_HEADING_RE =
   /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
+// Every page with Canvas entries says what to hand in under this heading, and
+// a submission format lives there, never in a heading (#288).
+// An entry with its own `##` section and <AssignmentMeta> (the RFC's draft and
+// final, a sprint's individual contribution) needs its own block inside it.
+const WHAT_YOU_SUBMIT_RE = /^#{2,3} What You Submit$/m;
+const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/im;
+const META_RE = /<AssignmentMeta\b/;
+const FENCED_CODE_RE = /^(```|~~~)[\s\S]*?^\1/gm;
 const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
+
+// Format headings on every assignment page, graded or not: the loop below
+// skips pages without an `assignment:` block. Fenced code is not a heading.
+for (const file of files) {
+  const text = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8").replace(
+    FENCED_CODE_RE,
+    ""
+  );
+  const formatHeading = text.match(FORMAT_HEADING_RE);
+  if (formatHeading) {
+    console.error(
+      `SUBMIT ${file}: the heading "${formatHeading[0]}" carries a submission format; state it under "What You Submit" instead.`
+    );
+    failed = true;
+  }
+}
 
 for (const file of files) {
   const slug = file.replace(/\.mdx$/, "");
@@ -682,6 +706,29 @@ for (const file of files) {
   } else {
     console.error(`META ${file}: no <AssignmentMeta weight="..."> found.`);
     failed = true;
+  }
+
+  // Every page with Canvas entries says what to hand in.
+  const sections = body.split(/^(?=## )/m).slice(1);
+  const entrySections = sections.filter((section) => META_RE.test(section));
+  const shared = sections.filter((section) => !META_RE.test(section)).join("");
+  if (
+    assignment.canvas &&
+    entrySections.length < assignment.canvas.length &&
+    !WHAT_YOU_SUBMIT_RE.test(shared)
+  ) {
+    console.error(
+      `SUBMIT ${file}: has Canvas entries without their own section but no page-level "What You Submit" heading saying what to hand in.`
+    );
+    failed = true;
+  }
+  for (const section of entrySections) {
+    if (!WHAT_YOU_SUBMIT_RE.test(section)) {
+      console.error(
+        `SUBMIT ${file}: the entry section "${section.split("\n")[0]}" has its own <AssignmentMeta> but no "### What You Submit" block.`
+      );
+      failed = true;
+    }
   }
 
   // A page with a written deliverable carries the AI-use paragraph.

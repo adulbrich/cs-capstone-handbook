@@ -216,15 +216,25 @@ Sections in **bold** are required.
    applies, its length and repository path:
 
    - `## What You Must Produce`
-   - `## What It Must Contain (1 to 2 pages, in \`docs/shipped.md\`, submitted as one PDF)`
-   - `## Structure (2 to 3 pages, in \`docs/postmortems/\`, submitted as one PDF)`
+   - `## What It Must Contain (1 to 2 pages, in \`docs/shipped.md\`)`
+   - `## Structure (2 to 3 pages, in \`docs/postmortems/\`)`
    - `## Required Sections`
 
    Prefer a numbered list when the artifact has named parts a grader will look
-   for one by one. State the format, the length, and where it lives. Every
-   document is submitted as one PDF; link the rule in
+   for one by one. State the length and where it lives.
+
+   Then **`## What You Submit`**, in one or two lines: the format and what goes
+   in it. An entry with its own `##` section and `<AssignmentMeta>` (the RFC's
+   draft and final, a sprint's individual contribution) carries its own
+   `### What You Submit` inside that section. Where each entry's section
+   already says what a complete submission is (the workshops), one page-level
+   block covers them all. Every document is submitted as one PDF; link the rule in
    `assignments/introduction.mdx` ("Submitting Your Work") rather than
-   restating what its cover carries.
+   restating what its cover carries. An entry with nothing to hand in says so
+   and why ("Nothing to upload: ..."). A format never goes in a heading.
+   `validate-outcomes.mjs` fails a page with Canvas entries and no such
+   heading, an entry section with its own meta and no block, and a heading
+   carrying "PDF" or "submitted as" (#288).
 
 4. **`## Rubric (100 points)`**, whose table is a `<RubricTable>` rather than
    Markdown. Prose belongs under it: the `**AI use:**` paragraph, per-criterion
