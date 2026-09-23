@@ -223,14 +223,18 @@ Sections in **bold** are required.
    Prefer a numbered list when the artifact has named parts a grader will look
    for one by one. State the length and where it lives.
 
-   Then **`## What You Submit`** (or `### What You Submit` inside each entry's
-   own section, on a page with several), in one or two lines: the format and
-   what goes in it. Every document is submitted as one PDF; link the rule in
+   Then **`## What You Submit`**, in one or two lines: the format and what goes
+   in it. An entry with its own `##` section and `<AssignmentMeta>` (the RFC's
+   draft and final, a sprint's individual contribution) carries its own
+   `### What You Submit` inside that section. Where each entry's section
+   already says what a complete submission is (the workshops), one page-level
+   block covers them all. Every document is submitted as one PDF; link the rule in
    `assignments/introduction.mdx` ("Submitting Your Work") rather than
    restating what its cover carries. An entry with nothing to hand in says
    "Nothing." and why. A format never goes in a heading.
    `validate-outcomes.mjs` fails a page with Canvas entries and no such
-   heading, and a heading carrying "PDF" or "submitted as" (#288).
+   heading, an entry section with its own meta and no block, and a heading
+   carrying "PDF" or "submitted as" (#288).
 
 4. **`## Rubric (100 points)`**, whose table is a `<RubricTable>` rather than
    Markdown. Prose belongs under it: the `**AI use:**` paragraph, per-criterion
