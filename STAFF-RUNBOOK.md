@@ -21,7 +21,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 
 **Before, five minutes.** Read the latest note's contribution lines (this week's if it is in, otherwise the previous one) so you know what each student can demo, and check your record for what each showed last time. Open the board and the repository's merged PRs for the sprint window; note any student with none. Note the previous "decision needed".
 
-**Note-less check-ins** keep the script with a different demo. Fall week 2 is the kickoff: charter, roles, repository, and the first sprint's plan, one student each. Spring weeks 8 and 10 demo the release and the handoff, by student. The record gets its per-student line either way.
+**Note-less check-ins** keep the script with a different demo. Fall week 2 is the kickoff: first the team's Term Startup list as it stands (who has replied, what is scheduled, what is stuck), then charter, roles, repository, and the first sprint's plan, one student each. In winter and spring, the week 2 check-in opens with the team's Term Startup report. Spring weeks 8 and 10 demo the release and the handoff, by student. The record gets its per-student line either way.
 
 **Agenda**, in this order, inside 25 to 30 minutes.
 
