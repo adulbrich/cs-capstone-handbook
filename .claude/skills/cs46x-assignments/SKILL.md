@@ -230,8 +230,8 @@ Sections in **bold** are required.
    already says what a complete submission is (the workshops), one page-level
    block covers them all. Every document is submitted as one PDF; link the rule in
    `assignments/introduction.mdx` ("Submitting Your Work") rather than
-   restating what its cover carries. An entry with nothing to hand in says
-   "Nothing." and why. A format never goes in a heading.
+   restating what its cover carries. An entry with nothing to hand in says so
+   and why ("Nothing to upload: ..."). A format never goes in a heading.
    `validate-outcomes.mjs` fails a page with Canvas entries and no such
    heading, an entry section with its own meta and no block, and a heading
    carrying "PDF" or "submitted as" (#288).
