@@ -73,8 +73,9 @@ lives in `src/content/docs/**` as MDX.
    has its own due date, late window, grade and submission, so four sprint
    notes are four entries and a draft and a final are two, even when one
    handbook page holds them all. The page lists its entries in
-   `assignment.canvas` frontmatter and renders one `<RubricTable>` per
-   distinct rubric; `validate-outcomes.mjs` reconciles the list with the
+   `assignment.canvas` frontmatter, gives entries that differ in what is
+   submitted or how it is graded their own section, and renders one
+   `<RubricTable>` per distinct rubric; `validate-outcomes.mjs` reconciles the list with the
    page weight, the rendered rubrics, and Canvas's per-group points. See
    `docs/decisions/2026-09-23-canvas-entry-model.md`.
 

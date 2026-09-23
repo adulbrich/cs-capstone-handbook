@@ -28,7 +28,7 @@ const rows = canvasRows(assignment?.canvas);
 const SUBMISSION_LABELS = {
   none: "No submission",
   pdf: "PDF",
-  survey: "Survey",
+  survey: "Qualtrics survey",
   url: "URL",
   video: "Video",
 };
@@ -37,12 +37,11 @@ const title = (term: string) => term[0].toUpperCase() + term.slice(1);
 const percent = (n: number) => `${Number.parseFloat(n.toFixed(2))}%`;
 
 function due(weeks: number[], peerReviewWeek?: number) {
-  const unique = [...new Set(weeks)];
-  const last = unique.pop();
+  // One week per entry, repeats included, so five entries show five weeks.
+  const rest = weeks.slice(0, -1);
+  const last = weeks.at(-1);
   const list =
-    unique.length === 0
-      ? `Week ${last}`
-      : `Weeks ${unique.join(", ")} and ${last}`;
+    rest.length === 0 ? `Week ${last}` : `Weeks ${rest.join(", ")} and ${last}`;
   return peerReviewWeek ? `${list}; peer reviews week ${peerReviewWeek}` : list;
 }
 ---

@@ -162,6 +162,10 @@ const files = readdirSync(ASSIGNMENTS_DIR).filter((f) => f.endsWith(".mdx"));
 let parsed = 0;
 // slug -> parsed assignment block, for the weight reconciliation below.
 const pages = new Map();
+// slug -> the page source and the rubric tables it renders, for the Canvas
+// entry and page-shape checks below.
+const pageSources = new Map();
+const pageTables = new Map();
 
 for (const file of files) {
   const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
@@ -178,7 +182,8 @@ for (const file of files) {
   const body = source.slice(source.indexOf("---", 3) + 3);
   const slug = file.replace(/\.mdx$/, "");
   const tables = rubricTables(source);
-  assignment.tables = tables;
+  pageSources.set(slug, source);
+  pageTables.set(slug, tables);
   let rubricTags = {};
   if (tables.length === 0) {
     // A page that keeps a hand-written table: the documented exceptions.
@@ -440,7 +445,10 @@ for (const [slug, assignment] of pages) {
     continue;
   }
   const rendered = new Set(
-    (assignment.tables ?? []).map((t) => t.path).filter(Boolean)
+    pageTables
+      .get(slug)
+      .map((t) => t.path)
+      .filter(Boolean)
   );
   const declaredRubrics = new Set();
   for (const family of canvas) {
@@ -480,13 +488,15 @@ for (const [slug, assignment] of pages) {
   const rows = canvasRows(canvas);
   for (const term of assignment.terms) {
     const termRows = rows.filter((r) => r.term === term);
-    const pageWeight =
-      typeof assignment.weight === "number"
-        ? assignment.weight
-        : assignment.weight?.[term];
+    const pageWeight = familyWeight(assignment, term);
     const sum = termRows.reduce((acc, r) => acc + (r.weight ?? 0), 0);
     if (termRows.length === 0) {
       console.error(`CANVAS ${file}: no Canvas entry runs in ${term}.`);
+      failed = true;
+    } else if (pageWeight === undefined) {
+      console.error(
+        `CANVAS ${file}: runs in ${term} but its weight map has no ${term} entry.`
+      );
       failed = true;
     } else if (Math.abs(sum - pageWeight) > TOLERANCE) {
       console.error(
@@ -495,12 +505,7 @@ for (const [slug, assignment] of pages) {
       failed = true;
     }
     const entryCount = termRows.reduce((acc, r) => acc + r.names.length, 0);
-    if (
-      entryCount > 1 &&
-      !/<CanvasEntries\b/.test(
-        readFileSync(join(ASSIGNMENTS_DIR, file), "utf8")
-      )
-    ) {
+    if (entryCount > 1 && !/<CanvasEntries\b/.test(pageSources.get(slug))) {
       console.error(
         `CANVAS ${file}: owns ${entryCount} Canvas entries in ${term} but does not render <CanvasEntries />.`
       );
@@ -549,6 +554,26 @@ for (const [slug, assignment] of pages) {
         failed = true;
       }
       entryNames.get(term).set(`${family.group} / ${name}`, file);
+    }
+  }
+}
+// A TSV left in a mapped directory that no entry declares would still be
+// imported by hand and still look current. Every file must belong to a family.
+const declaredTsvs = new Set(
+  [...pages.values()].flatMap((a) =>
+    (a.canvas ?? [])
+      .filter((f) => f.rubric)
+      .map((f) => `${CANVAS_DIR}/${f.rubric}`)
+  )
+);
+for (const dir of Object.keys(CANVAS_TO_HANDBOOK)) {
+  for (const f of readdirSync(join(CANVAS_DIR, dir))) {
+    const path = `${CANVAS_DIR}/${dir}/${f}`;
+    if (f.endsWith("rubric-details.tsv") && !declaredTsvs.has(path)) {
+      console.error(
+        `CANVAS ${path}: no Canvas entry on ${CANVAS_TO_HANDBOOK[dir]}.mdx uses this rubric. Declare it or delete it.`
+      );
+      failed = true;
     }
   }
 }
@@ -609,7 +634,7 @@ for (const file of files) {
 
   // Rubric points total exactly 100, summed from each rendered TSV, and
   // each table sits under a rubric heading: its nearest "##" or "###".
-  for (const table of assignment.tables ?? []) {
+  for (const table of pageTables.get(slug)) {
     if (!table.path) {
       continue; // already reported as RUBRIC IMPORT above
     }

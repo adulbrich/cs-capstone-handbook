@@ -3,13 +3,13 @@
 - This directory holds one validated `*-rubric-details.tsv` per live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
 - `scripts/validate-outcomes.mjs` reads every TSV as the rubric: it reconciles the outcome tags in field 1 against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own assignment's TSV. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
-- One TSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the TSV. That list, rendered on the page as the Canvas assignments table, is what to create in Canvas. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
+- One TSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the TSV. That list is what to create in Canvas: the page renders it for students as the Canvas assignments table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is the source of truth for all graded work except the two owned in Canvas, and each rubric here is the source of truth for itself.** Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
 
 ## Canvas Changes: One Entry per Due Date (#259)
 
-Each Canvas assignment has its own due date, late window, grade and submission, so none may hold several (`AGENTS.md` hard rule 6). The Canvas assignments table on each handbook page lists what to create. What changes from the current fall course:
+Each Canvas assignment has its own due date, late window, grade and submission, so none may hold several (`AGENTS.md` hard rule 6). The Canvas assignments table on each handbook page lists what to create. What changes from the fall course as it stood before #259:
 
 | Canvas today | Change | Rubric |
 |---|---|---|
