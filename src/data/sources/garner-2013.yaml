@@ -1,0 +1,56 @@
+authors:
+  - Garner, J. K.
+  - Alley, M. P.
+year: 2013
+title: >-
+  How the Design of Presentation Slides Affects Audience Comprehension: A Case
+  for the Assertion-Evidence Approach
+venue: International Journal of Engineering Education, 29(6), 1564-1579
+kind: peer-reviewed
+# The journal assigns no DOI; the authors' institution hosts the full text.
+url: https://writing.engr.psu.edu/ae_comprehension.pdf
+verified: full-text
+claims:
+  - claim: >-
+      Estimates of the share of slides that follow the topic-and-bullets
+      structure of PowerPoint's default layout range from 65% in a sample of
+      engineering and science presentations to 80% in a sample of textbook
+      instructor slides.
+    locator: Section 1.3, p. 1566
+  - claim: >-
+      Multimedia-learning research finds that the same words shown and spoken
+      at once (the redundancy principle) reduce available working memory, and
+      the default bulleted slide invites exactly that.
+    locator: Section 1.1, p. 1565; Section 1.3, p. 1567
+  - claim: >-
+      110 engineering undergraduates were randomly assigned to watch the same
+      narrated presentation on MRI with either assertion-evidence slides or
+      slides following PowerPoint's defaults.
+    locator: Abstract; Section 2.1, p. 1569 (random assignment); Section 2.2, p. 1572 (identical narration)
+  - claim: >-
+      The assertion-evidence group showed better comprehension in essay
+      responses, fewer misconceptions, and lower self-rated mental effort.
+    locator: Abstract; Section 3.1.4, p. 1574; Section 3.3.1, p. 1575
+  - claim: >-
+      The assertion-evidence group scored higher on an unannounced delayed
+      recall test.
+    locator: Abstract; Section 2.3, p. 1572 (unannounced); Section 3.2.2, p. 1575 (result)
+  - claim: >-
+      On the immediate multiple-choice test there was no main effect of slide
+      design; the difference appeared on higher-level questions requiring
+      inference.
+    locator: Section 3.2.1, pp. 1574-1575
+  - claim: >-
+      Participants who saw the default-style slides rated the amount of text
+      on them as more appropriate than the assertion-evidence group rated
+      theirs, despite learning less.
+    locator: Section 3.3.3 and Table 4, p. 1576
+  - claim: >-
+      Earlier research had mostly tested single slide features, such as text
+      density or text-relevant images, rather than a slide template that
+      applies the principles consistently.
+    locator: Section 1.5, pp. 1568-1569
+  - claim: >-
+      The participants were recruited from a communications course for
+      engineering students.
+    locator: Section 2.1, p. 1569
