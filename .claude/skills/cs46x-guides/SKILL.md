@@ -7,7 +7,7 @@ description: Use when creating or editing guide pages (MDX files in src/content/
 
 This skill governs how guides are written for the CS capstone handbook
 (Astro/Starlight, MDX). The opening and the closing three sections below are
-what every guide on the branch does. The four artifact sections come from
+the shape every guide follows. The four artifact sections come from
 `adr.mdx` and `requirements.mdx`; `retrospectives.mdx` is the model for a
 practice guide and has none of them. When in doubt, open the one that matches
 your guide's kind and follow it.
@@ -15,10 +15,9 @@ your guide's kind and follow it.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice and this skill does not restate it. The short version: every claim a
-reader could doubt is evidence, a reference, or the instruction team's
-recommendation, and the sentence says which; every paragraph carries one idea
-and ends on information, not a punchline; and no em dashes.
+voice: whose voice the handbook uses, person, the three kinds of claim,
+structure, openers, and the word-level rules. This skill does not restate it;
+it adds only what the explanation register needs.
 
 Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
 compression in the terminal, where the reader can ask a follow-up. That rule
@@ -97,19 +96,9 @@ option is the marketing the Some Truths section is supposed to prevent.
 ### Sourcing
 
 Guides owe evidence. Sort every claim a reader could doubt into the three kinds
-`docs/agents/voice.md` defines (Evidence, Reference, Recommendation) and give
-each what its kind needs:
-
-- **Evidence** cites a peer-reviewed paper, a research book, or an industry
-  report with a published method, and the citation is verified: someone read
-  the supporting passage and recorded where it is. Where research on the
-  question exists, cite it, not a blog post summarizing it.
-- **Reference** links the standard or the official documentation the first
-  time the page names the tool, format, or technique.
-- **Recommendation** reads "The instruction team recommends X, because Y."
-
-A practitioner essay is cited as an argument ("Fowler argues"). A claim that
-fits none of the three is cut.
+under Claims in `docs/agents/voice.md` and give each what its kind needs. Of
+the three registers, the guide is the one where Evidence claims live, so this
+is where the sort does most of its work.
 
 There is no link-count target. The old one (six per 1,000 words) was met by
 linking vendor docs and blog posts while the guides cited three peer-reviewed
@@ -124,11 +113,8 @@ them only when they say something (`conflict.mdx` keeps Validation and
 Measuring Success because its signals are real). The middle flexes with the
 topic.
 
-1. **Opening (no heading).** See [The Opener](#the-opener): the reader's
-   situation, what the page covers and does not, and the tl;dr. Then one or
-   two paragraphs that say what the thing is and link its authoritative
-   reference. Do not open on a definition of the topic's importance ("X is the
-   backbone of...") or a "Without X:" list of failure modes; both are banned.
+1. **Opening (no heading).** [The Opener](#the-opener), then one or two
+   paragraphs that say what the thing is and link its authoritative reference.
 
 2. *Artifact:* `## What is X?` or an equivalent definition section. What the
    artifact contains, usually as a bulleted list of its parts.
@@ -201,29 +187,27 @@ topic.
 
     This section holds only what the body does not already cite. A reference
     cited inline stays inline; this list is where a reader goes next, not a
-    bibliography of what was already said.
+    bibliography of what was already said. When the guide cites evidence, a
+    `## References` section listing the cited sources sits directly above
+    this one.
 
     There is no closing summary before it. The tl;dr at the top does that
     job, for the reader who needs it, at the point where they need it.
 
 ### The Opener
 
-Every guide opens, after the imports and before any heading, with three
-things in this order. The guides index is exempt.
+Every guide opens, after the imports and before any heading, with the opener
+`docs/agents/voice.md` defines under Structure: the reader's situation, what
+the page covers and does not, then the tl;dr. The guides index is exempt.
 
-1. **The reader's situation**, in one or two sentences: the moment they are in
-   when this page is useful. "Sooner or later someone other than you needs to
-   run your system" is a situation; "Documentation is the infrastructure of
-   knowledge transfer" is a claim about importance, and it is banned.
-2. **What the page covers and what it does not**, in a sentence or two, so a
-   reader who needs the other thing can leave.
-3. **A tl;dr**: three to seven bullets, each a concrete action or fact the
-   reader could act on without reading further. Not a table of contents, and
-   not a restatement of the situation.
+For a guide, the situation is a moment in a project. "Sooner or later someone
+other than you needs to run your system" is one; "Documentation is the
+infrastructure of knowledge transfer" is a claim about importance. The tl;dr
+is not a table of contents and does not restate the situation.
 
 The old form, a one-line "Read this when ...; it gives you ..." purpose line
 followed by a "Without X:" list of failure modes, was the same template on
-every page, and it read as generated. Do not reintroduce it.
+every page, and it read as generated. Don't reintroduce it.
 
 ## Frontmatter
 
@@ -421,11 +405,11 @@ The remaining pairs are constructed to the rule.
 > Before: Most teams never write an ADR. The cost is diffuse, which is why it
 > keeps not getting written.
 >
-> After: Most teams never write an ADR, and they ship anyway. The cost is real
+> After: A team can skip ADRs for months and ship anyway. The cost is real
 > but diffuse: six months later someone reverses a decision without knowing it
 > was a decision, and the rework is charged to that sprint instead of to the
-> missing record. That is why it keeps not getting written. It is also why the
-> teams that do write them tend to be the ones who have already paid once.
+> missing record. That's why the record keeps not getting written, and why the
+> teams that do write them tend to be the ones that have already paid once.
 
 **Defining a term.**
 
@@ -433,11 +417,12 @@ The remaining pairs are constructed to the rule.
 > Fix them or delete them.
 >
 > After: A **flaky test** passes and fails on the same code and the same
-> inputs, usually because it depends on timing, ordering, or a network it does
-> not control. The cost is not the failing run, it is that the team learns to
-> rerun red builds without reading them, which is the same as having no test
-> suite. Quarantine a flaky test the day you find it, then fix or delete it,
-> because a quarantined test at least does not train anyone to ignore red.
+> inputs, usually because it depends on timing, ordering, or a network it
+> doesn't control. The failing run is cheap; the expensive part is that the
+> team learns to rerun red builds without reading them, which is the same as
+> having no test suite. Quarantine a flaky test the day you find it, then fix
+> or delete it, because a quarantined test at least doesn't train anyone to
+> ignore red.
 
 **What the "before" column has in common:** each one is shorter, sounds more
 confident, and has deleted the causal clause that made it checkable. That is

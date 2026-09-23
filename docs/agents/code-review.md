@@ -45,13 +45,14 @@ skills under `.claude/skills/`.
    the paragraph instead of adding information. This is the review step from
    the instructor's Writing 101; `docs/agents/voice.md` links it. Put the
    outline in the review output, not the PR body.
-9. **Claims and voice**, on the same pages. Each claim a reader could doubt is
-   Evidence (cited, and the source says it), a Reference (linked), or a
-   Recommendation ("The instruction team recommends X, because Y"). An
-   unsourced "research shows" or "most teams" is a hard finding. So is "I",
-   a "we" outside the audience pages and syllabi, a "not A; it's B" that
-   closes a paragraph, and a bolded sentence. `docs/agents/voice.md` is the
-   rule; cite its section.
+9. **Claims and voice**, on the same pages. Check the diff against the Claims,
+   Person, Structure, and Sentences and words sections of
+   `docs/agents/voice.md`, and cite the section in each finding. The findings
+   that recur: an unsourced "research shows" or "most teams", an Evidence
+   citation whose source doesn't say what the page says, "I", a "we" outside
+   the audience pages and syllabi, a "not A; it's B" that closes a paragraph,
+   and a bolded sentence beyond the one critical instruction a section may
+   carry. Each is a hard finding.
 
 ## What the Standards axis ignores
 

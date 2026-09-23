@@ -14,11 +14,11 @@ why more of this skill is mechanical than the guide or activity skills.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice and this skill does not restate it. The short version: second person,
-"the instruction team" when the page must name the people who run the course
-(never "I", and "we" only on the audience pages), contractions except in hard
-requirements, bold only for a defined term or one critical instruction, every
-named tool or standard linked on first mention, and no em dashes.
+voice: whose voice the handbook uses, person, the three kinds of claim,
+structure, and the word-level rules. This skill does not restate it; it adds
+only what the task register needs. On an assignment page the rule that bites
+most often is the closer: a paragraph ends on its last requirement, never on
+a line that restates it.
 
 Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
 compression in the terminal, where the reader can ask a follow-up. That rule
@@ -65,9 +65,8 @@ the zero, then let the corpus tell us the rate.
 What does not depend on a number: a student who cannot find the standard you
 are grading against will guess at it, and then contest the grade.
 
-Assignments cite the standard they grade against and nothing else. Research
-findings belong in the guide the assignment links; on an assignment page,
-"studies show this practice works" is course-design rationale.
+Research findings belong in the guide the assignment links, not here (see
+"Who owes what" under Claims in `docs/agents/voice.md`).
 
 A link is not course-design rationale and does not violate the rule below. "Use
 [conventional commits](https://www.conventionalcommits.org/)" is a
@@ -213,7 +212,7 @@ Sections in **bold** are required.
    idea.
 
 7. **`## Activities That Prepare This`.** The shared recommendations first,
-   naming the criterion each one serves. Then, where projects genuinely
+   naming the criterion each one serves. Then, where projects actually
    differ, an **Examples** table whose first column reads "If your project is". Then a `Browse ... when these run
    out.` line naming one or two activity categories.
 
@@ -246,7 +245,7 @@ The rules below are about its content.
   copy-pasteable, and actually verified by a fresh run" tells a grader what to
   do. "High-quality documentation" does not.
 - **The Outcome column is the accreditation record.** Only tag a criterion when
-  the criterion genuinely evidences that outcome for that individual student.
+  the criterion actually evidences that outcome for that individual student.
 - **Follow the rubric table with per-criterion grading notes** when graders need
   consistency. One line per criterion, in rubric order, saying the first thing
   the grader checks. `repo-checkpoints.mdx` is the model.

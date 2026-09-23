@@ -18,10 +18,10 @@ inbound anchor for no reader benefit.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice and this skill does not restate it. The short version: second person,
-never "I", contractions ("Don't skip the dry run"), bold only for a defined
-term or a step's lead-in, every named tool or standard linked on first
-mention, and no em dashes. Activities have no citation duty beyond that link.
+voice: whose voice the handbook uses, person, claims, structure, and the
+word-level rules. This skill does not restate it; it adds only what the
+how-to register needs. The bold step name in the step format below is one of
+the labels voice.md allows.
 
 Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
 compression in the terminal, where the reader can ask a follow-up. That rule
@@ -78,7 +78,7 @@ Recommended badge. An activity does not link back. What stays: guide links,
 LinkCards, and external sources, which should grow rather than shrink.
 
 `validate-activities.mjs` enforces this per line, with two exemptions listed in
-the script for genuinely external events. `activities/introduction.mdx` is
+the script for events outside the team. `activities/introduction.mdx` is
 exempt as a whole, because it is the page that explains what a Workshop badge
 means.
 
@@ -179,7 +179,7 @@ are exactly three legal states:
 
 - `<Badge text="Individual Activity" variant="success" class="mb-6"/>`
 - `<Badge text="Team Activity" variant="note" class="mb-6"/>`
-- **both**, on the same line, when the activity genuinely works either way.
+- **both**, on the same line, when the activity works either way.
   This is a real pattern used across the library, not drift, and the validator
   allows it. Use it only when solo and team both make sense; defaulting to both
   because you cannot decide makes the badge useless.
@@ -203,7 +203,7 @@ ends up with and why it matters for their project. Do not open with "In this
 activity you will" or "This activity helps you". Start with the substance.
 
 Close the opening with a plain **effort clause** where you can state one
-honestly: "Thirty minutes as a team, once a term." "One to two hours, once."
+with confidence: "Thirty minutes as a team, once a term." "One to two hours, once."
 "Two to three hours to set up, minutes per run after." Write it as a sentence,
 not as an italic metadata line above the prose. Effort is the single most
 useful thing a student weighing an activity wants to know, and a wrong estimate
@@ -213,10 +213,10 @@ is worse than none, so omit it rather than guess.
 `- **Step name**: description.` so the list scans; this is the target for
 **new** activities, and the many existing activities that use plain
 `- Name: text` bullets or numbered lists are left as they are. Prose paragraphs are
-acceptable when the activity is genuinely a discussion or a judgment exercise
+acceptable when the activity is a discussion or a judgment exercise
 rather than a procedure, but prose is the exception and should not run past
 three short paragraphs. Sub-headings (`###`) are allowed only for activities
-with genuinely distinct phases, and they create anchors, so name them carefully.
+with distinct phases, and they create anchors, so name them carefully.
 
 **"A good output is..." line.** Mandatory, always the closing line of the body
 with nothing after it,

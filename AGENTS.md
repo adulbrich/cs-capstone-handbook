@@ -299,10 +299,9 @@ Do not create running logs, change logs, or idea files at the root. If a fact is
 ## Writing voice
 
 The single home is `docs/agents/voice.md`. It names whose voice the handbook
-uses (the instructor's own writing, linked there), and covers person (never
-"I"; "the instruction team"), the three kinds of claim (evidence, reference,
-recommendation) and what verified evidence means, structure, contractions,
-bold, banned words, and the floor that holds in every register.
+uses (the instructor's own writing, linked there) and covers person, the
+three kinds of claim and what verified evidence means, structure, the
+word-level rules, and the floor that holds in every register.
 
 Document voice is not chat voice. A maintainer's `CLAUDE.md` governs the
 terminal and is left alone; applying its compression rule to a handbook page
