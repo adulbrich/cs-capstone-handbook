@@ -485,8 +485,9 @@ are drawn from real handbook lines, not these.
 > [Fowler](https://martinfowler.com/bliki/TestPyramid.html), then name the
 > competing model and link
 > [Kent C. Dodds](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests),
-> explain what its proponents argue and why better tooling made the argument
-> viable, and close by saying the right balance depends on how expensive your
+> explain the assumption the pyramid rests on (Fowler's own hedge: broad tests
+> are usually slow and brittle, but not always) and what the trophy argues from
+> it, and close by saying the right balance depends on how expensive your
 > integration tests actually are.
 
 The second is four times longer and it is the only one of the two a student can

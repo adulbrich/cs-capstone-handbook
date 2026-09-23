@@ -91,13 +91,16 @@ disagrees has no argument to engage and no source to check.
 
 > Aphorism: "The pyramid is a guideline, not a rule."
 >
-> Explanation: "The pyramid is one of two competing models. The
+> Explanation: "The pyramid rests on an assumption, which
+> [Martin Fowler](https://martinfowler.com/bliki/TestPyramid.html) spells out:
+> broad tests are slow, expensive, and brittle compared with focused ones.
+> That's usually true, but where your high-level tests are fast, reliable, and
+> cheap to change, you need fewer low-level ones. The
 > [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests)
-> argues for more integration tests than unit tests, on the grounds that
-> integration tests buy more confidence per test and that modern tooling has
-> made them fast enough to write in bulk. Which one fits depends on how
-> expensive your integration tests actually are, so measure before you commit
-> to a shape."
+> takes that further and puts most of the effort into integration tests,
+> because tests that use the software the way people do give more confidence.
+> Which shape fits depends on how expensive your integration tests actually
+> are, so measure before you commit to one."
 
 The second is longer. It's also the only one a student can act on or
 disagree with.
@@ -282,7 +285,7 @@ A bolded sentence (`assignments/introduction.mdx`):
 > submitted, is off-topic, or is inaccessible to graders [...] scores **zero**
 > on the affected criteria.
 >
-> After: Work that isn't submitted, is off-topic, or can't be opened by a
+> After: Work that is not submitted, is off-topic, or cannot be opened by a
 > grader [...] scores zero on the affected criteria. "Does Not Meet" is only
 > for work you submitted that falls short.
 
