@@ -28,7 +28,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
 | `scripts/check-branch-name.mjs` | Branch rule, `<type>/<issue>-<slug>`. Runs at `pre-push` and in CI on the PR's head branch. |
-| `scripts/check-commit-message.mjs` | Conventional Commits subject rule. Runs at `commit-msg`, in the `guard-git` hook, and in CI over the PR range. |
+| `scripts/check-commit-message.mjs` | Conventional Commits subject rule, plus no em dash, emoji, or session link. Runs at `commit-msg`, in the `guard-git` hook, in CI over the PR range, and in the `pr-text` workflow over the PR title and body. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
