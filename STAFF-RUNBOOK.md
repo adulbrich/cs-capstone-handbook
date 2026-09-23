@@ -48,7 +48,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 - The same top risk three sprints running, or a decision needed that never gets decided.
 - The judgment layer reads like last sprint's.
 
-**What to do.** In the room, ask the direct question once ("which part of this is yours?"), record the answer, and move on; do not argue it in front of the team. Afterwards, write an evidence note (what was checked, what was found) into the individual contribution modifier process below. The check-in feeds that one process and is never a deduction of its own. A flag at two consecutive check-ins goes to an instructor with the notes.
+**What to do.** In the room, ask the direct question once ("which part of this is yours?"), record the answer, and move on; do not argue it in front of the team. Afterwards, write an evidence note (what was checked, what was found) into the individual contribution modifier process below. The check-in feeds that one process and is never a deduction of its own. A flag at two consecutive check-ins goes to the instructors with the notes.
 
 **Record.** One line per student per check-in in the check-in sheet: demoed own work (yes or no), artifact verified (yes or no), note or flag, one phrase. Two minutes. It is the evidence the modifier asks for, and it is what makes TAs' grading comparable.
 

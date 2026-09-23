@@ -5,18 +5,21 @@
  * mirrored in `CONTEXT.md`) rules out.
  *
  * Under `src/content/docs/` it also rejects the voice tells a pattern can see
- * (`docs/agents/voice.md`): the banned words, a bolded whole sentence, and
- * the two banned guide openers ("Without it:" and "X is the backbone of").
- * These run only on handbook pages, never on `--text` or `--stdin` (a PR
- * body may discuss a banned word) and never on `docs/`, `AGENTS.md`, or
- * `.claude/skills/`, which quote the patterns to teach them.
+ * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
+ * every page, and the two banned openers ("Without it:" and "X is the
+ * backbone of") in a guide's opening, the text before its first `## `
+ * heading. These run only on handbook pages, never on `--text` or `--stdin`
+ * (a PR body may discuss a banned word) and never on `docs/`, `AGENTS.md`,
+ * or `.claude/skills/`, which quote the patterns to teach them.
  *
- * The opener check is skipped on a page carrying the MDX comment in
- * `LEGACY_OPENER_MARKER` (below) on its own line right after the frontmatter.
- * Fourteen guides opened that way when the check landed (#207), and each is
- * rewritten by its own sweep PR. A marker in the page, rather than an
- * allowlist here, lets those PRs land in any order without all editing one
- * array; each removes its own marker, and the check applies from then on.
+ * The opener check is waived on a page containing the MDX comment in
+ * `LEGACY_OPENER_MARKER` (below). The marker may sit anywhere in the file;
+ * by convention it is the first line after the frontmatter. Fourteen guides
+ * opened that way when the check landed (#207), and each is rewritten by its
+ * own sweep PR. A marker in the page, rather than an allowlist here, lets
+ * those PRs land in any order without all editing one array. A marker with
+ * nothing to waive fails, so a sweep PR that fixes the opener must delete
+ * its marker too, and a marker outside `guides/` always fails.
  *
  * `validate-dashes.mjs` walks the content directories whole and runs in CI
  * and pre-commit. This script takes a file list instead, so lefthook can run
@@ -125,12 +128,14 @@ const VOCABULARY = [
   { avoid: /\bstudent-driven\b/i, use: "student-proposed" },
   { avoid: /\bTrack [AB]\b/, use: "NDA project, with a local note" },
   {
-    // Literal multiword phrases only. The singletons stay legal: the
-    // glossary's own Instructor entry, "staff mentor", and the co-instructor
-    // on the two Canvas-owned stubs need them.
+    // Literal multiword phrases for instructors and TAs together. "The
+    // instructors" stays legal, because a sentence about the faculty alone
+    // (grade questions, late-work exceptions) must not widen to the TAs, and
+    // so do the singletons: the glossary's own Instructor entry, "staff
+    // mentor", and the co-instructor on the two Canvas-owned stubs.
     avoid:
-      /\bteaching staff\b|\bcourse staff\b|\bteaching team\b|\binstruction staff\b|\bthe instructors\b|\byour instructors\b/i,
-    use: 'the instruction team ("we" on the audience pages and syllabi)',
+      /\bteaching staff\b|\bcourse staff\b|\bteaching team\b|\binstruction staff\b/i,
+    use: "the instruction team, or the instructors or a TA when only they are meant",
   },
 ];
 const VOCABULARY_PATHS = [
@@ -161,7 +166,7 @@ const VOICE_PATH = "src/content/docs/";
 const BANNED_WORDS = [
   {
     avoid: /\b(?<!\bacademic\s)honest(?:y|ly)?\b/i,
-    use: 'the word the sentence means ("accurate", "complete", "one step"), or nothing; "academic honesty" stays',
+    use: 'the word the sentence means, or nothing; "academic honesty" stays, and a rubric criterion name may be quoted',
   },
   { avoid: /\bgenuinely\b/i, use: "nothing; delete it" },
   { avoid: /\bworth stealing\b/i, use: '"worth adopting", or say why' },
@@ -174,18 +179,24 @@ const BANNED_WORDS = [
  * lookbehind keeps a numbered-list marker (`1. **Step.**`) from counting as
  * sentence-ending punctuation, and a bullet (`- **Step.**`) never matches, so
  * a list item's bold lead-in stays legal; so does a bold term or phrase
- * inside a sentence, and a colon label (`**AI use:**`). Table cells start
+ * inside a sentence, and a colon label (`**AI use:**`). The lookahead
+ * requires a space inside the span, so a one-word bold (`**e.g.**`,
+ * `**Why?**`, `**Examples.**`) is a label, not a sentence. Table cells start
  * with `|` and are not checked.
  */
 const BOLD_SENTENCE =
-  /(?:^\s*(?:>\s*)?|(?<!^\s*\d+)[.!?]["')]?\s+)\*\*[^*\n]+?(?:[.!?]\*\*|\*\*[.!?])/;
+  /(?:^\s*(?:>\s*)?|(?<!^\s*\d+)[.!?]["')]?\s+)\*\*(?=[^*\n]*?\s[^*\n]*?\*\*)[^*\n]+?(?:[.!?]\*\*|\*\*[.!?])/;
 
 /**
  * The two openers `docs/agents/voice.md` bans: a "Without it:" lead-in to a
  * list of failure modes, and a claim that the topic is the backbone of
  * something. The second also catches "are the backbone of" and "form the
- * backbone of", which is how two of the guides phrased it.
+ * backbone of", which is how two of the guides phrased it. Checked only in a
+ * guide's opening (GUIDES_PATH, before the first `## ` heading): both are
+ * rules about how a guide opens, and "Without X:" is ordinary English in the
+ * body of a page.
  */
+const GUIDES_PATH = "src/content/docs/guides/";
 const BANNED_OPENERS = [
   {
     avoid: /Without [^.:]{0,60}:\s*$/,
@@ -279,11 +290,66 @@ function vocabularyViolations(line, lineNumber) {
   return hits;
 }
 
+/** A line that opens or closes a fenced code block. */
+const FENCE = /^\s*(?:```|~~~)/;
+
 /**
- * The voice hits on one prose line of a handbook page. `checkOpeners` is
- * false on a page carrying LEGACY_OPENER_MARKER.
+ * The banned-opener hits in a guide's opening: every prose line before the
+ * first `## ` heading. Empty for any page outside GUIDES_PATH.
  */
-function voiceViolations(line, lineNumber, checkOpeners) {
+function openingHits(lines, path) {
+  const hits = [];
+  if (!repoRelative(path).startsWith(GUIDES_PATH)) {
+    return hits;
+  }
+  let inFence = false;
+  for (const [index, line] of lines.entries()) {
+    if (line.startsWith("## ")) {
+      break;
+    }
+    if (FENCE.test(line)) {
+      inFence = !inFence;
+    } else if (!inFence) {
+      const prose = stripInlineCode(line);
+      for (const rule of BANNED_OPENERS.filter((r) => r.avoid.test(prose))) {
+        hits.push({
+          kind: `voice: a banned opener; ${rule.use}`,
+          line: index + 1,
+          snippet: line.trim(),
+        });
+      }
+    }
+  }
+  return hits;
+}
+
+/**
+ * The opener hits, waived by LEGACY_OPENER_MARKER. A marker with nothing to
+ * waive is itself the hit: the opener was fixed and the marker left behind,
+ * or the marker sits on a page the opener check never reads.
+ */
+function openerViolations(lines, path) {
+  const hits = openingHits(lines, path);
+  const markerIndex = lines.findIndex((line) =>
+    line.includes(LEGACY_OPENER_MARKER)
+  );
+  if (markerIndex === -1) {
+    return hits;
+  }
+  if (hits.length > 0) {
+    return [];
+  }
+  return [
+    {
+      kind: "voice: a stale legacy-opener marker; nothing on this page needs it, so delete it",
+      line: markerIndex + 1,
+      snippet: lines[markerIndex].trim(),
+    },
+  ];
+}
+
+/** The voice hits on one prose line of a handbook page, openers aside. */
+function voiceViolations(line, lineNumber) {
   const hits = [];
   const hit = (kind) =>
     hits.push({ kind, line: lineNumber, snippet: line.trim() });
@@ -299,13 +365,6 @@ function voiceViolations(line, lineNumber, checkOpeners) {
     hit(
       "voice: a bolded whole sentence; unbold it, or bold only the defined term"
     );
-  }
-  if (checkOpeners) {
-    for (const rule of BANNED_OPENERS) {
-      if (rule.avoid.test(prose)) {
-        hit(`voice: a banned opener; ${rule.use}`);
-      }
-    }
   }
   return hits;
 }
@@ -325,15 +384,13 @@ export function findProseViolations(text, path) {
     proseChecks.push(vocabularyViolations);
   }
   if (voiceApplies(path)) {
-    const checkOpeners = !text.includes(LEGACY_OPENER_MARKER);
-    proseChecks.push((line, lineNumber) =>
-      voiceViolations(line, lineNumber, checkOpeners)
-    );
+    proseChecks.push(voiceViolations);
+    violations.push(...openerViolations(lines, path));
   }
   let inFence = false;
   for (const [index, line] of lines.entries()) {
     if (proseChecks.length > 0) {
-      if (/^\s*(?:```|~~~)/.test(line)) {
+      if (FENCE.test(line)) {
         inFence = !inFence;
       } else if (!inFence) {
         for (const check of proseChecks) {

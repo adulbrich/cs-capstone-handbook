@@ -30,9 +30,7 @@ The goal is not to enumerate every possible attack. It is to find the threats th
 
 For a capstone project, a full formal threat model is overkill. A lightweight version that the team can complete in a single session is far more valuable than a comprehensive one that never happens. Here is a practical approach:
 
-#### 1. Draw the system
-
-Start with a diagram of your architecture: the components, the data flows between them, and the trust boundaries (where data crosses from one security context to another). If you already have a C4 context or container diagram from your technical design, use that.
+1. **Draw the system.** Start with a diagram of your architecture: the components, the data flows between them, and the trust boundaries (where data crosses from one security context to another). If you already have a C4 context or container diagram from your technical design, use that.
 
 <LinkCard
   title="Technical Design"
@@ -40,17 +38,11 @@ Start with a diagram of your architecture: the components, the data flows betwee
   description="Architecture diagrams that double as the starting point for threat modeling."
 />
 
-#### 2. Identify the assets
+2. **Identify the assets.** What data or resources are valuable? User credentials, personal information, API keys, payment data, research datasets, administrative access. These are what an attacker wants.
 
-What data or resources are valuable? User credentials, personal information, API keys, payment data, research datasets, administrative access. These are what an attacker wants.
+3. **Identify the entry points.** Where can external input reach your system? Web forms, API endpoints, file uploads, URL parameters, WebSocket connections, environment variables read from external sources. Every entry point is a potential attack surface.
 
-#### 3. Identify the entry points
-
-Where can external input reach your system? Web forms, API endpoints, file uploads, URL parameters, WebSocket connections, environment variables read from external sources. Every entry point is a potential attack surface.
-
-#### 4. Ask "what could go wrong?" at each entry point
-
-For each entry point and each asset, consider the common threat categories. The STRIDE model provides a useful checklist:
+4. **Ask "what could go wrong?" at each entry point.** For each entry point and each asset, consider the common threat categories. The STRIDE model provides a useful checklist:
 
 | Threat | Question | Example |
 |--------|----------|---------|
@@ -63,14 +55,12 @@ For each entry point and each asset, consider the common threat categories. The 
 
 You do not need to address every cell in the matrix. Focus on the threats that are both likely and impactful for your specific project.
 
-#### 5. Decide what to do about each threat
+5. **Decide what to do about each threat.** For each identified threat, the team has four options:
 
-For each identified threat, the team has four options:
-
-- **Mitigate**: implement a control that reduces or eliminates the risk (input validation, authentication, encryption).
-- **Accept**: acknowledge the risk and document why it is acceptable for this project (low likelihood, low impact, out of scope).
-- **Transfer**: shift the risk to a third party (use a managed authentication service instead of building your own).
-- **Avoid**: remove the feature or component that introduces the risk.
+   - **Mitigate**: implement a control that reduces or eliminates the risk (input validation, authentication, encryption).
+   - **Accept**: acknowledge the risk and document why it is acceptable for this project (low likelihood, low impact, out of scope).
+   - **Transfer**: shift the risk to a third party (use a managed authentication service instead of building your own).
+   - **Avoid**: remove the feature or component that introduces the risk.
 
 Document your decisions. An Architecture Decision Record is a natural place for security decisions and their rationale.
 
