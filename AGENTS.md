@@ -14,7 +14,7 @@ lives in `src/content/docs/**` as MDX.
 
 | Path | Holds |
 |---|---|
-| `src/content/docs/assignments/` | Graded work. Source of truth. Every page's rubric table is machine-parsed. |
+| `src/content/docs/assignments/` | Graded work. Source of truth, except the two Canvas-owned stubs (hard rule 4). Every page's rubric table is machine-parsed. |
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
