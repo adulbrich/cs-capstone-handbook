@@ -1,10 +1,12 @@
-# Weekly check of every external link in the pages and the sources registry.
-# starlight-links-validator covers internal links and anchors on every build;
-# nothing else looks outside the site. This runs on a schedule, not per pull
-# request, because an outside outage would otherwise fail unrelated PRs.
+# Weekly check of every external link on the built site. The built HTML is
+# what a student clicks, including the doi.org links Cite renders from the
+# sources registry. Root-relative links are skipped by scheme, since
+# starlight-links-validator already checks internal links and anchors on
+# every build. This runs on a schedule, not per pull request, because an
+# outside outage would otherwise fail unrelated PRs.
 #
 # A failure opens one issue, or updates the open one, rather than failing
-# silently in a run log nobody reads. Hosts that answer a bot with 403 or a
+# silently in a run log nobody reads. Links that answer a bot with 403 or a
 # challenge page are listed in .lycheeignore.
 name: links
 
@@ -23,6 +25,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
       - name: Check external links
         id: lychee
         uses: lycheeverse/lychee-action@v2
@@ -30,9 +38,9 @@ jobs:
           args: >-
             --no-progress
             --max-retries 3
-            --exclude-loopback
-            'src/content/docs/**/*.mdx'
-            'src/data/sources/*.yaml'
+            --scheme https
+            --scheme http
+            'dist/**/*.html'
           output: lychee/out.md
           format: markdown
           # The issue below is the failure signal, so the step itself passes.

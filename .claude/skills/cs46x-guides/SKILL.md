@@ -114,7 +114,7 @@ reading is yours.
 
 **The registry.** One file per source, `src/data/sources/<id>.yaml`. The id is
 the first author's family name and the year, lowercase (`edmondson-1999`;
-`edmondson-1999b` for a second paper that year). One file per source rather
+see `suffix` below for two papers that year). One file per source rather
 than one list, because guide PRs add sources in parallel and a single file
 would conflict on every merge.
 
@@ -126,7 +126,7 @@ title: Psychological Safety and Learning Behavior in Work Teams
 venue: Administrative Science Quarterly
 kind: peer-reviewed
 url: https://www.jstor.org/stable/2666999
-doi: 10.2307/2666999       # optional; Cite links doi.org when present
+doi: 10.2307/2666999       # optional, bare (not a URL); Cite links doi.org
 verified: full-text        # or abstract
 claims:
   - claim: In 51 manufacturing teams, team psychological safety was associated with learning behavior.
@@ -148,6 +148,10 @@ claims:
   must be stated in the abstract and its locator is `Abstract`. A paywalled
   source nobody on the team can read is `abstract`, and the page says no more
   than the abstract does.
+- `suffix`, one lowercase letter, tells apart two sources that would cite the
+  same: give `edmondson-1999a` and `edmondson-1999b` suffixes `a` and `b` and
+  they render "Edmondson (1999a)" and "Edmondson (1999b)". The validator fails
+  on two entries with the same in-text label.
 - A month name in a title fails `validate-dates`, which scans `src/`.
 
 **In the page.** Import both components, then cite in the sentence:
@@ -171,9 +175,15 @@ markdown headings; the component lists every cited source in order of first
 citation. A source cited in the body leaves Additional Readings, which holds
 only what the body does not cite.
 
+A Cite inside a code block, an inline code span, or an MDX comment is not a
+citation, for the site or the validator; both read pages through
+`src/lib/cite-pattern.mjs`.
+
 `validate-sources` fails on a Cite with no registry file, a registry file
-missing a field or a locator, a registry entry no page cites, and a citing
-page without the References pair in place. It cannot tell whether the locator
+missing a field or a locator, two entries with the same in-text label, a
+registry entry no page cites, a citing page without the References pair
+directly above Additional Readings, and `<References />` on a page that cites
+nothing. It cannot tell whether the locator
 supports the claim. That is what the registry diff in the PR is for: the
 reviewer reads the claim, opens the source at the locator, and checks.
 

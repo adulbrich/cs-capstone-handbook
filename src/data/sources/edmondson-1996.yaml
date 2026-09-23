@@ -4,7 +4,7 @@ year: 1996
 title: >-
   Learning from Mistakes Is Easier Said Than Done: Group and Organizational
   Influences on the Detection and Correction of Human Error
-venue: Journal of Applied Behavioral Science
+venue: The Journal of Applied Behavioral Science
 kind: peer-reviewed
 url: https://journals.sagepub.com/doi/10.1177/0021886396321001
 doi: 10.1177/0021886396321001
@@ -13,6 +13,6 @@ verified: abstract
 claims:
   - claim: >-
       Patient-care groups in two hospitals differed systematically not only in
-      how often drug-administration errors occurred but in how likely errors
+      the frequency of drug-administration errors but in how likely errors
       were to be detected and learned from by group members.
     locator: Abstract

@@ -1,4 +1,5 @@
 ---
+import { citedYear } from "../lib/cite-pattern.mjs";
 import {
   citedIds,
   href,
@@ -34,14 +35,16 @@ if (entry.body === undefined) {
 }
 
 const sources = await Promise.all(
-  citedIds(entry.body).map((id) => requireSource(id, entry.filePath))
+  citedIds(entry.body).map((id) =>
+    requireSource(id, "References", entry.filePath)
+  )
 );
 ---
 <ul class="references">
   {
     sources.map((source) => (
       <li>
-        {listAuthors(source.data.authors)} ({source.data.year}).{" "}
+        {listAuthors(source.data.authors)} ({citedYear(source.data.year, source.data.suffix)}).{" "}
         {sentence(source.data.title)} <em>{source.data.venue}</em>.
         {source.data.kind === "preprint" ? " Preprint." : ""}{" "}
         <a href={href(source)}>{href(source)}</a>

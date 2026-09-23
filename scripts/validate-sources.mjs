@@ -12,15 +12,23 @@
  * Rules:
  *
  *   1. Every `<Cite id>` on a page names a registry file.
- *   2. Every registry file parses and carries the required fields, a known
- *      `kind` and `verified`, and at least one claim with a locator. The
- *      Astro content schema in src/content.config.ts enforces the same shape
- *      at build time; this copy exists because `astro:content` cannot run in
- *      a pre-commit hook. Change both together.
+ *   2. Every registry file parses and has the shape the Astro content schema
+ *      in src/content.config.ts requires: the required fields, non-blank
+ *      text, a known `kind` and `verified`, an http(s) `url`, a bare DOI, and
+ *      at least one claim with a locator, with no unknown keys. The schema
+ *      fails the build; this copy exists because `astro:content` cannot run
+ *      in a pre-commit hook. Change both together.
  *   3. Every registry entry is cited by at least one page. An entry nothing
  *      cites is a stale fact that nobody will re-check.
- *   4. A page that cites has `## References` followed by `<References />`,
- *      before `## Additional Readings`.
+ *   4. No two entries render the same in-text label ("Edmondson (1999)");
+ *      the second needs a `suffix`.
+ *   5. A page that cites has `## References` followed by `<References />`,
+ *      and the next `##` heading is `## Additional Readings`. A page with
+ *      `<References />` and no Cite fails too: its list would be empty.
+ *
+ * Citations are read the way the site reads them, through
+ * src/lib/cite-pattern.mjs, so a Cite inside a code block, an inline code
+ * span, or an MDX comment counts for neither.
  *
  * The "(preprint)" marker is not checked here: Cite.astro appends it from
  * `kind`, so a preprint cannot be cited without it.
@@ -34,6 +42,13 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, join } from "node:path";
 import { parse } from "yaml";
+import {
+  citableText,
+  citedYear,
+  citeIds,
+  citeTagCount,
+  inTextAuthors,
+} from "../src/lib/cite-pattern.mjs";
 
 const DOCS_DIR = "src/content/docs";
 const SOURCES_DIR = "src/data/sources";
@@ -48,10 +63,11 @@ const KINDS = new Set([
   "essay",
 ]);
 const VERIFIED = new Set(["full-text", "abstract"]);
-const REQUIRED_STRINGS = ["title", "venue", "url"];
+const REQUIRED_TEXT = ["title", "venue"];
 const KNOWN_FIELDS = new Set([
   "authors",
   "year",
+  "suffix",
   "title",
   "venue",
   "kind",
@@ -60,6 +76,7 @@ const KNOWN_FIELDS = new Set([
   "claims",
   "verified",
 ]);
+const CLAIM_FIELDS = new Set(["claim", "locator"]);
 
 function collectMdx(dir) {
   const out = [];
@@ -74,19 +91,50 @@ function collectMdx(dir) {
   return out;
 }
 
-/** The page with fenced code blocks removed: an example is not a citation. */
-function withoutFences(source) {
-  return source.replace(/^(```|~~~)[^\n]*\n[\s\S]*?^\1[ \t]*$/gm, "");
-}
-
 const shown = (value) =>
   value === undefined ? "missing" : JSON.stringify(value);
 
-const isText = (value) => typeof value === "string" && value.trim() !== "";
+/** Non-blank text, as the schema's `text()` requires. */
+const isText = (value) => typeof value === "string" && /\S/.test(value);
+
+const isHttpUrl = (value) =>
+  typeof value === "string" &&
+  URL.canParse(value) &&
+  ["http:", "https:"].includes(new URL(value).protocol);
+
+const isMapping = (value) =>
+  value !== null && typeof value === "object" && !Array.isArray(value);
+
+function claimProblems(claims) {
+  if (!Array.isArray(claims) || claims.length === 0) {
+    return [
+      "`claims` must list at least one claim the handbook makes from this source",
+    ];
+  }
+  const problems = [];
+  claims.forEach((claim, index) => {
+    const at = `claim ${index + 1}`;
+    if (!isMapping(claim)) {
+      problems.push(`${at} is not a mapping of \`claim\` and \`locator\``);
+      return;
+    }
+    for (const key of Object.keys(claim)) {
+      if (!CLAIM_FIELDS.has(key)) {
+        problems.push(`${at} has unknown field \`${key}\``);
+      }
+    }
+    if (!(isText(claim.claim) && isText(claim.locator))) {
+      problems.push(
+        `${at} needs both \`claim\` and \`locator\` (the section, page, figure, or table that supports it)`
+      );
+    }
+  });
+  return problems;
+}
 
 /** Everything wrong with one parsed registry entry, as strings. */
 function entryProblems(data) {
-  if (data === null || typeof data !== "object" || Array.isArray(data)) {
+  if (!isMapping(data)) {
     return ["is not a YAML mapping"];
   }
   const problems = [];
@@ -107,13 +155,27 @@ function entryProblems(data) {
   if (!Number.isInteger(data.year)) {
     problems.push("`year` must be an integer, the year only");
   }
-  for (const key of REQUIRED_STRINGS) {
+  if (
+    data.suffix !== undefined &&
+    !(typeof data.suffix === "string" && /^[a-z]$/.test(data.suffix))
+  ) {
+    problems.push(`\`suffix\` is ${shown(data.suffix)}; one lowercase letter`);
+  }
+  for (const key of REQUIRED_TEXT) {
     if (!isText(data[key])) {
-      problems.push(`\`${key}\` is missing or empty`);
+      problems.push(`\`${key}\` is missing or blank`);
     }
   }
-  if (data.doi !== undefined && !isText(data.doi)) {
-    problems.push("`doi` is empty; omit it or give the DOI");
+  if (!isHttpUrl(data.url)) {
+    problems.push(`\`url\` is ${shown(data.url)}; expected an http(s) URL`);
+  }
+  if (
+    data.doi !== undefined &&
+    !(typeof data.doi === "string" && /^10\.\S+$/.test(data.doi))
+  ) {
+    problems.push(
+      `\`doi\` is ${shown(data.doi)}; give the bare DOI starting 10., not a URL`
+    );
   }
   if (!KINDS.has(data.kind)) {
     problems.push(
@@ -125,26 +187,31 @@ function entryProblems(data) {
       `\`verified\` is ${shown(data.verified)}; expected full-text or abstract (how the claims were checked)`
     );
   }
-  if (!Array.isArray(data.claims) || data.claims.length === 0) {
-    problems.push(
-      "`claims` must list at least one claim the handbook makes from this source"
-    );
-  } else {
-    data.claims.forEach((claim, index) => {
-      if (!(isText(claim?.claim) && isText(claim?.locator))) {
-        problems.push(
-          `claim ${index + 1} needs both \`claim\` and \`locator\` (the section, page, figure, or table that supports it)`
-        );
-      }
-    });
-  }
+  problems.push(...claimProblems(data.claims));
   return problems;
+}
+
+/** The label Cite would render, or null when the entry is too broken to say. */
+function inTextLabel(data) {
+  if (
+    !(
+      isMapping(data) &&
+      Array.isArray(data.authors) &&
+      data.authors.length > 0 &&
+      data.authors.every(isText) &&
+      Number.isInteger(data.year)
+    )
+  ) {
+    return null;
+  }
+  return `${inTextAuthors(data.authors)} (${citedYear(data.year, data.suffix)})`;
 }
 
 const problems = [];
 
 // The registry.
 const registry = new Set();
+const labels = new Map();
 const registryFiles = existsSync(SOURCES_DIR)
   ? readdirSync(SOURCES_DIR).filter((name) => !name.startsWith("."))
   : [];
@@ -156,7 +223,8 @@ for (const name of registryFiles) {
     );
     continue;
   }
-  registry.add(basename(name, ".yaml"));
+  const id = basename(name, ".yaml");
+  registry.add(id);
   let data;
   try {
     data = parse(readFileSync(path, "utf8"));
@@ -167,6 +235,18 @@ for (const name of registryFiles) {
   for (const problem of entryProblems(data)) {
     problems.push(`${path}: ${problem}`);
   }
+  const label = inTextLabel(data);
+  if (label !== null) {
+    labels.set(label, [...(labels.get(label) ?? []), id]);
+  }
+}
+
+for (const [label, ids] of labels) {
+  if (ids.length > 1) {
+    problems.push(
+      `${ids.join(", ")}: all cite as "${label}"; give each a \`suffix\` (a, b, ...) so a reader can tell them apart`
+    );
+  }
 }
 
 // The pages.
@@ -174,17 +254,20 @@ const cited = new Set();
 let citingPages = 0;
 let citations = 0;
 for (const page of collectMdx(DOCS_DIR)) {
-  const prose = withoutFences(readFileSync(page, "utf8"));
-  const ids = [...prose.matchAll(/<Cite\b[^>]*?\bid=["']([^"']+)["']/g)].map(
-    (match) => match[1]
-  );
-  const tags = prose.match(/<Cite\b/g)?.length ?? 0;
-  if (tags > ids.length) {
+  const prose = citableText(readFileSync(page, "utf8"));
+  const ids = citeIds(prose);
+  const hasReferences = /^<References\s*\/>\s*$/m.test(prose);
+  if (citeTagCount(prose) > ids.length) {
     problems.push(
       `${page}: a <Cite> without an id="..." attribute; every Cite names a registry entry`
     );
   }
   if (ids.length === 0) {
+    if (hasReferences) {
+      problems.push(
+        `${page}: has <References /> but cites nothing; remove the References section or cite a source`
+      );
+    }
     continue;
   }
   citingPages += 1;
@@ -202,24 +285,23 @@ for (const page of collectMdx(DOCS_DIR)) {
   const references = lines.findIndex((line) =>
     /^##\s+References\s*$/.test(line)
   );
-  const readings = lines.findIndex((line) =>
-    /^##\s+Additional Readings\s*$/.test(line)
-  );
   if (references === -1) {
     problems.push(
       `${page}: cites a source but has no \`## References\` heading followed by <References />`
     );
     continue;
   }
-  const next = lines.slice(references + 1).find((line) => line.trim() !== "");
+  const after = lines.slice(references + 1);
+  const next = after.find((line) => line.trim() !== "");
   if (!/^<References\s*\/>\s*$/.test(next ?? "")) {
     problems.push(
       `${page}: \`## References\` must be followed directly by <References />`
     );
   }
-  if (readings !== -1 && readings < references) {
+  const nextHeading = after.find((line) => /^##\s/.test(line));
+  if (!/^##\s+Additional Readings\s*$/.test(nextHeading ?? "")) {
     problems.push(
-      `${page}: \`## References\` must come before \`## Additional Readings\``
+      `${page}: \`## References\` must sit directly above \`## Additional Readings\`; the next section is ${nextHeading ? `\`${nextHeading.trim()}\`` : "missing"}`
     );
   }
 }

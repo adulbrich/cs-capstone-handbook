@@ -1,5 +1,6 @@
 ---
-import { href, inTextAuthors, requireSource } from "../lib/sources";
+import { citedYear, inTextAuthors } from "../lib/cite-pattern.mjs";
+import { href, requireSource } from "../lib/sources";
 
 /**
  * Cite: an author-year citation in the sentence, linked to the source.
@@ -16,7 +17,8 @@ import { href, inTextAuthors, requireSource } from "../lib/sources";
  *   ... in work teams <Cite id="edmondson-1999" form="parenthetical" />.
  *                                                        (Edmondson, 1999)
  *
- * The year is the registry's integer year, never a full publication date:
+ * The year is the registry's integer year plus its optional suffix
+ * ("1999a"), never a full publication date:
  * validate-dates flags ISO dates under src/. A preprint is marked
  * "(preprint)" here, so no page can cite one without saying so.
  */
@@ -28,9 +30,13 @@ interface Props {
 }
 
 const { id, form = "narrative" } = Astro.props;
-const source = await requireSource(id, Astro.url.pathname);
+const source = await requireSource(
+  id,
+  "Cite",
+  Astro.locals.starlightRoute.entry.filePath
+);
 const who = inTextAuthors(source.data.authors);
-const year = String(source.data.year);
+const year = citedYear(source.data.year, source.data.suffix);
 const preprint = source.data.kind === "preprint" ? " (preprint)" : "";
 const text =
   form === "parenthetical"
