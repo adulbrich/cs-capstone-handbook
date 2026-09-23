@@ -1,19 +1,19 @@
 ---
 title: Shipping
-description: The playbook for reaching the top rungs of the spring outcome ladder, planned backward from spring starting in fall week one.
+description: The playbook for reaching the top rungs of the outcome ladder, planned backward from the end of the project and started in its first week.
 sidebar:
   order: 16
 ---
 
-Read this in fall week one, before you agree your spring rung with your project partner or mentor; it works through four paths up the outcome ladder and the clocks to start now.
+Read this in your project's first week, before you agree a target with your partner; it gives you four paths up the ladder and the clocks to start now.
 
 "Shipped" is not a single state, and the most useful way to think about it is as a ladder measured by one question: who ran the software. At the bottom, nobody outside the team ran it. One rung up, your partner watched it run. Above that the rungs depend on what kind of project you have, and the top of the ladder always means the same thing in different words: people who are not you depend on it. The top rungs are hard, and they are hard for reasons that have little to do with how good your code is.
 
-Here is the fact that should reorganize your year: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in spring week 8. The only move that works is starting the clocks early. That means choosing the rung you are aiming for at the very beginning, planning backward from it, and starting the slow external processes in your first week rather than when you feel ready for them.
+Here is the fact that should reorganize your plan: with AI tools, building is rarely the long pole anymore. **The external world is.** Maintainer review latency, app store review, IRB approval and data access, partner IT security review, recruiting users you don't know: every one of these clocks is measured in weeks, none of them is under your control, and none of them can be compressed by working harder in the final month. The only move that works is starting the clocks early. That means choosing the rung you are aiming for at the very beginning, planning backward from it, and starting the slow external processes in your first week rather than when you feel ready for them.
 
-This guide is the playbook. Each section below is a worked example of one path up the ladder: what each rung means for that kind of project, the prerequisites rung by rung, a term-by-term timeline, the common blockers, and the evidence worth collecting as you go. Evidence is the part teams leave until last and regret: a merged pull request, a dashboard, a maintainer's comment and a partner's email are all trivial to capture the day they happen and painful to reconstruct afterwards.
+This guide is the playbook. Each section below is a worked example of one path up the ladder: what each rung means for that kind of project, the prerequisites rung by rung, a timeline in three phases (early, middle, and late, each roughly a third of the project), the common blockers, and the evidence worth collecting as you go. Evidence is the part teams leave until last and regret: a merged pull request, a dashboard, a maintainer's comment and a partner's email are all trivial to capture the day they happen and painful to reconstruct afterwards.
 
-**What shipped means for your project is something you and your project partner or mentor agree**, not a label anyone assigns you. FOSS, New Product or Game, Research and Consultancy are the paths teams have most often taken, and they are here to give you an idea of what to expect rather than to sort you into a box. **A project that looks like none of them is fully fine**, and writing your own expectations costs you nothing, because the outcome rubrics read what you committed to rather than which example you resemble: what you owe either way is a rung you are aiming at and a partner who agreed it. Read the section closest to your project, then take the others as a menu, because the lead times in one routinely bite a project in another.
+**What shipped means for your project is something you and your project partner or mentor agree**, not a label anyone assigns you. FOSS, New Product or Game, Research and Consultancy are the paths teams have most often taken, and they are here to give you an idea of what to expect rather than to sort you into a box. **A project that looks like none of them is fully fine**, and writing your own expectations costs you nothing, because what matters is the rung you commit to rather than which example you resemble: either way, you need a rung you are aiming at and a partner who agreed it. Read the section closest to your project, then take the others as a menu, because the lead times in one routinely bite a project in another.
 
 ## FOSS
 
@@ -27,17 +27,17 @@ This guide is the playbook. Each section below is a worked example of one path u
 - **Reviewed:** a maintainer chose to spend time on your PR. Review latency on large projects is commonly 2 to 8 weeks per round, and most substantive PRs take multiple rounds.
 - **Merged:** every review round addressed, rebased onto a moving main branch, and the change judged worth maintaining forever by people who will own it after you graduate.
 
-Aim to have a first upstream pull request submitted by the end of fall, and aim past that: **get a trivial PR merged in the same term.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero.
+Aim to have a first upstream pull request submitted in the early phase, and aim past that: **get a trivial PR merged in the same phase.** A typo fix, a docs clarification, a good first issue. Its purpose is not the diff; it is opening the maintainer channel, proving your toolchain end to end (fork, build, test, CLA, CI, review etiquette), and teaching you this project's review culture while the stakes are near zero.
 
 Communication norms matter as much as code. Read the project's [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and recent merged PRs before writing anything. GitHub's [Open Source Guides](https://opensource.guide/how-to-contribute/) cover the etiquette in more detail than most projects write down. Discuss substantial changes in an issue or mailing list **before** building them; an unsolicited large PR is the most-rejected artifact in open source. Be responsive when review arrives: maintainers deprioritize contributors who take weeks to respond.
 
-| Term | What must be true |
+| Phase | What must be true |
 |---|---|
-| Fall | Upstream builds and tests locally for every member; CLA/DCO done; first PR submitted, ideally a trivial one merged; target issues discussed with maintainers |
-| Winter | Substantive PR(s) submitted and in active review; at least one review round addressed |
-| Spring | PRs merged; follow-up fixes handled; contribution noted in changelog or release notes if possible |
+| Early | Upstream builds and tests locally for every member; CLA/DCO done; first PR submitted, ideally a trivial one merged; target issues discussed with maintainers |
+| Middle | Substantive PR(s) submitted and in active review; at least one review round addressed |
+| Late | PRs merged; follow-up fixes handled; contribution noted in changelog or release notes if possible |
 
-**Common blockers:** review latency (weeks per round, worse around releases); CLA requiring employer or university sign-off; a maintainer disagreeing with your approach after you built it (discuss first); the project migrating or freezing mid-year; your patch conflicting with a moving main branch.
+**Common blockers:** review latency (weeks per round, worse around releases); CLA requiring employer or university sign-off; a maintainer disagreeing with your approach after you built it (discuss first); the project migrating or freezing mid-project; your patch conflicting with a moving main branch.
 
 **Evidence to collect:** links to merged and in-review PRs, the review threads themselves (they prove engagement), issue discussions where maintainers endorsed your direction, changelog or release mentions, and any maintainer comments praising the work. Screenshot or archive these as they happen.
 
@@ -53,21 +53,21 @@ Communication norms matter as much as code. Read the project's [CONTRIBUTING fil
 - **A dozen strangers:** a production URL with a real domain and TLS, an onboarding flow a stranger survives without you on a call, a recruitment channel (subreddit, Discord, campus group, itch.io page), and telemetry so you can prove they came.
 - **Two dozen strangers, and beyond:** retention, which means fixing what the first dozen users hit, which means having had those users early enough to iterate.
 
-**Deploy the walking skeleton to a production URL by the end of fall.** It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing) while there is nothing to lose. See the [DevOps guide](/guides/devops/) for how.
+**Deploy the walking skeleton to a production URL in the early phase.** It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing) while there is nothing to lose. See the [DevOps guide](/guides/devops/) for how.
 
 Know your **store clocks** if you are distributing through one. Apple: developer account approval can take days, and [Apple reviews about 90% of submissions in under 24 hours](https://developer.apple.com/app-store/review/), but that is the clock on one round. Rejections and resubmission loops are routine, first submissions get extra scrutiny, and review slows near holidays. Google Play: new personal accounts face a testing requirement (a closed test with a dozen testers over two weeks) before production access, and the [test tracks](https://developer.android.com/distribute/best-practices/launch/test-tracks) are worth understanding before you need them. For games, **[itch.io](https://itch.io/developers) is the fast path**: no review queue, upload and publish the same day. Ship on itch.io early even if a store launch is the end goal.
 
-Add an **analytics or telemetry starter in fall**, not spring: a privacy-respecting page-view and event counter ([Plausible](https://plausible.io/), [Umami](https://umami.is/), [PostHog](https://posthog.com/)) or a simple event log. Any credible claim about use requires metrics, and metrics require instrumentation that has been quietly collecting since before you needed it.
+Add an **analytics or telemetry starter early**, not in the last phase: a privacy-respecting page-view and event counter ([Plausible](https://plausible.io/), [Umami](https://umami.is/), [PostHog](https://posthog.com/)) or a simple event log. Any credible claim about use requires metrics, and metrics require instrumentation that has been quietly collecting since before you needed it.
 
 If the venture question interests you beyond the software, [Y Combinator's Startup School](https://www.startupschool.org/) is a free, self-paced course on taking a product to a market, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator) runs programs for student founders. Neither is a substitute for a dozen strangers using the thing: they help you decide what to build next, and the ladder only counts what someone actually ran.
 
-| Term | What must be true |
+| Phase | What must be true |
 |---|---|
-| Fall | Production URL live (walking skeleton); domain, TLS, hosting sorted; analytics wired; store accounts created if relevant |
-| Winter | Beta users onboarding themselves; feedback loop running; store test track passed if relevant; real-user session evidenced |
-| Spring | Strangers using it; metrics dashboard showing it; store listing live or study executed |
+| Early | Production URL live (walking skeleton); domain, TLS, hosting sorted; analytics wired; store accounts created if relevant |
+| Middle | Beta users onboarding themselves; feedback loop running; store test track passed if relevant; real-user session evidenced |
+| Late | Strangers using it; metrics dashboard showing it; store listing live or study executed |
 
-**Common blockers:** app store rejection loops, Play Console testing requirements, free-tier hosting limits hit at the worst moment, domain or account ownership stuck with one team member, and above all user recruitment: strangers take weeks to find, so the channel must exist by winter.
+**Common blockers:** app store rejection loops, Play Console testing requirements, free-tier hosting limits hit at the worst moment, domain or account ownership stuck with one team member, and above all user recruitment: strangers take weeks to find, so the channel must exist by the middle phase.
 
 **Evidence to collect:** the production URL and uptime history, analytics screenshots with dates, user counts and testimonials, store listing links and review correspondence, user study protocol and results, and retention evidence: repeat-use counts or week-over-week active users, which is what separates the top rungs from a launch spike.
 
@@ -79,23 +79,23 @@ If the venture question interests you beyond the software, [Y Combinator's Start
 
 **Rung-by-rung prerequisites:**
 
-- **A pipeline first:** it runs end to end on sample data, which is the fall week 10 gate.
+- **A pipeline first:** it runs end to end on sample data by the end of the early phase, the first gate the rest depends on.
 - **A real-data run:** the real dataset, which means data access agreements and possibly IRB approval, both of which are clocks you do not control.
 - **Reran by others, then reproduced by a stranger:** the reproducible artifact described below, a reproduced baseline to compare against, compute for larger runs, and enough calendar time to iterate after the first results disappoint you (they will).
 
-**Start the IRB and data-access clocks in fall week one.** [Institutional Review Board review at OSU](https://research.oregonstate.edu/irb) takes weeks even for exempt determinations, and longer if revisions are requested; data use agreements between institutions can take a full term. Your faculty partner knows these processes: ask in your first meeting what approvals the project needs and who files them. If human subjects are even plausibly involved (user studies count), ask explicitly.
+**Start the IRB and data-access clocks in your first week.** [Institutional Review Board review at OSU](https://research.oregonstate.edu/irb) takes weeks even for exempt determinations, and longer if revisions are requested; data use agreements between institutions can take months. Your faculty partner knows these processes: ask in your first meeting what approvals the project needs and who files them. If human subjects are even plausibly involved (user studies count), ask explicitly.
 
-Get the pipeline running end to end on sample data in fall. Clearing that bar early means that when real data arrives, you are debugging science instead of plumbing.
+Get the pipeline running end to end on sample data in the early phase. Clearing that bar early means that when real data arrives, you are debugging science instead of plumbing.
 
-**Reproducibility is the bar.** A result that only exists on one student's laptop is a rumor. This is not a course affectation: a [Nature survey of 1,576 researchers](https://www.nature.com/articles/533452a) found that more than 70% had tried and failed to reproduce another scientist's experiment, and the response across computing has been to make the artifact, not just the paper, the reviewable object. A reproducible artifact means: pinned dependencies (a lock file or container), versioned or precisely referenced data, seeded runs, one documented command from clean checkout to result table, and a README a stranger can follow. The test is literal: another team member, or your professor's grad student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt novelty**: if you cannot reproduce the published number you are comparing against, you cannot claim to beat it.
+**Reproducibility is the bar.** A result that only exists on one student's laptop is a rumor. This is not a classroom affectation: a [Nature survey of 1,576 researchers](https://www.nature.com/articles/533452a) found that more than 70% had tried and failed to reproduce another scientist's experiment, and the response across computing has been to make the artifact, not just the paper, the reviewable object. A reproducible artifact means: pinned dependencies (a lock file or container), versioned or precisely referenced data, seeded runs, one documented command from clean checkout to result table, and a README a stranger can follow. The test is literal: another team member, or your professor's grad student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt novelty**: if you cannot reproduce the published number you are comparing against, you cannot claim to beat it.
 
-| Term | What must be true |
+| Phase | What must be true |
 |---|---|
-| Fall | IRB/data-access filings submitted; pipeline runs end to end on sample data; baseline identified and reproduction started |
-| Winter | Real data in hand; baseline reproduced; first real experiments run; results tracked and versioned |
-| Spring | Novel experiments complete; artifact reproducible by a stranger; paper or report drafted with your partner |
+| Early | IRB/data-access filings submitted; pipeline runs end to end on sample data; baseline identified and reproduction started |
+| Middle | Real data in hand; baseline reproduced; first real experiments run; results tracked and versioned |
+| Late | Novel experiments complete; artifact reproducible by a stranger; paper or report drafted with your partner |
 
-**Common blockers:** IRB revision cycles, data agreements stalled in legal review, the baseline paper's code not actually running, compute quotas, and the classic: results that arrive in week 8 of spring with no time left to interpret them.
+**Common blockers:** IRB revision cycles, data agreements stalled in legal review, the baseline paper's code not actually running, compute quotas, and the classic: results that arrive a few weeks before the end with no time left to interpret them.
 
 **Evidence to collect:** approval letters and agreement dates, the reproducible artifact itself (repo tag plus instructions), baseline reproduction numbers next to published ones, experiment logs, your partner's written confirmation that results are novel or submission-worthy, and the paper draft or preprint link.
 
@@ -111,31 +111,31 @@ Get the pipeline running end to end on sample data in fall. Clearing that bar ea
 - **Partner integrating:** the system running in the **partner's** environment, which means their IT department has said yes: accounts provisioned, security review passed, data handling approved.
 - **In production:** all of the above plus a handoff the partner's people can operate without you.
 
-**Ask about IT and security review in your first fall meeting.** "Who has to approve software running in your environment, and how long does that take?" At small nonprofits the answer may be "the director, tomorrow." At hospitals, school districts, government agencies, and large companies, the answer is a formal review measured in **months**, sometimes with penetration tests, data protection assessments, or vendor onboarding forms. Whatever the answer, write it into your plan with an owner and a start-by date.
+**Ask about IT and security review in your first meeting with the partner.** "Who has to approve software running in your environment, and how long does that take?" At small nonprofits the answer may be "the director, tomorrow." At hospitals, school districts, government agencies, and large companies, the answer is a formal review measured in **months**, sometimes with penetration tests, data protection assessments, or vendor onboarding forms. Whatever the answer, write it into your plan with an owner and a start-by date.
 
-**Agree on acceptance criteria early and in writing.** The "feedback addressed" rung is only checkable against criteria the partner endorsed before you built. Vague scope is how consultancy projects hit spring with a partner who feels the system "isn't what we asked for."
+**Agree on acceptance criteria early and in writing.** The "feedback addressed" rung is only checkable against criteria the partner endorsed before you built. Vague scope is how consultancy projects reach the late phase with a partner who feels the system "isn't what we asked for."
 
-Stage the deployment: your own hosting first (fast iteration, demos), then a **staging instance in the partner's environment** in winter, then production in spring. The staging step is the one teams skip and regret; it is where authentication schemes, network policies, and data access rules surface.
+Stage the deployment: your own hosting first (fast iteration, demos), then a **staging instance in the partner's environment** in the middle phase, then production in the late one. The staging step is the one teams skip and regret; it is where authentication schemes, network policies, and data access rules surface.
 
-Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system stays. Runbooks, admin documentation, credential transfer, a maintenance guide, and a trained partner contact are not paperwork after the real work: for the partner, they largely *are* the product, and they are what the spring evaluation remembers.
+Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system stays. Runbooks, admin documentation, credential transfer, a maintenance guide, and a trained partner contact are not paperwork after the real work: for the partner, they largely *are* the product, and they are what the partner remembers once you are gone.
 
-| Term | What must be true |
+| Phase | What must be true |
 |---|---|
-| Fall | IT/security review process mapped with dates; acceptance criteria written and partner-endorsed; prototype demoed from your hosting |
-| Winter | Security review in progress or passed; staging instance in the partner's environment; feedback rounds addressed against the criteria |
-| Spring | Production deployment in partner environment; handoff package delivered; partner operating the system without you |
+| Early | IT/security review process mapped with dates; acceptance criteria written and partner-endorsed; prototype demoed from your hosting |
+| Middle | Security review in progress or passed; staging instance in the partner's environment; feedback rounds addressed against the criteria |
+| Late | Production deployment in partner environment; handoff package delivered; partner operating the system without you |
 
-**Common blockers:** security review dead time (weeks with no visible progress), a single overloaded partner IT contact, credential and access provisioning, data that cannot leave the partner's network (design for this early), and partner staff turnover mid-year.
+**Common blockers:** security review dead time (weeks with no visible progress), a single overloaded partner IT contact, credential and access provisioning, data that cannot leave the partner's network (design for this early), and partner staff turnover mid-project.
 
 **Evidence to collect:** the signed acceptance criteria, meeting notes and emails showing feedback rounds and sign-offs, security review correspondence, screenshots of the system running in the partner's environment, the handoff package, and the partner's written statement of production use.
 
 ## Best Practices for Shipping
 
-- Start every external clock in fall: domain, TLS, hosting, store accounts, CLA, IRB, partner IT access. None of them runs faster for being started late.
+- Start every external clock in the first weeks: domain, TLS, hosting, store accounts, CLA, IRB, partner IT access. None of them runs faster for being started late.
 - Deploy the walking skeleton while there is nothing to lose. A production URL with a placeholder page flushes out the whole dependency chain at zero risk.
-- Instrument before you need the numbers. Analytics wired in fall is evidence in spring; analytics wired in spring week 8 is a screenshot of an empty chart.
-- Treat recruiting strangers as a workstream: an owner, a channel that exists, backlog items, starting in winter.
-- Put dates in the first half of the project, not the second, and renegotiate the rung in the open when they slip rather than discovering the slip at the end.
+- Instrument before you need the numbers. Analytics wired in the early phase is evidence by the late one; analytics wired a month before the end is a screenshot of an empty chart.
+- Treat recruiting strangers as a workstream: an owner, a channel that exists, backlog items, starting no later than the middle phase.
+- Put dates before the project's midpoint, not after it, and renegotiate the rung in the open when they slip rather than discovering the slip at the end.
 - Read the ladder literally and plan for the rung you can prove, not the one you hope for.
 - Capture evidence the day it happens (the merged PR, the dashboard, the maintainer's comment, the partner's email) and link it from `docs/shipped.md`.
 
@@ -143,14 +143,21 @@ Finally, adopt the **handoff-is-the-product** mindset. You graduate; the system 
 
 Everything below follows from one fact stated at the top of this page: the long pole is other people, and other people do not respond to effort. That is what makes shipping feel different from building, where working harder reliably produces more.
 
-- The last 10% is not 10%. Teams that plan "build until spring week 8, ship in week 10" are describing a plan for the bottom of the ladder.
-- Every external clock starts later than you think and runs longer than they told you. The only defense is starting it before you need it.
-- A trivial thing shipped in fall beats an impressive thing shipped never. The walking skeleton, the typo PR, the sample-data pipeline: none of them is the point, and all of them are the point.
-- Strangers are not friends who haven't heard of you yet. Recruiting users you don't know is a project workstream with its own backlog items, not a tweet you send in week 9.
-- "The partner will deploy it after the course ends" is "feedback addressed" wearing "in operations" as a costume. If it is not in their environment by spring, it is not shipped.
-- Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not APIs with SLAs. Being early, polite, and responsive is a technical skill.
-- If your shipping plan contains no date in the first half of the project, it is not a plan; it is a wish. Renegotiate the rung or move the dates.
-- Evidence collected in the moment costs minutes; evidence reconstructed at the end of the year is thin, undated and unconvincing. Screenshot the milestone the day it happens.
+The last tenth of a project is not a tenth of the work. A plan that says "build until a month before the end, then ship" is a plan for the bottom of the ladder, because the top rungs are gated on reviews, approvals, and users whose clocks that plan never started. The building estimate may even be right; it is the waiting that was never on the schedule.
+
+Every external clock starts later than you think and runs longer than you were told. The estimate you get from an IT department, an IRB coordinator, or a maintainer is how long their step takes when nothing goes wrong. It leaves out the time your request sits in a queue before anyone reads it, and the revision round that follows. Apple's own figure is the pattern in miniature: most submissions are reviewed within a day, and that is the clock on one round, not on a rejection and a resubmission. Starting a clock before you need it is the only defense, because nothing you do later makes someone else's queue move faster.
+
+A trivial thing shipped early beats an impressive thing shipped never. The walking skeleton, the typo pull request, and the sample-data pipeline have no value as features. Their value is that each one runs the whole external chain once (domain, TLS, contributor agreement, CI, review, data access) while failure is cheap, so the problems surface when you have months to fix them instead of days. None of them is the point, and all of them are what make the point reachable.
+
+Strangers are not friends who have not heard of you yet. Friends try your software because they like you, and they forgive an onboarding flow that needs you on a call. Strangers owe you nothing, arrive slowly through channels that take weeks to build, and leave at the first confusing screen. That is why recruiting them is a workstream with an owner and backlog items, not a post you make the week you need them.
+
+"The partner will deploy it after the project ends" is the feedback rung wearing the operations rung as a costume. Once the team is gone, nobody is left to fix the configuration that differs in the partner's environment, which is where deployments usually break, so a plan that stops short of deployment ends one rung lower than it claims. If it is not running in their environment before you leave, it has not shipped.
+
+Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not APIs with service-level agreements. Each of them decides which of many requests to handle next, and a request from someone who was early, polite, and quick to answer the last question gets handled sooner. That makes courtesy a technical skill in the only sense that matters here: it changes how long the process takes.
+
+If your shipping plan has no date before the project's midpoint, it is a wish rather than a plan. A late date cannot slip without taking the rung with it, while an early date that slips is information you can still act on, by renegotiating the rung in the open or by moving the work.
+
+Evidence collected in the moment costs minutes. Evidence reconstructed at the end is thin, undated, and unconvincing, because the dashboard has been reset, the email thread is buried, and nobody remembers which week the first stranger signed up. Screenshot the milestone the day it happens.
 
 ## Shipping in Industry and Academia
 
@@ -158,7 +165,7 @@ Industry spent two decades removing the ceremony between a commit and production
 
 Open-source maintainers judge contributors by merged pull requests, and the first merge is the hard one, which is why "good first issue" labels and onboarding programs exist. In research, the reproducibility crisis produced [artifact evaluation](https://www.artifact-eval.org/): ACM conferences award badges for artifacts that are available, evaluated, and reproduced, and a paper with a reproduced artifact is worth more than one without. The [artifact evaluation process](https://ctuning.org/ae/) is now routine at systems and programming-language conferences, and the [Center for Open Science badges](https://www.cos.io/initiatives/badges) apply the same idea across other fields. The top research rung is written with that bar in mind.
 
-The common thread is that every field has learned, expensively, that working software nobody can run is not a result. The ladder is the course's version of that lesson.
+The common thread is that every field has learned, expensively, that working software nobody can run is not a result. The ladder on this page is a small version of that lesson.
 
 ## Additional Readings
 

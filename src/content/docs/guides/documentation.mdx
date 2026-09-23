@@ -20,7 +20,7 @@ The goal of documentation is not to document everything. It is to document the r
 
 The most useful idea for deciding what "the right things" means is [Diataxis](https://diataxis.fr/), Daniele Procida's framework, which observes that documentation serves four distinct needs and that most bad documentation is two of them mashed together. A **tutorial** takes a beginner through a first success and is learning-oriented. A **how-to guide** helps someone who already knows the system accomplish a specific task. **Reference** describes what exists, precisely and without narrative. **Explanation** covers why things are the way they are. The reason this matters practically is that the needs conflict: a tutorial that pauses to explain every design decision loses the beginner, and a reference that tells a story is useless to someone scanning for a function signature. When a page feels wrong and you cannot say why, it is usually serving two of these at once.
 
-This handbook is itself an instance of the framework: guides are explanation, activities are how-to, and assignment rubrics are reference.
+This handbook is itself an instance of the framework: its guides are explanation and its activities are how-to.
 
 The reader who tests your documentation hardest is the one who inherits the project after you leave: someone who cannot ask you anything and has to get the system running from what is written down. Write for that person and the rest takes care of itself.
 
@@ -122,13 +122,13 @@ For REST APIs, [OpenAPI (Swagger)](https://swagger.io/specification/) is the ind
 
 ## User Documentation
 
-User documentation explains how to use the software, not how it was built. It is written for end users, not engineers. For a Capstone project, this might be:
+User documentation explains how to use the software, not how it was built. It is written for end users, not engineers. For a capstone project, this might be:
 
 - A user guide or wiki explaining how to complete key workflows.
 - In-app help text or tooltips.
 - A short video walkthrough.
 
-User documentation is especially important for consultancy projects where the project partner will hand the software to non-technical users after the year ends.
+User documentation is especially important for consultancy projects where the project partner will hand the software to non-technical users after the team leaves.
 
 ## Developer Documentation
 
@@ -175,7 +175,7 @@ The tool names above date faster than anything else on this page. Checked at the
 
 ## Best Practices
 
-- Write documentation when you build the feature, not at the end of the term.
+- Write documentation when you build the feature, not at the end of the project.
 - Keep documentation close to the code. Documentation that lives far from what it describes becomes stale quickly.
 - Treat README setup instructions as a test: run them on a fresh machine or in a clean environment.
 - Delete documentation that is wrong. Outdated docs are worse than no docs: they actively mislead.
@@ -228,7 +228,7 @@ At Google, documentation is treated as a first-class engineering deliverable. Th
 
 In open-source projects, documentation quality is often the difference between a project that gets adopted and one that gets ignored, regardless of the underlying code quality.
 
-In academic research, documentation ensures reproducibility: another researcher should be able to run your code and reproduce your results using only your documentation. This standard is a useful benchmark for Capstone projects as well.
+In academic research, documentation ensures reproducibility: another researcher should be able to run your code and reproduce your results using only your documentation. This standard is a useful benchmark for capstone projects as well.
 
 ## Additional Readings
 

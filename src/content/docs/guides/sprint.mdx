@@ -1,6 +1,6 @@
 ---
 title: Sprints
-description: Understanding and running effective sprints, the iteration cycle at the heart of your Capstone project.
+description: Understanding and running effective sprints, the iteration cycle at the heart of a student software project.
 sidebar:
   order: 2
 ---
@@ -11,14 +11,14 @@ Read this before your first sprint planning and whenever a sprint ends with noth
 
 A sprint is a fixed-length period during which a team plans, builds, and reviews a small, demonstrable increment of work. It is the fundamental unit of iteration in modern software engineering. Without a disciplined sprint cadence:
 
-- Work accumulates silently until the end of the term, then collapses under its own weight.
+- Work accumulates silently until the end of the project, then collapses under its own weight.
 - The team loses visibility into whether it is on track until it is too late to recover.
 - The project partner is kept in the dark until a demo reveals months of misaligned assumptions.
 - Individual contributions become invisible, making evaluation unreliable.
 
 Sprints are not a bureaucratic overhead. They are a forcing function that makes progress visible, assumptions testable, and problems surfaced early.
 
-In Capstone, **sprints are two weeks long**, running from the start of Fall term through the end of Spring term.
+This guide assumes **two-week sprints**, a common length for teams whose members have other commitments: long enough to finish something demonstrable, short enough that a bad plan costs two weeks rather than a month.
 
 ## Preparing for Your First Sprint
 
@@ -48,17 +48,17 @@ Many teams spend the first several weeks exclusively on planning and documentati
 
 Once the team has enough context and infrastructure to pull real work items into a sprint, the preparation period is over. From that point on, every sprint should produce demonstrable progress: working software, experimental results, validated findings, or a combination.
 
-:::note[Capstone Timeline]
-Capstone begins at week 0 of Fall term, but teams are not assigned until the end of week 1. After team formation, the preparation work above means the first real sprint typically cannot start until **week 3 or 4**. That is normal, but these early weeks are not idle time. Treat them as a focused Sprint 0 with the deliverables listed above. Teams that use this time well hit the ground running; teams that treat it as free time spend the rest of the term catching up.
+:::note[Sprint 0]
+Few teams can run a real sprint in their first week together. Between forming the team and having a repository, a backlog, and a partner who has explained the problem, the first real sprint usually starts **two to four weeks in**. That is normal, but these early weeks are not idle time. Treat them as a focused Sprint 0 with the deliverables listed above. Teams that use this time well hit the ground running; teams that treat it as free time spend the next several months catching up.
 :::
 
 ## The Sprint Cycle
 
 The vocabulary on this page comes from Scrum, and where this guide and the
 [Scrum Guide](https://scrumguides.org/scrum-guide.html) disagree, it is because
-a capstone team is not a full-time product team: you have four other courses,
-your sprints are two weeks because the term is ten, and nobody is a dedicated
-Scrum Master. Read the Scrum Guide once anyway. It is short, it is the
+a student team is not a full-time product team: you have other courses, your
+sprint length is set by an academic calendar rather than by the product, and
+nobody is a dedicated Scrum Master. Read the Scrum Guide once anyway. It is short, it is the
 authoritative definition of the terms your future colleagues will use, and it
 is explicit that the framework is deliberately incomplete.
 
@@ -97,7 +97,7 @@ Stand-ups are not status reports for a manager. They are peer coordination. If y
 
 ### Sprint Review
 
-At the end of the sprint, the team demonstrates what was accomplished to the project partner and, on the course's demo cadence, to the instruction team. This is the sprint demo.
+At the end of the sprint, the team demonstrates what was accomplished to the project partner and to anyone else with a stake in the direction, such as a mentor or advisor. This is the sprint demo.
 
 The sprint review answers one question: **does the work meet the acceptance criteria and the project partner's expectations?**
 
@@ -116,14 +116,14 @@ After the review, before the next sprint starts, the team runs a brief retrospec
 <LinkCard
   title="Retrospectives"
   href="/guides/retrospectives/"
-  description="Formats and facilitation guidance for sprint and term retrospectives."
+  description="Formats and facilitation guidance for sprint and milestone retrospectives."
 />
 
 ## Definition of Done
 
 The Definition of Done (DoD) is the shared agreement on what it means for a piece of work to be *finished*. Without it, "done" means something different to every team member, and integration becomes painful.
 
-A typical DoD for a Capstone **software** project:
+A typical DoD for a **software** project:
 
 - Code is committed to the main branch via a reviewed pull request.
 - All tests pass in CI.
@@ -131,7 +131,7 @@ A typical DoD for a Capstone **software** project:
 - Documentation is updated (README, inline comments, API docs if applicable).
 - The project partner has been shown the feature or has signed off on the acceptance criteria.
 
-A typical DoD for a Capstone **research** project:
+A typical DoD for a **research** project:
 
 - Notebooks or scripts are committed to the repository and run without errors.
 - Results are reproducible: another team member can re-run the notebook and get the same output.
@@ -189,7 +189,7 @@ Kanban tends to suit teams that:
 - Are **self-driven and proactive**. In a sprint, the planning meeting assigns work explicitly. In Kanban, every team member is responsible for pulling the next task without being asked. This only works when every person on the team takes ownership of finding and starting work independently.
 - Have unpredictable workloads (e.g., frequent project partner feedback that reshuffles priorities).
 - Prefer a steady flow of small deliverables over batch delivery every two weeks.
-- Find sprint boundaries artificial or stressful given the pace of the term.
+- Find sprint boundaries artificial or stressful given the pace of their other commitments.
 
 :::caution[Kanban Requires More Initiative, Not Less]
 A common failure mode: a team adopts Kanban and one or more members stop contributing because "there was nothing to do" or "I was waiting to be assigned something." In a pull-based system, the backlog *is* the assignment. If the board has items in the backlog column and you are idle, you pull the next one. No one is going to tap you on the shoulder. Teams where members are not yet comfortable taking initiative on their own are usually better served by sprint planning, where work is explicitly discussed and distributed.
@@ -197,13 +197,13 @@ A common failure mode: a team adopts Kanban and one or more members stop contrib
 
 ### Scrumban: The Hybrid
 
-Many Capstone teams land somewhere in between, and that is fine. **Scrumban** combines the sprint cadence (for planning and demos) with Kanban-style flow (WIP limits, continuous pulling) during the sprint itself. In practice this looks like:
+Many student teams land somewhere in between, and that is fine. **Scrumban** combines the sprint cadence (for planning and demos) with Kanban-style flow (WIP limits, continuous pulling) during the sprint itself. In practice this looks like:
 
 - The team still plans every two weeks and runs a sprint review and retrospective.
 - During the sprint, work flows continuously rather than being frozen into a fixed commitment.
 - WIP limits prevent overload and keep the team focused on finishing over starting.
 
-This hybrid is often the most practical fit for Capstone teams: the sprint boundaries align with sprint notes and project partner check-ins, while the Kanban flow gives flexibility for the uneven schedules of student life.
+This hybrid is often the most practical fit for student teams: the sprint boundaries give a regular rhythm for written progress notes and project partner check-ins, while the Kanban flow gives flexibility for the uneven schedules of student life.
 
 :::tip[Pick What Works, Then Adapt]
 You do not need to choose a methodology on day one and stick with it forever. Start with basic sprints. If the team struggles with rigid commitments, experiment with WIP limits and continuous flow. The retrospective is where you decide what to change. The only wrong approach is one you never revisit.
@@ -249,13 +249,13 @@ The tool names above date faster than anything else on this page. Checked at the
 
 - Commit to a sprint goal, not just a task list. Goals are more resilient to mid-sprint disruptions.
 - Do not start new tasks if blocked ones are still open. Finish what is in progress before starting something new.
-- Demo to your project partner every sprint, not just at end-of-term milestones. Frequent feedback is cheaper than late surprises.
+- Demo to your project partner every sprint, not just at major milestones. Frequent feedback is cheaper than late surprises.
 - Keep sprint planning lightweight. An over-engineered planning process reduces the time available to actually build things.
 - Timebox stand-ups. If they are running long, take detailed discussions offline.
 
 ## Some Truths About Sprints
 
-Start with the uncomfortable one: a two-week sprint on a capstone team is a
+Start with the uncomfortable one: a two-week sprint on a student team is a
 simulation of a practice designed for people who work on one thing full time.
 Your sprint contains four other courses, two midterms, and a week where nobody
 is available. Real teams have variable capacity too, but not by a factor of
@@ -318,9 +318,9 @@ Sprint ceremonies take time, and it is worth knowing roughly how much. For a two
 | Retrospective | 30-45 min | ~15-22 min |
 | Board and backlog upkeep | ongoing | ~20-30 min |
 
-That totals roughly **1.5 to 2.5 hours per week** on process, leaving the majority of your course hours for building. For comparison, the [Scrum Guide](https://scrumguides.org/scrum-guide.html) caps a two-week sprint at about ten hours of ceremonies per person (four hours planning, two hours review, ninety minutes retrospective, fifteen minutes a day), roughly 12% of a full-time fortnight, and most teams run well under the ceiling.
+That totals roughly **1.5 to 2.5 hours per week** on process, leaving the majority of your project hours for building. For comparison, the [Scrum Guide](https://scrumguides.org/scrum-guide.html) caps a two-week sprint at about ten hours of ceremonies per person (four hours planning, two hours review, ninety minutes retrospective, fifteen minutes a day), roughly 12% of a full-time fortnight, and most teams run well under the ceiling.
 
-These are averages. Some weeks will be heavier (planning week, demo prep) and others lighter. The workload also shifts across terms: Fall has more ramp-up overhead, Winter is the most build-intensive, and Spring (at 2 credits) focuses on refinement with naturally lighter sprints. If your process overhead starts crowding out build time, simplify your ceremonies rather than skipping them.
+These are averages. Some weeks will be heavier (planning week, demo prep) and others lighter. The workload also shifts across a long project: the early months carry more ramp-up overhead, the middle is the most build-intensive, and the final stretch focuses on refinement with naturally lighter sprints. If your process overhead starts crowding out build time, simplify your ceremonies rather than skipping them.
 :::
 
 ## Additional Readings

@@ -1,6 +1,6 @@
 ---
 title: Security and Threat Modeling
-description: How to think about security in your Capstone project, from identifying threats early to building software that handles real-world attacks gracefully.
+description: How to think about security in your capstone project, from identifying threats early to building software that handles real-world attacks gracefully.
 sidebar:
   order: 14
 ---
@@ -16,7 +16,7 @@ Security is the practice of building software that behaves correctly even when s
 - Credentials committed to a public repository get scraped within minutes and used to compromise cloud accounts.
 - The project partner's production environment is left vulnerable because the team never considered who might use the system maliciously.
 
-You are not building a bank. But you are building software that real people may use, and many Capstone projects handle real data, real user accounts, and real deployments. The baseline expectation is not perfection. It is *awareness*: knowing where the risks are, addressing the most critical ones, and making conscious decisions about the rest.
+You are not building a bank. But you are building software that real people may use, and many capstone projects handle real data, real user accounts, and real deployments. The baseline expectation is not perfection. It is *awareness*: knowing where the risks are, addressing the most critical ones, and making conscious decisions about the rest.
 
 ## Threat Modeling: Thinking Like an Attacker
 
@@ -26,7 +26,7 @@ The goal is not to enumerate every possible attack. It is to find the threats th
 
 ### A Lightweight Threat Modeling Process
 
-For a Capstone project, a full formal threat model is overkill. A lightweight version that the team can complete in a single session is far more valuable than a comprehensive one that never happens. Here is a practical approach:
+For a capstone project, a full formal threat model is overkill. A lightweight version that the team can complete in a single session is far more valuable than a comprehensive one that never happens. Here is a practical approach:
 
 **1. Draw the system.** Start with a diagram of your architecture: the components, the data flows between them, and the trust boundaries (where data crosses from one security context to another). If you already have a C4 context or container diagram from your technical design, use that.
 
@@ -76,7 +76,7 @@ Do a lightweight threat modeling session early, ideally when the technical desig
 
 The [OWASP Top 10](https://owasp.org/www-project-top-ten/) is a periodically updated list of the most critical security risks in web applications. The current edition is [Top 10:2025](https://owasp.org/Top10/2025/). Not every item applies to every project, but knowing the list helps you recognize common mistakes before you make them.
 
-Here are the ones most relevant to Capstone projects. Note where they rank: Broken Access Control is first and Security Misconfiguration second, ahead of Injection at fifth. The ranking is itself a lesson, because the top of the list is permissions and configuration rather than exotic attacks.
+Here are the ones most relevant to capstone projects. Note where they rank: Broken Access Control is first and Security Misconfiguration second, ahead of Injection at fifth. The ranking is itself a lesson, because the top of the list is permissions and configuration rather than exotic attacks.
 
 ### Injection
 
@@ -110,7 +110,7 @@ Authentication is how the system verifies who a user is. Session management is h
 - Session tokens that are predictable, never expire, or are not invalidated on logout.
 - Missing rate limiting on login endpoints, allowing brute-force attacks.
 
-For most Capstone projects, the best approach is to *not build your own authentication*. Use a managed service or established library:
+For most capstone projects, the best approach is to *not build your own authentication*. Use a managed service or established library:
 
 - **Firebase Authentication**, **Auth0**, **Clerk**, or **Supabase Auth** for managed solutions.
 - **Passport.js** (Node.js), **Django's auth system** (Python), or **NextAuth.js** (Next.js) for library-based approaches.
@@ -267,13 +267,13 @@ someone notices. Automated scanners watch public commits continuously, and
 deleting the commit does not help because the object is still reachable and very
 likely already copied. Rotate the credential. Rewriting history is cleanup, not
 remediation, and treating it as remediation is how a leaked key stays live for
-the rest of the term.
+months.
 
 ## Security in Industry and Academia
 
 In industry, security is a baseline expectation, not a specialization. Companies like Google, Microsoft, and Amazon require threat models for new features and conduct regular security reviews. The OWASP Top 10 and STRIDE are standard vocabulary in software engineering interviews and design reviews. Many organizations require automated security scanning (SAST, DAST, dependency auditing) as part of their CI/CD pipeline.
 
-Security certifications and compliance frameworks (SOC 2, HIPAA, GDPR, PCI-DSS) govern how companies handle sensitive data. While Capstone projects are unlikely to require formal compliance, understanding that these frameworks exist and why they matter is valuable context for industry roles.
+Security certifications and compliance frameworks (SOC 2, HIPAA, GDPR, PCI-DSS) govern how companies handle sensitive data. While capstone projects are unlikely to require formal compliance, understanding that these frameworks exist and why they matter is valuable context for industry roles.
 
 In academia, security concerns increasingly intersect with research ethics, especially in projects involving human subjects data, machine learning models that affect people, or systems deployed in sensitive environments. Responsible data handling and privacy-preserving techniques are becoming standard expectations in computational research.
 

@@ -249,6 +249,15 @@ checkpoints, grades, terms, or weeks of the course. Not "your
 fall workshop", not "deploy the walking skeleton by the end of fall". Say what
 the practice is and why it matters, and let the reader decide when to apply it.
 
+Time in a guide is relative to the project, never to the course calendar. An
+argument that spans months is written in phases ("in your first weeks", "by the
+middle of the project", "a month before the end"), and that includes a generic
+illustration: "a plan made at the start is wrong a month later", not "a plan
+made in week 2 is wrong by week 6". The validator cannot tell a course week from
+an illustrative one, so no week number appears at all. `shipping.mdx` is the
+worked example: its argument is that external clocks take months, and it makes
+that argument with Early, Middle and Late phases rather than terms (#194).
+
 There is no exception, including an aside at the top. **The link between a
 guide and an assignment runs one way: the assignment points at the guide.**
 
@@ -341,8 +350,19 @@ issue that measured it rather than trimming a working section to hit a number.
 - Tool requirements presented as mandatory. Guides may show the current
   industry baseline; say what the substitute is for students without the tool.
 - Em dashes. `validate-dashes.mjs` fails on one.
-- Calendar dates or an academic year. Terms and weeks only; weekdays and
-  named holidays are fine. `validate-dates.mjs` fails on a date.
+- Calendar dates or an academic year. Weekdays and named holidays are fine.
+  `validate-dates.mjs` fails on a date.
+- A term, a week number, "first half" or "second half", the word "workshop",
+  or a link to an assignment page. `validate-activities.mjs` applies the
+  activity patterns to every guide: a week followed by a digit, "in the fall"
+  or "fall week" (and the same for winter and spring), either half, the word
+  "workshop", and a `](/assignments/` link. The target of a Markdown link to
+  another site is not read, so a third-party slug passes. The patterns are a
+  floor. A spelled-out week ("week two", "the fourth week"), a bare "term",
+  "Fall has", and a course artifact named in plain prose ("Team Charter", "the
+  Expo") all pass them and are still violations, which is what the greps under
+  Before Finishing are for. Write "before the midpoint", not "the first half of
+  the project".
 
 Nothing checks the section skeleton, the length, or the opener rules; those
 are read for, not validated.
@@ -404,16 +424,26 @@ the failure this skill exists to prevent.
 1. Run `npm run build`. It compiles the MDX and validates every internal link
    and anchor, which is the only reliable check on the anchors you wrote.
 2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
-   covers outcome tags and grading language on guides, the second em dashes.
-3. Confirm the guide is standalone. Two greps, because a link check alone
-   misses an assignment named in plain prose:
+   covers the standalone patterns, outcome tags, and grading language on
+   guides, the second em dashes.
+3. Confirm the guide is standalone. Three greps, because the validator's
+   patterns are a floor and a link check misses an assignment named in plain
+   prose:
 
    ```bash
    grep -nE '/assignments/|[Ww]orkshop|checkpoint' <file>
-   grep -nE 'Definition of Shipped|Team Charter|Sprint Notes?|Peer Evaluations?|Repo Checkpoints?|Project Handoff|Landing Page|Project Partner Evaluation' <file>
+   grep -nE 'Definition of Shipped|Team Charter|Sprint Notes?|Peer Evaluations?|Repo Checkpoints?|Project Handoff|Landing Page|Project Partner Evaluation|Expo\b' <file>
+   grep -nEi '\b(fall|winter|spring)\b|\bterms?\b|\b(this|the) course\b|\bweek (one|two|three|four|five|six|seven|eight|nine|ten)\b|\b(second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth) week\b|\b(mid-?year|all year|the year ends)\b' <file>
    ```
 
-   The first must return nothing. The second returns false positives and needs
+   The third catches the time forms the validator misses: a spelled-out or
+   ordinal week, a bare "term", a term name used without "in" or "week", and
+   the school year standing in for the project. It returns many false
+   positives ("long-term", "fall short", "in terms of", "the term comes
+   from"); read each hit with the test below.
+
+   The first must return nothing but a third-party URL (the Crazy 8s link in
+   `planning.mdx` is one). The second returns false positives and needs
    a human: it is the capitalized, course-specific use that is the violation,
    not the ordinary English phrase. Known-good cases that will match and should
    be left alone: "the defense" meaning defense in depth (`security.mdx`), "your

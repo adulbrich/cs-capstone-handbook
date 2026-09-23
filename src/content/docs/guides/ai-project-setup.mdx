@@ -57,7 +57,7 @@ TypeScript, React 19, Express, Postgres via Prisma, Vitest, Playwright.
 - Paste partner data, user emails, or .env contents into any tool.
 ```
 
-The last line is your confidentiality rule, spelled out for the tools. The human-readable version belongs in the team's charter and says the same thing in the partner's terms:
+The last line is your confidentiality rule, spelled out for the tools. The human-readable version belongs in the team's working agreement and says the same thing in the partner's terms:
 
 ```md
 ## AI and confidentiality (in docs/charter.md)
@@ -187,15 +187,15 @@ It is also the one item on this page that is **not** shared. Memory lives on one
 - **Keep instructions short.** A file nobody reads is a file the tool half-follows. The list above fits on a page; anything longer belongs in `docs/`.
 - **Write the "do not" section first.** It is the part that prevents damage, and it is the part teams forget.
 - **Trip every gate once, on purpose.** Run the command the hook should block and try the merge protection should stop.
-- **Update it when it lies.** An instruction file that describes last term's architecture actively misleads the tool. Re-read it whenever the architecture moves.
+- **Update it when it lies.** An instruction file that describes the architecture of three months ago actively misleads the tool. Re-read it whenever the architecture moves.
 
 ## Some Truths About AI Project Setup
 
 Most teams never write any of this, ship anyway, and the cost shows up somewhere other than the setup: two people solving the same problem two different ways, a dependency that arrived without a discussion, a schema change nobody reviewed. That is a real cost, but it is diffuse, which is why the file keeps not getting written.
 
-The instruction file rots faster than the code. It is written in week 2 and describes the architecture of week 2 forever, and a confidently wrong instruction is worse than a missing one, because the tool follows it.
+The instruction file rots faster than the code. It is written in the project's first weeks and describes that architecture forever, and a confidently wrong instruction is worse than a missing one, because the tool follows it.
 
-Hooks are the highest-leverage item on this page and the one teams reach for last. Two or three cover most of the damage a delegated agent can do to a repository: no commits on the default branch, no edits to generated files, formatter on save. Past that the returns fall off fast: teams write elaborate policy hooks, trip over them twenty times a day, and quietly disable the lot in week 6. A gate that fires constantly gets removed, and then you have no gate.
+Hooks are the highest-leverage item on this page and the one teams reach for last. Two or three cover most of the damage a delegated agent can do to a repository: no commits on the default branch, no edits to generated files, formatter on save. Past that the returns fall off fast: teams write elaborate policy hooks, trip over them twenty times a day, and quietly disable the lot within a month. A gate that fires constantly gets removed, and then you have no gate.
 
 Gates also fail quietly. Cursor's hooks fail open by default, so a script that crashes waves the action through unless you set `failClosed`, and a git hook is one `--no-verify` from irrelevant. A gate you believe in and have never tripped is worse than no gate, because you delegate as though it were there.
 

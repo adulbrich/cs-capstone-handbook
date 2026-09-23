@@ -17,14 +17,20 @@
 //   3. Every anchor an assignment links to must resolve to a real heading.
 //      (The Starlight link validator also catches this at build time; this
 //      check runs without a build and names the activity, not the URL.)
-//   4. An activity page is standalone. It never links an assignment page, never
-//      says "workshop", and never places itself in a term, a week, or a half
-//      of a class session. The guides directory has held this line by
-//      convention since it was written (zero assignment links across nineteen
-//      files); activities had drifted to sixty-one backlinks and ten sessions
-//      described by the clock. A reader who is not enrolled should be able to
-//      run any activity on these pages. Guide links and external sources stay,
-//      and the direction of travel is one way: assignments link to activities.
+//   4. An activity or guide page is standalone. It never links an assignment
+//      page, never says "workshop", and never places itself in a term, a
+//      numbered week, or a "first half" or "second half" (of a class session
+//      on an activity page, of the project on a guide). The patterns are a
+//      floor: a spelled-out week or a bare "term" passes them and is still a
+//      violation the page's skill asks a human to read for. Activities had
+//      drifted to sixty-one backlinks and ten sessions described by the
+//      clock. Guides held the assignment-link half by convention (zero
+//      backlinks across nineteen files) and still carried about sixty term
+//      and week references, the shipping guide built on the course calendar,
+//      because nothing checked them. A reader who is not enrolled should be
+//      able to use any page in either directory. Guide links and external
+//      sources stay, and the direction of travel is one way: assignments link
+//      to both.
 //
 //   5. Every activity carries a closing "A good output is..." line. The
 //      deliverable line is the only quality signal an activity has, and it is
@@ -444,14 +450,16 @@ for (const [key, row] of workshopWeeks) {
   }
 }
 
-// --- Rule 4: activity pages are standalone -----------------------------------
+// --- Rule 4: activity and guide pages are standalone -------------------------
 // Each pattern is something a reader outside this course cannot resolve. The
 // two exemptions are real external events, not sessions of this course, and
 // they are listed rather than pattern-matched so that adding a third is a
-// deliberate act.
+// deliberate act. A week number is banned outright, not only a course week:
+// the pattern cannot tell "fall week 3" from "a plan made in week 2", and an
+// illustration reads as well in durations ("a month later") as in numbers.
 const STANDALONE_RULES = [
   [/\]\(\/assignments\//, "links an assignment page"],
-  [/\b(?:first|second) half\b/i, "describes half of a class session"],
+  [/\b(?:first|second) half\b/i, 'says "first half" or "second half"'],
   [/\bworkshops?\b/i, 'says "workshop"'],
   [/\bweeks? \d/i, "names a week number"],
   [/\bin (?:the )?(?:fall|winter|spring)\b/i, "places itself in a term"],
@@ -463,23 +471,41 @@ const STANDALONE_RULES = [
 const STANDALONE_EXEMPT = new Set([
   // The OSU Advantage Accelerator's Iterate program is an external event the
   // team registers for, and calling it anything but a workshop would be wrong.
-  "requirements#osu-advantage-accelerators-iterate-program",
+  "activities/requirements#osu-advantage-accelerators-iterate-program",
   // "Present at a conference or workshop" is an outreach channel.
-  "user#find-users",
+  "activities/user#find-users",
 ]);
+// A third-party URL is someone else's slug, not this page's prose: the Crazy
+// 8s link in the planning guide ends in "crazy-eights-workshop". Internal
+// links are kept, because the assignment-link rule reads them.
+const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/g;
 
-for (const file of readdirSync(ACTIVITIES_DIR)) {
-  // The index is the page that explains what a Workshop badge means, so it is
-  // the one activity page allowed to use the word and to link the assignment
-  // that owns the tier.
-  if (!file.endsWith(".mdx") || file === "introduction.mdx") {
+// Every MDX page under activities/ and guides/, with the directory's short
+// name for messages and keys. Rule 4 and the outcome-tag and grading-language
+// check below both read exactly these pages.
+function* activityAndGuidePages() {
+  for (const [dir, kind] of [
+    [ACTIVITIES_DIR, "activities"],
+    [GUIDES_DIR, "guides"],
+  ]) {
+    for (const file of readdirSync(dir)) {
+      if (file.endsWith(".mdx")) {
+        yield { dir, file, kind };
+      }
+    }
+  }
+}
+
+for (const { dir, kind, file } of activityAndGuidePages()) {
+  // The activities index is the page that explains what a Workshop badge
+  // means, so it is the one page allowed to use the word and to link the
+  // assignment that owns the tier. The guides index gets no such pass.
+  if (dir === ACTIVITIES_DIR && file === "introduction.mdx") {
     continue;
   }
-  const page = file.slice(0, -4);
+  const page = `${kind}/${file.slice(0, -4)}`;
   let section = null;
-  for (const line of readFileSync(join(ACTIVITIES_DIR, file), "utf8").split(
-    "\n"
-  )) {
+  for (const line of readFileSync(join(dir, file), "utf8").split("\n")) {
     if (line.startsWith("## ")) {
       section = `${page}#${slugify(line.slice(3).trim())}`;
     }
@@ -487,10 +513,11 @@ for (const file of readdirSync(ACTIVITIES_DIR)) {
     if (line.startsWith("<Badge") || STANDALONE_EXEMPT.has(section)) {
       continue;
     }
+    const prose = line.replace(EXTERNAL_LINK_TARGET_RE, "]()");
     for (const [pattern, what] of STANDALONE_RULES) {
-      if (pattern.test(line)) {
+      if (pattern.test(prose)) {
         problems.push(
-          `not standalone: activities/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
+          `not standalone: ${kind}/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
         );
       }
     }
@@ -509,28 +536,23 @@ const GRADE_WORD_RE =
   /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/i;
 const GRADE_CONTEXT_CHARS = 60;
 
-for (const dir of [ACTIVITIES_DIR, GUIDES_DIR]) {
-  for (const file of readdirSync(dir)) {
-    if (!file.endsWith(".mdx")) {
-      continue;
-    }
-    const source = readFileSync(join(dir, file), "utf8");
-    const where = `${dir.split("/").at(-1)}/${file}`;
-    for (const m of source.matchAll(OUTCOME_TAG_RE)) {
+for (const { dir, file, kind } of activityAndGuidePages()) {
+  const source = readFileSync(join(dir, file), "utf8");
+  const where = `${kind}/${file}`;
+  for (const m of source.matchAll(OUTCOME_TAG_RE)) {
+    problems.push(
+      `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric tables`
+    );
+  }
+  for (const m of source.matchAll(GRADE_NUMBER_RE)) {
+    const context = source.slice(
+      Math.max(0, m.index - GRADE_CONTEXT_CHARS),
+      m.index + m[0].length + GRADE_CONTEXT_CHARS
+    );
+    if (GRADE_WORD_RE.test(context)) {
       problems.push(
-        `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric tables`
+        `grading language: ${where} says "${m[0]}" next to a grading word: ${JSON.stringify(context.replace(/\s+/g, " ").trim())}`
       );
-    }
-    for (const m of source.matchAll(GRADE_NUMBER_RE)) {
-      const context = source.slice(
-        Math.max(0, m.index - GRADE_CONTEXT_CHARS),
-        m.index + m[0].length + GRADE_CONTEXT_CHARS
-      );
-      if (GRADE_WORD_RE.test(context)) {
-        problems.push(
-          `grading language: ${where} says "${m[0]}" next to a grading word: ${JSON.stringify(context.replace(/\s+/g, " ").trim())}`
-        );
-      }
     }
   }
 }

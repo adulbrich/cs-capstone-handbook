@@ -21,7 +21,7 @@ lives in `src/content/docs/**` as MDX.
 | `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per assignment except the two Canvas-owned ones (hard rule 4), rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric TSV, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, and that each page renders its own TSV. Runs in CI and pre-commit. |
-| `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the no-outcome-tags, no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
+| `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
 | `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. Runs in CI and pre-commit. |

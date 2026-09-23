@@ -45,18 +45,18 @@ Several well-known workflows exist. Each makes different tradeoffs between simpl
 
 [**GitHub Flow**](https://docs.github.com/en/get-started/using-github/github-flow) is the simplest workflow that supports team collaboration. It has one rule: the `main` branch is always in a deployable (or at least stable) state. All work happens on short-lived feature branches that are merged back through pull requests.
 
-This is the recommended workflow for most Capstone projects. It is easy to learn, works well for small teams, and enforces code review without adding ceremony.
+This is the recommended workflow for most capstone projects. It is easy to learn, works well for small teams, and enforces code review without adding ceremony.
 
 ### Git Flow
 
-[**Git Flow**](https://nvie.com/posts/a-successful-git-branching-model/), described by Vincent Driessen in 2010, uses long-lived `develop` and `main` branches, plus dedicated branches for releases and hotfixes. Driessen has since added a note to that post recommending against it for teams shipping continuously, which is worth reading as an example of an influential idea whose author narrowed its scope later. It provides more structure for projects with formal release cycles but adds complexity that most Capstone projects do not need. It is common in enterprise environments where multiple versions are maintained simultaneously.
+[**Git Flow**](https://nvie.com/posts/a-successful-git-branching-model/), described by Vincent Driessen in 2010, uses long-lived `develop` and `main` branches, plus dedicated branches for releases and hotfixes. Driessen has since added a note to that post recommending against it for teams shipping continuously, which is worth reading as an example of an influential idea whose author narrowed its scope later. It provides more structure for projects with formal release cycles but adds complexity that most capstone projects do not need. It is common in enterprise environments where multiple versions are maintained simultaneously.
 
 ### Trunk-Based Development
 
 In [**trunk-based development**](https://trunkbaseddevelopment.com/), everyone commits directly to `main` (or to very short-lived branches that are merged within hours). This requires strong CI, comprehensive test coverage, and high team discipline. It is used by large engineering organizations (Google, for example) and the [DORA research](https://dora.dev/) consistently finds it associated with better delivery performance, but it is difficult to adopt without mature testing infrastructure. The disagreement between this row and the one above is real, and it is mostly about how good your tests are: trunk-based development without a trustworthy test suite is just committing to `main`.
 
 :::tip[Which Workflow Should We Use?]
-For most Capstone teams, **GitHub Flow** is the right choice. It is simple enough that the team will actually follow it, and it enforces the two practices that matter most: working on branches and reviewing each other's code before merging. If you find you need more structure later, you can adopt elements of Git Flow. Start simple.
+For most capstone teams, **GitHub Flow** is the right choice. It is simple enough that the team will actually follow it, and it enforces the two practices that matter most: working on branches and reviewing each other's code before merging. If you find you need more structure later, you can adopt elements of Git Flow. Start simple.
 :::
 
 ## GitHub Flow in Practice
@@ -238,7 +238,7 @@ The best way to handle merge conflicts is to avoid them. Keep branches short-liv
 
 ## Protecting the Main Branch
 
-GitHub allows you to add branch protection rules, now offered as [repository rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets), to prevent direct pushes to `main` and enforce quality checks before merging. Rulesets are the newer mechanism and the one to prefer on a new repository, because they can be layered and their enforcement status is visible. For a Capstone project, useful protections include:
+GitHub allows you to add branch protection rules, now offered as [repository rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets), to prevent direct pushes to `main` and enforce quality checks before merging. Rulesets are the newer mechanism and the one to prefer on a new repository, because they can be layered and their enforcement status is visible. For a capstone project, useful protections include:
 
 - **Require pull request reviews**: at least one approval before merging.
 - **Require status checks to pass**: CI tests must pass before the merge button is available.
@@ -317,7 +317,7 @@ override as a decision someone announces rather than one they hide.
 
 Git is the dominant version control system in software engineering. GitHub, GitLab, and Bitbucket host the vast majority of both open-source and proprietary projects. Familiarity with Git workflows, pull requests, and code review is a baseline expectation for software engineering roles.
 
-In open-source communities, the pull request model (fork, branch, PR, review, merge) is the standard contribution mechanism. Understanding this workflow is essential for contributing to FOSS projects, which many Capstone teams do.
+In open-source communities, the pull request model (fork, branch, PR, review, merge) is the standard contribution mechanism. Understanding this workflow is essential for contributing to FOSS projects, which many capstone teams do.
 
 In research settings, version control is increasingly recognized as essential for reproducibility. Journals and conferences expect computational work to be backed by a public repository with clear commit history. Git enables this, and platforms like GitHub and GitLab provide the infrastructure for sharing and collaborating on research code.
 

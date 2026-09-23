@@ -20,7 +20,7 @@ A requirement is a **specific, testable statement** about the product. It is not
 
 ## What Is a Requirement?
 
-Three kinds cover almost everything a Capstone project needs:
+Three kinds cover almost everything a capstone project needs:
 
 - **Functional**: what the system does. "A user can reset their password by email." "The pipeline rejects a record whose timestamp is missing."
 - **Non-functional**: how well it does it, with a number. "The dashboard loads in under 3 seconds on a campus connection." "A fresh clone runs the full pipeline in one documented command."
@@ -105,7 +105,7 @@ A [user story map](https://www.nngroup.com/articles/user-story-mapping/) lays th
 
 A requirement is validated when someone other than the author has confirmed it. The cheap confirmations:
 
-- **The partner read it.** Review the document with your project partner or mentor early, and again after any re-framing. Misunderstandings surface here every year; the review costs an hour and the misunderstanding costs a term.
+- **The partner read it.** Review the document with your project partner or mentor early, and again after any re-framing. Misunderstandings surface here on almost every project; the review costs an hour and the misunderstanding costs months.
 - **A prototype hit it.** A clickable mockup or a walking-skeleton slice tests a requirement faster than another meeting, and tells you whether the thing is feasible at the same time.
 - **A test names it.** When FR-2 has a test called `test_second_claim_on_full_shift_fails`, the requirement is re-validated every time CI runs.
 
@@ -137,21 +137,21 @@ that changes the behavior.
 
 Expect most of it to be wrong at first, and treat that as the normal condition
 rather than a failure of analysis. Requirements are guesses about what people
-need until a user or a partner confirms them, and the guesses made in fall week 3
+need until a user or a partner confirms them, and the guesses made in the first weeks
 are made by a team that has not yet watched anyone use anything. This is why the
 document needs a way to mark which items are confirmed and which are assumed; an
 unconfirmed requirement that looks identical to a confirmed one is how teams
 build the wrong thing with total confidence.
 
-The staleness question deserves a straight answer, because teams ask it every
-year and the usual advice dodges. Once your board holds the current work and your
+The staleness question deserves a straight answer, because teams always ask it
+and the usual advice dodges. Once your board holds the current work and your
 tests encode the acceptance criteria, the functional list genuinely does become
 redundant, and maintaining it in parallel is duplicated effort that will drift.
 What does not become redundant is the part the board never holds: the problem
 statement, the non-goals, the non-functional bars, and the open questions. If you
 let the functional list lag behind the board, that is a defensible trade. If you
 let those four go stale, you have lost the only record of what you decided not to
-do and how good it has to be, and both will be asked about in spring.
+do and how good it has to be, and both will be asked about at the end.
 
 Safety-critical, regulated, and hardware projects are the real exception, and it
 is worth understanding why rather than filing it as a caveat. When the cost of a
