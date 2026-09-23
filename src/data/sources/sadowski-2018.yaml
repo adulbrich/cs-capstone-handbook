@@ -1,0 +1,25 @@
+authors:
+  - Sadowski, C.
+  - Söderberg, E.
+  - Church, L.
+  - Sipko, M.
+  - Bacchelli, A.
+year: 2018
+title: "Modern Code Review: A Case Study at Google"
+venue: >-
+  40th International Conference on Software Engineering: Software Engineering
+  in Practice (ICSE-SEIP)
+kind: peer-reviewed
+url: https://research.google/pubs/modern-code-review-a-case-study-at-google/
+doi: 10.1145/3183519.3183525
+verified: full-text
+claims:
+  - claim: >-
+      At Google, the median change modifies 24 lines, about 90% of changes
+      modify fewer than 10 files, and the median latency for the whole review
+      process is under four hours.
+    locator: Sec. 5.2, Quantifying The Review Process
+  - claim: >-
+      Code review has been a required part of development at Google since
+      early in the company's history, and the median change has one reviewer.
+    locator: Sec. 1, Introduction; Sec. 5.2

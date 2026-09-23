@@ -1,0 +1,37 @@
+authors:
+  - Bacchelli, A.
+  - Bird, C.
+year: 2013
+title: Expectations, Outcomes, and Challenges of Modern Code Review
+venue: 35th International Conference on Software Engineering (ICSE)
+kind: peer-reviewed
+url: https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/ICSE202013-codereview.pdf
+doi: 10.1109/ICSE.2013.6606617
+verified: full-text
+claims:
+  - claim: >-
+      In interviews at Microsoft, understanding the change, and in particular
+      the reason for it, was reviewers' main challenge.
+    locator: Sec. VI.A, Code Review is Understanding
+  - claim: >-
+      Developers said that when the author provided context and direction in a
+      review, they could respond better and faster.
+    locator: Sec. VII.A, Recommendations for Practitioners (Understanding)
+  - claim: >-
+      Finding defects was the top motivation for review, yet of 570 review
+      comments, 78 (14%) were about defects, fourth of nine categories, while
+      165 (29%) were code improvements.
+    locator: Sec. V, The Outcomes of Code Reviews; Fig. 4
+  - claim: >-
+      Review provides benefits beyond finding defects, including knowledge
+      transfer, team awareness, and alternative solutions.
+    locator: Abstract; Sec. VII.A (Beyond Defects)
+  - claim: >-
+      The authors recommend increasing the breadth of understanding across the
+      team, because if the author of a change is the only expert, there is no
+      potential reviewer.
+    locator: Sec. VII.A, Recommendations for Practitioners (Understanding)
+  - claim: >-
+      Microsoft teams in the study reviewed code through CodeFlow, a tool more
+      than 40,000 developers had used.
+    locator: Sec. III.B, Research Setting

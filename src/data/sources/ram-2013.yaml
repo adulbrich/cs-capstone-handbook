@@ -1,0 +1,24 @@
+authors:
+  - Ram, K.
+year: 2013
+title: Git Can Facilitate Greater Reproducibility and Increased Transparency in Science
+venue: Source Code for Biology and Medicine
+kind: peer-reviewed
+url: https://link.springer.com/article/10.1186/1751-0473-8-7
+doi: 10.1186/1751-0473-8-7
+verified: full-text
+claims:
+  - claim: >-
+      Sharing the data and code behind publications is becoming more common,
+      driven partly by journal requirements and funder mandates, yet access
+      to them is still not very common.
+    locator: Abstract; Background
+  - claim: >-
+      Ram argues that Git's history maintains a complete provenance of a
+      project's data, code, and figures.
+    locator: How Git can track various artifacts of a research effort (Data)
+  - claim: >-
+      Git hosting services are not a solution for permanent archiving, and
+      researchers should deposit projects in an archival repository such as
+      figshare.
+    locator: Use cases for Git in science, Backup and failsafe against data loss
