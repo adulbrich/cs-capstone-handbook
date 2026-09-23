@@ -10,13 +10,32 @@ assignment:
     fall: 8
     winter: 10
     spring: 6
+  canvas:
+    - name: "Sprint Notes {n}"
+      group: Sprint Notes
+      weeks: { fall: [4, 6, 8, 10], winter: [2, 4, 6, 8, 10], spring: [2, 4, 6] }
+      weight: { fall: 4, winter: 5, spring: 3 }
+      points: 100
+      submission: pdf
+      rubric: sprint-note/sprint-note-rubric-details.tsv
+    - name: "Sprint Notes {n}: Individual Contribution"
+      group: Sprint Notes
+      weeks: { fall: [4, 6, 8, 10], winter: [2, 4, 6, 8, 10], spring: [2, 4, 6] }
+      weight: { fall: 4, winter: 5, spring: 3 }
+      points: 100
+      submission: none
+      rubric: individual-contribution/individual-contribution-rubric-details.tsv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricTsv from '/canvas/assignments/sprint-note/sprint-note-rubric-details.tsv?raw';
+import contributionTsv from '/canvas/assignments/individual-contribution/individual-contribution-rubric-details.tsv?raw';
+import CanvasEntries from '/src/components/CanvasEntries.astro';
 
-<AssignmentMeta submission="Team, with the individual contribution modifier" due="Fall weeks 4, 6, 8, 10; winter weeks 2, 4, 6, 8, 10; spring weeks 2, 4, 6" weight="2% each: 8% of the fall grade, 10% of the winter grade, 6% of the spring grade; pass/fail per item" />
+<AssignmentMeta submission="Team, with the individual contribution modifier" due="Fall weeks 4, 6, 8, 10; winter weeks 2, 4, 6, 8, 10; spring weeks 2, 4, 6" weight="2% per sprint, half of it the individual contribution: 8% of the fall grade, 10% of the winter grade, 6% of the spring grade" />
+
+<CanvasEntries />
 
 At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html) (the [sprint guide](/guides/sprint/) covers the cadence itself), the team submits a one-page sprint note and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes.
 
@@ -78,7 +97,11 @@ Each note is checked pass/fail per item, 20 points each; the [rubric conventions
 
 <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/sprint-note/sprint-note-rubric-details.tsv" />
 
-**Individual contribution modifier:** half of each sprint note's points are individual and default to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the team's TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/assignments/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note costs you nothing; a pattern with no explanation is what reduces your individual half.
+### Individual Contribution (100 points each)
+
+<RubricTable tsv={contributionTsv} sourceLabel="canvas/assignments/individual-contribution/individual-contribution-rubric-details.tsv" />
+
+**Individual contribution modifier:** half of each sprint's weight is individual, graded as its own Canvas entry, and defaults to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, repo record, review activity) shows no meaningful contribution. Deductions are flagged by the team's TA with the evidence noted, and confirmed by an instructor following the corroboration process on the [partner evaluation page](/assignments/project-partner-evaluation/); no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Missing your PR-per-sprint norm once with an explanation in the note costs you nothing; a pattern with no explanation is what reduces your individual half.
 
 ## Activities That Prepare This
 

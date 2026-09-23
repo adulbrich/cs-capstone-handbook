@@ -2,7 +2,7 @@
 
 Date: 2026-09-20
 Branch: `docs/rubric-single-source`
-Status: implemented in #144. Section 6's open decisions are resolved; the resolutions are recorded inline.
+Status: implemented in #144. Section 6's open decisions are resolved; the resolutions are recorded inline. Section 6.2's two unrendered directories were reversed by #259 (`2026-09-23-canvas-entry-model.md`): both are now rendered.
 Companion documents: `AGENTS.md` hard rule 4 (which this design inverts), `canvas/assignments/assignment-readme.md`, `.claude/skills/cs46x-assignments/SKILL.md`, `scripts/validate-outcomes.mjs`.
 
 ## 1. Why

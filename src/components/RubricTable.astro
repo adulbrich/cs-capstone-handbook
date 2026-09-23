@@ -34,9 +34,9 @@ import { parseRubricTsv, rubricTotal } from "../lib/rubric-tsv.mjs";
  * Usage in MDX:
  *
  *   import RubricTable from '/src/components/RubricTable.astro';
- *   import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
+ *   import rubricTsv from '/canvas/assignments/rfc/rfc-final-rubric-details.tsv?raw';
  *
- *   <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-rubric-details.tsv" />
+ *   <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-final-rubric-details.tsv" />
  *
  * `?raw` is a Vite feature and needs no Astro configuration. A missing file
  * fails the build; `scripts/validate-outcomes.mjs` catches the other half,

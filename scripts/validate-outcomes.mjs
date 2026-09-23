@@ -11,13 +11,17 @@
 //   - every WIC (L07-L09) and Beyond OSU (L10) outcome: >= 1 individual-level point,
 //     except the outcomes in CANVAS_EVIDENCED below
 // It also checks that each term's Team Deliverables table sums to exactly 25%,
-// and that each page imports the TSV that belongs to it rather than another
-// assignment's, which Vite cannot catch because both paths resolve.
+// that each page imports the TSVs that belong to it rather than another
+// assignment's, which Vite cannot catch because both paths resolve, and that
+// each page's `assignment.canvas` entries reconcile with its weight and the
+// rubrics it renders (the Canvas entry model record in docs/decisions/).
 //
 // Run: node scripts/validate-outcomes.mjs
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { parse } from "yaml";
+import { canvasRows, termWeight } from "../src/lib/canvas-entries.mjs";
 import {
   OUTCOME_TAG_RE,
   parseRubricTsv,
@@ -38,6 +42,7 @@ const CANVAS_TO_HANDBOOK = {
   defense: "defense",
   "definition-of-shipped": "definition-of-shipped",
   "incident-postmortem": "incident-postmortem",
+  "individual-contribution": "sprint-notes",
   "project-handoff": "project-handoff",
   "project-landing-page": "landing-page",
   "project-retrospective": "project-retrospective",
@@ -47,25 +52,16 @@ const CANVAS_TO_HANDBOOK = {
   "sprint-note": "sprint-notes",
   "team-charter": "team-charter",
   "term-retrospective": "term-retrospective",
+  "workshop-activities": "workshop-activities",
 };
 
-// Canvas rubrics with no handbook counterpart, by decision rather than
-// omission. Both are tagless, both hold one TSV per term because the item
-// count differs by term, and neither is a rubric a student is shown on the
-// page: `individual-contribution` is the individual half of the Sprint Notes
-// points and is described in prose on that page, and `workshop-activities` is
-// scored complete/incomplete per item. Rendering either would add tables to a
-// page that deliberately has none.
-const CANVAS_ONLY = new Set(["individual-contribution", "workshop-activities"]);
-
-// The three pages that render no <RubricTable>, by decision rather than
-// omission. `workshop-activities` has no rubric section at all, being scored
-// complete/incomplete per item. The two survey instruments run through
-// Qualtrics and are the only pages still holding a hand-written Markdown
-// table, because theirs carry weights rather than points. Sprint Notes is not an exception: its rubric is the
-// nine-field pass/fail TSV and totals 100 like any other (#29, #144).
+// The two pages that render no <RubricTable>, by decision rather than
+// omission. The survey instruments run through Qualtrics and are the only
+// pages still holding a hand-written Markdown table, because theirs carry
+// weights rather than points; their Canvas entries declare no `rubric`.
+// Sprint Notes and Workshop Activities are not exceptions: their TSVs total
+// 100 like any other (#29, #144, #259).
 const RUBRIC_EXCEPTIONS = new Set([
-  "workshop-activities",
   "peer-evaluations",
   "project-partner-evaluation",
 ]);
@@ -84,68 +80,25 @@ function parseFrontmatter(source) {
   return match ? match[1] : null;
 }
 
-// One `  key: value` line of the assignment block. Returns the name of the
-// nested map (`weight` or `outcomes`) that the following four-space lines
-// belong to, or null when the key is a scalar.
-function readAssignmentKey(assignment, key, value) {
-  if (key === "level") {
-    assignment.level = value;
-    return null;
-  }
-  if (key === "terms") {
-    assignment.terms = value
-      .replace(/^\[|\]$/g, "")
-      .split(",")
-      .map((t) => t.trim());
-    return null;
-  }
-  // `weight` is either a scalar (the page is worth the same in every term it
-  // runs) or a per-term map. Sprint Notes and Workshop Activities vary by term,
-  // and a scalar silently stated the wrong number for two of the three.
-  if (key === "weight") {
-    if (value === "") {
-      assignment.weight = {};
-      return "weight";
-    }
-    assignment.weight = Number(value);
-    return null;
-  }
-  if (key === "outcomes") {
-    assignment.outcomes = {};
-    return "outcomes";
-  }
-  return null;
-}
-
-// Minimal targeted parser for the `assignment:` block we control.
+// The `assignment:` block, parsed as the YAML it is. The hand-rolled line
+// parser this replaced could not read the list of Canvas entries.
 function parseAssignment(frontmatter) {
-  const lines = frontmatter.split("\n");
-  const start = lines.findIndex((l) => /^assignment:\s*$/.test(l));
-  if (start === -1) {
+  const assignment = parse(frontmatter)?.assignment;
+  if (!assignment) {
     return null;
   }
-  const assignment = { level: null, outcomes: {}, terms: [], weight: null };
-  let block = null;
-  for (const line of lines.slice(start + 1)) {
-    if (/^\S/.test(line)) {
-      break;
-    }
-    const key = line.match(/^\s{2}(\w+):\s*(.*)$/);
-    if (key) {
-      block = readAssignmentKey(assignment, key[1], key[2].trim());
-      continue;
-    }
-    const item = line.match(/^\s{4}(\w+):\s*(\d+(?:\.\d+)?)/);
-    if (block && item) {
-      assignment[block][item[1]] = Number(item[2]);
-    }
-  }
-  return assignment;
+  return {
+    canvas: assignment.canvas ?? null,
+    level: assignment.level ?? null,
+    outcomes: assignment.outcomes ?? {},
+    terms: assignment.terms ?? [],
+    weight: assignment.weight ?? null,
+  };
 }
 
-// The Markdown fallback, for the three pages that keep a hand-written table:
-// the two Qualtrics instruments, whose tables carry weights rather than
-// points, and the pass/fail workshop page. Rows whose LAST cell is a
+// The Markdown fallback, for the two pages that keep a hand-written table:
+// the Qualtrics instruments, whose tables carry weights rather than points.
+// Rows whose LAST cell is a
 // comma-separated list of outcome IDs.
 function parseRubricTags(body) {
   const tags = {};
@@ -173,18 +126,29 @@ function parseRubricTags(body) {
   return tags;
 }
 
-// The TSV a page renders, from its `<RubricTable tsv={...} />` and the
-// matching `?raw` import. Returns null for a page that renders none.
-const RUBRIC_TABLE_RE = /<RubricTable\s[^>]*\btsv=\{(\w+)\}/;
-function rubricTsvPath(source) {
-  const used = source.match(RUBRIC_TABLE_RE);
-  if (!used) {
-    return null;
-  }
-  const imported = source.match(
-    new RegExp(`^import\\s+${used[1]}\\s+from\\s+['"]/([^'"?]+)\\?raw['"]`, "m")
-  );
-  return imported ? imported[1] : { missingImport: used[1] };
+// Every TSV a page renders, one per `<RubricTable tsv={...} />`, resolved
+// through the matching `?raw` import. A page owning several Canvas entries
+// renders one table per distinct rubric. `path` is null when the name has no
+// import; `index` is where the tag sits, for the heading check below.
+const RUBRIC_TABLE_RE = /<RubricTable\s[^>]*>/g;
+function rubricTables(source) {
+  return [...source.matchAll(RUBRIC_TABLE_RE)].map((m) => {
+    const name = m[0].match(/\btsv=\{(\w+)\}/)?.[1];
+    const imported = name
+      ? source.match(
+          new RegExp(
+            `^import\\s+${name}\\s+from\\s+['"]/([^'"?]+)\\?raw['"]`,
+            "m"
+          )
+        )
+      : null;
+    return {
+      index: m.index,
+      label: m[0].match(/\ssourceLabel="([^"]*)"/)?.[1] ?? null,
+      name,
+      path: imported ? imported[1] : null,
+    };
+  });
 }
 
 const counts = {};
@@ -198,6 +162,10 @@ const files = readdirSync(ASSIGNMENTS_DIR).filter((f) => f.endsWith(".mdx"));
 let parsed = 0;
 // slug -> parsed assignment block, for the weight reconciliation below.
 const pages = new Map();
+// slug -> the page source and the rubric tables it renders, for the Canvas
+// entry and page-shape checks below.
+const pageSources = new Map();
+const pageTables = new Map();
 
 for (const file of files) {
   const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
@@ -213,9 +181,11 @@ for (const file of files) {
   pages.set(file.replace(/\.mdx$/, ""), assignment);
   const body = source.slice(source.indexOf("---", 3) + 3);
   const slug = file.replace(/\.mdx$/, "");
-  const tsvPath = rubricTsvPath(source);
-  let rubricTags;
-  if (tsvPath === null) {
+  const tables = rubricTables(source);
+  pageSources.set(slug, source);
+  pageTables.set(slug, tables);
+  let rubricTags = {};
+  if (tables.length === 0) {
     // A page that keeps a hand-written table: the documented exceptions.
     if (!RUBRIC_EXCEPTIONS.has(slug)) {
       console.error(
@@ -224,39 +194,46 @@ for (const file of files) {
       failed = true;
     }
     rubricTags = parseRubricTags(body);
-  } else if (typeof tsvPath === "string") {
-    // The page must import its own assignment's TSV. Vite resolves any real
+  }
+  for (const table of tables) {
+    if (!table.path) {
+      console.error(
+        `RUBRIC IMPORT ${file}: <RubricTable tsv={${table.name}}> has no matching \`import ${table.name} from '/...tsv?raw'\`.`
+      );
+      failed = true;
+      continue;
+    }
+    // The page must import its own assignment's TSVs. Vite resolves any real
     // path, so nothing else catches a page rendering a neighbour's rubric.
     // `sourceLabel` is what parse errors name, so a stale one sends the next
     // reader to the wrong file. Nothing else compares it to the real import.
-    const label = source.match(/<RubricTable[^>]*\ssourceLabel="([^"]*)"/);
-    if (!label) {
+    if (!table.label) {
       console.error(
-        `RUBRIC IMPORT ${file}: <RubricTable> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
+        `RUBRIC IMPORT ${file}: <RubricTable tsv={${table.name}}> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
       );
       failed = true;
-    } else if (label[1] !== tsvPath) {
+    } else if (table.label !== table.path) {
       console.error(
-        `RUBRIC IMPORT ${file}: sourceLabel="${label[1]}" but the import reads ${tsvPath}.`
+        `RUBRIC IMPORT ${file}: sourceLabel="${table.label}" but the import reads ${table.path}.`
       );
       failed = true;
     }
-    const [, , dir] = tsvPath.split("/");
+    const [, , dir] = table.path.split("/");
     if (CANVAS_TO_HANDBOOK[dir] !== slug) {
       console.error(
-        `RUBRIC IMPORT ${file}: imports ${tsvPath}, which belongs to ${CANVAS_TO_HANDBOOK[dir] ?? "no mapped page"}, not ${slug}.`
+        `RUBRIC IMPORT ${file}: imports ${table.path}, which belongs to ${CANVAS_TO_HANDBOOK[dir] ?? "no mapped page"}, not ${slug}.`
       );
       failed = true;
     }
-    rubricTags = rubricTagCounts(
-      parseRubricTsv(readFileSync(tsvPath, "utf8"), tsvPath)
-    );
-  } else {
-    console.error(
-      `RUBRIC IMPORT ${file}: <RubricTable tsv={${tsvPath.missingImport}}> has no matching \`import ${tsvPath.missingImport} from '/...tsv?raw'\`.`
-    );
-    failed = true;
-    rubricTags = {};
+    // Tags add up across a page's rubrics: the RFC's draft and final
+    // together are what the frontmatter declares.
+    for (const [tag, n] of Object.entries(
+      rubricTagCounts(
+        parseRubricTsv(readFileSync(table.path, "utf8"), table.path)
+      )
+    )) {
+      rubricTags[tag] = (rubricTags[tag] || 0) + n;
+    }
   }
 
   // Reconcile: frontmatter must equal the rubric tags exactly.
@@ -420,7 +397,6 @@ for (const dir of readdirSync(CANVAS_DIR)) {
   if (
     !statSync(join(CANVAS_DIR, dir)).isDirectory() ||
     CANVAS_DEPRECATED.has(dir) ||
-    CANVAS_ONLY.has(dir) ||
     CANVAS_TO_HANDBOOK[dir]
   ) {
     continue;
@@ -439,10 +415,172 @@ for (const dir of readdirSync(CANVAS_DIR)) {
   }
   if (tags.size > 0) {
     console.error(
-      `UNMAPPED canvas/assignments/${dir}: tags ${[...tags].sort().join(", ")} but no handbook page renders it. Add it to CANVAS_TO_HANDBOOK, CANVAS_ONLY or CANVAS_DEPRECATED.`
+      `UNMAPPED canvas/assignments/${dir}: tags ${[...tags].sort().join(", ")} but no handbook page renders it. Add it to CANVAS_TO_HANDBOOK or CANVAS_DEPRECATED.`
     );
     failed = true;
   }
+}
+
+// --- Canvas entries ---------------------------------------------------------
+// Each Canvas assignment has its own due date, late window, grade and
+// submission, so a page that owns several declares each family in
+// `assignment.canvas` rather than bundling them into one column. The list is
+// what the Canvas import will generate from, so it has to agree with the
+// page's weight, with the rubrics the page renders, and with Canvas's own
+// arithmetic: an assignment group weights its entries by points, so within a
+// group every entry must carry the same weight per point.
+const TOLERANCE = 1e-6;
+// term -> group -> weight per point of the first entry seen, and where.
+const groupRates = new Map();
+// term -> "group / entry name" -> page that declared it.
+const entryNames = new Map();
+for (const [slug, assignment] of pages) {
+  const file = `${slug}.mdx`;
+  const { canvas } = assignment;
+  if (!Array.isArray(canvas) || canvas.length === 0) {
+    console.error(
+      `CANVAS ${file}: no \`assignment.canvas\` entries. Every graded page declares the Canvas assignments it owns.`
+    );
+    failed = true;
+    continue;
+  }
+  const rendered = new Set(
+    pageTables
+      .get(slug)
+      .map((t) => t.path)
+      .filter(Boolean)
+  );
+  const declaredRubrics = new Set();
+  for (const family of canvas) {
+    if (family.rubric) {
+      const path = `${CANVAS_DIR}/${family.rubric}`;
+      declaredRubrics.add(path);
+      if (!rendered.has(path)) {
+        console.error(
+          `CANVAS ${file}: entry "${family.name}" uses ${path}, which the page does not render.`
+        );
+        failed = true;
+      }
+    } else if (!RUBRIC_EXCEPTIONS.has(slug)) {
+      console.error(
+        `CANVAS ${file}: entry "${family.name}" names no rubric, and only the survey pages may omit one.`
+      );
+      failed = true;
+    }
+    for (const term of Object.keys(family.weeks ?? {})) {
+      if (!assignment.terms.includes(term)) {
+        console.error(
+          `CANVAS ${file}: entry "${family.name}" runs in ${term}, which the page's terms do not list.`
+        );
+        failed = true;
+      }
+    }
+  }
+  for (const path of rendered) {
+    if (!declaredRubrics.has(path)) {
+      console.error(
+        `CANVAS ${file}: renders ${path}, but no Canvas entry uses it.`
+      );
+      failed = true;
+    }
+  }
+
+  const rows = canvasRows(canvas);
+  for (const term of assignment.terms) {
+    const termRows = rows.filter((r) => r.term === term);
+    const pageWeight = termWeight(assignment, term);
+    const sum = termRows.reduce((acc, r) => acc + (r.weight ?? 0), 0);
+    if (termRows.length === 0) {
+      console.error(`CANVAS ${file}: no Canvas entry runs in ${term}.`);
+      failed = true;
+    } else if (pageWeight === undefined) {
+      console.error(
+        `CANVAS ${file}: runs in ${term} but its weight map has no ${term} entry.`
+      );
+      failed = true;
+    } else if (Math.abs(sum - pageWeight) > TOLERANCE) {
+      console.error(
+        `CANVAS ${file}: ${term} entries carry ${sum}% but the page weight is ${pageWeight}%.`
+      );
+      failed = true;
+    }
+    const entryCount = termRows.reduce((acc, r) => acc + r.names.length, 0);
+    if (entryCount > 1 && !/<CanvasEntries\b/.test(pageSources.get(slug))) {
+      console.error(
+        `CANVAS ${file}: owns ${entryCount} Canvas entries in ${term} but does not render <CanvasEntries />.`
+      );
+      failed = true;
+    }
+  }
+
+  for (const row of rows) {
+    const { family, term } = row;
+    if (termWeight(family, term) === undefined) {
+      console.error(
+        `CANVAS ${file}: entry "${family.name}" is due in ${term} but declares no ${term} weight.`
+      );
+      failed = true;
+      continue;
+    }
+    if (
+      family.peer_review_week &&
+      row.weeks.some((w) => w >= family.peer_review_week)
+    ) {
+      console.error(
+        `CANVAS ${file}: entry "${family.name}" has ${term} peer reviews due in week ${family.peer_review_week}, not after the draft.`
+      );
+      failed = true;
+    }
+    if (!groupRates.has(term)) {
+      groupRates.set(term, new Map());
+      entryNames.set(term, new Map());
+    }
+    const rate = row.each / family.points;
+    const seen = groupRates.get(term).get(family.group);
+    if (!seen) {
+      groupRates.get(term).set(family.group, { file, name: family.name, rate });
+    } else if (Math.abs(seen.rate - rate) > TOLERANCE) {
+      console.error(
+        `CANVAS ${file}: in the ${term} "${family.group}" group, "${family.name}" is worth ${row.each}% for ${family.points} points, but "${seen.name}" (${seen.file}) carries a different weight per point. Canvas weights a group's entries by points.`
+      );
+      failed = true;
+    }
+    for (const name of row.names) {
+      const other = entryNames.get(term).get(`${family.group} / ${name}`);
+      if (other) {
+        console.error(
+          `CANVAS ${file}: two ${term} entries in the "${family.group}" group are named "${name}" (also ${other}).`
+        );
+        failed = true;
+      }
+      entryNames.get(term).set(`${family.group} / ${name}`, file);
+    }
+  }
+}
+// A TSV left in a mapped directory that no entry declares would still be
+// imported by hand and still look current. Every file must belong to a family.
+const declaredTsvs = new Set(
+  [...pages.values()].flatMap((a) =>
+    (a.canvas ?? [])
+      .filter((f) => f.rubric)
+      .map((f) => `${CANVAS_DIR}/${f.rubric}`)
+  )
+);
+for (const dir of Object.keys(CANVAS_TO_HANDBOOK)) {
+  for (const f of readdirSync(join(CANVAS_DIR, dir))) {
+    const path = `${CANVAS_DIR}/${dir}/${f}`;
+    if (f.endsWith("rubric-details.tsv") && !declaredTsvs.has(path)) {
+      console.error(
+        `CANVAS ${path}: no Canvas entry on ${CANVAS_TO_HANDBOOK[dir]}.mdx uses this rubric. Declare it or delete it.`
+      );
+      failed = true;
+    }
+  }
+}
+if (!failed) {
+  console.log(
+    "  Canvas entries reconcile with page weights, rendered rubrics, and group points."
+  );
 }
 
 // --- Page shape -------------------------------------------------------------
@@ -494,24 +632,31 @@ for (const file of files) {
     failed = true;
   }
 
-  // Rubric points total exactly 100, summed from the rendered TSV.
-  if (!RUBRIC_EXCEPTIONS.has(slug)) {
-    const tsvPath = rubricTsvPath(source);
-    if (typeof tsvPath !== "string") {
-      // Already reported as NO RUBRIC TABLE or RUBRIC IMPORT above.
-    } else if (/^## Rubric/m.test(body)) {
-      const total = rubricTotal(
-        parseRubricTsv(readFileSync(tsvPath, "utf8"), tsvPath)
-      );
-      if (total !== 100) {
-        console.error(
-          `RUBRIC ${file}: ${tsvPath} totals ${total} points, not 100.`
-        );
-        failed = true;
-      }
-    } else {
+  // Rubric points total exactly 100, summed from each rendered TSV, and
+  // each table sits under a rubric heading: its nearest "##" or "###".
+  for (const table of pageTables.get(slug)) {
+    if (!table.path) {
+      continue; // already reported as RUBRIC IMPORT above
+    }
+    const total = rubricTotal(
+      parseRubricTsv(readFileSync(table.path, "utf8"), table.path)
+    );
+    if (total !== 100) {
       console.error(
-        `RUBRIC ${file}: renders a <RubricTable> but has no "## Rubric" heading above it.`
+        `RUBRIC ${file}: ${table.path} totals ${total} points, not 100.`
+      );
+      failed = true;
+    }
+    const headings = [
+      ...source.slice(0, table.index).matchAll(/^(#{2,3}) (.*)$/gm),
+    ];
+    const h2 = headings.findLast((h) => h[1] === "##");
+    const h3 = headings.findLast(
+      (h) => h[1] === "###" && (!h2 || h.index > h2.index)
+    );
+    if (![h2, h3].some((h) => h && /Rubric/.test(h[2]))) {
+      console.error(
+        `RUBRIC ${file}: renders ${table.path} with no "Rubric" heading above it (the nearest ## or ###).`
       );
       failed = true;
     }

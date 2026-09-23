@@ -9,14 +9,30 @@ assignment:
   weight: 25
   outcomes:
     SO5: 2
+  canvas:
+    - name: "Midterm Survey"
+      group: Peer Review
+      weeks: { fall: [6], winter: [6], spring: [6] }
+      weight: 5
+      points: 5
+      submission: survey
+    - name: "End-of-Term Survey"
+      group: Peer Review
+      weeks: { fall: [10], winter: [10], spring: [10] }
+      weight: 20
+      points: 20
+      submission: survey
 ---
 
+import CanvasEntries from '/src/components/CanvasEntries.astro';
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import Latex from '../../../components/Latex.astro';
 
 <AssignmentMeta submission="Individual, one survey per teammate" due="Midterm survey sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
   Anonymous. Results go to instructors only.
 </AssignmentMeta>
+
+<CanvasEntries />
 
 Peer evaluations are how you evaluate the contributions of your teammates, and they evaluate yours. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
 

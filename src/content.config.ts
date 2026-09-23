@@ -25,6 +25,23 @@ const SOURCE_KINDS = [
 const NOT_BLANK = /\S/;
 const text = () => z.string().regex(NOT_BLANK, "must not be blank");
 
+// Percent of the term grade: a number when it is the same in every term, a
+// per-term map when it varies. Strict, so a misspelled term fails here rather
+// than silently declaring nothing.
+const termWeight = () =>
+  z.union([
+    z.number(),
+    z
+      .object({
+        fall: z.number().optional(),
+        spring: z.number().optional(),
+        winter: z.number().optional(),
+      })
+      .strict(),
+  ]);
+const weekList = () => z.array(z.number().int().min(1).max(11)).min(1);
+const SUBMISSIONS = ["pdf", "video", "url", "survey", "none"] as const;
+
 const sources = defineCollection({
   loader: glob({ base: "./src/data/sources", pattern: "*.yaml" }),
   schema: z
@@ -67,6 +84,46 @@ export const collections = {
         // matrix and the coverage check in scripts/validate-outcomes.mjs
         assignment: z
           .object({
+            // The Canvas entries this page owns (the Canvas entry model
+            // record in docs/decisions/). Each Canvas assignment
+            // has its own due date, late window, grade and submission,
+            // so entries are never bundled: a family expands to one
+            // entry per week listed. src/lib/canvas-entries.mjs expands
+            // it for the page table; validate-outcomes.mjs checks it.
+            canvas: z
+              .array(
+                z
+                  .object({
+                    // Canvas assignment group; weights live on groups.
+                    group: text(),
+                    // Exact Canvas name; "{n}" numbers a family 1, 2, ...
+                    name: text(),
+                    // Week the Canvas peer reviews are due, when the
+                    // entry uses Canvas's own peer review.
+                    peer_review_week: z.number().int().optional(),
+                    points: z.number().positive(),
+                    // Canvas rubric, relative to canvas/assignments/.
+                    // Absent only on the two survey pages.
+                    rubric: text().optional(),
+                    submission: z.union([
+                      z.enum(SUBMISSIONS),
+                      z.array(z.enum(SUBMISSIONS)).min(1),
+                    ]),
+                    // One entry per week listed, per term.
+                    weeks: z
+                      .object({
+                        fall: weekList().optional(),
+                        spring: weekList().optional(),
+                        winter: weekList().optional(),
+                      })
+                      .strict(),
+                    // Percent of the term grade for the whole family,
+                    // split evenly across its entries that term.
+                    weight: termWeight(),
+                  })
+                  .strict()
+              )
+              .min(1),
             level: z.enum(["individual", "team"]),
             // outcome ID (SO1-SO6, L07-L10) -> number of rubric items
             // in this assignment that evidence it
@@ -79,16 +136,7 @@ export const collections = {
             // Team Deliverables tables in assignments/introduction.mdx.
             // The map is strict so a misspelled term fails here
             // rather than silently declaring nothing.
-            weight: z.union([
-              z.number(),
-              z
-                .object({
-                  fall: z.number().optional(),
-                  spring: z.number().optional(),
-                  winter: z.number().optional(),
-                })
-                .strict(),
-            ]),
+            weight: termWeight(),
           })
           .optional(),
         pageActions: z.boolean().optional().default(true),

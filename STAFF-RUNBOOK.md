@@ -130,7 +130,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
 - NDA teams: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
 
-**Where it lives in Canvas.** One Individual Contribution column per term holds the individual half of the Sprint Notes points, imported from `canvas/assignments/individual-contribution/` (one TSV per term, because the sprint counts differ: fall 4 x 25, winter 5 x 20, spring 34 / 33 / 33). One criterion per sprint, scored full, half, or zero. It defaults to full credit; there is no submission.
+**Where it lives in Canvas.** Each sprint note has a sibling entry, "Sprint Notes N: Individual Contribution", 100 points in the Sprint Notes group, so each is half the sprint's weight. One criterion, scored full, half, or zero, from `canvas/assignments/individual-contribution/individual-contribution-rubric-details.tsv`. It defaults to full credit through Set Default Grade; there is no submission. Grade it when you grade that sprint's note, so a deduction reaches the student in the sprint it concerns.
 
 **Per-sprint bands.** Every deduction needs an evidence note (what was checked, what was found) so the decision is reviewable.
 
@@ -197,7 +197,7 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 
 - [ ] Check-in sheet current; TA assignments made
 - [ ] Canvas shells: assignments imported from `canvas/assignments/` TSVs (rubric browser extension), weights checked against the handbook tables
-- [ ] Both sprint-note Canvas columns (team + individual) created; together they equal the Sprint Notes weight
+- [ ] Every Canvas entry in each page's Canvas assignments table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
 - [ ] Term Startup created by hand: 0 points, omit from final grade, text entry, group submission, due end of week 1. It has no rubric and no TSV, so nothing imports it
 - [ ] Spring only: Engineering Expo created by hand, same shape as Term Startup (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric, no TSV. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] Qualtrics surveys updated (contact lists from the roster script)

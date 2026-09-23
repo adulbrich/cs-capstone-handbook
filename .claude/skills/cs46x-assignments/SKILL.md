@@ -88,6 +88,14 @@ assignment:
   outcomes:
     SO2: 1
     SO4: 2
+  canvas:
+    - name: "<Exact Canvas name; {n} numbers a family>"
+      group: <Canvas assignment group>
+      weeks: { fall: [4, 8] }
+      weight: <the family's percent of the term grade>
+      points: 100
+      submission: pdf | video | url | survey | none, or a list
+      rubric: <dir>/<name>-rubric-details.tsv
 ---
 ```
 
@@ -101,7 +109,14 @@ a per-term map when it varies:
     spring: 4
 ```
 
-Seven rules the validators enforce, all of which have been gotten wrong before:
+`canvas` lists the page's **Canvas entries**, one family per item, and each
+family expands to one Canvas assignment per week listed. **Never bundle
+entries** (AGENTS.md hard rule 6): a draft and a final, or four sprint notes,
+are separate Canvas assignments with their own due dates and grades, however
+the page groups them for the reader. `docs/decisions/2026-09-23-canvas-entry-model.md`
+has the model; `peer_review_week` marks an entry using Canvas's own peer review.
+
+Eight rules the validators enforce, all of which have been gotten wrong before:
 
 1. **`outcomes` counts must equal the number of TSV criteria carrying that
    tag.** `scripts/validate-outcomes.mjs` parses field 1 of the rubric TSV as
@@ -126,8 +141,13 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
 6. **A page with a deliverable section carries an `**AI use:**` paragraph.**
    The deliverable headings the validator recognizes are the four listed
    under **Section Skeleton** below.
-7. **Rubric points total exactly 100**, unless the page is on the exception
-   list in `validate-outcomes.mjs` (see **Rubric Rules**).
+7. **Rubric points total exactly 100** per TSV, unless the page is on the
+   exception list in `validate-outcomes.mjs` (see **Rubric Rules**).
+8. **The `canvas` entries reconcile.** Per term, family weights sum to the page
+   weight; within one Canvas group, every entry carries the same weight per
+   point (Canvas weights a group's entries by points); every family's rubric
+   is rendered on the page and every rendered TSV belongs to a family; a page
+   with more than one entry in a term renders `<CanvasEntries />`.
 
 A page with no `assignment:` block is skipped by the validator entirely: no
 rubric TSV, no weight, no AI-use paragraph, no outcome tags. Four ungraded pages
@@ -171,6 +191,12 @@ Sections in **bold** are required.
      links work. Anything longer belongs in the intro prose.
 
    Self-close it (`/>`) when there is no note.
+
+   On a page owning more than one Canvas entry in a term, `<CanvasEntries />`
+   follows it: the table of entries, read from the page's own `canvas`
+   frontmatter. Where the entries differ in what is submitted or how it is
+   graded (the RFC's draft and final), give each its own `##` section named
+   as in Canvas, with its own `<AssignmentMeta>` and its own rubric.
 
 2. **Intro prose.** One to three paragraphs, in second person, on what the
    student produces, by when, and what makes it good. Say why it matters **to
@@ -226,19 +252,20 @@ The rubric is a TSV, not a Markdown table (see **The Rubric Lives in the TSV**).
 The rules below are about its content.
 
 - **Points total exactly 100**, summed as each criterion's highest band.
-  Three documented exceptions, listed in `validate-outcomes.mjs` as
-  `RUBRIC_EXCEPTIONS`. `workshop-activities.mdx` has no rubric section at all:
-  it is scored complete/incomplete per item, and its three per-term TSVs are
-  Canvas-only. The two survey instruments, `peer-evaluations.mdx` and
-  `project-partner-evaluation.mdx`, are the only pages that still hold a
-  hand-written Markdown table, because theirs carry weights rather than points.
-  `sprint-notes.mdx` is not an exception: its TSV is the two-band pass/fail
-  shape and totals 100 like any other.
+  Two documented exceptions, listed in `validate-outcomes.mjs` as
+  `RUBRIC_EXCEPTIONS`: the survey instruments, `peer-evaluations.mdx` and
+  `project-partner-evaluation.mdx`, hold a hand-written Markdown table because
+  theirs carry weights rather than points.
+- **One TSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
+  one TSV; every workshop shares one. The RFC's draft and final differ, so
+  they have two. A page with several renders each under a heading containing
+  "Rubric" (the nearest `##` or `###`), and its outcome counts are the sum
+  across them.
 - **Three to six criteria is the working range.** Fewer than three cannot
   discriminate. More is allowed when each criterion is a separable
   observable check and the grading cost is accepted: at ~300 students and
   6 TAs every criterion is a line a grader reads on every submission, so
-  say in the commit why the extra ones earn it. `rfc.mdx` (nine) and
+  say in the commit why the extra ones earn it. `rfc.mdx` (eight on the final) and
   `team-charter.mdx` (seven) are the standing examples (#27, decided
   2026-09-14).
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
@@ -264,11 +291,11 @@ browser extension. One file, two destinations, nothing to keep in sync.
 
 ```mdx
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
+import rubricTsv from '/canvas/assignments/team-charter/team-charter-rubric-details.tsv?raw';
 
 ## Rubric (100 points)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-rubric-details.tsv" />
+<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric-details.tsv" />
 ```
 
 `?raw` is a Vite feature and needs no configuration. `validate-outcomes.mjs`
@@ -302,11 +329,9 @@ empty rather than assuming a number:
 - **Four bands, 15 fields.** `defense` adds a `Missing` band at 0 for an
   unexcused no-show, which the other rubrics state in prose instead.
 
-Two directories hold Canvas rubrics that **no page renders**, by decision:
-`individual-contribution/` (the individual half of the Sprint Notes points,
-described in prose on that page) and `workshop-activities/` (complete/incomplete
-per item). Both are tagless and both hold one TSV per term. They are listed in
-`CANVAS_ONLY` in the validator.
+Every Canvas rubric directory is rendered by a page. `individual-contribution/`
+is rendered on Sprint Notes, `workshop-activities/` on Workshop Activities; both
+are tagless.
 
 **Changing a TSV means re-importing it into Canvas.** Say so in
 `canvas/assignments/assignment-readme.md` in the same commit.

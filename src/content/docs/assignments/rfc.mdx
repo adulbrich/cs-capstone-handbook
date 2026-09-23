@@ -16,13 +16,33 @@ assignment:
     L07: 1
     L08: 1
     L09: 1
+  canvas:
+    - name: "RFC Draft + Peer Review"
+      group: RFC Draft
+      weeks: { fall: [4], winter: [4] }
+      weight: 5
+      points: 100
+      submission: pdf
+      rubric: rfc/rfc-draft-rubric-details.tsv
+      peer_review_week: 5
+    - name: "RFC Final Draft"
+      group: RFC Final
+      weeks: { fall: [8], winter: [8] }
+      weight: 10
+      points: 100
+      submission: pdf
+      rubric: rfc/rfc-final-rubric-details.tsv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricTsv from '/canvas/assignments/rfc/rfc-rubric-details.tsv?raw';
+import draftRubricTsv from '/canvas/assignments/rfc/rfc-draft-rubric-details.tsv?raw';
+import finalRubricTsv from '/canvas/assignments/rfc/rfc-final-rubric-details.tsv?raw';
+import CanvasEntries from '/src/components/CanvasEntries.astro';
 
 <AssignmentMeta submission="Individual" due="Fall and winter: draft week 4, final week 8" weight="15% of the term grade" />
+
+<CanvasEntries />
 
 An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. The name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), which is how the internet's protocols are still specified; the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). You write one per term, in fall and winter, about a **real decision your team currently faces that is hard to reverse**. Not a hypothetical and not a retrospective justification of something already built: a live decision where your document should change what the team does.
 
@@ -65,11 +85,17 @@ Feedback is structured: for each draft you review, answer four questions in writ
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
 6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-## Rubric (100 points)
+## Rubrics (100 points each)
 
-<RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/rfc/rfc-rubric-details.tsv" />
+### RFC Draft + Peer Review
 
-Non-submission of the draft forfeits the revision points (there is nothing to revise); non-submission of peer feedback forfeits those 5 points and is visible to the affected teams. If your assigned reviewer no-shows, flag it to your TA: you will not be penalized for feedback you never received, and the instruction team will supply a review. The standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies.
+<RubricTable tsv={draftRubricTsv} sourceLabel="canvas/assignments/rfc/rfc-draft-rubric-details.tsv" />
+
+### RFC Final Draft
+
+<RubricTable tsv={finalRubricTsv} sourceLabel="canvas/assignments/rfc/rfc-final-rubric-details.tsv" />
+
+Non-submission of the draft forfeits the revision points (there is nothing to revise); non-submission of your peer reviews forfeits the review criteria and is visible to the affected teams. If your assigned reviewer no-shows, flag it to your TA: you will not be penalized for feedback you never received, and the instruction team will supply a review. The standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies.
 
 Expect written margin feedback on the draft from your two peer reviewers and rubric feedback on the final from the instruction team.
 
@@ -90,7 +116,7 @@ Different activities suit the fall and winter RFCs, so you're not redoing the sa
 | Fall | [Six Thinking Hats](/activities/creative/#six-thinking-hats) | Options, including "do nothing" |
 | Winter | [Write a Literature Review](/activities/creative/#write-a-literature-review) | Tradeoff analysis, and the 2,000-word source work |
 | Winter | [Proof-of-Concept](/activities/design/#proof-of-concept) | Recommendation with a verification plan |
-| Winter | [Peer Technical Design Review](/activities/design/#peer-technical-design-review) | Feedback given, and revision |
+| Winter | [Peer Technical Design Review](/activities/design/#peer-technical-design-review) | Review quality, and revision |
 | Both | [Apply the Privacy by Design Guidelines](/activities/design/#apply-the-privacy-by-design-pbd-guidelines) | Constraints |
 | Both | [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass) | Delegation and validation |
 
