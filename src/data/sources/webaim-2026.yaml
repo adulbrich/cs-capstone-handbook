@@ -20,8 +20,9 @@ claims:
       previous six years.
     locator: WCAG Conformance
   - claim: >-
-      Because only automatically detectable failures were counted, the rate
-      of full WCAG 2 A/AA conformance was certainly lower than 4.1%.
+      Because only automatically detectable failures were counted, WebAIM
+      says this suggests the rate of full WCAG 2 A/AA conformance was
+      certainly lower than 4.1%.
     locator: WCAG Conformance
   - claim: >-
       The evaluation ran the WAVE engine against the rendered DOM of each

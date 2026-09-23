@@ -26,6 +26,11 @@ claims:
       found by automated tests and 9,178 by manual testing.
     locator: "Appendix, Table 2: Issue Counts by Success Criteria, row 21"
   - claim: >-
+      All 9,553 issues against success criterion 2.4.3 Focus Order and all
+      7,312 against 2.4.7 Focus Visible were found by manual testing, with
+      no automated findings.
+    locator: "Table 1: WCAG Success Criteria with the Most Issues, rows 6 and 8; Appendix, Table 2"
+  - claim: >-
       Of 88,714 issues against success criterion 1.4.3 Contrast (Minimum),
       14,981 (16.89%) were found by manual testing.
     locator: "Table 1: WCAG Success Criteria with the Most Issues, row 1"
