@@ -31,39 +31,41 @@ import rubricTsv from '/canvas/assignments/workshop-activities/workshop-activiti
 
 Nine activities from the [practice library](/activities/introduction/) are run as workshops in class: five in fall, three in winter, and one in spring. Each session runs the activity twice: once by hand, then once with an AI agent. Both outputs go in the same submission. They are graded, but only on whether you did them: there is no quality bar. Submit the output and you get the points.
 
-Each one makes several later rubric criteria easier; the tables below name which. The more than a hundred other activities in the [library](/activities/introduction/) are optional.
+Each one makes several later rubric criteria easier; the tables below name which, together with the Canvas entry each one is and what a complete submission shows. The more than a hundred other activities in the [library](/activities/introduction/) are optional.
 
 ## Fall (5 items, 2%)
 
-| Activity | Week | What it makes easier |
-|---|---|---|
-| [User Story Mapping](/activities/requirements/#user-story-mapping) ([what it is](https://www.nngroup.com/articles/user-story-mapping/)) | 2 | `docs/requirements.md` at every [repo checkpoint](/assignments/repo-checkpoints/), in the shape the [requirements guide](/guides/requirements/#story-mapping) sets out; the winter [Definition of Shipped](/assignments/definition-of-shipped/) |
-| [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) | 3 | Your [RFC](/assignments/rfc/) topic, which has to be a decision that is hard to reverse; the [defense](/assignments/defense/) judgment question |
-| [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) | 3 | Four criteria across the checkpoints, the RFC, and the defense |
-| [Peer Technical Design Review](/activities/design/#peer-technical-design-review) | 7 | The [RFC](/assignments/rfc/) final, due the week after: its revision criterion, and the [defense](/assignments/defense/) technical-depth question |
-| [Identify Success Metrics](/activities/planning/#identify-success-metrics) | 8 | The v0 [Definition of Shipped](/assignments/definition-of-shipped/) draft at the week 10 [repo checkpoint](/assignments/repo-checkpoints/), and the spring [Release and Metrics](/assignments/release/): the number that proves it worked, chosen while there is still time to instrument it |
+| Canvas entry | Week | Complete when the submission shows | What it makes easier |
+|---|---|---|---|
+| Workshop 1: [User Story Mapping](/activities/requirements/#user-story-mapping) | 2 | A story map covering the current scope, and `docs/requirements.md` reflecting it | `docs/requirements.md` at every [repo checkpoint](/assignments/repo-checkpoints/), in the shape the [requirements guide](/guides/requirements/#story-mapping) sets out; the winter [Definition of Shipped](/assignments/definition-of-shipped/) |
+| Workshop 2: [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) | 3 | The team's upcoming decisions sorted into hard-to-reverse and easy-to-reverse, with a validator named for each hard-to-reverse one | Your [RFC](/assignments/rfc/) topic, which has to be a decision that is hard to reverse; the [defense](/assignments/defense/) judgment question |
+| Workshop 3: [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) | 3 | How much the team delegates to AI tools, what would catch a wrong result, and one named gap with the smallest change that closes it | Four criteria across the checkpoints, the RFC, and the defense |
+| Workshop 4: [Peer Technical Design Review](/activities/design/#peer-technical-design-review) | 7 | Your team's design packet, the review you wrote of each of the two other packets in your triad, and a note on what you changed after reading theirs | The [RFC](/assignments/rfc/) final, due the week after: its revision criterion, and the [defense](/assignments/defense/) technical-depth question |
+| Workshop 5: [Identify Success Metrics](/activities/planning/#identify-success-metrics) | 8 | A short list of metrics that would prove the project worked for its users, each with how it will be measured and where it will be shown | The v0 [Definition of Shipped](/assignments/definition-of-shipped/) draft at the week 10 [repo checkpoint](/assignments/repo-checkpoints/), and the spring [Release and Metrics](/assignments/release/): the number that proves it worked, chosen while there is still time to instrument it |
 
-Week 3 is one session with two outputs: the decisions you can't walk back, and the checks that catch everything else. Both land before the RFC draft at the end of week 4, and the hard-to-reverse decision you pick is usually the RFC topic. [Describe your Architecture](/activities/design/#describe-your-architecture) is recommended the same week and takes an hour or two on your own; it feeds `docs/design.md` and the RFC framing.
+The week 3 session runs two activities, Workshop 2 and Workshop 3, and each is its own Canvas entry with its own submission. Both land before the RFC draft at the end of week 4, and the hard-to-reverse decision you pick in Workshop 2 is usually the RFC topic. [Describe your Architecture](/activities/design/#describe-your-architecture) is recommended the same week and takes an hour or two on your own; it feeds `docs/design.md` and the RFC framing.
+
+Workshop 4 runs asynchronously, in triads of teams the instruction team publishes in Canvas during week 6. Post your team's design packet (the one-page diagram and one page of text the activity describes) in your triad's Canvas discussion by the start of week 7, and write your reviews of the other two packets there during the week. The week 7 class session is working time: read the reviews you received and decide what changes in your design.
 
 ## Winter (3 items, 1%)
 
-| Activity | Week | What it makes easier |
-|---|---|---|
-| [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis) | 1 | The [Definition of Shipped](/assignments/definition-of-shipped/), due two weeks later: the external clocks named and started |
-| [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment) | 2 | The midterm [peer evaluation](/assignments/peer-evaluations/) in week 5: naming a problem before the survey does; the [defense](/assignments/defense/) role question later |
-| [Test Plan](/activities/design/#test-plan) | 3 | The week-5 [repo checkpoint](/assignments/repo-checkpoints/): the tests in CI that must exist before real users arrive at the release candidate |
+| Canvas entry | Week | Complete when the submission shows | What it makes easier |
+|---|---|---|---|
+| Workshop 1: [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis) | 1 | A critical path from today to the Definition of Shipped rung, with every external clock (review, approval, access, recruiting) named and its start set | The [Definition of Shipped](/assignments/definition-of-shipped/), due two weeks later: the external clocks named and started |
+| Workshop 2: [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment) | 2 | The completed assessment and what the team recorded about what it surfaced | The midterm [peer evaluation](/assignments/peer-evaluations/) in week 5: naming a problem before the survey does; the [defense](/assignments/defense/) role question later |
+| Workshop 3: [Test Plan](/activities/design/#test-plan) | 3 | A test plan naming what is tested at which level before real users arrive, with success criteria per item | The week-5 [repo checkpoint](/assignments/repo-checkpoints/): the tests in CI that must exist before real users arrive at the release candidate |
 
 ## Spring (1 item, 1%)
 
-| Activity | Week | What it makes easier |
-|---|---|---|
-| [Team Health Assessment](/activities/teamwork/#team-health-assessment) | 2 | The spring [charter](/assignments/team-charter/) refresh and the midterm [peer evaluation](/assignments/peer-evaluations/); the [Project Retrospective](/assignments/project-retrospective/) team-dynamics criterion later |
+| Canvas entry | Week | Complete when the submission shows | What it makes easier |
+|---|---|---|---|
+| Workshop 1: [Team Health Assessment](/activities/teamwork/#team-health-assessment) | 2 | The completed assessment, and `docs/charter.md` refreshed with what it surfaced | The spring [charter](/assignments/team-charter/) refresh and the midterm [peer evaluation](/assignments/peer-evaluations/); the [Project Retrospective](/assignments/project-retrospective/) team-dynamics criterion later |
 
 The spring assessment closes with the charter refresh: update `docs/charter.md` (the [working agreement guide](/guides/working-agreement/) has the patterns) with what it surfaced (roles for the final term, the decision process, anything the winter postmortem changed) and commit it. Spring has no repo checkpoint to carry the refresh, so this workshop is where it lives.
 
 ## Rubric (100 points per workshop)
 
-Each workshop is its own Canvas entry, scored with this rubric. The spring week-6 Resume Building session runs like a workshop but is not scored here.
+Each workshop is its own Canvas entry, scored with this rubric; the tables above say what a complete submission shows for each. The spring week-6 Resume Building session runs like a workshop but is not scored here.
 
 <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/workshop-activities/workshop-activities-rubric-details.tsv" />
 
@@ -76,6 +78,6 @@ There is no partial credit within an item and no quality judgment. An output tha
 Missed the workshop session? The activity pages are public and self-contained, so do the activity from its page and submit the output as usual.
 
 :::note[NDA teams]
-Every workshop activity produces output that stays inside your repository or your team's own documents. Submit a sanitized PDF note confirming what you did, or tell your Teaching Assistant (TA) and cover it in your next check-in. No partner-confidential material needs to leave your boundary for these.
+Every workshop activity produces output that stays inside your repository or your team's own documents. Submit a sanitized PDF note confirming what you did, or tell your Teaching Assistant (TA) and cover it in your next check-in. No partner-confidential material needs to leave your boundary for these. For Workshop 4, the other teams in your triad read your packet, so write it as a decision skeleton the way the [RFC's NDA note](/assignments/rfc/#the-cycle) describes: the structure and the reasoning, with neutral placeholders for confidential specifics.
 :::
 
