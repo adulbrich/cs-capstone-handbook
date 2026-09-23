@@ -37,7 +37,7 @@ Write the answers into your working agreement or `CONTRIBUTING.md`, in a few lin
 
 ## Testing as the Safety Net
 
-Most of the code in a Capstone project is now written with AI tools, which is why the useful question is not how much you delegated but what your automation would catch when the delegation goes wrong. That automation is your **safety net**, and testing is most of it. The net has five parts, and each is checkable:
+Most of the code in a capstone project is now written with AI tools, which is why the useful question is not how much you delegated but what your automation would catch when the delegation goes wrong. That automation is your **safety net**, and testing is most of it. The net has five parts, and each is checkable:
 
 - **Tests that fail when behavior breaks**, on the paths that matter. A suite that passes after you delete a feature is not a net.
 - **CI on every pull request**, green, and required before merge.
@@ -158,7 +158,7 @@ Giving a working version of the software to a small group of users and collectin
 
 ### A/B Testing and Experiments
 
-For projects where success is measurable (conversion rates, task completion times, error rates), A/B testing compares two variations to determine which performs better. This requires enough users and enough traffic to be statistically meaningful, which limits its applicability in many Capstone projects, but the thinking behind it (form a hypothesis, measure the outcome, decide based on evidence) applies universally.
+For projects where success is measurable (conversion rates, task completion times, error rates), A/B testing compares two variations to determine which performs better. This requires enough users and enough traffic to be statistically meaningful, which limits its applicability in many capstone projects, but the thinking behind it (form a hypothesis, measure the outcome, decide based on evidence) applies universally.
 
 ### Project Partner Demos as Validation
 
@@ -300,7 +300,7 @@ trade to make deliberately, not an automatic win.
 
 Finally, automated tests answer whether the code does what you specified. They
 cannot tell you whether you specified the right thing. A suite that is entirely
-green on a feature nobody wants is a well-tested waste of a term, which is why
+green on a feature nobody wants is a well-tested waste of months, which is why
 this guide keeps sending you back to real users and why research projects need
 reproducibility checks rather than just passing tests. Results you cannot
 reproduce are not results, and software nobody can use is not shipped.
@@ -313,7 +313,7 @@ The testing pyramid (or variations like the [testing trophy](https://kentcdodds.
 
 In academia, reproducibility serves the same purpose as automated testing: it allows others to verify that results are valid. Journals increasingly require that computational results be backed by public code and data, with clear instructions for reproducing the findings. A well-tested research codebase is publishable; an untested one is a liability.
 
-The habit of testing holistically, through automated suites, manual exploration, reproducibility checks, and user validation, is one of the most transferable skills a Capstone project can develop.
+The habit of testing holistically, through automated suites, manual exploration, reproducibility checks, and user validation, is one of the most transferable skills a capstone project can develop.
 
 ## Additional Readings
 
@@ -338,4 +338,5 @@ tests are, is answered by which tools you pick.
 - [Test Plan](/activities/design/#test-plan): turns this guide into a plan specific to your project.
 - [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half of the accessibility check.
 - [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checking work against what was asked, which tests cannot do for you.
+- [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): turns the one flow users depend on into an end-to-end test that runs on every change.
 - [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log): the research equivalent of a test record.

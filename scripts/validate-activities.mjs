@@ -17,14 +17,16 @@
 //   3. Every anchor an assignment links to must resolve to a real heading.
 //      (The Starlight link validator also catches this at build time; this
 //      check runs without a build and names the activity, not the URL.)
-//   4. An activity page is standalone. It never links an assignment page, never
-//      says "workshop", and never places itself in a term, a week, or a half
-//      of a class session. The guides directory has held this line by
-//      convention since it was written (zero assignment links across nineteen
-//      files); activities had drifted to sixty-one backlinks and ten sessions
-//      described by the clock. A reader who is not enrolled should be able to
-//      run any activity on these pages. Guide links and external sources stay,
-//      and the direction of travel is one way: assignments link to activities.
+//   4. An activity or guide page is standalone. It never links an assignment
+//      page, never says "workshop", and never places itself in a term, a week,
+//      or a half of a class session. Activities had drifted to sixty-one
+//      backlinks and ten sessions described by the clock. Guides held the
+//      assignment-link half by convention (zero backlinks across nineteen
+//      files) and still carried about sixty term and week references, the
+//      shipping guide alone built on the course calendar, because nothing
+//      checked them. A reader who is not enrolled should be able to use any
+//      page in either directory. Guide links and external sources stay, and
+//      the direction of travel is one way: assignments link to both.
 //
 //   5. Every activity carries a closing "A good output is..." line. The
 //      deliverable line is the only quality signal an activity has, and it is
@@ -444,14 +446,16 @@ for (const [key, row] of workshopWeeks) {
   }
 }
 
-// --- Rule 4: activity pages are standalone -----------------------------------
+// --- Rule 4: activity and guide pages are standalone -------------------------
 // Each pattern is something a reader outside this course cannot resolve. The
 // two exemptions are real external events, not sessions of this course, and
 // they are listed rather than pattern-matched so that adding a third is a
-// deliberate act.
+// deliberate act. A week number is banned outright, not only a course week:
+// the pattern cannot tell "fall week 3" from "a plan made in week 2", and an
+// illustration reads as well in durations ("a month later") as in numbers.
 const STANDALONE_RULES = [
   [/\]\(\/assignments\//, "links an assignment page"],
-  [/\b(?:first|second) half\b/i, "describes half of a class session"],
+  [/\b(?:first|second) half\b/i, 'says "first half" or "second half"'],
   [/\bworkshops?\b/i, 'says "workshop"'],
   [/\bweeks? \d/i, "names a week number"],
   [/\bin (?:the )?(?:fall|winter|spring)\b/i, "places itself in a term"],
@@ -463,35 +467,42 @@ const STANDALONE_RULES = [
 const STANDALONE_EXEMPT = new Set([
   // The OSU Advantage Accelerator's Iterate program is an external event the
   // team registers for, and calling it anything but a workshop would be wrong.
-  "requirements#osu-advantage-accelerators-iterate-program",
+  "activities/requirements#osu-advantage-accelerators-iterate-program",
   // "Present at a conference or workshop" is an outreach channel.
-  "user#find-users",
+  "activities/user#find-users",
 ]);
+// A third-party URL is someone else's slug, not this page's prose: the Crazy
+// 8s link in the planning guide ends in "crazy-eights-workshop". Internal
+// links are kept, because the assignment-link rule reads them.
+const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/g;
 
-for (const file of readdirSync(ACTIVITIES_DIR)) {
-  // The index is the page that explains what a Workshop badge means, so it is
-  // the one activity page allowed to use the word and to link the assignment
-  // that owns the tier.
-  if (!file.endsWith(".mdx") || file === "introduction.mdx") {
-    continue;
-  }
-  const page = file.slice(0, -4);
-  let section = null;
-  for (const line of readFileSync(join(ACTIVITIES_DIR, file), "utf8").split(
-    "\n"
-  )) {
-    if (line.startsWith("## ")) {
-      section = `${page}#${slugify(line.slice(3).trim())}`;
-    }
-    // The tier badge carries the word "Workshop" as markup, not as prose.
-    if (line.startsWith("<Badge") || STANDALONE_EXEMPT.has(section)) {
+// Each directory's index is exempt. The activities index is the page that
+// explains what a Workshop badge means, so it is the one activity page allowed
+// to use the word and to link the assignment that owns the tier; the guides
+// index only lists guides.
+for (const dir of [ACTIVITIES_DIR, GUIDES_DIR]) {
+  const kind = dir.split("/").at(-1);
+  for (const file of readdirSync(dir)) {
+    if (!file.endsWith(".mdx") || file === "introduction.mdx") {
       continue;
     }
-    for (const [pattern, what] of STANDALONE_RULES) {
-      if (pattern.test(line)) {
-        problems.push(
-          `not standalone: activities/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
-        );
+    const page = `${kind}/${file.slice(0, -4)}`;
+    let section = null;
+    for (const line of readFileSync(join(dir, file), "utf8").split("\n")) {
+      if (line.startsWith("## ")) {
+        section = `${page}#${slugify(line.slice(3).trim())}`;
+      }
+      // The tier badge carries the word "Workshop" as markup, not as prose.
+      if (line.startsWith("<Badge") || STANDALONE_EXEMPT.has(section)) {
+        continue;
+      }
+      const prose = line.replace(EXTERNAL_LINK_TARGET_RE, "]()");
+      for (const [pattern, what] of STANDALONE_RULES) {
+        if (pattern.test(prose)) {
+          problems.push(
+            `not standalone: ${kind}/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
+          );
+        }
       }
     }
   }

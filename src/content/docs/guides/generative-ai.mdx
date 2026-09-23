@@ -1,6 +1,6 @@
 ---
 title: Generative AI
-description: How to use AI coding tools effectively in your Capstone project, from setup and configuration to team coordination and responsible use.
+description: How to use AI coding tools effectively in your capstone project, from setup and configuration to team coordination and responsible use.
 sidebar:
   order: 10
 ---
@@ -36,12 +36,12 @@ These are not temporary gaps waiting for a better model, at least not all of the
 - Apply your project's specific constraints (your team's architecture, your project partner's requirements, your deployment environment)
 - Produce secure, efficient, or trustworthy code without oversight
 - Guarantee correctness: AI frequently **hallucinates** information, including fabricated libraries, nonexistent APIs, and incorrect citations
-- Understand the nuances of your Capstone project's unique context
+- Understand the nuances of your capstone project's unique context
 - Make ethical decisions
 
 ### Risks
 
-The risks below share a structure worth naming: each one is invisible at the moment it occurs and expensive later. Nobody notices the over-reliance in week 3; they notice it in week 18 when a bug lands in code no one on the team can read.
+The risks below share a structure worth naming: each one is invisible at the moment it occurs and expensive later. Nobody notices the over-reliance in the first month; they notice it five months later, when a bug lands in code no one on the team can read.
 
 - Incorrect or misleading information presented confidently
 - Insecure or poorly optimized code
@@ -74,7 +74,7 @@ The [AI practice activities](/activities/ai/) turn all of this into exercises yo
 
 ### Use AI to learn, not just to produce
 
-When the AI generates code you do not understand, ask it to explain. Use it as a learning tool, not just a production tool. The goal of Capstone is to grow as an engineer. Shipping code you cannot maintain or debug is not growth; it is debt.
+When the AI generates code you do not understand, ask it to explain. Use it as a learning tool, not just a production tool. The goal of a capstone is to grow as an engineer. Shipping code you cannot maintain or debug is not growth; it is debt.
 
 ### Know when to stop prompting
 
@@ -127,7 +127,7 @@ When you ask "what can I hand off?", this is the index. Each entry links to the 
 **What stays human.** Whether the product is actually good for the person using it. Which decisions are one-way doors. The tradeoffs your users and your project partner will feel. And whether an automated finding actually matters, which is a judgment no tool makes for you: a report with forty findings is not forty problems.
 
 :::note[Reviewed annually]
-This section and the tool names throughout this guide are the fastest-moving content in the handbook. Checked at the annual review. The judgment they support (spend attention where mistakes are expensive, build the net that covers the rest) has been stable much longer than any of these tools have existed, which is why the course's rubrics assess the judgment and never the tooling.
+This section and the tool names throughout this guide are the fastest-moving content in the handbook. It is checked once a year. The judgment they support (spend attention where mistakes are expensive, build the net that covers the rest) has been stable much longer than any of these tools have existed, which is why the judgment is the part worth learning and the tool names are not.
 :::
 
 ## AI Coding Tools
@@ -188,7 +188,7 @@ If you want to compare models, these resources track current benchmarks:
 - Decide the one-way doors yourself and delegate the two-way doors freely. If you cannot tell which is which, [Map Your One-Way Doors](/activities/ai/#map-your-one-way-doors) before delegating anything.
 - Build the safety net before scaling delegation: tests, CI, review gates, a staging environment, a rollback path. The net is what makes a large delegation reasonable; without it, the same delegation is a gamble.
 - Review a generated diff the way you would review a stranger's pull request, because that is what it is.
-- Keep the confidentiality boundary in the team charter and in the tool configuration, not in people's memory.
+- Keep the confidentiality boundary in the team's working agreement and in the tool configuration, not in people's memory.
 - Prefer the cheapest tool that does the job. Every workflow in this guide has a free or student-tier substitute.
 - When a tool misleads you, write down what happened and what caught it. That record is how your judgment improves, and it is the only evidence you will have later that it did.
 
@@ -233,7 +233,7 @@ If you cannot debug or modify code in your repository, you do not own it, and
 that is true whether a model wrote it or a teammate did. The difference is that a
 teammate can explain their reasoning next week and a model cannot reconstruct
 reasoning it never had. Code you accepted without understanding is a debt that
-comes due during your first hard bug, usually in spring, usually near a deadline.
+comes due during your first hard bug, usually months later, usually near a deadline.
 
 Finally, everything specific on this page has a short shelf life. Model names,
 capabilities, and prices move faster than this handbook is revised, and advice
@@ -243,7 +243,7 @@ keep the ability to work without the tool.
 
 ## AI Tools in Industry and Academia
 
-AI-assisted coding is the default at most software companies now. Google said on its late-2024 earnings call that more than a quarter of its new code was generated by AI and then reviewed by engineers, and the second half of that sentence is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without a net, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this course cares about the fit between delegation and safety net rather than the tool. The [DORA research program](https://dora.dev/research/2025/dora-report/) has been measuring what AI adoption actually does to delivery performance across thousands of organizations, and its findings are more nuanced than either the marketing or the backlash: adoption is near-universal, the effects depend heavily on the surrounding practices, and teams with weak delivery pipelines get worse outcomes rather than better ones.
+AI-assisted coding is the default at most software companies now. Google said on its late-2024 earnings call that more than a quarter of its new code was generated by AI and then reviewed by engineers, and "reviewed by engineers" is the part that matters: generated code goes through the same review and CI pipeline as anything else. Nobody serious ships what a model wrote without a net, and the companies that get value from these tools are the ones whose review culture and test coverage were already strong. That is why this guide cares about the fit between delegation and safety net rather than the tool. The [DORA research program](https://dora.dev/research/2025/dora-report/) has been measuring what AI adoption actually does to delivery performance across thousands of organizations, and its findings are more nuanced than either the marketing or the backlash: adoption is near-universal, the effects depend heavily on the surrounding practices, and teams with weak delivery pipelines get worse outcomes rather than better ones.
 
 The open-source world is more divided. Several projects banned AI-generated contributions outright: [Gentoo's council policy](https://wiki.gentoo.org/wiki/Project:Council/AI_policy) forbids them, and [NetBSD's commit guidelines](https://www.netbsd.org/developers/commit-guidelines.html) presume LLM output to be tainted code that must not be committed without prior written approval from core. Daniel Stenberg of curl has written bluntly about [AI-generated security reports](https://daniel.haxx.se/blog/2024/01/02/the-i-in-llm-stands-for-intelligence/) that consume maintainer time without containing a real bug. If your project is FOSS, read the upstream's policy before you delegate anything, and expect a maintainer to ask what you verified.
 

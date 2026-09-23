@@ -14,7 +14,7 @@ If people will use your software, some of them will use it with a screen reader,
 
 Without it:
 
-- A critical flow turns out to be uncompletable without a mouse, discovered the week of the Expo.
+- A critical flow turns out to be uncompletable without a mouse, discovered the week of a public demo.
 - A partner in the public sector cannot accept the software, because the institution procures against a standard the team never read.
 - The automated score is green and the product is still unusable, because nobody ever tried it with the keyboard.
 
@@ -32,7 +32,7 @@ Three layers, cheapest first:
 - **Component and page level**: [axe-core](https://github.com/dequelabs/axe-core) runs inside your existing test suite and fails a test when a rendered component violates a rule. Wiring it into the tests you already have is usually a few lines.
 - **Whole-page budgets**: [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [pa11y](https://pa11y.org/) score a running page and can fail the build below a threshold.
 
-Run these as a CI gate, not as a pre-release scramble. An accessibility violation caught in a pull request costs minutes; the same violation found the week before the Expo costs a redesign.
+Run these as a CI gate, not as a pre-release scramble. An accessibility violation caught in a pull request costs minutes; the same violation found the week before a public demo costs a redesign.
 
 ## Manual Accessibility Testing
 
@@ -83,7 +83,7 @@ Automated tools are oversold and still worth running. A green automated run is n
 
 The manual pass is the highest-yield thing on this page and takes the least equipment. Unplugging a mouse costs nothing and finds real defects in most student projects on the first try.
 
-Recruiting a daily assistive-technology user inside a ten-week term is genuinely hard, and the honest answer is often that you could not. Saying so in your writeup is worth more than a simulated session described as a real one.
+Recruiting a daily assistive-technology user on a student timeline is genuinely hard, because the people you need are few, busy, and rightly wary of being a checkbox, and the honest answer is often that you could not. Saying so in your writeup is worth more than a simulated session described as a real one.
 
 Retrofitting is the expensive path and it is the one most teams take. The work is mostly in the markup: semantic elements, labels, focus order. Getting it right while the component is being written is nearly free, and the same fix after a design is finished can mean rebuilding the component.
 

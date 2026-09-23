@@ -249,6 +249,15 @@ checkpoints, grades, terms, or weeks of the course. Not "your
 fall workshop", not "deploy the walking skeleton by the end of fall". Say what
 the practice is and why it matters, and let the reader decide when to apply it.
 
+Time in a guide is relative to the project, never to the course calendar. An
+argument that spans months is written in phases ("in your first weeks", "by the
+middle of the project", "a month before the end"), and that includes a generic
+illustration: "a plan made at the start is wrong a month later", not "a plan
+made in week 2 is wrong by week 6". The validator cannot tell a course week from
+an illustrative one, so no week number appears at all. `shipping.mdx` is the
+worked example: its argument is that external clocks take months, and it makes
+that argument with Early, Middle and Late phases rather than terms (#194).
+
 There is no exception, including an aside at the top. **The link between a
 guide and an assignment runs one way: the assignment points at the guide.**
 
@@ -341,8 +350,14 @@ issue that measured it rather than trimming a working section to hit a number.
 - Tool requirements presented as mandatory. Guides may show the current
   industry baseline; say what the substitute is for students without the tool.
 - Em dashes. `validate-dashes.mjs` fails on one.
-- Calendar dates or an academic year. Terms and weeks only; weekdays and
-  named holidays are fine. `validate-dates.mjs` fails on a date.
+- Calendar dates or an academic year. Weekdays and named holidays are fine.
+  `validate-dates.mjs` fails on a date.
+- A term, a week number, the word "workshop", or a link to an assignment page.
+  `validate-activities.mjs` fails on any of them in a guide, with the same
+  patterns it applies to activities; a third-party URL is not read. A course
+  artifact named in plain prose ("Team Charter", "the Expo") passes the
+  pattern and is still a violation, which is what the greps under Before
+  Finishing are for.
 
 Nothing checks the section skeleton, the length, or the opener rules; those
 are read for, not validated.
@@ -413,7 +428,8 @@ the failure this skill exists to prevent.
    grep -nE 'Definition of Shipped|Team Charter|Sprint Notes?|Peer Evaluations?|Repo Checkpoints?|Project Handoff|Landing Page|Project Partner Evaluation' <file>
    ```
 
-   The first must return nothing. The second returns false positives and needs
+   The first must return nothing but a third-party URL (the Crazy 8s link in
+   `planning.mdx` is one). The second returns false positives and needs
    a human: it is the capitalized, course-specific use that is the violation,
    not the ordinary English phrase. Known-good cases that will match and should
    be left alone: "the defense" meaning defense in depth (`security.mdx`), "your

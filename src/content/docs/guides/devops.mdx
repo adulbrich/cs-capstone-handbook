@@ -1,13 +1,13 @@
 ---
 title: DevOps and Deployment
-description: How to deploy your Capstone project reliably, from local development to production, using CI/CD pipelines and modern hosting platforms.
+description: How to deploy your capstone project reliably, from local development to production, using CI/CD pipelines and modern hosting platforms.
 sidebar:
   order: 15
 ---
 
 import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
-Read this when you set up CI or deploy for the first time, ideally in fall; it gives you the pipeline shape, the environments, and a rollback plan.
+Read this when you set up CI or deploy for the first time, ideally in your project's first weeks; it gives you the pipeline shape, the environments, and a rollback plan.
 
 DevOps is the set of practices that bridges writing code and running it in production. Deployment is the act of getting your software from a repository to a place where users can actually use it. Without a deliberate approach to both:
 
@@ -194,11 +194,11 @@ CI is most effective when combined with branch protection rules that require che
 
 ## Continuous Deployment (CD)
 
-Continuous deployment means automatically deploying the application when code is merged to `main`. For many Capstone projects, this is the right approach: the main branch is always in a deployable state (because CI enforces that), so deploying it automatically is a natural extension.
+Continuous deployment means automatically deploying the application when code is merged to `main`. For many capstone projects, this is the right approach: the main branch is always in a deployable state (because CI enforces that), so deploying it automatically is a natural extension.
 
 ### Platform-as-a-Service (PaaS)
 
-For most Capstone projects, a platform-as-a-service provider is the right deployment target. These platforms handle server provisioning, HTTPS, scaling, and most infrastructure concerns so the team can focus on the application:
+For most capstone projects, a platform-as-a-service provider is the right deployment target. These platforms handle server provisioning, HTTPS, scaling, and most infrastructure concerns so the team can focus on the application:
 
 | Platform | Good For | Free Tier |
 |----------|----------|-----------|
@@ -337,7 +337,7 @@ At minimum, ensure the team has a way to:
 - Identify which deployment introduced a regression.
 - Access application logs from the hosting platform.
 
-You do not need a sophisticated monitoring stack. For a Capstone project, Sentry plus the hosting platform's built-in logs is sufficient. The important thing is that errors do not disappear silently.
+You do not need a sophisticated monitoring stack. For a capstone project, Sentry plus the hosting platform's built-in logs is sufficient. The important thing is that errors do not disappear silently.
 
 ## Rollbacks
 
@@ -364,10 +364,10 @@ The first deployment is disproportionately hard and every one after it is
 routine, which has a consequence most teams get backwards. Because the first one
 is hard, teams postpone it until there is something worth deploying, and so they
 meet the hard part at the moment they can least afford it: the week of a demo,
-with a partner watching. Deploying an empty page in week two is not premature
+with a partner watching. Deploying an empty page in your second week is not premature
 optimization. It is moving the expensive, unpredictable work to the point in the
-term where failure costs nothing, which is why the walking skeleton appears in
-[Shipping](/guides/shipping/) as a fall deadline.
+project where failure costs nothing, which is why the walking skeleton appears in
+[Shipping](/guides/shipping/) as one of the first clocks to start.
 
 Most outages on student projects are configuration, not code. A missing
 environment variable, a migration that never ran, debug mode left on, a secret
@@ -415,7 +415,7 @@ The "you build it, you run it" philosophy (attributed to Amazon's Werner Vogels)
 
 In research settings, reproducibility is the equivalent of reliable deployment. A research project that cannot be set up and run by someone other than the original author has limited scientific value. Docker, dependency pinning, and clear setup instructions serve the same purpose in academia as deployment pipelines serve in industry: they make the work reproducible by others.
 
-The deployment skills you develop during Capstone transfer directly. Every professional software project needs to go from code to running system, and the team that understands that pipeline has a significant advantage over one that treats deployment as someone else's problem.
+The deployment skills you develop during a capstone transfer directly. Every professional software project needs to go from code to running system, and the team that understands that pipeline has a significant advantage over one that treats deployment as someone else's problem.
 
 ## Additional Readings
 
