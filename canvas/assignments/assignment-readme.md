@@ -7,6 +7,10 @@
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is the source of truth for all graded work except the two owned in Canvas, and each rubric here is the source of truth for itself.** Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
 
+## Re-import Required: Team Charter (#263)
+
+`team-charter/team-charter-rubric-details.tsv`: Exceeds on the Definition of Done now accepts a gate that is not built yet if the charter names the sprint it lands in and its owner. Exceeds on CONTRIBUTING.md and the AI context file accepts an AI context file whose parts that cannot be written before there is code are listed with an owner. The Meets bands change to match. Points and tags are unchanged.
+
 ## Re-import Required: RFC Final (#262)
 
 `rfc/rfc-final-rubric-details.tsv`: the Problem framing bands no longer require a decision that is "currently live". Exceeds asks for a decision that is real and current: still open in fall; in winter, open or already being acted on, with the RFC still changing how it is verified, reversed, or continued. Does Not Meet now names an RFC that justifies a decision it no longer changes, in place of "a retrospective justification of work already built". Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms. Import this after the #259 split if both are pending.

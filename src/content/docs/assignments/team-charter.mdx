@@ -40,7 +40,7 @@ Three artifacts, all in the repository:
 
 1. **`docs/charter.md`**: the charter itself, 2 to 4 pages of focused, scannable policy (sections below).
 2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**: setup steps a new contributor can follow, local commands for tests and linting, the branch and PR workflow, code review expectations, and where to ask for help. Start from the [CONTRIBUTING template](/CONTRIBUTING-template.md).
-3. **The AI context file** (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
+3. **The AI context file** (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
 
 Submit one PDF containing all three files, built as [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes.
 
@@ -74,7 +74,7 @@ A restorative, stepwise conflict path: name it early, talk directly, involve the
 
 ### 5. Definition of Done
 
-The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the actual CI configuration that enforces it.
+The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the CI configuration, hook, or test that enforces each check. In week 2 some of them may not exist yet, because there is no code to check: name the gate you will add (a pre-commit hook, a CI job, a test suite), the sprint it lands in, and who owns it.
 
 ### 6. Inclusion Norms
 
@@ -96,7 +96,7 @@ For NDA teams, this one-pager is the difference between normal tool use and a br
 
 <RubricTable tsv={rubricTsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric-details.tsv" />
 
-**AI use:** AI may draft any of this; the agreement must be yours. A charter your team has not actually agreed to is worse than none, because it tells you nothing when you need it.
+**AI use:** AI may draft any of this. Every student must have read, understood, and agreed to every commitment before the team submits it, and the instruction team will challenge any commitment the team cannot realistically keep.
 
 ## Activities That Prepare This
 
