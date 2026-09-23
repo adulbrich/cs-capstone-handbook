@@ -9,22 +9,43 @@ assignment:
   weight: 25
   canvas:
     - name: "Midterm Pulse"
-      group: Project Partner
+      group: Project Partner Midterm
       weeks: { fall: [6], winter: [6], spring: [6] }
       weight: 5
-      points: 5
+      points: 100
       submission: survey
+      rubric: project-partner-evaluation/partner-pulse-rubric.csv
     - name: "End-of-Term Survey"
-      group: Project Partner
-      weeks: { fall: [10], winter: [10], spring: [10] }
+      group: Project Partner Final
+      weeks: { fall: [10] }
       weight: 20
-      points: 20
+      points: 100
       submission: survey
+      rubric: project-partner-evaluation/partner-final-fall-rubric.csv
+    - name: "End-of-Term Survey"
+      group: Project Partner Final
+      weeks: { winter: [10] }
+      weight: 20
+      points: 100
+      submission: survey
+      rubric: project-partner-evaluation/partner-final-winter-rubric.csv
+    - name: "End-of-Term Survey"
+      group: Project Partner Final
+      weeks: { spring: [10] }
+      weight: 20
+      points: 100
+      submission: survey
+      rubric: project-partner-evaluation/partner-final-spring-rubric.csv
 ---
 
 import CanvasEntries from '/src/components/CanvasEntries.astro';
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import RubricTable from '/src/components/RubricTable.astro';
+import pulseCsv from '/canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv?raw';
+import fallCsv from '/canvas/assignments/project-partner-evaluation/partner-final-fall-rubric.csv?raw';
+import winterCsv from '/canvas/assignments/project-partner-evaluation/partner-final-winter-rubric.csv?raw';
+import springCsv from '/canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv?raw';
 
 <AssignmentMeta submission="Completed by your project partner, not by you" due="Midterm pulse sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
   Team-level by default, with individual adjustment where a partner flags a specific student.
@@ -39,24 +60,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 **If your team has no project partner**, which is most common on a student-proposed project, your mentor, an instructor, or your TA stands in as the project partner and scores the same six facets. This 25% is always scored and never redistributed, so every student in the course is graded on the same four blocks of 25%.
 
-Fall and winter are progress-focused; spring scores outcomes. The facet weights move with the year:
-
-| Facet | CS 461 | CS 462 | CS 463 |
-|---|---|---|---|
-| Reflection | 15% | 15% | 15% |
-| Requirements and Specifications | **40%** | 15% | 5% |
-| Design, Implementation, and Deployment | 15% | **40%** | 20% |
-| Verification and Validation | 5% | 10% | **40%** |
-| Teamwork | 15% | 10% | 10% |
-| Communication | 10% | 10% | 10% |
-
-Fall is won on requirements, winter on building, spring on the shipped outcome. If a team changes projects mid-year the weights do not change.
+Fall and winter are progress-focused; spring scores outcomes. The facet weights move with the year, and each term's [rubric](#final-evaluation-rubric) gives them as points: fall is won on requirements, winter on building, spring on the shipped outcome. If a team changes projects mid-year the weights do not change.
 
 ## How the scoring works
 
-Every facet has three written anchors, at 100, 80, and 50. A partner scores 90 or 70 when the team sits between two anchors. The spring Verification and Validation ladder has six rungs of its own.
+Every facet has three written anchors in the [rubric](#final-evaluation-rubric), at 100, 80, and 50 of the facet's points. A partner scores 90 or 70 when the team sits between two anchors. The spring Verification and Validation facet is scored on the outcome ladder, which has six rungs of its own.
 
-Under each facet is a short list headed **What it looks like**. It is the same list for both readers: for the student, it's what to do every week; for the partner, it's what to look for before choosing an anchor. In the lists and the anchors, "you" is the partner. Nothing on the lists needs a rubric to be understood, and nothing on them is optional in a professional engagement. Discuss the lists with your partner in the first meeting of every term.
+Under each facet is a short list headed **What it looks like**. It is the same list for both readers: for the student, it's what to do every week; for the partner, it's what to look for before choosing an anchor. In the lists, "you" is the partner. Nothing on the lists needs a rubric to be understood, and nothing on them is optional in a professional engagement. Discuss the lists with your partner in the first meeting of every term.
 
 The survey also asks the partner to flag any specific student who did not contribute; that flag starts the corroboration review at the bottom of this page.
 
@@ -80,19 +90,11 @@ Three statements, each answered on a five-point scale from Strongly disagree to 
 
 ### Pulse Rubric
 
-The pulse has its own scale, separate from the six facets that follow. Each answer converts to points, and the pulse score is the average of the items your partner answered.
+The pulse has its own scale, separate from the six facets that follow.
 
-| Answer | Points |
-|---|---|
-| Strongly agree | 100 |
-| Somewhat agree | 90 |
-| Neither agree nor disagree | 80 |
-| Somewhat disagree | 70 |
-| Strongly disagree | 50 |
+<RubricTable csv={pulseCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv" />
 
 ## Reflection
-
-Whether the team learns from each sprint and shows it.
 
 **What it looks like**
 
@@ -101,26 +103,7 @@ Whether the team learns from each sprint and shows it.
 - Retrospective outcomes reach you as changed behavior (a new meeting rhythm, a different demo format).
 - The team states the project's impact and its intellectual-property terms in their own words.
 
-<Tabs syncKey="terms">
-  <TabItem label="Fall & Winter">
-    Points | Anchor
-    -------|---------
-    100    | Every sprint the team names one thing it learned and one process change it made because of it; your feedback shows up in the next sprint's work, or you are told why not.
-    80     | The team reflects when asked and has acted on some of your feedback; some sprints show a change, most do not.
-    50     | No reflection you can point to; the same feedback is given twice with no visible effect.
-  </TabItem>
-  <TabItem label="Spring">
-    Points | Anchor
-    -------|---------
-    100    | The team explains, with named examples, what worked, what did not, and what it would do differently, and the handoff reflects it.
-    80     | General lessons with few specifics; the handoff does not show them.
-    50     | No lessons the team can articulate.
-  </TabItem>
-</Tabs>
-
 ## Requirements and Specifications
-
-Whether the team knows what it is building, in terms you agreed to.
 
 **What it looks like**
 
@@ -129,28 +112,11 @@ Whether the team knows what it is building, in terms you agreed to.
 - Priorities are explicit: the team can tell you what is in, what is out, and what is next, and you have seen the list.
 - The written requirements change as understanding changes, and you can see what changed.
 
-<Tabs syncKey="terms">
-  <TabItem label="Fall & Winter">
-    Points | Anchor
-    -------|---------
-    100    | Written, measurable goals you agreed to; a prioritized list you have seen; questions arrive before the work starts.
-    80     | Goals are written but some cannot be measured as written or carry no priority; you sometimes learn of an assumption after the fact.
-    50     | No written goals you have seen; the team builds on assumptions you never confirmed.
-  </TabItem>
-  <TabItem label="Spring">
-    Points | Anchor
-    -------|---------
-    100    | Requirements are complete, prioritized, and current; what shipped matches them, or the difference was negotiated with you.
-    80     | Requirements are mostly documented; there is drift between the document and what shipped.
-    50     | Requirements are missing or stale; the delivered work does not map to them.
-  </TabItem>
-</Tabs>
-
 Goals that are not stated and measurable cannot be evaluated; that is the first conversation of fall.
 
 ## Design, Implementation, and Deployment
 
-Whether working software exists, advances, and can be run by someone other than the team. Fall carries little weight here; the goal is to have the implementation and a deployment path under way so winter starts at speed.
+Fall carries little weight here; the goal is to have the implementation and a deployment path under way so winter starts at speed.
 
 **What it looks like**
 
@@ -159,28 +125,9 @@ Whether working software exists, advances, and can be run by someone other than 
 - Design decisions that affect you (data, integrations, hosting, cost) are explained before they are made.
 - Documentation exists for whoever runs this after the team is gone.
 
-<Tabs syncKey="terms">
-  <TabItem label="Fall & Winter">
-    Points | Anchor
-    -------|---------
-    100    | Working software you can access every sprint; milestones met or renegotiated ahead of time; decisions that affect you explained first.
-    80     | Progress is visible most sprints; some milestones slip without warning.
-    50     | Nothing runnable to show; progress is described, not demonstrated.
-  </TabItem>
-  <TabItem label="Spring">
-    Points | Anchor
-    -------|---------
-    100    | Deployed where it needs to run, documented for its successor, used by you or your users, and no gap you raised remains open.
-    80     | Deployed and functional, with gaps the team has named and not yet closed.
-    50     | Not deployed, or deployed but unusable without the team present.
-  </TabItem>
-</Tabs>
-
 "Deployment" is read loosely: for a research project it means the code and artifacts are documented and reproducible; for a FOSS project it means the patches include every necessary change, documentation included, and work in the existing codebase without regression.
 
 ## Verification and Validation
-
-The outcome of the project, not only the output.
 
 **What it looks like**
 
@@ -189,34 +136,15 @@ The outcome of the project, not only the output.
 - The team states, in writing, what "verified" means for this project and against which expectations of yours.
 - In spring, the team can name the rung of the ladder it is on and the evidence for it.
 
-### Fall & Winter Terms
-
-Points | Anchor
--------|---------
-100    | A written test and validation approach you have seen; tests run on every change; feedback from you or from users is collected every sprint and visibly acted on.
-80     | Tests cover some parts and run when someone remembers; feedback is collected some sprints.
-50     | No tests you know of; no feedback collected.
-
 ### Spring
 
-In spring the scale is one ladder for every project: **who ran the software**. Read it literally. Every rung above 50 describes someone outside the team running your work, and the top rung describes people who depend on it. Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out, path by path. Those paths are guidance and a playbook; they do not change the scale.
-
-Points | What is true about who ran the software
--------|---------
-100    | **People outside the team depend on it.** Consultancy: the partner runs it in operations. FOSS: patches shipped in an upstream release. Research: a stranger reproduced the result from the published artifact. New Product or Game: sustained use by strangers (tens of heavy or hundreds of light users).
-90     | **Someone outside the team runs it in their own environment.** Consultancy: the partner is integrating it into production. FOSS: patches merged. Research: a person outside the team reran the pipeline on real data and got the numbers. New Product or Game: two dozen strangers used it.
-80     | **An outsider ran it and the team acted on what they found.** Consultancy: your feedback on a prototype addressed in a newer version. FOSS: a pull request reviewed and revised. Research: your group ran it on real data and the issues were fixed. New Product or Game: a dozen strangers, or a completed user study.
-70     | **An outsider ran it once.** Consultancy: you tried a prototype. FOSS: a pull request submitted. Research: a real-data run shown to you. New Product or Game: friends tried a deployed build.
-60     | **You watched it run on your real inputs** (a live demo or a recording) **but nobody outside the team has operated it.**
-50     | **Nobody outside the team has run it.**
+In spring the scale is one ladder for every project, the outcome ladder: **who ran the software**. Its six rungs are the Verification and Validation row of the [spring rubric](#final-evaluation-rubric). Read it literally. Every rung above 50 describes someone outside the team running your work, and the top rung describes people who depend on it. Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out, path by path. Those paths are guidance and a playbook; they do not change the scale.
 
 Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete. The rungs are written generally because they have to cover every project in the class. Your Definition of Shipped says what your target rung means for your project: which environment, which users, which upstream, measured how. That is what your partner scores against in spring, and it's why you write it in winter, while there is still time to act on it.
 
 Custom scoring is for genuine deviation, not for restating the ladder. If your partner's expectations differ from the ladder in kind rather than in detail, they can score on a custom scale of [50,100]. The standing example is a project whose right outcome is zero users yet, such as a tool that must not reach patients or operators until a certification that won't arrive before spring week 10; it is scored on the user activities it did run, such as supervised trials and reproduced results. Agree that in the Definition of Shipped in winter, not in spring week 10.
 
 ## Teamwork
-
-Whether the team works as one unit in front of you.
 
 **What it looks like**
 
@@ -225,17 +153,9 @@ Whether the team works as one unit in front of you.
 - Disagreements reach you as decisions the team made together, with the options it weighed.
 - Work is visibly shared: over a term, the demos and the questions come from different people.
 
-Points | Anchor
--------|---------
-100    | Whole team present and prepared; anyone can speak to the project; disagreements are resolved and reported to you; work is visibly spread across members.
-80     | Mostly present; one or two members carry the meetings; disagreements show in a meeting and are settled by the next one.
-50     | Members missing without notice; one person does the talking and the work; conflict visible and unmanaged.
-
 Students also evaluate each other directly every term, and the end-of-spring survey adds the CATME instrument. See [Peer Evaluations](/assignments/peer-evaluations/).
 
 ## Communication
-
-Whether you always know where the project stands without asking.
 
 **What it looks like**
 
@@ -246,11 +166,19 @@ Whether you always know where the project stands without asking.
 - Written updates arrive on the cadence you agreed, without being chased, and a message gets an answer within one working day.
 - Documents you receive are short, current, and answer the question they were sent for.
 
-Points | Anchor
--------|---------
-100    | All of the above, every time: agenda before, every voice during, notes after, working demos, updates on cadence.
-80     | Meetings are prepared and followed up most of the time; one or two students rarely speak; you occasionally have to chase an update.
-50     | Meetings without an agenda or notes; the same one or two people speak; you chase for updates; demos are slides.
+## Final Evaluation Rubric
+
+<Tabs syncKey="terms">
+  <TabItem label="Fall">
+    <RubricTable csv={fallCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-fall-rubric.csv" />
+  </TabItem>
+  <TabItem label="Winter">
+    <RubricTable csv={winterCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-winter-rubric.csv" />
+  </TabItem>
+  <TabItem label="Spring">
+    <RubricTable csv={springCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv" />
+  </TabItem>
+</Tabs>
 
 ## Activities That Prepare This
 

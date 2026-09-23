@@ -11,22 +11,26 @@ assignment:
     SO5: 2
   canvas:
     - name: "Midterm Survey"
-      group: Peer Review
+      group: Peer Review Midterm
       weeks: { fall: [6], winter: [6], spring: [6] }
       weight: 5
-      points: 5
+      points: 100
       submission: survey
+      rubric: peer-evaluation/peer-evaluation-rubric.csv
     - name: "End-of-Term Survey"
-      group: Peer Review
+      group: Peer Review Final
       weeks: { fall: [10], winter: [10], spring: [10] }
       weight: 20
-      points: 20
+      points: 100
       submission: survey
+      rubric: peer-evaluation/peer-evaluation-rubric.csv
 ---
 
 import CanvasEntries from '/src/components/CanvasEntries.astro';
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import Latex from '../../../components/Latex.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricCsv from '/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw';
 
 <AssignmentMeta submission="Individual, one survey per teammate" due="Midterm survey sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
   Anonymous. Results go to instructors only.
@@ -36,14 +40,7 @@ import Latex from '../../../components/Latex.astro';
 
 Peer evaluations are how you evaluate the contributions of your teammates, and they evaluate yours. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
 
-## The Two Instruments
-
-| Instrument | Share of term grade | Outcome |
-|---|---|---|
-| Midterm survey: four criteria plus the point distribution | 5% | SO5 |
-| End-of-term survey: the same instrument (CATME is read beside it at the end of spring) | 20% | SO5 |
-
-Both surveys use the same instrument every term and are scored the same way, per student rather than banded, so the three-band rubric convention does not apply.
+Both surveys use the same instrument and the same rubric every term, scored per student from what your teammates answer.
 
 :::caution
 Not completing a peer evaluation scores 50% on that survey's share of the grade for the student who did not complete it.
@@ -125,6 +122,12 @@ The final peer score is the average of five numbers: the four criteria scores an
 Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four criteria, converting to 87.5, 87.5, 100, 87.5. On the distribution, teammates gave the student an average of 28 points; normalized for team size (× 4 ÷ 5) that is 22.4, within the [10, 40] clamp; the formula gives 0.65 + 0.0225(22.4) − 0.00025(22.4²) = 1.03, so the distribution score is 103. Final peer score: (87.5 + 87.5 + 100 + 87.5 + 103) / 5 = **93.1**.
 
 Survey validation issues (self-rating below the floor, totals that do not sum to 100, out-of-range ratings) each deduct from the rater's own score; these deductions are reflected in the posted grade, not just in the feedback email.
+
+## Rubric (100 points)
+
+The rubric is the calculation above in points: the four criteria together are 80, the distribution 20.
+
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" />
 
 ## Teams of Two
 

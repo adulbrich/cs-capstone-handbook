@@ -103,8 +103,7 @@ export const collections = {
                     peer_review_week: z.number().int().optional(),
                     points: z.number().positive(),
                     // Canvas rubric, relative to canvas/assignments/.
-                    // Absent only on the two survey pages.
-                    rubric: text().optional(),
+                    rubric: text(),
                     submission: z.union([
                       z.enum(SUBMISSIONS),
                       z.array(z.enum(SUBMISSIONS)).min(1),

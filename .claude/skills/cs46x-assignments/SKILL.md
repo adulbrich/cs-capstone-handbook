@@ -145,8 +145,7 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
 6. **A page with a deliverable section carries an `**AI use:**` paragraph.**
    The deliverable headings the validator recognizes are the four listed
    under **Section Skeleton** below.
-7. **Rubric points total exactly 100** per CSV, unless the page is on the
-   exception list in `validate-outcomes.mjs` (see **Rubric Rules**).
+7. **Rubric points total exactly 100** per CSV (see **Rubric Rules**).
 8. **The `canvas` entries reconcile.** Per term, family weights sum to the page
    weight; within one Canvas group, every entry carries the same weight per
    point (Canvas weights a group's entries by points); every family's rubric
@@ -269,11 +268,9 @@ Sections in **bold** are required.
 The rubric is a CSV, not a Markdown table (see **The Rubric Lives in the CSV**).
 The rules below are about its content.
 
-- **Points total exactly 100**, summed as each criterion's highest band.
-  Two documented exceptions, listed in `validate-outcomes.mjs` as
-  `RUBRIC_EXCEPTIONS`: the survey instruments, `peer-evaluations.mdx` and
-  `project-partner-evaluation.mdx`, hold a hand-written Markdown table because
-  theirs carry weights rather than points.
+- **Points total exactly 100**, summed as each criterion's highest band. The
+  survey pages are no exception: their criteria carry the facet or score
+  weights as points (#300).
 - **One CSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
   one CSV; every workshop shares one. The RFC's draft and final differ, so
   they have two. A page with several renders each under a heading containing
@@ -296,8 +293,8 @@ The rules below are about its content.
   the grader checks. `repo-checkpoints.mdx` is the model.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
-**Does Not Meet** (low or none), except the pass/fail ones and `defense`, which
-adds a fourth. Not submitted, off-topic, or inaccessible to graders scores zero,
+**Does Not Meet** (low or none), except the pass/fail ones, `defense`, which
+adds a fourth, and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
 ## The Rubric Lives in the CSV
@@ -317,8 +314,7 @@ import rubricCsv from '/canvas/assignments/team-charter/team-charter-rubric.csv?
 ```
 
 `?raw` is a Vite feature and needs no configuration. `validate-outcomes.mjs`
-fails the build if a page renders no `<RubricTable>` without being a documented
-exception, if the `csv={...}` name has no matching import, or if a page imports
+fails the build if a page renders no `<RubricTable>`, if the `csv={...}` name has no matching import, or if a page imports
 a CSV belonging to a different assignment (Vite resolves any real path, so
 nothing else catches that).
 
@@ -430,7 +426,7 @@ the student has to learn first.
 - Calendar dates or an academic year. `due` is a term and a week, and may
   add a weekday or a named holiday ("Fall, week 9, Wednesday before
   Thanksgiving"), never a date. `validate-dates.mjs` fails on one.
-- A rubric that does not total 100, absent a documented exception.
+- A rubric that does not total 100.
 - Outcome tags whose counts disagree with the frontmatter.
 - Links to activities that carry no tier badge.
 - Explanations that belong in a guide. Link to the guide instead; two

@@ -56,10 +56,8 @@ it. Content lives in `src/content/docs/**` as MDX.
    handbook page by `src/components/RubricTable.astro` and imported through
    the Canvas Rubrics page. Edit the CSV, and re-import it into Canvas (#144).
    The CSV goes one way and is never read back out, so a fix made only in
-   Canvas is lost at the next import. Two pages are documented exceptions,
-   listed as `RUBRIC_EXCEPTIONS` in `validate-outcomes.mjs`: the Qualtrics
-   instruments keep a hand-written table because theirs carries weights
-   rather than points.
+   Canvas is lost at the next import. The Qualtrics surveys are no
+   exception: their rubrics give the scoring in points (#300).
    Two graded pages have no rubric here at all: `resume-and-intent` and
    `career-retrospective` run entirely in Canvas under the co-instructor
    (#197). Their pages are stubs with no `assignment:` block; do not

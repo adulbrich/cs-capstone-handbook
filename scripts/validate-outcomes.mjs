@@ -27,7 +27,6 @@ import {
   termWeight,
 } from "../src/lib/canvas-entries.mjs";
 import {
-  OUTCOME_TAG_RE,
   parseRubricCsv,
   RUBRIC_CSV_SUFFIX,
   rubricTagCounts,
@@ -48,8 +47,10 @@ const CANVAS_TO_HANDBOOK = {
   "definition-of-shipped": "definition-of-shipped",
   "incident-postmortem": "incident-postmortem",
   "individual-contribution": "sprint-notes",
+  "peer-evaluation": "peer-evaluations",
   "project-handoff": "project-handoff",
   "project-landing-page": "landing-page",
+  "project-partner-evaluation": "project-partner-evaluation",
   "project-retrospective": "project-retrospective",
   "repo-checkpoint": "repo-checkpoints",
   rfc: "rfc",
@@ -59,17 +60,6 @@ const CANVAS_TO_HANDBOOK = {
   "term-retrospective": "term-retrospective",
   "workshop-activities": "workshop-activities",
 };
-
-// The two pages that render no <RubricTable>, by decision rather than
-// omission. The survey instruments run through Qualtrics and are the only
-// pages still holding a hand-written Markdown table, because theirs carry
-// weights rather than points; their Canvas entries declare no `rubric`.
-// Sprint Notes and Workshop Activities are not exceptions: their CSVs total
-// 100 like any other (#29, #144, #259).
-const RUBRIC_EXCEPTIONS = new Set([
-  "peer-evaluations",
-  "project-partner-evaluation",
-]);
 
 const CANVAS_DEPRECATED = new Set(["_template"]);
 
@@ -116,36 +106,6 @@ function parseAssignment(frontmatter) {
     terms: assignment.terms ?? [],
     weight: assignment.weight ?? null,
   };
-}
-
-// The Markdown fallback, for the two pages that keep a hand-written table:
-// the Qualtrics instruments, whose tables carry weights rather than points.
-// Rows whose LAST cell is a
-// comma-separated list of outcome IDs.
-function parseRubricTags(body) {
-  const tags = {};
-  for (const line of body.split("\n")) {
-    if (!line.trim().startsWith("|")) {
-      continue;
-    }
-    const cells = line
-      .split("|")
-      .map((c) => c.trim())
-      .filter((c, i, a) => !(c === "" && (i === 0 || i === a.length - 1)));
-    if (cells.length < 2) {
-      continue;
-    }
-    const parts = cells
-      .at(-1)
-      .split(",")
-      .map((p) => p.trim());
-    if (parts.length > 0 && parts.every((p) => OUTCOME_TAG_RE.test(p))) {
-      for (const p of parts) {
-        tags[p] = (tags[p] || 0) + 1;
-      }
-    }
-  }
-  return tags;
 }
 
 // Every CSV a page renders, one per `<RubricTable csv={...} />`, resolved
@@ -201,21 +161,16 @@ for (const file of files) {
   }
   parsed += 1;
   pages.set(file.replace(/\.mdx$/, ""), assignment);
-  const body = source.slice(source.indexOf("---", 3) + 3);
   const slug = file.replace(/\.mdx$/, "");
   const tables = rubricTables(source);
   pageSources.set(slug, source);
   pageTables.set(slug, tables);
-  let rubricTags = {};
+  const rubricTags = {};
   if (tables.length === 0) {
-    // A page that keeps a hand-written table: the documented exceptions.
-    if (!RUBRIC_EXCEPTIONS.has(slug)) {
-      console.error(
-        `NO RUBRIC TABLE ${file}: renders no <RubricTable> and is not a documented exception. Import its CSV from canvas/assignments/ and render it.`
-      );
-      failed = true;
-    }
-    rubricTags = parseRubricTags(body);
+    console.error(
+      `NO RUBRIC TABLE ${file}: renders no <RubricTable>. Import its CSV from canvas/assignments/ and render it.`
+    );
+    failed = true;
   }
   for (const table of tables) {
     if (!table.path) {
@@ -498,10 +453,8 @@ for (const [slug, assignment] of pages) {
         );
         failed = true;
       }
-    } else if (!RUBRIC_EXCEPTIONS.has(slug)) {
-      console.error(
-        `CANVAS ${file}: entry "${family.name}" names no rubric, and only the survey pages may omit one.`
-      );
+    } else {
+      console.error(`CANVAS ${file}: entry "${family.name}" names no rubric.`);
       failed = true;
     }
     for (const term of Object.keys(family.weeks ?? {})) {
@@ -769,7 +722,7 @@ for (const file of files) {
 }
 if (!failed) {
   console.log(
-    "  Every page states its weight in the meta, carries AI use where it has a deliverable, and totals 100 or is a documented exception."
+    "  Every page states its weight in the meta, carries AI use where it has a deliverable, and totals 100."
   );
 }
 
