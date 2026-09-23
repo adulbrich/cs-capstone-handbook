@@ -1,0 +1,20 @@
+authors:
+  - Steinmacher, I.
+  - Pinto, G.
+  - Wiese, I. S.
+  - Gerosa, M. A.
+year: 2018
+title: "Almost There: A Study on Quasi-Contributors in Open-Source Software Projects"
+venue: Proceedings of the 40th International Conference on Software Engineering (ICSE)
+kind: peer-reviewed
+url: https://doi.org/10.1145/3180155.3180208
+doi: 10.1145/3180155.3180208
+verified: abstract
+claims:
+  - claim: >-
+      In 21 popular GitHub projects, the main reasons quasi-contributors gave
+      for their pull requests not being accepted were a superseded or
+      duplicated pull request and a mismatch between the developer's and the
+      team's vision; about 30% said the nonacceptance demotivated them or
+      prevented them from placing another pull request.
+    locator: Abstract

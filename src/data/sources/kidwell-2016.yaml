@@ -1,0 +1,32 @@
+authors:
+  - Kidwell, M. C.
+  - Lazarević, L. B.
+  - Baranski, E.
+  - Hardwicke, T. E.
+  - Piechowski, S.
+  - Falkenberg, L.-S.
+  - Kennett, C.
+  - Slowik, A.
+  - Sonnleitner, C.
+  - Hess-Holden, C.
+  - Errington, T. M.
+  - Fiedler, S.
+  - Nosek, B. A.
+year: 2016
+title: "Badges to Acknowledge Open Practices: A Simple, Low-Cost, Effective Method for Increasing Transparency"
+venue: PLOS Biology
+kind: peer-reviewed
+url: https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002456
+doi: 10.1371/journal.pbio.1002456
+verified: abstract
+claims:
+  - claim: >-
+      After Psychological Science began awarding open data badges, the share
+      of its articles reporting open data rose from less than 3% to 23%, and
+      to 39% in a later period, while data sharing stayed low and unchanged in
+      comparison journals.
+    locator: Abstract
+  - claim: >-
+      Data reported as available was more likely to be actually available,
+      correct, usable, and complete when the article had earned a badge.
+    locator: Abstract

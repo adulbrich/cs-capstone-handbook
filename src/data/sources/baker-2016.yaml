@@ -1,0 +1,22 @@
+authors:
+  - Baker, M.
+year: 2016
+title: 1,500 scientists lift the lid on reproducibility
+venue: Nature 533, 452-454 (news feature)
+# A news feature reporting Nature's own online survey of its readers, not a
+# peer-reviewed article. There is no kind for journalism; industry-report is
+# the nearest, and the page names it as a news feature reporting a survey.
+# The full text was read in the republication on BioEd Online, which carries
+# it "courtesy of Nature News":
+# https://www.bioedonline.org/news/nature-news-archive/1500-scientists-lift-the-lid-on-reproducibility/
+kind: industry-report
+url: https://www.nature.com/articles/533452a
+doi: 10.1038/533452a
+verified: full-text
+claims:
+  - claim: >-
+      In Nature's survey of 1,576 researchers who took a brief online
+      questionnaire, more than 70% had tried and failed to reproduce another
+      scientist's experiments, and more than half had failed to reproduce
+      their own.
+    locator: Opening paragraphs

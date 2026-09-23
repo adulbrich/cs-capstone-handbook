@@ -1,0 +1,21 @@
+authors:
+  - Tsay, J.
+  - Dabbish, L.
+  - Herbsleb, J.
+year: 2014
+title: Influence of Social and Technical Factors for Evaluating Contribution in GitHub
+venue: Proceedings of the 36th International Conference on Software Engineering (ICSE)
+kind: peer-reviewed
+url: https://doi.org/10.1145/2568225.2568315
+doi: 10.1145/2568225.2568315
+verified: abstract
+claims:
+  - claim: >-
+      When evaluating pull requests, project managers used information
+      signaling both good technical contribution practices and the strength
+      of the social connection between the submitter and the project manager.
+    locator: Abstract
+  - claim: >-
+      Well-established projects were more conservative in accepting pull
+      requests.
+    locator: Abstract
