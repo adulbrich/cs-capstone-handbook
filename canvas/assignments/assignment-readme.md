@@ -21,7 +21,7 @@
 
 ## Canvas Changes: One Entry per Due Date (#259)
 
-Each Canvas assignment has its own due date, late window, grade and submission, so none may hold several (`AGENTS.md` hard rule 6). The Canvas assignments table on each handbook page lists what to create. What changes from the fall course as it stood before #259:
+Each Canvas assignment has its own due date, late window, grade and submission, so none may hold several (`AGENTS.md` hard rule 6). The Submissions table on each handbook page lists what to create. What changes from the fall course as it stood before #259:
 
 | Canvas before #259 | Change | Rubric |
 |---|---|---|
