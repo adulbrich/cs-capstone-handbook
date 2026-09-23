@@ -21,7 +21,9 @@ claims:
       programming tasks in Python, JavaScript, and C. Participants with the
       assistant wrote insecure solutions more often on four of the five tasks
       and wrote significantly less secure code overall.
-    locator: Abstract; Section 1, Introduction; Section 3, Methods
+    locator: >-
+      Abstract; Section 1, Introduction; Section 3, Methods; Section 6.2,
+      Prompt Parameters
   - claim: >-
       Participants with the assistant were more likely to believe they had
       written secure code, suggesting that such tools may lead users to be
