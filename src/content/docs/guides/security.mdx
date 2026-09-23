@@ -1,88 +1,107 @@
 ---
 title: Security and Threat Modeling
-description: How to think about security in your capstone project, from identifying threats early to building software that handles real-world attacks gracefully.
+description: How to find the threats that matter for your system and close the common ones, from threat modeling to access control, secrets, and dependencies.
 sidebar:
   order: 14
 ---
 
-{/* check-prose: legacy-opener */}
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
-import { LinkCard } from '@astrojs/starlight/components';
+Your system is about to take its first real users or its first real data: a login page, a table of volunteer records, an API key for a paid service. This page covers how to find the threats that matter for that system, the vulnerabilities that turn up most often in web applications, and the baseline practices that close them: access control, authentication, secrets, dependencies, transport, and input handling, plus what changes for research and data projects. It doesn't cover penetration testing, writing cryptography, or preparing for a compliance audit.
 
-Read this before your system handles real users or real data; it gives you the threats worth your time and the baseline practices that close them.
+:::note[tl;dr]
+- Run a one-session threat model when the architecture takes shape: draw the system, list its assets and entry points, walk through STRIDE, and record a response to each threat that matters.
+- Check authorization on the server for every request. Hiding a button protects nothing.
+- Use your framework's authentication and output escaping instead of writing your own, and store passwords with Argon2id, scrypt, or bcrypt.
+- Keep secrets out of the repository from the first commit. If one gets pushed, rotate it before you do anything else.
+- Turn on Dependabot alerts and read each one before you act on it. Keep push protection on, and on a private repository without GitHub's paid secret scanning, add a pre-commit secret scanner.
+- Before each deployment, confirm that debug mode is off, default credentials are changed, and CORS allows only the origins that need it.
+:::
 
-Security is the practice of building software that behaves correctly even when someone is actively trying to break it. It is not a feature you add at the end. It is a property of how you design, build, and deploy your system from the start. Without deliberate attention to security:
-
-- User data gets exposed through a misconfigured API endpoint or a leaked database connection string.
-- An attacker exploits a form input to run arbitrary code on your server.
-- Credentials committed to a public repository get scraped within minutes and used to compromise cloud accounts.
-- The project partner's production environment is left vulnerable because the team never considered who might use the system maliciously.
-
-You are not building a bank. But you are building software that real people may use, and many capstone projects handle real data, real user accounts, and real deployments. The baseline expectation is not perfection. It is *awareness*: knowing where the risks are, addressing the most critical ones, and making conscious decisions about the rest.
+Security is the practice of building software that behaves correctly when someone is actively trying to make it misbehave. It's a property of how you design, build, and deploy the system rather than a feature you add at the end, which is why most of this page is about decisions you make early.
 
 ## Threat Modeling: Thinking Like an Attacker
 
-Threat modeling is a structured way to identify what could go wrong before it does. Instead of guessing at security measures, you systematically ask: *What are we building? What can go wrong? What are we going to do about it?*
+Threat modeling is analyzing a representation of your system, usually a diagram, to find what could go wrong with its security and privacy before it does. The [Threat Modeling Manifesto](https://www.threatmodelingmanifesto.org/) frames it as four questions: What are we working on? What can go wrong? What are we going to do about it? Did we do a good enough job?
 
-The goal is not to enumerate every possible attack. It is to find the threats that matter most for *your* project and address them proportionally. A student portfolio site has different security needs than a healthcare data pipeline.
+You're looking for the threats that matter for your system, answered in proportion. A personal portfolio site and a healthcare data pipeline face different attackers, hold different assets, and deserve different amounts of effort.
 
 ### A Lightweight Threat Modeling Process
 
-For a capstone project, a full formal threat model is overkill. A lightweight version that the team can complete in a single session is far more valuable than a comprehensive one that never happens. Here is a practical approach:
+A formal threat model, with a dedicated tool and a review board, is more than a small team needs. Aim for a version the whole team can finish in one session, because a short model that exists beats a thorough one that never gets written:
 
-1. **Draw the system.** Start with a diagram of your architecture: the components, the data flows between them, and the trust boundaries (where data crosses from one security context to another). If you already have a C4 context or container diagram from your technical design, use that.
+1. **Draw the system.** Sketch the components, the data flows between them, and the trust boundaries, where data crosses from one security context to another: from the browser to your API, or from your API to a third-party service. If you already have a [C4](https://c4model.com/) context or container diagram, start from it; the [Technical Design guide](/guides/technical-design/) covers drawing one.
 
-<LinkCard
-  title="Technical Design"
-  href="/guides/technical-design/"
-  description="Architecture diagrams that double as the starting point for threat modeling."
-/>
+2. **Identify the assets.** List the data and resources an attacker would want: user credentials, personal information, API keys, payment data, research datasets, administrative access.
 
-2. **Identify the assets.** What data or resources are valuable? User credentials, personal information, API keys, payment data, research datasets, administrative access. These are what an attacker wants.
+3. **Identify the entry points.** List everywhere external input reaches the system: web forms, API endpoints, file uploads, URL parameters, WebSocket connections, configuration read from outside sources. Each one is part of the attack surface.
 
-3. **Identify the entry points.** Where can external input reach your system? Web forms, API endpoints, file uploads, URL parameters, WebSocket connections, environment variables read from external sources. Every entry point is a potential attack surface.
+4. **Ask what could go wrong at each entry point.** For each entry point and asset, walk through the six threat categories of [STRIDE](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats), Microsoft's threat model:
 
-4. **Ask "what could go wrong?" at each entry point.** For each entry point and each asset, consider the common threat categories. The STRIDE model provides a useful checklist:
+   | Threat | Question | Example |
+   |--------|----------|---------|
+   | **S**poofing | Can someone pretend to be another user or system? | Forged authentication tokens, session hijacking |
+   | **T**ampering | Can someone modify data they shouldn't? | Changing another user's profile through a direct API call |
+   | **R**epudiation | Can someone deny an action they took? | Deleted audit logs, unsigned transactions |
+   | **I**nformation Disclosure | Can someone see data they shouldn't? | Database dumps through SQL injection, error messages that expose internals |
+   | **D**enial of Service | Can someone make the system unavailable? | Flooding an endpoint with requests, triggering expensive queries |
+   | **E**levation of Privilege | Can someone gain access beyond their role? | A regular user reaching admin endpoints, path traversal to read server files |
 
-| Threat | Question | Example |
-|--------|----------|---------|
-| **S**poofing | Can someone pretend to be another user or system? | Forged authentication tokens, session hijacking |
-| **T**ampering | Can someone modify data they should not? | Changing another user's profile via a direct API call |
-| **R**epudiation | Can someone deny an action they took? | Deleting audit logs, unsigned transactions |
-| **I**nformation Disclosure | Can someone access data they should not see? | Database dumps via SQL injection, verbose error messages exposing internals |
-| **D**enial of Service | Can someone make the system unavailable? | Flooding an endpoint with requests, triggering expensive queries |
-| **E**levation of Privilege | Can someone gain access beyond their role? | A regular user accessing admin endpoints, path traversal to read server files |
+   Don't try to fill every cell. Keep the threats that are both likely and damaging for your system, because a list of forty unranked threats gets the same response as no list.
 
-You do not need to address every cell in the matrix. Focus on the threats that are both likely and impactful for your specific project.
+5. **Decide what to do about each threat.** The [OWASP Threat Modeling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html) gives four responses, from Adam Shostack:
 
-5. **Decide what to do about each threat.** For each identified threat, the team has four options:
+   - Mitigate: add a control that reduces the risk, such as input validation, authentication, or encryption.
+   - Eliminate: remove the feature or component that introduces the risk.
+   - Transfer: shift the responsibility to someone else, for example a managed authentication service instead of your own.
+   - Accept: leave the risk in place and write down why, such as low likelihood, low impact, or out of scope.
 
-   - **Mitigate**: implement a control that reduces or eliminates the risk (input validation, authentication, encryption).
-   - **Accept**: acknowledge the risk and document why it is acceptable for this project (low likelihood, low impact, out of scope).
-   - **Transfer**: shift the risk to a third party (use a managed authentication service instead of building your own).
-   - **Avoid**: remove the feature or component that introduces the risk.
+   Record each decision with its reason. An [Architecture Decision Record](/guides/adr/) fits, because whoever later wants to undo an accepted risk needs to know why it was accepted.
 
-Document your decisions. An Architecture Decision Record is a natural place for security decisions and their rationale.
-
-<LinkCard
-  title="Architecture Decision Records"
-  href="/guides/adr/"
-  description="Document security decisions alongside other architectural choices."
-/>
+6. **Check the result.** Read the list against the diagram. Every trust boundary should have at least one threat considered, and every Mitigate should have become a task with an owner, or the model changes nothing in the code.
 
 :::tip[When to Threat Model]
-Do a lightweight threat modeling session early, ideally when the technical design is taking shape. Revisit it when the architecture changes significantly or when you add a new integration. It does not need to be a formal event. A 30-minute team discussion with a whiteboard or shared document is enough.
+Run the first session when the architecture takes shape, and revisit it when the architecture changes or you add an integration, because each new component brings new entry points. It doesn't need to be a formal event: a 30-minute team discussion around a whiteboard or a shared document is enough.
 :::
 
 ## The OWASP Top 10: Common Vulnerabilities
 
-The [OWASP Top 10](https://owasp.org/www-project-top-ten/) is a periodically updated list of the most critical security risks in web applications. The current edition is [Top 10:2025](https://owasp.org/Top10/2025/). Not every item applies to every project, but knowing the list helps you recognize common mistakes before you make them.
+The [OWASP Top 10](https://owasp.org/projects/top-ten) is a ranked list of the most critical security risks to web applications, published by the Open Worldwide Application Security Project (OWASP) and revised every few years. The current edition, [Top 10:2025](https://top10.owasp.org/2025/0x00_2025-Introduction/), ranks eight of its categories from testing data contributed for over 2.8 million applications and adds two that a community survey of practitioners voted in.
 
-Here are the ones most relevant to capstone projects. Note where they rank: Broken Access Control is first and Security Misconfiguration second, ahead of Injection at fifth. The ranking is itself a lesson, because the top of the list is permissions and configuration rather than exotic attacks.
+The ranking tells you where to look first. Broken Access Control is first: on average, 3.73% of the applications tested had at least one of its weaknesses. Security Misconfiguration moved up from fifth to second, and Injection fell from third to fifth. The sections below cover four of the ten, in rank order, with cross-site scripting under Injection.
+
+### Broken Access Control
+
+Access control decides what an authenticated user is allowed to do. It's broken when a user can act on data or functions beyond their role:
+
+- A user can view another user's data by changing an ID in the URL (`/api/users/42/profile` to `/api/users/43/profile`).
+- An API endpoint checks that a user is logged in but not that they may perform the requested action.
+- Administrative functions are hidden in the interface but reachable through direct API calls.
+
+Check authorization on the server, for every request, against the specific resource requested. Hiding a button or a route in the frontend doesn't count, because anyone can send the request the button would have sent. The [OWASP Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html) covers the patterns, starting with denying access by default and validating permissions on every request.
+
+### Security Misconfiguration
+
+Misconfiguration covers the settings left at a default or never changed for production:
+
+- Debug mode left on in production, exposing stack traces and internal state.
+- Default credentials on databases, admin panels, or cloud services.
+- A [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) (cross-origin resource sharing) policy that lets any origin make authenticated requests.
+- Cloud storage buckets left publicly readable.
+- Ports or services exposed to the internet that nothing needs.
+
+Check these before every deployment:
+
+- [ ] Debug mode is off.
+- [ ] Default passwords are changed.
+- [ ] Secrets come from environment variables, not hardcoded values.
+- [ ] CORS allows only the origins that need access.
+- [ ] Error pages don't leak stack traces or internal details.
 
 ### Injection
 
-Injection attacks happen when untrusted input is sent to an interpreter (a database, a shell, an operating system command) as part of a command or query. The most common variant is SQL injection:
+An injection attack sends untrusted input to an interpreter (a database, a shell, a template engine) as part of a command or query, where it runs as code. SQL injection is the best-known variant:
 
 ```python
 # Vulnerable: user input is concatenated directly into the query
@@ -92,64 +111,29 @@ query = f"SELECT * FROM users WHERE email = '{user_input}'"
 cursor.execute("SELECT * FROM users WHERE email = %s", (user_input,))
 ```
 
-The principle applies everywhere input meets an interpreter: SQL queries, shell commands, LDAP queries, template engines. The defense is always the same: never concatenate untrusted input into executable code. Use parameterized queries, prepared statements, or safe APIs that handle escaping for you.
+The same rule applies wherever input meets an interpreter: SQL queries, shell commands, LDAP queries, template engines. Never build executable code by concatenating untrusted input. Use parameterized queries, prepared statements, or APIs that handle escaping for you, as the [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html) details.
 
-If you are using an ORM (like SQLAlchemy, Prisma, or Django's ORM), you are largely protected from SQL injection for standard queries. But be cautious with raw query methods or string-based filters, which bypass the ORM's built-in protections.
+An ORM (object-relational mapper) such as [SQLAlchemy](https://www.sqlalchemy.org/) or Django's parameterizes the queries it builds, so its standard queries are protected. Raw query methods and filters built from strings bypass that protection, and Django's documentation on [raw SQL](https://docs.djangoproject.com/en/stable/topics/db/sql/) warns you to pass user-controlled values as parameters every time you use it.
 
 #### Cross-Site Scripting (XSS)
 
-The browser is an interpreter too, which is why XSS belongs here. An attacker injects a script into a page other users will view; if your application renders user-generated content without escaping it, that script runs with your site's privileges and can steal cookies, redirect users, or rewrite the page.
+The browser is an interpreter too, which is why XSS belongs here. An attacker gets a script into a page other users will view. If your application renders user-generated content without escaping it, that script runs with your site's privileges and can steal session cookies, redirect users, or rewrite the page.
 
-Modern frontend frameworks (React, Vue, Svelte, Angular) escape output by default, which prevents most XSS. The risk surfaces when you use escape hatches that bypass this protection, such as React's `dangerouslySetInnerHTML`, Vue's `v-html`, or Svelte's `{@html}` directive. These should only be used with content you fully control or have sanitized with a library like [DOMPurify](https://github.com/cure53/DOMPurify).
-
-The same risk applies when rendering user input in contexts that frameworks do not protect: URLs, CSS values, and inline JavaScript.
+React, Vue, and Svelte escape the values you render by default; Vue's [security guide](https://vuejs.org/guide/best-practices/security.html) shows what that escaping does to an injected `<script>` tag. The risk comes back through each framework's escape hatch for raw HTML: React's [`dangerouslySetInnerHTML`](https://react.dev/reference/react-dom/components/common), Vue's [`v-html`](https://vuejs.org/api/built-in-directives.html), and Svelte's [`{@html}`](https://svelte.dev/docs/svelte/@html). Use them only with content you fully control or have sanitized with a library like [DOMPurify](https://github.com/cure53/DOMPurify). Vue's security guide also covers the contexts escaping doesn't protect: URLs, style values, and inline JavaScript built from user input.
 
 ### Authentication Failures
 
-Authentication is how the system verifies who a user is. Session management is how it remembers that identity across requests. Common mistakes:
+Authentication verifies who a user is, and session management remembers that identity across requests. The common mistakes:
 
-- Storing passwords in plaintext or with weak hashing. Use `bcrypt`, `argon2`, or `scrypt`. Never use MD5 or SHA-256 alone for password hashing.
-- Session tokens that are predictable, never expire, or are not invalidated on logout.
-- Missing rate limiting on login endpoints, allowing brute-force attacks.
+- Storing passwords in plaintext or with a fast general-purpose hash such as MD5 or SHA-256, which lets an attacker who steals the table test guesses quickly. The [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html) recommends Argon2id, then scrypt, and bcrypt for legacy systems.
+- Session tokens that are predictable, never expire, or survive logout.
+- No rate limiting on the login endpoint, which leaves it open to brute-force guessing.
 
-For most capstone projects, the best approach is to *not build your own authentication*. Use a managed service or established library:
-
-- **Firebase Authentication**, **Auth0**, **Clerk**, or **Supabase Auth** for managed solutions.
-- **Passport.js** (Node.js), **Django's auth system** (Python), or **NextAuth.js** (Next.js) for library-based approaches.
-
-If you must implement authentication yourself, treat it as a high-risk component and test it thoroughly.
-
-### Broken Access Control
-
-Access control determines what an authenticated user is allowed to do. Broken access control means a user can perform actions or access data beyond their intended permissions. Common patterns:
-
-- A user can view another user's data by changing an ID in the URL (`/api/users/42/profile` to `/api/users/43/profile`).
-- An API endpoint checks whether a user is logged in but not whether they have permission to perform the requested action.
-- Administrative functions are hidden from the UI but accessible via direct API calls.
-
-The fix is to check authorization on the server for every request, not just in the frontend. Never rely on hiding a button or link as a security measure.
-
-### Security Misconfiguration
-
-The most common security failures are not sophisticated attacks. They are misconfigurations:
-
-- Debug mode left enabled in production, exposing stack traces and internal state.
-- Default credentials on databases, admin panels, or cloud services.
-- Overly permissive CORS policies that allow any origin to make authenticated requests.
-- Cloud storage buckets (S3, GCS) left publicly readable.
-- Unnecessary ports or services exposed to the internet.
-
-A quick checklist before any deployment:
-
-- [ ] Debug mode is off.
-- [ ] Default passwords are changed.
-- [ ] Environment variables (not hardcoded values) are used for secrets.
-- [ ] CORS is configured to allow only the origins that need access.
-- [ ] Error pages do not leak stack traces or internal details.
+Don't build your own authentication. Use your framework's built-in system, such as [Django's](https://docs.djangoproject.com/en/stable/topics/auth/), or a managed service such as [Firebase Authentication](https://firebase.google.com/docs/auth) or [Auth0](https://auth0.com/docs). That's the Transfer response from the threat model: the provider carries password storage, the reset flow, and session handling, which are the parts that are easy to get subtly wrong. If you must write it yourself, treat it as your highest-risk component and test the failure paths (wrong password, expired session, logout) as carefully as the successful login.
 
 ## Secrets Management
 
-Secrets (API keys, database passwords, tokens, private keys) must never appear in your source code or version history. This is the single most common security mistake in student projects, and it has real consequences: bots continuously scan public GitHub repositories for leaked credentials.
+Secrets (API keys, database passwords, tokens, private keys) must never appear in your source code or its history. Keep them in environment variables loaded from a file Git ignores:
 
 ```text title=".env"
 DATABASE_URL=postgres://user:password@localhost:5432/mydb
@@ -163,149 +147,108 @@ JWT_SECRET=your-secret-key
 .env.production
 ```
 
-If you have already committed a secret to your repository, changing the `.gitignore` is not enough. The secret exists in Git history. Rotate the credential immediately (generate a new key and revoke the old one), then use a tool like [git-filter-repo](https://github.com/newren/git-filter-repo) or [BFG Repo-Cleaner](https://github.com/rtyley/bfg-repo-cleaner) to remove it from history if needed.
+<Cite id="meli-2019" /> scanned public GitHub commits in near real time for almost six months, together with a snapshot covering 13% of public repositories, and found secret leakage in over 100,000 repositories, with thousands of new, unique secrets leaked every day, a count they present as a lower bound. A test string they pushed appeared in GitHub's search results with a median delay of 20 seconds, and a single API key within GitHub's rate limits saw about 99% of newly committed files matching their searches. The authors conclude that an attacker with minimal resources could compromise many GitHub users by stealing leaked keys.
 
-For deployment, use your platform's secrets management: environment variables on Vercel, Heroku, or Railway; GitHub Secrets for CI/CD workflows; cloud provider secret managers (AWS Secrets Manager, Google Secret Manager) for production systems.
+If you've pushed a secret, rotate it first: generate a new credential and revoke the old one. GitHub's guide to [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) makes revoking or rotating the first step and says rewriting history may not be needed once the credential is dead. Rewriting history doesn't make a live credential safe: the same study recovered the full contents of commits removed with both `git filter-branch` and BFG, the two methods GitHub recommended at the time, from GitHub itself, given only the commit's hash <Cite id="meli-2019" form="parenthetical" />. Once the credential is revoked, clean the history with [git-filter-repo](https://github.com/newren/git-filter-repo) if you want the file gone, and treat that as cleanup.
 
-<LinkCard
-  title="Git and GitHub Essentials"
-  href="/guides/git-and-github/"
-  description="Using .gitignore and keeping secrets out of version control."
-/>
+In deployment, keep secrets in the platform's secret store: your hosting platform's environment-variable settings, [GitHub Actions secrets](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets) for CI workflows, and a cloud secret manager such as [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) or [Google Secret Manager](https://docs.cloud.google.com/secret-manager/docs) for production systems. The [Git and GitHub guide](/guides/git-and-github/) covers `.gitignore` and the repository side.
+
+Let GitHub watch for you as well. On public repositories, [secret scanning](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning) runs automatically and for free, and when it finds a credential issued by one of GitHub's partner providers, GitHub notifies the provider so it can act, for example by revoking it. [Push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection) goes a step earlier: the version tied to your GitHub account is on by default and blocks a push that would put a recognized secret in a public repository. On a private repository, secret scanning and repository-level push protection need GitHub Secret Protection, which the free plan doesn't include, so run a pre-commit scanner such as [gitleaks](https://github.com/gitleaks/gitleaks) instead.
 
 ## Dependency Security
 
-Your project depends on dozens or hundreds of open-source packages. Any of them could contain known vulnerabilities. Keeping dependencies updated and audited is a basic security hygiene practice.
+Your project depends on dozens or hundreds of open-source packages, and a vulnerability in any of them is a vulnerability in your system. The 2025 OWASP Top 10 ranks Software Supply Chain Failures third: the category has the fewest occurrences in the testing data, which OWASP attributes to how hard it is to test for, but the highest average exploit and impact scores among the published vulnerabilities (CVEs) it analyzed.
+
+Run your ecosystem's audit command, which checks your dependencies against published vulnerability advisories: [npm audit](https://docs.npmjs.com/cli/commands/npm-audit) for Node.js, [pip-audit](https://pypi.org/project/pip-audit/) for Python, and [cargo audit](https://github.com/rustsec/rustsec/tree/main/cargo-audit) for Rust.
 
 ```bash
-# Check for known vulnerabilities
 npm audit              # Node.js
 pip-audit              # Python (install with: pip install pip-audit)
-cargo audit            # Rust
+cargo audit            # Rust (install with: cargo install cargo-audit)
 ```
 
-GitHub's **Dependabot** can automatically open pull requests when a dependency has a known vulnerability. Enable it under *Settings > Advanced Security > Dependabot alerts*. It is free on every plan, for public and private repositories alike, and requires minimal configuration.
+On GitHub, turn on [Dependabot alerts](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-dependabot-alerts) in the repository's Settings, under Advanced Security. Dependabot then alerts you when a dependency on your default branch has a known vulnerability, and with [Dependabot security updates](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-security-updates) enabled it also tries to fix each one with a pull request that updates the dependency.
 
-Not every vulnerability alert is urgent. Read the advisory, understand whether the vulnerable code path is actually reachable in your project, and prioritize accordingly. But do not ignore alerts indefinitely. Unpatched known vulnerabilities are one of the most common ways real systems get compromised.
+Read each alert before you act on it. Check whether your code reaches the vulnerable function, and use the severity score, usually a [CVSS](https://www.first.org/cvss/) score, to order the work. Don't leave alerts open indefinitely, though, because a published advisory tells an attacker what to look for as clearly as it tells you.
 
 ## HTTPS and Transport Security
 
-All communication between your frontend and backend (and between your backend and external services) should use HTTPS, not HTTP. HTTPS encrypts data in transit, preventing anyone on the network from reading or modifying it.
+Every connection between your frontend and backend, and between your backend and external services, should use HTTPS. HTTPS encrypts data in transit, so nobody on the network path can read or modify it.
 
-Most modern hosting platforms (Vercel, Netlify, Heroku, Railway) provide HTTPS by default. If you are deploying to a VM or container, use a reverse proxy like Nginx or Caddy with automatic TLS certificate management via Let's Encrypt.
+Managed hosting platforms issue certificates for you: [Vercel](https://vercel.com/docs/domains/working-with-ssl), for example, generates one automatically for every domain you add to a project. On a virtual machine or a container, put a reverse proxy in front of the application. [Caddy](https://caddyserver.com/docs/automatic-https) serves HTTPS by default, with certificates it obtains and renews from a public certificate authority such as [Let's Encrypt](https://letsencrypt.org/), while [Nginx](https://nginx.org/) needs a separate program to obtain and renew them.
 
-For API calls to external services, always use `https://` URLs. If a third-party API only supports HTTP, treat the data flowing through it as potentially compromised.
+Call external APIs over HTTPS as well. If a third-party API only supports plain HTTP, treat anything that passes through it as readable and modifiable by whoever sits on the network path.
 
 ## Input Validation and Output Encoding
 
-The general principle behind most web vulnerabilities is the same: untrusted input is treated as trusted code or data. The defense has two sides:
+Injection and XSS share a cause: untrusted input treated as trusted code or data. The defense has two sides:
 
-- **Validate input**: check that incoming data matches expected formats, types, lengths, and ranges *before* processing it. Reject anything that does not conform. Do this on the server, even if you also validate on the client.
-- **Encode output**: when displaying user-supplied data, ensure it is treated as data, not as executable code. This means HTML-encoding for web pages, parameterizing for SQL, and escaping for shell commands.
-
-Validation in the browser improves user experience but provides no security. A user can bypass any client-side check by sending requests directly to the API. Server-side validation is the real boundary.
+- Validate input: check that incoming data matches the expected format, type, length, and range before you process it, and reject anything that doesn't. Do it on the server even if you also validate in the browser, because anyone can skip browser checks by sending requests straight to your API. Browser validation is for the user's convenience. The [OWASP Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html) covers allowlists and the cases where validation isn't enough.
+- Encode output: when you display user-supplied data, make sure it's treated as data rather than executable code. That means HTML-encoding for web pages, parameters for SQL, and escaping for shell commands.
 
 ## Security for Research and Data Projects
 
-Projects that handle datasets, machine learning models, or research data have security concerns that differ from typical web applications:
+Projects that handle datasets, machine learning models, or research data have concerns that a typical web application doesn't:
 
-- **Data privacy.** If your dataset contains personally identifiable information (PII) such as names, emails, health records, or location data, it must be handled with care. Anonymize or pseudonymize data before processing. Store raw data with restricted access. Check whether your project needs IRB approval.
-- **Model security.** Machine learning models can be vulnerable to adversarial inputs (data crafted to cause misclassification) and data poisoning (corrupted training data). If your model makes decisions that affect people, consider how it might be manipulated.
-- **Notebook hygiene.** Jupyter notebooks frequently contain hardcoded credentials, API keys, and connection strings in cell outputs. Clear outputs before committing, and use environment variables for credentials.
-
-:::note[IRB and Data Handling]
-If your project involves human subjects data or personally identifiable information, check with your faculty advisor about [IRB requirements](https://research.oregonstate.edu/ori/irb) early. The approval process takes time and must be completed before data collection begins.
-:::
+- Data privacy: if your dataset contains personally identifiable information (PII), such as names, emails, health records, or locations, pseudonymize or anonymize it before processing and store the raw data with restricted access. If the project involves human subjects, find out early whether it needs approval from an institutional review board (IRB), because review runs on the board's schedule, not yours; [Complete an IRB Application](/activities/user/#complete-an-irb-application) walks through the filing.
+- Model security: a machine learning model can be attacked through its inputs, with evasion attacks that craft an input to force a wrong prediction, and through its training data, with poisoning. [NIST AI 100-2](https://csrc.nist.gov/pubs/ai/100/2/e2025/final) is NIST's taxonomy of these attacks. If your model makes decisions that affect people, work out how someone could manipulate it.
+- Notebook hygiene: a [Jupyter](https://jupyter.org/) notebook stores each cell's outputs in the file next to its code ([nbformat](https://nbformat.readthedocs.io/en/latest/format_description.html)), so a cell that prints a connection string commits it. Clear outputs before committing, or strip them automatically with [nbstripout](https://github.com/kynan/nbstripout), and read credentials from environment variables.
 
 ## Best Practices
 
-- Do a lightweight threat modeling session when the architecture takes shape. Revisit when it changes.
-- Never commit secrets to version control. Use environment variables and `.gitignore` from day one.
-- Use established libraries and services for authentication. Do not roll your own unless the project specifically requires it.
-- Validate all input on the server. Client-side validation is a convenience, not a security measure.
-- Keep dependencies updated and enable Dependabot alerts.
-- Check the OWASP Top 10 against your project before each major deployment.
+- Run a lightweight threat model when the architecture takes shape, and revisit it when the architecture changes.
+- Decide the authorization model during design, and check authorization on the server for every request.
+- Never commit secrets. Set up environment variables and `.gitignore` before the first commit, and rotate any secret that reaches a remote.
+- Use your framework's defaults for session handling, password storage, cookie flags, and CSRF protection. If you need to deviate, record why in an [ADR](/guides/adr/) so the next person can evaluate it.
+- Use established libraries and services for authentication rather than your own code.
+- Validate all input on the server.
+- Turn on Dependabot alerts and triage them as they arrive. Keep push protection on, and add a pre-commit secret scanner where GitHub's secret scanning isn't available.
+- Check the OWASP Top 10 against your system before each major deployment.
 - Use HTTPS for all network communication.
-- Apply the principle of least privilege: give users, services, and API keys only the access they need, nothing more.
-- Log security-relevant events (failed logins, access denied, input validation failures) so you can detect suspicious behavior.
+- Apply least privilege: give users, services, and API keys only the access they need, so a stolen key or a compromised account can do as little as possible.
+- Log security-relevant events (failed logins, denied access, rejected input) so you can spot suspicious behavior; the [OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) lists what to record and what to keep out of logs.
 
 ## Some Truths About Security
 
-Almost nothing that will go wrong with your project is interesting. The
-[OWASP Top 10](https://owasp.org/www-project-top-ten/) and the
-[CWE Top 25](https://cwe.mitre.org/top25/) are both, in effect, lists of the same
-mistakes people keep making: broken access control, injection, misconfiguration,
-outdated dependencies. Zero-days are what security looks like in films; this list
-is what it looks like in incident reports. The practical consequence is that
-reading one of those two lists carefully is a better use of an afternoon than any
-amount of cryptography you are tempted to implement yourself.
+The threats most likely to hurt your project are boring. The [CWE Top 25](https://cwe.mitre.org/top25/) for 2025, which MITRE ranks from the weaknesses behind 39,080 published vulnerability records, opens with cross-site scripting, SQL injection, cross-site request forgery, and missing authorization, and the OWASP Top 10 opens with broken access control and misconfiguration. None of these needs a clever attacker, and OWASP publishes a cheat sheet on preventing each of the first four. Read one of the two lists carefully before you spend an afternoon on anything exotic, such as implementing cryptography yourself.
 
-Security is a spectrum and treating it as a binary causes a specific failure: a
-team decides it "cannot really secure" a student project and therefore does
-nothing, when the distance between nothing and the basics is most of the
-available benefit. You will not make your project unbreakable. You can make it
-uninteresting to the kind of automated scanning that finds exposed databases
-within hours of them appearing, and that is a real and achievable goal.
+Treating security as all or nothing leads to a specific failure: a team decides it can't really secure a small project, and so does nothing, trusting that nobody knows the system exists. That protects nothing. <Cite id="durumeric-2013" /> built an open-source scanner that surveys the entire IPv4 address space in under 45 minutes from a single machine. Nobody has to know your system exists: a database or an admin panel on a public address is found by whoever scans for its port. You won't make your project unbreakable, but changed default credentials, closed ports, and authentication on every endpoint shut the doors that kind of scanning finds, and they're within reach of any team.
 
-The one expensive mistake on this page is architectural. Retrofitting
-authentication and access control into a system that assumed neither is not a
-patch, it is a rewrite of every data path, because the question "who is allowed
-to see this row" has to be answered everywhere at once. This is the argument for
-deciding your authorization model during design rather than when a partner asks
-whether volunteers can see each other's details. Everything else on this page can
-be fixed later at moderate cost. This cannot.
+Most fixes on this page can be applied late, one at a time. Authorization is the exception. Retrofitting authentication and access control into a system that assumed neither means revisiting every data path, because the question "who may see this row?" has to be answered in every query, endpoint, and view at once. Decide your authorization model during design, before the organization you're building for asks whether volunteers can see each other's details.
 
-Use the framework's defaults, and understand that this advice is unusual: almost
-everywhere else this handbook tells you to make a deliberate choice. Here the
-default encodes years of incident response by people who specialize in this, and
-your override encodes an afternoon. Session handling, password storage, cookie
-flags, and CSRF protection are all places where the framework is right and you
-are guessing. If you need to deviate, write the reason in an
-[ADR](/guides/adr/) so the next person can evaluate it.
+Knowing that passwords must be hashed doesn't mean your code will hash them. <Cite id="naiakshina-2017" /> asked 20 computer science students to add registration and authentication to a social networking application. None of the 10 who weren't told to store passwords securely did so, while 7 of the 10 who were told at least hashed them. The frameworks' secure-storage support was opt-in, and the authors conclude that opt-in support isn't enough and that developers need to be asked for security explicitly. The study is small and its authors claim no generalizability, but the practical response is cheap: prefer the path where secure storage is already on (your framework's built-in authentication, a managed provider), and when it isn't, write the security requirement into the task so nobody has to remember it.
 
-Finally, the credential thing, because it happens every year. A secret that
-reached a public repository is compromised the moment it was pushed, not when
-someone notices. Automated scanners watch public commits continuously, and
-deleting the commit does not help because the object is still reachable and very
-likely already copied. Rotate the credential. Rewriting history is cleanup, not
-remediation, and treating it as remediation is how a leaked key stays live for
-months.
+Experience doesn't stop credentials from leaking either. <Cite id="meli-2019" /> compared the repositories that leaked secrets with a random sample of about 100,000 others and found that neither repository activity nor contributor experience was strongly correlated with leakage. One of their case studies was a set of AWS credentials for a major government agency's website, committed by a developer who claims nearly 10 years of experience. Since care alone doesn't prevent it, put the check in the tooling: a `.gitignore` entry for every secrets file before the first commit, push protection or a pre-commit scanner, and a rotation you've walked through once, so the first real leak isn't the first time anyone tries it.
 
 ## Security in Industry and Academia
 
-In industry, security is a baseline expectation, not a specialization. Companies like Google, Microsoft, and Amazon require threat models for new features and conduct regular security reviews. The OWASP Top 10 and STRIDE are standard vocabulary in software engineering interviews and design reviews. Many organizations require automated security scanning (SAST, DAST, dependency auditing) as part of their CI/CD pipeline.
+In industry, threat modeling is part of published development processes. Microsoft's [Security Development Lifecycle](https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle) has teams create threat models during design, keep them current as the software changes, and review every threat model for accuracy and completeness before a product is released. The AWS [Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/sec_securely_operate_threat_model.html) recommends threat modeling to its customers as a security best practice and rates the risk of skipping it as high.
 
-Security certifications and compliance frameworks (SOC 2, HIPAA, GDPR, PCI-DSS) govern how companies handle sensitive data. While capstone projects are unlikely to require formal compliance, understanding that these frameworks exist and why they matter is valuable context for industry roles.
+Regulation sets the floor for some kinds of data. [PCI DSS](https://www.pcisecuritystandards.org/standards/pci-dss/) is written for every organization that stores, processes, or transmits cardholder data, and the [GDPR](https://gdpr-info.eu/) can apply to a system that offers services to people in the European Union. If your system takes payments, a payment provider's hosted checkout page keeps card numbers off your servers, which is the Transfer response applied to a compliance risk.
 
-In academia, security concerns increasingly intersect with research ethics, especially in projects involving human subjects data, machine learning models that affect people, or systems deployed in sensitive environments. Responsible data handling and privacy-preserving techniques are becoming standard expectations in computational research.
+In academia, security research handles the same material it studies, and its practices carry over to any research project with sensitive data. <Cite id="meli-2019" /> collected over 200,000 leaked credentials. Their IRB found the work exempt because it used only public data, and they still ran every experiment from a locked-down virtual machine, kept the secrets inside the collection database, which was reachable only over key-authenticated SSH, and never used a discovered credential, not even to check that it worked.
 
-The security habits you build now (thinking about threats early, managing secrets properly, validating input, keeping dependencies updated) transfer directly to professional practice. They are not overhead. They are part of building software that works reliably in the real world.
+## References
+
+<References />
 
 ## Additional Readings
 
-Application security is one of the best-documented areas in this handbook, and
-almost all of it is free. OWASP in particular publishes both the "what goes
-wrong" lists and the "how to do it right" cheat sheets, which between them cover
-nearly everything a capstone project needs.
-
 **Sources and further reading**
 
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/): the ten categories that account for most real incidents, updated periodically with data.
-- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/): concrete, per-topic guidance on authentication, session management, input validation, and much else.
-- [CWE Top 25](https://cwe.mitre.org/top25/), MITRE: the same territory from the weakness side, useful when triaging a scanner finding.
-- [STRIDE threats](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats), Microsoft: the threat-modeling taxonomy this guide uses, from its source.
-- [Digital Identity Guidelines](https://pages.nist.gov/800-63-3/sp800-63b.html), NIST SP 800-63B: the authoritative modern answer on passwords, including why rotation requirements were dropped.
-- [CVSS](https://www.first.org/cvss/), FIRST: how severity scores are calculated, for reading advisories rather than guessing at them.
-- [About Dependabot alerts](https://docs.github.com/en/code-security/dependabot/dependabot-alerts/about-dependabot-alerts), GitHub: the dependency half, which is free to turn on.
-- [About secret scanning](https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning), GitHub: the check that catches a committed credential, ideally before a scanner elsewhere does.
-- [Have I Been Pwned](https://haveibeenpwned.com/), Troy Hunt: useful for showing a skeptical teammate what a breach corpus actually looks like.
-- [DevSecOps Guideline](https://owasp.org/www-project-devsecops-guideline/), OWASP: where each of these checks belongs in a pipeline.
+- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/): per-topic guidance on authentication, session management, file uploads, and much else not covered here.
+- [Application Security Verification Standard](https://owasp.org/projects/asvs), OWASP: a list of security requirements to build and test against, for when the Top 10 isn't detailed enough.
+- [Digital Identity Guidelines: Authentication and Authenticator Management](https://pages.nist.gov/800-63-4/sp800-63b.html), NIST SP 800-63B-4: the standard on passwords, including its rule against forcing periodic password changes.
+- [Known Exploited Vulnerabilities Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), CISA: vulnerabilities with evidence of exploitation in the wild, for deciding which alert to fix first.
+- [Security Engineering](https://www.cl.cam.ac.uk/archive/rja14/book.html), Ross Anderson: a textbook on building systems that stay dependable under attack, with chapters free to download.
+- [DevSecOps Guideline](https://owasp.org/projects/devsecops-guideline), OWASP: adding security checks to a development pipeline.
+- [Have I Been Pwned](https://haveibeenpwned.com/), Troy Hunt: useful for showing a skeptical teammate what a breach corpus looks like.
 
 **Activities that exercise this**
 
 - [Describe your Architecture](/activities/design/#describe-your-architecture): the diagram a threat model is drawn on top of.
+- [Designing for System Security](/activities/design/#designing-for-system-security): the design-time version of this guide.
+- [Apply the Privacy by Design (PbD) Guidelines](/activities/design/#apply-the-privacy-by-design-pbd-guidelines): privacy decided up front rather than retrofitted.
 - [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): whether your gates would catch a bad change before it merges.
 - [Risk Management Plan](/activities/planning/#risk-management-plan): where a security risk gets an owner and a date.
 - [Complete an IRB Application](/activities/user/#complete-an-irb-application): for projects handling human-subjects data, where the security question becomes a compliance question.
-- [Designing for System Security](/activities/design/#designing-for-system-security): the design-time version of this guide.
-- [Apply the Privacy by Design (PbD) Guidelines](/activities/design/#apply-the-privacy-by-design-pbd-guidelines): privacy decided up front rather than retrofitted.

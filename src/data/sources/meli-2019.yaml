@@ -1,0 +1,55 @@
+authors:
+  - Meli, M.
+  - McNiece, M. R.
+  - Reaves, B.
+year: 2019
+title: >-
+  How Bad Can It Git? Characterizing Secret Leakage in Public GitHub
+  Repositories
+venue: Network and Distributed System Security Symposium (NDSS)
+kind: peer-reviewed
+url: https://www.ndss-symposium.org/ndss-paper/how-bad-can-it-git-characterizing-secret-leakage-in-public-github-repositories/
+doi: 10.14722/ndss.2019.23418
+verified: full-text
+claims:
+  - claim: >-
+      Across a nearly six-month scan of public GitHub commits in near real
+      time and a snapshot of 13% of public repositories, secret leakage
+      affected over 100,000 repositories, and thousands of new, unique
+      secrets were leaked every day; the authors present their results as a
+      lower bound.
+    locator: Abstract; Sec. I, Introduction
+  - claim: >-
+      A known string pushed to a repository appeared in GitHub Search API
+      results with a median delay of 20 seconds (from half a second to over
+      4 minutes), and a single API key within GitHub's rate limits saw about
+      99% (98.92%) of newly committed files matching the authors' queries.
+    locator: Sec. VI-A, Search API Evaluation
+  - claim: >-
+      The authors conclude that an attacker with minimal resources could
+      compromise many GitHub users by stealing leaked keys.
+    locator: Sec. IX, Mitigations
+  - claim: >-
+      The authors recovered the full contents of commits removed with
+      git filter-branch and with BFG, the two methods GitHub then recommended,
+      from GitHub using only the commit's SHA-1 hash, and conclude that even
+      rapidly detected leaks are hard to mitigate short of deleting the
+      repository or reissuing the credentials.
+    locator: Sec. VIII, Case Studies, Rewriting History Does Not Protect Secrets
+  - claim: >-
+      Comparing repositories that leaked secrets with a random control sample
+      of about 100,000 repositories, neither repository activity nor
+      contributor experience was strongly correlated with leakage.
+    locator: Sec. VII-A, Repository and Contributor Statistics
+  - claim: >-
+      The case studies include AWS credentials for the website of a major
+      government agency in a Western European country, committed by a
+      developer who claims nearly 10 years of development experience.
+    locator: Sec. VIII, Case Studies, High-Value Targets
+  - claim: >-
+      The authors collected over 200,000 leaked credentials; their IRB found
+      the work exempt because it used only publicly available data; they ran
+      experiments from a locked-down virtual machine, kept secret data inside
+      the collection database, reachable only over public-key SSH, and never
+      used a discovered secret, not even to verify that it worked.
+    locator: Sec. IV, Ethics and Disclosure

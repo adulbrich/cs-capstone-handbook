@@ -1,0 +1,15 @@
+authors:
+  - Durumeric, Z.
+  - Wustrow, E.
+  - Halderman, J. A.
+year: 2013
+title: "ZMap: Fast Internet-wide Scanning and Its Security Applications"
+venue: 22nd USENIX Security Symposium
+kind: peer-reviewed
+url: https://www.usenix.org/conference/usenixsecurity13/technical-sessions/paper/durumeric
+verified: abstract
+claims:
+  - claim: >-
+      ZMap, an open-source network scanner, can survey the entire IPv4
+      address space in under 45 minutes from user space on a single machine.
+    locator: Abstract

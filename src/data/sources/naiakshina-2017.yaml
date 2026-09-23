@@ -1,0 +1,38 @@
+authors:
+  - Naiakshina, A.
+  - Danilova, A.
+  - Tiefenau, C.
+  - Herzog, M.
+  - Dechand, S.
+  - Smith, M.
+year: 2017
+title: "Why Do Developers Get Password Storage Wrong? A Qualitative Usability Study"
+venue: >-
+  Proceedings of the 2017 ACM SIGSAC Conference on Computer and
+  Communications Security (CCS '17)
+kind: peer-reviewed
+url: https://arxiv.org/abs/1708.08759
+doi: 10.1145/3133956.3134082
+# Read in full as arXiv 1708.08759v2, the authors' version of the CCS paper.
+verified: full-text
+claims:
+  - claim: >-
+      Twenty computer science students were asked to add registration and
+      authentication to an existing stub of a social networking application;
+      half were told to store the passwords securely and half
+      were not.
+    locator: Sec. 1, Introduction; Sec. 3.3, Task Design
+  - claim: >-
+      None of the 10 participants who were not told to store passwords
+      securely implemented a secure solution, while 7 of the 10 who were told
+      at least hashed the passwords.
+    locator: Sec. 4.6, Priming vs. Non-Priming Scenario
+  - claim: >-
+      Secure-storage support in the frameworks was opt-in, and the authors
+      conclude that more usable APIs are not enough when their secure methods
+      are opt-in, and that explicitly requesting security is necessary.
+    locator: Sec. 1, Introduction (key insights)
+  - claim: >-
+      The participants came from one computer science environment, and the
+      authors claim no generalizability.
+    locator: Sec. 5, Limitations
