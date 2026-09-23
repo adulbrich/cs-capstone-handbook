@@ -12,11 +12,15 @@ claims:
       Sharing the data and code behind publications is becoming more common,
       driven partly by journal requirements and funder mandates, yet access
       to them is still not very common.
-    locator: Abstract; Background
+    locator: Abstract (Background); Introduction
+  - claim: >-
+      Ram argues that Git can facilitate reproducibility and transparency in
+      science.
+    locator: Title; Abstract
   - claim: >-
       Ram argues that Git's history maintains a complete provenance of a
-      project's data, code, and figures.
-    locator: How Git can track various artifacts of a research effort (Data)
+      project's data.
+    locator: How Git can track various artifacts of a research effort, Datasets
   - claim: >-
       Git hosting services are not a solution for permanent archiving, and
       researchers should deposit projects in an archival repository such as

@@ -14,7 +14,9 @@ doi: 10.1145/2597073.2597076
 verified: full-text
 claims:
   - claim: >-
-      In the Qt, VTK, and ITK projects, components that integrated more
-      self-approved, hastily reviewed, or undiscussed changes tended to have
-      more post-release defects.
-    locator: Abstract; Sec. 4, Case Study Results (RQ2)
+      In the review participation analysis of Qt and ITK (VTK was omitted for
+      too few components), the proportion of changes merged without review
+      discussion was associated with more post-release defects in all three
+      release models; self-approved and hastily reviewed changes were
+      significant in one Qt release model each.
+    locator: Sec. 4, Case Study Results (RQ2); Table 4

@@ -12,13 +12,15 @@ url: https://services.google.com/fh/files/misc/state-of-devops-2017.pdf
 verified: full-text
 claims:
   - claim: >-
-      Merging into trunk daily, keeping branches alive for less than a day,
-      and having fewer than three active branches contributed to higher
-      software delivery performance.
+      The report restates the previous year's findings that merging into
+      trunk daily, keeping branches alive for less than a day, and having
+      fewer than three active branches contributed to higher software
+      delivery performance.
     locator: Technical practices, Trunk-based development, p. 40
   - claim: >-
-      High performers' branches typically lived for hours and low performers'
-      for days, a statistically significant difference.
+      New analysis confirmed those findings: high performers' branches
+      typically lived for hours and low performers' for days, a statistically
+      significant difference.
     locator: Technical practices, p. 41
   - claim: >-
       The report addresses developers used to the GitHub-recommended workflow:
