@@ -25,6 +25,7 @@ claims:
       All 171 projects used the Team Software Process, a mature process built
       around risk mitigation, and the authors do not claim the finding
       generalizes beyond it; they suggest the effect may still hold in
-      high-assurance software and architecturally complex systems, while
-      saying they have no evidence for or against that.
+      high-assurance software, architecturally complex systems, or projects
+      with poor engineering discipline, while saying they have no evidence
+      for or against that.
     locator: Sec. 6.4; Sec. 7
