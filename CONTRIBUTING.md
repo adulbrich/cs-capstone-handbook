@@ -16,7 +16,7 @@ pick up          branch             commit                push               pul
 GitHub issue     fetch, then        lefthook:             lefthook:          build and audit       squash
 ready-for-*      branch from        prose, not main,      branch name,       required (ruleset)    one PR,
 p0/p1/p2         origin/main        validators, biome,    validators, build  review loop           one issue
-claim it         type/issue-slug    commit message                           recorded in the PR
+claim it         type/slug          commit message                           recorded in the PR
 ```
 
 1. **Pick up an issue.** The queue is `ready-for-agent` or `ready-for-human`,
@@ -26,10 +26,12 @@ claim it         type/issue-slug    commit message                           rec
    Labels are explained in `docs/agents/triage-labels.md`; the tracker
    mechanics in `docs/agents/issue-tracker.md`.
 2. **Branch from a fresh `origin/main`.** `git fetch origin main` first.
-   Name it `<type>/<issue>-<slug>`: the commit type, the issue it closes, and
-   a few lowercase words, as in `fix/192-handoff-week`. The desktop app names
-   a session's worktree branch `claude/<slug>-<hash>` before any hook runs, so
-   rename it before the first push: `git branch -m <type>/<issue>-<slug>`.
+   Name it `<type>/<slug>`: the commit type and a few lowercase words. Lead
+   the slug with the issue number when the work has an issue, as in
+   `fix/192-handoff-week`; without one, `fix/handoff-week` passes too. The
+   desktop app names a session's worktree branch `claude/<slug>-<hash>` before
+   any hook runs, so rename it before the first push:
+   `git branch -m <type>/<issue>-<slug>`.
    `scripts/check-branch-name.mjs` is the rule.
 3. **Commit by name.** Stage paths, never `git add -A`. The subject is
    Conventional Commits with a lowercase imperative:
@@ -64,7 +66,7 @@ first column is what stops you locally; the last is what stops the merge.
 | External links on the built site resolve | | | `links`: weekly and on dispatch, opens or updates one issue |
 | Every internal link and anchor resolves | `pre-push`: `npm run build` | | `build`: the Astro build with the links validator |
 | Never commit anything under `data/` | `pre-commit` | `guard-edits.mjs` refuses the write | `build`: tracked-files guard |
-| Branch is `<type>/<issue>-<slug>` | `pre-push` | | `build`: the PR's head branch |
+| Branch is `<type>/<slug>`, issue number recommended | `pre-push` | | `build`: the PR's head branch |
 | Stage by name; never commit on `main` | `pre-commit` branch check | `guard-git.mjs` | ruleset: pull request required |
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |

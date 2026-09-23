@@ -1,8 +1,9 @@
 /**
- * The branch-name rule, as a check: `<type>/<issue>-<slug>`, where the type is
- * one of the Conventional Commits types, the issue is the number the branch
- * closes, and the slug is lowercase words joined by hyphens:
- * `fix/192-handoff-week`.
+ * The branch-name rule, as a check: `<type>/<slug>`, where the type is one of
+ * the Conventional Commits types and the slug is lowercase words or numbers
+ * joined by hyphens. Leading the slug with the issue number the branch closes
+ * is recommended, not required, so work with no issue is not blocked:
+ * `fix/192-handoff-week` and `fix/handoff-week` both pass.
  *
  * One implementation, two callers. lefthook runs it at `pre-push` on the
  * current branch, and CI runs it on a pull request's head branch, which
@@ -13,7 +14,7 @@
  * The check sits at the push, not at branch creation, because the desktop
  * app creates a session's worktree branch (`claude/<slug>-<hash>`) before any
  * hook runs. Rename it before the first push:
- * `git branch -m <type>/<issue>-<slug>`.
+ * `git branch -m <type>/<issue>-<slug>`, or `<type>/<slug>` with no issue.
  *
  * Usage:
  *   node scripts/check-branch-name.mjs                the current branch
@@ -22,9 +23,7 @@
 import { execFileSync } from "node:child_process";
 import { TYPES } from "./check-commit-message.mjs";
 
-const BRANCH = new RegExp(
-  `^(?:${TYPES.join("|")})/[1-9][0-9]*-[a-z0-9]+(?:-[a-z0-9]+)*$`
-);
+const BRANCH = new RegExp(`^(?:${TYPES.join("|")})/[a-z0-9]+(?:-[a-z0-9]+)*$`);
 
 /** Branches the rule does not reach: Dependabot names its own. */
 const EXEMPT_BRANCH = /^dependabot\//;
@@ -37,9 +36,7 @@ export function checkBranchName(name) {
   if (EXEMPT_BRANCH.test(name) || BRANCH.test(name)) {
     return [];
   }
-  return [
-    `"${name}" is not "type/issue-slug" with type one of ${TYPES.join(", ")}`,
-  ];
+  return [`"${name}" is not "type/slug" with type one of ${TYPES.join(", ")}`];
 }
 
 function main(argv) {
@@ -63,7 +60,7 @@ function main(argv) {
       process.stderr.write(`branch name: ${problem}\n`);
     }
     process.stderr.write(
-      "Branch rule: type/issue-slug, such as fix/192-handoff-week. Rename with `git branch -m <new>`. See CONTRIBUTING.md.\n"
+      "Branch rule: type/slug, led by the issue number when there is one, such as fix/192-handoff-week. Rename with `git branch -m <new>`. See CONTRIBUTING.md.\n"
     );
     process.exit(1);
   }
