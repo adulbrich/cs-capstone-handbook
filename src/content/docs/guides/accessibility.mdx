@@ -81,9 +81,9 @@ When that isn't possible on your timeline, the closest substitute is a task-base
 
 A team can skip all of this and see no consequence, because the people who build, review, and demo the software usually all use a mouse and a screen. That's why it gets skipped: the cost lands on people who aren't in the room.
 
-It's also what most of the web looks like. WebAIM's million-home-page report found detectable WCAG failures on 95.9% of the pages, up from 94.8% the year before, which reversed six years of small improvements <Cite id="webaim-2026" form="parenthetical" />. Because only automatically detectable failures were counted, WebAIM notes that this suggests the rate of full WCAG A and AA conformance was certainly lower than 4.1%.
+It's also what most of the web looks like. WebAIM's million-home-page report found detectable WCAG failures on 95.9% of the pages, up from 94.8% the year before, which reversed six years of small improvements <Cite id="webaim-2026" form="parenthetical" />. Because only automatically detectable failures were counted, WebAIM notes that the rate of full WCAG A and AA conformance was therefore certainly lower than 4.1%.
 
-Automated tools are oversold and still worth running. A clean run means the mechanical rules pass, and the [coverage figures](#manual-accessibility-testing) show how much that leaves unchecked whichever way you count. Run them anyway, because they catch the most common failures on every pull request without anyone remembering to look, and a person only has to review what they flag as incomplete.
+Automated tools are oversold and still worth running. A clean run means the mechanical rules pass, and the [coverage figures](#manual-accessibility-testing) show how much that leaves unchecked whichever way you count. Run them anyway, because they catch the most common failures on every pull request on every change, and the only human cost is reviewing what they flag as incomplete.
 
 If you run only one check on this page, make it the manual pass, because it costs nothing but the laptop you already have and it targets the failures automation misses, keyboard and focus above all. Put it on the pre-demo checklist where someone has to tick it, because unlike a CI gate, nothing turns red when nobody runs it.
 
