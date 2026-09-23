@@ -40,6 +40,7 @@ jobs:
             --max-retries 3
             --scheme https
             --scheme http
+            --root-dir "${{ github.workspace }}/dist"
             'dist/**/*.html'
           output: lychee/out.md
           format: markdown

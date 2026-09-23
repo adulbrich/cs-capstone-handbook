@@ -191,8 +191,13 @@ function entryProblems(data) {
   return problems;
 }
 
-/** The label Cite would render, or null when the entry is too broken to say. */
-function inTextLabel(data) {
+/**
+ * The label Cite would render without its suffix, or null when the entry is
+ * too broken to say. Grouping on the bare label is what catches a
+ * half-applied suffix: "Edmondson (1999)" beside "Edmondson (1999b)" differ
+ * as rendered, but a reader still cannot tell which one "1999" means.
+ */
+function bareLabel(data) {
   if (
     !(
       isMapping(data) &&
@@ -204,7 +209,7 @@ function inTextLabel(data) {
   ) {
     return null;
   }
-  return `${inTextAuthors(data.authors)} (${citedYear(data.year, data.suffix)})`;
+  return `${inTextAuthors(data.authors)} (${citedYear(data.year)})`;
 }
 
 const problems = [];
@@ -235,16 +240,23 @@ for (const name of registryFiles) {
   for (const problem of entryProblems(data)) {
     problems.push(`${path}: ${problem}`);
   }
-  const label = inTextLabel(data);
+  const label = bareLabel(data);
   if (label !== null) {
-    labels.set(label, [...(labels.get(label) ?? []), id]);
+    labels.set(label, [
+      ...(labels.get(label) ?? []),
+      { id, suffix: data.suffix },
+    ]);
   }
 }
 
-for (const [label, ids] of labels) {
-  if (ids.length > 1) {
+for (const [label, entries] of labels) {
+  const suffixes = entries.map((entry) => entry.suffix);
+  const allDistinct =
+    suffixes.every((suffix) => suffix !== undefined) &&
+    new Set(suffixes).size === suffixes.length;
+  if (entries.length > 1 && !allDistinct) {
     problems.push(
-      `${ids.join(", ")}: all cite as "${label}"; give each a \`suffix\` (a, b, ...) so a reader can tell them apart`
+      `${entries.map((entry) => entry.id).join(", ")}: all cite as "${label}"; give every one a distinct \`suffix\` (a, b, ...) so a reader can tell them apart`
     );
   }
 }
