@@ -43,10 +43,6 @@ The technical tradeoffs that matter for this decision: performance, complexity, 
 
 Which option you propose and why it wins the analysis above. Then, concretely: how will the team know it worked? List the tests, metrics, or acceptance criteria that would detect failure, and when they will be checked.
 
-## Consequences
-
-What follows if the team adopts the recommendation: what gets easier, what gets harder or costs more, and what the team commits to maintaining. Write the costs as plainly as the benefits, because they're what a later reader needs to judge whether the decision still holds.
-
 ## Constraints
 
 Licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision. If none apply, say so explicitly and briefly explain why.

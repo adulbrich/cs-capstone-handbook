@@ -88,17 +88,17 @@ Real teams range from 2 to 5 or more ([For Students](/introduction/for-students/
 For the **four criteria**:
 
 1. Convert ratings to a 50-100 scale: 1 = 50, 2 = 62.5, 3 = 75, 4 = 87.5, 5 = 100.
-2. Average the ratings each member received, **excluding** self-ratings.
+2. Average the ratings each member received, excluding self-ratings.
 
 For the **100-point distribution**:
 
 1. Verify that self-evaluation is at least 100/N points and that each survey's total is 100.
-2. Average the points each member received, **excluding** self-allocation.
+2. Average the points each member received, excluding self-allocation.
 3. Normalize for team size: multiply the average by N, divide by 5.
 4. Clamp the result to [10, 40].
 5. Apply <Latex formula="0.65 + 0.0225\cdot x - 0.00025\cdot x^2"/>, where <Latex formula="x"/> is the clamped average.
 
-The formula's output is a multiplier bounded between 0.85 and 1.15; **multiply it by 100 to get the distribution score** (85 to 115). Scoring over 100 means teammates rated your contribution above an equal share, and you are rewarded for it.
+The formula's output is a multiplier bounded between 0.85 and 1.15; multiply it by 100 to get the distribution score (85 to 115). Scoring over 100 means teammates rated your contribution above an equal share, and you are rewarded for it.
 
 The final peer score is the average of five numbers: the four criteria scores and the distribution score.
 
