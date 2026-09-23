@@ -27,10 +27,16 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 
 const HOOK = ".claude/hooks/guard-git.mjs";
-const RULE_SCRIPTS = ["check-prose.mjs", "check-commit-message.mjs"];
+// The rule scripts the hook runs, and what they import, copied into the fixture
+// at their repo paths.
+const RULE_FILES = [
+  "scripts/check-prose.mjs",
+  "scripts/check-commit-message.mjs",
+  "src/lib/rubric-csv.mjs",
+];
 
 /**
  * `process.env` without the `GIT_*` keys. This runs at pre-push, which is a
@@ -83,13 +89,13 @@ function fixtures() {
   run(main, ["init", "--initial-branch=main"]);
   run(main, ["config", "user.email", "test@example.com"]);
   run(main, ["config", "user.name", "Test"]);
-  mkdirSync(join(main, "scripts"));
-  for (const script of RULE_SCRIPTS) {
-    copyFileSync(join("scripts", script), join(main, "scripts", script));
+  for (const file of RULE_FILES) {
+    mkdirSync(dirname(join(main, file)), { recursive: true });
+    copyFileSync(file, join(main, file));
   }
   writeFileSync(join(main, "README.md"), "fixture\n");
   assertThrowaway(main, root);
-  run(main, ["add", "README.md", "scripts"]);
+  run(main, ["add", "README.md", ...RULE_FILES]);
   run(main, ["commit", "-m", "chore: fixture"]);
   assertThrowaway(main, root);
   run(main, ["worktree", "add", "-b", "fix/thing", worktree]);

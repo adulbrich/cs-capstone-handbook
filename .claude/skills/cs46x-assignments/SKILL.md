@@ -337,7 +337,7 @@ rejects any other header. Then one row per criterion, fields in order:
    in Canvas there is no page.
 4. `true` (Canvas's Criteria Enable Range; the handbook ignores it).
 5. Onwards, **repeating groups of three**: band name, band description,
-   points. Points come last, the reverse of the old TSV.
+   points. Points come last.
 
 The group count is what varies. Rows may stop short of the header, as in
 Canvas's template, and the parser reads groups until one is empty rather than

@@ -27,72 +27,87 @@
 /** The outcome IDs the accreditation record recognises. Nothing else is a tag. */
 export const OUTCOME_TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;
 
-export const CRITERION_HEADER = [
+const CRITERION_HEADER = [
   "Rubric Name",
   "Criteria Name",
   "Criteria Description",
   "Criteria Enable Range",
 ];
-export const RATING_HEADER = [
-  "Rating Name",
-  "Rating Description",
-  "Rating Points",
-];
+const RATING_HEADER = ["Rating Name", "Rating Description", "Rating Points"];
 
 const TRAILING_BRACKET_RE = /\s*\[([^\]]+)\]\s*$/;
+const FIELD_END = new Set([",", "\r", "\n"]);
 const FIRST_RATING = CRITERION_HEADER.length;
 const RATING_GROUP_WIDTH = RATING_HEADER.length;
 
 /**
- * RFC 4180 records: commas separate fields, a quoted field may hold commas,
- * newlines, and `""` for a literal quote. Band descriptions quote student
- * phrasing ("we worked well together"), so a `split(",")` would shift every
- * column after the first quoted comma and still parse.
+ * RFC 4180 records, each with the file line it starts on: commas separate
+ * fields, a quoted field may hold commas, newlines, and `""` for a literal
+ * quote. Band descriptions quote student phrasing ("we worked well
+ * together"), so a `split(",")` would shift every column after the first
+ * quoted comma and still parse. `check-prose` reads the fields through this
+ * too, so the CSV quoting is not mistaken for a cited phrase.
+ *
+ * @returns {{cells: string[], line: number}[]}
  */
 export function readCsvRecords(text, sourceLabel) {
   const records = [];
-  let record = [];
+  let cells = [];
   let field = "";
+  let line = 1;
+  let start = 1;
+  const endRecord = () => {
+    cells.push(field);
+    records.push({ cells, line: start });
+    cells = [];
+    field = "";
+  };
   let i = 0;
   while (i < text.length) {
     const ch = text[i];
-    if (ch === '"' && field === "") {
-      [field, i] = readQuoted(text, i + 1, sourceLabel);
+    if (ch === '"') {
+      const quoted = readQuoted(text, i, field, sourceLabel, line);
+      field = quoted.value;
+      line += quoted.newlines;
+      i = quoted.next;
       continue;
     }
-    if (ch === '"') {
-      throw new Error(
-        `rubric CSV ${sourceLabel} record ${records.length + 1}: a quote inside an unquoted field. Quote the whole field and double the inner quote ("say ""this""").`
-      );
-    }
     if (ch === ",") {
-      record.push(field);
+      cells.push(field);
       field = "";
     } else if (ch === "\n" || ch === "\r") {
-      record.push(field);
-      records.push(record);
-      record = [];
-      field = "";
+      endRecord();
       if (ch === "\r" && text[i + 1] === "\n") {
         i += 1;
       }
+      line += 1;
+      start = line;
     } else {
       field += ch;
     }
     i += 1;
   }
-  if (field !== "" || record.length > 0) {
-    record.push(field);
-    records.push(record);
+  if (field !== "" || cells.length > 0) {
+    endRecord();
   }
   // A blank line is one empty field, not a criterion.
-  return records.filter((r) => r.some((cell) => cell.trim() !== ""));
+  return records.filter((r) => r.cells.some((cell) => cell.trim() !== ""));
 }
 
-/** A quoted field's value from just past its opening quote, and where it ends. */
-function readQuoted(text, start, sourceLabel) {
+/**
+ * The quoted field whose opening quote is at `quoteAt`: its value, the
+ * newlines inside it, and where the text after it starts. The quotes must
+ * wrap the whole field, so `before` (what the field held when the quote
+ * arrived) must be empty and a field separator must follow the close.
+ */
+function readQuoted(text, quoteAt, before, sourceLabel, line) {
+  if (before !== "") {
+    throw new Error(
+      `rubric CSV ${sourceLabel} line ${line}: a quote inside an unquoted field. Quote the whole field and double the inner quote ("say ""this""").`
+    );
+  }
   let value = "";
-  let i = start;
+  let i = quoteAt + 1;
   while (i < text.length) {
     if (text[i] !== '"') {
       value += text[i];
@@ -101,11 +116,17 @@ function readQuoted(text, start, sourceLabel) {
       value += '"';
       i += 2;
     } else {
-      return [value, i + 1];
+      const newlines = value.split("\n").length - 1;
+      if (i + 1 < text.length && !FIELD_END.has(text[i + 1])) {
+        throw new Error(
+          `rubric CSV ${sourceLabel} line ${line + newlines}: text after a closing quote. The whole field goes inside the quotes.`
+        );
+      }
+      return { newlines, next: i + 1, value };
     }
   }
   throw new Error(
-    `rubric CSV ${sourceLabel}: a quoted field never closes, so every row after it is swallowed.`
+    `rubric CSV ${sourceLabel} line ${line}: a quoted field never closes, so every row after it is swallowed.`
   );
 }
 
@@ -125,7 +146,7 @@ function readTags(rawTitle) {
 }
 
 /** The repeating three-field rating groups, in order. */
-function readRatings(cells, row, sourceLabel) {
+function readRatings(cells, line, sourceLabel) {
   const ratings = [];
   for (let i = FIRST_RATING; i < cells.length; i += RATING_GROUP_WIDTH) {
     const name = (cells[i] ?? "").trim();
@@ -134,7 +155,14 @@ function readRatings(cells, row, sourceLabel) {
     // Stop at the first wholly empty group, testing the raw points cell rather
     // than Number(): `Number("")` is 0, which is finite, so a trailing comma
     // run would otherwise be pushed as a nameless zero-point band and rendered.
+    // Only a trailing run: a band after the gap would be dropped, and unless
+    // it was the top band the rubric would still total 100.
     if (!(rawPoints || name || description)) {
+      if (cells.slice(i).some((cell) => cell.trim() !== "")) {
+        throw new Error(
+          `rubric CSV ${sourceLabel} line ${line}: an empty rating group before a filled one. Move the bands after it left.`
+        );
+      }
       break;
     }
     // A band that exists must carry a number. An empty cell is the likeliest
@@ -144,7 +172,7 @@ function readRatings(cells, row, sourceLabel) {
     const points = Number(rawPoints);
     if (rawPoints === "" || !Number.isFinite(points) || points < 0) {
       throw new Error(
-        `rubric CSV ${sourceLabel} row ${row}, band "${name || "(unnamed)"}": points cell is "${rawPoints}", which is not a points value. Every band with a name or a description needs one.`
+        `rubric CSV ${sourceLabel} line ${line}, band "${name || "(unnamed)"}": points cell is "${rawPoints}", which is not a points value. Every band with a name or a description needs one.`
       );
     }
     ratings.push({ description, name, points });
@@ -180,23 +208,23 @@ function checkHeader(header, widest, sourceLabel) {
   }
 }
 
-function parseRow(cells, row, sourceLabel) {
+function parseRow({ cells, line }, sourceLabel) {
   // A stray comma in an unquoted field shifts every rating group after it and
   // is otherwise silent: the row still parses, just into the wrong columns.
   const ratingCells = cells.length - FIRST_RATING;
   if (ratingCells < RATING_GROUP_WIDTH || ratingCells % RATING_GROUP_WIDTH) {
     throw new Error(
-      `rubric CSV ${sourceLabel} row ${row}: ${cells.length} fields, which is not ${FIRST_RATING} plus a whole number of ${RATING_GROUP_WIDTH}-field rating groups. An unquoted comma inside a field will do this.`
+      `rubric CSV ${sourceLabel} line ${line}: ${cells.length} fields, which is not ${FIRST_RATING} plus a whole number of ${RATING_GROUP_WIDTH}-field rating groups. An unquoted comma inside a field will do this.`
     );
   }
 
   const rawTitle = cells[1].trim();
   const tags = readTags(rawTitle);
-  const ratings = readRatings(cells, row, sourceLabel);
+  const ratings = readRatings(cells, line, sourceLabel);
 
   if (ratings.length === 0) {
     throw new Error(
-      `rubric CSV ${sourceLabel} row ${row}: no rating bands. A criterion nothing can be scored against is not a criterion.`
+      `rubric CSV ${sourceLabel} line ${line}: no rating bands. A criterion nothing can be scored against is not a criterion.`
     );
   }
 
@@ -222,29 +250,33 @@ export function parseRubricCsv(csvText, sourceLabel) {
     throw new Error(`rubric CSV ${sourceLabel} is empty or missing.`);
   }
   const [header, ...rows] = readCsvRecords(csvText, sourceLabel);
-  checkHeader(header, Math.max(0, ...rows.map((r) => r.length)), sourceLabel);
+  checkHeader(
+    header.cells,
+    Math.max(0, ...rows.map((r) => r.cells.length)),
+    sourceLabel
+  );
   if (rows.length === 0) {
     throw new Error(`rubric CSV ${sourceLabel}: a header and no criteria.`);
   }
 
   // One file is one rubric. Canvas groups rows by this column, so a second
   // name would import as a second rubric the page never renders.
-  const name = rows[0][0].trim();
+  const name = rows[0].cells[0].trim();
   if (!name) {
-    throw new Error(`rubric CSV ${sourceLabel} row 1: no Rubric Name.`);
+    throw new Error(
+      `rubric CSV ${sourceLabel} line ${rows[0].line}: no Rubric Name.`
+    );
   }
-  rows.forEach((cells, index) => {
+  for (const { cells, line } of rows) {
     if (cells[0].trim() !== name) {
       throw new Error(
-        `rubric CSV ${sourceLabel} row ${index + 1}: Rubric Name "${cells[0].trim()}" differs from row 1's "${name}". One file holds one rubric.`
+        `rubric CSV ${sourceLabel} line ${line}: Rubric Name "${cells[0].trim()}" differs from the first criterion's "${name}". One file holds one rubric.`
       );
     }
-  });
+  }
 
   return {
-    criteria: rows.map((cells, index) =>
-      parseRow(cells, index + 1, sourceLabel)
-    ),
+    criteria: rows.map((row) => parseRow(row, sourceLabel)),
     name,
   };
 }

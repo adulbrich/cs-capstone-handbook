@@ -12,29 +12,11 @@
 Canvas now imports rubrics itself, from the Rubrics page of a course, using the template in `_template/import_rubric_template.csv`. Every rubric here was converted to that format, and the browser extension is retired. Each `*-rubric-details.tsv` became `<name>-rubric.csv` in the same directory:
 
 - CSV with a header row in place of headerless TSV. Fields holding a comma or a quote are quoted, so edit these in a spreadsheet or a CSV-aware editor.
-- A new first column, Rubric Name, the same on every row of a file. It is the name Canvas lists the rubric under, and the validator fails two files that share one.
+- A new first column, Rubric Name, the same on every row of a file. It is the name Canvas lists the rubric under, taken from the page's Canvas entry name, or the assignment name where one rubric serves several entries.
 - Each rating group is now name, description, points. The TSV put points first.
 - Criteria Enable Range stays `true` on every criterion, as `use_range` was.
 
-**Nothing students or graders see changed.** Every criterion, description, band, point value and outcome tag was checked equal, file by file, between the old parser's reading of each TSV and the new parser's reading of its CSV. A rubric already in Canvas does not need re-importing for this change. The pending re-imports below now take the CSV named in each. Canvas creates a new rubric from each import rather than updating one of the same content, so before re-importing a rubric that is already in the course, delete the old one or check that its name matches the Rubric Name below, or the course ends up with two. Import `defense/defense-rubric.csv` first as the check that Canvas takes a fourth rating group and the quoted fields.
-
-| File | Rubric Name |
-|---|---|
-| `defense/defense-rubric.csv` | Individual Defense |
-| `definition-of-shipped/definition-of-shipped-rubric.csv` | Definition of Shipped |
-| `incident-postmortem/incident-postmortem-rubric.csv` | Incident Postmortem |
-| `individual-contribution/individual-contribution-rubric.csv` | Individual Contribution |
-| `project-handoff/project-handoff-rubric.csv` | Project Handoff |
-| `project-landing-page/project-landing-page-rubric.csv` | Landing Page |
-| `project-retrospective/project-retrospective-rubric.csv` | Project Retrospective |
-| `repo-checkpoint/repo-checkpoint-rubric.csv` | Repo Checkpoint |
-| `rfc/rfc-draft-rubric.csv` | RFC Draft |
-| `rfc/rfc-final-rubric.csv` | RFC Final |
-| `spring-release/spring-release-rubric.csv` | Release and Metrics |
-| `sprint-note/sprint-note-rubric.csv` | Sprint Notes |
-| `team-charter/team-charter-rubric.csv` | Team Charter |
-| `term-retrospective/term-retrospective-rubric.csv` | Term Retrospective |
-| `workshop-activities/workshop-activities-rubric.csv` | Workshop Activities |
+**Nothing students or graders see changed.** Every criterion, description, band, point value and outcome tag was checked equal, file by file, between the old parser's reading of each TSV and the new parser's reading of its CSV. A rubric already in Canvas does not need re-importing for this change. The pending re-imports below now take the CSV named in each. An import may add a second rubric rather than replace the one already in the course, so after re-importing, check the course's rubric list and delete the old one if both are there. Import `defense/defense-rubric.csv` first as the check that Canvas takes a fourth rating group and the quoted fields.
 
 The sections below this one predate the move and name the old `.tsv` files where they record history.
 

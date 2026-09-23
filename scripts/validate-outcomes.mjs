@@ -68,6 +68,29 @@ const RUBRIC_EXCEPTIONS = new Set([
 
 const CANVAS_DEPRECATED = new Set(["_template"]);
 
+// Each rubric file is read by several checks below; parse it once.
+const rubrics = new Map();
+function readRubric(path) {
+  if (!rubrics.has(path)) {
+    rubrics.set(path, parseRubricCsv(readFileSync(path, "utf8"), path));
+  }
+  return rubrics.get(path);
+}
+
+// The filesystem, not git: Finder drops a `.DS_Store` into any folder it
+// opens, and a hook that blocks on that trains people to skip hooks. Anything
+// else that is not a rubric CSV, such as a pre-CSV `-rubric-details.tsv`,
+// would be skipped by every check here and still look like a rubric to import.
+function strayFile(dir, f) {
+  if (f.startsWith(".") || f.endsWith("-rubric.csv")) {
+    return false;
+  }
+  console.error(
+    `CANVAS ${CANVAS_DIR}/${dir}/${f}: only <name>-rubric.csv files belong in a rubric directory.`
+  );
+  return true;
+}
+
 // Outcomes evidenced outside the handbook, exempt from the individual floor.
 // L10 came only from Resume and Intent and the Career and Individual
 // Retrospective, which the co-instructor now runs entirely in Canvas, so no
@@ -228,9 +251,7 @@ for (const file of files) {
     // Tags add up across a page's rubrics: the RFC's draft and final
     // together are what the frontmatter declares.
     for (const [tag, n] of Object.entries(
-      rubricTagCounts(
-        parseRubricCsv(readFileSync(table.path, "utf8"), table.path).criteria
-      )
+      rubricTagCounts(readRubric(table.path).criteria)
     )) {
       rubricTags[tag] = (rubricTags[tag] || 0) + n;
     }
@@ -403,13 +424,15 @@ for (const dir of readdirSync(CANVAS_DIR)) {
   }
   const tags = new Set();
   for (const f of readdirSync(join(CANVAS_DIR, dir))) {
-    if (!f.endsWith("-rubric.csv")) {
+    if (strayFile(dir, f)) {
+      failed = true;
+      continue;
+    }
+    if (f.startsWith(".")) {
       continue;
     }
     const path = join(CANVAS_DIR, dir, f);
-    for (const tag of Object.keys(
-      rubricTagCounts(parseRubricCsv(readFileSync(path, "utf8"), path).criteria)
-    )) {
+    for (const tag of Object.keys(rubricTagCounts(readRubric(path).criteria))) {
       tags.add(tag);
     }
   }
@@ -571,28 +594,21 @@ const declaredCsvs = new Set(
 const rubricNames = new Map();
 for (const dir of Object.keys(CANVAS_TO_HANDBOOK)) {
   for (const f of readdirSync(join(CANVAS_DIR, dir))) {
-    // The filesystem, not git: Finder drops a `.DS_Store` into any folder it
-    // opens, and a hook that blocks on that trains people to skip hooks.
+    if (strayFile(dir, f)) {
+      failed = true;
+      continue;
+    }
     if (f.startsWith(".")) {
       continue;
     }
     const path = `${CANVAS_DIR}/${dir}/${f}`;
-    // Anything else here, such as a pre-CSV `-rubric-details.tsv`, would be
-    // skipped by every check below and still look like a rubric to import.
-    if (!f.endsWith("-rubric.csv")) {
-      console.error(
-        `CANVAS ${path}: only <name>-rubric.csv files belong in a rubric directory.`
-      );
-      failed = true;
-      continue;
-    }
     if (!declaredCsvs.has(path)) {
       console.error(
         `CANVAS ${path}: no Canvas entry on ${CANVAS_TO_HANDBOOK[dir]}.mdx uses this rubric. Declare it or delete it.`
       );
       failed = true;
     }
-    const { name } = parseRubricCsv(readFileSync(path, "utf8"), path);
+    const { name } = readRubric(path);
     if (rubricNames.has(name)) {
       console.error(
         `CANVAS ${path}: Rubric Name "${name}" is also ${rubricNames.get(name)}'s.`
@@ -663,9 +679,7 @@ for (const file of files) {
     if (!table.path) {
       continue; // already reported as RUBRIC IMPORT above
     }
-    const total = rubricTotal(
-      parseRubricCsv(readFileSync(table.path, "utf8"), table.path).criteria
-    );
+    const total = rubricTotal(readRubric(table.path).criteria);
     if (total !== 100) {
       console.error(
         `RUBRIC ${file}: ${table.path} totals ${total} points, not 100.`

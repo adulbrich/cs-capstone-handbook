@@ -42,6 +42,7 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import nodePath from "node:path";
+import { readCsvRecords } from "../src/lib/rubric-csv.mjs";
 
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
@@ -163,10 +164,11 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * students as surely as one on a page. The rest of `canvas/` and the runbook
  * keep the vocabulary check alone.
  */
+const RUBRIC_CSV_SUFFIX = "-rubric.csv";
 const BOLD_AND_OPENER_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
-  { prefix: "canvas/assignments/", suffix: "-rubric.csv" },
+  { prefix: "canvas/assignments/", suffix: RUBRIC_CSV_SUFFIX },
   { prefix: "canvas/syllabus/", suffix: ".html" },
   { prefix: "public/", suffix: ".md" },
 ];
@@ -459,6 +461,51 @@ function proseChecksFor(path) {
 }
 
 /**
+ * A rubric CSV's criteria as prose lines, one per record, fields joined. The
+ * CSV quotes every field that holds a comma, and `stripInlineCode` drops a
+ * quoted span as someone else's words, so reading raw lines hid most band
+ * descriptions from the banned-word check. A phrase quoted inside a field is
+ * still a citation and is still skipped. A file that does not parse falls
+ * back to raw lines; `validate-outcomes` reports the parse error.
+ */
+function csvProseLines(text, path) {
+  try {
+    return readCsvRecords(text, path).map(({ cells, line }) => ({
+      line,
+      prose: cells.join(" | "),
+    }));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The lines the prose checks read, as `{ line, prose }`: a rubric CSV's
+ * records, or every line outside a fenced code block.
+ */
+function proseLines(text, lines, path, proseChecks) {
+  if (proseChecks.length === 0) {
+    return [];
+  }
+  const records = path.endsWith(RUBRIC_CSV_SUFFIX)
+    ? csvProseLines(text, path)
+    : null;
+  if (records) {
+    return records;
+  }
+  const out = [];
+  let inFence = false;
+  for (const [index, line] of lines.entries()) {
+    if (FENCE.test(line)) {
+      inFence = !inFence;
+    } else if (!inFence) {
+      out.push({ line: index + 1, prose: line });
+    }
+  }
+  return out;
+}
+
+/**
  * Every hit in `text`, as `{ line, kind, snippet }`. `kind` is `em dash`,
  * `emoji`, or a vocabulary or voice message. Exported for the commit-message
  * check, which adds its own rules on top; the CLI below is the same function
@@ -471,17 +518,12 @@ export function findProseViolations(text, path) {
   if (boldAndOpenerRulesApply(path)) {
     violations.push(...openerViolations(lines, path));
   }
-  let inFence = false;
-  for (const [index, line] of lines.entries()) {
-    if (proseChecks.length > 0) {
-      if (FENCE.test(line)) {
-        inFence = !inFence;
-      } else if (!inFence) {
-        for (const check of proseChecks) {
-          violations.push(...check(line, index + 1));
-        }
-      }
+  for (const { line, prose } of proseLines(text, lines, path, proseChecks)) {
+    for (const check of proseChecks) {
+      violations.push(...check(prose, line));
     }
+  }
+  for (const [index, line] of lines.entries()) {
     if (line.includes(EMDASH) || EMDASH_ENTITY.test(line)) {
       violations.push({
         kind: "em dash",
