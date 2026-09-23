@@ -1,0 +1,37 @@
+authors:
+  - GitHub
+year: 2017
+title: Open Source Survey
+venue: opensourcesurvey.org
+kind: industry-report
+url: https://opensourcesurvey.org/2017/
+verified: full-text
+claims:
+  - claim: >-
+      GitHub designed the survey with researchers from academia, industry,
+      and the open-source community, and collected responses from 5,500
+      randomly sampled respondents from over 3,800 open-source repositories
+      on GitHub.com.
+    locator: Overview; About the survey, Design
+  - claim: >-
+      Incomplete or outdated documentation was observed as a problem by 93
+      percent of respondents, yet 60 percent of contributors said they rarely
+      or never contribute to documentation.
+    locator: Insights, Documentation is highly valued, but often overlooked
+  - claim: >-
+      64 percent said an open-source license is very important in deciding
+      whether to use a project, and 67 percent in deciding whether to
+      contribute.
+    locator: Insights, Documentation is highly valued, but often overlooked
+  - claim: >-
+      Documentation that explains a project's processes, such as contributing
+      guides and codes of conduct, is valued more by groups underrepresented
+      in open source, like women.
+    locator: Insights, Documentation helps create inclusive communities
+  - claim: >-
+      Documentation helps orient newcomers, covering how to use a project,
+      how to contribute back, the terms of use and contribution, and the
+      standards of conduct in a community; the report recommends that someone
+      who runs into a documentation issue open a pull request that improves
+      it.
+    locator: Insights, Documentation is highly valued, but often overlooked
