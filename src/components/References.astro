@@ -1,0 +1,51 @@
+---
+import {
+  citedIds,
+  href,
+  listAuthors,
+  requireSource,
+  sentence,
+} from "../lib/sources";
+
+/**
+ * References: the list of every source the page cites with `<Cite>`, in order
+ * of first citation, built from the page's own MDX body so it cannot drift
+ * from the citations.
+ *
+ * Starlight builds the table of contents from markdown headings only, so the
+ * heading lives in the MDX and this component renders the list under it:
+ *
+ *   import References from '/src/components/References.astro';
+ *
+ *   ## References
+ *
+ *   <References />
+ *
+ *   ## Additional Readings
+ *
+ * scripts/validate-sources.mjs fails a page that cites a source without this
+ * pair, or that places it after Additional Readings.
+ */
+const { entry } = Astro.locals.starlightRoute;
+if (entry.body === undefined) {
+  throw new Error(
+    `References: ${entry.filePath} has no raw body to read citations from.`
+  );
+}
+
+const sources = await Promise.all(
+  citedIds(entry.body).map((id) => requireSource(id, entry.filePath))
+);
+---
+<ul class="references">
+  {
+    sources.map((source) => (
+      <li>
+        {listAuthors(source.data.authors)} ({source.data.year}).{" "}
+        {sentence(source.data.title)} <em>{source.data.venue}</em>.
+        {source.data.kind === "preprint" ? " Preprint." : ""}{" "}
+        <a href={href(source)}>{href(source)}</a>
+      </li>
+    ))
+  }
+</ul>

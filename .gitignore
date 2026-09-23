@@ -17,4 +17,6 @@ npm-debug.log*
 # macOS-specific files
 .DS_Store
 
-data/
+# Student PII: rosters, grades, survey exports (AGENTS.md, hard rule 1).
+# Anchored to the root so src/data/sources/, the sources registry, is tracked.
+/data/

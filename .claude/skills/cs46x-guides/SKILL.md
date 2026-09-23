@@ -105,6 +105,78 @@ linking vendor docs and blog posts while the guides cited three peer-reviewed
 papers between them, two of them wrongly. The test is whether each doubtable
 claim has the right kind of support, not how many links the page carries.
 
+### Citing Evidence
+
+An Evidence claim is cited through the sources registry, not a bare link, so
+the claim, the source, and the passage that supports it sit in one file a
+reviewer can check. `npm run validate:sources` checks the mechanics; the
+reading is yours.
+
+**The registry.** One file per source, `src/data/sources/<id>.yaml`. The id is
+the first author's family name and the year, lowercase (`edmondson-1999`;
+`edmondson-1999b` for a second paper that year). One file per source rather
+than one list, because guide PRs add sources in parallel and a single file
+would conflict on every merge.
+
+```yaml
+authors:
+  - Edmondson, A.          # "Family, Initials", in the source's order
+year: 1999                 # the year only, never a full date
+title: Psychological Safety and Learning Behavior in Work Teams
+venue: Administrative Science Quarterly
+kind: peer-reviewed
+url: https://www.jstor.org/stable/2666999
+doi: 10.2307/2666999       # optional; Cite links doi.org when present
+verified: full-text        # or abstract
+claims:
+  - claim: In 51 manufacturing teams, team psychological safety was associated with learning behavior.
+    locator: Abstract      # section, page, figure, or table
+```
+
+- `kind` is one of `peer-reviewed`, `research-book`, `industry-report`, and
+  `preprint`, which are Evidence; `standard` and `documentation`, which are
+  Reference; and `essay`, which is an argument ("Fowler argues") and never
+  Evidence. An industry report is named as one in the sentence. A Reference
+  usually stays a plain link; register it only when the page states a
+  specific claim from a specific section of it.
+- `claims` lists every claim the handbook makes from the source, each with its
+  locator. A new sentence citing the source adds a claim here, or it is
+  unverified.
+- `verified` says how the claims were checked, as defined under Claims in
+  `docs/agents/voice.md`. `full-text` means someone read the passage at each
+  locator. `abstract` means only the abstract was read, and then every claim
+  must be stated in the abstract and its locator is `Abstract`. A paywalled
+  source nobody on the team can read is `abstract`, and the page says no more
+  than the abstract does.
+- A month name in a title fails `validate-dates`, which scans `src/`.
+
+**In the page.** Import both components, then cite in the sentence:
+
+```mdx
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
+
+<Cite id="edmondson-1999" /> found ...                       → Edmondson (1999)
+... in work teams <Cite id="edmondson-1999" form="parenthetical" />.  → (Edmondson, 1999)
+```
+
+Two authors render as "Smith and Jones (2020)", three or more as "Perry et
+al. (2023)", and a `preprint` gets "(preprint)" appended, so no page can cite
+one without saying so. A missing id fails the build.
+
+**References.** A page that cites puts `## References` directly above
+`## Additional Readings`, with `<References />` as the only thing under it.
+The heading lives in the MDX because Starlight's table of contents reads only
+markdown headings; the component lists every cited source in order of first
+citation. A source cited in the body leaves Additional Readings, which holds
+only what the body does not cite.
+
+`validate-sources` fails on a Cite with no registry file, a registry file
+missing a field or a locator, a registry entry no page cites, and a citing
+page without the References pair in place. It cannot tell whether the locator
+supports the claim. That is what the registry diff in the PR is for: the
+reviewer reads the claim, opens the source at the locator, and checks.
+
 ## Section Skeleton
 
 Sections in **bold** are required for every guide. Sections marked *artifact*

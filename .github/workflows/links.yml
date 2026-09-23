@@ -1,0 +1,60 @@
+# Weekly check of every external link in the pages and the sources registry.
+# starlight-links-validator covers internal links and anchors on every build;
+# nothing else looks outside the site. This runs on a schedule, not per pull
+# request, because an outside outage would otherwise fail unrelated PRs.
+#
+# A failure opens one issue, or updates the open one, rather than failing
+# silently in a run log nobody reads. Hosts that answer a bot with 403 or a
+# challenge page are listed in .lycheeignore.
+name: links
+
+on:
+  schedule:
+    # Mondays, early morning UTC.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check external links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-retries 3
+            --exclude-loopback
+            'src/content/docs/**/*.mdx'
+            'src/data/sources/*.yaml'
+          output: lychee/out.md
+          format: markdown
+          # The issue below is the failure signal, so the step itself passes.
+          fail: false
+      # Reuse the open report issue, found by its exact title, so a broken
+      # link that stays broken is one issue updated weekly, not one per week.
+      - name: Find the open link report
+        if: steps.lychee.outputs.exit_code != 0
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search 'in:title "Broken external links"' \
+            --json number,title \
+            --jq '[.[] | select(.title == "Broken external links")][0].number // empty')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+      - name: Open or update the link report
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v6
+        with:
+          title: Broken external links
+          content-filepath: lychee/out.md
+          issue-number: ${{ steps.existing.outputs.number }}
+          labels: needs-triage

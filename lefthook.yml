@@ -45,6 +45,11 @@ pre-commit:
       # both pass and the group renders in an order nobody chose.
       glob: "src/content/docs/**/*.mdx"
       run: node scripts/validate-sidebar.mjs
+    validate-sources:
+      # A cited source must be in the registry with its claims and locators,
+      # and a registry entry must be cited; either file can break the pair.
+      glob: "{src/content/docs/**/*.mdx,src/data/sources/*.yaml}"
+      run: node scripts/validate-sources.mjs
     biome:
       glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
       run: npx biome check {staged_files}
@@ -80,6 +85,8 @@ pre-push:
       run: node scripts/validate-dates.mjs
     validate-sidebar:
       run: node scripts/validate-sidebar.mjs
+    validate-sources:
+      run: node scripts/validate-sources.mjs
     test-hooks:
       run: node scripts/test-guard-git.mjs
     build:

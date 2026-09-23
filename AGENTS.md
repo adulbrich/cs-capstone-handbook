@@ -20,11 +20,14 @@ lives in `src/content/docs/**` as MDX.
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
 | `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per assignment except the two Canvas-owned ones (hard rule 4), rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
+| `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric TSV, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, and that each page renders its own TSV. Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
 | `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. Runs in CI and pre-commit. |
+| `scripts/validate-sources.mjs` | Every `<Cite id>` names a file in `src/data/sources/`, every registry entry has its claims with locators and a `verified` value and is cited by some page, and a citing page has `## References` then `<References />` before Additional Readings. Runs in CI and pre-commit. |
+| `.github/workflows/links.yml` | Weekly lychee check of external links in the pages and the sources registry; opens or updates one issue on failure. Not per PR, because an outside outage would fail unrelated PRs. |
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
@@ -36,7 +39,8 @@ lives in `src/content/docs/**` as MDX.
 
 1. **Never commit anything under `data/`.** It holds rosters, grades, and
    survey exports with student PII. A lefthook pre-commit hook and a CI step
-   both block it. Do not work around either.
+   both block it. Do not work around either. This is the root `data/` only;
+   `src/data/sources/` is the sources registry and is tracked.
 2. **Use `npm`, never `bun` or `pnpm`.** CI runs `npm ci`, which installs
    strictly from `package-lock.json`. `npm install` in CI would let the
    lockfile drift, so CI would stop testing what ships.
@@ -79,6 +83,7 @@ npm run validate:downloads
 npm run validate:dashes
 npm run validate:dates
 npm run validate:sidebar
+npm run validate:sources
 npm run check            # Biome, for anything under scripts/ or src/ that is code
 npm run check:prose      # no em dash, emoji, or glossary-rejected synonym
 npm run check:commits    # Conventional Commits over origin/main..HEAD
