@@ -6,6 +6,8 @@ sidebar:
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
 
 Read this before writing your team's agreement, and when a norm nobody agreed on starts causing friction; it gives you what the agreement covers and how to revise it.
 
@@ -22,9 +24,11 @@ A working agreement is **not a set of rules imposed from above**. It is a docume
 
 Software teams fail far more often from coordination problems than from technical ones. A team of strong individual developers can still produce poor results if they cannot agree on branching strategy, cannot resolve disagreements constructively, or cannot maintain a shared understanding of what "finished" means.
 
-Google's [Project Aristotle](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness) is the best-known attempt to measure which of these actually matters. Studying its own teams, Google found that who was on the team mattered less than how the team operated, and that the strongest single predictor was psychological safety: whether members believed they could take an interpersonal risk, such as admitting a mistake or asking an obvious question, without being penalized for it. The term comes from [Amy Edmondson's research](https://amycedmondson.com/psychological-safety/) on hospital teams, where she found that the better teams reported *more* errors, not fewer, because they were willing to. A working agreement is one of the few levers a student team has on that variable, because it decides in advance what happens when someone says they are stuck.
+Google's [Project Aristotle](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness) is the best-known attempt to measure which of these actually matters. Studying its own teams, Google found that who was on the team mattered less than how the team operated, and that the strongest single predictor was psychological safety: whether members believed they could take an interpersonal risk, such as admitting a mistake or asking an obvious question, without being penalized for it. A working agreement is one of the few levers a student team has on psychological safety, because it decides in advance what happens when someone says they're stuck.
 
-A working agreement addresses this by making implicit expectations explicit. When a team member says "I thought we agreed to review PRs within a day," the agreement is where that expectation is either confirmed or revealed as an assumption that was never actually shared.
+<Cite id="edmondson-1999" /> defined team psychological safety and, in a study of 51 manufacturing teams, found it associated with the team's learning behavior. She built that study on her earlier work with hospital patient-care teams, where members of some teams openly acknowledged a medication error and discussed how to avoid a repeat, while members of others kept it to themselves <Cite id="edmondson-1999" form="parenthetical" />. The hospital study found that the teams differed not only in how often errors happened but in how likely an error was to be detected and learned from <Cite id="edmondson-1996" form="parenthetical" />.
+
+A working agreement supports psychological safety by making implicit expectations explicit. When a team member says "I thought we agreed to review PRs within a day," the agreement is where that expectation is either confirmed or revealed as an assumption that was never actually shared.
 
 This is especially important on a capstone team, where teams form quickly, members may not know each other well, and there is no manager to set norms. The team has to define its own operating model, or one will emerge by default (and it usually will not be one anyone chose).
 
@@ -283,11 +287,15 @@ New hires at well-run companies are onboarded to these norms explicitly, not exp
 
 In academia, working agreements give instructors visibility into how the team intended to operate, which is essential context when judging teamwork at the end of a course. They also give the team itself a tool for self-correction: when something is not working, the agreement is the starting point for figuring out why.
 
+## References
+
+<References />
+
 ## Additional Readings
 
 The research on what makes teams work is better than most engineers expect, and
 it points somewhere slightly unintuitive: the composition of the team matters
-less than the norms it operates under. The first three entries are that
+less than the norms it operates under. The first two entries are that
 research. The handbooks that follow are what those norms look like when an
 organization writes them down in public and has to live with them.
 
@@ -295,7 +303,6 @@ organization writes them down in public and has to live with them.
 
 - [Understanding team effectiveness](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness), Google re:Work: the Project Aristotle findings and the instruments used to measure them.
 - [Psychological Safety](https://amycedmondson.com/psychological-safety/), Amy Edmondson: the researcher who defined the term, with her papers and talks.
-- [Psychological Safety in Learning Behavior in Work Teams](https://www.jstor.org/stable/2666999), Amy Edmondson, Administrative Science Quarterly: the 1999 paper the whole literature builds on.
 - [Working agreements play](https://www.atlassian.com/team-playbook/plays/working-agreements), Atlassian Team Playbook: a facilitated format for writing one as a team in an hour.
 - [The GitLab all-remote handbook](https://handbook.gitlab.com/handbook/company/culture/all-remote/): the most thorough public example of a working agreement at company scale.
 - [How We Communicate](https://basecamp.com/guides/how-we-communicate), Basecamp: short, opinionated communication defaults worth stealing.

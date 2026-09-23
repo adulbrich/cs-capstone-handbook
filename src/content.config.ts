@@ -1,6 +1,62 @@
 import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
+import { glob } from "astro/loaders";
+
+// The sources registry: one YAML file per cited source, named by its id
+// (`src/data/sources/edmondson-1999.yaml` is `<Cite id="edmondson-1999" />`).
+// One file per source rather than one list, because guide PRs add sources in
+// parallel and a single file would conflict on every merge. This schema fails
+// the build on a malformed entry; scripts/validate-sources.mjs mirrors it for
+// pre-commit, where `astro:content` cannot run, and adds the cross-file rules
+// (every Cite resolves, every entry is cited, no two entries cite the same,
+// References is placed). Change both together.
+const SOURCE_KINDS = [
+  "peer-reviewed",
+  "research-book",
+  "preprint",
+  "industry-report",
+  "standard",
+  "documentation",
+  "essay",
+] as const;
+
+// A string with at least one non-space character. `.min(1)` alone passes "  ".
+const NOT_BLANK = /\S/;
+const text = () => z.string().regex(NOT_BLANK, "must not be blank");
+
+const sources = defineCollection({
+  loader: glob({ base: "./src/data/sources", pattern: "*.yaml" }),
+  schema: z
+    .object({
+      // "Family, Initials", in the source's own author order.
+      authors: z.array(text()).min(1),
+      // Every claim the handbook makes from this source, with the section,
+      // page, figure, or table where the source supports it.
+      claims: z
+        .array(z.object({ claim: text(), locator: text() }).strict())
+        .min(1),
+      // A bare DOI ("10.2307/2666999"); Cite prefixes https://doi.org/.
+      doi: z
+        .string()
+        .regex(/^10\.\S+$/, "a bare DOI starting 10., not a URL")
+        .optional(),
+      kind: z.enum(SOURCE_KINDS),
+      // Tells apart two sources that would cite the same: "1999a", "1999b".
+      suffix: z
+        .string()
+        .regex(/^[a-z]$/, "one lowercase letter")
+        .optional(),
+      title: text(),
+      url: z.url({ protocol: /^https?$/ }),
+      venue: text(),
+      // How the claims were checked. A claim verified from the abstract alone
+      // must be stated in the abstract.
+      verified: z.enum(["full-text", "abstract"]),
+      year: z.number().int(),
+    })
+    .strict(),
+});
 
 export const collections = {
   docs: defineCollection({
@@ -39,4 +95,5 @@ export const collections = {
       }),
     }),
   }),
+  sources,
 };

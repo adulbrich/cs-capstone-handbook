@@ -1,0 +1,46 @@
+---
+import { citedYear, inTextAuthors } from "../lib/cite-pattern.mjs";
+import { href, requireSource } from "../lib/sources";
+
+/**
+ * Cite: an author-year citation in the sentence, linked to the source.
+ *
+ * The id is a file in the sources registry, `src/data/sources/<id>.yaml`, and
+ * a missing file fails the build. Every source a page cites is listed by
+ * `<References />` under the page's `## References` heading.
+ *
+ * Usage in MDX:
+ *
+ *   import Cite from '/src/components/Cite.astro';
+ *
+ *   <Cite id="edmondson-1999" /> found ...               Edmondson (1999)
+ *   ... in work teams <Cite id="edmondson-1999" form="parenthetical" />.
+ *                                                        (Edmondson, 1999)
+ *
+ * The year is the registry's integer year plus its optional suffix
+ * ("1999a"), never a full publication date:
+ * validate-dates flags ISO dates under src/. A preprint is marked
+ * "(preprint)" here, so no page can cite one without saying so.
+ */
+interface Props {
+  /** "narrative" (default) reads "Edmondson (1999)"; "parenthetical" reads "(Edmondson, 1999)". */
+  form?: "narrative" | "parenthetical";
+  /** The registry id: the file name under src/data/sources/ without .yaml. */
+  id: string;
+}
+
+const { id, form = "narrative" } = Astro.props;
+const source = await requireSource(
+  id,
+  "Cite",
+  Astro.locals.starlightRoute.entry.filePath
+);
+const who = inTextAuthors(source.data.authors);
+const year = citedYear(source.data.year, source.data.suffix);
+const preprint = source.data.kind === "preprint" ? " (preprint)" : "";
+const text =
+  form === "parenthetical"
+    ? `(${who}, ${year})${preprint}`
+    : `${who} (${year})${preprint}`;
+---
+<a class="cite" href={href(source)}>{text}</a>

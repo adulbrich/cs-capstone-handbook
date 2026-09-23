@@ -60,6 +60,8 @@ first column is what stops you locally; the last is what stops the merge.
 | Outcome coverage, per-term weights sum, Canvas TSV parity, assignment page shape | `pre-commit` on assignment and TSV paths; `pre-push` | | `build`: `validate-outcomes` |
 | Activity tiers, badges, the standalone rule, schedule links by week, no grading language in activities or guides | `pre-commit` on activity, assignment, guide, schedule paths; `pre-push` | | `build`: `validate-activities` |
 | Every download in `public/` has an owning page | `pre-commit`; `pre-push` | | `build`: `validate-downloads` |
+| Every `<Cite>` resolves to a registry entry with claims and locators, every entry is cited, References sits above Additional Readings | `pre-commit` on page and registry paths; `pre-push` | | `build`: `validate-sources` |
+| External links on the built site resolve | | | `links`: weekly and on dispatch, opens or updates one issue |
 | Every internal link and anchor resolves | `pre-push`: `npm run build` | | `build`: the Astro build with the links validator |
 | Never commit anything under `data/` | `pre-commit` | `guard-edits.mjs` refuses the write | `build`: tracked-files guard |
 | Branch is `<type>/<issue>-<slug>` | `pre-push` | | `build`: the PR's head branch |

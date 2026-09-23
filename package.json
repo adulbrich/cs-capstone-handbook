@@ -20,7 +20,8 @@
     "validate:dates": "node scripts/validate-dates.mjs",
     "validate:downloads": "node scripts/validate-downloads.mjs",
     "validate:outcomes": "node scripts/validate-outcomes.mjs",
-    "validate:sidebar": "node scripts/validate-sidebar.mjs"
+    "validate:sidebar": "node scripts/validate-sidebar.mjs",
+    "validate:sources": "node scripts/validate-sources.mjs"
   },
   "dependencies": {
     "@astrojs/check": "0.9.10",
@@ -44,7 +45,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.13",
     "lefthook": "^2.1.12",
-    "ultracite": "7.11.1"
+    "ultracite": "7.11.1",
+    "yaml": "^2.9.0"
   },
   "engines": {
     "node": ">=24"

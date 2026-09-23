@@ -1,0 +1,11 @@
+# Links that answer an automated check with 403 or a challenge page whatever
+# the link's state. One regular expression per line, matched against the link
+# as written, not where it redirects. Each entry is a link the weekly check
+# cannot see, so add one only after it has failed that way.
+^https?://([a-z0-9-]+\.)*medium\.com/
+^https?://([a-z0-9-]+\.)*apa\.org/
+^https?://journals\.sagepub\.com/
+# DOIs that resolve to journals.sagepub.com: SAGE's own prefix, and the
+# Administrative Science Quarterly paper registered under JSTOR's prefix.
+^https?://doi\.org/10\.1177/
+^https?://doi\.org/10\.2307/2666999$
