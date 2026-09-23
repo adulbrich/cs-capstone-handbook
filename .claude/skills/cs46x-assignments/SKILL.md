@@ -322,7 +322,8 @@ that. Two neighbours are deliberately elsewhere:
 
 Peer evaluations and project partner evaluations **are** assignments, despite
 being completed by someone other than the student: together they are 50% of
-every term's grade, and this section is the source of truth for all graded work.
+every term's grade, and this section is the source of truth for all graded work
+apart from the two Canvas-owned stubs.
 
 ## Say Each Fact Once
 
@@ -343,7 +344,9 @@ weight appears in four places that must agree:
 4. `canvas/assignments/assignment-readme.md`.
 
 The validator reconciles the first two against each other. The last two it
-cannot see.
+cannot see. The two Canvas-owned stubs have no frontmatter weight: their copy
+is the `<AssignmentMeta>` text plus the Individual Evidence row on
+`assignments/introduction.mdx`, and no validator reads either.
 
 Raising one weight means cutting another. Verify the sums with a script, not by
 eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
