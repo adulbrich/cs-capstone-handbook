@@ -52,12 +52,13 @@ output_feedback <- output_feedback[, .(RecipientEmail, Team, `Q2 Names`, `Q2 Com
 
 fwrite(output_feedback, output_feedback_filename, row.names = FALSE)
 
-# Likert scale definition
+# Likert scale: the Midterm Pulse rubric on the handbook's partner evaluation
+# page (#264). Every answer earns at least 50, like the facet anchors.
 likert_scale <- list(
-  "0"   = "Strongly disagree",
-  "25"  = "Somewhat disagree",
-  "50"  = "Neither agree nor disagree",
-  "75"  = "Somewhat agree",
+  "50"  = "Strongly disagree",
+  "70"  = "Somewhat disagree",
+  "80"  = "Neither agree nor disagree",
+  "90"  = "Somewhat agree",
   "100" = "Strongly agree"
 )
 likert_map <- setNames(
@@ -71,18 +72,21 @@ input_qualtrics[,
   (q1_numeric_cols) := lapply(.SD, function(value) likert_map[value]),
   .SDcols = q1_cols
 ]
+
+# The pulse score is the mean of the three items, out of 100. Qualtrics' own
+# SC0 score uses the survey's scoring weights, not this scale, so it is not
+# compared here.
 input_qualtrics[,
-  Q1_total := rowSums(.SD, na.rm = TRUE),
+  ProjectPartnerMidtermScore := rowMeans(.SD, na.rm = TRUE),
   .SDcols = q1_numeric_cols
 ]
 
-input_qualtrics[, SC0 := as.numeric(SC0)]
-input_qualtrics[, Score_Check := Q1_total - SC0]
+# Canvas holds the Midterm Pulse at 5 points.
+input_qualtrics[, CanvasScore := ProjectPartnerMidtermScore * 5 / 100]
 
-cat("Number of rows with score check mismatch:",
-    nrow(input_qualtrics[Score_Check != 0, ]), "\n")
-
-input_qualtrics[, ProjectPartnerMidtermScore := Q1_total / 12]
+# Teams whose partner never answered are not in this export: enter them by
+# hand at the A lower bound on the grading scale (learning-objectives/
+# grading.mdx), scaled to 5 points, never as a zero or a blank.
 
 # Prepare final output
 output <- input_qualtrics[,
@@ -90,15 +94,15 @@ output <- input_qualtrics[,
     `Responsiveness` = Q1_1_numeric,
     `Professionalism` = Q1_2_numeric,
     `Delivery Quality` = Q1_3_numeric,
-    `Total (/300)` = Q1_total,
-    `Total (/25)` = ProjectPartnerMidtermScore,
+    `Score (/100)` = ProjectPartnerMidtermScore,
+    `Canvas (/5)` = CanvasScore,
     Comment = str_c("Responsiveness", Q1_1_numeric,
                     "Professionalism", Q1_2_numeric,
                     "Delivery Quality", Q1_3_numeric,
                     "Scores out of 100.", sep = "\n")
   )
 ]
-output[`Total (/25)` == 25, Comment := ""]
+output[`Score (/100)` == 100, Comment := ""]
 setorderv(output, "Team")
 
 fwrite(output, output_score_filename, row.names = FALSE)
