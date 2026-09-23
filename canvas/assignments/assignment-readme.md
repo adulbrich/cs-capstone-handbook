@@ -32,6 +32,14 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 `sprint-note/sprint-note-rubric.csv`: the Working software evidence Pass band now says when a video may replace the live demo (a missed check-in, or a TA who could not meet) and how it is recorded (media.oregonstate.edu, unlisted, captioned, one timestamp per student). Points and tags are unchanged. Re-import it on every Sprint Notes N entry.
 
+## Re-import Required: Contribution Counts Any Accepted Work (#295)
+
+A contribution is owned work someone else accepted, wherever it lives: a merged PR, a closed issue or ticket in any tracker, an approved document. Re-import all three; points and tags are unchanged.
+
+- `sprint-note/sprint-note-rubric.csv`: the Contribution lines bands pass a line that truthfully says a student has nothing this sprint, and fail only a missing line or one whose work does not check out. Re-import on every Sprint Notes N entry.
+- `individual-contribution/individual-contribution-rubric.csv`: the bands judge owned, accepted work of any kind, not only reviewed PRs. Re-import on every Sprint Notes N: Individual Contribution entry.
+- `team-charter/team-charter-rubric.csv`: the CONTRIBUTING criterion names the contribution norm instead of the PR-per-sprint norm.
+
 ## Canvas Changes: Workshops Named and Due That Week (#285)
 
 - Rename every workshop entry to its page title: **Workshop N: Activity Name**, as the Workshop Activities page's entries table lists them (fall "Workshop 1: User Story Mapping" to "Workshop 5: Identify Success Metrics", winter three, spring one).

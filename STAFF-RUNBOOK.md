@@ -35,14 +35,14 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 
 **Challenge moves** for a team that is fine: what would you cut if you lost two weeks; which done item could the partner use today; what is the riskiest untested path; show me the deploy; who decided that, and when.
 
-**Work that is not code.** Research, user research, requirements, RFC sections, test plans: valid contributions, and they must be measurable, which means they landed in the repository as a written PR with the findings in it. "I researched auth options" with nothing to open is activity, not a result. Open the document the way you would open a PR and ask what it changed.
+**Work that is not code.** Research, user research, requirements, RFC sections, test plans: valid contributions, and they must be something you can open: the document, issue, or ticket where the findings live, in the repository or the tracker the charter names. "I researched auth options" with nothing to open is activity, not a result. Open the document the way you would open a PR and ask what it changed.
 
 **Tells.** One is a note in the record; the same one at two check-ins running is a flag.
 
 - The same artifact as last check-in, "still working on it". Nothing new since last time is no contribution this sprint, however much effort went in.
 - "We" throughout and no "I"; the student cannot say which lines are theirs.
 - A teammate drives the screen during the student's demo.
-- The owned PR is a rename, a formatter run, a lockfile bump, or a status update.
+- The owned work is a rename, a formatter run, a lockfile bump, or a status update.
 - The student cannot navigate the code or the document they claim.
 - The contribution line and the repository disagree.
 - The same top risk three sprints running, or a decision needed that never gets decided.
@@ -59,7 +59,7 @@ The rubric on the assignment page is the rule; these are the clicks that produce
 1. **Working software evidence**: the link opens and the CI run is there; or a plain statement of why nothing works. That statement is fine once; at the third consecutive sprint it is a note in the record.
 2. **What got done**: the board link opens, and each item is something you could go and look at. "Worked on X" fails the item.
 3. **Top risk and one decision needed**: one risk, one decision, with a from-whom.
-4. **Contribution lines**: one line per student. Open one owned artifact per student: it exists, it landed in the sprint window (check the merge date), and it is a real change, not mechanical. The review part names a change asked for. The shipped sentence is human-written and specific. A missing PR with an explanation on the line passes; a line whose artifact does not open, did not land this sprint, or is mechanical, with no explanation, misrepresents the sprint, and the item fails on that. The item grades whether the note is true; who contributed is the modifier's question.
+4. **Contribution lines**: one line per student. Open one owned artifact per student: it exists, it was accepted in the sprint window (check the merge or close date), and it is a real change, not mechanical. The review part names a change asked for. The shipped sentence is human-written and specific. A line that truthfully says a student has nothing this sprint, or explains a miss, passes; a line whose work does not open, was not accepted this sprint, or is mechanical misrepresents the sprint, and the item fails on that. The item grades whether the note is true; who contributed is the modifier's question.
 5. **Judgment layer**: about five lines, specific to this sprint, not last sprint's text.
 
 An item fails for the team because the note is wrong or missing. An individual's zero-work sprint goes through the modifier, which is where it is penalized and the only place.
@@ -134,11 +134,11 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 
 **Per-sprint bands.** Every deduction needs an evidence note (what was checked, what was found) so the decision is reviewable.
 
-- **Full** (default): the contribution line lists reviewed PR(s) the student owned and the repo record corroborates it; or the PR norm was missed once with an explanation in the note.
-- **Half**: some activity is visible, but no owned, reviewed PR and no explanation in the note; or the contribution line is only weakly corroborated by the repo record (trivial commits; review-only activity not agreed as that student's contribution mode in the charter).
-- **Zero**: no meaningful contribution visible anywhere for the sprint (no contribution line, no PRs, no reviews, no traceable work) and no explanation; or the contribution line is contradicted by the repo record.
+- **Full** (default): the contribution line lists one or more pieces of work the student owned that someone else accepted, and the record where they live corroborates it; or the norm was missed once with an explanation in the note.
+- **Half**: some activity is visible, but no owned, accepted work and no explanation in the note; or the contribution line is only weakly corroborated by the record (trivial changes; review-only activity not agreed as that student's contribution mode in the charter).
+- **Zero**: no meaningful contribution visible anywhere for the sprint (no contribution line, no owned work, no reviews, no traceable work) and no explanation; or the contribution line is contradicted by the record.
 
-**Evidence sources**, in the order to check them: the contribution lines in the team's sprint notes (PR titles or IDs; NDA teams list IDs only); the repository record (authored or driven PRs, review responses, merges); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which trigger the corroboration review on the partner evaluation page. Reviewed PRs are the default evidence, but any verifiable contribution counts if the charter and the sprint note make it traceable (substantial reviews, documentation, test or infrastructure work).
+**Evidence sources**, in the order to check them: the contribution lines in the team's sprint notes (links or IDs; NDA teams list IDs only); the record where the work lives (authored or driven PRs, closed issues or tickets, approved documents, review responses); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which trigger the corroboration review on the partner evaluation page. Any owned, accepted work counts where the charter says it lives and the sprint note links it; a code change is its merged PR.
 
 **Appeals.** The student is shown the evidence note, has five business days to respond with evidence, and an instructor decides. TAs flag; instructors adjudicate.
 
