@@ -28,14 +28,11 @@ claims:
       explored more files when a context file was present.
     locator: Sec. 4.3
   - claim: >-
-      Repository overviews in context files did not help agents reach the
-      files relevant to a task any sooner.
+      Context files, most of which included a repository overview, did not
+      get agents to the files relevant to a task any sooner than no context
+      file; the authors conclude context files are not effective as
+      repository overviews.
     locator: Sec. 4.3, Figure 4
-  - claim: >-
-      The authors recommend that human-written context files include only
-      instructions not already available in the codebase or README, such as
-      specific conventions or non-functional requirements.
-    locator: Sec. 1; Sec. 6
   - claim: >-
       The four pairings were Claude Code with Sonnet 4.5, Codex with GPT-5.2
       and with GPT-5.1 mini, and Qwen Code with the open-weight

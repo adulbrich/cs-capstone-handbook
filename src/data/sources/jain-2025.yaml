@@ -12,14 +12,14 @@ venue: >-
 kind: peer-reviewed
 url: https://arxiv.org/abs/2407.09726
 doi: 10.1109/ICSE-SEIP66354.2025.00027
-# The published version is paywalled; the full text read is arXiv v1, and
-# the claim uses only figures stated in its abstract.
-verified: full-text
+# The published version is paywalled; only the abstract is relied on (the
+# arXiv v1 preprint predates it), so the claim stays inside the abstract.
+verified: abstract
 claims:
   - claim: >-
-      Code models make more invalid calls to rarely seen APIs (GPT-4o made
-      valid invocations of 38.58% of low-frequency cloud APIs); retrieving
-      documentation at generation time raised that to 47.94%, but with a
-      sub-optimal retriever it cut performance on common APIs, which the
-      model already knew, by 39.02 points.
-    locator: Abstract; Sec. 1; Sec. 2.3; Sec. 3.2
+      On CloudAPIBench, code models struggled with low-frequency APIs (GPT-4o
+      achieved only 38.58% valid low-frequency API invocations);
+      documentation augmented generation raised that to 47.94%, but with
+      sub-optimal retrievers it hurt high-frequency APIs, a 39.02% absolute
+      drop.
+    locator: Abstract
