@@ -21,7 +21,7 @@ If a video replaced the live demo (a missed check-in, or a TA who could not meet
 ## 2. What Got Done
 
 Everything the team finished this sprint. Each item concrete (someone could go look at it) and consequential
-(the project is meaningfully further along). It does not have to be code; non-code work counts when it landed in the repository as a written PR someone can open. Activity without a result does not
+(the project is meaningfully further along). It does not have to be code; non-code work counts when someone can open it (the repository, an issue or ticket, your partner's system). Activity without a result does not
 belong here: "worked on the API" and "researched options" are not done things.
 
 - Board link:
@@ -39,10 +39,10 @@ The single biggest threat to your Definition of Shipped, and one concrete decisi
 ## 4. Contribution Lines
 
 One line per student, three parts:
-  (a) the PR(s) you owned this sprint, by title or ID (NDA teams: IDs only);
-  (b) whose work you reviewed and the one change you asked for, named specifically ("LGTM" is not a review);
+  (a) the work you owned this sprint, one or more pieces, each with a link or ID (NDA teams: IDs only);
+  (b) whose work you reviewed (a pull request, a spec, a document) and the one change you asked for, named specifically ("LGTM" is not a review);
   (c) one human-written sentence: the most consequential thing you shipped, and how the team knows it works.
-If a student has no PR this sprint, say why on their line. Mechanical changes (formatter runs, lockfile bumps,
+If a student has nothing this sprint, their line says so plainly, and why if there is a reason. Mechanical changes (formatter runs, lockfile bumps,
 generated files, bulk renames) are normal work but are not evidence; leave them out.
 
 **[Student 1]**
