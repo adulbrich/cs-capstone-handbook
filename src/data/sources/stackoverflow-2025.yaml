@@ -8,8 +8,8 @@ url: https://survey.stackoverflow.co/2025/ai
 verified: full-text
 claims:
   - claim: >-
-      84% of respondents were using or planning to use AI tools in their
-      development process; the survey drew 49,009 qualified responses,
-      recruited mainly through Stack Overflow's own channels, so the sample
-      skews toward active users of the site.
+      84% of the 33,662 respondents who answered the question were using or
+      planning to use AI tools in their development process; respondents
+      were recruited mainly through Stack Overflow's own channels, so the
+      sample skews toward active users of the site.
     locator: AI, 3.1 Sentiment and usage; Methodology
