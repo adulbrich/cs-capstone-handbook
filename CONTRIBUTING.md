@@ -31,7 +31,7 @@ claim it         type/slug          commit message                           rec
    `fix/192-handoff-week`; without one, `fix/handoff-week` passes too. The
    desktop app names a session's worktree branch `claude/<slug>-<hash>` before
    any hook runs, so rename it before the first push:
-   `git branch -m <type>/<issue>-<slug>`.
+   `git branch -m <type>/<slug>`.
    `scripts/check-branch-name.mjs` is the rule.
 3. **Commit by name.** Stage paths, never `git add -A`. The subject is
    Conventional Commits with a lowercase imperative:

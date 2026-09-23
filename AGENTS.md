@@ -85,8 +85,8 @@ it. Content lives in `src/content/docs/**` as MDX.
    syllabi say which source wins: Canvas, once the assignments are in it.
    Write "submit", "your submission", "the gradebook". Something that exists
    only in Canvas, such as a registration link or a published schedule, is
-   "check announcements for the link". The two Canvas-owned stubs are the
-   one place a page names Canvas.
+   "check announcements for the link". The two Canvas-owned stubs and the
+   Acknowledgments tools list are the only pages that name Canvas.
 
 ## Validation
 
