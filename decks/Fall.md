@@ -14,7 +14,7 @@ Kirsten Winters, Alex Ulbrich
 # What This Course Is
 
 - A year-long, team-based project with a real external partner
-- The goal is an **outcome** you agree with your partner: in production, merged upstream, reproducible, or in real use
+- The goal is an **outcome**: in production, merged upstream, reproducible, in real use, or another outcome you agree with your partner
 - Fall: discover, specify, walking skeleton
 - Winter: build, verify, real users
 - Spring: ship, prove, hand off
@@ -63,13 +63,11 @@ Half your grade is individually determined. Weights, weeks and policies: the han
 - **RFC**: one per term (fall, winter). A real decision your team faces. Draft, cross-team feedback, revision.
 - **Defense**: once a term, live, in your check-in. Explain what you own. AI open for explaining, closed for generating.
 
-Both are about your own project: the RFC argues a decision your team already faces, and the defense asks about code you own.
-
 ---
 
 # AI Tools
 
-- Use them, as industry teams do
+- Use them
 - **You own the result**: correctness, security, licensing.
 - **Delegate deliberately**: say what you handed to AI, what checks made that reasonable, and where you validated yourself. Graded on how well your checks fit how far you delegated, never on which tool you used.
 - Your team charter defines what may enter which tools (NDA teams especially).
