@@ -303,12 +303,12 @@ const overview = readFileSync(
 );
 const termSections = [
   ...overview.matchAll(
-    /### (Fall|Winter|Spring) Team Deliverables \(25%\)([\s\S]*?)(?=\n#{2,3} |$)/g
+    /### (Fall|Winter|Spring) Team Deliverables\n([\s\S]*?)(?=\n#{2,3} |$)/g
   ),
 ];
 if (termSections.length !== 3) {
   console.error(
-    `TERM WEIGHTS: expected 3 "### <Term> Team Deliverables (25%)" tables in introduction.mdx, found ${termSections.length}.`
+    `TERM WEIGHTS: expected 3 "### <Term> Team Deliverables" tables in introduction.mdx, found ${termSections.length}.`
   );
   failed = true;
 }

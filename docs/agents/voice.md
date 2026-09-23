@@ -180,6 +180,11 @@ have no citation duty, though they may link.
   claim about the topic's importance ("X is the backbone, the foundation, the
   fundamental unit of...") and a "Without X:" list of what goes wrong.
 - A page has no closing summary. It ends on its last useful section.
+- A heading names its section and never carries a percentage ("Midterm
+  Pulse", not "Midterm Pulse (5%)"). The number already lives where the page
+  states it (frontmatter, the meta box, a table), and a copy in a heading
+  drifts and breaks every inbound anchor when it changes. `check-prose` fails
+  a heading with `%` on a handbook page, a syllabus, or a download.
 
 ## Sentences and words
 
