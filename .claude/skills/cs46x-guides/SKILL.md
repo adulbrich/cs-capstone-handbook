@@ -16,8 +16,9 @@ your guide's kind and follow it.
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
 voice and this skill does not restate it. The short version: every claim a
-reader could doubt carries its reason, every named tool or standard carries a
-link to its authoritative source on first mention, and no em dashes.
+reader could doubt is evidence, a reference, or the instruction team's
+recommendation, and the sentence says which; every paragraph carries one idea
+and ends on information, not a punchline; and no em dashes.
 
 Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
 compression in the terminal, where the reader can ask a follow-up. That rule
@@ -79,12 +80,11 @@ it works at the level this course needs, give one concrete example, and say
 what breaks if you get it wrong. A definition without the "what breaks" is
 trivia.
 
-**Prose over lists.** Favor paragraphs. Use a list only for genuinely discrete
-parallel items, a side-by-side comparison, or an end-of-section checklist. A
-list of five bolded fragments is the most common way a guide looks finished
-while explaining nothing: the bolding carries the claim and the prose that
-would have justified it was never written. When a concept can be a flowing
-paragraph, make it one.
+**Prose for arguments, lists for things you can count.** Steps, options, and
+checklists are lists; an option list may label its pick "(Preferred)". Reasons
+are paragraphs. A list of five bolded fragments is the most common way a guide
+looks finished while explaining nothing: the bolding carries the claim and the
+prose that would have justified it was never written.
 
 **Never open a section with a list, table, code block, or component.** Lead
 with prose that says what the section covers and why it matters here.
@@ -96,15 +96,25 @@ option is the marketing the Some Truths section is supposed to prevent.
 
 ### Sourcing
 
-Link the authoritative reference the first time a concept appears in the body:
-official documentation, an RFC, a standard, a paper, the author who named the
-thing. Roughly six external links per 1,000 words is the target, measured from
-the same instructor's unaided lecture notes, which run 7.4.
+Guides owe evidence. Sort every claim a reader could doubt into the three kinds
+`docs/agents/voice.md` defines (Evidence, Reference, Recommendation) and give
+each what its kind needs:
 
-This is not decoration. An unsourced claim makes verification the reader's
-problem; a sourced one hands them the door. It is also the cheapest defense
-against a confidently wrong page, because writing the link means checking the
-claim.
+- **Evidence** cites a peer-reviewed paper, a research book, or an industry
+  report with a published method, and the citation is verified: someone read
+  the supporting passage and recorded where it is. Where research on the
+  question exists, cite it, not a blog post summarizing it.
+- **Reference** links the standard or the official documentation the first
+  time the page names the tool, format, or technique.
+- **Recommendation** reads "The instruction team recommends X, because Y."
+
+A practitioner essay is cited as an argument ("Fowler argues"). A claim that
+fits none of the three is cut.
+
+There is no link-count target. The old one (six per 1,000 words) was met by
+linking vendor docs and blog posts while the guides cited three peer-reviewed
+papers between them, two of them wrongly. The test is whether each doubtable
+claim has the right kind of support, not how many links the page carries.
 
 ## Section Skeleton
 
@@ -114,17 +124,11 @@ them only when they say something (`conflict.mdx` keeps Validation and
 Measuring Success because its signals are real). The middle flexes with the
 topic.
 
-1. **Opening (no heading).** The purpose line, then two to four paragraphs. Say what the thing is, link the
-   authoritative external reference, and state what goes wrong without it. `adr.mdx` and `requirements.mdx` both use a short bulleted list of
-   failure modes here, which works well and is worth copying:
-
-   ```md
-   Without clear ADRs:
-
-   - Teams forget why decisions were made, leading to repeated debates or mistakes.
-   - New contributors struggle to understand the rationale behind the architecture.
-   - Projects risk inconsistency, technical debt, or costly rework.
-   ```
+1. **Opening (no heading).** See [The Opener](#the-opener): the reader's
+   situation, what the page covers and does not, and the tl;dr. Then one or
+   two paragraphs that say what the thing is and link its authoritative
+   reference. Do not open on a definition of the topic's importance ("X is the
+   backbone of...") or a "Without X:" list of failure modes; both are banned.
 
 2. *Artifact:* `## What is X?` or an equivalent definition section. What the
    artifact contains, usually as a bulleted list of its parts.
@@ -156,13 +160,14 @@ topic.
    working in real life, not the artifact's own quality.
 
 8. **`## Best Practices for Writing X`.** A bulleted list of concrete,
-   actionable rules. No hedging.
+   actionable rules. No hedging on the rule; hedge only a number you are
+   estimating.
 
 9. **`## Some Truths about X`.** Required, and the section that gives these
    guides their credibility. Say the uncomfortable thing first: where the
    practice is busywork, where it goes stale, where teams reasonably skip it.
-   Then say when it genuinely does matter. A guide that only advocates is
-   marketing, and students can tell.
+   Then say when it does matter. A guide that only advocates is marketing,
+   and students can tell.
 
    **Every truth carries its reason, and a source where one exists.**
    One-sentence truths are banned. This section is where the compression
@@ -194,13 +199,31 @@ topic.
       LinkCards down the page. A guide whose practice has no activity says so
       in one line rather than leaving the group out.
 
-    This section is not a dumping ground for links already used in the body.
-    A reference cited inline stays inline; this list is where a reader goes
-    next, not a bibliography of what was already said.
+    This section holds only what the body does not already cite. A reference
+    cited inline stays inline; this list is where a reader goes next, not a
+    bibliography of what was already said.
 
-### Purpose line
+    There is no closing summary before it. The tl;dr at the top does that
+    job, for the reader who needs it, at the point where they need it.
 
-Every guide opens, after the imports and before any heading or paragraph, with one sentence under 30 words in the form "Read this when ...; it gives you ...". It is the only thing a student reads before deciding whether the page is for them now, so it names the moment and the payoff, nothing else. The guides index is exempt.
+### The Opener
+
+Every guide opens, after the imports and before any heading, with three
+things in this order. The guides index is exempt.
+
+1. **The reader's situation**, in one or two sentences: the moment they are in
+   when this page is useful. "Sooner or later someone other than you needs to
+   run your system" is a situation; "Documentation is the infrastructure of
+   knowledge transfer" is a claim about importance, and it is banned.
+2. **What the page covers and what it does not**, in a sentence or two, so a
+   reader who needs the other thing can leave.
+3. **A tl;dr**: three to seven bullets, each a concrete action or fact the
+   reader could act on without reading further. Not a table of contents, and
+   not a restatement of the situation.
+
+The old form, a one-line "Read this when ...; it gives you ..." purpose line
+followed by a "Without X:" list of failure modes, was the same template on
+every page, and it read as generated. Do not reintroduce it.
 
 ## Frontmatter
 
@@ -230,7 +253,7 @@ import { LinkCard, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/compon
 - **Aside** / `:::note`, `:::tip`, `:::caution`: short, immediate, one idea.
   Always give a title. Do not use an aside to smuggle in a section you did not
   want to write.
-- **Steps**: only for genuinely ordered procedures.
+- **Steps**: only for procedures whose order matters.
 - **Tabs**: only when instructions truly differ by platform or language.
 
 Import only what you use.
@@ -334,7 +357,7 @@ and `ai-project-setup.mdx` both came out that way (#113). If everyone who
 reads one reads the other, it is not a split, and the fix is to cut whatever
 dates fastest, which is almost always a tool catalog.
 
-Word count is a diagnostic, not a target. A page that genuinely covers several
+Word count is a diagnostic, not a target. A page that covers several
 distinct layers can sit over the line; when one does, write the reason on the
 issue that measured it rather than trimming a working section to hit a number.
 
@@ -372,7 +395,8 @@ are read for, not validated.
 The anchor pair is real: the same topic written both ways, in this repository
 and in the same instructor's CS 362 lecture notes. The constructed pairs after
 it are illustrations of the rule, not quotations. When in doubt about the
-register, read `docs/agents/voice.md` and the CS 362 lectures, not these.
+register, read the before and after pairs in `docs/agents/voice.md`, which
+are drawn from real handbook lines, not these.
 
 **The anchor: the testing pyramid, same topic, two treatments.**
 
@@ -463,9 +487,16 @@ the failure this skill exists to prevent.
    assignment page requires.
 5. Read the Some Truths section back and check that no entry is a single
    sentence and that each one says why. This is where compression re-enters.
-6. Count external links against the body's word count. Under roughly four per
-   1,000 words means the guide is asserting where it should be citing; find
-   the claims that need a source and give them one.
-7. Check the Additional Readings activity list against
+6. Sort the claims. Read the page for every sentence a reader could doubt and
+   confirm it is Evidence (cited and verified), a Reference (linked), or a
+   Recommendation ("The instruction team recommends X, because Y"). Grep for
+   the unsourced tells: `research shows`, `studies`, `most teams`, a bare
+   percentage.
+7. Run the reverse outline from `docs/agents/code-review.md` yourself before
+   the review does: one line per paragraph naming its idea and what it
+   contributes. A paragraph with no contribution is cut; a paragraph with two
+   ideas is split; a paragraph whose last sentence restates it loses that
+   sentence.
+8. Check the Additional Readings activity list against
    `src/content/docs/activities/`. An activity that exercises this practice and
    is not listed is a dead end for the reader.

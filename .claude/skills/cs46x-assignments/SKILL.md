@@ -14,9 +14,11 @@ why more of this skill is mechanical than the guide or activity skills.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice and this skill does not restate it. The short version: every claim a
-reader could doubt carries its reason, every named tool or standard carries a
-link to its authoritative source on first mention, and no em dashes.
+voice and this skill does not restate it. The short version: second person,
+"the instruction team" when the page must name the people who run the course
+(never "I", and "we" only on the audience pages), contractions except in hard
+requirements, bold only for a defined term or one critical instruction, every
+named tool or standard linked on first mention, and no em dashes.
 
 Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
 compression in the terminal, where the reader can ask a follow-up. That rule
@@ -62,6 +64,10 @@ the zero, then let the corpus tell us the rate.
 
 What does not depend on a number: a student who cannot find the standard you
 are grading against will guess at it, and then contest the grade.
+
+Assignments cite the standard they grade against and nothing else. Research
+findings belong in the guide the assignment links; on an assignment page,
+"studies show this practice works" is course-design rationale.
 
 A link is not course-design rationale and does not violate the rule below. "Use
 [conventional commits](https://www.conventionalcommits.org/)" is a

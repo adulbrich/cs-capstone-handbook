@@ -18,9 +18,10 @@ inbound anchor for no reader benefit.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice and this skill does not restate it. The short version: every claim a
-reader could doubt carries its reason, every named tool or standard carries a
-link to its authoritative source on first mention, and no em dashes.
+voice and this skill does not restate it. The short version: second person,
+never "I", contractions ("Don't skip the dry run"), bold only for a defined
+term or a step's lead-in, every named tool or standard linked on first
+mention, and no em dashes. Activities have no citation duty beyond that link.
 
 Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
 compression in the terminal, where the reader can ask a follow-up. That rule
@@ -294,7 +295,10 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 - Imperative for steps. "Compare options", not "You should compare options".
 - Short sentences, one idea each. Students read these under deadline pressure.
 - No hedging ("you might want to consider possibly"), no rule-of-three padding,
-  no "it's worth noting".
+  no "it's worth noting". Hedge a time estimate ("about an hour"), never the
+  instruction.
+- No line that restates the activity. The body ends on the "A good output
+  is..." line, which describes the artifact, and nothing follows it.
 - Do not explain concepts at length. Link to the relevant page in
   `src/content/docs/guides/` and move on. Guides explain; activities exercise.
 - **Name the paired guide.** Every activity links the guide whose practice it
