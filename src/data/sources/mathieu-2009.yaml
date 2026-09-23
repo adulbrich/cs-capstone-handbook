@@ -1,0 +1,20 @@
+authors:
+  - Mathieu, J. E.
+  - Rapp, T. L.
+year: 2009
+title: >-
+  Laying the Foundation for Successful Team Performance Trajectories: The
+  Roles of Team Charters and Performance Strategies
+venue: Journal of Applied Psychology
+kind: peer-reviewed
+url: https://psycnet.apa.org/doi/10.1037/a0013257
+doi: 10.1037/a0013257
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      In 32 teams of MBA students in a business strategy simulation, teams
+      with high-quality performance strategies outperformed teams with poorer
+      ones, and charter quality interacted with strategy quality: the highest
+      sustained performance came from teams high on both.
+    locator: Abstract

@@ -1,0 +1,16 @@
+authors:
+  - Tuckman, B. W.
+year: 1965
+title: Developmental Sequence in Small Groups
+venue: Psychological Bulletin
+kind: peer-reviewed
+url: https://psycnet.apa.org/doi/10.1037/h0022100
+doi: 10.1037/h0022100
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      A review of 50 articles on group development proposes four general
+      stages; in the social realm they are testing-dependence, conflict,
+      cohesion, and functional roles.
+    locator: Abstract

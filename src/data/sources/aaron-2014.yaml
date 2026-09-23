@@ -1,0 +1,19 @@
+authors:
+  - Aaron, J. R.
+  - McDowell, W. C.
+  - Herdman, A. O.
+year: 2014
+title: The Effects of a Team Charter on Student Team Behaviors
+venue: Journal of Education for Business
+kind: peer-reviewed
+url: https://www.tandfonline.com/doi/abs/10.1080/08832323.2013.763753
+doi: 10.1080/08832323.2013.763753
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      In business-student teams on a task requiring cooperation and
+      coordination, introducing a team charter improved process outcomes:
+      communication, effort, mutual support, cohesion, and member
+      satisfaction.
+    locator: Abstract
