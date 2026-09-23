@@ -5,8 +5,8 @@
  * mirrored in `CONTEXT.md`) rules out.
  *
  * Under `src/content/docs/` it also rejects the voice tells a pattern can see
- * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
- * every page, and the two banned openers ("Without it:" and "X is the
+ * (`docs/agents/voice.md`): the banned words, a bolded whole sentence, and a
+ * percentage in a heading on every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
  * heading. The banned words alone also reach the Canvas rubric CSVs, the
  * syllabi, and the Markdown downloads in `public/` (BANNED_WORD_PATHS),
@@ -444,6 +444,22 @@ function boldSentenceViolations(line, lineNumber) {
   ];
 }
 
+const PERCENT_HEADING = /^#{1,6}\s.*%/;
+
+/** A heading carrying a percentage; the weight lives in frontmatter (#287). */
+function percentHeadingViolations(line, lineNumber) {
+  if (!PERCENT_HEADING.test(line)) {
+    return [];
+  }
+  return [
+    hit(
+      "voice: a percentage in a heading; name the section and state the weight in the body",
+      lineNumber,
+      line
+    ),
+  ];
+}
+
 /** The line checks that read prose at `path`, and so skip fenced code. */
 function proseChecksFor(path) {
   const checks = [];
@@ -454,7 +470,7 @@ function proseChecksFor(path) {
     checks.push(bannedWordViolations);
   }
   if (boldAndOpenerRulesApply(path)) {
-    checks.push(boldSentenceViolations);
+    checks.push(boldSentenceViolations, percentHeadingViolations);
   }
   return checks;
 }
@@ -611,7 +627,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and in the rubric CSVs, syllabi, and public/ Markdown no banned word (docs/agents/voice.md).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, percentage in a heading, or banned opener, and in the rubric CSVs, syllabi, and public/ Markdown no banned word (docs/agents/voice.md).\n"
     );
     process.exit(1);
   }
