@@ -7,6 +7,10 @@
 
 **The [course handbook](https://capstone.alexulbrich.com/assignments/introduction/) is the source of truth for all graded work except the two owned in Canvas, and each rubric here is the source of truth for itself.** Since #144 the handbook page renders this directory's TSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a TSV changes both the handbook page and what the next Canvas import carries.
 
+## Re-import Required: RFC Final (#262)
+
+`rfc/rfc-final-rubric-details.tsv`: the Problem framing bands no longer require a decision that is "currently live". The decision must be real and current: still open in fall, and in winter open or recently made and still shaping the work. Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms. Import this after the #259 split if both are pending.
+
 ## Re-import Required: Sprint Note (#260)
 
 `sprint-note/sprint-note-rubric-details.tsv`: the Working software evidence Pass band now says when a video may replace the live demo (a missed check-in, or a TA who could not meet) and how it is recorded (media.oregonstate.edu, unlisted, captioned, one timestamp per student). Points and tags are unchanged. Re-import it on every Sprint Notes N entry.
