@@ -26,7 +26,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { findProseViolations, gitLines } from "./check-prose.mjs";
 
-const TYPES = [
+export const TYPES = [
   "feat",
   "fix",
   "docs",

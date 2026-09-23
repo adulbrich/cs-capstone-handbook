@@ -28,6 +28,7 @@ lives in `src/content/docs/**` as MDX.
 | `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/`, `decks/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
+| `scripts/check-branch-name.mjs` | Branch rule, `<type>/<issue>-<slug>`. Runs at `pre-push` and in CI on the PR's head branch. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule. Runs at `commit-msg`, in the `guard-git` hook, and in CI over the PR range. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
@@ -81,6 +82,7 @@ npm run validate:sidebar
 npm run check            # Biome, for anything under scripts/ or src/ that is code
 npm run check:prose      # no em dash, emoji, or glossary-rejected synonym
 npm run check:commits    # Conventional Commits over origin/main..HEAD
+npm run check:branch     # the current branch is <type>/<issue>-<slug>
 npm run test:hooks       # cases for the git guard hook
 ```
 
@@ -257,10 +259,12 @@ too when the work is prose.
 
 The rules, which the hooks under `.claude/hooks/`, `lefthook.yml`, and the
 `main` ruleset enforce (the gates table in `CONTRIBUTING.md` shows where each
-one stops you): branch
-from a fresh `origin/main`, never commit on `main`, stage by name, Conventional
-Commits with a lowercase imperative, no em dash, emoji, or session link in a
-commit message or PR text, one PR per issue, squash merge after the review loop.
+one stops you): branch from a fresh `origin/main` as `<type>/<issue>-<slug>`,
+renaming the app's `claude/` branch before the first push
+(`git branch -m <type>/<issue>-<slug>`), never commit on `main`, stage by
+name, Conventional Commits with a lowercase imperative, no em dash, emoji, or
+session link in a commit message or PR text, one PR per issue, squash merge
+after the review loop.
 
 ## Agent skills
 
