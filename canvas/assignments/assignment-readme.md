@@ -1,7 +1,7 @@
 # Assignment README
 
-- This directory holds one validated `*-rubric-details.tsv` per live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
-- `scripts/validate-outcomes.mjs` reads every TSV as the rubric: it reconciles the outcome tags in field 1 against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own assignment's TSV. Runs in CI and pre-commit.
+- This directory holds one validated `*-rubric-details.tsv` per distinct rubric of every live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), for the Canvas rubric-import browser extension, plus the extension's template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
+- `scripts/validate-outcomes.mjs` reads every TSV as the rubric: it reconciles the outcome tags in field 1 against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own TSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
 - One TSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the TSV. That list is what to create in Canvas: the page renders it for students as the Canvas assignments table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
@@ -11,7 +11,7 @@
 
 Each Canvas assignment has its own due date, late window, grade and submission, so none may hold several (`AGENTS.md` hard rule 6). The Canvas assignments table on each handbook page lists what to create. What changes from the fall course as it stood before #259:
 
-| Canvas today | Change | Rubric |
+| Canvas before #259 | Change | Rubric |
 |---|---|---|
 | RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due end of week 5, cross-team pairings assigned by staff. | Import `rfc/rfc-draft-rubric-details.tsv` (new) and `rfc/rfc-final-rubric-details.tsv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
 | Sprint Notes Individual Contributions, one 400-point entry | Delete it. Create **Sprint Notes 1: Individual Contribution** to **Sprint Notes 4: Individual Contribution**, 100 points each, in the Sprint Notes group, no submission, due with the matching note, full marks by Set Default Grade. Winter has 5, spring 3. | Import `individual-contribution/individual-contribution-rubric-details.tsv` (one criterion, Full 100 / Half 50 / Zero 0) on every one. The three per-term TSVs are deleted. |

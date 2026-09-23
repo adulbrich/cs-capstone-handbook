@@ -10,11 +10,10 @@
 
 export const TERMS = ["fall", "winter", "spring"];
 
-// Percent of the term grade the whole family carries in `term`.
-export function familyWeight(family, term) {
-  return typeof family.weight === "number"
-    ? family.weight
-    : family.weight?.[term];
+// Percent of the term grade something with a `weight` (a page, or a whole
+// family) carries in `term`: a scalar applies to every term.
+export function termWeight(item, term) {
+  return typeof item.weight === "number" ? item.weight : item.weight?.[term];
 }
 
 // One row per family per term it runs in, in term order then page order.
@@ -26,7 +25,7 @@ export function canvasRows(canvas) {
       if (!weeks) {
         continue;
       }
-      const weight = familyWeight(family, term);
+      const weight = termWeight(family, term);
       rows.push({
         each: weight / weeks.length,
         family,

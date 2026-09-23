@@ -21,7 +21,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
-import { canvasRows, familyWeight } from "../src/lib/canvas-entries.mjs";
+import { canvasRows, termWeight } from "../src/lib/canvas-entries.mjs";
 import {
   OUTCOME_TAG_RE,
   parseRubricTsv,
@@ -488,7 +488,7 @@ for (const [slug, assignment] of pages) {
   const rows = canvasRows(canvas);
   for (const term of assignment.terms) {
     const termRows = rows.filter((r) => r.term === term);
-    const pageWeight = familyWeight(assignment, term);
+    const pageWeight = termWeight(assignment, term);
     const sum = termRows.reduce((acc, r) => acc + (r.weight ?? 0), 0);
     if (termRows.length === 0) {
       console.error(`CANVAS ${file}: no Canvas entry runs in ${term}.`);
@@ -515,7 +515,7 @@ for (const [slug, assignment] of pages) {
 
   for (const row of rows) {
     const { family, term } = row;
-    if (familyWeight(family, term) === undefined) {
+    if (termWeight(family, term) === undefined) {
       console.error(
         `CANVAS ${file}: entry "${family.name}" is due in ${term} but declares no ${term} weight.`
       );
