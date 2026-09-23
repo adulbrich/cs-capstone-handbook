@@ -77,7 +77,7 @@ const CANVAS_DEPRECATED = new Set(["_template"]);
 // Retrospective, which the co-instructor now runs entirely in Canvas, so no
 // rubric here carries it (#197). A stopgap until #196 decides how L10 is
 // recorded. A handbook criterion tagged L10 still counts normally.
-const CANVAS_EVIDENCED = new Set(["L10"]);
+const CANVAS_EVIDENCED = new Map([["L10", "evidenced in Canvas, #196"]]);
 
 function parseFrontmatter(source) {
   const match = source.match(/^---\n([\s\S]*?)\n---/);
@@ -545,7 +545,7 @@ for (const outcome of OTHER_OUTCOMES) {
   if (counts[outcome] >= 1) {
     status = "ok";
   } else if (exempt) {
-    status = "exempt (evidenced in Canvas, #196)";
+    status = `exempt (${CANVAS_EVIDENCED.get(outcome)})`;
   }
   console.log(`  ${outcome}: ${counts[outcome]} ${status}`);
   for (const src of sources[outcome]) {

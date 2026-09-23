@@ -8,8 +8,9 @@ duplicate it.
 ## What this repository is
 
 The CS 461/462/463 capstone handbook: an Astro + Starlight documentation site
-that is the **source of truth for all graded work** in the course. Canvas
-mirrors it. Content lives in `src/content/docs/**` as MDX.
+that is the **source of truth for all graded work** in the course, except the
+two Canvas-owned assignments under hard rule 4. Canvas mirrors it. Content
+lives in `src/content/docs/**` as MDX.
 
 | Path | Holds |
 |---|---|
@@ -17,7 +18,7 @@ mirrors it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
-| `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per assignment, rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
+| `canvas/` | **The rubrics.** One `*-rubric-details.tsv` per assignment except the two Canvas-owned ones (hard rule 4), rendered on the handbook page and imported into Canvas by the extension, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric TSV, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, and that each page renders its own TSV. Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the no-outcome-tags, no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
@@ -221,12 +222,14 @@ assignment:
 A scalar on a page whose weight varies is now a hard failure. It used to be
 silent, and Sprint Notes and Workshop Activities were both wrong.
 
-Two places still hold weights the validator cannot see:
+Three places still hold weights the validator cannot see:
 
 1. the three syllabi,
-2. `canvas/assignments/assignment-readme.md`.
+2. `canvas/assignments/assignment-readme.md`,
+3. the `<AssignmentMeta>` text on the two Canvas-owned stubs, which carry no
+   `assignment:` block for the validator to read.
 
-Changing one weight means re-cutting another, in all four places.
+Changing one weight means re-cutting another, in every place it appears.
 
 ## Code style
 

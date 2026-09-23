@@ -5,7 +5,8 @@ description: Use when creating or editing assignment pages (MDX files in src/con
 
 # Assignment Style Guide
 
-Assignment pages are **the source of truth for all graded work in the course**.
+Assignment pages are **the source of truth for all graded work in the course**,
+except the two Canvas-owned stubs described under **Frontmatter Contract**.
 Canvas mirrors them, the syllabi mirror them, and two validators parse them. A
 mistake here propagates into student grades and accreditation evidence, which is
 why more of this skill is mechanical than the guide or activity skills.
@@ -124,15 +125,20 @@ Seven rules the validators enforce, all of which have been gotten wrong before:
    list in `validate-outcomes.mjs` (see **Rubric Rules**).
 
 A page with no `assignment:` block is skipped by the validator entirely: no
-rubric TSV, no weight, no AI-use paragraph, no outcome tags. Five pages are in
-that state deliberately. `introduction.mdx`, `term-startup.mdx`, and `expo.mdx`
-are ungraded. `resume-and-intent.mdx` and `career-retrospective.mdx` are graded
-but run entirely in Canvas under the co-instructor (#197), so each shows only
-its `<AssignmentMeta>` and "Please check the Canvas assignment."; do not
-rebuild them. A sixth needs a reason. **This is the supported shape for an ungraded item**, paired
+rubric TSV, no weight, no AI-use paragraph, no outcome tags. Four ungraded pages
+are in that state deliberately: `introduction.mdx`, `term-startup.mdx`,
+`demo-day.mdx`, and `expo.mdx`. A fifth needs a reason. **This is the supported shape for an ungraded item**, paired
 with a Canvas item at 0 points with `omit_from_final_grade`; see
 `canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
-passes Zod but keeps the block and so re-arms the rubric and AI-use checks. Not enforced, still required: the
+passes Zod but keeps the block and so re-arms the rubric and AI-use checks.
+
+Two **graded** pages share the shape for a different reason:
+`resume-and-intent.mdx` and `career-retrospective.mdx` run entirely in Canvas
+under the co-instructor (#197), at their real weights, not at 0 points. Each
+shows only its `<AssignmentMeta>` and "Please check the Canvas assignment.", and
+the Section Skeleton below does not apply to them. Do not rebuild them.
+
+Not enforced, still required: the
 three bands, criteria written as observable checks, the section order, and the
 Canvas TSV band descriptions (only the tag sets are reconciled).
 
