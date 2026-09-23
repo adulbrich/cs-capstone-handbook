@@ -1,0 +1,30 @@
+authors:
+  - Becker, J.
+  - Rush, N.
+  - Barnes, E.
+  - Rein, D.
+year: 2025
+title: >-
+  Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer
+  Productivity
+venue: arXiv (METR)
+kind: preprint
+url: https://arxiv.org/abs/2507.09089
+verified: full-text
+claims:
+  - claim: >-
+      In a randomized controlled trial run by METR, 16 experienced open-source
+      developers completed 246 tasks in mature projects on which they had an
+      average of 5 years of prior experience, with each task randomly assigned
+      to allow or disallow early-2025 AI tools. Allowing AI increased
+      completion time by 19%. Before starting, the developers forecast that AI
+      would reduce completion time by 24%; after the study, they estimated it
+      had reduced it by 20%.
+    locator: Abstract
+  - claim: >-
+      The authors caution against overgeneralizing: high developer familiarity
+      with the repositories and their size and maturity contributed to the
+      slowdown, and the results are consistent with small greenfield projects
+      or development in unfamiliar codebases seeing substantial speedup from
+      AI assistance.
+    locator: Section 4.1, Key Caveats

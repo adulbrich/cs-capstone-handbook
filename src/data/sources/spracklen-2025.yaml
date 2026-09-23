@@ -1,0 +1,27 @@
+authors:
+  - Spracklen, J.
+  - Wijewickrama, R.
+  - Sakib, A. H. M. N.
+  - Maiti, A.
+  - Viswanath, B.
+  - Jadliwala, M.
+year: 2025
+title: >-
+  We Have a Package for You! A Comprehensive Analysis of Package
+  Hallucinations by Code Generating LLMs
+venue: 34th USENIX Security Symposium
+kind: peer-reviewed
+url: https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen
+verified: full-text
+claims:
+  - claim: >-
+      Using 16 code-generating LLMs, the authors generated 576,000 Python and
+      JavaScript code samples; the average share of recommended packages that
+      did not exist was at least 5.2% for commercial models and 21.7% for
+      open-source models, with GPT-4 Turbo lowest at 3.59%.
+    locator: Abstract; Section 5.1, Prevalence of Package Hallucinations
+  - claim: >-
+      An adversary can exploit a repeated hallucination by publishing a
+      malicious package under the hallucinated name, which later users are
+      then recommended and download.
+    locator: Section 1, Introduction

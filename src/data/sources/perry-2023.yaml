@@ -1,0 +1,41 @@
+authors:
+  - Perry, N.
+  - Srivastava, M.
+  - Kumar, D.
+  - Boneh, D.
+year: 2023
+title: Do Users Write More Insecure Code with AI Assistants?
+venue: >-
+  Proceedings of the 2023 ACM SIGSAC Conference on Computer and
+  Communications Security (CCS '23)
+kind: peer-reviewed
+url: https://dl.acm.org/doi/10.1145/3576915.3623157
+doi: 10.1145/3576915.3623157
+# Read in full as arXiv 2211.03622v3, which the authors label the full
+# version of the CCS paper.
+verified: full-text
+claims:
+  - claim: >-
+      47 participants (33 with an AI assistant built on OpenAI's
+      codex-davinci-002 model, 14 without) completed five security-related
+      programming tasks in Python, JavaScript, and C. Participants with the
+      assistant wrote insecure solutions more often on four of the five tasks
+      and wrote significantly less secure code overall.
+    locator: >-
+      Abstract; Section 1, Introduction; Section 3, Methods; Section 6.2,
+      Prompt Parameters
+  - claim: >-
+      Participants with the assistant were more likely to believe they had
+      written secure code, suggesting that such tools may lead users to be
+      overconfident about security flaws in their code.
+    locator: Abstract; Section 1, Introduction
+  - claim: >-
+      The authors observed an inverse relationship between security and trust
+      in the assistant: participants with secure solutions reported less
+      trust in it than participants with insecure solutions.
+    locator: Section 5, Trust Analysis; Figure 2
+  - claim: >-
+      Participants who invested more in their queries to the assistant, such
+      as providing helper functions or adjusting parameters, were more likely
+      to eventually provide secure solutions.
+    locator: Section 8, Conclusion
