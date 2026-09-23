@@ -32,6 +32,10 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 `sprint-note/sprint-note-rubric.csv`: the Working software evidence Pass band now says when a video may replace the live demo (a missed check-in, or a TA who could not meet) and how it is recorded (media.oregonstate.edu, unlisted, captioned, one timestamp per student). Points and tags are unchanged. Re-import it on every Sprint Notes N entry.
 
+## Re-import Required: Checkpoint PDF Carries the Documents (#297)
+
+`repo-checkpoint/repo-checkpoint-rubric.csv`: the living-docs criterion now expects the documents in the PDF, matching the named commit, and its Does Not Meet band names a PDF that does not match. Points and tags are unchanged. Re-import on both Repo Checkpoint entries, and re-import this after #295 if both are pending.
+
 ## Re-import Required: Contribution Counts Any Accepted Work (#295)
 
 A contribution is owned work someone else accepted, wherever it lives: a merged PR, a closed issue or ticket in any tracker, an approved document. Re-import all four; points and tags are unchanged.
