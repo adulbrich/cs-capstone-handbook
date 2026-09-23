@@ -16,6 +16,7 @@ claims:
   - claim: >-
       Inadequate or absent learning resources topped the list of obstacles
       to learning an API, named by 50 of the 74 respondents who reported an
-      obstacle; insufficient or inadequate examples was the largest
-      subcategory, with 20 respondents.
+      obstacle; insufficient or inadequate examples was the most-named
+      resource subcategory, with 20 respondents, tied with issues in the
+      API's structural design (20) as the most-named subcategory of any kind.
     locator: p. 29, Survey Results; Table 1

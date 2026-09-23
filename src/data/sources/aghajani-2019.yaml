@@ -10,7 +10,7 @@ year: 2019
 title: Software Documentation Issues Unveiled
 venue: Proceedings of the 41st International Conference on Software Engineering (ICSE)
 kind: peer-reviewed
-url: https://ieeexplore.ieee.org/document/8811931
+url: https://emadpres.github.io/pdfs/icse2019.pdf
 doi: 10.1109/ICSE.2019.00122
 verified: full-text
 claims:
@@ -33,6 +33,11 @@ claims:
       correctness issues, and the authors recommend testing code examples as
       production code is tested.
     locator: Section IV.A, Discussion and Implications
+  - claim: >-
+      Of the correctness issues where a documentation type was labeled, code
+      examples accounted for 50 percent and installation guidelines for 20
+      percent.
+    locator: Section IV.A, Correctness
   - claim: >-
       Some projects prevented outdated documentation by adding documentation
       updates to the contribution checklist or by making a Javadoc update

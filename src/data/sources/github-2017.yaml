@@ -29,7 +29,9 @@ claims:
       in open source, like women.
     locator: Insights, Documentation helps create inclusive communities
   - claim: >-
-      Documentation helps orient newcomers, and the report recommends that
-      someone who runs into a documentation issue open a pull request that
-      improves it.
+      Documentation helps orient newcomers, covering how to use a project,
+      how to contribute back, the terms of use and contribution, and the
+      standards of conduct in a community; the report recommends that someone
+      who runs into a documentation issue open a pull request that improves
+      it.
     locator: Insights, Documentation is highly valued, but often overlooked

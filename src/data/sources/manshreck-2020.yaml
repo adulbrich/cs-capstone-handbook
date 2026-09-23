@@ -1,0 +1,41 @@
+authors:
+  - Manshreck, T.
+year: 2020
+title: Documentation
+venue: "Software Engineering at Google, edited by T. Winters, T. Manshreck, and H. Wright (O'Reilly), chapter 10"
+kind: essay
+url: https://abseil.io/resources/swe-book/html/ch10.html
+# A practitioner's account of Google's own practice, cited as the author's
+# account and never as Evidence. The whole chapter was read on abseil.io.
+verified: full-text
+claims:
+  - claim: >-
+      Documentation's benefits arrive downstream for readers rather than
+      immediately for its author, which is one reason engineers consider it
+      poor.
+    locator: Why Is Documentation Needed?
+  - claim: >-
+      Software engineers will always need to write most documentation
+      themselves, and most of the documentation an engineer at Google writes
+      takes the form of code comments.
+    locator: Introduction; What Qualifies as Documentation?
+  - claim: >-
+      Google's internal wiki had no true document owners; many documents
+      became obsolete or duplicated, with 7 to 10 documents at one point on
+      setting up Borg, only a few of them maintained, and documentation
+      quality became the number one developer complaint on Google's annual
+      developer surveys.
+    locator: Case Study, The Google Wiki
+  - claim: >-
+      When the wiki was deprecated, around 90 percent of its documents had
+      had no views or updates in the previous few months.
+    locator: Case Study, The Google Wiki, footnote 3
+  - claim: >-
+      Moving documentation under source control, with owners, canonical
+      locations, bug tracking, and code review, made the documents better.
+    locator: Case Study, The Google Wiki
+  - claim: >-
+      Google attaches freshness dates to documents, recording the owner and
+      when the document was last reviewed, and metadata sends reminders when
+      a document hasn't been touched in, for example, three months.
+    locator: Deprecating Documents
