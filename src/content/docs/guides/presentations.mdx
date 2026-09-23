@@ -19,9 +19,9 @@ Sooner or later you'll stand in front of people who need something from your wor
 - Let the person who built each piece present it, and rehearse the handoffs between speakers.
 :::
 
-Every section below serves one goal: leave the audience with an accurate understanding of what matters most, whether that's a decision they need to make, a risk they should know about, or progress they can rely on. Where two pieces of advice on this page conflict, follow the one that serves that understanding, because it's the part of the talk the audience will act on after you've left the room.
+Every section below serves one goal: leave the audience with an accurate understanding of what matters most, whether that's a decision they need to make, a risk they should know about, or progress they can rely on. When you're unsure whether something belongs in a talk, keep it only if it serves that understanding, because that's the part of the talk the audience will act on after you've left the room.
 
-Two teachers of technical communication are worth knowing by name. [Jean-luc Doumont](https://www.principiae.be/X0100.php) builds his book *Trees, Maps, and Theorems* on three laws: adapt to your audience, maximize the signal-to-noise ratio, and use effective redundancy. Patrick Winston's [How to Speak](https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/), an MIT tradition for over 40 years and [recorded in full](https://www.youtube.com/watch?v=Unzc731iCUY), treats speaking as something you improve by learning a small set of heuristic rules rather than a talent you have or lack. If you watch one thing before your next talk, make it that hour, because each rule in it comes with an example of the talk it applies to: job talks, thesis defenses, oral exams, and lectures.
+Two teachers of technical communication are worth knowing by name. Jean-luc Doumont, author of *Trees, Maps, and Theorems*, separates information (what) from a message (so what), and builds his approach to presentations on [three laws](https://www.principiae.be/pdfs/TM&Th-3.0-summary.pdf): adapt to your audience, maximize the signal-to-noise ratio, and use effective redundancy. Patrick Winston's [How to Speak](https://ocw.mit.edu/courses/res-tll-005-how-to-speak-january-iap-2018/), an MIT tradition for over 40 years and [recorded in full](https://www.youtube.com/watch?v=Unzc731iCUY), treats speaking as something you improve by learning a small set of heuristic rules rather than a talent you have or lack. If you watch one thing before your next talk, make it that hour, because each rule in it comes with an example of the talk it applies to: job talks, thesis defenses, oral exams, and lectures.
 
 ## Sprint Demos
 
@@ -30,25 +30,25 @@ A sprint demo is a live walkthrough of what the team delivered in the most recen
 A good sprint demo:
 
 - Shows the work end to end on realistic data, rather than describing what was attempted or what's planned next.
-- Shows work that meets the team's Definition of Done. If "done" means reviewed, tested, and deployed to a staging environment, run the demo on staging. If the standard for this phase only requires passing tests locally, that's fine too; the demo should reflect whatever standard the team committed to.
+- Shows work that meets the team's [Definition of Done](/guides/sprint/#definition-of-done). If "done" means reviewed, tested, and deployed to a staging environment, run the demo on staging. If the standard for this phase only requires passing tests locally, that's fine too; the demo should reflect whatever standard the team committed to.
 - Connects what was built to a requirement or acceptance criterion the audience already knows.
 - Says plainly what was descoped, delayed, or changed, and why.
 - Ends with a question for the audience: "Does this meet your expectations? What should we change?"
 
-The demo is the team's main feedback loop with the people it builds for, and it sits in the review step of the [sprint cycle](/guides/sprint/). Whoever is in the room, whether that's the person who asked for the software, a manager, or the rest of the team, run it as a conversation rather than a performance, because the feedback you need only arrives if the audience has room to give it. The difference shows in the last five minutes: a performance ends on a summary, and a conversation ends on a question you want answered.
+The demo is the team's main feedback loop with the people it builds for, and it sits in the review step of the [sprint cycle](/guides/sprint/). Whoever is in the room, whether that's the person who asked for the software, a manager, or the rest of the team, run it as a conversation rather than a performance, because the feedback you need only arrives if the audience has room to give it. Leave the last five minutes for the audience's answers, and write them down before anyone leaves, so the team plans the next sprint from the same notes.
 
 ## Stakeholder Presentations
 
 A stakeholder presentation addresses a broader audience: people who care about the project's outcome but aren't involved in the day-to-day work. That includes leadership, management, cross-functional teams, the people who fund the work, and anyone evaluating the project from the outside.
 
-Where a demo says "here's what we built this sprint", a stakeholder presentation says "here's where the project stands, how we got here, and where it's going." Effective ones tend to cover four things:
+Where a demo says "here's what we built this sprint", a stakeholder presentation says "here's where the project stands, how we got here, and where it's going." Cover four things, in this order, because each one answers the question the audience asks next:
 
 - The problem: what the project solves, and for whom. This grounds the audience before any technical content.
 - The approach: how the team decided to solve it, and which alternatives it considered and rejected. Showing the rejected options is what tells the audience the choice was deliberate.
 - The current state: what has been built, validated, or discovered so far. Show it: a working demo, a plot of real results, or a walkthrough of the running system convinces more than a summary of tasks completed.
 - What comes next: the known limitations, the risks that remain, and the plan for the next phase.
 
-At least one large company has decided that slides are the wrong medium for this altogether. In his [2017 letter to shareholders](https://www.aboutamazon.com/news/company-news/2017-letter-to-shareholders), Jeff Bezos writes that Amazon doesn't use slide presentations in its meetings. Instead, someone writes a six-page narrative memo, everyone reads it silently at the start of the meeting in what he calls a kind of "study hall", and only then does the discussion begin. He adds that a great memo takes a week or more to write, rewritten and reviewed by colleagues. You'll almost certainly be asked for slides rather than a memo, but borrow the habit anyway: write the argument as paragraphs first, check that it holds together, and only then decide which parts need a slide, because prose won't let you skip the connection between two claims the way a bullet list will.
+At least one large company has decided that slides are the wrong medium for this altogether. In his [2017 letter to shareholders](https://www.aboutamazon.com/news/company-news/2017-letter-to-shareholders), Jeff Bezos writes that Amazon doesn't use slide presentations in its meetings. Instead, someone writes a six-page narrative memo, everyone reads it silently at the start of the meeting in what he calls a kind of "study hall", and only then does the discussion begin. He adds that a great memo "might take a week or more", because it's written, reviewed by colleagues, and rewritten. You'll almost certainly be asked for slides rather than a memo, but borrow the habit anyway: write the argument as paragraphs first, check that it holds together, and only then decide which parts need a slide, because prose won't let you skip the connection between two claims the way a bullet list will.
 
 ## Design Reviews
 
@@ -67,7 +67,7 @@ What changes:
 - The demo leads. Have it running before the doors open, looping or ready to restart, and show visitors the thing working before you explain it. Don't rely on a single run-through.
 - The audience is mixed. Some visitors are deeply technical and many aren't. You need an explanation that works for both, and the running software is the part both understand.
 - You don't control the timing. Someone may walk up at any moment, so be ready to start cold.
-- Brevity is the fallback, not the plan. Many visitors will only give you a minute, so keep a 60-second pitch ready for the one who won't stop walking. It comes after the demo, not instead of it.
+- Keep a 60-second pitch ready for visitors who won't stop walking, and end it by pointing at the running demo, so the ones who stay see the work.
 
 ## Principles That Apply to Every Presentation
 
@@ -123,13 +123,13 @@ Each format needs different preparation.
 For recorded presentations:
 
 - Use a quiet room with consistent lighting.
-- Record the screen and a face camera together; seeing the speaker makes a recording easier to follow. [OBS Studio](https://obsproject.com/) is free and cross-platform, and Loom or Zoom's local recording are quicker to set up if you only need one take.
+- If you include a face camera, keep it small and in a corner, because the screen content is what the viewer needs to read. [OBS Studio](https://obsproject.com/) is free and cross-platform; [Loom](https://www.loom.com/) and [Zoom's local recording](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063640) are quicker to set up if you only need one take.
 - Edit out dead air and false starts. A viewer can skip ahead, but every skip is a moment they stopped listening.
-- Speak slightly slower than feels natural, because nerves speed most speakers up, and a recording can't slow down for a confused viewer the way you would in the room.
+- Speak slightly slower than feels natural, because a recording can't slow down for a confused viewer the way you would when you see faces in the room.
 
 For live presentations:
 
-- Practice the full run-through, including the handoffs between speakers, at least once on the setup you'll use. The [TEDx organizer guide](https://www.ted.com/tedx/organizer-guide/prepare-speakers-and-program) goes much further: its speakers rehearse for weeks or months and attend at least one dress rehearsal onstage with their slides.
+- Practice the full run-through, including the handoffs between speakers, at least once on the setup you'll use. The [TEDx organizer guide](https://www.ted.com/tedx/organizer-guide/prepare-speakers-and-program) goes much further: it tells organizers that speakers will rehearse "for weeks or months in advance", including a dress rehearsal, and should go through the talk several times onstage with their slides.
 - Confirm the technical setup (display resolution, audio, browser, microphone) on the actual machine and screen you'll use.
 - Arrive early. A problem found five minutes before you start is an emergency; the same problem found thirty minutes before is an inconvenience.
 
@@ -139,34 +139,31 @@ You don't need design expertise to make effective slides, but you do need a posi
 
 The alternative is the assertion-evidence structure, developed by Michael Alley at Penn State and documented, with templates, at [assertion-evidence.com](https://www.assertion-evidence.com/). Each slide gets a headline that states a complete sentence rather than a topic ("Latency doubles above 200 concurrent users", not "Performance"), and the body of the slide is the visual evidence for that sentence: a chart, a diagram, a screenshot. The bullets disappear because the headline carries the claim and the image carries the support. It takes longer to build, and it exposes a vague slide immediately, because a sentence headline has to say something.
 
-It's also one of the few pieces of slide advice that has been tested. Garner and Alley randomly assigned 110 engineering undergraduates to watch the same narrated presentation on MRI, with either assertion-evidence slides or slides built on PowerPoint's defaults. The assertion-evidence group wrote essays that showed better comprehension and fewer misconceptions, rated the talk as less mental effort, and scored higher on an unannounced recall test given later. On the immediate multiple-choice test the two groups did about equally well on facts; the difference showed on the questions that required inference <Cite id="garner-2013" form="parenthetical" />. That's one study, on one topic, with students as the audience, so treat the size of the effect as uncertain; the direction is the reason to try the structure.
+It's also slide advice that has been tested as a whole structure. Earlier studies had mostly tested single features of a slide, such as how dense the text was or whether an image matched it, and <Cite id="garner-2013" /> set out to test a complete template. They randomly assigned 110 engineering undergraduates, recruited from a communications course, to watch the same narrated presentation on MRI, with either assertion-evidence slides or slides built on PowerPoint's defaults. The assertion-evidence group wrote essays that showed better comprehension and fewer misconceptions, rated the talk as less mental effort, and scored higher on an unannounced recall test given later. On the immediate multiple-choice test the two groups did about equally well on facts; the difference showed on the questions that required inference <Cite id="garner-2013" form="parenthetical" />. That's one study, on one topic, with students as the audience, so treat the size of the effect as uncertain; the direction is the reason to try the structure.
 
 With that settled, the rest is mechanical:
 
 - One idea per slide. If a slide makes two separate points, split it. A headline that needs the word "and" is usually two slides.
 - Diagrams over prose. A system architecture diagram, a data-flow visualization, or an experimental workflow communicates more than three paragraphs of description, and the audience can look at it while you talk.
-- Readable type. Use at least 24pt for body text, because a slide that's readable on your laptop is often unreadable from the back of a room. Check contrast rather than trusting your monitor: the [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) of 4.5:1 for body text is the threshold to design against, and a projector in a bright room washes out colors further than any screen you tested on.
+- Readable type. Use at least 24pt for body text, because a slide that's readable on your laptop is often unreadable from the back of a room. Check contrast rather than trusting your monitor. At 24pt your text counts as large under the [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), which only requires 3:1, but design against the 4.5:1 it sets for normal-size text anyway, as a deliberate margin: a projector in a bright room washes out colors further than any screen you tested on.
 - Attribute borrowed assets. If you use an image, icon, or diagram you didn't create, include a source credit, for the same reason you'd cite a source in writing.
 
 ## Best Practices
 
-- Practice the full presentation at least once before delivering it, especially the demo.
-- Time yourself. Running well over your slot tells the audience you didn't rehearse, and it takes the time from whoever speaks next.
-- Get feedback from someone outside the team before the final delivery. They'll catch the jargon and skipped steps that the team no longer notices.
-- Don't apologize for things being "in progress." State the current state plainly and explain what comes next.
-- Know your handoffs. "I'll now hand it over to Sam, who will walk through the data pipeline" is smoother than trailing off while someone else starts unexpectedly.
+- Time yourself, because running well over your slot takes the time from whoever speaks next, and the part you rush at the end is usually the conclusion.
+- Get feedback from someone outside the team before the final delivery, because they'll catch the jargon and skipped steps the team no longer notices.
+- Name each handoff out loud ("I'll hand it over to Sam, who will walk through the data pipeline"), because it tells the audience a new section is starting and who to direct questions to.
+- Send a short written summary afterward, because the people who have to act on the talk will want the decisions and risks in writing.
 
 ## Some Truths About Presentations
 
-Most presentation advice, including some of the advice on this page, is asserted rather than tested. The assertion-evidence structure has a controlled comparison behind it <Cite id="garner-2013" form="parenthetical" />; "make eye contact" and "never read your slides" are craft advice that happens to be widely agreed on. Both can be useful, but they're different kinds of claim. On this page, a finding carries a citation, and an instruction without one is practical judgment, with its reason attached so you can weigh it.
+Craft advice and tested advice aren't the same kind of claim. "Make eye contact" and "never read your slides" are craft advice, passed on by people who teach speaking. The assertion-evidence structure has a controlled comparison behind it <Cite id="garner-2013" form="parenthetical" />, with the limits described under Slide Design. Both can be useful, but when a piece of craft advice doesn't fit your audience or your material, you have less reason to hold on to it than to the tested one.
 
 What an audience likes and what it learns from can come apart. In Garner and Alley's study, the students who saw bullet-heavy slides rated the amount of text on them as more appropriate than the assertion-evidence group rated theirs, while learning less from them <Cite id="garner-2013" form="parenthetical" />. "I liked the slides" tells you the audience was comfortable, so when you want to know whether a talk worked, ask the audience what they'd do next or how they'd explain the result to someone else.
 
-Sprint demos on a student project are a partial simulation, and everyone in the room knows it. In industry the audience controls a budget and can cancel the feature; on a student project the audience is judging how you work and has already committed to the project continuing. That changes the incentives: the full disclosure that could cost you a feature at work costs you very little here, which makes the demo a cheap place to practice a habit that's expensive to learn later. Use it that way rather than treating the demo as a performance review.
+Rehearsal is easy to skip, because it's boring and tweaking slides feels like work. The failures it prevents are specific: demos break on the machine, the adapter, the resolution, the network, and the one account whose password nobody remembers. A rehearsal on your own laptop catches almost none of those. A rehearsal on the actual machine, projected onto the actual screen, catches most of them.
 
-Rehearsal is easy to skip, because it's boring and tweaking slides feels like work. The failures it prevents are specific: demos break on the machine, the adapter, the resolution, the network, and the one account whose password nobody remembers. A rehearsal on your own laptop catches almost none of those. A rehearsal on the actual machine, projected onto the actual screen, catches most of them, which is why the recommendation above is narrower than "practice more" and why the recorded fallback exists.
-
-Disclose gaps by default, even ones you're fairly sure nobody would notice, because the costs are lopsided. "This part doesn't work yet, and here's why" costs little and shows you know where the edges of your system are. Glossing over a gap and getting caught costs much more: once one claim turns out to be wrong, the audience has a reason to doubt every other claim in the talk.
+Disclose gaps by default, even ones you're fairly sure nobody would notice, because the costs are lopsided. "This part doesn't work yet, and here's why" costs little and shows you know where the edges of your system are. Glossing over a gap and getting caught costs much more: once one claim turns out to be wrong, the audience has a reason to doubt every other claim in the talk. Build the habit in low-stakes demos, where the audience is judging how you work rather than deciding whether to fund the feature, so it's already reflexive when a budget depends on the answer.
 
 Finding presentations hard doesn't mean you're in the wrong field: being a strong engineer and being a strong presenter are separate skills. Winston's lecture rests on the premise that speaking improves when you learn specific rules and practice them, so treat the difficulty as a pointer to where your practice time should go: rehearse the talks you'd rather avoid, and ask for feedback on the delivery as well as the content.
 
@@ -174,11 +171,11 @@ Finding presentations hard doesn't mean you're in the wrong field: being a stron
 
 In industry, engineers present constantly: sprint demos, design reviews, incident postmortems, all-hands updates, sales engineering calls, and cross-team coordination meetings. Dropbox, for one, writes the skill into its published [engineering career framework](https://dropbox.github.io/dbx-career-framework/ic5_staff_software_engineer.html): Communication is among the expectations for its entry-level engineers (IC1) and its staff engineers (IC5), and at staff level the framework expects an engineer to tailor the message to the audience and present it "at the right altitude".
 
-<Cite id="begel-2008" /> observed eight recent graduates for 85 hours during their first six months as developers at Microsoft and sorted the ways they got stuck into five kinds (communication, collaboration, technical, cognition, and orientation), only one of them technical. They concluded that the graduates' degrees had prepared them well for design and development, but not as well for communication, collaboration, and orientation. On communication, the new developers sometimes went into too much detail in design meetings, at other times gave too little, and didn't push for enough detail in the answers they got back, which is the "design for your audience" problem above, observed in the field.
+<Cite id="begel-2008" /> observed eight recent graduates for 85 hours during their first six months as developers at Microsoft and sorted the ways they got stuck into five kinds (communication, collaboration, technical, cognition, and orientation), only one of them technical. They concluded that the graduates' degrees had given them adequate design and development skills, but hadn't addressed communication, collaboration, and orientation as well. On communication, the new developers sometimes went into too much detail in design meetings, at other times gave too little, and didn't push for enough detail in the answers they got back, which is the "design for your audience" problem above, observed in the field.
 
-In academia, conference talks and thesis defenses follow the same principles. A poster session has more in common with a public demo at an engineering expo than either audience might expect: short attention, mixed expertise, and a presenter who adjusts depth to whoever is asking. The assertion-evidence research itself came out of engineering education (Garner and Alley ran their study with students from a communications course for engineers), and Doumont's and Winston's teaching is aimed at researchers and academics who present for a living.
+In academia, conference talks and thesis defenses follow the same principles. A poster session has more in common with a public demo at an engineering expo than either audience might expect: short attention, mixed expertise, and a presenter who adjusts depth to whoever is asking.
 
-The two worlds differ most in what counts as evidence. An industry stakeholder wants to see the thing working; a conference audience wants to see the method and the numbers that let them judge whether it generalizes. A student project shown at a public showcase usually needs both, because the people walking past include employers who want a demo and faculty who want a method.
+The two worlds differ most in what counts as evidence. An industry stakeholder wants to see the thing working; a conference audience wants to see the method and the numbers that let them judge whether it generalizes. A project shown at a public showcase, such as a university expo or a trade fair, often needs both, because the people walking past include practitioners who want a demo and researchers who want a method.
 
 ## References
 
