@@ -28,9 +28,11 @@ claims:
       at least hashed the passwords.
     locator: Sec. 4.6, Priming vs. Non-Priming Scenario
   - claim: >-
-      Secure-storage support in the frameworks was opt-in, and the authors
-      conclude that more usable APIs are not enough when their secure methods
-      are opt-in, and that explicitly requesting security is necessary.
+      Half the participants used Spring, which contains helper classes for
+      password storage that are opt-in, and half used JSF, where they had to
+      implement storage themselves; the authors conclude that more usable
+      APIs are not enough when their secure methods are opt-in, and that
+      explicitly requesting security is necessary.
     locator: Sec. 1, Introduction (key insights)
   - claim: >-
       The participants came from one computer science environment, and the

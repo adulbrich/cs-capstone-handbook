@@ -19,17 +19,17 @@ Your system is about to take its first real users or its first real data: a logi
 - Before each deployment, confirm that debug mode is off, default credentials are changed, and CORS allows only the origins that need it.
 :::
 
-Security is the practice of building software that behaves correctly when someone is actively trying to make it misbehave. It's a property of how you design, build, and deploy the system rather than a feature you add at the end, which is why most of this page is about decisions you make early.
+Security is the practice of building software that behaves correctly when someone is actively trying to make it misbehave. It comes from design decisions, such as who may see which data, and from build and deployment habits, such as where secrets live and which ports are open. The first kind is expensive to change later; most of the second can be fixed one item at a time.
 
 ## Threat Modeling: Thinking Like an Attacker
 
-Threat modeling is analyzing a representation of your system, usually a diagram, to find what could go wrong with its security and privacy before it does. The [Threat Modeling Manifesto](https://www.threatmodelingmanifesto.org/) frames it as four questions: What are we working on? What can go wrong? What are we going to do about it? Did we do a good enough job?
+Threat modeling is analyzing a representation of your system, usually a diagram, to find what could go wrong with its security and privacy before it does. The [Threat Modeling Manifesto](https://www.threatmodelingmanifesto.org/) frames it as four questions: "What are we working on?", "What can go wrong?", "What are we going to do about it?", and "Did we do a good enough job?"
 
 You're looking for the threats that matter for your system, answered in proportion. A personal portfolio site and a healthcare data pipeline face different attackers, hold different assets, and deserve different amounts of effort.
 
 ### A Lightweight Threat Modeling Process
 
-A formal threat model, with a dedicated tool and a review board, is more than a small team needs. Aim for a version the whole team can finish in one session, because a short model that exists beats a thorough one that never gets written:
+A formal threat model, with a dedicated tool and a review board, is more than a small team needs. Aim for a version the whole team can finish in one session, because the value comes from everyone walking the same diagram, and a session that short can be rerun when the architecture changes:
 
 1. **Draw the system.** Sketch the components, the data flows between them, and the trust boundaries, where data crosses from one security context to another: from the browser to your API, or from your API to a third-party service. If you already have a [C4](https://c4model.com/) context or container diagram, start from it; the [Technical Design guide](/guides/technical-design/) covers drawing one.
 
@@ -48,7 +48,7 @@ A formal threat model, with a dedicated tool and a review board, is more than a 
    | **D**enial of Service | Can someone make the system unavailable? | Flooding an endpoint with requests, triggering expensive queries |
    | **E**levation of Privilege | Can someone gain access beyond their role? | A regular user reaching admin endpoints, path traversal to read server files |
 
-   Don't try to fill every cell. Keep the threats that are both likely and damaging for your system, because a list of forty unranked threats gets the same response as no list.
+   Don't try to fill every cell. Rank the threats by how likely and how damaging each one is for your system, and carry the top of the list into step 5, because each threat you keep needs a response and, for a mitigation, someone to build it.
 
 5. **Decide what to do about each threat.** The [OWASP Threat Modeling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html) gives four responses, from Adam Shostack:
 
@@ -91,7 +91,9 @@ Misconfiguration covers the settings left at a default or never changed for prod
 - Cloud storage buckets left publicly readable.
 - Ports or services exposed to the internet that nothing needs.
 
-Check these before every deployment:
+Each of these hands an attacker something for free: a stack trace maps your internals, a default password is one an attacker can look up, and an open bucket or port needs no exploit at all.
+
+Check these before every deployment; the [DevOps guide's deployment checklist](/guides/devops/#deployment-checklist) covers the rest of a release and points here for this part:
 
 - [ ] Debug mode is off.
 - [ ] Default passwords are changed.
@@ -112,6 +114,8 @@ cursor.execute("SELECT * FROM users WHERE email = %s", (user_input,))
 ```
 
 The same rule applies wherever input meets an interpreter: SQL queries, shell commands, LDAP queries, template engines. Never build executable code by concatenating untrusted input. Use parameterized queries, prepared statements, or APIs that handle escaping for you, as the [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html) details.
+
+Shell commands have their own order of defenses in the [OWASP OS Command Injection Defense Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html). First, call a library function instead of a command where one exists (`os.mkdir()` rather than running `mkdir`). Where you can't, use a mechanism that keeps the data separate from the command, such as passing the arguments as a list to Python's [`subprocess.run`](https://docs.python.org/3/library/subprocess.html) without `shell=True`, and validate the command and its arguments against an allowlist. The cheat sheet also lists escaping, and notes that even with escaping an attacker can still pass one argument to the command.
 
 An ORM (object-relational mapper) such as [SQLAlchemy](https://www.sqlalchemy.org/) or Django's parameterizes the queries it builds, so its standard queries are protected. Raw query methods and filters built from strings bypass that protection, and Django's documentation on [raw SQL](https://docs.djangoproject.com/en/stable/topics/db/sql/) warns you to pass user-controlled values as parameters every time you use it.
 
@@ -151,9 +155,9 @@ JWT_SECRET=your-secret-key
 
 If you've pushed a secret, rotate it first: generate a new credential and revoke the old one. GitHub's guide to [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) makes revoking or rotating the first step and says rewriting history may not be needed once the credential is dead. Rewriting history doesn't make a live credential safe: the same study recovered the full contents of commits removed with both `git filter-branch` and BFG, the two methods GitHub recommended at the time, from GitHub itself, given only the commit's hash <Cite id="meli-2019" form="parenthetical" />. Once the credential is revoked, clean the history with [git-filter-repo](https://github.com/newren/git-filter-repo) if you want the file gone, and treat that as cleanup.
 
-In deployment, keep secrets in the platform's secret store: your hosting platform's environment-variable settings, [GitHub Actions secrets](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets) for CI workflows, and a cloud secret manager such as [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) or [Google Secret Manager](https://docs.cloud.google.com/secret-manager/docs) for production systems. The [Git and GitHub guide](/guides/git-and-github/) covers `.gitignore` and the repository side.
+Outside your machine, secrets live in the platform's secret store; the [DevOps guide](/guides/devops/#environment-variables) covers where each environment keeps them, and the [Git and GitHub guide](/guides/git-and-github/) covers `.gitignore`. The security decision is to give each environment its own credentials, so a key leaked from a laptop or a CI log doesn't open production, and to give each credential only the access its environment needs.
 
-Let GitHub watch for you as well. On public repositories, [secret scanning](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning) runs automatically and for free, and when it finds a credential issued by one of GitHub's partner providers, GitHub notifies the provider so it can act, for example by revoking it. [Push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection) goes a step earlier: the version tied to your GitHub account is on by default and blocks a push that would put a recognized secret in a public repository. On a private repository, secret scanning and repository-level push protection need GitHub Secret Protection, which the free plan doesn't include, so run a pre-commit scanner such as [gitleaks](https://github.com/gitleaks/gitleaks) instead.
+Let GitHub watch for you as well. On public repositories, [secret scanning](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning) runs automatically and for free, and when it finds a credential issued by one of GitHub's partner providers, GitHub notifies the provider so it can act, for example by revoking it. [Push protection](https://docs.github.com/en/code-security/concepts/secret-security/push-protection) goes a step earlier: the version tied to your GitHub account is on by default and blocks a push that would put a recognized secret in a public repository. Private repositories are another matter. An organization's private repository gets secret scanning and repository-level push protection only with GitHub Secret Protection on a GitHub Team or Enterprise Cloud plan, and a private repository on a personal account can't get secret scanning at all outside GitHub Enterprise Cloud with Enterprise Managed Users. For a private repository without them, run a pre-commit scanner such as [gitleaks](https://github.com/gitleaks/gitleaks).
 
 ## Dependency Security
 
@@ -175,16 +179,13 @@ Read each alert before you act on it. Check whether your code reaches the vulner
 
 Every connection between your frontend and backend, and between your backend and external services, should use HTTPS. HTTPS encrypts data in transit, so nobody on the network path can read or modify it.
 
-Managed hosting platforms issue certificates for you: [Vercel](https://vercel.com/docs/domains/working-with-ssl), for example, generates one automatically for every domain you add to a project. On a virtual machine or a container, put a reverse proxy in front of the application. [Caddy](https://caddyserver.com/docs/automatic-https) serves HTTPS by default, with certificates it obtains and renews from a public certificate authority such as [Let's Encrypt](https://letsencrypt.org/), while [Nginx](https://nginx.org/) needs a separate program to obtain and renew them.
+Managed hosting platforms issue and renew certificates for you, and on a virtual machine a reverse proxy terminates HTTPS in front of the application; the [DevOps guide](/guides/devops/#deploying-to-a-vm-or-vps) covers both setups. If you run the proxy yourself, automate renewal, because an expired certificate either takes the site down or trains users to click through the browser's warning. [Caddy](https://caddyserver.com/docs/automatic-https) obtains and renews certificates from a public certificate authority such as [Let's Encrypt](https://letsencrypt.org/) by default; [Nginx](https://nginx.org/) needs its [ACME module](https://nginx.org/en/docs/http/ngx_http_acme_module.html) or a separate program that obtains certificates.
 
 Call external APIs over HTTPS as well. If a third-party API only supports plain HTTP, treat anything that passes through it as readable and modifiable by whoever sits on the network path.
 
 ## Input Validation and Output Encoding
 
-Injection and XSS share a cause: untrusted input treated as trusted code or data. The defense has two sides:
-
-- Validate input: check that incoming data matches the expected format, type, length, and range before you process it, and reject anything that doesn't. Do it on the server even if you also validate in the browser, because anyone can skip browser checks by sending requests straight to your API. Browser validation is for the user's convenience. The [OWASP Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html) covers allowlists and the cases where validation isn't enough.
-- Encode output: when you display user-supplied data, make sure it's treated as data rather than executable code. That means HTML-encoding for web pages, parameters for SQL, and escaping for shell commands.
+Injection and XSS share a cause: untrusted input treated as trusted code or data. The defense at the interpreter, parameters and output encoding, is covered under [Injection](#injection) and [Cross-Site Scripting](#cross-site-scripting-xss) above. The other defense sits where input arrives: check that incoming data matches the expected format, type, length, and range before you process it, and reject anything that doesn't. Do it on the server even if you also validate in the browser, because anyone can skip browser checks by sending requests straight to your API. The [OWASP Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html) covers allowlists and the cases where validation isn't enough.
 
 ## Security for Research and Data Projects
 
@@ -196,29 +197,29 @@ Projects that handle datasets, machine learning models, or research data have co
 
 ## Best Practices
 
-- Run a lightweight threat model when the architecture takes shape, and revisit it when the architecture changes.
 - Decide the authorization model during design, and check authorization on the server for every request.
 - Never commit secrets. Set up environment variables and `.gitignore` before the first commit, and rotate any secret that reaches a remote.
-- Use your framework's defaults for session handling, password storage, cookie flags, and CSRF protection. If you need to deviate, record why in an [ADR](/guides/adr/) so the next person can evaluate it.
-- Use established libraries and services for authentication rather than your own code.
-- Validate all input on the server.
+- Use your framework's authentication or a managed service, and keep the framework's defaults for session handling, password storage, cookie flags, and protection against cross-site request forgery ([CSRF](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html), where another site makes a logged-in user's browser send a request the user didn't intend). If you need to deviate, record why in an [ADR](/guides/adr/) so the next person can evaluate it.
+- Validate all input on the server, because a browser check is skipped by anyone who calls the API directly.
 - Turn on Dependabot alerts and triage them as they arrive. Keep push protection on, and add a pre-commit secret scanner where GitHub's secret scanning isn't available.
-- Check the OWASP Top 10 against your system before each major deployment.
-- Use HTTPS for all network communication.
+- Check the OWASP Top 10 against your system before each major deployment, because each new feature can add an entry point the last check never saw.
+- Use HTTPS for all network communication, including calls between your own services, because any hop left in plain HTTP can be read or changed by whoever sits on that network path.
 - Apply least privilege: give users, services, and API keys only the access they need, so a stolen key or a compromised account can do as little as possible.
 - Log security-relevant events (failed logins, denied access, rejected input) so you can spot suspicious behavior; the [OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) lists what to record and what to keep out of logs.
 
 ## Some Truths About Security
 
-The threats most likely to hurt your project are boring. The [CWE Top 25](https://cwe.mitre.org/top25/) for 2025, which MITRE ranks from the weaknesses behind 39,080 published vulnerability records, opens with cross-site scripting, SQL injection, cross-site request forgery, and missing authorization, and the OWASP Top 10 opens with broken access control and misconfiguration. None of these needs a clever attacker, and OWASP publishes a cheat sheet on preventing each of the first four. Read one of the two lists carefully before you spend an afternoon on anything exotic, such as implementing cryptography yourself.
+For some systems a threat model is busywork, and it's reasonable to skip it. A static site with no login, no user data, and no server-side code has little to model: its assets are the content and the credentials that deploy it, and the hosting platform runs everything else. Spend that session on the deploy key and the dependency alerts instead. The model earns its time once the system holds accounts, personal data, or payments, or calls another service on a user's behalf, because each of those adds a trust boundary that someone can try to cross.
 
-Treating security as all or nothing leads to a specific failure: a team decides it can't really secure a small project, and so does nothing, trusting that nobody knows the system exists. That protects nothing. <Cite id="durumeric-2013" /> built an open-source scanner that surveys the entire IPv4 address space in under 45 minutes from a single machine. Nobody has to know your system exists: a database or an admin panel on a public address is found by whoever scans for its port. You won't make your project unbreakable, but changed default credentials, closed ports, and authentication on every endpoint shut the doors that kind of scanning finds, and they're within reach of any team.
+The [CWE Top 25](https://cwe.mitre.org/top25/) for 2025, which MITRE ranks from the weaknesses behind 39,080 published vulnerability records, opens with cross-site scripting, SQL injection, cross-site request forgery, and missing authorization, and the OWASP Top 10 opens with broken access control and misconfiguration. None of these needs a clever attacker, and OWASP publishes a cheat sheet on preventing each of the first four. Read one of the two lists carefully before you spend an afternoon on anything exotic, such as implementing cryptography yourself.
+
+Treating security as all or nothing leads to a specific failure: a team decides it can't really secure a small project, and so does nothing, trusting that nobody knows the system exists. <Cite id="durumeric-2013" /> built an open-source scanner that surveys the entire IPv4 address space in under 45 minutes from a single machine. Nobody has to know your system exists: a database or an admin panel on a public address is found by whoever scans for its port. You won't make your project unbreakable, but changed default credentials, closed ports, and authentication on every endpoint shut the doors that kind of scanning finds, and they're within reach of any team.
 
 Most fixes on this page can be applied late, one at a time. Authorization is the exception. Retrofitting authentication and access control into a system that assumed neither means revisiting every data path, because the question "who may see this row?" has to be answered in every query, endpoint, and view at once. Decide your authorization model during design, before the organization you're building for asks whether volunteers can see each other's details.
 
-Knowing that passwords must be hashed doesn't mean your code will hash them. <Cite id="naiakshina-2017" /> asked 20 computer science students to add registration and authentication to a social networking application. None of the 10 who weren't told to store passwords securely did so, while 7 of the 10 who were told at least hashed them. The frameworks' secure-storage support was opt-in, and the authors conclude that opt-in support isn't enough and that developers need to be asked for security explicitly. The study is small and its authors claim no generalizability, but the practical response is cheap: prefer the path where secure storage is already on (your framework's built-in authentication, a managed provider), and when it isn't, write the security requirement into the task so nobody has to remember it.
+Knowing that passwords must be hashed doesn't mean your code will hash them. <Cite id="naiakshina-2017" /> asked 20 computer science students to add registration and authentication to a social networking application. None of the 10 who weren't told to store passwords securely did so, while 7 of the 10 who were told at least hashed them. Half the participants used the Spring framework, whose password-storage helpers were opt-in, and half used JSF, where they had to implement storage themselves; the authors conclude that easier APIs aren't enough while their secure methods are opt-in, and that developers need to be asked for security explicitly. The study is small and its authors claim no generalizability, but the practical response is cheap: prefer the path where secure storage is already on (your framework's built-in authentication, a managed provider), and when it isn't, write the security requirement into the task so nobody has to remember it.
 
-Experience doesn't stop credentials from leaking either. <Cite id="meli-2019" /> compared the repositories that leaked secrets with a random sample of about 100,000 others and found that neither repository activity nor contributor experience was strongly correlated with leakage. One of their case studies was a set of AWS credentials for a major government agency's website, committed by a developer who claims nearly 10 years of experience. Since care alone doesn't prevent it, put the check in the tooling: a `.gitignore` entry for every secrets file before the first commit, push protection or a pre-commit scanner, and a rotation you've walked through once, so the first real leak isn't the first time anyone tries it.
+Experience doesn't stop credentials from leaking either. <Cite id="meli-2019" /> compared the repositories that leaked secrets with a random sample of about 100,000 others and found that neither repository activity nor contributor experience was strongly correlated with leakage. One of their case studies was a set of AWS credentials for a major government agency's website, committed by a developer who claims nearly 10 years of experience. Since experience doesn't prevent it, put the check in the tooling: a `.gitignore` entry for every secrets file before the first commit, push protection or a pre-commit scanner, and a rotation you've walked through once, so the first real leak isn't the first time anyone tries it.
 
 ## Security in Industry and Academia
 
