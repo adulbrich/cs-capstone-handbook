@@ -1,0 +1,36 @@
+authors:
+  - Keiser, N. L.
+  - Arthur, W.
+year: 2021
+title: >-
+  A Meta-Analysis of the Effectiveness of the After-Action Review (or
+  Debrief) and Factors That Influence Its Effectiveness
+venue: Journal of Applied Psychology
+kind: peer-reviewed
+url: https://psycnet.apa.org/doi/10.1037/apl0000821
+doi: 10.1037/apl0000821
+# Closed access; only the abstract (PubMed 32852990) was read, so the claims
+# stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Across 61 studies, the after-action review improved training outcomes
+      by an overall d of 0.79; alignment to the individual or the team and
+      objective performance review media consistently contributed to its
+      effectiveness.
+    locator: Abstract
+  - claim: >-
+      The effects of the other characteristics were often interactive: the
+      most effective combinations were self-led facilitation with a
+      team-aligned review, and self-led facilitation with objective media.
+    locator: Abstract
+  - claim: >-
+      A highly structured review was more effective than a less structured
+      one in the military, while the two were comparably effective in
+      healthcare.
+    locator: Abstract
+  - claim: >-
+      The authors conclude that the effectiveness of the after-action review
+      should be understood as a function of the combined influence of
+      multiple interacting characteristics.
+    locator: Abstract

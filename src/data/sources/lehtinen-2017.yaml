@@ -1,0 +1,42 @@
+authors:
+  - Lehtinen, T. O. A.
+  - Itkonen, J.
+  - Lassenius, C.
+year: 2017
+title: >-
+  Recurring Opinions or Productive Improvements: What Agile Teams Actually
+  Discuss in Retrospectives
+venue: Empirical Software Engineering
+kind: peer-reviewed
+url: https://link.springer.com/article/10.1007/s10664-016-9464-2
+doi: 10.1007/s10664-016-9464-2
+verified: full-text
+claims:
+  - claim: >-
+      A longitudinal case study of 37 team-level retrospectives over almost
+      three years in a large, distributed agile software organization.
+    locator: Abstract
+  - claim: >-
+      Certain discussion topics recurred over a long period of time.
+    locator: Abstract
+  - claim: >-
+      The tangible outcomes of retrospectives have received little research
+      attention, despite their widespread use.
+    locator: Section 1, p. 2410
+  - claim: >-
+      Retrospective discussions of estimation accuracy contradicted the
+      estimation data in the task repository, and despite many repeated
+      discussions and corrective actions, estimation accuracy did not
+      improve.
+    locator: Section 4.4.3, p. 2443
+  - claim: >-
+      The authors propose bringing fact-based evidence into the
+      retrospective; in the case organization, bug data would have been
+      readily available but was not used.
+    locator: Section 5.1, p. 2445
+  - claim: >-
+      The authors hypothesize that a team's improvement proposals for issues
+      beyond its control, or too complex to resolve at team level, tend to
+      remain ineffective, and that recurring discussions are a potential
+      sign of waste.
+    locator: Section 5.1, Table 12, p. 2445

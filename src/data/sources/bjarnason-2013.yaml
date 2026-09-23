@@ -1,0 +1,29 @@
+authors:
+  - Bjarnason, E.
+  - Hess, A.
+  - Doerr, J.
+  - Regnell, B.
+year: 2013
+title: >-
+  Variations on the Evidence-Based Timeline Retrospective Method: A
+  Comparison of Two Cases
+venue: >-
+  39th Euromicro Conference on Software Engineering and Advanced
+  Applications (SEAA)
+kind: peer-reviewed
+url: https://lup.lub.lu.se/search/files/6230761/4285901.pdf
+doi: 10.1109/SEAA.2013.39
+verified: full-text
+claims:
+  - claim: >-
+      Retrospective reflections based purely on experience may lead to
+      incorrect conclusions; the evidence-based timeline retrospective
+      mitigates this with a pre-generated timeline of project history built
+      from evidence rather than memory.
+    locator: Abstract
+  - claim: >-
+      In Kerth's method the timeline is produced at the meeting by the
+      participants; the evidence-based method instead prepares it beforehand
+      from time-stamped evidence in various systems, which saves meeting
+      time and provides objective information.
+    locator: Section II
