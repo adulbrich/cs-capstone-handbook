@@ -651,6 +651,10 @@ if (!failed) {
 const DELIVERABLE_HEADING_RE =
   /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
+// Every page with Canvas entries says what to hand in under this heading, and
+// a submission format lives there, never in a heading (#288).
+const WHAT_YOU_SUBMIT_RE = /^#{2,3} What You Submit$/m;
+const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/im;
 const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
 
 for (const file of files) {
@@ -681,6 +685,21 @@ for (const file of files) {
     }
   } else {
     console.error(`META ${file}: no <AssignmentMeta weight="..."> found.`);
+    failed = true;
+  }
+
+  // Every page with Canvas entries says what to hand in.
+  if (assignment.canvas && !WHAT_YOU_SUBMIT_RE.test(body)) {
+    console.error(
+      `SUBMIT ${file}: has Canvas entries but no "What You Submit" heading saying what to hand in.`
+    );
+    failed = true;
+  }
+  const formatHeading = body.match(FORMAT_HEADING_RE);
+  if (formatHeading) {
+    console.error(
+      `SUBMIT ${file}: the heading "${formatHeading[0]}" carries a submission format; state it under "What You Submit" instead.`
+    );
     failed = true;
   }
 
