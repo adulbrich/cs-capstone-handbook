@@ -16,7 +16,7 @@ pick up          branch             commit                push               pul
 GitHub issue     fetch, then        lefthook:             lefthook:          build and audit       squash
 ready-for-*      branch from        prose, branch,        five validators    required (ruleset)    one PR,
 p0/p1/p2         origin/main        validators, biome,    and the build      review loop           one issue
-claim it         docs/ feat/ ...    commit message                           recorded in the PR
+claim it         type/issue-slug    commit message                           recorded in the PR
 ```
 
 1. **Pick up an issue.** The queue is `ready-for-agent` or `ready-for-human`,
@@ -26,8 +26,11 @@ claim it         docs/ feat/ ...    commit message                           rec
    Labels are explained in `docs/agents/triage-labels.md`; the tracker
    mechanics in `docs/agents/issue-tracker.md`.
 2. **Branch from a fresh `origin/main`.** `git fetch origin main` first.
-   Prefix the branch with the commit type: `docs/`, `feat/`, `fix/`, `chore/`,
-   `ci/`.
+   Name it `<type>/<issue>-<slug>`: the commit type, the issue it closes, and
+   a few lowercase words, as in `fix/192-handoff-week`. The desktop app names
+   a session's worktree branch `claude/<slug>-<hash>` before any hook runs, so
+   rename it before the first push: `git branch -m feat/<issue>-<slug>`.
+   `scripts/check-branch-name.mjs` is the rule.
 3. **Commit by name.** Stage paths, never `git add -A`. The subject is
    Conventional Commits with a lowercase imperative:
    `docs(assignments): state the sprint-note due day once`. No em dash, no
@@ -59,6 +62,7 @@ first column is what stops you locally; the last is what stops the merge.
 | Every download in `public/` has an owning page | `pre-commit`; `pre-push` | | `build`: `validate-downloads` |
 | Every internal link and anchor resolves | `pre-push`: `npm run build` | | `build`: the Astro build with the links validator |
 | Never commit anything under `data/` | `pre-commit` | `guard-edits.mjs` refuses the write | `build`: tracked-files guard |
+| Branch is `<type>/<issue>-<slug>` | `pre-push` | | `build`: the PR's head branch |
 | Stage by name; never commit on `main` | `pre-commit` branch check | `guard-git.mjs` | ruleset: pull request required |
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
