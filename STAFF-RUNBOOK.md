@@ -44,7 +44,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 - A teammate drives the screen during the student's demo.
 - The owned work is a rename, a formatter run, a lockfile bump, or a status update.
 - The student cannot navigate the code or the document they claim.
-- The contribution line and the repository disagree.
+- The contribution line and the record where the work lives disagree.
 - The same top risk three sprints running, or a decision needed that never gets decided.
 - The judgment layer reads like last sprint's.
 
@@ -59,7 +59,7 @@ The rubric on the assignment page is the rule; these are the clicks that produce
 1. **Working software evidence**: the link opens and the CI run is there; or a plain statement of why nothing works. That statement is fine once; at the third consecutive sprint it is a note in the record.
 2. **What got done**: the board link opens, and each item is something you could go and look at. "Worked on X" fails the item.
 3. **Top risk and one decision needed**: one risk, one decision, with a from-whom.
-4. **Contribution lines**: one line per student. Open one owned artifact per student: it exists, it was accepted in the sprint window (check the merge or close date), and it is a real change, not mechanical. The review part names a change asked for. The shipped sentence is human-written and specific. A line that truthfully says a student has nothing this sprint, or explains a miss, passes; work in a system you cannot open is verified at the check-in demo. A line missing one of its three parts, or whose work does not check out (does not open and was not verified at the demo, was not accepted this sprint, or is mechanical), misrepresents the sprint, and the item fails on that. The item grades whether the note is true; who contributed is the modifier's question.
+4. **Contribution lines**: one line per student. Open one owned artifact per student: it exists, it was accepted in the sprint window (check the merge or close date), and it is a real change, not mechanical. The review part names a change asked for. The shipped sentence is human-written and specific. A line that truthfully says a student has nothing this sprint needs no other part and passes, as does a line that explains a miss; work in a system you cannot open is verified at the check-in demo. Any other line missing one of its three parts, or whose work does not check out (does not open and was not verified at the demo, was not accepted this sprint, or is mechanical), misrepresents the sprint, and the item fails on that. The item grades whether the note is true; who contributed is the modifier's question.
 5. **Judgment layer**: about five lines, specific to this sprint, not last sprint's text.
 
 An item fails for the team because the note is wrong or missing. An individual's zero-work sprint goes through the modifier, which is where it is penalized and the only place.
