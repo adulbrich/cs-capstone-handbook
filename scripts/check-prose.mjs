@@ -304,20 +304,25 @@ function openingHits(lines, path) {
   }
   let inFence = false;
   for (const [index, line] of lines.entries()) {
+    // Fence state first: a "## " line inside a code block is not the
+    // page's first section heading.
+    if (FENCE.test(line)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) {
+      continue;
+    }
     if (line.startsWith("## ")) {
       break;
     }
-    if (FENCE.test(line)) {
-      inFence = !inFence;
-    } else if (!inFence) {
-      const prose = stripInlineCode(line);
-      for (const rule of BANNED_OPENERS.filter((r) => r.avoid.test(prose))) {
-        hits.push({
-          kind: `voice: a banned opener; ${rule.use}`,
-          line: index + 1,
-          snippet: line.trim(),
-        });
-      }
+    const prose = stripInlineCode(line);
+    for (const rule of BANNED_OPENERS.filter((r) => r.avoid.test(prose))) {
+      hits.push({
+        kind: `voice: a banned opener; ${rule.use}`,
+        line: index + 1,
+        snippet: line.trim(),
+      });
     }
   }
   return hits;
