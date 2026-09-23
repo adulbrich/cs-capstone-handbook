@@ -35,7 +35,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 
 **Challenge moves** for a team that is fine: what would you cut if you lost two weeks; which done item could the partner use today; what is the riskiest untested path; show me the deploy; who decided that, and when.
 
-**Work that is not code.** Research, user research, requirements, RFC sections, test plans: valid contributions, and they must be something you can open: the document, issue, or ticket where the findings live, in the repository or the tracker the charter names. "I researched auth options" with nothing to open is activity, not a result. Open the document the way you would open a PR and ask what it changed.
+**Work that is not code.** Research, user research, requirements, RFC sections, test plans: valid contributions, and they must be something you can open: the document, issue, or ticket where the findings live, in the repository or the tracker `CONTRIBUTING.md` names. "I researched auth options" with nothing to open is activity, not a result. Open the document the way you would open a PR and ask what it changed.
 
 **Tells.** One is a note in the record; the same one at two check-ins running is a flag.
 

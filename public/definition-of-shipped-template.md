@@ -1,5 +1,3 @@
-<!-- docs/shipped.md -->
-
 # Definition of Shipped: [Project Name]
 
 <!-- 1 to 2 pages. This is a contract with your project partner about what "shipped"

@@ -20,6 +20,18 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below this one predate the move and name the old `.tsv` files where they record history.
 
+## Re-import Required: Only Agent-Useful Documents in the Repository (#302)
+
+The project repository now keeps only the living docs (requirements, design, decision records, risks, README, CONTRIBUTING, the AI context file). The charter, retrospectives, handoff document, Definition of Shipped, and inherited-codebase audit live elsewhere and are still submitted as one PDF; a postmortem is in the repository only when the incident is technical. The Definition of Done and the Contribution Norm moved from the charter to `CONTRIBUTING.md`. Points and tags are unchanged. Re-import all six, after any earlier re-import of the same file:
+
+- `team-charter/team-charter-rubric.csv`: the Definition of Done is judged in `CONTRIBUTING.md`.
+- `repo-checkpoint/repo-checkpoint-rubric.csv`: traceability reads where `CONTRIBUTING.md`, not the charter, says work lives. Re-import on both Repo Checkpoint entries.
+- `definition-of-shipped/definition-of-shipped-rubric.csv`, `incident-postmortem/incident-postmortem-rubric.csv`: the writing criterion no longer names a repository path.
+- `spring-release/spring-release-rubric.csv`: metrics match the Definition of Shipped, not `docs/shipped.md`.
+- `project-handoff/project-handoff-rubric.csv`: three living docs, not four.
+
+Re-paste the bodies of Team Charter, Repo Checkpoints, Definition of Shipped, Release and Metrics, Project Handoff, Incident Postmortem, Term Retrospective, Project Retrospective, Workshop Activities, and Sprint Notes.
+
 ## Canvas Changes: Survey Entries at 100 Points, with Rubrics (#300)
 
 The four survey entries each term now have rubrics. Each entry is 100 points in a group of its own, as the RFC split did, so a group's weight is its entry's weight.
