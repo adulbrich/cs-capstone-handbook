@@ -251,11 +251,12 @@ too when the work is prose.
 
 The rules, which the hooks under `.claude/hooks/`, `lefthook.yml`, and the
 `main` ruleset enforce (the gates table in `CONTRIBUTING.md` shows where each
-one stops you): branch
-from a fresh `origin/main` as `<type>/<issue>-<slug>`, renaming the app's
-`claude/` branch before the first push (`git branch -m <type>/<issue>-<slug>`), never commit on `main`, stage by name, Conventional
-Commits with a lowercase imperative, no em dash, emoji, or session link in a
-commit message or PR text, one PR per issue, squash merge after the review loop.
+one stops you): branch from a fresh `origin/main` as `<type>/<issue>-<slug>`,
+renaming the app's `claude/` branch before the first push
+(`git branch -m <type>/<issue>-<slug>`), never commit on `main`, stage by
+name, Conventional Commits with a lowercase imperative, no em dash, emoji, or
+session link in a commit message or PR text, one PR per issue, squash merge
+after the review loop.
 
 ## Agent skills
 
