@@ -1,0 +1,25 @@
+authors:
+  - Jain, N.
+  - Kwiatkowski, R.
+  - Ray, B.
+  - Ramanathan, M. K.
+  - Kumar, V.
+year: 2025
+title: On Mitigating Code LLM Hallucinations with API Documentation
+venue: >-
+  IEEE/ACM International Conference on Software Engineering: Software
+  Engineering in Practice (ICSE-SEIP)
+kind: peer-reviewed
+url: https://arxiv.org/abs/2407.09726
+doi: 10.1109/ICSE-SEIP66354.2025.00027
+# The published version is paywalled; only the abstract is relied on (the
+# arXiv v1 preprint predates it), so the claim stays inside the abstract.
+verified: abstract
+claims:
+  - claim: >-
+      On CloudAPIBench, code models struggled with low-frequency APIs (GPT-4o
+      achieved only 38.58% valid low-frequency API invocations);
+      documentation augmented generation raised that to 47.94%, but with
+      sub-optimal retrievers it hurt high-frequency APIs, a 39.02% absolute
+      drop.
+    locator: Abstract

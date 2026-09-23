@@ -1,0 +1,34 @@
+authors:
+  - Chatlatanagulchai, W.
+  - Li, H.
+  - Kashiwa, Y.
+  - Reid, B.
+  - Thonglek, K.
+  - Leelaprute, P.
+  - Rungsawang, A.
+  - Manaskasemsak, B.
+  - Adams, B.
+  - Hassan, A. E.
+  - Iida, H.
+year: 2026
+title: 'Agent READMEs: An Empirical Study of Context Files for Agentic Coding'
+venue: ACM Transactions on Software Engineering and Methodology
+kind: peer-reviewed
+url: https://doi.org/10.1145/3840295
+doi: 10.1145/3840295
+# The ACM page blocked every fetch; the full text read is arXiv v2
+# (arxiv.org/abs/2511.12884), the open-access copy Unpaywall points to.
+verified: full-text
+claims:
+  - claim: >-
+      In a study of 2,303 agent context files from 1,925 repositories, 67.0%
+      of Claude Code context files were modified in more than one commit, and
+      the files evolved mainly through small, incremental additions rather
+      than large deletions or rewrites.
+    locator: Abstract; Sec. 4.2.3
+  - claim: >-
+      In a manually classified sample of 332 of those files, security
+      instructions appeared in 14.8% and performance instructions in 14.5%,
+      against 75.9% for testing, which the authors read
+      as the files giving agents few guardrails for secure or performant code.
+    locator: Abstract; Sec. 4.3.2; Sec. 4.3.3, Table 3
