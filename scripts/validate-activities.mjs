@@ -72,6 +72,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
+import { canvasRows } from "../src/lib/canvas-entries.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
@@ -261,7 +262,8 @@ const WORKSHOP_HEADING_RE = /^### Workshop (\d+):/;
 function readWorkshopWeeks() {
   const weeks = new Map(); // "page#slug" -> { term, week }
   const source = readFileSync(WORKSHOP_PAGE, "utf8");
-  const [family] = parse(source.split(/^---$/m)[1]).assignment.canvas;
+  const rows = canvasRows(parse(source.split(/^---$/m)[1]).assignment.canvas);
+  const termWeeks = (t) => rows.find((r) => r.term === t)?.weeks;
   let term = null;
   let entry = null;
   for (const line of source.split("\n")) {
@@ -276,7 +278,7 @@ function readWorkshopWeeks() {
       continue;
     }
     const [link] = [...line.matchAll(ACTIVITY_LINK_RE)];
-    const week = family.weeks[term]?.[entry - 1];
+    const week = termWeeks(term)?.[entry - 1];
     if (!(entry && link && Number.isInteger(week))) {
       continue;
     }

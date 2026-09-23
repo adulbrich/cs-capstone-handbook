@@ -11,6 +11,11 @@
 
 export const TERMS = ["fall", "winter", "spring"];
 
+// A titled family names each entry: "Workshop {n}: {title}".
+export function isTitled(family) {
+  return Boolean(family.titles);
+}
+
 // Percent of the term grade something with a `weight` (a page, or a whole
 // family) carries in `term`: a scalar applies to every term.
 export function termWeight(item, term) {
@@ -46,10 +51,11 @@ export function canvasRows(canvas) {
 }
 
 // The rows the page table shows: a titled family gets one row per entry,
-// since "Workshop 1 to 5: {title}" names nothing.
+// since "Workshop 1 to 5: {title}" names nothing. Such a row's `weight` is
+// its one entry's share, which is also its `each`.
 export function tableRows(canvas) {
   return canvasRows(canvas).flatMap((row) =>
-    row.family.titles
+    isTitled(row.family)
       ? row.names.map((name, i) => ({
           ...row,
           names: [name],

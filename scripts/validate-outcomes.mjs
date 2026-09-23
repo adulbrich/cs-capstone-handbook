@@ -21,7 +21,11 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
-import { canvasRows, termWeight } from "../src/lib/canvas-entries.mjs";
+import {
+  canvasRows,
+  isTitled,
+  termWeight,
+} from "../src/lib/canvas-entries.mjs";
 import {
   OUTCOME_TAG_RE,
   parseRubricCsv,
@@ -556,7 +560,7 @@ for (const [slug, assignment] of pages) {
       continue;
     }
     const titles = family.titles?.[term];
-    if (Boolean(family.titles) !== family.name.includes("{title}")) {
+    if (isTitled(family) !== family.name.includes("{title}")) {
       console.error(
         `CANVAS ${file}: entry "${family.name}" must use "{title}" in its name exactly when it declares titles.`
       );
