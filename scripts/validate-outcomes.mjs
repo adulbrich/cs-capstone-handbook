@@ -25,6 +25,7 @@ import { canvasRows, termWeight } from "../src/lib/canvas-entries.mjs";
 import {
   OUTCOME_TAG_RE,
   parseRubricCsv,
+  RUBRIC_CSV_SUFFIX,
   rubricTagCounts,
   rubricTotal,
 } from "../src/lib/rubric-csv.mjs";
@@ -77,18 +78,12 @@ function readRubric(path) {
   return rubrics.get(path);
 }
 
-// The filesystem, not git: Finder drops a `.DS_Store` into any folder it
-// opens, and a hook that blocks on that trains people to skip hooks. Anything
-// else that is not a rubric CSV, such as a pre-CSV `-rubric-details.tsv`,
-// would be skipped by every check here and still look like a rubric to import.
-function strayFile(dir, f) {
-  if (f.startsWith(".") || f.endsWith("-rubric.csv")) {
-    return false;
-  }
-  console.error(
-    `CANVAS ${CANVAS_DIR}/${dir}/${f}: only <name>-rubric.csv files belong in a rubric directory.`
+// The rubric CSVs in one directory, as file names. The stray-file check below
+// reports everything else.
+function rubricCsvsIn(dir) {
+  return readdirSync(join(CANVAS_DIR, dir)).filter((f) =>
+    f.endsWith(RUBRIC_CSV_SUFFIX)
   );
-  return true;
 }
 
 // Outcomes evidenced outside the handbook, exempt from the individual floor.
@@ -414,6 +409,28 @@ if (!failed) {
 // Canvas imports. What still needs checking is that no directory has appeared
 // claiming outcomes with nothing rendering it, which is how a retired
 // assignment's rubric would keep counting toward accreditation coverage.
+//
+// First, every rubric directory holds rubric CSVs and nothing else. Anything
+// else, such as a pre-CSV `-rubric-details.tsv`, would be skipped by every
+// check here and still look like a rubric to import. Dotfiles are exempt:
+// this reads the filesystem, not git, Finder drops a `.DS_Store` into any
+// folder it opens, and a hook that blocks on that trains people to skip hooks.
+for (const dir of readdirSync(CANVAS_DIR)) {
+  if (
+    !statSync(join(CANVAS_DIR, dir)).isDirectory() ||
+    CANVAS_DEPRECATED.has(dir)
+  ) {
+    continue;
+  }
+  for (const f of readdirSync(join(CANVAS_DIR, dir))) {
+    if (!(f.startsWith(".") || f.endsWith(RUBRIC_CSV_SUFFIX))) {
+      console.error(
+        `CANVAS ${CANVAS_DIR}/${dir}/${f}: only <name>${RUBRIC_CSV_SUFFIX} files belong in a rubric directory.`
+      );
+      failed = true;
+    }
+  }
+}
 for (const dir of readdirSync(CANVAS_DIR)) {
   if (
     !statSync(join(CANVAS_DIR, dir)).isDirectory() ||
@@ -423,14 +440,7 @@ for (const dir of readdirSync(CANVAS_DIR)) {
     continue;
   }
   const tags = new Set();
-  for (const f of readdirSync(join(CANVAS_DIR, dir))) {
-    if (strayFile(dir, f)) {
-      failed = true;
-      continue;
-    }
-    if (f.startsWith(".")) {
-      continue;
-    }
+  for (const f of rubricCsvsIn(dir)) {
     const path = join(CANVAS_DIR, dir, f);
     for (const tag of Object.keys(rubricTagCounts(readRubric(path).criteria))) {
       tags.add(tag);
@@ -593,14 +603,7 @@ const declaredCsvs = new Set(
 // sharing one import as two rubrics a grader cannot tell apart.
 const rubricNames = new Map();
 for (const dir of Object.keys(CANVAS_TO_HANDBOOK)) {
-  for (const f of readdirSync(join(CANVAS_DIR, dir))) {
-    if (strayFile(dir, f)) {
-      failed = true;
-      continue;
-    }
-    if (f.startsWith(".")) {
-      continue;
-    }
+  for (const f of rubricCsvsIn(dir)) {
     const path = `${CANVAS_DIR}/${dir}/${f}`;
     if (!declaredCsvs.has(path)) {
       console.error(

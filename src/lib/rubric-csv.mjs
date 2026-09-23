@@ -4,7 +4,8 @@
  * `RubricTable.astro` renders these files and `scripts/validate-outcomes.mjs`
  * reconciles them against each page's frontmatter. Both used to walk the
  * format themselves, which is how they came to disagree about stripping `\r`
- * and about what counts as an outcome tag. One parser, imported by both.
+ * and about what counts as an outcome tag. One parser, imported by both, and
+ * by `scripts/check-prose.mjs`, which reads the fields as prose.
  *
  * The format is Canvas's own rubric import template
  * (`canvas/assignments/_template/import_rubric_template.csv`): RFC 4180 CSV,
@@ -34,6 +35,9 @@ const CRITERION_HEADER = [
   "Criteria Enable Range",
 ];
 const RATING_HEADER = ["Rating Name", "Rating Description", "Rating Points"];
+
+/** Every rubric file is `<name>-rubric.csv`; the validators find them by this. */
+export const RUBRIC_CSV_SUFFIX = "-rubric.csv";
 
 const TRAILING_BRACKET_RE = /\s*\[([^\]]+)\]\s*$/;
 const FIELD_END = new Set([",", "\r", "\n"]);

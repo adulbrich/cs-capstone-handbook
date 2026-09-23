@@ -42,7 +42,7 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import nodePath from "node:path";
-import { readCsvRecords } from "../src/lib/rubric-csv.mjs";
+import { RUBRIC_CSV_SUFFIX, readCsvRecords } from "../src/lib/rubric-csv.mjs";
 
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
@@ -164,7 +164,6 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * students as surely as one on a page. The rest of `canvas/` and the runbook
  * keep the vocabulary check alone.
  */
-const RUBRIC_CSV_SUFFIX = "-rubric.csv";
 const BOLD_AND_OPENER_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
@@ -461,19 +460,20 @@ function proseChecksFor(path) {
 }
 
 /**
- * A rubric CSV's criteria as prose lines, one per record, fields joined. The
- * CSV quotes every field that holds a comma, and `stripInlineCode` drops a
- * quoted span as someone else's words, so reading raw lines hid most band
- * descriptions from the banned-word check. A phrase quoted inside a field is
- * still a citation and is still skipped. A file that does not parse falls
- * back to raw lines; `validate-outcomes` reports the parse error.
+ * A rubric CSV's fields as prose lines, each at the line its record starts
+ * on. The CSV quotes every field that holds a comma, and `stripInlineCode`
+ * drops a quoted span as someone else's words, so reading raw lines hid most
+ * band descriptions from the banned-word check. A phrase quoted inside a
+ * field is still a citation and is still skipped. Fields are checked one at a
+ * time, so a stray quote in one cannot hide text in the next. A file that
+ * does not parse falls back to raw lines; `validate-outcomes` reports the
+ * parse error.
  */
 function csvProseLines(text, path) {
   try {
-    return readCsvRecords(text, path).map(({ cells, line }) => ({
-      line,
-      prose: cells.join(" | "),
-    }));
+    return readCsvRecords(text, path).flatMap(({ cells, line }) =>
+      cells.map((prose) => ({ line, prose }))
+    );
   } catch {
     return null;
   }
