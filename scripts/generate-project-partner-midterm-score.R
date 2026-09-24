@@ -71,7 +71,7 @@ likert_map <- setNames(
   as.numeric(names(likert_scale)),
   unlist(likert_scale, use.names = FALSE)
 )
-q1_cols <- paste0("Q1_", 1:3)
+q1_cols <- paste0("Q1_", 1:4)
 q1_numeric_cols <- paste0(q1_cols, "_numeric")
 
 input_qualtrics[,
@@ -80,7 +80,7 @@ input_qualtrics[,
 ]
 
 # An answer that maps to nothing (a values export, a relabeled choice)
-# would otherwise drop silently out of the mean.
+# would otherwise drop silently out of the score.
 unmapped <- 0
 for (i in seq_along(q1_cols)) {
   raw <- input_qualtrics[[q1_cols[i]]]
@@ -91,7 +91,7 @@ if (unmapped > 0) {
   stop(unmapped, " answer(s) match no label in likert_scale; check the export")
 }
 
-# A team whose partner opened the survey but answered none of the three
+# A team whose partner opened the survey but answered none of the four
 # items has no pulse score: treat it as unanswered and enter it by hand.
 unanswered <- input_qualtrics[
   rowSums(!is.na(input_qualtrics[, ..q1_numeric_cols])) == 0, Team
@@ -102,11 +102,13 @@ if (length(unanswered) > 0) {
 }
 input_qualtrics <- input_qualtrics[!(Team %in% unanswered)]
 
-# The pulse score is the mean of the three items, out of 100. Qualtrics' own
-# SC0 score uses the survey's scoring weights, not this scale, so it is not
-# compared here.
+# Each of the four items is worth a quarter of the pulse (#307), so the score
+# is their sum divided by four, out of 100. Every item is required in
+# Qualtrics; one left blank anyway scores nothing, as in the rubric.
+# Qualtrics' own SC0 score uses the survey's scoring weights, not this scale,
+# so it is not compared here.
 input_qualtrics[,
-  ProjectPartnerMidtermScore := rowMeans(.SD, na.rm = TRUE),
+  ProjectPartnerMidtermScore := rowSums(.SD, na.rm = TRUE) / length(q1_cols),
   .SDcols = q1_numeric_cols
 ]
 
@@ -116,18 +118,21 @@ input_qualtrics[, CanvasScore := ProjectPartnerMidtermScore * canvas_points / 10
 # hand at the A lower bound on the grading scale (learning-objectives/
 # grading.mdx), scaled to canvas_points, never as a zero or a blank.
 
-# Prepare final output
+# Prepare final output: each item out of 25, as the rubric shows it.
+item_points <- function(value) ifelse(is.na(value), 0, value / length(q1_cols))
 output <- input_qualtrics[,
   .(Team,
-    `Responsiveness` = Q1_1_numeric,
-    `Professionalism` = Q1_2_numeric,
-    `Delivery Quality` = Q1_3_numeric,
+    `Responsiveness` = item_points(Q1_1_numeric),
+    `Professionalism` = item_points(Q1_2_numeric),
+    `Delivery quality` = item_points(Q1_3_numeric),
+    `Reflection` = item_points(Q1_4_numeric),
     `Score (/100)` = ProjectPartnerMidtermScore,
     `Canvas score` = CanvasScore,
-    Comment = str_c("Responsiveness", Q1_1_numeric,
-                    "Professionalism", Q1_2_numeric,
-                    "Delivery Quality", Q1_3_numeric,
-                    "Scores out of 100.", sep = "\n")
+    Comment = str_c("Responsiveness", item_points(Q1_1_numeric),
+                    "Professionalism", item_points(Q1_2_numeric),
+                    "Delivery quality", item_points(Q1_3_numeric),
+                    "Reflection", item_points(Q1_4_numeric),
+                    "Each item out of 25, total out of 100.", sep = "\n")
   )
 ]
 output[`Score (/100)` == 100, Comment := ""]
