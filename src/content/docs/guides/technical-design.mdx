@@ -124,13 +124,15 @@ front end, a Node API, and Postgres on Render, behind Google Workspace SSO.
   generated from it. POST /shifts/{id}/claims returns 409 when the shift is full.
 
 ## Data
-- Postgres (ADR-001): User, Shift, Claim (ERD in ./diagrams/erd.png). One Claim per
+- Postgres through Prisma (ADR-001): User, Shift, Claim (ERD in
+  ./diagrams/erd.png). One Claim per
   (shift, user), enforced by a database constraint.
 
 ## Deployment
 - Render web service plus managed Postgres; a preview deploy per PR.
 - Production: the partner's Render account, owned by their IT lead.
-  Their security sign-off is R-2 in docs/risks.md. ADR-004.
+  Their security sign-off is R-2 in the risk register, docs/risks.md.
+  ADR-004.
 - Rollback: redeploy the previous build (tried once, works).
 
 ## Open questions
@@ -211,7 +213,7 @@ Review is where drift gets caught, and the design document is the reference that
 - Split any box in a diagram that you can't describe in one sentence, because teammates will each read an overloaded box differently.
 - Make implicit dependencies explicit. If service A only works when service B is running, say so, because the unwritten dependency is the one that breaks a deploy.
 - Treat interface definitions as more stable than implementations. Change an implementation freely; change a contract only with the people on both sides, because a contract change breaks code you didn't write.
-- Include the design decisions you deferred on purpose. A reader can then tell a deliberate gap from an oversight. Product scope and non-goals belong in the requirements, not here.
+- Include the design decisions you deferred on purpose, so a reader can tell a deliberate gap from an oversight. Product scope and non-goals belong in the requirements.
 - Write for the next person joining the project cold, who can't tell which unstated assumptions the rest of the team shares.
 
 ## Some Truths About Technical Design
