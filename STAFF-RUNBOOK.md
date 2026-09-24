@@ -120,7 +120,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 ## Repo Checkpoints
 
 - Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist: the documents from the PDF, and the build, gate and history from the repository at the named commit. Spot-check one document against the commit; a PDF that does not match counts against the living-docs criterion. Leave feedback as issues where useful. Checkpoint 1 is graded in week 5; checkpoint 2 in finals week, after the week-10 check-ins, so that week stays at check-in load.
-- NDA teams: 15-minute walkthrough of the repository at the named commit, in its own slot in the checkpoint week, scheduled with the team, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing beyond the sanitized PDF the team submits where its partner permits. It never displaces a demo.
+- NDA teams whose partner rules out read access: 15-minute walkthrough of the repository at the named commit, in its own slot in the checkpoint week, scheduled with the team, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing beyond the sanitized PDF the team submits where its partner permits. It never displaces a demo.
 - Consistency anchors live on the assignment page ("How Graders Review"). Calibrate by having all TAs review one volunteer staff-accessible repo together in week 4.
 
 ## Individual Contribution Modifier
@@ -209,4 +209,4 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)
-- [ ] NDA teams identified and flagged in the check-in sheet
+- [ ] NDA teams identified and flagged in the check-in sheet, with whether the partner allows the instruction team read access

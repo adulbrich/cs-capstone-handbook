@@ -300,8 +300,9 @@ The rules below are about its content.
   the grader checks. `repo-checkpoints.mdx` is the model.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
-**Does Not Meet** (low or none), except the two-band ones, the individual
-contribution's own three (Full, Partial, Zero), `defense`, which adds a fourth, and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
+**Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
+Startup); the individual contribution's Full, Partial, and Zero; `defense`,
+which adds a fourth; and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
 ## The Rubric Lives in the CSV
