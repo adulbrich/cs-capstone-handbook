@@ -80,7 +80,7 @@ input_qualtrics[,
 ]
 
 # An answer that maps to nothing (a values export, a relabeled choice)
-# would otherwise drop silently out of the mean.
+# would otherwise drop silently out of the score.
 unmapped <- 0
 for (i in seq_along(q1_cols)) {
   raw <- input_qualtrics[[q1_cols[i]]]
@@ -124,13 +124,13 @@ output <- input_qualtrics[,
   .(Team,
     `Responsiveness` = item_points(Q1_1_numeric),
     `Professionalism` = item_points(Q1_2_numeric),
-    `Delivery Quality` = item_points(Q1_3_numeric),
+    `Delivery quality` = item_points(Q1_3_numeric),
     `Reflection` = item_points(Q1_4_numeric),
     `Score (/100)` = ProjectPartnerMidtermScore,
     `Canvas score` = CanvasScore,
     Comment = str_c("Responsiveness", item_points(Q1_1_numeric),
                     "Professionalism", item_points(Q1_2_numeric),
-                    "Delivery Quality", item_points(Q1_3_numeric),
+                    "Delivery quality", item_points(Q1_3_numeric),
                     "Reflection", item_points(Q1_4_numeric),
                     "Each item out of 25, total out of 100.", sep = "\n")
   )
