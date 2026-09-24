@@ -60,8 +60,8 @@ Half your grade is individually determined. Weights, weeks and policies: the han
 
 # The Individual Work
 
-- **RFC**: one per term (fall, winter). A real decision your team faces. Draft, cross-team feedback, revision.
-- **Defense**: once a term, live, in your check-in. Explain what you own. AI open for explaining, closed for generating.
+- **RFC**: one per term (fall, winter). A real decision your team faces. Draft, peer review, revision.
+- **Defense**: once a term, live, in a session of its own in week 7 or 9. Explain what you own. AI open for explaining, closed for generating.
 
 ---
 
@@ -83,8 +83,8 @@ A weaker model or a smaller budget is no disadvantage: it means tighter checks a
 | 2, 3, 7, 8 | Five workshop activities, complete/incomplete |
 | 2 | Team charter (roles, norms, AI and confidentiality) |
 | 4 | RFC draft; sprint note 1 |
-| 5 | Repo checkpoint 1: rails stood up; RFC peer feedback |
-| 7-9 | Defense in TA check-ins |
+| 5 | Repo checkpoint 1: rails stood up; RFC peer review |
+| 7 or 9 | Defense, a session of its own |
 | 8 | RFC final |
 | 9 | Term retrospective |
 | 10 | Repo checkpoint 2: **"hello, production"** + Definition of Shipped v0 |

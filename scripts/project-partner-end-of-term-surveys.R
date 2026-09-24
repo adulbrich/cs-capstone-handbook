@@ -140,7 +140,7 @@ dt[,
 
 # Teams whose partner never answered are not in this export: enter them by
 # hand at the A lower bound on the grading scale (learning-objectives/
-# grading.mdx), out of the Final Evaluation's 100 Canvas points (#264, #300).
+# grading.mdx), out of the End-of-Term Survey's 100 Canvas points (#264, #300).
 
 # Write Scores to CSV
 fwrite(

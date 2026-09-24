@@ -26,7 +26,7 @@ Run the 4Ls session first (Liked, Learned, Lacked, Longed for), then distill it 
 
 ## Evidence
 
-At least one artifact per theme (a PR, a review thread, a board snapshot, a chart) with a caption saying what it shows. Screenshots or links are fine; NDA teams use PR titles or IDs only.
+At least one artifact per theme (a PR, a review thread, a board snapshot, a chart) with a caption saying what it shows. Screenshots or links are fine; NDA teams use titles or IDs only.
 
 ## Team Actions (3)
 

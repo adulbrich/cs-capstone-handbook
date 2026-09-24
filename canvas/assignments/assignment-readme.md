@@ -24,7 +24,7 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 The project repository now keeps only the living docs (requirements, design, decision records, risks, README, CONTRIBUTING, the AI context file). The charter, retrospectives, handoff document, Definition of Shipped, and inherited-codebase audit live elsewhere and are still submitted as one PDF; a postmortem is in the repository only when the incident is technical. The Definition of Done and the Contribution Norm moved from the charter to `CONTRIBUTING.md`. Points and tags are unchanged. Re-import all seven, after any earlier re-import of the same file:
 
-- `team-charter/team-charter-rubric.csv`: the Definition of Done is judged in `CONTRIBUTING.md`.
+- `team-charter/team-charter-rubric.csv`: the Definition of Done is judged in `CONTRIBUTING.md`, and the criterion "AI and confidentiality one-pager" is renamed "AI and confidentiality", since it is a charter section, not a separate page.
 - `repo-checkpoint/repo-checkpoint-rubric.csv`: traceability reads where `CONTRIBUTING.md`, not the charter, says work lives, and only the living docs in the PDF must match the commit. Re-import on both Repo Checkpoint entries.
 - `definition-of-shipped/definition-of-shipped-rubric.csv`, `incident-postmortem/incident-postmortem-rubric.csv`: the writing criterion no longer names a repository path.
 - `spring-release/spring-release-rubric.csv`: metrics match the Definition of Shipped, not `docs/shipped.md`.
@@ -82,7 +82,7 @@ Each Canvas assignment has its own due date, late window, grade and submission, 
 
 | Canvas before #259 | Change | Rubric |
 |---|---|---|
-| RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due end of week 5, cross-team pairings assigned by staff. | Import `rfc/rfc-draft-rubric.csv` (new) and `rfc/rfc-final-rubric.csv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
+| RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due end of week 5, two reviews per student assigned by Canvas. | Import `rfc/rfc-draft-rubric.csv` (new) and `rfc/rfc-final-rubric.csv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
 | Sprint Notes Individual Contributions, one 400-point entry | Delete it. Create **Sprint Notes 1: Individual Contribution** to **Sprint Notes 4: Individual Contribution**, 100 points each, in the Sprint Notes group, no submission, due with the matching note, full marks by Set Default Grade. Winter has 5, spring 3. | Import `individual-contribution/individual-contribution-rubric.csv` (one criterion, Full 100 / Half 50 / Zero 0) on every one. The three per-term TSVs are deleted. |
 | Workshop 1 to Workshop 5, 100 points each | No change to the entries. | Import `workshop-activities/workshop-activities-rubric.csv` (one criterion, Complete 100 / Incomplete 0) on every workshop entry, every term. The three per-term TSVs are deleted. |
 
@@ -329,7 +329,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 3 | Demo Day registration (0 points, omit from final grade) |
 | 3-5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
-| 5 | Repo Checkpoint 1 (rails stood up); RFC cross-team feedback; Demo Day session 1 |
+| 5 | Repo Checkpoint 1 (rails stood up); RFC peer review; Demo Day session 1 |
 | 6 | Sprint Note 2 |
 | 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
@@ -345,7 +345,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 1-3 | Workshop Activities (3 items, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
 | 4 | Sprint Note 2; RFC draft |
-| 5 | Repo Checkpoint 1 (integration health); RFC cross-team feedback; Demo Day session 3 |
+| 5 | Repo Checkpoint 1 (integration health); RFC peer review; Demo Day session 3 |
 | 6 | Sprint Note 3 |
 | 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 4; RFC final (revision and decision) |

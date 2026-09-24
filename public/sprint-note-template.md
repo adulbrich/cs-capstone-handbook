@@ -1,5 +1,3 @@
-<!-- YYYY-MM-DD-[TeamID]-SprintNote.md -->
-
 # Sprint Note: Sprint [N], [Team Name]
 
 <!-- One page maximum. Each numbered section is graded pass/fail (20 points each).
@@ -31,7 +29,7 @@ belong here: "worked on the API" and "researched options" are not done things.
 
 ## 3. Top Risk and One Decision Needed
 
-The single biggest threat to your Definition of Shipped, and one concrete decision the team needs from the partner, the staff, or itself.
+The single biggest threat to shipping (in fall, before the Definition of Shipped exists, to the term gate), and one concrete decision the team needs from the partner, the staff, or itself.
 
 - Top risk:
 - Decision needed (from whom, by when):

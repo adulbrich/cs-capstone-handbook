@@ -16,7 +16,7 @@ Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for th
 
 If a score comes out borderline, or a student's part of the session ran short, tick the follow-up box below and arrange a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine.
 
-**The reviewer-side half of criterion 5 is checkable.** In fall and winter it is the RFC cross-team review; in spring it is code review, and the team's sprint notes name the one change each student asked for. Both are graded records. "I left some comments" is not an answer, and neither is anything that named no line and requested no change.
+**The reviewer-side half of criterion 5 is checkable.** In fall and winter it is the RFC peer review; in spring it is code review, and the team's sprint notes name the one change each student asked for. Both are graded records. "I left some comments" is not an answer, and neither is anything that named no line and requested no change.
 
 **Score the decision, not the luck.** A student who delegated a hard-to-reverse change (schema, auth, deployment, data migration) with no checks scores low on criterion 1 even if nothing broke. A student who stopped and validated at the right point scores high even if some reversible feature code has bugs. Sophisticated tooling is not itself worth points: a student with a weaker model who gated tightly and validated more has done the harder work, and the anchors are written so that reads as strength.
 
