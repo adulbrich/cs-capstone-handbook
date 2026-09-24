@@ -62,6 +62,10 @@ jobs:
         run: node scripts/test-guard-git.mjs
       - name: Build (includes astro check)
         run: npm run build
+      # The paste kit reads the built pages, so it runs after the build.
+      # --strict fails when an OVERRIDES entry no longer matches its page.
+      - name: Build the Canvas paste kit
+        run: npm run canvas:export -- --strict
       - name: Guard against student data
         run: |
           if git ls-files | grep -E '^data/'; then

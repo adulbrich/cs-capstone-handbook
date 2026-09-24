@@ -6,7 +6,7 @@
   // canvas/ is HTML pasted into Canvas and public/ is served verbatim; neither
   // is code, and reformatting them only makes the Canvas diff unreadable.
   "files": {
-    "includes": ["!canvas", "!public", "!dist", "!.astro"]
+    "includes": ["!canvas", "!canvas-export", "!public", "!dist", "!.astro"]
   },
   "overrides": [
     {
