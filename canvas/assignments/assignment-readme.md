@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below this one predate the move and name the old `.tsv` files where they record history.
 
+## Re-paste Required: Workshops Run in Class (#312)
+
+No rubric changes. Re-paste the bodies of fall Workshop 1 (User Story Mapping), Workshop 4 (Peer Technical Design Review), Workshop 5 (Identify Success Metrics), and winter Workshop 3 (Test Plan). Workshop 4 now runs in the week 7 session with the team at the next table: no triads, no discussions, and nothing due in week 6, so skip the fall week 6 triad announcement and the discussion setup.
+
 ## Re-import Required: Peer Evaluation Split into Five Criteria (#310)
 
 `peer-evaluation/peer-evaluation-rubric.csv` now has five criteria at 20 points each (Quantity, Quality, Attitude as a team player, Technical value, Point distribution) in place of Teammate ratings (80) and Point distribution (20). Scores do not move. Re-import it on the Midterm Survey and End-of-Term Survey entries in every term. Nothing changes in Qualtrics or the scoring script.
