@@ -253,6 +253,10 @@ Three places still hold weights the validator cannot see:
 3. the `<AssignmentMeta>` text on the two Canvas-owned stubs, which carry no
    `assignment:` block for the validator to read.
 
+The Demo Day extra credit (1% in the term a team presents, on top of the
+four components, #305) is in no frontmatter at all: its page, the
+assignments overview, the syllabi, and the Canvas readme state it.
+
 Changing one weight means re-cutting another, in every place it appears.
 
 ## Code style

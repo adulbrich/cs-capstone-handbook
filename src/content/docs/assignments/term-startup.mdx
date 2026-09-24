@@ -1,17 +1,31 @@
 ---
 title: Term Startup
-description: What your team settles with your project partner or mentor at the start of each term, and the short status report you submit; it carries no points and every later deliverable depends on it.
+description: What your team settles with your project partner or mentor at the start of each term, and the short status report you submit; every later deliverable depends on it.
 sidebar:
   order: 1
+assignment:
+  level: team
+  terms: [fall, winter, spring]
+  weight: 1
+  canvas:
+    - name: "Term Startup"
+      group: Term Startup
+      weeks: { fall: [2], winter: [1], spring: [1] }
+      weight: 1
+      points: 100
+      submission: text
+      rubric: term-startup/term-startup-rubric.csv
 ---
 
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricCsv from '/canvas/assignments/term-startup/term-startup-rubric.csv?raw';
 
-<AssignmentMeta submission="Team, one status report per team" due="Fall, end of week 2; winter and spring, end of week 1" weight="No points; it does not change your grade">
+<AssignmentMeta submission="Team, one status report per team" due="Fall, end of week 2; winter and spring, end of week 1" weight="1% of the term grade, complete or incomplete">
   Each term has its own list below.
 </AssignmentMeta>
 
-In this assignment your team starts the term with your project partner or mentor: you work through this term's list below, then submit a short report of where each item stands. It carries no points. Your interactions with your project partner are [25% of your grade every term](/assignments/project-partner-evaluation/), and where your team has no partner, a mentor, an instructor, or your Teaching Assistant (TA) stands in. Every item on a list is something a later graded deliverable assumes you have started.
+In this assignment your team starts the term with your project partner or mentor: you work through this term's list below, then submit a short report of where each item stands. Your interactions with your project partner are [25% of your grade every term](/assignments/project-partner-evaluation/), and where your team has no partner, a mentor, an instructor, or your Teaching Assistant (TA) stands in. Every item on a list is something a later graded deliverable assumes you have started.
 
 ## What to Do
 
@@ -57,13 +71,17 @@ A short text entry, one line per item on your term's list, numbered as the list 
 4. Done: draft review set with the partner for Monday of week 2.
 ```
 
-Nobody grades the writing and there is no rubric. In winter and spring, your week 2 TA check-in picks up any item still not done.
+It is graded complete or incomplete, never on the writing. In winter and spring, your week 2 TA check-in picks up any item still not done.
 
 Partner hasn't replied? Make two documented attempts (email plus one other channel), then tell your TA, which is the same rule the [Definition of Shipped](/assignments/definition-of-shipped/) uses. A partner who goes quiet is a problem the instruction team can solve in week 2 and can't solve in week 9.
 
 :::note[If your project is under NDA]
 Nothing on these lists needs partner-confidential material. The report states dates, names, and your cadence, which an NDA doesn't cover. Fall item 6 is the conversation where you find out an NDA applies at all.
 :::
+
+## Rubric (100 points)
+
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/term-startup/term-startup-rubric.csv" />
 
 ## Activities That Prepare This
 

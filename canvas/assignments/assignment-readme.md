@@ -20,6 +20,14 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below this one predate the move and name the old `.tsv` files where they record history.
 
+## Canvas Changes: Individual Contribution Bands, Term Startup, and Demo Day (#305)
+
+- **Individual Contribution.** Re-import `individual-contribution/individual-contribution-rubric.csv` on every Sprint Notes N: Individual Contribution entry, after the #302 re-import of the same file if both are pending. The bands are Full (100), Partial (1 to 99, the grader's call), and Zero (no contribution that sprint); Half is gone.
+- **Term Startup** is graded now, 1% every term. Change the existing entry: 100 points, clear `omit_from_final_grade`, move it into a new **Term Startup** group at 1%, and import `term-startup/term-startup-rubric.csv` (Complete 100 / Incomplete 0).
+- **Weights that paid for it:** Team Charter group 4% to 3% (fall), Incident Postmortem 3% to 2% (winter), Project Handoff 5% to 4% (spring).
+- **Demo Day.** The fall registration item stays ungraded; retitle it **Demo Day Registration**. In every term's course, add an **Extra Credit** group at 1% holding one **Demo Day Presentation** entry, separate from the fall **Demo Day Registration** item: 100 points, no submission, group assignment. Enter 100 for each student on a team that presented that term and leave everyone else blank, never zero; the group weights then total 101%, which is the extra credit. Check in one course that a blank costs nothing before the first session.
+- Re-paste the three syllabi and the bodies of Sprint Notes, Term Startup, Demo Day, Team Charter, Incident Postmortem, Project Handoff, and the Assignments Overview.
+
 ## Re-import Required: Only Agent-Useful Documents in the Repository (#302)
 
 The project repository now keeps only the living docs (requirements, design, decision records, risks, README, CONTRIBUTING, the AI context file). The charter, retrospectives, handoff document, Definition of Shipped, and inherited-codebase audit live elsewhere and are still submitted as one PDF; a postmortem is in the repository only when the incident is technical. The Definition of Done and the Contribution Norm moved from the charter to `CONTRIBUTING.md`. Points and tags are unchanged. Re-import all seven, after any earlier re-import of the same file:
@@ -274,27 +282,15 @@ The AI policy now says "checks" where it said "the net" or "safety net", and "ha
 | `spring-release/` | Criterion renamed `Accurate outcomes [SO6]` (was Honest outcomes); Trailer description: "partial features named as partial" |
 | `workshop-activities/` | `-fall-` row renamed `Map Your Hard-to-Reverse Decisions` (was Map Your One-Way Doors), with its description; Audit Your Safety Net: "Accurate statement" |
 
-## Canvas Items Without a Rubric: Term Startup (#157), Demo Day (#172) and Expo (#162)
+## Canvas Items Without a Rubric: Demo Day (#172) and Expo (#162)
 
-Three assignment pages carry no points and no rubric, so there is no TSV here to import for any of them. Create them by hand.
+Two assignment pages carry no points and no rubric, so there is nothing here to import for either. Create them by hand. Term Startup was the third until #305 graded it; see that section above.
 
-**Term Startup**, once per term:
-
-| Field | Value |
-|---|---|
-| Title | Term Startup |
-| Points possible | 0 |
-| `omit_from_final_grade` | true |
-| Group | any; it contributes nothing, so the group choice does not affect the grade |
-| Submission type | text entry |
-| Due | fall: end of week 2; winter and spring: end of week 1 |
-| Group assignment | yes, one submission per team |
-
-**Demo Day**, once for the year. One Canvas item taking each team's proof of registration, so staff can see every team has taken one of the five sessions. The registration link itself goes out in an announcement:
+**Demo Day Registration**, once for the year. One Canvas item taking each team's proof of registration, so staff can see every team has taken one of the five sessions. The registration link itself goes out in an announcement:
 
 | Field | Value |
 |---|---|
-| Title | Demo Day |
+| Title | Demo Day Registration |
 | Points possible | 0 |
 | `omit_from_final_grade` | true |
 | Group | any; it contributes nothing, so the group choice does not affect the grade |
@@ -325,7 +321,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | Week | Due |
 |------|-----|
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
-| 2 | Term Startup (0 points, omit from final grade); Team Charter; Resume and Intent |
+| 2 | Term Startup (1%); Team Charter; Resume and Intent |
 | 3 | Demo Day registration (0 points, omit from final grade) |
 | 3-5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
@@ -340,7 +336,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
-| 1 | Term Startup (0 points, omit from final grade) |
+| 1 | Term Startup (1%) |
 | 2 | Sprint Note 1 |
 | 1-3 | Workshop Activities (3 items, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
@@ -356,7 +352,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
-| 1 | Term Startup (0 points, omit from final grade) |
+| 1 | Term Startup (1%) |
 | 2 | Sprint Note 1 |
 | 2 | Workshop Activities (1 item, complete/incomplete) |
 | 4 | Sprint Note 2 |
