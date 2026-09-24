@@ -37,8 +37,8 @@ skills under `.claude/skills/`.
    is a judgement call.
 7. **Length and scope.** Guides and activities have ceilings in their skills;
    over one is a finding with the number, never a blocker on its own. Audience
-   pages (students, partners, mentors) have no word ceiling. Their check is
-   scope: run the link count in `AGENTS.md` (Audience pages are orientation)
+   pages (students, partners, mentors) have no word ceiling but must stay
+   short enough to read in one sitting; their other check is scope: run the link count in `AGENTS.md` (Audience pages are orientation)
    and flag each outbound link that answers no question the page's reader asks.
 8. **The reverse outline**, on every guide and audience page in the diff. For
    each changed paragraph, write one line: the idea it carries and what it
