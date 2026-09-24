@@ -193,6 +193,7 @@ Current canonical homes:
 | The four example paths up the ladder, and that a project may match none | `guides/shipping.mdx` |
 | What shipped means for a project, agreed with the partner and recorded | `assignments/definition-of-shipped.mdx` |
 | The inherited-codebase audit and what it covers | `assignments/repo-checkpoints.mdx` |
+| What each project-repository document holds | `assignments/repo-checkpoints.mdx` |
 | IP, NDA, and licensing policy | `introduction/ip-nda-and-licensing.mdx` |
 | How projects are proposed, how teams form, how either changes | `introduction/for-students.mdx` |
 | V&V outcome ladder (one ladder, every project) | `assignments/project-partner-evaluation.mdx` |

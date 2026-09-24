@@ -89,7 +89,7 @@ and spreadsheet; three were double-booked last month (per the coordinator).
 ## Constraints
 - C-1: Sign-in through the partner's Google Workspace; no new accounts.
 - C-2: Volunteer names and emails never leave the partner's tenant.
-- C-3: Extends the partner's Django app; its CI and review rules apply.
+- C-3: Runs in the partner's Render account; their IT lead's review rules apply.
 
 ## Success metrics
 - Double-bookings in the first 4 weeks of use: 0 (from the claim log).
@@ -97,9 +97,12 @@ and spreadsheet; three were double-booked last month (per the coordinator).
 
 ## Non-goals
 - Payroll or hours export.
+- Shift swaps between volunteers, until after launch.
 
 ## Open questions
 - Does v1 need recurring shifts? Owner: PM, before sprint 2.
+- Do volunteers need the schedule offline at the venue? Owner: PM, asks
+  the partner before the first deploy.
 ```
 
 Give each requirement an ID so a pull request, a test, or a commit message can cite it. Write a functional requirement as a user story where the benefit isn't obvious and as a plain statement where it is. Give every non-functional requirement a number and a way to measure it, since without both nobody can say whether it has been met.

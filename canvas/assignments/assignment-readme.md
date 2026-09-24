@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: One Home per Repository Question (#325)
+
+Re-import `repo-checkpoint/repo-checkpoint-rubric.csv` on every Repo Checkpoint entry: the fall week 5 gate reads the production target from `docs/design.md` and the approval it needs from `docs/risks.md`. Re-paste the Repo Checkpoint, Definition of Shipped, and fall Workshop 4 bodies.
+
 ## Re-paste Required: Walking Skeleton Link (#323)
 
 No rubric changes. Re-paste the Repo Checkpoint bodies: the fall week 10 gate no longer links a walking skeleton template, which is deleted.
