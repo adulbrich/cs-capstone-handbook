@@ -22,7 +22,7 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 ## Re-import Required: Consistency Pass (#316)
 
-Re-import `sprint-note/sprint-note-rubric.csv` on every Sprint Notes entry: the top-risk criterion says "the instruction team" where it said "the staff". Re-paste the three syllabi ("course schedule"), and the bodies the kit regenerates for Sprint Notes, Definition of Shipped, Term Retrospective, Incident Postmortem, and winter Workshop 2.
+Re-import `sprint-note/sprint-note-rubric.csv` on every Sprint Notes entry: the top-risk criterion says "the instruction team" where it said "the staff". Re-paste the three syllabi ("course schedule"), and the bodies the kit regenerates for Sprint Notes, Definition of Shipped, Term Retrospective, Incident Postmortem, fall Workshop 2, and winter Workshop 2.
 
 ## Re-paste Required: Workshops Run in Class (#312)
 
