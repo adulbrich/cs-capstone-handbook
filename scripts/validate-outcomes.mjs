@@ -727,9 +727,7 @@ if (!failed) {
   );
 }
 
-console.log(
-  "Individual data points per student per year (from rubric CSVs):"
-);
+console.log("Individual data points per student per year (from rubric CSVs):");
 for (const outcome of ABET_OUTCOMES) {
   const ok = counts[outcome] >= MIN_ABET;
   console.log(
