@@ -246,12 +246,15 @@ assignment:
 A scalar on a page whose weight varies is now a hard failure. It used to be
 silent, and Sprint Notes and Workshop Activities were both wrong.
 
-Three places still hold weights the validator cannot see:
+Four places still hold weights the validator cannot see:
 
 1. the three syllabi,
 2. `canvas/assignments/assignment-readme.md`,
 3. the `<AssignmentMeta>` text on the two Canvas-owned stubs, which carry no
-   `assignment:` block for the validator to read.
+   `assignment:` block for the validator to read,
+4. the Demo Day extra credit (1% in the term a team presents, on top of the
+   four components), stated on its page, the assignments overview, the
+   syllabi, and the Canvas readme (#305).
 
 Changing one weight means re-cutting another, in every place it appears.
 

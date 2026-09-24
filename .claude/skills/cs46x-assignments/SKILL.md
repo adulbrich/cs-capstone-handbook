@@ -97,7 +97,7 @@ assignment:
       titles: { fall: [<one per week listed>] }  # only with {title} in the name
       weight: <the family's percent of the term grade>
       points: 100
-      submission: pdf | video | url | image | survey | none, or a list
+      submission: pdf | video | url | image | survey | text | none, or a list
       rubric: <dir>/<name>-rubric.csv
 ---
 ```
@@ -154,9 +154,10 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
 
 A page with no `assignment:` block is skipped by the validator entirely: no
 rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages
-are in that state deliberately: `introduction.mdx`, `demo-day.mdx` (its
-presentation is extra credit outside the four components, #305), and
-`expo.mdx`. A fourth needs a reason. **This is the supported shape for an ungraded item**, paired
+are in that state deliberately: `introduction.mdx`, `demo-day.mdx`, and
+`expo.mdx`. A fourth needs a reason. Demo Day also has a 100-point
+Presentation entry in an Extra Credit Canvas group, outside the four
+components (#305); the readme documents it, since no frontmatter can. **This is the supported shape for an ungraded item**, paired
 with a Canvas item at 0 points with `omit_from_final_grade`; see
 `canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
 passes Zod but keeps the block and so re-arms the rubric and AI-use checks.

@@ -201,10 +201,10 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 - [ ] Canvas shells: rubrics imported from the `canvas/assignments/` CSVs (Canvas Rubrics page, Import), weights checked against the handbook tables
 - [ ] Every Canvas entry in each page's Submissions table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
 - [ ] Term Startup: 100 points in its own Term Startup group (1%), text entry, group submission, due end of week 2 in fall and end of week 1 in winter and spring, with `term-startup/term-startup-rubric.csv` attached. TAs grade it complete or incomplete in the week it is due.
-- [ ] Fall only: Demo Day created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due end of fall week 3. Announce the registration link with the five sessions
+- [ ] Fall only: Demo Day Registration created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due end of fall week 3. Announce the registration link with the five sessions
 - [ ] Every term: an Extra Credit group (1%) holding one Demo Day Presentation entry, 100 points, no submission, group assignment. Enter 100 for each student on a team that presented that term; leave everyone else blank, never zero.
 - [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1), the funds and cloud request form, and in fall the Workshop 4 triads with their discussions (start of week 6)
-- [ ] Spring only: Engineering Expo created by hand, (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
+- [ ] Spring only: Engineering Expo created by hand (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)
