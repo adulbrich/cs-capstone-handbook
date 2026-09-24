@@ -1,10 +1,14 @@
+#!/usr/bin/env node
 // Canvas paste kit for all three terms: one HTML body per Canvas entry, the
 // rubric CSVs those entries use, and the syllabus, written to canvas-export/
 // (gitignored). Entries come from each page's `assignment.canvas` frontmatter,
 // expanded by src/lib/canvas-entries. Reads dist/, so run `npm run build`
 // first. KIT_README below is what a body is and how the kit is laid out.
 // --strict exits 1 on any warning, which is how CI catches an OVERRIDES entry
-// whose page changed under it. A stopgap for #50 until #5 builds an .imscc.
+// whose page changed under it, or a page element the transform does not
+// handle. A stopgap for #50 until #5 builds an .imscc.
+//
+// Run: npm run build && npm run canvas:export [-- --strict]
 import {
   copyFileSync,
   mkdirSync,
@@ -28,9 +32,11 @@ const OUT = "canvas-export";
 const PAGES = "src/content/docs/assignments";
 const COURSE = { fall: "CS 461", spring: "CS 463", winter: "CS 462" };
 const SYLLABUS = { fall: "cs461", spring: "cs463", winter: "cs462" };
+// Built in Canvas by the co-instructor (#197); their weight is what the
+// handbook's entries leave of the term's 100%.
 const OWNED = {
-  fall: "Resume and Intent (2%)",
-  spring: "the Career and Individual Retrospective (15%)",
+  fall: "Resume and Intent",
+  spring: "the Career and Individual Retrospective",
 };
 const TERM_WORD = /\b(fall|winter|spring)\b/gi;
 
@@ -60,7 +66,7 @@ npm run build
 npm run canvas:export
 \`\`\`
 
-A \`WARN\` line means a page-specific cut in \`OVERRIDES\` no longer matches its page.
+A \`WARN\` line means a page-specific cut in \`OVERRIDES\` no longer matches its page, or a page gained an element the transform does not handle; \`--strict\` turns either into a failure.
 
 ## Layout
 
@@ -86,14 +92,14 @@ Then trimmed to the entry, by rules that read the page rather than name it:
 3. A section, row or paragraph naming another member of a numbered family goes ("### Workshop 4: ..." leaves Workshop 2).
 4. A column headed by another term's course number goes ("CS 462" leaves the fall partner survey).
 
-\`OVERRIDES\` in \`scripts/canvas-export.mjs\` holds what no rule sees: an Individual Contribution entry keeps only its own section; the Midterm Pulse drops the facet sections; only the fall week 5 checkpoint keeps the inherited-codebase audit.
+\`OVERRIDES\` in \`scripts/canvas-export.mjs\` holds the page-specific cuts no rule sees.
 
 Mentions of other terms that remain are cross-term context a student needs ("Winter's instrumentation commitment comes due here").
 
 ## Not generated
 
 - Resume and Intent (fall) and the Career and Individual Retrospective (spring) are the co-instructor's, in Canvas (#197).
-- The letter-grade scale is a course setting: the 11-band scale in \`learning-objectives/grading.mdx\`.
+- The letter-grade scale is a course setting: the scale in \`learning-objectives/grading.mdx\`.
 `;
 
 const warnings = [];
@@ -157,7 +163,6 @@ function entries() {
         all.push({
           families: canvas,
           family: row.family,
-          index: i,
           level: data.assignment.level,
           name: row.names[i],
           page,
@@ -602,6 +607,10 @@ function termReadme(term, list) {
   for (const e of list.filter((x) => !(x.zero || x.extra))) {
     groups.set(e.family.group, (groups.get(e.family.group) ?? 0) + e.weight);
   }
+  const total = [...groups.values()].reduce((a, b) => a + b, 0);
+  const extra = list
+    .filter((x) => x.extra)
+    .reduce((sum, x) => sum + x.weight, 0);
   const rows = list.map((e) =>
     [
       e.file.slice(0, 2),
@@ -632,9 +641,9 @@ ${rows.map((r) => `| ${r} |`).join("\n")}
 | Group | Weight |
 |---|---|
 ${[...groups].map(([g, w]) => `| ${g} | ${pct(w)} |`).join("\n")}
-| **Total** | **${pct([...groups.values()].reduce((a, b) => a + b, 0))}** |
-| Extra Credit (on top of the total) | 1% |
-${OWNED[term] ? `\nThe rest of the term is ${OWNED[term]}, built in Canvas by the co-instructor (#197); nothing for it here.\n` : ""}`;
+| **Total** | **${pct(total)}** |
+| Extra Credit (on top of the total) | ${pct(extra)} |
+${OWNED[term] ? `\nThe rest of the term is ${OWNED[term]} (${pct(100 - total)}), built in Canvas by the co-instructor (#197); nothing for it here.\n` : ""}`;
 }
 
 const all = entries();

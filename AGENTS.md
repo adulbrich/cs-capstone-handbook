@@ -33,8 +33,8 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. On handbook pages, also no banned word, bolded whole sentence, or banned guide opener from `docs/agents/voice.md`, and no banned word or percentage in a heading there or in the rubric CSVs, the syllabi, or the Markdown downloads in `public/`; a guide carrying the legacy-opener marker skips the opener check until its sweep, and a marker with nothing to waive fails. Runs in CI, pre-commit, and the `after-edit` hook. |
 | `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
 | `scripts/check-branch-name.mjs` | Branch rule, `<type>/<slug>`, with the issue number leading the slug when there is one. Runs at `pre-push` and in CI on the PR's head branch. |
-| `scripts/canvas-export.mjs` | The Canvas paste kit: one HTML body per Canvas entry from the built pages in `dist/`, plus each term's rubric CSVs, syllabus, and entry list, written to the gitignored `canvas-export/`. `npm run canvas:export` after `npm run build`; CI runs it with `--strict`, which fails when an `OVERRIDES` entry no longer matches its page. A stopgap for #50 until #5. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule, plus no em dash, emoji, or session link. Runs at `commit-msg`, in the `guard-git` hook, in CI over the PR range, and in the `pr-text` workflow over the PR title and body. |
+| `scripts/canvas-export.mjs` | The Canvas paste kit: one HTML body per Canvas entry from the built pages in `dist/`, plus each term's rubric CSVs, syllabus, and entry list, written to the gitignored `canvas-export/`. `npm run canvas:export` after `npm run build`; CI runs it with `--strict`, which fails on any warning: an `OVERRIDES` entry that no longer matches its page, or a page element the transform does not handle. A stopgap for #50 until #5. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -256,7 +256,8 @@ Three places still hold weights the validator cannot see:
 
 The Demo Day extra credit (1% in the term a team presents, on top of the
 four components, #305) is in no frontmatter at all: its page, the
-assignments overview, the syllabi, and the Canvas readme state it.
+assignments overview, the syllabi, the Canvas readme, and the extra
+entries in `scripts/canvas-export.mjs` state it.
 
 Changing one weight means re-cutting another, in every place it appears.
 
