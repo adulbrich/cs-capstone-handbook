@@ -22,9 +22,9 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Canvas Changes: Mentors, Retrospective Group, Defense Sheet (#320)
 
-- Rename the **Team Retrospective** group to **Term Retrospective** (fall and winter).
-- Re-paste the three syllabi and the partner survey bodies (Midterm Pulse, End-of-Term Survey): where a team has no partner, its mentor, sometimes an instructor, stands in; the TA no longer does.
-- Reprint the defense scoresheet: its bands now match `defense/defense-rubric.csv` (17-20 Exceeds, 5-16 Meets, 1-4 Does Not Meet). No rubric re-import.
+- Rename the **Team Retrospective** group to **Term Retrospective** (fall only; the assignment runs in fall).
+- Re-paste the three syllabi and the bodies of the partner surveys (Midterm Pulse, End-of-Term Survey) and Term Startup: where a team has no partner, its mentor (sometimes an instructor) stands in; the TA no longer does.
+- Reprint the defense scoresheet: its bands and anchor text now match `defense/defense-rubric.csv` (17-20 Exceeds, 5-16 Meets, 1-4 Does Not Meet). No rubric re-import.
 
 ## Re-paste Required: Repo Checkpoint NDA Note (#318)
 
