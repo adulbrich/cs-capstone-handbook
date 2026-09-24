@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below this one predate the move and name the old `.tsv` files where they record history.
 
+## Re-import Required: Peer Evaluation Split into Five Criteria (#310)
+
+`peer-evaluation/peer-evaluation-rubric.csv` now has five criteria at 20 points each (Quantity, Quality, Attitude as a team player, Technical value, Point distribution) in place of Teammate ratings (80) and Point distribution (20). Scores do not move. Re-import it on the Midterm Survey and End-of-Term Survey entries in every term. Nothing changes in Qualtrics or the scoring script.
+
 ## Re-import Required: Midterm Pulse Scored per Statement (#307)
 
 `project-partner-evaluation/partner-pulse-rubric.csv` now has four criteria at 25 points each, one per statement, in place of one averaged criterion; a fourth statement, Reflection, is new. Re-import it on the Midterm Pulse entry in every term. In the Qualtrics midterm pulse survey, add the Reflection statement as the fourth item of Q1 ("The team acted on the feedback I gave since our last meetings, or told me why not.", same five-point scale, with the note "If you have not given the team feedback yet, answer Neither agree nor disagree.") and make all four items required; `generate-project-partner-midterm-score.R` reads `Q1_1` to `Q1_4`. Re-paste the Midterm Pulse body.
