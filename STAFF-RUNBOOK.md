@@ -198,6 +198,7 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 ## Week 0 Checklist (per term)
 
 - [ ] Check-in sheet current; TA assignments made
+- [ ] Paste kit regenerated from `main`: `npm run build`, then `npm run canvas:export`, which writes `canvas-export/<term>/` with a body per entry, the rubric CSVs, the syllabus, and a README listing every entry's group, points, weight and due week
 - [ ] Canvas shells: rubrics imported from the `canvas/assignments/` CSVs (Canvas Rubrics page, Import), weights checked against the handbook tables
 - [ ] Every Canvas entry in each page's Submissions table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
 - [ ] Term Startup: 100 points in its own Term Startup group (1%), text entry, group submission, due end of week 2 in fall and end of week 1 in winter and spring, with `term-startup/term-startup-rubric.csv` attached. TAs grade it complete or incomplete in the week it is due.
