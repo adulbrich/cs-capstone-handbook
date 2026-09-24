@@ -20,6 +20,12 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Canvas Changes: Mentors, Retrospective Group, Defense Sheet (#320)
+
+- Rename the **Team Retrospective** group to **Term Retrospective** (fall only; the assignment runs in fall).
+- Re-paste the three syllabi and the bodies of the partner surveys (Midterm Pulse, End-of-Term Survey) and Term Startup: where a team has no partner, its mentor (sometimes an instructor) stands in; the TA no longer does.
+- Reprint the defense scoresheet: its bands and anchor text now match `defense/defense-rubric.csv` (17-20 Exceeds, 5-16 Meets, 1-4 Does Not Meet). No rubric re-import.
+
 ## Re-paste Required: Repo Checkpoint NDA Note (#318)
 
 No rubric changes. Re-paste the Repo Checkpoint bodies: the NDA walkthrough now applies only when the partner rules out read access, as the IP and NDA page says.
@@ -156,7 +162,7 @@ section above).
 
 ## Grade Architecture (every term)
 
-Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; a mentor, instructor, or TA stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: RFC 15% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
+Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: RFC 15% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close at the end of week 6; final surveys are sent week 9 and close at the end of week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
