@@ -128,16 +128,16 @@ A good output is the proof-of-concept itself and a brief write-up on its feasibi
 
 <Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
-Develop a comprehensive [test plan](https://en.wikipedia.org/wiki/Test_plan) to ensure your project's functionality, performance, and reliability.
+Write a [test plan](https://en.wikipedia.org/wiki/Test_plan) for the paths that must work before real users arrive, not for every feature. One to two hours as a team.
 
-1. Identify Test Objectives: Define what you need to test (e.g., functionality, usability).
-2. Create Test Cases: Develop detailed test scenarios for each feature.
+1. Identify Test Objectives: List the paths that must work (signing in, saving data, a payment) and what you need to test on each (e.g., functionality, usability).
+2. Create Test Cases: Write the test scenarios for each of those paths.
 3. Determine Test Methods: Choose manual or automated testing.
 4. Set Success Criteria: Define what constitutes a pass/fail result.
 
 Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
-A good output is a test plan document outlining test cases, methods, and criteria.
+A good output is a test plan covering the paths that must work, with their test cases, methods, and pass criteria.
 
 ## Deployment Plan
 
@@ -227,28 +227,26 @@ A good output is a list of the inclusivity bugs you found and what you'll change
 
 ## Peer Technical Design Review
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
 
-Two other teams review your technical design and you review theirs, in writing, so nobody has to be in the same room at the same time; the [presentations guide](/guides/presentations/#design-reviews) covers what a design review is for. Two to three hours in total, once per design cycle, spread over a few days.
+Put your technical design in front of another team, who doesn't share your assumptions, and review theirs in return, in one sitting; the [presentations guide](/guides/presentations/#design-reviews) covers what a design review is for. About 90 minutes for two teams in one room or on one call; three teams reviewing in a ring take about half an hour more.
 
-- **Write your packet**: a one-page diagram and one page of text covering the three issues below, shared with the two teams reviewing you.
-- **Review the other two packets**: for each, answer the questions below in writing, then open the repository and check that the code implements the design.
-- **Read the reviews you received**: decide what changes in your design, and write down what you changed and what you declined, with a reason.
-- **Talk it through (optional)**: if you disagree with a review, a 20-minute call with the reviewing team once the written reviews are in, to argue the points still open.
+- **Draw your design on one page** (20 minutes): the components, how they connect, what they are built with, and the one design decision your team is least sure of. Cover the three issues below at the depth one page allows.
+- **Present** (5 minutes): walk the other team through the page. Answer their questions; don't defend the design yet.
+- **Review** (20 minutes): the other team works through the questions below and writes down each finding in one sentence. Then swap roles and repeat.
+- **Decide** (20 minutes): mark each finding you received accepted or declined, with a one-line reason, and name the change you will make first.
 
-As a reviewer, think critically about the other team's design:
+As a reviewer, question the other team's design:
 
-- Does the packet address the three issues below?
-- Is the design fit for purpose? Does it meet the specification?
+- Is the design fit for purpose? Does it do what the project needs?
 - Is the design fit for the future? Can it grow modularly?
-- Does the code implement the design? (Look at the code.)
 - Is the design solving the right problem?
-- Are there design alternatives that should be considered?
-- Are there coding issues that should be addressed?
+- What alternatives should the team consider, and would one of them make the least-sure decision easier?
+- What would you change first?
 
-The review can be individual (one person from each team) or team (everyone reviews both packets, and the team consolidates one review per packet). Giving and receiving this kind of review is rehearsal for a formal RFC review round.
+Giving and receiving this kind of review is rehearsal for a formal RFC review round.
 
-The packet covers these three issues:
+The page covers these three issues:
 
 ### Explanation of the Design
 
@@ -276,7 +274,7 @@ A rationale for why this design meets the requirements/specification.
 
 Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
-A good output is your packet, the written review you gave each of the two other teams, and a note on what you changed in your own design after reading theirs.
+A good output is your one-page design, the findings the other team gave you, and each finding marked accepted or declined with a reason.
 
 ## Read a Book on Approaches to Software Design
 
