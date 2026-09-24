@@ -24,7 +24,7 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 The project repository now keeps only the living docs (requirements, design, decision records, risks, README, CONTRIBUTING, the AI context file). The charter, retrospectives, handoff document, Definition of Shipped, and inherited-codebase audit live elsewhere and are still submitted as one PDF; a postmortem is in the repository only when the incident is technical. The Definition of Done and the Contribution Norm moved from the charter to `CONTRIBUTING.md`. Points and tags are unchanged. Re-import all seven, after any earlier re-import of the same file:
 
-- `team-charter/team-charter-rubric.csv`: the Definition of Done is judged in `CONTRIBUTING.md`.
+- `team-charter/team-charter-rubric.csv`: the Definition of Done is judged in `CONTRIBUTING.md`, and the criterion "AI and confidentiality one-pager" is renamed "AI and confidentiality", since it is a charter section, not a separate page.
 - `repo-checkpoint/repo-checkpoint-rubric.csv`: traceability reads where `CONTRIBUTING.md`, not the charter, says work lives, and only the living docs in the PDF must match the commit. Re-import on both Repo Checkpoint entries.
 - `definition-of-shipped/definition-of-shipped-rubric.csv`, `incident-postmortem/incident-postmortem-rubric.csv`: the writing criterion no longer names a repository path.
 - `spring-release/spring-release-rubric.csv`: metrics match the Definition of Shipped, not `docs/shipped.md`.
