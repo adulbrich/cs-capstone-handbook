@@ -12,7 +12,7 @@ import References from '/src/components/References.astro';
 You're about to write `docs/design.md` for a system that barely exists yet, or you're a few sprints in and every integration turns up a mismatch nobody planned for. This page covers what a design document has to decide (the architecture, the interfaces, the data), how to test the risky parts with a spike before you commit, how to check a design with someone other than its authors, and how to keep the document true while the code moves. It doesn't cover recording individual decisions, which the [Architecture Decision Records](/guides/adr/) guide does, or configuring your AI tools, which [AI Project Setup](/guides/ai-project-setup/) does.
 
 :::note[tl;dr]
-- Put the system view in `docs/design.md`: what the system does, one or two diagrams, the interfaces, the data, how it deploys, and the open risks. Two pages is enough for a small team.
+- Put the system view in `docs/design.md`: what the system does, one or two diagrams, the interfaces, the data, how it deploys, and the open questions. Risks go in one risk register, `docs/risks.md`, not here. Two pages is enough for a small team.
 - Draw a context diagram and one level below it with the [C4 model](https://c4model.com/), in whatever tool the team already uses.
 - Agree on every interface (API, schema, file format, message) in writing before two people build toward it from opposite sides.
 - Spike the riskiest assumption, time-boxed to a few days, and record what you learned in an ADR.
@@ -133,9 +133,9 @@ front end, a Node API, and Postgres on Render, behind Google Workspace SSO.
   Needs their security sign-off; Sam asked for it. ADR-004.
 - Rollback: redeploy the previous build (tried once, works).
 
-## Risks and open questions
+## Open questions
 - SSO on the partner's Workspace tenant is unproven; Priya spikes it first.
-- Email deliverability from a new domain. Fallback: in-app notice only.
+- Email deliverability from a new domain: in docs/risks.md, fallback in-app notice.
 
 ## Out of scope
 Shift swaps between volunteers: deferred until after launch.

@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below this one predate the move and name the old `.tsv` files where they record history.
 
+## Re-import Required: Consistency Pass (#316)
+
+Re-import `sprint-note/sprint-note-rubric.csv` on every Sprint Notes entry: the top-risk criterion says "the instruction team" where it said "the staff". Re-paste the three syllabi ("course schedule"), and the bodies the kit regenerates for Sprint Notes, Definition of Shipped, Term Retrospective, Incident Postmortem, and winter Workshop 2.
+
 ## Re-paste Required: Workshops Run in Class (#312)
 
 No rubric changes. Re-paste the bodies of fall Workshop 1 (User Story Mapping), Workshop 4 (Peer Technical Design Review), Workshop 5 (Identify Success Metrics), and winter Workshop 3 (Test Plan). Workshop 4 now runs in the week 7 session with the team at the next table: no triads, no discussions, and nothing due in week 6, so skip the fall week 6 triad announcement and the discussion setup.
