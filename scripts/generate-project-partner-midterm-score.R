@@ -71,7 +71,7 @@ likert_map <- setNames(
   as.numeric(names(likert_scale)),
   unlist(likert_scale, use.names = FALSE)
 )
-q1_cols <- paste0("Q1_", 1:3)
+q1_cols <- paste0("Q1_", 1:4)
 q1_numeric_cols <- paste0(q1_cols, "_numeric")
 
 input_qualtrics[,
@@ -91,7 +91,7 @@ if (unmapped > 0) {
   stop(unmapped, " answer(s) match no label in likert_scale; check the export")
 }
 
-# A team whose partner opened the survey but answered none of the three
+# A team whose partner opened the survey but answered none of the four
 # items has no pulse score: treat it as unanswered and enter it by hand.
 unanswered <- input_qualtrics[
   rowSums(!is.na(input_qualtrics[, ..q1_numeric_cols])) == 0, Team
@@ -102,11 +102,13 @@ if (length(unanswered) > 0) {
 }
 input_qualtrics <- input_qualtrics[!(Team %in% unanswered)]
 
-# The pulse score is the mean of the three items, out of 100. Qualtrics' own
-# SC0 score uses the survey's scoring weights, not this scale, so it is not
-# compared here.
+# Each of the four items is worth a quarter of the pulse (#307), so the score
+# is their sum divided by four, out of 100. Every item is required in
+# Qualtrics; one left blank anyway scores nothing, as in the rubric.
+# Qualtrics' own SC0 score uses the survey's scoring weights, not this scale,
+# so it is not compared here.
 input_qualtrics[,
-  ProjectPartnerMidtermScore := rowMeans(.SD, na.rm = TRUE),
+  ProjectPartnerMidtermScore := rowSums(.SD, na.rm = TRUE) / length(q1_cols),
   .SDcols = q1_numeric_cols
 ]
 
