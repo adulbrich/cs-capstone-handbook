@@ -42,6 +42,7 @@ const TERM_WORD = /\b(fall|winter|spring)\b/gi;
 
 const CELL =
   "border:1px solid #c7cdd1;padding:6px 8px;vertical-align:top;text-align:left;";
+const CAPTION = "text-align:left;font-weight:bold;padding:0 0 4px;";
 const BOX =
   "border:1px solid #c7cdd1;border-left:4px solid #2d3b45;border-radius:4px;padding:8px 12px;margin:12px 0;";
 
@@ -577,10 +578,10 @@ function body(e) {
     "Handbook page: ",
     h("a", { href: pageUrl }, text(select("h1", doc)).trim()),
   ]);
-  return canvasHtml({
-    children: [source, metaBox(e), ...root.children],
-    type: "root",
-  });
+  return canvasHtml(
+    { children: [source, metaBox(e), ...root.children], type: "root" },
+    { fallback: e.name, where: `${e.term}/${e.name}` }
+  );
 }
 
 // Canvas's accessibility checker wants a scope on every header cell: col for
@@ -605,8 +606,35 @@ function scopeHeaders(tree) {
 // Canvas's editor breaks on a tag split across lines ("</a\n  >") and on
 // multi-line style attributes, which a code formatter produces. Re-serialize:
 // whole tags, one-line styles, collapsed whitespace, one line per block.
-function canvasHtml(tree) {
+// Canvas's checker also wants a caption on every table. Markdown tables have
+// none, so an uncaptioned table takes the nearest heading above it, or the
+// entry's name when no heading precedes it.
+function captionTables(tree, { fallback, where }) {
+  let heading = fallback;
+  visit(tree, "element", (node) => {
+    if (/^h[1-6]$/.test(node.tagName)) {
+      heading = text(node).trim();
+      return;
+    }
+    const captioned = node.children.some(
+      (c) => isEl(c) && c.tagName === "caption"
+    );
+    if (node.tagName !== "table" || captioned) {
+      return;
+    }
+    if (!heading) {
+      warnings.push(
+        `${where}: a table with no caption and no heading above it`
+      );
+      return;
+    }
+    node.children.unshift(h("caption", { style: CAPTION }, heading));
+  });
+}
+
+function canvasHtml(tree, context) {
   scopeHeaders(tree);
+  captionTables(tree, context);
   visit(tree, "element", (node) => {
     const { style } = node.properties;
     if (typeof style === "string") {
@@ -694,7 +722,8 @@ for (const term of TERMS) {
     canvasHtml(
       fromHtml(readFileSync(`canvas/syllabus/${SYLLABUS[term]}.html`, "utf8"), {
         fragment: true,
-      })
+      }),
+      { where: `syllabus/${SYLLABUS[term]}` }
     )
   );
   writeFileSync(`${OUT}/${term}/README.md`, termReadme(term, list));
