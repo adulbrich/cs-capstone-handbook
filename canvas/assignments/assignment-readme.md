@@ -18,9 +18,11 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 **Nothing students or graders see changed.** Every criterion, description, band, point value and outcome tag was checked equal, file by file, between the old parser's reading of each TSV and the new parser's reading of its CSV. A rubric already in Canvas does not need re-importing for this change. The pending re-imports below now take the CSV named in each. An import may add a second rubric rather than replace the one already in the course, so after re-importing, check the course's rubric list and delete the old one if both are there. Import `defense/defense-rubric.csv` first as the check that Canvas takes a fourth rating group and the quoted fields.
 
-The sections below this one predate the move and name the old `.tsv` files where they record history.
+The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
-The dated sections below record each change as it was made, newest first; an older section can name a band, a file format, or a count that a later one replaced (the Half contribution band, the `-rubric-details.tsv` files), so read the current value from the CSV and the handbook page.
+## Re-paste Required: Repo Checkpoint NDA Note (#318)
+
+No rubric changes. Re-paste the Repo Checkpoint bodies: the NDA walkthrough now applies only when the partner rules out read access, as the IP and NDA page says.
 
 ## Re-import Required: Consistency Pass (#316)
 

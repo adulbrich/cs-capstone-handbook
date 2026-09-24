@@ -241,8 +241,8 @@ assignment:
   terms: [fall, winter, spring]
   weight:
     fall: 8
-    winter: 8
-    spring: 4
+    winter: 10
+    spring: 6
 ```
 
 A scalar on a page whose weight varies is now a hard failure. It used to be

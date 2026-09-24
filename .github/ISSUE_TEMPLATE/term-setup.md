@@ -12,7 +12,6 @@ labels: type:chore
 - [ ] Add TAs to Canvas
 - [ ] Create the Teams channel for TAs and instructors
 - [ ] Create the TA meeting notes document
-- [ ] Flag NDA teams in the tracking sheet (where the partner rules out read access, their repo checkpoints run as live walkthroughs)
 
 ## Canvas and surveys
 
@@ -20,13 +19,9 @@ labels: type:chore
 - [ ] Fall only: confirm the week-by-week schedule in `src/content/docs/introduction/schedule.mdx` still holds for the year (a holiday that removes a Friday lecture, a workshop moved to another week)
 - [ ] Update the syllabus statements, then re-paste the syllabus HTML from `canvas/syllabus/` into Canvas after any edit to it
 - [ ] Set the Canvas grading standard by hand to the cut points on `src/content/docs/learning-objectives/grading.mdx`; the syllabi mirror the same table
-- [ ] Re-import every rubric CSV named in the re-import lists of `canvas/assignments/assignment-readme.md` (Canvas Rubrics page, Import; sources in `canvas/assignments/`)
-- [ ] Work through the Week 0 Checklist in `STAFF-RUNBOOK.md`: every Canvas entry and group (one entry per workshop and per sprint, never a column), Term Startup, the Extra Credit group, and the paste kit
+- [ ] Work through the Week 0 Checklist in `STAFF-RUNBOOK.md`, the one list of Canvas, survey, and staffing setup: every Canvas entry and group (one per workshop and per sprint, never a column), the rubric imports, Term Startup, the Extra Credit group, the paste kit, Qualtrics, the defense calibration hour, and the NDA flags
 - [ ] Fall and spring: confirm the co-instructor has set up Resume and Intent (fall) or the Career and Individual Retrospective (spring) in Canvas, with the resume meetings; nothing to import from this repo (`STAFF-RUNBOOK.md`, Resume and Intent, Career Retrospective)
-- [ ] Update the Qualtrics surveys (peer evaluation, project partner evaluation)
-- [ ] Announce each team's TA in week 1; each team agrees its check-in time with its TA (TA Check-ins in `src/content/docs/assignments/introduction.mdx`)
-- [ ] Schedule the defense calibration hour before week 7 (`STAFF-RUNBOOK.md`, Defense Logistics)
-- [ ] Fall and winter: turn on Canvas peer review for the RFC Draft + Peer Review entry, which assigns each student two drafts at the start of week 5 (`STAFF-RUNBOOK.md`, RFC)
+- [ ] Fall and winter: turn on Canvas peer review for the RFC Draft + Peer Review entry, which assigns each student two drafts at the start of week 5 (`STAFF-RUNBOOK.md`, RFC Machinery)
 
 ## Repository
 

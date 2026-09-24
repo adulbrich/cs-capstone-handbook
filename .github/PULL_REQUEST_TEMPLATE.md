@@ -9,15 +9,15 @@ Closes #
 
 <!-- Keep the lines that ran, delete the rest. Pre-push runs all of these. -->
 
-- `npm run build`
-- `npm run validate:outcomes`, `validate:activities`, `validate:downloads`, `validate:dashes`, `validate:dates`
-- `npm run check`
+- `npm run build`, `npm run canvas:export -- --strict`
+- `npm run validate:outcomes`, `validate:activities`, `validate:downloads`, `validate:dashes`, `validate:dates`, `validate:sidebar`, `validate:sources`
+- `npm run check`, `check:prose`, `test:hooks`
 
 ## Canvas mirror
 
-<!-- Graded work is authored here and exported to Canvas. If a rubric
-     table, a weight or a syllabus changed, the CSV or HTML under canvas/
-     changed with it and someone has to re-import. Keep one line. -->
+<!-- Graded work is authored here and exported to Canvas. If a rubric,
+     a weight or a syllabus changed, the CSV or HTML under canvas/
+     changed with it and someone has to re-import or re-paste. Keep one line. -->
 
 - CSV re-import needed: yes, for `canvas/assignments/<name>/...`
 - CSV re-import needed: no

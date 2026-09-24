@@ -145,7 +145,7 @@ const files = readdirSync(ASSIGNMENTS_DIR).filter((f) => f.endsWith(".mdx"));
 let parsed = 0;
 // slug -> parsed assignment block, for the weight reconciliation below.
 const pages = new Map();
-// slug -> the page source and the rubric tables it renders, for the Canvas
+// slug -> the page source and the rubric CSVs it renders, for the Canvas
 // entry and page-shape checks below.
 const pageSources = new Map();
 const pageTables = new Map();
@@ -728,7 +728,7 @@ if (!failed) {
 }
 
 console.log(
-  "Individual data points per student per year (from rubric tables):"
+  "Individual data points per student per year (from rubric CSVs):"
 );
 for (const outcome of ABET_OUTCOMES) {
   const ok = counts[outcome] >= MIN_ABET;
@@ -766,4 +766,4 @@ if (failed) {
   );
   process.exit(1);
 }
-console.log("\nAll outcomes covered; frontmatter and rubric tables reconcile.");
+console.log("\nAll outcomes covered; frontmatter and rubric CSVs reconcile.");

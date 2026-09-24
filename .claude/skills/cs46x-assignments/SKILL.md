@@ -301,7 +301,7 @@ The rules below are about its content.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except the two-band ones, the individual
-contribution (Full, Partial, Zero), `defense`, which adds a fourth, and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
+contribution's own three (Full, Partial, Zero), `defense`, which adds a fourth, and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
 ## The Rubric Lives in the CSV
@@ -496,15 +496,11 @@ the student to guess the standard they will be graded against.
 
 ## Before Finishing
 
-1. `npm run validate:outcomes` (frontmatter, rubric tags, weights, Canvas
-   entries, AssignmentMeta weight text, AI-use paragraph, rubric totals).
-2. `npm run validate:activities` (every linked activity is tiered).
-3. `npm run validate:downloads` (every `public/` download has an owning page).
-4. `npm run validate:dashes` (no em dashes, literal or entity).
-5. `npm run validate:dates`, `validate:sidebar`, and `validate:sources`.
-6. `npm run check:prose` (em dash, emoji, rejected synonyms, voice tells).
-7. `npm run build` (MDX, internal links, anchors), then
-   `npm run canvas:export -- --strict` (the paste kit still converts the page).
-8. If you touched a weight, verify all three terms still sum to 25%.
-9. If you touched a rubric, you touched the CSV, so add it to the re-import
+1. Run the whole Validation list in `AGENTS.md`. For an assignment page two of
+   them carry most of the weight: `validate:outcomes` checks the frontmatter,
+   rubric tags, weights, Canvas entries, AssignmentMeta weight text, AI-use
+   paragraph, and rubric totals; `canvas:export -- --strict` checks the page
+   still converts to a Canvas body.
+2. If you touched a weight, verify all three terms still sum to 25%.
+3. If you touched a rubric, you touched the CSV, so add it to the re-import
    list in `canvas/assignments/assignment-readme.md` in the same commit.

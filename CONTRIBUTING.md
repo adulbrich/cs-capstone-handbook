@@ -90,7 +90,7 @@ gh api repos/adulbrich/cs-capstone-handbook/rulesets --jq '.[] | {id, name, enfo
 A rubric **is** the CSV under `canvas/assignments/` (`AGENTS.md`, hard rule 4):
 edit it there and the handbook page re-renders from it. A change to a weight, a
 due week, or a syllabus statement still changes the syllabi under
-`canvas/syllabus/` in the same PR. Either way the PR says a re-import is needed. The re-import lists live in
+`canvas/syllabus/` and the Canvas readme in the same PR. Either way the PR says a re-import is needed. The re-import lists live in
 `canvas/assignments/assignment-readme.md`; the term-setup issue template is
 where the re-import gets scheduled.
 
