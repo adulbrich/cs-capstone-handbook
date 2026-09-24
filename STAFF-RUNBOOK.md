@@ -130,13 +130,13 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
 - NDA teams: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
 
-**Where it lives in Canvas.** Each sprint note has a sibling entry, "Sprint Notes N: Individual Contribution", 100 points in the Sprint Notes group, so each is half the sprint's weight. One criterion, scored full, half, or zero, from `canvas/assignments/individual-contribution/individual-contribution-rubric.csv`. It defaults to full credit through Set Default Grade; there is no submission. Grade it when you grade that sprint's note, so a deduction reaches the student in the sprint it concerns.
+**Where it lives in Canvas.** Each sprint note has a sibling entry, "Sprint Notes N: Individual Contribution", 100 points in the Sprint Notes group, so each is half the sprint's weight. One criterion, scored full, partial, or zero, from `canvas/assignments/individual-contribution/individual-contribution-rubric.csv`. It defaults to full credit through Set Default Grade; there is no submission. Grade it when you grade that sprint's note, so a deduction reaches the student in the sprint it concerns.
 
 **Per-sprint bands.** Every deduction needs an evidence note (what was checked, what was found) so the decision is reviewable.
 
-- **Full** (default): the contribution line lists one or more pieces of work the student owned that someone else accepted, and the record where they live corroborates it; or the norm was missed once with an explanation in the note.
-- **Half**: some activity is visible, but no owned, accepted work and no explanation in the note; or the contribution line is only weakly corroborated by the record (trivial changes; review-only activity not agreed as that student's contribution mode in `CONTRIBUTING.md`).
-- **Zero**: no meaningful contribution visible anywhere for the sprint (no contribution line, no owned work, no reviews, no traceable work) and no explanation; or the contribution line is contradicted by the record.
+- **Full** (default): the contribution line lists one or more pieces of work the student owned that someone else accepted, and the record where they live corroborates it. A sprint where the whole team was blocked, stated in the note, is Full too.
+- **Partial** (1 to 99, your call): some contribution, short of the norm: trivial changes only, review-only activity not agreed as that student's contribution mode in `CONTRIBUTING.md`, or work that is only weakly corroborated by the record. Dock from the first sprint it happens; waiting for a pattern teaches the team that a free sprint exists.
+- **Zero**: no contribution this sprint, or a contribution line the record contradicts. Being blocked is not an explanation on its own, since there is other work to pick up; only a whole-team block is.
 
 **Evidence sources**, in the order to check them: the contribution lines in the team's sprint notes (links or IDs; NDA teams list IDs only); the record where the work lives (authored or driven PRs, closed issues or tickets, approved documents, review responses); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which trigger the corroboration review on the partner evaluation page. Any owned, accepted work counts where `CONTRIBUTING.md` says it lives and the sprint note links it; a code change is its merged PR.
 
@@ -200,10 +200,11 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 - [ ] Check-in sheet current; TA assignments made
 - [ ] Canvas shells: rubrics imported from the `canvas/assignments/` CSVs (Canvas Rubrics page, Import), weights checked against the handbook tables
 - [ ] Every Canvas entry in each page's Submissions table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
-- [ ] Term Startup created by hand: 0 points, omit from final grade, text entry, group submission, due end of week 2 in fall and end of week 1 in winter and spring. It has no rubric, so nothing imports it
+- [ ] Term Startup: 100 points in its own Term Startup group (1%), text entry, group submission, due end of week 2 in fall and end of week 1 in winter and spring, with `term-startup/term-startup-rubric.csv` attached. TAs grade it complete or incomplete in the week it is due.
 - [ ] Fall only: Demo Day created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due end of fall week 3. Announce the registration link with the five sessions
+- [ ] Every term: an Extra Credit group (1%) holding one Demo Day Presentation entry, 100 points, no submission, group assignment. Enter 100 for each student on a team that presented that term; leave everyone else blank, never zero.
 - [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1), the funds and cloud request form, and in fall the Workshop 4 triads with their discussions (start of week 6)
-- [ ] Spring only: Engineering Expo created by hand, same shape as Term Startup (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
+- [ ] Spring only: Engineering Expo created by hand, (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] Qualtrics surveys updated (contact lists from the roster script)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)

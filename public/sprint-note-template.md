@@ -40,7 +40,7 @@ One line per student, three parts:
   (a) the work you owned this sprint, one or more pieces, each with a link or ID (NDA teams: IDs only);
   (b) whose work you reviewed (a pull request, a spec, a document) and the one change you asked for, named specifically ("LGTM" is not a review);
   (c) one human-written sentence: the most consequential thing you shipped, and how the team knows it works.
-If a student has nothing this sprint, their line says so plainly, and why if there is a reason. Mechanical changes (formatter runs, lockfile bumps,
+If a student has nothing this sprint, their line says so plainly, and why. Mechanical changes (formatter runs, lockfile bumps,
 generated files, bulk renames) are normal work but are not evidence; leave them out.
 
 **[Student 1]**

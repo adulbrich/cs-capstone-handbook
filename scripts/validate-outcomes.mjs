@@ -58,6 +58,7 @@ const CANVAS_TO_HANDBOOK = {
   "sprint-note": "sprint-notes",
   "team-charter": "team-charter",
   "term-retrospective": "term-retrospective",
+  "term-startup": "term-startup",
   "workshop-activities": "workshop-activities",
 };
 

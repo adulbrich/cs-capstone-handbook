@@ -153,9 +153,10 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    with more than one entry in a term renders `<CanvasEntries />`.
 
 A page with no `assignment:` block is skipped by the validator entirely: no
-rubric CSV, no weight, no AI-use paragraph, no outcome tags. Four ungraded pages
-are in that state deliberately: `introduction.mdx`, `term-startup.mdx`,
-`demo-day.mdx`, and `expo.mdx`. A fifth needs a reason. **This is the supported shape for an ungraded item**, paired
+rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages
+are in that state deliberately: `introduction.mdx`, `demo-day.mdx` (its
+presentation is extra credit outside the four components, #305), and
+`expo.mdx`. A fourth needs a reason. **This is the supported shape for an ungraded item**, paired
 with a Canvas item at 0 points with `omit_from_final_grade`; see
 `canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
 passes Zod but keeps the block and so re-arms the rubric and AI-use checks.
@@ -377,9 +378,9 @@ are tagless.
 ## What Does Not Belong Here
 
 Assignment pages hold **assignments**: things submitted and evaluated. Almost
-all carry a weight; `term-startup.mdx` is the exception, because students do not
-act on what Canvas does not put in their to-do list and the schedule cannot do
-that. Two neighbours are deliberately elsewhere:
+all carry a weight; Demo Day and the Expo are the exceptions, because students
+do not act on what Canvas does not put in their to-do list and the schedule
+cannot do that. Two neighbours are deliberately elsewhere:
 
 - **Grading policy** (points to letter grade, what each letter means, how
   outcome tags work) lives in `learning-objectives/grading.mdx`, because every
