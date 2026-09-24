@@ -262,10 +262,9 @@ An unsourced claim (`guides/testing-strategy.mdx`):
 > Before: Boundary conditions (empty inputs, maximum values, invalid data,
 > concurrent access) are where most bugs live.
 >
-> After: The instruction team recommends testing boundaries first (empty
-> inputs, maximum values, invalid data, concurrent access), because a boundary
-> is where a single wrong comparison flips the result, and it's the case a
-> happy-path test never reaches.
+> After: Test boundaries first (empty inputs, maximum values, invalid data,
+> concurrent access), because a boundary is where a single wrong comparison
+> flips the result, and it's the case a happy-path test never reaches.
 
 "Where most bugs live" is a statistic with no source. The after owns it as a
 recommendation and gives the reason.

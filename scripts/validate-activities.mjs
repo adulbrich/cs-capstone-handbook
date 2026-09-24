@@ -537,7 +537,7 @@ for (const { dir, kind, file } of activityAndGuidePages()) {
 }
 
 // --- Activities and guides: no outcome tags, no grading language -------------
-// Outcome tags belong only in assignment rubric tables, where the outcomes
+// Outcome tags belong only in assignment rubric CSVs, where the outcomes
 // validator reads them; a tag anywhere else looks like coverage and counts
 // as nothing. Point values and percentages next to "grade", "rubric" or
 // "criterion" are assignment-page content. A bare "%" or "points" is not
@@ -553,7 +553,7 @@ for (const { dir, file, kind } of activityAndGuidePages()) {
   const where = `${kind}/${file}`;
   for (const m of source.matchAll(OUTCOME_TAG_RE)) {
     problems.push(
-      `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric tables`
+      `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric CSVs`
     );
   }
   for (const m of source.matchAll(GRADE_NUMBER_RE)) {

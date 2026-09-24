@@ -91,4 +91,5 @@ pre-push:
       run: node scripts/test-guard-git.mjs
     build:
       # astro check + astro build; fails on a broken internal link or anchor.
-      run: npm run build
+      # The paste kit reads the built pages, so it runs in the same command.
+      run: npm run build && npm run canvas:export -- --strict

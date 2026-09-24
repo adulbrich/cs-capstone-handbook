@@ -169,7 +169,7 @@ Line by line:
 
 **Heading.** No trailing punctuation, and see **Heading Rules** below; they
 are load-bearing. Sentence case is the target for **new** activities only:
-about 110 of the 118 existing headings are Title Case and stay that way,
+nearly all existing headings are Title Case and stay that way,
 because renaming a heading breaks every inbound anchor. Never re-case an
 existing heading.
 
@@ -344,7 +344,7 @@ and cost. The second names the artifact and the time.
 - Submission mechanics ("upload to Canvas"). The one exception is the Workshop
   tier, and even there the mechanics live on the assignment page, not here.
 - Claims about accreditation outcomes (`SO1`-`SO6`, `L07`-`L10`). Outcome tags
-  belong exclusively in assignment rubric tables, where the validator reads
+  belong exclusively in the assignment rubric CSVs, where the validator reads
   them. An activity tagged with an outcome creates the appearance of coverage
   that the validator will not count, which is worse than no tag.
 - Tool requirements presented as mandatory when a cheaper substitute exists. If
