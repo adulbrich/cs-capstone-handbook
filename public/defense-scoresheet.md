@@ -10,7 +10,7 @@
 
 **Speaking position:** ____ of ____ (order drawn at random) **Individual follow-up needed:** yes / no
 
-Score each criterion 0 to 20. Anchors: high (17-20) = Exceeds, middle (10-16) = Meets, low (1-9) = Does Not Meet, 0 = unexcused no-show or no meaningful attempt. "I don't know, but here is how I would find out" scores; bluffing does not.
+Score each criterion 0 to 20. Anchors: high (17-20) = Exceeds, middle (5-16) = Meets, low (1-4) = Does Not Meet, 0 = unexcused no-show or no meaningful attempt. "I don't know, but here is how I would find out" scores; bluffing does not.
 
 Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session. **Draw the speaking order at random in the room and do not publish it in advance**, and give each student a different artifact and a different "what breaks if X" question: whoever goes last has otherwise heard several rounds of the same questions. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
 
@@ -44,7 +44,7 @@ Notes: __________________________________________________________________
 
 Notes: __________________________________________________________________
 
-## 4. Role and Team Accountability (SO5): ____ / 20
+## 4. Role, Team Accountability, and Work Distribution (SO5): ____ / 20
 
 - High: articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, names a decision they chaired to a conclusion (check it against the sprint-note record), and explains how the team's decisions actually got made and how work was distributed.
 - Middle: describes the role's duties but gives little evidence of carrying them out, or describes decisions and work distribution vaguely.
