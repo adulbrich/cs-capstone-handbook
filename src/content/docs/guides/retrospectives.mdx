@@ -1,6 +1,6 @@
 ---
 title: Retrospectives
-description: How to run retrospectives that change how the team works, from sprint-level check-ins to project-wide reflections and incident post-mortems.
+description: How to run retrospectives that change how the team works, from sprint-level check-ins to project-wide reflections and incident postmortems.
 sidebar:
   order: 4
 ---
@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has just closed a sprint, finished a milestone, or cleaned up after a bad deploy, and someone has put an hour on the calendar called a retrospective. This page covers the kinds of retrospective, four formats for running one, how to facilitate it so it produces actions rather than complaints, and the post-mortem you write after an incident. It doesn't cover planning or reviewing the sprint itself (see [Sprints](/guides/sprint/)), or what to do when a problem between two people outgrows the meeting (see [Conflict](/guides/conflict/)).
+Your team has just closed a sprint, finished a milestone, or cleaned up after a bad deploy, and someone has put an hour on the calendar called a retrospective. This page covers the kinds of retrospective, four formats for running one, how to facilitate it so it produces actions rather than complaints, and the postmortem you write after an incident. It doesn't cover planning or reviewing the sprint itself (see [Sprints](/guides/sprint/)), or what to do when a problem between two people outgrows the meeting (see [Conflict](/guides/conflict/)).
 
 :::note[tl;dr]
 - Hold a sprint retrospective at the end of every sprint, time-boxed to 30 to 45 minutes, including the sprints that went well.
@@ -16,7 +16,7 @@ Your team has just closed a sprint, finished a milestone, or cleaned up after a 
 - Bring records (the board, merged PRs, CI history, bug counts) so the discussion rests on what happened rather than on memory.
 - Leave with no more than three actions, each with one owner, a deadline, and a sign that it worked, and open the next retrospective by checking them.
 - Keep the discussion on systems and conditions, not people: ask what made the failure likely, not who failed.
-- After an incident, write a post-mortem: summary, timeline, root cause, contributing factors, and actions.
+- After an incident, write a postmortem: summary, timeline, root cause, contributing factors, and actions.
 :::
 
 A retrospective is a structured conversation in which the team examines how it worked rather than what it built. [Scrum](https://scrumguides.org/scrum-guide.html) makes it the event that closes every sprint, with the purpose of planning ways to increase quality and effectiveness. [Esther Derby and Diana Larsen's *Agile Retrospectives*](https://pragprog.com/titles/dlret2/agile-retrospectives-second-edition/) is a widely used practitioner book on running one, and it splits the meeting into five phases: set the stage, gather data, generate insights, decide what to do, and close the retrospective.
@@ -48,12 +48,12 @@ Run it at the end of the project, over the full lifecycle from the first require
 
 Pair the team discussion with individual reflection, where each member writes down their own growth, contributions, and lessons, because over a whole project each person's arc differs from the team's, and a group conversation only captures the shared part.
 
-### Incident Retrospective (Post-Mortem)
+### Incident Retrospective (Postmortem)
 
-When something breaks, or nearly breaks, in production, run a retrospective focused on that one event. The output is a written post-mortem (the format is [below](#post-mortem-format)), and the goal is to change the system so the failure is less likely or caught sooner.
+When something breaks, or nearly breaks, in production, run a retrospective focused on that one event. The output is a written postmortem (the format is [below](#postmortem-format)), and the goal is to change the system so the failure is less likely or caught sooner.
 
 :::tip[Blameless Culture]
-Write the post-mortem without blame: assume everyone involved acted with good intent and the best information they had at the time, and ask what in the system or process let the failure through. [Google's SRE book](https://sre.google/sre-book/postmortem-culture/) argues that where people are pointed at and shamed for mistakes, they stop bringing issues to light for fear of punishment.
+Write the postmortem without blame: assume everyone involved acted with good intent and the best information they had at the time, and ask what in the system or process let the failure through. [Google's SRE book](https://sre.google/sre-book/postmortem-culture/) argues that where people are pointed at and shamed for mistakes, they stop bringing issues to light for fear of punishment.
 :::
 
 ## Formats
@@ -141,9 +141,9 @@ Put the actions where the team tracks its other work (the Scrum Guide notes they
 
 Check whether each action is within the team's control. Lehtinen and colleagues hypothesize that a team's improvement proposals for problems outside its control, or too complex to solve at the team level, tend to stay ineffective <Cite id="lehtinen-2017" form="parenthetical" />. For those, the action is to raise the problem with whoever does control it (the project partner, a manager or an advisor), not to promise a fix the team can't deliver.
 
-## Post-Mortem Format
+## Postmortem Format
 
-For incidents, a lightweight post-mortem covers five areas:
+For incidents, a lightweight postmortem covers five areas:
 
 1. **Summary**: what happened, and what was the impact?
 2. **Timeline**: a chronological reconstruction of events.
@@ -177,7 +177,7 @@ A written retrospective takes longer than it looks, and the time goes into recon
 
 The retrospective is a defined event in Scrum, but the practice predates agile. <Cite id="tannenbaum-2013" /> note that the U.S. Army has used debriefs, or after-action reviews, for decades, and that medical, aviation, and other communities increasingly use them too.
 
-In software operations, [Google's Site Reliability Engineering (SRE) book](https://sre.google/sre-book/postmortem-culture/) describes the blameless post-mortem as a tenet of SRE culture and documents how Google runs one. Some companies publish their post-mortems: [GitHub's monthly availability reports](https://github.blog/tag/github-availability-report/), [Atlassian's review of its multi-day outage](https://www.atlassian.com/blog/how-we-build/post-incident-review-april-2022-outage), and [Stripe's root-cause analysis of a period of elevated API errors](https://stripe.com/rcas/2019-07-10) are examples, and [Dan Luu's list](https://github.com/danluu/post-mortems) collects many more.
+In software operations, [Google's Site Reliability Engineering (SRE) book](https://sre.google/sre-book/postmortem-culture/) describes the blameless postmortem as a tenet of SRE culture and documents how Google runs one. Some companies publish their postmortems: [GitHub's monthly availability reports](https://github.blog/tag/github-availability-report/), [Atlassian's review of its multi-day outage](https://www.atlassian.com/blog/how-we-build/post-incident-review-april-2022-outage), and [Stripe's root-cause analysis of a period of elevated API errors](https://stripe.com/rcas/2019-07-10) are examples, and [Dan Luu's list](https://github.com/danluu/post-mortems) collects many more.
 
 In software engineering research, retrospectives are less studied than they are used. <Cite id="lehtinen-2017" /> note that their tangible outcomes have received little research attention despite their widespread use, and both software studies cited on this page are case studies: one organization over almost three years, and two cases of the evidence-based timeline <Cite id="bjarnason-2013" form="parenthetical" />. The debrief meta-analyses weren't designed around software teams (Keiser and Arthur name the military and healthcare among their settings), so treat their effect sizes as a strong hint for a software team rather than a measurement of one.
 
@@ -187,14 +187,14 @@ In software engineering research, retrospectives are less studied than they are 
 
 ## Additional Readings
 
-Most of these come from incident review. Read them even if your project never has an incident, because a blameless post-mortem is a retrospective run under pressure, with the same rule of studying the conditions rather than the culprit.
+Most of these come from incident review. Read them even if your project never has an incident, because a blameless postmortem is a retrospective run under pressure, with the same rule of studying the conditions rather than the culprit.
 
 **Sources and further reading**
 
 - [The Retrospective Handbook](https://leanpub.com/the-retrospective-handbook), Patrick Kua: a practitioner's guide to facilitation problems, drawn from years of running retrospectives.
 - [How to run a blameless postmortem](https://www.atlassian.com/incident-management/postmortem/blameless), Atlassian: shorter than the SRE chapter, with a template.
-- [PagerDuty Postmortem Documentation](https://postmortems.pagerduty.com/), PagerDuty: an open guide to writing post-mortems step by step.
-- [Postmortem Practices for Incident Management](https://sre.google/workbook/postmortem-culture/), Google SRE workbook: a poorly written post-mortem compared with the one actually written after the same outage.
+- [PagerDuty Postmortem Documentation](https://postmortems.pagerduty.com/), PagerDuty: an open guide to writing postmortems step by step.
+- [Postmortem Practices for Incident Management](https://sre.google/workbook/postmortem-culture/), Google SRE workbook: a poorly written postmortem compared with the one actually written after the same outage.
 - [Each necessary, but only jointly sufficient](https://www.kitchensoap.com/2012/02/10/each-necessary-but-only-jointly-sufficient/), John Allspaw: the argument that complex systems fail without a single root cause.
 - [The Field Guide to Understanding 'Human Error'](https://www.routledge.com/The-Field-Guide-to-Understanding-Human-Error/Dekker/p/book/9781472439055), Sidney Dekker: the case against the "bad apple" explanation of failure.
 
@@ -204,4 +204,4 @@ Most of these come from incident review. Read them even if your project never ha
 - [Learning Journal](/activities/reflective/#learning-journal): the running note that makes a written retrospective tractable.
 - [External Feedback Session](/activities/reflective/#external-feedback-session): the same reflective habit, with an outside perspective.
 - [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment): useful when a retrospective keeps surfacing the same unresolved thing.
-- [Fishbone Diagram](/activities/planning/#fishbone-diagram): lays out several causes at once for a post-mortem's root-cause section.
+- [Fishbone Diagram](/activities/planning/#fishbone-diagram): lays out several causes at once for a postmortem's root-cause section.

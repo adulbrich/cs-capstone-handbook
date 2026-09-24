@@ -445,7 +445,8 @@ issue that measured it rather than trimming a working section to hit a number.
   words of "grade", "rubric" or "criterion" on any guide page; the rest of
   this rule is on you.
 - Accreditation outcome tags (`SO1`-`SO6`, `L07`-`L10`). Those live only in
-  assignment rubric tables, where `validate-outcomes.mjs` reads them, and
+  the assignment rubric CSVs under `canvas/assignments/`, where
+  `validate-outcomes.mjs` reads them, and
   `validate-activities.mjs` fails on one appearing in a guide.
 - Tool requirements presented as mandatory. Guides may show the current
   industry baseline; say what the substitute is for students without the tool.
@@ -566,7 +567,7 @@ the failure this skill exists to prevent.
    sentence and that each one says why. This is where compression re-enters.
 6. Sort the claims. Read the page for every sentence a reader could doubt and
    confirm it is Evidence (cited and verified), a Reference (linked), or a
-   Recommendation ("The instruction team recommends X, because Y"). Grep for
+   Recommendation (an imperative with its reason: "Do X, because Y"). Grep for
    the unsourced tells: `research shows`, `studies`, `most teams`, a bare
    percentage.
 7. Run the reverse outline from `docs/agents/code-review.md` yourself before

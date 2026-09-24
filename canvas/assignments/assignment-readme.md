@@ -2,7 +2,7 @@
 
 - This directory holds one validated `<name>-rubric.csv` per distinct rubric of every live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), in the format of Canvas's rubric import, plus Canvas's own template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
 - `scripts/validate-outcomes.mjs` reads every CSV as the rubric: it reconciles the outcome tags in the Criteria Name column against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own CSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
-- The body of each assignment in Canvas is the handbook page itself, pasted from the local build (`npm run build`, then the page under `dist/assignments/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
+- The body of each assignment in Canvas is the handbook page itself, from the paste kit (`npm run build`, then `npm run canvas:export`, which writes one body per Canvas entry to `canvas-export/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
 - One CSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the CSV. That list is what to create in Canvas: the page renders it for students as the Submissions table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
 **All graded work except the two assignments owned in Canvas is authored in the [course handbook](https://capstone.alexulbrich.com/assignments/introduction/), and each rubric here is the only copy of itself.** Once imported, Canvas is what students go by, as the syllabi say, so a fix made only in Canvas has to be made here too or the next import undoes it. Since #144 the handbook page renders this directory's CSV rather than restating it, so there is no second copy of any rubric and nothing to keep in sync by hand. Editing a CSV changes both the handbook page and what the next Canvas import carries.
@@ -18,7 +18,37 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 **Nothing students or graders see changed.** Every criterion, description, band, point value and outcome tag was checked equal, file by file, between the old parser's reading of each TSV and the new parser's reading of its CSV. A rubric already in Canvas does not need re-importing for this change. The pending re-imports below now take the CSV named in each. An import may add a second rubric rather than replace the one already in the course, so after re-importing, check the course's rubric list and delete the old one if both are there. Import `defense/defense-rubric.csv` first as the check that Canvas takes a fourth rating group and the quoted fields.
 
-The sections below this one predate the move and name the old `.tsv` files where they record history.
+The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
+
+## Re-paste Required: Accessibility Checker (#329)
+
+No rubric changes. Re-paste every body and the three syllabi from the regenerated kit: every table now has a caption, the CS 463 Beyond OSU II table has a header row, and the syllabus buttons use `#c43c00`, which meets the checker's contrast ratio.
+
+## Re-paste Required: Table Header Scopes (#327)
+
+No rubric changes. Re-paste every body and the three syllabi from the regenerated kit: each table header now declares its scope, which Canvas's accessibility checker requires.
+
+## Re-import Required: One Home per Repository Question (#325)
+
+Re-import `repo-checkpoint/repo-checkpoint-rubric.csv` on every Repo Checkpoint entry: the fall week 5 gate reads the production target from `docs/design.md` and the approval it needs from `docs/risks.md`. Re-paste the Repo Checkpoint, Definition of Shipped, and fall Workshop 4 bodies.
+
+## Re-paste Required: Walking Skeleton Link (#323)
+
+No rubric changes. Re-paste the Repo Checkpoint bodies: the fall week 10 gate no longer links a walking skeleton template, which is deleted.
+
+## Canvas Changes: Mentors, Retrospective Group, Defense Sheet (#320)
+
+- Rename the **Team Retrospective** group to **Term Retrospective** (fall only; the assignment runs in fall).
+- Re-paste the three syllabi and the bodies of the partner surveys (Midterm Pulse, End-of-Term Survey) and Term Startup: where a team has no partner, its mentor (sometimes an instructor) stands in; the TA no longer does.
+- Reprint the defense scoresheet: its bands and anchor text now match `defense/defense-rubric.csv` (17-20 Exceeds, 5-16 Meets, 1-4 Does Not Meet). No rubric re-import.
+
+## Re-paste Required: Repo Checkpoint NDA Note (#318)
+
+No rubric changes. Re-paste the Repo Checkpoint bodies: the NDA walkthrough now applies only when the partner rules out read access, as the IP and NDA page says.
+
+## Re-import Required: Consistency Pass (#316)
+
+Re-import `sprint-note/sprint-note-rubric.csv` on every Sprint Notes entry: the top-risk criterion says "the instruction team" where it said "the staff". Re-paste the three syllabi ("course schedule"), and the bodies the kit regenerates for Sprint Notes, Definition of Shipped, Term Retrospective, Incident Postmortem, fall Workshop 2, and winter Workshop 2.
 
 ## Re-paste Required: Workshops Run in Class (#312)
 
@@ -148,7 +178,7 @@ section above).
 
 ## Grade Architecture (every term)
 
-Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; a mentor, instructor, or TA stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: RFC 15% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
+Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: RFC 15% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close at the end of week 6; final surveys are sent week 9 and close at the end of week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
@@ -240,7 +270,7 @@ so the TSV must be re-imported:
 comparable ownership area", which is the same rule, and its band descriptions are
 unchanged.
 
-The fall Term Retrospective's Writing criterion changed in the same way, but no TSV for it exists under `canvas/assignments/`; it needs one before the fall rubric is built in Canvas.
+The fall Term Retrospective's Writing criterion changed in the same way, but no TSV for it existed then; it has since become `term-retrospective/term-retrospective-rubric.csv`.
 
 **All three syllabus bodies need re-pasting into Canvas** from `canvas/syllabus/` (2026-09-13, #22 and #32; the Term cells lost their year under #57): the grade table is the 11-band handbook scale, the Term cells read Fall, Winter and Spring with no year, and the late-policy paragraph is a summary that links the handbook instead of a second full statement.
 
@@ -339,7 +369,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC peer review; Demo Day session 1 |
 | 6 | Sprint Note 2 |
-| 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
+| 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
 | 9 | Term Retrospective |
 | 10 | Sprint Note 4; Repo Checkpoint 2 ("hello, production" gate); Demo Day session 2 |
@@ -355,7 +385,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 4 | Sprint Note 2; RFC draft |
 | 5 | Repo Checkpoint 1 (integration health); RFC peer review; Demo Day session 3 |
 | 6 | Sprint Note 3 |
-| 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
+| 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 4; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
 | 10 | Sprint Note 5; Repo Checkpoint 2 (release candidate gate); Demo Day session 4 |
@@ -371,7 +401,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 5 | Demo Day session 5 |
 | 6 | Sprint Note 3 |
 | 7 | Landing Page |
-| 7-9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
+| 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Release and Metrics; Project Handoff |
 | 9 | Project Retrospective; Career and Individual Retrospective |
 | 10 | Engineering Expo (0 points, omit from final grade) |

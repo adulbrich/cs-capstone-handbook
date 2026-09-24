@@ -2,7 +2,7 @@
 
 Date: 2026-09-21
 Branch: `feat/162-dissolve-practicalities`
-Status: implemented. `src/content/docs/practicalities/` no longer exists. The rule it broke is now written in `AGENTS.md` under "Audience pages are orientation, not a course index".
+Status: implemented. Term Startup, cited below as an ungraded item, is graded since #305 (1% every term). `src/content/docs/practicalities/` no longer exists. The rule it broke is now written in `AGENTS.md` under "Audience pages are orientation, not a course index".
 Companion documents: `AGENTS.md` (canonical homes, and the register rule), `.claude/skills/cs46x-guides/SKILL.md` (the equivalent rule for guides), `docs/decisions/2026-09-21-outcome-type-ownership.md`.
 
 ## 1. Why

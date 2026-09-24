@@ -108,8 +108,8 @@ a per-term map when it varies:
 ```yaml
   weight:
     fall: 8
-    winter: 8
-    spring: 4
+    winter: 10
+    spring: 6
 ```
 
 `canvas` lists the page's **Canvas entries**, one family per item, and each
@@ -141,7 +141,7 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    **Grade Weights** below.
 5. **The `<AssignmentMeta weight="...">` text states every percentage the
    frontmatter declares.** A per-term map means every term's figure appears
-   in the text ("8% of the fall and winter grades, 4% of the spring grade").
+   in the text ("8% of the fall grade, 10% of the winter grade, 6% of the spring grade").
 6. **A page with a deliverable section carries an `**AI use:**` paragraph.**
    The deliverable headings the validator recognizes are the four listed
    under **Section Skeleton** below.
@@ -182,7 +182,7 @@ Sections in **bold** are required.
    ```mdx
    import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 
-   <AssignmentMeta submission="Team" due="Winter, week 3 (v1, partner-agreed)" weight="4% of the winter grade">
+   <AssignmentMeta submission="Team" due="Winter, week 3 (v1, partner-agreed)" weight="3% of the winter grade">
      A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).
    </AssignmentMeta>
    ```
@@ -300,8 +300,9 @@ The rules below are about its content.
   the grader checks. `repo-checkpoints.mdx` is the model.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
-**Does Not Meet** (low or none), except the pass/fail ones, `defense`, which
-adds a fourth, and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
+**Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
+Startup); the individual contribution's Full, Partial, and Zero; `defense`,
+which adds a fourth; and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
 ## The Rubric Lives in the CSV
@@ -360,7 +361,10 @@ assuming a number:
 
 - **Three bands, 13 fields.** The default: `Exceeds Expectations` /
   `Meets Expectations` / `Does Not Meet Expectations`, at full / 80% / 20%.
-- **Two bands, 10 fields.** Pass/fail rubrics: `Pass` at full, `Fail` at 0.
+- **Two bands, 10 fields.** The sprint note's `Pass` at full and `Fail` at 0;
+  the workshops' and Term Startup's `Complete` at full and `Incomplete` at 0.
+- **Individual contribution.** `Full` at 100, `Partial` at 99 with a range
+  down to 1 at the grader's discretion, and `Zero` at 0.
 - **Four bands, 16 fields.** `defense` adds a `Missing` band at 0 for an
   unexcused no-show, which the other rubrics state in prose instead.
 - **The surveys' own scales.** The partner's facets keep three bands, 13
@@ -493,12 +497,11 @@ the student to guess the standard they will be graded against.
 
 ## Before Finishing
 
-1. `npm run validate:outcomes` (frontmatter, rubric tags, weights, Canvas
-   mirror, AssignmentMeta weight text, AI-use paragraph, rubric totals).
-2. `npm run validate:activities` (every linked activity is tiered).
-3. `npm run validate:downloads` (every `public/` download has an owning page).
-4. `npm run validate:dashes` (no em dashes, literal or entity).
-5. `npm run build` (MDX, internal links, anchors).
-6. If you touched a weight, verify all three terms still sum to 25%.
-7. If you touched a rubric, you touched the CSV, so add it to the re-import
+1. Run the whole Validation list in `AGENTS.md`. For an assignment page two of
+   them carry most of the weight: `validate:outcomes` checks the frontmatter,
+   rubric tags, weights, Canvas entries, AssignmentMeta weight text, AI-use
+   paragraph, and rubric totals; `canvas:export -- --strict` checks the page
+   still converts to a Canvas body.
+2. If you touched a weight, verify all three terms still sum to 25%.
+3. If you touched a rubric, you touched the CSV, so add it to the re-import
    list in `canvas/assignments/assignment-readme.md` in the same commit.

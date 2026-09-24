@@ -92,7 +92,7 @@ Draw the system your team is about to build, at the level of zoom your project p
 - **Mark the risky parts**: which component is new to the team, which integration is unproven, and what you'll spike first.
 - **State scalability, security, and performance assumptions**: one line each, or "not a concern for this project" with the reason.
 
-Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 Keep the diagram in your repository docs; it anchors the design section of an RFC.
 
@@ -135,7 +135,7 @@ Write a [test plan](https://en.wikipedia.org/wiki/Test_plan) for the paths that 
 3. Determine Test Methods: Choose manual or automated testing.
 4. Set Success Criteria: Define what constitutes a pass/fail result.
 
-Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is a test plan covering the paths that must work, with their test cases, methods, and pass criteria.
 
@@ -156,7 +156,7 @@ That means:
 2. Create a Deployment Checklist: Include steps like configuration, testing, build, integration, uploads, release, and backups. 
 3. Define Rollback Plan: Plan actions if deployment fails.
 
-See the [Shipping guide](/guides/shipping/) for the lead times your deployment path involves.
+The [DevOps guide](/guides/devops/#deployment-checklist) covers the deployment checklist and [rollbacks](/guides/devops/#rollbacks); the [Shipping guide](/guides/shipping/) has the lead times your deployment path involves.
 
 A good output is a deployment plan detailing environment, steps, and rollback procedures.
 
@@ -231,7 +231,7 @@ A good output is a list of the inclusivity bugs you found and what you'll change
 
 Put your technical design in front of another team and review theirs in return, in one sitting; the [presentations guide](/guides/presentations/#design-reviews) covers what a design review is for. About 75 minutes for two or three teams in one room or on one call.
 
-- **Draw your design on one page**: 20 minutes. The components, how they connect, what they are built with, and the one design decision your team is least sure of. Cover the three issues below at the depth one page allows.
+- **Draw your design on one page**: 20 minutes, starting from your design document if you have one. The components, how they connect, what they are built with, and the one design decision your team is least sure of. Cover the three issues below at the depth one page allows.
 - **Present**: 5 minutes per team. Walk the others through your page. Answer their questions; don't defend the design yet.
 - **Review**: 20 minutes, every team at once. Work through the questions below on the other team's page, or with three teams on the next team's page, write each finding in one sentence, and hand the findings over.
 - **Decide**: 20 minutes. Mark each finding you received accepted or declined, with a one-line reason, and name the change you will make first.
@@ -272,7 +272,7 @@ A rationale for why this design meets the requirements/specification.
 - Does the design facilitate managing that change in a modular fashion? 
 - What are core assumptions that cannot be changed?
 
-Run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
 A good output is your one-page design, the findings the other team gave you, and each finding marked accepted or declined with a reason.
 
