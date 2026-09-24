@@ -1,89 +1,44 @@
-# Problem Statement
+## Problem statement
 
-## One-Sentence Problem Statement
+The section that opens `docs/requirements.md`. Rewrite it as you learn, and say what changed in the commit message.
 
-State who is affected, what breaks, where/when it occurs, and why it matters. Avoid solution language.
+### Statement
 
-## Context & Affected Users/Roles
+One paragraph: who is affected, what breaks, where and when it happens, why it matters, and what evidence says it's real. Avoid solution language.
 
-- Role 1: [1–2 lines on context/pain]
-- Role 2: [1–2 lines on context/pain]
+### Affected Users and Roles
+
+- Role 1: [1–2 lines on context and pain]
+- Role 2: [1–2 lines on context and pain]
 [Add more as needed]
 
-## Evidence Snapshot
+### Evidence Snapshot
 
-3-5 bullets
+3 to 5 bullets, PII redacted.
 
-- [Timestamp, Role] Key insight 1
-- [Timestamp, Role] Key insight 2
-- [Timestamp, Role] Key insight 3
+- [Role, interview or observation] Key insight 1
+- [Role, interview or observation] Key insight 2
+- [Role, interview or observation] Key insight 3
 
-Redact PII; keep concise
-
-## Framing Lenses
-
-Per teammate
+### Framing Lenses
 
 - **Lens A (e.g., 5 Whys)**: [1 short paragraph: main finding]
 - **Lens B (e.g., Is/Is-Not)**: [finding]
 - **Lens C (e.g., JTBD forces / HMW / fishbone / workflow-as-is)**: [finding]
 
-## Current vs. Ideal
+### Current vs. Ideal
 
 Choose one.
 
-**Option A, Current Workflow & Pain Points:**  
+**Option A, Current Workflow and Pain Points:**  
 [Short bullet flow + where pain occurs]  
 **OR**  
 **Option B, Before/After Scenario:**  
 **Before:** [user’s current experience]  
 **After:** [what “better” looks like without naming a solution]
 
-## Measurable Success Criteria
+### Optional: Diagram (Fishbone / Is-Is Not / JTBD timeline)
 
-2-4 bullets
+Paste image, ASCII diagram, or public link.
 
-- SC-1: [Metric/threshold, e.g., “Reduce average X from A to ≤ B (P95 ≤ T)”]
-- SC-2: [Binary/ratio target, e.g., “Task success ≥ Y% in Z context”]
-- SC-3: [Optional]
-
-## Constraints & Assumptions; Non-Goals
-
-- **Constraints:** [tech/policy/time/access limits]
-- **Assumptions:** [what must be true]
-- **Non-Goals:** [out-of-scope items]
-
-## Partner Feedback & Edits
-
-- Meeting date: [YYYY-MM-DD]: [decisions, owners]
-- Edits made: [what changed in sections 1–7]
-
-## Traceability Mini-Table
-
-| Partner Goal | Problem Facet | Success Criterion ID |
-|---|---|---|
-| G1: [goal] | F1: [facet] | SC-1 |
-| G2: [goal] | F2: [facet] | SC-2 |
-
-## Change Log
-
-- [YYYY-MM-DD] Initial draft.
-- [YYYY-MM-DD] Updated after partner review: [brief note].
-- [YYYY-MM-DD] [Further edits]
-
-## Optional
-
-### Diagram (Fishbone / Is-Is Not / JTBD timeline)
-
-Paste image, ASCII diagram, or public link
-
-### Top Risks
-
-Maximum 2 bullets
-
-- R1: [risk]. Trigger: [X]; Mitigation: [Y]
-- R2: [risk]. Trigger: [X]; Mitigation: [Y]
-
-### One-Slide Elevator Pitch
-
-[Problem in 2–3 bullets + one metric that matters
+Success metrics, constraints, and non-goals are sections of their own in `docs/requirements.md`; they do not go here.
