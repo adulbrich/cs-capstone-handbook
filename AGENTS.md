@@ -15,11 +15,11 @@ it. Content lives in `src/content/docs/**` as MDX.
 
 | Path | Holds |
 |---|---|
-| `src/content/docs/assignments/` | Graded work, authored here and exported to Canvas, except the two Canvas-owned stubs (hard rule 4). Every page's rubric table is machine-parsed. |
+| `src/content/docs/assignments/` | Graded work, authored here and exported to Canvas, except the two Canvas-owned stubs (hard rule 4). Every page's rubric CSV is machine-parsed. |
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
 | `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
-| `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies are pasted from the built handbook page, not stored here. |
+| `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies come from the built pages through the paste kit (`npm run canvas:export`) and are not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, that each page renders its own CSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
@@ -94,6 +94,7 @@ Run all of these before considering any content change done:
 
 ```sh
 npm run build            # astro check + astro build; fails on broken internal links
+npm run canvas:export -- --strict  # the paste kit, after the build; fails on any warning
 npm run validate:outcomes
 npm run validate:activities
 npm run validate:downloads
@@ -115,11 +116,13 @@ text determines anchor slugs, so renaming a heading breaks every inbound
 
 ## How outcome coverage stays true
 
-Every assignment page carries outcome tags in its rubric table and declares
-matching counts in its frontmatter. `scripts/validate-outcomes.mjs` parses the
-rubric tables directly as the source of truth and fails if:
+Every assignment page's rubric is a CSV under `canvas/assignments/`, rendered
+on the page, with each criterion's outcome tags in its Criteria Name column;
+the page declares matching counts in its frontmatter.
+`scripts/validate-outcomes.mjs` reads the CSVs as the source of truth and
+fails if:
 
-- frontmatter counts and rubric-table tags disagree,
+- frontmatter counts and CSV tags disagree,
 - any ABET outcome (SO1-SO6) drops below **two individual data points**,
 - any WIC or Beyond OSU outcome (L07-L10) loses individual coverage entirely,
   except L10, exempt while its only criteria live in Canvas (#196).
@@ -131,16 +134,14 @@ carries. This is the rule most easily gotten wrong: a team-level page tagged
 
 `src/content/docs/learning-objectives/mapping.mdx` is the human-readable view
 of the same map and is hand-maintained against this check. When you change a
-rubric criterion's tags, update the frontmatter, the mapping page, and the
-Canvas CSV in the same commit.
+rubric criterion's tags, update the CSV, the frontmatter, and the mapping page
+in the same commit.
 
-The same validator reconciles **Canvas against the handbook**: the set of
-outcome tags in each `canvas/assignments/*/​*-rubric.csv` must equal the
-set in the handbook rubric table it mirrors. Nothing else in the toolchain reads
-Canvas, so without this it drifts silently, and it had. The directory-to-page
-map and the deprecated-directory list live at the top of the script; a Canvas
-directory that starts claiming outcomes without being in either list fails the
-check rather than being skipped.
+The same validator checks that each page renders its own CSVs. Vite resolves
+any real path, so nothing else would catch a page rendering another
+assignment's rubric. The directory-to-page map and the deprecated-directory
+list live at the top of the script; a rubric directory that claims outcomes
+without being in either list fails the check rather than being skipped.
 
 ## How activity tiers stay true
 
@@ -263,8 +264,8 @@ Changing one weight means re-cutting another, in every place it appears.
 
 ## Code style
 
-Biome (via Ultracite's `core` preset) formats and lints the code: the three
-validators, the Astro config and components, the content schema, and the JSON
+Biome (via Ultracite's `core` preset) formats and lints the code: the
+scripts, the Astro config and components, the content schema, and the JSON
 configs. `canvas/` and `public/` are excluded on purpose; they are pasted or
 served verbatim, not code. Run `npm run format` to fix and `npm run check` to
 check. The same check runs in CI and as a pre-commit hook on staged code

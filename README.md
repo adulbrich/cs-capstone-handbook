@@ -23,8 +23,8 @@ completion record.
 ## Working in This Repository
 
 `AGENTS.md` carries the project invariants: what must never be committed, why
-CI uses `npm ci`, how the outcome validator decides coverage, and which four
-places grade weights have to agree in. Read it before making content changes,
+CI uses `npm ci`, how the outcome validator decides coverage, and the places
+grade weights have to agree in. Read it before making content changes,
 and point any per-tool instruction file (`CLAUDE.md` and friends) at it rather
 than duplicating it.
 

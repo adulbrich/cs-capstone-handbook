@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.13/schema.json",
   "extends": ["ultracite/biome/core"],
-  // Biome covers the code: the three validators, the Astro config and
+  // Biome covers the code: the scripts, the Astro config and
   // components, the content schema, and the JSON configs. Everything under
   // canvas/ is HTML pasted into Canvas and public/ is served verbatim; neither
   // is code, and reformatting them only makes the Canvas diff unreadable.
