@@ -176,8 +176,9 @@ function entries() {
   for (const z of ZERO_POINT) {
     all.push({ ...z, families: [], family: { name: z.name }, zero: true });
   }
-  // Demo Day presenting is 1% extra credit in the term a team presents (#305),
-  // outside the four components, so no frontmatter carries it.
+  // Demo Day presenting is extra credit in the term a team presents (#305),
+  // outside the four components, so no frontmatter carries it; `weight` below
+  // is the one copy here.
   for (const term of TERMS) {
     all.push({
       extra: true,
@@ -431,7 +432,7 @@ function metaBox(e) {
   } else if (e.extra) {
     submission = "Team; nothing to submit, your team presents at its session";
     due = "The Demo Day session your team registered for";
-    weight = "1% extra credit in the term your team presents";
+    weight = `${pct(e.weight)} extra credit in the term your team presents`;
   } else {
     const kinds = [e.family.submission].flat();
     const who =
