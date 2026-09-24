@@ -118,18 +118,21 @@ input_qualtrics[, CanvasScore := ProjectPartnerMidtermScore * canvas_points / 10
 # hand at the A lower bound on the grading scale (learning-objectives/
 # grading.mdx), scaled to canvas_points, never as a zero or a blank.
 
-# Prepare final output
+# Prepare final output: each item out of 25, as the rubric shows it.
+item_points <- function(value) ifelse(is.na(value), 0, value / length(q1_cols))
 output <- input_qualtrics[,
   .(Team,
-    `Responsiveness` = Q1_1_numeric,
-    `Professionalism` = Q1_2_numeric,
-    `Delivery Quality` = Q1_3_numeric,
+    `Responsiveness` = item_points(Q1_1_numeric),
+    `Professionalism` = item_points(Q1_2_numeric),
+    `Delivery Quality` = item_points(Q1_3_numeric),
+    `Reflection` = item_points(Q1_4_numeric),
     `Score (/100)` = ProjectPartnerMidtermScore,
     `Canvas score` = CanvasScore,
-    Comment = str_c("Responsiveness", Q1_1_numeric,
-                    "Professionalism", Q1_2_numeric,
-                    "Delivery Quality", Q1_3_numeric,
-                    "Scores out of 100.", sep = "\n")
+    Comment = str_c("Responsiveness", item_points(Q1_1_numeric),
+                    "Professionalism", item_points(Q1_2_numeric),
+                    "Delivery Quality", item_points(Q1_3_numeric),
+                    "Reflection", item_points(Q1_4_numeric),
+                    "Each item out of 25, total out of 100.", sep = "\n")
   )
 ]
 output[`Score (/100)` == 100, Comment := ""]

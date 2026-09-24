@@ -22,7 +22,7 @@ The sections below this one predate the move and name the old `.tsv` files where
 
 ## Re-import Required: Midterm Pulse Scored per Statement (#307)
 
-`project-partner-evaluation/partner-pulse-rubric.csv` now has four criteria at 25 points each, one per statement, in place of one averaged criterion; a fourth statement, Reflection, is new. Re-import it on the Midterm Pulse entry in every term. In the Qualtrics midterm pulse survey, add the Reflection statement as the fourth item of Q1 ("The team acted on the feedback I gave since our last meetings, or told me why not.", same five-point scale) and make all four items required; `generate-project-partner-midterm-score.R` reads `Q1_1` to `Q1_4`. Re-paste the Midterm Pulse body.
+`project-partner-evaluation/partner-pulse-rubric.csv` now has four criteria at 25 points each, one per statement, in place of one averaged criterion; a fourth statement, Reflection, is new. Re-import it on the Midterm Pulse entry in every term. In the Qualtrics midterm pulse survey, add the Reflection statement as the fourth item of Q1 ("The team acted on the feedback I gave since our last meetings, or told me why not.", same five-point scale, with the note "If you have not given the team feedback yet, answer Neither agree nor disagree.") and make all four items required; `generate-project-partner-midterm-score.R` reads `Q1_1` to `Q1_4`. Re-paste the Midterm Pulse body.
 
 ## Canvas Changes: Individual Contribution Bands, Term Startup, and Demo Day (#305)
 
