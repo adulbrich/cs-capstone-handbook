@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Walking Skeleton Link (#323)
+
+No rubric changes. Re-paste the Repo Checkpoint bodies: the fall week 10 gate no longer links a walking skeleton template, which is deleted.
+
 ## Canvas Changes: Mentors, Retrospective Group, Defense Sheet (#320)
 
 - Rename the **Team Retrospective** group to **Term Retrospective** (fall only; the assignment runs in fall).

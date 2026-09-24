@@ -35,9 +35,11 @@ skills under `.claude/skills/`.
 6. **Section contracts.** Each content skill defines the section skeleton for
    its directory. A missing required section is a hard finding; section order
    is a judgement call.
-7. **Length.** Audience pages (students, partners, mentors) run about 400
-   words. Guides and activities have ceilings in their skills. Over budget is a
-   finding with the number, never a blocker on its own.
+7. **Length.** Audience pages (students, partners, mentors) are short enough
+   to read in one sitting and never a second table of contents (`AGENTS.md`,
+   Audience pages are orientation). Guides and activities have ceilings in
+   their skills; over one of those is a finding with the number, never a
+   blocker on its own.
 8. **The reverse outline**, on every guide and audience page in the diff. For
    each changed paragraph, write one line: the idea it carries and what it
    contributes to the page. A paragraph with no contribution, or with two

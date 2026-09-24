@@ -22,8 +22,6 @@ Redact PII; keep concise
 
 ## Framing Lenses
 
-Per teammate
-
 - **Lens A (e.g., 5 Whys)**: [1 short paragraph: main finding]
 - **Lens B (e.g., Is/Is-Not)**: [finding]
 - **Lens C (e.g., JTBD forces / HMW / fishbone / workflow-as-is)**: [finding]
@@ -53,10 +51,9 @@ Choose one.
 - **Assumptions:** [what must be true]
 - **Non-Goals:** [out-of-scope items]
 
-## Partner Feedback & Edits
+## Partner Feedback
 
 - Meeting date: [YYYY-MM-DD]: [decisions, owners]
-- Edits made: [what changed in sections 1–7]
 
 ## Traceability Mini-Table
 
@@ -65,24 +62,11 @@ Choose one.
 | G1: [goal] | F1: [facet] | SC-1 |
 | G2: [goal] | F2: [facet] | SC-2 |
 
-## Change Log
-
-- [YYYY-MM-DD] Initial draft.
-- [YYYY-MM-DD] Updated after partner review: [brief note].
-- [YYYY-MM-DD] [Further edits]
-
 ## Optional
 
 ### Diagram (Fishbone / Is-Is Not / JTBD timeline)
 
 Paste image, ASCII diagram, or public link
-
-### Top Risks
-
-Maximum 2 bullets
-
-- R1: [risk]. Trigger: [X]; Mitigation: [Y]
-- R2: [risk]. Trigger: [X]; Mitigation: [Y]
 
 ### One-Slide Elevator Pitch
 
