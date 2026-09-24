@@ -19,7 +19,7 @@ Operational companion to the course design. Staff-facing; the student-facing rul
 
 The check-in verifies the sprint note; it is not a status meeting. One script for every TA, because the detection failures we have had were TAs watching a demo the student chose: the same broken page at four check-ins running, "still working on it". Students still choose what they demo, so the rule that closes that now binds the choice: **each student demos an artifact from their own contribution line for the sprint, never the one they showed last time, and nothing to open means nothing was done.**
 
-**Before, five minutes.** Read the latest note's contribution lines (this week's if it is in, otherwise the previous one) so you know what each student can demo, and check your record for what each showed last time. Open the board and the repository's merged PRs for the sprint window; note any student with none. Note the previous "decision needed".
+**Before, five minutes.** Read the latest note's contribution lines (this week's if it is in, otherwise the previous one) so you know what each student can demo, and check your record for what each showed last time. Open the board and the record where the team's work lives (`CONTRIBUTING.md` names it) for the sprint window; note any student with no owned, accepted work. Note the previous "decision needed".
 
 **Note-less check-ins** keep the script with a different demo. Fall week 2 is the kickoff: first the team's Term Startup list as it stands (who has replied, what is scheduled, what is stuck), then charter, roles, repository, and the first sprint's plan, one student each. Spring weeks 8 and 10 demo the release and the handoff, by student. The record gets its per-student line either way.
 
@@ -70,7 +70,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 |---|---|
 | 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
 | 1-2 | Team-to-TA assignments made; charters graded (TAs); Qualtrics contact lists built |
-| 4-5 | RFC drafts land; staff generate cross-team review pairings and publish in Canvas; checkpoint 1 (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
+| 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; checkpoint 1 (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
 | 5 | All-hands demo day 1 (sampled lineup, ~15 teams in the hour) |
 | 7 and 9 | Defense sessions, separate from check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
@@ -85,12 +85,12 @@ An item fails for the team because the note is wrong or missing. An individual's
 - **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per group per term.
 - **A team is assessed by a TA or instructor who is not its regular TA, and the regular TA does not attend.** Presence defeats the independence the session buys. Pair TAs and swap rosters for the cycle: the total hours per TA are unchanged, because each still assesses about the same number of teams, but booking becomes a cross-product rather than each TA working down their own list, so do the pairing before the slots go out. Where two assessors attend, split the students between them.
 - Fall week 9 is short (see Term Calendar): book no defenses on its Thursday or Friday.
-- Absences: rescheduled within the window, or into a later check-in, if flagged before the session; unexcused no-show scores zero (the rubric has a zero band).
+- Absences: rescheduled within the window if flagged before the session; unexcused no-show scores zero (the rubric has a zero band).
 - Scores and notes entered into Canvas after each session; sheets are the live instrument, Canvas is the retention record for program assessment.
 
 ## RFC Machinery
 
-- Pairing: generate reviewer pairs across teams (avoid same-project pairs; pair NDA teams with each other when possible). A spreadsheet or small script from the roster suffices; publish at the start of week 5.
+- Pairing: Canvas peer review on the RFC Draft + Peer Review entry assigns each student two drafts at the start of week 5; staff do not pick the pairs. NDA students submit a sanitized draft or contact the instruction team, as the RFC page says.
 - Grading: TAs grade their teams' RFCs (~50 each per term in fall and winter, ~10 minutes each against the rubric; budget ~8 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
 - Reviewer no-shows: the author is held harmless (revision graded on self-identified improvements or staff feedback); the no-show reviewer loses the feedback points.
 

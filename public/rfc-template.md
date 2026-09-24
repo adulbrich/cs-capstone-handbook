@@ -57,7 +57,7 @@ What is assessed is in the [AI policy](https://capstone.alexulbrich.com/assignme
 
 ## Response to Feedback
 
-Written at revision time, after the week 5 cross-team review. One short paragraph per reviewer:
+Written at revision time, after the week 5 peer review. One short paragraph per reviewer:
 
 - **What they raised**, in your words, not a quote dump.
 - **What you changed because of it**, pointing at the section above that moved. If you changed nothing, say why the objection does not hold.

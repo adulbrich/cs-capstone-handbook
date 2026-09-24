@@ -1,5 +1,3 @@
-<!-- YYYY-MM-DD-[TeamID]-Prototype.md -->
-
 # Walking Skeleton Prototype
 
 ## RUN
@@ -22,13 +20,9 @@ Linter/formatter output from the same build; name the config used. 1 screenshot 
 
 Show top-level file/folder tree (1–2 levels) OR an interface stub/API schema. No business logic required. 1 small screenshot.
 
-## AUTHORSHIP
-
-Each member lists authored changes. Approvals alone don’t count. Use PR IDs or change tickets. Small table.
-
 ## ACCESS (optional)
 
-If staging is private, provide time-boxed credentials or reviewer instructions. Remove/redact after grading. 1–2 lines.
+If staging is private, provide time-boxed credentials or reviewer instructions. Revoke them afterward. 1–2 lines.
 
 ## ATTN (optional)
 

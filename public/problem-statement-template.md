@@ -1,5 +1,3 @@
-<!-- YYYY-MM-DD-[TeamID]-[ONID]-ProblemStatement.md -->
-
 # Problem Statement
 
 ## One-Sentence Problem Statement
