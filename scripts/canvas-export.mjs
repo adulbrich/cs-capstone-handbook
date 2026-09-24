@@ -583,12 +583,9 @@ function body(e) {
   });
 }
 
-// Canvas's editor breaks on a tag split across lines ("</a\n  >") and on
-// multi-line style attributes, which a code formatter produces. Re-serialize:
-// whole tags, one-line styles, collapsed whitespace, one line per block.
 // Canvas's accessibility checker wants a scope on every header cell: col for
-// a header row (in <thead>, or a first row of only <th>), row for a body
-// row's leading <th>. Cells that already declare one keep it.
+// a header row (in <thead>, or a first row of only <th>), row for a <th> in
+// a body row, which has data cells. Cells that already declare one keep it.
 function scopeHeaders(tree) {
   for (const table of selectAll("table", tree)) {
     const headRows = new Set(selectAll("thead tr", table));
@@ -596,15 +593,18 @@ function scopeHeaders(tree) {
       const cells = tr.children.filter(isEl);
       const isHeadRow =
         headRows.has(tr) || (r === 0 && cells.every((c) => c.tagName === "th"));
-      cells.forEach((cell, k) => {
+      for (const cell of cells) {
         if (cell.tagName === "th" && !cell.properties.scope) {
-          cell.properties.scope = isHeadRow || k > 0 ? "col" : "row";
+          cell.properties.scope = isHeadRow ? "col" : "row";
         }
-      });
+      }
     });
   }
 }
 
+// Canvas's editor breaks on a tag split across lines ("</a\n  >") and on
+// multi-line style attributes, which a code formatter produces. Re-serialize:
+// whole tags, one-line styles, collapsed whitespace, one line per block.
 function canvasHtml(tree) {
   scopeHeaders(tree);
   visit(tree, "element", (node) => {
