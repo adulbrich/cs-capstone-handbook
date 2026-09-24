@@ -212,12 +212,17 @@ Sections in **bold** are required.
    `STAFF-RUNBOOK.md`, `docs/agents/`, or the issue that made the decision.
 
 3. **The deliverable section.** Heading names the artifact and, where it
-   applies, its length and repository path:
+   applies, its length:
 
    - `## What You Must Produce`
-   - `## What It Must Contain (1 to 2 pages, in \`docs/shipped.md\`)`
-   - `## Structure (2 to 3 pages, in \`docs/postmortems/\`)`
+   - `## What It Must Contain (1 to 2 pages)`
+   - `## Structure (2 to 3 pages)`
    - `## Required Sections`
+
+   Only what an AI tool or a successor needs to work on the product goes in
+   the project repository: the living docs Repo Checkpoints lists (#302).
+   Team documents (the charter, retrospectives, the handoff document) do
+   not, and the page says where they live instead.
 
    Prefer a numbered list when the artifact has named parts a grader will look
    for one by one. State the length and where it lives.

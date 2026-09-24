@@ -1,11 +1,10 @@
-<!-- docs/shipped.md -->
-
 # Definition of Shipped: [Project Name]
 
 <!-- 1 to 2 pages. This is a contract with your project partner about what "shipped"
      means for THIS project. v0 draft is due at the fall week-10 repo checkpoint;
      v1 (partner-agreed) is due winter week 3. If the target becomes unreachable,
-     renegotiate and update this file; git history is the record. -->
+     renegotiate, record the new version and the partner's agreement to it,
+     and update the metrics in the repository to match. -->
 
 **Team:** | **Project partner:** | **Version:** | **Date:**
 

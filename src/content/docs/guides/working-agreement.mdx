@@ -16,7 +16,7 @@ Your team has just formed, or it has worked together long enough that a habit no
 - Give each concern exactly one owner: the schedule and partner relationship, the shared AI configuration and confidentiality rule, and the Definition of Done and state of the build.
 - Write every norm with a trigger someone can observe ("acknowledge within 24 hours on weekdays"), never an attitude ("be responsive").
 - Decide in advance which decisions one person makes, which the team makes, which go to your project partner, and what silence on a proposal means.
-- Keep it in the repository as `docs/charter.md`, short enough to read in five minutes, a few pages at most.
+- Keep it with the team's own documents rather than in the code repository, short enough to read in five minutes, a few pages at most.
 - Revise it after your first retrospective, after a significant conflict, when the scope changes, and at each new phase of the project.
 :::
 
@@ -71,7 +71,7 @@ The Definition of Done (DoD) answers one question: *what does it mean for a task
 
 Without a shared DoD, "done" means different things to different people. One person considers a feature done when it works on their machine. Another considers it done when it's deployed, reviewed, and documented. The mismatch surfaces at integration time and during sprint reviews, when the gap is most expensive to close.
 
-A DoD doesn't need to be elaborate, but it does need to be written down and agreed on. It usually grows as the project matures: early sprints might require only a reviewed PR and passing tests, while later sprints add deployment and documentation.
+A DoD doesn't need to be elaborate, but it does need to be written down and agreed on. It usually grows as the project matures: early sprints might require only a reviewed PR and passing tests, while later sprints add deployment and documentation. The team agrees on it together, as part of the working agreement, and writes it down in `CONTRIBUTING.md`, because the people and AI tools that merge code read that file and never see the agreement.
 
 <LinkCard
   title="Sprints"
@@ -129,7 +129,7 @@ These norms belong in the working agreement because they're about how the team c
 
 A working agreement captures *how the team operates*. A `CONTRIBUTING.md` file in your repository captures *how someone contributes to the codebase*. The two are related but serve different readers.
 
-Your working agreement is for the team. It covers roles, communication, conflict resolution, and norms. Your `CONTRIBUTING.md` is for anyone who touches the code: current teammates, future contributors, and reviewers. It covers branching strategy, PR requirements, code style, testing expectations, and the Definition of Done.
+Your working agreement is for the team. It covers roles, communication, conflict resolution, and norms. Your `CONTRIBUTING.md` is for anyone who touches the code: current teammates, future contributors, and reviewers. It covers branching strategy, PR requirements, code style, testing expectations, the Definition of Done, and the contribution floor: what each person lands per sprint and where each kind of work lives.
 
 Think of `CONTRIBUTING.md` as the technical expression of your working agreement. When the agreement says "all work goes through reviewed pull requests," `CONTRIBUTING.md` says what that means in practice: branch naming, review turnaround, merge strategy.
 
@@ -152,7 +152,9 @@ Atlassian's [working agreements play](https://www.atlassian.com/team-playbook/pl
 
 Before the session, name the stage your team is in, and spell out more (explicit roles, response times) the less the team knows each other, because members who haven't worked together can't fall back on habits they don't share yet. <Cite id="tuckman-1965" /> reviewed 50 studies of group development and proposed four stages; on the interpersonal side, a group moves from testing and dependence, through conflict and then cohesion, to functional roles. The [Team Formation Strategies Assessment](/activities/teamwork/#team-formation-strategies-assessment) walks those stages under their popular labels, forming to performing.
 
-The agreement lives in the repository as `docs/charter.md`. Kept to the conversations above, it stays short:
+Keep the agreement with the team's own documents, such as a shared drive or the team wiki, not in the code repository. It is an agreement between the people on the team, while the repository is read by the project partner and inherited by whoever maintains the code next.
+
+Kept to the conversations above, the agreement stays short:
 
 ```md
 # Team Charter
@@ -172,9 +174,8 @@ The agreement lives in the repository as `docs/charter.md`. Kept to the conversa
 - Stand-up Tue and Thu 17:00. Review and retro every other Friday.
 - Availability: 9 h/week each; interview weeks announced a sprint ahead.
 
-## Definition of Done
-Reviewed PR, CI green, deployed to preview, docs updated (details in
-CONTRIBUTING.md). Everyone lands at least one reviewed piece of work per sprint.
+## Merging
+Definition of Done and the contribution floor: CONTRIBUTING.md.
 
 ## Inclusion
 Facilitator rotates each meeting; anyone who hasn't spoken is asked
@@ -202,7 +203,7 @@ Revisit it at the natural moments:
 - After a significant conflict: what process gap allowed it?
 - When the project scope changes: do the roles and the DoD still apply?
 
-Version the agreement in your repository. Its history shows how the team's norms changed and when, which is useful to the team and to anyone who later needs to understand how it operated.
+Keep the agreement's earlier versions, which the version history of a shared document does for you. Its history shows how the team's norms changed and when, which is useful to the team and to anyone who later needs to understand how it operated.
 
 ## When Things Go Wrong
 

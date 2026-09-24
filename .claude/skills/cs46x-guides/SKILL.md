@@ -52,8 +52,7 @@ attached: move the explanation here and leave the activity pointing at it.
 
 A guide is one of two kinds, and the kind decides which sections are required:
 
-- **Artifact guides** teach a document the team produces and keeps in the
-  repository: `adr.mdx`, `requirements.mdx`, `technical-design.mdx`,
+- **Artifact guides** teach a document the team produces: `adr.mdx`, `requirements.mdx`, `technical-design.mdx`,
   `working-agreement.mdx`. They show the artifact.
 - **Practice guides** teach a way of working: everything else,
   `documentation.mdx` included, because it covers several artifacts and none
@@ -212,7 +211,7 @@ topic.
 
 4. *Artifact:* `## What Makes a Good X?` The quality bar, **with the artifact
    itself in a fenced code block**, under about 30 lines: an ADR, a
-   `docs/requirements.md`, a `docs/design.md`, a `docs/charter.md`. It is the
+   `docs/requirements.md`, a `docs/design.md`, a team charter. It is the
    section students copy from and the one the fall workshops run on. Show the
    artifact, do not describe it. `technical-design.mdx` names it "What Makes
    a Good Design Document?"; `working-agreement.mdx` puts the file under

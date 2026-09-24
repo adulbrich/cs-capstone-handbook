@@ -27,20 +27,20 @@ import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/team-charter/team-charter-rubric.csv?raw';
 
 <AssignmentMeta submission="Team" due="Fall, week 2" weight="4% of the fall grade">
-  Winter's charter refresh is part of the first [Repo Checkpoint](/assignments/repo-checkpoints/) of the term, and spring's closes the [Team Health Assessment workshop](/assignments/workshop-activities/#workshop-1-team-health-assessment) in week 2; neither is a separate assignment.
+  Winter's refresh reaches the first [Repo Checkpoint](/assignments/repo-checkpoints/) of the term through `CONTRIBUTING.md`, and spring's closes the [Team Health Assessment workshop](/assignments/workshop-activities/#workshop-1-team-health-assessment) in week 2; neither is a separate assignment.
 </AssignmentMeta>
 
 In this assignment you will write your team's operating agreement: who owns what, how decisions get made, what has to be true before code merges, and what happens when the team isn't working. It is due in week 2, before you have had the arguments it settles. The [Working Agreement guide](/guides/working-agreement/) explains why teams write one and has patterns you can adopt; this page says what you submit.
 
-The charter lives in your repository as `docs/charter.md`. Git history is the change log; there's no separate revision table to maintain. When the charter changes (and it should, as your retrospectives teach you things), change the file and commit.
+The charter is an agreement between the people on your team, so it lives with [your team's documents](/assignments/repo-checkpoints/#what-the-repository-must-contain-the-living-docs), not in the repository. When it changes (and it should, as your retrospectives teach you things), update it where it lives.
 
 ## What You Must Produce
 
-Three artifacts, all in the repository:
+Three artifacts:
 
-1. **`docs/charter.md`**: the charter itself, 2 to 4 pages of focused, scannable policy (sections below).
-2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**: setup steps a new contributor can follow, local commands for tests and linting, the branch and PR workflow, code review expectations, and where to ask for help. Start from the [CONTRIBUTING template](/CONTRIBUTING-template.md).
-3. **The AI context file** (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
+1. **The charter** itself, 2 to 4 pages of focused, scannable policy ([sections below](#required-charter-sections)).
+2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**, in the repository: setup steps a new contributor can follow, local commands for tests and linting, the branch and PR workflow, code review expectations, where to ask for help, and the [Definition of Done and the Contribution Norm](#required-in-contributingmd). Start from the [CONTRIBUTING template](/CONTRIBUTING-template.md).
+3. **The AI context file**, in the repository (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
 
 ## Required Charter Sections
 
@@ -70,29 +70,31 @@ Meeting times, communication channels, and core tools, including where decisions
 
 A restorative, stepwise conflict path: name it early, talk directly, involve the team, escalate to the instruction team, with time bounds and measurable triggers (missed meetings, unreviewed PR backlog). Accountability ties to observable evidence (PRs, reviews, attendance), not testimony. The [Working Agreement guide](/guides/working-agreement/) has conflict-path patterns you can adopt.
 
-### 5. Definition of Done
-
-The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the CI configuration, hook, or test that enforces each check. In week 2 some of them may not exist yet, because there is no code to check: name the gate you will add (a pre-commit hook, a CI job, a test suite), the sprint it lands in, and who owns it.
-
-### 6. Inclusion Norms
+### 5. Inclusion Norms
 
 Meeting norms that let everyone contribute (time zones, note-taking, turn-taking), how a teammate requests an accommodation, and how the team surfaces barriers without drama.
 
-### 7. The Contribution Norm
+### 6. AI and Confidentiality One-Pager
 
-Every student owns at least one piece of accepted work per sprint, as [Contribution lines](/assignments/sprint-notes/#contribution-lines) defines them. Record where your team's work lives (the repository, an issue tracker, your partner's system), what accepted means for each kind of work, and how your team makes the norm workable (sizing, pairing, review turnaround expectations). This norm feeds the individual contribution modifier on [Sprint Notes](/assignments/sprint-notes/), so write it as something you will actually follow.
-
-### 8. AI and Confidentiality One-Pager
-
-One page stating which data, code, and documents may enter which AI tools, per your partner agreement: what is fully open, what may go only into approved or local tools, and what never leaves the repository. Cover code, partner data, credentials, and meeting content. See the [Generative AI guide](/guides/generative-ai/).
+One page stating which data, code, and documents may enter which AI tools, per your partner agreement: what is fully open, what may go only into approved or local tools, and what never leaves the repository. Cover code, partner data, credentials, and meeting content. See the [Generative AI guide](/guides/generative-ai/). The one-pager is the team's agreement; the parts your AI tools must follow can also go into the repository as rules, in the AI context file or your tool's rules files.
 
 :::caution[NDA teams: this section is load-bearing]
 For NDA teams, this one-pager is the difference between normal tool use and a breach. Write it with your partner, name the approved tools explicitly, and treat "we were not sure, so we pasted it anyway" as the incident it is.
 :::
 
+## Required in CONTRIBUTING.md
+
+### Definition of Done
+
+The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the CI configuration, hook, or test that enforces each check. In week 2 some of them may not exist yet, because there is no code to check: name the gate you will add (a pre-commit hook, a CI job, a test suite), the sprint it lands in, and who owns it.
+
+### The Contribution Norm
+
+Every student owns at least one piece of accepted work per sprint, as [Contribution lines](/assignments/sprint-notes/#contribution-lines) defines them. Record where your team's work lives (the repository, an issue tracker, your partner's system), what accepted means for each kind of work, and how your team makes the norm workable (sizing, pairing, review turnaround expectations). This norm feeds the individual contribution modifier on [Sprint Notes](/assignments/sprint-notes/), so write it as something you will actually follow.
+
 ## What You Submit
 
-Submit one PDF containing all three files, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes.
+Submit one PDF containing all three artifacts, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes.
 
 ## Rubric (100 points)
 

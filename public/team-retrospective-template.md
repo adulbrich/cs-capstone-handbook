@@ -1,5 +1,3 @@
-<!-- docs/retrospectives/fall.md -->
-
 # Retrospective
 
 Run the 4Ls session first (Liked, Learned, Lacked, Longed for), then distill it here. The write-up is themes and actions, not the raw sticky notes. The [Term Retrospective](https://capstone.alexulbrich.com/assignments/term-retrospective/) page owns the format.

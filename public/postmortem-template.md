@@ -1,5 +1,3 @@
-<!-- docs/postmortems/YYYY-MM-DD-short-title.md -->
-
 # Postmortem: [Short, Factual Title]
 
 <!-- 2 to 3 pages. Blameless: the unit of analysis is the system, not the person.
