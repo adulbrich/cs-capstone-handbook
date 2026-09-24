@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.13/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
   "extends": ["ultracite/biome/core"],
   // Biome covers the code: the scripts, the Astro config and
   // components, the content schema, and the JSON configs. Everything under
@@ -8,6 +8,17 @@
   // canvas-export/ is the generated paste kit, gitignored.
   "files": {
     "includes": ["!canvas", "!canvas-export", "!public", "!dist", "!.astro"]
+  },
+  "linter": {
+    "rules": {
+      "suspicious": {
+        // Biome 2.5.14 infers that RegExp.prototype.exec never returns null,
+        // so it flags every `if (match)` after an exec as always truthy.
+        // Taking its fix crashes the git guard and the sidebar validator on
+        // input that does not match. Off until the inference is fixed.
+        "noUnnecessaryConditions": "off"
+      }
+    }
   },
   "overrides": [
     {
