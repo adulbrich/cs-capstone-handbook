@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Accessibility Checker (#329)
+
+No rubric changes. Re-paste every body and the three syllabi from the regenerated kit: every table now has a caption, the CS 463 Beyond OSU II table has a header row, and the syllabus buttons use `#c43c00`, which meets the checker's contrast ratio.
+
 ## Re-paste Required: Table Header Scopes (#327)
 
 No rubric changes. Re-paste every body and the three syllabi from the regenerated kit: each table header now declares its scope, which Canvas's accessibility checker requires.
