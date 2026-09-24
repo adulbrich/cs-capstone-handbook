@@ -603,17 +603,22 @@ function scopeHeaders(tree) {
   }
 }
 
-// Canvas's editor breaks on a tag split across lines ("</a\n  >") and on
-// multi-line style attributes, which a code formatter produces. Re-serialize:
-// whole tags, one-line styles, collapsed whitespace, one line per block.
 // Canvas's checker also wants a caption on every table. Markdown tables have
 // none, so an uncaptioned table takes the nearest heading above it, or the
-// entry's name when no heading precedes it.
+// entry's name when no heading precedes it; a second table under the same
+// heading adds its first column header, so no two captions read alike. Every
+// caption, hand-written ones included, gets the same left-aligned style.
 function captionTables(tree, { fallback, where }) {
   let heading = fallback;
+  let used = false;
   visit(tree, "element", (node) => {
     if (/^h[1-6]$/.test(node.tagName)) {
       heading = text(node).trim();
+      used = false;
+      return;
+    }
+    if (node.tagName === "caption") {
+      node.properties.style ??= CAPTION;
       return;
     }
     const captioned = node.children.some(
@@ -628,10 +633,16 @@ function captionTables(tree, { fallback, where }) {
       );
       return;
     }
-    node.children.unshift(h("caption", { style: CAPTION }, heading));
+    const first = select("th", node);
+    const label = used && first ? `${heading}: ${text(first).trim()}` : heading;
+    used = true;
+    node.children.unshift(h("caption", { style: CAPTION }, label));
   });
 }
 
+// Canvas's editor breaks on a tag split across lines ("</a\n  >") and on
+// multi-line style attributes, which a code formatter produces. Re-serialize:
+// whole tags, one-line styles, collapsed whitespace, one line per block.
 function canvasHtml(tree, context) {
   scopeHeaders(tree);
   captionTables(tree, context);
