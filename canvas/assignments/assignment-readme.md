@@ -370,8 +370,8 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
+| 1 | Resume and Intent |
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
-| 1 | Resume and Intent (end of the week) |
 | 2 | Term Startup (1%); Team Charter |
 | 3 | Demo Day registration (0 points, omit from final grade) |
 | 3-5 | Resume meetings (co-instructor) |
