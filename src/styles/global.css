@@ -36,17 +36,3 @@
 .cta > a {
   @apply rounded-lg;
 }
-
-/* A markdown table written without a header row (`| | |`) still emits a <thead>
-   of empty cells, which renders as a stray bordered strip. The week blocks on
-   the schedule page are label/value pairs rather than tabular data, so the
-   empty header is hidden and the label column is held to its content width. */
-.sl-markdown-content thead:not(:has(th:not(:empty))) {
-  display: none;
-}
-
-.sl-markdown-content thead:not(:has(th:not(:empty))) + tbody td:first-child {
-  width: 1%;
-  min-width: 8.25rem;
-  white-space: nowrap;
-}

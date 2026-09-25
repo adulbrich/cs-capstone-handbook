@@ -1,0 +1,200 @@
+---
+// One term of the week-by-week schedule as week cards grouped by sprint.
+// The weeks stay Markdown in introduction/schedule.mdx; this renders them,
+// and src/lib/schedule-weeks.mjs rebuilds the result as cards.
+import { getCollection } from "astro:content";
+import { fromHtml } from "hast-util-from-html";
+import { toHtml } from "hast-util-to-html";
+import { canvasRows } from "../lib/canvas-entries.mjs";
+import { weekCards } from "../lib/schedule-weeks.mjs";
+
+interface Props {
+  term: "fall" | "winter" | "spring";
+}
+const { term } = Astro.props;
+
+const docs = await getCollection("docs");
+const levels = new Map(
+  docs
+    .filter((d) => d.data.assignment?.level)
+    .map((d) => [d.id, d.data.assignment?.level])
+);
+const sprintNotes = docs.find((d) => d.id === "assignments/sprint-notes");
+const row = canvasRows(sprintNotes?.data.assignment?.canvas).find(
+  (r) => r.term === term && r.family.name === "Sprint Notes {n}"
+);
+if (!row) {
+  throw new Error(`WeekCards: no Sprint Notes entries for ${term}`);
+}
+const notes = row.weeks.map((week: number, i: number) => ({
+  n: row.first + i,
+  week,
+}));
+
+const tree = fromHtml(await Astro.slots.render("default"), { fragment: true });
+const html = toHtml(weekCards(tree, { levels, notes, term }));
+---
+
+<div class="week-cards" set:html={html} />
+
+<style>
+  /* Icons are Tabler Icons outlines (MIT), drawn with CSS masks so nothing
+     loads from outside and screen readers skip them. */
+  .week-cards {
+    --icon-due: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z'/%3E%3Cpath d='M5 21v-7'/%3E%3C/svg%3E");
+    --icon-in-class: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4h18'/%3E%3Cpath d='M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-10'/%3E%3Cpath d='M12 16v4'/%3E%3Cpath d='M9 20h6'/%3E%3Cpath d='M8 12l3 -3l2 2l3 -3'/%3E%3C/svg%3E");
+    --icon-read: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0'/%3E%3Cpath d='M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0'/%3E%3Cpath d='M3 6v13'/%3E%3Cpath d='M12 6v13'/%3E%3Cpath d='M21 6v13'/%3E%3C/svg%3E");
+    --icon-optional: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7'/%3E%3Cpath d='M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3'/%3E%3Cpath d='M9.7 17h4.6'/%3E%3C/svg%3E");
+    margin-top: 1.5rem;
+  }
+
+  .week-cards :global(.sprint-group) {
+    display: flex;
+    gap: 0.75rem;
+    margin: 0 0 1.5rem;
+  }
+
+  /* The rail: a bar above and below the group's name, centred on it. */
+  .week-cards :global(.sprint-rail) {
+    flex: 0 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+  }
+  .week-cards :global(.sprint-rail)::before,
+  .week-cards :global(.sprint-rail)::after {
+    content: "";
+    flex: 1;
+    width: 3px;
+    min-height: 0.75rem;
+    background: var(--sl-color-gray-4);
+  }
+  .week-cards :global(.sprint-rail span) {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding: 0.5rem 0;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-2);
+    white-space: nowrap;
+  }
+
+  .week-cards :global(.sprint-group__weeks) {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .week-cards :global(.sprint-group__weeks > *) {
+    margin: 0;
+  }
+
+  .week-cards :global(.week-card) {
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.75rem;
+    padding: 0.875rem 1.125rem;
+    background: var(--sl-color-bg);
+    font-size: var(--sl-text-sm);
+  }
+  .week-cards :global(.week-card > *) {
+    margin: 0;
+  }
+
+  .week-cards :global(.week-card__head) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.375rem;
+  }
+  .week-cards :global(.week-card__head .sl-heading-wrapper) {
+    margin: 0;
+  }
+  .week-cards :global(.week-card__head h3) {
+    font-size: var(--sl-text-lg);
+  }
+
+  /* Icon lines keep ordinary text flow, so links and commas wrap as prose. */
+  .week-cards :global(.week-card__label),
+  .week-cards :global(.week-card__more li) {
+    position: relative;
+    padding-left: 1.35rem;
+  }
+  .week-cards :global(.week-card__label)::before,
+  .week-cards :global(.week-card__more li)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.3em;
+    width: 0.9rem;
+    height: 0.9rem;
+    background: currentColor;
+    mask: var(--icon) center / contain no-repeat;
+  }
+  .week-cards :global(.week-card__label--due) {
+    --icon: var(--icon-due);
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-xs);
+  }
+  .week-cards :global(li[data-row="in-class"]) {
+    --icon: var(--icon-in-class);
+  }
+  .week-cards :global(li[data-row="read"]) {
+    --icon: var(--icon-read);
+  }
+  .week-cards :global(li[data-row="optional"]) {
+    --icon: var(--icon-optional);
+  }
+
+  .week-cards :global(ul.week-card__due),
+  .week-cards :global(ul.week-card__more) {
+    list-style: none;
+    padding: 0;
+  }
+  .week-cards :global(.week-card__due li) {
+    margin: 0.15rem 0 0;
+    font-size: var(--sl-text-base);
+  }
+  .week-cards :global(.week-card__none) {
+    color: var(--sl-color-gray-3);
+    margin-top: 0.25rem;
+  }
+
+  .week-cards :global(ul.week-card__more) {
+    border-top: 1px solid var(--sl-color-hairline);
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    color: var(--sl-color-gray-2);
+  }
+  .week-cards :global(.week-card__more li) {
+    margin: 0.2rem 0 0;
+  }
+  .week-cards :global(.week-card__more li > strong) {
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  /* Who submits: the audience colours the activity badges use. */
+  .week-cards :global(.week-tag) {
+    display: inline-block;
+    font-size: var(--sl-text-xs);
+    line-height: 1.4;
+    padding: 0.05rem 0.45rem;
+    border-radius: 0.375rem;
+    vertical-align: 0.1em;
+    white-space: nowrap;
+  }
+  .week-cards :global(.week-tag--team) {
+    background: var(--sl-color-blue-low);
+    color: var(--sl-color-blue-high);
+  }
+  .week-cards :global(.week-tag--individual) {
+    background: var(--sl-color-green-low);
+    color: var(--sl-color-green-high);
+  }
+  .week-cards :global(.week-tag--partner) {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-2);
+  }
+</style>
