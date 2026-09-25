@@ -95,6 +95,7 @@ assignment:
       group: <Canvas assignment group>
       weeks: { fall: [4, 8] }
       titles: { fall: [<one per week listed>] }  # only with {title} in the name
+      numbering: year  # optional: {n} continues across terms (Sprint Notes 1 to 12)
       weight: <the family's percent of the term grade>
       points: 100
       submission: pdf | video | url | image | survey | text | none, or a list

@@ -12,6 +12,7 @@ assignment:
     spring: 6
   canvas:
     - name: "Sprint Notes {n}"
+      numbering: year
       group: Sprint Notes
       weeks: { fall: [4, 6, 8, 10], winter: [2, 4, 6, 8, 10], spring: [2, 4, 6] }
       weight: { fall: 4, winter: 5, spring: 3 }
@@ -19,6 +20,7 @@ assignment:
       submission: pdf
       rubric: sprint-note/sprint-note-rubric.csv
     - name: "Sprint Notes {n}: Individual Contribution"
+      numbering: year
       group: Sprint Notes
       weeks: { fall: [4, 6, 8, 10], winter: [2, 4, 6, 8, 10], spring: [2, 4, 6] }
       weight: { fall: 4, winter: 5, spring: 3 }
@@ -39,11 +41,11 @@ import CanvasEntries from '/src/components/CanvasEntries.astro';
 
 At the end of every two-week [sprint](https://scrumguides.org/scrum-guide.html), the team submits a one-page sprint note and demos working software. The note is evidence plus judgment, not prose: if your repository and board are in order, producing it takes 15 minutes. The [sprint guide](/guides/sprint/) covers how to plan, run, and review a sprint; the windows below are when this course's sprints fall.
 
-| Term | Sprint windows |
-|---|---|
-| Fall | Weeks 3 to 4, 5 to 6, 7 to 8, 9 to 10 |
-| Winter | Weeks 1 to 2, 3 to 4, 5 to 6, 7 to 8, 9 to 10 |
-| Spring | Weeks 1 to 2, 3 to 4, 5 to 6 |
+| Term | Sprints | Sprint windows |
+|---|---|---|
+| Fall | 1 to 4 | Weeks 3 to 4, 5 to 6, 7 to 8, 9 to 10 |
+| Winter | 5 to 9 | Weeks 1 to 2, 3 to 4, 5 to 6, 7 to 8, 9 to 10 |
+| Spring | 10 to 12 | Weeks 1 to 2, 3 to 4, 5 to 6 |
 
 **AI use:** you may generate the evidence with AI from your own repo history and board. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and the one sentence in each contribution line saying what you shipped and how you know it works. Start from the [sprint note template](/sprint-note-template.md).
 
