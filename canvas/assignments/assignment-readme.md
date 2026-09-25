@@ -374,7 +374,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
 | 2 | Term Startup (1%); Team Charter |
 | 3 | Demo Day registration (0 points, omit from final grade) |
-| 3-5 | Resume meetings (co-instructor) |
+| by 5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC peer review; Demo Day session 1 |
 | 6 | Sprint Note 2 |
