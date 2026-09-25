@@ -106,6 +106,9 @@ export const collections = {
                     group: text(),
                     // Exact Canvas name; "{n}" numbers a family 1, 2, ...
                     name: text(),
+                    // "year" continues "{n}" across terms (Sprint Notes 1
+                    // to 12); by default each term starts again at 1.
+                    numbering: z.enum(["term", "year"]).optional(),
                     // Week the Canvas peer reviews are due, when the
                     // entry uses Canvas's own peer review.
                     peer_review_week: z.number().int().optional(),

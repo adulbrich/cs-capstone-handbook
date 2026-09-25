@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Canvas Changes: Sprint Notes Numbered Across the Year (#337)
+
+Sprint notes now run 1 to 12 across the year instead of restarting each term, so a sprint and its note carry one number all year. Fall is unchanged (Sprint Notes 1 to 4). In CS 462 rename the entries **Sprint Notes 5** to **Sprint Notes 9** and **Sprint Notes 5: Individual Contribution** to **Sprint Notes 9: Individual Contribution**; in CS 463, **Sprint Notes 10** to **Sprint Notes 12** and their Individual Contribution entries. Re-paste those bodies from the paste kit. Points, weights, due weeks, and rubrics are unchanged.
+
 ## Re-paste Required: Accessibility Checker (#329)
 
 No rubric changes. Re-paste every body and the three syllabi from the regenerated kit: every table now has a caption, the CS 463 Beyond OSU II table has a header row, and the syllabus buttons use `#c43c00`, which meets the checker's contrast ratio.
@@ -379,27 +383,27 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | Week | Due |
 |------|-----|
 | 1 | Term Startup (1%) |
-| 2 | Sprint Note 1 |
+| 2 | Sprint Note 5 |
 | 1-3 | Workshop Activities (3 items, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
-| 4 | Sprint Note 2; RFC draft |
+| 4 | Sprint Note 6; RFC draft |
 | 5 | Repo Checkpoint 1 (integration health); RFC peer review; Demo Day session 3 |
-| 6 | Sprint Note 3 |
+| 6 | Sprint Note 7 |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
-| 8 | Sprint Note 4; RFC final (revision and decision) |
+| 8 | Sprint Note 8; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
-| 10 | Sprint Note 5; Repo Checkpoint 2 (release candidate gate); Demo Day session 4 |
+| 10 | Sprint Note 9; Repo Checkpoint 2 (release candidate gate); Demo Day session 4 |
 
 ### CS 463 (Spring Term)
 
 | Week | Due |
 |------|-----|
 | 1 | Term Startup (1%) |
-| 2 | Sprint Note 1 |
+| 2 | Sprint Note 10 |
 | 2 | Workshop Activities (1 item, complete/incomplete) |
-| 4 | Sprint Note 2 |
+| 4 | Sprint Note 11 |
 | 5 | Demo Day session 5 |
-| 6 | Sprint Note 3 |
+| 6 | Sprint Note 12 |
 | 7 | Landing Page |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Release and Metrics; Project Handoff |
