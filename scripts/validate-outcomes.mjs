@@ -113,9 +113,11 @@ function parseAssignment(frontmatter) {
 // through the matching `?raw` import. A page owning several Canvas entries
 // renders one table per distinct rubric. `path` is null when the name has no
 // import; `index` is where the tag sits, for the heading check below.
-const RUBRIC_TABLE_RE = /<RubricTable\s[^>]*>/g;
-function rubricTables(source) {
-  return [...source.matchAll(RUBRIC_TABLE_RE)].map((m) => {
+// `<RubricCriterion>` renders one criterion of a CSV the page already
+// renders in full (the spring outcome ladder); pass its name to read those.
+function rubricTables(source, component = "RubricTable") {
+  const tagRe = new RegExp(`<${component}\\s[^>]*>`, "g");
+  return [...source.matchAll(tagRe)].map((m) => {
     const name = m[0].match(/\bcsv=\{(\w+)\}/)?.[1];
     const imported = name
       ? source.match(
@@ -126,6 +128,7 @@ function rubricTables(source) {
         )
       : null;
     return {
+      component,
       index: m.index,
       label: m[0].match(/\ssourceLabel="([^"]*)"/)?.[1] ?? null,
       name,
@@ -173,10 +176,12 @@ for (const file of files) {
     );
     failed = true;
   }
-  for (const table of tables) {
+  // A criterion view gets the same import checks as a full table, but its
+  // tags are already counted once through the table that renders its CSV.
+  for (const table of [...tables, ...rubricTables(source, "RubricCriterion")]) {
     if (!table.path) {
       console.error(
-        `RUBRIC IMPORT ${file}: <RubricTable csv={${table.name}}> has no matching \`import ${table.name} from '/...csv?raw'\`.`
+        `RUBRIC IMPORT ${file}: <${table.component} csv={${table.name}}> has no matching \`import ${table.name} from '/...csv?raw'\`.`
       );
       failed = true;
       continue;
@@ -187,7 +192,7 @@ for (const file of files) {
     // reader to the wrong file. Nothing else compares it to the real import.
     if (!table.label) {
       console.error(
-        `RUBRIC IMPORT ${file}: <RubricTable csv={${table.name}}> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
+        `RUBRIC IMPORT ${file}: <${table.component} csv={${table.name}}> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
       );
       failed = true;
     } else if (table.label !== table.path) {
@@ -202,6 +207,9 @@ for (const file of files) {
         `RUBRIC IMPORT ${file}: imports ${table.path}, which belongs to ${CANVAS_TO_HANDBOOK[dir] ?? "no mapped page"}, not ${slug}.`
       );
       failed = true;
+    }
+    if (table.component !== "RubricTable") {
+      continue;
     }
     // Tags add up across a page's rubrics: the RFC's draft and final
     // together are what the frontmatter declares.

@@ -196,7 +196,7 @@ Current canonical homes:
 | What each project-repository document holds | `assignments/repo-checkpoints.mdx` |
 | IP, NDA, and licensing policy | `introduction/ip-nda-and-licensing.mdx` |
 | How projects are proposed, how teams form, how either changes | `introduction/for-students.mdx` |
-| V&V outcome ladder (one ladder, every project) | `assignments/project-partner-evaluation.mdx` |
+| V&V outcome ladder (one ladder, every project) | its rungs in `canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv`, shown by `<RubricCriterion>` under `assignments/project-partner-evaluation.mdx#spring` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
 | Week-by-week schedule | `introduction/schedule.mdx` |
 | The handbook's vocabulary and the synonyms it rejects | `about/glossary.mdx` (`CONTEXT.md` points agents there) |

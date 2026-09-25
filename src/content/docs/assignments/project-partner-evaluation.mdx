@@ -42,6 +42,7 @@ import CanvasEntries from '/src/components/CanvasEntries.astro';
 import AssignmentMeta from '/src/components/AssignmentMeta.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import RubricTable from '/src/components/RubricTable.astro';
+import RubricCriterion from '/src/components/RubricCriterion.astro';
 import pulseCsv from '/canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv?raw';
 import fallCsv from '/canvas/assignments/project-partner-evaluation/partner-final-fall-rubric.csv?raw';
 import winterCsv from '/canvas/assignments/project-partner-evaluation/partner-final-winter-rubric.csv?raw';
@@ -147,7 +148,18 @@ The outcome of the project, not only the output.
 
 ### Spring
 
-In spring the scale is one ladder for every project, the outcome ladder: **who ran the software**. Its six rungs are the Verification and Validation row of the [spring rubric](#end-of-term-survey-rubric). Read it literally. Every rung above the bottom one describes someone outside the team running your work, and the top rung describes people who depend on it. Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out, path by path. Those paths are guidance and a playbook; they do not change the scale.
+In spring the scale is one ladder for every project, the outcome ladder: **who ran the software**. Read it literally. Every rung above the bottom one describes someone outside the team running your work, and the top rung describes people who depend on it.
+
+<RubricCriterion
+  csv={springCsv}
+  sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv"
+  criterion="Verification and Validation"
+  caption="The outcome ladder, top rung first"
+  ratingLabel="Rung"
+  split={["Consultancy", "FOSS", "Research", "New Product or Game"]}
+/>
+
+Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out, path by path. Those paths are guidance and a playbook; they do not change the scale.
 
 Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete. The rungs are written generally because they have to cover every project in the class. Your Definition of Shipped says what your target rung means for your project: which environment, which users, which upstream, measured how. That is what your partner scores against in spring, and it's why you write it in winter, while there is still time to act on it.
 

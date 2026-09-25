@@ -373,6 +373,12 @@ assuming a number:
   have five bands, 19 fields; the partner's spring Verification and
   Validation ladder six, 22 fields.
 
+A criterion a reader needs where the page discusses it, not only in the rubric at
+the bottom, is shown with `<RubricCriterion csv={...} sourceLabel="..."
+criterion="..." />` (`src/components/RubricCriterion.astro`): the same CSV, one
+criterion, one row per band. The spring outcome ladder is the only one. Never
+retype the bands in MDX to get the same effect.
+
 Every Canvas rubric directory is rendered by a page. `individual-contribution/`
 is rendered on Sprint Notes, `workshop-activities/` on Workshop Activities; both
 are tagless.
