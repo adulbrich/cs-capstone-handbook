@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Canvas Changes: Sprint Notes Numbered Across the Year (#337)
 
-Sprint notes now run 1 to 12 across the year instead of restarting each term, so a sprint and its note carry one number all year. Fall is unchanged (Sprint Notes 1 to 4). In CS 462 rename the entries **Sprint Notes 5** to **Sprint Notes 9** and **Sprint Notes 5: Individual Contribution** to **Sprint Notes 9: Individual Contribution**; in CS 463, **Sprint Notes 10** to **Sprint Notes 12** and their Individual Contribution entries. Re-paste those bodies from the paste kit. Points, weights, due weeks, and rubrics are unchanged.
+Sprint notes now run 1 to 12 across the year instead of restarting each term, so a sprint and its note carry one number all year. Fall is unchanged (Sprint Notes 1 to 4). In CS 462 rename Sprint Notes 1 to 5 as **Sprint Notes 5** to **Sprint Notes 9**, and each Individual Contribution entry with its note (Sprint Notes 1: Individual Contribution becomes **Sprint Notes 5: Individual Contribution**). In CS 463 rename Sprint Notes 1 to 3 as **Sprint Notes 10** to **Sprint Notes 12**, the same way. Re-paste those bodies from the paste kit, and re-paste the three syllabi, whose Team Deliverables line now names each term's sprint note numbers. Points, weights, due weeks, and rubrics are unchanged.
 
 ## Re-paste Required: Accessibility Checker (#329)
 

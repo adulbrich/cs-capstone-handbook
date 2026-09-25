@@ -35,9 +35,11 @@ export function canvasRows(canvas) {
         continue;
       }
       const weight = termWeight(family, term);
-      const first =
-        family.numbering === "year" ? (numbered.get(family) ?? 0) + 1 : 1;
-      numbered.set(family, first - 1 + weeks.length);
+      const byYear = family.numbering === "year";
+      const first = byYear ? (numbered.get(family) ?? 0) + 1 : 1;
+      if (byYear) {
+        numbered.set(family, first - 1 + weeks.length);
+      }
       rows.push({
         each: weight / weeks.length,
         family,
