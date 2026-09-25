@@ -18,13 +18,15 @@ const AFTER_LAST_SPRINT = "Project Handoff";
 // Links whose page `level` does not say who submits the item: the partner
 // completes the partner evaluation; the two Canvas-owned stubs carry no
 // `assignment:` block; Demo Day and the Expo are team events with no block
-// either; the bidding survey is the one section of For Students that is due.
+// either; the bidding survey is the one section of For Students that is due;
+// the team sends the first email to its partner from the template.
 const TAG_BY_PATH = {
   "assignments/career-retrospective": "Individual",
   "assignments/demo-day": "Team",
   "assignments/expo": "Team",
   "assignments/project-partner-evaluation": "Partner",
   "assignments/resume-and-intent": "Individual",
+  "email-template.txt": "Team",
   "introduction/for-students#how-you-get-your-project-and-team": "Individual",
 };
 

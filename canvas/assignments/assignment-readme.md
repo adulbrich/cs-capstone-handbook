@@ -24,6 +24,10 @@ The sections below record each change as it was made. The ones from before the m
 
 Sprint notes now run 1 to 12 across the year instead of restarting each term, so a sprint and its note carry one number all year. Fall is unchanged (Sprint Notes 1 to 4). In CS 462 rename Sprint Notes 1 to 5 as **Sprint Notes 5** to **Sprint Notes 9**, and each Individual Contribution entry with its note (Sprint Notes 1: Individual Contribution becomes **Sprint Notes 5: Individual Contribution**). Work from the highest number down, so old Sprint Notes 5 is already Sprint Notes 9 before old Sprint Notes 1 takes its name. In CS 463 rename Sprint Notes 1 to 3 as **Sprint Notes 10** to **Sprint Notes 12**, the same way. Re-paste those bodies from the paste kit, and re-paste the three syllabi, whose Team Deliverables line now names each term's sprint note numbers. Points, weights, due weeks, and rubrics are unchanged.
 
+## Canvas Changes: Resume and Intent Due at the End of Fall Week 1
+
+Resume and Intent is due at the end of fall week 1, a week earlier than before; the resume meetings still run by week 5. The co-instructor owns the entry, so its due date is set there. Re-paste the CS 461 syllabus, whose Individual Evidence row gives the new week.
+
 ## Re-paste Required: Accessibility Checker (#329)
 
 No rubric changes. Re-paste every body and the three syllabi from the regenerated kit: every table now has a caption, the CS 463 Beyond OSU II table has a header row, and the syllabus buttons use `#c43c00`, which meets the checker's contrast ratio.
@@ -366,10 +370,11 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
+| 1 | Resume and Intent |
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
-| 2 | Term Startup (1%); Team Charter; Resume and Intent |
+| 2 | Term Startup (1%); Team Charter |
 | 3 | Demo Day registration (0 points, omit from final grade) |
-| 3-5 | Resume meetings (co-instructor) |
+| by 5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (rails stood up); RFC peer review; Demo Day session 1 |
 | 6 | Sprint Note 2 |
