@@ -1,5 +1,6 @@
 ---
 import { parseRubricCsv, rubricTotal } from "../lib/rubric-csv.mjs";
+import "../styles/rubric-skin.css";
 
 /**
  * RubricTable: renders an assignment's rubric from the Canvas rubric CSV.
@@ -20,8 +21,8 @@ import { parseRubricCsv, rubricTotal } from "../lib/rubric-csv.mjs";
  *   announce the criterion a rating belongs to instead of reading loose text.
  * - Each rating's points and band name are text, never conveyed by color or
  *   position alone.
- * - Colors come from Starlight's custom properties, so both themes and their
- *   contrast ratios are inherited rather than re-invented.
+ * - The table skin, colors included, is `src/styles/rubric-skin.css`,
+ *   shared with RubricCriterion.
  * - Outcome tags are rendered as text in their own labelled cell. They are the
  *   accreditation record and must survive being read aloud.
  *
@@ -49,7 +50,7 @@ const { criteria } = parseRubricCsv(csv, sourceLabel);
 const totalPoints = rubricTotal(criteria);
 ---
 
-<div class="rubric not-content">
+<div class="rubric rubric-skin not-content">
   <table>
     <caption>
       Rubric: {totalPoints} points across {
@@ -110,53 +111,9 @@ const totalPoints = rubricTotal(criteria);
 </div>
 
 <style>
-  .rubric {
-    margin-block: 1.5rem;
-    /* The bands are wide; let the table use the full content column. */
-    overflow-x: auto;
-  }
-
-  .rubric table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--sl-text-sm);
-  }
-
-  .rubric caption {
-    caption-side: top;
-    text-align: start;
-    font-size: var(--sl-text-xs);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--sl-color-gray-3);
-    padding-block-end: 0.5rem;
-  }
-
-  .rubric th,
-  .rubric td {
-    text-align: start;
-    vertical-align: top;
-    padding: 0.75rem;
-    border-block-start: 1px solid var(--sl-color-gray-5);
-  }
-
-  .rubric thead th {
-    font-size: var(--sl-text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--sl-color-gray-3);
-    border-block-start: 0;
-    padding-block-end: 0.35rem;
-  }
-
   .rubric__criterion-col {
     width: 30%;
     min-width: 11rem;
-  }
-
-  .rubric tbody th {
-    font-weight: 400;
   }
 
   .rubric__title,
@@ -229,24 +186,10 @@ const totalPoints = rubricTotal(criteria);
   }
 
   @media (prefers-contrast: more) {
-    .rubric th,
-    .rubric td {
-      border-block-start-width: 2px;
-    }
     .rubric__description,
     .rubric__band-description,
     .rubric__tags {
       color: var(--sl-color-white);
-    }
-  }
-
-  @media print {
-    .rubric {
-      overflow-x: visible;
-    }
-    .rubric th,
-    .rubric td {
-      border-block-start: 1px solid #000;
     }
   }
 </style>

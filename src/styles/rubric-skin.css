@@ -1,0 +1,67 @@
+/*
+ * The table skin shared by RubricTable and RubricCriterion: both render a
+ * rubric CSV as a captioned table with row headers, and a contrast or print
+ * fix belongs to both. Each component keeps only its own cell layout.
+ * Colors come from Starlight's custom properties, so both themes and their
+ * contrast ratios are inherited rather than re-invented.
+ */
+.rubric-skin {
+  margin-block: 1.5rem;
+  /* The bands are wide; let the table use the full content column. */
+  overflow-x: auto;
+}
+
+.rubric-skin table {
+  width: 100%;
+  font-size: var(--sl-text-sm);
+  border-collapse: collapse;
+}
+
+.rubric-skin caption {
+  padding-block-end: 0.5rem;
+  font-size: var(--sl-text-xs);
+  font-weight: 600;
+  color: var(--sl-color-gray-3);
+  text-align: start;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  caption-side: top;
+}
+
+.rubric-skin th,
+.rubric-skin td {
+  padding: 0.75rem;
+  vertical-align: top;
+  text-align: start;
+  border-block-start: 1px solid var(--sl-color-gray-5);
+}
+
+.rubric-skin thead th {
+  padding-block-end: 0.35rem;
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-block-start: 0;
+}
+
+.rubric-skin tbody th {
+  font-weight: 400;
+}
+
+@media (prefers-contrast: more) {
+  .rubric-skin th,
+  .rubric-skin td {
+    border-block-start-width: 2px;
+  }
+}
+
+@media print {
+  .rubric-skin {
+    overflow-x: visible;
+  }
+  .rubric-skin th,
+  .rubric-skin td {
+    border-block-start: 1px solid #000;
+  }
+}

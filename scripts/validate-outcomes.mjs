@@ -113,9 +113,9 @@ function parseAssignment(frontmatter) {
 // through the matching `?raw` import. A page owning several Canvas entries
 // renders one table per distinct rubric. `path` is null when the name has no
 // import; `index` is where the tag sits, for the heading check below.
-// `<RubricCriterion>` renders one criterion of a CSV the page already
-// renders in full (the spring outcome ladder); pass its name to read those.
-function rubricTables(source, component = "RubricTable") {
+// `<RubricCriterion>` renders one criterion of a CSV the page also renders in
+// full (the spring outcome ladder): same attributes, read with its name.
+function renderedCsvs(source, component) {
   const tagRe = new RegExp(`<${component}\\s[^>]*>`, "g");
   return [...source.matchAll(tagRe)].map((m) => {
     const name = m[0].match(/\bcsv=\{(\w+)\}/)?.[1];
@@ -166,7 +166,8 @@ for (const file of files) {
   parsed += 1;
   pages.set(file.replace(/\.mdx$/, ""), assignment);
   const slug = file.replace(/\.mdx$/, "");
-  const tables = rubricTables(source);
+  const tables = renderedCsvs(source, "RubricTable");
+  const criterionViews = renderedCsvs(source, "RubricCriterion");
   pageSources.set(slug, source);
   pageTables.set(slug, tables);
   const rubricTags = {};
@@ -176,9 +177,7 @@ for (const file of files) {
     );
     failed = true;
   }
-  // A criterion view gets the same import checks as a full table, but its
-  // tags are already counted once through the table that renders its CSV.
-  for (const table of [...tables, ...rubricTables(source, "RubricCriterion")]) {
+  for (const table of [...tables, ...criterionViews]) {
     if (!table.path) {
       console.error(
         `RUBRIC IMPORT ${file}: <${table.component} csv={${table.name}}> has no matching \`import ${table.name} from '/...csv?raw'\`.`
@@ -208,15 +207,23 @@ for (const file of files) {
       );
       failed = true;
     }
-    if (table.component !== "RubricTable") {
-      continue;
-    }
-    // Tags add up across a page's rubrics: the RFC's draft and final
-    // together are what the frontmatter declares.
+  }
+  // Tags add up across a page's rubrics: the RFC's draft and final together
+  // are what the frontmatter declares. A criterion view counts nothing, so
+  // its CSV must be one a table on the page counts.
+  for (const table of tables.filter((t) => t.path)) {
     for (const [tag, n] of Object.entries(
       rubricTagCounts(readRubric(table.path).criteria)
     )) {
       rubricTags[tag] = (rubricTags[tag] || 0) + n;
+    }
+  }
+  for (const view of criterionViews) {
+    if (view.path && !tables.some((t) => t.path === view.path)) {
+      console.error(
+        `RUBRIC IMPORT ${file}: <RubricCriterion csv={${view.name}}> shows part of ${view.path}, which no <RubricTable> on the page renders in full, so its outcome tags would go uncounted.`
+      );
+      failed = true;
     }
   }
 
