@@ -1,9 +1,10 @@
 ---
 import { parseRubricCsv } from "../lib/rubric-csv.mjs";
+import "../styles/rubric-skin.css";
 
 /**
  * RubricCriterion: renders one criterion of a rubric CSV on its own, one row
- * per rating, top rating first.
+ * per rating, in the CSV's order.
  *
  * It exists for the spring outcome ladder (#334): six rungs that
  * `RubricTable` shows as one row of the spring rubric, in a tab, at the
@@ -15,10 +16,11 @@ import { parseRubricCsv } from "../lib/rubric-csv.mjs";
  * the first label, or a description with none, renders as written. A label
  * missing from the CSV changes the layout, never the words.
  *
- * The table carries a caption and header scopes because the Canvas export
- * keeps it: the class is `rubric-criterion`, not `rubric`, which the export
- * strips. `scripts/validate-outcomes.mjs` checks its import and sourceLabel
- * like a `RubricTable`'s, and does not count its outcome tags a second time.
+ * The Canvas export keeps it: the class is `rubric-criterion`, not `rubric`,
+ * which the export strips. The table skin is `src/styles/rubric-skin.css`,
+ * shared with RubricTable. `scripts/validate-outcomes.mjs` checks its import
+ * and sourceLabel like a `RubricTable`'s, requires a `RubricTable` on the
+ * same page to render the whole CSV, and counts its outcome tags only there.
  *
  * Usage in MDX:
  *
@@ -32,14 +34,14 @@ import { parseRubricCsv } from "../lib/rubric-csv.mjs";
  *   />
  */
 interface Props {
-  /** Table caption. Defaults to the criterion title and its points. */
-  caption?: string;
+  /** Table caption. */
+  caption: string;
   /** The criterion's title as the CSV gives it, without outcome tags. */
   criterion: string;
   /** The CSV file's contents, imported with `?raw`. */
   csv: string;
   /** Header for the ratings column. */
-  ratingLabel?: string;
+  ratingLabel: string;
   /** Repository-relative path, used in error messages and checked by the validator. */
   sourceLabel: string;
   /** Labels that open the parts of a rating description, in any order. */
@@ -51,7 +53,7 @@ const {
   sourceLabel,
   criterion,
   caption,
-  ratingLabel = "Rating",
+  ratingLabel,
   split = [],
 } = Astro.props;
 
@@ -85,10 +87,10 @@ function parts(text: string) {
 }
 ---
 
-<div class="rubric-criterion not-content">
+<div class="rubric-criterion rubric-skin not-content">
   <table>
     <caption>
-      {caption ?? `${found.title}: ${found.maxPoints} points`}
+      {caption}
     </caption>
     <thead>
       <tr>
@@ -131,52 +133,9 @@ function parts(text: string) {
 </div>
 
 <style>
-  .rubric-criterion {
-    margin-block: 1.5rem;
-    overflow-x: auto;
-  }
-
-  .rubric-criterion table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--sl-text-sm);
-  }
-
-  .rubric-criterion caption {
-    caption-side: top;
-    text-align: start;
-    font-size: var(--sl-text-xs);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--sl-color-gray-3);
-    padding-block-end: 0.5rem;
-  }
-
-  .rubric-criterion th,
-  .rubric-criterion td {
-    text-align: start;
-    vertical-align: top;
-    padding: 0.75rem;
-    border-block-start: 1px solid var(--sl-color-gray-5);
-  }
-
-  .rubric-criterion thead th {
-    font-size: var(--sl-text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--sl-color-gray-3);
-    border-block-start: 0;
-    padding-block-end: 0.35rem;
-  }
-
   .rubric-criterion__rating-col {
     width: 35%;
     min-width: 9rem;
-  }
-
-  .rubric-criterion tbody th {
-    font-weight: 400;
   }
 
   .rubric-criterion__name {
@@ -206,22 +165,8 @@ function parts(text: string) {
   }
 
   @media (prefers-contrast: more) {
-    .rubric-criterion th,
-    .rubric-criterion td {
-      border-block-start-width: 2px;
-    }
     .rubric-criterion__points {
       color: var(--sl-color-white);
-    }
-  }
-
-  @media print {
-    .rubric-criterion {
-      overflow-x: visible;
-    }
-    .rubric-criterion th,
-    .rubric-criterion td {
-      border-block-start: 1px solid #000;
     }
   }
 </style>
