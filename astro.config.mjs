@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
@@ -30,19 +31,11 @@ export default defineConfig({
           tag: "script",
         },
         {
-          // Term tabs (`syncKey="terms"`) open on the current term, read from
-          // the month so no date is ever written down (hard rule 5). Starlight
-          // restores synced tabs from this localStorage key before first
-          // paint. The first page of a browser session sets it; a tab the
-          // reader picks after that holds for the rest of the session.
-          content: `try {
-  const key = "starlight-synced-tabs__terms";
-  if (!sessionStorage.getItem(key)) {
-    const month = new Date().getMonth();
-    localStorage.setItem(key, month < 3 ? "Winter" : month < 6 ? "Spring" : "Fall");
-    sessionStorage.setItem(key, "set");
-  }
-} catch {}`,
+          // Opens term tabs on the current term; see the file for why and how.
+          content: readFileSync(
+            new URL("./src/lib/term-tabs.js", import.meta.url),
+            "utf8"
+          ),
           tag: "script",
         },
       ],
