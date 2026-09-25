@@ -130,10 +130,10 @@ This is enforced, not merely requested. `npm run validate:activities` fails if a
 linked activity carries no badge, if a Recommended badge has no assignment
 linking to it, or if an assignment links to an anchor matching no heading. It
 also reconciles the week-by-week schedule on `introduction/schedule.mdx`,
-reading it by term, week and row label: an activity in a **Recommended** row
-must be Workshop or Recommended tier, a **Lecture** row may link an untiered
-activity, and every Workshop activity must sit in a Lecture row in the same
-week `assignments/workshop-activities.mdx` gives it. Demoting an activity
+reading it by term, week and line label: an activity on any line but
+**In class** must be Workshop or Recommended tier, an **In class** line may
+link an untiered activity, and every Workshop activity must sit on an In class
+line in the same week `assignments/workshop-activities.mdx` gives it. Demoting an activity
 therefore means removing it from the schedule in the same commit. It runs in
 CI and pre-commit.
 

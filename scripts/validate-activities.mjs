@@ -43,9 +43,9 @@
 //
 //   6. The week-by-week schedule on introduction/schedule.mdx links activities
 //      directly, outside any assignment page. Every one of those links must
-//      resolve. A link in a **Recommended** row must carry a Workshop or
+//      resolve. A link on an **Optional** line must carry a Workshop or
 //      Recommended badge, so the schedule never offers a student an activity
-//      no assignment page still recommends. A **Lecture** row may link an
+//      no assignment page still recommends. An **In class** line may link an
 //      untiered activity: a class session can run something unassessed, and
 //      an icebreaker will never earn a tier because no assignment prepares
 //      from it.
@@ -55,7 +55,7 @@
 //      ai-project-setup, 4,843 words nobody was ever asked to read. This is
 //      the guide half of rule 6, with one deliberate exemption.
 //
-//   7. Every Workshop activity sits in a Lecture row, in the same term and
+//   7. Every Workshop activity sits on an In class line, in the same term and
 //      week that assignments/workshop-activities.mdx gives it, and every
 //      workshop section on that page points at an activity badged Workshop. The schedule, the
 //      assignment page, and the badge are three records of one fact, and
@@ -86,8 +86,9 @@ const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
 // schedule, "## Fall" on the assignment page.
 const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
 const WEEK_HEADING_RE = /^### Week (\d+)\b/;
-// A schedule row is labelled in its first cell: Lecture, Due, Read, Recommended.
-const ROW_LABEL_RE = /^\|\s*\*\*([A-Za-z][A-Za-z -]*)\*\*\s*\|/;
+// A schedule line is a list item labelled in bold: Due, In class, Read,
+// Optional. A nested item carries no label and belongs to the line above it.
+const ROW_LABEL_RE = /^- \*\*([A-Za-z][A-Za-z -]*?):?\*\*/;
 
 // GitHub-style slugger, matching how Starlight derives heading anchors.
 function slugify(heading) {
@@ -226,24 +227,29 @@ function readAssignmentLinks() {
 }
 
 // Collect every activity link on the schedule page with the term, week, and
-// row label it sits under. A flat set of links cannot tell a Lecture row from
-// a Recommended one, which is how the fall week 3 contradiction survived CI.
+// line label it sits under. A flat set of links cannot tell an In class line from
+// an Optional one, which is how the fall week 3 contradiction survived CI.
 function readSchedulePlacements() {
   const placements = [];
   let term = null;
   let week = null;
+  let label = null;
   for (const line of readFileSync(SCHEDULE_PAGE, "utf8").split("\n")) {
     if (line.startsWith("## ")) {
       term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
       week = null;
+      label = null;
       continue;
     }
     const weekHeading = line.match(WEEK_HEADING_RE);
     if (weekHeading) {
       week = Number(weekHeading[1]);
+      label = null;
       continue;
     }
-    const row = line.match(ROW_LABEL_RE)?.[1];
+    // A nested item or a wrapped continuation belongs to the line above it.
+    label = line.match(ROW_LABEL_RE)?.[1] ?? label;
+    const row = label;
     if (!row) {
       continue;
     }
@@ -352,8 +358,8 @@ for (const [key, activity] of activities) {
   }
 }
 
-// Rule 6: every scheduled link resolves, and a Recommended row offers only
-// tiered activities. A Lecture row may link an untiered one.
+// Rule 6: every scheduled link resolves, and every line but In class offers
+// only tiered activities. An In class line may link an untiered one.
 for (const placement of placements) {
   const activity = activities.get(placement.key);
   const where = `${placement.term} week ${placement.week}`;
@@ -363,9 +369,9 @@ for (const placement of placements) {
     );
     continue;
   }
-  if (!(activity.tier || placement.row === "Lecture")) {
+  if (!(activity.tier || placement.row === "In class")) {
     problems.push(
-      `schedule drift: "${activity.heading}" (${activity.page}) is in the ${placement.row} row of ${where} but no assignment page recommends it and it is not a workshop activity`
+      `schedule drift: "${activity.heading}" (${activity.page}) is on the ${placement.row} line of ${where} but no assignment page recommends it and it is not a workshop activity`
     );
   }
 }
@@ -374,7 +380,7 @@ for (const placement of placements) {
 // workshop. Each direction fails differently, so each is reported separately.
 const lectureWeeks = new Map(); // "page#slug" -> [{ term, week }]
 for (const placement of placements) {
-  if (placement.row !== "Lecture") {
+  if (placement.row !== "In class") {
     continue;
   }
   if (!lectureWeeks.has(placement.key)) {
@@ -391,7 +397,7 @@ for (const [key, activity] of activities) {
   const assigned = workshopWeeks.get(key);
   if (lectures.length === 0) {
     problems.push(
-      `unscheduled workshop: "${activity.heading}" (${activity.page}) is Workshop tier but no Lecture row on the week-by-week schedule links it`
+      `unscheduled workshop: "${activity.heading}" (${activity.page}) is Workshop tier but no In class line on the week-by-week schedule links it`
     );
   }
   if (!assigned) {
@@ -406,13 +412,13 @@ for (const [key, activity] of activities) {
   ) {
     const found = lectures.map((l) => `${l.term} week ${l.week}`).join(", ");
     problems.push(
-      `workshop week mismatch: "${activity.heading}" (${activity.page}) runs in ${assigned.term} week ${assigned.week} on assignments/workshop-activities.mdx, but the schedule's Lecture rows put it in ${found}`
+      `workshop week mismatch: "${activity.heading}" (${activity.page}) runs in ${assigned.term} week ${assigned.week} on assignments/workshop-activities.mdx, but the schedule's In class lines put it in ${found}`
     );
   }
 }
 
-// Rule 7a: every guide is read in some week. Only Read rows count, because a
-// guide named in passing in a Lecture cell is not assigned reading.
+// Rule 7a: every guide is read in some week. Only Read lines count, because a
+// guide named in passing on an In class line is not assigned reading.
 const GUIDES_NEVER_SCHEDULED = new Set([
   // The section index, not a guide.
   "introduction",

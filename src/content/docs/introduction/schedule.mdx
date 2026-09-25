@@ -7,10 +7,11 @@ tableOfContents: false
 ---
 
 import { Badge, TabItem, Tabs } from '@astrojs/starlight/components';
+import WeekCards from '/src/components/WeekCards.astro';
 
-Fall has a **week 0** because the term starts midweek; winter and spring start at week 1. Sprints are two weeks long in every term.
+Fall has a **week 0** because the term starts midweek; winter and spring start at week 1. Sprints run two weeks in every term, and their numbers continue from one term to the next. A label beside each group of weeks names its sprint, or Term Start and Project Handoff for the weeks before the year's first sprint and after its last.
 
-The [assignment pages](/assignments/introduction/) say what is due and how it is scored; this page lays them out in time. **Read** points at the [guides](/guides/introduction/) that help that week. **Recommended** points at optional [activities](/activities/introduction/) from the practice library. A week with no **Lecture** line has no class session unless an announcement says otherwise.
+The [assignment pages](/assignments/introduction/) say what is due and how it is scored; this page lays them out in time. A tag on each item due names who submits it: your team, you individually, or your project partner, whose evaluation of the team closes that week. **Read** points at the [guides](/guides/introduction/) that help that week. **Optional** points at [activities](/activities/introduction/) from the practice library. A week with no **In class** line has no class session unless an announcement says otherwise.
 
 Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check-in](/assignments/introduction/#ta-check-ins), at a time your team and your TA agree; in a sprint-note week it includes the [sprint demo](/assignments/sprint-notes/#demo-cadence).
 
@@ -21,105 +22,113 @@ Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check
 
 3 credits. Discover, specify, walking skeleton.
 
+<WeekCards term="fall">
+
 ### Week 0
 
-| | |
-|---|---|
-| **Lecture** | Welcome; [project bidding](/introduction/for-students/#how-you-get-your-project-and-team) opens |
-| **Due** | Bidding survey |
-| **Read** | [For Students](/introduction/for-students/), [Assignments Overview](/assignments/introduction/), [Shipping guide](/guides/shipping/) |
+- **Due**
+  - [Bidding survey](/introduction/for-students/#how-you-get-your-project-and-team)
+- **In class:** welcome; [project bidding](/introduction/for-students/#how-you-get-your-project-and-team) opens
+- **Read:** [For Students](/introduction/for-students/), [Assignments Overview](/assignments/introduction/), [Shipping guide](/guides/shipping/)
 
 ### Week 1
 
-| | |
-|---|---|
-| **Lecture** | Teams announced and seated together; [Two truths and a bug](/activities/teamwork/#two-truths-and-a-bug), then the [Team Charter](/assignments/team-charter/) kickoff. Email your project partner this week, starting from the [introduction email template](/email-template.txt). |
-| **Read** | [Shipping](/guides/shipping/), the section closest to your project; [Sprint: Preparing for Your First Sprint](/guides/sprint/#preparing-for-your-first-sprint); [AI Project Setup](/guides/ai-project-setup/) |
-| **Recommended** | [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills) |
+- **In class:** teams announced and seated together; [Two truths and a bug](/activities/teamwork/#two-truths-and-a-bug), then the [Team Charter](/assignments/team-charter/) kickoff. Email your project partner this week, starting from the [introduction email template](/email-template.txt).
+- **Read:** [Shipping](/guides/shipping/), the section closest to your project; [Sprint: Preparing for Your First Sprint](/guides/sprint/#preparing-for-your-first-sprint); [AI Project Setup](/guides/ai-project-setup/)
+- **Optional:** [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills)
 
 ### Week 2
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | Workshop: [User Story Mapping](/activities/requirements/#user-story-mapping) |
-| **Due** | [Term Startup](/assignments/term-startup/), [Team Charter](/assignments/team-charter/), [Resume and Intent](/assignments/resume-and-intent/), [Workshop Activities](/assignments/workshop-activities/) |
-| **Read** | [Working Agreement](/guides/working-agreement/), [Requirements](/guides/requirements/), [Planning and Prioritization](/guides/planning/) |
-| **Recommended** | [Kanban Board Setup](/activities/planning/#kanban-board-setup), [Definition of Done](/activities/planning/#definition-of-done) |
+- **Due**
+  - [Term Startup](/assignments/term-startup/)
+  - [Team Charter](/assignments/team-charter/)
+  - [Resume and Intent](/assignments/resume-and-intent/)
+  - [Workshop Activities](/assignments/workshop-activities/)
+- **In class:** workshop, [User Story Mapping](/activities/requirements/#user-story-mapping)
+- **Read:** [Working Agreement](/guides/working-agreement/), [Requirements](/guides/requirements/), [Planning and Prioritization](/guides/planning/)
+- **Optional:** [Kanban Board Setup](/activities/planning/#kanban-board-setup), [Definition of Done](/activities/planning/#definition-of-done)
 
 ### Week 3
 
-| | |
-|---|---|
-| **Lecture** | Workshop: the decisions you cannot walk back and the checks that catch the rest, [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) and [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) |
-| **Due** | [Workshop Activities](/assignments/workshop-activities/), two items; [Demo Day](/assignments/demo-day/) registration |
-| **Read** | [Technical Design](/guides/technical-design/), [Testing Strategy](/guides/testing-strategy/) |
-| **Recommended** | [Describe your Architecture](/activities/design/#describe-your-architecture); [Evaluate Different Technologies](/activities/design/#evaluate-different-technologies) |
+- **Due**
+  - [Workshop Activities](/assignments/workshop-activities/), two items
+  - [Demo Day](/assignments/demo-day/) registration
+- **In class:** workshop, the decisions you cannot walk back and the checks that catch the rest, [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) and [Audit Your Safety Net](/activities/ai/#audit-your-safety-net)
+- **Read:** [Technical Design](/guides/technical-design/), [Testing Strategy](/guides/testing-strategy/)
+- **Optional:** [Describe your Architecture](/activities/design/#describe-your-architecture); [Evaluate Different Technologies](/activities/design/#evaluate-different-technologies)
 
 ### Week 4
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Due** | [RFC](/assignments/rfc/) draft, [Sprint Note](/assignments/sprint-notes/) 1 |
-| **Read** | [Generative AI](/guides/generative-ai/) |
-| **Recommended** | [Plan Prototype](/activities/planning/#plan-prototype) |
+- **Due**
+  - [RFC](/assignments/rfc/) draft
+  - [Sprint Note 1](/assignments/sprint-notes/)
+- **Read:** [Generative AI](/guides/generative-ai/)
+- **Optional:** [Plan Prototype](/activities/planning/#plan-prototype)
 
 ### Week 5
 
-| | |
-|---|---|
-| **Lecture** | [Demo day](/assignments/demo-day/) 1 |
-| **Due** | [Repo Checkpoint](/assignments/repo-checkpoints/) 1, [RFC](/assignments/rfc/) peer review, [Resume and Intent](/assignments/resume-and-intent/) resume meeting by this week |
-| **Read** | [DevOps: Continuous Integration](/guides/devops/#continuous-integration-ci), [Documentation: Repository Documentation](/guides/documentation/#repository-documentation) |
+- **Due**
+  - [Repo Checkpoint 1](/assignments/repo-checkpoints/)
+  - [RFC](/assignments/rfc/) peer review
+  - [Resume and Intent](/assignments/resume-and-intent/) resume meeting by this week
+- **In class:** [Demo day](/assignments/demo-day/) 1
+- **Read:** [DevOps: Continuous Integration](/guides/devops/#continuous-integration-ci), [Documentation: Repository Documentation](/guides/documentation/#repository-documentation)
 
 ### Week 6
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 2, midterm [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
-| **Read** | [Presentations: Design Reviews](/guides/presentations/#design-reviews) |
-| **Recommended** | [Six Thinking Hats](/activities/creative/#six-thinking-hats) |
+- **Due**
+  - [Sprint Note 2](/assignments/sprint-notes/)
+  - Midterm [peer evaluations](/assignments/peer-evaluations/) close
+  - Midterm [partner evaluation](/assignments/project-partner-evaluation/) closes
+- **Read:** [Presentations: Design Reviews](/guides/presentations/#design-reviews)
+- **Optional:** [Six Thinking Hats](/activities/creative/#six-thinking-hats)
 
 ### Week 7
 
-| | |
-|---|---|
-| **Lecture** | Workshop: [Peer Technical Design Review](/activities/design/#peer-technical-design-review), with the team at the next table, all within the session |
-| **Due** | [Workshop Activities](/assignments/workshop-activities/), [Defense](/assignments/defense/), yours is in week 7 or 9 |
-| **Read** | [Conflict and Performance Conversations](/guides/conflict/) |
-| **Recommended** | [Learning Journal](/activities/reflective/#learning-journal) |
+- **Due**
+  - [Workshop Activities](/assignments/workshop-activities/)
+  - [Defense](/assignments/defense/), yours is in week 7 or 9
+- **In class:** workshop, [Peer Technical Design Review](/activities/design/#peer-technical-design-review), with the team at the next table, all within the session
+- **Read:** [Conflict and Performance Conversations](/guides/conflict/)
+- **Optional:** [Learning Journal](/activities/reflective/#learning-journal)
 
 ### Week 8
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | Workshop: [Identify Success Metrics](/activities/planning/#identify-success-metrics), what number will prove the project worked |
-| **Due** | [Workshop Activities](/assignments/workshop-activities/), [RFC](/assignments/rfc/) final, [Sprint Note](/assignments/sprint-notes/) 3 |
-| **Read** | [Retrospectives](/guides/retrospectives/) |
-| **Recommended** | [External Feedback Session](/activities/reflective/#external-feedback-session), [Deployment Plan](/activities/design/#deployment-plan), [Software Release and Versioning](/activities/planning/#software-release-and-versioning) |
+- **Due**
+  - [Workshop Activities](/assignments/workshop-activities/)
+  - [RFC](/assignments/rfc/) final
+  - [Sprint Note 3](/assignments/sprint-notes/)
+- **In class:** workshop, [Identify Success Metrics](/activities/planning/#identify-success-metrics), what number will prove the project worked
+- **Read:** [Retrospectives](/guides/retrospectives/)
+- **Optional:** [External Feedback Session](/activities/reflective/#external-feedback-session), [Deployment Plan](/activities/design/#deployment-plan), [Software Release and Versioning](/activities/planning/#software-release-and-versioning)
 
 ### Week 9
 
-| | |
-|---|---|
-| **Lecture** | No class, Thanksgiving |
-| **Due** | [Term Retrospective](/assignments/term-retrospective/), [Defense](/assignments/defense/) if yours is in week 9 |
+- **Due**
+  - [Term Retrospective](/assignments/term-retrospective/)
+  - [Defense](/assignments/defense/) if yours is in week 9
+- **In class:** no session, Thanksgiving
 
 ### Week 10
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | [Demo day](/assignments/demo-day/) 2 |
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 4, [Repo Checkpoint](/assignments/repo-checkpoints/) 2, final [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
+- **Due**
+  - [Sprint Note 4](/assignments/sprint-notes/)
+  - [Repo Checkpoint 2](/assignments/repo-checkpoints/)
+  - Final [peer evaluations](/assignments/peer-evaluations/) close
+  - Final [partner evaluation](/assignments/project-partner-evaluation/) closes
+- **In class:** [Demo day](/assignments/demo-day/) 2
+
+</WeekCards>
 
 </TabItem>
 <TabItem label="Winter">
@@ -128,97 +137,103 @@ Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check
 
 3 credits. Build, verify, real users.
 
+<WeekCards term="winter">
+
 ### Week 1
 
-| | |
-|---|---|
-| **Lecture** | Workshop: [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis), the calendar backward from your Definition of Shipped |
-| **Due** | [Term Startup](/assignments/term-startup/), [Workshop Activities](/assignments/workshop-activities/) |
-| **Read** | [Shipping](/guides/shipping/), the section closest to your project; [Planning: Success-Metric Frameworks](/guides/planning/#success-metric-frameworks) |
-| **Recommended** | [Identify Success Metrics](/activities/planning/#identify-success-metrics) |
+- **Due**
+  - [Term Startup](/assignments/term-startup/)
+  - [Workshop Activities](/assignments/workshop-activities/)
+- **In class:** workshop, [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis), the calendar backward from your Definition of Shipped
+- **Read:** [Shipping](/guides/shipping/), the section closest to your project; [Planning: Success-Metric Frameworks](/guides/planning/#success-metric-frameworks)
+- **Optional:** [Identify Success Metrics](/activities/planning/#identify-success-metrics)
 
 ### Week 2
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | Workshop: [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment) |
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 5, [Workshop Activities](/assignments/workshop-activities/) |
-| **Read** | [Working Agreement: Keeping It Alive](/guides/working-agreement/#keeping-it-alive) |
-| **Recommended** | [Find Users](/activities/user/#find-users), [Risk Management Plan](/activities/planning/#risk-management-plan) |
+- **Due**
+  - [Sprint Note 5](/assignments/sprint-notes/)
+  - [Workshop Activities](/assignments/workshop-activities/)
+- **In class:** workshop, [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment)
+- **Read:** [Working Agreement: Keeping It Alive](/guides/working-agreement/#keeping-it-alive)
+- **Optional:** [Find Users](/activities/user/#find-users), [Risk Management Plan](/activities/planning/#risk-management-plan)
 
 ### Week 3
 
-| | |
-|---|---|
-| **Lecture** | Workshop: [Test Plan](/activities/design/#test-plan), which tests to write before real users arrive |
-| **Due** | [Definition of Shipped](/assignments/definition-of-shipped/), [Workshop Activities](/assignments/workshop-activities/) |
-| **Read** | [Testing Strategy: Validation](/guides/testing-strategy/#validation-does-the-product-solve-the-right-problem) |
-| **Recommended** | [Write a Literature Review](/activities/creative/#write-a-literature-review) |
+- **Due**
+  - [Definition of Shipped](/assignments/definition-of-shipped/)
+  - [Workshop Activities](/assignments/workshop-activities/)
+- **In class:** workshop, [Test Plan](/activities/design/#test-plan), which tests to write before real users arrive
+- **Read:** [Testing Strategy: Validation](/guides/testing-strategy/#validation-does-the-product-solve-the-right-problem)
+- **Optional:** [Write a Literature Review](/activities/creative/#write-a-literature-review)
 
 ### Week 4
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Due** | [RFC](/assignments/rfc/) draft, [Sprint Note](/assignments/sprint-notes/) 6 |
-| **Read** | [ADR](/guides/adr/) |
-| **Recommended** | [Engage Users](/activities/user/#engage-users) |
+- **Due**
+  - [RFC](/assignments/rfc/) draft
+  - [Sprint Note 6](/assignments/sprint-notes/)
+- **Read:** [ADR](/guides/adr/)
+- **Optional:** [Engage Users](/activities/user/#engage-users)
 
 ### Week 5
 
-| | |
-|---|---|
-| **Lecture** | [Demo day](/assignments/demo-day/) 1 |
-| **Due** | [Repo Checkpoint](/assignments/repo-checkpoints/) 1, [RFC](/assignments/rfc/) peer review |
-| **Read** | [Security](/guides/security/) |
+- **Due**
+  - [Repo Checkpoint 1](/assignments/repo-checkpoints/)
+  - [RFC](/assignments/rfc/) peer review
+- **In class:** [Demo day](/assignments/demo-day/) 1
+- **Read:** [Security](/guides/security/)
 
 ### Week 6
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 7, midterm [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
-| **Read** | [Documentation](/guides/documentation/) |
-| **Recommended** | [Proof-of-Concept](/activities/design/#proof-of-concept) |
+- **Due**
+  - [Sprint Note 7](/assignments/sprint-notes/)
+  - Midterm [peer evaluations](/assignments/peer-evaluations/) close
+  - Midterm [partner evaluation](/assignments/project-partner-evaluation/) closes
+- **Read:** [Documentation](/guides/documentation/)
+- **Optional:** [Proof-of-Concept](/activities/design/#proof-of-concept)
 
 ### Week 7
 
-| | |
-|---|---|
-| **Due** | [Defense](/assignments/defense/), yours is in week 7 or 9 |
-| **Read** | [Presentations](/guides/presentations/) |
-| **Recommended** | [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass) |
+- **Due**
+  - [Defense](/assignments/defense/), yours is in week 7 or 9
+- **Read:** [Presentations](/guides/presentations/)
+- **Optional:** [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass)
 
 ### Week 8
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Due** | [RFC](/assignments/rfc/) final, [Sprint Note](/assignments/sprint-notes/) 8 |
-| **Read** | [Retrospectives: Postmortem Format](/guides/retrospectives/#postmortem-format) |
-| **Recommended** | [Fishbone Diagram](/activities/planning/#fishbone-diagram) |
+- **Due**
+  - [RFC](/assignments/rfc/) final
+  - [Sprint Note 8](/assignments/sprint-notes/)
+- **Read:** [Retrospectives: Postmortem Format](/guides/retrospectives/#postmortem-format)
+- **Optional:** [Fishbone Diagram](/activities/planning/#fishbone-diagram)
 
 ### Week 9
 
-| | |
-|---|---|
-| **Due** | [Incident Postmortem](/assignments/incident-postmortem/), [Defense](/assignments/defense/) if yours is in week 9 |
-| **Read** | [DevOps and Deployment](/guides/devops/) |
-| **Recommended** | [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass) |
+- **Due**
+  - [Incident Postmortem](/assignments/incident-postmortem/)
+  - [Defense](/assignments/defense/) if yours is in week 9
+- **Read:** [DevOps and Deployment](/guides/devops/)
+- **Optional:** [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass)
 
 ### Week 10
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | [Demo day](/assignments/demo-day/) 2 |
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 9, [Repo Checkpoint](/assignments/repo-checkpoints/) 2, final [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
+- **Due**
+  - [Sprint Note 9](/assignments/sprint-notes/)
+  - [Repo Checkpoint 2](/assignments/repo-checkpoints/)
+  - Final [peer evaluations](/assignments/peer-evaluations/) close
+  - Final [partner evaluation](/assignments/project-partner-evaluation/) closes
+- **In class:** [Demo day](/assignments/demo-day/) 2
+
+</WeekCards>
 
 </TabItem>
 <TabItem label="Spring">
@@ -227,93 +242,95 @@ Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check
 
 2 credits. Ship, prove, hand off.
 
+<WeekCards term="spring">
+
 ### Week 1
 
-| | |
-|---|---|
-| **Lecture** | Welcome back; [Expo](/assignments/expo/) registration opens |
-| **Due** | [Term Startup](/assignments/term-startup/) |
-| **Read** | [Shipping](/guides/shipping/), the section closest to your project |
+- **Due**
+  - [Term Startup](/assignments/term-startup/)
+- **In class:** welcome back; [Expo](/assignments/expo/) registration opens
+- **Read:** [Shipping](/guides/shipping/), the section closest to your project
 
 ### Week 2
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | Workshop: [Team Health Assessment](/activities/teamwork/#team-health-assessment), with the charter refresh |
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 10, [Workshop Activities](/assignments/workshop-activities/) |
-| **Read** | [Retrospectives](/guides/retrospectives/) |
-| **Recommended** | [Learning Journal](/activities/reflective/#learning-journal) |
+- **Due**
+  - [Sprint Note 10](/assignments/sprint-notes/)
+  - [Workshop Activities](/assignments/workshop-activities/)
+- **In class:** workshop, [Team Health Assessment](/activities/teamwork/#team-health-assessment), with the charter refresh
+- **Read:** [Retrospectives](/guides/retrospectives/)
+- **Optional:** [Learning Journal](/activities/reflective/#learning-journal)
 
 ### Week 3
 
-| | |
-|---|---|
-| **Read** | [Planning: Prioritization Methods](/guides/planning/#prioritization-methods) |
-| **Recommended** | [Prioritization](/activities/planning/#prioritization) |
+- **Read:** [Planning: Prioritization Methods](/guides/planning/#prioritization-methods)
+- **Optional:** [Prioritization](/activities/planning/#prioritization)
 
 ### Week 4
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 11 |
-| **Read** | [Testing Strategy: Beta Testing and Feedback](/guides/testing-strategy/#beta-testing-and-feedback), [Accessibility Testing](/guides/accessibility/) |
-| **Recommended** | [The Mom Test](/activities/creative/#the-mom-test), [Designing for Accessibility](/activities/design/#designing-for-accessibility) |
+- **Due**
+  - [Sprint Note 11](/assignments/sprint-notes/)
+- **Read:** [Testing Strategy: Beta Testing and Feedback](/guides/testing-strategy/#beta-testing-and-feedback), [Accessibility Testing](/guides/accessibility/)
+- **Optional:** [The Mom Test](/activities/creative/#the-mom-test), [Designing for Accessibility](/activities/design/#designing-for-accessibility)
 
 ### Week 5
 
-| | |
-|---|---|
-| **Lecture** | [Demo day](/assignments/demo-day/) |
-| **Read** | [Presentations: Public Demonstrations](/guides/presentations/#public-demonstrations) |
-| **Recommended** | [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci) |
+- **In class:** [Demo day](/assignments/demo-day/)
+- **Read:** [Presentations: Public Demonstrations](/guides/presentations/#public-demonstrations)
+- **Optional:** [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci)
 
 ### Week 6
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | Session: [Resume Building](/activities/career/#resume-building), individual, for the career retrospective |
-| **Due** | [Sprint Note](/assignments/sprint-notes/) 12, midterm [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
-| **Read** | [Documentation: User Documentation](/guides/documentation/#user-documentation) |
-| **Recommended** | [Identify Success Metrics](/activities/planning/#identify-success-metrics), the second pass; [Learn from Patrick Winston](/activities/communication/#learn-from-patrick-winston), [Planning for Maintenance and Long-Term Support](/activities/design/#planning-for-maintenance-and-long-term-support) |
+- **Due**
+  - [Sprint Note 12](/assignments/sprint-notes/)
+  - Midterm [peer evaluations](/assignments/peer-evaluations/) close
+  - Midterm [partner evaluation](/assignments/project-partner-evaluation/) closes
+- **In class:** session: [Resume Building](/activities/career/#resume-building), individual, for the career retrospective
+- **Read:** [Documentation: User Documentation](/guides/documentation/#user-documentation)
+- **Optional:** [Identify Success Metrics](/activities/planning/#identify-success-metrics), the second pass; [Learn from Patrick Winston](/activities/communication/#learn-from-patrick-winston), [Planning for Maintenance and Long-Term Support](/activities/design/#planning-for-maintenance-and-long-term-support)
 
 ### Week 7
 
-| | |
-|---|---|
-| **Due** | [Landing Page](/assignments/landing-page/), [Defense](/assignments/defense/), yours is in week 7 or 9 |
-| **Recommended** | [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass) |
+- **Due**
+  - [Landing Page](/assignments/landing-page/)
+  - [Defense](/assignments/defense/), yours is in week 7 or 9
+- **Optional:** [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass)
 
 ### Week 8
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Due** | [Release and Metrics](/assignments/release/), [Project Handoff](/assignments/project-handoff/), [Career and Individual Retrospective](/assignments/career-retrospective/) resume meeting by this week |
-| **Read** | [Documentation: Developer Documentation](/guides/documentation/#developer-documentation) |
+- **Due**
+  - [Release and Metrics](/assignments/release/)
+  - [Project Handoff](/assignments/project-handoff/)
+  - [Career and Individual Retrospective](/assignments/career-retrospective/) resume meeting by this week
+- **Read:** [Documentation: Developer Documentation](/guides/documentation/#developer-documentation)
 
 ### Week 9
 
-| | |
-|---|---|
-| **Lecture** | Expo rehearsal, if announced |
-| **Due** | [Project Retrospective](/assignments/project-retrospective/), [Career and Individual Retrospective](/assignments/career-retrospective/), [Defense](/assignments/defense/) if yours is in week 9 |
-| **Read** | [Presentations: Delivering a Demo](/guides/presentations/#delivering-a-demo) |
+- **Due**
+  - [Project Retrospective](/assignments/project-retrospective/)
+  - [Career and Individual Retrospective](/assignments/career-retrospective/)
+  - [Defense](/assignments/defense/) if yours is in week 9
+- **In class:** Expo rehearsal, if announced
+- **Read:** [Presentations: Delivering a Demo](/guides/presentations/#delivering-a-demo)
 
 ### Week 10
 
 <Badge text="TA check-in" variant="tip" />
 
-| | |
-|---|---|
-| **Lecture** | [Expo](/assignments/expo/) |
-| **Due** | [Engineering Expo](/assignments/expo/), final [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
+- **Due**
+  - [Engineering Expo](/assignments/expo/)
+  - Final [peer evaluations](/assignments/peer-evaluations/) close
+  - Final [partner evaluation](/assignments/project-partner-evaluation/) closes
+- **In class:** [Expo](/assignments/expo/)
+
+</WeekCards>
 
 </TabItem>
 </Tabs>
