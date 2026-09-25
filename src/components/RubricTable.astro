@@ -82,7 +82,12 @@ const totalPoints = rubricTotal(criteria);
               )}
             </th>
             <td>
-              <ul class="rubric__ratings">
+              <ul
+                class:list={[
+                  "rubric__ratings",
+                  { "rubric__ratings--stacked": c.ratings.length > 4 },
+                ]}
+              >
                 {c.ratings.map((r) => (
                   <li>
                     <span class="rubric__band">
@@ -197,6 +202,15 @@ const totalPoints = rubricTotal(criteria);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  /*
+   * More than four bands is an ordered scale read top to bottom: the survey
+   * rubrics' five points and the spring outcome ladder's six rungs. A grid
+   * puts two bands on a line and the reading order zigzags.
+   */
+  .rubric__ratings--stacked {
+    grid-template-columns: 1fr;
   }
 
   .rubric__band,

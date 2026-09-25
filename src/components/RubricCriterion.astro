@@ -1,0 +1,227 @@
+---
+import { parseRubricCsv } from "../lib/rubric-csv.mjs";
+
+/**
+ * RubricCriterion: renders one criterion of a rubric CSV on its own, one row
+ * per rating, top rating first.
+ *
+ * It exists for the spring outcome ladder (#334): six rungs that
+ * `RubricTable` shows as one row of the spring rubric, in a tab, at the
+ * bottom of the page. This is a second view of the same CSV, not a second
+ * source, so the rungs are still written once (AGENTS.md hard rule 4).
+ *
+ * `split` names the labels that run together in a rating description
+ * ("Consultancy: ... FOSS: ..."). Each becomes an item in a list; text before
+ * the first label, or a description with none, renders as written. A label
+ * missing from the CSV changes the layout, never the words.
+ *
+ * The table carries a caption and header scopes because the Canvas export
+ * keeps it: the class is `rubric-criterion`, not `rubric`, which the export
+ * strips. `scripts/validate-outcomes.mjs` checks its import and sourceLabel
+ * like a `RubricTable`'s, and does not count its outcome tags a second time.
+ *
+ * Usage in MDX:
+ *
+ *   <RubricCriterion
+ *     csv={springCsv}
+ *     sourceLabel="canvas/assignments/<dir>/<name>-rubric.csv"
+ *     criterion="Verification and Validation"
+ *     caption="The outcome ladder, top rung first"
+ *     ratingLabel="Rung"
+ *     split={["Consultancy", "FOSS"]}
+ *   />
+ */
+interface Props {
+  /** Table caption. Defaults to the criterion title and its points. */
+  caption?: string;
+  /** The criterion's title as the CSV gives it, without outcome tags. */
+  criterion: string;
+  /** The CSV file's contents, imported with `?raw`. */
+  csv: string;
+  /** Header for the ratings column. */
+  ratingLabel?: string;
+  /** Repository-relative path, used in error messages and checked by the validator. */
+  sourceLabel: string;
+  /** Labels that open the parts of a rating description, in any order. */
+  split?: string[];
+}
+
+const {
+  csv,
+  sourceLabel,
+  criterion,
+  caption,
+  ratingLabel = "Rating",
+  split = [],
+} = Astro.props;
+
+const { criteria } = parseRubricCsv(csv, sourceLabel);
+const found = criteria.find((c) => c.title === criterion);
+if (!found) {
+  throw new Error(
+    `RubricCriterion: ${sourceLabel} has no criterion titled "${criterion}". It has: ${criteria.map((c) => `"${c.title}"`).join(", ")}.`
+  );
+}
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const labelRe =
+  split.length > 0
+    ? new RegExp(`(?:^|\\s)(${split.map(escapeRe).join("|")}):\\s`, "g")
+    : null;
+
+/** A description as its lead text plus one part per label found in it. */
+function parts(text: string) {
+  const matches = labelRe ? [...text.matchAll(labelRe)] : [];
+  if (matches.length === 0) {
+    return { items: [], lead: text };
+  }
+  const items = matches.map((m, i) => ({
+    label: m[1],
+    text: text
+      .slice(m.index + m[0].length, matches[i + 1]?.index ?? text.length)
+      .trim(),
+  }));
+  return { items, lead: text.slice(0, matches[0].index).trim() };
+}
+---
+
+<div class="rubric-criterion not-content">
+  <table>
+    <caption>
+      {caption ?? `${found.title}: ${found.maxPoints} points`}
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col" class="rubric-criterion__rating-col">{ratingLabel}</th>
+        <th scope="col">What it looks like</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        found.ratings.map((r) => {
+          const { items, lead } = parts(r.description);
+          return (
+            <tr>
+              <th scope="row">
+                {/* A break, not block spans: the Canvas export drops classes. */}
+                <strong class="rubric-criterion__name">{r.name}</strong>
+                <br />
+                <span class="rubric-criterion__points">
+                  {r.points} of {found.maxPoints} points
+                </span>
+              </th>
+              <td>
+                {lead && <p>{lead}</p>}
+                {items.length > 0 && (
+                  <ul>
+                    {items.map((item) => (
+                      <li>
+                        <strong>{item.label}:</strong> {item.text}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .rubric-criterion {
+    margin-block: 1.5rem;
+    overflow-x: auto;
+  }
+
+  .rubric-criterion table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sl-text-sm);
+  }
+
+  .rubric-criterion caption {
+    caption-side: top;
+    text-align: start;
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sl-color-gray-3);
+    padding-block-end: 0.5rem;
+  }
+
+  .rubric-criterion th,
+  .rubric-criterion td {
+    text-align: start;
+    vertical-align: top;
+    padding: 0.75rem;
+    border-block-start: 1px solid var(--sl-color-gray-5);
+  }
+
+  .rubric-criterion thead th {
+    font-size: var(--sl-text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sl-color-gray-3);
+    border-block-start: 0;
+    padding-block-end: 0.35rem;
+  }
+
+  .rubric-criterion__rating-col {
+    width: 35%;
+    min-width: 9rem;
+  }
+
+  .rubric-criterion tbody th {
+    font-weight: 400;
+  }
+
+  .rubric-criterion__name {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .rubric-criterion__points {
+    color: var(--sl-color-gray-2);
+  }
+
+  .rubric-criterion td p,
+  .rubric-criterion td ul {
+    margin: 0;
+  }
+
+  .rubric-criterion td p + ul {
+    margin-block-start: 0.4rem;
+  }
+
+  .rubric-criterion td ul {
+    padding-inline-start: 1.1rem;
+  }
+
+  .rubric-criterion td li + li {
+    margin-block-start: 0.3rem;
+  }
+
+  @media (prefers-contrast: more) {
+    .rubric-criterion th,
+    .rubric-criterion td {
+      border-block-start-width: 2px;
+    }
+    .rubric-criterion__points {
+      color: var(--sl-color-white);
+    }
+  }
+
+  @media print {
+    .rubric-criterion {
+      overflow-x: visible;
+    }
+    .rubric-criterion th,
+    .rubric-criterion td {
+      border-block-start: 1px solid #000;
+    }
+  }
+</style>
