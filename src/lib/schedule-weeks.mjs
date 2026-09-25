@@ -15,18 +15,21 @@ import { h } from "hastscript";
 const BEFORE_FIRST_SPRINT = "Term Start";
 const AFTER_LAST_SPRINT = "Project Handoff";
 
-// Pages whose own `level` does not say who submits the item: the partner
-// completes the partner evaluation; the two Canvas-owned stubs and the
-// bidding survey carry no `assignment:` block; Demo Day and the Expo are
-// team events with no block either.
+// Links whose page `level` does not say who submits the item: the partner
+// completes the partner evaluation; the two Canvas-owned stubs carry no
+// `assignment:` block; Demo Day and the Expo are team events with no block
+// either; the bidding survey is the one section of For Students that is due.
 const TAG_BY_PATH = {
   "assignments/career-retrospective": "Individual",
   "assignments/demo-day": "Team",
   "assignments/expo": "Team",
   "assignments/project-partner-evaluation": "Partner",
   "assignments/resume-and-intent": "Individual",
-  "introduction/for-students": "Individual",
+  "introduction/for-students#how-you-get-your-project-and-team": "Individual",
 };
+
+// The lines a week may carry, and the icon each one's `data-row` selects.
+const LABELS = new Set(["Due", "In class", "Read", "Optional"]);
 
 const WEEK_HEADING_RE = /^Week (\d+)$/;
 const LABEL_COLON_RE = /:$/;
@@ -40,8 +43,9 @@ const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/g, "");
 // Who submits a Due item, from the page its one internal link points at.
 export function tagFor(href, levels) {
   const path = pagePath(href);
-  if (TAG_BY_PATH[path]) {
-    return TAG_BY_PATH[path];
+  const anchored = `${path}#${href.split("#")[1] ?? ""}`;
+  if (TAG_BY_PATH[anchored] ?? TAG_BY_PATH[path]) {
+    return TAG_BY_PATH[anchored] ?? TAG_BY_PATH[path];
   }
   const level = levels.get(path);
   if (level === "team") {
@@ -94,7 +98,12 @@ function splitWeeks(children) {
         throw new Error(`schedule: unexpected heading "${textOf(h3)}"`);
       }
       weeks.push({ heading: node, id: h3.properties.id, nodes: [], number });
-    } else if (weeks.length > 0 && isEl(node)) {
+    } else if (isEl(node)) {
+      if (weeks.length === 0) {
+        throw new Error(
+          `schedule: <${node.tagName}> before the first week would not be shown; put it above <WeekCards>`
+        );
+      }
       weeks.at(-1).nodes.push(node);
     }
   }
@@ -116,8 +125,12 @@ function findBadge(nodes) {
   return null;
 }
 
+// A list line's bold label. A loose list (blank lines between items) wraps
+// each item in a paragraph, so look one level in as well.
 function labelOf(li) {
-  const strong = li.children.find((c) => isEl(c, "strong"));
+  const lead = li.children.find((c) => isEl(c));
+  const holder = isEl(lead, "p") ? lead : li;
+  const strong = holder.children.find((c) => isEl(c, "strong"));
   return strong ? textOf(strong).replace(LABEL_COLON_RE, "") : null;
 }
 
@@ -156,9 +169,27 @@ function dueItem(li, ctx) {
 }
 
 function card(week, ctx) {
+  const where = `${ctx.term} week ${week.number}`;
   const badge = findBadge(week.nodes);
   const list = week.nodes.find((n) => isEl(n, "ul"));
+  // Anything else in a week would be dropped from the card, so it fails.
+  const stray = week.nodes.find(
+    (n) =>
+      n !== list && n !== badge && !(isEl(n, "p") && n.children.includes(badge))
+  );
+  if (stray) {
+    throw new Error(
+      `schedule: ${where} has a <${stray.tagName}> the card would drop ("${textOf(stray).slice(0, 60)}"); put it in the week's list`
+    );
+  }
   const items = list ? list.children.filter((c) => isEl(c, "li")) : [];
+  for (const li of items) {
+    if (!LABELS.has(labelOf(li))) {
+      throw new Error(
+        `schedule: ${where} has a line labelled "${labelOf(li)}"; use Due, In class, Read, or Optional`
+      );
+    }
+  }
   const due = items.find((li) => labelOf(li) === "Due");
   const more = items.filter((li) => li !== due);
   const dueItems = due
@@ -168,8 +199,8 @@ function card(week, ctx) {
     : [];
   const itemCtx = { ...ctx, week: week.number };
   return h(
-    "section.week-card",
-    { ariaLabelledBy: week.id },
+    "div.week-card",
+    { ariaLabelledBy: week.id, role: "group" },
     [
       h("div.week-card__head", [week.heading, badge].filter(Boolean)),
       h("p.week-card__label.week-card__label--due", "Due"),
@@ -186,7 +217,7 @@ function card(week, ctx) {
               ...li,
               properties: {
                 ...li.properties,
-                dataRow: labelOf(li)?.toLowerCase().replace(/\s+/g, "-"),
+                dataRow: labelOf(li).toLowerCase().replace(" ", "-"),
               },
             }))
           )

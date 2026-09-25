@@ -87,9 +87,9 @@ const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
 const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
 const WEEK_HEADING_RE = /^### Week (\d+)\b/;
 // A schedule line is a list item labelled in bold: Due, In class, Read,
-// Optional. The items nested under Due carry no label of their own.
+// Optional. A nested item carries no label and belongs to the line above it.
 const ROW_LABEL_RE = /^- \*\*([A-Za-z][A-Za-z -]*?):?\*\*/;
-const DUE_ITEM_RE = /^\s+- /;
+const NESTED_ITEM_RE = /^\s+- /;
 
 // GitHub-style slugger, matching how Starlight derives heading anchors.
 function slugify(heading) {
@@ -229,11 +229,12 @@ function readAssignmentLinks() {
 
 // Collect every activity link on the schedule page with the term, week, and
 // line label it sits under. A flat set of links cannot tell an In class line from
-// a Recommended one, which is how the fall week 3 contradiction survived CI.
+// an Optional one, which is how the fall week 3 contradiction survived CI.
 function readSchedulePlacements() {
   const placements = [];
   let term = null;
   let week = null;
+  let label = null;
   for (const line of readFileSync(SCHEDULE_PAGE, "utf8").split("\n")) {
     if (line.startsWith("## ")) {
       term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
@@ -243,10 +244,12 @@ function readSchedulePlacements() {
     const weekHeading = line.match(WEEK_HEADING_RE);
     if (weekHeading) {
       week = Number(weekHeading[1]);
+      label = null;
       continue;
     }
+    label = line.match(ROW_LABEL_RE)?.[1] ?? label;
     const row =
-      line.match(ROW_LABEL_RE)?.[1] ?? (DUE_ITEM_RE.test(line) ? "Due" : null);
+      ROW_LABEL_RE.test(line) || NESTED_ITEM_RE.test(line) ? label : null;
     if (!row) {
       continue;
     }
@@ -355,8 +358,8 @@ for (const [key, activity] of activities) {
   }
 }
 
-// Rule 6: every scheduled link resolves, and an Optional line offers only
-// tiered activities. An In class line may link an untiered one.
+// Rule 6: every scheduled link resolves, and every line but In class offers
+// only tiered activities. An In class line may link an untiered one.
 for (const placement of placements) {
   const activity = activities.get(placement.key);
   const where = `${placement.term} week ${placement.week}`;
