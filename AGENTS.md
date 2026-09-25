@@ -69,7 +69,10 @@ it. Content lives in `src/content/docs/**` as MDX.
    before Thanksgiving"). The handbook is reused every year and a date is a
    fact that rots on a schedule. `validate-dates.mjs` checks the content
    directories, the syllabi, and the runbook; the changelogs keep their
-   decision timestamps.
+   decision timestamps. Code may read today's month to pick the current
+   term, as `src/lib/term-tabs.js` does for term tabs; pages name weeks in
+   text, and no code computes the current week, since that needs each
+   year's start date.
 6. **One Canvas entry per due date; never bundle.** Each Canvas assignment
    has its own due date, late window, grade and submission, so four sprint
    notes are four entries and a draft and a final are two, even when one

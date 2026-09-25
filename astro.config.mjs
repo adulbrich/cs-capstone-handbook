@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
@@ -27,6 +28,14 @@ export default defineConfig({
             defer: true,
             src: "/knowledge/js/script.outbound-links.js",
           },
+          tag: "script",
+        },
+        {
+          // Opens term tabs on the current term; see the file for why and how.
+          content: readFileSync(
+            new URL("./src/lib/term-tabs.js", import.meta.url),
+            "utf8"
+          ),
           tag: "script",
         },
       ],

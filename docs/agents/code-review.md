@@ -63,7 +63,7 @@ skills under `.claude/skills/`.
   rhythm. The reverse outline and the claims check above are not taste; they
   are the voice rules, and they stay in.
 - The Fowler smell baseline, except on `scripts/*.mjs`, `.claude/hooks/*.mjs`,
-  `astro.config.mjs`, `src/lib/*.mjs`, and `src/components/*.astro`. MDX is not
+  `astro.config.mjs`, `src/lib/*.{js,mjs}`, and `src/components/*.astro`. MDX is not
   code.
 - Anything a validator, Biome, or the commit-message check already enforces.
   Do not re-report a passing check.

@@ -3,17 +3,19 @@ title: Schedule
 description: "Week by week, term by term: what runs in class, what is due, what to read, and what to practice."
 sidebar:
   order: 0
-tableOfContents:
-  maxHeadingLevel: 2
+tableOfContents: false
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import { Badge, TabItem, Tabs } from '@astrojs/starlight/components';
 
 Fall has a **week 0** because the term starts midweek; winter and spring start at week 1. Sprints are two weeks long in every term.
 
 The [assignment pages](/assignments/introduction/) say what is due and how it is scored; this page lays them out in time. **Read** points at the [guides](/guides/introduction/) that help that week. **Recommended** points at optional [activities](/activities/introduction/) from the practice library. A week with no **Lecture** line has no class session unless an announcement says otherwise.
 
 Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check-in](/assignments/introduction/#ta-check-ins), at a time your team and your TA agree; in a sprint-note week it includes the [sprint demo](/assignments/sprint-notes/#demo-cadence).
+
+<Tabs syncKey="terms">
+<TabItem label="Fall">
 
 ## Fall (CS 461)
 
@@ -119,6 +121,9 @@ Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check
 | **Lecture** | [Demo day](/assignments/demo-day/) 2 |
 | **Due** | [Sprint Note](/assignments/sprint-notes/) 4, [Repo Checkpoint](/assignments/repo-checkpoints/) 2, final [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
 
+</TabItem>
+<TabItem label="Winter">
+
 ## Winter (CS 462)
 
 3 credits. Build, verify, real users.
@@ -215,6 +220,9 @@ Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check
 | **Lecture** | [Demo day](/assignments/demo-day/) 2 |
 | **Due** | [Sprint Note](/assignments/sprint-notes/) 5, [Repo Checkpoint](/assignments/repo-checkpoints/) 2, final [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
 
+</TabItem>
+<TabItem label="Spring">
+
 ## Spring (CS 463)
 
 2 credits. Ship, prove, hand off.
@@ -306,3 +314,6 @@ Weeks marked <Badge text="TA check-in" variant="tip" /> carry your team's [check
 |---|---|
 | **Lecture** | [Expo](/assignments/expo/) |
 | **Due** | [Engineering Expo](/assignments/expo/), final [peer evaluations](/assignments/peer-evaluations/) and [partner evaluation](/assignments/project-partner-evaluation/) close |
+
+</TabItem>
+</Tabs>
