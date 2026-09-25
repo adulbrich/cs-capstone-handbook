@@ -35,6 +35,7 @@ const WEEK_HEADING_RE = /^Week (\d+)$/;
 const LABEL_COLON_RE = /:$/;
 const SPRINT_NOTE_RE = /^Sprint Note (\d+)\b/;
 
+const isBlank = (n) => n.type === "text" && !n.value.trim();
 const isEl = (n, tag) => n?.type === "element" && (!tag || n.tagName === tag);
 const hasClass = (n, c) =>
   isEl(n) && [n.properties?.className ?? []].flat().includes(c);
@@ -43,9 +44,10 @@ const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/g, "");
 // Who submits a Due item, from the page its one internal link points at.
 export function tagFor(href, levels) {
   const path = pagePath(href);
-  const anchored = `${path}#${href.split("#")[1] ?? ""}`;
-  if (TAG_BY_PATH[anchored] ?? TAG_BY_PATH[path]) {
-    return TAG_BY_PATH[anchored] ?? TAG_BY_PATH[path];
+  const fixed =
+    TAG_BY_PATH[`${path}#${href.split("#")[1] ?? ""}`] ?? TAG_BY_PATH[path];
+  if (fixed) {
+    return fixed;
   }
   const level = levels.get(path);
   if (level === "team") {
@@ -173,9 +175,10 @@ function card(week, ctx) {
   const badge = findBadge(week.nodes);
   const list = week.nodes.find((n) => isEl(n, "ul"));
   // Anything else in a week would be dropped from the card, so it fails.
+  const badgeOnly = (n) =>
+    isEl(n, "p") && n.children.every((c) => c === badge || isBlank(c));
   const stray = week.nodes.find(
-    (n) =>
-      n !== list && n !== badge && !(isEl(n, "p") && n.children.includes(badge))
+    (n) => n !== list && n !== badge && !badgeOnly(n)
   );
   if (stray) {
     throw new Error(
@@ -184,13 +187,28 @@ function card(week, ctx) {
   }
   const items = list ? list.children.filter((c) => isEl(c, "li")) : [];
   for (const li of items) {
-    if (!LABELS.has(labelOf(li))) {
+    const label = labelOf(li);
+    if (!LABELS.has(label)) {
       throw new Error(
-        `schedule: ${where} has a line labelled "${labelOf(li)}"; use Due, In class, Read, or Optional`
+        `schedule: ${where} has ${label ? `a line labelled "${label}"` : "an unlabelled line"}; use Due, In class, Read, or Optional`
       );
     }
   }
   const due = items.find((li) => labelOf(li) === "Due");
+  // The Due line holds its label and a nested list, nothing else: items
+  // written on the line itself would be dropped.
+  const dueExtra = due?.children.find((c) => {
+    if (isBlank(c) || isEl(c, "ul")) {
+      return false;
+    }
+    const inner = isEl(c, "p") ? c.children : [c];
+    return !inner.every((x) => isBlank(x) || isEl(x, "strong"));
+  });
+  if (dueExtra) {
+    throw new Error(
+      `schedule: ${where} has text on the Due line itself ("${textOf(dueExtra).slice(0, 60)}"); nest each item under it`
+    );
+  }
   const more = items.filter((li) => li !== due);
   const dueItems = due
     ? (due.children.find((c) => isEl(c, "ul"))?.children ?? []).filter((c) =>

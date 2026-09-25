@@ -89,7 +89,6 @@ const WEEK_HEADING_RE = /^### Week (\d+)\b/;
 // A schedule line is a list item labelled in bold: Due, In class, Read,
 // Optional. A nested item carries no label and belongs to the line above it.
 const ROW_LABEL_RE = /^- \*\*([A-Za-z][A-Za-z -]*?):?\*\*/;
-const NESTED_ITEM_RE = /^\s+- /;
 
 // GitHub-style slugger, matching how Starlight derives heading anchors.
 function slugify(heading) {
@@ -239,6 +238,7 @@ function readSchedulePlacements() {
     if (line.startsWith("## ")) {
       term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
       week = null;
+      label = null;
       continue;
     }
     const weekHeading = line.match(WEEK_HEADING_RE);
@@ -247,9 +247,9 @@ function readSchedulePlacements() {
       label = null;
       continue;
     }
+    // A nested item or a wrapped continuation belongs to the line above it.
     label = line.match(ROW_LABEL_RE)?.[1] ?? label;
-    const row =
-      ROW_LABEL_RE.test(line) || NESTED_ITEM_RE.test(line) ? label : null;
+    const row = label;
     if (!row) {
       continue;
     }
