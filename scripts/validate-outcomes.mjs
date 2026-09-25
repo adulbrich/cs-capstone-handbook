@@ -113,9 +113,11 @@ function parseAssignment(frontmatter) {
 // through the matching `?raw` import. A page owning several Canvas entries
 // renders one table per distinct rubric. `path` is null when the name has no
 // import; `index` is where the tag sits, for the heading check below.
-const RUBRIC_TABLE_RE = /<RubricTable\s[^>]*>/g;
-function rubricTables(source) {
-  return [...source.matchAll(RUBRIC_TABLE_RE)].map((m) => {
+// `<RubricCriterion>` renders one criterion of a CSV the page also renders in
+// full (the spring outcome ladder): same attributes, read with its name.
+function renderedCsvs(source, component) {
+  const tagRe = new RegExp(`<${component}\\s[^>]*>`, "g");
+  return [...source.matchAll(tagRe)].map((m) => {
     const name = m[0].match(/\bcsv=\{(\w+)\}/)?.[1];
     const imported = name
       ? source.match(
@@ -126,6 +128,7 @@ function rubricTables(source) {
         )
       : null;
     return {
+      component,
       index: m.index,
       label: m[0].match(/\ssourceLabel="([^"]*)"/)?.[1] ?? null,
       name,
@@ -163,7 +166,8 @@ for (const file of files) {
   parsed += 1;
   pages.set(file.replace(/\.mdx$/, ""), assignment);
   const slug = file.replace(/\.mdx$/, "");
-  const tables = rubricTables(source);
+  const tables = renderedCsvs(source, "RubricTable");
+  const criterionViews = renderedCsvs(source, "RubricCriterion");
   pageSources.set(slug, source);
   pageTables.set(slug, tables);
   const rubricTags = {};
@@ -173,10 +177,10 @@ for (const file of files) {
     );
     failed = true;
   }
-  for (const table of tables) {
+  for (const table of [...tables, ...criterionViews]) {
     if (!table.path) {
       console.error(
-        `RUBRIC IMPORT ${file}: <RubricTable csv={${table.name}}> has no matching \`import ${table.name} from '/...csv?raw'\`.`
+        `RUBRIC IMPORT ${file}: <${table.component} csv={${table.name}}> has no matching \`import ${table.name} from '/...csv?raw'\`.`
       );
       failed = true;
       continue;
@@ -187,7 +191,7 @@ for (const file of files) {
     // reader to the wrong file. Nothing else compares it to the real import.
     if (!table.label) {
       console.error(
-        `RUBRIC IMPORT ${file}: <RubricTable csv={${table.name}}> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
+        `RUBRIC IMPORT ${file}: <${table.component} csv={${table.name}}> has no sourceLabel. MDX props are not typechecked, so nothing else catches this, and a parse error would name "undefined".`
       );
       failed = true;
     } else if (table.label !== table.path) {
@@ -203,12 +207,23 @@ for (const file of files) {
       );
       failed = true;
     }
-    // Tags add up across a page's rubrics: the RFC's draft and final
-    // together are what the frontmatter declares.
+  }
+  // Tags add up across a page's rubrics: the RFC's draft and final together
+  // are what the frontmatter declares. A criterion view counts nothing, so
+  // its CSV must be one a table on the page counts.
+  for (const table of tables.filter((t) => t.path)) {
     for (const [tag, n] of Object.entries(
       rubricTagCounts(readRubric(table.path).criteria)
     )) {
       rubricTags[tag] = (rubricTags[tag] || 0) + n;
+    }
+  }
+  for (const view of criterionViews) {
+    if (view.path && !tables.some((t) => t.path === view.path)) {
+      console.error(
+        `RUBRIC IMPORT ${file}: <RubricCriterion csv={${view.name}}> shows part of ${view.path}, which no <RubricTable> on the page renders in full, so its outcome tags would go uncounted.`
+      );
+      failed = true;
     }
   }
 

@@ -83,7 +83,7 @@ A \`WARN\` line means a page-specific cut in \`OVERRIDES\` no longer matches its
 The handbook page for that entry, with:
 
 - a link to the handbook page on top, then a Submission / Due / Weight box for this entry, replacing the page's own meta box and its Canvas-entries table;
-- rubric tables removed, since Canvas shows the attached rubric below the body; prose under a rubric heading stays under **Grading**, an empty rubric heading goes;
+- rubric tables removed, since Canvas shows the attached rubric below the body; prose under a rubric heading stays under **Grading**, an empty rubric heading goes; a single criterion shown in the body's prose (RubricCriterion, the spring outcome ladder) stays;
 - links made absolute, tabs reduced to this term's panel, math kept as MathML.
 
 Then trimmed to the entry, by rules that read the page rather than name it:
