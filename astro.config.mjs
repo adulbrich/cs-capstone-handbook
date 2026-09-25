@@ -29,6 +29,22 @@ export default defineConfig({
           },
           tag: "script",
         },
+        {
+          // Term tabs (`syncKey="terms"`) open on the current term, read from
+          // the month so no date is ever written down (hard rule 5). Starlight
+          // restores synced tabs from this localStorage key before first
+          // paint. The first page of a browser session sets it; a tab the
+          // reader picks after that holds for the rest of the session.
+          content: `try {
+  const key = "starlight-synced-tabs__terms";
+  if (!sessionStorage.getItem(key)) {
+    const month = new Date().getMonth();
+    localStorage.setItem(key, month < 3 ? "Winter" : month < 6 ? "Spring" : "Fall");
+    sessionStorage.setItem(key, "set");
+  }
+} catch {}`,
+          tag: "script",
+        },
       ],
       lastUpdated: true,
       plugins: [
