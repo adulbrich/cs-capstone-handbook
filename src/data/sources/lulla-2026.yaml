@@ -1,0 +1,26 @@
+authors:
+  - Lulla, J. L.
+  - Mohsenimofidi, S.
+  - Galster, M.
+  - Zhang, J. M.
+  - Baltes, S.
+  - Treude, C.
+year: 2026
+title: On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents
+venue: arXiv
+kind: preprint
+url: https://arxiv.org/abs/2601.20404
+# Presented at the Journal Ahead Workshop (JAWs) 2026; no published version
+# or DOI yet, so it stays a preprint. Read in full, arXiv v2 (HTML).
+verified: full-text
+claims:
+  - claim: >-
+      On 124 pull requests from 10 repositories, running OpenAI Codex with the
+      repository's AGENTS.md present was associated with a lower median
+      runtime (about 29%) and fewer median output tokens (about 17%) than
+      running it with the file removed.
+    locator: Abstract; Sec. 3.1.1 and 3.1.6; Sec. 4, Table 1
+  - claim: >-
+      The study did not evaluate the correctness of the agents' output; the
+      authors state that evaluating output quality is beyond its scope.
+    locator: Sec. 3.1.8
