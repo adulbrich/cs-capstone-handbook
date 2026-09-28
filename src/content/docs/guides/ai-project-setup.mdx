@@ -43,7 +43,7 @@ Put in it only what an agent can't find out for itself, because every line costs
 - Where the work is tracked and what done means (next section).
 - Boundaries in three tiers: always, ask first, never.
 
-The tiers come from GitHub's [guidance on writing agent files](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/). Ask first doubles as the stopping rule: keep working unless a decision needs a person or the next action is on that list. Write the never tier even if you write nothing else, because it's the part that prevents damage, and put security in it, because that's the boundary these files leave out: <Cite id="chatlatanagulchai-2026" /> found security instructions in only 14.8% of the context files they classified, against 75.9% for testing.
+The tiers come from GitHub's [guidance on writing agent files](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/). Ask first doubles as the stopping rule: keep working unless a decision needs a person or the next action is on that list. Write the never tier even if you write nothing else, because it's the part that prevents damage, and put security in it, because that's the boundary these files mostly leave out: <Cite id="chatlatanagulchai-2026" /> found security instructions in only 14.8% of the context files they classified, against 75.9% for testing.
 
 For length, use a test rather than a number. [Anthropic's best practices](https://code.claude.com/docs/en/best-practices) ask of each line whether removing it would cause a mistake, and cut it if not. Kept to that test, the file fits on one screen:
 
@@ -81,7 +81,7 @@ Some tools also keep a memory, but memory never shows up in a diff, so nobody re
 
 ## Define Done, Then Let the Agent Check It
 
-An agent stops when the work looks done to it. With no check to run, as Anthropic's best practices put it, "you become the verification loop": every mistake waits for you to notice. So say what done is before it starts, at three levels:
+An agent stops when the work looks done to it. With no check to run, as Anthropic's best practices put it, "you become the verification loop: every mistake waits for you to notice it." So say what done is before it starts, at three levels:
 
 - The task names its finish line, as the [Generative AI guide](/guides/generative-ai/#start-with-clear-intent) describes. Addy Osmani's [example](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/): every payment endpoint is migrated to the new library, the old one is deleted, and the test suite passes.
 - The issue carries acceptance criteria someone could mark passed or failed, written as the [Requirements guide](/guides/requirements/#what-makes-a-good-requirement) shows.
@@ -105,7 +105,7 @@ An agent hook is one of three layers, and each catches what the one before it mi
 | --- | --- | --- |
 | Agent hook | When the agent calls a tool | Working outside that agent |
 | Git hook ([`lefthook`](https://github.com/evilmartians/lefthook), [`husky`](https://typicode.github.io/husky/)) | On commit and push | [`git commit --no-verify`](https://git-scm.com/docs/git-commit) |
-| CI and branch protection | On the pull request | A repository administrator, until you turn bypass off |
+| CI and branch protection | On the pull request | Anyone on the bypass list |
 
 Anyone can skip a git hook, so the same checks run in CI, where [branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) turns a red build into a blocked merge. The [workflow](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch), including who can bypass them, are in those guides. A hook answers in milliseconds but stops one agent; CI takes minutes but covers every change. Put fast feedback in the first, and the check you depend on in the last.
 
@@ -127,7 +127,7 @@ A skill and a hook can guard the same mistake, but a skill runs when someone inv
 - Define done before the agent starts, and make every criterion something a check can confirm.
 - Enforce what you explain: `AGENTS.md` says why a boundary exists, and a hook or CI makes it hold.
 - Commit instructions, hooks, skills, and tool configuration, so every clone behaves the same.
-- Add a line when the agent repeats a mistake, and prune the rest, because these files grow by small additions <Cite id="chatlatanagulchai-2026" form="parenthetical" /> and often go untouched after they're created <Cite id="dossantos-2026" form="parenthetical" />.
+- Add a line when the agent repeats a mistake, and delete lines that no longer hold, because these files grow by small additions <Cite id="chatlatanagulchai-2026" form="parenthetical" /> and a quarter of them are never touched after they're created <Cite id="dossantos-2026" form="parenthetical" />.
 - Trip every check once on purpose, because a check with a typo in its path fails silently.
 
 ## Some Truths About AI Project Setup
@@ -144,7 +144,7 @@ A weak criterion gets met literally. "The tests pass" is satisfied by deleting t
 
 The conventions are consolidating in public. OpenAI released `AGENTS.md` and Anthropic released MCP, and both went to the Linux Foundation's [Agentic AI Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation) as a neutral home.
 
-The teams building these tools apply the same layered checks to their own agents. GitHub's cloud agent can't approve or merge its own pull requests, per its [risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations) page, and OpenAI's Codex team keeps its `AGENTS.md` to [roughly 100 lines](https://openai.com/index/harness-engineering/), used as a map into `docs/`.
+The teams building these tools hold their own agents to the same practices. GitHub's cloud agent can't approve or merge its own pull requests, per its [risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations) page, and OpenAI's Codex team keeps its `AGENTS.md` to [roughly 100 lines](https://openai.com/index/harness-engineering/), used as a map into `docs/`.
 
 In academia the evidence is young: <Cite id="gloaguen-2026" /> tested Python projects only and <Cite id="lulla-2026" /> a single agent, so treat their numbers as a first measurement.
 
