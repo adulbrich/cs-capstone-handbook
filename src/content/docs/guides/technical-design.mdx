@@ -197,7 +197,7 @@ Three or four people, each with their own tool, is a different problem. Every as
 
 The design document counters that drift by giving every teammate and every tool the same account of how the system is structured and which boundaries to respect. Two practices put it to work:
 
-- Give the design to your AI tools the way you'd brief a new teammate: point your project-level instructions at `docs/design.md`, and copy in only the rules a tool must never break (boundaries, naming, interface contracts), so every suggestion starts from your architecture. A copy of the whole design drifts from the original. [AI Project Setup](/guides/ai-project-setup/#project-level-instructions) has the files and what belongs in them.
+- Give the design to your AI tools the way you'd brief a new teammate: point your project-level instructions at `docs/design.md`, and copy in only the rules a tool must never break (boundaries, naming, interface contracts), so every suggestion starts from your architecture. A copy of the whole design drifts from the original. [AI Project Setup](/guides/ai-project-setup/#what-goes-in-agentsmd) has the files and what belongs in them.
 - Use ADRs to record what was rejected, not only what was chosen. An AI tool has no memory of your team's discussions, so without an ADR recording that microservices were considered and rejected for their deployment complexity, it may suggest exactly that approach again.
 
 Review is where drift gets caught, and the design document is the reference that review checks generated code against. How the team reviews AI-generated code, and how loosely it treats spikes and prototypes, is team process, which the [working agreement](/guides/working-agreement/#ai-tool-usage) covers.

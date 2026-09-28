@@ -1,6 +1,6 @@
 ---
 title: AI Project Setup
-description: "Instructions, hooks, MCP servers, and skills: the committed configuration that tells an AI tool how your project works, and the checks that stop it doing damage."
+description: "What to commit so every coding agent on the team works from the same rules and can check its own work."
 sidebar:
   order: 11
 ---
@@ -8,227 +8,145 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your repository exists, and your teammates have started pointing coding agents at it. Each agent knows only what it can infer from the code, so one adds a dependency nobody agreed to, another solves a problem a second way, and a third edits a migration it should have left alone. This page covers the configuration you commit so every teammate's tool works from the same rules: the instruction file, the hooks and gates that enforce what matters, MCP servers, skills, and where assistant memory fits. It doesn't cover how to prompt, review, or decide what to delegate, which is the [Generative AI guide](/guides/generative-ai/)'s subject, or the CI workflow and branch settings themselves, which belong to the [DevOps](/guides/devops/) and [Git and GitHub](/guides/git-and-github/) guides.
+Your repository exists, and your teammates have started pointing coding agents at it. Each agent knows only what the repository tells it, so one adds a dependency nobody agreed to and another reports a task finished that nobody can check. This page covers what you commit so every agent works from the same rules and can tell when its work is done. How to prompt and review is the [Generative AI guide](/guides/generative-ai/)'s subject, and the CI (continuous integration) workflow and branch settings belong to [DevOps](/guides/devops/) and [Git and GitHub](/guides/git-and-github/).
 
 :::note[tl;dr]
-- Write one `AGENTS.md` at the repository root. Cursor and GitHub Copilot read it directly; Claude Code reads it only when there's no `CLAUDE.md`, so start any `CLAUDE.md` with an `@AGENTS.md` line.
-- Put in it only what an agent can't learn from the code: commands, conventions the code doesn't show, and what it must not do. Leave style rules to your formatter.
-- Enforce anything you'd be angry to find in a diff with an agent hook, a git hook, or CI. The instruction file is a request.
-- In a Claude Code or Cursor hook script, exit with code 2 to block. A crash, a timeout, or exit code 1 lets the action through.
-- Turn off administrator bypass on your `main` branch protection, then trip every gate once on purpose.
-- Commit MCP configuration and skills next to the code, with credentials in environment variables.
-- Keep team rules out of assistant memory, because memory never shows up in a pull request.
+- What isn't written in the repository doesn't exist for the agent.
+- Keep `AGENTS.md` short: commands, conventions the code doesn't show, boundaries, and pointers into `docs/`.
+- Give every task a finish line the agent can check: acceptance criteria, a Definition of Done, and tests it runs itself.
+- Instructions are requests. Enforce what matters with a hook, a git hook, or CI.
+- Commit all of it, and add a line only when the agent has made the mistake it prevents.
 :::
 
-Almost everything here is a file in the repository, so it gets reviewed, versioned, and shared like code, and every teammate's tool reads the same rules. Two open formats carry most of it: [AGENTS.md](https://agents.md/) for instructions and the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) for connecting tools to outside data. The rest is per-tool configuration that's converging fast, which is why the paths below come with links to each vendor's current documentation.
+## The Repository Is the Agent's Onboarding
 
-## Project-Level Instructions
+A coding agent starts every session with the code, the files you committed, and the task, and nothing else. A decision made in a meeting or a constraint the partner mentioned in an email is invisible to it until someone writes it into the repository. OpenAI's Codex team [makes the same point](https://openai.com/index/harness-engineering/) and treats a versioned `docs/` directory as the system of record.
 
-An instruction file is Markdown that your AI tool loads into its context at the start of every session, so the agent begins each task already knowing your commands, conventions, and limits. Each tool looks for its own file, and all three major ones now also read the shared one:
+Birgitta Böckeler [calls](https://martinfowler.com/articles/harness-engineering.html) everything around the model its harness and sorts the parts two ways. Some steer the agent before it acts (she calls these guides); others check the result so it can correct itself (sensors). Each is either computational (a script: fast, and the same answer every time) or inferential (another model judging: slower and less predictable):
 
-- **`AGENTS.md`**: the cross-tool format, a plain Markdown file at the repository root. Cursor also reads `AGENTS.md` files in subdirectories, and Copilot uses the one nearest the file it's working on.
-- **Claude Code**: `CLAUDE.md` or `.claude/CLAUDE.md`, described in its [memory documentation](https://code.claude.com/docs/en/memory). Claude Code reads `AGENTS.md` only when no `CLAUDE.md` exists, so if you keep a `CLAUDE.md`, make its first line `@AGENTS.md`, which imports the shared file before any Claude-specific lines.
-- **Cursor**: [project rules](https://cursor.com/docs/rules), `.mdc` files in `.cursor/rules/` whose frontmatter applies each rule to matching paths, on request, or when the agent judges it relevant.
-- **GitHub Copilot**: `.github/copilot-instructions.md`, documented under [repository custom instructions](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions).
+| | Steer before | Check after |
+| --- | --- | --- |
+| Computational | formatter config, permission lists | tests, type checker, linter, CI |
+| Inferential | `AGENTS.md` and the docs it points to | a review pass in a fresh context |
 
-Write the content once, in `AGENTS.md`, and have every per-tool file point at it. Two files that disagree fail silently: each teammate's tool reads a different one, and Claude Code's own documentation warns that when two rules contradict each other, it may pick one arbitrarily. Nobody notices the drift until one teammate's suggestions stop matching another's.
+Use the computational row wherever a script can make the call, and keep the inferential row for what needs judgment. Strong types and clear module boundaries make computational checks cheap, which is one more reason your [technical design](/guides/technical-design/) matters.
 
-### What belongs in the file
+## What Goes in AGENTS.md
 
-Put in the instruction file only what an agent can't find out for itself, because everything in it costs context on every task whether the task needs it or not. <Cite id="gloaguen-2026" /> tested this on real issues from open-source Python projects, with four agent and model pairings. Context files didn't significantly change how often the agents solved the task (developer-written files gained 2.4% on average, generated ones lost 0.5% to 2%, neither statistically significant), and they raised inference cost by up to 19% for developer-written files and by over 20% for generated ones. The agents did follow what the files told them, in every pairing, including Qwen Code running an open-weight model on the researchers' own hardware: a tool the file named, such as `uv`, was used about 1.6 times per task when mentioned and almost never otherwise. The files didn't work as a map, though. Agents given a context file, most of which included a repository overview, reached the files the task needed no sooner than agents given none.
+[`AGENTS.md`](https://agents.md/) is an open format for agent instructions: a Markdown file at the repository root that the agent loads at the start of every session. Most coding agents read it, and a tool with its own filename can point that file at it, so write the content once rather than keep two copies that drift apart.
 
-That points the file at a short list:
+Put in it only what an agent can't find out for itself, because every line costs context on every task. <Cite id="gloaguen-2026" /> found that agents followed context files, but the files didn't significantly change how often they solved a task, raised its cost, and didn't help as repository overviews. <Cite id="dossantos-2026" /> confirmed 58 of 100 popular repositories' files restating rules a linter or formatter already checks. That leaves a short list:
 
 - The commands to install, build, test, and run, exactly as typed.
-- Conventions the code doesn't make obvious, or that older parts of the code violate ("all data access goes through `src/server/repos/`").
-- Architectural constraints, and where the reasons live (`docs/adr/`), so the agent reads the decision instead of re-deriving it.
-- Testing expectations: which framework, where tests go, what must pass before a pull request.
-- What the agent must not do, such as adding a dependency or touching the schema.
+- Conventions the code doesn't make obvious.
+- Constraints, with a pointer to where the reasons live, such as `docs/adr/`.
+- Where the work is tracked and what done means (next section).
+- Boundaries in three tiers: always, ask first, never.
 
-Leave out anything your linter or formatter already checks. <Cite id="dossantos-2026" /> examined the agent configuration files of 100 popular open-source repositories and flagged 62 of them (58 confirmed by hand) for restating naming, formatting, and style rules that a tool already enforces, which the authors argue adds little while enlarging the agent's context.
+The tiers come from GitHub's [guidance on writing agent files](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/). Ask first doubles as the stopping rule: keep working unless a decision needs a person or the next action is on that list. Write the never tier even if you write nothing else, because it's the part that prevents damage, and put security in it, because that's the boundary these files mostly leave out: <Cite id="chatlatanagulchai-2026" /> found security instructions in only 14.8% of the context files they classified, against 75.9% for testing.
 
-Keep the file short, too: [Claude Code's documentation](https://code.claude.com/docs/en/memory) suggests under 200 lines, because longer files consume more context and reduce how reliably the instructions are followed.
-
-Kept to that list, the file fits on one screen:
+For length, use a test rather than a number. [Anthropic's best practices](https://code.claude.com/docs/en/best-practices) ask of each line whether removing it would cause a mistake, and cut it if not. Kept to that test, the file fits on one screen:
 
 ```md
 # AGENTS.md
 
 ## Project
-Shift board for <partner>: coordinators post shifts, volunteers claim
-them. Read docs/requirements.md and docs/design.md before changing
-behavior; decisions and their reasons are in docs/adr/.
+Shift board for <partner>. Requirements: docs/requirements.md.
+Architecture: docs/design.md. Decisions and reasons: docs/adr/.
 
 ## Commands
 npm ci, npm run dev, npm test (Vitest), npm run e2e (Playwright).
+npm run check runs types, lint, and tests.
+
+## Work
+GitHub Issues; docs/agents/issue-tracker.md says how to read one,
+what the labels mean, and how a PR links back. Done means the
+issue's acceptance criteria and the Definition of Done in
+CONTRIBUTING.md.
 
 ## Conventions
 - All data access goes through src/server/repos/. No SQL in routes.
-- Errors: throw AppError with a code; routes map codes to HTTP status.
-- Tests live next to the code as *.test.ts. Run `npm test` before a PR.
 
-## Do not
-- Add a dependency without an issue that says why.
-- Change the Prisma schema, auth, or deployment config without a human
-  review. These are hard-to-reverse decisions.
-- Paste partner data, user emails, or .env contents into any tool.
+## Boundaries
+- Always: run npm run check before calling a task done.
+- Ask first: adding a dependency; changing the schema, auth, or
+  deployment config.
+- Never: commit to main, edit a test to make it pass, or paste
+  partner data or .env contents into any tool.
 ```
 
-Write the "Do not" section even if you write nothing else, because it's the part that prevents damage, and it's the kind of instruction these files skip. <Cite id="chatlatanagulchai-2026" /> classified the instructions in a sample of 332 agent context files and found testing instructions in 75.9% of them but security instructions in only 14.8% and performance instructions in 14.5%, and read that as the files giving agents few guardrails for secure or performant code.
+The last line is your confidentiality rule written for the tools; the version for people belongs in the [working agreement](/guides/working-agreement/#ai-tool-usage).
 
-The last line of the example is your confidentiality rule, written for the tools; the version for people belongs in the team's [working agreement](/guides/working-agreement/#ai-tool-usage).
+Some tools also keep a memory, but memory never shows up in a diff, so nobody reviews it: keep it for personal conveniences and put team rules in the file.
+
+## Define Done, Then Let the Agent Check It
+
+An agent stops when the work looks done to it. With no check to run, as Anthropic's best practices put it, "you become the verification loop: every mistake waits for you to notice it." So say what done is before it starts, at three levels:
+
+- The task names its finish line, as the [Generative AI guide](/guides/generative-ai/#start-with-clear-intent) describes. Addy Osmani's [example](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/): every payment endpoint is migrated to the new library, the old one is deleted, and the test suite passes.
+- The issue carries acceptance criteria someone could mark passed or failed, written as the [Requirements guide](/guides/requirements/#what-makes-a-good-requirement) shows.
+- The project has a [Definition of Done](/guides/sprint/#definition-of-done) that applies to every task, which `AGENTS.md` points to rather than each request repeating.
+
+The criteria live in your issue tracker, which sits outside the repository, so the repository carries the map to it. A short document such as `docs/agents/issue-tracker.md` says how to read an issue, which label marks work ready for an agent, how a pull request links back, and when to file a new issue instead of fixing something in passing. Then "work on the next ready issue" is a complete instruction. GitHub Issues is one example; any board the agent can read works, and if it can't reach yours, paste the criteria into the task.
+
+Criteria become evidence only when the agent can run the checks behind them: one command that brings up a working environment, tests, a type checker, and a linter it runs without you, with error messages that say how to fix the problem. Ask for the test output, not the claim. What to test is the [testing strategy](/guides/testing-strategy/)'s subject.
+
+Don't let the session that did the work be its only reviewer. A reviewer in a fresh context sees only the diff and the criteria, so it doesn't share the author's blind spots. Tell it to report only gaps against correctness and the criteria, because a reviewer asked for problems will find some whether or not they matter.
 
 ## Hooks and Gates
 
-Everything in the instruction file is a request. Claude Code's documentation says so directly: it treats `CLAUDE.md` as context rather than enforced configuration, and to block an action regardless of what the model decides, it points you to a hook. A **hook** is a script your tool runs on a lifecycle event, such as just before the agent calls a tool, and it runs whether or not the model paid attention to your instructions.
+Everything in `AGENTS.md` is a request. Anthropic's documentation says so: instruction files are advisory, hooks are deterministic. A **hook** is a script the agent's tool runs on an event, such as before a command or after an edit, whether or not the model paid attention to your instructions. It can refuse a command, format every edited file, or keep the agent from stopping until the tests pass.
 
-All three tools support hooks, and each reads its configuration from a file you commit:
+Start with the dull checks: no commits to the default branch, no edits to generated files, format after every edit. They block nothing ordinary, which keeps the team from switching them off. Where a list of allowed and denied commands will do, use your tool's permission list instead of a script.
 
-- **Claude Code**: `.claude/settings.json`, with events such as `SessionStart`, `PreToolUse`, and `PostToolUse`, each matched against a tool name. The [hooks reference](https://code.claude.com/docs/en/hooks) lists every event and the JSON each one receives.
-- **Cursor**: [`.cursor/hooks.json`](https://cursor.com/docs/hooks), with events such as `preToolUse`, `beforeShellExecution`, and `afterFileEdit`.
-- **GitHub Copilot CLI and cloud agent**: `.github/hooks/*.json`, with `sessionStart`, `userPromptSubmitted`, `preToolUse`, `postToolUse`, and others, listed in the [Copilot hooks reference](https://docs.github.com/en/copilot/reference/hooks-reference). The CLI also reads the hooks in a repository's `.claude/settings.json`.
-
-The names differ; the shape doesn't. A pre-tool hook inspects the call the agent is about to make and can refuse it. In Claude Code:
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-git.mjs"],
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-The guard script itself is short. It reads the pending tool call as JSON on standard input (in Claude Code, a shell command arrives as `tool_input.command`), and when the command matches something you never want, such as a force push or a commit straight to `main`, it prints a reason to standard error and exits with code 2. Use exactly 2: it's the code that blocks in Claude Code and in Cursor, and Claude Code's reference warns that exit code 1 counts as a non-blocking error, so the action goes ahead. The agent reads your reason and takes another route.
-
-Start with the dull hooks: block commits to the default branch, block edits to generated directories, run your formatter after every edit, and print the current branch and build state when a session starts. Each one covers a mistake that's cheap to prevent and tedious to undo, and none of them blocks ordinary work, which is what keeps the team from switching them off.
-
-Before writing a script, check whether a plain list will do. Claude Code's settings file takes [`permissions.allow` and `permissions.deny`](https://code.claude.com/docs/en/permissions) lists of commands and paths, which a reviewer can read at a glance. Write a hook when the decision needs logic, such as "allow `git push`, except to `main`".
-
-### Three layers, and which one actually holds
-
-An agent hook is one of three layers, and each catches what the one before it misses. The git and CI layers work the same with any assistant, or with none:
+An agent hook is one of three layers, and each catches what the one before it misses:
 
 | Layer | Runs | Bypassed by |
 | --- | --- | --- |
 | Agent hook | When the agent calls a tool | Working outside that agent |
 | Git hook ([`lefthook`](https://github.com/evilmartians/lefthook), [`husky`](https://typicode.github.io/husky/)) | On commit and push | [`git commit --no-verify`](https://git-scm.com/docs/git-commit) |
-| CI and branch protection | On the pull request | A repository administrator, until you turn bypass off |
+| CI and branch protection | On the pull request | Anyone on the bypass list |
 
-Put the checks a human should also pass in the git layer, because a git hook fires for commands you type and commands an agent runs alike:
+Anyone can skip a git hook, so the same checks run in CI, where [branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) turns a red build into a blocked merge. The [workflow](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch), including who can bypass them, are in those guides. A hook answers in milliseconds but stops one agent; CI takes minutes but covers every change. Put fast feedback in the first, and the check you depend on in the last.
 
-```yaml
-# lefthook.yml
-pre-commit:
-  commands:
-    branch:
-      run: test "$(git branch --show-current)" != main
-      fail_text: "never commit on main; branch first"
-    lint:
-      glob: "*.{ts,tsx}"
-      run: npx biome check {staged_files}
-```
+## Tools, Data, and Credentials
 
-Anyone can skip that layer with `--no-verify`, which is why the same checks also run in CI, and [branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) turns a red build into a blocked merge. One setting decides whether that last layer holds. By default, GitHub doesn't apply a branch protection rule to people with admin permissions on the repository, so on a team where everyone is an administrator the rule binds nobody until you remove that bypass. The [workflow file](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch) are covered in those guides.
+The [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) is an open standard for connecting an agent to outside services. A server exposes tools the agent can call, such as fetching current library documentation, driving a browser, or reading a database schema. Add one when it answers a question the agent otherwise guesses at, not by default: <Cite id="jain-2025" /> found retrieved documentation improved generated calls to rarely used APIs but, with weak retrieval, hurt calls to common ones.
 
-Read the three layers as a trade between speed and reach. An agent hook answers in milliseconds but stops only that agent, in that session. CI takes minutes but applies to every change from every source. Put fast feedback where it saves a round trip, and put the gate you depend on where nobody can route around it.
-
-
-## MCP Servers
-
-The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting an AI tool to outside data and services. A server exposes tools the agent can call, such as "fetch the docs for this library" or "run this query", and the agent decides when to call them. Three kinds are useful on a web project:
-
-- **Documentation**: [Context7](https://context7.com/) fetches current, version-specific documentation for a library into the agent's context.
-- **Browser**: [Playwright MCP](https://github.com/microsoft/playwright-mcp) lets the agent drive a browser through accessibility snapshots, to reproduce a bug or check a flow. Its own README suggests that coding agents use the [Playwright CLI](https://github.com/microsoft/playwright-cli) with skills instead, because the CLI keeps large page snapshots out of the model's context.
-- **Database**: a database server lets the agent read your schema instead of guessing at table names. The original PostgreSQL and SQLite reference servers are [archived](https://github.com/modelcontextprotocol/servers-archived); look for a maintained one in the [MCP Registry](https://registry.modelcontextprotocol.io/), and point it at a development database with read-only credentials.
-
-Reach for a documentation server when your stack includes a library the model is unlikely to know well: a new one, a niche one, or one whose API changed recently. <Cite id="jain-2025" /> measured this on CloudAPIBench, a benchmark of calls to cloud-service APIs. GPT-4o produced valid calls to only 38.58% of rarely used APIs, and adding retrieved documentation raised that to 47.94%; with a sub-optimal retriever, though, the same retrieval hurt performance on frequently used APIs, a 39.02-point absolute drop.
-
-Which servers a tool loads is itself configuration, and it belongs in the repository. Claude Code and the Copilot CLI read `.mcp.json` at the project root, Cursor reads [`.cursor/mcp.json`](https://cursor.com/docs/mcp), and [VS Code](https://code.visualstudio.com/docs/agent-customization/mcp-servers) reads `.vscode/mcp.json`, which the [Copilot CLI doesn't read](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers). Commit the file, and keep credentials out of it: reference environment variables instead, which Claude Code and Cursor both expand when they read the file.
-
-Treat every server as code you're about to run with your credentials. The [MCP specification](https://modelcontextprotocol.io/specification/2026-07-28) states that tools represent arbitrary code execution and must be treated with appropriate caution, and that a server's descriptions of its own tools should be considered untrusted unless they come from a trusted server. Check who publishes a server and what it can reach before you add it.
+Treat every server as code running with your credentials. The [MCP specification](https://modelcontextprotocol.io/specification/2026-07-28) states that tools represent arbitrary code execution and that a server's descriptions of its own tools are untrusted unless the server is. Simon Willison [argues](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) that the dangerous combination is private data, content an attacker controls, and a way to send data out: then a web page or an issue comment can instruct the agent to leak what it reads. Keep the three apart: give a database server read-only access to a development database, keep credentials in environment variables, and keep partner data out of every tool.
 
 ## Skills
 
-A **skill** is a reusable set of instructions the agent loads when a task calls for it, so a recurring job runs the same way whoever asks for it. It's a directory with a `SKILL.md` file: Markdown instructions under YAML frontmatter that names the skill and describes when to use it, optionally alongside scripts and reference files. The format is an open standard, the [Agent Skills specification](https://agentskills.io/specification), and Claude Code, Cursor, and Copilot all support it. [skills.sh](https://skills.sh/) is a public directory of published skills.
+A **skill** is a packaged set of instructions, optionally with scripts, that the agent loads when a task calls for it; until then only its name and description take up context. The format is an open standard, the [Agent Skills specification](https://agentskills.io/specification). Good candidates are jobs done every week and slightly differently each time, such as a review against the team's conventions or working an issue through to a pull request. Read a published collection, such as Jesse Vincent's [Superpowers](https://github.com/obra/superpowers) or [Matt Pocock's skills](https://github.com/mattpocock/skills), before writing your own, and read any third-party skill before installing it, because it can bundle scripts the agent runs.
 
-Good candidates for a team skill are the jobs someone does every week and does slightly differently each time:
-
-- Code review against the team's conventions and architectural constraints.
-- Commit messages in the team's format.
-- Tests that follow the project's existing patterns and framework.
-- Documentation updates in the team's format.
-
-Where the directory goes depends on the tool. `.claude/skills/` is the one directory all three read, so put team skills there if the team uses more than one of these tools:
-
-- **Claude Code**: `.claude/skills/<skill-name>/SKILL.md`, invoked as `/<skill-name>` or loaded when Claude judges it relevant. See its [skills documentation](https://code.claude.com/docs/en/skills).
-- **Cursor**: [`.cursor/skills/` or `.agents/skills/`](https://cursor.com/docs/skills), and for compatibility it also loads `.claude/skills/`. Type `/` in the agent chat to pick one.
-- **GitHub Copilot**: `.github/skills/`, `.claude/skills/`, or `.agents/skills/`, per [About agent skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills). Separately, VS Code's Copilot Chat supports single-file prompt files at `.github/prompts/<name>.prompt.md`, invoked as `/<name>`.
-
-Read a published collection before writing your own, because both of these also show how their authors structure a skill:
-
-- [Superpowers](https://github.com/obra/superpowers), Jesse Vincent: brainstorming, planning, subagent-driven development with a two-stage review, systematic debugging, and red-green test-driven development, plus a skill for writing new skills.
-- [Matt Pocock's skills](https://github.com/mattpocock/skills): spec and issue flows, test-driven development, bug diagnosis, and a "grilling" skill that questions you about a plan until its gaps show.
-
-A review skill and a plan-before-you-build skill do the same job as the [hooks and gates](#hooks-and-gates) above, one step earlier. What differs is who starts them: a skill runs when someone invokes it or when the agent judges it relevant, and a hook runs every time its event fires. Put a check you'd be sorry to forget in a hook.
-
-Read a third-party skill before you install it. A skill can bundle scripts that the agent runs when the skill is invoked, and your team owns whatever it produces.
-
-## Memory and Context
-
-Some tools keep memory across sessions: facts the assistant noticed or was told once and keeps using, such as a command that always needs a flag or a directory that's generated and shouldn't be edited. Where that memory lives differs by tool:
-
-- **Claude Code**: [auto memory](https://code.claude.com/docs/en/memory#auto-memory) holds notes Claude writes for itself under `~/.claude/projects/<project>/memory/`. It's machine-local and isn't shared across machines.
-- **GitHub Copilot**: [Copilot Memory](https://docs.github.com/en/copilot/concepts/agents/copilot-memory) stores repository-level facts on GitHub, available to every user with access to Copilot Memory in that repository. Repository owners can review and delete them.
-
-Neither kind shows up in a diff or a pull request. A rule in Claude Code's memory reaches only the person who wrote it; a fact in Copilot Memory reaches teammates who use Copilot and nobody else, and no reviewer approved it. Put anything that should change how a teammate's tool behaves in `AGENTS.md`, where review sees it, and use memory for your own conveniences.
+A skill and a hook can guard the same mistake, but a skill runs when someone invokes it or the agent judges it relevant, and a hook runs every time. Put a check you'd be sorry to forget in a hook.
 
 ## Best Practices for AI Project Setup
 
-- Keep one source of truth. Write the content in `AGENTS.md` and have every per-tool file point at it, because two files that disagree send different teammates' tools different rules.
-- Enforce what you explain. `AGENTS.md` says why a constraint exists; a hook or a CI check makes it hold. Anything you'd be angry to find in a diff belongs in both.
-- Gate the hard-to-reverse decisions first: schema changes, auth, deployment configuration, and credentials. A blocked action there costs a few minutes; an unblocked one can cost data you can't get back.
-- Commit all of it. Instructions, hooks, skills, and MCP configuration belong in the repository, not in one person's editor settings, so a new teammate's tool behaves the same from the first clone.
-- Leave style rules to the formatter and keep the instruction file to what the code can't tell the agent, because every line costs context on every task.
-- Trip every gate once, on purpose. Run the command the hook should block and try the merge that protection should stop, because a hook with a mistyped path fails without telling you.
-- Update the file when the agent repeats a mistake, when a review catches something the agent should have known, or when you type the same correction twice, which are the triggers [Claude Code's documentation](https://code.claude.com/docs/en/memory) lists. Delete lines that no longer hold while you're there.
+- Keep one `AGENTS.md`, and commit the decisions it points to under `docs/`.
+- Define done before the agent starts, and make every criterion something a check can confirm.
+- Enforce what you explain: `AGENTS.md` says why a boundary exists, and a hook or CI makes it hold.
+- Commit instructions, hooks, skills, and tool configuration, so every clone behaves the same.
+- Add a line when the agent repeats a mistake, and delete lines that no longer hold, because these files grow by small additions <Cite id="chatlatanagulchai-2026" form="parenthetical" /> and a quarter of them are never touched after they're created <Cite id="dossantos-2026" form="parenthetical" />.
+- Trip every check once on purpose, because a check with a typo in its path fails silently.
 
 ## Some Truths About AI Project Setup
 
-A team can skip all of this and ship. The cost is real but diffuse: two people solving the same problem two ways, a dependency that arrived without a discussion, a schema change nobody reviewed, each charged to whatever sprint it surfaces in rather than to the missing file. The file doesn't show up on a task-success score either (see [What belongs in the file](#what-belongs-in-the-file)), so its value is visible only as the absence of those costs, which is why it keeps not getting written.
+A team can run agents on a bare repository and ship; the cost arrives later and lands on whoever reviews. <Cite id="denisov-blanch-2026" /> found that among repositories whose first AI tool was an agent, those with no committed AI configuration took on roughly twice the rise in code complexity of those with one, though they caution that teams who write these files may be more disciplined to begin with. And <Cite id="xu-2025" /> found that after Copilot arrived in Microsoft's open-source repositories, core developers reviewed 6.5% more pull requests while their own code output fell 19%.
 
-Read together, two studies suggest two ways an instruction file drifts away from the code: it keeps growing, or it stops changing. In a study of 2,303 agent context files, <Cite id="chatlatanagulchai-2026" /> found that 67.0% of Claude Code context files were changed in more than one commit, mainly through small additions rather than deletions or rewrites. <Cite id="dossantos-2026" /> found both patterns in their 100 repositories: 42 files had passed 200 lines, and 24 had never been touched after the commit that created them. Either way, the agent follows an outdated instruction as readily as a current one.
+The evidence that instruction files help is thin and points two ways. <Cite id="gloaguen-2026" /> found no significant change in how often agents solved tasks, at higher cost; <Cite id="lulla-2026" /> found agents finished faster and used fewer output tokens with the file present, but didn't measure whether the work was correct. Neither shows the file making an agent more correct; that comes from the checks.
 
-A hook that blocks work people do every day gets switched off. Git hooks have `--no-verify`, Claude Code has a `disableAllHooks` setting, and one frustrating afternoon is enough to reach for either. Once a hook is off, it no longer guards the rare, hard-to-reverse action it was written for, and nothing reminds the team that it's gone.
+A check people resent gets switched off, and one nobody has tripped may already be off. Git hooks have `--no-verify`, agent tools have a setting that disables hooks, and a hook that crashes or points at a mistyped path often lets the action through without a word. The team keeps delegating as though the check were there.
 
-In two of the three tools, a broken gate fails open. In Claude Code, a hook that times out, crashes, or points at a script that doesn't exist lets the action proceed, and its reference notes that a mistyped path leaves the gate silently disabled. [Cursor's hooks](https://cursor.com/docs/hooks) behave the same way unless you set `failClosed: true` on the hook. The Copilot CLI goes the other way for command `preToolUse` hooks, denying the call on a crash or any non-zero exit, but it still lets a timed-out hook through. A gate you believe in and have never tripped is worse than no gate, because you delegate as though it were there.
-
-In Claude Code, a skill costs context even when nobody uses it. By default, each skill's description stays in context in every session so the agent can decide when to load the full skill, which turns a skill collected because it looked impressive into a prompt you pay for and maintain. The ones that earn their place encode a process your team already follows, such as the review pass or the commit format.
+A weak criterion gets met literally. "The tests pass" is satisfied by deleting the failing test as surely as by fixing the code, and nothing in that finish line tells the agent to prefer the fix. That's why the example's never tier forbids editing a test to make it pass.
 
 ## AI Project Setup in Industry and Academia
 
-The convention layer is consolidating in public. OpenAI released `AGENTS.md` and Anthropic released MCP, and both were contributed to the [Agentic AI Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation), which the Linux Foundation formed as a neutral home for them. Hooks are converging the same way. Cursor's documentation says its exit code 2 matches Claude Code's behavior for compatibility, and the Copilot CLI reads hooks from a repository's `.claude/settings.json` and accepts Claude Code's event names. Skills followed as one open specification that all three tools implement.
+The conventions are consolidating in public. OpenAI released `AGENTS.md` and Anthropic released MCP, and both went to the Linux Foundation's [Agentic AI Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation) as a neutral home.
 
-Vendors have built the same layered gates into their own products, both for the agents they run and for the organizations that deploy their tools. GitHub's cloud agent can't approve or merge its own pull requests, by default doesn't run a repository's workflows on its changes until someone with write access approves them, and won't let the person who asked for the change approve it, as its [risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations) page lists. For organizations, Claude Code's managed settings can restrict a machine to hooks the administrator deployed ([`allowManagedHooksOnly`](https://code.claude.com/docs/en/settings-reference#allowmanagedhooksonly)), and Copilot CLI [policy hooks](https://docs.github.com/en/copilot/reference/hooks-reference#policy-hooks) load machine-wide and can't be turned off with the CLI's own `disableAllHooks` setting.
+The teams building these tools hold their own agents to the same practices. GitHub's cloud agent can't approve or merge its own pull requests, per its [risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations) page, and OpenAI's Codex team keeps its `AGENTS.md` to [roughly 100 lines](https://openai.com/index/harness-engineering/), used as a map into `docs/`.
 
-In academia, context files have become a research subject in their own right, and the evidence is young. The studies cited on this page examine open-source repositories, and <Cite id="gloaguen-2026" /> tested Python projects only, so treat their numbers as a first measurement rather than a settled one.
-
-If you work in a research lab, use the same files for reproducibility. Name the data layout, the environment, and the outputs that must never be regenerated in the instruction file, and add a hook that refuses to overwrite a published result, because an agent that regenerates an output can silently change a number you've already reported.
-
-:::note[Reviewed annually]
-The tool names and file paths on this page date faster than anything else on it. Checked at the annual review.
-:::
+In academia the evidence is young: <Cite id="gloaguen-2026" /> tested Python projects only and <Cite id="lulla-2026" /> a single agent, so treat their numbers as a first measurement.
 
 ## References
 
@@ -236,22 +154,17 @@ The tool names and file paths on this page date faster than anything else on it.
 
 ## Additional Readings
 
-The configuration formats on this page change quickly, so vendor documentation is the only reliable source for the current shape of a file. The rest of this list is for the judgment calls: what to gate, and how other people have answered the questions this page raises.
-
 **Sources and further reading**
 
-- [Claude Code settings](https://code.claude.com/docs/en/settings), Anthropic: every key in `settings.json`, and which file a setting is read from.
-- [Claude Code best practices](https://code.claude.com/docs/en/best-practices), Anthropic: how the team that builds the tool configures it.
-- [About workflows](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows), GitHub: the CI layer the third row of the gating table depends on.
-- [pre-commit](https://pre-commit.com/): the framework to reach for when your git hooks need to run tools from several languages.
-- [awesome-copilot](https://github.com/github/awesome-copilot), GitHub: community instructions, prompt files, and skills to read before writing your own.
-- [Exploring Generative AI](https://martinfowler.com/articles/exploring-gen-ai.html), Birgitta Böckeler and colleagues at Thoughtworks: a long-running field report on where these tools help and where they don't.
-- [AI-assisted programming](https://simonwillison.net/tags/ai-assisted-programming/), Simon Willison: sustained practical writing on delegation, verification, and failure modes.
+- Where each tool reads instructions, hooks, and skills: [Claude Code](https://code.claude.com/docs/en/features-overview), Anthropic; [Codex](https://learn.chatgpt.com/docs/agent-configuration/agents-md), OpenAI; [Cursor rules](https://cursor.com/docs/rules), Cursor; [repository custom instructions](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions), GitHub Copilot.
+- [Context Engineering for Coding Agents](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html), Birgitta Böckeler: who chooses what an agent sees.
+- [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), Anthropic: context as a budget, loaded just in time.
+- [My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey), Mitchell Hashimoto: turning each agent mistake into an instruction or a tool.
 
 **Activities that exercise this**
 
-- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure the gap between how much your team delegates and what your checks would actually catch.
-- [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): pick the skills your team will actually run and commit them.
-- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): decide which actions get a gate before you delegate anything.
-- [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass): the review passes a team skill can package, run separately from the build.
-- [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): the MCP section applied to your own application.
+- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure the gap between how much your team delegates and what your checks would catch.
+- [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): pick the skills your team will run and commit them.
+- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): decide what goes in the ask-first and never tiers before you delegate.
+- [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass): the review passes a team skill can package.
+- [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): an agent checking your own application in a browser.

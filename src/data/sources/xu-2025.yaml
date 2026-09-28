@@ -1,0 +1,22 @@
+authors:
+  - Xu, F.
+  - Medappa, P. K.
+  - Tunc, M. M.
+  - Vroegindeweij, M.
+  - Fransoo, J. C.
+year: 2025
+title: >-
+  AI-Assisted Programming Decreases the Productivity of Experienced Developers
+  by Increasing the Technical Debt and Maintenance Burden
+venue: arXiv
+kind: preprint
+url: https://arxiv.org/abs/2510.10165
+# Read in full, arXiv v3 (HTML).
+verified: full-text
+claims:
+  - claim: >-
+      In a difference-in-differences study of Microsoft-owned open-source
+      repositories after GitHub Copilot's technical preview, core
+      contributors reviewed 6.5% more pull requests and their own code
+      productivity fell 19%, while peripheral contributors submitted more.
+    locator: Abstract; Sec. 3.1; Sec. 4.2
