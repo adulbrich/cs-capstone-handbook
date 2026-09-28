@@ -132,9 +132,9 @@ A skill and a hook can guard the same mistake, but a skill runs when someone inv
 
 ## Some Truths About AI Project Setup
 
-A team can run agents on a bare repository and ship. What they pay shows up as review load: every change needs a person to catch the dependency nobody discussed and the task reported finished that nobody verified, and that cost grows with how much the team delegates rather than appearing all at once.
+A team can run agents on a bare repository and ship; the cost arrives later and lands on whoever reviews. <Cite id="denisov-blanch-2026" /> found that among repositories whose first AI tool was an agent, those with no committed AI configuration took on roughly twice the rise in code complexity of those with one, though they caution that teams who write these files may be more disciplined to begin with. And <Cite id="xu-2025" /> found that after Copilot arrived in Microsoft's open-source repositories, core developers reviewed 6.5% more pull requests while their own code output fell 19%.
 
-The evidence that instruction files help is thin and points two ways. <Cite id="gloaguen-2026" /> found no significant change in how often agents solved tasks, at higher cost; <Cite id="lulla-2026" /> found agents finished faster and used fewer output tokens with the file present, but didn't measure whether the work was correct. Neither shows the file making an agent more correct; the checks do that, which is why this page spends more on them than on the file.
+The evidence that instruction files help is thin and points two ways. <Cite id="gloaguen-2026" /> found no significant change in how often agents solved tasks, at higher cost; <Cite id="lulla-2026" /> found agents finished faster and used fewer output tokens with the file present, but didn't measure whether the work was correct. Neither shows the file making an agent more correct; that comes from the checks.
 
 A check people resent gets switched off, and one nobody has tripped may already be off. Git hooks have `--no-verify`, agent tools have a setting that disables hooks, and a hook that crashes or points at a mistyped path often lets the action through without a word. The team keeps delegating as though the check were there.
 

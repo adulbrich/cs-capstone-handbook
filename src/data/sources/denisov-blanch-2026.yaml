@@ -1,0 +1,28 @@
+authors:
+  - Denisov-Blanch, Y.
+  - Agarwal, S.
+  - Azaletskiy, P.
+  - He, H.
+  - Schaeffer, R.
+  - Miranda, B.
+  - Vasilescu, B.
+  - Koyejo, S.
+year: 2026
+title: >-
+  A Few Pages of Markdown: Committed AI Configuration and Lower Quality Cost
+  after Coding-Agent Adoption
+venue: arXiv
+kind: preprint
+url: https://arxiv.org/abs/2608.25241
+# Read in full, arXiv v2 (HTML).
+verified: full-text
+claims:
+  - claim: >-
+      In a staggered difference-in-differences panel of agent-adopting
+      repositories, those that adopted an agent as their first AI tool and had
+      no committed AI configuration (instruction files, rules, agent
+      definitions) showed roughly twice the increase in cognitive complexity
+      of those with one (+53% against +27%); the authors caution that the
+      comparison is observational and that correlated engineering discipline
+      may explain part of the gap.
+    locator: Abstract; Study 2 results table; Limitations
