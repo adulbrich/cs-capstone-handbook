@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your repository exists, and your teammates have started pointing coding agents at it. Each agent knows only what the repository tells it, so one adds a dependency nobody agreed to and another reports a task finished that nobody can check. This page covers what you commit so every agent works from the same rules and can tell when its work is done. How to prompt and review is the [Generative AI guide](/guides/generative-ai/)'s subject, and the CI workflow and branch settings belong to [DevOps](/guides/devops/) and [Git and GitHub](/guides/git-and-github/).
+Your repository exists, and your teammates have started pointing coding agents at it. Each agent knows only what the repository tells it, so one adds a dependency nobody agreed to and another reports a task finished that nobody can check. This page covers what you commit so every agent works from the same rules and can tell when its work is done. How to prompt and review is the [Generative AI guide](/guides/generative-ai/)'s subject, and the CI (continuous integration) workflow and branch settings belong to [DevOps](/guides/devops/) and [Git and GitHub](/guides/git-and-github/).
 
 :::note[tl;dr]
 - What isn't written in the repository doesn't exist for the agent.
@@ -22,12 +22,12 @@ Your repository exists, and your teammates have started pointing coding agents a
 
 A coding agent starts every session with the code, the files you committed, and the task, and nothing else. A decision made in a meeting or a constraint the partner mentioned in an email is invisible to it until someone writes it into the repository. OpenAI's Codex team [makes the same point](https://openai.com/index/harness-engineering/) and treats a versioned `docs/` directory as the system of record.
 
-Birgitta Böckeler [calls](https://martinfowler.com/articles/harness-engineering.html) everything around the model its harness and sorts the parts two ways. Guides steer the agent before it acts; sensors check the result so it can correct itself. Each is either computational (a script: fast, and the same answer every time) or inferential (another model judging: slower and less predictable):
+Birgitta Böckeler [calls](https://martinfowler.com/articles/harness-engineering.html) everything around the model its harness and sorts the parts two ways. Some steer the agent before it acts (she calls these guides); others check the result so it can correct itself (sensors). Each is either computational (a script: fast, and the same answer every time) or inferential (another model judging: slower and less predictable):
 
-| | Guides: steer before | Sensors: check after |
+| | Steer before | Check after |
 | --- | --- | --- |
 | Computational | formatter config, permission lists | tests, type checker, linter, CI |
-| Inferential | `AGENTS.md`, skills | a review pass in a fresh context |
+| Inferential | `AGENTS.md` and the docs it points to | a review pass in a fresh context |
 
 Use the computational row wherever a script can make the call, and keep the inferential row for what needs judgment. Strong types and clear module boundaries make computational checks cheap, which is one more reason your [technical design](/guides/technical-design/) matters.
 
@@ -35,7 +35,7 @@ Use the computational row wherever a script can make the call, and keep the infe
 
 [`AGENTS.md`](https://agents.md/) is an open format for agent instructions: a Markdown file at the repository root that the agent loads at the start of every session. Most coding agents read it, and a tool with its own filename can point that file at it, so write the content once rather than keep two copies that drift apart.
 
-Put in it only what an agent can't find out for itself, because every line costs context on every task. <Cite id="gloaguen-2026" /> found that agents followed context files, but the files didn't significantly change how often they solved a task, raised its cost, and didn't help as repository overviews. <Cite id="dossantos-2026" /> found 62 of 100 popular repositories' files restating style rules a linter already enforces. That leaves a short list:
+Put in it only what an agent can't find out for itself, because every line costs context on every task. <Cite id="gloaguen-2026" /> found that agents followed context files, but the files didn't significantly change how often they solved a task, raised its cost, and didn't help as repository overviews. <Cite id="dossantos-2026" /> confirmed 58 of 100 popular repositories' files restating rules a linter or formatter already checks. That leaves a short list:
 
 - The commands to install, build, test, and run, exactly as typed.
 - Conventions the code doesn't make obvious.
@@ -43,7 +43,7 @@ Put in it only what an agent can't find out for itself, because every line costs
 - Where the work is tracked and what done means (next section).
 - Boundaries in three tiers: always, ask first, never.
 
-The tiers come from GitHub's [analysis of over 2,500 agent files](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/). Ask first doubles as the stopping rule: keep working unless a decision needs a person or the next action is on that list. Write the never tier even if you write nothing else, because it prevents damage and it's what these files tend to skip: <Cite id="chatlatanagulchai-2026" /> found security instructions in only 14.8% of the context files they classified, against 75.9% for testing.
+The tiers come from GitHub's [guidance on writing agent files](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/). Ask first doubles as the stopping rule: keep working unless a decision needs a person or the next action is on that list. Write the never tier even if you write nothing else, because it's the part that prevents damage, and put security in it, because that's the boundary these files leave out: <Cite id="chatlatanagulchai-2026" /> found security instructions in only 14.8% of the context files they classified, against 75.9% for testing.
 
 For length, use a test rather than a number. [Anthropic's best practices](https://code.claude.com/docs/en/best-practices) ask of each line whether removing it would cause a mistake, and cut it if not. Kept to that test, the file fits on one screen:
 
@@ -75,13 +75,15 @@ CONTRIBUTING.md.
   partner data or .env contents into any tool.
 ```
 
-The last line is your confidentiality rule written for the tools; the version for people belongs in the [working agreement](/guides/working-agreement/#ai-tool-usage). Some tools also keep a memory, but memory never shows up in a diff, so nobody reviews it: keep it for personal conveniences and put team rules in the file.
+The last line is your confidentiality rule written for the tools; the version for people belongs in the [working agreement](/guides/working-agreement/#ai-tool-usage).
+
+Some tools also keep a memory, but memory never shows up in a diff, so nobody reviews it: keep it for personal conveniences and put team rules in the file.
 
 ## Define Done, Then Let the Agent Check It
 
-An agent stops when the work looks done to it. Without a check it can run, Anthropic's best practices point out, "looks done" is its only signal, and you become the check. So say what done is before it starts, at three levels:
+An agent stops when the work looks done to it. With no check to run, as Anthropic's best practices put it, "you become the verification loop": every mistake waits for you to notice. So say what done is before it starts, at three levels:
 
-- The task names its finish line. Addy Osmani's [example](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/): every payment endpoint is migrated to the new library, the old one is deleted, and the test suite passes.
+- The task names its finish line, as the [Generative AI guide](/guides/generative-ai/#start-with-clear-intent) describes. Addy Osmani's [example](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/): every payment endpoint is migrated to the new library, the old one is deleted, and the test suite passes.
 - The issue carries acceptance criteria someone could mark passed or failed, written as the [Requirements guide](/guides/requirements/#what-makes-a-good-requirement) shows.
 - The project has a [Definition of Done](/guides/sprint/#definition-of-done) that applies to every task, which `AGENTS.md` points to rather than each request repeating.
 
@@ -89,7 +91,7 @@ The criteria live in your issue tracker, which sits outside the repository, so t
 
 Criteria become evidence only when the agent can run the checks behind them: one command that brings up a working environment, tests, a type checker, and a linter it runs without you, with error messages that say how to fix the problem. Ask for the test output, not the claim. What to test is the [testing strategy](/guides/testing-strategy/)'s subject.
 
-Don't let the agent grade its own work. A reviewer in a fresh context sees only the diff and the criteria, so it doesn't share the author's blind spots. Tell it to report only gaps against correctness and the criteria, because a reviewer asked for problems will find some whether or not they matter.
+Don't let the session that did the work be its only reviewer. A reviewer in a fresh context sees only the diff and the criteria, so it doesn't share the author's blind spots. Tell it to report only gaps against correctness and the criteria, because a reviewer asked for problems will find some whether or not they matter.
 
 ## Hooks and Gates
 
@@ -105,7 +107,7 @@ An agent hook is one of three layers, and each catches what the one before it mi
 | Git hook ([`lefthook`](https://github.com/evilmartians/lefthook), [`husky`](https://typicode.github.io/husky/)) | On commit and push | [`git commit --no-verify`](https://git-scm.com/docs/git-commit) |
 | CI and branch protection | On the pull request | A repository administrator, until you turn bypass off |
 
-Anyone can skip a git hook, so the same checks run in CI, where [branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) turns a red build into a blocked merge. GitHub exempts administrators by default, so on a team of administrators the rule binds nobody until you remove that bypass; the [workflow](/guides/devops/#continuous-integration-ci) and [repository settings](/guides/git-and-github/#protecting-the-main-branch) are in those guides. A hook answers in milliseconds but stops one agent; CI takes minutes but covers every change. Put fast feedback in the first, and the check you depend on in the last.
+Anyone can skip a git hook, so the same checks run in CI, where [branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) turns a red build into a blocked merge. The [workflow](/guides/devops/#continuous-integration-ci) and the [repository settings](/guides/git-and-github/#protecting-the-main-branch), including who can bypass them, are in those guides. A hook answers in milliseconds but stops one agent; CI takes minutes but covers every change. Put fast feedback in the first, and the check you depend on in the last.
 
 ## Tools, Data, and Credentials
 
@@ -124,17 +126,15 @@ A skill and a hook can guard the same mistake, but a skill runs when someone inv
 - Keep one `AGENTS.md`, and commit the decisions it points to under `docs/`.
 - Define done before the agent starts, and make every criterion something a check can confirm.
 - Enforce what you explain: `AGENTS.md` says why a boundary exists, and a hook or CI makes it hold.
-- Commit instructions, hooks, skills, and tool configuration, so a new teammate's agent behaves the same from the first clone.
-- Add a line when the agent repeats a mistake, and delete lines that no longer hold.
+- Commit instructions, hooks, skills, and tool configuration, so every clone behaves the same.
+- Add a line when the agent repeats a mistake, and prune the rest, because these files grow by small additions <Cite id="chatlatanagulchai-2026" form="parenthetical" /> and often go untouched after they're created <Cite id="dossantos-2026" form="parenthetical" />.
 - Trip every check once on purpose, because a check with a typo in its path fails silently.
 
 ## Some Truths About AI Project Setup
 
-A team can skip all of this and ship. The cost is diffuse: a dependency nobody discussed, a task reported finished that nobody verified, each charged to the sprint where it surfaces rather than to the missing file, which is why the file keeps not getting written.
+A team can run agents on a bare repository and ship. What they pay shows up as review load: every change needs a person to catch the dependency nobody discussed and the task reported finished that nobody verified, and that cost grows with how much the team delegates rather than appearing all at once.
 
 The evidence that instruction files help is thin and points two ways. <Cite id="gloaguen-2026" /> found no significant change in how often agents solved tasks, at higher cost; <Cite id="lulla-2026" /> found agents finished faster and used fewer output tokens with the file present, but didn't measure whether the work was correct. Neither shows the file making an agent more correct; the checks do that, which is why this page spends more on them than on the file.
-
-Instruction files drift. <Cite id="chatlatanagulchai-2026" /> found two-thirds of Claude Code context files changed in more than one commit, mostly through small additions rather than deletions, and <Cite id="dossantos-2026" /> found 42 of 100 files past 200 lines and 24 never touched after the commit that created them. The agent follows an outdated line as readily as a current one.
 
 A check people resent gets switched off, and one nobody has tripped may already be off. Git hooks have `--no-verify`, agent tools have a setting that disables hooks, and a hook that crashes or points at a mistyped path often lets the action through without a word. The team keeps delegating as though the check were there.
 
@@ -142,9 +142,11 @@ A weak criterion gets met literally. "The tests pass" is satisfied by deleting t
 
 ## AI Project Setup in Industry and Academia
 
-The conventions are consolidating in public. OpenAI released `AGENTS.md` and Anthropic released MCP, and both went to the Linux Foundation's [Agentic AI Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation) as a neutral home. GitHub's cloud agent can't approve or merge its own pull requests, per its [risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations) page, and OpenAI's Codex team keeps its `AGENTS.md` to [roughly 100 lines](https://openai.com/index/harness-engineering/), used as a map into `docs/`.
+The conventions are consolidating in public. OpenAI released `AGENTS.md` and Anthropic released MCP, and both went to the Linux Foundation's [Agentic AI Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation) as a neutral home.
 
-In academia the evidence is young: the studies on this page cover open-source repositories, <Cite id="gloaguen-2026" /> Python projects only and <Cite id="lulla-2026" /> a single agent.
+The teams building these tools apply the same layered checks to their own agents. GitHub's cloud agent can't approve or merge its own pull requests, per its [risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations) page, and OpenAI's Codex team keeps its `AGENTS.md` to [roughly 100 lines](https://openai.com/index/harness-engineering/), used as a map into `docs/`.
+
+In academia the evidence is young: <Cite id="gloaguen-2026" /> tested Python projects only and <Cite id="lulla-2026" /> a single agent, so treat their numbers as a first measurement.
 
 ## References
 
