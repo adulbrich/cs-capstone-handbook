@@ -1,0 +1,32 @@
+authors:
+  - Shen, J. H.
+  - Tamkin, A.
+year: 2026
+title: How AI Impacts Skill Formation
+venue: arXiv (Anthropic)
+kind: preprint
+url: https://arxiv.org/abs/2601.20245
+# Read in full as v1 (HTML) and v2 (PDF). Anthropic's blog summary says
+# "mostly junior"; the paper's Table 1 does not (29 of 52 had 7+ years of
+# coding), so the page does not say it.
+verified: full-text
+claims:
+  - claim: >-
+      A preregistered randomized controlled trial with 52 developers (26 per
+      arm), each self-reporting more than a year of Python and no prior use of
+      the Trio library, who completed a Trio task with or without an AI
+      assistant and then took a quiz without AI.
+    locator: Section 4.3, Study Design; Table 1; Section 5.2.1
+  - claim: >-
+      The AI group scored 4.15 points lower on the 27-point quiz, which the
+      authors describe as 17% (Cohen's d = 0.738, p = 0.01), and completion
+      time did not improve significantly.
+    locator: Section 1.1, Our Results; Section 5.2.2, Results; Figure 6
+  - claim: >-
+      In a qualitative analysis of screen recordings, with small clusters, the
+      AI Delegation, Progressive AI Reliance, and Iterative AI Debugging
+      patterns averaged under 40% on the quiz, while Generation-Then-
+      Comprehension, Hybrid Code-Explanation, and Conceptual Inquiry (asking
+      only conceptual questions and resolving errors independently) averaged
+      65% or higher.
+    locator: Section 6, Qualitative Analysis; Figure 11; Section 7, Discussion
