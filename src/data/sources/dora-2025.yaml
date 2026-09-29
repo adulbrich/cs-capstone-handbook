@@ -26,8 +26,5 @@ claims:
     locator: p. 4, Key findings
   - claim: >-
       In the presence of more frequent rollbacks, AI's positive influence on
-      team performance is amplified. The authors suspect this relates to the
-      importance of rapidly undoing changes when working with larger batches
-      of code, and hypothesize that AI's link to instability comes in part
-      from larger batches being harder to review.
+      team performance is amplified.
     locator: pp. 56-57, Strong version control practices; Figure 39

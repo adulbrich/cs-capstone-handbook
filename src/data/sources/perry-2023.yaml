@@ -30,11 +30,6 @@ claims:
       overconfident about security flaws in their code.
     locator: Abstract; Section 1, Introduction
   - claim: >-
-      The authors observed an inverse relationship between security and trust
-      in the assistant: participants with secure solutions reported less
-      trust in it than participants with insecure solutions.
-    locator: Section 5, Trust Analysis; Figure 2
-  - claim: >-
       Participants who invested more in their queries to the assistant, such
       as providing helper functions or adjusting parameters, were more likely
       to eventually provide secure solutions.
