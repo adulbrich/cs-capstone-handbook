@@ -42,7 +42,7 @@ AI search tools that attach citations to their answers fail the same way. A cita
 
 A **sycophantic** answer tells you what you appear to want to hear. <Cite id="sharma-2024" /> found five AI assistants consistently tailoring their answers to the user's stated views: praising an argument more when the user said they liked it, apologizing for and sometimes abandoning a correct answer when the user asked "are you sure?", and shifting an answer toward one the user suggested. They conclude it's likely driven in part by training on human feedback, since both people and the models trained to predict their preferences sometimes preferred a convincing sycophantic answer over a correct one.
 
-The habit that follows is to keep your opinion out of the question. "What's wrong with this schema?" gets you a review; "this schema is fine, right?" gets you agreement. Once you've settled on a plan, ask the tool for the strongest case against it before you commit, because it won't volunteer one while you sound sure.
+The habit that follows is to keep your opinion out of the question. "What's wrong with this schema?" gets you a review; "this schema is fine, right?" gets you agreement. Once you've settled on a plan, ask the tool for the strongest case against it before you commit, because a question that already sounds settled pulls the answer toward agreement.
 
 ## Using AI Effectively
 
@@ -50,7 +50,7 @@ The habit that follows is to keep your opinion out of the question. "What's wron
 
 Before asking a tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the tool enough context to produce something useful. Be this specific because the model fills every gap in your request with its most likely guess, and its most likely guess isn't your design.
 
-Say what done looks like as well: which behavior changes, which tests must pass, what must stay as it is. [AI project setup](/guides/ai-project-setup/#define-done-then-let-the-agent-check-it) covers writing that finish line into the repository, so a task inherits it without your having to repeat it.
+Say what done looks like as well (which behavior changes, which tests must pass, what must stay as it is), because a finish line you leave out gets filled with the same kind of guess. [AI project setup](/guides/ai-project-setup/#define-done-then-let-the-agent-check-it) covers writing that finish line into the repository, so a task inherits it without your having to repeat it.
 
 ### Verify what matters, and build the checks that let you trust the rest
 
@@ -114,13 +114,13 @@ AI coding tools come in three shapes. An autocomplete tool suggests the next few
 
 A coding agent is two choices, not one: the program you run, which reads files, runs commands, and edits code, and the model it calls to decide what to do next. Some agent programs work only with their vendor's models; open ones, such as [OpenCode](https://opencode.ai/docs/), connect to any provider you have an API key for, so you can change the model without changing how you work.
 
-What the agent knows about your project comes from the repository, not from the model. [AI project setup](/guides/ai-project-setup/) calls everything around the model its harness and covers the parts you commit, so a repository set up that way serves every teammate, whichever model each one brings.
+Changing the model doesn't change what the agent knows about your project, which comes from the repository and the task. [AI project setup](/guides/ai-project-setup/) uses Birgitta Böckeler's term, harness, for everything around the model and covers the parts you commit, so a repository set up that way serves every teammate, whichever model each one brings.
 
 ### Comparing models
 
 Many labs publish capable models at a wide range of prices, several of them with open weights that anyone can host. Which one gives the best value for a given kind of task changes as new models are released, so compare them on public measurements rather than reputation.
 
-A **benchmark** is a fixed set of tasks with a score, and each measures one kind of work, so read what a benchmark tests before you read its ranking: a model that leads on isolated coding puzzles may trail on a change that spans a large repository. Epoch AI's [Benchmarking Hub](https://epoch.ai/benchmarks) and [LiveBench](https://livebench.ai/) track current results. A **Pareto curve** plots performance against price, and the models on it are the ones no other model beats on both at once; for any model below the curve, some model on it does at least as well for no more. arena.ai publishes these curves for [coding](https://arena.ai/leaderboard/code/pareto), [agent](https://arena.ai/leaderboard/agent/pareto), and general text tasks.
+A **benchmark** is a fixed set of tasks with a score, and each measures one kind of work, so read what a benchmark tests before you read its ranking: a model that leads on isolated coding puzzles may trail on a change that spans a large repository. Epoch AI's [Benchmarking Hub](https://epoch.ai/benchmarks) and [LiveBench](https://livebench.ai/) track current results. A **Pareto curve** plots performance against price, and the models on it are the ones no other model beats on both at once; for any model below the curve, some model on it does at least as well for no more. arena.ai publishes these curves for [coding](https://arena.ai/leaderboard/code/pareto), [agent](https://arena.ai/leaderboard/agent/pareto), and [general text](https://arena.ai/leaderboard/text/pareto) tasks.
 
 Use the measurements to shortlist, then decide on your own work. Take the models on the curve within your budget, give each the same task from your repository, and run your checks on the result, because a leaderboard score comes from other people's prompts on other people's code. Then take the cheapest model that passes.
 
