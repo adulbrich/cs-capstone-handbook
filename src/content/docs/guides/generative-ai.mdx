@@ -26,21 +26,23 @@ You're responsible for the correctness, security, licensing, and professionalism
 
 The tools do well where the space of acceptable answers is wide, where you can recognize a good answer faster than you could produce one, and where a wrong answer is cheap to detect. Brainstorming, a first draft of a test suite, and an explanation of an unfamiliar API fit all three; a security-critical authentication flow fits none of them.
 
-Where the boundary falls is harder to see than that test suggests. <Cite id="dellacqua-2026" /> ran a preregistered experiment with 758 Boston Consulting Group consultants using GPT-4. On tasks inside what the model could do, consultants with AI completed 12.2% more tasks, 25.1% faster, at about 32% higher quality. On a task chosen to sit outside it, they were 19 percentage points less likely to reach a correct answer than consultants working alone. The authors call the boundary a jagged technological frontier: tasks that look equally hard can fall on opposite sides of it, the boundary is hard to see in advance, and it moves when a new model is released. Their tasks were consulting work, not software, but the practice carries over: find the frontier for your own work by trying tasks and checking the results, and check again when you change models.
+Where the boundary falls is harder to see than that test suggests. <Cite id="dellacqua-2026" /> ran a preregistered experiment with 758 Boston Consulting Group consultants using GPT-4. On tasks inside what the model could do, consultants with AI finished more tasks, faster, at about 32% higher quality. On a task chosen to sit outside it, they were 19 percentage points less likely to reach a correct answer than consultants working alone. The authors call the boundary a jagged technological frontier: tasks that look equally hard can fall on opposite sides of it, the boundary is hard to see in advance, and it moves when a new model is released. Their tasks were consulting work, not software, but the practice carries over: find the frontier for your own work by trying tasks and checking the results, and check again when you change models.
 
 Some limits won't close with a better model, because the information or the responsibility isn't the model's to have. A model can't apply your project partner's unstated preference, because nobody wrote it down, and it can't make an ethical call on your behalf, because that call is yours to own.
 
 ### Hallucinations
 
-A **hallucination** is fluent, confident output that isn't grounded in anything real: a library that doesn't exist, an API method nobody wrote, a citation to a paper nobody published. The model isn't lying. It generates a plausible continuation of the text so far, and nothing in that process checks the result against the world. Check every specific fact a tool gives you (a package, a function signature, a flag, a citation) against its source before you rely on it. AI search tools that attach citations to their answers fail the same way: a citation can be fabricated, or attached to a source that doesn't say what the answer claims, and you won't see either unless you open it.
+A **hallucination** is fluent, confident output that isn't grounded in anything real: a library that doesn't exist, an API method nobody wrote, a citation to a paper nobody published. The model isn't lying. It generates a plausible continuation of the text so far, and nothing in that process checks the result against the world. Check every specific fact a tool gives you (a package, a function signature, a flag, a citation) against its source before you rely on it.
 
 Package names are the best-measured case. <Cite id="spracklen-2025" /> generated 576,000 Python and JavaScript samples with 16 code-generating models and found that, on average, at least 5.2% of the packages recommended by commercial models and 21.7% of those recommended by open-source models didn't exist. That's a security problem as well as a correctness one, because an attacker can publish a malicious package under a name that models keep inventing, and the next person who trusts the suggestion installs it <Cite id="spracklen-2025" form="parenthetical" />.
 
+AI search tools that attach citations to their answers fail the same way. A citation can be fabricated, or attached to a source that doesn't say what the answer claims, and you won't see either unless you open it, so open each one before you repeat what it supports.
+
 ### Sycophancy
 
-A **sycophantic** answer tells you what you appear to want to hear. <Cite id="sharma-2024" /> found five AI assistants consistently tailoring their answers to the user's stated views: praising an argument more when the user said they liked it, apologizing for and sometimes abandoning a correct answer when the user asked "are you sure?", and shifting an answer toward one the user suggested. They trace it in part to training on human feedback, since both people and the models trained to predict their preferences sometimes preferred a convincing sycophantic answer over a correct one.
+A **sycophantic** answer tells you what you appear to want to hear. <Cite id="sharma-2024" /> found five AI assistants consistently tailoring their answers to the user's stated views: praising an argument more when the user said they liked it, apologizing for and sometimes abandoning a correct answer when the user asked "are you sure?", and shifting an answer toward one the user suggested. They conclude it's likely driven in part by training on human feedback, since both people and the models trained to predict their preferences sometimes preferred a convincing sycophantic answer over a correct one.
 
-The habit that follows is to keep your opinion out of the question. "What's wrong with this schema?" gets you a review; "this schema is fine, right?" gets you agreement. Once you've settled on a plan, ask the tool for the strongest case against it before you commit, because it will argue either side and the side you don't ask for is the one you won't hear.
+The habit that follows is to keep your opinion out of the question. "What's wrong with this schema?" gets you a review; "this schema is fine, right?" gets you agreement. Once you've settled on a plan, ask the tool for the strongest case against it before you commit, because it won't volunteer one while you sound sure.
 
 ## Using AI Effectively
 
@@ -48,19 +50,19 @@ The habit that follows is to keep your opinion out of the question. "What's wron
 
 Before asking a tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the tool enough context to produce something useful. Be this specific because the model fills every gap in your request with its most likely guess, and its most likely guess isn't your design.
 
-Say what done looks like as well: which behavior changes, which tests must pass, what must stay as it is. A tool with no finish line stops when the work looks done to it, and you find out later what it skipped. [AI project setup](/guides/ai-project-setup/#define-done-then-let-the-agent-check-it) covers writing that finish line into the repository, so a task inherits it without your having to repeat it.
+Say what done looks like as well: which behavior changes, which tests must pass, what must stay as it is. [AI project setup](/guides/ai-project-setup/#define-done-then-let-the-agent-check-it) covers writing that finish line into the repository, so a task inherits it without your having to repeat it.
 
 ### Verify what matters, and build the checks that let you trust the rest
 
 Generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Rather than trying to read every line, spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are hard-to-reverse decisions: getting one wrong costs far more than the review would have, so validate those yourself.
 
-Work behind your checks is easy to reverse: once a test tells you a feature is broken, the fix is one more commit. Delegate that work as far as your checks catch, and no further: tests that would fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, and a rollback path you've actually tried. To hand off more, improve the checks rather than reading harder. The industry report on AI-assisted development from DORA (DevOps Research and Assessment), Google Cloud's research program, found that AI's positive influence on team performance was amplified where developers rolled back changes more often, and its authors suspect batch size: AI produces larger batches of code, which are harder to review and matter more to undo quickly <Cite id="dora-2025" form="parenthetical" />. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures that fit on your own repository.
+Work behind your checks is easy to reverse: once a test tells you a feature is broken, the fix is one more commit. Delegate that work as far as your checks catch, and no further: tests that would fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, and a rollback path you've actually tried. To hand off more, improve the checks rather than reading harder. The industry report on AI-assisted development from DORA (DevOps Research and Assessment), Google Cloud's research program, found that AI's positive influence on team performance was amplified where developers rolled back changes more often. Its authors suspect that undoing changes quickly matters more with the larger batches of code AI produces, and that larger batches being harder to review is part of why AI is linked to delivery instability <Cite id="dora-2025" form="parenthetical" />. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures that fit on your own repository.
 
 Checks catch what they were written to catch; they don't show that a change does what you meant. Simon Willison [argues](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) that your job is to deliver code you have proven to work, in two steps: exercise the change yourself and watch it do the right thing, then leave a test that fails if the change is reverted. Put the evidence in the pull request (the commands you ran and their output, or a screenshot), because a change submitted without it hands the verification to whoever reviews it.
 
 ### Vibe coding and augmented coding
 
-Andrej Karpathy coined **vibe coding** for accepting whatever the model writes without reading the diffs, and letting the code grow past what you understand. Willison [argues](https://simonwillison.net/2025/Mar/19/vibe-coding/) that most AI-assisted programming isn't that, and that vibe coding suits low-stakes work: a throwaway prototype, a personal tool. Kent Beck [calls](https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes) the alternative augmented coding. You still care about the code, its complexity, and its tests, and you watch for signs the tool is going off track: functionality you didn't ask for, and any sign it's cheating, such as disabling or deleting a test to make the suite pass.
+Andrej Karpathy [coined](https://x.com/karpathy/status/1886192184808149383) **vibe coding** for accepting whatever the model writes without reading the diffs, and letting the code grow past what you understand. Willison [argues](https://simonwillison.net/2025/Mar/19/vibe-coding/) that most AI-assisted programming isn't that, and that vibe coding suits low-stakes work: a throwaway prototype, a personal tool. Kent Beck [calls](https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes) the alternative augmented coding. You still care about the code, its complexity, and its tests, and you watch for signs the tool is going off track: functionality you didn't ask for, and any sign it's cheating, such as disabling or deleting a test to make the suite pass.
 
 Vibe-code a spike you'll throw away, and augment anything someone else will build on, because whoever builds on vibe-coded work inherits code nobody has read.
 
@@ -80,7 +82,7 @@ If you've gone back and forth with a tool several times on the same problem and 
 
 Decide what you're about to paste before you paste it, because the provider's terms decide what happens to it next, and those terms differ by plan: some plans use your conversations to train models unless you opt out, some don't by default, and some are priced lower in exchange for training on what you send. Read the terms for the plan you're on, not just the tool's name.
 
-Your team decides which material may go into which tools and writes that rule down: the version for people in the [working agreement](/guides/working-agreement/#ai-tool-usage), and the version for the tools in [AI project setup](/guides/ai-project-setup/#what-goes-in-agentsmd). Your part is to check the rule before you paste, because the check takes seconds and a leak can't be undone.
+Your team decides which material may go into which tools and writes that rule down: the version for people in the [working agreement](/guides/working-agreement/#writing-your-agreement), and the version for the tools in [AI project setup](/guides/ai-project-setup/#what-goes-in-agentsmd). Your part is to check the rule before you paste, because the check takes seconds and a leak can't be undone.
 
 ## What You Can Automate
 
@@ -100,7 +102,7 @@ When you ask "what can I hand off?", use this table as the index. Each entry lin
 
 Four judgments stay with you: whether the product is actually good for the person using it, which decisions are hard to reverse, the tradeoffs your users and your project partner will feel, and whether an automated finding matters.
 
-## Choosing a Model and a Harness
+## Choosing a Model and an Agent
 
 The tools change faster than any page about them, so this section covers how to choose rather than what to choose.
 
@@ -108,25 +110,27 @@ The tools change faster than any page about them, so this section covers how to 
 
 AI coding tools come in three shapes. An autocomplete tool suggests the next few lines as you type, and you see each suggestion before it lands. A chat assistant answers in a conversation, and you decide what to copy out of it. An agent plans a multi-step change, reads several files, runs commands, and edits your codebase before you see any of it. Give an agent more oversight than autocomplete for that reason, and more again on a team where several people run agents against the same repository.
 
-### Harness and model
+### Agent and model
 
-An agent is two choices, not one. The **harness** is the program you run: it reads files, runs commands, edits code, and decides what to ask you first. The **model** is what the harness calls to decide what to do next. Some harnesses work only with their vendor's models; open ones, such as [OpenCode](https://opencode.ai/docs/), connect to any provider you have an API key for. Most coding agents read the same `AGENTS.md`, so a repository set up the way [AI project setup](/guides/ai-project-setup/) describes works whichever model each teammate brings.
+A coding agent is two choices, not one: the program you run, which reads files, runs commands, and edits code, and the model it calls to decide what to do next. Some agent programs work only with their vendor's models; open ones, such as [OpenCode](https://opencode.ai/docs/), connect to any provider you have an API key for, so you can change the model without changing how you work.
+
+What the agent knows about your project comes from the repository, not from the model. [AI project setup](/guides/ai-project-setup/) calls everything around the model its harness and covers the parts you commit, so a repository set up that way serves every teammate, whichever model each one brings.
 
 ### Comparing models
 
-Many labs publish capable models at a wide range of prices, several of them with open weights that anyone can host. Which one gives the best value for a given kind of task changes every few months, so compare them on public measurements rather than reputation.
+Many labs publish capable models at a wide range of prices, several of them with open weights that anyone can host. Which one gives the best value for a given kind of task changes as new models are released, so compare them on public measurements rather than reputation.
 
-A **benchmark** is a fixed set of tasks with a score, and each measures one kind of work, so read what a benchmark tests before you read its ranking: a model that leads on isolated coding puzzles may trail on a change that spans a large repository. Epoch AI's [Benchmarking Hub](https://epoch.ai/benchmarks) and [LiveBench](https://livebench.ai/) track current results. A **Pareto curve** plots performance against price, and the models on it are the ones no other model beats on both at once; a model below the curve costs more than one that does at least as well. [arena.ai](https://arena.ai/leaderboard) publishes these curves for coding, agent, and general text tasks.
+A **benchmark** is a fixed set of tasks with a score, and each measures one kind of work, so read what a benchmark tests before you read its ranking: a model that leads on isolated coding puzzles may trail on a change that spans a large repository. Epoch AI's [Benchmarking Hub](https://epoch.ai/benchmarks) and [LiveBench](https://livebench.ai/) track current results. A **Pareto curve** plots performance against price, and the models on it are the ones no other model beats on both at once; for any model below the curve, some model on it does at least as well for no more. arena.ai publishes these curves for [coding](https://arena.ai/leaderboard/code/pareto), [agent](https://arena.ai/leaderboard/agent/pareto), and general text tasks.
 
 Use the measurements to shortlist, then decide on your own work. Take the models on the curve within your budget, give each the same task from your repository, and run your checks on the result, because a leaderboard score comes from other people's prompts on other people's code. Then take the cheapest model that passes.
+
+:::tip[Student plans]
+Several vendors offer free or discounted plans to verified students. Check the student pages of the tools on your shortlist before you pay.
+:::
 
 ### Where your data goes
 
 Who hosts a model decides where your prompts go, not who trained it. An open-weight model can be served by the lab that made it, by a third-party provider, or on your own hardware, and each host has its own data terms. Some institutions and governments bar specific providers' services on the devices they manage, so read the rules that govern your work as well as the provider's terms, then apply [Check what you paste](#check-what-you-paste).
-
-:::tip[Student plans]
-Several vendors offer free or discounted plans to verified students. Check the student pages of the tools you're considering before you pay.
-:::
 
 ## Best Practices for Using AI Tools
 
@@ -147,7 +151,7 @@ The speedup itself depends on who you are and what you're working on, and the ev
 
 A tool can make you more confident and less careful at the same time. In a user study published at the ACM Conference on Computer and Communications Security (CCS), <Cite id="perry-2023" /> gave 47 participants five security-related programming tasks in Python, JavaScript, and C. The 33 who had an assistant built on OpenAI's codex-davinci-002 model wrote insecure solutions more often on four of the five tasks than the 14 who didn't, and were more likely to believe their code was secure, which the authors suggest means such tools may lead users to be overconfident about security flaws. Participants with secure solutions reported less trust in the assistant than those with insecure ones, and participants who put more work into their prompts, such as supplying helper functions or adjusting parameters, were more likely to reach a secure solution <Cite id="perry-2023" form="parenthetical" />. That model is several generations old, so don't read the size of the gap as current.
 
-The same pattern shows up outside security. <Cite id="lee-2025" /> surveyed 319 knowledge workers about 936 of their own uses of generative AI at work and found that the more confidence people had in the AI for a task, the less critical thinking they reported doing on it, while the more confidence they had in their own ability, the more they reported. It's a self-report survey, so it shows an association rather than a measured effect, but it points the same way as Perry's result: the tasks where you trust the tool most are the ones you're least likely to check.
+The same pattern shows up outside security. <Cite id="lee-2025" /> surveyed 319 knowledge workers about 936 of their own uses of generative AI at work and found that the more confidence people had in the AI for a task, the less critical thinking they reported doing on it, while the more confidence they had in their own ability, the more they reported. It's a self-report survey, so it shows an association rather than a measured effect, but it points the same way as Perry's result.
 
 The bottleneck moves from writing code to verifying it. When a model drafts the code, your throughput is limited by how fast you can check it, and checking doesn't get faster because generation did: a team that doubles its output with the same review capacity builds a queue of unreviewed changes. The DORA industry report found that AI adoption now improves software delivery throughput but still increases delivery instability, which the report reads as teams adapting for speed before their underlying systems can safely manage AI-accelerated development <Cite id="dora-2025" form="parenthetical" />. Put your effort into the checks in [AI project setup](/guides/ai-project-setup/#hooks-and-gates) before prompt technique.
 

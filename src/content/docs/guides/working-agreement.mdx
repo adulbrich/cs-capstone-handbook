@@ -103,9 +103,10 @@ These are the concrete form of the psychological safety finding above. A rotatin
 
 Your team will probably use AI coding assistants: in the <Cite id="stackoverflow-2025" /> developer survey, an industry report with a self-selected sample, 84% of the roughly 34,000 who answered the question said they use or plan to use AI tools in their development process.
 
-Settle three questions early, because teammates who each prompt their own assistant their own way can leave the codebase with inconsistent patterns, conflicting abstractions, and code nobody on the team fully understands:
+Settle four questions early, because teammates who each prompt their own assistant their own way can leave the codebase with inconsistent patterns, conflicting abstractions, and code nobody on the team fully understands:
 
-- Which configuration does the team share, and which providers may see your material? Agree on one `AGENTS.md` checked into the repository, as [AI project setup](/guides/ai-project-setup/) describes, so every teammate's agent gets the same architectural context whichever model it runs. Teammates may bring different models to the same repository, so name the providers your confidentiality rule allows as well.
+- Which configuration does the team share? Agree on one `AGENTS.md` checked into the repository, as [AI project setup](/guides/ai-project-setup/) describes, so every teammate's agent gets the same architectural context whichever model it runs.
+- Which providers may see your material? Teammates may bring different models to the same repository, so name in your confidentiality rule the providers each kind of material may go to.
 - What review does AI-generated code get? A reasonable default is the same review as human-written code. The author is responsible for understanding and defending what they commit, whoever (or whatever) wrote the first draft.
 - How does the team handle an architectural change an AI tool suggests? Treat it like any design change: discuss it, check it against the design document, and write an ADR if the team adopts it. Nobody merges a structural change just because an assistant proposed it.
 
