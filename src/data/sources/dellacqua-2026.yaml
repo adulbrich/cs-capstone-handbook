@@ -1,0 +1,40 @@
+authors:
+  - Dell'Acqua, F.
+  - McFowland III, E.
+  - Mollick, E.
+  - Lifshitz, H.
+  - Kellogg, K. C.
+  - Rajendran, S.
+  - Krayer, L.
+  - Candelon, F.
+  - Lakhani, K. R.
+year: 2026
+title: >-
+  Navigating the Jagged Technological Frontier: Field Experimental Evidence of
+  the Effects of Artificial Intelligence on Knowledge Worker Productivity and
+  Quality
+venue: Organization Science
+kind: peer-reviewed
+url: https://pubsonline.informs.org/doi/full/10.1287/orsc.2025.21838
+doi: 10.1287/orsc.2025.21838
+# Read in full as the published Articles in Advance version (pp. 1-21), open
+# under CC BY 4.0 at hbs.edu. Locators are journal page numbers. The 2023
+# working paper's "more than 40% higher quality" is not this version's figure.
+verified: full-text
+claims:
+  - claim: >-
+      A preregistered experiment with 758 Boston Consulting Group consultants
+      using GPT-4. On tasks inside the frontier, consultants with AI completed
+      12.2% more tasks, 25.1% faster on average, with quality about 32% higher.
+    locator: Abstract; Section 3, p. 4-5; Tables 4-6, pp. 7-10; Section 4.1, p. 10
+  - claim: >-
+      On a task selected to be outside the frontier, consultants using AI were
+      19 percentage points less likely to produce a correct solution than
+      those without AI.
+    locator: p. 11, Figure 5; p. 16
+  - claim: >-
+      The jagged technological frontier describes AI improving performance on
+      some tasks and worsening it on others, where tasks that look equally
+      difficult can fall on opposite sides of a boundary that is hard to see in
+      advance and that moves as new models are released.
+    locator: Abstract; pp. 2-4, Figure 1; p. 18

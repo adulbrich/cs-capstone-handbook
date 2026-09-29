@@ -105,7 +105,7 @@ Your team will probably use AI coding assistants: in the <Cite id="stackoverflow
 
 Settle three questions early, because teammates who each prompt their own assistant their own way can leave the codebase with inconsistent patterns, conflicting abstractions, and code nobody on the team fully understands:
 
-- Which tools and configurations does the team share? If the team uses a tool that supports project-level instructions (such as `CLAUDE.md`, agent skills, or a shared system prompt), agree on a single configuration checked into the repository, so every teammate's assistant gets the same architectural context.
+- Which configuration does the team share, and which providers may see your material? Agree on one `AGENTS.md` checked into the repository, as [AI project setup](/guides/ai-project-setup/) describes, so every teammate's agent gets the same architectural context whichever model it runs. Teammates may bring different models to the same repository, so name the providers your confidentiality rule allows as well.
 - What review does AI-generated code get? A reasonable default is the same review as human-written code. The author is responsible for understanding and defending what they commit, whoever (or whatever) wrote the first draft.
 - How does the team handle an architectural change an AI tool suggests? Treat it like any design change: discuss it, check it against the design document, and write an ADR if the team adopts it. Nobody merges a structural change just because an assistant proposed it.
 
@@ -120,9 +120,9 @@ These norms belong in the working agreement because they're about how the team c
 />
 
 <LinkCard
-  title="Generative AI"
-  href="/guides/generative-ai/"
-  description="Individual guidelines for using AI tools effectively and responsibly."
+  title="AI Project Setup"
+  href="/guides/ai-project-setup/"
+  description="What to commit so every coding agent on the team works from the same rules and can check its own work."
 />
 
 ## From Agreement to Repository
@@ -287,6 +287,6 @@ For a student team, the agreement is also a record of how the team meant to oper
 - [Definition of Done](/activities/planning/#definition-of-done): the DoD drafted and agreed as a team.
 - [Map Your Team's Working Styles](/activities/conflict/#map-your-teams-working-styles): the personality gaps inside the team, each with an agreed tactic on both sides.
 - [Plan Your Escalation Path](/activities/conflict/#plan-your-escalation-path): the conflict section of the agreement, decided before you need it.
-- [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): the shared AI configuration and confidentiality rules the AI section points at.
+- [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): the skills the team agrees to run, committed so every teammate's agent uses the same ones.
 - [Team Health Assessment](/activities/teamwork/#team-health-assessment): the periodic check that tells you whether the agreement is holding.
 - [Team Dysfunctions Assessment](/activities/teamwork/#team-dysfunctions-assessment): Lencioni's ladder, useful for naming what is actually wrong.
