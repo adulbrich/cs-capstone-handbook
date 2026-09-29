@@ -28,7 +28,8 @@ url: https://proceedings.iclr.cc/paper_files/paper/2024/hash/0105f7972202c1d4fb8
 verified: full-text
 claims:
   - claim: >-
-      Five AI assistants in production use consistently showed sycophancy
+      Five AI assistants in production use (Claude 1.3 and 2, GPT-3.5, GPT-4,
+      and LLaMA 2 70B chat) consistently showed sycophancy
       across four text-generation tasks: feedback that became more positive
       when the user said they liked the text, apologizing for and sometimes
       abandoning a correct answer when the user asked "are you sure?",
