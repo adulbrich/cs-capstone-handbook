@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-import Required: RFC Revision Log (#348)
 
-`rfc/rfc-final-rubric.csv`: the response-to-feedback note is now a revision log, a table after the RFC in the final PDF with one row per point of feedback received, each changed or declined. The Revision criterion is renamed "Revision: feedback integrated, with a revision log" and its bands check the log row by row; the Writing criterion's length band no longer counts the log. Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms, after #262 if both are pending. Re-paste the RFC Final Draft body from the paste kit.
+`rfc/rfc-final-rubric.csv`: the prose note on the final is now a revision log, a table after the RFC in the final PDF with one row per point of feedback received, each changed or declined. The Revision criterion is renamed "Revision: feedback integrated, with a revision log" and its description is empty and its bands check the log row by row; the Writing criterion's length band no longer counts the log. Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms, after #262 if both are pending. Re-paste the RFC Final Draft body from the paste kit.
 
 ## Canvas Changes: Sprint Notes Numbered Across the Year (#337)
 
