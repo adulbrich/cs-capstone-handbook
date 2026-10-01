@@ -56,10 +56,11 @@ const rows = summaryRows(assignment.canvas).map((row) => ({
 // A one-row card already states the row's weight in its header line.
 const showWeight = rows.length > 1 || rows.some((row) => row.repeats);
 const hasNote = Astro.slots.has("default");
+// The root keeps the "assignment-meta" class because scripts/canvas-export.mjs
+// strips it: each Canvas entry gets its own meta box there, built from the
+// same frontmatter.
 ---
 
-<!-- "assignment-meta" is the class scripts/canvas-export.mjs strips: each
-     Canvas entry gets its own meta box there, built from the same frontmatter. -->
 <div class="assignment-meta assignment-summary not-content">
   <p class="assignment-summary__head">
     <strong>{who}</strong>

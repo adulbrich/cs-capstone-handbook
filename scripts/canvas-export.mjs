@@ -290,7 +290,6 @@ function ops(root, where) {
   };
 }
 
-// The heading text a family would give its own section: "Sprint Notes N".
 const familyBase = (f) =>
   f.name.includes("{n}") ? f.name.slice(0, f.name.indexOf("{n}")) : null;
 
