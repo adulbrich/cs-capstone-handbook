@@ -153,7 +153,7 @@ export const collections = {
             // worth the same in every term it runs; a per-term map
             // when it varies (Sprint Notes, Workshop Activities).
             // validate-outcomes.mjs reconciles this against the
-            // Team Deliverables tables in assignments/introduction.mdx.
+            // grade grid in assignments/introduction.mdx.
             // The map is strict so a misspelled term fails here
             // rather than silently declaring nothing.
             weight: termWeight(),

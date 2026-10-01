@@ -188,7 +188,7 @@ Current canonical homes:
 | Fact | Lives in |
 |---|---|
 | The four-component grade split | `assignments/introduction.mdx` |
-| Per-term Team Deliverables weights | `assignments/introduction.mdx` |
+| Per-term assignment weights (the grade grid) | `assignments/introduction.mdx` |
 | Rubric bands, missing-is-zero, evidence rules | `assignments/introduction.mdx` |
 | The AI policy and what it assesses | `assignments/introduction.mdx` |
 | How work is submitted: one PDF, every author named on the cover | `assignments/introduction.mdx` |
@@ -233,12 +233,15 @@ and every audience page links it rather than restating it.
 
 ## Grade weight arithmetic
 
-Each term's grade is four components of 25% each. The Team Deliverables
-component is split across several assignment pages, and **every term must sum
-to exactly 25%**. `validate-outcomes.mjs` enforces that against the term tables,
-and also reconciles each page's `assignment.weight` frontmatter against the row
-that links it. `weight` is a scalar when the page is worth the same in every
-term it runs, and a per-term map when it varies:
+Each term's grade is four components of 25% each, laid out in the grade grid
+on `assignments/introduction.mdx`: a row per component and per assignment (two
+for each evaluation page, midterm and end-of-term), a column per term. Each
+component is split across several assignment pages, and **every component must
+sum to exactly 25% in every term**. `validate-outcomes.mjs` enforces that
+against the grid, and also reconciles each page's `assignment.weight` and
+`assignment.terms` frontmatter against the rows that link it. `weight` is a
+scalar when the page is worth the same in every term it runs, and a per-term
+map when it varies:
 
 ```yaml
 assignment:

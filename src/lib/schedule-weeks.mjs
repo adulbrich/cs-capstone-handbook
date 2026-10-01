@@ -9,26 +9,12 @@
 
 import { toString as textOf } from "hast-util-to-string";
 import { h } from "hastscript";
+import { tagFor, tagNode } from "./who-tag.mjs";
 
 // The groups outside any sprint: the weeks before the year's first sprint and
 // after its last. Any other week outside a sprint is an error, not a guess.
 const BEFORE_FIRST_SPRINT = "Term Start";
 const AFTER_LAST_SPRINT = "Project Handoff";
-
-// Links whose page `level` does not say who submits the item: the partner
-// completes the partner evaluation; the two Canvas-owned stubs carry no
-// `assignment:` block; Demo Day and the Expo are team events with no block
-// either; the bidding survey is the one section of For Students that is due;
-// the team sends the first email to its partner from the template.
-const TAG_BY_PATH = {
-  "assignments/career-retrospective": "Individual",
-  "assignments/demo-day": "Team",
-  "assignments/expo": "Team",
-  "assignments/project-partner-evaluation": "Partner",
-  "assignments/resume-and-intent": "Individual",
-  "email-template.txt": "Team",
-  "introduction/for-students#how-you-get-your-project-and-team": "Individual",
-};
 
 // The lines a week may carry, and the icon each one's `data-row` selects.
 const LABELS = new Set(["Due", "In class", "Read", "Optional"]);
@@ -41,22 +27,6 @@ const isBlank = (n) => n.type === "text" && !n.value.trim();
 const isEl = (n, tag) => n?.type === "element" && (!tag || n.tagName === tag);
 const hasClass = (n, c) =>
   isEl(n) && [n.properties?.className ?? []].flat().includes(c);
-const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/g, "");
-
-// Who submits a Due item, from the page its one internal link points at.
-export function tagFor(href, levels) {
-  const path = pagePath(href);
-  const fixed =
-    TAG_BY_PATH[`${path}#${href.split("#")[1] ?? ""}`] ?? TAG_BY_PATH[path];
-  if (fixed) {
-    return fixed;
-  }
-  const level = levels.get(path);
-  if (level === "team") {
-    return "Team";
-  }
-  return level === "individual" ? "Individual" : null;
-}
 
 // The group label for each week of a term. Sprint N runs from the week after
 // the previous note to the week its note is due; a term's first sprint is the
@@ -165,11 +135,7 @@ function dueItem(li, ctx) {
   if (note) {
     ctx.seenNotes.push({ n: Number(note), week: ctx.week });
   }
-  return h("li", [
-    ...li.children,
-    " ",
-    h(`span.week-tag.week-tag--${tag.toLowerCase()}`, tag),
-  ]);
+  return h("li", [...li.children, " ", tagNode(tag)]);
 }
 
 function card(week, ctx) {
