@@ -234,13 +234,14 @@ and every audience page links it rather than restating it.
 ## Grade weight arithmetic
 
 Each term's grade is four components of 25% each, laid out in the grade grid
-on `assignments/introduction.mdx`: a row per component and per assignment
-(two for each evaluation page, midterm and end-of-term), a column per term. Each component is split across several
-assignment pages, and **every component must sum to exactly 25% in every
-term**. `validate-outcomes.mjs` enforces that against the grid, and also
-reconciles each page's `assignment.weight` and `assignment.terms` frontmatter
-against the rows that link it. `weight` is a scalar when the page is worth the same in every
-term it runs, and a per-term map when it varies:
+on `assignments/introduction.mdx`: a row per component and per assignment (two
+for each evaluation page, midterm and end-of-term), a column per term. Each
+component is split across several assignment pages, and **every component must
+sum to exactly 25% in every term**. `validate-outcomes.mjs` enforces that
+against the grid, and also reconciles each page's `assignment.weight` and
+`assignment.terms` frontmatter against the rows that link it. `weight` is a
+scalar when the page is worth the same in every term it runs, and a per-term
+map when it varies:
 
 ```yaml
 assignment:
