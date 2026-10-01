@@ -34,15 +34,12 @@ assignment:
       rubric: rfc/rfc-final-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import draftRubricCsv from '/canvas/assignments/rfc/rfc-draft-rubric.csv?raw';
 import finalRubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
-import CanvasEntries from '/src/components/CanvasEntries.astro';
 
-<AssignmentMeta submission="Individual" due="Fall and winter: draft week 4, peer reviews week 5, final week 8" weight="15% of the term grade: 5% for the draft and peer review, 10% for the final" />
-
-<CanvasEntries />
+<AssignmentSummary />
 
 An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. The name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), which is how the internet's protocols are still specified; the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). You write a different one each term, in fall and winter, about a **real decision your team faces that is hard to reverse**. In fall the decision is still open. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. Not a hypothetical, and not a justification written after the fact for a decision the RFC no longer changes.
 
@@ -77,8 +74,6 @@ Write it in the format the [ADR guide](/guides/adr/) sets out, starting from the
 
 ### RFC Draft + Peer Review
 
-<AssignmentMeta submission="Individual" due="Draft end of week 4; peer reviews end of week 5" weight="5% of the term grade" />
-
 Submit a complete draft by the end of week 4: every section above, within the term's length band. The draft is graded for completeness, not for the quality of its reasoning. You don't need its grade before revising: start as soon as your peer reviews arrive.
 
 #### The Peer Review
@@ -101,8 +96,6 @@ Submit a sanitized draft: your reviewers read it, so replace partner-confidentia
 :::
 
 ### RFC Final Draft
-
-<AssignmentMeta submission="Individual" due="End of week 8" weight="10% of the term grade" />
 
 Submit the revised RFC by the end of week 8, followed by its revision log, in one PDF. Your team records the decision in the RFC (accepted, rejected, or superseded). The instruction team grades the final against the rubric below and returns rubric feedback. Not submitting the draft forfeits the revision points, because there is nothing to revise. The standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies to both entries.
 

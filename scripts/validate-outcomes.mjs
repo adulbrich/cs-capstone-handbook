@@ -558,9 +558,12 @@ for (const [slug, assignment] of pages) {
       failed = true;
     }
     const entryCount = termRows.reduce((acc, r) => acc + r.names.length, 0);
-    if (entryCount > 1 && !/<CanvasEntries\b/.test(pageSources.get(slug))) {
+    if (
+      entryCount > 1 &&
+      !/<(CanvasEntries|AssignmentSummary)\b/.test(pageSources.get(slug))
+    ) {
       console.error(
-        `CANVAS ${file}: owns ${entryCount} Canvas entries in ${term} but does not render <CanvasEntries />.`
+        `CANVAS ${file}: owns ${entryCount} Canvas entries in ${term} but renders neither <AssignmentSummary /> nor <CanvasEntries />.`
       );
       failed = true;
     }
@@ -669,16 +672,18 @@ const DELIVERABLE_HEADING_RE =
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
 // Every page with Canvas entries says what to hand in under this heading, and
 // a submission format lives there, never in a heading (#288).
-// On the fixed skeleton (#331), an entry with its own <AssignmentMeta> (the
-// RFC's draft and final) is a "###" under "## What You Submit", and "## Rubric"
-// has an "###" of the same name: the Canvas export gives each entry the "###"
-// sections named for it. A page not yet moved to the skeleton gives such an
-// entry its own "##" section with a "### What You Submit" block inside.
+// On the fixed skeleton (#331), a page whose entries have rubrics of their own
+// (the RFC's draft and final) gives each one an "###" named for it under
+// "## Rubric", and the same "###" under "## What You Submit": the Canvas export
+// gives each entry the "###" sections named for it. A page not yet moved to
+// the skeleton gives such an entry its own "##" section, with an
+// <AssignmentMeta> and a "### What You Submit" block inside.
 const WHAT_YOU_SUBMIT_RE = /^#{2,3} What You Submit$/m;
 const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/im;
 const META_RE = /<AssignmentMeta\b/;
 const FENCED_CODE_RE = /^(```|~~~)[\s\S]*?^\1/gm;
 const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
+const SUMMARY_RE = /<AssignmentSummary\b/;
 
 // Format headings on every assignment page, graded or not: the loop below
 // skips pages without an `assignment:` block. Fenced code is not a heading.
@@ -707,13 +712,15 @@ for (const file of files) {
 
   // The AssignmentMeta weight text must state every percentage the
   // frontmatter declares. Sprint Notes said "2% each" and never gave the
-  // term totals that every other page's meta states.
+  // term totals that every other page's meta states. <AssignmentSummary />
+  // writes its weights from the frontmatter, so there is nothing to compare.
+  const summary = SUMMARY_RE.test(body);
   const meta = body.match(META_WEIGHT_RE);
   const declared =
     typeof assignment.weight === "number"
       ? [assignment.weight]
       : Object.values(assignment.weight ?? {});
-  if (meta) {
+  if (!summary && meta) {
     for (const w of new Set(declared)) {
       if (!meta[1].includes(`${w}%`)) {
         console.error(
@@ -722,8 +729,10 @@ for (const file of files) {
         failed = true;
       }
     }
-  } else {
-    console.error(`META ${file}: no <AssignmentMeta weight="..."> found.`);
+  } else if (!summary) {
+    console.error(
+      `META ${file}: no <AssignmentMeta weight="..."> or <AssignmentSummary /> found.`
+    );
     failed = true;
   }
 
@@ -753,25 +762,23 @@ for (const file of files) {
       .split(/^(?=### )/m)
       .slice(1)
       .map((sub) => sub.split("\n")[0].slice(4));
-  const submitEntries = (sections.find(isSection("What You Submit")) ?? "")
-    .split(/^(?=### )/m)
-    .slice(1)
-    .filter((sub) => META_RE.test(sub))
-    .map((sub) => sub.split("\n")[0].slice(4));
-  if (submitEntries.length > 0) {
-    const families = new Set(
-      (assignment.canvas ?? []).map((f) => f.name.replace("{n}", "N"))
-    );
-    for (const name of submitEntries.filter((n) => !families.has(n))) {
+  const families = new Set(
+    (assignment.canvas ?? []).map((f) => f.name.replace("{n}", "N"))
+  );
+  const rubricEntries = entryHeadings(sections.find(isSection("Rubric")));
+  if (rubricEntries.length > 0) {
+    for (const name of rubricEntries.filter((n) => !families.has(n))) {
       console.error(
-        `SUBMIT ${file}: "### ${name}" under What You Submit names no Canvas entry; the export matches it to an entry by name.`
+        `RUBRIC ${file}: "### ${name}" under Rubric names no Canvas entry; the export matches it to an entry by name.`
       );
       failed = true;
     }
-    const rubricEntries = entryHeadings(sections.find(isSection("Rubric")));
+    const submitEntries = entryHeadings(
+      sections.find(isSection("What You Submit"))
+    ).filter((n) => families.has(n));
     if (rubricEntries.join("|") !== submitEntries.join("|")) {
       console.error(
-        `RUBRIC ${file}: "## Rubric" has the entries [${rubricEntries.join(", ")}] but "## What You Submit" has [${submitEntries.join(", ")}]; give each entry one "###" in both, in the same order.`
+        `SUBMIT ${file}: "## Rubric" has the entries [${rubricEntries.join(", ")}] but "## What You Submit" has [${submitEntries.join(", ")}]; give each entry one "###" in both, in the same order.`
       );
       failed = true;
     }
