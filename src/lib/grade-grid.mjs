@@ -11,10 +11,12 @@
 
 import { toString as textOf } from "hast-util-to-string";
 import { h } from "hastscript";
-import { tagFor, tagNode } from "./schedule-weeks.mjs";
+import { tagFor, tagNode } from "./who-tag.mjs";
 
-const WEIGHT_RE = /^\d+$/;
+// A weight is a whole percent; scripts/validate-outcomes.mjs reads the same rule.
+export const WEIGHT_RE = /^\d+$/;
 
+const isBlank = (n) => n.type === "text" && !n.value.trim();
 const isEl = (n, tag) => n?.type === "element" && (!tag || n.tagName === tag);
 const cellsOf = (tr) => tr.children.filter((c) => isEl(c, "td"));
 
@@ -50,9 +52,7 @@ function weightCell(td, where) {
 }
 
 function componentRow(tr, first) {
-  const [name, ...who] = first.children.filter(
-    (c) => !(c.type === "text" && !c.value.trim())
-  );
+  const [name, ...who] = first.children.filter((c) => !isBlank(c));
   return {
     name: textOf(name),
     render: (tag) =>
@@ -118,9 +118,7 @@ function bandRows(rows, levels) {
   };
   for (const tr of rows) {
     const [first] = cellsOf(tr);
-    const lead = first.children.find(
-      (c) => !(c.type === "text" && !c.value.trim())
-    );
+    const lead = first.children.find((c) => !isBlank(c));
     const where = `the row "${textOf(first).trim()}"`;
     const weights = cellsOf(tr)
       .slice(1)

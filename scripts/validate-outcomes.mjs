@@ -27,6 +27,7 @@ import {
   isTitled,
   termWeight,
 } from "../src/lib/canvas-entries.mjs";
+import { WEIGHT_RE } from "../src/lib/grade-grid.mjs";
 import {
   parseRubricCsv,
   RUBRIC_CSV_SUFFIX,
@@ -257,7 +258,6 @@ if (parsed === 0) {
 // adding up.
 const TERMS = ["fall", "winter", "spring"];
 const COMPONENT_WEIGHT = 25;
-const WEIGHT_CELL_RE = /^\d+(\.\d+)?$/;
 const GRID_ITEM_RE = /^\[[^\]]+\]\(\/assignments\/([a-z0-9-]+)\/[^)]*\)$/;
 const overview = readFileSync(
   join(ASSIGNMENTS_DIR, "introduction.mdx"),
@@ -292,12 +292,12 @@ if (gridRows.length === 0) {
   let total = null;
   for (const row of gridRows.slice(2)) {
     const [first, ...rest] = tableCells(row);
-    const bad = rest.find((c) => c !== "" && !WEIGHT_CELL_RE.test(c));
+    const bad = rest.find((c) => c !== "" && !WEIGHT_RE.test(c));
     if (rest.length !== TERMS.length || bad !== undefined) {
       gridFail(`"${first}" needs one weight or an empty cell per term.`);
       continue;
     }
-    const values = rest.map((c) => (c === "" ? null : Number.parseFloat(c)));
+    const values = rest.map((c) => (c === "" ? null : Number(c)));
     const name = first.match(/^\*\*(.+?)\*\*/)?.[1];
     if (name === "Total") {
       total = values;
