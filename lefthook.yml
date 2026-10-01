@@ -51,8 +51,10 @@ pre-commit:
       glob: "{src/content/docs/**/*.mdx,src/data/sources/*.yaml}"
       run: node scripts/validate-sources.mjs
     biome:
+      # biome.json ignores some files this glob matches (package-lock.json),
+      # and a commit staging only those would otherwise fail on "no files".
       glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
-      run: npx biome check {staged_files}
+      run: npx biome check --no-errors-on-unmatched {staged_files}
 
 commit-msg:
   commands:
