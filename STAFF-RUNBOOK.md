@@ -92,7 +92,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 
 - Pairing: Canvas peer review on the RFC Draft + Peer Review entry assigns each student two drafts at the start of week 5; staff do not pick the pairs. NDA students submit a sanitized draft or contact the instruction team, as the RFC page says.
 - Grading: TAs grade their teams' RFCs (~50 each per term in fall and winter, ~10 minutes each against the rubric; budget ~8 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
-- Reviewer no-shows: the author is held harmless (revision graded on self-identified improvements or staff feedback); the no-show reviewer loses the feedback points.
+- Reviewer no-shows: the author is held harmless (the revision log takes the substitute staff review as its source); the no-show reviewer loses the feedback points.
 
 ## WIC Compliance (CS 462)
 
@@ -104,11 +104,11 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 | 300 or 400 level, juniors and seniors | 462, capstone standing | Met |
 | Regular departmental number | 462 | Met |
 | 4,000 words per student across assignments | Unmeasured beyond the RFC | Open (#60) |
-| 1,500 words of low-stakes writing per student | Two written peer reviews, five contribution lines, a share of five judgment layers; no length guideline today | Open (#60) |
+| 1,500 words of low-stakes writing per student | Two written peer reviews, the RFC revision log (outside the RFC's length floor), five contribution lines, a share of five judgment layers; no length guideline today | Open (#60) |
 | One formal piece of 1,500 or more words using disciplinary sources | The winter RFC: its length floor (on the RFC page) clears this, and its analysis is argued from cited sources | Met |
 | 35% of the grade from writing assignments | Writing assignments are 30% of the winter grade, 38% if repo checkpoints (docs graded from the checkpoint PDF) count; the weights are on the assignments overview, the RFC under Individual Evidence and the rest in the Winter Team Deliverables table | Open (#60) |
 | Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final, plus a substitute review when a peer reviewer no-shows. Waiting on the WIC director | Open (#60) |
-| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback; revision after instructor feedback waits on the draft-feedback decision in #60 | Partial (#60) |
+| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback through the revision log, one row per point with a decision (#348); its Source column already takes instruction-team feedback, so revision after instructor feedback waits only on the draft-feedback decision in #60 | Partial (#60) |
 | Student-to-instructor ratio of 25 to 1 or better | Two instructors, six TAs, about 300 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
 | Instructor of record is not a graduate student | Faculty instructors | Met |
 | WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open (#60) |
