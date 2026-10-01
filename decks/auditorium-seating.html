@@ -20,6 +20,7 @@
       --tint-b: 73%;
       --label: 36%;
       --label-fg: #ffffff;
+      --error: #b3261e;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
@@ -37,23 +38,8 @@
         --tint-b: 40%;
         --label: 62%;
         --label-fg: #111110;
+        --error: #ff8a80;
       }
-    }
-    :root[data-theme="dark"] {
-      --bg: #161614;
-      --fg: #f0efe9;
-      --muted: #a8a69e;
-      --stage: #2a2926;
-      --stage-edge: #4a4842;
-      --screen: #e9e7df;
-      --seat: #1d1d1b;
-      --seat-edge: rgb(255 255 255 / 0.3);
-      --halo: #161614;
-      --sat: 45%;
-      --tint-a: 30%;
-      --tint-b: 40%;
-      --label: 62%;
-      --label-fg: #111110;
     }
 
     * {
@@ -132,7 +118,7 @@
     }
     .error {
       font-weight: 600;
-      color: #b3261e;
+      color: var(--error);
     }
     .slide header label {
       display: none;
@@ -233,8 +219,7 @@
     </main>
     <footer id="legend"></footer>
 
-    <script>
-    "use strict";
+    <script type="module">
     // The room. Edit this block to match the real auditorium; everything else is derived.
     // Units are arbitrary drawing units; only the ratios matter.
     const ROOM = {
@@ -289,7 +274,7 @@
           side: "right",
         },
       ],
-      teams: 65,
+      teams: 65, // raise this if more teams form; every team gets five to seven seats at 65
     };
 
     const NS = "http://www.w3.org/2000/svg";
@@ -393,7 +378,7 @@
     }
 
     // Rows pair up front to back. Teams are allocated across every pair in the room
-    // at once, which keeps team sizes within a seat or so of each other.
+    // at once, which keeps team sizes close; the footer flags seats left without a team.
     const sections = ROOM.sections.map((s) => {
       const seatRows = rowsOf(s);
       const pairs = [];
@@ -531,15 +516,23 @@
       const chip = document.createElement("span");
       chip.className = "chip";
       chip.style.setProperty("--h", section.hue);
-      chip.innerHTML = `<i></i>${section.name}: ${text.toLowerCase()}`;
+      chip.append(
+        document.createElement("i"),
+        `${section.name}: ${text.toLowerCase()}`
+      );
       legend.appendChild(chip);
     }
 
     const count = document.createElement("span");
     count.textContent = `${totalSeats} seats, ${ROOM.teams} teams`;
+    const seated = svg.querySelectorAll(".seat").length;
     if (totalSeats !== ROOM.expectedSeats) {
       count.className = "error";
       count.textContent += ` (expected ${ROOM.expectedSeats} seats: check the row counts)`;
+    } else if (seated !== totalSeats || ROOM.teams > totalSeats) {
+      count.className = "error";
+      count.textContent +=
+        " (some seats or teams were left out: check the team count)";
     }
     legend.prepend(count);
 
@@ -553,7 +546,7 @@
     function focus(team) {
       let hit = false;
       for (const g of svg.querySelectorAll(".team")) {
-        const on = String(team) === g.dataset.team;
+        const on = Number(team) === Number(g.dataset.team);
         g.classList.toggle("on", on);
         hit ||= on;
       }
@@ -568,9 +561,16 @@
       focus(g ? g.dataset.team : "");
     });
     svg.addEventListener("mouseleave", () => focus(find.value));
-    // ?slide hides the team box, for exporting the map as an image.
+    // ?slide hides the team box and forces the light theme, for exporting the map
+    // as a 16:9 image for slides. From the repository root:
+    //   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+    //     --hide-scrollbars --window-size=1920,1080 --force-device-scale-factor=2 \
+    //     --screenshot="$PWD/auditorium-seating.png" "file://$PWD/decks/auditorium-seating.html?slide"
     const params = new URLSearchParams(location.search);
-    document.body.classList.toggle("slide", params.has("slide"));
+    if (params.has("slide")) {
+      document.body.classList.add("slide");
+      document.documentElement.dataset.theme = "light";
+    }
     const fromUrl = params.get("team");
     if (fromUrl) {
       find.value = fromUrl;
