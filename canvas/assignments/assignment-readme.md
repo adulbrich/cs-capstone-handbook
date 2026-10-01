@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: RFC Revision Log (#348)
+
+`rfc/rfc-final-rubric.csv`: the response-to-feedback note is now a revision log, a table after the RFC in the final PDF with one row per point of feedback received, each changed or declined. The Revision criterion is renamed "Revision: feedback integrated, with a revision log" and its bands check the log row by row; the Writing criterion's length band no longer counts the log. Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms, after #262 if both are pending. Re-paste the RFC Final Draft body from the paste kit.
+
 ## Canvas Changes: Sprint Notes Numbered Across the Year (#337)
 
 Sprint notes now run 1 to 12 across the year instead of restarting each term, so a sprint and its note carry one number all year. Fall is unchanged (Sprint Notes 1 to 4). In CS 462 rename Sprint Notes 1 to 5 as **Sprint Notes 5** to **Sprint Notes 9**, and each Individual Contribution entry with its note (Sprint Notes 1: Individual Contribution becomes **Sprint Notes 5: Individual Contribution**). Work from the highest number down, so old Sprint Notes 5 is already Sprint Notes 9 before old Sprint Notes 1 takes its name. In CS 463 rename Sprint Notes 1 to 3 as **Sprint Notes 10** to **Sprint Notes 12**, the same way. Re-paste those bodies from the paste kit, and re-paste the three syllabi, whose Team Deliverables line now names each term's sprint note numbers. Points, weights, due weeks, and rubrics are unchanged.

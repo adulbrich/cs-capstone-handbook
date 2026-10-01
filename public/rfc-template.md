@@ -55,15 +55,6 @@ Licensing, data use, IP, and the partner confidentiality boundary as they bear o
 
 What is assessed is in the [AI policy](https://capstone.alexulbrich.com/assignments/introduction/#ai-policy-applies-to-every-assignment).
 
-## Response to Feedback
-
-Written at revision time, after the week 5 peer review. One short paragraph per reviewer:
-
-- **What they raised**, in your words, not a quote dump.
-- **What you changed because of it**, pointing at the section above that moved. If you changed nothing, say why the objection does not hold.
-
-Reviewers whose points you accepted should be able to find their fingerprints in the document.
-
 ## Decision
 
 Accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
