@@ -60,23 +60,32 @@ export function canvasRows(canvas) {
   return rows;
 }
 
-// The anchor of the rubric that scores a family, from the page's headings
-// (Starlight's `{ depth, slug, text }` list): the "###" named for the family
-// under "## Rubric" when its entries have a rubric of their own, else
-// "## Rubric" itself.
-export function rubricAnchor(family, headings) {
-  const name = family.name.replace("{n}", "N");
-  const rubric = headings.findIndex(
-    (h) => h.depth === 2 && h.text === "Rubric"
-  );
-  if (rubric < 0) {
+// The heading a family's entries share on the page: its name with "{n}"
+// written "N" ("Sprint Notes N"). The page's "###" under What You Submit and
+// Rubric, the Canvas export, and the validator all match entries by it.
+export const familyHeading = (family) => family.name.replace("{n}", "N");
+
+// The slug of the "###" named `name` inside the "##" section titled
+// `section`, from the page's headings (Starlight's `{ depth, slug, text }`
+// list), or undefined.
+export function headingUnder(headings, section, name) {
+  const start = headings.findIndex((h) => h.depth === 2 && h.text === section);
+  if (start < 0) {
     return;
   }
-  const end = headings.findIndex((h, i) => i > rubric && h.depth <= 2);
-  const under = headings.slice(rubric + 1, end < 0 ? undefined : end);
+  const end = headings.findIndex((h, i) => i > start && h.depth <= 2);
+  return headings
+    .slice(start + 1, end < 0 ? undefined : end)
+    .find((h) => h.depth === 3 && h.text === name)?.slug;
+}
+
+// The anchor of the rubric that scores a family: its "###" under "## Rubric"
+// when its entries have a rubric of their own, else "## Rubric" itself.
+export function rubricAnchor(family, headings) {
   return (
-    under.find((h) => h.depth === 3 && h.text === name) ?? headings[rubric]
-  ).slug;
+    headingUnder(headings, "Rubric", familyHeading(family)) ??
+    headings.find((h) => h.depth === 2 && h.text === "Rubric")?.slug
+  );
 }
 
 const TITLE_SUFFIX_RE = /: \{title\}$/;
@@ -127,7 +136,7 @@ export function pageTerms(assignment) {
 // that varies says so per term, unless `due_label` says it in words.
 /**
  * @returns {{ due: string, family: any, heading: string, name: string,
- *   peerReview: string | null, weight: string }[]}
+ *   peerReview: string | null, repeats: boolean, weight: string }[]}
  */
 export function summaryRows(canvas) {
   const rows = canvasRows(canvas);
@@ -138,14 +147,15 @@ export function summaryRows(canvas) {
   return [...groups.values()].flatMap((families) => {
     const [family] = families;
     const mine = rows.filter((r) => families.includes(r.family));
-    const line = (rowsOf, weeksText, weight) => ({
+    const line = (rowsOf, weeksText, weight, isRepeated) => ({
       due: family.due_label ?? weeksText,
       family,
-      heading: family.name.replace("{n}", "N"),
+      heading: familyHeading(family),
       name: familyName(family, rowsOf),
       peerReview: family.peer_review_week
         ? `peer reviews week ${family.peer_review_week}`
         : null,
+      repeats: isRepeated,
       weight,
     });
     if (isTitled(family)) {
@@ -153,7 +163,8 @@ export function summaryRows(canvas) {
         line(
           [r],
           cap(`${r.term} ${weekList([...new Set(r.weeks)]).toLowerCase()}`),
-          r.names.length > 1 ? `${pct(r.weight)} in all` : pct(r.weight)
+          r.names.length > 1 ? `${pct(r.weight)} in all` : pct(r.weight),
+          false
         )
       );
     }
@@ -170,7 +181,7 @@ export function summaryRows(canvas) {
         ? pct(mine[0].each)
         : mine.map((r) => `${pct(r.each)} ${r.term}`).join(", ");
     const repeats = mine.some((r) => r.weeks.length > 1);
-    return [line(mine, due, repeats ? `${each} each` : each)];
+    return [line(mine, due, repeats ? `${each} each` : each, repeats)];
   });
 }
 

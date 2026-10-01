@@ -25,7 +25,11 @@ import { toString as text } from "hast-util-to-string";
 import { h } from "hastscript";
 import { SKIP, visit } from "unist-util-visit";
 import { parse } from "yaml";
-import { canvasRows, TERMS } from "../src/lib/canvas-entries.mjs";
+import {
+  canvasRows,
+  familyHeading,
+  TERMS,
+} from "../src/lib/canvas-entries.mjs";
 
 const SITE = "https://capstone.alexulbrich.com";
 const OUT = "canvas-export";
@@ -225,10 +229,10 @@ const OVERRIDES = {
       o.dropSection("the-inherited-codebase-audit");
     }
   },
-  // The individual half is its own block under What You Submit; nothing else
-  // on the page is it.
+  // The individual half is its own blocks under What You Submit and Rubric;
+  // nothing else on the page is it.
   "Sprint Notes {n}: Individual Contribution": (o) => {
-    o.keepOnly("what-you-submit");
+    o.keepOnly("what-you-submit", "rubric");
   },
 };
 
@@ -266,19 +270,27 @@ function ops(root, where) {
       }
       top.splice(i, sectionEnd(top, i) - i);
     },
-    keepOnly(id) {
-      const i = find(id);
-      if (i < 0) {
-        return miss(`section #${id}`);
+    // Keep only the named sections, in page order; drop the rest, the
+    // page's intro included.
+    keepOnly(...ids) {
+      const kept = [];
+      for (const id of ids) {
+        const i = find(id);
+        if (i < 0) {
+          miss(`section #${id}`);
+          continue;
+        }
+        kept.push([i, sectionEnd(top, i)]);
       }
-      top.splice(sectionEnd(top, i));
-      top.splice(0, i);
+      const nodes = kept
+        .sort((a, b) => a[0] - b[0])
+        .flatMap(([i, j]) => top.slice(i, j));
+      top.splice(0, top.length, ...nodes);
     },
   };
 }
 
 // The heading text a family would give its own section: "Sprint Notes N".
-const familyHeading = (f) => f.name.replace("{n}", "N");
 const familyBase = (f) =>
   f.name.includes("{n}") ? f.name.slice(0, f.name.indexOf("{n}")) : null;
 
@@ -526,13 +538,9 @@ function body(e) {
       ["script", "style", "svg", "starlight-tabs-restore"].includes(
         node.tagName
       ) ||
-      [
-        "sl-anchor-link",
-        "katex-html",
-        "rubric",
-        "assignment-meta",
-        "canvas-entries",
-      ].some((c) => hasClass(node, c));
+      ["sl-anchor-link", "katex-html", "rubric", "assignment-meta"].some((c) =>
+        hasClass(node, c)
+      );
     if (drop) {
       parent.children.splice(index, 1);
       return [SKIP, index];

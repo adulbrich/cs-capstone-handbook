@@ -24,6 +24,7 @@ import { join } from "node:path";
 import { parse } from "yaml";
 import {
   canvasRows,
+  familyHeading,
   isTitled,
   termWeight,
 } from "../src/lib/canvas-entries.mjs";
@@ -668,6 +669,7 @@ const SKELETON = [
   "Rubric",
   "Activities That Prepare This",
 ];
+const REQUIRED = ["What You Submit", "Rubric"];
 const AFTER_ACTIVITIES = new Set(["References"]);
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
 // A submission format lives under What You Submit, never in a heading (#288).
@@ -713,7 +715,7 @@ for (const file of files) {
   const sections = body.split(/^(?=## )/m).slice(1);
   const titles = sections.map((text) => text.split("\n")[0].slice(3));
   const section = (name) => sections[titles.indexOf(name)];
-  for (const name of SKELETON.slice(1, 3)) {
+  for (const name of REQUIRED) {
     if (!titles.includes(name)) {
       console.error(`SKELETON ${file}: no "## ${name}" section.`);
       failed = true;
@@ -744,7 +746,12 @@ for (const file of files) {
   const aiUses = body.match(new RegExp(AI_USE_RE.source, "gm")) ?? [];
   if (produce) {
     const [own] = produce.split(/^### /m);
-    if (!AI_USE_RE.test(own) || aiUses.length !== 1) {
+    const lastBlock =
+      own
+        .trim()
+        .split(/\n\s*\n/)
+        .at(-1) ?? "";
+    if (!AI_USE_RE.test(lastBlock) || aiUses.length !== 1) {
       console.error(
         `AI USE ${file}: needs one "**AI use:**" paragraph, as the last paragraph of What You Produce before any "###", naming what AI may do and what fails the assignment.`
       );
@@ -766,9 +773,7 @@ for (const file of files) {
       .split(/^(?=### )/m)
       .slice(1)
       .map((sub) => sub.split("\n")[0].slice(4));
-  const families = new Set(
-    (assignment.canvas ?? []).map((f) => f.name.replace("{n}", "N"))
-  );
+  const families = new Set((assignment.canvas ?? []).map(familyHeading));
   const rubricEntries = entryHeadings(section("Rubric"));
   for (const name of rubricEntries.filter((n) => !families.has(n))) {
     console.error(

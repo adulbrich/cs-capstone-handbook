@@ -188,8 +188,10 @@ required; `validate-outcomes.mjs` checks the order.
 
 1. **`<AssignmentSummary />`**, immediately after the imports, before any
    prose. It is generated from the `assignment` frontmatter: a header line
-   saying who submits, when the page runs, and its weight, then one row per
+   saying who submits, when the page runs, and its weight, then a row per
    Canvas entry family with its due week, weight, and a link to its rubric.
+   Families sharing a name are one row (the partner's End-of-Term Survey);
+   a titled family gets a row per term (the workshops).
 
    ```mdx
    import AssignmentSummary from '/src/components/AssignmentSummary.astro';
@@ -259,6 +261,9 @@ required; `validate-outcomes.mjs` checks the order.
    Every activity you link here must carry a `Recommended` or `Workshop` badge;
    `scripts/validate-activities.mjs` fails otherwise. Promote and link in the
    same commit.
+
+   Workshop Activities is the one page without it: its entries are
+   activities.
 
 ### Entries with a rubric of their own
 
