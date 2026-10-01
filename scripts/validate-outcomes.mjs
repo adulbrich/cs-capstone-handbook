@@ -665,12 +665,15 @@ if (!failed) {
 // the first time it fires.
 //
 const DELIVERABLE_HEADING_RE =
-  /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
+  /^## (What You Produce|What .* Must (Produce|Contain)|Structure|Required Sections)$/m;
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
 // Every page with Canvas entries says what to hand in under this heading, and
 // a submission format lives there, never in a heading (#288).
-// An entry with its own `##` section and <AssignmentMeta> (the RFC's draft and
-// final, a sprint's individual contribution) needs its own block inside it.
+// On the fixed skeleton (#331), an entry with its own <AssignmentMeta> (the
+// RFC's draft and final) is a "###" under "## What You Submit", and "## Rubric"
+// has an "###" of the same name: the Canvas export gives each entry the "###"
+// sections named for it. A page not yet moved to the skeleton gives such an
+// entry its own "##" section with a "### What You Submit" block inside.
 const WHAT_YOU_SUBMIT_RE = /^#{2,3} What You Submit$/m;
 const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/im;
 const META_RE = /<AssignmentMeta\b/;
@@ -726,22 +729,49 @@ for (const file of files) {
 
   // Every page with Canvas entries says what to hand in.
   const sections = body.split(/^(?=## )/m).slice(1);
-  const entrySections = sections.filter((section) => META_RE.test(section));
-  const shared = sections.filter((section) => !META_RE.test(section)).join("");
-  if (
-    assignment.canvas &&
-    entrySections.length < assignment.canvas.length &&
-    !WHAT_YOU_SUBMIT_RE.test(shared)
-  ) {
+  if (assignment.canvas && !WHAT_YOU_SUBMIT_RE.test(body)) {
     console.error(
-      `SUBMIT ${file}: has Canvas entries without their own section but no page-level "What You Submit" heading saying what to hand in.`
+      `SUBMIT ${file}: has Canvas entries but no "What You Submit" heading saying what to hand in.`
     );
     failed = true;
   }
-  for (const section of entrySections) {
-    if (!WHAT_YOU_SUBMIT_RE.test(section)) {
+  const isSection = (name) => (section) => section.startsWith(`## ${name}\n`);
+  for (const section of sections) {
+    if (
+      META_RE.test(section) &&
+      !isSection("What You Submit")(section) &&
+      !WHAT_YOU_SUBMIT_RE.test(section)
+    ) {
       console.error(
         `SUBMIT ${file}: the entry section "${section.split("\n")[0]}" has its own <AssignmentMeta> but no "### What You Submit" block.`
+      );
+      failed = true;
+    }
+  }
+  const entryHeadings = (section) =>
+    (section ?? "")
+      .split(/^(?=### )/m)
+      .slice(1)
+      .map((sub) => sub.split("\n")[0].slice(4));
+  const submitEntries = (sections.find(isSection("What You Submit")) ?? "")
+    .split(/^(?=### )/m)
+    .slice(1)
+    .filter((sub) => META_RE.test(sub))
+    .map((sub) => sub.split("\n")[0].slice(4));
+  if (submitEntries.length > 0) {
+    const families = new Set(
+      (assignment.canvas ?? []).map((f) => f.name.replace("{n}", "N"))
+    );
+    for (const name of submitEntries.filter((n) => !families.has(n))) {
+      console.error(
+        `SUBMIT ${file}: "### ${name}" under What You Submit names no Canvas entry; the export matches it to an entry by name.`
+      );
+      failed = true;
+    }
+    const rubricEntries = entryHeadings(sections.find(isSection("Rubric")));
+    if (rubricEntries.join("|") !== submitEntries.join("|")) {
+      console.error(
+        `RUBRIC ${file}: "## Rubric" has the entries [${rubricEntries.join(", ")}] but "## What You Submit" has [${submitEntries.join(", ")}]; give each entry one "###" in both, in the same order.`
       );
       failed = true;
     }

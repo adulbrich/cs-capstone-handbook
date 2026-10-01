@@ -357,13 +357,44 @@ function rubricHeadingsToGrading(top) {
   }
 }
 
+// Drop each "##" or "###" section another family owns or `offScope` rejects.
+// The entry's own "###" on the fixed skeleton loses its heading, since the
+// Canvas entry carries the name, and its "####" subsections move up a level
+// so no heading level skips.
+function dropOtherSections(top, family, owner, offScope) {
+  for (let i = 0; i < top.length; i += 1) {
+    const n = top[i];
+    if (!(isEl(n) && ["h2", "h3"].includes(n.tagName))) {
+      continue;
+    }
+    const heading = text(n).trim();
+    const f = owner(heading);
+    if ((f && f !== family) || offScope(heading)) {
+      top.splice(i, sectionEnd(top, i) - i);
+      i -= 1;
+    } else if (f && n.tagName === "h3" && heading === familyHeading(f)) {
+      for (const sub of top.slice(i + 1, sectionEnd(top, i))) {
+        if (isEl(sub) && sub.tagName === "h4") {
+          sub.tagName = "h3";
+        }
+      }
+      top.splice(i, 1);
+      i -= 1;
+    }
+  }
+}
+
 function trim(e, root) {
   const top = root.children;
   const { term, week, family } = e;
   const weeksInTerm = family.weeks?.[term]?.length ?? 1;
 
   // 1. Sections owned by another entry family on the same page. A heading
-  // belongs to the family with the longest name it starts with.
+  // belongs to the family with the longest name it starts with: an "##" on a
+  // page that gives each entry its own section, an "###" under "What You
+  // Submit" and "Rubric" on the fixed skeleton (#331). On the skeleton the
+  // entry's own "###" heading goes too, since the Canvas entry carries the
+  // name; its content stays (dropOtherSections).
   const owner = (heading) =>
     e.families
       .filter((f) => heading.startsWith(familyHeading(f)))
@@ -386,18 +417,12 @@ function trim(e, root) {
     return Boolean(m && m[1] !== own);
   };
 
-  for (let i = 0; i < top.length; i += 1) {
-    const n = top[i];
-    if (!(isEl(n) && ["h2", "h3"].includes(n.tagName))) {
-      continue;
-    }
-    const heading = text(n).trim();
-    const f = n.tagName === "h2" ? owner(heading) : null;
-    if ((f && f !== family) || offTerm(heading) || otherMember(heading)) {
-      top.splice(i, sectionEnd(top, i) - i);
-      i -= 1;
-    }
-  }
+  dropOtherSections(
+    top,
+    family,
+    owner,
+    (heading) => offTerm(heading) || otherMember(heading)
+  );
 
   const scope = { offTerm, otherMember, root, term };
   visit(root, "element", (node, index, parent) => {

@@ -1,5 +1,5 @@
 ---
-import { rowName, tableRows } from "../lib/canvas-entries.mjs";
+import { rowName, rubricAnchor, tableRows } from "../lib/canvas-entries.mjs";
 
 /**
  * CanvasEntries: the Canvas assignments an assignment page owns, as a table.
@@ -9,7 +9,8 @@ import { rowName, tableRows } from "../lib/canvas-entries.mjs";
  * Canvas import generates. Each row is one family in one term: "Sprint Notes
  * 1 to 4" is four Canvas assignments, each with its own due date, grade and
  * submission. A titled family ("Workshop {n}: {title}") gets one row per
- * entry instead, since its entries differ by name.
+ * entry instead, since its entries differ by name. Each row links to the
+ * rubric that scores it, so how an entry is scored is on the first screen.
  *
  * Accessibility notes:
  * - A real <table> with a <caption> and header cells.
@@ -23,7 +24,8 @@ import { rowName, tableRows } from "../lib/canvas-entries.mjs";
  *
  *   <CanvasEntries />
  */
-const { assignment } = Astro.locals.starlightRoute.entry.data;
+const { entry, headings } = Astro.locals.starlightRoute;
+const { assignment } = entry.data;
 const rows = tableRows(assignment?.canvas);
 
 const SUBMISSION_LABELS = {
@@ -59,6 +61,7 @@ function due(weeks: number[], peerReviewWeek?: number) {
         <th scope="col">Due</th>
         <th scope="col">Weight</th>
         <th scope="col">Submission</th>
+        <th scope="col">Rubric</th>
       </tr>
     </thead>
     <tbody>
@@ -77,6 +80,9 @@ function due(weeks: number[], peerReviewWeek?: number) {
               {row.submissions
                 .map((s: keyof typeof SUBMISSION_LABELS) => SUBMISSION_LABELS[s])
                 .join(" and ")}
+            </td>
+            <td>
+              <a href={`#${rubricAnchor(row.family, headings)}`}>Rubric</a>
             </td>
           </tr>
         ))
@@ -120,6 +126,12 @@ function due(weeks: number[], peerReviewWeek?: number) {
   .canvas-entries tbody th {
     font-weight: 600;
     color: var(--sl-color-white);
+  }
+
+  /* The table opts out of Starlight's content styles, so its links take the
+     theme's accent here. */
+  .canvas-entries a {
+    color: var(--sl-color-text-accent);
   }
 
   @media print {

@@ -83,3 +83,32 @@ export function rowName(row) {
   const last = row.first + row.names.length - 1;
   return row.family.name.replace("{n}", `${row.first} to ${last}`);
 }
+
+// The anchor of the rubric that scores a family, from the page's headings
+// (Starlight's `{ depth, slug, text }` list). On the fixed skeleton (#331) it
+// is the "###" named for the family under "## Rubric". A page not yet moved
+// to it names the rubric in a heading of its own ("End-of-Term Survey
+// Rubric"), puts it after the family's own heading ("Midterm Pulse", then
+// "Pulse Rubric"), or has one rubric for every entry.
+export function rubricAnchor(family, headings) {
+  const name = family.name.replace("{n}", "N");
+  const isRubric = (h) => h.text.includes("Rubric");
+  const startsWithName = (h) =>
+    h.text === name || h.text.startsWith(`${name} `);
+  const rubricH2 = headings.findIndex(
+    (h) => h.depth === 2 && h.text === "Rubric"
+  );
+  if (rubricH2 >= 0) {
+    const end = headings.findIndex((h, i) => i > rubricH2 && h.depth <= 2);
+    const under = headings.slice(rubricH2 + 1, end < 0 ? undefined : end);
+    return (
+      under.find((h) => h.depth === 3 && h.text === name) ?? headings[rubricH2]
+    ).slug;
+  }
+  const own = headings.findIndex(startsWithName);
+  return (
+    headings.find((h) => startsWithName(h) && isRubric(h)) ??
+    (own >= 0 ? headings.slice(own).find(isRubric) : undefined) ??
+    headings.find(isRubric)
+  )?.slug;
+}
