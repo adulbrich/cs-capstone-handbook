@@ -23,13 +23,13 @@ assignment:
       rubric: project-handoff/project-handoff-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/project-handoff/project-handoff-rubric.csv?raw';
 
-<AssignmentMeta submission="Team" due="Spring, week 8" weight="4% of the spring grade">
+<AssignmentSummary>
   The last thing your team ships.
-</AssignmentMeta>
+</AssignmentSummary>
 
 Within a few weeks, your team stops existing and the project keeps going: with your partner, a maintainer community, next year's capstone team, or you. The handoff is professional knowledge transfer, and the bar is concrete: **a stranger with relevant technical background can run and maintain the project using only this document and the repository.** If your living docs stayed current all year, this assignment is mostly assembly.
 
@@ -37,9 +37,11 @@ Within a few weeks, your team stops existing and the project keeps going: with y
 You hold the IP by default ([IP, NDA, and Licensing](/introduction/ip-nda-and-licensing/) has the details), so the successor can be your own team. Three things change: repository ownership stays with you instead of transferring, the archive declaration in section 6 still applies, and the conversation with your partner about what you're taking forward happens before week 10, not after. One thing does not change: **the spring rung is scored on what shipped by week 10.** "We are going to keep working on it" is the same move as "the partner will deploy it after the project ends" (see [Some Truths About Shipping](/guides/shipping/#some-truths-about-shipping)) and it earns the same rung.
 :::
 
-## What You Must Produce
+## What You Produce
 
 A **partner-facing handoff document** (2 to 4 pages, delivered where your partner keeps project documents: their issue tracker, wiki, or document system, or the repository's issues if they have none) containing the sections below. Student-proposed projects use their mentor or instructor as the confirming partner. A non-responsive partner does not tank your grade: after two documented attempts, an instructor or mentor confirms instead and the criterion is scored on your documented attempts.
+
+**AI use:** AI may draft and assemble from your repository; that is what the living docs were for. Do not let it invent steps, links, or artifact locations: every command and URL in this document must work, because the person who discovers otherwise cannot ask you anymore.
 
 ### 1. Overview and Current Status
 
@@ -78,11 +80,9 @@ The school may share project archives with future students and project partners 
 
 The handoff document as one PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes and the written partner confirmation from section 5 inside it.
 
-## Rubric (100 points)
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/project-handoff/project-handoff-rubric.csv" />
-
-**AI use:** AI may draft and assemble from your repository; that is what the living docs were for. Do not let it invent steps, links, or artifact locations: every command and URL in this document must work, because the person who discovers otherwise cannot ask you anymore.
 
 ## Activities That Prepare This
 

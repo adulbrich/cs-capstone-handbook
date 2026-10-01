@@ -97,11 +97,16 @@ export const collections = {
             // has its own due date, late window, grade and submission,
             // so entries are never bundled: a family expands to one
             // entry per week listed. src/lib/canvas-entries.mjs expands
-            // it for the page table; validate-outcomes.mjs checks it.
+            // it for the summary card; validate-outcomes.mjs checks it.
             canvas: z
               .array(
                 z
                   .object({
+                    // When it is due, in words, for the summary card where
+                    // the weeks alone mislead or run long: "With each
+                    // sprint note", "Week 7 or 9". The weeks still set the
+                    // Canvas due dates.
+                    due_label: text().optional(),
                     // Canvas assignment group; weights live on groups.
                     group: text(),
                     // Exact Canvas name; "{n}" numbers a family 1, 2, ...

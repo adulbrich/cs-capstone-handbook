@@ -21,19 +21,19 @@ assignment:
       rubric: project-landing-page/project-landing-page-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/project-landing-page/project-landing-page-rubric.csv?raw';
 
-<AssignmentMeta submission="Team" due="Spring, week 7" weight="3% of the spring grade">
+<AssignmentSummary>
   One page per team, not per student.
-</AssignmentMeta>
+</AssignmentSummary>
 
 Your project needs a front door: the page a recruiter, a future user, or your project partner's boss lands on and understands in thirty seconds what this is and why it matters. Building one gives every team member a link that belongs on a resume and in the [Career and Individual Retrospective](/assignments/career-retrospective/).
 
 This is a **team submission**. One page, built together, crediting everyone. Individual portfolio pages are encouraged but are not this assignment.
 
-## What You Must Produce
+## What You Produce
 
 Pick the format that fits your project:
 
@@ -43,7 +43,11 @@ Pick the format that fits your project:
 
 Talk to your partner first: they may have an existing page to update rather than replace. Multi-year projects credit past contributors and may build on a previous team's page.
 
-## Required Content (any format)
+**AI use:** AI may write copy and code for the page. Every claim about features, capabilities, and results must be accurate; a landing page that oversells what exists is graded as inaccurate, not ambitious.
+
+### Required Content
+
+In any format:
 
 1. **Description and value proposition**: one sentence saying what it is and who it is for; the problem it solves and why that matters; the "so what" that makes it notable. Written for the audience, not the grader.
 2. **Highlights**: 3 to 5 features, findings, or capabilities from the audience's perspective, with at least one real screenshot, figure, or demo clip showing the project in action.
@@ -54,13 +58,11 @@ Talk to your partner first: they may have an existing page to update rather than
 
 A public URL plus a full-page screenshot (the screenshot is the graded snapshot; the URL proves it's live).
 
-## Rubric (100 points)
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/project-landing-page/project-landing-page-rubric.csv" />
 
 For the **polish and accessibility** criterion, the standard being graded is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) level AA: [text alternatives](https://www.w3.org/WAI/tutorials/images/) on meaningful images, 4.5:1 contrast on body text, and link text whose purpose is clear from the link and its surrounding text. Run [Lighthouse](https://developer.chrome.com/docs/lighthouse/) or [axe](https://github.com/dequelabs/axe-core) first, then do a manual pass, because automation covers only part of it: the [accessibility guide](/guides/accessibility/#manual-accessibility-testing) has the coverage figures and the manual checks, and no tool will tell you that your alt text describes the wrong thing.
-
-**AI use:** AI may write copy and code for the page. Every claim about features, capabilities, and results must be accurate; a landing page that oversells what exists is graded as inaccurate, not ambitious.
 
 :::note[If your project is under NDA or cannot publish]
 Publish a sanitized page: the problem domain, approach, and lessons in terms your partner approves. If that isn't possible, or your research project cannot publish, contact the instruction team.

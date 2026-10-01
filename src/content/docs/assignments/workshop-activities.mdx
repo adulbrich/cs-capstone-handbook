@@ -33,16 +33,19 @@ assignment:
       rubric: workshop-activities/workshop-activities-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
-import CanvasEntries from '/src/components/CanvasEntries.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/workshop-activities/workshop-activities-rubric.csv?raw';
 
-<AssignmentMeta submission="Team, graded complete/incomplete" due="Fall weeks 2, 3, 7 and 8; winter weeks 1 to 3; spring week 2" weight="Fall 2% (5 items), winter 1% (3 items), spring 1% (1 item)" />
+<AssignmentSummary who="Team, graded complete/incomplete" />
 
-<CanvasEntries />
+In this assignment your team runs an activity from the [practice library](/activities/introduction/) in class and submits its output. The more than a hundred other activities in the library are optional.
 
-In this assignment your team runs an activity from the [practice library](/activities/introduction/) in class and submits its output. Each workshop below is its own entry, with the activity to run, what a complete submission holds, and the later work it makes easier. The more than a hundred other activities in the library are optional.
+## What You Produce
+
+Each workshop below is its own entry, with the activity to run, what a complete submission holds, and the later work it makes easier. A submission is complete when it is the activity's output; there is no quality bar.
+
+**AI use:** use AI tools the way the activity page describes. Submitting an AI-generated output without running the activity as a team scores Incomplete.
 
 ## Fall
 
@@ -120,16 +123,12 @@ The assessment closes with the charter refresh: update the charter (the [working
 
 The workshop's complete submission, as its section above describes, in one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)); a photo of a whiteboard or sticky notes goes inside the PDF.
 
-## Rubric (100 points per workshop)
+:::note[If your project is under NDA]
+Submit a sanitized version: what you did, without partner-confidential specifics. If that isn't possible, contact the instruction team.
+:::
+
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/workshop-activities/workshop-activities-rubric.csv" />
 
 Do the workshop in class, or by the end of the week the class happened, for credit; a workshop submitted after that week earns no points ([late work](/assignments/introduction/#late-work-absence-and-makeup)).
-
-A submission is complete when it is the activity's output; there is no quality bar.
-
-**AI use:** use AI tools the way the activity page describes. Submitting an AI-generated output without running the activity as a team scores Incomplete.
-
-:::note[If your project is under NDA]
-Submit a sanitized version: what you did, without partner-confidential specifics. If that isn't possible, contact the instruction team.
-:::

@@ -94,6 +94,7 @@ assignment:
     - name: "<Exact Canvas name; {n} numbers a family, {title} names each entry>"
       group: <Canvas assignment group>
       weeks: { fall: [4, 8] }
+      due_label: <optional: the due date in words for the card, "Week 7 or 9">
       titles: { fall: [<one per week listed>] }  # only with {title} in the name
       numbering: year  # optional: {n} continues across terms (Sprint Notes 1 to 12)
       weight: <the family's percent of the term grade>
@@ -119,6 +120,9 @@ entries** (AGENTS.md hard rule 6): a draft and a final, or four sprint notes,
 are separate Canvas assignments with their own due dates and grades, however
 the page groups them for the reader. `docs/decisions/2026-09-23-canvas-entry-model.md`
 has the model; `peer_review_week` marks an entry using Canvas's own peer review.
+`due_label` replaces the weeks on the summary card where they mislead or run
+long ("End of each sprint", "Week 7 or 9"); the weeks still set the Canvas due
+dates.
 
 Eight rules the validators enforce, all of which have been gotten wrong before:
 
@@ -141,18 +145,19 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    term is a hard failure, as is a declared term no grid row gives, or a page
    with an `assignment:` block and no row. See
    **Grade Weights** below.
-5. **The `<AssignmentMeta weight="...">` text states every percentage the
-   frontmatter declares.** A per-term map means every term's figure appears
-   in the text ("8% of the fall grade, 10% of the winter grade, 6% of the spring grade").
-6. **A page with a deliverable section carries an `**AI use:**` paragraph.**
-   The deliverable headings the validator recognizes are the four listed
-   under **Section Skeleton** below.
+5. **The page follows the Section Skeleton below.** `<AssignmentSummary />`
+   and never `<AssignmentMeta>`; What You Submit and Rubric present; the fixed
+   sections in order; nothing after Activities but References; every rubric
+   table inside `## Rubric`.
+6. **What You Produce ends its own text on one `**AI use:**` paragraph**,
+   before any `###`, and a page without What You Produce has none.
 7. **Rubric points total exactly 100** per CSV (see **Rubric Rules**).
 8. **The `canvas` entries reconcile.** Per term, family weights sum to the page
    weight; within one Canvas group, every entry carries the same weight per
    point (Canvas weights a group's entries by points); every family's rubric
-   is rendered on the page and every rendered CSV belongs to a family; a page
-   with more than one entry in a term renders `<CanvasEntries />`.
+   is rendered on the page and every rendered CSV belongs to a family; every
+   `###` under Rubric names a family, and the family `###`s under What You
+   Submit, if any, match them.
 
 A page with no `assignment:` block is skipped by the validator entirely: no
 rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages
@@ -167,43 +172,38 @@ passes Zod but keeps the block and so re-arms the rubric and AI-use checks.
 Two **graded** pages share the shape for a different reason:
 `resume-and-intent.mdx` and `career-retrospective.mdx` run entirely in Canvas
 under the co-instructor (#197), at their real weights, not at 0 points. Each
-shows only its `<AssignmentMeta>` and "Please check the Canvas assignment.", and
+shows only its hand-written `<AssignmentMeta>` and "Please check the Canvas assignment.", and
 the Section Skeleton below does not apply to them. Do not rebuild them.
 
 Not enforced, still required: the
-three bands, criteria written as observable checks, the section order, and the
-Canvas CSV band descriptions (only the tag sets are reconciled).
+three bands, criteria written as observable checks, and the Canvas CSV band
+descriptions (only the tag sets are reconciled).
 
 ## Section Skeleton
 
-Sections in **bold** are required.
+Every graded page has the same sections in the same order, so a student who
+has read one page knows where to look on the next, and the Canvas export can
+cut a page into one body per entry by heading name. Sections in **bold** are
+required; `validate-outcomes.mjs` checks the order.
 
-1. **`<AssignmentMeta>` block**, immediately after the frontmatter, before any
-   prose. This replaced the freehand bold sentence; do not reintroduce one.
+1. **`<AssignmentSummary />`**, immediately after the imports, before any
+   prose. It is generated from the `assignment` frontmatter: a header line
+   saying who submits, when the page runs, and its weight, then one row per
+   Canvas entry family with its due week, weight, and a link to its rubric.
 
    ```mdx
-   import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+   import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 
-   <AssignmentMeta submission="Team" due="Winter, week 3 (v1, partner-agreed)" weight="3% of the winter grade">
-     A v0 draft is part of the fall week-10 [Repo Checkpoint](/assignments/repo-checkpoints/).
-   </AssignmentMeta>
+   <AssignmentSummary who="Individual, held as a team session" />
    ```
 
-   - `submission`: "Team", "Individual", or the qualified form where it matters
-     ("Team, with the individual contribution modifier"; "Individual, held as a
-     team session").
-   - `due`: the term and week, or the cadence for repeated work.
-   - `weight`: percent of that term's grade, matching the `weight` frontmatter.
-   - The slot is optional and holds **one** qualifying clause. It is MDX, so
-     links work. Anything longer belongs in the intro prose.
-
-   Self-close it (`/>`) when there is no note.
-
-   On a page owning more than one Canvas entry in a term, `<CanvasEntries />`
-   follows it: the table of entries, read from the page's own `canvas`
-   frontmatter. Where the entries differ in what is submitted or how it is
-   graded (the RFC's draft and final), give each its own `##` section named
-   as in Canvas, with its own `<AssignmentMeta>` and its own rubric.
+   - `who` overrides "Team" or "Individual" (from `level`) where the page
+     needs the qualified form ("Team, with the individual contribution
+     modifier"; "Completed by your project partner, not by you").
+   - The slot is optional and holds **one** qualifying clause, in MDX.
+     Anything longer belongs in the intro prose.
+   - Nothing on the card is typed by hand. A due date the weeks state badly
+     goes in the family's `due_label`.
 
 2. **Intro prose.** One to three paragraphs, in second person, on what the
    student produces, by when, and what makes it good. Say why it matters **to
@@ -215,62 +215,70 @@ Sections in **bold** are required.
    Students read the page to find out what to do; design rationale belongs in
    `STAFF-RUNBOOK.md`, `docs/agents/`, or the issue that made the decision.
 
-3. **The deliverable section.** Heading names the artifact and, where it
-   applies, its length:
-
-   - `## What You Must Produce`
-   - `## What It Must Contain (1 to 2 pages)`
-   - `## Structure (2 to 3 pages)`
-   - `## Required Sections`
+3. **`## What You Produce`**, on every page where the student makes an
+   artifact. The heading is always this; the length goes in its first lines
+   ("The postmortem is two to three pages."), never in the heading. Named
+   parts are `###` subsections, or a numbered list when a grader looks for
+   them one by one. Its own text, before the first `###`, ends on the
+   **`**AI use:**` paragraph**: what AI may legitimately do here, and the
+   specific dishonest use that fails the assignment. Be concrete:
+   "fabricating demo footage, metrics, findings, or user feedback fails the
+   assignment; a smaller true number always beats a bigger invented one."
 
    Only what an AI tool or a successor needs to work on the product goes in
    the project repository: the living docs Repo Checkpoints lists (#302).
    Team documents (the charter, retrospectives, the handoff document) do
    not, and the page says where they live instead.
 
-   Prefer a numbered list when the artifact has named parts a grader will look
-   for one by one. State the length and where it lives.
+   A page whose student makes nothing to hand in (Defense, Term Startup, the
+   two evaluation pages) has no What You Produce and no AI-use paragraph.
 
-   Then **`## What You Submit`**, in one or two lines: the format and what goes
-   in it. An entry with its own `##` section and `<AssignmentMeta>` (the RFC's
-   draft and final, a sprint's individual contribution) carries its own
-   `### What You Submit` inside that section. Where each entry's section
-   already says what a complete submission is (the workshops), one page-level
-   block covers them all. Every document is submitted as one PDF; link the rule in
+4. *Explanation sections*, optional: how a session runs, the term gates, the
+   partner's facets, the demo cadence. Named for their content.
+
+5. **`## What You Submit`**, in one or two lines: the format and what goes in
+   it. Every document is submitted as one PDF; link the rule in
    `assignments/introduction.mdx` ("Submitting Your Work") rather than
-   restating what its cover carries. An entry with nothing to hand in says so
-   and why ("Nothing to upload: ..."). A format never goes in a heading, and neither does a
-   percentage (`docs/agents/voice.md`, Structure).
-   `validate-outcomes.mjs` fails a page with Canvas entries and no such
-   heading, an entry section with its own meta and no block, and a heading
-   carrying "PDF" or "submitted as" (#288).
+   restating what its cover carries. Something with nothing to hand in says
+   so and why ("Nothing to upload: ..."). A format never goes in a heading,
+   and neither does a percentage (`docs/agents/voice.md`, Structure). The
+   NDA variation of what to submit goes here, as a
+   `:::note[If your project is under NDA]`.
 
-4. **`## Rubric (100 points)`**, whose table is a `<RubricTable>` rather than
-   Markdown. Prose belongs under it: the `**AI use:**` paragraph, per-criterion
-   grading notes, and any late or non-submission rule. One sentence may precede
-   the component where it frames the whole rubric.
-   See **The Rubric Lives in the CSV** and **Rubric Rules**.
-
-5. **`**AI use:**` paragraph**, required on any assignment whose deliverable is
-   a written document. State what AI may legitimately do here, and name the
-   specific dishonest use that would fail the assignment. Be concrete:
-   "fabricating demo footage, metrics, findings, or user feedback fails the
-   assignment; a smaller true number always beats a bigger invented one."
-
-6. *Admonitions.* Optional. The pattern worth reusing is
-   `:::note[If your project is under NDA]` for the local NDA variation. Do not
-   write a `Why this replaces X` or `Why we do it this way` admonition; that
-   is course design talking to itself on a student page. Keep each to one
-   idea.
+6. **`## Rubric`**, exactly that, whose table is a `<RubricTable>` rather than
+   Markdown. Prose belongs under it: per-criterion grading notes and any late
+   or non-submission rule. One sentence may precede the table where it frames
+   the whole rubric. See **The Rubric Lives in the CSV** and **Rubric Rules**.
 
 7. **`## Activities That Prepare This`.** The shared recommendations first,
    naming the criterion each one serves. Then, where projects actually
    differ, an **Examples** table whose first column reads "If your project is". Then a `Browse ... when these run
-   out.` line naming one or two activity categories.
+   out.` line naming one or two activity categories. Nothing follows it but
+   `## References` on a page that cites sources.
 
    Every activity you link here must carry a `Recommended` or `Workshop` badge;
    `scripts/validate-activities.mjs` fails otherwise. Promote and link in the
    same commit.
+
+### Entries with a rubric of their own
+
+Where a page's Canvas entries are graded differently (the RFC's draft and
+final, a sprint's team note and individual contribution, the partner's pulse
+and survey), each gets one `###` under `## Rubric`, named exactly as the
+`canvas` family with `{n}` written as `N` ("Sprint Notes N"). Where they also
+differ in what is handed in, each gets the same `###` under `## What You
+Submit`, with any procedure of its own (the RFC's peer review) as `####`
+inside it. Where every entry shares one rubric (Repo Checkpoints, the
+workshops, Peer Evaluations), there are no entry headings.
+
+The Canvas export gives each entry the `###` sections named for it and drops
+the others, so a misspelled entry heading puts the wrong text in Canvas. The
+validator checks the names.
+
+*Admonitions* are optional anywhere. The pattern worth reusing is
+`:::note[If your project is under NDA]` for the local NDA variation. Do not
+write a `Why this replaces X` or `Why we do it this way` admonition; that is
+course design talking to itself on a student page. Keep each to one idea.
 
 ## Rubric Rules
 
@@ -282,9 +290,8 @@ The rules below are about its content.
   weights as points (#300).
 - **One CSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
   one CSV; every workshop shares one. The RFC's draft and final differ, so
-  they have two. A page with several renders each under a heading containing
-  "Rubric" (the nearest `##` or `###`), and its outcome counts are the sum
-  across them.
+  they have two. A page with several renders each under its entry's `###`
+  in `## Rubric`, and its outcome counts are the sum across them.
 - **Three to six criteria is the working range.** Fewer than three cannot
   discriminate. More is allowed when each criterion is a separable
   observable check and the grading cost is accepted: at ~300 students and
@@ -318,7 +325,7 @@ page. One file, two destinations, nothing to keep in sync.
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/team-charter/team-charter-rubric.csv?raw';
 
-## Rubric (100 points)
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/team-charter/team-charter-rubric.csv" />
 ```
@@ -502,7 +509,7 @@ the student to guess the standard they will be graded against.
 
 1. Run the whole Validation list in `AGENTS.md`. For an assignment page two of
    them carry most of the weight: `validate:outcomes` checks the frontmatter,
-   rubric tags, weights, Canvas entries, AssignmentMeta weight text, AI-use
+   rubric tags, weights, Canvas entries, the section skeleton, the AI-use
    paragraph, and rubric totals; `canvas:export -- --strict` checks the page
    still converts to a Canvas body.
 2. If you touched a weight, verify all three terms still sum to 25%.

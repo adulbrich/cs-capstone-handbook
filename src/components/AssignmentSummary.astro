@@ -63,6 +63,9 @@ const rows = summaryRows(assignment.canvas).map((row) => ({
   rubric: rubricAnchor(row.family, headings),
   section: sectionOf(row.heading),
 }));
+// A one-row card already states the row's weight in its header line.
+const showWeight =
+  rows.length > 1 || rows.some((row) => row.weight.endsWith(" each"));
 const hasNote = Astro.slots.has("default");
 ---
 
@@ -90,8 +93,14 @@ const hasNote = Astro.slots.has("default");
               {row.due}
               {row.peerReview && `, ${row.peerReview}`}
             </span>
-            <span class="assignment-summary__sep" aria-hidden="true">·</span>
-            <span>{row.weight}</span>
+            {showWeight && (
+              <>
+                <span class="assignment-summary__sep" aria-hidden="true">
+                  ·
+                </span>
+                <span>{row.weight}</span>
+              </>
+            )}
             {row.rubric && (
               <>
                 <span class="assignment-summary__sep" aria-hidden="true">

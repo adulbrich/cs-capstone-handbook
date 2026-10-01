@@ -9,6 +9,7 @@ assignment:
   weight: 25
   canvas:
     - name: "Midterm Pulse"
+      due_label: Closes end of week 6
       group: Project Partner Midterm
       weeks: { fall: [6], winter: [6], spring: [6] }
       weight: 5
@@ -16,6 +17,7 @@ assignment:
       submission: survey
       rubric: project-partner-evaluation/partner-pulse-rubric.csv
     - name: "End-of-Term Survey"
+      due_label: Closes end of week 10
       group: Project Partner Final
       weeks: { fall: [10] }
       weight: 20
@@ -38,8 +40,7 @@ assignment:
       rubric: project-partner-evaluation/partner-final-spring-rubric.csv
 ---
 
-import CanvasEntries from '/src/components/CanvasEntries.astro';
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import RubricTable from '/src/components/RubricTable.astro';
 import pulseCsv from '/canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv?raw';
@@ -47,11 +48,9 @@ import fallCsv from '/canvas/assignments/project-partner-evaluation/partner-fina
 import winterCsv from '/canvas/assignments/project-partner-evaluation/partner-final-winter-rubric.csv?raw';
 import springCsv from '/canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv?raw';
 
-<AssignmentMeta submission="Completed by your project partner, not by you" due="Midterm pulse sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
+<AssignmentSummary who="Completed by your project partner, not by you">
   Team-level by default, with individual adjustment where a partner flags a specific student.
-</AssignmentMeta>
-
-<CanvasEntries />
+</AssignmentSummary>
 
 25% of your grade every term is based on your interactions with your project partner, scored by them in two surveys:
 
@@ -60,19 +59,15 @@ import springCsv from '/canvas/assignments/project-partner-evaluation/partner-fi
 
 **If your team has no project partner**, as on a student-proposed project, your mentor (sometimes an instructor) stands in as the project partner and scores the same six facets. This 25% is always scored and never redistributed, so every student in the course is graded on the same four blocks of 25%.
 
-Fall and winter are progress-focused; spring scores outcomes. The facet weights move with the year, and each term's [rubric](#end-of-term-survey-rubric) gives them as points: fall is won on requirements, winter on building, spring on the shipped outcome. If a team changes projects mid-year the weights do not change.
+Fall and winter are progress-focused; spring scores outcomes. The facet weights move with the year, and each term's [rubric](#end-of-term-survey) gives them as points: fall is won on requirements, winter on building, spring on the shipped outcome. If a team changes projects mid-year the weights do not change.
 
 ## How the scoring works
 
-Every facet has three written anchors in the [rubric](#end-of-term-survey-rubric), worth all of the facet's points, 80% of them, and half of them. A partner scores 90% or 70% when the team sits between two anchors. The spring Verification and Validation facet is scored on the outcome ladder, which has six rungs of its own.
+Every facet has three written anchors in the [rubric](#end-of-term-survey), worth all of the facet's points, 80% of them, and half of them. A partner scores 90% or 70% when the team sits between two anchors. The spring Verification and Validation facet is scored on the outcome ladder, which has six rungs of its own.
 
 Under each facet is a short list headed **What it looks like**. It is the same list for both readers: for the student, it's what to do every week; for the partner, it's what to look for before choosing an anchor. In the lists, "you" is the partner. Nothing on the lists needs a rubric to be understood, and nothing on them is optional in a professional engagement. Discuss the lists with your partner in the first meeting of every term.
 
-The survey also asks the partner to flag any specific student who did not contribute; that flag starts the corroboration review at the bottom of this page.
-
-## What You Submit
-
-Nothing. Your project partner, or whoever stands in for them, completes both surveys.
+The survey also asks the partner to flag any specific student who did not contribute; that flag starts the [corroboration review](#corroboration-review) below.
 
 ## If Your Partner Does Not Answer
 
@@ -80,7 +75,7 @@ A survey your partner (or the stand-in scoring your team) does not answer by the
 
 ## Midterm Pulse
 
-Four statements, each answered on a five-point scale from Strongly disagree to Strongly agree, and each worth a quarter of the pulse; the [pulse rubric](#pulse-rubric) below turns each answer into points. Each statement is one behavior from the facet lists below, so the way to score well in week 6 is the way to score well in week 10.
+Four statements, each answered on a five-point scale from Strongly disagree to Strongly agree, and each worth a quarter of the pulse; the [pulse rubric](#midterm-pulse-1) below turns each answer into points. Each statement is one behavior from the facet lists below, so the way to score well in week 6 is the way to score well in week 10.
 
 | Item | Statement your partner rates | Drawn from |
 |---|---|---|
@@ -90,12 +85,6 @@ Four statements, each answered on a five-point scale from Strongly disagree to S
 | Reflection | The team acted on the feedback I gave since our last meetings, or told me why not. | Reflection |
 
 A partner who has not given the team any feedback yet answers Neither agree nor disagree on Reflection.
-
-### Pulse Rubric
-
-The pulse has its own scale, separate from the six facets that follow.
-
-<RubricTable csv={pulseCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv" />
 
 ## Reflection
 
@@ -147,7 +136,7 @@ The outcome of the project, not only the output.
 
 ### Spring
 
-In spring the scale is one ladder for every project, the outcome ladder: **who ran the software**. Its six rungs are the Verification and Validation row of the [spring rubric](#end-of-term-survey-rubric). Read it literally. Every rung above the bottom one describes someone outside the team running your work, and the top rung describes people who depend on it. Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out, path by path. Those paths are guidance and a playbook; they do not change the scale.
+In spring the scale is one ladder for every project, the outcome ladder: **who ran the software**. Its six rungs are the Verification and Validation row of the [spring rubric](#end-of-term-survey). Read it literally. Every rung above the bottom one describes someone outside the team running your work, and the top rung describes people who depend on it. Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out, path by path. Those paths are guidance and a playbook; they do not change the scale.
 
 Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete. The rungs are written generally because they have to cover every project in the class. Your Definition of Shipped says what your target rung means for your project: which environment, which users, which upstream, measured how. That is what your partner scores against in spring, and it's why you write it in winter, while there is still time to act on it.
 
@@ -178,28 +167,6 @@ Whether the partner always knows where the project stands without asking.
 - A question gets an answer or an "I will find out by X", and X holds.
 - Written updates arrive on the cadence you agreed, without being chased, and a message gets an answer within one working day.
 - Documents you receive are short, current, and answer the question they were sent for.
-
-## End-of-Term Survey Rubric
-
-<Tabs syncKey="terms">
-  <TabItem label="Fall">
-    <RubricTable csv={fallCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-fall-rubric.csv" />
-  </TabItem>
-  <TabItem label="Winter">
-    <RubricTable csv={winterCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-winter-rubric.csv" />
-  </TabItem>
-  <TabItem label="Spring">
-    <RubricTable csv={springCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv" />
-  </TabItem>
-</Tabs>
-
-## Activities That Prepare This
-
-- [Regular Stand-Up Meetings](/activities/teamwork/#regular-stand-up-meetings): the Teamwork and Communication lists; the habit of every voice, every time.
-- [User Story Mapping](/activities/requirements/#user-story-mapping): the Requirements list; written, prioritized goals your partner has seen.
-- [External Feedback Session](/activities/reflective/#external-feedback-session): the Reflection and Verification lists; feedback collected and visibly acted on.
-
-Browse [teamwork](/activities/teamwork/) and [communication](/activities/communication/) when these run out.
 
 ## Individual Accountability
 
@@ -237,3 +204,37 @@ The best protection is **visible, traceable contribution throughout the term**:
 - Make every contribution measurable and attributable to you. If your work isn't easily traceable (e.g., design discussions, testing, documentation), make sure to document it in a way that can be corroborated (e.g., meeting notes, issue comments, pull request reviews).
 - If you're blocked, tell your team and your project partner early. If you raise a blocker and adapt, you are treated very differently from a student who goes quiet.
 - Peer evaluations reflect your teammates' real-time view of your work. If you're having a difficult term, address it on your individual page of the term retrospective and raise it with the instructors early; waiting until grades are posted is too late.
+
+## What You Submit
+
+Nothing. Your project partner, or whoever stands in for them, completes both surveys.
+
+## Rubric
+
+### Midterm Pulse
+
+The pulse has its own scale, separate from the six facets of the End-of-Term Survey.
+
+<RubricTable csv={pulseCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv" />
+
+### End-of-Term Survey
+
+<Tabs syncKey="terms">
+  <TabItem label="Fall">
+    <RubricTable csv={fallCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-fall-rubric.csv" />
+  </TabItem>
+  <TabItem label="Winter">
+    <RubricTable csv={winterCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-winter-rubric.csv" />
+  </TabItem>
+  <TabItem label="Spring">
+    <RubricTable csv={springCsv} sourceLabel="canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv" />
+  </TabItem>
+</Tabs>
+
+## Activities That Prepare This
+
+- [Regular Stand-Up Meetings](/activities/teamwork/#regular-stand-up-meetings): the Teamwork and Communication lists; the habit of every voice, every time.
+- [User Story Mapping](/activities/requirements/#user-story-mapping): the Requirements list; written, prioritized goals your partner has seen.
+- [External Feedback Session](/activities/reflective/#external-feedback-session): the Reflection and Verification lists; feedback collected and visibly acted on.
+
+Browse [teamwork](/activities/teamwork/) and [communication](/activities/communication/) when these run out.

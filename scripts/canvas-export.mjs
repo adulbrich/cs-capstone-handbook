@@ -225,10 +225,10 @@ const OVERRIDES = {
       o.dropSection("the-inherited-codebase-audit");
     }
   },
-  // The individual half has its own section; nothing else on the page is it.
-  "Sprint Notes {n}: Individual Contribution": (o, e) => {
-    o.keepOnly("sprint-notes-n-individual-contribution");
-    o.renameHeading("sprint-notes-n-individual-contribution", e.name);
+  // The individual half is its own block under What You Submit; nothing else
+  // on the page is it.
+  "Sprint Notes {n}: Individual Contribution": (o) => {
+    o.keepOnly("what-you-submit");
   },
 };
 
@@ -273,13 +273,6 @@ function ops(root, where) {
       }
       top.splice(sectionEnd(top, i));
       top.splice(0, i);
-    },
-    renameHeading(id, label) {
-      const i = find(id);
-      if (i < 0) {
-        return miss(`heading #${id}`);
-      }
-      top[i].children = [{ type: "text", value: label }];
     },
   };
 }

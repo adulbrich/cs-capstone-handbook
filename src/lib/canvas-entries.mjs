@@ -1,7 +1,8 @@
 // Expands an assignment page's `assignment.canvas` families into the Canvas
-// entries they stand for. Shared by `src/components/CanvasEntries.astro`,
-// which renders them on the page, and `scripts/validate-outcomes.mjs`, which
-// checks them, so the two cannot disagree about what a family means.
+// entries they stand for. Shared by `src/components/AssignmentSummary.astro`,
+// which summarizes them at the top of the page, `scripts/canvas-export.mjs`,
+// and `scripts/validate-outcomes.mjs`, which checks them, so none of them can
+// disagree about what a family means.
 //
 // A family is one frontmatter item: a name, a Canvas group, and the weeks it
 // is due in each term. It expands to one entry per week listed, because each
@@ -59,58 +60,23 @@ export function canvasRows(canvas) {
   return rows;
 }
 
-// The rows the page table shows: a titled family gets one row per entry,
-// since "Workshop 1 to 5: {title}" names nothing. Such a row's `weight` is
-// its one entry's share, which is also its `each`.
-export function tableRows(canvas) {
-  return canvasRows(canvas).flatMap((row) =>
-    isTitled(row.family)
-      ? row.names.map((name, i) => ({
-          ...row,
-          names: [name],
-          weeks: [row.weeks[i]],
-          weight: row.each,
-        }))
-      : [row]
-  );
-}
-
-// The name a row shows: "Sprint Notes 5 to 9" for a numbered family.
-export function rowName(row) {
-  if (row.names.length === 1) {
-    return row.names[0];
-  }
-  const last = row.first + row.names.length - 1;
-  return row.family.name.replace("{n}", `${row.first} to ${last}`);
-}
-
 // The anchor of the rubric that scores a family, from the page's headings
-// (Starlight's `{ depth, slug, text }` list). On the fixed skeleton (#331) it
-// is the "###" named for the family under "## Rubric". A page not yet moved
-// to it names the rubric in a heading of its own ("End-of-Term Survey
-// Rubric"), puts it after the family's own heading ("Midterm Pulse", then
-// "Pulse Rubric"), or has one rubric for every entry.
+// (Starlight's `{ depth, slug, text }` list): the "###" named for the family
+// under "## Rubric" when its entries have a rubric of their own, else
+// "## Rubric" itself.
 export function rubricAnchor(family, headings) {
   const name = family.name.replace("{n}", "N");
-  const isRubric = (h) => h.text.includes("Rubric");
-  const startsWithName = (h) =>
-    h.text === name || h.text.startsWith(`${name} `);
-  const rubricH2 = headings.findIndex(
+  const rubric = headings.findIndex(
     (h) => h.depth === 2 && h.text === "Rubric"
   );
-  if (rubricH2 >= 0) {
-    const end = headings.findIndex((h, i) => i > rubricH2 && h.depth <= 2);
-    const under = headings.slice(rubricH2 + 1, end < 0 ? undefined : end);
-    return (
-      under.find((h) => h.depth === 3 && h.text === name) ?? headings[rubricH2]
-    ).slug;
+  if (rubric < 0) {
+    return;
   }
-  const own = headings.findIndex(startsWithName);
+  const end = headings.findIndex((h, i) => i > rubric && h.depth <= 2);
+  const under = headings.slice(rubric + 1, end < 0 ? undefined : end);
   return (
-    headings.find((h) => startsWithName(h) && isRubric(h)) ??
-    (own >= 0 ? headings.slice(own).find(isRubric) : undefined) ??
-    headings.find(isRubric)
-  )?.slug;
+    under.find((h) => h.depth === 3 && h.text === name) ?? headings[rubric]
+  ).slug;
 }
 
 const TITLE_SUFFIX_RE = /: \{title\}$/;
@@ -152,25 +118,45 @@ export function pageTerms(assignment) {
 }
 
 // One line per family for the page's summary card: its name across the year,
-// when it is due, and what each entry is worth. A family due the same weeks
-// and worth the same in every term reads as one line ("Week 4", "5%"); one
-// that varies says so per term.
+// when it is due, and what each entry is worth. Families sharing a name are
+// one line (the partner's End-of-Term Survey, one family per term because
+// each term has its own rubric). A titled family gets a line per term with
+// the term's total ("Workshop 1 to 5 · Fall weeks 2, 3, 7, and 8 · 2% in
+// all"), since its entries' shares are fractions nobody plans by. A family
+// due the same weeks and worth the same in every term reads as one line; one
+// that varies says so per term, unless `due_label` says it in words.
 /**
  * @returns {{ due: string, family: any, heading: string, name: string,
  *   peerReview: string | null, weight: string }[]}
  */
 export function summaryRows(canvas) {
   const rows = canvasRows(canvas);
-  return (canvas ?? []).map((family) => {
-    const mine = rows.filter((r) => r.family === family);
-    const numbers = [
-      ...new Set(mine.flatMap((r) => r.names.map((_, i) => r.first + i))),
-    ];
-    const span =
-      numbers.length > 2
-        ? `${numbers[0]} to ${numbers.at(-1)}`
-        : termList(numbers.map(String));
-    const name = family.name.replace("{n}", span).replace(TITLE_SUFFIX_RE, "");
+  const groups = new Map();
+  for (const family of canvas ?? []) {
+    groups.set(family.name, [...(groups.get(family.name) ?? []), family]);
+  }
+  return [...groups.values()].flatMap((families) => {
+    const [family] = families;
+    const mine = rows.filter((r) => families.includes(r.family));
+    const line = (rowsOf, weeksText, weight) => ({
+      due: family.due_label ?? weeksText,
+      family,
+      heading: family.name.replace("{n}", "N"),
+      name: familyName(family, rowsOf),
+      peerReview: family.peer_review_week
+        ? `peer reviews week ${family.peer_review_week}`
+        : null,
+      weight,
+    });
+    if (isTitled(family)) {
+      return mine.map((r) =>
+        line(
+          [r],
+          cap(`${r.term} ${weekList([...new Set(r.weeks)]).toLowerCase()}`),
+          r.names.length > 1 ? `${pct(r.weight)} in all` : pct(r.weight)
+        )
+      );
+    }
     const sameWeeks = new Set(mine.map((r) => r.weeks.join())).size === 1;
     const due = sameWeeks
       ? weekList(mine[0].weeks)
@@ -179,20 +165,23 @@ export function summaryRows(canvas) {
             .map((r) => `${r.term} ${weekList(r.weeks).toLowerCase()}`)
             .join("; ")
         );
-    const repeats = mine.some((r) => r.weeks.length > 1);
     const each =
       new Set(mine.map((r) => r.each)).size === 1
         ? pct(mine[0].each)
         : mine.map((r) => `${pct(r.each)} ${r.term}`).join(", ");
-    return {
-      due,
-      family,
-      heading: family.name.replace("{n}", "N"),
-      name,
-      peerReview: family.peer_review_week
-        ? `peer reviews week ${family.peer_review_week}`
-        : null,
-      weight: repeats ? `${each} each` : each,
-    };
+    const repeats = mine.some((r) => r.weeks.length > 1);
+    return [line(mine, due, repeats ? `${each} each` : each)];
   });
+}
+
+// "Sprint Notes 1 to 12", "Repo Checkpoint 1 and 2", "Workshop 1 to 5".
+function familyName(family, rows) {
+  const numbers = [
+    ...new Set(rows.flatMap((r) => r.names.map((_, i) => r.first + i))),
+  ];
+  const span =
+    numbers.length > 2
+      ? `${numbers[0]} to ${numbers.at(-1)}`
+      : termList(numbers.map(String));
+  return family.name.replace("{n}", span).replace(TITLE_SUFFIX_RE, "");
 }

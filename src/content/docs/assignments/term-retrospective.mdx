@@ -13,6 +13,7 @@ assignment:
     SO5: 1
   canvas:
     - name: "Term Retrospective"
+      due_label: Week 9, Wednesday before Thanksgiving
       group: Term Retrospective
       weeks: { fall: [9] }
       weight: 3
@@ -21,23 +22,25 @@ assignment:
       rubric: term-retrospective/term-retrospective-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/term-retrospective/term-retrospective-rubric.csv?raw';
 
-<AssignmentMeta submission="Team, with one individual page per student" due="Fall, week 9, Wednesday before Thanksgiving" weight="3% of the fall grade">
+<AssignmentSummary who="Team, with one individual page per student">
   Week 9 is a three-day week, and the sprint this reflects on closed with Sprint Note 3 in week 8, so Monday to Wednesday is enough for a 60-to-90-minute session and a short write-up.
-</AssignmentMeta>
+</AssignmentSummary>
 
 Ten weeks in, your team has real patterns: things you do well without noticing and things that hurt every sprint. The retrospective is where you name them while there's still time to act, because winter starts a few weeks after finals with the same people and a harder job.
 
 Fall uses the **4Ls format**: Liked, Learned, Lacked, Longed for. Run the session as a team (the Retrospectives guide has [the four dimensions](/guides/retrospectives/#4ls) and [how to facilitate](/guides/retrospectives/#running-a-good-retrospective)), then write up what came out of it. Run it under the [retrospective prime directive](https://retrospectivewiki.org/index.php?title=The_Prime_Directive), which assumes everyone did the best they could with what they knew at the time. That's not politeness: a session where people expect blame produces a sanitized list, and a sanitized list gives you nothing to act on.
 
-## What You Must Produce
+## What You Produce
 
-One document (2 pages of team content plus individual pages), kept with [your team's documents](/assignments/repo-checkpoints/#what-the-repository-must-contain-the-living-docs), not in the repository. NDA teams reference work by title or ID only.
+One document (2 pages of team content plus individual pages), kept with [your team's documents](/assignments/repo-checkpoints/#what-you-produce), not in the repository. NDA teams reference work by title or ID only.
 
 Start from the [retrospective template](/team-retrospective-template.md).
+
+**AI use:** AI may help you structure and phrase the write-up. It cannot attend your retrospective, and it must not invent artifacts or soften findings.
 
 ### 1. Themes (from the 4Ls)
 
@@ -66,13 +69,11 @@ The individual page is graded on wins and gaps tied to concrete examples and one
 
 The retrospective as one PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes.
 
-## Rubric (100 points)
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/term-retrospective/term-retrospective-rubric.csv" />
 
 The individual-pages criterion is scored per student; a missing or generic individual page costs that student, not the team.
-
-**AI use:** AI may help you structure and phrase the write-up. It cannot attend your retrospective, and it must not invent artifacts or soften findings.
 
 :::note[Winter and spring]
 Winter's retrospective is the [Incident Postmortem](/assignments/incident-postmortem/), one concrete failure analyzed. Spring's is the [Project Retrospective](/assignments/project-retrospective/), the cross-year story.
