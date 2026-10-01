@@ -174,27 +174,4 @@ const html = toHtml(weekCards(tree, { levels, notes, term }));
     font-weight: 400;
     white-space: nowrap;
   }
-
-  /* Who submits: the audience colours the activity badges use. */
-  .week-cards :global(.week-tag) {
-    display: inline-block;
-    font-size: var(--sl-text-xs);
-    line-height: 1.4;
-    padding: 0.05rem 0.45rem;
-    border-radius: 0.375rem;
-    vertical-align: 0.1em;
-    white-space: nowrap;
-  }
-  .week-cards :global(.week-tag--team) {
-    background: var(--sl-color-blue-low);
-    color: var(--sl-color-blue-high);
-  }
-  .week-cards :global(.week-tag--individual) {
-    background: var(--sl-color-green-low);
-    color: var(--sl-color-green-high);
-  }
-  .week-cards :global(.week-tag--partner) {
-    background: var(--sl-color-gray-6);
-    color: var(--sl-color-gray-2);
-  }
 </style>

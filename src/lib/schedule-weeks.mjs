@@ -43,6 +43,11 @@ const hasClass = (n, c) =>
   isEl(n) && [n.properties?.className ?? []].flat().includes(c);
 const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/g, "");
 
+// The Team, Individual or Partner tag, styled in src/styles/global.css because
+// the Assignments Overview's grade grid shows the same tags.
+export const tagNode = (tag) =>
+  h(`span.who-tag.who-tag--${tag.toLowerCase()}`, tag);
+
 // Who submits a Due item, from the page its one internal link points at.
 export function tagFor(href, levels) {
   const path = pagePath(href);
@@ -165,11 +170,7 @@ function dueItem(li, ctx) {
   if (note) {
     ctx.seenNotes.push({ n: Number(note), week: ctx.week });
   }
-  return h("li", [
-    ...li.children,
-    " ",
-    h(`span.week-tag.week-tag--${tag.toLowerCase()}`, tag),
-  ]);
+  return h("li", [...li.children, " ", tagNode(tag)]);
 }
 
 function card(week, ctx) {

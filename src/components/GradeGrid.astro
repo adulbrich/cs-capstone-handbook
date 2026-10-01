@@ -1,0 +1,102 @@
+---
+// The Assignments Overview's grade grid: every term's grade, by component.
+// The table stays Markdown in assignments/introduction.mdx; this renders it,
+// and src/lib/grade-grid.mjs bands each component and tags it.
+import { getCollection } from "astro:content";
+import { fromHtml } from "hast-util-from-html";
+import { toHtml } from "hast-util-to-html";
+import { gradeGrid } from "../lib/grade-grid.mjs";
+
+const docs = await getCollection("docs");
+const levels = new Map(
+  docs
+    .filter((d) => d.data.assignment?.level)
+    .map((d) => [d.id, d.data.assignment?.level])
+);
+
+const tree = fromHtml(await Astro.slots.render("default"), { fragment: true });
+const html = toHtml(gradeGrid(tree, { levels }));
+---
+
+<div class="grade-grid" set:html={html} />
+
+<style>
+  .grade-grid :global(table) {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sl-text-sm);
+  }
+  .grade-grid :global(th),
+  .grade-grid :global(td) {
+    padding: 0.4rem 0.75rem;
+    border: 0;
+    border-bottom: 1px solid var(--sl-color-hairline);
+    background: transparent;
+  }
+  .grade-grid :global(thead th) {
+    color: var(--sl-color-gray-2);
+    font-weight: 600;
+    border-bottom: 2px solid var(--sl-color-gray-5);
+  }
+
+  /* The term columns: numbers right-aligned so they line up down a term. */
+  .grade-grid :global(th:not(:first-child)),
+  .grade-grid :global(td:not(:first-child)) {
+    width: 4.5rem;
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .grade-grid :global(.grade-grid__component td) {
+    background: var(--sl-color-gray-6);
+    padding-top: 0.6rem;
+  }
+  .grade-grid :global(.grade-grid__component td:not(:first-child)) {
+    vertical-align: top;
+    color: var(--sl-color-gray-2);
+  }
+  .grade-grid :global(.grade-grid__name) {
+    display: block;
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+  .grade-grid :global(.grade-grid__who) {
+    display: block;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-2);
+  }
+
+  .grade-grid :global(.grade-grid__item td:first-child) {
+    padding-inline-start: 1.5rem;
+  }
+  .grade-grid :global(.grade-grid__none) {
+    color: var(--sl-color-gray-3);
+  }
+
+  .grade-grid :global(.grade-grid__total td) {
+    font-weight: 600;
+    border-top: 2px solid var(--sl-color-gray-5);
+    border-bottom: 0;
+  }
+
+  .grade-grid :global(.grade-grid__note) {
+    margin-top: 0.5rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+  }
+
+  @media (max-width: 30rem) {
+    .grade-grid :global(th),
+    .grade-grid :global(td) {
+      padding-inline: 0.4rem;
+    }
+    .grade-grid :global(th:not(:first-child)),
+    .grade-grid :global(td:not(:first-child)) {
+      width: 3.25rem;
+    }
+    .grade-grid :global(.grade-grid__item td:first-child) {
+      padding-inline-start: 0.9rem;
+    }
+  }
+</style>

@@ -1,115 +1,51 @@
 ---
 title: Assignments Overview
-description: The full assignment architecture for the capstone series, including grade weights, cadence, individual accountability, and NDA handling.
+description: "Every term's grade by component and assignment, and the rules that apply to every assignment: submitting, rubrics, late work, AI use, and TA check-ins."
 sidebar:
   order: 0
 ---
 
-This section covers all graded work in the capstone series, and two pages here that carry no points of their own: [Demo Day](/assignments/demo-day/) and the [Engineering Expo](/assignments/expo/). Two graded assignments run under the co-instructor and are not described here: [Resume and Intent](/assignments/resume-and-intent/) and the [Career and Individual Retrospective](/assignments/career-retrospective/).
+import GradeGrid from '/src/components/GradeGrid.astro';
 
-The repository is the product and the documentation: you spend your hours building, verifying, and shipping, not producing documents about work. Requirements and design documents live in the repository as continuously updated docs (where your AI coding tools can read them too), and graders review them at a commit you name. Individual credit comes from the things no one else can do for you: writing an RFC, defending your own work live, and owning work your team accepts.
+This section covers all graded work in the capstone series, and two pages here that carry no points of their own: [Demo Day](/assignments/demo-day/) and the [Engineering Expo](/assignments/expo/). Two graded assignments run under the co-instructor and are not described here: [Resume and Intent](/assignments/resume-and-intent/) and the [Career and Individual Retrospective](/assignments/career-retrospective/).
 
 ## Grade Architecture
 
-Each term, the grade is composed of four equal components:
+Each term's grade is four equal components of 25. Every number below is a percent of that term's grade, and a dot means the assignment does not run that term. Each name links to the page that says what is due, when, and how it is scored; the [Schedule](/introduction/schedule/) lays the due weeks out in time.
 
-| Component | Weight | Level | Details |
-|-----------|--------|-------|---------|
-| Project Partner Interactions | 25% | Team, with individual corroboration | How your team works with your project partner, scored by them: midterm pulse 5% + final survey 20%. Where a team has no partner, its mentor (sometimes an instructor) stands in. See [Project Partner Evaluation](/assignments/project-partner-evaluation/). |
-| Peer Evaluation | 25% | Individual | Midterm survey 5% + final survey 20%. See [Peer Evaluations](/assignments/peer-evaluations/). |
-| Individual Evidence | 25% | Individual | Fall: [RFC](/assignments/rfc/) 15% + [Defense](/assignments/defense/) 8% + [Resume and Intent](/assignments/resume-and-intent/) 2%. Winter: RFC 15% + Defense 10%. Spring: [Career and Individual Retrospective](/assignments/career-retrospective/) 15% + Defense 10%. |
-| Team Deliverables | 25% | Team, with the individual contribution modifier | Term-specific set, detailed below. |
+<GradeGrid>
 
-## The Year at a Glance
-
-| | Fall (CS 461, 3 cr) | Winter (CS 462, 3 cr) | Spring (CS 463, 2 cr) |
+| | Fall | Winter | Spring |
 |---|---|---|---|
-| Theme | Discover, specify, walking skeleton | Build, verify, real users | Ship, prove, hand off |
-| Individual | Resume and Intent, RFC 1, Defense 1 | RFC 2, Defense 2 | Career and Individual Retrospective, Defense 3 |
-| Team | Term Startup, Team Charter, 5 Workshop Activities, 4 Sprint Notes, 2 Repo Checkpoints (ending with "hello, production"), Term Retrospective | Term Startup, Definition of Shipped, 3 Workshop Activities, 5 Sprint Notes, 2 Repo Checkpoints (ending with a release candidate and real-user evidence), Incident Postmortem | Term Startup, 1 Workshop Activity, 3 Sprint Notes, Release and Metrics, Landing Page, Project Handoff, Project Retrospective, Engineering Expo |
+| **Project Partner Interactions** Scored by your project partner, or by your mentor where your team has no partner | 25 | 25 | 25 |
+| [Midterm Pulse](/assignments/project-partner-evaluation/#midterm-pulse) | 5 | 5 | 5 |
+| [End-of-Term Survey](/assignments/project-partner-evaluation/#end-of-term-survey-rubric) | 20 | 20 | 20 |
+| **Peer Evaluation** Scored by your teammates, for you alone | 25 | 25 | 25 |
+| [Midterm Survey](/assignments/peer-evaluations/) | 5 | 5 | 5 |
+| [End-of-Term Survey](/assignments/peer-evaluations/) | 20 | 20 | 20 |
+| **Individual Evidence** Your own work, scored for you alone | 25 | 25 | 25 |
+| [Resume and Intent](/assignments/resume-and-intent/) | 2 | | |
+| [RFC](/assignments/rfc/) | 15 | 15 | |
+| [Defense](/assignments/defense/) | 8 | 10 | 10 |
+| [Career and Individual Retrospective](/assignments/career-retrospective/) | | | 15 |
+| **Team Deliverables** Your team's work; half of each sprint note is your [individual contribution](/assignments/sprint-notes/#sprint-notes-n-individual-contribution) | 25 | 25 | 25 |
+| [Term Startup](/assignments/term-startup/) | 1 | 1 | 1 |
+| [Team Charter](/assignments/team-charter/) | 3 | | |
+| [Workshop Activities](/assignments/workshop-activities/) | 2 | 1 | 1 |
+| [Sprint Notes](/assignments/sprint-notes/) | 8 | 10 | 6 |
+| [Repo Checkpoints](/assignments/repo-checkpoints/) | 8 | 8 | |
+| [Term Retrospective](/assignments/term-retrospective/) | 3 | | |
+| [Definition of Shipped](/assignments/definition-of-shipped/) | | 3 | |
+| [Incident Postmortem](/assignments/incident-postmortem/) | | 2 | |
+| [Landing Page](/assignments/landing-page/) | | | 3 |
+| [Release and Metrics](/assignments/release/) | | | 7 |
+| [Project Handoff](/assignments/project-handoff/) | | | 4 |
+| [Project Retrospective](/assignments/project-retrospective/) | | | 3 |
+| **Total** | 100 | 100 | 100 |
 
-[Demo Day](/assignments/demo-day/) and the [Engineering Expo](/assignments/expo/) appear in none of the three tables below. Demo Day is the all-hands session your team takes once during the year, and presenting earns 1% extra credit in the term you present, added on top of the four components. The Expo is the public event your project partner is invited to in spring week 10, and carries no points.
+Presenting at [Demo Day](/assignments/demo-day/), which your team does once during the year, earns 1% extra credit in the term you present, on top of the 100. The [Engineering Expo](/assignments/expo/) in spring week 10 carries no points.
 
-### Fall Team Deliverables
-
-| Assignment | Weight | Due |
-|---|---|---|
-| [Term Startup](/assignments/term-startup/) (complete/incomplete) | 1% | Week 2 |
-| [Team Charter](/assignments/team-charter/) | 3% | Week 2 |
-| [Workshop Activities](/assignments/workshop-activities/) (5 items, complete/incomplete) | 2% | Weeks 2, 3, 7, 8 |
-| [Sprint Notes](/assignments/sprint-notes/) (4 × 2%) | 8% | Weeks 4, 6, 8, 10 |
-| [Repo Checkpoints](/assignments/repo-checkpoints/) (2 × 4%) | 8% | Weeks 5, 10 |
-| [Term Retrospective](/assignments/term-retrospective/) | 3% | Week 9 |
-
-Fall sprint notes start in week 4 because teams are only assigned at the end of week 1, and the first real sprint can't start before week 3; the [Sprint guide](/guides/sprint/#preparing-for-your-first-sprint) covers what those preparation weeks are for.
-
-### Winter Team Deliverables
-
-| Assignment | Weight | Due |
-|---|---|---|
-| [Term Startup](/assignments/term-startup/) (complete/incomplete) | 1% | Week 1 |
-| [Definition of Shipped](/assignments/definition-of-shipped/) | 3% | Week 3 |
-| [Workshop Activities](/assignments/workshop-activities/) (3 items, complete/incomplete) | 1% | Weeks 1-3 |
-| [Sprint Notes](/assignments/sprint-notes/) (5 × 2%) | 10% | Weeks 2, 4, 6, 8, 10 |
-| [Repo Checkpoints](/assignments/repo-checkpoints/) (2 × 4%) | 8% | Weeks 5, 10 |
-| [Incident Postmortem](/assignments/incident-postmortem/) | 2% | Week 9 |
-
-### Spring Team Deliverables
-
-| Assignment | Weight | Due |
-|---|---|---|
-| [Term Startup](/assignments/term-startup/) (complete/incomplete) | 1% | Week 1 |
-| [Workshop Activities](/assignments/workshop-activities/) (1 item, complete/incomplete) | 1% | Week 2 |
-| [Sprint Notes](/assignments/sprint-notes/) (3 × 2%) | 6% | Weeks 2, 4, 6 |
-| [Landing Page](/assignments/landing-page/) | 3% | Week 7 |
-| [Release and Metrics](/assignments/release/) | 7% | Week 8 |
-| [Project Handoff](/assignments/project-handoff/) | 4% | Week 8 |
-| [Project Retrospective](/assignments/project-retrospective/) | 3% | Week 9 |
-
-Spring sprints are two weeks like every other term, so the three notes land at weeks 2, 4 and 6. Weeks 7 to 10 carry no sprint note: spring is a 2-credit term, and those weeks already hold the Landing Page, Release and Metrics, both retrospectives, the Handoff, and the defense.
-
-## Individual Accountability on Team Work
-
-Half of each Sprint Note's weight is individual and defaults to full credit. Your TA flags a deduction from your half, and an instructor confirms it, only when the evidence shows you fell short of the contribution floor that sprint. Four sources supply that evidence:
-
-- **At least one piece of accepted work per sprint, per student**, as [Contribution lines](/assignments/sprint-notes/#contribution-lines) defines them; your team records how it meets the floor in `CONTRIBUTING.md`, as the [Team Charter](/assignments/team-charter/#the-contribution-norm) asks.
-- The per-student contribution line in each [Sprint Note](/assignments/sprint-notes/).
-- The [Defense](/assignments/defense/), which spot-checks ownership claims live.
-- Partner surveys, which can flag an individual concern and trigger a [corroboration review](/assignments/project-partner-evaluation/).
-
-**Roster changes:** a student who joins a team mid-term is assessed from their join date; earlier sprints score full credit on their individual modifier by default, and their defense and RFC anchor to work since joining.
-
-## TA Check-ins
-
-Every team has a Teaching Assistant (TA), with a standing 25-to-30-minute check-in in every sprint-note week, plus one in fall week 2 and in spring weeks 8 and 10, which have no note. The fall week 2 check-in goes through your [Term Startup](/assignments/term-startup/) list while it is still in progress. Check announcements in week 1 for your TA; your team and your TA agree the check-in time. The check-in is where your [sprint demo](/assignments/sprint-notes/#demo-cadence) happens, live, with every student showing a piece of their own work from the sprint. The [Defense](/assignments/defense/), once per term, is a separate session in week 7 or 9; check announcements for the schedule. Between check-ins, your TA is reachable async.
-
-## Late Work, Absence, and Makeup
-
-- **Deadlines**: submissions are due at the posted time. Work up to 48 hours late loses one rubric band on each criterion (Exceeds grades as Meets, and so on); beyond 48 hours it scores zero unless you contacted the instructors before the deadline with a documented reason. Planned conflicts (interviews, travel) need at least 48 hours' notice.
-- **Sprint notes** are one exception: they are pass/fail evidence of the sprint that just happened, so late sprint notes are not accepted; a missed note scores zero. One missed note with a documented reason per term is excused on request.
-- **Workshops** earn credit only when done in class or by the end of the week the class happened; a [workshop](/assignments/workshop-activities/) submitted after that week scores zero.
-- **Defense**: if you are sick or absent for your team's defense, tell your TA before the session and you will be rescheduled that term, no penalty. An unexcused no-show scores zero on your individual defense.
-- **Demos**: every check-in carries its own demo, so there is no spare slot to reschedule into. If you miss yours, send your TA a video of your segment within 48 hours, recorded as the [demo cadence](/assignments/sprint-notes/#demo-cadence) describes; it costs you nothing.
-- **Surveys** (peer and partner evaluations) have the completion penalties stated on their pages; they cannot be made up after the survey closes because the results feed grade computation.
-- **Illness and emergencies**: contact the instructors as soon as you reasonably can. The instructors will always find a path for a documented emergency; the one case they cannot recover is one they were never told about.
-
-## NDA Projects
-
-If your project is under an NDA, [IP, NDA, and Licensing](/introduction/ip-nda-and-licensing/#teams-under-an-nda) has the one rule for what an NDA team submits, and each affected page adds a short note.
-
-## AI Policy (applies to every assignment)
-
-Generative AI tools may be used on any assignment unless a page says otherwise. Three standing rules:
-
-1. **You own the result.** Correctness, security, licensing, and professionalism of anything you submit are your responsibility, whatever produced it. [choosealicense.com](https://choosealicense.com/) summarizes what the common licenses permit and require, which is where to start when a dependency carries one you don't recognize.
-2. **Delegate deliberately, and build the checks that make it reasonable.** Major deliverables ask what you handed to AI tools, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and where you stopped to validate the result yourself. Validate carefully where a decision is hard to reverse: architecture, database schema, authentication, deployment, data migrations, licensing. Delegate freely where your checks catch mistakes cheaply. What is graded is the fit between how far you delegated and how strong your checks are, never how sophisticated your tooling is, so a weaker model or a tighter budget is not a disadvantage: it simply means tighter gates and more validation of your own.
-3. **Respect the confidentiality boundary.** What may be pasted into which tools is defined in your Team Charter's AI and confidentiality section, per your partner agreement. See the [Generative AI guide](/guides/generative-ai/).
-
-The [AI practice activities](/activities/ai/) teach all three of these, including how to tell a hard-to-reverse decision from an easy-to-reverse one and how to build checks you can actually trust.
-
-## Learning Outcome Tags
-
-Rubric criteria carry tags such as `SO1` through `SO6` and `L07` through `L10`. They document where each learning outcome is evidenced and change nothing about how you complete the work. See [grading](/learning-objectives/grading/#learning-outcome-tags) and the [outcome mapping](/learning-objectives/mapping/).
+</GradeGrid>
 
 ## Submitting Your Work
 
@@ -123,24 +59,60 @@ Project 42: Beaver Habitat Tracker
 Alex Ulbrich <ulbrical@oregonstate.edu>, Jane Doe <doej@oregonstate.edu>
 ```
 
-When one submission combines several files, such as the three of the [Team Charter](/assignments/team-charter/), the cover lines appear once, at the top of the first. Any tool that turns Markdown into a PDF works, such as the VS Code "Markdown PDF" extension or printing the rendered file from a browser. The PDF shows the rendered document, not raw Markdown: real headings and tables, and diagrams as images rather than their source.
+When one submission combines several files, such as the three of the [Team Charter](/assignments/team-charter/), the cover lines appear once, at the top of the first. Any tool that turns Markdown into a PDF works, such as the VS Code "Markdown PDF" extension or printing the rendered file from a browser. The PDF shows the rendered document, not raw Markdown: real headings and tables, diagrams as images rather than their source, and alt text on every image.
 
 A repository link does not replace the PDF, even when the document also lives in your repository, because the PDF is the version graded and kept. Two submissions are exceptions and say so on their pages: the [Landing Page](/assignments/landing-page/) is a URL and a screenshot, and the [Release and Metrics](/assignments/release/) trailer is a video beside its PDF report.
+
+If your project is under an NDA, [IP, NDA, and Licensing](/introduction/ip-nda-and-licensing/#teams-under-an-nda) has the one rule for what an NDA team submits, and each affected page adds a short note.
 
 ## Rubric Conventions
 
 Most rubrics use three bands per criterion:
 
-- **Exceeds**: full points. The work does what the criterion asks, verifiably, and shows judgment beyond the mechanical minimum.
-- **Meets**: partial points. The work substantially does what the criterion asks, with gaps that do not undermine it.
-- **Does Not Meet**: low points. The work attempts the criterion but falls short in ways that matter.
+| Band | Points | The work |
+|---|---|---|
+| Exceeds | Full | Does what the criterion asks, verifiably, and shows judgment beyond the mechanical minimum. |
+| Meets | Partial | Substantially does what the criterion asks, with gaps that do not undermine it. |
+| Does Not Meet | Low | Attempts the criterion but falls short in ways that matter. |
 
 Work that is not submitted, is off-topic, or cannot be opened by a grader (broken links, private documents, videos that do not play) scores zero on the affected criteria. "Does Not Meet" is only for work you submitted that falls short. The [Defense](/assignments/defense/) is the one rubric that carries an explicit **Missing** rating at zero, because it is scored live and an unexcused no-show has to be recorded in the room rather than inferred from an empty submission. Check every link from a logged-out browser before you submit.
 
 Criteria are written to be verifiable: commit hashes, CI runs, URLs, PR IDs, measured numbers. Describing the evidence does not substitute for linking it.
 
-The exceptions to three bands: each [sprint note](/assignments/sprint-notes/) item is present and real (Pass, full points) or it is not (Fail, zero); [Workshop Activities](/assignments/workshop-activities/) and [Term Startup](/assignments/term-startup/) are complete or incomplete; each sprint's individual contribution is full, partial, or zero; and the peer and partner surveys score on the scales their rubrics give.
+The rubrics that use other bands:
 
-Formatting expectations, unless a page overrides them: one PDF as [Submitting Your Work](#submitting-your-work) describes, linkable evidence, readable structure with headings, alt text on images, and no links graders cannot open (exceptions for NDA teams are noted per assignment).
+- Each [sprint note](/assignments/sprint-notes/) item is present and real (Pass, full points) or it is not (Fail, zero).
+- [Workshop Activities](/assignments/workshop-activities/) and [Term Startup](/assignments/term-startup/) are Complete or Incomplete.
+- Each sprint's [individual contribution](/assignments/sprint-notes/#sprint-notes-n-individual-contribution) is Full, Partial, or Zero.
+- The peer and partner surveys score on the scales their rubrics give.
 
-How points become a letter grade is on the [grading page](/learning-objectives/grading/).
+Rubric criteria also carry learning outcome tags, `SO1` through `SO6` and `L07` through `L10`. They record where each outcome is evidenced and change nothing about how you complete the work; [grading](/learning-objectives/grading/#learning-outcome-tags) and the [outcome mapping](/learning-objectives/mapping/) explain them. How points become a letter grade is on the same [grading page](/learning-objectives/grading/).
+
+## Late Work, Absence, and Makeup
+
+Submissions are due at the posted time. Planned conflicts (interviews, travel) need at least 48 hours' notice.
+
+| Work | If it's late or missed |
+|---|---|
+| Most submissions | Up to 48 hours late loses one rubric band on each criterion (Exceeds grades as Meets, and so on). Beyond 48 hours it scores zero, unless you contacted the instructors before the deadline with a documented reason. |
+| Sprint notes | Not accepted late: a note is pass/fail evidence of the sprint that just happened, so a missed note scores zero. One missed note with a documented reason per term is excused on request. |
+| Workshops | Credit only when done in class or by the end of the week the class happened. A [workshop](/assignments/workshop-activities/) submitted after that week scores zero. |
+| Defense | If you're sick or absent, tell your TA before the session and you'll be rescheduled that term, with no penalty. An unexcused no-show scores zero on your individual defense. |
+| Demos | Send your TA a video of your segment within 48 hours, recorded as the [demo cadence](/assignments/sprint-notes/#demo-cadence) describes; it costs you nothing. Every check-in carries its own demo, so there is no spare slot to reschedule into. |
+| Peer and partner surveys | The completion penalties are on their pages. A survey can't be made up after it closes, because the results feed grade computation. |
+
+For illness and emergencies, contact the instructors as soon as you reasonably can. The instructors will always find a path for a documented emergency; the one case they cannot recover is one they were never told about.
+
+## AI Policy (applies to every assignment)
+
+Generative AI tools may be used on any assignment unless a page says otherwise. Three standing rules:
+
+1. **You own the result.** Correctness, security, licensing, and professionalism of anything you submit are your responsibility, whatever produced it. [choosealicense.com](https://choosealicense.com/) summarizes what the common licenses permit and require, which is where to start when a dependency carries one you don't recognize.
+2. **Delegate deliberately, and build the checks that make it reasonable.** Major deliverables ask what you handed to AI tools, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and where you stopped to validate the result yourself. Validate carefully where a decision is hard to reverse: architecture, database schema, authentication, deployment, data migrations, licensing. Delegate freely where your checks catch mistakes cheaply. What is graded is the fit between how far you delegated and how strong your checks are, never how sophisticated your tooling is, so a weaker model or a tighter budget is not a disadvantage: it simply means tighter gates and more validation of your own.
+3. **Respect the confidentiality boundary.** What may be pasted into which tools is defined in your Team Charter's AI and confidentiality section, per your partner agreement. See the [Generative AI guide](/guides/generative-ai/).
+
+The [AI practice activities](/activities/ai/) teach all three of these, including how to tell a hard-to-reverse decision from an easy-to-reverse one and how to build checks you can actually trust.
+
+## TA Check-ins
+
+Every team has a Teaching Assistant (TA), with a standing 25-to-30-minute check-in in each week the [Schedule](/introduction/schedule/) marks. The fall week 2 check-in goes through your [Term Startup](/assignments/term-startup/) list while it is still in progress. Check announcements in week 1 for your TA; your team and your TA agree the check-in time. The check-in is where your [sprint demo](/assignments/sprint-notes/#demo-cadence) happens, live, with every student showing a piece of their own work from the sprint. The [Defense](/assignments/defense/), once per term, is a separate session in week 7 or 9; check announcements for the schedule. Between check-ins, your TA is reachable async.

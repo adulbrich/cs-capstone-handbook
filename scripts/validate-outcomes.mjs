@@ -10,7 +10,8 @@
 //   - every ABET outcome (SO1-SO6): >= 2 individual-level data points
 //   - every WIC (L07-L09) and Beyond OSU (L10) outcome: >= 1 individual-level point,
 //     except the outcomes in CANVAS_EVIDENCED below
-// It also checks that each term's Team Deliverables table sums to exactly 25%,
+// It also checks that the grade grid on the assignments overview adds up, with
+// every component at 25% and every term at 100%, against each page's weight,
 // that each page imports the CSVs that belong to it rather than another
 // assignment's, which Vite cannot catch because both paths resolve, and that
 // each page's `assignment.canvas` entries reconcile with its weight and the
@@ -247,113 +248,174 @@ if (parsed === 0) {
   process.exit(1);
 }
 
-// --- Term weight arithmetic --------------------------------------------------
-// Team Deliverables is one of four equal 25% components, split across several
-// assignment pages. The per-term tables on the assignments overview must each
-// sum to exactly 25, and nothing else checks it: the weights also appear in
-// each page's frontmatter, in three syllabi, and in the Canvas readme, so a
-// re-cut that misses one leaves students' grades not adding up.
+// --- Grade grid arithmetic ---------------------------------------------------
+// The grade grid on the assignments overview gives every term's grade by
+// component and assignment. Each of the four components is 25 in every term,
+// its assignments sum to it, and the components sum to the Total row's 100.
+// The weights also appear in each page's frontmatter, in three syllabi, and in
+// the Canvas readme, so a re-cut that misses one leaves students' grades not
+// adding up.
+const TERMS = ["fall", "winter", "spring"];
+const COMPONENT_WEIGHT = 25;
+const WEIGHT_CELL_RE = /^\d+(\.\d+)?$/;
+const GRID_ITEM_RE = /^\[[^\]]+\]\(\/assignments\/([a-z0-9-]+)\/[^)]*\)$/;
 const overview = readFileSync(
   join(ASSIGNMENTS_DIR, "introduction.mdx"),
   "utf8"
 );
-const termSections = [
-  ...overview.matchAll(
-    /### (Fall|Winter|Spring) Team Deliverables\n([\s\S]*?)(?=\n#{2,3} |$)/g
-  ),
-];
-if (termSections.length !== 3) {
-  console.error(
-    `TERM WEIGHTS: expected 3 "### <Term> Team Deliverables" tables in introduction.mdx, found ${termSections.length}.`
-  );
+const tableCells = (row) =>
+  row
+    .trim()
+    .slice(1, -1)
+    .split("|")
+    .map((c) => c.trim());
+// term -> (slug -> percent), summed over every row linking the page: the
+// partner and peer pages each own a midterm row and an end-of-term row.
+const gridWeights = new Map(TERMS.map((t) => [t, new Map()]));
+const grid = overview.match(/<GradeGrid>\n([\s\S]*?)\n<\/GradeGrid>/)?.[1];
+const gridRows = (grid ?? "")
+  .split("\n")
+  .filter((l) => l.trim().startsWith("|"));
+const gridFail = (message) => {
+  console.error(`GRADE GRID: ${message}`);
   failed = true;
-}
-// term -> (slug -> percent), harvested from the same rows that get summed.
-const tableWeights = new Map();
-for (const [, term, table] of termSections) {
-  const key = term.toLowerCase();
-  tableWeights.set(key, new Map());
-  let sum = 0;
-  for (const row of table.split("\n")) {
-    if (!row.trim().startsWith("|")) {
+};
+if (gridRows.length === 0) {
+  gridFail("no Markdown table inside <GradeGrid> in introduction.mdx.");
+} else if (
+  tableCells(gridRows[0])
+    .slice(1)
+    .map((c) => c.toLowerCase())
+    .join() === TERMS.join()
+) {
+  const components = [];
+  let total = null;
+  for (const row of gridRows.slice(2)) {
+    const [first, ...rest] = tableCells(row);
+    const bad = rest.find((c) => c !== "" && !WEIGHT_CELL_RE.test(c));
+    if (rest.length !== TERMS.length || bad !== undefined) {
+      gridFail(`"${first}" needs one weight or an empty cell per term.`);
       continue;
     }
-    const cells = row.split("|").map((c) => c.trim());
-    const pct = cells.find((c) => /^\d+(\.\d+)?%$/.test(c));
-    if (pct) {
-      sum += Number.parseFloat(pct);
-      const slug = cells[1]?.match(/\]\(\/assignments\/([a-z0-9-]+)\/\)/)?.[1];
-      if (slug) {
-        tableWeights.get(key).set(slug, Number.parseFloat(pct));
+    const values = rest.map((c) => (c === "" ? null : Number.parseFloat(c)));
+    const name = first.match(/^\*\*(.+?)\*\*/)?.[1];
+    if (name === "Total") {
+      total = values;
+    } else if (name) {
+      components.push({ items: [], name, values });
+    } else {
+      const slug = first.match(GRID_ITEM_RE)?.[1];
+      if (!(slug && components.length > 0)) {
+        gridFail(
+          `"${first}" is neither a bold component nor an item that is one link to an assignment page, under a component.`
+        );
+        continue;
       }
+      components.at(-1).items.push(values);
+      TERMS.forEach((term, i) => {
+        if (values[i] !== null) {
+          const m = gridWeights.get(term);
+          m.set(slug, (m.get(slug) ?? 0) + values[i]);
+        }
+      });
     }
   }
-  if (Math.abs(sum - 25) > 0.001) {
-    console.error(
-      `TERM WEIGHTS: ${term} Team Deliverables sums to ${sum}%, must be exactly 25%.`
-    );
-    failed = true;
-  } else {
-    console.log(`  ${term} Team Deliverables: ${sum}% ok`);
+  if (!total) {
+    gridFail("no **Total** row.");
   }
+  TERMS.forEach((term, i) => {
+    let sum = 0;
+    for (const c of components) {
+      const items = c.items.reduce((s, v) => s + (v[i] ?? 0), 0);
+      if (c.values[i] !== COMPONENT_WEIGHT) {
+        gridFail(
+          `${c.name} is ${c.values[i]}% in ${term}, must be ${COMPONENT_WEIGHT}%.`
+        );
+      }
+      if (Math.abs(items - (c.values[i] ?? 0)) > 0.001) {
+        gridFail(
+          `${c.name}'s ${term} assignments sum to ${items}%, but the component row says ${c.values[i]}%.`
+        );
+      }
+      sum += items;
+    }
+    if (Math.abs(sum - 100) > 0.001 || total?.[i] !== 100) {
+      gridFail(
+        `${term} sums to ${sum}% with a Total of ${total?.[i]}%; both must be 100%.`
+      );
+    } else {
+      console.log(
+        `  ${term}: ${components.length} components of ${COMPONENT_WEIGHT}%, 100% ok`
+      );
+    }
+  });
+} else {
+  gridFail(`the header must name the terms in order: ${gridRows[0]}`);
 }
 
 // --- Frontmatter weight reconciliation ---------------------------------------
-// Each page's `assignment.weight` restates what the term tables above already
-// say. Nothing read it, so it drifted: Sprint Notes declared 8 while spring is
-// 4%, and Workshop Activities declared 2 while winter and spring are 1%.
-// `weight` may be a scalar when the page is worth the same in every term it
-// runs, or a per-term map when it varies. Only Team Deliverables pages appear
-// in the term tables; the four 25% components (RFC, Defense, and the two
-// evaluation instruments) are stated in the Grade Architecture table instead
-// and are skipped here deliberately, not by accident. Their weights are
-// checked by hand against that table; the Defense varies by term since the
-// fall Resume and Intent took 2% of it. Resume and Intent and the Career
-// Retrospective run in Canvas and declare no weight here at all (#197).
+// Each page's `assignment.weight` and `assignment.terms` restate what the grid
+// above already says. Nothing read them, so they drifted: Sprint Notes declared
+// 8 while spring is 4%, and Workshop Activities declared 2 while winter and
+// spring are 1%. `weight` may be a scalar when the page is worth the same in
+// every term it runs, or a per-term map when it varies. Every page with an
+// `assignment:` block has a grid row; Resume and Intent and the Career
+// Retrospective run in Canvas and have rows but no block to reconcile (#197).
 for (const [slug, assignment] of pages) {
-  const inTables = [...tableWeights.entries()].filter(([, m]) => m.has(slug));
-  if (inTables.length === 0) {
-    continue; // a 25% component, checked by the Grade Architecture table by hand
-  }
-  const declared = assignment.weight;
-  if (declared === null) {
+  const inGrid = TERMS.filter((t) => gridWeights.get(t).has(slug));
+  if (inGrid.length === 0) {
     console.error(
-      `WEIGHT ${slug}.mdx: appears in a Team Deliverables table but declares no weight.`
+      `WEIGHT ${slug}.mdx: has an assignment: block but no grade grid row links it.`
     );
     failed = true;
     continue;
   }
-  const varies = new Set(inTables.map(([, m]) => m.get(slug))).size > 1;
+  if ([...assignment.terms].sort().join() !== [...inGrid].sort().join()) {
+    console.error(
+      `WEIGHT ${slug}.mdx: declares terms ${assignment.terms.join(", ")} but the grade grid gives it ${inGrid.join(", ")}.`
+    );
+    failed = true;
+  }
+  const declared = assignment.weight;
+  if (declared === null) {
+    console.error(
+      `WEIGHT ${slug}.mdx: appears in the grade grid but declares no weight.`
+    );
+    failed = true;
+    continue;
+  }
+  const gridOf = (term) => gridWeights.get(term).get(slug);
+  const varies = new Set(inGrid.map(gridOf)).size > 1;
   if (varies && typeof declared === "number") {
     console.error(
-      `WEIGHT ${slug}.mdx: weight is the scalar ${declared} but the term tables give ${inTables
-        .map(([t, m]) => `${t} ${m.get(slug)}%`)
+      `WEIGHT ${slug}.mdx: weight is the scalar ${declared} but the grade grid gives ${inGrid
+        .map((t) => `${t} ${gridOf(t)}%`)
         .join(", ")}. Use a per-term map.`
     );
     failed = true;
     continue;
   }
-  for (const [term, m] of inTables) {
-    const expected = m.get(slug);
+  for (const term of inGrid) {
+    const expected = gridOf(term);
     const actual = typeof declared === "number" ? declared : declared[term];
     if (actual === undefined) {
       console.error(
-        `WEIGHT ${slug}.mdx: no ${term} weight declared, but the ${term} table gives ${expected}%.`
+        `WEIGHT ${slug}.mdx: no ${term} weight declared, but the grade grid gives ${expected}%.`
       );
       failed = true;
     } else if (Math.abs(actual - expected) > 0.001) {
       console.error(
-        `WEIGHT ${slug}.mdx: declares ${actual} for ${term} but the ${term} table gives ${expected}%.`
+        `WEIGHT ${slug}.mdx: declares ${actual} for ${term} but the grade grid gives ${expected}%.`
       );
       failed = true;
     }
   }
-  // A declared term the tables do not carry is the same drift in reverse.
+  // A declared term the grid does not carry is the same drift in reverse.
   if (typeof declared === "object") {
     for (const term of Object.keys(declared)) {
-      if (!tableWeights.get(term)?.has(slug)) {
+      if (!gridWeights.get(term)?.has(slug)) {
         console.error(
-          `WEIGHT ${slug}.mdx: declares a ${term} weight, but no ${term} table row links it.`
+          `WEIGHT ${slug}.mdx: declares a ${term} weight, but no grade grid row gives one.`
         );
         failed = true;
       }
@@ -361,7 +423,7 @@ for (const [slug, assignment] of pages) {
   }
 }
 if (!failed) {
-  console.log("  Frontmatter weights reconcile with the term tables.");
+  console.log("  Frontmatter weights and terms reconcile with the grade grid.");
 }
 
 // --- Canvas directory coverage ----------------------------------------------

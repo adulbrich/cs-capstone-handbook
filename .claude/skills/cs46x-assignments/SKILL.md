@@ -136,9 +136,10 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    criteria moved to Canvas (`CANVAS_EVIDENCED`, #196). Removing a tagged criterion can drop an
    outcome below its floor and fail CI. Run the validator before assuming a
    deletion is safe.
-4. **`weight` is reconciled against the term tables** in
+4. **`weight` and `terms` are reconciled against the grade grid** in
    `assignments/introduction.mdx`. A scalar on a page whose weight varies by
-   term is a hard failure, as is a declared term no table row links. See
+   term is a hard failure, as is a declared term no grid row gives, or a page
+   with an `assignment:` block and no row. See
    **Grade Weights** below.
 5. **The `<AssignmentMeta weight="...">` text states every percentage the
    frontmatter declares.** A per-term map means every term's figure appears
@@ -409,19 +410,20 @@ a paragraph that explains something, grep for it.
 
 ## Grade Weights
 
-Each term's grade is four components of 25% each. Team Deliverables is split
-across several assignment pages and **every term must sum to exactly 25%**. A
-weight appears in four places that must agree:
+Each term's grade is four components of 25% each, each split across several
+assignment pages, and **every component must sum to exactly 25% in every
+term**. A weight appears in four places that must agree:
 
 1. the page's `assignment.weight` frontmatter,
-2. the term tables in `assignments/introduction.mdx`,
+2. the grade grid in `assignments/introduction.mdx`,
 3. the three syllabi,
 4. `canvas/assignments/assignment-readme.md`.
 
 The validator reconciles the first two against each other. The last two it
 cannot see. The two Canvas-owned stubs have no frontmatter weight: their copy
-is the `<AssignmentMeta>` text plus the Individual Evidence row on
-`assignments/introduction.mdx`, and no validator reads either.
+is the `<AssignmentMeta>` text plus their grade grid rows on
+`assignments/introduction.mdx`. The validator sums those rows into Individual
+Evidence but has no page weight to reconcile them against.
 
 Raising one weight means cutting another. Verify the sums with a script, not by
 eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
