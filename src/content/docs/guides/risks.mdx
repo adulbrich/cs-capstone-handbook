@@ -41,7 +41,7 @@ Each entry in the register carries the same parts:
 - **Owner**: the person who watches the risk and runs the response.
 - **Response**: what you're doing about it.
 - **Trigger**: the observable sign that the risk is turning into an issue.
-- **Asked**: for a risk that waits on someone outside the team, who you asked and when.
+- **Asked**: for a risk that waits on someone outside the team, who you asked and when; until you've asked, a start-by date instead.
 
 ## Addressing a Problem
 
@@ -73,7 +73,7 @@ A disagreement between teammates, or a teammate who isn't delivering, isn't a re
 
 ### Risks That Wait on Someone Else
 
-Some risks in every category wait on someone outside the team, such as the partner's IT review or a maintainer's queue. They aren't a fourth category, because what's at stake is still business, technical, or team; what sets them apart is that the clock isn't yours. Give each one an Asked line (who you asked, and when), a start-by date (the last day you can ask and still absorb the usual wait), and what's blocked until it lands, because its likelihood only falls when the other side answers. A risk you can only wait out is managed by starting early, which is why the start-by date matters more than the rank. The [Shipping guide](/guides/shipping/) lists these clocks for each kind of project, with their usual lead times.
+Some risks in every category wait on someone outside the team, such as the partner's IT review or a maintainer's queue. They aren't a fourth category, because what's at stake is still business, technical, or team; what sets them apart is that the clock isn't yours. Before you've asked, give it a start-by date: the last day you can ask and still absorb the usual wait. Once you've asked, replace the date with an Asked line (who you asked, and when), because from then on its likelihood only falls when the other side answers. A risk you can only wait out is managed by starting early, which is why the start-by date matters more than the rank. The [Shipping guide](/guides/shipping/) lists these clocks for each kind of project, with their usual lead times.
 
 ## Writing a Risk
 
@@ -93,7 +93,7 @@ A trigger makes the review concrete: "no reviewer named two weeks after the requ
 
 ## What Makes a Good Risk Register?
 
-The register below is for a shift board: a web app where a nonprofit's volunteer coordinators post shifts and volunteers claim them, so that no shift is double-booked. A team of three builds it: Sam, the project manager; Priya; and Jordan, who owns CI and the tests. Staff sign in with the partner's Google Workspace accounts, production runs in the partner's own Render account, and the app emails coordinators from the partner's domain. Each risk leads with its rank, and the closed risk stays at the bottom so the next team can see what was tried.
+The register below is for a shift board: a web app where a nonprofit's volunteer coordinators post shifts and volunteers claim them, so that no shift is double-booked. A team of three builds it: Sam, the project manager; Priya; and Jordan, who owns CI and the tests. Staff sign in with the partner's Google Workspace accounts, production runs in the partner's own Render account, and the app emails coordinators from the partner's domain. Each risk leads with its category and rank, and the closed risk stays at the bottom so the next team can see what was tried.
 
 ```md
 # Risks
@@ -105,10 +105,10 @@ R-1 technical, H/H (untried; every feature needs sign-in). SSO on the
   partner's Workspace tenant is unproven; if it fails, nobody can sign in.
   Owner: Priya. Mitigate: spike it first. Trigger: no working spike by
   sprint review.
-R-2 business, M/H (their reviews take weeks; production waits). The
-  partner's IT security review has no date. Asked: their IT lead, at
-  kickoff. Owner: Sam. Mitigate: send the data-flow diagram now.
-  Trigger: no reviewer named two weeks after the request.
+R-2 business, M/H (their reviews take weeks; it gates production). The
+  partner's IT security review has no date; until it passes, production
+  waits. Asked: their IT lead, at kickoff. Owner: Sam. Mitigate: send the
+  data-flow diagram now. Trigger: no reviewer two weeks after asking.
 R-3 team, M/M (one deployer; a rollback exists). Only Jordan has deployed
   to Render; if Jordan is away, a broken release stays broken. Owner:
   Jordan. Mitigate: pair on the next two deploys. Trigger: a release is
@@ -117,16 +117,17 @@ R-4 business, M/M (unconfirmed; the objective depends on it). Coordinators
   haven't used the board; if they keep scheduling by email,
   double-bookings don't drop. Owner: Sam. Mitigate: two coordinators try
   the claim flow before the emails are built. Trigger: no session booked.
-R-5 technical, L/M (IT answers slowly; a fallback exists). Sending from
-  the partner's domain needs DNS changes on their side. Asked: their IT
-  lead, by email. Owner: Priya. Accept: send from our domain if it
-  slips. Trigger: no reply in a week.
+R-5 technical, L/M (a one-record change; a fallback exists). Sending
+  from the partner's domain needs a DNS change on their side; without it,
+  emails come from our domain and look less official. Start by: before
+  the emails are built. Owner: Priya. Accept: use our domain. Trigger:
+  no DNS change by the time the emails ship.
 
 ## Closed
 R-6 Render account in the partner's organization: granted by the IT lead.
 ```
 
-The objective at the top is what every impact rating is measured against, and the words after each rank say why. Each response is something the owner can do this sprint. R-2 and R-5 both wait on the partner, from different categories, so both carry an Asked line, and R-5 is accepted with its fallback written down.
+The objective at the top is what every impact rating is measured against, and the words after each rank say why. Each response is something the owner can do this sprint. R-2 and R-5 both wait on the partner, from different categories: R-2 has been asked, so it carries an Asked line, while R-5 still has a start-by date. R-5 is accepted because its fallback costs only how the emails look.
 
 ## Ranking Risks
 
@@ -153,9 +154,9 @@ Some risks don't make the register because saying them out loud feels disloyal t
 
 The research usually cited for the premortem supports less than the citation claims. Klein credits <Cite id="mitchell-1989" /> with showing that imagining an event has already happened makes people 30% better at identifying the reasons for it. The paper counted how many reasons people listed, not whether they were right, and the effect came from treating the outcome as certain rather than from placing it in the past: in the first experiment, MBA students listed 4.5 reasons per scenario when the outcome was certain and 3.3 when it was only possible. The authors add that seeing more isn't necessarily seeing better. More candidates is still what a register needs, because its usual failure is a missing risk rather than a wrong one.
 
-Run one with everyone writing reasons alone before anyone speaks, which is what [brainwriting](/guides/planning/#6-3-5-brainwriting) does and for the same reasons; the [Risk Management Plan](/activities/planning/#risk-management-plan) activity has the steps. Run it at the start, and again whenever the plan changes substantially, because a new plan has failure modes the first premortem never saw.
+Run one with everyone writing reasons alone before anyone speaks, which is what [brainwriting](/guides/planning/#6-3-5-brainwriting) does and for the same reasons; the [Risk Management Plan](/activities/planning/#risk-management-plan) activity has the steps. Run it at the start, and again whenever the plan changes substantially, because a new plan has failure modes the first premortem never saw. [Reverse brainstorming](/guides/planning/#reverse-brainstorming), which asks how to make the problem worse, finds failure modes from a different angle when the premortem runs dry.
 
-The team's premortem only finds what the team can imagine. Ask your partner the outside version of the same question: "What went wrong the last time someone built something like this for you?" [Reverse brainstorming](/guides/planning/#reverse-brainstorming), which asks how to make the problem worse, finds failure modes from a different angle when the premortem runs dry.
+The team's premortem only finds what the team can imagine. Ask your partner the outside version of the same question: "What went wrong the last time someone built something like this for you?"
 
 ## Keeping the Register Current
 
