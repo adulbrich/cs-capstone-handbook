@@ -106,14 +106,13 @@ linking vendor docs and blog posts while the guides cited three peer-reviewed
 papers between them, two of them wrongly. The test is whether each doubtable
 claim has the right kind of support, not how many links the page carries.
 
-**Read the source of every Reference the page paraphrases.** A plain link
-still owes accuracy: when the page says what a framework, a standard, or an
-article contains (Cagan's four big risks, a standard's process, a handbook's
-statement format), open it and check the sentence against it. Work from the
-source itself, never from someone else's citation of it. The risks guide
-first filed all four of Cagan's risks under product, feasibility included,
-from memory of the page rather than the page; and Klein's premortem essay
-credits Mitchell et al. (1989) with a finding the paper does not report.
+**Read every source the page paraphrases.** When the page says what a
+framework, a standard, an essay, or a paper contains (a framework's list of
+categories, a standard's process, a handbook's statement format), open the
+source and check the sentence against it, whether the claim stays a plain
+link or meets the registry test under Citing Evidence. Work from the source
+itself, since a citation can carry a finding the source does not report:
+Klein's premortem essay credits Mitchell et al. (1989) with one.
 
 ### Citing Evidence
 
@@ -226,13 +225,13 @@ topic.
    a Good Design Document?"; `working-agreement.mdx` puts the file under
    "Writing Your Agreement", which is where its reader is when they need it.
 
-   The artifact stands alone. The prose above it states the project, the
-   team, and every detail the artifact relies on, even when another guide
-   uses the same project (the shift board appears in several). A reader who
-   arrives from search reads this page only, so introduce the example here
-   rather than as another guide's, and define any ID it uses (`FR-3`, `R-2`)
-   on this page. Prose examples earlier on the page stay generic until the
-   artifact introduces its project.
+   The artifact stands alone, for the reason in [Guides Are
+   Standalone](#guides-are-standalone). The prose above it states the
+   project, the team, and every detail the artifact relies on, even when
+   another guide uses the same project (the shift board appears in
+   several), and the page defines any ID the artifact uses (`FR-3`,
+   `R-2`). Examples earlier on the page are concrete without leaning on
+   that project before it is introduced.
 
 5. *Topic-specific middle sections.* Flex freely. `retrospectives.mdx` uses
    `## Types`, `## Formats`, and `## Running a Good Retrospective` instead of
@@ -586,8 +585,8 @@ the failure this skill exists to prevent.
    confirm it is Evidence (cited and verified), a Reference (linked), or a
    Recommendation (an imperative with its reason: "Do X, because Y"). Grep for
    the unsourced tells: `research shows`, `studies`, `most teams`, a bare
-   percentage. For every Reference the page paraphrases, confirm you read the
-   source (see Sourcing).
+   percentage. Name in the pull request body each source you opened to check
+   a paraphrase (see Sourcing).
 7. Run the reverse outline from `docs/agents/code-review.md` yourself before
    the review does: one line per paragraph naming its idea and what it
    contributes. A paragraph with no contribution is cut; a paragraph with two
@@ -597,17 +596,17 @@ the failure this skill exists to prevent.
    `src/content/docs/activities/`. An activity that exercises this practice and
    is not listed is a dead end for the reader.
 9. Run the concision pass, on the whole page for a new or rewritten guide and
-   on the touched paragraphs for a smaller edit. Read for four kinds of cut:
+   on the touched paragraphs for a smaller edit, after the reverse outline in
+   step 7. Read for three kinds of cut:
    - repetition: a point the page already made, a Best Practices bullet that
-     restates its reason from the body, a source cited again where it does no
+     repeats its reason from the body, a source cited again where it does no
      new work, a sentence that describes the page to itself;
    - study setup beyond what helps the reader judge the finding (keep the
      finding, its size, and its caveat);
-   - stale lines: an entry about content the page no longer has;
-   - a closing line that restates its paragraph.
+   - stale lines: an entry about content the page no longer has.
 
-   Keep every claim's reason, source, and caveat, the tl;dr, and the required
-   sections; those are the explanation, and cutting them is the compression
-   failure the register exists to prevent. List each cut with its word
-   saving in the pull request body, so the reviewer can check that nothing of
-   substance went with it.
+   Each claim keeps its reason, source, and caveat once on the page, and the
+   tl;dr and required sections stay. List each cut with its word saving in
+   the pull request body, or write "no cuts", so the reviewer can check
+   what went; the savings describe the edit and are not a target (see
+   Length).
