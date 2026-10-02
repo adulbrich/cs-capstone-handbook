@@ -117,17 +117,18 @@ R-4 business, M/M (unconfirmed; the objective depends on it). Coordinators
   haven't used the board; if they keep scheduling by email,
   double-bookings don't drop. Owner: Sam. Mitigate: two coordinators try
   the claim flow before the emails are built. Trigger: no session booked.
-R-5 technical, L/M (a one-record change; a fallback exists). Sending
-  from the partner's domain needs a DNS change on their side; without it,
-  emails come from our domain and look less official. Start by: before
-  the emails are built. Owner: Priya. Accept: use our domain. Trigger:
-  no DNS change by the time the emails ship.
+R-5 technical, L/M (a one-record change; missed emails cost claims).
+  Sending from the partner's domain needs a DNS change on their side;
+  without it, emails may land in spam and coordinators miss releases.
+  Start by: before the emails are built. Owner: Priya. Accept, because
+  the fallback is cheap: send from our domain and have each coordinator
+  allow it. Trigger: no DNS change by the time the emails ship.
 
 ## Closed
 R-6 Render account in the partner's organization: granted by the IT lead.
 ```
 
-The objective at the top is what every impact rating is measured against, and the words after each rank say why. Each response is something the owner can do this sprint. R-2 and R-5 both wait on the partner, from different categories: R-2 has been asked, so it carries an Asked line, while R-5 still has a start-by date. R-5 is accepted because its fallback costs only how the emails look.
+The objective at the top is what every impact rating is measured against, and the words after each rank say why. Each response is something the owner can do this sprint. R-2 and R-5 both wait on the partner, from different categories: R-2 has been asked, so it carries an Asked line, while R-5 still has a start-by date. R-5 is accepted, and the entry says why: its fallback costs each coordinator one setting.
 
 ## Ranking Risks
 
