@@ -158,6 +158,16 @@ Have someone outside the team read it: your partner, or whoever inherits the pro
 
 The register is working if the problems that hurt the project were on it before they hurt. When something goes wrong, check whether it was listed. If it wasn't, look at which of the three categories it belongs to; a register that keeps missing team risks is being written by people who only look at the code. If it was listed and nobody acted, the review isn't happening, or the owner didn't have the time to act.
 
+## AI and the Register
+
+AI tools help with one part of risk work more than the others. <Cite id="collier-2025" /> had product safety professionals rate ChatGPT's work on six consumer products: it did better at divergent tasks such as brainstorming failure modes and mitigations, but made errors, gave inconsistent results, and offered guidance the professionals found overly generic. The authors suggest the tools assist with ideation while experts review the output. Use them the same way:
+
+- In a premortem, add the tool's list after everyone has written and read out their own, so it extends the team's list instead of anchoring it. Give it the requirements, the design document, and the current register, because without that context it lists the risks of any project.
+- Point your coding agents at the register in the repository's instruction file (see [AI Project Setup](/guides/ai-project-setup/)), so an agent says when a task touches an open risk. Let it flag, not edit: ranking needs judgment and context it doesn't have, and the partner reads the file.
+- Before each sprint planning, have an agent draft what moved since the last review: merged pull requests, closed issues, and any trigger it can check in the repository, such as whether the spike's issue is still open. The team decides. A trigger outside the repository, such as a reply from the partner's IT department, stays with its owner.
+
+Keep the register out of commit hooks. A hook can't tell whether a risk moved, because the facts behind most risks live outside the repository, so it either flags nothing or flags every commit, and a check that always fires teaches the team to bypass it.
+
 ## Best Practices for Keeping a Risk Register
 
 - Keep one register, in the repository, for the whole project.
@@ -168,6 +178,7 @@ The register is working if the problems that hurt the project were on it before 
 - Write facts about the project, never judgments about a person.
 - Write down why you accepted a risk, and what you'll do if it lands.
 - Run a premortem at the start and whenever the plan changes.
+- Let AI tools extend the list after the team has written its own, and let agents flag open risks rather than edit the register.
 
 ## Some Truths about Risk Registers
 
