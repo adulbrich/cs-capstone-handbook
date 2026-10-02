@@ -106,6 +106,15 @@ linking vendor docs and blog posts while the guides cited three peer-reviewed
 papers between them, two of them wrongly. The test is whether each doubtable
 claim has the right kind of support, not how many links the page carries.
 
+**Read the source of every Reference the page paraphrases.** A plain link
+still owes accuracy: when the page says what a framework, a standard, or an
+article contains (Cagan's four big risks, a standard's process, a handbook's
+statement format), open it and check the sentence against it. Work from the
+source itself, never from someone else's citation of it. The risks guide
+first filed all four of Cagan's risks under product, feasibility included,
+from memory of the page rather than the page; and Klein's premortem essay
+credits Mitchell et al. (1989) with a finding the paper does not report.
+
 ### Citing Evidence
 
 An Evidence claim is cited through the sources registry, not a bare link, so
@@ -216,6 +225,14 @@ topic.
    artifact, do not describe it. `technical-design.mdx` names it "What Makes
    a Good Design Document?"; `working-agreement.mdx` puts the file under
    "Writing Your Agreement", which is where its reader is when they need it.
+
+   The artifact stands alone. The prose above it states the project, the
+   team, and every detail the artifact relies on, even when another guide
+   uses the same project (the shift board appears in several). A reader who
+   arrives from search reads this page only, so introduce the example here
+   rather than as another guide's, and define any ID it uses (`FR-3`, `R-2`)
+   on this page. Prose examples earlier on the page stay generic until the
+   artifact introduces its project.
 
 5. *Topic-specific middle sections.* Flex freely. `retrospectives.mdx` uses
    `## Types`, `## Formats`, and `## Running a Good Retrospective` instead of
@@ -561,15 +578,16 @@ the failure this skill exists to prevent.
 4. Confirm the final four sections are present and in order: Best Practices,
    Some Truths, Industry and Academia, Additional Readings. Their absence is
    the most common way a new guide fails to match the others. For an artifact
-   guide, also confirm the fenced artifact is there and still matches what the
-   assignment page requires.
+   guide, also confirm the fenced artifact is there, still matches what the
+   assignment page requires, and stands alone (see Section Skeleton, item 4).
 5. Read the Some Truths section back and check that no entry is a single
    sentence and that each one says why. This is where compression re-enters.
 6. Sort the claims. Read the page for every sentence a reader could doubt and
    confirm it is Evidence (cited and verified), a Reference (linked), or a
    Recommendation (an imperative with its reason: "Do X, because Y"). Grep for
    the unsourced tells: `research shows`, `studies`, `most teams`, a bare
-   percentage.
+   percentage. For every Reference the page paraphrases, confirm you read the
+   source (see Sourcing).
 7. Run the reverse outline from `docs/agents/code-review.md` yourself before
    the review does: one line per paragraph naming its idea and what it
    contributes. A paragraph with no contribution is cut; a paragraph with two
@@ -578,3 +596,18 @@ the failure this skill exists to prevent.
 8. Check the Additional Readings activity list against
    `src/content/docs/activities/`. An activity that exercises this practice and
    is not listed is a dead end for the reader.
+9. Run the concision pass, on the whole page for a new or rewritten guide and
+   on the touched paragraphs for a smaller edit. Read for four kinds of cut:
+   - repetition: a point the page already made, a Best Practices bullet that
+     restates its reason from the body, a source cited again where it does no
+     new work, a sentence that describes the page to itself;
+   - study setup beyond what helps the reader judge the finding (keep the
+     finding, its size, and its caveat);
+   - stale lines: an entry about content the page no longer has;
+   - a closing line that restates its paragraph.
+
+   Keep every claim's reason, source, and caveat, the tl;dr, and the required
+   sections; those are the explanation, and cutting them is the compression
+   failure the register exists to prevent. List each cut with its word
+   saving in the pull request body, so the reviewer can check that nothing of
+   substance went with it.
