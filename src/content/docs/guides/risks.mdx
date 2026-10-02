@@ -13,7 +13,7 @@ Halfway through the project, your partner mentions that their IT department revi
 :::note[tl;dr]
 - Keep one ranked register in `docs/risks.md`, written so your partner can read it.
 - Write each risk as a condition and a consequence, with an owner and a trigger that tells you it's happening.
-- Look in four places: the product, the technology, the team's capacity, and the clocks other people control.
+- Sort each risk as business, technical, or team, and look for each in the document that surfaces it: your requirements, your design, your working agreement.
 - Rank by likelihood and impact on a three-level scale, write the reason next to each rating, and act on the top of the list.
 - Give each risk a response (mitigate, eliminate, transfer, or accept), and write down why you accepted one.
 - Run a premortem to surface the risks nobody wants to say out loud.
@@ -36,35 +36,38 @@ Each entry in the register carries the same parts:
 
 - **ID**: `R-1`, `R-2`, so a pull request, an issue, or a design document can point at it.
 - **Statement**: the condition that's true now and the consequence if the risk lands.
-- **Source**: product, technical, team, or external (see below).
+- **Category**: business, technical, or team (see below).
 - **Likelihood and impact**: each high, medium, or low, with a short reason.
 - **Owner**: the person who watches the risk and runs the response.
 - **Response**: what you're doing about it.
 - **Trigger**: the observable sign that the risk is turning into an issue.
+- **Asked**: for a risk that waits on someone outside the team, who you asked and when.
 
 ## Where Risks Come From
 
 Teams list the risks they're comfortable thinking about, which for a software team usually means technical ones. The evidence points elsewhere. <Cite id="boehm-1991" /> drew up a checklist of the ten most common sources of software risk from a survey of experienced project managers, and only two of the ten are about the technology itself (real-time performance and straining computer-science capabilities); the rest are people, schedules, requirements, and suppliers. <Cite id="wallace-2004" /> surveyed 507 software project managers and found a chain: risk from the organization and the users influenced risk in the requirements and the project's complexity, which influenced risk in planning and in the team, which in turn influenced how the project performed. Their sample was one of convenience, so trust the shape of the chain more than its numbers: the technical risk you can see often starts somewhere you weren't looking.
 
-Look in four places, each already surfaced by a practice you run anyway.
+Sort what you find into three categories, each surfaced by a document you already keep and each with a natural owner. The category tells you where to look for more and who acts.
 
-### Product
+### Business
 
-Three of Marty Cagan's [four big risks](https://www.svpg.com/four-big-risks/) are product risks: value (whether users will choose to use it), usability (whether they can figure out how), and business viability (whether it works for the partner's business, including their contracts and legal obligations). The fourth, feasibility, is technical and belongs in the next section. The [requirements guide](/guides/requirements/#validation) asks all four of each requirement. Every requirement still labeled assumed is a product risk until a user or the partner confirms it: "Coordinators haven't used the board; if they keep scheduling by email, double-bookings don't drop."
+Business risks are about whether the work is worth doing for the people it's for. Three of Marty Cagan's [four big risks](https://www.svpg.com/four-big-risks/) belong here: value (whether users will choose to use it), usability (whether they can figure out how), and business viability (whether it works for the partner's business, including their contracts and legal obligations). Cagan makes the product manager responsible for value and viability and the designer for usability. On an open-source contribution, the business is the upstream project and its maintainers; on a research project, it's the research question and whoever needs the answer.
+
+Your requirements document surfaces these. The [requirements guide](/guides/requirements/#validation) asks Cagan's questions of each requirement, and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "Coordinators haven't used the board; if they keep scheduling by email, double-bookings don't drop." The partner's own constraints belong here too: an approval their IT department has to give, a data agreement, a policy the product has to follow.
 
 ### Technical
 
-The technical risks are Cagan's feasibility risk: whether the team can build what's needed with the time, skills, and technology it has. They live in the assumptions your design rests on and nobody has tested: an integration you've never built, a library pushed past what its documentation promises, data at a scale you've never loaded. The [technical design guide](/guides/technical-design/#prototypes-and-spikes) answers each with a spike, a short experiment that turns the assumption into a fact. Until the spike is done, the assumption is a register entry. Security threats you've ranked in a threat model can sit here too, so the most serious one competes with everything else for the team's attention.
+Technical risks are Cagan's fourth, feasibility: whether the team can build what's needed with the time, skills, and technology it has. Cagan makes the lead engineer responsible for it. These risks live in the assumptions your design document rests on and nobody has tested: an integration you've never built, a library pushed past what its documentation promises, data at a scale you've never loaded. The [technical design guide](/guides/technical-design/#prototypes-and-spikes) answers each with a spike, a short experiment that turns the assumption into a fact; until the spike is done, the assumption is a register entry. Security threats you've ranked in a threat model can sit here too, so the most serious one competes with everything else for the team's attention.
 
-### Team and process
+### Team
 
-The team's own risks are capacity and concentration: midterms and interviews that eat a week, a part-time job, the one person who knows how to deploy, the skill nobody on the team has yet. Write them as facts about the project, because the partner and future maintainers read the register: "Only one person has deployed to production; if they're away, a broken release stays broken." That sentence leads to a fix (pair on the next deploy). "Sam never shares the deploy steps" leads to a defensive teammate and no fix.
+Team risks are about capacity and concentration: midterms and interviews that eat a week, a part-time job, the one person who knows how to deploy, the skill nobody on the team has yet. Your [working agreement](/guides/working-agreement/) surfaces them, because it's where the team wrote down who owns what and how much time each person has. Write them as facts about the project, because the partner and future maintainers read the register: "Only one person has deployed to production; if they're away, a broken release stays broken." That sentence leads to a fix (pair on the next deploy). "Sam never shares the deploy steps" leads to a defensive teammate and no fix.
 
 A disagreement between teammates, or a teammate who isn't delivering, isn't a register entry. Naming it in a document the partner reads turns a team problem into a public one. Work it through your team's agreement and the [Conflict guide](/guides/conflict/).
 
-### External
+### Risks That Wait on Someone Else
 
-The external risks are clocks other people control: an IT security review, an ethics board determination, an app store review, a maintainer's review queue, an account someone has to provision, users who have to be recruited. The [Shipping guide](/guides/shipping/) lists them for each kind of project, with their usual lead times. Each one your project depends on becomes a register entry with an owner, who you asked and when, and what's blocked until it lands, because its likelihood only falls when the other side answers.
+Some risks in every category wait on someone outside the team: an IT security review, an ethics board determination, an app store review, a maintainer's review queue, an account someone has to provision, users who have to be recruited. They aren't a fourth category, because what's at stake is still business, technical, or team; what sets them apart is that the clock isn't yours. Give each one an Asked line (who you asked, and when) and say what's blocked until it lands, because its likelihood only falls when the other side answers. The [Shipping guide](/guides/shipping/) lists these clocks for each kind of project, with their usual lead times.
 
 ## Writing a Risk
 
@@ -94,25 +97,26 @@ Ranked by likelihood and impact (H/M/L); reviewed at every sprint planning.
 R-1 (H/H, technical) SSO on the partner's Workspace tenant is unproven;
   if it fails, nobody can sign in. Owner: Priya. Mitigate: spike it before
   any feature work. Trigger: the spike isn't working by sprint review.
-R-2 (M/H, external) The partner's IT security review has no date; until it
+R-2 (M/H, business) The partner's IT security review has no date; until it
   passes, production waits. Asked: their IT lead, at kickoff. Owner: Jordan.
   Mitigate: send the data-flow diagram now. Trigger: no reviewer named
   two weeks after the request.
 R-3 (M/M, team) Only Sam has deployed to Render; if Sam is away, a broken
   release stays broken. Owner: Sam. Mitigate: pair on the next two
   deploys; rollback steps in the README.
-R-4 (M/M, product) Coordinators haven't used the board; if they keep
+R-4 (M/M, business) Coordinators haven't used the board; if they keep
   scheduling by email, double-bookings don't drop. Owner: Jordan.
   Mitigate: two coordinators try the claim flow before FR-3 is built.
-R-5 (L/M, external) Sending from the partner's domain needs DNS changes
-  on their side. Owner: Priya. Accept: send from our domain if it
-  slips; the emails look less official. Trigger: no DNS reply in a week.
+R-5 (L/M, technical) Sending from the partner's domain needs DNS changes
+  on their side. Asked: their IT lead, by email. Owner: Priya. Accept:
+  send from our domain if it slips; the emails look less official.
+  Trigger: no reply in a week.
 
 ## Closed
 R-6 Render account in the partner's organization: granted by the IT lead.
 ```
 
-Each response is a verb the owner can act on this sprint. R-5 shows an accepted risk with its fallback written down, which is what keeps acceptance from being a polite word for ignoring it.
+Each response is a verb the owner can act on this sprint. R-2 and R-5 wait on the partner, in different categories, and carry an Asked line. R-5 shows an accepted risk with its fallback written down, which is what keeps acceptance from being a polite word for ignoring it.
 
 ## Ranking Risks
 
@@ -152,7 +156,7 @@ Review the top of the register at every sprint planning, which takes five minute
 
 Have someone outside the team read it: your partner, or whoever inherits the project. Two checks matter. Can they tell from each entry what it would cost them? And did they already know about every risk that touches them? Raise any risk that touches them in person as well, rather than leaving the document to break the news.
 
-The register is working if the problems that hurt the project were on it before they hurt. When something goes wrong, check whether it was listed. If it wasn't, look at which of the four sources it came from; a register that keeps missing team risks is being written by people who only look at the code. If it was listed and nobody acted, the review isn't happening, or the owner didn't have the time to act.
+The register is working if the problems that hurt the project were on it before they hurt. When something goes wrong, check whether it was listed. If it wasn't, look at which of the three categories it belongs to; a register that keeps missing team risks is being written by people who only look at the code. If it was listed and nobody acted, the review isn't happening, or the owner didn't have the time to act.
 
 ## Best Practices for Keeping a Risk Register
 

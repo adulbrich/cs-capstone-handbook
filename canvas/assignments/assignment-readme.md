@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-paste Required: Project Risks Guide (#147)
 
-No rubric changes. Re-paste the Repo Checkpoint bodies (the risk register line links the new Project Risks guide, and the fall week 5 preparation list now recommends Risk Management Plan, moved from winter week 5) and the Project Retrospective body (its forward-looking section links the guide).
+No rubric changes. Re-paste the Repo Checkpoint bodies (the risk register line names its categories as business, technical, and team, and links the new Project Risks guide, and the fall week 5 preparation list now recommends Risk Management Plan, moved from winter week 5) and the Project Retrospective body (its forward-looking section links the guide).
 
 ## Re-import Required: RFC Revision Log (#348)
 
