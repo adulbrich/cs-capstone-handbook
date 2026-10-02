@@ -25,7 +25,7 @@ A **sprint** is a fixed-length period in which a team plans, builds, and reviews
 
 ## Preparing for Your First Sprint
 
-A real sprint, one where the team plans, builds, and delivers something it can demonstrate, needs a few things in place first. Get them done in your first weeks together, before the first sprint planning:
+A real sprint needs a few things in place first. Get them done in your first weeks together, before the first sprint planning:
 
 - Meet your project partner to understand the problem, the constraints, and what matters most to them.
 - Set up the development environment: repository, CI (continuous integration) pipeline, project board, and communication channels.
@@ -51,7 +51,7 @@ The time before the first real sprint is sometimes called Sprint 0. The term isn
 
 Each sprint runs the same four phases: plan, build, review, reflect. The [Scrum Guide](https://scrumguides.org/scrum-guide.html) names them Sprint Planning, the Sprint itself with its Daily Scrum, the Sprint Review, and the Sprint Retrospective. Read it once, because it's the authoritative definition of the terms your future colleagues will use, and it's short. It also says Scrum is "immutable", and that while "implementing only parts of Scrum is possible, the result is not Scrum."
 
-This page departs from the Guide in a few places, so by the Guide's own definition what it describes isn't Scrum. Each departure below names what the Guide prescribes, and the reason behind them is the one [Some Truths](#some-truths-about-sprints) opens with.
+This page departs from the Guide in a few places, so by the Guide's own definition what it describes isn't Scrum; [Some Truths](#some-truths-about-sprints) opens with the reason.
 
 ### Sprint Planning
 
@@ -61,10 +61,10 @@ At the start of each sprint, the team meets to decide what it'll deliver by the 
 2. What work will you pull in? Specific items from the backlog (user stories, research questions, experiments, data pipeline steps), sized to fit the hours people have.
 3. Who owns what? Every item has one person responsible for finishing it.
 
-Keep planning to 30 to 60 minutes, which is enough when the backlog arrives ready and the meeting only has to choose, check sizes, and assign. The Scrum Guide allows up to eight hours for a one-month sprint and says the event is usually shorter for shorter sprints. If your planning runs long, look at the backlog first: a team writing and sizing items during planning is doing what the Scrum Guide calls Product Backlog refinement, "breaking down and further defining Product Backlog items into smaller more precise items", which belongs before planning.
+Keep planning to 30 to 60 minutes, which is enough when the backlog arrives ready and the meeting only has to choose, check sizes, and assign. If your planning runs long, look at the backlog first: a team writing and sizing items during planning is doing what the Scrum Guide calls Product Backlog refinement, "breaking down and further defining Product Backlog items into smaller more precise items", which belongs before planning.
 
 :::tip[The Backlog]
-A **backlog** is the ordered list of all the work the team intends to do. Keep it current between plannings rather than rebuilding it at each one: update it after every meeting with your project partner, so the top items are ready to pull into the next sprint without much discussion. The [planning guide](/guides/planning/) covers how to rank it.
+A **backlog** is the ordered list of all the work the team intends to do. Keep it current between plannings rather than rebuilding it at each one: update it after every meeting with your project partner, so the top items are ready to pull into the next sprint without much discussion.
 :::
 
 ### The Sprint Itself
@@ -73,13 +73,13 @@ During the sprint, the team builds. Two practices keep it coordinated without a 
 
 A **stand-up** is a short sync (10 to 15 minutes) where each person says what they did since the last one, what they'll do before the next one, and what's blocking them. Scrum's version, the Daily Scrum, is a 15-minute daily event. The 2020 edition of the Scrum Guide [dropped these three questions](https://scrumguides.org/revisions.html) and lets the team "select whatever structure and techniques they want", as long as the meeting focuses on progress toward the sprint goal.
 
-Hold stand-ups two or three times a week rather than daily, and adjust once you see what the team needs. <Cite id="stray-2020" /> recommend adapting the frequency in the same direction: a team that already communicates well can stop meeting daily if three or four times a week is enough. They also suggest posting the answers in writing and meeting less often, which is what an async stand-up does: a thread in the team's chat that everyone answers on the days between meetings, or instead of a meeting when schedules don't overlap.
+Hold stand-ups two or three times a week rather than daily, and adjust once you see what the team needs. <Cite id="stray-2020" /> recommend adapting the frequency in the same direction: a team that already communicates well can stop meeting daily if three or four times a week is enough. For larger teams, they suggest posting the answers in writing every day and meeting in person less often. An async stand-up borrows that idea for a small team: a thread in the team's chat that everyone answers on the days between meetings, or instead of a meeting when schedules don't overlap.
 
 A stand-up can easily turn into a status report to whoever runs it; run it as coordination between peers instead. In a study of 12 software teams in three companies, the factors that did most to make people dislike the daily stand-up were status reporting to the manager and a meeting people felt was held too often and ran too long, while the factors that did most to make them value it were information sharing and the chance to discuss and solve problems <Cite id="stray-2016" form="parenthetical" />. <Cite id="stray-2020" /> observed that when the facilitator's behavior made members address the facilitator, the stand-up often became a status-reporting meeting, and when members talked to each other, it tended to become a discussion.
 
-The same authors go further than this page does and recommend dropping "what did you do since last time" altogether, putting status on a visual board instead so the meeting's time goes to what's ahead and what's blocked <Cite id="stray-2020" form="parenthetical" />. If your stand-ups turn into a recital of yesterday's work, try it for a sprint.
+The same authors go further than this page does and recommend dropping "what did you do since last time" altogether, putting status somewhere else, such as a visual board, so the meeting's time goes to what's ahead and what's blocked <Cite id="stray-2020" form="parenthetical" />. If your stand-ups turn into a recital of yesterday's work, try it for a sprint.
 
-The **sprint board** is a shared view of what's to do, in progress, and done. Keep it accurate throughout the sprint rather than tidying it before the review, because the board is what the stand-up reads and what the next planning starts from. The [Tools](#tools) section lists options.
+The **sprint board** is a shared view of what's to do, in progress, and done. Keep it accurate throughout the sprint rather than tidying it before the review, because the board is what the stand-up reads and what the next planning starts from.
 
 ### Sprint Review
 
@@ -98,7 +98,7 @@ Show the work itself: running software on real data, a notebook with actual outp
 After the review and before the next sprint starts, the team holds a short retrospective (30 to 45 minutes) on how it worked rather than on what it built. The Scrum Guide gives its purpose as planning "ways to increase quality and effectiveness", and the [retrospectives guide](/guides/retrospectives/) covers formats and facilitation.
 
 :::note[Process Overhead]
-Sprint ceremonies take time, and it helps to know roughly how much. At the lengths this page recommends, a two-week sprint costs each person about this much:
+At the lengths this page recommends, a two-week sprint costs each person about this much:
 
 | Activity | Per sprint | Weekly average |
 |----------|-----------|----------------|
@@ -145,7 +145,7 @@ Software estimates tend to be wrong, and in one direction. <Cite id="molokken-20
 
 Estimate each task as **small** (a few hours), **medium** (one or two days), or **large** (more than two days), and split every large task before it enters a sprint. The scheme only has to catch a task that won't fit in a sprint, and three sizes are enough for that.
 
-Estimate together, because a teammate may know why a task is harder than it looks. <Cite id="molokken-ostvold-2007" /> trialled [planning poker](https://www.mountaingoatsoftware.com/agile/story-points/planning-poker), in which the team discusses a task until it agrees on one estimate, in one software project, using it for half the tasks. The group estimates were less optimistic and more accurate than a mechanical combination of the individual estimates for the same tasks, though control tasks estimated by individual experts came out about as accurate as the planning poker tasks.
+Estimate together, because a teammate may know why a task is harder than it looks. In [planning poker](https://www.mountaingoatsoftware.com/agile/story-points/planning-poker), the team discusses differing estimates and estimates again until they converge. <Cite id="molokken-ostvold-2007" /> trialled it in one software project, using it for half the tasks. The group estimates were less optimistic and more accurate than a mechanical combination of the individual estimates for the same tasks, though control tasks estimated by individual experts came out about as accurate as the planning poker tasks.
 
 **Capacity** is the time the team actually has this sprint, after every other commitment each member has. Count all of it during planning and plan to it, because people predict their own completion times optimistically. <Cite id="buehler-1994" /> found people's predictions too optimistic across a variety of academic and nonacademic tasks, and found that people predicting focused on future scenarios rather than on relevant past experience.
 
@@ -233,10 +233,10 @@ The tool names above date faster than anything else on this page. Checked at the
 
 ## Best Practices
 
-- Commit to a sprint goal, not just a task list. The Scrum Guide lets the team renegotiate a sprint's scope "without affecting the Sprint Goal", so a goal survives a disruption that would break a fixed list.
+- Commit to a sprint goal, not just a task list, because a goal survives a disruption that would break a fixed list.
 - Finish work in progress before starting something new, because the review can show only finished work, and a teammate can build only on a finished piece.
 - Demo to your project partner every sprint, not only at milestones, because feedback on two weeks of work is cheaper to act on than feedback on two months.
-- Timebox stand-ups, and move detailed discussion to a follow-up with only the people it concerns, because a stand-up that runs too long is among the things that most turn people against the meeting <Cite id="stray-2016" form="parenthetical" />.
+- Timebox stand-ups, and move a problem that concerns only two or three people to a follow-up with them, so the rest of the team isn't held in someone else's discussion.
 
 ## Some Truths About Sprints
 
