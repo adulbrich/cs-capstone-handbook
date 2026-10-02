@@ -61,7 +61,7 @@ Technical risks are Cagan's fourth, feasibility: whether the team can build what
 
 ### Team
 
-Team risks are about capacity and concentration: midterms and interviews that eat a week, a part-time job, the one person who knows how to deploy, the skill nobody on the team has yet. Your [working agreement](/guides/working-agreement/) surfaces them, because it's where the team wrote down who owns what and how much time each person has. Write them as facts about the project, because the partner and future maintainers read the register: "Only one person has deployed to production; if they're away, a broken release stays broken." That sentence leads to a fix (pair on the next deploy). "Sam never shares the deploy steps" leads to a defensive teammate and no fix.
+Team risks are about capacity and concentration: midterms and interviews that eat a week, a part-time job, the one person who knows how to deploy, the skill nobody on the team has yet. Your [working agreement](/guides/working-agreement/) surfaces them, because it's where the team wrote down who owns what and how much time each person has. Write them as facts about the project, because the partner and future maintainers read the register: "Only one person has deployed to production; if they're away, a broken release stays broken." That sentence leads to a fix (pair on the next deploy). "Jordan never shares the deploy steps" leads to a defensive teammate and no fix.
 
 A disagreement between teammates, or a teammate who isn't delivering, isn't a register entry. Naming it in a document the partner reads turns a team problem into a public one. Work it through your team's agreement and the [Conflict guide](/guides/conflict/).
 
@@ -87,7 +87,7 @@ A trigger makes the review concrete: "no reviewer named two weeks after the requ
 
 ## What Makes a Good Risk Register?
 
-The register below belongs to the shift-board project the [requirements](/guides/requirements/) and [technical design](/guides/technical-design/) guides use. Each risk leads with its rank, and the closed risk stays at the bottom so the next team can see what was tried.
+The register below belongs to the running example in the [requirements](/guides/requirements/) and [technical design](/guides/technical-design/) guides: a shift board where a partner's volunteer coordinators post shifts and volunteers claim them, built by a team of three (Sam as project manager, Priya, and Jordan, who owns CI and the tests). Each risk leads with its rank, and the closed risk stays at the bottom so the next team can see what was tried.
 
 ```md
 # Risks
@@ -98,14 +98,14 @@ R-1 (H/H, technical) SSO on the partner's Workspace tenant is unproven;
   if it fails, nobody can sign in. Owner: Priya. Mitigate: spike it before
   any feature work. Trigger: the spike isn't working by sprint review.
 R-2 (M/H, business) The partner's IT security review has no date; until it
-  passes, production waits. Asked: their IT lead, at kickoff. Owner: Jordan.
+  passes, production waits. Asked: their IT lead, at kickoff. Owner: Sam.
   Mitigate: send the data-flow diagram now. Trigger: no reviewer named
   two weeks after the request.
-R-3 (M/M, team) Only Sam has deployed to Render; if Sam is away, a broken
-  release stays broken. Owner: Sam. Mitigate: pair on the next two
+R-3 (M/M, team) Only Jordan has deployed to Render; if Jordan is away, a
+  broken release stays broken. Owner: Jordan. Mitigate: pair on the next two
   deploys; rollback steps in the README.
 R-4 (M/M, business) Coordinators haven't used the board; if they keep
-  scheduling by email, double-bookings don't drop. Owner: Jordan.
+  scheduling by email, double-bookings don't drop. Owner: Sam.
   Mitigate: two coordinators try the claim flow before FR-3 is built.
 R-5 (L/M, technical) Sending from the partner's domain needs DNS changes
   on their side. Asked: their IT lead, by email. Owner: Priya. Accept:
