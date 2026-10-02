@@ -22,18 +22,15 @@ assignment:
       rubric: repo-checkpoint/repo-checkpoint-rubric.csv
 ---
 
-import CanvasEntries from '/src/components/CanvasEntries.astro';
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-rubric.csv?raw';
 
-<AssignmentMeta submission="Team" due="Fall and winter, weeks 5 and 10" weight="4% each, 8% per term" />
-
-<CanvasEntries />
+<AssignmentSummary />
 
 Your requirements and design documents live in your repository under `docs/`, stay current because your team (and your AI tools) need them current, and are graded at the commit you name: the documents from the PDF you submit, and the build, the term gate, and the history from the repository at that commit. A checkpoint is the instruction team's review of the repository as it actually is, with no drift between the document and the code. Graders may leave issues or PR comments in your repository as feedback.
 
-## What the Repository Must Contain (the living docs)
+## What You Produce
 
 The repository holds what an AI tool or a successor needs to work on the product, and nothing about the team itself, because your partner reads it and whoever continues the project inherits it. Your team's documents (the charter, the retrospectives, the Definition of Shipped, and a postmortem on anything but a technical incident) live where your team keeps its own files, such as a shared drive or wiki, and each one is submitted as a PDF. The [handoff document](/assignments/project-handoff/) goes where your partner keeps project documents.
 
@@ -44,11 +41,7 @@ The repository holds what an AI tool or a successor needs to work on the product
 - `README.md`: a quickstart that a new contributor (or grader) can actually follow. [makeareadme.com](https://www.makeareadme.com/) lists what a reader looks for.
 - [`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), carrying your Definition of Done and Contribution Norm, and the AI context file (`AGENTS.md`, `CLAUDE.md`, or your tool's equivalent), which points at the documents above rather than copying them, both from your [Team Charter](/assignments/team-charter/). At the first winter checkpoint, `CONTRIBUTING.md` shows the winter charter refresh: the Definition of Done and the Contribution Norm as your team now works. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default; per-tool files should point at it rather than duplicate it, because two instruction files disagreeing with each other is worse than none.
 
-## What You Submit
-
-One PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, that names the repository URL and the full hash of the commit you want graded, then carries every living doc at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, each decision record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file. Two gate documents follow them in the same PDF: at fall week 5, the [inherited-codebase audit](#the-inherited-codebase-audit) if your team starts in an existing codebase, and at fall week 10, the [Definition of Shipped](/assignments/definition-of-shipped/) v0 draft.
-
-Push everything before you submit: the living docs in the PDF must match the named commit.
+**AI use:** AI may draft and maintain the living docs from your code and history, and may write the CI configuration; the checkpoint grades the repository, not who typed it. What fails the checkpoint is evidence that is not real: a green badge from a workflow that runs nothing, a requirements document describing features the code does not have, or a PR history dressed up after the fact.
 
 ## What CI Must Do
 
@@ -102,11 +95,19 @@ Audit what you inherited in fall weeks 1 to 5. The fall week 5 gate checks it fo
 
 One page, submitted in the fall week 5 checkpoint PDF. What it finds that the code depends on goes into the repository where the next person looks: constraints in `docs/requirements.md`, conventions and pitfalls in the AI context file, and a decision to keep or replace something in an ADR. [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase) is the exercise that produces it.
 
-## Rubric (100 points per checkpoint)
+## What You Submit
+
+One PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, that names the repository URL and the full hash of the commit you want graded, then carries every living doc at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, each decision record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file. Two gate documents follow them in the same PDF: at fall week 5, the [inherited-codebase audit](#the-inherited-codebase-audit) if your team starts in an existing codebase, and at fall week 10, the [Definition of Shipped](/assignments/definition-of-shipped/) v0 draft.
+
+Push everything before you submit: the living docs in the PDF must match the named commit.
+
+:::note[If your project is under NDA]
+If your partner rules out read access for the instruction team, the checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your TA schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; its living docs match the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
+:::
+
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-rubric.csv" />
-
-**AI use:** AI may draft and maintain the living docs from your code and history, and may write the CI configuration; the checkpoint grades the repository, not who typed it. What fails the checkpoint is evidence that is not real: a green badge from a workflow that runs nothing, a requirements document describing features the code does not have, or a PR history dressed up after the fact.
 
 Each criterion has one thing graders check first, so you can check it yourself:
 
@@ -117,10 +118,6 @@ Each criterion has one thing graders check first, so you can check it yourself:
 - **Contribution traceability**: this grades whether the infrastructure for attribution exists, not whether every student contributed. Individual non-contribution is handled by the [individual contribution](/assignments/sprint-notes/#sprint-notes-n-individual-contribution) and never double-counted here.
 
 What "a history a maintainer could inherit" means is spelled out in the [git and GitHub guide](/guides/git-and-github/#a-history-a-maintainer-could-inherit); the checkpoint checks the five items listed there.
-
-:::note[If your project is under NDA]
-If your partner rules out read access for the instruction team, the checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your TA schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; its living docs match the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
-:::
 
 ## Activities That Prepare This
 

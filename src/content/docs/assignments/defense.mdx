@@ -20,6 +20,7 @@ assignment:
   canvas:
     # Due at the end of the week 7 or 9 window, whichever the team took.
     - name: "Individual Defense"
+      due_label: Week 7 or 9
       group: Defense
       weeks: { fall: [9], winter: [9], spring: [9] }
       weight: { fall: 8, winter: 10, spring: 10 }
@@ -28,11 +29,11 @@ assignment:
       rubric: defense/defense-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/defense/defense-rubric.csv?raw';
 
-<AssignmentMeta submission="Individual, held as a team session" due="Week 7 or 9, every term" weight="8% of the fall grade, 10% of the winter and spring grades" />
+<AssignmentSummary who="Individual, held as a team session" />
 
 Once per term, in week 7 or 9 (check announcements for the schedule), your team meets a Teaching Assistant (TA) or instructor who is not your team's regular TA for a defense session separate from your [TA check-ins](/assignments/introduction/#ta-check-ins), during which each student walks through something they own and answers live questions. Your own TA does not attend, so the account you give of your work has to stand on its own. The session is six minutes per student plus about ten minutes for setup and wrap, so a team of three runs a little under half an hour and a team of five runs about forty minutes. Per-student time doesn't shrink on a larger team; the session simply runs longer. Sick or absent that week? Tell your TA before the session and you will be rescheduled, per the [absence policy](/assignments/introduction/#late-work-absence-and-makeup).
 
@@ -60,7 +61,7 @@ TAs and instructors score each student live on a printed sheet (the [scoresheet]
 
 Nothing. The defense is live, so prepare by doing your work and being able to talk about it.
 
-## Rubric (100 points, per student)
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/defense/defense-rubric.csv" />
 

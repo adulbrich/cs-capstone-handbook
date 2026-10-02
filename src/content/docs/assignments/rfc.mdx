@@ -34,15 +34,12 @@ assignment:
       rubric: rfc/rfc-final-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import draftRubricCsv from '/canvas/assignments/rfc/rfc-draft-rubric.csv?raw';
 import finalRubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
-import CanvasEntries from '/src/components/CanvasEntries.astro';
 
-<AssignmentMeta submission="Individual" due="Fall and winter: draft week 4, peer reviews week 5, final week 8" weight="15% of the term grade: 5% for the draft and peer review, 10% for the final" />
-
-<CanvasEntries />
+<AssignmentSummary />
 
 An RFC (Request for Comments) is how engineering organizations make significant decisions in writing: someone frames the problem, lays out the options, recommends one, and invites critique before the team commits. The name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), which is how the internet's protocols are still specified; the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). You write a different one each term, in fall and winter, about a **real decision your team faces that is hard to reverse**. In fall the decision is still open. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. Not a hypothetical, and not a justification written after the fact for a decision the RFC no longer changes.
 
@@ -60,7 +57,7 @@ Do not invent a hard-to-reverse decision you are not actually facing.
 
 What you can direct an agent or a teammate to build is bounded by how precisely you can specify it. Write the RFC to that standard.
 
-## What the RFC Must Contain
+## What You Produce
 
 1. **Problem and context**: what decision is needed, why now, what happens if the team does nothing.
 2. **Options**: at least three credible options including "do nothing", each with its real costs.
@@ -69,19 +66,17 @@ What you can direct an agent or a teammate to build is bounded by how precisely 
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
 6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-Write it in the format the [ADR guide](/guides/adr/) sets out, starting from the [RFC template](/rfc-template.md), and commit it to your repository under `docs/rfcs/` or `docs/adr/`. Both entries below take it as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)). The length is 800 to 1,500 words in fall and 1,500 to 2,500 in winter, with a 2,000-word floor on the winter final (see [RFC Final Draft](#rfc-final-draft)).
+Write it in the format the [ADR guide](/guides/adr/) sets out, starting from the [RFC template](/rfc-template.md), and commit it to your repository under `docs/rfcs/` or `docs/adr/`. Both entries take it as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)). The length is 800 to 1,500 words in fall and 1,500 to 2,500 in winter, with a 2,000-word floor on the winter final (see [RFC Final Draft](#rfc-final-draft)).
 
 **AI use:** AI may research options, draft sections, and sharpen the argument; the Delegation and validation criterion is where you say what you handed off and how you checked it. Presenting a generated analysis you did not verify as your own judgment, or inventing evidence (benchmarks, quotes, references that do not exist), fails the assignment. The defense will ask you to explain the decision without the tool.
 
-## RFC Draft + Peer Review
+## What You Submit
 
-<AssignmentMeta submission="Individual" due="Draft end of week 4; peer reviews end of week 5" weight="5% of the term grade" />
+### RFC Draft + Peer Review
 
-### What You Submit
+Submit a complete draft by the end of week 4: every section above, within the term's length band. You don't need its grade before revising: start as soon as your peer reviews arrive.
 
-Submit a complete draft by the end of week 4: every section above, within the term's length band. The draft is graded for completeness, not for the quality of its reasoning. You don't need its grade before revising: start as soon as your peer reviews arrive.
-
-### The Peer Review
+#### The Peer Review
 
 In week 5 you review two drafts by other students, and two students review yours. Your reviews carry most of this entry's points, and they are the part graded on quality.
 
@@ -100,19 +95,11 @@ If an assigned reviewer does not submit, flag it to your Teaching Assistant (TA)
 Submit a sanitized draft: your reviewers read it, so replace partner-confidential specifics with neutral placeholders. If that isn't possible, contact the instruction team.
 :::
 
-### Rubric (100 points)
+### RFC Final Draft
 
-<RubricTable csv={draftRubricCsv} sourceLabel="canvas/assignments/rfc/rfc-draft-rubric.csv" />
+Submit the revised RFC by the end of week 8, followed by its revision log, in one PDF. Your team records the decision in the RFC (accepted, rejected, or superseded). The instruction team grades the final against the rubric below and returns rubric feedback.
 
-## RFC Final Draft
-
-<AssignmentMeta submission="Individual" due="End of week 8" weight="10% of the term grade" />
-
-### What You Submit
-
-Submit the revised RFC by the end of week 8, followed by its revision log, in one PDF. Your team records the decision in the RFC (accepted, rejected, or superseded). The instruction team grades the final against the rubric below and returns rubric feedback. Not submitting the draft forfeits the revision points, because there is nothing to revise. The standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies to both entries.
-
-### Revision Log
+#### Revision Log
 
 After the RFC, add a table with one row for every point raised in the feedback you received: both peer reviews, and any review the instruction team supplied, including one that stands in for a reviewer who did not submit. Each row records what you did with that point:
 
@@ -129,9 +116,21 @@ The log goes in the submission only: the RFC in your repository is the team's re
 CS 462 is the writing intensive term: the winter RFC's revised version, not counting the revision log, must total **at least 2,000 words**.
 :::
 
-### Rubric (100 points)
+## Rubric
+
+The standard [late policy](/assignments/introduction/#late-work-absence-and-makeup) applies to both entries.
+
+### RFC Draft + Peer Review
+
+<RubricTable csv={draftRubricCsv} sourceLabel="canvas/assignments/rfc/rfc-draft-rubric.csv" />
+
+The draft is graded for completeness, not for the quality of its reasoning.
+
+### RFC Final Draft
 
 <RubricTable csv={finalRubricCsv} sourceLabel="canvas/assignments/rfc/rfc-final-rubric.csv" />
+
+Not submitting the draft forfeits the revision points, because there is nothing to revise.
 
 ## Activities That Prepare This
 

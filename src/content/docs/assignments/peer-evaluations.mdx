@@ -11,6 +11,7 @@ assignment:
     SO5: 2
   canvas:
     - name: "Midterm Survey"
+      due_label: Sent week 5, closes end of week 6
       group: Peer Review Midterm
       weeks: { fall: [6], winter: [6], spring: [6] }
       weight: 5
@@ -18,6 +19,7 @@ assignment:
       submission: survey
       rubric: peer-evaluation/peer-evaluation-rubric.csv
     - name: "End-of-Term Survey"
+      due_label: Sent week 9, closes end of week 10
       group: Peer Review Final
       weeks: { fall: [10], winter: [10], spring: [10] }
       weight: 20
@@ -26,17 +28,14 @@ assignment:
       rubric: peer-evaluation/peer-evaluation-rubric.csv
 ---
 
-import CanvasEntries from '/src/components/CanvasEntries.astro';
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import Latex from '../../../components/Latex.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw';
 
-<AssignmentMeta submission="Individual, one survey per teammate" due="Midterm survey sent week 5, closes end of week 6; final survey sent week 9, closes end of week 10" weight="25% of the term grade">
+<AssignmentSummary who="Individual, one survey per teammate">
   Anonymous. Results go to instructors only.
-</AssignmentMeta>
-
-<CanvasEntries />
+</AssignmentSummary>
 
 Peer evaluations are how you evaluate the contributions of your teammates, and they evaluate yours. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
 
@@ -47,10 +46,6 @@ Not completing a peer evaluation scores 50% on that survey's share of the grade 
 :::
 
 All answers are anonymous; results are shared with instructors only. Questions about grades go to the instructors directly.
-
-## What You Submit
-
-Nothing to upload: you answer each [Qualtrics](https://www.qualtrics.com/) survey from the link sent by email, before it closes on the schedule above; it is not reopened.
 
 ## The Per-Term Instrument
 
@@ -123,12 +118,6 @@ Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four 
 
 Survey validation issues (self-rating below the floor, totals that do not sum to 100, out-of-range ratings) each deduct from the rater's own score; these deductions are reflected in the posted grade, not just in the feedback email.
 
-## Rubric (100 points)
-
-The rubric is the calculation above in points: each of the five numbers is worth 20 points, a fifth of its value.
-
-<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" />
-
 ## Teams of Two
 
 On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. Two protections apply: the self-allocation floor is relaxed, and any two-person team where the received ratings average below 3 (or the two teammates' ratings of each other diverge sharply) is reviewed by an instructor against the repo record and partner feedback before the score stands. A single teammate's ratings never finalize a low score on a team of two without corroboration.
@@ -136,6 +125,16 @@ On a team of two, every score you receive comes from exactly one rater, which is
 ## CATME in Spring
 
 At the end of spring, the final peer evaluation additionally uses the [CATME Five Teamwork Dimensions](https://info.catme.org/features/catme-five-dimensions/) (contributing to the team's work, interacting with teammates, keeping the team on track, expecting quality, and having relevant knowledge, skills, and abilities), a behaviorally anchored instrument with a strong validity literature [1]. It is not scored: the instructors read it beside the four criteria and the point distribution, as the year's closing teamwork evidence, to corroborate them.
+
+## What You Submit
+
+Nothing to upload: you answer each [Qualtrics](https://www.qualtrics.com/) survey from the link sent by email, before it closes; it is not reopened.
+
+## Rubric
+
+The rubric is the calculation above in points: each of the five numbers is worth 20 points, a fifth of its value.
+
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" />
 
 ## Activities That Prepare This
 

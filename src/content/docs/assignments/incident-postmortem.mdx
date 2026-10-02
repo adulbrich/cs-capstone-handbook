@@ -22,13 +22,13 @@ assignment:
       rubric: incident-postmortem/incident-postmortem-rubric.csv
 ---
 
-import AssignmentMeta from '/src/components/AssignmentMeta.astro';
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/incident-postmortem/incident-postmortem-rubric.csv?raw';
 
-<AssignmentMeta submission="Team" due="Winter, week 9" weight="2% of the winter grade">
+<AssignmentSummary>
   Winter's retrospective, in the form of one analyzed failure.
-</AssignmentMeta>
+</AssignmentSummary>
 
 By week 9 of winter, something real has gone wrong: an outage, a bad merge that cost a weekend, a dependency or platform surprise, a security scare, a missed commitment, a partner miscommunication that burned a sprint. Pick the most instructive one and write the document engineering teams write when it happens to them: a **blameless postmortem**.
 
@@ -40,9 +40,11 @@ Some terms really are quiet. If your team cannot name an incident, write the pos
 If you can't name a near miss either, that's your finding, and it's a real one: nothing in your process is currently surfacing problems early enough to see them. Write that up instead, using the same structure, with the timeline tracing how a plausible failure would travel through your system undetected and the corrective actions aimed at detection. Tell your Teaching Assistant (TA) in week 7 rather than week 9, so there's time to scope it properly.
 :::
 
-## Structure (2 to 3 pages)
+## What You Produce
 
-Where the incident is technical, keep the postmortem with the work, in the repository: an issue, an ADR, or the PR that fixes it. Otherwise keep it with [your team's documents](/assignments/repo-checkpoints/#what-the-repository-must-contain-the-living-docs).
+The postmortem is two to three pages.
+
+Where the incident is technical, keep the postmortem with the work, in the repository: an issue, an ADR, or the PR that fixes it. Otherwise keep it with [your team's documents](/assignments/repo-checkpoints/#what-you-produce).
 
 1. **Summary and impact**: what happened, when, who and what was affected, in factual, measurable terms.
 2. **Timeline**: the sequence of events, decisions, and signals (including missed ones), timestamped where possible.
@@ -53,15 +55,15 @@ Where the incident is technical, keep the postmortem with the work, in the repos
 
 Start from the [postmortem template](/postmortem-template.md).
 
+**AI use:** AI may reconstruct the timeline from logs, commits, and chat history, and draft the write-up. It must not invent events or timestamps, or supply a tidier root cause than the evidence supports. A fabricated timeline, or a corrective action with no real owner, fails the assignment. Section 6 asks you to say when AI contributed to the incident; the same disclosure applies to the document.
+
 ## What You Submit
 
 The postmortem as one PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes.
 
-## Rubric (100 points)
+## Rubric
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/incident-postmortem/incident-postmortem-rubric.csv" />
-
-**AI use:** AI may reconstruct the timeline from logs, commits, and chat history, and draft the write-up. It must not invent events or timestamps, or supply a tidier root cause than the evidence supports. A fabricated timeline, or a corrective action with no real owner, fails the assignment. Section 6 asks you to say when AI contributed to the incident; the same disclosure applies to the document.
 
 ## Activities That Prepare This
 

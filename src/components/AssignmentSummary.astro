@@ -1,0 +1,210 @@
+---
+/**
+ * AssignmentSummary: the card at the top of an assignment page, generated
+ * from its `assignment` frontmatter, so it cannot drift from what
+ * `scripts/validate-outcomes.mjs` checks or what the Canvas import creates.
+ *
+ * A header line says who submits, when the page runs, and what it is worth.
+ * Below it, one row per Canvas entry family: its name, linked to its section
+ * under What You Submit when it has one; when it is due; what each entry is
+ * worth; and a link to the rubric that scores it. On a phone each row wraps
+ * to two lines.
+ *
+ * Usage in MDX:
+ *
+ *   import AssignmentSummary from '/src/components/AssignmentSummary.astro';
+ *
+ *   <AssignmentSummary />
+ *
+ * `who` overrides the header's first item where the page's `level` says too
+ * little ("Team, with an individual half"). The optional slot holds one
+ * qualifying clause, as on AssignmentMeta.
+ *
+ * Accessibility: the rows are a list, the header is a paragraph, and colors
+ * come from Starlight's custom properties, so both themes keep their
+ * contrast ratios. Nothing here is a heading.
+ */
+import {
+  headingUnder,
+  pageTerms,
+  pageWeight,
+  rubricAnchor,
+  summaryRows,
+} from "../lib/canvas-entries.mjs";
+
+interface Props {
+  who?: string;
+}
+
+const { entry, headings } = Astro.locals.starlightRoute;
+const { assignment } = entry.data;
+if (!assignment?.canvas) {
+  throw new Error(
+    `AssignmentSummary: ${entry.id} has no assignment.canvas entries to summarize`
+  );
+}
+const who =
+  Astro.props.who ??
+  (assignment.level === "individual" ? "Individual" : "Team");
+
+const rows = summaryRows(assignment.canvas).map((row) => ({
+  ...row,
+  rubric: rubricAnchor(row.family, headings),
+  // The entry's own "###" under What You Submit, if the page has one.
+  section: headingUnder(headings, "What You Submit", row.heading),
+}));
+// A one-row card already states the row's weight in its header line.
+const showWeight = rows.length > 1 || rows.some((row) => row.repeats);
+const hasNote = Astro.slots.has("default");
+// The root keeps the "assignment-meta" class because scripts/canvas-export.mjs
+// strips it: each Canvas entry gets its own meta box there, built from the
+// same frontmatter.
+---
+
+<div class="assignment-meta assignment-summary not-content">
+  <p class="assignment-summary__head">
+    <strong>{who}</strong>
+    <span class="assignment-summary__sep" aria-hidden="true">·</span>
+    <span>{pageTerms(assignment)}</span>
+    <span class="assignment-summary__sep" aria-hidden="true">·</span>
+    <span>{pageWeight(assignment)}</span>
+  </p>
+  <ul class="assignment-summary__rows">
+    {
+      rows.map((row) => (
+        <li>
+          <span class="assignment-summary__name">
+            {row.section ? (
+              <a href={`#${row.section}`}>{row.name}</a>
+            ) : (
+              row.name
+            )}
+          </span>
+          <span class="assignment-summary__facts">
+            <span>
+              {row.due}
+              {row.peerReview && `, ${row.peerReview}`}
+            </span>
+            {showWeight && (
+              <>
+                <span class="assignment-summary__sep" aria-hidden="true">
+                  ·
+                </span>
+                <span>{row.weight}</span>
+              </>
+            )}
+            {row.rubric && (
+              <>
+                <span class="assignment-summary__sep" aria-hidden="true">
+                  ·
+                </span>
+                <a href={`#${row.rubric}`}>Rubric</a>
+              </>
+            )}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    hasNote && (
+      <div class="assignment-summary__note">
+        <slot />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .assignment-summary {
+    border: 1px solid var(--sl-color-gray-5);
+    border-inline-start: 4px solid var(--sl-color-accent);
+    border-radius: 0.5rem;
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+    padding: 0.75rem 1rem;
+    margin-block: 1.5rem;
+    font-size: var(--sl-text-sm);
+  }
+
+  .assignment-summary__head {
+    margin: 0 0 0.25rem;
+    color: var(--sl-color-gray-2);
+  }
+  .assignment-summary__head strong {
+    color: var(--sl-color-white);
+    font-weight: 600;
+  }
+
+  .assignment-summary__sep {
+    color: var(--sl-color-gray-4);
+    margin-inline: 0.4rem;
+  }
+
+  .assignment-summary__rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Mobile first: the name, then its facts on the next line. */
+  .assignment-summary__rows li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem 1rem;
+    padding-block: 0.45rem;
+    border-block-start: 1px solid var(--sl-color-gray-5);
+  }
+
+  /* Name and facts side by side once there is room. */
+  @media (min-width: 34rem) {
+    .assignment-summary__rows li {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+    }
+    .assignment-summary__facts {
+      text-align: end;
+    }
+  }
+
+  .assignment-summary__name {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+  .assignment-summary__name a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .assignment-summary__name a:hover {
+    text-decoration: underline;
+  }
+
+  .assignment-summary__facts {
+    color: var(--sl-color-gray-2);
+  }
+  .assignment-summary__facts a {
+    color: var(--sl-color-text-accent);
+  }
+
+  .assignment-summary__note {
+    margin-block-start: 0.5rem;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid var(--sl-color-gray-5);
+  }
+  .assignment-summary__note :global(p) {
+    color: var(--sl-color-gray-2);
+    margin: 0;
+  }
+
+  @media (prefers-contrast: more) {
+    .assignment-summary {
+      border-width: 2px;
+    }
+  }
+
+  @media print {
+    .assignment-summary {
+      border: 1px solid #000;
+      background: none;
+    }
+  }
+</style>

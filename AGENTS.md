@@ -22,7 +22,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies come from the built pages through the paste kit (`npm run canvas:export`) and are not stored here. |
 | `public/` | Templates and scoresheets students download. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
-| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: AssignmentMeta weight text, the AI-use paragraph, rubric totals, that each page renders its own CSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
+| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page. Runs in CI and pre-commit. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
@@ -77,9 +77,10 @@ it. Content lives in `src/content/docs/**` as MDX.
    has its own due date, late window, grade and submission, so four sprint
    notes are four entries and a draft and a final are two, even when one
    handbook page holds them all. The page lists its entries in
-   `assignment.canvas` frontmatter, gives entries that differ in what is
-   submitted or how it is graded their own section, and renders one
-   `<RubricTable>` per distinct rubric; `validate-outcomes.mjs` reconciles the list with the
+   `assignment.canvas` frontmatter, gives entries graded differently one
+   `###` each under `## Rubric` (and under `## What You Submit` when what
+   they hand in differs), and renders one `<RubricTable>` per distinct
+   rubric; `validate-outcomes.mjs` reconciles the list with the
    page weight, the rendered rubrics, and Canvas's per-group points. See
    `docs/decisions/2026-09-23-canvas-entry-model.md`.
 7. **Pages do not mention Canvas.** Assignment bodies are pasted into

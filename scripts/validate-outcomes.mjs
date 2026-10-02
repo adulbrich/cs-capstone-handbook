@@ -24,6 +24,7 @@ import { join } from "node:path";
 import { parse } from "yaml";
 import {
   canvasRows,
+  familyHeading,
   isTitled,
   termWeight,
 } from "../src/lib/canvas-entries.mjs";
@@ -557,13 +558,6 @@ for (const [slug, assignment] of pages) {
       );
       failed = true;
     }
-    const entryCount = termRows.reduce((acc, r) => acc + r.names.length, 0);
-    if (entryCount > 1 && !/<CanvasEntries\b/.test(pageSources.get(slug))) {
-      console.error(
-        `CANVAS ${file}: owns ${entryCount} Canvas entries in ${term} but does not render <CanvasEntries />.`
-      );
-      failed = true;
-    }
   }
 
   for (const row of rows) {
@@ -664,18 +658,25 @@ if (!failed) {
 // pages that otherwise validated. Each is a few lines and pays for itself
 // the first time it fires.
 //
-const DELIVERABLE_HEADING_RE =
-  /^## (What .* Must (Produce|Contain)|Structure|Required Sections)/m;
+// The fixed skeleton (#331): <AssignmentSummary /> at the top, then these
+// "##" sections in this order, any page-specific explanation sections between
+// What You Produce and What You Submit, and nothing after Activities but
+// References. What You Produce is there when the student makes an artifact,
+// and its own text ends on the AI-use paragraph, before any "###".
+const SKELETON = [
+  "What You Produce",
+  "What You Submit",
+  "Rubric",
+  "Activities That Prepare This",
+];
+const REQUIRED = ["What You Submit", "Rubric"];
+const AFTER_ACTIVITIES = new Set(["References"]);
 const AI_USE_RE = /^\*\*AI use:\*\*/m;
-// Every page with Canvas entries says what to hand in under this heading, and
-// a submission format lives there, never in a heading (#288).
-// An entry with its own `##` section and <AssignmentMeta> (the RFC's draft and
-// final, a sprint's individual contribution) needs its own block inside it.
-const WHAT_YOU_SUBMIT_RE = /^#{2,3} What You Submit$/m;
+// A submission format lives under What You Submit, never in a heading (#288).
 const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/im;
-const META_RE = /<AssignmentMeta\b/;
 const FENCED_CODE_RE = /^(```|~~~)[\s\S]*?^\1/gm;
-const META_WEIGHT_RE = /<AssignmentMeta[^>]*\sweight="([^"]*)"/;
+const SUMMARY_RE = /<AssignmentSummary\b/;
+const META_RE = /<AssignmentMeta\b/;
 
 // Format headings on every assignment page, graded or not: the loop below
 // skips pages without an `assignment:` block. Fenced code is not a heading.
@@ -702,61 +703,99 @@ for (const file of files) {
   const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
   const body = source.slice(source.indexOf("---", 3) + 3);
 
-  // The AssignmentMeta weight text must state every percentage the
-  // frontmatter declares. Sprint Notes said "2% each" and never gave the
-  // term totals that every other page's meta states.
-  const meta = body.match(META_WEIGHT_RE);
-  const declared =
-    typeof assignment.weight === "number"
-      ? [assignment.weight]
-      : Object.values(assignment.weight ?? {});
-  if (meta) {
-    for (const w of new Set(declared)) {
-      if (!meta[1].includes(`${w}%`)) {
-        console.error(
-          `META ${file}: frontmatter declares ${w} but the AssignmentMeta weight text "${meta[1]}" never says ${w}%.`
-        );
-        failed = true;
-      }
-    }
-  } else {
-    console.error(`META ${file}: no <AssignmentMeta weight="..."> found.`);
-    failed = true;
-  }
-
-  // Every page with Canvas entries says what to hand in.
-  const sections = body.split(/^(?=## )/m).slice(1);
-  const entrySections = sections.filter((section) => META_RE.test(section));
-  const shared = sections.filter((section) => !META_RE.test(section)).join("");
-  if (
-    assignment.canvas &&
-    entrySections.length < assignment.canvas.length &&
-    !WHAT_YOU_SUBMIT_RE.test(shared)
-  ) {
+  // The card at the top is generated from the frontmatter this script checks.
+  if (!SUMMARY_RE.test(body) || META_RE.test(body)) {
     console.error(
-      `SUBMIT ${file}: has Canvas entries without their own section but no page-level "What You Submit" heading saying what to hand in.`
+      `SUMMARY ${file}: renders <AssignmentMeta> or no <AssignmentSummary />; a graded page's card is <AssignmentSummary />, generated from its frontmatter.`
     );
     failed = true;
   }
-  for (const section of entrySections) {
-    if (!WHAT_YOU_SUBMIT_RE.test(section)) {
-      console.error(
-        `SUBMIT ${file}: the entry section "${section.split("\n")[0]}" has its own <AssignmentMeta> but no "### What You Submit" block.`
-      );
+
+  // The skeleton's sections, present and in order.
+  const sections = body.split(/^(?=## )/m).slice(1);
+  const titles = sections.map((text) => text.split("\n")[0].slice(3));
+  const section = (name) => sections[titles.indexOf(name)];
+  for (const name of REQUIRED) {
+    if (!titles.includes(name)) {
+      console.error(`SKELETON ${file}: no "## ${name}" section.`);
       failed = true;
     }
   }
-
-  // A page with a written deliverable carries the AI-use paragraph.
-  if (DELIVERABLE_HEADING_RE.test(body) && !AI_USE_RE.test(body)) {
+  const positions = SKELETON.map((name) => titles.indexOf(name)).filter(
+    (i) => i >= 0
+  );
+  if (positions.some((p, i) => i > 0 && p < positions[i - 1])) {
     console.error(
-      `AI USE ${file}: has a deliverable section but no "**AI use:**" paragraph naming what AI may do and what fails the assignment.`
+      `SKELETON ${file}: sections run [${titles.join(", ")}]; ${SKELETON.join(", ")} come in that order.`
+    );
+    failed = true;
+  }
+  const activities = titles.indexOf("Activities That Prepare This");
+  const trailing = titles
+    .slice(activities + 1)
+    .filter((t) => activities >= 0 && !AFTER_ACTIVITIES.has(t));
+  if (trailing.length > 0) {
+    console.error(
+      `SKELETON ${file}: [${trailing.join(", ")}] comes after Activities That Prepare This; only References may.`
+    );
+    failed = true;
+  }
+
+  // AI use closes What You Produce's own text, before any "###".
+  const produce = section("What You Produce");
+  const aiUses = body.match(new RegExp(AI_USE_RE.source, "gm")) ?? [];
+  if (produce) {
+    const [own] = produce.split(/^### /m);
+    const lastBlock =
+      own
+        .trim()
+        .split(/\n\s*\n/)
+        .at(-1) ?? "";
+    if (!AI_USE_RE.test(lastBlock) || aiUses.length !== 1) {
+      console.error(
+        `AI USE ${file}: needs one "**AI use:**" paragraph, as the last paragraph of What You Produce before any "###", naming what AI may do and what fails the assignment.`
+      );
+      failed = true;
+    }
+  } else if (aiUses.length > 0) {
+    console.error(
+      `AI USE ${file}: has an "**AI use:**" paragraph but no What You Produce section to close.`
+    );
+    failed = true;
+  }
+
+  // Entries with rubrics of their own: an "###" each under Rubric named for
+  // the Canvas entry, and the same "###" under What You Submit when what they
+  // hand in differs. The Canvas export gives each entry the "###" sections
+  // named for it.
+  const entryHeadings = (text) =>
+    (text ?? "")
+      .split(/^(?=### )/m)
+      .slice(1)
+      .map((sub) => sub.split("\n")[0].slice(4));
+  const families = new Set((assignment.canvas ?? []).map(familyHeading));
+  const rubricEntries = entryHeadings(section("Rubric"));
+  for (const name of rubricEntries.filter((n) => !families.has(n))) {
+    console.error(
+      `RUBRIC ${file}: "### ${name}" under Rubric names no Canvas entry; the export matches it to an entry by name.`
+    );
+    failed = true;
+  }
+  const submitEntries = entryHeadings(section("What You Submit")).filter((n) =>
+    families.has(n)
+  );
+  if (
+    submitEntries.length > 0 &&
+    rubricEntries.join("|") !== submitEntries.join("|")
+  ) {
+    console.error(
+      `SUBMIT ${file}: "## Rubric" has the entries [${rubricEntries.join(", ")}] but "## What You Submit" has [${submitEntries.join(", ")}]; give each entry one "###" in both, in the same order.`
     );
     failed = true;
   }
 
   // Rubric points total exactly 100, summed from each rendered CSV, and
-  // each table sits under a rubric heading: its nearest "##" or "###".
+  // each table sits in the "## Rubric" section.
   for (const table of pageTables.get(slug)) {
     if (!table.path) {
       continue; // already reported as RUBRIC IMPORT above
@@ -768,16 +807,10 @@ for (const file of files) {
       );
       failed = true;
     }
-    const headings = [
-      ...source.slice(0, table.index).matchAll(/^(#{2,3}) (.*)$/gm),
-    ];
-    const h2 = headings.findLast((h) => h[1] === "##");
-    const h3 = headings.findLast(
-      (h) => h[1] === "###" && (!h2 || h.index > h2.index)
-    );
-    if (![h2, h3].some((h) => h && /Rubric/.test(h[2]))) {
+    const h2 = [...source.slice(0, table.index).matchAll(/^## (.*)$/gm)].at(-1);
+    if (h2?.[1] !== "Rubric") {
       console.error(
-        `RUBRIC ${file}: renders ${table.path} with no "Rubric" heading above it (the nearest ## or ###).`
+        `RUBRIC ${file}: renders ${table.path} outside the "## Rubric" section.`
       );
       failed = true;
     }
@@ -785,7 +818,7 @@ for (const file of files) {
 }
 if (!failed) {
   console.log(
-    "  Every page states its weight in the meta, carries AI use where it has a deliverable, and totals 100."
+    "  Every page has the summary card and the skeleton, carries AI use where it produces something, and totals 100."
   );
 }
 
