@@ -26,13 +26,11 @@ A working agreement is a document the team writes together to make its operating
 
 Write the agreement before the first technical argument, because a team of strong developers can still stall on process: which branching strategy to use, who breaks a tie, what "finished" means. Those questions are cheaper to settle in the abstract, before anyone's code or pride depends on the answer.
 
-Google's [Project Aristotle](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness) is the best-known attempt to measure which of these actually matters; it's an internal study of 180 Google teams, published on Google's re:Work site rather than in a journal. Studying its own teams, Google found that who was on the team mattered less than how the team operated, and that the strongest single predictor was psychological safety: whether members believed they could take an interpersonal risk, such as admitting a mistake or asking an obvious question, without being penalized for it. Use the agreement to build psychological safety: decide in it what happens when someone says they're stuck, so the person saying it knows the response before they speak.
+Google's [Project Aristotle](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness) is the best-known attempt to measure which of these actually matters; it's an internal study of 180 Google teams, published on Google's re:Work site rather than in a journal. Google found that who was on the team mattered less than how the team operated, and that psychological safety ranked first of the five dynamics Google identified: whether members believed they could take an interpersonal risk, such as admitting a mistake or asking a question, without being penalized for it. Use the agreement to build psychological safety: decide in it what happens when someone says they're stuck, so the person saying it knows the response before they speak.
 
-<Cite id="edmondson-1999" /> defined team psychological safety and, in a study of 51 manufacturing teams, found it associated with the team's learning behavior. She built that study on her earlier work with hospital patient-care teams, where members of some teams openly acknowledged a medication error and discussed how to avoid a repeat, while members of others kept it to themselves <Cite id="edmondson-1999" form="parenthetical" />. The hospital study found that the teams differed not only in how often errors happened but in how likely an error was to be detected and learned from <Cite id="edmondson-1996" form="parenthetical" />.
+<Cite id="edmondson-1999" /> defined team psychological safety and, in a study of 51 work teams in a manufacturing company, found it associated with the team's learning behavior. She built that study on her earlier work with hospital patient-care teams, where members of some teams openly acknowledged a medication error and discussed how to avoid a repeat, while members of others kept it to themselves <Cite id="edmondson-1999" form="parenthetical" />. The hospital study found that the teams differed not only in how often errors happened but in how likely an error was to be detected and learned from <Cite id="edmondson-1996" form="parenthetical" />.
 
 <Cite id="aaron-2014" /> compared business-student teams under several charter conditions and found that introducing a charter improved communication, effort, mutual support, cohesion, and member satisfaction. <Cite id="mathieu-2009" /> followed 32 MBA teams through a business simulation: the quality of a team's performance strategy, its plan for the task, predicted its performance, and the teams that sustained the highest performance had both a high-quality charter and a high-quality strategy. Write the agreement alongside your project plan, then, rather than in place of one.
-
-The need is greatest on a team that formed quickly, whose members don't know each other well, and that has no manager to set norms. That team defines its own operating model, or one emerges by default.
 
 ## What Effective Agreements Cover
 
@@ -59,7 +57,7 @@ A default rule for silence keeps team decisions moving. The Apache Software Foun
 Be specific about how the team stays in touch:
 
 - Where conversations happen. Pick one primary channel (Slack, Discord, Teams) and commit to it.
-- How fast a message gets answered. "Acknowledge messages within 24 hours on weekdays" is a norm; "respond promptly" isn't.
+- How fast a message gets answered, in hours.
 - When the team meets: stand-ups, sprint reviews, and retrospectives, each with a day and a time.
 - How someone flags something urgent.
 
@@ -97,7 +95,7 @@ Agree explicitly on how the team makes sure every member is heard, especially in
 - Posting proposals in writing before a decision, so everyone has time to think.
 - Inviting quieter members to give their view before closing a discussion.
 
-These are the concrete form of the psychological safety finding above. A rotating facilitator and an explicit invitation to speak are mechanisms anyone can check, where "we value everyone's input" is a sentiment nobody can. Check at each retrospective whether they're still happening, because nothing breaks visibly when they lapse.
+A rotating facilitator and an explicit invitation to speak are mechanisms anyone can check, where "we value everyone's input" is a sentiment nobody can. Check at each retrospective whether they're still happening, because nothing breaks visibly when they lapse.
 
 ### AI Tool Usage
 
@@ -118,12 +116,6 @@ These norms belong in the working agreement because they're about how the team c
   title="Technical Design in the Age of AI"
   href="/guides/technical-design/#technical-design-in-the-age-of-ai"
   description="How design documents help coordinate teams where everyone uses AI coding tools."
-/>
-
-<LinkCard
-  title="AI Project Setup"
-  href="/guides/ai-project-setup/"
-  description="What to commit so every coding agent on the team works from the same rules and can check its own work."
 />
 
 ## From Agreement to Repository
@@ -149,18 +141,18 @@ A short working session (45 to 60 minutes) is usually enough:
 3. Draft the document together during the session.
 4. Review the communication cadence and the Definition of Done with your project partner.
 
-Atlassian's [working agreements play](https://www.atlassian.com/team-playbook/plays/working-agreements) is a facilitated version of the same session, if your team wants a script.
+Atlassian's [working agreements play](https://www.atlassian.com/team-playbook/plays/working-agreements) is a scripted alternative of about an hour: a lead drafts the communication channels and escalation process in advance, and the team edits them. The cost is that one person frames those two sections before anyone else speaks.
 
 Before the session, name the stage your team is in, and spell out more (explicit roles, response times) the less the team knows each other, because members who haven't worked together can't fall back on habits they don't share yet. <Cite id="tuckman-1965" /> reviewed 50 studies of group development and proposed four stages; on the interpersonal side, a group moves from testing and dependence, through conflict and then cohesion, to functional roles. The [Team Formation Strategies Assessment](/activities/teamwork/#team-formation-strategies-assessment) walks those stages under their popular labels, forming to performing.
 
 Keep the agreement with the team's own documents, such as a shared drive or the team wiki, not in the code repository. It is an agreement between the people on the team, while the repository is read by the project partner and inherited by whoever maintains the code next.
 
-Kept to the conversations above, the agreement stays short:
+Kept to the conversations above, the agreement stays short. Here is one for a three-person team building a shift board, where a nonprofit's volunteer coordinators post shifts and volunteers claim them:
 
 ```md
-# Team Charter
+# Working Agreement
 
-## Roles (rotate at each phase review)
+## Roles (rotate at each new phase)
 - Project Manager, Sam: board, sprint planning, partner liaison.
 - AI Coordinator, Priya: AGENTS.md, skills, the confidentiality rule.
 - Quality Owner, Jordan: CI, test suite, the Definition of Done.
@@ -169,11 +161,14 @@ Kept to the conversations above, the agreement stays short:
 - Individual: your own task. Team: architecture, dependencies, scope,
   proposed in the channel; silence for 24 h is a yes.
 - Escalated: partner-facing changes, blockers over one sprint.
+- Log: team and escalated decisions, on the team drive. The chair
+  rotates; each of us chairs at least one team decision a phase.
 
 ## Communication
 - Discord #shift-board. Acknowledge within 24 h on weekdays.
 - Stand-up Tue and Thu 17:00. Review and retro every other Friday.
 - Availability: 9 h/week each; interview weeks announced a sprint ahead.
+- Meeting notes in the team drive the same day, for whoever missed it.
 
 ## Merging
 Definition of Done and the contribution floor: CONTRIBUTING.md.
@@ -183,20 +178,22 @@ Facilitator rotates each meeting; anyone who hasn't spoken is asked
 before a decision closes. Accommodation requests go privately to the PM.
 
 ## When it isn't working
+Triggers: two missed stand-ups in a sprint, or a PR unreviewed for 48 h.
 Talk directly within a week; raise it at the next retro; after two
 sprints with no change, escalate to our supervisor.
 
 ## AI and confidentiality
 Shared config in AGENTS.md; generated code is reviewed like any other.
 Any tool: our code, docs, synthetic data. Partner-approved tools only:
-partner API docs. Never: production data, personal data, credentials.
+partner API docs, meeting notes. Never: production data, personal data,
+credentials.
 ```
 
 Keep yours short enough to read in five minutes, a few pages at most, because the agreement gets consulted in the middle of a disagreement, and nobody reads ten pages to find the clause they need.
 
 ## Keeping It Alive
 
-An agreement written in the first weeks and never reopened stops describing the team. A few months later the project has changed, the dynamics have shifted, and some norms have proven unrealistic. <Cite id="luvison-2025" /> found that student teams who revised their charter midway through the project showed significantly higher team commitment, team satisfaction, and individual effectiveness than teams who wrote a charter once when they formed. The revised-charter teams also received feedback and coaching, so the effect belongs to the three together.
+An agreement written in the first weeks and never reopened stops describing the team. <Cite id="luvison-2025" /> found that student teams who revised their charter partway through the project showed significantly higher team commitment, team satisfaction, and individual effectiveness than teams who used a one-time charter. The revised-charter teams also received feedback and coaching, so the effect belongs to the three together.
 
 Revisit it at the natural moments:
 
@@ -240,7 +237,6 @@ The agreement is working when it changes behavior, which is harder to see than w
 ## Best Practices
 
 - Be specific. "Acknowledge within 24 hours on weekdays" is a norm; "respond promptly" isn't, because nobody can say when it was broken, so enforcing it means arguing about a teammate's attitude.
-- Separate team norms from project standards. Conflict resolution belongs in the working agreement; branching strategy belongs in `CONTRIBUTING.md`.
 - Include a process for changing it. "Any teammate can propose a change; the team discusses it at the next retrospective" is a reasonable default.
 - Write it in a live session, in person or on a call, because a comment thread lets people skip the disagreement a conversation forces into the open.
 
@@ -254,13 +250,11 @@ Expect parts of the agreement to be wrong within a few months. The team that wro
 
 ## Working Agreements in Industry and Academia
 
-In industry, agile teams write working agreements under many names: team charter, team manifesto, team norms, social contract. Atlassian's Team Playbook, linked above, publishes a format for writing one. Large engineering organizations also document norms that apply across every team, such as coding standards, on-call expectations, and incident response; Google's [engineering practices](https://google.github.io/eng-practices/), which set out its code review standards, are a public example.
+In industry, agile teams write working agreements under many names: team charter, team manifesto, team norms, social contract. Large engineering organizations also document norms that apply across every team, such as coding standards, on-call expectations, and incident response; Google's [engineering practices](https://google.github.io/eng-practices/), which set out its code review standards, are a public example.
 
-GitLab's [all-remote handbook](https://handbook.gitlab.com/handbook/company/culture/all-remote/) and Basecamp's [How We Communicate](https://basecamp.com/guides/how-we-communicate) show what a company-scale working agreement looks like in public, and both are far longer than yours needs to be. Read them for the kind of decision they bother to write down, which is defaults rather than values: which channel is for what, how long a reply may take, what's a meeting and what's a document.
+Basecamp's [How We Communicate](https://basecamp.com/guides/how-we-communicate) shows what a company-scale working agreement looks like in public, and it is far longer than yours needs to be. Read it for the kind of decision it bothers to write down, which is defaults rather than values: which channel is for what, how long a reply may take, what's a meeting and what's a document.
 
 A company that writes its norms down can hand them to a new hire on the first day instead of leaving them to be learned from mistakes. Your `CONTRIBUTING.md` does the same for anyone who joins your project or reviews your work.
-
-In academia, the charter studies cited on this page all used student teams: business students <Cite id="aaron-2014" form="parenthetical" />, MBA students <Cite id="mathieu-2009" form="parenthetical" />, and student project teams <Cite id="luvison-2025" form="parenthetical" />.
 
 For a student team, the agreement is also a record of how the team meant to operate, which gives the team, and whoever supervises it, a starting point when something stops working.
 
