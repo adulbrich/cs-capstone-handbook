@@ -14,9 +14,10 @@ verified: abstract
 claims:
   - claim: >-
       The serial order effect, the tendency for later responses to a
-      divergent thinking task to be better than earlier ones, is one of the
-      oldest and most robust findings in creativity research.
-    locator: Abstract
+      divergent thinking task to be better than earlier ones (ideas that
+      "get more creative across time", in the title), is one of the oldest
+      and most robust findings in modern creativity work.
+    locator: Title; Abstract
   - claim: >-
       In a 10-minute unusual-uses task with 133 young adults, creativity
       increased sharply with time, while fluency was highest in the first

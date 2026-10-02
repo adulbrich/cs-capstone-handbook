@@ -48,7 +48,7 @@ The techniques below are structures that work around that loss, mostly by having
 
 Six rounds of six people produce 108 ideas in half an hour. Adjust the numbers to your team size and keep the structure: write alone, read what came before, pass it on.
 
-Reach for brainwriting when one or two teammates dominate discussion. Research on passing slips of paper around a group suggests it can be quite effective, and in one short session, writing yielded twice as many ideas as talking <Cite id="paulus-2018" form="parenthetical" />. The meta-analysis points the same way: the group loss was stronger when contributions were spoken aloud and tape-recorded, rather than written <Cite id="mullen-1991" form="parenthetical" />.
+Reach for brainwriting when one or two teammates dominate discussion. Research on passing slips of paper around a group suggests it can be quite effective, and in one short session, writing yielded twice as many ideas as talking <Cite id="paulus-2018" form="parenthetical" />. The meta-analysis points the same way: the group loss was stronger when contributions were spoken into a tape recorder rather than written <Cite id="mullen-1991" form="parenthetical" />.
 
 If the team is remote, brainwrite in a shared document and then discuss the ideas live: <Cite id="paulus-2018" /> report that electronic idea exchange tends to generate more ideas than talking, but that evaluating ideas works better face to face.
 
@@ -96,7 +96,7 @@ The [DSDM Agile Project Framework](https://www.agilebusiness.org/dsdm-project-fr
 
 - **M (Must have)**: the project fails without it. DSDM's test is to ask what happens if it isn't delivered; if the answer is to cancel the project, it's a Must.
 - **S (Should have)**: important, and can slip if it has to.
-- **C (Could have)**: desirable, with less impact if left out.
+- **C (Could have)**: desirable, with less impact than a Should Have if left out.
 - **W (Won't have this time)**: out of scope for now, and written down so nobody re-proposes it next sprint.
 
 MoSCoW is easy to game, because nobody wants their item in Could. DSDM's guard is a cap: typically no more than 60% of the effort on Must Haves, and around 20% on Could Haves as contingency. If your Musts add up to more than that, the sort hasn't happened yet.
@@ -147,13 +147,13 @@ quadrantChart
   quadrant-2 2
   quadrant-3 4
   quadrant-4 3
-  Do these tasks immediately: [0.75, 0.75] radius: 0
-  Schedule these tasks for later: [0.25, 0.75] radius: 0
-  Consider eliminating these tasks: [0.25, 0.25] radius: 0
-  Delegate these tasks if possible: [0.75, 0.25] radius: 0
+  Do it now: [0.75, 0.75] radius: 0
+  Schedule it: [0.25, 0.75] radius: 0
+  Drop it: [0.25, 0.25] radius: 0
+  Delegate it if you can: [0.75, 0.25] radius: 0
 ```
 
-In Covey's framing, quadrant 2, the important work that isn't urgent (planning, creative thinking, learning and renewal), is where time earns the best return. [Some Truths](#some-truths-about-planning) covers why that work keeps losing to whatever is due Friday.
+In Covey's framing, quadrant 2, the important work that isn't urgent (planning, creative thinking, learning and renewal), is where time earns the best return.
 
 ### Cost-Value Matrix
 
@@ -173,10 +173,10 @@ quadrantChart
   quadrant-2 2
   quadrant-3 3
   quadrant-4 4
-  Worth investing in if resources allow: [0.75, 0.75] radius: 0
-  Prioritize these quick wins: [0.25, 0.75] radius: 0
-  Consider doing if time permits: [0.25, 0.25] radius: 0
-  Generally avoid or minimize these tasks: [0.75, 0.25] radius: 0
+  Invest if the schedule allows: [0.75, 0.75] radius: 0
+  Quick wins, do first: [0.25, 0.75] radius: 0
+  If time permits: [0.25, 0.25] radius: 0
+  Avoid: [0.75, 0.25] radius: 0
 ```
 
 Let whoever the product is for (a project partner, a panel of users) set the value axis, and let the team set the cost. Use the matrix when the team and that person disagree about what matters, because it puts both judgments on one chart.
@@ -213,7 +213,7 @@ Dave McClure's [Startup Metrics for Pirates](https://www.slideshare.net/dmc500ha
 - **Referral**: do they tell anyone?
 - **Revenue**: will they pay?
 
-For a product with a few dozen users, measure activation and retention first. At that scale, acquisition is mostly the people you told and your public landing page, and revenue is usually out of scope.
+For a product with a few dozen users, measure activation and retention first. At that scale, acquisition is mostly the people you told and a public landing page, and revenue is usually out of scope.
 
 ### HEART
 
@@ -264,7 +264,9 @@ Other companies decide what to build by writing first. Amazon's Working Backward
 
 Metric frameworks come from practice too. <Cite id="rodden-2010" /> applied HEART and Goals-Signals-Metrics to more than 20 products and projects at Google. Vohra's account of Superhuman shows the product-market fit survey used to segment users: the people who answered "Very disappointed" narrowed down which users the product was for.
 
-In research, the equivalent of committing a metric with a date is **preregistration**: defining the research questions and analysis plan before observing the outcomes <Cite id="nosek-2018" form="parenthetical" />. Nosek and colleagues present it as an effective guard against mistaking an explanation found in the data for a prediction made beforehand, a mistake that hindsight bias (seeing an outcome as more predictable after the fact than before it) makes hard to avoid. The Center for Open Science counts [over 300 journals](https://www.cos.io/initiatives/registered-reports) that use Registered Reports, in which peer review of the question and method happens before data collection, among them PeerJ Computer Science and one section of Frontiers in Computer Science. The ranked backlog has a research equivalent too: the experiment plan, which says which runs come first, which baselines they compare against, and what result would end the line of inquiry.
+In research, the equivalent of committing a metric with a date is **preregistration**: defining the research questions and analysis plan before observing the outcomes <Cite id="nosek-2018" form="parenthetical" />. Nosek and colleagues present it as an effective guard against mistaking an explanation found in the data for a prediction made beforehand, a mistake that hindsight bias (seeing an outcome as more predictable after the fact than before it) makes hard to avoid. The Center for Open Science counts [over 300 journals](https://www.cos.io/initiatives/registered-reports) that use Registered Reports, in which peer review of the question and method happens before data collection, among them PeerJ Computer Science.
+
+The ranked backlog has a research equivalent too: the experiment plan, which says which runs come first, which baselines they compare against, and what result would end the line of inquiry.
 
 In open source, prioritization is public. GitHub creates a set of [default labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels) in every new repository, including `good first issue`, `help wanted`, and `wontfix`, and `wontfix` does the job of MoSCoW's Won't Have, on the record. Before you contribute to a project, read how it labels and ranks its issues, because that tells you whether a patch will be reviewed soon or wait.
 
