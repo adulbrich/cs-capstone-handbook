@@ -1,0 +1,21 @@
+authors:
+  - Collier, Z. A.
+  - Gruss, R. J.
+  - Abrahams, A. S.
+year: 2025
+title: How Good Are Large Language Models at Product Risk Assessment?
+venue: Risk Analysis
+kind: peer-reviewed
+url: https://doi.org/10.1111/risa.14351
+doi: 10.1111/risa.14351
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Product safety professionals rated ChatGPT's output on product risk
+      assessment tasks for six consumer products: it performed better at
+      divergent tasks such as brainstorming failure modes and mitigations,
+      but its results had errors and inconsistencies and its guidance was
+      perceived as overly generic; the authors see a role in ideation, with
+      experts reviewing the output.
+    locator: Abstract

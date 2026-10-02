@@ -1,0 +1,234 @@
+---
+title: Project Risks
+description: "How to find what could stop your project, write each risk so someone can act on it, rank the register, and keep docs/risks.md current until the project ends."
+sidebar:
+  order: 4
+---
+
+import Cite from '/src/components/Cite.astro';
+import References from '/src/components/References.astro';
+
+Halfway through the project, your partner mentions that their IT department reviews any software before it runs on their network, and that the review usually takes six weeks. The same week, the one teammate who has ever deployed the app starts a round of job interviews. Both facts were there to be found at the start; nobody wrote them down, so nobody planned around them. This page covers what a risk is, where to look for one, how to write, rank, and respond to it, and how to keep `docs/risks.md` current as the project moves. It doesn't cover the external clocks each kind of project has to start early, which the [Shipping guide](/guides/shipping/) lists, threat modeling for security risks, which the [Security guide](/guides/security/#threat-modeling-thinking-like-an-attacker) covers, or a disagreement between teammates, which belongs to the [Conflict guide](/guides/conflict/).
+
+:::note[tl;dr]
+- Keep one ranked register in `docs/risks.md`, written so your partner can read it.
+- Write each risk as a condition and a consequence, with an owner and a trigger that tells you it's happening.
+- Sort each risk as business, technical, or team, and look for each in the document that surfaces it: your requirements, your design, your working agreement.
+- Rank by likelihood and impact on a three-level scale, write the reason next to each rating, and act on the top of the list.
+- Give each risk a response (mitigate, eliminate, transfer, or accept), and write down why you accepted one.
+- Run a premortem to surface the risks nobody wants to say out loud.
+- Review the top of the register at every sprint planning; a risk whose trigger fires becomes an issue on the board.
+:::
+
+[ISO 31000](https://www.iso.org/iso-31000-risk-management.html), the international standard for risk management, defines risk as the effect of uncertainty on objectives. For a software project the objective is whatever you and your partner agreed to deliver, and the uncertainty is everything that could stop it: a requirement nobody confirmed, an integration nobody has built, a teammate's exam week, an approval in someone else's queue. A risk register is the list of those uncertainties, each with someone watching it.
+
+Keep the register in the repository as `docs/risks.md`, one file for the whole project. The categories below help you find risks, but one ranked list is what tells you which to act on first; three registers would each have a top risk and no way to compare them. In the repository, a pull request that retires a risk can close it in the same commit, a design document can cite it by ID, and whoever inherits the project finds it next to the code.
+
+## What Is a Risk?
+
+A risk is something that hasn't happened, might, and would hurt the project if it did. Three neighbors get confused with it, and each belongs somewhere else:
+
+- An issue has already happened: the build is broken, the partner's server is down. It goes on the board as work.
+- An open question can be answered by asking someone: "Does the first release need to work offline?" It goes in your requirements or design document with an owner, and stops being uncertain once someone answers it.
+- An assumption is something you're treating as true without checking. An assumption whose failure would hurt is a risk; the [requirements guide](/guides/requirements/#validation) labels the product ones "assumed" so they can be checked.
+
+Each entry in the register carries the same parts:
+
+- **ID**: `R-1`, `R-2`, so a pull request, an issue, or a design document can point at it.
+- **Statement**: the condition that's true now and the consequence if the risk lands.
+- **Category**: business, technical, or team (see below).
+- **Likelihood and impact**: each high, medium, or low, with a short reason.
+- **Owner**: the person who watches the risk and runs the response.
+- **Response**: what you're doing about it.
+- **Trigger**: the observable sign that the risk is turning into an issue.
+- **Asked**: for a risk that waits on someone outside the team, who you asked and when; until you've asked, a start-by date instead.
+
+## Addressing a Problem
+
+A risk is a risk to something: the outcome you and your partner agreed the project would deliver. Write that objective at the top of the register in one sentence, and judge each risk's impact against it. A delay that moves nothing the partner cares about is low impact however annoying it is, while a small gap that blocks the one flow the partner needs is high. Without the objective, impact becomes how worried the team feels, and the ranking follows whoever worries most.
+
+## Where Risks Come From
+
+Look beyond the technical risks, because the evidence on where software risk comes from points mostly elsewhere. <Cite id="boehm-1991" /> drew up a checklist of the ten most common sources of software risk from a survey of experienced project managers, and only two of the ten are about the technology itself (real-time performance and straining computer-science capabilities); the rest are people, schedules, requirements, and suppliers. <Cite id="wallace-2004" /> surveyed 507 software project managers and found a chain: risk from the organization and the users influenced risk in the requirements and the project's complexity, which influenced risk in planning and in the team, which in turn influenced how the project performed. Their sample was one of convenience, so trust the shape of the chain more than its numbers.
+
+Sort what you find into three categories, each surfaced by a document you already keep. The category tells you where to look for more.
+
+### Business
+
+Business risks are about whether the work is worth doing for the people it's for. Three of Marty Cagan's [four big risks](https://www.svpg.com/four-big-risks/) belong here: value (will users choose it), usability (can they figure it out), and business viability (does it work for the partner's business, contracts and legal obligations included). Cagan makes the product manager responsible for value and viability, and the designer for usability. On an open-source contribution, the business is the upstream project and its maintainers; on a research project, it's the research question and whoever needs the answer.
+
+Your requirements document surfaces these. The [requirements guide](/guides/requirements/#validation) asks Cagan's questions of each requirement, and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "The people this is for haven't tried it; if they keep their spreadsheet, the problem the project exists to fix stays unfixed." The partner's own constraints belong here too: an approval their IT department has to give, a data agreement, a policy the product has to follow.
+
+### Technical
+
+Technical risks are Cagan's fourth, feasibility, which he assigns to the lead engineer: whether the team can build what's needed with the time, skills, and technology it has. They live in the assumptions your design document rests on and nobody has tested: an integration you've never built, a library pushed past what its documentation promises, data at a scale you've never loaded. The [technical design guide](/guides/technical-design/#prototypes-and-spikes) answers each with a spike, a short experiment that turns the assumption into a fact; until the spike is done, the assumption is a register entry. Security threats you've ranked in a threat model can sit here too, so the most serious one competes with everything else for the team's attention.
+
+### Team
+
+Team risks are about capacity and concentration: midterms and interviews that eat a week, a part-time job, the one person who knows how to deploy, the skill nobody on the team has yet. Your [working agreement](/guides/working-agreement/) surfaces them, because it's where the team wrote down who owns what and how much time each person has.
+
+Write them as facts about the project, because the partner and future maintainers read the register. "Only one person has deployed to production; if they're away, a broken release stays broken" leads to a fix: pair on the next deploy. "Our deployer never writes anything down" names the same risk as a complaint, and leads to a defensive teammate and no fix.
+
+A disagreement between teammates, or a teammate who isn't delivering, isn't a register entry. Naming it in a document the partner reads turns a team problem into a public one. Work it through your team's agreement and the [Conflict guide](/guides/conflict/).
+
+### Risks That Wait on Someone Else
+
+Some risks in every category wait on someone outside the team, such as the partner's IT review or a maintainer's queue. They aren't a fourth category, because what's at stake is still business, technical, or team; what sets them apart is that the clock isn't yours. Before you've asked, give it a start-by date: the last day you can ask and still absorb the usual wait. Once you've asked, replace the date with an Asked line (who you asked, and when), because from then on its likelihood only falls when the other side answers. A risk you can only wait out is managed by starting early, which is why the start-by date matters more than the rank. The [Shipping guide](/guides/shipping/) lists these clocks for each kind of project, with their usual lead times.
+
+## Writing a Risk
+
+Write each risk as a condition and a consequence: what is true now, and what happens if the risk lands. The condition can be checked (is it true?) and the consequence can be weighed (how bad is it?), which is what ranking needs. NASA's [Risk Management Handbook](https://ntrs.nasa.gov/citations/20120000033) writes every risk statement in a longer version of the same form, "Given that [condition], there is a possibility of [departure] adversely impacting [asset], thereby leading to [consequence]", and requires the condition to be a fact someone else can check, so that the register doesn't fill with pure speculation.
+
+A bare noun can't be ranked or acted on, because it doesn't say what happens:
+
+> Security review.
+
+The same risk with its condition and consequence:
+
+> The partner's IT security review has no date yet; if it isn't passed before the release, the app runs on our hosting instead of theirs and the partner's staff can't sign in with their accounts.
+
+The owner usually can't make the risk go away (nobody on your team can speed up an IT department's queue) but makes sure that someone notices when it moves. Name one person, because a risk the whole team owns gets checked by whoever happens to remember it.
+
+A trigger makes the review concrete: "no reviewer named two weeks after the request", "the spike isn't green by the end of the sprint". Without one, the team reviews the risk by feel, and a risk that changes slowly feels fine at every review until it has already landed.
+
+## What Makes a Good Risk Register?
+
+The register below is for a shift board: a web app where a nonprofit's volunteer coordinators post shifts and volunteers claim them, so that no shift is double-booked. A team of three builds it: Sam, the project manager; Priya; and Jordan, who owns CI and the tests. Staff sign in with the partner's Google Workspace accounts, production runs in the partner's own Render account, and the app emails coordinators from the partner's domain. Each risk leads with its category and rank, and the closed risk stays at the bottom so the next team can see what was tried.
+
+```md
+# Risks
+
+Objective: coordinators fill every shift with no double-booking, in the
+partner's own accounts. Rank: likelihood/impact (H/M/L) and why.
+
+R-1 technical, H/H (untried; every feature needs sign-in). SSO on the
+  partner's Workspace tenant is unproven; if it fails, nobody can sign in.
+  Owner: Priya. Mitigate: spike it first. Trigger: no working spike by
+  sprint review.
+R-2 business, M/H (their reviews take weeks; it gates production). The
+  partner's IT security review has no date; until it passes, production
+  waits. Asked: their IT lead, at kickoff. Owner: Sam. Mitigate: send the
+  data-flow diagram now. Trigger: no reviewer two weeks after asking.
+R-3 team, M/M (one deployer; a rollback exists). Only Jordan has deployed
+  to Render; if Jordan is away, a broken release stays broken. Owner:
+  Jordan. Mitigate: pair on the next two deploys. Trigger: a release is
+  due while Jordan is away.
+R-4 business, M/M (unconfirmed; the objective depends on it). Coordinators
+  haven't used the board; if they keep scheduling by email,
+  double-bookings don't drop. Owner: Sam. Mitigate: two coordinators try
+  the claim flow before the emails are built. Trigger: no session booked.
+R-5 technical, L/M (a one-record change; missed emails cost claims).
+  Sending from the partner's domain needs a DNS change on their side;
+  without it, emails may land in spam and coordinators miss releases.
+  Start by: before the emails are built. Owner: Priya. Accept, because
+  the fallback is cheap: send from our domain and have each coordinator
+  allow it. Trigger: no DNS change by the time the emails ship.
+
+## Closed
+R-6 Render account in the partner's organization: granted by the IT lead.
+```
+
+The objective at the top is what every impact rating is measured against, and the words after each rank say why. Each response is something the owner can do this sprint. R-2 and R-5 both wait on the partner, from different categories: R-2 has been asked, so it carries an Asked line, while R-5 still has a start-by date. R-5 is accepted, and the entry says why: its fallback costs each coordinator one setting.
+
+## Ranking Risks
+
+Rate each risk's likelihood and impact as high, medium, or low, sort with high-high at the top, and write a few words of reason next to each rating. Act on the top three to five; watch the rest at each review. A coarse scale is deliberate: a team can't estimate whether a security review is a 30% or a 40% risk of slipping, and a five-point scale spends the meeting arguing over whether something is a 3 or a 4 instead of what to do about it.
+
+Combining the two comes from <Cite id="boehm-1991" />, who defined risk exposure as the probability of an unsatisfactory outcome times the loss if it happens, and suggested a relative scale from 0 to 10 when the real numbers are out of reach. Three levels are the same idea with less false precision, and they carry a known weakness: <Cite id="cox-2008" /> showed that risk matrices can give identical ratings to very different risks, rate a smaller risk above a larger one, and give opposite ratings of the same risk to two different people, and concluded that they should be used only with their embedded judgments explained. The few words next to each rating are that explanation: whoever re-ranks the risk later can argue with what you assumed instead of with a letter.
+
+## Responding to a Risk
+
+Each risk gets one of four responses, the same four the [Security guide](/guides/security/#threat-modeling-thinking-like-an-attacker) applies to threats:
+
+- **Mitigate**: lower the likelihood or the impact now. Spike the integration, pair on the deploy, show users the main flow before building more.
+- **Eliminate**: change the plan so the risk can't happen. Use the partner's existing sign-in instead of building your own; drop the feature that needs the data you can't get.
+- **Transfer**: give the risk to someone better placed to carry it. A managed hosting service takes the uptime risk; the partner's IT runs the server. Transfer moves the work, not always the consequence, so keep the entry and watch it.
+- **Accept**: leave the risk in place, write down why, and write the contingency: what you'll do if the trigger fires.
+
+A mitigation costs effort now to make the risk smaller. A contingency costs nothing until the trigger fires, then tells you what to do without a meeting. Every accepted risk needs a contingency, and most mitigated risks benefit from one, because a mitigation lowers the odds without removing them.
+
+Accepting a risk is a legitimate decision, and for a small team with a fixed end date it's often the right one. The failure is accepting by default, without writing it down, so that nobody can tell an accepted risk from a forgotten one.
+
+## Finding the Risks Nobody Says
+
+Some risks don't make the register because saying them out loud feels disloyal to the plan or to a teammate. Gary Klein's [premortem](https://hbr.org/2007/09/performing-a-project-premortem) is built for those: the team imagines the project has already failed and lists why, a framing Klein argues gives skeptics permission to speak.
+
+The research usually cited for the premortem supports less than the citation claims. Klein credits <Cite id="mitchell-1989" /> with showing that imagining an event has already happened makes people 30% better at identifying the reasons for it. The paper counted how many reasons people listed, not whether they were right, and the effect came from treating the outcome as certain rather than from placing it in the past: in the first experiment, MBA students listed 4.5 reasons per scenario when the outcome was certain and 3.3 when it was only possible. The authors add that seeing more isn't necessarily seeing better. More candidates is still what a register needs, because its usual failure is a missing risk rather than a wrong one.
+
+Run one with everyone writing reasons alone before anyone speaks, which is what [brainwriting](/guides/planning/#6-3-5-brainwriting) does and for the same reasons; the [Risk Management Plan](/activities/planning/#risk-management-plan) activity has the steps. Run it at the start, and again whenever the plan changes substantially, because a new plan has failure modes the first premortem never saw. [Reverse brainstorming](/guides/planning/#reverse-brainstorming), which asks how to make the problem worse, finds failure modes from a different angle when the premortem runs dry.
+
+The team's premortem only finds what the team can imagine. Ask your partner the outside version of the same question: "What went wrong the last time someone built something like this for you?"
+
+## Keeping the Register Current
+
+Review the top of the register at every sprint planning: check each trigger, re-rank what moved, and close what's resolved. When a trigger fires, the risk becomes an issue on the board, and the register entry records what happened and points at the issue. Update the register in the same pull request as the change that affects it, as you would a requirement.
+
+## Validation
+
+Have someone outside the team read it: your partner, or whoever inherits the project. Two checks matter. Can they tell from each entry what it would cost them? And did they already know about every risk that touches them? Raise any risk that touches them in person as well, rather than leaving the document to break the news.
+
+## Measuring Success
+
+The register is working if the problems that hurt the project were on it before they hurt. When something goes wrong, check whether it was listed. If it wasn't, look at which of the three categories it belongs to; a register that keeps missing team risks is being written by people who only look at the code. If it was listed and nobody acted, the review isn't happening, or the owner didn't have the time to act.
+
+## AI and the Register
+
+The evidence on language models and risk work is thin and comes from outside software. <Cite id="collier-2025" /> had product safety professionals rate ChatGPT's risk assessments for six consumer products: it did better at divergent tasks such as brainstorming failure modes and mitigations, but made errors, gave inconsistent results, and offered guidance the professionals found overly generic. The authors suggest the tools assist with ideation while experts review the output, and that division fits a register too:
+
+- In a premortem, add the tool's list after everyone has written and read out their own, so it extends the team's list instead of anchoring it. Give it the requirements, the design document, and the current register, because without that context it lists the risks of any project.
+- Point your coding agents at the register in the repository's instruction file (see [AI Project Setup](/guides/ai-project-setup/)), so an agent says when a task touches an open risk. Let it flag, not edit: ranking needs judgment and context it doesn't have, and the partner reads the file.
+- Before each sprint planning, have an agent draft what moved since the last review: merged pull requests, closed issues, and any trigger it can check in the repository, such as whether the spike's issue is still open. The team decides. A trigger outside the repository, such as a reply from the partner's IT department, stays with its owner.
+
+Keep the register out of commit hooks. A hook can't tell whether a risk moved, because the facts behind most risks live outside the repository, so it either flags nothing or flags every commit, and a check that always fires teaches the team to bypass it.
+
+## Best Practices for Keeping a Risk Register
+
+- Keep one register, in the repository, for the whole project.
+- Write each risk as a condition and a consequence.
+- Give every open risk an owner and a trigger.
+- Rank on a three-level scale and write the reason next to each rating.
+- Review the top of the list at every sprint planning, and close what's resolved.
+- Write facts about the project, never judgments about a person.
+- Write down why you accepted a risk, and what you'll do if it lands.
+- Run a premortem at the start and whenever the plan changes.
+- Let AI extend the team's list, never start it, and let agents flag risks rather than edit them.
+
+## Some Truths about Risk Registers
+
+A register is easy to write at the start and leave alone. <Cite id="bannerman-2008" /> studied 17 government software projects: five ran formal risk management, five ran none, and seven identified risks formally at the start and then monitored them informally, with monitoring that faded as the project went on. One project manager kept a register "because that's what we're required to do." <Cite id="kutsch-2009" /> found that in a third of the IT projects they studied, managers applied no formal risk management at all, because they couldn't justify its cost. The cost of keeping a register is visible every week, and the benefit is a problem that didn't happen, which nobody notices. That's why the review has to be a fixed agenda item rather than something the team does when it feels worried: by the time the team feels worried, the trigger has usually fired.
+
+A register can turn into a list of things the team can later say it warned about. A risk with no owner and no response protects the team's reputation and does nothing for the project; the partner reads it as a disclaimer. A risk the team can't act on still belongs in the register, accepted and shared with the partner, who may be able to act on it.
+
+Writing a risk down can feel like delivering bad news, so teams soften the statement or leave it out until it's an issue. Early bad news is cheaper for everyone: a partner who hears in the first weeks that their IT review could take two months can start it, find a different contact, or change the deployment target, while one who hears about it at the end can only be disappointed.
+
+## Risk Management in Industry and Academia
+
+[ISO 31000](https://www.iso.org/iso-31000-risk-management.html) sets out general risk management principles for any organization, and [ISO/IEC/IEEE 16085](https://www.iso.org/standard/74371.html) defines a risk management process for the life cycle of systems and software. The software standard defines the process and leaves the techniques open, so the practices on this page fit inside it. Adopt the standard's full process when a contract or a regulator asks for it; short of that, the time it costs is better spent on the review.
+
+Large engineering organizations run the register as a standing process. NASA's [Risk Management Handbook](https://ntrs.nasa.gov/citations/20120000033) describes continuous risk management as five repeating functions: identify, analyze, plan, track, and control. The same cycle runs, smaller, at each sprint planning. [Extreme Programming](http://www.extremeprogramming.org/rules/spike.html) handles technical risk in the backlog instead, with a spike scheduled ahead of the work that depends on its answer; the [technical design guide](/guides/technical-design/#prototypes-and-spikes) covers spikes.
+
+Research and practice have drifted apart on this topic. <Cite id="bannerman-2008" /> concluded that risk management research lags the needs of practice and that practice lags what research prescribes. None of the agencies in his study used quantitative risk assessment; those that assessed risk at all used qualitative scales, which is what the three levels on this page are.
+
+## References
+
+<References />
+
+## Additional Readings
+
+**Sources and further reading**
+
+- [Waltzing with Bears: Managing Risk on Software Projects](https://www.dorsethouse.com/books/waltz.html), Tom DeMarco and Timothy Lister, Dorset House.
+- [A Construct for Describing Software Development Risks](https://www.sei.cmu.edu/library/a-construct-for-describing-software-development-risks/), David Gluch, Software Engineering Institute: the condition-and-consequence form, with worked examples.
+- [Components of Software Development Risk: How to Address Them?](https://doi.org/10.1109/32.841112), Janne Ropponen and Kalle Lyytinen, IEEE Transactions on Software Engineering.
+- [Risk Management](https://sebokwiki.org/wiki/Risk_Management), Systems Engineering Body of Knowledge (SEBoK).
+- [SWEBOK Guide V4](https://www.computer.org/education/bodies-of-knowledge/software-engineering), IEEE Computer Society.
+
+**Activities that exercise this**
+
+- [Risk Management Plan](/activities/planning/#risk-management-plan): a premortem that produces the first entries in `docs/risks.md`.
+- [Map Your External Approvals](/activities/planning/#map-your-external-approvals): every approval the project needs, each with an owner and a start date.
+- [Dependency Mapping or Critical Path Analysis](/activities/planning/#dependency-mapping-or-critical-path-analysis): the tasks whose delay delays everything after them.
+- [Stakeholder Mapping](/activities/planning/#stakeholder-mapping): whose risks you haven't heard yet.
+- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): the technical choices whose risk is that they're expensive to undo.
+- [Proof-of-Concept](/activities/design/#proof-of-concept): turning a technical risk into a fact.
+- [Fishbone Diagram](/activities/planning/#fishbone-diagram): the causes behind a risk that has already turned into an issue.

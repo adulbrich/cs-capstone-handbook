@@ -158,18 +158,22 @@ A good output is your prioritized list of requirements or tasks, the method you 
 
 ## Risk Management Plan
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
 
-Develop a risk management plan to identify and mitigate potential project risks.
+Run a premortem and turn what it surfaces into the first ranked entries in `docs/risks.md`. The [Project Risks guide](/guides/risks/) explains each part. About an hour as a team, then again whenever the plan changes.
 
-1. Identify Risks: Consider the [Rumsfeld matrix](https://www.theuncertaintyproject.org/tools/rumsfeld-matrix) to figure out if you need to do more research or have discussions to uncover additional risk factors.
-2. Assess Impact and Probability: Evaluate each risk's potential impact on the project and its likelihood of occurring.
-3. Develop Mitigation Strategies: Create contingency plans to address each risk, minimizing its impact.
-4. Monitor and Review: Establish a system for tracking risks and updating the plan as the project progresses.
+- **Imagine the failure**: say "It's the end of the project, and it failed. What happened?"
+- **Write alone first**: everyone lists reasons silently for five minutes before anyone speaks.
+- **Read round-robin**: one reason per person per turn until the lists are empty.
+- **Check the three categories**: for each of business, technical, and team, ask whether anything is missing, and add it.
+- **Write each risk**: a condition and a consequence, with a category, an owner, and a trigger.
+- **Rank**: likelihood and impact as high, medium, or low, with a few words of reason for each.
+- **Respond**: mitigate, eliminate, transfer, or accept, with a contingency for every accepted risk.
+- **Set the review**: put the top of the register on the agenda of every sprint planning.
 
-Give the external-world risks you surface here (approvals, reviews, recruitment) a start-by date, because you don't control their lead times.
+Give each risk that waits on someone outside the team (an approval, a review, users to recruit) an Asked line, who you asked and when, and a start-by date, because you don't control its lead time.
 
-A good output is a risk management plan detailing risks, their categorization (impact/likelihood), and mitigation strategies.
+A good output is a `docs/risks.md` with every open risk written as a condition and a consequence, ranked with a reason, and carrying an owner, a response, and a trigger.
 
 ## SWOT Analysis
 

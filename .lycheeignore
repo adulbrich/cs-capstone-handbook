@@ -9,3 +9,5 @@
 # Administrative Science Quarterly paper registered under JSTOR's prefix.
 ^https?://doi\.org/10\.1177/
 ^https?://doi\.org/10\.2307/2666999$
+# ISO answers an automated request with 403 while the page loads in a browser.
+^https?://(www\.)?iso\.org/

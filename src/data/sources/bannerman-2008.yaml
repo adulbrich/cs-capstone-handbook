@@ -1,0 +1,31 @@
+authors:
+  - Bannerman, P. L.
+year: 2008
+title: "Risk and Risk Management in Software Projects: A Reassessment"
+venue: Journal of Systems and Software
+kind: peer-reviewed
+url: https://doi.org/10.1016/j.jss.2008.03.059
+doi: 10.1016/j.jss.2008.03.059
+# Read in full (author's copy of the published version). A small,
+# non-random sample from one Australian state government's agencies
+# (Study limitations).
+verified: full-text
+claims:
+  - claim: >-
+      Of 17 government software projects, five practiced formal risk
+      management, five practiced none, and seven identified risks formally at
+      the start and then monitored them informally, with monitoring that
+      dissipated as the project progressed.
+    locator: p. 2124, section 4.1
+  - claim: >-
+      A project manager said: "We keep a [risk] register because that's what
+      we're required to do."
+    locator: p. 2125
+  - claim: >-
+      No agency used quantitative risk assessment; agencies that assessed risk
+      used qualitative scales.
+    locator: p. 2125
+  - claim: >-
+      Risk management research lags the needs of practice, and practice lags
+      the prescriptions of research.
+    locator: Abstract
