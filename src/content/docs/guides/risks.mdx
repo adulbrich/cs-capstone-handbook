@@ -29,7 +29,7 @@ Keep the register in the repository as `docs/risks.md`, one file for the whole p
 A risk is something that hasn't happened, might, and would hurt the project if it did. Three neighbors get confused with it, and each belongs somewhere else:
 
 - An issue has already happened: the build is broken, the partner's server is down. It goes on the board as work.
-- An open question can be answered by asking someone: "Does the first release need recurring shifts?" It goes in your requirements or design document with an owner, and stops being uncertain once someone answers it.
+- An open question can be answered by asking someone: "Does the first release need to work offline?" It goes in your requirements or design document with an owner, and stops being uncertain once someone answers it.
 - An assumption is something you're treating as true without checking. An assumption whose failure would hurt is a risk; the [requirements guide](/guides/requirements/#validation) labels the product ones "assumed" so they can be checked.
 
 Each entry in the register carries the same parts:
@@ -53,7 +53,7 @@ Sort what you find into three categories, each surfaced by a document you alread
 
 Business risks are about whether the work is worth doing for the people it's for. Three of Marty Cagan's [four big risks](https://www.svpg.com/four-big-risks/) belong here: value (whether users will choose to use it), usability (whether they can figure out how), and business viability (whether it works for the partner's business, including their contracts and legal obligations). Cagan makes the product manager responsible for value and viability and the designer for usability. On an open-source contribution, the business is the upstream project and its maintainers; on a research project, it's the research question and whoever needs the answer.
 
-Your requirements document surfaces these. The [requirements guide](/guides/requirements/#validation) asks Cagan's questions of each requirement, and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "Coordinators haven't used the board; if they keep scheduling by email, double-bookings don't drop." The partner's own constraints belong here too: an approval their IT department has to give, a data agreement, a policy the product has to follow.
+Your requirements document surfaces these. The [requirements guide](/guides/requirements/#validation) asks Cagan's questions of each requirement, and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "The people this is for haven't tried it; if they keep their spreadsheet, the problem the project exists to fix stays unfixed." The partner's own constraints belong here too: an approval their IT department has to give, a data agreement, a policy the product has to follow.
 
 ### Technical
 
@@ -79,7 +79,7 @@ A bare noun can't be ranked or acted on, because it doesn't say what happens:
 
 The same risk with its condition and consequence:
 
-> The partner's IT security review has no date yet; if it isn't passed before the release, the board runs on our hosting instead of theirs and the partner's staff can't sign in with their accounts.
+> The partner's IT security review has no date yet; if it isn't passed before the release, the app runs on our hosting instead of theirs and the partner's staff can't sign in with their accounts.
 
 The owner usually can't make the risk go away (nobody on your team can speed up an IT department's queue) but makes sure that someone notices when it moves. A risk with no owner is watched by everyone, which in practice means nobody.
 
@@ -87,7 +87,7 @@ A trigger makes the review concrete: "no reviewer named two weeks after the requ
 
 ## What Makes a Good Risk Register?
 
-The register below belongs to the running example in the [requirements](/guides/requirements/) and [technical design](/guides/technical-design/) guides: a shift board where a partner's volunteer coordinators post shifts and volunteers claim them, built by a team of three (Sam as project manager, Priya, and Jordan, who owns CI and the tests). Each risk leads with its rank, and the closed risk stays at the bottom so the next team can see what was tried.
+The register below is for a shift board: a web app where a nonprofit's volunteer coordinators post shifts and volunteers claim them, so that no shift is double-booked. A team of three builds it: Sam, the project manager; Priya; and Jordan, who owns CI and the tests. Staff sign in with the partner's Google Workspace accounts, production runs in the partner's own Render account, and the app emails coordinators from the partner's domain. Each risk leads with its rank, and the closed risk stays at the bottom so the next team can see what was tried.
 
 ```md
 # Risks
@@ -106,7 +106,7 @@ R-3 (M/M, team) Only Jordan has deployed to Render; if Jordan is away, a
   deploys; rollback steps in the README.
 R-4 (M/M, business) Coordinators haven't used the board; if they keep
   scheduling by email, double-bookings don't drop. Owner: Sam.
-  Mitigate: two coordinators try the claim flow before FR-3 is built.
+  Mitigate: two coordinators try the claim flow before the emails are built.
 R-5 (L/M, technical) Sending from the partner's domain needs DNS changes
   on their side. Asked: their IT lead, by email. Owner: Priya. Accept:
   send from our domain if it slips; the emails look less official.
@@ -128,7 +128,7 @@ Combining the two comes from <Cite id="boehm-1991" />, who defined risk exposure
 
 Each risk gets one of four responses, the same four the [Security guide](/guides/security/#threat-modeling-thinking-like-an-attacker) applies to threats:
 
-- **Mitigate**: lower the likelihood or the impact now. Spike the integration, pair on the deploy, show coordinators the claim flow before building more.
+- **Mitigate**: lower the likelihood or the impact now. Spike the integration, pair on the deploy, show users the main flow before building more.
 - **Eliminate**: change the plan so the risk can't happen. Use the partner's existing sign-in instead of building your own; drop the feature that needs the data you can't get.
 - **Transfer**: give the risk to someone better placed to carry it. A managed hosting service takes the uptime risk; the partner's IT runs the server. Transfer moves the work, not always the consequence, so keep the entry and watch it.
 - **Accept**: leave the risk in place, write down why, and write the contingency: what you'll do if the trigger fires.
