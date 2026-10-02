@@ -1,0 +1,19 @@
+authors:
+  - Kutsch, E.
+  - Hall, M.
+year: 2009
+title: >-
+  The Rational Choice of Not Applying Project Risk Management in Information
+  Technology Projects
+venue: Project Management Journal
+kind: peer-reviewed
+url: https://doi.org/10.1002/pmj.20112
+doi: 10.1002/pmj.20112
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      In interviews and a survey of IT project managers, in one third of cases
+      no formal project risk management process was applied, because its cost
+      could not be justified.
+    locator: Abstract

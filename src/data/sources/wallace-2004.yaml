@@ -1,0 +1,25 @@
+authors:
+  - Wallace, L.
+  - Keil, M.
+  - Rai, A.
+year: 2004
+title: >-
+  How Software Project Risk Affects Project Performance: An Investigation of
+  the Dimensions of Risk and an Exploratory Model
+venue: Decision Sciences
+kind: peer-reviewed
+url: https://doi.org/10.1111/j.00117315.2004.02059.x
+doi: 10.1111/j.00117315.2004.02059.x
+# Read in full as the authors' manuscript (posted by Keil), not the typeset
+# version, so the locators are the manuscript's sections and pages. The
+# sample is a convenience sample; the authors say generalizability may be
+# limited (Limitations).
+verified: full-text
+claims:
+  - claim: >-
+      In a survey of 507 software project managers, social subsystem risk
+      (organizational environment and users) influenced technical subsystem
+      risk (requirements and project complexity), which influenced project
+      management risk (planning and control, and the team), which in turn
+      influenced project performance.
+    locator: Abstract; Instrument Development and Validation; A Model of Risk and Performance

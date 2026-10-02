@@ -1,0 +1,25 @@
+authors:
+  - Mitchell, D. J.
+  - Russo, J. E.
+  - Pennington, N.
+year: 1989
+title: "Back to the Future: Temporal Perspective in the Explanation of Events"
+venue: Journal of Behavioral Decision Making
+kind: peer-reviewed
+url: https://doi.org/10.1002/bdm.3960020103
+doi: 10.1002/bdm.3960020103
+# Read in full (published version). The paper counts reasons listed and never
+# scores whether they are correct, so the "30% better at identifying reasons"
+# often attributed to it (Klein, HBR 2007) is not a finding of this paper.
+verified: full-text
+claims:
+  - claim: >-
+      In the first experiment, MBA students listed 4.5 reasons per scenario
+      when the outcome was certain and 3.3 when it was only possible; placing
+      the event in the past or the future made no reliable difference.
+    locator: p. 29, Exhibit 1
+  - claim: >-
+      The authors could not judge the value of each reason, so they do not
+      conclude that prospective hindsight produces better explanations, only
+      more of them.
+    locator: p. 35

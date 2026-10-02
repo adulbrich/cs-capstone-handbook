@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Project Risks Guide (#147)
+
+No rubric changes. Re-paste the Repo Checkpoint bodies (the risk register line links the new Project Risks guide, and the fall week 5 preparation list now recommends Risk Management Plan, moved from winter week 5) and the Project Retrospective body (its forward-looking section links the guide).
+
 ## Re-import Required: RFC Revision Log (#348)
 
 `rfc/rfc-final-rubric.csv`: the prose note on the final is now a revision log, a table after the RFC in the final PDF with one row per point of feedback received, each changed or declined. The Revision criterion is renamed "Revision: feedback integrated, with a revision log" and its description is empty and its bands check the log row by row; the Writing criterion's length band no longer counts the log. Points and tags are unchanged. Re-import it on RFC Final Draft, in both terms, after #262 if both are pending. Re-paste the RFC Final Draft body from the paste kit.

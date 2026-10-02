@@ -1,0 +1,17 @@
+authors:
+  - Cox, L. A.
+year: 2008
+title: What's Wrong with Risk Matrices?
+venue: Risk Analysis
+kind: peer-reviewed
+url: https://doi.org/10.1111/j.1539-6924.2008.01030.x
+doi: 10.1111/j.1539-6924.2008.01030.x
+# Closed access; only the abstract was read, so the claims stay inside it.
+verified: abstract
+claims:
+  - claim: >-
+      Risk matrices can assign identical ratings to quantitatively very
+      different risks, can rate a smaller risk higher than a larger one, and
+      can give opposite ratings of the same risk to different users; they
+      should be used with caution and with their embedded judgments explained.
+    locator: Abstract

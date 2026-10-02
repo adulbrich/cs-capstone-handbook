@@ -1,0 +1,30 @@
+authors:
+  - Boehm, B. W.
+year: 1991
+title: "Software Risk Management: Principles and Practices"
+venue: IEEE Software
+kind: peer-reviewed
+url: https://doi.org/10.1109/52.62930
+doi: 10.1109/52.62930
+# Read in full from a scan of the published article; pages are the printed
+# footers. An experience-based overview, not an empirical study: the top-ten
+# list rests on an informal survey of experienced project managers.
+verified: full-text
+claims:
+  - claim: >-
+      Risk exposure is the probability of an unsatisfactory outcome times the
+      loss to the parties affected if the outcome is unsatisfactory.
+    locator: p. 33
+  - claim: >-
+      The top ten primary sources of risk on software projects, from a survey
+      of experienced project managers, are personnel shortfalls, unrealistic
+      schedules and budgets, developing the wrong functions and properties,
+      developing the wrong user interface, gold-plating, a continuing stream
+      of requirements changes, shortfalls in externally furnished components,
+      shortfalls in externally performed tasks, real-time performance
+      shortfalls, and straining computer-science capabilities.
+    locator: p. 35, Table 1
+  - claim: >-
+      When probabilities and losses are hard to estimate, they can be assessed
+      on a relative scale of 0 to 10 for prioritizing.
+    locator: p. 36
