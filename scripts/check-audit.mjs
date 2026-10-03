@@ -39,7 +39,11 @@ try {
 if (run.error || !report || report.error || !report.vulnerabilities) {
   console.error("npm audit did not produce a report:");
   console.error(
-    run.error?.message ?? report?.error?.summary ?? (run.stderr || run.stdout)
+    run.error?.message ||
+      report?.error?.summary ||
+      report?.message ||
+      run.stderr ||
+      run.stdout
   );
   process.exit(1);
 }
