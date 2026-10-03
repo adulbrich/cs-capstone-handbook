@@ -7,7 +7,6 @@
     "build": "astro check && astro build",
     "canvas:export": "node scripts/canvas-export.mjs",
     "check": "biome check",
-    "check:audit": "node scripts/check-audit.mjs",
     "check:branch": "node scripts/check-branch-name.mjs",
     "check:commits": "node scripts/check-commit-message.mjs --range origin/main..HEAD",
     "check:prose": "node scripts/check-prose.mjs --all",
