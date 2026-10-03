@@ -31,8 +31,16 @@ let report;
 try {
   report = JSON.parse(run.stdout);
 } catch {
-  console.error("npm audit did not return JSON:");
-  console.error(run.stderr || run.stdout);
+  report = undefined;
+}
+// npm writes its own failures (no network, no lockfile) as JSON too, so a
+// report that parses is not yet a report: fail closed unless it carries the
+// vulnerabilities map.
+if (run.error || !report || report.error || !report.vulnerabilities) {
+  console.error("npm audit did not produce a report:");
+  console.error(
+    run.error?.message ?? report?.error?.summary ?? (run.stderr || run.stdout)
+  );
   process.exit(1);
 }
 
@@ -41,7 +49,7 @@ const idOf = (url) => url.split("/").pop();
 // Every advisory npm reports, with whether any package it affects can be
 // fixed without a major bump.
 const advisories = new Map();
-for (const vuln of Object.values(report.vulnerabilities ?? {})) {
+for (const vuln of Object.values(report.vulnerabilities)) {
   for (const via of vuln.via) {
     if (typeof via !== "object") {
       continue;
@@ -54,7 +62,13 @@ for (const vuln of Object.values(report.vulnerabilities ?? {})) {
       title: via.title,
     };
     entry.packages.add(via.name);
-    if (vuln.fixAvailable === true) {
+    // true, or an object naming the fix: only a non-major one counts, since
+    // a major fix is a breaking change npm audit fix will not apply.
+    const fix = vuln.fixAvailable;
+    if (
+      fix === true ||
+      (typeof fix === "object" && fix !== null && !fix.isSemVerMajor)
+    ) {
       entry.fixable = true;
     }
     advisories.set(id, entry);
