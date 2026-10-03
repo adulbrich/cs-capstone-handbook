@@ -87,5 +87,7 @@ jobs:
       # catching tampered tarballs that a version check would not.
       - name: Verify registry signatures
         run: npm audit signatures
+      # High and critical advisories fail, except the reviewed exceptions in
+      # scripts/check-audit.mjs, each with the reason it does not reach this site.
       - name: Audit for known vulnerabilities
-        run: npm audit --audit-level=high
+        run: npm run check:audit
