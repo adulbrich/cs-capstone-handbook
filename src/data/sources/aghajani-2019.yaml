@@ -31,7 +31,9 @@ claims:
   - claim: >-
       Code examples were the documentation type most frequently affected by
       correctness issues, and the authors recommend testing code examples as
-      production code is tested.
+      production code is tested, noting that this might not be trivial
+      because documentation often reports incomplete examples rather than
+      runnable programs.
     locator: Section IV.A, Discussion and Implications
   - claim: >-
       Of the correctness issues where a documentation type was labeled, code
@@ -39,7 +41,7 @@ claims:
       percent.
     locator: Section IV.A, Correctness
   - claim: >-
-      Some projects prevented outdated documentation by adding documentation
-      updates to the contribution checklist or by making a Javadoc update
-      mandatory for a pull request to be accepted.
+      Some developers prevented outdated documentation by adding
+      documentation updates to the contribution checklist or by making a
+      Javadoc update mandatory for a pull request to be accepted.
     locator: Section IV.A, Up-to-dateness
