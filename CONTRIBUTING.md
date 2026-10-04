@@ -73,7 +73,7 @@ first column is what stops you locally; the last is what stops the merge.
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files | `after-edit.mjs` | `build`: `npm run check` |
 | PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`) | `pr-text`: the PR title and body, re-run on every edit |
-| Dependencies audit clean and signed | | | `audit` |
+| Dependencies signed, and no critical advisory | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code
 hooks and CI catch what was skipped, so skipping moves the failure rather than
