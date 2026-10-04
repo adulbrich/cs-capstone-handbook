@@ -10,7 +10,7 @@ url: https://abseil.io/resources/swe-book/html/ch11.html
 verified: full-text
 claims:
   - claim: >-
-      By 2005 the Google Web Server's releases were becoming buggier, and at
+      In 2005 the Google Web Server's releases were becoming buggier, and at
       one point more than 80% of its production pushes contained
       user-affecting bugs that had to be rolled back; its tech lead
       then required tests with all new code changes, run continuously, and
