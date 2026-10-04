@@ -10,8 +10,8 @@ kind: peer-reviewed
 url: https://dl.acm.org/doi/10.1145/1240624.1240714
 doi: 10.1145/1240624.1240714
 # Read in full from the publisher PDF on Microsoft Research's site, with the
-# proceedings pagination (557-566). Nine developers were interviewed (p. 559);
-# the survey's 427 responses came from six surveys sent to 400 developers each.
+# proceedings pagination (557-566). Nine developers were interviewed, and the
+# survey drew 427 responses (p. 559).
 verified: full-text
 claims:
   - claim: >-
