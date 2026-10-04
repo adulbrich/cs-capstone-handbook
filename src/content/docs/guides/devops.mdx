@@ -29,7 +29,7 @@ Before anyone deploys, every teammate has to be able to run the project locally.
 A good setup has three properties:
 
 1. **Documented.** A new teammate (or an AI coding tool) goes from cloning the repository to a running application by following the README. No Slack messages, no "ask Jordan, they know how to set it up."
-2. **Reproducible.** Everyone runs the same dependency versions, the same database schema, and the same configuration, so a bug on one machine is a bug on all of them.
+2. **Reproducible.** Everyone runs the same dependency versions, the same database schema, and the same configuration.
 3. **Fast.** Setup takes minutes. If it needs six tools installed and three services configured by hand, script it.
 
 ### The README as Setup Guide
@@ -57,7 +57,7 @@ If the project has several services (a frontend, a backend, a database), documen
 
 ### Containers for Consistency
 
-[Docker](https://docs.docker.com/get-started/) packages an application with its runtime and system libraries into an image that runs the same way on every machine, and [Docker Compose](https://docs.docker.com/compose/) starts several containers together from one file. When a project depends on a specific database version, a message queue, or system libraries that are hard to install consistently, a Compose file gives the whole team the same stack:
+[Docker](https://docs.docker.com/get-started/docker-overview/) packages an application with its runtime and system libraries into an image that runs the same way for everyone you share it with, and [Docker Compose](https://docs.docker.com/compose/) starts several containers together from one file. When a project depends on a specific database version, a message queue, or system libraries that are hard to install consistently, a Compose file gives the whole team the same stack:
 
 ```yaml
 # compose.yaml
@@ -178,7 +178,7 @@ Add these when they fit your stack:
 - A type checker: `tsc` for TypeScript, [mypy](https://mypy-lang.org/) or [Pyright](https://github.com/microsoft/pyright) for Python.
 - A dependency audit, [`npm audit`](https://docs.npmjs.com/cli/commands/npm-audit/) or [pip-audit](https://github.com/pypa/pip-audit), which flags dependencies with known vulnerabilities.
 
-If you set up only one check, make it the tests. The 2017 State of DevOps Report is an industry report by Puppet and DORA, based on a survey of about 3,200 people <Cite id="forsgren-2017" form="parenthetical" />. It recruited them by snowball sampling, promoting the survey online and asking respondents to pass it on to their networks, and notes that its sample is likely limited to organizations already familiar with DevOps <Cite id="forsgren-2017" form="parenthetical" />. Of the practices it tested, test automation, deployment automation, continuous integration with [trunk-based development](/guides/git-and-github/#trunk-based-development), comprehensive version control, and integrating security into delivery work all contributed to continuous delivery, with test automation the biggest contributor <Cite id="forsgren-2017" form="parenthetical" />.
+If you set up only one check, make it the tests. The 2017 State of DevOps Report is an industry report by Puppet and DORA, based on a survey of about 3,200 people <Cite id="forsgren-2017" form="parenthetical" />. It recruited them by snowball sampling and notes that its sample is likely limited to organizations and teams familiar with DevOps <Cite id="forsgren-2017" form="parenthetical" />. Five technical practices it tested all contributed to continuous delivery: test automation, deployment automation, continuous integration with [trunk-based development](/guides/git-and-github/#trunk-based-development), comprehensive version control, and integrating security into delivery work. Of the five, test automation contributed most <Cite id="forsgren-2017" form="parenthetical" />.
 
 ### CI and Branch Protection
 
@@ -199,7 +199,7 @@ A platform-as-a-service runs your application from your repository and handles t
 
 Check the current pricing page before you commit to one, because free and hobby tiers appear and disappear faster than a long project runs.
 
-Vercel and Netlify also build a [preview deployment](https://vercel.com/docs/deployments/environments) for every pull request: a temporary URL where a reviewer can use the change before it merges (Netlify calls them [deploy previews](https://docs.netlify.com/deploy/deploy-types/deploy-previews/)). Turn them on, because a reviewer who can click through the change sees problems the diff doesn't show.
+Vercel and Netlify also build a [preview deployment](https://vercel.com/docs/deployments/environments) for every pull request: a URL where a reviewer can use the change before it merges (Netlify calls them [deploy previews](https://docs.netlify.com/deploy/deploy-types/deploy-previews/)). Both are on by default once the repository is connected. Review on the preview as well as the diff, because a reviewer who can click through the change sees problems the diff doesn't show.
 
 ### Deploying to a VM or VPS
 
@@ -220,11 +220,11 @@ Use a managed database, because backups, upgrades, and security patches are oper
 
 ## Environment Management
 
-An application behaves differently in development, staging, and production. Environment variables carry those differences, so the code stays the same in all three.
+An application behaves differently in development, staging, and production.
 
 ### The Three Environments
 
-Environments exist so a change can be observed somewhere it can't hurt anyone before it reaches somewhere it can. They differ in who's affected when something breaks, so use that to decide what runs where.
+Environments exist so a change can be observed somewhere it can't hurt anyone before it reaches somewhere it can.
 
 - **Development (local).** Runs on each developer's machine, with local databases, mock services, verbose logging, and debug tools.
 - **Staging (optional).** A deployed copy that mirrors production but isn't public, for testing deployments and integrations before they reach real users.
@@ -232,7 +232,7 @@ Environments exist so a change can be observed somewhere it can't hurt anyone be
 
 ### Environment Variables
 
-Store configuration that changes between environments (database URLs, API keys, feature flags, log levels) in environment variables, not in code, as the [Twelve-Factor App's config factor](https://12factor.net/config) argues:
+Store configuration that changes between deploys (database URLs, API keys, the hostname) in environment variables, not in code, as the [Twelve-Factor App's config factor](https://12factor.net/config) argues:
 
 ```javascript
 // Reads the connection string from the environment
@@ -256,14 +256,14 @@ Commit a `.env.example` with a placeholder for every variable the application ne
 Change the database schema through migration files, never by hand. A migration is a version-controlled script that moves the database from one schema to the next:
 
 ```bash
-# Create a new migration
+# Prisma ORM 7: create and apply a new migration locally
 npx prisma migrate dev --name add-user-roles
 
 # Apply migrations in production
 npx prisma migrate deploy
 ```
 
-Use the migration tool that comes with your ORM or framework: [Prisma Migrate](https://www.prisma.io/docs/orm/migrations/how-migrations-work) for JavaScript and TypeScript, [Alembic](https://alembic.sqlalchemy.org/) for SQLAlchemy, [Django migrations](https://docs.djangoproject.com/en/stable/topics/migrations/) for Django.
+Use the migration tool that comes with your ORM or framework, and follow the docs for the major version you install, because the commands change between them (Prisma ORM 8 renames both of the ones above): [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production) for JavaScript and TypeScript, [Alembic](https://alembic.sqlalchemy.org/) for SQLAlchemy, [Django migrations](https://docs.djangoproject.com/en/stable/topics/migrations/) for Django.
 
 Create each migration, run it locally, commit it, and let the deployment apply it to production. Every environment then has the same schema, and the migration history records each change, which is what you work from when one has to be undone.
 
@@ -295,7 +295,7 @@ Walk through this before your first production deployment and again whenever the
 
 Once the application is live, you need to know when it breaks, ideally before a user tells you.
 
-An error tracker such as Sentry captures each unhandled exception with its stack trace, the request that triggered it, and the release that introduced it, which is more than a console log on the hosting platform gives you. The release is what tells you which deployment to roll back.
+An error tracker such as Sentry captures each unhandled exception with its stack trace and, for a web request, the request that triggered it, which is more than a console log on the hosting platform gives you. If you tell it about each release, it also shows the first release in which an error appeared, which usually points at the deployment to roll back.
 
 For a small team, an error tracker plus the platform's built-in logs is enough. A fuller monitoring stack is one more system you'd have to maintain.
 
@@ -303,7 +303,7 @@ For a small team, an error tracker plus the platform's built-in logs is enough. 
 
 Make every deployment reversible, because when one breaks production, restoring the last working version is faster than debugging forward while users wait. How you roll back depends on how you deploy:
 
-- PaaS platforms: [Vercel](https://vercel.com/docs/instant-rollback), [Netlify](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview/), and [Render](https://render.com/docs/rollbacks) each roll back from the dashboard. Read your platform's page before you need it: on Vercel's Hobby plan you can roll back only to the immediately previous deployment, and on Netlify with auto publishing on, the next Git-triggered deploy replaces the version you rolled back to.
+- PaaS platforms: [Vercel](https://vercel.com/docs/instant-rollback), [Netlify](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview/), and [Render](https://render.com/docs/rollbacks) each roll back from the dashboard. Read your platform's page before you need it, because they differ on what happens next. After a rollback, Vercel stops sending new pushes to production until you promote a deployment, and a dashboard rollback on Render turns off autodeploys until you re-enable them; on Netlify with auto publishing on, the next Git-triggered deploy replaces the version you rolled back to. On Vercel's Hobby plan you can roll back only to the immediately previous deployment.
 - Containers: keep the previous image tagged. Rolling back means deploying it again.
 - VMs: if you deploy with `git pull`, roll back by checking out the previous commit and restarting the service. Script it, so it's one command.
 
@@ -321,11 +321,11 @@ Practice a rollback once on a quiet day, so the first real one isn't also the fi
 
 The first deployment is the hard one. It's where you meet DNS, TLS, the hosting account's limits, and the build that works locally and fails on the platform, and every deployment after it reuses that work. The asymmetry tempts you to wait until there's something worth deploying, which moves the hard part to the week of a demo, with a partner watching. Deploy an empty page in your first weeks instead. The cost is the same either way, but early in the project a failure costs a day of fiddling and nothing else. [Shipping](/guides/shipping/#new-product-or-game) calls this a walking skeleton, the thinnest version of the system that runs end to end on a production URL, and puts it in the early phase.
 
-When a deployment breaks, suspect the configuration before the code. <Cite id="oppenheimer-2003" /> studied user-visible failures at three large internet services and found operator error the leading cause in two of them. In all three, more than half of the operator errors behind those failures were configuration errors, and they generally arose while operators were changing the system, such as deploying or upgrading software. On a small team's project the same failure looks like a missing environment variable, a migration that never ran, debug mode left on, or a secret that exists on a laptop and not on the platform.
+When a deployment breaks, suspect the configuration before the code. <Cite id="oppenheimer-2003" /> studied user-visible failures at three large internet services and found operator error the leading cause in two of them. In all three, more than half of the operator errors behind those failures were configuration errors, and operator errors generally arose during changes to the system, such as deploying or upgrading software. On a small team's project the same failure looks like a missing environment variable, a migration that never ran, debug mode left on, or a secret that exists on a laptop and not on the platform.
 
-[The Twelve-Factor App](https://12factor.net/), a methodology its authors drew from their work on the Heroku platform, argues for designing against those failures. Its central rule is to keep configuration in the environment, strictly separate from the code, so the same build runs in development and production with different settings. Read at least factor III (config), factor X ([dev/prod parity](https://12factor.net/dev-prod-parity)), and factor XI ([logs](https://12factor.net/logs)): the first two prevent the failures listed above, and the third is how you find the ones they miss.
+[The Twelve-Factor App](https://12factor.net/), a methodology its authors drew from their work on the Heroku platform, argues for designing against those failures. Read at least three of its factors. Factor III ([config](https://12factor.net/config)) keeps configuration strictly separate from the code, so a missing variable or a laptop-only secret is a setting to check rather than a code change. Factor X ([dev/prod parity](https://12factor.net/dev-prod-parity)) keeps development, staging, and production as similar as possible, so less of what works locally fails on the platform. Factor XI ([logs](https://12factor.net/logs)) treats logs as event streams, which is how you find the failures the other two don't prevent.
 
-Much of what DevOps means at a large company (platform teams, container clusters, multi-region failover) solves problems of scale your project doesn't have, and [Kubernetes](https://kubernetes.io/docs/concepts/overview/) is the clearest case: you almost certainly don't need it. It schedules containers across many machines with automated failover, which is a real problem for organizations running hundreds of services and not a problem you have. What it costs is a large operational surface that someone has to understand, and on a small team that someone becomes the only person who can deploy. A platform-as-a-service that deploys on push gives you the part you need for a fraction of the attention. If you want Kubernetes experience for your resume, that's a legitimate goal; call it a learning goal rather than an architectural requirement, and say so in your design document.
+Much of what DevOps means at a large company (platform teams, container clusters, multi-region failover) solves problems of scale your project doesn't have, and [Kubernetes](https://kubernetes.io/docs/concepts/overview/) is the clearest case: you almost certainly don't need it. It fits containers onto a cluster of machines and handles their scaling and failover, which is a real problem for organizations running hundreds of services. What it costs is a large operational surface that someone has to understand, and on a small team that someone becomes the only person who can deploy. A platform-as-a-service that deploys on push gives you the part you need for a fraction of the attention. If you want Kubernetes experience for your resume, that's a legitimate goal; call it a learning goal rather than an architectural requirement, and say so in your design document.
 
 ## DevOps in Industry and Academia
 
@@ -333,7 +333,7 @@ The 2017 State of DevOps Report [introduced above](#what-to-run-in-ci) also meas
 
 In a [2006 interview with ACM Queue](https://queue.acm.org/doi/10.1145/1142055.1142065), Werner Vogels, then Amazon's CTO, described each Amazon service's team as responsible for it from design through operation: "You build it, you run it." He argued that giving developers operational responsibility had improved the services' quality, because it put them in daily contact with their software in production and with its customers. Your team is in that position already, since nobody else will deploy your system or fix it when it breaks.
 
-In research, the equivalent of a reliable deployment is code someone else can build and run. <Cite id="collberg-2016" /> examined 601 papers from ACM systems conferences and journals and tried to build the code for those whose results were backed by it. Of those papers, research assistants built it within 30 minutes for 32.3%, and with unlimited time but without the lead developer's help for 48.3%; the study stopped at the build and didn't check the results. The authors found the lead developer often couldn't be reached, for reasons such as the student responsible for the code having graduated or the authors' email addresses no longer working. A pinned dependency list, a container image, and a setup section that works from a fresh clone address the same problem in both settings.
+In research, the equivalent of a reliable deployment is code someone else can build and run. <Cite id="collberg-2016" /> examined 601 papers from ACM conferences and journals and, for those whose results were backed by code, tried to build the code they could obtain. Of the papers backed by code, research assistants built it within 30 minutes for 32.3%, and with "unlimited time" but without the lead developer's help for 48.3%; the study stopped at the build and didn't check the results. The authors found the lead developer often wasn't available, for reasons such as the student responsible for the code having graduated or the authors' email addresses no longer working. A pinned dependency list, a container image, and a setup section that works from a fresh clone address the same problem in both settings.
 
 ## References
 
@@ -343,10 +343,10 @@ In research, the equivalent of a reliable deployment is code someone else can bu
 
 **Sources and further reading**
 
-- [Accelerate](https://itrevolution.com/product/accelerate/), Nicole Forsgren, Jez Humble, and Gene Kim: the research book behind DORA's four delivery metrics (deployment frequency, lead time for changes, time to restore service, and change failure rate).
-- [DORA](https://dora.dev/), Google Cloud: the same research program's current reports.
+- [Accelerate](https://itrevolution.com/product/accelerate/), Nicole Forsgren, Jez Humble, and Gene Kim: the research book behind DORA's delivery metrics.
+- [DORA](https://dora.dev/), Google Cloud: the same research program's current reports and metrics.
 - [Site Reliability Engineering](https://sre.google/sre-book/table-of-contents/), Google: free online.
-- [BlueGreenDeployment](https://martinfowler.com/bliki/BlueGreenDeployment.html), Martin Fowler: a deployment pattern for zero-downtime releases and instant rollback.
+- [BlueGreenDeployment](https://martinfowler.com/bliki/BlueGreenDeployment.html), Martin Fowler: a deployment pattern for releases with minimal downtime and rapid rollback.
 - [Using secrets in GitHub Actions](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets), GitHub Docs.
 - [DevSecOps Guideline](https://owasp.org/projects/devsecops-guideline), OWASP: where the security checks belong in the pipeline.
 

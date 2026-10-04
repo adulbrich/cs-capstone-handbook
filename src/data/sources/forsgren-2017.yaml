@@ -37,8 +37,8 @@ claims:
       Test automation, deployment automation, continuous integration with
       trunk-based development, comprehensive version control, and
       integrating security into software delivery work all positively
-      affected continuous delivery; test automation was the biggest
-      contributor.
+      affected continuous delivery; of these five technical practices,
+      test automation was the biggest contributor.
     locator: Technical practices, p. 34
   - claim: >-
       About 3,200 people participated in the survey.

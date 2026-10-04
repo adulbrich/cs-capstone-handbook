@@ -13,7 +13,7 @@ claims:
       In a study of user-visible failures at three large-scale internet
       services, operator error was the leading cause of service failure in
       two of the three.
-    locator: Abstract; Analysis of failure causes, Service failure root cause
+    locator: Abstract; Analysis of failure causes, Service failure root cause; Table 3
   - claim: >-
       In all three services, more than 50% of the operator errors that led
       to service failures were configuration errors, and operator errors
