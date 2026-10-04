@@ -7,9 +7,15 @@ title: "ZMap: Fast Internet-wide Scanning and Its Security Applications"
 venue: 22nd USENIX Security Symposium
 kind: peer-reviewed
 url: https://www.usenix.org/conference/usenixsecurity13/technical-sessions/paper/durumeric
-verified: abstract
+# Read in full from the USENIX open-access PDF.
+verified: full-text
 claims:
   - claim: >-
       ZMap, an open-source network scanner, can survey the entire IPv4
       address space in under 45 minutes from user space on a single machine.
     locator: Abstract
+  - claim: >-
+      Many developers assume the Internet is too large to enumerate, and
+      high-speed scanning may disrupt that security model by discovering
+      services previously thought to be well hidden.
+    locator: Sec. 4, Applications and Security Implications
