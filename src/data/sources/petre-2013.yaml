@@ -6,22 +6,26 @@ venue: 35th International Conference on Software Engineering (ICSE)
 kind: peer-reviewed
 url: https://oro.open.ac.uk/35805/
 doi: 10.1109/ICSE.2013.6606618
-# Read in full from the accepted manuscript on Open Research Online.
+# Read in full from the accepted manuscript on Open Research Online (ORO cover
+# sheet, ICSE 2013 pp. 722-731). The counts are declared current use; the
+# remaining 4 of 50 are automated code generation (3) and retrofit (1), with no
+# wholehearted users. Section III warns the counts are descriptive, not
+# representative of all software engineers, so the page scopes them to the study.
 verified: full-text
 claims:
   - claim: >-
       In interviews with 50 professional software engineers from 50 companies,
-      35 did not use UML, and 11 used it selectively and informally, for as
-      long as it was useful, after which it was discarded.
-    locator: Section IV; Table I
+      35 did not use UML in their current work, and 11 used it selectively and
+      informally, for as long as it was useful, after which it was discarded.
+    locator: Abstract; Section IV; Table I
   - claim: >-
-      The engineers who did not use UML had typically considered it, often
-      trying it on a project or two, and found it offered no advantage over
-      their current practices and representations.
+      The engineers who did not use UML had considered it, often adopting it
+      for a project or two, and found it offered no advantage over their
+      current practices and representations.
     locator: Section V
   - claim: >-
       Among the 11 selective users, the most used diagrams were class diagrams
       (7), sequence diagrams (6), and activity diagrams (6); sequence diagrams
       were reported as used for requirements elicitation and eliciting
       behaviors.
-    locator: Table II
+    locator: Section VIII; Table II

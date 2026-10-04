@@ -28,7 +28,7 @@ Technical design is deciding *how* the system will be built, before or alongside
 2. What are the interfaces and contracts between them? (Interface design)
 3. What are the riskiest assumptions, and how will you test them? (Risk and prototyping)
 
-The answers go into a design document: a written artifact that captures the structure, the diagrams, and the reasoning. Write only what a new contributor needs to change the system without breaking it, because every section you add is one more thing someone has to keep true.
+The answers go into a design document: a written artifact that captures the structure and the diagrams. Write only what a new contributor needs to change the system without breaking it, because every section you add is one more thing someone has to keep true.
 
 The design document holds the big picture. Individual decisions along the way ([PostgreSQL](https://www.postgresql.org/) over [MongoDB](https://www.mongodb.com/), a monolith instead of microservices, one data pipeline shape over another) go into Architecture Decision Records (ADRs). The design document shows *what* the system looks like; the ADRs explain *why* it looks that way and what else was on the table.
 
@@ -40,12 +40,12 @@ Technical design works at several levels of abstraction. Think through at least 
 
 The highest-level view names the major subsystems, services, or modules and how they communicate. Simon Brown's [C4 model](https://c4model.com/) structures that view as four levels of zoom:
 
-- **Context diagram** (C4 level 1): your system as a black box, showing who and what interacts with it (users, external services, data sources, hardware). It's the diagram for your project partner and for anyone non-technical.
-- **Container diagram** (C4 level 2): the major deployable or runnable units and how they communicate. For a web application, these might be a frontend, an API server, and a database. For a data pipeline, an ingestion service, a processing framework, and a storage layer. For an embedded project, firmware modules and a host application.
+- **Context diagram** (C4 level 1): your system as a black box, showing who and what interacts with it (users, external services, data sources, hardware). C4 pitches it at everybody, technical or not, which makes it the diagram for your project partner.
+- **Container diagram** (C4 level 2): the applications and data stores that must be running for the system to work, and how they communicate. For a web application, these might be a frontend, an API server, and a database. For a data pipeline, an ingestion service, a processing framework, and a storage layer. For an embedded project, firmware modules and a host application.
 - **Component diagram** (C4 level 3): the internal structure of a single container, for the developers working inside it.
 - **Code diagram** (C4 level 4): the implementation details of one component, usually a UML class diagram or an entity-relationship diagram. Generate it from the code or the schema when you need it, because a hand-drawn copy goes stale as soon as the code changes.
 
-Draw the context diagram and one level below it, and stop there unless a reader has a question only a deeper level answers. That gives anyone, your project partner included, a mental model of the system without reading the code. C4 doesn't prescribe a notation, so draw the boxes in whatever tool your team already uses; what it does ask is that every diagram say which level of zoom it's at, so nobody argues about a component while looking at a container.
+Draw the context diagram and one level below it, and stop there unless a reader has a question only a deeper level answers. [C4's own documentation](https://c4model.com/diagrams) says those two are sufficient for most software development teams. C4 doesn't prescribe a notation, so draw the boxes in whatever tool your team already uses; what it does ask is that every diagram say which level of zoom it's at, so nobody argues about a component while looking at a container.
 
 Draw the first version together, because a diagram surfaces disagreements that words hide. Four people can agree that "the API talks to the database" while holding four different pictures of what that means, and the sentence won't show the difference. A boxes-and-arrows sketch will, as soon as someone points at a box and says that's not where that lives.
 
@@ -92,7 +92,7 @@ For projects with a database, the answers become entity-relationship diagrams, t
 
 Sometimes the right move is to build a small, throwaway prototype that answers one question before you commit to a design: *Does this third-party API do what its documentation claims? Is this library fast enough for your use case? Does this algorithm generalize to real data?*
 
-[Extreme Programming](http://www.extremeprogramming.org/rules/spike.html) calls this a **spike**: a very simple program that explores one technical problem, ignores every other concern, and is expected to be thrown away. Its goal is to reduce the risk of that problem, and its output is a finding, not production code. Record the finding in an ADR and delete the code.
+[Extreme Programming](http://www.extremeprogramming.org/rules/spike.html) calls this a **spike**: a very simple program that explores possible solutions to one technical problem, ignores every other concern, and is expected to be thrown away. Its goal is to reduce the risk of that problem, and its output is a finding, not production code. Record the finding in an ADR and delete the code.
 
 Time-box every spike. Extreme Programming suggests a pair of developers for a week or two; on a small team with other work in flight, a few days is usually what you can afford. The time box matters because a spike without an end date quietly becomes the first draft of production code, with none of the care production code gets.
 
@@ -102,7 +102,7 @@ Spike the riskiest assumption first. If the design depends on a component or an 
 
 Write the design document as an explanation of how the system works (or will work) for someone who hasn't read the code. It's tempting to treat it as a template to fill in, section by section, but a filled-in template answers the template's questions. A useful design document answers the questions your team and your project partner actually have, briefly enough that people read it more than once.
 
-The `docs/design.md` below is for a web application, and it links an ADR for every significant "why" instead of arguing it inline. A research project swaps in a workflow diagram, the pipeline's stage formats, and a reproducibility plan; a contribution to an open source project describes the existing architecture and where your change fits into it.
+The `docs/design.md` below is for a shift board: a web app where a nonprofit's volunteer coordinators post shifts and volunteers claim them. A team of three builds it, Priya among them, and it links an ADR for every significant "why" instead of arguing it inline. A research project swaps in a workflow diagram, the pipeline's stage formats, and a reproducibility plan; a contribution to an open source project describes the existing architecture and where your change fits into it.
 
 ```md
 # Design
@@ -138,14 +138,14 @@ front end, a Node API, and Postgres on Render, behind Google Workspace SSO.
 ## Open questions
 - SSO on the partner's Workspace tenant is unproven; Priya spikes it first.
 - Can Postmark send from the partner's domain without DNS changes on
-  their side? Spike it before FR-3.
+  their side? Spike it before building the release emails.
 
 ## Deferred decisions
 - Notification delivery: email from the API for now; a queue only if
   volume calls for one, recorded in an ADR when it does.
 ```
 
-If you want a template rather than a blank page, [arc42](https://arc42.org/overview) is the established one: twelve sections covering goals, constraints, context, solution strategy, building blocks, runtime, deployment, cross-cutting concepts, decisions, quality, risks, and a glossary. It prescribes structure, not notation, so C4 or UML diagrams drop into it unchanged. Keep the sections you need and delete the rest, because a small system described in all twelve is mostly empty headings a reader has to skip.
+If you want a template rather than a blank page, [arc42](https://arc42.org/overview) is the established one: twelve sections covering goals, constraints, context, solution strategy, building blocks, runtime, deployment, cross-cutting concepts, decisions, quality, risks, and a glossary. It [prescribes structure, not notation](https://faq.arc42.org/questions/B-2/), so C4 or UML diagrams drop into it unchanged. Keep the sections you need and delete the rest, because a small system described in all twelve is mostly empty headings a reader has to skip.
 
 :::tip[Diagramming Tools]
 [Excalidraw](https://excalidraw.com/) makes quick, hand-drawn-style diagrams. [draw.io / diagrams.net](https://app.diagrams.net/) supports formal UML and exports cleanly. [Mermaid](https://mermaid.js.org/) lets you write diagrams as code inside Markdown files, so they're versioned and reviewed with everything else.
@@ -162,7 +162,7 @@ The [Unified Modeling Language](https://www.omg.org/spec/UML/) (UML) gives you a
 
 Activity, component, package, and composite-structure diagrams exist too; the [UML diagram reference](https://www.uml-diagrams.org/) covers all of them.
 
-Professional practice uses far less of UML than the full diagram catalog implies. <Cite id="petre-2013" /> interviewed 50 professional software engineers from 50 companies: 35 didn't use UML at all, and 11 used it selectively and informally, keeping a diagram only as long as it was useful and then discarding it (Section IV). The engineers who didn't use it had typically tried it on a project or two and found no advantage over what they already did (Section V). The selective users reached most often for class, sequence, and activity diagrams, and reported using sequence diagrams to elicit requirements and behaviors (Table II).
+The professionals in one interview study used far less of UML than the full diagram catalog implies. <Cite id="petre-2013" /> interviewed 50 professional software engineers from 50 companies: 35 didn't use UML in their current work, and 11 used it selectively and informally, keeping a diagram only as long as it was useful and then discarding it (Section IV). The engineers who didn't use it had considered it, often trying it on a project or two, and found no advantage over what they already did (Section V). The selective users reached most often for class, sequence, and activity diagrams, and reported using sequence diagrams to elicit requirements and behaviors (Table II).
 
 ## Validating Your Design
 
@@ -172,7 +172,7 @@ Check the design with someone other than its authors before you build on it, bec
 - Walk one key scenario end to end: trace a representative workflow (a user action, a data processing run, an experimental trial) through every component in your diagram, and note each place where the diagram doesn't say what happens next.
 - Ask what happens when each component fails, and whether the rest of the system degrades or stops.
 
-A [peer technical design review](/activities/design/#peer-technical-design-review) puts your design in front of another team, who ask whether it's fit for purpose, whether it can grow, and whether it solves the right problem. Reviewers from outside the team are useful precisely because they don't share your assumptions.
+A [peer technical design review](/activities/design/#peer-technical-design-review) puts your design in front of another team, who ask whether it's fit for purpose, whether it can grow, and whether it solves the right problem.
 
 ## Measuring Success
 
@@ -187,7 +187,7 @@ The design is working when the problems it was supposed to prevent stop happenin
 
 Your design will change, and that's expected. What you want is for each change to be deliberate and recorded, rather than the sum of local decisions teammates made independently. When the design changes significantly, update `docs/design.md` in the same pull request as the code, and write an ADR that records the change, the alternatives, and the reason.
 
-Decisions made at a whiteboard are easy to lose. <Cite id="cherubini-2007" /> interviewed developers at Microsoft and checked what they heard with a survey of 427 responses: most diagrams were transient, and diagrams that documented design decisions were often drawn in those temporary sketches and then lost (Abstract; p. 559). When a whiteboard session settles something, photograph the board and write the outcome into the design document or an ADR that day, while the people in the room still agree on what was decided.
+Decisions made at a whiteboard are easy to lose. <Cite id="cherubini-2007" /> interviewed developers at Microsoft and checked what they heard with a survey of 427 responses: most diagrams were transient, and diagrams that documented design decisions were often drawn in those temporary sketches and then lost (Abstract; pp. 559, 563). When a whiteboard session settles something, photograph the board and write the outcome into the design document or an ADR that day, while the people in the room still agree on what was decided.
 
 ## Technical Design in the Age of AI
 
@@ -218,21 +218,21 @@ Review is where drift gets caught, and the design document is the reference that
 
 ## Some Truths About Technical Design
 
-No design survives contact with the implementation. The document will be wrong in places, and much of its value is in what the team worked out while writing it. That has a practical consequence: a design document written by one person the night before a review has delivered almost none of that value, however polished it looks, because the other teammates never had the argument that would have changed their picture of the system. <Cite id="cherubini-2007" /> found something similar about whiteboard sketches: the value of a transient sketch was secondary to the setting it was drawn in, and it dropped as soon as that setting ended (p. 563).
+No design survives contact with the implementation. The document will be wrong in places, and much of its value is in what the team worked out while writing it. So a design document written by one person the night before a review has delivered almost none of that value, however polished it looks, because the other teammates never had the argument that would have changed their picture of the system. <Cite id="cherubini-2007" /> found something similar about whiteboard sketches: the value of a transient sketch was secondary to the setting it was drawn in, and it dropped as soon as that setting ended (p. 563).
 
-Over-design looks like diligence, which makes it easy to wave through a review. It has a recognizable shape: a plugin architecture for the one plugin that exists, an abstraction layer over a database you'll never swap, microservices for a system four people are building. Fowler's [YAGNI](https://martinfowler.com/bliki/Yagni.html) argues that speculative generality costs you now, in code to build and maintain, and pays off only if the future you imagined arrives. His [MonolithFirst](https://martinfowler.com/bliki/MonolithFirst.html) makes the same argument for the decision a small team is most tempted to over-engineer. Build for the load and the team you have, and add the flexibility when a real second case shows up.
+Over-design looks like diligence, which makes it easy to wave through a review. It has a recognizable shape: a plugin architecture for the one plugin that exists, an abstraction layer over a database you'll never swap, microservices for a system four people are building. Fowler's [YAGNI](https://martinfowler.com/bliki/Yagni.html) argues that a feature built for a presumed future need costs effort now and complexity every later change has to carry, and costs you even when the need arrives, because it delayed the work that mattered now. His [MonolithFirst](https://martinfowler.com/bliki/MonolithFirst.html) makes the same argument against starting a new system as microservices. Build for the load and the team you have, and add the flexibility when a real second case shows up.
 
-There's a real disagreement about when to design. The "big design up front" tradition says decide the architecture before you build; the agile reaction says let it emerge from the code. Fowler's [Is Design Dead?](https://martinfowler.com/articles/designDead.html) argues that evolutionary design depends on practices like automated tests, continuous integration, and refactoring that keep the code cheap to change. A project with a fixed end date and an external partner can't fully afford either extreme, so this guide takes a narrow position: decide in advance only what's hard to reverse (the data model, authorization boundaries, deployment topology, integration contracts), and let the rest emerge. Sort decisions by reversibility rather than importance, because an important decision that's easy to reverse can wait until you know more, and a hard-to-reverse one only gets more expensive with every line built on it. The [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) activity runs this sort on a real project.
+There's a real disagreement about when to design. Fowler's [Is Design Dead?](https://martinfowler.com/articles/designDead.html) contrasts planned design, which settles the big decisions before coding, with evolutionary design, which grows as the system is built. He argues that evolutionary design depends on practices like automated tests, continuous integration, and refactoring that keep the code cheap to change, and that those practices strike a new balance between up-front design and refactoring rather than doing away with design. A project with a fixed end date and an external partner can't fully afford either extreme, so this guide takes a narrow position: decide in advance only what's hard to reverse (the data model, authorization boundaries, deployment topology, integration contracts), and let the rest emerge. Sort decisions by reversibility rather than importance, because an important decision that's easy to reverse can wait until you know more, and a hard-to-reverse one only gets more expensive with every line built on it.
 
 The diagrams in your design document will go out of date. <Cite id="cherubini-2007" /> found diagrams in documentation were often out of date, because keeping them in sync with the code was costly (p. 564). That's the case for drawing few of them: a context diagram and a container diagram change only when the architecture does, while a class diagram changes every time someone adds a field. Treat a hand-drawn diagram that nobody has updated in months as a question for the team.
 
-Your architecture will tend to mirror your team's communication structure, whether you plan it or not. Mel Conway made that argument in ["How Do Committees Invent?"](https://www.melconway.com/Home/Committees_Paper.html), and it's now known as Conway's law. <Cite id="maccormack-2012" /> tested a version of it on five matched pairs of software products with the same function, each built once by a commercial firm and once by an open source community: in every pair, the product from the more loosely coupled organization was significantly more modular (Abstract; Table 4). On a four-person team where two people rarely talk, expect a seam between their parts of the code, whether or not the design document put one there. If the design needs those two people to share a module, either change who works on it or write the interface between them down first.
+Your architecture will tend to mirror your team's communication structure, whether you plan it or not. Mel Conway made that argument in ["How Do Committees Invent?"](https://www.melconway.com/Home/Committees_Paper.html), and it's now known as Conway's law. <Cite id="maccormack-2012" /> tested a version of it, the mirroring hypothesis, on five matched pairs of software products of similar function and size, each pairing a product from a tightly coupled organization (usually a commercial firm) with one from a loosely coupled open source community: in every pair, the product from the loosely coupled organization was significantly more modular (Abstract; Table 4). On a four-person team where two people rarely talk, expect a seam between their parts of the code, whether or not the design document put one there. If the design needs those two people to share a module, either change who works on it or write the interface between them down first.
 
 ## Technical Design in Industry and Academia
 
-In industry, design documents go by many names: tech spec, RFC (request for comments), design doc, TDD (technical design document). Malte Ubl's account of [design docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/) describes them as relatively informal documents written before coding starts, covering the context and scope, the goals and non-goals, the design, the alternatives considered, and cross-cutting concerns such as security and privacy. Open source projects formalize the same idea: [PEP 1](https://peps.python.org/pep-0001/) defines a Python Enhancement Proposal as a design document, and the [Rust RFC process](https://github.com/rust-lang/rfcs) asks for a written proposal before any substantial change to the language.
+In industry, design documents go by many names: tech spec, RFC (request for comments), design doc, TDD (technical design document). Malte Ubl's account of [design docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/) describes them as relatively informal documents written before coding starts, covering the context and scope, the goals and non-goals, the design, the alternatives considered, and cross-cutting concerns such as security and privacy. Open source projects formalize the same idea: [PEP 1](https://peps.python.org/pep-0001/) defines a Python Enhancement Proposal as a design document, and the [Rust RFC process](https://github.com/rust-lang/rfcs) asks for a written proposal before any substantial change to Rust, Cargo, or crates.io.
 
-Amazon's [Working Backwards](https://www.allthingsdistributed.com/2006/11/working_backwards.html) process, as Werner Vogels describes it, starts from the documents needed at launch (the press release and the FAQ) and works toward documents closer to the implementation.
+Amazon's [Working Backwards](https://www.allthingsdistributed.com/2006/11/working_backwards.html) process, as Werner Vogels describes it, writes the launch documents first, the press release and the FAQ, then works toward documents nearer the implementation.
 
 In research, the closest equivalent is the methods section of a paper, which describes the approach in enough detail for someone else to replicate it. For computational research, that includes the architectural and algorithmic decisions needed to reproduce the results.
 
@@ -246,9 +246,9 @@ Architecture writing skews toward systems far larger than yours, so these are pi
 
 **Sources and further reading**
 
-- [Software Architecture Guide](https://martinfowler.com/architecture/), Martin Fowler: what architecture means and why it's worth deciding deliberately.
+- [Software Architecture Guide](https://martinfowler.com/architecture/), Martin Fowler.
 - [A Philosophy of Software Design](https://web.stanford.edu/~ouster/cgi-bin/book.php), John Ousterhout: deep modules, simple interfaces, and how complexity accumulates.
-- [Documenting Software Architectures: Views and Beyond](https://www.informit.com/store/documenting-software-architectures-views-and-beyond-9780321552686), Clements and colleagues: how to write down each view of an architecture for the reader who needs it.
+- [Documenting Software Architectures: Views and Beyond](https://www.informit.com/store/documenting-software-architectures-views-and-beyond-9780321552686), Clements and colleagues.
 - [Software Architecture in Practice](https://www.informit.com/store/software-architecture-in-practice-9780136886099), Bass, Clements, and Kazman: quality attributes and the tactics that achieve them.
 - [Architecture Decision Records](https://adr.github.io/), the ADR community site: templates and tooling for the companion artifact.
 - [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/guide/), Microsoft: reference architectures and patterns, useful as a catalog of what a shape is called.

@@ -9,7 +9,9 @@ venue: Proceedings of the SIGCHI Conference on Human Factors in Computing System
 kind: peer-reviewed
 url: https://dl.acm.org/doi/10.1145/1240624.1240714
 doi: 10.1145/1240624.1240714
-# Read in full from the authors' PDF of the CHI paper.
+# Read in full from the publisher PDF on Microsoft Research's site, with the
+# proceedings pagination (557-566). Nine developers were interviewed (p. 559);
+# the survey's 427 responses came from six surveys sent to 400 developers each.
 verified: full-text
 claims:
   - claim: >-
@@ -17,14 +19,12 @@ claims:
       responses, found that most diagrams were transient, and that diagrams
       documenting design decisions were often drawn in these temporary
       sketches and then lost.
-    locator: Abstract; p. 559
+    locator: Abstract; pp. 559, 563
   - claim: >-
       For transient sketches, the value of the diagram was secondary to the
       setting in which it was drawn, and dropped as soon as that setting ended.
     locator: p. 563
   - claim: >-
-      In peer meetings, developers drew informal boxes-and-arrows diagrams
-      and followed no graphical standard; UML use was very low, and diagrams
-      in documentation were often out of date because keeping them in sync
-      with the code was costly.
+      Diagrams in documentation were often out of date, because keeping them
+      in sync with the evolving code had a high cost.
     locator: p. 564
