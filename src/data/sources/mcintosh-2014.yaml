@@ -15,8 +15,10 @@ verified: full-text
 claims:
   - claim: >-
       In the review participation analysis of Qt and ITK (VTK was omitted for
-      too few components), the proportion of changes merged without review
-      discussion was associated with more post-release defects in all three
-      release models; self-approved and hastily reviewed changes were
+      too few components), and only among components where every change was
+      reviewed, the proportion of changes approved without any comment from
+      another team member had a significant positive coefficient for
+      post-release defects in all three release models (Qt 5.0.0, Qt 5.1.0,
+      ITK 4.3.0); self-approved and hastily reviewed changes were
       significant in one Qt release model each.
     locator: Sec. 4, Case Study Results (RQ2); Table 4

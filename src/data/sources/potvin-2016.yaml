@@ -12,8 +12,8 @@ claims:
   - claim: >-
       Google practices trunk-based development: most engineers work at head,
       development on branches is unusual and branches are mainly used for
-      releases, and new features sit behind flags instead of on development
-      branches.
+      releases, and new features sit behind conditional flags instead of on
+      development branches.
     locator: Trunk-based development
   - claim: >-
       To keep trunk from breaking, Google tests changes before they land

@@ -23,9 +23,15 @@ claims:
       significant difference.
     locator: Technical practices, p. 41
   - claim: >-
-      The report addresses developers used to the GitHub-recommended workflow:
-      short-lived branches merged into trunk at least daily are consistent
-      with continuous integration.
+      Teams should avoid keeping branches alive more than a day; taking more
+      than a day to merge and integrate branches is a warning sign.
+    locator: Technical practices, p. 41
+  - claim: >-
+      The report notes that some developers used to the GitHub-recommended
+      workflow, which merges branches into trunk only periodically, remain
+      skeptical, and states that short-lived branches merged into trunk at
+      least daily are consistent with commonly accepted continuous
+      integration practices.
     locator: Technical practices, Trunk-based development, p. 40
   - claim: >-
       Test automation, deployment automation, continuous integration with
