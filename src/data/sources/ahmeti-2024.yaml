@@ -18,7 +18,9 @@ claims:
       microservice-based system (two teams), introducing ADRs addressed challenges of
       documentation culture, knowledge transfer, and prioritizing what to
       document, and the authors found that cooperation among the teams
-      improved.
+      improved; they note that documenting decisions does not always
+      strengthen cooperation and expect corporate culture and the social
+      dynamics within a team to have a strong influence.
     locator: Abstract; Section 6.3, Documentation Culture
   - claim: >-
       Practitioners sometimes struggled to decide whether a decision was

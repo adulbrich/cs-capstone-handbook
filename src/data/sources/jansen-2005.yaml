@@ -17,4 +17,4 @@ claims:
       representation and so is lost, which they call knowledge vaporization,
       and they believe it is partly responsible for high costs of change and
       design erosion.
-    locator: Abstract; Section 3, Problems of software architecture
+    locator: Abstract; Section 1, Introduction; Section 3, Problems of software architecture
