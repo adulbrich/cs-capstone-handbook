@@ -13,5 +13,6 @@ claims:
   - claim: >-
       In an evaluation of six automated tools against WCAG 2.0, coverage was
       at most 50% of the success criteria, and among the criteria analyzed,
-      only about 4 in 10 violations were caught (completeness 14% to 38%).
+      completeness (the share of violations caught) ranged between 14% and
+      38%, which the abstract summarizes as at most 4 in 10.
     locator: Abstract

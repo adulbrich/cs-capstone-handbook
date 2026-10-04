@@ -9,15 +9,17 @@ venue: Proceedings of the SIGCHI Conference on Human Factors in Computing System
 kind: peer-reviewed
 url: https://dl.acm.org/doi/10.1145/2207676.2207736
 doi: 10.1145/2207676.2207736
-verified: abstract
+verified: full-text
 claims:
   - claim: >-
       Task-based evaluations with 32 blind users on 16 websites yielded 1,383
-      instances of user problems, of which only 50.4% were covered by WCAG
-      2.0 success criteria.
-    locator: Abstract
+      instances of user problems, of which only 50.4% were covered by a
+      directly relevant WCAG 2.0 success criterion.
+    locator: "Abstract; Results, User problems and coverage by WCAG CPs/SCs (Figure 4)"
   - claim: >-
-      For problems covered by WCAG 2.0, 16.7% of websites implemented the
-      techniques WCAG 2.0 recommends, but the techniques did not solve the
-      problems.
-    locator: Abstract
+      Of the user problems that WCAG 2.0 covered, 16.7% (8.4% of all user
+      problems) occurred on pages that had implemented the directly relevant
+      success criteria, so the guideline was met and the user still had the
+      problem. The abstract words this as "16.7% of websites"; the results
+      and discussion give the problem-based denominator.
+    locator: "Results, User problems and coverage by WCAG CPs/SCs (Figure 4, bar 3); Discussion and Conclusions"

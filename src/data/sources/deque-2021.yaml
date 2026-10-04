@@ -20,7 +20,7 @@ claims:
   - claim: >-
       The report sets out to argue that coverage should be counted by volume
       of issues rather than by the number of success criteria.
-    locator: Introduction; In summary
+    locator: "Opening paragraphs (headed Introduction in the PDF); In Summary"
   - claim: >-
       Of 9,412 issues against success criterion 2.1.1 Keyboard, 234 were
       found by automated tests and 9,178 by manual testing.
