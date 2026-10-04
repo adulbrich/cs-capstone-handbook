@@ -18,7 +18,7 @@ claims:
       affected over 100,000 repositories, and thousands of new, unique
       secrets were leaked every day; the authors present their results as a
       lower bound.
-    locator: Abstract; Sec. I, Introduction
+    locator: Abstract; Sec. I, Introduction; Sec. X, Limitations (lower bound)
   - claim: >-
       A known string pushed to a repository appeared in GitHub Search API
       results with a median delay of 20 seconds (from half a second to over
