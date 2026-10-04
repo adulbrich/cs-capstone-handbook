@@ -42,7 +42,7 @@ The layers target the failures that are most common in practice. WebAIM's annual
 
 ## Manual Accessibility Testing
 
-Automated tools find a large share of the issues but cover at most half of the rules, and the figure you hear depends on which one is counted. Deque, the company that maintains axe-core, published an industry report on first-time audits covering more than 13,000 pages and page states and nearly 300,000 issues: axe-core's automated tests found 57.38% of the issues by volume <Cite id="deque-2021" form="parenthetical" />. Counted by WCAG success criteria instead, the same data had automated findings for 16 of the 50 WCAG 2.1 AA criteria, which the report acknowledges supports the widely quoted figure of 20 to 30% coverage. The report was written to argue for the by-volume count, so read it as the tool vendor's case. An independent benchmark of six tools against WCAG 2.0 by <Cite id="vigo-2013" /> found that they caught between 14% and 38% of the violations on the success criteria they did test, and tested at most 50% of the success criteria at all.
+Automated tools find a large share of the issues but cover at most half of the rules, and the figure you hear depends on which one is counted. Deque, the company that maintains axe-core, published an industry report on first-time audits covering more than 13,000 pages and page states and nearly 300,000 issues: axe-core's automated tests found 57.38% of the issues by volume <Cite id="deque-2021" form="parenthetical" />. Counted by WCAG success criteria instead, the same data had automated findings for 16 of the 50 WCAG 2.1 AA criteria, which the report acknowledges supports the widely quoted figure of 20 to 30% coverage. The report was written to argue for the by-volume count, so read it as the tool vendor's case. An independent benchmark of six tools against WCAG 2.0 by <Cite id="vigo-2013" /> found that they caught between 14% and 38% of the violations on the success criteria the study analyzed, and tested at most 50% of the success criteria at all.
 
 The split follows a pattern. Tools are reliable on rules a machine can decide (is there alt text, is the contrast ratio at least 4.5:1) and blind to rules that need judgment: whether the focus order makes sense, whether a label is *meaningful* rather than merely present, whether the flow can be completed at all without a mouse. Keyboard and focus problems show it most clearly in Deque's data. Automated tests found none of the 9,553 issues against Focus Order or the 7,312 against Focus Visible, and 234 of the 9,412 against Keyboard; manual testing found the rest <Cite id="deque-2021" form="parenthetical" />.
 
@@ -55,7 +55,7 @@ The manual pass is four checks, none of which needs special equipment. Run them 
 
 ## Testing with Assistive Technology Users
 
-A session with a daily assistive-technology user tests whether the people who rely on those tools can finish their tasks. <Cite id="power-2012" /> ran task-based evaluations with 32 blind users on 16 websites and logged 1,383 problems; only 50.4% of them were covered by a WCAG 2.0 success criterion. Where WCAG did cover a problem, the page had already met the relevant success criterion in 16.7% of cases: the developers had followed the guideline and the user still failed.
+A session with a daily assistive-technology user tests whether the people who rely on those tools can finish their tasks. <Cite id="power-2012" /> ran task-based evaluations with 32 blind users on 16 websites and logged 1,383 problems; only 50.4% of them were covered by a WCAG 2.0 success criterion. Where WCAG did cover a problem, the page had already met the relevant success criterion in 16.7% of cases: the developers had followed the guideline and the user still hit the problem.
 
 A daily user brings what a teammate with a screen reader switched on doesn't have: shortcuts and navigation strategies learned over years, and a sense of how a well-built page behaves. They notice where yours departs from it, including problems that no success criterion names.
 
@@ -71,7 +71,7 @@ When that isn't possible on your timeline, the closest substitute is a task-base
 
 ## Best Practices for Accessibility Testing
 
-- Start at the lint layer. It runs before a browser is involved and catches the missing alt text and missing labels that are among the most common errors in WebAIM's report.
+- Start at the lint layer. It runs before a browser is involved and catches missing alt text, one of the most common errors in WebAIM's report; turn on `control-has-associated-label` and it catches missing form labels too.
 - Run axe-core in the tests you already have, and check contrast in a real browser rather than in JSDOM.
 - Do the keyboard pass on every flow you demo. It takes a few minutes, and keyboard failures are the ones automated tools almost never report.
 - Judge the work by whether the flow can be completed. A page can pass every automated rule and still be impossible to finish without a mouse.

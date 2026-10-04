@@ -20,6 +20,5 @@ claims:
       Of the user problems that WCAG 2.0 covered, 16.7% (8.4% of all user
       problems) occurred on pages that had implemented the directly relevant
       success criteria, so the guideline was met and the user still had the
-      problem. The abstract words this as "16.7% of websites"; the results
-      and discussion give the problem-based denominator.
-    locator: "Results, User problems and coverage by WCAG CPs/SCs (Figure 4, bar 3); Discussion and Conclusions"
+      problem.
+    locator: "Results, User problems and coverage by WCAG CPs/SCs (Figure 4, bar 3)"
