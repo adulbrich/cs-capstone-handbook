@@ -16,6 +16,6 @@ claims:
     locator: Abstract
   - claim: >-
       Many developers assume the Internet is too large to enumerate, and
-      high-speed scanning may disrupt that security model by discovering
-      services previously thought to be well hidden.
+      high-speed scanning may disrupt existing security models, for example
+      by discovering services previously thought to be well hidden.
     locator: Sec. 4, Applications and Security Implications

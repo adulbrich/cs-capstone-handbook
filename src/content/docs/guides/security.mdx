@@ -23,7 +23,7 @@ Security is the practice of building software that behaves correctly when someon
 
 ## Threat Modeling: Thinking Like an Attacker
 
-The [Threat Modeling Manifesto](https://www.threatmodelingmanifesto.org/) defines threat modeling as analyzing representations of a system, such as a diagram, to highlight concerns about its security and privacy, and frames it as four questions: "What are we working on?", "What can go wrong?", "What are we going to do about it?", and "Did we do a good enough job?"
+The [Threat Modeling Manifesto](https://www.threatmodelingmanifesto.org/) defines threat modeling as analyzing representations of a system to highlight concerns about its security and privacy, and frames it as four questions: "What are we working on?", "What can go wrong?", "What are we going to do about it?", and "Did we do a good enough job?"
 
 You're looking for the threats that matter for your system, answered in proportion. A personal portfolio site and a healthcare data pipeline face different attackers, hold different assets, and deserve different amounts of effort.
 
@@ -55,7 +55,7 @@ A formal threat model, with a dedicated tool and a review board, is more than a 
    - Mitigate: add a control that reduces the risk, such as input validation, authentication, or encryption.
    - Eliminate: remove the feature or component that introduces the risk.
    - Transfer: shift the responsibility to someone else, for example a managed authentication service instead of your own.
-   - Accept: leave the risk in place, because no other response fits the project's requirements or constraints, and write down why.
+   - Accept: leave the risk in place, because no other response fits the project's requirements or constraints.
 
    Record each decision with its reason. An [Architecture Decision Record](/guides/adr/) fits, because whoever later wants to undo an accepted risk needs to know why it was accepted. The [Project Risks guide](/guides/risks/#responding-to-a-risk) applies the same four responses to every risk in the project's register.
 
@@ -93,7 +93,7 @@ Misconfiguration covers the settings left at a default or never changed for prod
 
 Each of these hands an attacker something for free: a stack trace maps your internals, a default password is one an attacker can look up, and an open bucket or port needs no exploit at all.
 
-Check these before every deployment; the [DevOps guide's deployment checklist](/guides/devops/#deployment-checklist) covers the rest of a release:
+The [DevOps guide's deployment checklist](/guides/devops/#deployment-checklist) covers the rest of a release. Check these before every deployment:
 
 - [ ] Debug mode is off.
 - [ ] Default passwords are changed.
@@ -113,9 +113,9 @@ query = f"SELECT * FROM users WHERE email = '{user_input}'"
 cursor.execute("SELECT * FROM users WHERE email = %s", (user_input,))
 ```
 
-Wherever input meets an interpreter, never build executable code by concatenating untrusted input. Use parameterized queries, prepared statements, or APIs that handle escaping for you, as the [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html) details.
+Wherever input meets an interpreter, never build executable code by concatenating untrusted input. Use parameterized queries (prepared statements), as the [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html) details; it strongly discourages escaping input yourself.
 
-Shell commands have their own defenses in the [OWASP OS Command Injection Defense Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html). First, call a library function instead of a command where one exists (`os.mkdir()` rather than running `mkdir`). Where you can't, use a mechanism that keeps the data separate from the command, such as passing the arguments as a list to Python's [`subprocess.run`](https://docs.python.org/3/library/subprocess.html) without `shell=True`, and validate the command and its arguments against an allowlist. The cheat sheet also lists escaping, and notes that even with escaping an attacker can still pass one argument to the command.
+The [OWASP OS Command Injection Defense Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html) lists three defenses for shell commands. The first is to call a library function instead of a command where one exists (`os.mkdir()` rather than running `mkdir`). The second, escaping, still lets an attacker pass one argument to the command. The third, for a command you can't avoid, keeps the data separate from the command, such as passing the arguments as a list to Python's [`subprocess.run`](https://docs.python.org/3/library/subprocess.html) without `shell=True`, and validates the command and its arguments against an allowlist.
 
 An ORM (object-relational mapper) such as [SQLAlchemy](https://www.sqlalchemy.org/) or Django's parameterizes the queries it builds, so its standard queries are protected. Raw query methods and filters built from strings bypass that protection, and Django's documentation on [raw SQL](https://docs.djangoproject.com/en/stable/topics/db/sql/) warns you to pass user-controlled values as parameters every time you use it.
 
@@ -151,7 +151,7 @@ JWT_SECRET=your-secret-key
 .env.production
 ```
 
-<Cite id="meli-2019" /> scanned public GitHub commits in near real time for almost six months, together with a snapshot covering 13% of public repositories, and found secret leakage in over 100,000 repositories, with thousands of new, unique secrets leaked every day, a count they present as a lower bound. A test string they pushed appeared in GitHub's search results with a median delay of 20 seconds, and a single API key within GitHub's rate limits saw about 99% of newly committed files matching their searches. The authors conclude that an attacker with minimal resources could compromise many GitHub users by stealing leaked keys.
+<Cite id="meli-2019" /> scanned public GitHub commits in near real time for almost six months, together with a snapshot covering 13% of public repositories, and found secret leakage in over 100,000 repositories, with thousands of new, unique secrets leaked every day, a count they present as a lower bound. A test string they pushed appeared in GitHub's Search API results with a median delay of 20 seconds, and a single API key within GitHub's rate limits saw about 99% of newly committed files matching their searches. The authors conclude that an attacker with minimal resources could compromise many GitHub users by stealing leaked keys.
 
 If you've pushed a secret, rotate it first: generate a new credential and revoke the old one. GitHub's guide to [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) makes revoking or rotating the first step and says rewriting history may not be needed once the credential is dead. Rewriting history doesn't make a live credential safe: the same study recovered the full contents of commits removed with both `git filter-branch` and BFG, the two methods GitHub recommended at the time, from GitHub itself, given only the commit's hash <Cite id="meli-2019" form="parenthetical" />. Once the credential is revoked, clean the history with [git-filter-repo](https://github.com/newren/git-filter-repo) if you want the file gone, and treat that as cleanup.
 
@@ -181,7 +181,7 @@ Every connection between your frontend and backend, and between your backend and
 
 Managed hosting platforms issue and renew certificates for you, and on a virtual machine a reverse proxy terminates HTTPS in front of the application; the [DevOps guide](/guides/devops/#deploying-to-a-vm-or-vps) covers both setups. If you run the proxy yourself, automate renewal, because an expired certificate either takes the site down or trains users to click through the browser's warning. [Caddy](https://caddyserver.com/docs/automatic-https) obtains and renews certificates from a public certificate authority such as [Let's Encrypt](https://letsencrypt.org/) by default; [Nginx](https://nginx.org/) needs its [ACME module](https://nginx.org/en/docs/http/ngx_http_acme_module.html) or a separate program that obtains certificates.
 
-Call external APIs over HTTPS as well. If a third-party API only supports plain HTTP, treat anything that passes through it as readable and modifiable by whoever sits on the network path.
+If a third-party API only supports plain HTTP, treat anything that passes through it as readable and modifiable by whoever sits on the network path.
 
 ## Input Validation and Output Encoding
 
@@ -203,7 +203,7 @@ Projects that handle datasets, machine learning models, or research data have co
 - Validate all input on the server, even where the browser validates it too.
 - Turn on Dependabot alerts and triage them as they arrive. Keep push protection on, and add a pre-commit secret scanner where GitHub's secret scanning isn't available.
 - Check the OWASP Top 10 against your system before each major deployment, because each new feature can add an entry point the last check never saw.
-- Use HTTPS for all network communication, including calls between your own services.
+- Use HTTPS for all network communication, including calls between your own services, because any hop left in plain HTTP can be read or changed by whoever sits on that network path.
 - Apply least privilege: give users, services, and API keys only the access they need, so a stolen key or a compromised account can do as little as possible.
 - Log security-relevant events (failed logins, denied access, rejected input) so you can spot suspicious behavior; the [OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) lists what to record and what to keep out of logs.
 
@@ -219,7 +219,7 @@ Most fixes on this page can be applied late, one at a time. Authorization is the
 
 Knowing that passwords must be hashed doesn't mean your code will hash them. <Cite id="naiakshina-2017" /> asked 20 computer science students to add registration and authentication to a social networking application. None of the 10 who weren't told to store passwords securely did so, while 7 of the 10 who were told at least hashed them. Half the participants used the Spring framework, whose password-storage helpers were opt-in, and half used JSF, where they had to implement storage themselves; the authors conclude that easier APIs aren't enough while their secure methods are opt-in, and that developers need to be asked for security explicitly. The study is small and its authors claim no generalizability, but the practical response is cheap: prefer the path where secure storage is already on (your framework's built-in authentication, a managed provider), and when it isn't, write the security requirement into the task so nobody has to remember it.
 
-Experience doesn't stop credentials from leaking either. <Cite id="meli-2019" /> compared the repositories that leaked secrets with a random sample of about 100,000 others and found that neither repository activity nor contributor experience was strongly correlated with leakage. One of their case studies was a set of AWS credentials for a major government agency's website, committed by a developer who claims nearly 10 years of experience. Since experience doesn't prevent it, put the check in the tooling: a `.gitignore` entry for every secrets file before the first commit, push protection or a pre-commit scanner, and a rotation you've walked through once, so the first real leak isn't the first time anyone tries it.
+Experienced developers leak credentials too. <Cite id="meli-2019" /> compared the repositories that leaked secrets with a random sample of about 100,000 others and found that neither repository activity nor contributor experience was strongly correlated with leakage. One of their case studies was a set of AWS credentials for a major government agency's website, committed by a developer who claims nearly 10 years of experience. Put the check in the tooling instead: a `.gitignore` entry for every secrets file before the first commit, push protection or a pre-commit scanner, and a rotation you've walked through once, so the first real leak isn't the first time anyone tries it.
 
 ## Security in Industry and Academia
 
