@@ -101,7 +101,7 @@ The **testing pyramid** is a model for balancing these types: many fast, focused
 /   Unit Tests    \    Many, fast, focused
 ```
 
-The pyramid has a competitor, and Fowler himself hedges it. He notes that it rests on the assumption that broad tests are slow, expensive, and brittle compared with focused ones, that this is usually true but has exceptions, and that if your high-level tests are fast, reliable, and cheap to change, lower-level tests aren't needed. Kent C. Dodds's [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests) draws integration tests as its largest band, where each band's size is the focus that kind of test deserves, on the principle that a test gives more confidence the more closely it resembles the way the software is used, and he points out that a unit test can't ensure you're calling a dependency correctly. Mike Wacker, on Google's Testing Blog, defends the pyramid with the 70/20/10 split of unit, integration, and end-to-end tests that Google often suggests as a first guess, arguing that you should [say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) because they give slow, flaky feedback and a failure is hard to trace to the code that caused it. Which shape fits depends on how expensive your integration tests actually are, so measure that before you commit to a shape.
+The pyramid has a competitor, and Fowler himself hedges it. He notes that it rests on the assumption that broad tests are slow, expensive, and brittle compared with focused ones, that this is usually true but has exceptions, and that if your high-level tests are fast, reliable, and cheap to change, lower-level tests aren't needed. Kent C. Dodds's [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests) draws integration tests as its largest band, where each band's size is, in general, the focus that kind of test deserves, on the principle that a test gives more confidence the more closely it resembles the way the software is used, and he points out that a unit test can't ensure you're calling a dependency correctly. Mike Wacker, on Google's Testing Blog, defends the pyramid with the 70/20/10 split of unit, integration, and end-to-end tests that Google often suggests as a first guess, arguing that you should [say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) because they give slow, flaky feedback and a failure is hard to trace to the code that caused it. Which shape fits depends on how expensive your integration tests actually are, so measure that before you commit to a shape.
 
 #### What to Test
 
@@ -137,7 +137,7 @@ The methods below differ mostly in how many users they need: a usability session
 
 ### Usability Testing
 
-Watch real users, or reasonable proxies, attempt key tasks in your system, and note where they hesitate, make mistakes, or say they're confused. Keep each round small and run several. <Cite id="nielsen-1993" /> modeled problem discovery across 11 studies and, for their medium example, estimated the best benefit-to-cost ratio at four evaluations; Nielsen later [argued for about five users per round](https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/), and for several small rounds over one large one, because each added user reveals less that's new and the budget is better spent testing the redesign.
+Watch real users, or reasonable proxies, attempt key tasks in your system, and note where they hesitate, make mistakes, or say they're confused. Keep each round small and run several. <Cite id="nielsen-1993" /> modeled problem discovery across 11 studies and, for their medium example, estimated the best benefit-to-cost ratio at four evaluations; Nielsen later [argued for about five users per round](https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/), because each added user reveals less that's new and the budget is better spent testing the redesign.
 
 Test before the product is finished. Paper prototypes, clickable mockups, and half-built features are all testable, and a problem found in a mockup costs a redraw instead of a rewrite.
 
@@ -193,14 +193,14 @@ Write the conventions (framework, file layout, how to run the suite) into `CONTR
 
 ### Dealing with Flaky Tests
 
-A **flaky test** passes and fails on the same code. <Cite id="luo-2014" /> classified the causes of 161 flaky-test fixes in 51 open-source Apache projects: 45% were async waits, 20% concurrency, and 12% test order dependency, 77% together. Each of those has a fix, below, along with the one for tests that depend on the network, the clock, or random numbers:
+A **flaky test** passes and fails on the same code. <Cite id="luo-2014" /> classified the causes of 161 flaky-test fixes from open-source Apache projects: 45% were async waits, 20% concurrency, and 12% test order dependency, 77% together. Each of those has a fix, below, along with the one for tests that depend on the network, the clock, or random numbers:
 
 - **Async wait**: the test uses a result before an asynchronous call has produced it, sometimes hidden behind a `sleep()`. Wait explicitly for the condition instead.
 - **Concurrency**: threads interleave differently on different runs. Add the missing synchronization or make the code deterministic.
 - **Test order dependency**: a test relies on state a previous test left behind. Have each test set up and clean up its own state.
 - **Network, time, and randomness**: a real network, clock, or random generator in the loop. Use a test double or a local instance, freeze the time, and seed the generator.
 
-The same study found 78% of flaky tests were flaky from the day they were written <Cite id="luo-2014" form="parenthetical" />, so run a new test many times in a row before you merge it.
+<Cite id="luo-2014" /> also found 78% of flaky tests were flaky from the day they were written, so run a new test many times in a row before you merge it.
 
 ## Testing Tools
 
