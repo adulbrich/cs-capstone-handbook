@@ -22,8 +22,8 @@ claims:
   - claim: >-
       Google's internal wiki had no true document owners; many documents
       became obsolete or duplicated, with 7 to 10 documents at one point on
-      setting up Borg, only a few of them maintained, and documentation
-      quality became the number one developer complaint on Google's annual
+      setting up Borg, only a few of which seemed to be maintained, and
+      documentation quality became the number one developer complaint on Google's annual
       developer surveys.
     locator: Case Study, The Google Wiki
   - claim: >-
