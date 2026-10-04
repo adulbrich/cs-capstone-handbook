@@ -30,7 +30,7 @@ claims:
       integration practices.
     locator: Technical practices, Trunk-based development, p. 40
   - claim: >-
-      Test automation, deployment automation, continuous integration and
+      Test automation, deployment automation, continuous integration with
       trunk-based development, comprehensive version control, and
       integrating security into software delivery work all positively
       affected continuous delivery; test automation was the biggest
