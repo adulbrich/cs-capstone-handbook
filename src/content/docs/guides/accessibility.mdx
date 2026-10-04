@@ -71,7 +71,7 @@ When that isn't possible on your timeline, the closest substitute is a task-base
 
 ## Best Practices for Accessibility Testing
 
-- Start at the lint layer. It runs before a browser is involved and catches missing alt text, one of the most common errors in WebAIM's report. Missing form labels need the rendered page, so axe-core catches those.
+- Start at the lint layer. It runs before a browser is involved and catches missing alt text, one of the most common errors in WebAIM's report. Its shipped rules don't check for missing form labels, so leave those to axe-core.
 - Run axe-core in the tests you already have, and check contrast in a real browser rather than in JSDOM.
 - Do the keyboard pass on every flow you demo. It takes a few minutes, and keyboard failures are the ones automated tools almost never report.
 - Judge the work by whether the flow can be completed. A page can pass every automated rule and still be impossible to finish without a mouse.
