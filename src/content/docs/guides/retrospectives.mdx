@@ -68,7 +68,7 @@ This is the simplest format. Each team member contributes to three lists:
 - Stop: things the team should stop doing.
 - Continue: things that are working and should be kept.
 
-After everyone has written, cluster similar items and pick two or three to act on.
+After everyone has written, cluster similar items and pick [two or three](#focus-on-actions) to act on.
 
 ### 4Ls
 
@@ -120,11 +120,11 @@ A common convention for this is Norm Kerth's [Prime Directive](https://retrospec
 
 Rotate the facilitator role across team members. The facilitator's job is to run the process, not to share the most opinions: ask questions, group what people contribute, and keep time. Running it from inside the team fits the evidence: <Cite id="keiser-2021" /> found that the most effective combinations included self-led facilitation with a review aligned to the team.
 
-Make sure every person contributes before open discussion starts, for example by having everyone write sticky notes in silence first. In an open discussion the floor goes to whoever is comfortable taking it, and a teammate who has been carrying a problem alone for weeks is the least likely to interrupt. The first edition of [Derby and Larsen's book](https://pragprog.com/titles/dlret/agile-retrospectives/) gives the facilitator the same job: watch for people talking much more or much less than the others, and make an opening for the quieter ones without putting them on the spot.
+Make sure every person contributes before open discussion starts, for example by having everyone write sticky notes in silence first. In an open discussion the floor goes to whoever is comfortable taking it, and a teammate who has been carrying a problem alone for weeks is the least likely to interrupt. [Derby and Larsen](https://pragprog.com/titles/dlret/agile-retrospectives/) give the facilitator the same job: watch for people talking much more or much less than the others, and make an opening for the quieter ones without putting them on the spot.
 
 ### Bring the Evidence
 
-Put the records on the table: the board, the merged PRs, CI history, bug counts, and any team health check you ran. <Cite id="lehtinen-2017" /> analyzed the recorded outcomes of 37 retrospectives held over almost three years in one software organization and found that the teams' discussions of estimation accuracy contradicted the estimation data in their own task repository. The teams kept discussing it and adding corrective actions, and estimation accuracy didn't improve. The authors propose bringing fact-based evidence into the meeting; in that organization, bug data would have been readily available and wasn't used. Keiser and Arthur's meta-analysis points the same way: objective media for reviewing performance consistently contributed to an after-action review's effectiveness <Cite id="keiser-2021" form="parenthetical" />.
+Put the records on the table: the board, the merged PRs, CI history, bug counts, and any team health check you ran. <Cite id="lehtinen-2017" /> analyzed data from 37 retrospectives held over almost three years in one software organization and found that the teams' discussions of estimation accuracy contradicted the estimation data in their own task repository. The teams kept discussing it and adding corrective actions, and estimation accuracy didn't improve. The authors propose bringing fact-based evidence into the meeting; in that organization, bug data would have been readily available and wasn't used. Keiser and Arthur's meta-analysis points the same way: objective media for reviewing performance consistently contributed to an after-action review's effectiveness <Cite id="keiser-2021" form="parenthetical" />.
 
 ### Focus on Actions
 
@@ -161,7 +161,7 @@ For the root cause, the [5 Whys](https://en.wikipedia.org/wiki/Five_whys) techni
 - Share the draft timeline or the health-check results a day ahead, so people arrive having looked at the evidence rather than meeting it for the first time.
 - Decide as a team before inviting anyone from outside it, such as the project partner or a manager, because people say less in front of someone who evaluates them.
 - Record the themes and actions within a day, where the team keeps its own documents, so the next retrospective and anyone who joins later can find them. Keep them out of the code repository, which people outside the team read; an action that changes how code gets merged goes into `CONTRIBUTING.md` as the rule itself.
-- Close by asking how the retrospective itself went, and change the format when the answers say it's gone stale, because the participants are the only ones who can tell when a format has stopped surfacing anything new.
+- Close by asking how the retrospective itself went, because the participants are the only ones who can tell when a format has stopped surfacing anything new.
 
 ## Some Truths About Retrospectives
 
@@ -171,7 +171,7 @@ Retrospectives can produce their own waste. In the organization <Cite id="lehtin
 
 A blameless retrospective can also become a place to avoid an uncomfortable conversation. Framing a problem as a system problem is right whenever a process change could fix it, but when one person has missed commitments sprint after sprint, the system framing lets the team talk around it indefinitely, and the person never hears it directly. That conversation doesn't belong in a group meeting, where it turns into public blame; have it one-to-one, and see [Conflict](/guides/conflict/) for how to hold it and when to escalate.
 
-A written retrospective takes longer than it looks, and the time goes into reconstructing what happened, not into writing. Memory is a weak source for that, which is why the Timeline format builds from records. Keep a short note each sprint, such as a [learning journal](/activities/reflective/#learning-journal), and the document at the end becomes a matter of selecting and explaining rather than remembering.
+A written retrospective takes longer than it looks, and the time goes into reconstructing what happened, not into writing. Memory is a weak source for that, which is why the evidence-based timeline above is drafted from records. Keep a short note each sprint, such as a [learning journal](/activities/reflective/#learning-journal), and the document at the end becomes a matter of selecting and explaining rather than remembering.
 
 ## Retrospectives in Industry and Academia
 
