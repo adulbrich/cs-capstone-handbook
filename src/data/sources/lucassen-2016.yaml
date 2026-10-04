@@ -17,10 +17,12 @@ claims:
   - claim: >-
       In a survey of 182 practitioners with 21 follow-up interviews, 59% of
       respondents used the "As a role, I want goal, [so that benefit]"
-      template, in which the "so that" clause is optional, and practitioners agreed that user stories, a template, and
-      quality guidelines such as INVEST improve their productivity and the
-      quality of their work.
-    locator: Abstract; Sec. 3.3, p. 209
+      template, in which the "so that" clause is optional. A majority agreed
+      that user stories (61% productivity, 68% quality) and a template (53%,
+      54%) improve their productivity and the quality of their work
+      deliverables, while 51% and 45% neither agreed nor disagreed that
+      quality guidelines do.
+    locator: Sec. 3.3, p. 209; Sec. 4.1 and Fig. 1, pp. 210-211
   - claim: >-
       INVEST is the best-known set of quality guidelines for user stories,
       but only 23.5% of respondents used it; 33% used self-defined guidelines
@@ -28,7 +30,7 @@ claims:
     locator: Sec. 3.4, p. 210
   - claim: >-
       Although the most popular template treats it as optional, interviewees
-      called the "so that" clause, the why of a story, essential,
+      stressed the importance of the "so that" clause, the why of a story,
       and attributed to it less confusion among stakeholders, less discussion,
       and more autonomy for developers.
     locator: Sec. 4.2, finding F7, p. 213
