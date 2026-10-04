@@ -23,12 +23,14 @@ claims:
       significant difference.
     locator: Technical practices, p. 41
   - claim: >-
-      The report addresses developers used to the GitHub-recommended workflow:
-      short-lived branches merged into trunk at least daily are consistent
-      with continuous integration.
+      The report notes that some developers used to the GitHub-recommended
+      workflow, which merges branches into trunk only periodically, remain
+      skeptical, and states that short-lived branches merged into trunk at
+      least daily are consistent with commonly accepted continuous
+      integration practices.
     locator: Technical practices, Trunk-based development, p. 40
   - claim: >-
-      Test automation, deployment automation, continuous integration with
+      Test automation, deployment automation, continuous integration and
       trunk-based development, comprehensive version control, and
       integrating security into software delivery work all positively
       affected continuous delivery; test automation was the biggest

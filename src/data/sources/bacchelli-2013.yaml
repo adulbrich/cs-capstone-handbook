@@ -20,8 +20,9 @@ claims:
   - claim: >-
       Finding defects was the top motivation for review, yet of 570 review
       comments, 78 (14%) were about defects, fourth of nine categories, while
-      165 (29%) were code improvements.
-    locator: Sec. V, The Outcomes of Code Reviews; Fig. 4
+      165 (29%) were code improvements: better code practices (58), removing
+      unnecessary or unused code (55), and readability (52).
+    locator: Sec. IV.G, Fig. 3 (motivations); Sec. V, The Outcomes of Code Reviews; Fig. 4
   - claim: >-
       Review provides benefits beyond finding defects, including knowledge
       transfer, team awareness, and alternative solutions.
