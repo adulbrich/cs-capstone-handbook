@@ -44,7 +44,7 @@ Your **checks** are everything that catches a bad change before it reaches a use
 - a staging or preview environment, so the first run of a change isn't in production;
 - a rollback path you've actually tried.
 
-Delegate to AI tools only as far as those checks would catch a mistake, and strengthen the checks before you delegate more, because a tool's output can look right and still be wrong in ways nobody reads closely enough to see. The [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest) makes that argument in full, and [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap on your own repository. Tests are the part of the checks this page covers.
+Delegate to AI tools only as far as those checks would catch a mistake, and strengthen the checks before you delegate more, because a tool's output can look right and still be wrong in ways nobody reads closely enough to see. The [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest) makes that argument in full, and [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap on your own repository.
 
 ## Verification: Does the Code Work?
 
@@ -91,7 +91,7 @@ When a frontend consumes a backend API, a contract test checks that both sides a
 
 #### The Testing Pyramid
 
-The **testing pyramid** is a model for balancing these types: many fast, focused unit tests at the base, fewer integration tests in the middle, and a few slow, broad E2E tests at the top. [Fowler traces it](https://martinfowler.com/bliki/TestPyramid.html) to Mike Cohn, who described it as the "Test Automation Pyramid" in *Succeeding with Agile* (2009).
+The **testing pyramid** is a model for balancing these types: many fast, focused unit tests at the base, fewer integration tests in the middle, and a few slow, broad E2E tests at the top. [Fowler credits](https://martinfowler.com/bliki/TestPyramid.html) Mike Cohn's *Succeeding with Agile* (2009) with making it known.
 
 ```
     /   E2E   \        Few, slow, broad
@@ -101,7 +101,7 @@ The **testing pyramid** is a model for balancing these types: many fast, focused
 /   Unit Tests    \    Many, fast, focused
 ```
 
-The pyramid has a competitor, and Fowler himself hedges it. He notes that it rests on the assumption that broad tests are slow, expensive, and brittle compared with focused ones, that this is usually true but has exceptions, and that if your high-level tests are fast, reliable, and cheap to change, lower-level tests aren't needed. Kent C. Dodds's [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests) gives integration tests the largest share of attention, on the principle that a test gives more confidence the more closely it resembles the way the software is used, and he points out that a unit test can't ensure you're calling a dependency correctly. Mike Wacker, on Google's Testing Blog, defends the pyramid and suggests a 70/20/10 split of unit, integration, and end-to-end tests as a first guess, arguing that you should [say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) because they give slow, flaky feedback and a failure is hard to trace to the code that caused it. Which shape fits depends on how expensive your integration tests actually are, so measure that before you commit to a shape.
+The pyramid has a competitor, and Fowler himself hedges it. He notes that it rests on the assumption that broad tests are slow, expensive, and brittle compared with focused ones, that this is usually true but has exceptions, and that if your high-level tests are fast, reliable, and cheap to change, lower-level tests aren't needed. Kent C. Dodds's [testing trophy](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests) draws integration tests as its largest band, where each band's size is, in general, the focus that kind of test deserves, on the principle that a test gives more confidence the more closely it resembles the way the software is used, and he points out that a unit test can't ensure you're calling a dependency correctly. Mike Wacker, on Google's Testing Blog, defends the pyramid with the 70/20/10 split of unit, integration, and end-to-end tests that Google often suggests as a first guess, arguing that you should [say no to more end-to-end tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) because they give slow, flaky feedback and a failure is hard to trace to the code that caused it. Which shape fits depends on how expensive your integration tests actually are, so measure that before you commit to a shape.
 
 #### What to Test
 
@@ -127,7 +127,7 @@ Run automated accessibility checks in the same CI run as the rest of your suite,
 
 Automated tests check what the team told them to check. A person using the system notices what nobody thought to write a test for: a button that works but is invisible on a dark background, a form that submits successfully and confuses every user, a workflow that's technically correct and takes twelve clicks instead of two.
 
-**Exploratory testing** is unscripted manual testing: someone uses the system without a checklist, looking for anything that feels wrong, such as a confusing workflow, an unexpected state, a visual glitch, or a slow page. Run it after a major feature is complete and before a demo or release, when there's a whole workflow to explore.
+**Exploratory testing** is unscripted manual testing: someone uses the system without a checklist, looking for anything that feels wrong. Run it after a major feature is complete and before a demo or release, when there's a whole workflow to explore.
 
 **Smoke testing** is a quick manual check that the most critical workflows still function after a deployment or a significant change. It answers one question, whether the system is broken outright, before anyone spends time on more detailed verification.
 
@@ -137,11 +137,11 @@ The methods below differ mostly in how many users they need: a usability session
 
 ### Usability Testing
 
-Watch real users, or reasonable proxies, attempt key tasks in your system, and note where they hesitate, make mistakes, or say they're confused. Keep each round small and run several: <Cite id="nielsen-1993" /> modeled problem discovery across 11 studies and, for their medium example, estimated the best benefit-to-cost ratio at four evaluations. Nielsen later [argued for about five users per round](https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/), because each added user reveals less that's new and the budget is better spent testing the redesign.
+Watch real users, or reasonable proxies, attempt key tasks in your system, and note where they hesitate, make mistakes, or say they're confused. Keep each round small and run several. <Cite id="nielsen-1993" /> modeled problem discovery across 11 studies and, for their medium example, estimated the best benefit-to-cost ratio at four evaluations; Nielsen later [argued for about five users per round](https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/), because each added user reveals less that's new and the budget is better spent testing the redesign.
 
 Test before the product is finished. Paper prototypes, clickable mockups, and half-built features are all testable, and a problem found in a mockup costs a redraw instead of a rewrite.
 
-Plan each session: pick the tasks to test, recruit the participants, and write a script. "Try it and tell me what you think" gets opinions; "book a room for Thursday" shows you where the user gets stuck.
+Plan each session: pick the tasks to test, recruit the participants, and write a script. "Try it and tell me what you think" gets opinions; a task such as "book a room for Thursday" shows you where the user gets stuck.
 
 ### Testing with Assistive Technology Users
 
@@ -193,14 +193,14 @@ Write the conventions (framework, file layout, how to run the suite) into `CONTR
 
 ### Dealing with Flaky Tests
 
-A **flaky test** passes and fails on the same code. <Cite id="luo-2014" /> studied 201 commits that likely fixed flaky tests in 51 open-source Apache projects and classified the cause of 161: 45% were async waits, 20% concurrency, and 12% test order dependency, 77% together. Each of those has a fix, below, along with the one for tests that depend on the network, the clock, or random numbers:
+A **flaky test** passes and fails on the same code. <Cite id="luo-2014" /> classified the causes of 161 flaky-test fixes from open-source Apache projects: 45% were async waits, 20% concurrency, and 12% test order dependency, 77% together. Each of those has a fix, below, along with the one for tests that depend on the network, the clock, or random numbers:
 
 - **Async wait**: the test uses a result before an asynchronous call has produced it, sometimes hidden behind a `sleep()`. Wait explicitly for the condition instead.
 - **Concurrency**: threads interleave differently on different runs. Add the missing synchronization or make the code deterministic.
 - **Test order dependency**: a test relies on state a previous test left behind. Have each test set up and clean up its own state.
 - **Network, time, and randomness**: a real network, clock, or random generator in the loop. Use a test double or a local instance, freeze the time, and seed the generator.
 
-The same study found 78% of flaky tests were flaky from the day they were written <Cite id="luo-2014" form="parenthetical" />, so run a new test many times in a row before you merge it.
+<Cite id="luo-2014" /> also found 78% of flaky tests were flaky from the day they were written, so run a new test many times in a row before you merge it.
 
 ## Testing Tools
 
@@ -228,7 +228,7 @@ Coverage is the metric most likely to mislead you, because it records which line
 
 Mutation testing measures what coverage can't: whether the tests would notice a bug. Tools such as [PIT](https://pitest.org/) and [Stryker](https://stryker-mutator.io/) seed small faults into your code and count how many your tests catch, and <Cite id="just-2014" /> found that a suite's mutant detection correlates with its detection of real faults, independently of coverage. It reruns the suite once per seeded fault, so on a large codebase run it on the critical paths rather than everywhere.
 
-Flaky tests do damage beyond the test itself. On Google's Testing Blog, <Cite id="micco-2016" /> reports that about 1.5% of all test runs at Google are flaky, that almost 16% of their tests have some flakiness, and that 84% of the pass-to-fail transitions their CI sees involve a flaky test; with that many false alarms, people commonly ignore legitimate failures in those tests. Deleting the test is tempting, but <Cite id="luo-2014" /> found that 24% of flaky-test fixes changed the code under test, and 94% of those fixed a real bug, so they argue against simply removing flaky tests. Quarantine a flaky test the day you find it, so it stops training the team to ignore red, then read the failure before you decide between fixing and deleting.
+Flaky tests do damage beyond the test itself. On Google's Testing Blog, <Cite id="micco-2016" /> reports that about 1.5% of all test runs at Google are flaky, that almost 16% of their tests have some flakiness, and that about 84% of the pass-to-fail transitions their CI sees involve a flaky test; with that many false alarms, people commonly ignore legitimate failures in those tests. Deleting the test is tempting, but <Cite id="luo-2014" /> found that 24% of flaky-test fixes changed the code under test, and 94% of those fixed a real bug, so they argue against simply removing flaky tests. Quarantine a flaky test the day you find it, so it stops training the team to ignore red, then read the failure before you decide between fixing and deleting.
 
 Testing pressure improves design only up to a point. What it rewards is separating decisions from side effects: a function that only computes is trivial to test, and one that computes and writes to a database is not, and the separated version is also easier to change. Past that point, David Heinemeier Hansson argues, the pressure does [test-induced design damage](https://dhh.dk/2014/test-induced-design-damage.html): indirection and extra layers added only so a unit test can run fast and in isolation, at the cost of clarity. When a change makes code easier to test and harder to read, prefer the readable version and test it at a higher level, because the reader pays for every extra layer and the test doesn't need it.
 
@@ -236,9 +236,9 @@ Verification is easier to invest in than validation, because a test suite gives 
 
 ## Testing in Industry and Academia
 
-Google's testing culture turned on a failure. <Cite id="bender-2020" /> recounts that by 2005 the Google Web Server's releases were getting buggier, and at one point more than 80% of its production pushes contained user-affecting bugs that had to be rolled back; the tech lead then required tests with every new code change, run continuously, and within a year emergency pushes had dropped by half, despite a record number of changes.
+Google's testing culture turned on a failure. <Cite id="bender-2020" /> recounts that in 2005 the Google Web Server's releases were getting buggier, and at one point more than 80% of its production pushes contained user-affecting bugs that had to be rolled back; the tech lead then required tests with every new code change, run continuously, and within a year emergency pushes had dropped by half, despite a record number of changes.
 
-In academia, testing is also a research field. Testing research often measures a suite with mutation analysis, because the real faults in a program are usually unknowable in advance <Cite id="just-2014" form="parenthetical" />, and that's how the coverage study under Some Truths measured fault detection.
+In academia, testing research often measures a suite with mutation analysis, because the real faults in a program are usually unknowable in advance <Cite id="just-2014" form="parenthetical" />, and that's how the coverage study under Some Truths measured fault detection.
 
 When research depends on code, reproducibility plays the role a test suite plays in industry, and the failure it guards against has been documented at scale: <Cite id="kapoor-2023" /> surveyed the literature and found data leakage in 17 fields, affecting 294 papers and in some cases leading to wildly overoptimistic conclusions.
 
@@ -254,7 +254,7 @@ When research depends on code, reproducibility plays the role a test suite plays
 - [The Testing Trophy and Testing Classifications](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications), Kent C. Dodds.
 - [Eradicating Non-Determinism in Tests](https://martinfowler.com/articles/nonDeterminism.html), Martin Fowler.
 - [Hypothesis](https://hypothesis.works/), a property-based testing library for Python, for when example-based tests keep missing the edge case.
-- [Test and Evaluate](https://www.w3.org/WAI/test-evaluate/), W3C Web Accessibility Initiative.
+- [Evaluating Web Accessibility Overview](https://www.w3.org/WAI/test-evaluate/), W3C Web Accessibility Initiative.
 
 **Activities that exercise this**
 
