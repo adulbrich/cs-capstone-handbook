@@ -18,15 +18,17 @@ venue: PLOS Biology
 kind: peer-reviewed
 url: https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002456
 doi: 10.1371/journal.pbio.1002456
-verified: abstract
+# Open access. The abstract and the Results passages at each locator were
+# read on the PLOS Biology page.
+verified: full-text
 claims:
   - claim: >-
       After Psychological Science began awarding open data badges, the share
       of its articles reporting open data rose from less than 3% to 23%, and
       to 39% in a later period, while data sharing stayed low and unchanged in
       comparison journals.
-    locator: Abstract
+    locator: Abstract; Results, Reported Availability of Data and Materials by Year and by Journal
   - claim: >-
       Data reported as available was more likely to be actually available,
       correct, usable, and complete when the article had earned a badge.
-    locator: Abstract
+    locator: Abstract; Results, Actual Data Sharing
