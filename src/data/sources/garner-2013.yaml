@@ -12,15 +12,16 @@ url: https://writing.engr.psu.edu/ae_comprehension.pdf
 verified: full-text
 claims:
   - claim: >-
-      Estimates of the share of slides that follow the topic-and-bullets
-      structure of PowerPoint's default layout range from 65% in a sample of
-      engineering and science presentations to 80% in a sample of textbook
-      instructor slides.
+      Estimates the authors cite from their own earlier surveys put the share
+      of slides that follow the topic-and-bullets structure of PowerPoint's
+      default layout at 65% in a sample of engineering and science
+      presentations and 80% in a sample of instructor slides from
+      introductory psychology textbooks.
     locator: Section 1.3, p. 1566
   - claim: >-
       Multimedia-learning research finds that the same words shown and spoken
-      at once (the redundancy principle) reduce available working memory, and
-      the default bulleted slide invites exactly that.
+      at once (the redundancy principle) seem to reduce available working
+      memory, and the default bulleted slide invites exactly that.
     locator: Section 1.1, p. 1565; Section 1.3, p. 1567
   - claim: >-
       110 engineering undergraduates were randomly assigned to watch the same
@@ -30,7 +31,7 @@ claims:
   - claim: >-
       The assertion-evidence group showed better comprehension in essay
       responses, fewer misconceptions, and lower self-rated mental effort.
-    locator: Abstract; Section 3.1.4, p. 1574; Section 3.3.1, p. 1575
+    locator: Abstract; Section 3.1.1, p. 1573; Section 3.1.4, p. 1574; Section 3.3.1, p. 1575
   - claim: >-
       The assertion-evidence group scored higher on an unannounced delayed
       recall test.
