@@ -10,19 +10,19 @@ doi: 10.1145/2812803
 verified: full-text
 claims:
   - claim: >-
-      The study examined 601 papers from ACM systems conferences and
-      journals and tried to build the code for the papers whose results were
-      backed by code, without checking whether the published results
-      reproduced.
-    locator: Introduction, The study; Study Process
+      The study examined 601 papers from ACM conferences and journals and
+      tried to build the code behind the papers whose results were backed
+      by code, where the study could obtain it, without checking whether
+      the published results reproduced.
+    locator: Introduction, The study, p. 64; Study Process, p. 65
   - claim: >-
-      Excluding papers whose results were not backed by code, research
-      assistants built the code within 30 minutes for 32.3% of papers
-      (weak repeatability A), and with unlimited time but without the lead
-      developer's help for 48.3% (weak repeatability B).
-    locator: Study Process; Study Results
+      Of the papers whose results were backed by code, research assistants
+      built the code within 30 minutes for 32.3% (weak repeatability A),
+      and with "unlimited time" but without the lead developer's help for
+      48.3% (weak repeatability B).
+    locator: Study Process, p. 65; Study Results, p. 66; Table 2, p. 67
   - claim: >-
-      The lead developer was often unavailable, for reasons including the
-      student responsible for development having graduated and the authors'
-      email addresses no longer working.
-    locator: Study Results
+      The lead developer was often unavailable for consultation, for
+      reasons including the student responsible for development having
+      graduated and the authors' email addresses no longer working.
+    locator: Study Results, p. 66
