@@ -13,12 +13,12 @@ Your team has one repository, four people who can push to it, and a demo coming 
 
 :::note[tl;dr]
 - Use GitHub Flow: `main` stays deployable, and every change reaches it through a pull request from a short-lived branch.
-- Keep branches to a day where you can and two at most, and keep each pull request small enough for a teammate to read in one sitting.
+- Keep branches to a day, and keep each pull request small enough for a teammate to read in one sitting.
 - Write commit messages and pull request descriptions that say why the change was made; the diff already shows what.
 - Protect `main` with a ruleset: require a pull request, require CI to pass, block force pushes, and leave the bypass list empty.
 - Squash and merge, then delete the branch.
 - When something goes wrong locally, stop and read `git reflog` before improvising; almost every committed state is recoverable.
-- Never commit a secret. If one slips in, rotate it first; a dead secret may not need rewriting out of the history.
+- Never commit a secret. If one slips in, rotate it first and clean the history second.
 :::
 
 [Git](https://git-scm.com/) is a distributed version control system: every clone holds the project's full history as a graph of commits, and a branch is a movable label that points at one of them. [GitHub](https://github.com/) hosts Git repositories and adds the collaboration layer on top: pull requests, code review, issues, and the settings that control who can change what. If you're new to either, or need a refresher, start with these two lectures and come back.
@@ -58,10 +58,10 @@ Use GitHub Flow on a small team shipping one product. It's simple enough that ev
 
 In [trunk-based development](https://trunkbaseddevelopment.com/), everyone commits to `main` (the "trunk"), either directly or through short-lived branches, which the site limits to a couple of days. Google works this way at scale. <Cite id="potvin-2016" /> describe a single repository where most engineers work at the latest version, development on branches is unusual, branches exist mainly for releases, and new features sit behind conditional flags instead of on development branches. It holds together because of what surrounds it: every change is tested before it lands, affected code is rebuilt on almost every commit, and a change that breaks the build widely is rolled back automatically.
 
-Industry data on branch lifetime points the same way. The 2017 State of DevOps Report, an industry report by Puppet and DORA based on a survey of practitioners, restates the previous year's findings that merging into trunk daily, keeping branches alive for less than a day, and having fewer than three active branches all contributed to higher software delivery performance, and confirms them with new data: high performers' branches typically lived for hours where low performers' lived for days <Cite id="forsgren-2017" form="parenthetical" />. The report notes that some developers used to the GitHub-recommended workflow, which merges branches into trunk only periodically, remain skeptical, and replies that short-lived branches merged into trunk at least daily are consistent with commonly accepted continuous integration practice. GitHub Flow with branches that merge within a day is trunk-based development by both the site's definition and the report's; GitHub Flow with branches that stay open for several days has the branch lifetimes the report found among low performers.
+Industry data on branch lifetime points the same way. The 2017 State of DevOps Report, an industry report by Puppet and DORA based on a survey of practitioners, restates the previous year's findings that merging into trunk daily, keeping branches alive for less than a day, and having fewer than three active branches all contributed to higher software delivery performance, and confirms them with new data: high performers' branches typically lived for hours where low performers' lived for days <Cite id="forsgren-2017" form="parenthetical" />. The report notes that some developers used to the GitHub-recommended workflow, which merges branches into trunk only periodically, remain skeptical, and replies that short-lived branches merged into trunk at least daily are consistent with commonly accepted continuous integration practice. The report's own advice is to avoid keeping a branch alive more than a day <Cite id="forsgren-2017" form="parenthetical" />. GitHub Flow with branches that merge within a day follows that advice and fits the site's definition of trunk-based development; GitHub Flow with branches that stay open for days has the branch lifetimes the report found among low performers.
 
 :::tip[Which Workflow to Pick]
-Start with GitHub Flow and keep branches to a day where you can, two at most. Reach for Git Flow only if you ship versioned releases that you support side by side.
+Start with GitHub Flow and keep branches to a day. Reach for Git Flow only if you ship versioned releases that you support side by side.
 :::
 
 ## GitHub Flow in Practice
@@ -270,7 +270,7 @@ If the repository already has a classic branch protection rule, it behaves diffe
 
 - Commit early and often. Small commits are easier to review and to revert.
 - Pull `main` before starting new work.
-- Keep branches short-lived: a day where you can, two at most.
+- Keep branches short-lived: a day at most.
 - Write the why into commit messages and pull request descriptions.
 - Never commit secrets. API keys, passwords, and tokens belong in environment variables, and the files that hold them belong in `.gitignore`.
 - Set up `.gitignore` before the first commit, starting from GitHub's [templates](https://github.com/github/gitignore) for your language and framework, so build artifacts, IDE settings, and OS files never enter the history.
@@ -280,7 +280,7 @@ If the repository already has a classic branch protection rule, it behaves diffe
 The habits above are for you. These five are for whoever takes the repository over after you, and each one is cheap now and expensive to fix later:
 
 - Nothing lands on the default branch except through a pull request, enforced by the ruleset above.
-- No secrets, build artifacts, or dependency directories in the history. A committed `.env` stays in the history after you delete the file; GitHub's guidance on [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) is to revoke or rotate the secret first; once it's dead, rewriting the history may not be needed.
+- No secrets, build artifacts, or dependency directories in the history. A committed `.env` stays in the history after you delete the file. Revoke or rotate the secret first, as GitHub's guidance on [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) says, because that stops the damage. GitHub notes that rewriting the history may then not be needed for safety; rewrite it anyway before a handoff, because the next maintainer can't tell a revoked secret from a live one without checking.
 - Commit messages say what changed and why, with noisy branches squashed on merge.
 - Nobody force-pushes the default branch.
 - Large binaries stay out of Git, or go in [Git LFS](https://git-lfs.com/), because every clone downloads every version of every file ever committed.
