@@ -19,11 +19,15 @@ claims:
       In 171 software projects, the effort to resolve an issue in a later
       phase was not consistently or substantially greater than resolving it
       soon after it was introduced, so the study found no evidence for the
-      delayed issue effect.
-    locator: Abstract; Sec. 8
+      delayed issue effect. The abstract says that belief is often used to
+      justify processes that retire issues sooner, and the introduction quotes
+      Basili and Boehm crediting it with focusing industrial practice on
+      thorough requirements analysis and design.
+    locator: Abstract; Sec. 1; Sec. 8
   - claim: >-
-      All 171 projects used the Team Software Process, a mature process built
-      around risk mitigation, and the authors do not claim the finding
+      All 171 projects used the Team Software Process, which the authors
+      describe as a mature process constructed with risk mitigation as its
+      primary purpose, and they do not claim the finding
       generalizes beyond it; they suggest the effect may still hold in
       high-assurance software, architecturally complex systems, or projects
       with poor engineering discipline, while saying they have no evidence
