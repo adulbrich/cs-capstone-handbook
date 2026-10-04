@@ -178,7 +178,7 @@ Add these when they fit your stack:
 - A type checker: `tsc` for TypeScript, [mypy](https://mypy-lang.org/) or [Pyright](https://github.com/microsoft/pyright) for Python.
 - A dependency audit, [`npm audit`](https://docs.npmjs.com/cli/commands/npm-audit/) or [pip-audit](https://github.com/pypa/pip-audit), which flags dependencies with known vulnerabilities.
 
-If you set up only one check, make it the tests. The 2017 State of DevOps Report is an industry report by Puppet and DORA, based on a survey of about 3,200 people <Cite id="forsgren-2017" form="parenthetical" />. It recruited them by snowball sampling and notes that its sample is likely limited to organizations and teams familiar with DevOps <Cite id="forsgren-2017" form="parenthetical" />. Five technical practices it tested all contributed to continuous delivery: test automation, deployment automation, continuous integration with [trunk-based development](/guides/git-and-github/#trunk-based-development), comprehensive version control, and integrating security into delivery work. Of the five, test automation contributed most <Cite id="forsgren-2017" form="parenthetical" />.
+If you set up only one check, make it the tests. The 2017 State of DevOps Report is an industry report by Puppet and DORA, based on a survey of about 3,200 people <Cite id="forsgren-2017" form="parenthetical" />. It recruited them by snowball sampling, asking respondents to pass the survey on to their networks, and notes that its sample is likely limited to organizations and teams familiar with DevOps <Cite id="forsgren-2017" form="parenthetical" />. Five technical practices it tested all contributed to continuous delivery: test automation, deployment automation, continuous integration with [trunk-based development](/guides/git-and-github/#trunk-based-development), comprehensive version control, and integrating security into delivery work. Of the five, test automation contributed most <Cite id="forsgren-2017" form="parenthetical" />.
 
 ### CI and Branch Protection
 
@@ -220,7 +220,7 @@ Use a managed database, because backups, upgrades, and security patches are oper
 
 ## Environment Management
 
-An application behaves differently in development, staging, and production.
+An application behaves differently in development, staging, and production. Environment variables carry those differences, so the code stays the same in all three.
 
 ### The Three Environments
 
@@ -263,7 +263,7 @@ npx prisma migrate dev --name add-user-roles
 npx prisma migrate deploy
 ```
 
-Use the migration tool that comes with your ORM or framework, and follow the docs for the major version you install, because the commands change between them (Prisma ORM 8 renames both of the ones above): [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production) for JavaScript and TypeScript, [Alembic](https://alembic.sqlalchemy.org/) for SQLAlchemy, [Django migrations](https://docs.djangoproject.com/en/stable/topics/migrations/) for Django.
+Use the migration tool that comes with your ORM or framework: [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production) for JavaScript and TypeScript, [Alembic](https://alembic.sqlalchemy.org/) for SQLAlchemy, [Django migrations](https://docs.djangoproject.com/en/stable/topics/migrations/) for Django. Follow the docs for the major version you install, because the commands change between versions: the two above are Prisma ORM 7's (install `prisma@7`), and Prisma ORM 8 renames both.
 
 Create each migration, run it locally, commit it, and let the deployment apply it to production. Every environment then has the same schema, and the migration history records each change, which is what you work from when one has to be undone.
 
@@ -303,7 +303,10 @@ For a small team, an error tracker plus the platform's built-in logs is enough. 
 
 Make every deployment reversible, because when one breaks production, restoring the last working version is faster than debugging forward while users wait. How you roll back depends on how you deploy:
 
-- PaaS platforms: [Vercel](https://vercel.com/docs/instant-rollback), [Netlify](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview/), and [Render](https://render.com/docs/rollbacks) each roll back from the dashboard. Read your platform's page before you need it, because they differ on what happens next. After a rollback, Vercel stops sending new pushes to production until you promote a deployment, and a dashboard rollback on Render turns off autodeploys until you re-enable them; on Netlify with auto publishing on, the next Git-triggered deploy replaces the version you rolled back to. On Vercel's Hobby plan you can roll back only to the immediately previous deployment.
+- PaaS platforms: [Vercel](https://vercel.com/docs/instant-rollback), [Netlify](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview/), and [Render](https://render.com/docs/rollbacks) each roll back from the dashboard. Read your platform's page before you need it, because they differ on what happens next:
+  - Vercel stops sending new pushes to production until you promote a deployment, and on the Hobby plan you can roll back only to the immediately previous deployment.
+  - After a dashboard rollback, Render turns off autodeploys until you re-enable them.
+  - Netlify, with auto publishing on, replaces the version you rolled back to with the next Git-triggered deploy.
 - Containers: keep the previous image tagged. Rolling back means deploying it again.
 - VMs: if you deploy with `git pull`, roll back by checking out the previous commit and restarting the service. Script it, so it's one command.
 

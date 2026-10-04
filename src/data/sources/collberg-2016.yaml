@@ -12,7 +12,7 @@ claims:
   - claim: >-
       The study examined 601 papers from ACM conferences and journals and
       tried to build the code behind the papers whose results were backed
-      by code, where the authors could obtain it, without checking whether
+      by code, where the study could obtain it, without checking whether
       the published results reproduced.
     locator: Introduction, The study, p. 64; Study Process, p. 65
   - claim: >-
