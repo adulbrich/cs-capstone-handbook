@@ -29,7 +29,7 @@ You're looking for the threats that matter for your system, answered in proporti
 
 ### A Lightweight Threat Modeling Process
 
-A formal threat model, with a dedicated tool and a review board, is more than a small team needs. Aim for a version the whole team can finish in one session, because the value comes from everyone walking the same picture of the system, and a session that short can be rerun when the architecture changes:
+A formal threat model, with a dedicated tool and a review board, is more than a small team needs. Aim for a version the whole team can finish in one session, because the value comes from everyone working from the same picture of the system, and a session that short can be rerun when the architecture changes:
 
 1. **Draw the system.** Sketch the components, the data flows between them, and the trust boundaries, where data crosses from one security context to another: from the browser to your API, or from your API to a third-party service. If you already have a [C4](https://c4model.com/) context or container diagram, start from it; the [Technical Design guide](/guides/technical-design/) covers drawing one.
 
@@ -93,13 +93,15 @@ Misconfiguration covers the settings left at a default or never changed for prod
 
 Each of these hands an attacker something for free: a stack trace maps your internals, a default password is one an attacker can look up, and an open bucket or port needs no exploit at all.
 
-Check these before every deployment, and use the [DevOps guide's deployment checklist](/guides/devops/#deployment-checklist) for the rest of a release:
+Check these before every deployment:
 
 - [ ] Debug mode is off.
 - [ ] Default passwords are changed.
 - [ ] Secrets come from environment variables, not hardcoded values.
 - [ ] CORS allows only the origins that need access.
 - [ ] Error pages don't leak stack traces or internal details.
+
+The [DevOps guide's deployment checklist](/guides/devops/#deployment-checklist) covers the rest of a release.
 
 ### Injection
 
