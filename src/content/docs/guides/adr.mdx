@@ -19,7 +19,7 @@ Your team is about to commit to a database, an authentication provider, or a hos
 - Never rewrite an accepted ADR's decision: when the decision changes, write a new ADR that supersedes it and link the two.
 :::
 
-An architecture decision record (ADR) is a short file that records one technical decision and the reasons for it. The format comes from [Michael Nygard's 2011 post](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions), which is itself written as an ADR and takes a few minutes to read. His case for it starts from a newcomer who finds a past decision with no rationale attached. That person can only accept the decision blindly or change it blindly. Accepting is fine while the decision still fits, but not once the context has changed. Changing it can damage the project without anyone noticing, for instance when the decision protected a non-functional requirement nobody has tested yet. A record of the context and the consequences lets the newcomer do neither blindly.
+An architecture decision record (ADR) is a short file that records one technical decision and the reasons for it. The format comes from [Michael Nygard's 2011 post](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions), which is itself written as an ADR. His case for it centers on a newcomer who finds a past decision with no rationale attached. That person can only accept the decision blindly or change it blindly. Accepting is fine while the decision still fits, but not once the context has changed. Changing it can damage the project without anyone noticing, for instance when the decision protected a non-functional requirement nobody has tested yet. A record of the context and the consequences lets the newcomer do neither blindly.
 
 Readable code and tests don't make the record redundant. Thoughtworks, whose [Technology Radar](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records) placed lightweight ADRs in its "Adopt" ring, argues that code and tests can replace much documentation but that certain design decisions still need recording for future team members. Code shows what you built, but not the options you rejected or the constraint that ruled them out.
 
@@ -38,12 +38,12 @@ The reasons for rejecting the alternatives are the part that goes missing. In a 
 
 ### Status
 
-An ADR's status tells a reader whether to act on it. The five values below are MADR's, and they extend Nygard's original four with "rejected":
+MADR's template names the five values below and leaves room for others; they extend Nygard's original four with "rejected":
 
-- **Proposed**: written and under discussion; the team hasn't agreed yet. Some templates split this into finer states, such as draft and in review.
+- **Proposed**: written and under discussion; the team hasn't agreed yet. Draft and in review, where a template uses them, are finer states of proposed.
 - **Accepted**: the team agreed, and the decision is in force.
 - **Rejected**: the team considered the proposal and said no. Keep the file and the reason, so the same debate doesn't start again from scratch next month.
-- **Deprecated**: the decision no longer applies, and nothing replaced it.
+- **Deprecated**: the decision no longer applies. Use it when nothing replaced the decision, and superseded when a later ADR did, so the two statuses say different things.
 - **Superseded**: a later ADR replaced this one. Name the replacement and link it, and have the new ADR link back.
 
 Keep the status current, because it's the line that tells a reader a year from now whether the rest of the page still describes the system.
@@ -56,11 +56,11 @@ A proposal that argues for a decision before the team makes it (some organizatio
 
 ## Which Decisions Deserve an ADR?
 
-Decide by how expensive the decision is to reverse. Jeff Bezos's [2015 letter to Amazon shareholders](https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF) separates Type 1 decisions, which are consequential and irreversible or nearly so and should be made methodically and carefully, from Type 2 decisions, which are changeable and reversible and should be made quickly by individuals or small groups with good judgment. He observes that as organizations grow, they seem to apply the heavy Type 1 process to many Type 2 decisions, and that the result is slowness. Microsoft's [Azure Well-Architected guidance](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record) draws the same line for ADRs: include only the choices that affect the system's structure or key quality attributes, or that are difficult to reverse.
+Decide by how expensive the decision is to reverse. Jeff Bezos's [2015 letter to Amazon shareholders](https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF) separates Type 1 decisions, which are consequential and irreversible or nearly so and should be made methodically and carefully, from Type 2 decisions, which are changeable and reversible and should be made quickly by individuals or small groups with good judgment. He observes that as organizations grow, they seem to apply the heavy Type 1 process to many Type 2 decisions, and that the result is slowness. Microsoft's [Azure Well-Architected guidance](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record) draws a similar line for ADRs: include only the choices that affect the system's structure or key quality attributes, or that are difficult to reverse.
 
 Your database engine, your authentication approach, your data model, and your deployment target are hard-to-reverse decisions, and each deserves an ADR. Your logging library is an easy-to-reverse decision: if it turns out wrong, swapping it takes an afternoon.
 
-MADR draws its line lower. Its authors focus on architectural decisions but offer the template for capturing any important decision, and they list a choice between two Java logging libraries as an example of an architectural one. That works for a team that finds records cheap to write and easy to search. Set a threshold anyway, because the records for trivial choices bury the few a newcomer needs.
+MADR draws its line lower. Its authors focus on architectural decisions but offer the template for capturing any important decision, and they list a choice between two Java logging libraries as an example of an architectural one. [Spotify's engineering blog](https://engineering.atspotify.com/2020/04/when-should-i-write-an-architecture-decision-record) goes further and records small decisions too, because undocumented ones lead to duplicated effort and to competing solutions, such as two third-party libraries that do the same thing. That works for a team that finds records cheap to write and easy to search. Set a threshold anyway, because the records for trivial choices bury the few a newcomer needs.
 
 The threshold still leaves judgment calls. In an action research study at one company, practitioners sometimes struggled to decide whether a decision was architecturally significant enough for an ADR; they prioritized by the complexity of the logic involved, the impact of the change on the system, and the number of developers or teams affected <Cite id="ahmeti-2024" form="parenthetical" />. When the reversibility test doesn't settle it, use those three as tiebreakers.
 
@@ -70,14 +70,12 @@ Start the ADR from the problem, not the solution you've already picked. The cont
 
 Write the context down because the finished system won't show it. <Cite id="jansen-2005" /> argue that an architecture embeds the results of its design decisions without representing the decisions themselves, so knowledge about them is lost, which they call knowledge vaporization. They believe this is part of why architectures become expensive to change and erode over time.
 
-When the problem changes, don't edit the old context to match. A changed problem is a new context, and it gets a new ADR that supersedes the old one.
-
 ## What Makes a Good ADR?
 
 A good ADR is specific about the problem, names the options that were actually on the table, and states the costs of the choice as plainly as its benefits. Here's one:
 
 ```md
-# ADR-004: Use PostgreSQL for the main database
+# ADR-004: PostgreSQL for the main database
 
 Status: Accepted on YYYY-MM-DD. Deciders: Ana, Ben, Chloé. Reviewer: Priya.
 
@@ -107,11 +105,11 @@ We will use the host's managed PostgreSQL through the `pg` library.
 A test runs two concurrent edits on one task and checks both are applied.
 ```
 
-Notice what the example does that a weak ADR doesn't: it names alternatives that were actually considered, including keeping what already exists, and gives a specific reason each one lost. "PostgreSQL is the best fit" records nothing, because it would be equally true of any choice. Test your ADR by asking whether a reader could reconstruct the argument well enough to disagree with it.
+Notice what the example does that a weak ADR doesn't: it names alternatives that were actually considered, including keeping what already exists, and gives a specific reason each one lost. "PostgreSQL is the best fit" records nothing, because it would be equally true of any choice.
 
-Write the costs into Consequences as plainly as the benefits. Nygard asks for every consequence, positive, negative, and neutral. <Cite id="tang-2005" /> found that 27.2% of the practitioners they surveyed never or seldom document a design's weaknesses, and suspect a tendency to present good news rather than bad news during design. The costs are what the next reader needs to judge whether the decision still holds, so they're the part to write most carefully.
+Write the costs into Consequences as plainly as the benefits, because they're what the next reader needs to judge whether the decision still holds. Nygard asks for every consequence, positive, negative, and neutral. <Cite id="tang-2005" /> found that 27.2% of the practitioners they surveyed never or seldom document a design's weaknesses, and suspect a tendency to present good news rather than bad news during design.
 
-The Confirmation section comes from MADR, where it's optional: it says how you'll check that what gets built matches the decision, whether by a test, a review, or a check in CI (continuous integration). Add it for any decision that code could quietly drift away from.
+The Confirmation section comes from MADR, where it's optional: it says how you'll check that what gets built matches the decision, whether by a design or code review or by a test. Add it for any decision that code could quietly drift away from.
 
 ## Where ADRs Live
 
@@ -123,7 +121,7 @@ Write the date of the decision into the status line when you accept the ADR. The
 
 Have someone who wasn't part of the decision review each ADR while its status is still "proposed", and mark it accepted only after they have. A person who was in the room fills the gaps from memory without noticing them. The guidelines in the action research study above required each ADR to be reviewed by another developer before it was published <Cite id="ahmeti-2024" form="parenthetical" />. When the decision affects the people you're building for (their budget, their data, their systems), they should read it too.
 
-AWS's [ADR process](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html) opens each review meeting with a dedicated slot, 10 to 15 minutes on average, in which every reviewer reads the ADR and adds comments before anyone discusses it.
+AWS's [ADR process](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html) starts each review meeting with a slot for reading, in which every reviewer reads the ADR and adds comments and questions before anyone discusses them; AWS judges 10 to 15 minutes enough on average.
 
 Whatever form your review takes, have the reviewer answer these questions:
 
@@ -154,7 +152,7 @@ The rules below condense the page into a checklist to run before you mark an ADR
 - Write the ADR the week you make the decision, even roughly.
 - Name every option you considered, including keeping the current approach, and say why each lost.
 - State the costs in Consequences.
-- Record your confidence when it's low, as Microsoft's guidance suggests, so whoever revisits the decision knows it was a bet.
+- Record your confidence in the decision, as Microsoft's guidance suggests, so whoever revisits a low-confidence one knows it was a bet.
 - Link related ADRs to each other, and link the ADR from the pull request that implements it.
 - Record deliberate non-decisions, such as "we will not support offline mode", when someone is likely to ask.
 - Supersede instead of editing. Change an accepted ADR only to fix a typo, update its status, or add the link to its replacement.
@@ -168,15 +166,15 @@ The busywork criticism is fair. <Cite id="buchgeher-2023" /> found 921 public Gi
 
 A team that tries to keep every ADR current will find the format exhausting, and it doesn't have to. An accepted ADR describes a decision at a point in time, not the current system, so a change to the system doesn't make it wrong; it makes it superseded. AWS and Microsoft both treat accepted ADRs as immutable, and Microsoft describes the collection as an append-only log. In the GitHub study, about half of 6,362 ADR files were committed once and never modified again, which the authors read as a sign that ADRs aren't meant to change often <Cite id="buchgeher-2023" form="parenthetical" />. Maintenance costs one new file and one status line on the old one.
 
-Writing decisions down can also push a team to over-deliberate, treating every choice as consequential. In his [2016 letter to shareholders](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders), Bezos argues that most decisions should be made with somewhere around 70% of the information you wish you had, that waiting for 90% usually means you're slow, and that if you're good at course correcting, being wrong may cost less than you think, while being slow is expensive for sure. Write a faster ADR rather than skipping it: a record that took twenty minutes and says what you were worried about is worth more than a polished one that held up the decision for a week.
+Writing decisions down can also push a team to over-deliberate, treating every choice as consequential. In his [2016 letter to shareholders](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders), Bezos argues that most decisions should probably be made with somewhere around 70% of the information you wish you had, that waiting for 90% usually means you're slow, and that if you're good at course correcting, being wrong may cost less than you think, while being slow is expensive for sure. Write a faster ADR rather than skipping it: twenty minutes and a line on what you were worried about are enough, while a polished record that holds up the decision for a week costs the speed Bezos warns about.
 
 ## ADRs in Industry and Academia
 
-In open source, Nygard's format dominates: of the 921 GitHub repositories in the study above, 723 used his template and 129 used MADR <Cite id="buchgeher-2023" form="parenthetical" />. Cloud vendors publish guidance on the practice: AWS's Prescriptive Guidance describes a full process, from ownership through review to superseding, and Microsoft's Well-Architected Framework calls the ADR one of the most important deliverables of a solution architect. [Spotify's engineering blog](https://engineering.atspotify.com/2020/04/when-should-i-write-an-architecture-decision-record) describes how ADRs helped new owners get up to speed on a system when its ownership moved from one team to another.
+In open source, Nygard's format dominates: of the 921 GitHub repositories in the study above, 723 used mainly his template and 129 mainly MADR <Cite id="buchgeher-2023" form="parenthetical" />. Cloud vendors publish guidance on the practice: AWS's Prescriptive Guidance describes a full process, from ownership through review to superseding, and Microsoft's Well-Architected Framework calls the decision log, which it names the ADR, one of the most important deliverables of a solution architect. Spotify's engineering blog describes how ADRs helped new owners get up to speed on a system when its ownership moved from one team to another.
 
 In standards, [ISO/IEC/IEEE 42010](http://www.iso-architecture.org/42010/cm/), the international standard for architecture descriptions, specifies requirements for capturing key architecture decisions, and its architecture rationale records the reasoning behind them, including the alternatives not chosen.
 
-In research, architecture decisions have been studied as architectural knowledge since at least the mid-2000s, when the knowledge vaporization argument and the rationale survey cited above were published. Evidence on ADRs in practice is thinner: the authors of the action research study note that few approaches to documenting architectural decisions have empirical evidence of their usefulness in practice <Cite id="ahmeti-2024" form="parenthetical" />. At the one company they studied, introducing ADRs improved cooperation among the teams, and the authors found that where the documentation was stored had a strong influence on how useful practitioners found it <Cite id="ahmeti-2024" form="parenthetical" />.
+In research, the knowledge vaporization argument and the rationale survey cited above both date from 2005, but evidence on ADRs in practice is thinner: the authors of the action research study note that few approaches to documenting architectural decisions have empirical evidence of their usefulness in practice <Cite id="ahmeti-2024" form="parenthetical" />. At the one company they studied, the teams cooperated more after introducing ADRs, though the authors expect corporate culture and team dynamics to have shaped that result, and they found that where the documentation was stored had a strong influence on how useful practitioners found it <Cite id="ahmeti-2024" form="parenthetical" />.
 
 ## References
 

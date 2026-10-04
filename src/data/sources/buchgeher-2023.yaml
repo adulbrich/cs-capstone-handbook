@@ -25,14 +25,14 @@ claims:
       again, which the authors read as reflecting that ADRs are not meant to
       be modified often; the intended approach is append-only, with obsolete
       decisions marked superseded and kept.
-    locator: Section V, RQ2.3
+    locator: Section V, RQ2.3, p. 63736
   - claim: >-
       Among repositories with at least 10 ADRs, 84 percent (165 of 198) had
       ADRs written by more than one contributor, and the authors conclude
       that in projects where ADRs are adopted, recording decisions is done by
       the team rather than by a single person.
-    locator: Section V, RQ2.2
+    locator: Section V, RQ2.2, p. 63736
   - claim: >-
-      Nygard's template was the most used, in 723 of the 921 repositories,
-      followed by MADR in 129.
-    locator: Section IV-B, RQ2.5, Figure 10
+      Counting each repository by its most used ADR template, Nygard's was
+      the most used, in 723 of the 921 repositories, followed by MADR in 129.
+    locator: Section IV-B, RQ2.5, p. 63734; Figure 10, p. 63735
