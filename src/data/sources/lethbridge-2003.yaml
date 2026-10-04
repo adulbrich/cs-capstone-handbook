@@ -18,8 +18,9 @@ claims:
       relative to the current state of a system.
     locator: p. 36, Documentation maintenance and usefulness; Figure 1
   - claim: >-
-      Software engineers updated documentation continually only when it was
-      attached to the process for completing a change request.
+      Software engineers were likely to update documentation continually
+      only when it was attached to the process for completing a change
+      request.
     locator: p. 37, first paragraph
   - claim: >-
       Of 45 survey respondents, 53 percent somewhat and 28 percent strongly
@@ -33,10 +34,12 @@ claims:
       architecture, and detailed design, and near zero for specifications;
       the more abstract a document, the more likely engineers were to
       consider it accurate and useful.
-    locator: p. 37, Table 1 and the paragraph after it
+    locator: p. 37, Table 1 and the two paragraphs that follow it
   - claim: >-
-      Code comments, bug-tracker entries, and test cases stayed current
-      because they are short, sit right where the work happens, and take
-      little effort to maintain, while large requirements and specification
-      documents were considered less worth updating.
+      In the authors' discussion, code comments, bug-tracker entries, and
+      test cases stay up to date for different reasons: comments are short
+      and right there, so they take little maintenance; a bug-tracker entry
+      takes little effort and its maintenance is semiautomatic; and test
+      cases have a simple structure and obvious operational value for
+      verifying the system.
     locator: p. 38, Judging value, the simple-and-powerful rule

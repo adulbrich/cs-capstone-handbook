@@ -18,7 +18,7 @@ claims:
       Software engineers will always need to write most documentation
       themselves, and most of the documentation an engineer at Google writes
       takes the form of code comments.
-    locator: Introduction; What Qualifies as Documentation?
+    locator: Chapter opening (unheaded); What Qualifies as Documentation?
   - claim: >-
       Google's internal wiki had no true document owners; many documents
       became obsolete or duplicated, with 7 to 10 documents at one point on

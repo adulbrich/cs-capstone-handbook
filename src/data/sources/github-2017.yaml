@@ -10,8 +10,8 @@ claims:
   - claim: >-
       GitHub designed the survey with researchers from academia, industry,
       and the open-source community, and collected responses from 5,500
-      randomly sampled respondents from over 3,800 open-source repositories
-      on GitHub.com.
+      randomly sampled respondents sourced from over 3,800 open-source
+      repositories on GitHub.com.
     locator: Overview; About the survey, Design
   - claim: >-
       Incomplete or outdated documentation was observed as a problem by 93
@@ -27,7 +27,9 @@ claims:
       Documentation that explains a project's processes, such as contributing
       guides and codes of conduct, is valued more by groups underrepresented
       in open source, like women.
-    locator: Insights, Documentation helps create inclusive communities
+    locator: >-
+      Insights, Documentation is highly valued, but often overlooked
+      (bullet, Documentation helps create inclusive communities)
   - claim: >-
       Documentation helps orient newcomers, covering how to use a project,
       how to contribute back, the terms of use and contribution, and the
