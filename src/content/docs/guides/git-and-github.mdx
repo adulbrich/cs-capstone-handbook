@@ -13,12 +13,12 @@ Your team has one repository, four people who can push to it, and a demo coming 
 
 :::note[tl;dr]
 - Use GitHub Flow: `main` stays deployable, and every change reaches it through a pull request from a short-lived branch.
-- Keep branches to a day or two, and keep each pull request small enough for a teammate to read in one sitting.
+- Keep branches to a day where you can and two at most, and keep each pull request small enough for a teammate to read in one sitting.
 - Write commit messages and pull request descriptions that say why the change was made; the diff already shows what.
 - Protect `main` with a ruleset: require a pull request, require CI to pass, block force pushes, and leave the bypass list empty.
 - Squash and merge, then delete the branch.
 - When something goes wrong locally, stop and read `git reflog` before improvising; almost every committed state is recoverable.
-- Never commit a secret. If one slips in, rotate it first; rewrite the history only if the data itself must go.
+- Never commit a secret. If one slips in, rotate it first; a dead secret may not need rewriting out of the history.
 :::
 
 [Git](https://git-scm.com/) is a distributed version control system: every clone holds the project's full history as a graph of commits, and a branch is a movable label that points at one of them. [GitHub](https://github.com/) hosts Git repositories and adds the collaboration layer on top: pull requests, code review, issues, and the settings that control who can change what. If you're new to either, or need a refresher, start with these two lectures and come back.
@@ -58,10 +58,10 @@ Use GitHub Flow on a small team shipping one product. It's simple enough that ev
 
 In [trunk-based development](https://trunkbaseddevelopment.com/), everyone commits to `main` (the "trunk"), either directly or through short-lived branches, which the site limits to a couple of days. Google works this way at scale. <Cite id="potvin-2016" /> describe a single repository where most engineers work at the latest version, development on branches is unusual, branches exist mainly for releases, and new features sit behind conditional flags instead of on development branches. It holds together because of what surrounds it: every change is tested before it lands, affected code is rebuilt on almost every commit, and a change that breaks the build widely is rolled back automatically.
 
-Industry data on branch lifetime points the same way. The 2017 State of DevOps Report, an industry report by Puppet and DORA based on a survey of practitioners, restates the previous year's findings that merging into trunk daily, keeping branches alive for less than a day, and having fewer than three active branches all contributed to higher software delivery performance, and confirms them with new data: high performers' branches typically lived for hours where low performers' lived for days <Cite id="forsgren-2017" form="parenthetical" />. The report notes that some developers used to the GitHub-recommended workflow, which merges branches into trunk only periodically, remain skeptical, and replies that short-lived branches merged into trunk at least daily are consistent with commonly accepted continuous integration practice. By the definition above, GitHub Flow with branches that merge within a day or two already is trunk-based development; GitHub Flow with branches that stay open for days has the branch lifetimes the report found among low performers.
+Industry data on branch lifetime points the same way. The 2017 State of DevOps Report, an industry report by Puppet and DORA based on a survey of practitioners, restates the previous year's findings that merging into trunk daily, keeping branches alive for less than a day, and having fewer than three active branches all contributed to higher software delivery performance, and confirms them with new data: high performers' branches typically lived for hours where low performers' lived for days <Cite id="forsgren-2017" form="parenthetical" />. The report notes that some developers used to the GitHub-recommended workflow, which merges branches into trunk only periodically, remain skeptical, and replies that short-lived branches merged into trunk at least daily are consistent with commonly accepted continuous integration practice. GitHub Flow with branches that merge within a day is trunk-based development by both the site's definition and the report's; GitHub Flow with branches that stay open for several days has the branch lifetimes the report found among low performers.
 
 :::tip[Which Workflow to Pick]
-Start with GitHub Flow and keep branches to a day or two. Skip committing straight to `main` unless your CI catches real regressions and the team trusts a green build; without that suite, a direct commit ships untested code. Reach for Git Flow only if you ship versioned releases that you support side by side.
+Start with GitHub Flow and keep branches to a day where you can, two at most. Reach for Git Flow only if you ship versioned releases that you support side by side.
 :::
 
 ## GitHub Flow in Practice
@@ -184,7 +184,7 @@ git push
 
 Most people expect review to catch bugs. It catches some, but that's not most of what it produces. In the same Microsoft study, finding defects was the top motivation developers and managers gave for reviewing, yet of 570 review comments only 78 (14%) were about defects, the fourth most common of nine categories, while 165 (29%) were code improvements: better practices, removing unused code, and readability <Cite id="bacchelli-2013" form="parenthetical" />. The authors found that review also produces knowledge transfer, team awareness, and alternative solutions to problems. They also recommend spreading understanding of the code across the team, because when the author of a change is the only person who knows that code, nobody else is in a position to review it.
 
-That doesn't make review optional for quality. <Cite id="mcintosh-2014" /> studied review participation in two open-source projects, Qt and ITK, and found that among components where every change was reviewed, those integrating a larger share of changes approved without any comment from another developer tended to have more post-release defects, in all three releases they modeled. Self-approved and hastily reviewed changes showed the same effect in one Qt release each.
+That doesn't make review optional for quality. <Cite id="mcintosh-2014" /> studied review participation in two open-source projects, Qt and ITK, and found that among components where every change was reviewed, those integrating a larger share of changes approved without any comment from another team member tended to have more post-release defects, in all three releases they modeled. Self-approved and hastily reviewed changes showed the same effect in one Qt release each.
 
 <LinkCard
   title="Team Working Agreement"
@@ -270,7 +270,7 @@ If the repository already has a classic branch protection rule, it behaves diffe
 
 - Commit early and often. Small commits are easier to review and to revert.
 - Pull `main` before starting new work.
-- Keep branches short-lived: a day or two at most.
+- Keep branches short-lived: a day where you can, two at most.
 - Write the why into commit messages and pull request descriptions.
 - Never commit secrets. API keys, passwords, and tokens belong in environment variables, and the files that hold them belong in `.gitignore`.
 - Set up `.gitignore` before the first commit, starting from GitHub's [templates](https://github.com/github/gitignore) for your language and framework, so build artifacts, IDE settings, and OS files never enter the history.
@@ -280,7 +280,7 @@ If the repository already has a classic branch protection rule, it behaves diffe
 The habits above are for you. These five are for whoever takes the repository over after you, and each one is cheap now and expensive to fix later:
 
 - Nothing lands on the default branch except through a pull request, enforced by the ruleset above.
-- No secrets, build artifacts, or dependency directories in the history. A committed `.env` stays in the history after you delete the file; GitHub's guidance on [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) is to revoke or rotate the secret first, which may be all a leak needs, and to rewrite the history only if the data itself must not stay, as with personal data that can't be rotated.
+- No secrets, build artifacts, or dependency directories in the history. A committed `.env` stays in the history after you delete the file; GitHub's guidance on [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) is to revoke or rotate the secret first; once it's dead, rewriting the history may not be needed.
 - Commit messages say what changed and why, with noisy branches squashed on merge.
 - Nobody force-pushes the default branch.
 - Large binaries stay out of Git, or go in [Git LFS](https://git-lfs.com/), because every clone downloads every version of every file ever committed.
@@ -293,13 +293,13 @@ Almost every mistake you can make locally with committed work is recoverable, wh
 
 Review costs the author time, and Google's published [code review guidelines](https://google.github.io/eng-practices/review/) answer that cost with two rules. Their [central standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is to approve a change once it definitely improves the overall health of the code, even if it isn't perfect, rather than holding out for the version the reviewer would have written. Their page on [review speed](https://google.github.io/eng-practices/review/reviewer/speed.html) argues that slow reviews create pressure to accept weaker changes and make developers protest the process, says most of those complaints go away once reviews get faster, and sets one business day as the longest a review request should wait. Adopt both as written, because together they keep review from stalling on taste or on a review request nobody has opened.
 
-Which workflow you choose matters less than whether everyone follows it. All three workflows above work for the teams they were designed for. What doesn't work is a mix: two people open pull requests, one pushes straight to `main`. Pick GitHub Flow, write it into the [working agreement](/guides/working-agreement/), and enforce it with a ruleset.
+Which workflow you choose matters less than whether everyone follows it. All three workflows above work for the teams they were designed for. What doesn't work is a mix: two people open pull requests, one pushes straight to `main`, and nobody is sure which branch is current. Pick GitHub Flow, write it into the [working agreement](/guides/working-agreement/), and enforce it with a ruleset.
 
 No set of rules fits every change. A one-character typo fix in the README doesn't need the same scrutiny as a new authentication flow, and a team that makes the typo fix as slow to merge as the feature gives everyone a reason to batch unrelated changes into bigger pull requests, which are harder to review. Keep the protections on and make the small case cheap instead: a teammate can read and approve a typo fix in a minute.
 
 ## Git and GitHub in Industry and Academia
 
-Git is the default in industry. The 2022 Stack Overflow Developer Survey, an industry report, found that 94% of the roughly 71,000 respondents who answered its version control question used Git and 5% used SVN, and GitHub was the most used host for both personal and professional work, with GitLab, Bitbucket, and Azure Repos more common at work than for personal projects <Cite id="stackoverflow-2022" form="parenthetical" />. The respondents were recruited mostly through Stack Overflow's own channels, so its most engaged users were more likely to take part, but the gap between Git and everything else is too large for that to change the ranking.
+Git is the default in industry. The 2022 Stack Overflow Developer Survey, an industry report, found that 94% of the roughly 71,000 respondents who answered its version control question used Git and 5% used SVN, and GitHub was the most used host for both personal and professional work, with GitLab, Bitbucket, and Azure Repos more common at work than for personal projects <Cite id="stackoverflow-2022" form="parenthetical" />. The respondents were recruited mostly through Stack Overflow's own channels, so highly engaged users were more likely to take part, but the gap between Git and everything else is too large for that to change the ranking.
 
 Large companies use the same building blocks, arranged differently. Google rarely uses feature branches, working trunk-based as described above <Cite id="potvin-2016" form="parenthetical" />, but it doesn't skip review: review has been required there since early in the company's history, and the median change has a single reviewer <Cite id="sadowski-2018" form="parenthetical" />. At Microsoft, the teams in one study reviewed code through an internal tool that more than 40,000 developers had used <Cite id="bacchelli-2013" form="parenthetical" />.
 

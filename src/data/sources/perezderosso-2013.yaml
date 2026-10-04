@@ -17,7 +17,8 @@ claims:
       inconsistencies in its commands as a flaw they chose not to study.
     locator: Abstract; Sec. 1, Introduction; Sec. 2, Concept Design Criteria
   - claim: >-
-      "Tracked" and "staged" files are subtly different concepts, and a
-      tracked file updated after it was added is committed in its older,
-      added version.
+      "Tracked" and "staged" files are subtly different concepts: a file
+      that has been committed is tracked but no longer staged, and a tracked
+      file updated after it was added is committed in its older, added
+      version.
     locator: Sec. 3, An Overview of Git
