@@ -27,3 +27,7 @@ claims:
       from time-stamped evidence in various systems, which saves meeting
       time and provides objective information.
     locator: Section II
+  - claim: >-
+      The paper compares two cases of applying the evidence-based timeline
+      retrospective.
+    locator: Abstract

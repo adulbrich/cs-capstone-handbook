@@ -13,9 +13,10 @@ doi: 10.1007/s10664-016-9464-2
 verified: full-text
 claims:
   - claim: >-
-      A longitudinal case study of 37 team-level retrospectives over almost
-      three years in a large, distributed agile software organization.
-    locator: Abstract
+      A longitudinal case study analyzing data from 37 team-level
+      retrospectives over almost three years in a large, distributed agile
+      software organization; the authors were not present at the meetings.
+    locator: Abstract; Section 3, p. 2417
   - claim: >-
       Certain discussion topics recurred over a long period of time.
     locator: Abstract

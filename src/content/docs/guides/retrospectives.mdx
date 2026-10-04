@@ -53,7 +53,7 @@ Pair the team discussion with individual reflection, where each member writes do
 When something breaks, or nearly breaks, in production, run a retrospective focused on that one event. The output is a written postmortem (the format is [below](#postmortem-format)), and the goal is to change the system so the failure is less likely or caught sooner.
 
 :::tip[Blameless Culture]
-Write the postmortem without blame: assume everyone involved acted with good intent and the best information they had at the time, and ask what in the system or process let the failure through. [Google's SRE book](https://sre.google/sre-book/postmortem-culture/) argues that where people are pointed at and shamed for mistakes, they stop bringing issues to light for fear of punishment.
+Write the postmortem without blame: assume everyone involved acted with good intent and did the right thing with the information they had at the time, and ask what in the system or process let the failure through. [Google's SRE book](https://sre.google/sre-book/postmortem-culture/) argues that where people are pointed at and shamed for mistakes, they stop bringing issues to light for fear of punishment.
 :::
 
 ## Formats
@@ -68,7 +68,7 @@ This is the simplest format. Each team member contributes to three lists:
 - Stop: things the team should stop doing.
 - Continue: things that are working and should be kept.
 
-After everyone has written, cluster similar items and pick two or three to act on. Don't try to address every item, because a long action list spreads the team's attention across changes that each get a fraction of it.
+After everyone has written, cluster similar items and pick [two or three](#focus-on-actions) to act on.
 
 ### 4Ls
 
@@ -100,7 +100,7 @@ Use it in the middle of a project, when the team needs to reconnect with why it'
 
 ## Running a Good Retrospective
 
-How the session runs matters as much as which format it uses. <Cite id="tannenbaum-2013" /> found that debriefs worked better when the participants, the focus, and the measures were aligned, and found a potential effect of facilitation and structure. The sections below cover the facilitation: how to open, how to keep it safe, who runs it, what goes on the table, and what the team leaves with.
+How the session runs matters as much as which format it uses. <Cite id="tannenbaum-2013" /> found that debriefs worked better when the participants, the focus and intent, and the level of measurement were aligned, and found a potential effect of facilitation and structure.
 
 ### Set the Stage
 
@@ -108,9 +108,9 @@ Open with a brief check-in. Ask each person a low-stakes question ("One word for
 
 ### Psychological Safety First
 
-People won't share what they actually observed if they expect embarrassment or retaliation. <Cite id="edmondson-1999" /> defined team psychological safety as a shared belief that the team is safe for interpersonal risk taking, and found it associated with learning behavior in 51 teams in a manufacturing company. The 1999 study grew out of her study of hospital patient-care teams, where members of some teams openly acknowledged a medication error and discussed how to avoid a repeat, while members of others kept it to themselves. Those teams differed not only in how often errors happened but in how likely an error was to be detected and learned from <Cite id="edmondson-1996" form="parenthetical" />. A retrospective where everyone says things went fine may be describing that second kind of team.
+People won't share what they actually observed if they expect embarrassment or retaliation. <Cite id="edmondson-1999" /> defined team psychological safety as a shared belief that the team is safe for interpersonal risk taking, and found it associated with learning behavior in 51 teams in a manufacturing company. The 1999 study grew out of her study of hospital patient-care teams, where members of some teams openly acknowledged a medication error and discussed how to avoid a repeat, while members of others kept it to themselves. Those teams differed not only in the frequency of errors but in how likely an error was to be detected and learned from <Cite id="edmondson-1996" form="parenthetical" />. A retrospective where everyone says things went fine may be describing that second kind of team.
 
-A common convention for this is Norm Kerth's [Prime Directive](https://retrospectivewiki.org/index.php?title=The_Prime_Directive), read aloud at the start of many retrospectives: everyone did the best job they could, given what they knew at the time, their skills, the resources available, and the situation. Read it at the start, because it moves the question from who failed to what made failure likely, and only the second question leads to a change the team can make. Agree on ground rules as well:
+A common convention for this is Norm Kerth's [Prime Directive](https://retrospectivewiki.org/index.php?title=The_Prime_Directive): everyone did the best job they could, given what they knew at the time, their skills, the resources available, and the situation. Read it aloud at the start, because it moves the question from who failed to what made failure likely, and only the second question leads to a change the team can make. Agree on ground rules as well:
 
 - What's said in the retrospective stays there, unless the team decides to write it down.
 - Observations are about systems and processes, not individuals.
@@ -120,11 +120,11 @@ A common convention for this is Norm Kerth's [Prime Directive](https://retrospec
 
 Rotate the facilitator role across team members. The facilitator's job is to run the process, not to share the most opinions: ask questions, group what people contribute, and keep time. Running it from inside the team fits the evidence: <Cite id="keiser-2021" /> found that the most effective combinations included self-led facilitation with a review aligned to the team.
 
-Make sure every person contributes before open discussion starts, for example by having everyone write sticky notes in silence first. In an open discussion the floor goes to whoever is comfortable taking it, and a teammate who has been carrying a problem alone for weeks is the least likely to interrupt. Derby and Larsen give the facilitator the same job: watch for people talking much more or much less than the others, and make an opening for the quieter ones without putting them on the spot.
+Make sure every person contributes before open discussion starts, for example by having everyone write sticky notes in silence first. In an open discussion the floor goes to whoever is comfortable taking it, and a teammate who has been carrying a problem alone for weeks is the least likely to interrupt. [Derby and Larsen](https://pragprog.com/titles/dlret/agile-retrospectives/) give the facilitator the same job: watch for people talking much more or much less than the others, and make an opening for the quieter ones without putting them on the spot.
 
 ### Bring the Evidence
 
-Put the records on the table: the board, the merged PRs, CI history, bug counts, and any team health check you ran. <Cite id="lehtinen-2017" /> followed 37 retrospectives over almost three years in one software organization and found that the teams' discussions of estimation accuracy contradicted the estimation data in their own task repository. The teams kept discussing it and adding corrective actions, and estimation accuracy didn't improve. The authors propose bringing fact-based evidence into the meeting; in that organization, bug data would have been readily available and wasn't used. Keiser and Arthur's meta-analysis points the same way: objective media for reviewing performance consistently contributed to an after-action review's effectiveness <Cite id="keiser-2021" form="parenthetical" />.
+Put the records on the table: the board, the merged PRs, CI history, bug counts, and any team health check you ran. <Cite id="lehtinen-2017" /> analyzed data from 37 retrospectives held over almost three years in one software organization and found that the teams' discussions of estimation accuracy contradicted the estimation data in their own task repository. The teams kept discussing it and adding corrective actions, and estimation accuracy didn't improve. The authors propose bringing fact-based evidence into the meeting; in that organization, bug data would have been readily available and wasn't used. Keiser and Arthur's meta-analysis points the same way: objective media for reviewing performance consistently contributed to an after-action review's effectiveness <Cite id="keiser-2021" form="parenthetical" />.
 
 ### Focus on Actions
 
@@ -137,7 +137,7 @@ End every retrospective with actions. For each theme the team picks, define:
 
 Keep it to three actions at most. Each one competes for time with the sprint's actual work, and an action that doesn't get done costs more than the time: it teaches the team that what's said in the retrospective doesn't change anything.
 
-Put the actions where the team tracks its other work (the Scrum Guide notes they may go straight into the next sprint's backlog), and review them at the start of the next retrospective. If one wasn't done, find out why before adding new ones.
+Put the actions where the team tracks its other work (the Scrum Guide notes the most impactful ones may go straight into the next sprint's backlog), and review them at the start of the next retrospective. If one wasn't done, find out why before adding new ones.
 
 Check whether each action is within the team's control. Lehtinen and colleagues hypothesize that a team's improvement proposals for problems outside its control, or too complex to solve at the team level, tend to stay ineffective <Cite id="lehtinen-2017" form="parenthetical" />. For those, the action is to raise the problem with whoever does control it (the project partner, a manager or an advisor), not to promise a fix the team can't deliver.
 
@@ -161,7 +161,7 @@ For the root cause, the [5 Whys](https://en.wikipedia.org/wiki/Five_whys) techni
 - Share the draft timeline or the health-check results a day ahead, so people arrive having looked at the evidence rather than meeting it for the first time.
 - Decide as a team before inviting anyone from outside it, such as the project partner or a manager, because people say less in front of someone who evaluates them.
 - Record the themes and actions within a day, where the team keeps its own documents, so the next retrospective and anyone who joins later can find them. Keep them out of the code repository, which people outside the team read; an action that changes how code gets merged goes into `CONTRIBUTING.md` as the rule itself.
-- Close by asking how the retrospective itself went, and change the format when the answers say it's gone stale, because the participants are the only ones who can tell when a format has stopped surfacing anything new.
+- Close by asking how the retrospective itself went, because the participants are the only ones who can tell when a format has stopped surfacing anything new.
 
 ## Some Truths About Retrospectives
 
@@ -171,15 +171,15 @@ Retrospectives can produce their own waste. In the organization <Cite id="lehtin
 
 A blameless retrospective can also become a place to avoid an uncomfortable conversation. Framing a problem as a system problem is right whenever a process change could fix it, but when one person has missed commitments sprint after sprint, the system framing lets the team talk around it indefinitely, and the person never hears it directly. That conversation doesn't belong in a group meeting, where it turns into public blame; have it one-to-one, and see [Conflict](/guides/conflict/) for how to hold it and when to escalate.
 
-A written retrospective takes longer than it looks, and the time goes into reconstructing what happened, not into writing. Memory is a weak source for that, for the same reason the Timeline format above builds from records rather than recollection. Keep a short note each sprint, such as a [learning journal](/activities/reflective/#learning-journal), and the document at the end becomes a matter of selecting and explaining rather than remembering.
+A written retrospective takes longer than it looks, and the time goes into reconstructing what happened, not into writing. Memory is a weak source for that, which is why the evidence-based timeline above is drafted from records. Keep a short note each sprint, such as a [learning journal](/activities/reflective/#learning-journal), and the document at the end becomes a matter of selecting and explaining rather than remembering.
 
 ## Retrospectives in Industry and Academia
 
 The retrospective is a defined event in Scrum, but the practice predates agile. <Cite id="tannenbaum-2013" /> note that the U.S. Army has used debriefs, or after-action reviews, for decades, and that medical, aviation, and other communities increasingly use them too.
 
-In software operations, [Google's Site Reliability Engineering (SRE) book](https://sre.google/sre-book/postmortem-culture/) describes the blameless postmortem as a tenet of SRE culture and documents how Google runs one. Some companies publish their postmortems: [GitHub's monthly availability reports](https://github.blog/tag/github-availability-report/), [Atlassian's review of its multi-day outage](https://www.atlassian.com/blog/how-we-build/post-incident-review-april-2022-outage), and [Stripe's root-cause analysis of a period of elevated API errors](https://stripe.com/rcas/2019-07-10) are examples, and [Dan Luu's list](https://github.com/danluu/post-mortems) collects many more.
+In software operations, [Google's Site Reliability Engineering (SRE) book](https://sre.google/sre-book/postmortem-culture/) describes the blameless postmortem as a tenet of SRE culture and documents how Google runs one. Some companies publish their postmortems: [GitHub's monthly availability reports](https://github.blog/tag/github-availability-report/), [Atlassian's review of its multi-day outage](https://www.atlassian.com/blog/how-we-build/post-incident-review-april-2022-outage), and [Stripe's root-cause analysis of significantly elevated API error rates](https://stripe.com/rcas/2019-07-10) are examples, and [Dan Luu's list](https://github.com/danluu/post-mortems) collects many more.
 
-In software engineering research, retrospectives are less studied than they are used. <Cite id="lehtinen-2017" /> note that their tangible outcomes have received little research attention despite their widespread use, and both software studies cited on this page are case studies: one organization over almost three years, and two cases of the evidence-based timeline <Cite id="bjarnason-2013" form="parenthetical" />. The debrief meta-analyses weren't designed around software teams (Keiser and Arthur name the military and healthcare among their settings), so treat their effect sizes as a strong hint for a software team rather than a measurement of one.
+In software engineering research, retrospectives are less studied than they are used. <Cite id="lehtinen-2017" /> note that their tangible outcomes have received little research attention despite their widespread use, and both software studies cited on this page are case studies: one organization, and two cases of the evidence-based timeline <Cite id="bjarnason-2013" form="parenthetical" />. The debrief meta-analyses weren't designed around software teams (Keiser and Arthur name the military and healthcare among their settings), so treat their effect sizes as a strong hint for a software team rather than a measurement of one.
 
 ## References
 
@@ -191,10 +191,10 @@ Most of these come from incident review. Read them even if your project never ha
 
 **Sources and further reading**
 
-- [The Retrospective Handbook](https://leanpub.com/the-retrospective-handbook), Patrick Kua: a practitioner's guide to facilitation problems, drawn from years of running retrospectives.
-- [How to run a blameless postmortem](https://www.atlassian.com/incident-management/postmortem/blameless), Atlassian: shorter than the SRE chapter, with a template.
-- [PagerDuty Postmortem Documentation](https://postmortems.pagerduty.com/), PagerDuty: an open guide to writing postmortems step by step.
-- [Postmortem Practices for Incident Management](https://sre.google/workbook/postmortem-culture/), Google SRE workbook: a poorly written postmortem compared with the one actually written after the same outage.
+- [The Retrospective Handbook](https://leanpub.com/the-retrospective-handbook), Patrick Kua: a practitioner's guide to facilitation problems.
+- [How to run a blameless postmortem](https://www.atlassian.com/incident-management/postmortem/blameless), Atlassian.
+- [PagerDuty Postmortem Documentation](https://postmortems.pagerduty.com/), PagerDuty.
+- [Postmortem Culture: Learning from Failure](https://sre.google/workbook/postmortem-culture/), Google SRE workbook: a poorly written postmortem compared with the one actually written after the same outage.
 - [Each necessary, but only jointly sufficient](https://www.kitchensoap.com/2012/02/10/each-necessary-but-only-jointly-sufficient/), John Allspaw: the argument that complex systems fail without a single root cause.
 - [The Field Guide to Understanding 'Human Error'](https://www.routledge.com/The-Field-Guide-to-Understanding-Human-Error/Dekker/p/book/9781472439055), Sidney Dekker: the case against the "bad apple" explanation of failure.
 
