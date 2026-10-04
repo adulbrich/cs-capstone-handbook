@@ -55,7 +55,8 @@ claims:
       services in their production environments.
     locator: IT performance and organizational performance, Throughput, p. 24
   - claim: >-
-      Respondents were recruited by snowball sampling, and the report notes
+      Respondents were recruited by snowball sampling, including asking
+      people to share the survey with their networks, and the report notes
       the sample is likely limited to organizations and teams familiar with
       DevOps.
     locator: Methodology, Target population and sampling method, p. 50

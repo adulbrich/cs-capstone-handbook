@@ -256,14 +256,14 @@ Commit a `.env.example` with a placeholder for every variable the application ne
 Change the database schema through migration files, never by hand. A migration is a version-controlled script that moves the database from one schema to the next:
 
 ```bash
-# Prisma ORM 7: create and apply a new migration locally
+# Create and apply a new migration locally
 npx prisma migrate dev --name add-user-roles
 
 # Apply migrations in production
 npx prisma migrate deploy
 ```
 
-Use the migration tool that comes with your ORM or framework: [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production) for JavaScript and TypeScript, [Alembic](https://alembic.sqlalchemy.org/) for SQLAlchemy, [Django migrations](https://docs.djangoproject.com/en/stable/topics/migrations/) for Django. Follow the docs for the major version you install, because the commands change between versions: the two above are Prisma ORM 7's (install `prisma@7`), and Prisma ORM 8 renames both.
+Use the migration tool that comes with your ORM or framework: [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production) for JavaScript and TypeScript, [Alembic](https://alembic.sqlalchemy.org/) for SQLAlchemy, [Django migrations](https://docs.djangoproject.com/en/stable/topics/migrations/) for Django. Follow the docs for the major version you install, because the commands change between versions: the two above are Prisma ORM 7's (install `prisma@7` and `@prisma/client@7`), and Prisma ORM 8 renames both.
 
 Create each migration, run it locally, commit it, and let the deployment apply it to production. Every environment then has the same schema, and the migration history records each change, which is what you work from when one has to be undone.
 
@@ -303,7 +303,7 @@ For a small team, an error tracker plus the platform's built-in logs is enough. 
 
 Make every deployment reversible, because when one breaks production, restoring the last working version is faster than debugging forward while users wait. How you roll back depends on how you deploy:
 
-- PaaS platforms: [Vercel](https://vercel.com/docs/instant-rollback), [Netlify](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview/), and [Render](https://render.com/docs/rollbacks) each roll back from the dashboard. Read your platform's page before you need it, because they differ on what happens next:
+- PaaS platforms: [Vercel](https://vercel.com/docs/instant-rollback), [Netlify](https://docs.netlify.com/deploy/manage-deploys/manage-deploys-overview/), and [Render](https://render.com/docs/rollbacks) each roll back from the dashboard. Read your platform's page before you need it, because they differ on what you can roll back to and what happens next:
   - Vercel stops sending new pushes to production until you promote a deployment, and on the Hobby plan you can roll back only to the immediately previous deployment.
   - After a dashboard rollback, Render turns off autodeploys until you re-enable them.
   - Netlify, with auto publishing on, replaces the version you rolled back to with the next Git-triggered deploy.
