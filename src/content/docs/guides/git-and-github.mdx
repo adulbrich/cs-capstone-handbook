@@ -280,10 +280,12 @@ If the repository already has a classic branch protection rule, it behaves diffe
 The habits above are for you. These five are for whoever takes the repository over after you, and each one is cheap now and expensive to fix later:
 
 - Nothing lands on the default branch except through a pull request, enforced by the ruleset above.
-- No live secrets, build artifacts, or dependency directories in the history. A committed `.env` stays in the history after you delete the file, so a secret that slips in has to be revoked or rotated, as the first step in GitHub's guidance on [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository). A revoked or rotated secret can no longer be used for access, and GitHub notes that rewriting the history to remove it may then not be warranted. Say in the pull request that removes the secret that it was revoked: a squash merge puts the pull request number on its commit, so a maintainer who runs `git log` on the file reaches that record from the removal commit. When what leaked can't be revoked (personal data, or a credential the team doesn't control), turn off the ruleset's force-push block for one rewrite coordinated with the whole team, following GitHub's page, turn it back on, and have every teammate re-clone.
+- No live secrets, build artifacts, or dependency directories in the history. A committed `.env` stays in the history after you delete the file, so a secret that got in has been revoked or rotated, and the commit that removed it says so.
 - Commit messages say what changed and why, with noisy branches squashed on merge.
 - Nobody force-pushes the default branch.
 - Large binaries stay out of Git, or go in [Git LFS](https://git-lfs.com/), because every clone downloads every version of every file ever committed.
+
+If a secret does get committed, revoke or rotate it at once: GitHub's guidance on [removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) makes that the first step. A revoked or rotated secret can no longer be used for access, and GitHub notes that rewriting the history to remove it may then not be warranted. Say in the pull request that removes the file, and in its squashed commit message, that the key was revoked, so a maintainer who runs `git log -- .env` finds that record on the commit that removed it. When what leaked can't be revoked (personal data, or a credential the team doesn't control), set the ruleset to Disabled for one rewrite coordinated with the whole team, following GitHub's page, set it back to Active, and have every teammate re-clone.
 
 ## Some Truths About Git
 
