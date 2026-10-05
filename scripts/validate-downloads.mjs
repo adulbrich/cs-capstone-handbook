@@ -17,6 +17,7 @@
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { PAGE_EXTENSIONS, walk } from "./lib/content.mjs";
 
 const PUBLIC_DIR = "public";
 const DOCS_DIR = "src/content/docs";
@@ -25,20 +26,7 @@ const DOCS_DIR = "src/content/docs";
 // here is asserting "no page should link this", so keep the list short.
 const NOT_A_DOWNLOAD = new Set(["favicon.svg"]);
 
-function collectMdx(dir) {
-  const out = [];
-  for (const entry of readdirSync(dir)) {
-    const path = join(dir, entry);
-    if (statSync(path).isDirectory()) {
-      out.push(...collectMdx(path));
-    } else if (entry.endsWith(".mdx") || entry.endsWith(".md")) {
-      out.push(path);
-    }
-  }
-  return out;
-}
-
-const corpus = collectMdx(DOCS_DIR)
+const corpus = [...walk(DOCS_DIR, PAGE_EXTENSIONS)]
   .map((f) => readFileSync(f, "utf8"))
   .join("\n");
 

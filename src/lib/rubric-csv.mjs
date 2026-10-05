@@ -25,8 +25,12 @@
  * carries a fourth `Missing` band.
  */
 
-/** The outcome IDs the accreditation record recognises. Nothing else is a tag. */
-export const OUTCOME_TAG_RE = /^(SO[1-6]|L(07|08|09|10))$/;
+/**
+ * The outcome IDs the accreditation record recognises, as a regex
+ * alternation. Nothing else is a tag. The one spelling of the pattern.
+ */
+export const OUTCOME_TAG = "SO[1-6]|L0[7-9]|L10";
+export const OUTCOME_TAG_RE = new RegExp(`^(${OUTCOME_TAG})$`);
 
 const CRITERION_HEADER = [
   "Rubric Name",

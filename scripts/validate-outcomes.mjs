@@ -26,6 +26,7 @@ import {
   canvasRows,
   familyHeading,
   isTitled,
+  TERMS,
   termWeight,
 } from "../src/lib/canvas-entries.mjs";
 import { WEIGHT_RE } from "../src/lib/grade-grid.mjs";
@@ -35,6 +36,7 @@ import {
   rubricTagCounts,
   rubricTotal,
 } from "../src/lib/rubric-csv.mjs";
+import { parseFrontmatter } from "./lib/content.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
@@ -90,11 +92,6 @@ function rubricCsvsIn(dir) {
 // rubric here carries it (#197). A stopgap until #196 decides how L10 is
 // recorded. A handbook criterion tagged L10 still counts normally.
 const CANVAS_EVIDENCED = new Map([["L10", "evidenced in Canvas, #196"]]);
-
-function parseFrontmatter(source) {
-  const match = source.match(/^---\n([\s\S]*?)\n---/);
-  return match ? match[1] : null;
-}
 
 // The `assignment:` block, parsed as the YAML it is. The hand-rolled line
 // parser this replaced could not read the list of Canvas entries.
@@ -158,11 +155,11 @@ const pageTables = new Map();
 
 for (const file of files) {
   const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
-  const frontmatter = parseFrontmatter(source);
-  if (!frontmatter) {
+  const page = parseFrontmatter(source);
+  if (!page) {
     continue;
   }
-  const assignment = parseAssignment(frontmatter);
+  const assignment = parseAssignment(page.frontmatter);
   if (!assignment) {
     continue;
   }
@@ -272,7 +269,6 @@ if (parsed === 0) {
 // The weights also appear in each page's frontmatter, in three syllabi, and in
 // the Canvas readme, so a re-cut that misses one leaves students' grades not
 // adding up.
-const TERMS = ["fall", "winter", "spring"];
 const COMPONENT_WEIGHT = 25;
 const GRID_ITEM_RE = /^\[[^\]]+\]\(\/assignments\/([a-z0-9-]+)\/[^)]*\)$/;
 const overview = readFileSync(
@@ -413,7 +409,7 @@ for (const [slug, assignment] of pages) {
   }
   for (const term of inGrid) {
     const expected = gridOf(term);
-    const actual = typeof declared === "number" ? declared : declared[term];
+    const actual = termWeight(assignment, term);
     if (actual === undefined) {
       console.error(
         `WEIGHT ${slug}.mdx: no ${term} weight declared, but the grade grid gives ${expected}%.`
@@ -716,7 +712,7 @@ for (const file of files) {
     continue;
   }
   const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
-  const body = source.slice(source.indexOf("---", 3) + 3);
+  const { body } = parseFrontmatter(source);
 
   // The card at the top is generated from the frontmatter this script checks.
   if (!SUMMARY_RE.test(body) || META_RE.test(body)) {

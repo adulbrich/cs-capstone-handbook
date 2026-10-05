@@ -73,6 +73,8 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
 import { canvasRows } from "../src/lib/canvas-entries.mjs";
+import { OUTCOME_TAG } from "../src/lib/rubric-csv.mjs";
+import { parseFrontmatter } from "./lib/content.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
@@ -171,6 +173,9 @@ function readSection(page, lines, i) {
   };
 }
 
+// How a message names an activity, or a section that should have been one.
+const activityLabel = (section) => `"${section.heading}" (${section.page})`;
+
 // Collect every activity: page, heading, slug, and its tier badge (if any).
 // Also collect the near misses: sections with a tier badge and no audience
 // badge, which rule 5 reports.
@@ -268,7 +273,9 @@ const WORKSHOP_HEADING_RE = /^### Workshop (\d+):/;
 function readWorkshopWeeks() {
   const weeks = new Map(); // "page#slug" -> { term, week }
   const source = readFileSync(WORKSHOP_PAGE, "utf8");
-  const rows = canvasRows(parse(source.split(/^---$/m)[1]).assignment.canvas);
+  const rows = canvasRows(
+    parse(parseFrontmatter(source).frontmatter).assignment.canvas
+  );
   const termWeeks = (t) => rows.find((r) => r.term === t)?.weeks;
   let term = null;
   let entry = null;
@@ -303,7 +310,7 @@ const problems = [];
 // Rule 5, the audience half: a tier badge with no audience badge.
 for (const section of unlabeled) {
   problems.push(
-    `no audience badge: "${section.heading}" (${section.page}) carries a ${section.tier} badge but no Individual or Team Activity badge, so it is not counted as an activity`
+    `no audience badge: ${activityLabel(section)} carries a ${section.tier} badge but no Individual or Team Activity badge, so it is not counted as an activity`
   );
 }
 
@@ -319,7 +326,7 @@ for (const [key, sources] of links) {
   }
   if (!activity.tier) {
     problems.push(
-      `untiered: "${activity.heading}" (${activity.page}) is linked from ${from} but carries no Workshop or Recommended badge`
+      `untiered: ${activityLabel(activity)} is linked from ${from} but carries no Workshop or Recommended badge`
     );
   }
 }
@@ -328,32 +335,30 @@ for (const [key, sources] of links) {
 for (const [key, activity] of activities) {
   if (activity.audience > 2) {
     problems.push(
-      `too many audience badges: "${activity.heading}" (${activity.page}) carries ${activity.audience}; legal states are Individual, Team, or both`
+      `too many audience badges: ${activityLabel(activity)} carries ${activity.audience}; legal states are Individual, Team, or both`
     );
   }
   if (!activity.hasOutput) {
     problems.push(
-      `missing deliverable: "${activity.heading}" (${activity.page}) has no closing "A good output is..." line`
+      `missing deliverable: ${activityLabel(activity)} has no closing "A good output is..." line`
     );
   }
   if (!activity.outputIsClosing) {
     problems.push(
-      `deliverable not last: "${activity.heading}" (${activity.page}) has prose after its "A good output" line, which has to close the section`
+      `deliverable not last: ${activityLabel(activity)} has prose after its "A good output" line, which has to close the section`
     );
   }
   for (const bad of activity.badVariants) {
-    problems.push(
-      `wrong badge variant: "${activity.heading}" (${activity.page}) has ${bad}`
-    );
+    problems.push(`wrong badge variant: ${activityLabel(activity)} has ${bad}`);
   }
   if (!activity.badgesOnOneLine) {
     problems.push(
-      `badge placement: "${activity.heading}" (${activity.page}) must carry all its badges on one line, two lines below the heading (blank line between)`
+      `badge placement: ${activityLabel(activity)} must carry all its badges on one line, two lines below the heading (blank line between)`
     );
   }
   if (activity.tier === "Recommended" && !links.has(key)) {
     problems.push(
-      `unearned badge: "${activity.heading}" (${activity.page}) is marked Recommended but no assignment page links to it`
+      `unearned badge: ${activityLabel(activity)} is marked Recommended but no assignment page links to it`
     );
   }
 }
@@ -371,7 +376,7 @@ for (const placement of placements) {
   }
   if (!(activity.tier || placement.row === "In class")) {
     problems.push(
-      `schedule drift: "${activity.heading}" (${activity.page}) is on the ${placement.row} line of ${where} but no assignment page recommends it and it is not a workshop activity`
+      `schedule drift: ${activityLabel(activity)} is on the ${placement.row} line of ${where} but no assignment page recommends it and it is not a workshop activity`
     );
   }
 }
@@ -397,12 +402,12 @@ for (const [key, activity] of activities) {
   const assigned = workshopWeeks.get(key);
   if (lectures.length === 0) {
     problems.push(
-      `unscheduled workshop: "${activity.heading}" (${activity.page}) is Workshop tier but no In class line on the week-by-week schedule links it`
+      `unscheduled workshop: ${activityLabel(activity)} is Workshop tier but no In class line on the week-by-week schedule links it`
     );
   }
   if (!assigned) {
     problems.push(
-      `unassigned workshop: "${activity.heading}" (${activity.page}) is Workshop tier but assignments/workshop-activities.mdx has no row giving it a week`
+      `unassigned workshop: ${activityLabel(activity)} is Workshop tier but assignments/workshop-activities.mdx has no row giving it a week`
     );
     continue;
   }
@@ -412,7 +417,7 @@ for (const [key, activity] of activities) {
   ) {
     const found = lectures.map((l) => `${l.term} week ${l.week}`).join(", ");
     problems.push(
-      `workshop week mismatch: "${activity.heading}" (${activity.page}) runs in ${assigned.term} week ${assigned.week} on assignments/workshop-activities.mdx, but the schedule's In class lines put it in ${found}`
+      `workshop week mismatch: ${activityLabel(activity)} runs in ${assigned.term} week ${assigned.week} on assignments/workshop-activities.mdx, but the schedule's In class lines put it in ${found}`
     );
   }
 }
@@ -463,7 +468,7 @@ for (const [key, row] of workshopWeeks) {
       ? `a ${activity.tier} badge`
       : "no tier badge";
     problems.push(
-      `workshop not badged: "${activity.heading}" (${activity.page}) is the ${row.term} week ${row.week} workshop on assignments/workshop-activities.mdx but carries ${carries}`
+      `workshop not badged: ${activityLabel(activity)} is the ${row.term} week ${row.week} workshop on assignments/workshop-activities.mdx but carries ${carries}`
     );
   }
 }
@@ -548,7 +553,10 @@ for (const { dir, kind, file } of activityAndGuidePages()) {
 // as nothing. Point values and percentages next to "grade", "rubric" or
 // "criterion" are assignment-page content. A bare "%" or "points" is not
 // flagged, because the gen-AI and sprint guides use both legitimately.
-const OUTCOME_TAG_RE = /\b(SO[1-6]|L0[7-9]|L10)\b/g;
+const OUTCOME_TAG_IN_TEXT_RE = new RegExp(
+  String.raw`\b(${OUTCOME_TAG})\b`,
+  "g"
+);
 const GRADE_NUMBER_RE = /\b\d+(?:\.\d+)?(?:%| points?\b)/g;
 const GRADE_WORD_RE =
   /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/i;
@@ -557,7 +565,7 @@ const GRADE_CONTEXT_CHARS = 60;
 for (const { dir, file, kind } of activityAndGuidePages()) {
   const source = readFileSync(join(dir, file), "utf8");
   const where = `${kind}/${file}`;
-  for (const m of source.matchAll(OUTCOME_TAG_RE)) {
+  for (const m of source.matchAll(OUTCOME_TAG_IN_TEXT_RE)) {
     problems.push(
       `outcome tag: ${where} mentions ${m[1]}; tags belong only in assignment rubric CSVs`
     );
