@@ -255,7 +255,8 @@ required; `validate-outcomes.mjs` checks the order.
 7. **`## Activities That Prepare This`.** The shared recommendations first,
    naming the criterion each one serves. Then, where projects actually
    differ, an **Examples** table whose first column reads "If your project is". Then a `Browse ... when these run
-   out.` line naming one or two activity categories. Nothing follows it but
+   out.` line naming the activity pages that hold its recommendations,
+   usually one or two. Nothing follows it but
    `## References` on a page that cites sources.
 
    This section drives the activity badges. Linking an activity here makes

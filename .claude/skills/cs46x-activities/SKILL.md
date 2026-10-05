@@ -154,7 +154,8 @@ lines below the heading, once, with `anchor` equal to the heading's slug and
 Recommended badge; the closing "A good output" line being last, with nothing
 after it; the standalone rule above; no outcome tags and no point values or
 percentages next to grading words, on activity and guide pages alike; and the
-"more than a hundred" library figure on the index and the workshop page.
+"more than a hundred" figure on the index and the workshop page, which
+counts every activity other than the workshops (Recommended plus Library).
 What it does not check: heading case, whether `wholeTeam` is warranted, the
 effort clause in prose, the 400-word test, the opener rules, and the AI
 substitute rule. Those are still on you.
