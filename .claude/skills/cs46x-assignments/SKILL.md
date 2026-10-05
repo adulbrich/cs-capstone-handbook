@@ -294,9 +294,10 @@ The rules below are about its content.
 
 - **Points total the Canvas entry's `points`**, summed as each criterion's
   highest band, because Canvas grades an entry out of its rubric. An entry
-  is 100 points unless it shares a Canvas group with entries worth more,
-  since the group weights its entries by points. The survey pages are no exception: their criteria carry the facet or score
-  weights as points (#300).
+  is 100 points unless it shares a Canvas group with a heavier entry; then
+  its points are in proportion to its weight, since the group weights its
+  entries by points. The survey pages are no exception: their criteria
+  carry the facet or score weights as points (#300).
 - **One CSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
   one CSV; every workshop shares one. The RFC's draft and final differ, so
   they have two. A page with several renders each under its entry's `###`
