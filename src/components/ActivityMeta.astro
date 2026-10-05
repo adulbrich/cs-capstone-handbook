@@ -1,0 +1,131 @@
+---
+import { getCollection } from "astro:content";
+/**
+ * ActivityMeta: the badge line under every activity heading, generated from
+ * the assignment pages so it cannot drift from them.
+ *
+ * In order: `Whole team` when the activity fails without everyone present;
+ * the effort, on the fixed scale in `src/lib/activity-links.mjs`; a
+ * `Workshop N, <term>` badge linking the activity's `### Workshop N:` section
+ * on the workshop page; then `Prepares:` and one badge per assignment whose
+ * "Activities That Prepare This" section links the activity, each linking
+ * that section. An activity with none of these renders nothing.
+ *
+ * Usage in MDX, on the line after the blank line under the heading:
+ *
+ *   import ActivityMeta from '/src/components/ActivityMeta.astro';
+ *
+ *   <ActivityMeta anchor="lean-canvas" effort="30 min" wholeTeam />
+ *
+ * `anchor` is the heading's slug; `scripts/validate-activities.mjs` checks
+ * it matches, and that `effort` is on the scale.
+ *
+ * Linked badges are Starlight's `Badge` inside an anchor, because `Badge`
+ * takes no `href` and its styles are scoped to its own instances.
+ */
+import { Badge } from "@astrojs/starlight/components";
+import {
+  activityKey,
+  cachedActivityIndex,
+  EFFORT_SCALE,
+  PREP_ANCHOR,
+  WORKSHOP_PAGE_ID,
+} from "../lib/activity-links.mjs";
+
+interface Props {
+  /** The activity heading's anchor, as `lean-canvas`. */
+  anchor: string;
+  /** One value from the effort scale, as `30 min`. */
+  effort?: string;
+  /** Set when the activity fails without the whole team present. */
+  wholeTeam?: boolean;
+}
+
+const { anchor, effort, wholeTeam = false } = Astro.props;
+const { entry } = Astro.locals.starlightRoute;
+if (effort && !EFFORT_SCALE.includes(effort)) {
+  throw new Error(
+    `ActivityMeta: ${entry.id}#${anchor} has effort "${effort}", which is not one of ${EFFORT_SCALE.join(", ")}`
+  );
+}
+
+const assignments = await getCollection("docs", (d) =>
+  d.id.startsWith("assignments/")
+);
+const index = cachedActivityIndex(
+  assignments.map((d) => `${d.id}:${d.digest}`).join(),
+  () => ({
+    assignments: assignments.map((d) => ({
+      body: d.body ?? "",
+      id: d.id,
+      order: d.data.sidebar?.order,
+      title: d.data.title,
+    })),
+    workshopSource:
+      assignments.find((d) => d.id === WORKSHOP_PAGE_ID)?.body ?? "",
+  })
+);
+
+interface Entry {
+  prepares: { id: string; title: string }[];
+  workshop: { n: number; slug: string; term: string } | null;
+}
+const page = entry.id.replace(/^activities\//, "");
+const found: Entry | undefined = index.get(activityKey(page, anchor));
+const prepares = found?.prepares ?? [];
+const workshop = found?.workshop ?? null;
+const term = workshop
+  ? workshop.term[0].toUpperCase() + workshop.term.slice(1)
+  : null;
+const hasAny = wholeTeam || effort || workshop || prepares.length > 0;
+---
+
+{
+  hasAny && (
+    <div class="activity-meta not-content">
+      {wholeTeam && <Badge text="Whole team" variant="note" />}
+      {effort && <Badge text={effort} variant="default" />}
+      {workshop && (
+        <a href={`/${WORKSHOP_PAGE_ID}/#${workshop.slug}`}>
+          <Badge text={`Workshop ${workshop.n}, ${term}`} variant="caution" />
+        </a>
+      )}
+      {prepares.length > 0 && (
+        <span class="activity-meta__label">Prepares:</span>
+      )}
+      {prepares.map((a) => (
+        <a href={`/${a.id}/#${PREP_ANCHOR}`}>
+          <Badge text={a.title} variant="tip" />
+        </a>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .activity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .activity-meta a {
+    text-decoration: none;
+  }
+
+  .activity-meta a:hover :global(.sl-badge),
+  .activity-meta a:focus-visible :global(.sl-badge) {
+    text-decoration: underline;
+  }
+
+  .activity-meta__label {
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+    margin-inline-start: 0.25rem;
+  }
+
+  .activity-meta__label:first-child {
+    margin-inline-start: 0;
+  }
+</style>

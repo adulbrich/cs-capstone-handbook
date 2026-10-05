@@ -1,23 +1,28 @@
 #!/usr/bin/env node
 // Validates the activity pages against .claude/skills/cs46x-activities.
 //
-// An ACTIVITY is a `##` section carrying an audience badge. That is the whole
-// definition, and it is mechanical on purpose: page framing and closing prose
-// also use `##`, so counting headings alone silently counts non-activities.
+// An ACTIVITY is a `##` section carrying an `<ActivityMeta>` badge line. That
+// is the whole definition, and it is mechanical on purpose: page framing and
+// closing prose also use `##`, so counting headings alone silently counts
+// non-activities.
 //
-// Tiers are expressed as badges on activity pages, but the thing that actually
-// makes an activity Recommended is an assignment page linking to it. Those two
-// facts live in different files and drift silently, so this reconciles them:
+// An activity's tier is not written on its page. It is computed, here and in
+// the badge line alike, by src/lib/activity-links.mjs from the assignment
+// pages: Workshop when a `### Workshop N:` section on
+// assignments/workshop-activities.mdx names it, Recommended when an
+// assignment's "Activities That Prepare This" section links it, Library
+// otherwise. A hand-written tier badge was a second copy of that fact, and
+// two rules here existed only to catch the copies drifting.
 //
-//   1. Every activity linked from an assignment page's "Activities That Prepare
-//      This" section must carry a Workshop or Recommended badge. A linked
-//      activity with no badge reads to students as optional library filler.
-//   2. Every Recommended badge must be earned by such a link. A Recommended
-//      badge no assignment references is a lie about what prepares what.
-//   3. Every anchor an assignment links to must resolve to a real heading.
+//   1. The badge line sits two lines below its heading (blank line between),
+//      once per section, and its `anchor` is the heading's slug, so the
+//      component looks up the activity the heading names. `effort`, when
+//      present, is on the fixed scale. A hand-written audience or tier badge
+//      is reported: those are retired.
+//   2. Every anchor an assignment links to must resolve to a real heading.
 //      (The Starlight link validator also catches this at build time; this
 //      check runs without a build and names the activity, not the URL.)
-//   4. An activity or guide page is standalone. It never links an assignment
+//   3. An activity or guide page is standalone. It never links an assignment
 //      page, never says "workshop", and never places itself in a term, a
 //      numbered week, or a "first half" or "second half" (of a class session
 //      on an activity page, of the project on a guide). The patterns are a
@@ -30,48 +35,48 @@
 //      because nothing checked them. A reader who is not enrolled should be
 //      able to use any page in either directory. Guide links and external
 //      sources stay, and the direction of travel is one way: assignments link
-//      to both.
+//      to both. The generated badge line is the one exception: it names the
+//      course pages an activity serves, and it is computed, not prose.
 //
-//   5. Every activity carries a closing "A good output is..." line. The
+//   4. Every activity carries a closing "A good output is..." line. The
 //      deliverable line is the only quality signal an activity has, and it is
-//      what lets a student self-check. The audience badge itself cannot be
-//      required here, because it is the definition of an activity: a `##`
-//      section without one is prose. What can be caught is the near miss, a
-//      section that carries a tier badge (Workshop or Recommended) and no
-//      audience badge, which is an activity someone forgot to label. Those
-//      are reported instead of being skipped as prose.
+//      what lets a student self-check.
 //
-//   6. The week-by-week schedule on introduction/schedule.mdx links activities
+//   5. The week-by-week schedule on introduction/schedule.mdx links activities
 //      directly, outside any assignment page. Every one of those links must
-//      resolve. A link on an **Optional** line must carry a Workshop or
-//      Recommended badge, so the schedule never offers a student an activity
-//      no assignment page still recommends. An **In class** line may link an
-//      untiered activity: a class session can run something unassessed, and
-//      an icebreaker will never earn a tier because no assignment prepares
-//      from it.
+//      resolve. A link on an **Optional** line must be a Workshop or
+//      Recommended activity, so the schedule never offers a student an
+//      activity no assignment page still recommends. An **In class** line may
+//      link a library activity: a class session can run something
+//      unassessed, and an icebreaker will never earn a tier because no
+//      assignment prepares from it.
 //
-//   7a. Every guide is scheduled at least once. Nothing used to fail when a
+//   6a. Every guide is scheduled at least once. Nothing used to fail when a
 //      guide was read in no term, and two were: accessibility and
 //      ai-project-setup, 4,843 words nobody was ever asked to read. This is
-//      the guide half of rule 6, with one deliberate exemption.
+//      the guide half of rule 5, with one deliberate exemption.
 //
-//   7. Every Workshop activity sits on an In class line, in the same term and
-//      week that assignments/workshop-activities.mdx gives it, and every
-//      workshop section on that page points at an activity badged Workshop. The schedule, the
-//      assignment page, and the badge are three records of one fact, and
-//      before this check they disagreed about fall week 3 for weeks: the
-//      schedule prose named one activity, its link named another, and the
-//      badges sided with the prose. Reading the page as one flat set of links
-//      could not see it.
-//
-// Workshop-tier activities are exempt from rule 2: they are assigned centrally
-// through assignments/workshop-activities.mdx, not per assignment page.
+//   6. Every Workshop activity sits on an In class line, in the same term and
+//      week that assignments/workshop-activities.mdx gives it. The schedule
+//      and the assignment page are two records of one fact, and before this
+//      check they disagreed about fall week 3 for weeks: the schedule prose
+//      named one activity, its link named another. Reading the page as one
+//      flat set of links could not see it.
 //
 // Run: node scripts/validate-activities.mjs
 
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
+import {
+  ACTIVITY_LINK_RE,
+  activityKey,
+  buildActivityIndex,
+  EFFORT_SCALE,
+  slugify,
+  tierOf,
+  workshopEntries,
+} from "../src/lib/activity-links.mjs";
 import { canvasRows } from "../src/lib/canvas-entries.mjs";
 import { OUTCOME_TAG } from "../src/lib/rubric-csv.mjs";
 import { parseFrontmatter } from "./lib/content.mjs";
@@ -79,36 +84,25 @@ import { parseFrontmatter } from "./lib/content.mjs";
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
 const GUIDES_DIR = "src/content/docs/guides";
-const SECTION_HEADING = "## Activities That Prepare This";
 const SCHEDULE_PAGE = "src/content/docs/introduction/schedule.mdx";
 const WORKSHOP_PAGE = "src/content/docs/assignments/workshop-activities.mdx";
-const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/g;
 const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
-// Both pages head their term sections the same way: "## Fall (CS 461)" on the
-// schedule, "## Fall" on the assignment page.
+// The schedule heads its term sections "## Fall (CS 461)".
 const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
 const WEEK_HEADING_RE = /^### Week (\d+)\b/;
 // A schedule line is a list item labelled in bold: Due, In class, Read,
 // Optional. A nested item carries no label and belongs to the line above it.
 const ROW_LABEL_RE = /^- \*\*([A-Za-z][A-Za-z -]*?):?\*\*/;
 
-// GitHub-style slugger, matching how Starlight derives heading anchors.
-function slugify(heading) {
-  return heading
-    .trim()
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/[\s_]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-// The badges belong on the line right after the heading. The scan window is
-// wider than that one line only so a badge pushed down by a blank line or an
-// MDX comment is still found (and, from the same window, reported).
+// The badge line belongs on the line after the blank line under the heading.
+// The scan window is wider than that only so a badge line pushed down by a
+// second blank line or an MDX comment is still found and reported.
 const BADGE_WINDOW_LINES = 4;
-const AUDIENCE_BADGE_RE =
-  /<Badge[^>]*text="(Individual Activity|Team Activity)"/g;
-const TIER_BADGE_RE = /<Badge[^>]*text="(Workshop|Recommended)"/;
+const META_TAG_RE = /<ActivityMeta\b[^>]*>/;
+// The badges the badge line replaced. One left on an activity page is a
+// hand-written second copy of what the component computes.
+const RETIRED_BADGE_RE =
+  /<Badge[^>]*text="(Individual Activity|Team Activity|Workshop|Recommended)"/;
 
 // The section body runs to the next h2 or end of file.
 function sectionEnd(lines, start) {
@@ -118,27 +112,6 @@ function sectionEnd(lines, start) {
     }
   }
   return lines.length;
-}
-
-// The skill fixes the variant per audience; a Team badge in green reads as
-// an Individual one at a glance, which is the only reason the colours exist.
-const AUDIENCE_VARIANTS = {
-  "Individual Activity": "success",
-  "Team Activity": "note",
-};
-
-// Badges whose variant disagrees with AUDIENCE_VARIANTS, as "text (variant)".
-function badVariants(badgeWindow) {
-  const bad = [];
-  for (const [tag] of badgeWindow.matchAll(/<Badge\b[^>]*>/g)) {
-    const text = tag.match(/\btext="([^"]*)"/)?.[1];
-    const variant = tag.match(/\bvariant="([^"]*)"/)?.[1];
-    const expected = AUDIENCE_VARIANTS[text];
-    if (expected && variant !== expected) {
-      bad.push(`${text} (${variant ?? "no variant"}, expected ${expected})`);
-    }
-  }
-  return bad;
 }
 
 // True when the last "A good output" line is the final non-blank line of the
@@ -157,30 +130,33 @@ function readSection(page, lines, i) {
   const badgeWindow = lines.slice(i + 1, i + 1 + BADGE_WINDOW_LINES).join("\n");
   const bodyLines = lines.slice(i + 1, sectionEnd(lines, i));
   const body = bodyLines.join("\n");
+  const tag = badgeWindow.match(META_TAG_RE)?.[0] ?? null;
   return {
-    audience: [...badgeWindow.matchAll(AUDIENCE_BADGE_RE)].length,
-    // One badge line, on the line after the blank line after the heading.
-    badgesOnOneLine:
-      lines[i + 1] === "" &&
-      (lines[i + 2] ?? "").startsWith("<Badge") &&
-      bodyLines.filter((l) => l.startsWith("<Badge")).length === 1,
-    badVariants: badVariants(badgeWindow),
+    anchor: tag?.match(/\banchor="([^"]*)"/)?.[1] ?? null,
+    effort: tag?.match(/\beffort="([^"]*)"/)?.[1] ?? null,
     hasOutput: /^A good output/m.test(body),
     heading,
+    // One badge line, on the line after the blank line after the heading.
+    metaPlaced:
+      lines[i + 1] === "" &&
+      (lines[i + 2] ?? "").startsWith("<ActivityMeta") &&
+      bodyLines.filter((l) => l.includes("<ActivityMeta")).length === 1,
     outputIsClosing: outputIsClosing(bodyLines),
     page,
-    tier: badgeWindow.match(TIER_BADGE_RE)?.[1] ?? null,
+    retiredBadges: bodyLines.filter((l) => RETIRED_BADGE_RE.test(l)).length,
+    slug: slugify(heading),
+    tag,
   };
 }
 
 // How a message names an activity, or a section that should have been one.
 const activityLabel = (section) => `"${section.heading}" (${section.page})`;
 
-// Collect every activity: page, heading, slug, and its tier badge (if any).
-// Also collect the near misses: sections with a tier badge and no audience
-// badge, which rule 5 reports.
+// Collect every activity, keyed "page#slug". Also collect the near misses:
+// sections still carrying a retired hand-written badge and no badge line,
+// which are reported rather than skipped as prose.
 function readActivities() {
-  const activities = new Map(); // "page#slug" -> { page, heading, tier, ... }
+  const activities = new Map();
   const unlabeled = [];
   for (const file of readdirSync(ACTIVITIES_DIR)) {
     if (!file.endsWith(".mdx") || file === "introduction.mdx") {
@@ -193,42 +169,37 @@ function readActivities() {
         continue;
       }
       const section = readSection(page, lines, i);
-      // No audience badge means this is page prose, not an activity, unless
-      // a tier badge says otherwise.
-      if (section.audience === 0) {
-        if (section.tier) {
+      if (!section.tag) {
+        if (section.retiredBadges > 0) {
           unlabeled.push(section);
         }
         continue;
       }
-      activities.set(`${page}#${slugify(section.heading)}`, section);
+      activities.set(activityKey(page, section.slug), section);
     }
   }
   return { activities, unlabeled };
 }
 
-// Collect every activity link inside an "Activities That Prepare This" section.
-function readAssignmentLinks() {
-  const links = new Map(); // "page#slug" -> Set of assignment filenames
+// Every assignment page as the shared lib reads it: docs id, title, sidebar
+// order, and the raw MDX.
+function readAssignments() {
+  const assignments = [];
   for (const file of readdirSync(ASSIGNMENTS_DIR)) {
     if (!file.endsWith(".mdx")) {
       continue;
     }
     const source = readFileSync(join(ASSIGNMENTS_DIR, file), "utf8");
-    const start = source.indexOf(SECTION_HEADING);
-    if (start === -1) {
-      continue;
-    }
-    const section = source.slice(start);
-    for (const m of section.matchAll(ACTIVITY_LINK_RE)) {
-      const key = `${m[1]}#${m[2]}`;
-      if (!links.has(key)) {
-        links.set(key, new Set());
-      }
-      links.get(key).add(file);
-    }
+    const data = parse(parseFrontmatter(source)?.frontmatter ?? "") ?? {};
+    assignments.push({
+      body: source,
+      file,
+      id: `assignments/${file.slice(0, -4)}`,
+      order: data.sidebar?.order,
+      title: data.title ?? file,
+    });
   }
-  return links;
+  return assignments;
 }
 
 // Collect every activity link on the schedule page with the term, week, and
@@ -259,83 +230,75 @@ function readSchedulePlacements() {
       continue;
     }
     for (const m of line.matchAll(ACTIVITY_LINK_RE)) {
-      placements.push({ key: `${m[1]}#${m[2]}`, row, term, week });
+      placements.push({ key: activityKey(m[1], m[2]), row, term, week });
     }
   }
   return placements;
 }
 
-// The week each workshop runs, as the assignment page records it: a
-// "### Workshop N: ..." section under a term heading names the activity in its
-// first link, and entry N's week is the Nth week the frontmatter lists for
-// that term.
-const WORKSHOP_HEADING_RE = /^### Workshop (\d+):/;
-function readWorkshopWeeks() {
-  const weeks = new Map(); // "page#slug" -> { term, week }
-  const source = readFileSync(WORKSHOP_PAGE, "utf8");
+// The week each workshop runs: entry N's week is the Nth week the workshop
+// page's frontmatter lists for that term.
+function readWorkshopWeeks(source) {
   const rows = canvasRows(
     parse(parseFrontmatter(source).frontmatter).assignment.canvas
   );
-  const termWeeks = (t) => rows.find((r) => r.term === t)?.weeks;
-  let term = null;
-  let entry = null;
-  for (const line of source.split("\n")) {
-    if (line.startsWith("## ")) {
-      term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
-      entry = null;
-      continue;
+  const weeks = new Map(); // "page#slug" -> { term, week }
+  for (const entry of workshopEntries(source)) {
+    const week = rows.find((r) => r.term === entry.term)?.weeks[entry.n - 1];
+    if (Number.isInteger(week)) {
+      weeks.set(entry.key, { term: entry.term, week });
     }
-    const heading = line.match(WORKSHOP_HEADING_RE);
-    if (heading) {
-      entry = term ? Number(heading[1]) : null;
-      continue;
-    }
-    const [link] = [...line.matchAll(ACTIVITY_LINK_RE)];
-    const week = termWeeks(term)?.[entry - 1];
-    if (!(entry && link && Number.isInteger(week))) {
-      continue;
-    }
-    weeks.set(`${link[1]}#${link[2]}`, { term, week });
-    entry = null; // only the section's first link names its activity
   }
   return weeks;
 }
 
 const { activities, unlabeled } = readActivities();
-const links = readAssignmentLinks();
+const assignments = readAssignments();
+const workshopSource = readFileSync(WORKSHOP_PAGE, "utf8");
+const index = buildActivityIndex({ assignments, workshopSource });
+const tier = (key) => tierOf(index.get(key));
 const placements = readSchedulePlacements();
-const workshopWeeks = readWorkshopWeeks();
+const workshopWeeks = readWorkshopWeeks(workshopSource);
 const problems = [];
 
-// Rule 5, the audience half: a tier badge with no audience badge.
+// Rule 1, the near miss: a section with a hand-written badge and no badge line.
 for (const section of unlabeled) {
   problems.push(
-    `no audience badge: ${activityLabel(section)} carries a ${section.tier} badge but no Individual or Team Activity badge, so it is not counted as an activity`
+    `no badge line: ${activityLabel(section)} carries a hand-written audience or tier badge and no <ActivityMeta>, so it is not counted as an activity`
   );
 }
 
-// Rule 3, then rule 1.
-for (const [key, sources] of links) {
-  const activity = activities.get(key);
-  const from = [...sources].join(", ");
-  if (!activity) {
-    problems.push(
-      `broken anchor: /activities/${key} linked from ${from} matches no heading`
-    );
+// Rule 2: every prepared activity resolves.
+for (const [key, entry] of index) {
+  if (activities.has(key) || entry.prepares.length === 0) {
     continue;
   }
-  if (!activity.tier) {
-    problems.push(
-      `untiered: ${activityLabel(activity)} is linked from ${from} but carries no Workshop or Recommended badge`
-    );
-  }
+  const from = entry.prepares.map((a) => `${a.id}.mdx`).join(", ");
+  problems.push(
+    `broken anchor: /activities/${key} linked from ${from} matches no heading`
+  );
 }
 
-// Rules 2, 4, and 5.
-for (const [key, activity] of activities) {
-  if (activity.audience > 2) {
+// Rules 1 and 4.
+for (const activity of activities.values()) {
+  if (!activity.metaPlaced) {
     problems.push(
-      `too many audience badges: ${activityLabel(activity)} carries ${activity.audience}; legal states are Individual, Team, or both`
+      `badge placement: ${activityLabel(activity)} must carry one <ActivityMeta> line, two lines below the heading (blank line between)`
+    );
+  }
+  if (activity.anchor !== activity.slug) {
+    problems.push(
+      `badge anchor: ${activityLabel(activity)} has anchor="${activity.anchor ?? ""}", but its heading's anchor is "${activity.slug}"`
+    );
+  }
+  if (activity.effort !== null && !EFFORT_SCALE.includes(activity.effort)) {
+    problems.push(
+      `effort off the scale: ${activityLabel(activity)} has effort="${activity.effort}"; use one of ${EFFORT_SCALE.join(", ")}`
+    );
+  }
+  if (activity.retiredBadges > 0) {
+    problems.push(
+      `hand-written badge: ${activityLabel(activity)} still carries an Individual, Team, Workshop, or Recommended badge; <ActivityMeta> computes the badge line`
     );
   }
   if (!activity.hasOutput) {
@@ -348,23 +311,10 @@ for (const [key, activity] of activities) {
       `deliverable not last: ${activityLabel(activity)} has prose after its "A good output" line, which has to close the section`
     );
   }
-  for (const bad of activity.badVariants) {
-    problems.push(`wrong badge variant: ${activityLabel(activity)} has ${bad}`);
-  }
-  if (!activity.badgesOnOneLine) {
-    problems.push(
-      `badge placement: ${activityLabel(activity)} must carry all its badges on one line, two lines below the heading (blank line between)`
-    );
-  }
-  if (activity.tier === "Recommended" && !links.has(key)) {
-    problems.push(
-      `unearned badge: ${activityLabel(activity)} is marked Recommended but no assignment page links to it`
-    );
-  }
 }
 
-// Rule 6: every scheduled link resolves, and every line but In class offers
-// only tiered activities. An In class line may link an untiered one.
+// Rule 5: every scheduled link resolves, and every line but In class offers
+// only Workshop or Recommended activities.
 for (const placement of placements) {
   const activity = activities.get(placement.key);
   const where = `${placement.term} week ${placement.week}`;
@@ -374,15 +324,15 @@ for (const placement of placements) {
     );
     continue;
   }
-  if (!(activity.tier || placement.row === "In class")) {
+  if (!(tier(placement.key) !== "Library" || placement.row === "In class")) {
     problems.push(
       `schedule drift: ${activityLabel(activity)} is on the ${placement.row} line of ${where} but no assignment page recommends it and it is not a workshop activity`
     );
   }
 }
 
-// Rule 7: the schedule, the assignment page, and the badge agree on every
-// workshop. Each direction fails differently, so each is reported separately.
+// Rule 6: the schedule and the assignment page agree on every workshop. Each
+// direction fails differently, so each is reported separately.
 const lectureWeeks = new Map(); // "page#slug" -> [{ term, week }]
 for (const placement of placements) {
   if (placement.row !== "In class") {
@@ -394,25 +344,20 @@ for (const placement of placements) {
   lectureWeeks.get(placement.key).push(placement);
 }
 
-for (const [key, activity] of activities) {
-  if (activity.tier !== "Workshop") {
+for (const [key, assigned] of workshopWeeks) {
+  const activity = activities.get(key);
+  if (!activity) {
+    problems.push(
+      `broken anchor: /activities/${key} listed as the ${assigned.term} week ${assigned.week} workshop matches no heading`
+    );
     continue;
   }
   const lectures = lectureWeeks.get(key) ?? [];
-  const assigned = workshopWeeks.get(key);
   if (lectures.length === 0) {
     problems.push(
       `unscheduled workshop: ${activityLabel(activity)} is Workshop tier but no In class line on the week-by-week schedule links it`
     );
-  }
-  if (!assigned) {
-    problems.push(
-      `unassigned workshop: ${activityLabel(activity)} is Workshop tier but assignments/workshop-activities.mdx has no row giving it a week`
-    );
-    continue;
-  }
-  if (
-    lectures.length > 0 &&
+  } else if (
     !lectures.some((l) => l.term === assigned.term && l.week === assigned.week)
   ) {
     const found = lectures.map((l) => `${l.term} week ${l.week}`).join(", ");
@@ -422,7 +367,7 @@ for (const [key, activity] of activities) {
   }
 }
 
-// Rule 7a: every guide is read in some week. Only Read lines count, because a
+// Rule 6a: every guide is read in some week. Only Read lines count, because a
 // guide named in passing on an In class line is not assigned reading.
 const GUIDES_NEVER_SCHEDULED = new Set([
   // The section index, not a guide.
@@ -455,25 +400,7 @@ for (const file of readdirSync(GUIDES_DIR)) {
   );
 }
 
-for (const [key, row] of workshopWeeks) {
-  const activity = activities.get(key);
-  if (!activity) {
-    problems.push(
-      `broken anchor: /activities/${key} listed as the ${row.term} week ${row.week} workshop matches no heading`
-    );
-    continue;
-  }
-  if (activity.tier !== "Workshop") {
-    const carries = activity.tier
-      ? `a ${activity.tier} badge`
-      : "no tier badge";
-    problems.push(
-      `workshop not badged: ${activityLabel(activity)} is the ${row.term} week ${row.week} workshop on assignments/workshop-activities.mdx but carries ${carries}`
-    );
-  }
-}
-
-// --- Rule 4: activity and guide pages are standalone -------------------------
+// --- Rule 3: activity and guide pages are standalone -------------------------
 // Each pattern is something a reader outside this course cannot resolve. The
 // two exemptions are real external events, not sessions of this course, and
 // they are listed rather than pattern-matched so that adding a third is a
@@ -504,7 +431,7 @@ const STANDALONE_EXEMPT = new Set([
 const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/g;
 
 // Every MDX page under activities/ and guides/, with the directory's short
-// name for messages and keys. Rule 4 and the outcome-tag and grading-language
+// name for messages and keys. Rule 3 and the outcome-tag and grading-language
 // check below both read exactly these pages.
 function* activityAndGuidePages() {
   for (const [dir, kind] of [
@@ -520,8 +447,8 @@ function* activityAndGuidePages() {
 }
 
 for (const { dir, kind, file } of activityAndGuidePages()) {
-  // The activities index is the page that explains what a Workshop badge
-  // means, so it is the one page allowed to use the word and to link the
+  // The activities index is the page that explains what the badge line
+  // means, so it is the one page allowed to say "workshop" and to link the
   // assignment that owns the tier. The guides index gets no such pass.
   if (dir === ACTIVITIES_DIR && file === "introduction.mdx") {
     continue;
@@ -532,8 +459,9 @@ for (const { dir, kind, file } of activityAndGuidePages()) {
     if (line.startsWith("## ")) {
       section = `${page}#${slugify(line.slice(3).trim())}`;
     }
-    // The tier badge carries the word "Workshop" as markup, not as prose.
-    if (line.startsWith("<Badge") || STANDALONE_EXEMPT.has(section)) {
+    // The generated badge line names course pages by design; it is markup
+    // computed from the assignment pages, not prose.
+    if (line.startsWith("<ActivityMeta") || STANDALONE_EXEMPT.has(section)) {
       continue;
     }
     const prose = line.replace(EXTERNAL_LINK_TARGET_RE, "]()");
@@ -584,8 +512,8 @@ for (const { dir, file, kind } of activityAndGuidePages()) {
 }
 
 const counts = { Library: 0, Recommended: 0, Workshop: 0 };
-for (const activity of activities.values()) {
-  counts[activity.tier ?? "Library"] += 1;
+for (const key of activities.keys()) {
+  counts[tier(key)] += 1;
 }
 
 // Two pages describe the size of the non-workshop library in prose. An exact
@@ -633,5 +561,5 @@ if (problems.length > 0) {
   process.exit(1);
 }
 console.log(
-  "\nEvery linked activity is tiered, and every Recommended badge is earned."
+  "\nEvery badge line is placed and anchored, and every linked activity resolves."
 );

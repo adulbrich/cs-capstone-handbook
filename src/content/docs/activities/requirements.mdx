@@ -5,7 +5,7 @@ sidebar:
   order: 9
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 import LeanCanvas from '../../../components/LeanCanvas.astro';
 
 Your requirements create a shared understanding of the problem being solved and what needs to be built. These activities help you frame them.
@@ -16,7 +16,7 @@ Your requirements live in the repository as continuously updated docs, and the u
 
 ## OSU Advantage Accelerator's Iterate Program
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="osu-advantage-accelerators-iterate-program" effort="1 h" />
 
 Attend the OSU Advantage Accelerator's [Iterate](https://advantage.oregonstate.edu/advantage-accelerator/programs/iterate) workshop to pressure-test your project idea as a venture. It's a one-hour interactive virtual workshop covering what separates a startup from an idea, how to identify a problem worth solving, the Value Proposition Canvas, and how to pitch clearly. Sessions run periodically over Zoom; check the page for the next date and register.
 
@@ -32,7 +32,7 @@ A good output is the list of hypotheses the session changed, each with the user 
 
 ## Lean Canvas
 
-<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="lean-canvas" />
 
 Complete the [Lean Canvas](https://www.leanfoundry.com/tools/lean-canvas) with as much detail as you can.
 
@@ -46,7 +46,7 @@ A good output is your completed Lean Canvas with any additional information that
 
 ## Hypothesis Testing
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="hypothesis-testing" />
 
 Most of the information in your [Lean Canvas](#lean-canvas) is hypotheses. Identify five of the riskiest hypotheses in your plan's customer segments, problems, and competition.
 
@@ -63,7 +63,7 @@ A good output is five riskiest hypotheses, each with its pass/fail test, anonymi
 
 ## User Story Mapping
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="user-story-mapping" effort="1 to 2 h" />
 
 Read the Nielsen Norman Group's [User Story Mapping](https://www.nngroup.com/articles/user-story-mapping/) article, about ten minutes, then map your project's main user flows and write the initial epics and user stories under them. The map defines your use cases and scenarios; it grows later, so map the main flows rather than every edge case. About an hour and a half as a team.
 
@@ -86,7 +86,7 @@ A good output is a user story map with epics and written user stories, each mark
 
 ## User's Emotional Objectives
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="users-emotional-objectives" />
 
 Look past your users' functional goals to the emotional objectives behind them, since those shape whether people choose your software and keep using it.
 
@@ -101,7 +101,7 @@ A good output is a written list of the emotional objectives behind your users' f
 
 ## Domain Model
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="domain-model" />
 
 Create a [Domain Model](https://simplea.com/Articles/domain-model) that represents the key entities and relationships within your project's problem space.
 
@@ -114,7 +114,7 @@ A good output is a diagram along with a brief explanation of the entities and th
 
 ## User Manual
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="user-manual" />
 
 Develop a preliminary user manual that outlines how end-users will interact with your software.
 
@@ -129,7 +129,7 @@ A good output is a draft of the user manual with clear instructions on using the
 
 ## Define Your Research Questions
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="define-your-research-questions" effort="1 to 2 h" />
 
 For research and R&D projects, this does the job user stories do for everyone else: it decides what you build and how you'll know it worked. One to two hours with your faculty partner, after a [literature review](/activities/creative/#write-a-literature-review).
 
@@ -144,7 +144,7 @@ A good output is a page in `docs/requirements.md` carrying the question, whether
 
 ## Collect Data Sources
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="collect-data-sources" />
 
 If you're conducting secondary research, i.e., analyzing existing data or literature collected by others, list all the relevant data sources needed to answer your research questions.
 
@@ -154,7 +154,7 @@ A good output is a table of every data source with its creator, date, format, ac
 
 ## Define The Data To Collect
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="define-the-data-to-collect" />
 
 If you're [conducting primary research](https://owl.purdue.edu/owl/research_and_citation/conducting_research/conducting_primary_research/index.html), i.e., collecting original data, define what type of data (i.e., qualitative, quantitative, mixed) you need to collect, and what methodologies you'll use (i.e., surveys/questionnaires, interviews or focus groups, experiments or observations). Explain the purpose of each category of data collected with regard to your research question(s).
 
@@ -162,7 +162,7 @@ A good output is a written data collection plan naming the data types, the metho
 
 ## Low or Medium-Fidelity Prototype
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="low-or-medium-fidelity-prototype" />
 
 Create a low or medium-fidelity prototype to clarify and validate the project's functional requirements.
 
@@ -176,7 +176,7 @@ A good output is the prototype link and a brief reflection on how it clarified o
 
 ## Jobs to Be Done Theory
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="jobs-to-be-done-theory" />
 
 The [Jobs to Be Done (JTBD) Theory](https://www.coursera.org/articles/jobs-to-be-done) is a framework for understanding the underlying tasks or "jobs" users are trying to accomplish with your product. Instead of focusing solely on features, JTBD helps you uncover the real motivations and desired outcomes of your users.
 
@@ -191,7 +191,7 @@ A good output is the job statement for your primary user segment, backed by what
 
 ## Current vs. Ideal Workflow
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="current-vs-ideal-workflow" />
 
 Analyzing the current workflow versus the ideal workflow helps you identify pain points, inefficiencies, and opportunities for improvement in your project's domain.
 
@@ -203,7 +203,7 @@ A good output is a comparison of the current and ideal workflows (as text or dia
 
 ## Is / Is-Not
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="is--is-not" />
 
 The Is / Is-Not analysis helps clarify the scope and boundaries of your project by explicitly stating what the project is and is not.
 

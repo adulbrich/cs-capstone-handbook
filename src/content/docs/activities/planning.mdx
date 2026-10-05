@@ -5,7 +5,8 @@ sidebar:
   order: 7
 ---
 
-import { Badge, LinkCard } from '@astrojs/starlight/components';
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 
 Planning activities help you figure out your timeline and deliverables. They work best combined with the requirements and design activities. Say what you don't know yet (risks) and how you'll get those answers.
 
@@ -19,7 +20,7 @@ Planning activities help you figure out your timeline and deliverables. They wor
 
 ## Identify Success Metrics
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="identify-success-metrics" effort="1 to 2 h" />
 
 Decide what "it worked" will mean, in numbers, while you're still far enough from the deadline that the result can't sway you. About an hour and a half as a team, once when you first commit to what shipping will mean, and again when the deadline is close enough to check the number.
 
@@ -78,7 +79,7 @@ A good output is 2 or 3 metrics with their decision rules and a named instrument
 
 ## Weekly Work Intensity
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="weekly-work-intensity" />
 
 Rate each week of the term as low, medium, or high based on the effort you expect to dedicate to your project, considering other (course) commitments. Throughout the term, track your actual effort and compare it to your predictions. At the end, reflect on how your expectations matched your experience and identify any adjustments needed to better manage your time going forward.
 
@@ -88,7 +89,7 @@ A good output is your predicted intensity per week next to your actual tracked e
 
 ## Plan Prototype
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="plan-prototype" />
 
 Your project might have a lot of unknowns, either on the technical feasibility side or on the user side (value or usability).
 
@@ -113,7 +114,7 @@ A good output is a plan with the types of prototypes you'll build, in what order
 
 ## Gantt Chart
 
-<Badge text="Team Activity" variant="note" class="mb-6"/>
+<ActivityMeta anchor="gantt-chart" />
 
 A [Gantt chart](https://www.atlassian.com/agile/project-management/gantt-chart) is a visual project management tool that displays tasks and timelines. It consists of a horizontal bar chart, where each bar represents a task, showing its start date, duration, and end date. The chart helps in tracking project progress, managing deadlines, and identifying dependencies between tasks, making it easier to plan and monitor the project's workflow.
 
@@ -129,7 +130,7 @@ A good output is a Gantt chart showing tasks, durations, and dependencies, with 
 
 ## Dependency Mapping or Critical Path Analysis
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="dependency-mapping-or-critical-path-analysis" />
 
 Map task dependencies and identify the critical path to ensure efficient project scheduling and resource management.
 
@@ -144,7 +145,7 @@ A good output is a dependency map and critical path analysis, including identifi
 
 ## Prioritization
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="prioritization" />
 
 Turn your backlog of requirements or tasks into a ranked list with a reason next to each rank, so that sprint planning pulls from the top instead of re-arguing the order. Forty-five minutes as a team, then a few minutes after every project partner meeting.
 
@@ -158,7 +159,7 @@ A good output is your prioritized list of requirements or tasks, the method you 
 
 ## Risk Management Plan
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="risk-management-plan" effort="1 h" wholeTeam />
 
 Run a premortem and turn what it surfaces into the first ranked entries in `docs/risks.md`. The [Project Risks guide](/guides/risks/) explains each part. About an hour as a team, then again whenever the plan changes.
 
@@ -177,7 +178,7 @@ A good output is a `docs/risks.md` with every open risk written as a condition a
 
 ## SWOT Analysis
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="swot-analysis" />
 
 Conduct a SWOT (Strengths, Weaknesses, Opportunities, Threats) analysis to identify key internal and external factors affecting your project.
 
@@ -192,7 +193,7 @@ A good output is a completed SWOT grid with at least one concrete action drawn f
 
 ## Kanban Board Setup
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="kanban-board-setup" wholeTeam />
 
 Set up a Kanban board to visualize and manage your project's workflow effectively.
 
@@ -206,7 +207,7 @@ A good output is your live Kanban board and a brief explanation of its structure
 
 ## Responsibility Assignment Matrix (RACI)
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="responsibility-assignment-matrix-raci" wholeTeam />
 
 A [RACI matrix](https://en.wikipedia.org/wiki/Responsibility_assignment_matrix) is a project management tool that clarifies roles and responsibilities for tasks or deliverables. RACI stands for:
 
@@ -228,7 +229,7 @@ A good output is a RACI matrix for your project, detailing roles and responsibil
 
 ## Stakeholder Mapping
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="stakeholder-mapping" />
 
 Identify and categorize project stakeholders to ensure effective communication and alignment of expectations.
 
@@ -241,7 +242,7 @@ A good output is a stakeholder map and a plan outlining communication strategies
 
 ## Definition of Done
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="definition-of-done" wholeTeam />
 
 The [Definition of Done (DoD)](https://www.atlassian.com/agile/project-management/definition-of-done) establishes clear criteria for when tasks, features, or the overall project can be considered complete.
 
@@ -255,7 +256,7 @@ A good output is the agreed Definition of Done, written into your `CONTRIBUTING.
 
 ## How Might We Questions
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="how-might-we-questions" />
 
 The ["How Might We" (HMW) technique](https://www.nngroup.com/articles/how-might-we-questions/) is a creative problem-framing method used to turn challenges or observations into opportunities for innovation. By rephrasing problems as open-ended questions starting with "How might we...", you encourage brainstorming and solution-oriented thinking.
 
@@ -267,7 +268,7 @@ A good output is a list of at least three "How might we..." questions relevant t
 
 ## Fishbone Diagram
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="fishbone-diagram" />
 
 A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known as an Ishikawa or Cause-and-Effect Diagram) is a visual tool for identifying, exploring, and displaying the possible causes of a specific problem or effect. It helps teams systematically analyze root causes rather than just symptoms.
 
@@ -282,7 +283,7 @@ A good output is a completed Fishbone Diagram (hand-drawn or created with a diag
 
 ## Software Release and Versioning
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="software-release-and-versioning" />
 
 Plan the release process for your software, including version control and deployment strategies.
 
@@ -297,7 +298,7 @@ A good output is a release plan document that includes versioning details and de
 
 ## Software Development Process
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="software-development-process" wholeTeam />
 
 Define and plan the software development process for your project to ensure clear workflow and task management.
 
@@ -313,7 +314,7 @@ A good output is a document outlining the chosen process, phases, milestones, an
 
 ## Map Your External Approvals
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="map-your-external-approvals" effort="1 to 2 h" />
 
 Find every approval your project needs from someone outside your team, and start the slowest one this week. Ninety minutes in the first fortnight, then a standing agenda item.
 

@@ -5,7 +5,7 @@ sidebar:
   order: 10
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 
 Teamwork activities work best when all team members attend, because they surface how the team actually functions, and an absent member's view is the one nobody else can supply. Professionally, showing up for team rituals is the baseline of dependability: teammates plan around your presence, and repeated absences erode the trust these activities are designed to build.
 
@@ -13,7 +13,7 @@ Teamwork activities work best when all team members attend, because they surface
 
 ## Identify Individual Learning Objectives and Skills
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="identify-individual-learning-objectives-and-skills" wholeTeam />
 
 Each team member creates two lists: 
 
@@ -30,7 +30,7 @@ A good output is two lists per team member, motivations and learning objectives 
 
 ## Regular Stand-Up Meetings
 
-<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="regular-stand-up-meetings" effort="Ongoing" wholeTeam />
 
 Stand-up meetings help keep the team aligned by discussing recent progress, identifying challenges, and setting short-term goals.
 
@@ -44,7 +44,7 @@ A good output is an agreed cadence and format written into your charter, plus a 
 
 ## Two truths and a bug
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="two-truths-and-a-bug" effort="15 min" wholeTeam />
 
 Find out who you're actually working with, in the fifteen minutes before anyone opens a laptop. Fifteen minutes, once, when the team first sits together. The [working agreement guide](/guides/working-agreement/) covers the norms a team writes afterward, once it knows who it has.
 
@@ -57,7 +57,7 @@ A good output is that every person can name something about each teammate that t
 
 ## Team Formation Strategies Assessment
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="team-formation-strategies-assessment" wholeTeam />
 
 Identify which stage of formation your team is in, and apply appropriate strategies to move your team forward. Start from [Tuckman's stages of group development](https://en.wikipedia.org/wiki/Tuckman's_stages_of_group_development).
 
@@ -75,7 +75,7 @@ A good output is your team's current stage named, with the specific strategies y
 
 ## Team Dysfunctions Assessment
 
-<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="team-dysfunctions-assessment" wholeTeam />
 
 The Five Dysfunctions of a Team model names five barriers to teamwork: lack of trust, fear of conflict, lack of commitment, avoidance of accountability, and inattention to results. Name the ones your team shows, then pick a strategy for each.
 
@@ -97,7 +97,7 @@ A good output identifies the dysfunctions within the team, proposed strategies f
 
 ## Team Health Assessment
 
-<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="team-health-assessment" wholeTeam />
 
 Health checks are a structured input for your retrospectives: run one before a retro and the discussion starts from data instead of vibes. The formats below also work well as the basis for a term or project retrospective.
 

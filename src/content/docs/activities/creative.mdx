@@ -5,7 +5,8 @@ sidebar:
   order: 5
 ---
 
-import { Badge, LinkCard } from '@astrojs/starlight/components';
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 
 {/* > "Perhaps imagination is only intelligence having fun." (George Scialabba) */}
 
@@ -21,7 +22,7 @@ Creative activities generate ideas and help you figure out what to build. Frame 
 
 ## The Mom Test
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="the-mom-test" />
 
 Read [The Mom Test by Rob Fitzpatrick](https://www.goodreads.com/book/show/52283963-the-mom-test) or the [book's summary](https://durmonski.com/book-summaries/the-mom-test/). Keep the handbook's [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md) open while you plan and run the interviews; it condenses the rules into a one-page reference.
 
@@ -36,7 +37,7 @@ A good output is the interview plan, notes from the interviews, and a reflection
 
 ## Design Sprint
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="design-sprint" effort="Multi-day" />
 
 Read then run a 5-day [Design Sprint](https://www.thesprintbook.com/the-design-sprint) to rapidly prototype and test solutions for your project. Consider a condensed version if you can't schedule five full days.
 
@@ -52,7 +53,7 @@ A good output is a report detailing each day's activities, the prototype, and us
 
 ## Apply The SCAMPER Method
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="apply-the-scamper-method" />
 
 Apply the [SCAMPER method](https://www.interaction-design.org/literature/article/learn-how-to-use-the-best-ideation-methods-scamper) (Substitute, Combine, Adapt, Modify/Maximize/Minimize, Put to another use, Eliminate, Reverse) to creatively enhance a service, product, or feature in your project.
 
@@ -60,7 +61,7 @@ A good output shows how each SCAMPER step was applied, detailing the creative en
 
 ## Apply the C-K Theory
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="apply-the-c-k-theory" />
 
 Apply the [C-K Theory](https://www.ck-theory.org/c-k-theory/?lang=en) (Concept-Knowledge Theory) to explore and generate innovative solutions for your project by expanding both Concept (organized tree of ideas) and Knowledge (bag of facts: statements either true or false) Spaces.
 
@@ -74,7 +75,7 @@ A good output is your expanded Concept and Knowledge spaces, with the concepts t
 
 ## Six Thinking Hats
 
-<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="six-thinking-hats" />
 
 Read the [Six Thinking Hats](https://www.atlassian.com/blog/productivity/six-thinking-hats) methodology, then run it. It's a problem-solving and creative parallel thinking method developed by Edward de Bono. It involves six metaphorical hats, each representing a different perspective:
 
@@ -91,7 +92,7 @@ A good output is a written pass under each of the six hats on one real decision,
 
 ## Brainstorming Ideas
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="brainstorming-ideas" />
 
 Generate more candidate ideas than you need, then narrow to a shortlist you can defend. Thirty to sixty minutes as a team, once per open question.
 
@@ -104,7 +105,7 @@ A good output is the raw idea list, the criteria you used to narrow it, and the 
 
 ## Write a Literature Review
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="write-a-literature-review" />
 
 Write a [literature review](https://owl.purdue.edu/owl/research_and_citation/conducting_research/writing_a_literature_review.html) of your research topic: a summary and analysis of the existing research, so you can name the gap your project fills and build on what's already known.
 
