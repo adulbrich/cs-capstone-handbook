@@ -30,6 +30,7 @@ import {
   familyHeading,
   TERMS,
 } from "../src/lib/canvas-entries.mjs";
+import { parseFrontmatter } from "./lib/content.mjs";
 
 const SITE = "https://capstone.alexulbrich.com";
 const OUT = "canvas-export";
@@ -151,7 +152,11 @@ const ZERO_POINT = [
 
 function readPage(file) {
   const source = readFileSync(`${PAGES}/${file}`, "utf8");
-  return parse(source.split(/^---$/m)[1]) ?? {};
+  const page = parseFrontmatter(source);
+  if (!page) {
+    throw new Error(`${PAGES}/${file}: no frontmatter block`);
+  }
+  return parse(page.frontmatter) ?? {};
 }
 
 function entries() {
