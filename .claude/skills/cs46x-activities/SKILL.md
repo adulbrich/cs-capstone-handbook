@@ -293,10 +293,11 @@ a PR merged upstream" is unwritable for a greenfield product.
 ## Page-Level Structure
 
 Each page in `src/content/docs/activities/` groups activities by the kind of
-work they are, so every activity has one predictable home. Ten pages are
-project practice and two are growth (Learning and Reflection, Career). A new
-activity goes on the page whose work it is; a new page is a decision for the
-owner, not a way to place one activity.
+work they are, so every activity has one predictable home. The pages and
+their two halves, project practice and growth, are listed in
+`src/lib/activities-sidebar.mjs`. A new activity goes on the page whose work
+it is; a new page is a decision for the owner, not a way to place one
+activity.
 
 ```yaml
 ---
@@ -310,7 +311,8 @@ The title names the work, never a project category, and carries no
 `sidebar.order`. The Activities sidebar is an explicit list in
 `src/lib/activities-sidebar.mjs` (Project practice in first-use order, then
 Growth), which ignores `order`, so a new page must be added there;
-`validate:sidebar` fails until it is. Retiring a page needs a redirect in
+`validate:sidebar` fails until it is, and fails on an activity page that
+declares an `order`. Retiring a page needs a redirect in
 `astro.config.mjs` and every inbound link rewritten.
 
 The `description` field is YAML: **an unquoted colon inside it breaks the

@@ -9,7 +9,7 @@
 // the student rather than the project. Each label comes from the page title.
 
 /** Project-practice pages, in the order a project first needs them. */
-export const PROJECT_PRACTICE = [
+const PROJECT_PRACTICE = [
   "team-and-workflow",
   "planning-and-risk",
   "requirements",
@@ -23,7 +23,7 @@ export const PROJECT_PRACTICE = [
 ];
 
 /** Growth pages. */
-export const GROWTH = ["learning-and-reflection", "career"];
+const GROWTH = ["learning-and-reflection", "career"];
 
 const item = (page) => ({ slug: `activities/${page}` });
 
