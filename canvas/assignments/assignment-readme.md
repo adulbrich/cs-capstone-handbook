@@ -24,7 +24,7 @@ The sections below record each change as it was made. The ones from before the m
 
 In CS 461 only:
 
-- Create a **Bidding Survey** group at 1% holding one **Bidding Survey** assignment: 100 points, individual, no submission, due at the end of fall week 0, graded Complete from the Qualtrics export. It is due before classes start, so the course has to be published by week 0. Paste its body from the paste kit in place of the hand-written one, and import `bidding-survey/bidding-survey-rubric.csv` (Complete 100 / Incomplete 0).
+- Create a **Bidding Survey** group at 1% holding one **Bidding Survey** assignment: 100 points, individual, no submission, due at the end of fall week 0, graded Complete from the Qualtrics export. It is due in fall week 0, the partial week the term starts in, so the course has to be published when the term starts. Paste its body from the paste kit in place of the hand-written one, and import `bidding-survey/bidding-survey-rubric.csv` (Complete 100 / Incomplete 0).
 - Lower the **RFC Draft** group from 5% to 4%. RFC Final stays at 10%, so the RFC is 14% in fall. Its entries, points, and rubrics are unchanged.
 - Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of one PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%. Paste its body from the paste kit, and import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0).
 - Re-paste the Term Startup body, the RFC Draft + Peer Review body (its weight line), the Assignments Overview (the grade grid gives Bidding Survey 1 and RFC 14 in fall), and the CS 461 syllabus.

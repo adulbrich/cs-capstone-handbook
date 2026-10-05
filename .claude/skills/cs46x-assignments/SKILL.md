@@ -263,8 +263,8 @@ required; `validate-outcomes.mjs` checks the order.
    `scripts/validate-activities.mjs` fails otherwise. Promote and link in the
    same commit.
 
-   Workshop Activities is the one page without it: its entries are
-   activities.
+   Two pages go without it: Workshop Activities, whose entries are
+   activities, and the Bidding Survey, which no activity prepares.
 
 ### Entries with a rubric of their own
 
@@ -319,7 +319,7 @@ The rules below are about its content.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
-Startup); the individual contribution's Full, Partial, and Zero; `defense`,
+Startup, the Bidding Survey); the individual contribution's Full, Partial, and Zero; `defense`,
 which adds a fourth; and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
@@ -380,7 +380,8 @@ assuming a number:
 - **Three bands, 13 fields.** The default: `Exceeds Expectations` /
   `Meets Expectations` / `Does Not Meet Expectations`, at full / 80% / 20%.
 - **Two bands, 10 fields.** The sprint note's `Pass` at full and `Fail` at 0;
-  the workshops' and Term Startup's `Complete` at full and `Incomplete` at 0.
+  the workshops', Term Startup's, and the Bidding Survey's `Complete` at
+  full and `Incomplete` at 0.
 - **Individual contribution.** `Full` at 100, `Partial` at 99 with a range
   down to 1 at the grader's discretion, and `Zero` at 0.
 - **Four bands, 16 fields.** `defense` adds a `Missing` band at 0 for an
