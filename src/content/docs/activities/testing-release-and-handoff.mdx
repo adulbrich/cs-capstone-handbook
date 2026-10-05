@@ -1,0 +1,170 @@
+---
+title: Testing, Release, and Handoff
+description: Checking the work, shipping it, and leaving it maintainable for the next team.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
+
+These activities check the work, ship it, and leave it maintainable for whoever inherits it. Start with the test plan and the checks that decide how far you can delegate, then plan how the software reaches its users, how versions are released, and what the next maintainer needs to keep it running.
+
+<LinkCard
+  title="Testing Strategy guide"
+  href="/guides/testing-strategy/"
+  description="The test pyramid, end-to-end tests, and manual and exploratory testing explained."
+/>
+
+
+## Test Plan
+
+<ActivityMeta anchor="test-plan" effort="1 to 2 h" />
+
+Write a [test plan](https://en.wikipedia.org/wiki/Test_plan) for the paths that must work before anyone relies on the project, not for every feature. About an hour and a half as a team.
+
+1. Identify Test Objectives: List the paths that must work (signing in, saving data, a payment, or the pipeline that produces your reported numbers) and what you need to test on each (e.g., functionality, usability).
+2. Create Test Cases: Write the test scenarios for each of those paths.
+3. Determine Test Methods: Choose manual or automated testing.
+4. Set Success Criteria: Define what constitutes a pass/fail result.
+
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+
+A good output is a test plan covering the paths that must work, with their test cases, methods, and pass criteria.
+
+## Audit Your Safety Net
+
+<ActivityMeta anchor="audit-your-safety-net" effort="1 h" />
+
+Measure the gap between how much you delegate and how much your automation would catch, which is your team's actual risk. One hour as a team.
+
+- **State your delegation accurately**: roughly how much of your code is currently written by AI tools.
+- **Inventory what would catch it**: do tests exist for the paths that matter, and would they fail if the behavior broke? Does CI run on every pull request, and is it green? Are the hard-to-undo paths gated by review, or can anything merge? Is there a staging or preview environment? Can you roll back, and have you ever tried?
+- **Name the gap**: the distance between those two lists.
+- **Close it from the top**: the highest-value check is always the one guarding the decision you can't walk back.
+
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+
+A good output is one specific named gap and the smallest change that closes it, stated at the level of "nothing stops a schema change from merging without review" rather than "we have no tests".
+
+## Put a Browser Agent on Your Critical Flow
+
+<ActivityMeta anchor="put-a-browser-agent-on-your-critical-flow" />
+
+Get your most important user flow exercised continuously instead of whenever someone remembers, so demo-day failures are caught by a robot at 3am rather than by your project partner on a call. Two to three hours to set up, minutes per run after.
+
+- **Pick the flow** your users care about most, end to end.
+- **Have an agent drive it** in a real browser with [Playwright](https://playwright.dev/) and report what it finds.
+- **Keep the run as a test**: convert the session into an end-to-end test so it runs on every change. See [end-to-end testing](/guides/testing-strategy/#end-to-end-tests) for how it fits the wider suite.
+
+Once the flow runs on every change, the failures that break demos (routing broken, an environment variable missing, the login page white-screening) no longer depend on anyone remembering to check.
+
+**If your tools can't drive a browser:** the invariant is that the critical flow is exercised before every demo. The substitute is a written manual smoke script that a human runs and initials, plus a recorded end-to-end test added when tooling allows.
+
+A good output is a committed end-to-end test that runs in CI and fails when the flow breaks.
+
+## Run a Self-Audit and an Architectural Review Pass
+
+<ActivityMeta anchor="run-a-self-audit-and-an-architectural-review-pass" />
+
+Catch the problems that a feature's own author, human or agent, is structurally unable to see, by running two separate review passes after the work is already passing. Thirty minutes per pass.
+
+- **Self-audit**: ask the agent to critique its own work adversarially. What did it get wrong, what did it guess at, what did it assume about the rest of the system that it never checked?
+- **Architectural review**: ask specifically whether the change fits the system's existing shape, or whether it quietly introduced a second way of doing something the codebase already does one way.
+- **Keep them separate** from the build step, and from each other.
+
+Keep the passes separate because an agent asked to "build X and make sure it's good" produces a defense of its own work, while the same agent asked afterwards to find what's wrong with a diff finds real problems: you changed what it's optimizing for. The architectural pass catches drift, where every individual change looks reasonable and six weeks later there are three competing patterns for the same job.
+
+**If your tooling can't run separate passes:** ask a teammate who didn't write the change to answer the same two questions.
+
+A good output is a list of findings from each pass and a note on which ones you acted on.
+
+## Run an Acceptance Pass
+
+<ActivityMeta anchor="run-an-acceptance-pass" effort="30 min" />
+
+Decide whether your product is actually good, which is the one part of the work that doesn't delegate. Thirty minutes before each demo or release.
+
+- **Use your own product** the way a real user would, on a real task.
+- **Judge the experience**, not the tests: would a person trying to get something done succeed and feel fine about it?
+- **Write two lists**: what you'd fix, and what you decided to live with.
+
+The second list matters as much as the first, because shipping means choosing what's good enough and being able to say why. An agent can drive the browser, run the suite, and audit the markup, and none of that tells you the flow feels wrong, the empty state is demoralizing, or the thing your partner needs is two clicks deeper than it should be.
+
+A good output is those two lists, dated, with the second one justified.
+
+## Deployment Plan
+
+<ActivityMeta anchor="deployment-plan" />
+
+[Software deployment](https://en.wikipedia.org/wiki/Software_deployment) is all the things that need to happen for a software system to be available for use.
+
+Outline the steps needed to either:
+
+- deploy your project to a production environment or app store, 
+- build your software and make it available for download.
+
+That means:
+
+1. Identify Deployment Environment: Specify where your software will be deployed (e.g., cloud, server) or where artifacts will be stored.
+2. Create a Deployment Checklist: Include steps like configuration, testing, build, integration, uploads, release, and backups. 
+3. Define Rollback Plan: Plan actions if deployment fails.
+
+The [DevOps guide](/guides/devops/#deployment-checklist) covers the deployment checklist and [rollbacks](/guides/devops/#rollbacks); the [Shipping guide](/guides/shipping/) has the lead times your deployment path involves.
+
+A good output is a deployment plan detailing environment, steps, and rollback procedures.
+
+## Software Release and Versioning
+
+<ActivityMeta anchor="software-release-and-versioning" />
+
+Plan the release process for your software, including version control and deployment strategies.
+
+1. Define [Release Process](https://www.manageengine.com/products/service-desk/it-release-management/what-is-release-management.html): Outline steps for preparing the software for release (e.g., final testing, documentation updates, packaging).
+2. Establish [Versioning Scheme](https://en.wikipedia.org/wiki/Software_versioning): Choose a versioning system (e.g., Semantic Versioning) to track software updates (e.g., 1.0.0 for major releases, 1.0.1 for patches).
+3. Plan Deployment: Identify how and where the software will be deployed or accessed (e.g., cloud platform, local servers, GitHub repository assets).
+4. Team Agreement: Discuss the process with your team and ensure everyone agrees.
+
+The [documentation guide](/guides/documentation/#versioning) covers the versioning scheme; the [Shipping guide](/guides/shipping/) lists the lead times your release path involves.
+
+A good output is a release plan document that includes versioning details and deployment steps.
+
+## Planning for Maintenance and Long-Term Support
+
+<ActivityMeta anchor="planning-for-maintenance-and-long-term-support" />
+
+Identify key factors for maintaining and supporting the system post-deployment to ensure long-term sustainability.
+
+Instructions:
+
+- Define Maintenance Tasks: List regular maintenance tasks (e.g., backups, updates, bug fixes).
+- Plan for Scalability: Outline strategies for scaling the system as usage grows.
+- Support Structure: Identify the team or resources responsible for providing user support and resolving issues.
+- Create Documentation: Develop a plan for user manuals, FAQs, and support guides.
+
+A good output is a detailed plan addressing maintenance, scalability, and user support; it becomes raw material for the handoff package you leave the next maintainer.
+
+## User Manual
+
+<ActivityMeta anchor="user-manual" />
+
+Develop a preliminary user manual that outlines how end-users will interact with your software.
+
+- Identify Key Features: List the core features users need to know about.
+- User Instructions: Provide step-by-step guides on how to use the system, including screen navigation and input details.
+- Common Issues and Solutions: Include troubleshooting tips for common problems users may face.
+- Interface Overview: Provide a brief description of the user interface.
+
+If working on this activity as a team, have each person focus on a different subset of the manual.
+
+A good output is a draft of the user manual with clear instructions on using the main features of your system.
+
+## Describe your API Reference
+
+<ActivityMeta anchor="describe-your-api-reference" />
+
+Develop a comprehensive API reference to document the functions, endpoints, and data structures of your project's application programming interface (API).
+
+1. List API Endpoints: Document each endpoint, including URL paths and methods (GET, POST, etc.).
+2. Define Inputs/Outputs: Clearly specify the required parameters, data types, and response formats for each endpoint.
+3. Document Error Handling: Include examples of error messages and how to handle them.
+
+A good output is the complete API reference document and a sample request/response for each endpoint, living alongside the code in your repository.

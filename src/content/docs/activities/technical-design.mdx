@@ -1,0 +1,248 @@
+---
+title: Technical Design
+description: Architecture, technology choices, and the decisions that are hard to reverse.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
+
+Technical design activities settle how the system will work: which technologies, what architecture, what data shape, and which decisions would be expensive to undo. They're direct preparation for writing an RFC or a design document, because architecture descriptions, technology evaluations, and design reviews are exactly the reasoning such a document asks you to write down and defend.
+
+> "Design is not just what it looks like and feels like. Design is how it works." (Steve Jobs)
+
+<LinkCard
+  title="Technical Design guide"
+  href="/guides/technical-design/"
+  description="C4, UML, 4+1, and arc42 explained, plus what a design document is for. Read it before Describe your Architecture."
+/>
+
+
+## Analyze an Existing Codebase
+
+<ActivityMeta anchor="analyze-an-existing-codebase" />
+
+Learn how the code you're inheriting or contributing to is actually built, tested, and reviewed before you change any of it: a predecessor team's repository, your partner's codebase, or the upstream FOSS project. Two to three hours, once, in your first weeks on the codebase: alone to learn a project, as a team for a formal audit. If your project starts from scratch, run it on a FOSS project close to yours instead; the practices you find are the ones to adopt.
+
+- **Run it**: fresh clone, follow their README or handoff document to a working build and a passing test run, and write down every step that failed or was undocumented.
+- **Read the process**: CONTRIBUTING file, review rules, CI configuration, branch and release conventions, issue templates; for a predecessor team, their handoff document, project retrospective, and risk register.
+- **Map the state**: which tests exist and pass, how old the dependencies are, what the last ten merged changes touched and who reviewed them, where the known debt sits.
+- **Decide first moves**: what you adopt as is, what you change first and why, and what you won't touch this year.
+
+A good output is a one-page audit of the codebase you're inheriting: how it builds, how it's tested, how a change gets reviewed and released, what is undocumented, and what surprised you, ending with the first three changes you intend to make.
+
+## Select a Database or Storage Technology
+
+<ActivityMeta anchor="select-a-database-or-storage-technology" />
+
+Choose the most suitable database or storage technology for your project based on data requirements, scalability, and use case.
+
+- Assess Requirements: Analyze your project's data structure, volume, and usage patterns.
+- Compare Options: Explore relational (e.g., MySQL, PostgreSQL) vs. non-relational databases (e.g., MongoDB, Cassandra), as well as different ways to store data (offline, online, object stores, etc.).
+- Scalability and Performance: Consider factors like read/write speeds, scalability, and how well the database or store handles your expected workload.
+- Final Selection: Justify your choice based on how it aligns with the project's goals.
+
+A good output details the options considered, pros/cons, and the rationale for your final database/storage selection.
+
+## Evaluate Different Technologies
+
+<ActivityMeta anchor="evaluate-different-technologies" />
+
+Compare and assess multiple technologies (e.g., languages, frameworks, libraries, ...) to choose the best fit for your project's requirements.
+
+- Identify Key Criteria: Define what you need from the technology (e.g., performance, scalability, ease of use, ...).
+- Research Options: Explore 2-3 technology solutions and their strengths/weaknesses.
+- Compare Performance and Compatibility: Evaluate how well each technology integrates with your existing project and meets performance goals.
+- Security and Support: Consider security features and available community support for each option.
+
+A good output is a comparison matrix and a justification for the chosen technology; this maps directly onto the alternatives section of an RFC.
+
+## Complete a Tutorial
+
+<ActivityMeta anchor="complete-a-tutorial" />
+
+Gain hands-on experience and enhance your technical skills by completing a tutorial relevant to your project.
+
+1. Choose a Tutorial: Select an online tutorial that aligns with your project (e.g., database setup, API development, UI design, web framework).
+2. Work Through the Steps: Complete the tutorial, following the instructions and applying what you learn.
+
+:::note
+Consider doing one or more "Quick Start" guides to compare different technologies instead of an in-depth tutorial, see the [Evaluate Different Technologies](#evaluate-different-technologies) activity.
+:::
+
+Write a summary of what you learned and how you'll apply it to your project. Outline features, if any, that you learned about and how it will help with specific concerns or features.
+
+A good output is a summary of what you learned and the specific features or concerns in your project it applies to.
+
+## Map Your Hard-to-Reverse Decisions
+
+<ActivityMeta anchor="map-your-hard-to-reverse-decisions" effort="30 min" />
+
+Sort your team's upcoming decisions into the ones that deserve your attention and the ones that don't, so you stop spending equal care on a database schema and a button color. Thirty minutes as a team, once a term.
+
+- **List ten decisions**: the next ten your team expects to make, written down before you classify any of them.
+- **Classify each**: a **hard-to-reverse decision** is expensive or impossible to undo; an **easy-to-reverse decision** is cheap to change once you learn something. Typical hard-to-reverse decisions are database schema, authentication and authorization, deployment topology, data migrations, public API shape, licensing, third-party commitments, and anything touching user data you can't regenerate. Typical easy-to-reverse decisions are most feature code, UI layout, internal module boundaries, and any library you could swap in a week.
+- **Assign a validator**: for each hard-to-reverse decision, name who checks it and what they check before the team commits.
+- **Revisit at the end of the term**: which classifications were wrong? Treating an easy-to-reverse decision as hard to reverse costs you time; the opposite error costs you a week on a migration you can't roll back.
+
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+
+A good output is a list where the hard-to-reverse decisions are few; if eight of ten landed there, redo the classification.
+
+## Describe your Architecture
+
+<ActivityMeta anchor="describe-your-architecture" effort="1 to 2 h" />
+
+Draw the system your team is about to build, at the level of zoom your project partner can follow, and write one paragraph per box. One to two hours as a team, once at the start, then updated when the architecture changes.
+
+- **Pick a notation**: a C4 context plus container diagram fits most projects; use 4+1 views only if your readers have distinct concerns. The [Technical Design guide](/guides/technical-design/#system-level-design-architecture) explains the options.
+- **Identify core components**: list the major pieces (frontend, backend, database, external APIs, pipeline stages, data sources, firmware modules).
+- **Define interactions**: show how components communicate (API calls, queues, file formats, data flows) and name the protocol on each edge.
+- **Mark the risky parts**: which component is new to the team, which integration is unproven, and what you'll spike first.
+- **State scalability, security, and performance assumptions**: one line each, or "not a concern for this project" with the reason.
+
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+
+Keep the diagram in your repository docs; it anchors the design section of an RFC.
+
+A good output is a diagram of the architecture and a brief explanation of each component and its role in the system.
+
+## Define your Database Schema
+
+<ActivityMeta anchor="define-your-database-schema" />
+
+Design a structured database schema to organize and store your project's data effectively.
+
+- Identify Entities: List all the key entities (e.g., users, orders, products) relevant to your project.
+- Define Relationships: Determine how entities relate to each other (e.g., one-to-many, many-to-many).
+- Create Tables and Fields: Design the tables and define attributes (fields) for each entity.
+- Normalize Data: Ensure your schema minimizes redundancy through normalization.
+- Performance: Index key fields for faster querying and optimize design for scalability.
+- Security Measures: Plan data encryption, define access controls, and ensure proper handling of sensitive data (e.g., user passwords).
+
+A good output is your database schema diagram with explanations of the relationships, key tables or objects, and fields. Explain how normalization was used, and which performance and security considerations you plan to implement. A schema configuration file (e.g., SQL query to create the tables) is a plus.
+
+## Proof-of-Concept
+
+<ActivityMeta anchor="proof-of-concept" />
+
+Build a small-scale prototype or demo to test the feasibility of a specific idea, technology, or approach within your project.
+
+- Define Key Assumptions: Identify the core concept or functionality that needs validation.
+- Develop the Prototype: Create a minimal version focusing on the critical feature or technology.
+- Test Feasibility: Evaluate the proof-of-concept to ensure the technology or idea works as intended.
+
+A good output is the proof-of-concept itself and a brief write-up on its feasibility, challenges encountered, and potential next steps.
+
+## Designing for System Security
+
+<ActivityMeta anchor="designing-for-system-security" />
+
+Ensure the system is designed with robust security measures to protect data and user privacy.
+
+- Identify Vulnerabilities: List potential security risks (e.g., data breaches, unauthorized access).
+- Implement Best Practices: Plan for security measures such as encryption, authentication, and role-based access control.
+- Secure Data: Outline how sensitive data will be protected both in transit and at rest.
+- Compliance and Monitoring: Ensure the system meets security standards (e.g., GDPR, HIPAA) and establish regular monitoring for threats.
+
+A good output is a security plan that details risks, countermeasures, and compliance strategies.
+
+## Apply the Privacy by Design (PbD) Guidelines
+
+<ActivityMeta anchor="apply-the-privacy-by-design-pbd-guidelines" />
+
+[Privacy by Design](https://en.wikipedia.org/wiki/Privacy_by_design) is a systems engineering approach developed by Ann Cavoukian, former Information & Privacy Commissioner of Ontario. 
+
+The [seven foundational principles](https://www.ietf.org/ietf-ftp/slides/slides-privacyws-privacy-by-design-the-seven-foundational-principles-00.pdf) are:
+
+1. Proactive not reactive; preventive not remedial
+2. Privacy as the default setting
+3. Privacy embedded into Design
+4. Full functionality: positive-sum, not zero-sum
+5. End-to-end security: full lifecycle protection
+6. Visibility and transparency: keep it open
+7. Respect for user privacy: keep it user-centric
+
+Read the principles in detail, then write a report that explains how your software implements each one, or what needs to be done to get there. 
+
+A good output is your project assessed against the seven principles, naming which already hold, which you'll implement, and which don't apply and why.
+
+## Optimizing System Performance
+
+<ActivityMeta anchor="optimizing-system-performance" />
+
+Identify and address factors that influence system performance to ensure optimal operation under different loads.
+
+- Define Performance Metrics: Identify key metrics like response time, throughput, and latency.
+- Plan for Load Handling: Evaluate how the system will handle different levels of traffic (e.g., stress testing, load balancing).
+- Optimize Code and Queries: Identify areas for improving efficiency (e.g., database indexing, caching).
+- Monitoring and Scaling: Plan for performance monitoring tools and strategies for scaling.
+
+A good output is a performance plan with identified bottlenecks and optimization strategies.
+
+## Peer Technical Design Review
+
+<ActivityMeta anchor="peer-technical-design-review" effort="1 to 2 h" />
+
+Put your technical design in front of another team and review theirs in return, in one sitting; the [presentations guide](/guides/presentations/#design-reviews) covers what a design review is for. About 75 minutes for two or three teams in one room or on one call.
+
+- **Draw your design on one page**: 20 minutes, starting from your design document if you have one. The components, how they connect, what they are built with, and the one design decision your team is least sure of. Cover the three issues below at the depth one page allows.
+- **Present**: 5 minutes per team. Walk the others through your page. Answer their questions; don't defend the design yet.
+- **Review**: 20 minutes, every team at once. Work through the questions below on the other team's page, or with three teams on the next team's page, write each finding in one sentence, and hand the findings over.
+- **Decide**: 20 minutes. Mark each finding you received accepted or declined, with a one-line reason, and name the change you will make first.
+
+As a reviewer, question the other team's design:
+
+- Is the design fit for purpose? Does it do what the project needs?
+- Is the design fit for the future? Can it grow modularly?
+- Is the design solving the right problem?
+- What alternatives should the team consider, and would one of them make the least-sure decision easier?
+- What would you change first?
+
+Giving and receiving this kind of review is rehearsal for a formal RFC review round.
+
+Your one-page design covers these three issues:
+
+### Explanation of the Design
+
+This exercise covers the internal design and architecture of the software, not the user experience.
+
+- What are the components? 
+- What libraries and tools are used? 
+- How are they arranged? 
+- Any noteworthy uses of architectural styles or design patterns?
+- etc.
+
+### Fitness for Purpose
+
+A rationale for why this design meets the requirements/specification.
+
+- Why is this design better than reasonable alternatives? 
+- If the project is in a known domain with a known solution strategy, is it following normal design conventions? 
+- If the project is in a novel domain or has a novel solution strategy, why is the proposed design a good match?
+
+### Fitness for Future
+
+- What are the anticipated kinds of change, growth, or variability in the domain?
+- Does the design facilitate managing that change in a modular fashion? 
+- What are core assumptions that cannot be changed?
+
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+
+A good output is your one-page design, the findings the other team gave you, and each finding marked accepted or declined with a reason.
+
+## Read a Book on Approaches to Software Design
+
+<ActivityMeta anchor="read-a-book-on-approaches-to-software-design" />
+
+Take a look at a book about software design, and discuss in the context of your project. One good approach is that each team member skims several chapters, so that collectively you've examined the entire book. The books listed here are a starting point; you might find other interesting books worth reading.
+
+Write up what you learned and how you'll apply it to your project.
+
+- [Clean Architecture](https://www.goodreads.com/book/show/18043011-clean-architecture) by Robert C. Martin
+- [Release It!: Design and Deploy Production-Ready Software](https://www.goodreads.com/book/show/1069827.Release_It_) by Michael T. Nygard
+- [A Philosophy of Software Design](https://www.goodreads.com/book/show/39996759-a-philosophy-of-software-design) by John Ousterhout
+- [Software Design Decoded: 66 Ways Experts Think](https://www.goodreads.com/book/show/29889476-software-design-decoded) by Marian Petre and André van der Hoek
+- [Software Designers in Action: A Human-Centric Look at Design Work](https://www.goodreads.com/book/show/16236113-software-designers-in-action) by Marian Petre and André van der Hoek
+- [Designing Secure Software: A Guide for Developers](https://www.goodreads.com/book/show/58877754-designing-secure-software) by Loren Kohnfelder
+
+A good output is a written summary of what the team learned and the specific design decisions in your project it will change.

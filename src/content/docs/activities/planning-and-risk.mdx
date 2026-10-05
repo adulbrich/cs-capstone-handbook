@@ -1,0 +1,168 @@
+---
+title: Planning and Risk
+description: Approvals, stakeholders, risks, and the dependencies that set the schedule.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
+
+Planning and risk activities name what has to happen before the work can start, who has a stake in it, and what could stop it. Approvals and ethics review run on someone else's clock, so map them first; then say what you don't know yet, how you'll find out, and which pieces of work have to wait for which.
+
+> "Plans are worthless, but planning is everything." (Dwight D. Eisenhower, National Defense Executive Reserve Conference, 1957)
+
+<LinkCard
+  title="Project Risks guide"
+  href="/guides/risks/"
+  description="How to write, rank, and respond to a risk, and keep one register for the whole project."
+/>
+
+
+## Map Your External Approvals
+
+<ActivityMeta anchor="map-your-external-approvals" effort="1 to 2 h" />
+
+Find every approval your project needs from someone outside your team, and start the slowest one this week. Ninety minutes in the first fortnight, then a standing agenda item.
+
+Research and consultancy projects depend on approval clocks the team doesn't control. IRB review takes weeks even for an exempt determination, data use agreements between institutions can take a full term, and an enterprise security review is measured in months.
+
+- **Ask directly** in your first partner or faculty meeting: what approvals does this project need, who files them, and how long do they usually take?
+- **List every clock**: [IRB or human-subjects review](/activities/planning-and-risk/#complete-an-irb-application), data use agreements, security or IT review, vendor onboarding, account provisioning, CLA signing for FOSS, license review, export control.
+- **For each, record** who owns it, when it starts, how long it historically takes, and what is blocked until it lands.
+- **Start the longest one now**, even from an incomplete application, if the process allows amendment later.
+- **Put them in `docs/risks.md`** with owners and dates, and review them at every checkpoint.
+
+A good output is a dated table of every external approval with an owner and an expected duration, living in your risk register, with the longest clock already started.
+
+## Complete an IRB Application
+
+<ActivityMeta anchor="complete-an-irb-application" />
+
+Get human-subjects approval filed while there's still a year left to use it. A few hours to draft, then weeks of review you don't control, so start in your first week.
+
+If your project involves faculty research and any kind of user testing, you need [IRB approval](https://research.oregonstate.edu/ori/irb). "User testing" is broader than you might expect: interviews, surveys, and usability sessions can all count.
+
+- **Ask your faculty partner who files it.** Usually they do, or their graduate student does, and they've done it before, so don't work out the form alone.
+- **Determine the review level**: exempt, expedited, or full board. Exempt still takes weeks, and it's a determination someone else makes, so don't assume it.
+- **Draft the protocol**: what you'll ask, of whom, how you recruit, what data you keep, how you store it, and how you anonymize it.
+- **File it, then keep working.** Design and build against synthetic or public data while review runs.
+- **Record the filing date and expected turnaround** in `docs/risks.md` alongside your other [approval clocks](/activities/planning-and-risk/#map-your-external-approvals).
+
+A good output is a filed application with a dated confirmation, and a line in your risk register naming who owns it and what is blocked until it lands.
+
+## Stakeholder Mapping
+
+<ActivityMeta anchor="stakeholder-mapping" />
+
+Identify and categorize project stakeholders to ensure effective communication and alignment of expectations.
+
+- List Stakeholders: Identify all individuals or groups with a vested interest in the project (e.g., project partners, team members, end users).
+- Categorize Stakeholders: Use a power-interest matrix to categorize stakeholders based on their influence and interest in the project.
+- Define Communication Strategies: Establish how and when to communicate with each stakeholder category (e.g., regular updates, feedback sessions).
+- Review and Update: Regularly reassess the stakeholder map as the project evolves.
+
+A good output is a stakeholder map and a plan outlining communication strategies for each group.
+
+## SWOT Analysis
+
+<ActivityMeta anchor="swot-analysis" />
+
+Conduct a SWOT (Strengths, Weaknesses, Opportunities, Threats) analysis to identify key internal and external factors affecting your project.
+
+- Strengths: Identify the internal strengths of your project (e.g., team skills, resources).
+- Weaknesses: Determine internal weaknesses (e.g., limitations in knowledge, budget).
+- Opportunities: Explore external opportunities that could benefit your project (e.g., new technologies, partnerships).
+- Threats: Identify external risks or challenges (e.g., competitors, regulatory issues).
+
+Write up the SWOT analysis and how these factors will influence project planning and decisions. Consider creating a matrix with four quadrants.
+
+A good output is a completed SWOT grid with at least one concrete action drawn from it.
+
+## Risk Management Plan
+
+<ActivityMeta anchor="risk-management-plan" effort="1 h" wholeTeam />
+
+Run a premortem and turn what it surfaces into the first ranked entries in `docs/risks.md`. The [Project Risks guide](/guides/risks/) explains each part. About an hour as a team, then again whenever the plan changes.
+
+- **Imagine the failure**: say "It's the end of the project, and it failed. What happened?"
+- **Write alone first**: everyone lists reasons silently for five minutes before anyone speaks.
+- **Read round-robin**: one reason per person per turn until the lists are empty.
+- **Check the three categories**: for each of business, technical, and team, ask whether anything is missing, and add it.
+- **Write each risk**: a condition and a consequence, with a category, an owner, and a trigger.
+- **Rank**: likelihood and impact as high, medium, or low, with a few words of reason for each.
+- **Respond**: mitigate, eliminate, transfer, or accept, with a contingency for every accepted risk.
+- **Set the review**: put the top of the register on the agenda of every sprint planning.
+
+Give each risk that waits on someone outside the team (an approval, a review, users to recruit) an Asked line, who you asked and when, and a start-by date, because you don't control its lead time.
+
+A good output is a `docs/risks.md` with every open risk written as a condition and a consequence, ranked with a reason, and carrying an owner, a response, and a trigger.
+
+## Dependency Mapping or Critical Path Analysis
+
+<ActivityMeta anchor="dependency-mapping-or-critical-path-analysis" />
+
+Map task dependencies and identify the critical path to ensure efficient project scheduling and resource management.
+
+1. List Tasks: Break down the project into individual tasks or activities.
+2. Identify Dependencies: Determine which tasks rely on the completion of others before they can start.
+3. Create a Critical Path Diagram: Map out the sequence of dependent tasks and identify the longest path (critical path) that determines the project timeline.
+4. Analyze and Adjust: Identify potential bottlenecks and adjust timelines accordingly.
+
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+
+A good output is a dependency map and critical path analysis, including identified bottlenecks and adjustments.
+
+## Gantt Chart
+
+<ActivityMeta anchor="gantt-chart" />
+
+A [Gantt chart](https://www.atlassian.com/agile/project-management/gantt-chart) is a visual project management tool that displays tasks and timelines. It consists of a horizontal bar chart, where each bar represents a task, showing its start date, duration, and end date. The chart helps in tracking project progress, managing deadlines, and identifying dependencies between tasks, making it easier to plan and monitor the project's workflow.
+
+:::note
+This activity is easier to complete if you've already worked on the requirements and know what you need to build. Plan contingencies either way.
+:::
+
+For this activity, define your tasks, set the timeline (for all three terms), and create a readable Gantt chart. You could use the Roadmap view on GitHub Projects for that purpose.
+
+Revisit the chart at mid-term and at the end of the term, and reflect on how well you adhered to your plan and any changes made along the way.
+
+A good output is a Gantt chart showing tasks, durations, and dependencies, with the critical path visible.
+
+## Fishbone Diagram
+
+<ActivityMeta anchor="fishbone-diagram" />
+
+A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known as an Ishikawa or Cause-and-Effect Diagram) is a visual tool for identifying, exploring, and displaying the possible causes of a specific problem or effect. It helps teams systematically analyze root causes rather than just symptoms.
+
+1. Clearly define the problem or effect you want to analyze.
+2. Draw the main "spine" (horizontal line) with the problem at the "head."
+3. Identify major categories of causes (e.g., People, Process, Tools, Environment) and draw "bones" branching off the spine.
+4. Brainstorm and list possible causes under each category.
+
+The same diagram works for the root-cause analysis of an incident postmortem.
+
+A good output is a completed Fishbone Diagram (hand-drawn or created with a diagramming tool) for a key problem in your project, along with a short summary of the main causes identified.
+
+## Plan Prototype
+
+<ActivityMeta anchor="plan-prototype" />
+
+Your project might have a lot of unknowns, either on the technical feasibility side or on the user side (value or usability).
+
+Here are common feasibility concerns:
+
+- Algorithm concerns
+- Performance concerns
+- Scalability concerns
+- Fault tolerance concerns
+- Use of a technology the team hasn't used before
+- Use of a third-party component or service the team hasn't used before
+- Use of a legacy system the team hasn't used before
+- Dependency on new or related changes by other teams
+
+The idea with a feasibility prototype is to write code, quick and dirty, generally, to tackle items listed above. You could for example build a basic app in a language you've never used before, compare different algorithms on a subset of data, or make sure you can compile legacy code. Expect to throw this code away.
+
+On the user side, low-fidelity prototypes are interactive wireframes that only focus on the information and workflow of your software, not the visual design nor differences in the actual data. High-fidelity prototypes are very similar but you'd have to look closer to figure out they're fake. The visual design and data are very realistic, but the data isn't live. Consider [Figma](https://www.figma.com/) for your interactive use prototypes; you can also use pen and paper, PowerPoint, or anything else you feel comfortable with.
+
+Finally, there's the live-data prototype. Consider it a substantially smaller implementation of the eventual product. The quality, performance, and functionality are very limited, but it runs well enough to collect data for specific use cases. This is the type of prototype you can start iterating on, so figure out feasibility first.
+
+A good output is a plan with the types of prototypes you'll build, in what order, and in what time frame, indicating which concerns each one tackles.

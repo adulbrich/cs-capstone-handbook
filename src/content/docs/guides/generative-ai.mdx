@@ -54,9 +54,9 @@ Say what done looks like as well (which behavior changes, which tests must pass,
 
 ### Verify what matters, and build the checks that let you trust the rest
 
-Generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Rather than trying to read every line, spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are hard-to-reverse decisions: getting one wrong costs far more than the review would have, so validate those yourself.
+Generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Reading every line stops working once an agent writes more code than you can read, the same way a tech lead can't read every line their team writes, so spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are hard-to-reverse decisions: getting one wrong costs far more than the review would have, so validate those yourself.
 
-Work behind your checks is easy to reverse: once a test tells you a feature is broken, the fix is one more commit. Delegate that work as far as your checks catch, and no further: tests that would fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, and a rollback path you've actually tried. To hand off more, improve the checks rather than reading harder. The industry report on AI-assisted development from DORA (DevOps Research and Assessment), Google Cloud's research program, found that AI's positive influence on team performance was amplified where developers rolled back changes more often <Cite id="dora-2025" form="parenthetical" />. [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures that fit on your own repository.
+Work behind your checks is easy to reverse: once a test tells you a feature is broken, the fix is one more commit. Delegate that work as far as your checks catch, and no further: tests that would fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, and a rollback path you've actually tried. To hand off more, improve the checks rather than reading harder. The industry report on AI-assisted development from DORA (DevOps Research and Assessment), Google Cloud's research program, found that AI's positive influence on team performance was amplified where developers rolled back changes more often <Cite id="dora-2025" form="parenthetical" />. [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) measures that fit on your own repository.
 
 Checks catch what they were written to catch; they don't show that a change does what you meant. Simon Willison [argues](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) that your job is to deliver code you have proven to work, in two steps: exercise the change yourself and watch it do the right thing, then leave a test that fails if the change is reverted. Put the evidence in the pull request (the commands you ran and their output, or a screenshot), because a change submitted without it hands the verification to whoever reviews it.
 
@@ -95,7 +95,7 @@ When you ask "what can I hand off?", use this table as the index to the guide th
 | Accessibility auditing (axe-core, Lighthouse, lint-level rules) | [Automated accessibility testing](/guides/accessibility/#automated-accessibility-testing) |
 | Lint and format checks | [Hooks and gates](/guides/ai-project-setup/#hooks-and-gates) |
 | CI pipeline construction and check configuration | [DevOps](/guides/devops/) |
-| Self-audit and adversarial review passes | [Run a self-audit and an architectural review pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass) |
+| Self-audit and adversarial review passes | [Run a self-audit and an architectural review pass](/activities/testing-release-and-handoff/#run-a-self-audit-and-an-architectural-review-pass) |
 | Architectural review as a distinct step | [Technical design](/guides/technical-design/) |
 | Security scanning (dependency audit, secret scanning) | [Security](/guides/security/) |
 | Documentation and changelog generation | [Documentation](/guides/documentation/) |
@@ -133,7 +133,7 @@ Who hosts a model decides where your prompts go, not who trained it. An open-wei
 ## Best Practices for Using AI Tools
 
 - Set your repository up for agents, as [AI project setup](/guides/ai-project-setup/) describes, before you rely on them.
-- Decide the hard-to-reverse decisions yourself. If you can't tell which they are, [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions) first.
+- Decide the hard-to-reverse decisions yourself. If you can't tell which they are, [Map Your Hard-to-Reverse Decisions](/activities/technical-design/#map-your-hard-to-reverse-decisions) first.
 - Build the checks before you scale delegation.
 - Prove each change works before you ask for review.
 - Ask neutral questions, and ask for the case against your plan.
@@ -179,10 +179,10 @@ In academia, publishers keep the accountability with people but differ on disclo
 
 **Activities that exercise this**
 
-- [Map Your Hard-to-Reverse Decisions](/activities/ai/#map-your-hard-to-reverse-decisions): decide what you'll never delegate before you're tired.
-- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): measure your delegation against the checks that would catch a mistake.
-- [Set Up Your Repository's Skills](/activities/ai/#set-up-your-repositorys-skills): shared agent workflows, so a task like a code review runs the same way whoever asks for it.
-- [Run a Self-Audit and an Architectural Review Pass](/activities/ai/#run-a-self-audit-and-an-architectural-review-pass): the verification half, run on your own repository.
-- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): check generated work against what was actually asked for.
-- [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): delegation where the failure is visible.
-- [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): an automated check that catches what a generated interface gets wrong.
+- [Map Your Hard-to-Reverse Decisions](/activities/technical-design/#map-your-hard-to-reverse-decisions): decide what you'll never delegate before you're tired.
+- [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net): measure your delegation against the checks that would catch a mistake.
+- [Set Up Your Repository's Skills](/activities/team-and-workflow/#set-up-your-repositorys-skills): shared agent workflows, so a task like a code review runs the same way whoever asks for it.
+- [Run a Self-Audit and an Architectural Review Pass](/activities/testing-release-and-handoff/#run-a-self-audit-and-an-architectural-review-pass): the verification half, run on your own repository.
+- [Run an Acceptance Pass](/activities/testing-release-and-handoff/#run-an-acceptance-pass): check generated work against what was actually asked for.
+- [Put a Browser Agent on Your Critical Flow](/activities/testing-release-and-handoff/#put-a-browser-agent-on-your-critical-flow): delegation where the failure is visible.
+- [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci): an automated check that catches what a generated interface gets wrong.

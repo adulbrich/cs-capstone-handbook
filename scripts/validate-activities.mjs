@@ -459,7 +459,7 @@ const STANDALONE_EXEMPT = new Set([
   // team registers for, and calling it anything but a workshop would be wrong.
   "activities/requirements#osu-advantage-accelerators-iterate-program",
   // "Present at a conference or workshop" is an outreach channel.
-  "activities/user#find-users",
+  "activities/working-with-users#find-users",
 ]);
 // A third-party URL is someone else's slug, not this page's prose: a link
 // whose slug ends in "-workshop" is not the page saying "workshop". Internal

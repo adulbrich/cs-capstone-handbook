@@ -30,7 +30,7 @@ Decide what confidence your project needs before choosing a framework, because a
 - Who uses it, and when do they first touch it? Software handed to non-technical users after the team leaves needs usability testing. A pipeline whose only user is a data scientist needs reproducibility checks.
 - Where would a failure be most expensive? A payment flow or an authentication path earns rigorous automated tests; an about page doesn't. A model pipeline earns validation against a known baseline.
 - When will real users see it? Put user sessions on the board in the sprint you intend to run them, because work that isn't on the board has no owner and no time set aside for it.
-- What does your [Definition of Done](/activities/planning/#definition-of-done) already promise? If it requires green tests in CI (continuous integration), you need the pipeline before you need more kinds of test. If it requires sign-off from the project partner, you need a demo and a feedback loop.
+- What does your [Definition of Done](/activities/team-and-workflow/#definition-of-done) already promise? If it requires green tests in CI (continuous integration), you need the pipeline before you need more kinds of test. If it requires sign-off from the project partner, you need a demo and a feedback loop.
 
 Write the answers into your [working agreement](/guides/working-agreement/) or `CONTRIBUTING.md` in a few lines: which kinds of testing the team does, when automated tests are required, and when users are involved.
 
@@ -44,7 +44,7 @@ Your **checks** are everything that catches a bad change before it reaches a use
 - a staging or preview environment, so the first run of a change isn't in production;
 - a rollback path you've actually tried.
 
-Delegate to AI tools only as far as those checks would catch a mistake, and strengthen the checks before you delegate more, because a tool's output can look right and still be wrong in ways nobody reads closely enough to see. The [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest) makes that argument in full, and [Audit Your Safety Net](/activities/ai/#audit-your-safety-net) measures the gap on your own repository.
+Delegate to AI tools only as far as those checks would catch a mistake, and strengthen the checks before you delegate more, because a tool's output can look right and still be wrong in ways nobody reads closely enough to see. The [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest) makes that argument in full, and [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) measures the gap on your own repository.
 
 ## Verification: Does the Code Work?
 
@@ -160,7 +160,7 @@ When success is measurable (conversion rates, task completion times, error rates
 Treat every sprint demo as a test of whether you built the right thing. When the project partner watches a feature and says "that's not what I meant", you've found a requirements bug, and a demo finds it within a sprint of the code being written instead of at the end of the project. The [Presentations guide](/guides/presentations/) covers how to run a demo that gets that feedback.
 
 :::note[Ethics Review]
-Testing with human participants as part of a research study usually needs ethics review, called an IRB (institutional review board) in the United States, before the first session. Ask whoever supervises the research early, because review takes weeks you don't control; [Complete an IRB Application](/activities/user/#complete-an-irb-application) walks through the filing.
+Testing with human participants as part of a research study usually needs ethics review, called an IRB (institutional review board) in the United States, before the first session. Ask whoever supervises the research early, because review takes weeks you don't control; [Complete an IRB Application](/activities/planning-and-risk/#complete-an-irb-application) walks through the filing.
 :::
 
 ## Testing Research Projects
@@ -258,11 +258,11 @@ When research depends on code, reproducibility plays the role a test suite plays
 
 **Activities that exercise this**
 
-- [Test Plan](/activities/design/#test-plan): turns this guide into a plan specific to your project.
-- [Put a Browser Agent on Your Critical Flow](/activities/ai/#put-a-browser-agent-on-your-critical-flow): turns the one flow users depend on into an end-to-end test that runs on every change.
-- [Wire an Accessibility Audit Into CI](/activities/ai/#wire-an-accessibility-audit-into-ci): the automated half of the accessibility check.
-- [Run an Acceptance Pass](/activities/ai/#run-an-acceptance-pass): checks work against what was asked, which tests can't do for you.
-- [Do a User Activity](/activities/user/#do-a-user-activity): one validation session with real users, written up.
-- [Test with an Assistive Technology User](/activities/user/#test-with-an-assistive-technology-user): the session only a daily assistive-technology user can give you.
-- [Complete an IRB Application](/activities/user/#complete-an-irb-application): the approval a research study with human participants needs first.
-- [Reproduce Your Baseline](/activities/design/#reproduce-your-baseline) and [Keep an Experiment Log](/activities/reflective/#keep-an-experiment-log): the research equivalents of a test and a test record.
+- [Test Plan](/activities/testing-release-and-handoff/#test-plan): turns this guide into a plan specific to your project.
+- [Put a Browser Agent on Your Critical Flow](/activities/testing-release-and-handoff/#put-a-browser-agent-on-your-critical-flow): turns the one flow users depend on into an end-to-end test that runs on every change.
+- [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci): the automated half of the accessibility check.
+- [Run an Acceptance Pass](/activities/testing-release-and-handoff/#run-an-acceptance-pass): checks work against what was asked, which tests can't do for you.
+- [Do a User Activity](/activities/working-with-users/#do-a-user-activity): one validation session with real users, written up.
+- [Test with an Assistive Technology User](/activities/interaction-design/#test-with-an-assistive-technology-user): the session only a daily assistive-technology user can give you.
+- [Complete an IRB Application](/activities/planning-and-risk/#complete-an-irb-application): the approval a research study with human participants needs first.
+- [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline) and [Keep an Experiment Log](/activities/research-methods/#keep-an-experiment-log): the research equivalents of a test and a test record.
