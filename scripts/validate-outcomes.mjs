@@ -42,6 +42,8 @@ import { parseFrontmatter } from "./lib/content.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
+// The CSV a Canvas entry family declares, as the path the page imports.
+const rubricPath = (family) => `${CANVAS_DIR}/${family.rubric}`;
 const MIN_ABET = 2;
 
 // Canvas rubric CSV directory -> the handbook page that renders it. The CSV is
@@ -520,7 +522,7 @@ for (const [slug, assignment] of pages) {
   const declaredRubrics = new Set();
   for (const family of canvas) {
     if (family.rubric) {
-      const path = `${CANVAS_DIR}/${family.rubric}`;
+      const path = rubricPath(family);
       declaredRubrics.add(path);
       if (!rendered.has(path)) {
         console.error(
@@ -631,9 +633,7 @@ for (const [slug, assignment] of pages) {
 // imported by hand and still look current. Every file must belong to a family.
 const declaredCsvs = new Set(
   [...pages.values()].flatMap((a) =>
-    (a.canvas ?? [])
-      .filter((f) => f.rubric)
-      .map((f) => `${CANVAS_DIR}/${f.rubric}`)
+    (a.canvas ?? []).filter((f) => f.rubric).map(rubricPath)
   )
 );
 // Canvas lists a course's rubrics by the Rubric Name column, so two files
@@ -815,7 +815,7 @@ for (const file of files) {
     const points = [
       ...new Set(
         (assignment.canvas ?? [])
-          .filter((f) => `${CANVAS_DIR}/${f.rubric}` === table.path)
+          .filter((f) => rubricPath(f) === table.path)
           .map((f) => f.points)
       ),
     ];

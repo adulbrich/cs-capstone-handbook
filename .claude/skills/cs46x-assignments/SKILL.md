@@ -152,8 +152,8 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    table inside `## Rubric`.
 6. **What You Produce ends its own text on one `**AI use:**` paragraph**,
    before any `###`, and a page without What You Produce has none.
-7. **Rubric points total the entry's `points`** per CSV, 100 everywhere but
-   the Introduction Email's 25 (see **Rubric Rules**).
+7. **Rubric points total the entry's `points`** per CSV (see **Rubric
+   Rules**).
 8. **The `canvas` entries reconcile.** Per term, family weights sum to the page
    weight; within one Canvas group, every entry carries the same weight per
    point (Canvas weights a group's entries by points); every family's rubric
@@ -293,10 +293,9 @@ The rubric is a CSV, not a Markdown table (see **The Rubric Lives in the CSV**).
 The rules below are about its content.
 
 - **Points total the Canvas entry's `points`**, summed as each criterion's
-  highest band, because Canvas grades an entry out of its rubric. That is 100
-  on every entry but the Introduction Email (25), which shares the Term
-  Startup group and so carries points in proportion to its weight. The
-  survey pages are no exception: their criteria carry the facet or score
+  highest band, because Canvas grades an entry out of its rubric. An entry
+  is 100 points unless it shares a Canvas group with entries worth more,
+  since the group weights its entries by points. The survey pages are no exception: their criteria carry the facet or score
   weights as points (#300).
 - **One CSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
   one CSV; every workshop shares one. The RFC's draft and final differ, so
