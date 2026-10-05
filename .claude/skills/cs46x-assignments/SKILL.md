@@ -100,7 +100,6 @@ assignment:
       weight: <the family's percent of the term grade>
       points: 100
       submission: pdf | video | url | image | survey | text | none, or a list
-      submission_label: <optional: the submission in words, where a list means either, not both>
       rubric: <dir>/<name>-rubric.csv
 ---
 ```

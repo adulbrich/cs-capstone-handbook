@@ -24,7 +24,7 @@ The sections below record each change as it was made. The ones from before the m
 
 In CS 461 only:
 
-- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of an image or a PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%.
+- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of one PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%.
 - Import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0) on it, and paste its body from the paste kit.
 - Re-paste the bodies of Term Startup and the Assignments Overview, and the CS 461 syllabus, whose Team Deliverables row names both fall entries.
 - The existing Term Startup assignment, its points, and its rubric are unchanged. CS 462 and CS 463 are unchanged.

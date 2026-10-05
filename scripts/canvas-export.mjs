@@ -477,7 +477,7 @@ function metaBox(e) {
     submission =
       e.page === "project-partner-evaluation"
         ? "Completed by your project partner, not by you"
-        : `${who}; ${e.family.submission_label ?? kinds.map((k) => SUBMISSION[k] ?? k).join(" and ")}`;
+        : `${who}; ${kinds.map((k) => SUBMISSION[k] ?? k).join(" and ")}`;
     due = kinds.includes("survey")
       ? `${cap(e.term)}, closes end of week ${e.week}`
       : `${cap(e.term)}, week ${e.week}`;
