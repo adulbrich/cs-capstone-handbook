@@ -18,7 +18,7 @@ Each activity carried hand-written badges: an audience badge (Individual, Team, 
 The badge line under every activity heading is `<ActivityMeta>`, computed at build. In order:
 
 1. `Whole team`, optional, only on an activity that fails without everyone present.
-2. The effort, optional for now, on the fixed scale `15 min`, `30 min`, `1 h`, `1 to 2 h`, `Half day`, `Multi-day`, `Ongoing`.
+2. The effort, optional for now, on a fixed scale of seven values from `15 min` to `Ongoing` (`EFFORT_SCALE` in `src/lib/activity-links.mjs`).
 3. `Workshop N, <term>`, linking the activity's `### Workshop N:` section on `assignments/workshop-activities.mdx`.
 4. `Prepares:`, then one badge per assignment whose "Activities That Prepare This" section links the activity, each linking that section.
 
@@ -35,7 +35,9 @@ A second rule joins the `cs46x-activities` skill: an activity that needs a capab
 `src/lib/activity-links.mjs` holds pure functions over raw MDX: the prep-section parser (the section ends at the next `## `), the workshop-entry parser, the index from activity key (`page#anchor`) to its workshop entry and the assignments it prepares, the tier, and a `slugify` matching github-slugger. Two consumers share it, so the badge a student sees and the tier the validator counts cannot disagree:
 
 - `src/components/ActivityMeta.astro` reads the assignment pages from the docs collection (`entry.body` is the raw MDX) and caches the index per build, keyed on the entries' digests so the dev server rebuilds it when an assignment changes. Linked badges are Starlight's `Badge` inside an anchor: `Badge` takes no `href`, and its styles are scoped to its own instances, so an anchor carrying the same classes would render unstyled.
-- `scripts/validate-activities.mjs` reads the same pages with `fs`. It defines an activity as a `##` section with `<ActivityMeta` on its badge line, checks that `anchor` equals the heading's slug and that `effort` is on the scale, reports any hand-written audience or tier badge left over, and keeps its anchor, schedule, workshop-week, closing-line, standalone, outcome-tag, and library-claim checks. Rules 1 and 2 and the "workshop not badged" leg are gone, because nothing is left to drift.
+- `scripts/validate-activities.mjs` reads the same pages with `fs`. It defines an activity as a `##` section with `<ActivityMeta` on its badge line, checks that `anchor` equals the heading's slug and that `effort` is on the scale, reports any hand-written audience or tier badge left over, and keeps its anchor, schedule, workshop-week, closing-line, standalone, outcome-tag, and library-claim checks. Rules 1 and 2 and the "workshop not badged" leg are gone, because nothing is left to drift. The "unassigned workshop" leg (a Workshop activity with no week) is replaced by checks on the workshop page itself: every `### Workshop N:` section has a week N in its frontmatter, the two agree on each term's count, and no two sections share a heading.
+
+The badge links are rendered by a component, so `starlight-links-validator`, which reads Markdown links, never sees them. `validate-activities` checks what they depend on instead: each Prepares badge links an assignment's "Activities That Prepare This" heading, which the prep parser found by that exact heading, and each Workshop badge links a `### Workshop N:` heading whose slug the lib computes as github-slugger does and which the validator requires to be unique.
 
 Two details changed in passing. The prep section used to run from its heading to end of file; it now ends at the next `## ` (only Peer Evaluations has one after it, `## References`, which links no activity, so the linked set is unchanged at 97 page-activity pairs). And the validator's old `slugify` collapsed runs of hyphens, so `Is / Is-Not` became `is-is-not` there while Starlight emits `is--is-not`; the shared one keeps the run.
 

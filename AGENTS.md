@@ -117,7 +117,9 @@ npm run test:hooks       # cases for the git guard hook
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build
 fails on any broken internal link **including anchors**. This matters: heading
 text determines anchor slugs, so renaming a heading breaks every inbound
-`#anchor` link. Let the build tell you rather than guessing slugs.
+`#anchor` link. Let the build tell you rather than guessing slugs. The links
+in an activity's generated badge line are the exception: a component renders
+them, so `validate-activities.mjs` checks them, not the build.
 
 ## How outcome coverage stays true
 

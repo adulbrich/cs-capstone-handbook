@@ -56,8 +56,11 @@
 //      ai-project-setup, 4,843 words nobody was ever asked to read. This is
 //      the guide half of rule 5, with one deliberate exemption.
 //
-//   6. Every Workshop activity sits on an In class line, in the same term and
-//      week that assignments/workshop-activities.mdx gives it. The schedule
+//   6. Every workshop section on assignments/workshop-activities.mdx has a
+//      week in its frontmatter, the two agree on each term's count, no two
+//      sections share a heading (the Workshop badge links it by anchor, which
+//      the build's link validator never sees), and every Workshop activity
+//      sits on an In class line, in the same term and week that page gives it. The schedule
 //      and the assignment page are two records of one fact, and before this
 //      check they disagreed about fall week 3 for weeks: the schedule prose
 //      named one activity, its link named another. Reading the page as one
@@ -77,7 +80,7 @@ import {
   tierOf,
   workshopEntries,
 } from "../src/lib/activity-links.mjs";
-import { canvasRows } from "../src/lib/canvas-entries.mjs";
+import { canvasRows, TERMS } from "../src/lib/canvas-entries.mjs";
 import { OUTCOME_TAG } from "../src/lib/rubric-csv.mjs";
 import { parseFrontmatter } from "./lib/content.mjs";
 
@@ -236,20 +239,18 @@ function readSchedulePlacements() {
   return placements;
 }
 
-// The week each workshop runs: entry N's week is the Nth week the workshop
-// page's frontmatter lists for that term.
-function readWorkshopWeeks(source) {
+// Every workshop entry with the week it runs: entry N's week is the Nth week
+// the workshop page's frontmatter lists for that term, or undefined when the
+// frontmatter lists fewer. `rows` is the frontmatter's entries per term.
+function readWorkshops(source) {
   const rows = canvasRows(
     parse(parseFrontmatter(source).frontmatter).assignment.canvas
   );
-  const weeks = new Map(); // "page#slug" -> { term, week }
-  for (const entry of workshopEntries(source)) {
-    const week = rows.find((r) => r.term === entry.term)?.weeks[entry.n - 1];
-    if (Number.isInteger(week)) {
-      weeks.set(entry.key, { term: entry.term, week });
-    }
-  }
-  return weeks;
+  const entries = workshopEntries(source).map((entry) => ({
+    ...entry,
+    week: rows.find((r) => r.term === entry.term)?.weeks[entry.n - 1],
+  }));
+  return { entries, rows };
 }
 
 const { activities, unlabeled } = readActivities();
@@ -258,7 +259,7 @@ const workshopSource = readFileSync(WORKSHOP_PAGE, "utf8");
 const index = buildActivityIndex({ assignments, workshopSource });
 const tier = (key) => tierOf(index.get(key));
 const placements = readSchedulePlacements();
-const workshopWeeks = readWorkshopWeeks(workshopSource);
+const workshops = readWorkshops(workshopSource);
 const problems = [];
 
 // Rule 1, the near miss: a section with a hand-written badge and no badge line.
@@ -344,25 +345,60 @@ for (const placement of placements) {
   lectureWeeks.get(placement.key).push(placement);
 }
 
-for (const [key, assigned] of workshopWeeks) {
-  const activity = activities.get(key);
-  if (!activity) {
+// The page and its frontmatter agree on how many workshops each term holds,
+// so no section runs in a week nobody listed and no listed week goes without
+// its section. A section with no activity link is no entry, so the count
+// catches it too.
+for (const term of TERMS) {
+  const sections = workshops.entries.filter((e) => e.term === term).length;
+  const listed = workshops.rows.find((r) => r.term === term)?.names.length ?? 0;
+  if (sections !== listed) {
     problems.push(
-      `broken anchor: /activities/${key} listed as the ${assigned.term} week ${assigned.week} workshop matches no heading`
+      `workshop count: assignments/workshop-activities.mdx has ${sections} ${term} "### Workshop N:" section(s) naming an activity, but its frontmatter lists ${listed} ${term} workshop(s)`
+    );
+  }
+}
+
+// The Workshop badge links its section by anchor, outside the build's link
+// validator. github-slugger would suffix a repeated heading's anchor with
+// "-1" and the lib would not, so a repeat would send a badge to the wrong
+// section.
+const workshopSlugs = new Set();
+for (const entry of workshops.entries) {
+  if (workshopSlugs.has(entry.slug)) {
+    problems.push(
+      `duplicate workshop heading: "${entry.heading}" appears twice on assignments/workshop-activities.mdx, so its Workshop badges cannot both link it`
+    );
+  }
+  workshopSlugs.add(entry.slug);
+}
+
+for (const entry of workshops.entries) {
+  const where = `${entry.term} ${entry.heading}`;
+  if (!Number.isInteger(entry.week)) {
+    problems.push(
+      `workshop without a week: ${where} on assignments/workshop-activities.mdx has no week ${entry.n} in its frontmatter's ${entry.term} list`
     );
     continue;
   }
-  const lectures = lectureWeeks.get(key) ?? [];
+  const activity = activities.get(entry.key);
+  if (!activity) {
+    problems.push(
+      `broken anchor: /activities/${entry.key} listed as the ${entry.term} week ${entry.week} workshop matches no heading`
+    );
+    continue;
+  }
+  const lectures = lectureWeeks.get(entry.key) ?? [];
   if (lectures.length === 0) {
     problems.push(
       `unscheduled workshop: ${activityLabel(activity)} is Workshop tier but no In class line on the week-by-week schedule links it`
     );
   } else if (
-    !lectures.some((l) => l.term === assigned.term && l.week === assigned.week)
+    !lectures.some((l) => l.term === entry.term && l.week === entry.week)
   ) {
     const found = lectures.map((l) => `${l.term} week ${l.week}`).join(", ");
     problems.push(
-      `workshop week mismatch: ${activityLabel(activity)} runs in ${assigned.term} week ${assigned.week} on assignments/workshop-activities.mdx, but the schedule's In class lines put it in ${found}`
+      `workshop week mismatch: ${activityLabel(activity)} runs in ${entry.term} week ${entry.week} on assignments/workshop-activities.mdx, but the schedule's In class lines put it in ${found}`
     );
   }
 }
