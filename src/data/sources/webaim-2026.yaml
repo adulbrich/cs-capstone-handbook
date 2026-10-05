@@ -4,7 +4,10 @@ year: 2026
 title: "The WebAIM Million: The 2026 Report on the Accessibility of the Top 1,000,000 Home Pages"
 venue: WebAIM, Utah State University, industry report
 kind: industry-report
-url: https://webaim.org/projects/million/
+# A Wayback Machine snapshot, because WebAIM replaces the report at
+# webaim.org/projects/million/ with each new year's edition; the locators
+# below were read against this snapshot.
+url: https://web.archive.org/web/20261001144620/https://webaim.org/projects/million/
 verified: full-text
 claims:
   - claim: >-
