@@ -8,11 +8,20 @@ assignment:
   terms: [fall, winter, spring]
   weight: 1
   canvas:
+    - name: "Introduction Email"
+      due_label: Fall end of week 1
+      group: Term Startup
+      weeks: { fall: [1] }
+      weight: { fall: 0.2 }
+      points: 25
+      submission: [image, pdf]
+      submission_label: a screenshot of the sent message, or a PDF of it
+      rubric: term-startup/introduction-email-rubric.csv
     - name: "Term Startup"
       due_label: Fall end of week 2; winter and spring end of week 1
       group: Term Startup
       weeks: { fall: [2], winter: [1], spring: [1] }
-      weight: 1
+      weight: { fall: 0.8, winter: 1, spring: 1 }
       points: 100
       submission: text
       rubric: term-startup/term-startup-rubric.csv
@@ -20,9 +29,10 @@ assignment:
 
 import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
+import emailRubricCsv from '/canvas/assignments/term-startup/introduction-email-rubric.csv?raw';
 import rubricCsv from '/canvas/assignments/term-startup/term-startup-rubric.csv?raw';
 
-<AssignmentSummary who="Team, one status report per team">
+<AssignmentSummary who="Team, one submission per team">
   Each term has its own list below.
 </AssignmentSummary>
 
@@ -32,11 +42,13 @@ In this assignment your team starts the term with your project partner or mentor
 
 Do everything on your term's list by the deadline. When an item waits on an answer from your partner, asking is your part: report it as not done yet, with the date you asked.
 
+### Fall Week 1: Introduction Email
+
+Teams are announced in the week 1 class session. By the end of week 1, send the introduction email to your project partner, or to your mentor where your team has no partner, with every teammate on Cc. Start from the [introduction email template](/email-template.txt), which already carries the questions worth asking before you meet. Send it as soon as you know your team: the meeting you're asking for has to fit somebody else's calendar, and the [Definition of Shipped](/assignments/definition-of-shipped/), the [week 5 checkpoint gate](/assignments/repo-checkpoints/#term-gates), and any approval with a lead time measured in weeks all start from this conversation.
+
 ### Fall (by the end of week 2)
 
-You learn your team and your partner at the end of week 1. Send the email as soon as you do: the meeting you're asking for has to fit somebody else's calendar, and the [Definition of Shipped](/assignments/definition-of-shipped/), the [week 5 checkpoint gate](/assignments/repo-checkpoints/#term-gates), and any approval with a lead time measured in weeks all start from this conversation.
-
-1. **Introduction email sent**, starting from the [introduction email template](/email-template.txt), which already carries the questions worth asking before you meet.
+1. **Partner replied**, or two documented attempts made (email plus one other channel) and your TA told, which is the same rule the [Definition of Shipped](/assignments/definition-of-shipped/) uses. A partner who goes quiet is a problem the instruction team can solve in week 2 and can't solve in week 9.
 2. **First meeting held or scheduled.**
 3. **Meeting cadence and channel agreed.** Your partner committed to about an hour a week, so agree what that hour is for.
 4. **Evaluator confirmed.** Confirm with your partner that they are the person who completes your [partner evaluations](/assignments/project-partner-evaluation/) this term, and walk them through the facet lists on that page. They score you against those lists in week 6 and week 10.
@@ -63,6 +75,12 @@ Your TA check-in in fall week 2 falls before this deadline. Bring the list as it
 
 ## What You Submit
 
+### Introduction Email
+
+One per team: a screenshot of the sent message, or a PDF printed from your mail app when the email does not fit on one screen. It shows the sent timestamp, From, To, the Cc line with every teammate, the subject, and the whole body. It needs no cover lines, since the headers carry the names. A reply is not required; fall item 1 of the status report tracks it.
+
+### Term Startup
+
 A short text entry, one line per item on your term's list, numbered as the list is: done, with the date; not done yet, with what happens next and by when; or, for fall item 7, does not apply. For example, in winter:
 
 ```text
@@ -74,13 +92,17 @@ A short text entry, one line per item on your term's list, numbered as the list 
 
 It is graded complete or incomplete, never on the writing. In winter and spring, your week 2 TA check-in picks up any item still not done.
 
-Partner hasn't replied? Make two documented attempts (email plus one other channel), then tell your TA, which is the same rule the [Definition of Shipped](/assignments/definition-of-shipped/) uses. A partner who goes quiet is a problem the instruction team can solve in week 2 and can't solve in week 9.
-
 :::note[If your project is under NDA]
 Nothing on these lists needs partner-confidential material. The report states dates, names, and your cadence, which an NDA doesn't cover. Fall item 6 is the conversation where you find out an NDA applies at all.
 :::
 
 ## Rubric
+
+### Introduction Email
+
+<RubricTable csv={emailRubricCsv} sourceLabel="canvas/assignments/term-startup/introduction-email-rubric.csv" />
+
+### Term Startup
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/term-startup/term-startup-rubric.csv" />
 

@@ -124,6 +124,10 @@ export const collections = {
                       z.enum(SUBMISSIONS),
                       z.array(z.enum(SUBMISSIONS)).min(1),
                     ]),
+                    // What is submitted, in words, for the Canvas card where
+                    // the kinds joined by "and" mislead: a screenshot or a
+                    // PDF, not both.
+                    submission_label: text().optional(),
                     // One title per week listed, per term, filling
                     // "{title}" in the name: "Workshop {n}: {title}".
                     titles: z

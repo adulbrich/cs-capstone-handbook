@@ -100,6 +100,7 @@ assignment:
       weight: <the family's percent of the term grade>
       points: 100
       submission: pdf | video | url | image | survey | text | none, or a list
+      submission_label: <optional: the submission in words, where a list means either, not both>
       rubric: <dir>/<name>-rubric.csv
 ---
 ```
@@ -151,7 +152,8 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    table inside `## Rubric`.
 6. **What You Produce ends its own text on one `**AI use:**` paragraph**,
    before any `###`, and a page without What You Produce has none.
-7. **Rubric points total exactly 100** per CSV (see **Rubric Rules**).
+7. **Rubric points total the entry's `points`** per CSV, 100 everywhere but
+   the Introduction Email's 25 (see **Rubric Rules**).
 8. **The `canvas` entries reconcile.** Per term, family weights sum to the page
    weight; within one Canvas group, every entry carries the same weight per
    point (Canvas weights a group's entries by points); every family's rubric
@@ -290,7 +292,10 @@ course design talking to itself on a student page. Keep each to one idea.
 The rubric is a CSV, not a Markdown table (see **The Rubric Lives in the CSV**).
 The rules below are about its content.
 
-- **Points total exactly 100**, summed as each criterion's highest band. The
+- **Points total the Canvas entry's `points`**, summed as each criterion's
+  highest band, because Canvas grades an entry out of its rubric. That is 100
+  on every entry but the Introduction Email (25), which shares the Term
+  Startup group and so carries points in proportion to its weight. The
   survey pages are no exception: their criteria carry the facet or score
   weights as points (#300).
 - **One CSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
@@ -463,7 +468,7 @@ the student has to learn first.
 - Calendar dates or an academic year. `due` is a term and a week, and may
   add a weekday or a named holiday ("Fall, week 9, Wednesday before
   Thanksgiving"), never a date. `validate-dates.mjs` fails on one.
-- A rubric that does not total 100.
+- A rubric that does not total its entry's points.
 - Outcome tags whose counts disagree with the frontmatter.
 - Links to activities that carry no tier badge.
 - Explanations that belong in a guide. Link to the guide instead; two

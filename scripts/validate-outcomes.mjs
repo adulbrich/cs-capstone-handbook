@@ -805,16 +805,29 @@ for (const file of files) {
     failed = true;
   }
 
-  // Rubric points total exactly 100, summed from each rendered CSV, and
-  // each table sits in the "## Rubric" section.
+  // Each rendered CSV totals the points of the Canvas entries that use it,
+  // since Canvas grades an entry out of its rubric, and each table sits in
+  // the "## Rubric" section. A CSV no entry uses is reported above.
   for (const table of pageTables.get(slug)) {
     if (!table.path) {
       continue; // already reported as RUBRIC IMPORT above
     }
+    const points = [
+      ...new Set(
+        (assignment.canvas ?? [])
+          .filter((f) => `${CANVAS_DIR}/${f.rubric}` === table.path)
+          .map((f) => f.points)
+      ),
+    ];
     const total = rubricTotal(readRubric(table.path).criteria);
-    if (total !== 100) {
+    if (points.length > 1) {
       console.error(
-        `RUBRIC ${file}: ${table.path} totals ${total} points, not 100.`
+        `RUBRIC ${file}: ${table.path} is used by entries worth ${points.join(" and ")} points; entries sharing a rubric share its points.`
+      );
+      failed = true;
+    } else if (points.length === 1 && total !== points[0]) {
+      console.error(
+        `RUBRIC ${file}: ${table.path} totals ${total} points, but its Canvas entry is worth ${points[0]}.`
       );
       failed = true;
     }
@@ -829,7 +842,7 @@ for (const file of files) {
 }
 if (!failed) {
   console.log(
-    "  Every page has the summary card and the skeleton, carries AI use where it produces something, and totals 100."
+    "  Every page has the summary card and the skeleton, carries AI use where it produces something, and totals its entry's points."
   );
 }
 

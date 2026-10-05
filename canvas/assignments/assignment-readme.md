@@ -1,7 +1,7 @@
 # Assignment README
 
 - This directory holds one validated `<name>-rubric.csv` per distinct rubric of every live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), in the format of Canvas's rubric import, plus Canvas's own template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
-- `scripts/validate-outcomes.mjs` reads every CSV as the rubric: it reconciles the outcome tags in the Criteria Name column against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own CSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
+- `scripts/validate-outcomes.mjs` reads every CSV as the rubric: it reconciles the outcome tags in the Criteria Name column against the page's frontmatter, totals each rubric to its entry's points (100 on every entry but the Introduction Email's 25), and checks that each page renders its own CSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, from the paste kit (`npm run build`, then `npm run canvas:export`, which writes one body per Canvas entry to `canvas-export/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
 - One CSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the CSV. That list is what to create in Canvas: the page renders it for students as the Submissions table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
@@ -19,6 +19,17 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 **Nothing students or graders see changed.** Every criterion, description, band, point value and outcome tag was checked equal, file by file, between the old parser's reading of each TSV and the new parser's reading of its CSV. A rubric already in Canvas does not need re-importing for this change. The pending re-imports below now take the CSV named in each. An import may add a second rubric rather than replace the one already in the course, so after re-importing, check the course's rubric list and delete the old one if both are there. Import `defense/defense-rubric.csv` first as the check that Canvas takes a fourth rating group and the quoted fields.
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
+
+## Canvas Changes: Introduction Email (#413)
+
+In CS 461 only:
+
+- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of an image or a PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%.
+- Import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0) on it, and paste its body from the paste kit.
+- Re-paste the bodies of Term Startup and the Assignments Overview, and the CS 461 syllabus, whose Team Deliverables row names both fall entries.
+- The existing Term Startup assignment, its points, and its rubric are unchanged. CS 462 and CS 463 are unchanged.
+
+The validator now totals each rubric to its entry's points rather than to 100, which is what lets the email's rubric carry 25.
 
 ## Re-paste Required: ABET SO1 Wording (#358)
 
@@ -386,9 +397,9 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
-| 1 | Resume and Intent |
+| 1 | Resume and Intent; Introduction Email (0.2%, complete/incomplete) |
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
-| 2 | Term Startup (1%); Team Charter |
+| 2 | Term Startup (0.8%); Team Charter |
 | 3 | Demo Day registration (0 points, omit from final grade) |
 | by 5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
