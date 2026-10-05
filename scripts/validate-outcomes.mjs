@@ -50,6 +50,7 @@ const MIN_ABET = 2;
 // the rubric (#144), so this is not a mirror table: it is how the validator
 // tells whether a page imported its own assignment's rubric or a neighbour's.
 const CANVAS_TO_HANDBOOK = {
+  "bidding-survey": "bidding-survey",
   defense: "defense",
   "definition-of-shipped": "definition-of-shipped",
   "incident-postmortem": "incident-postmortem",

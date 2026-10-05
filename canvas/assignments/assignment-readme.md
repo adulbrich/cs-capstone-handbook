@@ -20,14 +20,15 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
-## Canvas Changes: Introduction Email (#413)
+## Canvas Changes: Bidding Survey and Introduction Email (#413, #424)
 
 In CS 461 only:
 
-- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of one PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%.
-- Import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0) on it, and paste its body from the paste kit.
-- Re-paste the Term Startup body and the CS 461 syllabus, whose Team Deliverables row names both fall entries.
-- The existing Term Startup assignment, its points, and its rubric are unchanged. CS 462 and CS 463 are unchanged.
+- Create a **Bidding Survey** group at 1% holding one **Bidding Survey** assignment: 100 points, individual, no submission, due at the end of fall week 0, graded Complete from the Qualtrics export. It is due before classes start, so the course has to be published by week 0. Paste its body from the paste kit in place of the hand-written one, and import `bidding-survey/bidding-survey-rubric.csv` (Complete 100 / Incomplete 0).
+- Lower the **RFC Draft** group from 5% to 4%. RFC Final stays at 10%, so the RFC is 14% in fall. Its entries, points, and rubrics are unchanged.
+- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of one PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%. Paste its body from the paste kit, and import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0).
+- Re-paste the Term Startup body, the RFC Draft + Peer Review body (its weight line), the Assignments Overview (the grade grid gives Bidding Survey 1 and RFC 14 in fall), and the CS 461 syllabus.
+- The existing Term Startup assignment, its 100 points, and its rubric are unchanged. CS 462 and CS 463 are unchanged.
 
 The validator now totals each rubric to its entry's points rather than to 100, which is what lets the email's rubric carry 25.
 
@@ -213,7 +214,7 @@ section above).
 
 ## Grade Architecture (every term)
 
-Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: RFC 15% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
+Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: Bidding Survey 1% + RFC 14% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close at the end of week 6; final surveys are sent week 9 and close at the end of week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
@@ -397,6 +398,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
+| 0 | Bidding Survey (1%, complete/incomplete) |
 | 1 | Resume and Intent; Introduction Email (0.2%, complete/incomplete) |
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
 | 2 | Term Startup (0.8%); Team Charter |

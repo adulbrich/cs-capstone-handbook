@@ -39,7 +39,8 @@ const termWeight = () =>
       })
       .strict(),
   ]);
-const weekList = () => z.array(z.number().int().min(1).max(11)).min(1);
+// Week 0 is the week before classes, when the bidding survey is due.
+const weekList = () => z.array(z.number().int().min(0).max(11)).min(1);
 const SUBMISSIONS = [
   "pdf",
   "video",
