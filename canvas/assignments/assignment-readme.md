@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: ABET SO1 Wording (#358)
+
+No rubric changes. Re-paste the three syllabi: SO1 under Course Learning Outcomes now reads "Analyze a complex computing problem and apply principles of computing", as ABET's criteria state it, where it said "and to apply".
+
 ## Re-import Required: Leaked Secrets Revoked and Disclosed (#400)
 
 `repo-checkpoint/repo-checkpoint-rubric.csv`: the Exceeds band of Contribution traceability and git hygiene now asks for no live secrets or build artifacts in the history, and, if a secret leaked, that it was revoked or rotated and the commit that removed it says so, in place of "no secrets or build artifacts are committed". It matches the git and GitHub guide. The Meets and Does Not Meet bands, points, and tags are unchanged. Re-import it on every Repo Checkpoint entry, after any earlier re-import of the same file.
