@@ -31,6 +31,8 @@ import {
 } from "../src/lib/canvas-entries.mjs";
 import { WEIGHT_RE } from "../src/lib/grade-grid.mjs";
 import {
+  ABET_OUTCOMES,
+  OTHER_OUTCOMES,
   parseRubricCsv,
   RUBRIC_CSV_SUFFIX,
   rubricTagCounts,
@@ -40,8 +42,6 @@ import { parseFrontmatter } from "./lib/content.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
-const ABET_OUTCOMES = ["SO1", "SO2", "SO3", "SO4", "SO5", "SO6"];
-const OTHER_OUTCOMES = ["L07", "L08", "L09", "L10"];
 const MIN_ABET = 2;
 
 // Canvas rubric CSV directory -> the handbook page that renders it. The CSV is

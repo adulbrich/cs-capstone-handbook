@@ -25,11 +25,12 @@
  * carries a fourth `Missing` band.
  */
 
-/**
- * The outcome IDs the accreditation record recognises, as a regex
- * alternation. Nothing else is a tag. The one spelling of the pattern.
- */
-export const OUTCOME_TAG = "SO[1-6]|L0[7-9]|L10";
+/** The outcome IDs the accreditation record recognises. Nothing else is a tag. */
+export const ABET_OUTCOMES = ["SO1", "SO2", "SO3", "SO4", "SO5", "SO6"];
+export const OTHER_OUTCOMES = ["L07", "L08", "L09", "L10"];
+
+/** The same IDs as a regex alternation: the one spelling of the pattern. */
+export const OUTCOME_TAG = [...ABET_OUTCOMES, ...OTHER_OUTCOMES].join("|");
 export const OUTCOME_TAG_RE = new RegExp(`^(${OUTCOME_TAG})$`);
 
 const CRITERION_HEADER = [
