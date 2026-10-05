@@ -30,48 +30,19 @@ Learn how the code you're inheriting or contributing to is actually built, teste
 
 A good output is a one-page audit of the codebase you're inheriting: how it builds, how it's tested, how a change gets reviewed and released, what is undocumented, and what surprised you, ending with the first three changes you intend to make.
 
-## Select a Database or Storage Technology
+## Choose a Storage or Technology
 
-<ActivityMeta anchor="select-a-database-or-storage-technology" />
+<ActivityMeta anchor="choose-a-storage-or-technology" />
 
-Choose the most suitable database or storage technology for your project based on data requirements, scalability, and use case.
+Choose a database, storage technology, language, framework, or library by comparing two or three options against criteria your project sets, after running each one. A choice you can justify against your requirements is one you can defend later, when someone asks why you didn't pick the other one.
 
-- Assess Requirements: Analyze your project's data structure, volume, and usage patterns.
-- Compare Options: Explore relational (e.g., MySQL, PostgreSQL) vs. non-relational databases (e.g., MongoDB, Cassandra), as well as different ways to store data (offline, online, object stores, etc.).
-- Scalability and Performance: Consider factors like read/write speeds, scalability, and how well the database or store handles your expected workload.
-- Final Selection: Justify your choice based on how it aligns with the project's goals.
+- **Assess requirements**: write down what you need from the technology. For storage, analyze your data's structure, volume, and usage patterns, and the read/write workload you expect. For anything else, name the criteria that matter (e.g., performance, scalability, ease of use).
+- **Shortlist options**: pick two or three candidates and note each one's strengths and weaknesses. For storage, compare relational (e.g., MySQL, PostgreSQL) and non-relational databases (e.g., MongoDB, Cassandra), as well as different ways to store data (offline, online, object stores, etc.).
+- **Run the quick-starts**: work through each candidate's "Quick Start" guide rather than one in-depth tutorial, and note what was harder than its documentation suggested.
+- **Compare**: score each option in a comparison matrix on how well it integrates with your existing project, how it handles your expected workload (read/write speeds, scalability), its security features, and its community support.
+- **Decide**: pick one and justify it against the project's goals.
 
-A good output details the options considered, pros/cons, and the rationale for your final database/storage selection.
-
-## Evaluate Different Technologies
-
-<ActivityMeta anchor="evaluate-different-technologies" />
-
-Compare and assess multiple technologies (e.g., languages, frameworks, libraries, ...) to choose the best fit for your project's requirements.
-
-- Identify Key Criteria: Define what you need from the technology (e.g., performance, scalability, ease of use, ...).
-- Research Options: Explore 2-3 technology solutions and their strengths/weaknesses.
-- Compare Performance and Compatibility: Evaluate how well each technology integrates with your existing project and meets performance goals.
-- Security and Support: Consider security features and available community support for each option.
-
-A good output is a comparison matrix and a justification for the chosen technology; this maps directly onto the alternatives section of an RFC.
-
-## Complete a Tutorial
-
-<ActivityMeta anchor="complete-a-tutorial" />
-
-Gain hands-on experience and enhance your technical skills by completing a tutorial relevant to your project.
-
-1. Choose a Tutorial: Select an online tutorial that aligns with your project (e.g., database setup, API development, UI design, web framework).
-2. Work Through the Steps: Complete the tutorial, following the instructions and applying what you learn.
-
-:::note
-Consider doing one or more "Quick Start" guides to compare different technologies instead of an in-depth tutorial, see the [Evaluate Different Technologies](#evaluate-different-technologies) activity.
-:::
-
-Write a summary of what you learned and how you'll apply it to your project. Outline features, if any, that you learned about and how it will help with specific concerns or features.
-
-A good output is a summary of what you learned and the specific features or concerns in your project it applies to.
+A good output is a comparison matrix of two or three options scored against your criteria, with what running each quick-start taught you and a justification for the one you chose; it maps directly onto the alternatives section of an RFC.
 
 ## Map Your Hard-to-Reverse Decisions
 

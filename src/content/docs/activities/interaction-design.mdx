@@ -15,33 +15,20 @@ These activities shape what a person sees and does with your software: prototype
 />
 
 
-## Low or Medium-Fidelity Prototype
+## Prototype an Interface
 
-<ActivityMeta anchor="low-or-medium-fidelity-prototype" />
+<ActivityMeta anchor="prototype-an-interface" />
 
-Create a low or medium-fidelity prototype to clarify and validate the project's functional requirements.
+Build a clickable prototype to check your requirements and your design with stakeholders or users before you write the code. Fidelity is a choice of when, so pick the lowest one that answers your current question.
 
-- Define Key Features: Identify the main features to be included in the prototype.
-- Create the Prototype: Use tools like Figma, [Penpot](https://penpot.app/), or similar to build a clickable prototype that demonstrates key user flows.
-- Validate Requirements: Review the prototype with stakeholders or users to ensure it meets functional requirements.
-
-Read this [blog post about a SoundCloud iOS redesign](https://www.freecodecamp.org/news/my-friends-hate-soundcloud-ios-so-i-redesigned-it-for-them-d3038cdd020b).
-
-A good output is the prototype link and a brief reflection on how it clarified or influenced the project's requirements.
-
-## High-Fidelity Prototype
-
-<ActivityMeta anchor="high-fidelity-prototype" />
-
-Develop a high-fidelity prototype to visualize and refine the design of your project, ensuring alignment with user experience and technical requirements.
-
-- Design User Flows: Create a detailed prototype showcasing key user interactions and functionality using tools like Figma or [Penpot](https://penpot.app/) (open source, free).
-- Visual Consistency: Ensure the design adheres to UI/UX principles and branding guidelines.
-- Gather Feedback: Share the prototype with stakeholders or users to refine the design based on feedback.
+- **Pick the fidelity**: low or medium while the functional requirements are still settling, to clarify and validate what the software does and its key user flows; high once the shape has settled, to visualize and refine how it looks and behaves against UI/UX principles and any branding guidelines.
+- **Define key features**: identify the main features and user flows the prototype has to show.
+- **Create the prototype**: use tools like Figma or [Penpot](https://penpot.app/) (open source, free) to build a clickable prototype that demonstrates those flows.
+- **Gather feedback**: review the prototype with stakeholders or users, and change the requirements or the design based on what they tell you.
 
 Read this [blog post about a SoundCloud iOS redesign](https://www.freecodecamp.org/news/my-friends-hate-soundcloud-ios-so-i-redesigned-it-for-them-d3038cdd020b).
 
-A good output is the prototype link and a reflection on design choices and feedback incorporated.
+A good output is the prototype link with a brief reflection naming the fidelity you chose and what the review changed in your requirements or design.
 
 ## UI Design Guidelines
 
@@ -66,37 +53,31 @@ Feel free to come up with another design system or your own exhaustive one.
 
 A good output is your updated UI wireframes or a demo of your updated software with a summary of what changed and why.
 
-## MDA Framework
+## Design the Core Experience
 
-<ActivityMeta anchor="mda-framework" />
+<ActivityMeta anchor="design-the-core-experience" />
 
-For game projects. Write down the intended player experience, the mechanics that produce it, and the dynamics you expect to emerge, using the [MDA (Mechanics, Dynamics, Aesthetics) framework](https://users.cs.northwestern.edu/~hunicke/MDA.pdf), before development begins. Doing it early is what lets the team argue about design goals instead of about code. Split the three parts among team members.
+For game projects. Write down the intended player experience and the mechanics that produce it before development begins, then check the core loop against them. Doing it early is what lets the team argue about design goals instead of about code, and a loop that reads flat on paper plays flat, so fix it here before building content around it.
 
-A good output is your mechanics, dynamics, and aesthetics written out, with the intended player experience stated first and the mechanics justified against it.
+- **State the experience**: write the intended player experience first, as the aesthetics of the [MDA (Mechanics, Dynamics, Aesthetics) framework](https://users.cs.northwestern.edu/~hunicke/MDA.pdf).
+- **Write the mechanics and dynamics**: the mechanics that produce that experience, and the dynamics you expect to emerge from them. Split the three parts among team members.
+- **Name the core loop**: the repeatable actions that drive engagement and progression.
+- **Check each step**: confirm each step of the loop gives the player a meaningful action and a reward, and change the loop or the mechanics where one doesn't.
 
-## Core Loop Analysis
+A good output is your mechanics, dynamics, and aesthetics written out, with the intended player experience stated first and the mechanics justified against it, ending on the core loop with each step's player action and reward and what you changed after analyzing it.
 
-<ActivityMeta anchor="core-loop-analysis" />
+## Map the Player Journey
 
-For game projects. Name the repeatable actions that drive engagement and progression, the core loop, and check that each step gives the player a meaningful action and a reward. A loop that reads flat on paper plays flat, so fix it here before building content around it.
+<ActivityMeta anchor="map-the-player-journey" />
 
-A good output is a description of the core loop naming each step's player action and reward, plus what you changed after analyzing it.
+For game projects. Map the player's journey from the First Time User Experience (FTUE) through the mid-game, and turn what you expect along it into claims a playtest can confirm or refute. The map exists to find the points where players drop off and to propose a fix for each before a playtest confirms it.
 
-## Player Journey
+- **Map the journey**: onboarding, learning curve, progression, from the first session through the mid-game.
+- **Mark the drop-off points**: where a player is likely to quit, and one fix proposed for each.
+- **Write the fun hypotheses**: your team's claims about what will make the game fun, each attached to the point in the journey where it should show. They're what you test first and what you cut when a playtest says otherwise.
+- **Plan the playtest**: for each hypothesis and each fix, how a playtest will confirm or refute it.
 
-<ActivityMeta anchor="player-journey" />
-
-For game projects. Map the player's journey from the First Time User Experience (FTUE) through the mid-game: onboarding, learning curve, progression. The map exists to find the points where players drop off and to propose a fix for each before a playtest confirms it.
-
-A good output is a mapped journey from first-time experience through mid-game, with likely drop-off points marked and one fix proposed for each.
-
-## Fun Hypotheses
-
-<ActivityMeta anchor="fun-hypotheses" />
-
-For game projects. Write down your team's hypotheses about what will make the game fun, each as a claim a playtest can confirm or refute. They're what you test first and what you cut when a playtest says otherwise.
-
-A good output is a written list of your fun hypotheses, each with how you plan to test it in playtesting.
+A good output is a journey map from first-time experience through mid-game, with the likely drop-off points marked, one fix proposed for each, and the fun hypotheses placed along it, each with how you plan to test it in playtesting.
 
 ## Designing for Accessibility
 
