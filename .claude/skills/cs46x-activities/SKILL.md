@@ -42,8 +42,8 @@ short.
 | Assignment | Reference | What is due, when, and how is it scored? |
 
 The consequence for voice: **an activity does not argue.** It does not need the
-causal clause a guide owes its reader, because the guide already carried it and
-is one link away. Terseness here is correct, where in a guide it is the failure
+causal clause a guide owes its reader, because a guide carries it where one
+exists. Terseness here is correct, where in a guide it is the failure
 mode. What an activity still owes is precision: a step a team can misread is a
 step that wastes their hour.
 
@@ -301,11 +301,6 @@ Ordering within a page is by rough sequence of use, not alphabetical.
   is..." line, which describes the artifact, and nothing follows it.
 - Do not explain concepts at length. Link to the relevant page in
   `src/content/docs/guides/` and move on. Guides explain; activities exercise.
-- **Name the paired guide.** Every activity links the guide whose practice it
-  exercises, in the opening sentences or the first step. Guides now close with
-  an `## Additional Readings` section listing the activities that exercise
-  them, so the link runs both ways; an activity with no named guide is either
-  missing its link or exercising a practice the handbook never explained.
 
 ### Worked examples
 
