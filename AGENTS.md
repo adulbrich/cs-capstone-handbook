@@ -119,7 +119,9 @@ fails on any broken internal link **including anchors**. This matters: heading
 text determines anchor slugs, so renaming a heading breaks every inbound
 `#anchor` link. Let the build tell you rather than guessing slugs. The links
 in an activity's generated badge line are the exception: a component renders
-them, so `validate-activities.mjs` checks them, not the build.
+them, so the build never sees them. `validate-activities.mjs` checks what they
+depend on instead: the exact "Activities That Prepare This" heading and unique
+workshop heading slugs.
 
 ## How outcome coverage stays true
 
