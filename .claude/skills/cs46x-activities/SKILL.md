@@ -101,8 +101,8 @@ An activity over roughly 400 words is usually a guide with an exercise stapled
 to it. The test is what the bulk *is*:
 
 - **Explanation** teaches a concept, a model, or a practice, and it belongs in
-  a guide. `activities/conflict.mdx` was four sections of this, up to 1,100
-  words each, and became `guides/conflict.mdx` plus four short exercises.
+  a guide. The old conflict activities page was four sections of this, up to
+  1,100 words each, and became `guides/conflict.mdx` plus four short exercises.
 - **An instrument** is something the student fills in, scores, or works
   through *during* the activity: an assessment table, a scoring rubric, a
   canvas, a checklist. It stays, however long it is. `Team Health Assessment`
@@ -292,22 +292,32 @@ a PR merged upstream" is unwritable for a greenfield product.
 
 ## Page-Level Structure
 
-Each page in `src/content/docs/activities/` groups activities by theme.
+Each page in `src/content/docs/activities/` groups activities by the kind of
+work they are, so every activity has one predictable home. Ten pages are
+project practice and two are growth (Learning and Reflection, Career). A new
+activity goes on the page whose work it is; a new page is a decision for the
+owner, not a way to place one activity.
 
 ```yaml
 ---
-title: <Theme> Activities
+title: <The kind of work, e.g. Technical Design>
 description: <one sentence naming what the page covers; quote it if it contains a colon>
-sidebar:
-  order: <number>
 ---
 ```
+
+The title names the work, never a project category, and carries no
+"Activities" suffix: the sidebar group already says it. There is no
+`sidebar.order`. The Activities sidebar is an explicit list in
+`src/lib/activities-sidebar.mjs` (Project practice in first-use order, then
+Growth), which ignores `order`, so a new page must be added there;
+`validate:sidebar` fails until it is. Retiring a page needs a redirect in
+`astro.config.mjs` and every inbound link rewritten.
 
 The `description` field is YAML: **an unquoted colon inside it breaks the
 build** with `bad indentation of a mapping entry`, which does not obviously
 point at the description. Quote any description containing a colon.
 
-After the import, each page opens with two or three sentences framing the theme,
+After the import, each page opens with two or three sentences framing the work,
 optionally followed by a pull quote. Then the activities, each a `##` section.
 Ordering within a page is by rough sequence of use, not alphabetical.
 
