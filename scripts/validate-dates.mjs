@@ -29,29 +29,14 @@
 //
 // Run: node scripts/validate-dates.mjs
 
-import { readdirSync, readFileSync, statSync } from "node:fs";
-import { extname, join } from "node:path";
+import { readFileSync } from "node:fs";
+import { walk } from "./lib/content.mjs";
 
 const ROOTS = ["src", "canvas", "public", "decks", "STAFF-RUNBOOK.md"];
 const SKIP_FILES = new Set([
   "canvas/assignments/assignment-readme.md",
   "src/content/docs/introduction/showcase.mdx",
 ]);
-const TEXT_EXTENSIONS = new Set([
-  ".astro",
-  ".css",
-  ".csv",
-  ".html",
-  ".json",
-  ".md",
-  ".mdx",
-  ".mjs",
-  ".ts",
-  ".txt",
-  ".yml",
-  ".yaml",
-]);
-
 const MONTHS = [
   "January",
   "February",
@@ -114,16 +99,6 @@ const PATTERNS = [
 const URL_RE = /https?:\/\/\S+/g;
 const CODE_SPAN_RE = /`[^`\n]*`/g;
 const CITATION_RE = /\bAccessed:|^\s*(\*\*)?\[\d+\]/;
-
-function* walk(path) {
-  if (statSync(path).isDirectory()) {
-    for (const name of readdirSync(path)) {
-      yield* walk(join(path, name));
-    }
-  } else if (TEXT_EXTENSIONS.has(extname(path))) {
-    yield path;
-  }
-}
 
 const hits = [];
 let checked = 0;

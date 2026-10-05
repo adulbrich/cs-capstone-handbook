@@ -7,36 +7,11 @@
 //
 // Run: node scripts/validate-dashes.mjs
 
-import { readdirSync, readFileSync, statSync } from "node:fs";
-import { extname, join } from "node:path";
+import { readFileSync } from "node:fs";
+import { walk } from "./lib/content.mjs";
 
 const ROOTS = ["src", "canvas", "public", "decks"];
-const TEXT_EXTENSIONS = new Set([
-  ".astro",
-  ".css",
-  ".csv",
-  ".html",
-  ".json",
-  ".md",
-  ".mdx",
-  ".mjs",
-  ".ts",
-  ".txt",
-  ".yml",
-  ".yaml",
-]);
 const EM_DASH_RE = /\u2014|&mdash;|&#8212;|&#x2014;/gi;
-
-function* walk(dir) {
-  for (const name of readdirSync(dir)) {
-    const path = join(dir, name);
-    if (statSync(path).isDirectory()) {
-      yield* walk(path);
-    } else if (TEXT_EXTENSIONS.has(extname(name))) {
-      yield path;
-    }
-  }
-}
 
 const hits = [];
 let checked = 0;

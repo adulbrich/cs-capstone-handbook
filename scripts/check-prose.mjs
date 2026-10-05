@@ -44,6 +44,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import nodePath from "node:path";
 import { RUBRIC_CSV_SUFFIX, readCsvRecords } from "../src/lib/rubric-csv.mjs";
+import { TEXT_EXTENSIONS } from "./lib/content.mjs";
 
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
@@ -66,29 +67,18 @@ const EMOJI =
   /[\u{1F000}-\u{1FAFF}\u{231A}\u{231B}\u{2328}\u{23CF}\u{23E9}-\u{23F3}\u{23F8}-\u{23FA}\u{2600}-\u{27BF}\u{2139}\u{2B05}-\u{2B07}\u{2B1B}\u{2B1C}\u{2B50}\u{2B55}]/u;
 
 /**
- * The text extensions validate-dashes.mjs reads, plus the code extensions
+ * The text extensions the content validators walk, plus the code extensions
  * Biome covers. Anything else `git ls-files` reports (images, the PDF, the
  * R and VBA scripts, lockfiles without an extension) is skipped rather than
  * read as UTF-8 and misjudged.
  */
-const TEXT_EXTENSIONS = new Set([
-  "astro",
-  "cjs",
-  "css",
-  "csv",
-  "html",
-  "js",
-  "json",
-  "jsonc",
-  "md",
-  "mdx",
-  "mjs",
-  "sh",
-  "ts",
-  "tsx",
-  "txt",
-  "yaml",
-  "yml",
+const CHECKED_EXTENSIONS = new Set([
+  ...TEXT_EXTENSIONS,
+  ".cjs",
+  ".js",
+  ".jsonc",
+  ".sh",
+  ".tsx",
 ]);
 
 /**
@@ -570,7 +560,7 @@ export function isCheckedPath(path) {
   if (dot === -1) {
     return false;
   }
-  return TEXT_EXTENSIONS.has(path.slice(dot + 1));
+  return CHECKED_EXTENSIONS.has(path.slice(dot));
 }
 
 export function gitLines(args) {

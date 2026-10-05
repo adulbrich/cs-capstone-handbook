@@ -21,15 +21,10 @@
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { parseFrontmatter } from "./lib/content.mjs";
 
 const DOCS_DIR = "src/content/docs";
 const ORDER_RE = /^sidebar:\n(?:[ \t]+.*\n)*?[ \t]+order:[ \t]*(-?\d+)[ \t]*$/m;
-
-/** The frontmatter block of an MDX file, or "" when it has none. */
-function frontmatter(source) {
-  const match = /^---\n([\s\S]*?)\n---/.exec(source);
-  return match ? match[1] : "";
-}
 
 const problems = [];
 
@@ -46,7 +41,9 @@ for (const directory of directories) {
 
   for (const page of pages) {
     const source = readFileSync(join(DOCS_DIR, directory, page), "utf8");
-    const order = ORDER_RE.exec(frontmatter(source))?.[1];
+    const order = ORDER_RE.exec(
+      parseFrontmatter(source)?.frontmatter ?? ""
+    )?.[1];
     if (order === undefined) {
       unordered.push(page);
       continue;

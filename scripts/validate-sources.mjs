@@ -39,7 +39,7 @@
  * Run: node scripts/validate-sources.mjs
  */
 
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { basename, join } from "node:path";
 import { parse } from "yaml";
 import {
@@ -49,6 +49,7 @@ import {
   citeTagCount,
   inTextAuthors,
 } from "../src/lib/cite-pattern.mjs";
+import { walk } from "./lib/content.mjs";
 
 const DOCS_DIR = "src/content/docs";
 const SOURCES_DIR = "src/data/sources";
@@ -78,18 +79,8 @@ const KNOWN_FIELDS = new Set([
 ]);
 const CLAIM_FIELDS = new Set(["claim", "locator"]);
 
-function collectMdx(dir) {
-  const out = [];
-  for (const entry of readdirSync(dir)) {
-    const path = join(dir, entry);
-    if (statSync(path).isDirectory()) {
-      out.push(...collectMdx(path));
-    } else if (entry.endsWith(".mdx")) {
-      out.push(path);
-    }
-  }
-  return out;
-}
+// Cite is an MDX component, so only an .mdx page can cite.
+const MDX = new Set([".mdx"]);
 
 const shown = (value) =>
   value === undefined ? "missing" : JSON.stringify(value);
@@ -265,7 +256,7 @@ for (const [label, entries] of labels) {
 const cited = new Set();
 let citingPages = 0;
 let citations = 0;
-for (const page of collectMdx(DOCS_DIR)) {
+for (const page of walk(DOCS_DIR, MDX)) {
   const prose = citableText(readFileSync(page, "utf8"));
   const ids = citeIds(prose);
   const hasReferences = /^<References\s*\/>\s*$/m.test(prose);

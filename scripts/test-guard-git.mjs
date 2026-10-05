@@ -19,7 +19,7 @@
 
 import { execFileSync } from "node:child_process";
 import {
-  copyFileSync,
+  cpSync,
   mkdirSync,
   mkdtempSync,
   realpathSync,
@@ -31,10 +31,12 @@ import { dirname, join } from "node:path";
 
 const HOOK = ".claude/hooks/guard-git.mjs";
 // The rule scripts the hook runs, and what they import, copied into the fixture
-// at their repo paths.
+// at their repo paths. `scripts/lib/` goes whole, so a new shared module the
+// scripts import is already there.
 const RULE_FILES = [
   "scripts/check-prose.mjs",
   "scripts/check-commit-message.mjs",
+  "scripts/lib",
   "src/lib/rubric-csv.mjs",
 ];
 
@@ -91,7 +93,7 @@ function fixtures() {
   run(main, ["config", "user.name", "Test"]);
   for (const file of RULE_FILES) {
     mkdirSync(dirname(join(main, file)), { recursive: true });
-    copyFileSync(file, join(main, file));
+    cpSync(file, join(main, file), { recursive: true });
   }
   writeFileSync(join(main, "README.md"), "fixture\n");
   assertThrowaway(main, root);
