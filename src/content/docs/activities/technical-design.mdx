@@ -34,12 +34,12 @@ A good output is a one-page audit of the codebase you're inheriting: how it buil
 
 <ActivityMeta anchor="choose-a-storage-or-technology" />
 
-Choose a database, storage technology, language, framework, or library by comparing two or three options against criteria your project sets, after running each one. A choice you can justify against your requirements is one you can defend later, when someone asks why you didn't pick the other one.
+Choose a database, storage technology, language, framework, or library by comparing two or three options against criteria your project sets, after running each one. Criteria written down before you compare give you the justification you'll need when someone later asks why you didn't pick another option.
 
-- **Assess requirements**: write down what you need from the technology. For storage, analyze your data's structure, volume, and usage patterns, and the read/write workload you expect. For anything else, name the criteria that matter (e.g., performance, scalability, ease of use).
+- **Assess requirements**: write down what you need from the technology as criteria (e.g., performance, scalability, ease of use, security, community support). For storage, add your data's structure, volume, and usage patterns, and the read/write workload you expect.
 - **Shortlist options**: pick two or three candidates and note each one's strengths and weaknesses. For storage, compare relational (e.g., MySQL, PostgreSQL) and non-relational databases (e.g., MongoDB, Cassandra), as well as different ways to store data (offline, online, object stores, etc.).
-- **Run the quick-starts**: work through each candidate's "Quick Start" guide rather than one in-depth tutorial, and note what was harder than its documentation suggested.
-- **Compare**: score each option in a comparison matrix on how well it integrates with your existing project, how it handles your expected workload (read/write speeds, scalability), its security features, and its community support.
+- **Run the quick-starts**: work through each candidate's "Quick Start" guide, and note the features that would help with specific concerns in your project.
+- **Compare**: score each option in a comparison matrix against the criteria from the first step, plus how well it integrates with your existing project.
 - **Decide**: pick one and justify it against the project's goals.
 
 A good output is a comparison matrix of two or three options scored against your criteria, with what running each quick-start taught you and a justification for the one you chose; it maps directly onto the alternatives section of an RFC.
