@@ -64,6 +64,20 @@ export function parseRubricExport(text) {
   return { criteria, header, students };
 }
 
+/**
+ * Writes one criterion's score into a student's `cells`, in place.
+ * `columnsAt` is that criterion's entry in parseRubricExport's `criteria`
+ * (its Rating, Points, and Comments indexes). A null `comment` leaves the
+ * exported comment as it was.
+ */
+export function fillCriterion(cells, columnsAt, { comment, points, rating }) {
+  cells[columnsAt.Rating] = rating;
+  cells[columnsAt.Points] = String(points);
+  if (comment !== null) {
+    cells[columnsAt.Comments] = comment;
+  }
+}
+
 /** Writes the header and each student's cells back out as CSV. */
 export function rubricExportCsv(header, rows) {
   return toCsv([header, ...rows]);

@@ -7,8 +7,8 @@ import {
   aLowerBound,
   bandFor,
   detectSurvey,
-  levelsFor,
   noResponseScore,
+  percentOf,
   scorePartnerSurvey,
 } from "./partner-scoring.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
@@ -253,7 +253,7 @@ test("the pulse ratings, pinned: label in, points out", () => {
   ];
   for (const c of rubrics.pulse.criteria) {
     assert.deepEqual(
-      levelsFor(c).map((level) => [level.rating, level.points]),
+      c.ratings.map((r) => [r.name, r.points]),
       expected
     );
   }
@@ -506,54 +506,6 @@ test("end-of-term scoring is refused until its export is known", () => {
   );
 });
 
-test("end-of-term anchor facets score at 100, 90, 80, 70, and 50 percent", () => {
-  for (const term of ["fall", "winter", "spring"]) {
-    for (const c of rubrics[term].criteria) {
-      if (c.ratings.length !== 3) {
-        continue;
-      }
-      const [top, middle, low] = c.ratings.map((r) => r.name);
-      assert.deepEqual(
-        levelsFor(c).map((level) => [level.percent, level.rating]),
-        [
-          [100, top],
-          [90, middle],
-          [80, middle],
-          [70, low],
-          [50, low],
-        ],
-        `${term} ${c.title}`
-      );
-      for (const level of levelsFor(c)) {
-        assert.equal(level.points, (c.maxPoints * level.percent) / 100);
-      }
-    }
-  }
-});
-
-test("regression: 70% of spring Requirements is 3.5, not 3", () => {
-  const level = levelsFor(
-    criterion("spring", "Requirements and Specifications")
-  ).find((l) => l.percent === 70);
-  assert.deepEqual(level, {
-    percent: 70,
-    points: 3.5,
-    rating: "Low anchor (half the points)",
-  });
-});
-
-test("spring Verification and Validation scores the six ladder rungs by name", () => {
-  const ladder = criterion("spring", "Verification and Validation");
-  assert.deepEqual(
-    levelsFor(ladder).map((level) => level.points),
-    [40, 36, 32, 28, 24, 20]
-  );
-  assert.deepEqual(
-    levelsFor(ladder).map((level) => level.rating),
-    ladder.ratings.map((r) => r.name)
-  );
-});
-
 test("a score between ratings is named after the highest rating at or below it", () => {
   const c = criterion("winter", "Design, Implementation, and Deployment");
   assert.equal(bandFor(c, 40).name, "Top anchor (full points)");
@@ -563,4 +515,10 @@ test("a score between ratings is named after the highest rating at or below it",
   assert.equal(bandFor(c, 20).name, "Low anchor (half the points)");
   assert.throws(() => bandFor(c, 19.99), /outside/);
   assert.throws(() => bandFor(c, 41), /outside/);
+});
+
+test("regression: 70% of spring Requirements' 5 points is 3.5, not 3", () => {
+  const requirements = criterion("spring", "Requirements and Specifications");
+  assert.equal(percentOf(requirements.maxPoints, 70), 3.5);
+  assert.equal(bandFor(requirements, 3.5).name, "Low anchor (half the points)");
 });

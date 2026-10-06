@@ -61,11 +61,7 @@ function downloadSurvey() {
 }
 
 function downloadContacts() {
-  download(
-    `${baseName}-contacts.csv`,
-    contactsCsv(result.rows),
-    "text/csv;charset=utf-8"
-  );
+  download(`${baseName}-contacts.csv`, contactsCsv(result.rows));
 }
 </script>
 

@@ -6,7 +6,7 @@
 // src/content/docs/learning-objectives/grading.mdx. The caller loads those
 // files; this module is pure, so node --test and the browser run the same code.
 
-import { nameKey } from "./rubric-export.mjs";
+import { fillCriterion, nameKey } from "./rubric-export.mjs";
 
 /** The midterm pulse's concern questions, by export tag, from its .qsf. */
 const PULSE_CONCERNS = { flag: "Q2", text: ["Q2 Names", "Q2 Comments", "Q3"] };
@@ -48,13 +48,6 @@ export const SURVEY_ORDER = [
   "final-spring",
 ];
 
-/**
- * The end-of-term facet levels, in percent of the facet's points, as the
- * partner evaluation page states them: the three anchors at 100, 80, and 50,
- * and 90 or 70 between two anchors.
- */
-export const ANCHOR_PERCENTS = [100, 90, 80, 70, 50];
-
 const A_ROW = /^A\s*\|\s*(\d+(?:\.\d+)?)\s*\|/m;
 
 /** The lower bound of an A, read from the grading scale's table. */
@@ -88,30 +81,6 @@ export function bandFor(criterion, points) {
     );
   }
   return rating;
-}
-
-/** A criterion with three ratings is an end-of-term anchor facet. */
-const isAnchorFacet = (criterion) => criterion.ratings.length === 3;
-
-/**
- * Every level a partner can score on one criterion: `{ points, rating }`,
- * plus `percent` for an end-of-term anchor facet. An anchor facet scores at
- * each of ANCHOR_PERCENTS, named after the highest anchor at or below it
- * (bandFor); any
- * other criterion (the pulse's five answers, the spring ladder's six rungs)
- * scores at its own ratings, by name.
- */
-export function levelsFor(criterion) {
-  if (!isAnchorFacet(criterion)) {
-    return criterion.ratings.map((rating) => ({
-      points: rating.points,
-      rating: rating.name,
-    }));
-  }
-  return ANCHOR_PERCENTS.map((percent) => {
-    const points = percentOf(criterion.maxPoints, percent);
-    return { percent, points, rating: bandFor(criterion, points).name };
-  });
 }
 
 /**
@@ -232,15 +201,12 @@ function scoreAnswer(response, { column, criterion }) {
 const hasColumn = (columns, tag) =>
   columns.some((column) => column.tag === tag);
 
-/** The concerns rows: every finished response that raised something. */
-function concernRows(columns, responses, concerns) {
-  const tags = [concerns.flag, ...concerns.text];
-  const absent = tags.filter((tag) => !hasColumn(columns, tag));
-  if (absent.length > 0) {
-    throw new Error(
-      `The Qualtrics file has no ${absent.join(", ")} column for the concerns table.`
-    );
-  }
+/**
+ * The concerns rows: every finished response that raised something. A flag
+ * of "No" with every text answer blank raises nothing, so it is left out.
+ * `tags` is the flag, then the text questions.
+ */
+function concernRows(responses, concerns, tags) {
   const header = ["Team", ...tags];
   const rows = responses
     .filter(
@@ -305,6 +271,14 @@ export function scorePartnerSurvey({
   }
   checkExportCriteria(rubric, rubricExport.criteria);
   const questions = questionColumns(columns, rubric);
+  const { concerns } = definition;
+  const concernTags = [concerns.flag, ...concerns.text];
+  const absent = concernTags.filter((tag) => !hasColumn(columns, tag));
+  if (absent.length > 0) {
+    throw new Error(
+      `The Qualtrics file has no ${absent.join(", ")} column for the concerns table.`
+    );
+  }
 
   // Only responses from a roster group are scored or need a choice; the rest
   // are reported, and their concerns still reach the concerns table.
@@ -314,12 +288,19 @@ export function scorePartnerSurvey({
   const responsesByTeam = byTeam(
     responses.filter((response) => rosterTeams.has(response.Team))
   );
+  // The response that counts for each team: its only one, or the one chosen.
+  const counted = new Map(
+    [...responsesByTeam].map(([team, list]) => [
+      team,
+      list.length === 1
+        ? list[0]
+        : (list.find((r) => r.ResponseId === choices[team]) ?? null),
+    ])
+  );
   const duplicates = [...responsesByTeam]
     .filter(([, list]) => list.length > 1)
     .map(([team, list]) => ({
-      chosen: list.some((r) => r.ResponseId === choices[team])
-        ? choices[team]
-        : null,
+      chosen: counted.get(team)?.ResponseId ?? null,
       responses: list,
       team,
     }));
@@ -332,9 +313,7 @@ export function scorePartnerSurvey({
       label: criterion.title,
       tag: column.tag,
     })),
-    ...[definition.concerns.flag, ...definition.concerns.text]
-      .filter((tag) => hasColumn(columns, tag))
-      .map((tag) => ({ label: tag, tag })),
+    ...concernTags.map((tag) => ({ label: tag, tag })),
   ];
   const pending = duplicates.some((d) => d.chosen === null);
   if (pending) {
@@ -342,14 +321,10 @@ export function scorePartnerSurvey({
   }
 
   const teamScores = new Map();
-  for (const [team, list] of responsesByTeam) {
-    const counted =
-      list.length > 1
-        ? list.find((r) => r.ResponseId === choices[team])
-        : list[0];
+  for (const [team, response] of counted) {
     teamScores.set(
       team,
-      questions.map((question) => scoreAnswer(counted, question))
+      questions.map((question) => scoreAnswer(response, question))
     );
   }
   const noResponse = [...rosterTeams].filter((team) => !teamScores.has(team));
@@ -380,13 +355,8 @@ export function scorePartnerSurvey({
       return cells;
     }
     for (const [i, { criterion }] of questions.entries()) {
-      const at = rubricExport.criteria.get(nameKey(criterion.title));
-      const score = teamScores.get(team)[i];
-      cells[at.Rating] = score.rating;
-      cells[at.Points] = String(score.points);
-      if (score.comment !== null) {
-        cells[at.Comments] = score.comment;
-      }
+      const columnsAt = rubricExport.criteria.get(nameKey(criterion.title));
+      fillCriterion(cells, columnsAt, teamScores.get(team)[i]);
     }
     return cells;
   });
@@ -394,7 +364,7 @@ export function scorePartnerSurvey({
   const exportIds = new Set(rubricExport.students.map((s) => s.id));
   return {
     compare,
-    concerns: concernRows(columns, responses, definition.concerns),
+    concerns: concernRows(responses, concerns, concernTags),
     duplicates,
     pending,
     report: {

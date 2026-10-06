@@ -39,7 +39,7 @@ const INPUTS = [
 const texts = $state({ qualtrics: "", roster: "", rubricExport: "" });
 const names = $state({ qualtrics: "", roster: "", rubricExport: "" });
 let surveyOverride = $state(null);
-let ran = $state(false);
+let runRequested = $state(false);
 let choices = $state({});
 
 /** One input parsed, or its error; null before a file is dropped. */
@@ -74,9 +74,10 @@ const detected = $derived(
 );
 
 const survey = $derived(surveyOverride ?? detected?.kind ?? null);
+const definition = $derived(survey ? SURVEYS[survey] : null);
 
 const result = $derived.by(() => {
-  if (!(ran && ready && SURVEYS[survey]?.supported)) {
+  if (!(runRequested && ready && definition?.supported)) {
     return null;
   }
   try {
@@ -85,7 +86,7 @@ const result = $derived.by(() => {
       choices: { ...choices },
       qualtrics: parsed.qualtrics.value,
       roster: parsed.roster.value,
-      rubric: rubrics[SURVEYS[survey].rubric],
+      rubric: rubrics[definition.rubric],
       rubricExport: parsed.rubricExport.value,
       survey,
     });
@@ -94,7 +95,7 @@ const result = $derived.by(() => {
   }
 });
 
-const done = $derived(result && !result.error && !result.pending);
+const scored = $derived(result && !result.error && !result.pending);
 
 async function readFile(key, event) {
   const input = event.currentTarget;
@@ -109,14 +110,14 @@ async function readFile(key, event) {
     surveyOverride = null;
     choices = {};
   }
-  ran = false;
+  runRequested = false;
   // Cleared so picking the same file again, after an edit, reads it again.
   input.value = "";
 }
 
 function chooseSurvey(event) {
   surveyOverride = event.currentTarget.value;
-  ran = false;
+  runRequested = false;
 }
 
 function downloadScores() {
@@ -165,9 +166,9 @@ function downloadConcerns() {
         {/each}
       </select>
     </label>
-    {#if survey && !SURVEYS[survey].supported}
+    {#if definition && !definition.supported}
       <div class="problem" role="alert">
-        <strong>{SURVEYS[survey].title} scoring is not supported yet.</strong>
+        <strong>{definition.title} scoring is not supported yet.</strong>
         Its export header is not recorded (issue #445), so the questions cannot
         be mapped to the rubric. Use
         <code>scripts/project-partner-end-of-term-surveys.R</code> for now.
@@ -178,8 +179,8 @@ function downloadConcerns() {
   <div class="actions">
     <button
       type="button"
-      onclick={() => (ran = true)}
-      disabled={!(ready && SURVEYS[survey]?.supported)}
+      onclick={() => (runRequested = true)}
+      disabled={!(ready && definition?.supported)}
     >
       Run
     </button>
@@ -234,7 +235,7 @@ function downloadConcerns() {
     {/each}
   {/if}
 
-  {#if done}
+  {#if scored}
     {@const report = result.report}
     <h3>Validation report</h3>
     <ul>
