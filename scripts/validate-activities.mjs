@@ -25,7 +25,9 @@
 //   3. An activity or guide page is standalone. It never links an assignment
 //      page, never says "workshop", and never places itself in a term, a
 //      numbered week, or a "first half" or "second half" (of a class session
-//      on an activity page, of the project on a guide). The patterns are a
+//      on an activity page, of the project on a guide). Nor does it measure
+//      itself by the course calendar ("three terms", "ten weeks", "this
+//      year", "a year left") or name the course staff ("TA"). The patterns are a
 //      floor: a spelled-out week or a bare "term" passes them and is still a
 //      violation the page's skill asks a human to read for. Activities had
 //      drifted to sixty-one backlinks and ten sessions described by the
@@ -456,6 +458,15 @@ const STANDALONE_RULES = [
     /\b(?:fall|winter|spring) (?:week|term|session|workshop)/i,
     "places itself in a term",
   ],
+  [/\bthree terms\b/i, 'says "three terms", the course calendar'],
+  [/\bten weeks\b/i, 'says "ten weeks", the length of a term'],
+  [
+    /\b(?:this|next|last) (?:academic )?year\b/i,
+    "places itself in the school year",
+  ],
+  [/\ba year left\b/i, "measures the project by the school year"],
+  // Case-sensitive, so lowercase "ta" does not trip it; \b keeps it out of words.
+  [/\bTAs?\b/, "names the course staff (TA)"],
 ];
 const STANDALONE_EXEMPT = new Set([
   // The OSU Advantage Accelerator's Iterate program is an external event the
