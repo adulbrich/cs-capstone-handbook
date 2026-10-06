@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-paste Required: Introduction Email Excusal (#442)
 
-No rubric changes. Re-paste the fall Introduction Email and Term Startup bodies: Fall Week 1 now excuses the email for a team whose every member already meets with its partner or mentor, and the Introduction Email's What You Submit says an excused team submits nothing. TAs mark the entry excused for each member of such a team.
+No rubric changes. Re-paste the fall Introduction Email and Term Startup bodies: Fall Week 1 now excuses the email for a team whose every member already meets with its partner or mentor, and the Introduction Email's What You Submit says an excused team submits nothing. The team emails `cs-46x-help@oregonstate.edu`, and the entry is marked excused for each member of such a team.
 
 ## Re-import Required: RFC Tradeoff Wording (#257)
 
