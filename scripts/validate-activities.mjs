@@ -465,7 +465,7 @@ const STANDALONE_RULES = [
     "places itself in the school year",
   ],
   [/\ba year left\b/i, "measures the project by the school year"],
-  // Case-sensitive, so "ta" inside a word and lowercase use do not trip it.
+  // Case-sensitive, so lowercase "ta" does not trip it; \b keeps it out of words.
   [/\bTAs?\b/, "names the course staff (TA)"],
 ];
 const STANDALONE_EXEMPT = new Set([
