@@ -5,13 +5,26 @@
 // generator, so a change to the survey shows up here. Every name and email
 // is invented.
 
-import { anchors } from "../../data/peer-evaluation.mjs";
+import { readFileSync } from "node:fs";
+import { parseRubricCsv } from "../rubric-csv.mjs";
 import { toCsv } from "./csv.mjs";
 import { memberLabel, SLOTS, selfFloor } from "./peer-contacts.mjs";
-import { buildPeerSurvey } from "./peer-survey-qsf.mjs";
+import { buildPeerSurvey, ratedCriteria } from "./peer-survey-qsf.mjs";
+
+const RUBRIC_PATH =
+  "canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv";
+
+/** The regular peer evaluation rubric, parsed as the page parses it. */
+export const rubric = parseRubricCsv(
+  readFileSync(new URL(`../../../${RUBRIC_PATH}`, import.meta.url), "utf8"),
+  RUBRIC_PATH
+);
+
+/** The rated criteria's shared anchors, lowest first. */
+const { anchors } = ratedCriteria(rubric)[0];
 
 const qids = Object.fromEntries(
-  buildPeerSurvey({ now: new Date(0), seed: 1 })
+  buildPeerSurvey({ now: new Date(0), rubric, seed: 1 })
     .SurveyElements.filter((element) => element.Element === "SQ")
     .map(({ Payload }) => [Payload.DataExportTag, Payload.QuestionID])
 );

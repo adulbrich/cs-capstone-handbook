@@ -11,9 +11,9 @@
 // total at 100; nothing is deducted. Flags queue a review and never change a
 // score.
 
-import { criteria } from "../../data/peer-evaluation.mjs";
 import { selfFloor } from "./peer-contacts.mjs";
 import { emailIn } from "./peer-export-columns.mjs";
+import { ratedCriteria } from "./peer-survey-qsf.mjs";
 
 /** A result's status. */
 export const STATUS = Object.freeze({
@@ -350,7 +350,8 @@ function buildResult(ctx, email, { student, team }) {
  * Scores every rostered student on a team of two or more.
  *
  * `students` is the parsed roster; `responses` are the responses that count
- * (parsePeerExport). Returns `{ results, problems, comments }`:
+ * (parsePeerExport); `rubric` is the parsed peer evaluation rubric, whose
+ * rated criteria (ratedCriteria) are the matrix rows. Returns `{ results, problems, comments }`:
  *
  * - `results`, in roster order: `{ student, team, teamSize, status, raters,
  *   means, criterionScores, meanShare, distribution, total, gap }`. `status`
@@ -362,7 +363,8 @@ function buildResult(ctx, email, { student, team }) {
  * - `comments`: every comment, for the instructor only: `{ team, rater,
  *   ratee, question, text }`.
  */
-export function scorePeers({ students, responses }) {
+export function scorePeers({ students, responses, rubric }) {
+  const rated = ratedCriteria(rubric);
   const problems = [];
   const report = (level, who, message) =>
     problems.push({ level, message, who });
@@ -377,7 +379,7 @@ export function scorePeers({ students, responses }) {
     received: new Map(
       [...byEmail.keys()].map((email) => [
         email,
-        { raters: new Set(), ratings: criteria.map(() => []), shares: [] },
+        { raters: new Set(), ratings: rated.map(() => []), shares: [] },
       ])
     ),
     report,

@@ -23,7 +23,7 @@
 // question: they differ between the generator's two modes. Responses are
 // read by tag, as qualtrics-export.mjs keys them.
 
-import { anchors } from "../../data/peer-evaluation.mjs";
+import { catmeTags } from "../../data/peer-evaluation.mjs";
 import { SLOTS } from "./peer-contacts.mjs";
 
 /** Loop prefix N names roster choice N ("choice"), or the Nth page shown ("iteration"). */
@@ -69,8 +69,8 @@ const IMPORT_ID = /^(?:(\d+)_)?(QID\d+)(?:_(\w+))?$/;
 /** The choice or row ID an ImportId suffix names: "x3" and "3" are both 3. */
 const X_PREFIX = /^x/;
 const idNumber = (suffix) => Number(String(suffix).replace(X_PREFIX, ""));
-/** Any looped column: its tag starts with the loop prefix. */
-const LOOPED = /^\d+_/;
+/** A CATME dimension's looped column: `N_` and one of catmeTags. */
+const CATME_TAG = new RegExp(`^\\d+_(${Object.values(catmeTags).join("|")})$`);
 
 /** The fixed and embedded columns' tags, found by ImportId first, then by tag. */
 function placeFixed(columns) {
@@ -122,18 +122,13 @@ function placeSplit(map, tag, importId) {
 
 /** Which survey the columns belong to. */
 function surveyType(map, counts) {
-  const hasRatings = Object.values(map.loop).some((it) => it.ratings.length);
-  const hasSplit = Object.keys(map.split).length > 0;
-  if (hasRatings && hasSplit) {
+  if (Object.values(map.loop).some((it) => it.ratings.length > 0)) {
     return SURVEY_TYPE.regular;
   }
-  if (counts.slots > 0) {
-    return SURVEY_TYPE.slots;
+  if (counts.catme > 0) {
+    return SURVEY_TYPE.catme;
   }
-  // The CATME survey loops over the roster with no matrix and no split.
-  return counts.looped > 0 && !hasRatings && !hasSplit
-    ? SURVEY_TYPE.catme
-    : SURVEY_TYPE.unknown;
+  return counts.slots > 0 ? SURVEY_TYPE.slots : SURVEY_TYPE.unknown;
 }
 
 /** What a regular export needs, and what the scorer works around. */
@@ -143,10 +138,15 @@ function checkRegular(map) {
       "The export has no Ratee column, so whom each page rated comes from the loop position alone, with no cross-check."
     );
   }
-  const missing = REQUIRED_FIXED.filter((key) => map.fixed[key] === undefined);
+  const missing = REQUIRED_FIXED.filter(
+    (key) => map.fixed[key] === undefined
+  ).map((key) => FIXED_COLUMNS[key].tag);
+  if (Object.keys(map.split).length === 0) {
+    missing.push("Split");
+  }
   if (missing.length > 0) {
     map.problems.push(
-      `The export has no ${missing.map((key) => FIXED_COLUMNS[key].tag).join(", ")} column. Export with all fields.`
+      `The export has no ${missing.join(", ")} column. Export with all fields.`
     );
   }
 }
@@ -172,7 +172,7 @@ export function mapColumns(columns) {
     split: {},
     warnings: [],
   };
-  const counts = { looped: 0, slots: 0 };
+  const counts = { catme: 0, slots: 0 };
 
   for (const { tag, importId = "" } of columns) {
     let problem = "";
@@ -185,8 +185,8 @@ export function mapColumns(columns) {
     } else if (SLOT_TAG.test(tag)) {
       counts.slots += 1;
     }
-    if (LOOPED.test(tag)) {
-      counts.looped += 1;
+    if (CATME_TAG.test(tag)) {
+      counts.catme += 1;
     }
     if (problem) {
       map.problems.push(problem);
@@ -230,8 +230,8 @@ const LEADING_VALUE = /^(\d+)(?:\s*:.*)?$/s;
 /**
  * A rating cell to 1 to 5. The labels export writes the choice text, which
  * the generator starts with the value ("4: Good solid effort; took
- * initiative"); text without the number is matched against the anchors.
- * Empty is null; anything else is NaN.
+ * initiative", or "5: Outstanding: a super asset to the team."). The
+ * leading number is the contract. Empty is null; anything else is NaN.
  */
 export function readRating(cell) {
   const text = String(cell ?? "").trim();
@@ -239,13 +239,7 @@ export function readRating(cell) {
     return null;
   }
   const leading = LEADING_VALUE.exec(text);
-  if (leading) {
-    return Number(leading[1]);
-  }
-  const anchor = anchors.findIndex(
-    (words) => words.toLowerCase() === text.toLowerCase()
-  );
-  return anchor === -1 ? Number.NaN : anchor + 1;
+  return leading ? Number(leading[1]) : Number.NaN;
 }
 
 /** A number cell: empty is null, unreadable is NaN. */

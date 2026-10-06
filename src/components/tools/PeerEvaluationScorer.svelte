@@ -34,7 +34,7 @@ const parsed = $derived.by(() => {
     return null;
   }
   try {
-    return parsePeerExport(files.export.text, { includePreviews });
+    return parsePeerExport(files.export.text, { includePreviews, rubric });
   } catch (error) {
     return {
       problems: [error.message],
@@ -80,7 +80,11 @@ function run() {
   try {
     const peer = peerCriteria(rubric);
     const students = parseRoster(files.roster.text);
-    const scored = scorePeers({ responses: parsed.responses, students });
+    const scored = scorePeers({
+      responses: parsed.responses,
+      rubric,
+      students,
+    });
     const filled = fillPeerAssessment({
       results: scored.results,
       rubric,

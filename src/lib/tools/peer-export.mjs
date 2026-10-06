@@ -4,7 +4,6 @@
 // qualtrics-export.mjs; this module is the peer survey's shape on top of it.
 // Which responses score what is peer-score.mjs. Pure: no DOM, no I/O.
 
-import { criteria } from "../../data/peer-evaluation.mjs";
 import { SLOTS } from "./peer-contacts.mjs";
 import {
   emailIn,
@@ -14,10 +13,11 @@ import {
   rosterChoiceOf,
   SURVEY_TYPE,
 } from "./peer-export-columns.mjs";
+import { ratedCriteria } from "./peer-survey-qsf.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 
 /** One response, keyed by tag, as the scorer reads it. */
-function reshape(map, row, index) {
+function reshape(map, rated, row, index) {
   const at = (tag) => (tag ? (row[tag] ?? "") : "");
   const fixed = (key) => at(map.fixed[key]);
   const members = Array.from({ length: SLOTS }, (_, slot) =>
@@ -29,7 +29,7 @@ function reshape(map, row, index) {
 
   const iterations = [];
   for (const [prefix, columns] of Object.entries(map.loop)) {
-    const ratings = criteria.map((_, r) => readRating(at(columns.ratings[r])));
+    const ratings = rated.map((_, r) => readRating(at(columns.ratings[r])));
     const comment = at(columns.comment);
     const rateeAnswer = columns.ratee === "" ? null : at(columns.ratee);
     if (ratings.every((r) => r === null) && comment === "" && !rateeAnswer) {
@@ -109,7 +109,8 @@ export function latestPerStudent(responses) {
 }
 
 /**
- * Parses the export text. Returns `{ type, problems, warnings, responses,
+ * Parses the export text against the parsed peer evaluation rubric, whose
+ * rated criteria (ratedCriteria) are the matrix rows. Returns `{ type, problems, warnings, responses,
  * dropped, stopped }`. `type` is one of SURVEY_TYPE;
  * `responses` (the latest finished response per student) is empty unless it
  * is "regular" with no `problems` (header errors). `dropped` counts previews,
@@ -126,9 +127,19 @@ export function latestPerStudent(responses) {
  * maps roster choice to the points given. `open` maps the open question
  * tags to text.
  */
-export function parsePeerExport(text, { includePreviews = false } = {}) {
+export function parsePeerExport(text, { includePreviews = false, rubric }) {
   const parsed = parseQualtricsExport(text, { includePreviews });
   const map = mapColumns(parsed.columns);
+  const rated = ratedCriteria(rubric);
+  const rows = Math.max(
+    0,
+    ...Object.values(map.loop).map((it) => it.ratings.length)
+  );
+  if (map.type === SURVEY_TYPE.regular && rows !== rated.length) {
+    map.problems.push(
+      `The export's rating matrix has ${rows} rows; the ${rubric.name} rubric rates ${rated.length} criteria. Generate the survey from the current rubric.`
+    );
+  }
   const dropped = { ...parsed.dropped, superseded: 0 };
   const result = {
     dropped,
@@ -141,14 +152,16 @@ export function parsePeerExport(text, { includePreviews = false } = {}) {
   if (map.type !== SURVEY_TYPE.regular || map.problems.length > 0) {
     return result;
   }
-  const finishedRows = parsed.responses.map((row, i) => reshape(map, row, i));
+  const finishedRows = parsed.responses.map((row, i) =>
+    reshape(map, rated, row, i)
+  );
   checkRecordedDates(finishedRows);
   const { kept, superseded } = latestPerStudent(finishedRows);
   dropped.superseded = superseded;
   const finished = new Set(kept.map((response) => response.email));
   result.responses = kept;
   result.stopped = latestPerStudent(
-    parsed.unfinished.map((row, i) => reshape(map, row, i))
+    parsed.unfinished.map((row, i) => reshape(map, rated, row, i))
   ).kept.filter((response) => !finished.has(response.email));
   return result;
 }

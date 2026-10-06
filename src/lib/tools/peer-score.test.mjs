@@ -1,13 +1,12 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { parseRubricCsv } from "../rubric-csv.mjs";
 import { parseCsv, toCsv } from "./csv.mjs";
 import { memberLabel } from "./peer-contacts.mjs";
 import {
   exportCsv,
   people,
   rosterCsv,
+  rubric,
   stamp,
   teamResponses,
 } from "./peer-export.fixture.mjs";
@@ -30,21 +29,18 @@ import { distributionScore, round, scorePeers } from "./peer-score.mjs";
 import { parseRoster } from "./roster.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 
-const RUBRIC_PATH =
-  "canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv";
-const rubric = parseRubricCsv(
-  readFileSync(new URL(`../../../${RUBRIC_PATH}`, import.meta.url), "utf8"),
-  RUBRIC_PATH
-);
-
 /** Parses, selects, and scores an export against a roster. */
 function run(teams, responses, options = {}) {
-  const parsed = parsePeerExport(exportCsv(responses, options), options);
+  const parsed = parsePeerExport(exportCsv(responses, options), {
+    ...options,
+    rubric,
+  });
   assert.deepEqual(parsed.problems, []);
   return {
     parsed,
     ...scorePeers({
       responses: parsed.responses,
+      rubric,
       students: parseRoster(rosterCsv(teams)),
     }),
   };
@@ -106,10 +102,16 @@ test("the distribution clamps the normalized share to [10, 40]", () => {
 
 test("a values export is refused: labels only", () => {
   assert.throws(
-    () => parsePeerExport(exportCsv(workedExample(), { labels: false })),
+    () =>
+      parsePeerExport(exportCsv(workedExample(), { labels: false }), {
+        rubric,
+      }),
     /values export/
   );
-  assert.equal(parsePeerExport(exportCsv(workedExample())).type, "regular");
+  assert.equal(
+    parsePeerExport(exportCsv(workedExample()), { rubric }).type,
+    "regular"
+  );
 });
 
 test("a team of ten fills every slot and loop prefix", () => {
@@ -332,7 +334,7 @@ test("the latest finished response per student counts", () => {
     response("b@example.edu", false, 3),
     response("c@example.edu", true, 4, "Survey Preview"),
   ]);
-  const parsed = parsePeerExport(csv);
+  const parsed = parsePeerExport(csv, { rubric });
   assert.deepEqual(
     parsed.responses.map((r) => [r.email, r.recordedDate]),
     [["a@example.edu", stamp(9)]]
@@ -343,22 +345,37 @@ test("the latest finished response per student counts", () => {
     parsed.stopped.map((r) => [r.email, r.recordedDate]),
     [["b@example.edu", stamp(3)]]
   );
-  const withPreviews = parsePeerExport(csv, { includePreviews: true });
+  const withPreviews = parsePeerExport(csv, { includePreviews: true, rubric });
   assert.equal(withPreviews.responses.length, 2);
 });
 
 test("the survey type is detected from the columns", () => {
   const type = (tags) => mapColumns(tags.map((tag) => ({ tag }))).type;
   assert.equal(type(["1_Rating_1", "Split_x1", "RecipientEmail"]), "regular");
-  assert.equal(type(["1_Ratee", "1_Contributing", "1_Comment"]), "catme");
+  // CATME is told by its dimensions' tags, not by a missing matrix.
+  assert.equal(
+    type(["1_Ratee", "1_Contributing", "1_OnTrack", "1_Comment"]),
+    "catme"
+  );
+  assert.equal(type(["1_Ratee", "1_Comment"]), "unknown");
   assert.equal(type(["S1_Rating_1", "Split_x1"]), "slots");
   assert.equal(type(["Q1", "Q2"]), "unknown");
+  // A matrix with no split is the regular survey with a header error.
+  const map = mapColumns(
+    ["RecipientEmail", "RecordedDate", "Team", "1_Rating_1"].map((tag) => ({
+      tag,
+    }))
+  );
+  assert.equal(map.type, "regular");
+  assert.match(map.problems[0], /no Split column/);
 });
 
 test("cell readers: rating labels, emails in either form", () => {
   assert.equal(readRating("4: Good solid effort; took initiative"), 4);
-  assert.equal(readRating("2: Some obvious shortcomings"), 2);
-  assert.equal(readRating("OK, but nothing special"), 3);
+  // A rubric description carries its own colon after the number's.
+  assert.equal(readRating("5: Outstanding: a super asset to the team."), 5);
+  // The leading number is the contract: bare anchor text is not read.
+  assert.ok(Number.isNaN(readRating("OK, but nothing special.")));
   assert.equal(readRating(""), null);
   assert.ok(Number.isNaN(readRating("great")));
   assert.equal(emailIn("Ada Lovelace (Ada@Example.edu)"), "ada@example.edu");
@@ -378,7 +395,7 @@ test("a RecordedDate a spreadsheet rewrote stops the run", () => {
   const responses = workedExample();
   responses[0].recordedDate = "1/1/99 10:00";
   assert.throws(
-    () => parsePeerExport(exportCsv(responses)),
+    () => parsePeerExport(exportCsv(responses), { rubric }),
     /RecordedDate "1\/1\/99 10:00".*Export the responses again/
   );
 });
@@ -498,7 +515,7 @@ test("criteria are paired by name: a reordered rubric scores the same", () => {
   assert.equal(byName(plain.csv)["Attitude as a team player - Points"], "20");
   assert.throws(
     () => peerCriteria({ ...rubric, criteria: rubric.criteria.slice(0, 4) }),
-    /expects 4 and 1/
+    /no rated criteria|expects 1, the point distribution/
   );
 });
 

@@ -2,9 +2,9 @@
 // assessment, the anonymized feedback for students, the instructor's
 // details, the self-versus-peer gaps, and the comments. Pure: no DOM, no I/O.
 
-import { criteria as surveyCriteria } from "../../data/peer-evaluation.mjs";
 import { toCsv } from "./csv.mjs";
 import { NON_COMPLETION_SCORE, round, STATUS } from "./peer-score.mjs";
+import { ratedCriteria } from "./peer-survey-qsf.mjs";
 import { bandFor } from "./rubric-bands.mjs";
 import {
   fillCriterion,
@@ -13,23 +13,19 @@ import {
   rubricExportCsv,
 } from "./rubric-export.mjs";
 
-/** A rated criterion's bands are named "Average of N"; the distribution's are not. */
-const AVERAGE_BAND = /^Average of \d+$/;
-
 /**
  * The rubric's peer criteria: `{ rated, distribution }`. `rated` are the
- * criteria whose bands are "Average of N", in rubric order, one per survey
- * matrix row; `distribution` is the one criterion whose bands are not.
- * Throws when the rubric has another shape.
+ * rated criteria (ratedCriteria: bands "Average of 1" to "Average of 5"), in
+ * rubric order, one per survey matrix row; `distribution` is the one other
+ * criterion, the point distribution. Throws when there is not exactly one.
  */
 export function peerCriteria(rubric) {
-  const isRated = (criterion) =>
-    criterion.ratings.every((rating) => AVERAGE_BAND.test(rating.name));
-  const rated = rubric.criteria.filter(isRated);
-  const others = rubric.criteria.filter((criterion) => !isRated(criterion));
-  if (rated.length !== surveyCriteria.length || others.length !== 1) {
+  const rated = ratedCriteria(rubric);
+  const titles = new Set(rated.map((c) => c.title));
+  const others = rubric.criteria.filter((c) => !titles.has(c.title));
+  if (others.length !== 1) {
     throw new Error(
-      `The peer evaluation rubric has ${rated.length} criteria rated "Average of N" and ${others.length} others; the scorer expects ${surveyCriteria.length} and 1 (the point distribution).`
+      `The ${rubric.name} rubric has ${others.length} criteria besides the rated ones; the scorer expects 1, the point distribution.`
     );
   }
   return { distribution: others[0], rated };
