@@ -1,8 +1,9 @@
 <script>
-// Writes the project partner survey (.qsf) and its contact list as
-// downloads. The roster and the partner sheet are read in the browser only:
-// nothing is uploaded. The rubric, the weights, and the page address arrive
-// from the handbook's own files at build time.
+// Writes a project partner survey (.qsf), the Midterm Pulse or a term's
+// End-of-Term Survey, and its contact list as downloads. The roster and the
+// partner sheet are read in the browser only: nothing is uploaded. The
+// rubrics, the "What it looks like" lists, the weights, and the page address
+// arrive from the handbook's own files at build time.
 
 import { distributionEmails } from "../../data/partner-evaluation.mjs";
 import { parsePartnerSheet } from "../../lib/partner-sheet.mjs";
@@ -17,14 +18,25 @@ import {
   VARIANTS,
 } from "../../lib/tools/partner-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
-import { defaultLabel } from "../../lib/tools/term-label.mjs";
+import { defaultLabel, termOf } from "../../lib/tools/term-label.mjs";
 
-const { pageUrl, rubric, weights } = $props();
+const { guidance, pageUrl, rubrics, weights } = $props();
 
-/** The one variant so far; the end-of-term surveys add theirs (#446). */
-const variant = "pulse";
-const { fields } = VARIANTS[variant];
-const email = distributionEmails[variant];
+/** The facets' lists by facet name, as buildPartnerSurvey reads them. */
+const guidanceMap = $derived(new Map(Object.entries(guidance)));
+
+const TERMS = ["fall", "winter", "spring"];
+
+/** Which survey: "pulse" or "final", and the term, the current one first. */
+let kind = $state("pulse");
+let term = $state(termOf(new Date()));
+
+const variant = $derived(kind === "pulse" ? "pulse" : `final-${term}`);
+const rubric = $derived(kind === "pulse" ? rubrics.pulse : rubrics[term]);
+const fields = $derived(VARIANTS[variant].fields);
+/** The contact list's close-date field: MidtermCloseDate or FinalCloseDate. */
+const closeField = $derived(fields[1]);
+const email = $derived(distributionEmails[variant]);
 
 /** Which copy button was last used, for its "Copied" label. */
 let copied = $state("");
@@ -53,7 +65,14 @@ const closeText = $derived(
 const survey = $derived.by(() => {
   try {
     return {
-      text: partnerSurveyQsf({ label, pageUrl, rubric, variant, weights }),
+      text: partnerSurveyQsf({
+        guidance: guidanceMap,
+        label,
+        pageUrl,
+        rubric,
+        variant,
+        weights,
+      }),
     };
   } catch (error) {
     return { error: error.message };
@@ -68,7 +87,7 @@ const contacts = $derived.by(() => {
     return buildPartnerContacts(
       parseRoster(texts.roster),
       parsePartnerSheet(texts.sheet),
-      { MidtermCloseDate: closeText }
+      { [closeField]: closeText }
     );
   } catch (error) {
     return { error: error.message };
@@ -107,6 +126,23 @@ function downloadContacts() {
 
 <form class="generator" onsubmit={(event) => event.preventDefault()}>
   <label>
+    <span>Survey</span>
+    <select bind:value={kind}>
+      <option value="pulse">Midterm Pulse (every term)</option>
+      <option value="final">End-of-Term Survey</option>
+    </select>
+  </label>
+  {#if kind === "final"}
+    <label>
+      <span>Term, set in the survey as the <code>Term</code> field</span>
+      <select bind:value={term}>
+        {#each TERMS as option (option)}
+          <option value={option}>{option}</option>
+        {/each}
+      </select>
+    </label>
+  {/if}
+  <label>
     <span>Roster with groups (CSV)</span>
     <input type="file" accept=".csv,text/csv" onchange={reader("roster")} />
   </label>
@@ -119,7 +155,7 @@ function downloadContacts() {
     <input type="text" bind:value={label} />
   </label>
   <label>
-    <span>Close date, shown to partners in the survey</span>
+    <span>Close date, shown to partners in the survey as <code>{closeField}</code></span>
     <input type="date" bind:value={closeDate} />
   </label>
 </form>
@@ -228,7 +264,8 @@ function downloadContacts() {
     gap: 0.25rem;
   }
   input[type="text"],
-  input[type="date"] {
+  input[type="date"],
+  select {
     max-width: 24rem;
     padding: 0.25rem 0.5rem;
     border: 1px solid var(--sl-color-gray-4);

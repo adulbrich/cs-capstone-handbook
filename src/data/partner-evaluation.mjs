@@ -46,6 +46,58 @@ export function pulseIntro({
 }
 
 /**
+ * The End-of-Term Survey's opening page. `facets` is how many it scores,
+ * `between` the between-anchor shares in percent, `ladders` the facets
+ * scored on a ladder instead, `finalWeight` its percent of the term grade,
+ * `pageUrl` the partner evaluation page.
+ */
+export function finalIntro({ between, facets, finalWeight, ladders, pageUrl }) {
+  const ladderNote = ladders.map(
+    (title) =>
+      `${title} is scored on the outcome ladder instead: pick the highest rung that is true today. Your team's Definition of Shipped says what each rung means for this project.`
+  );
+  return [
+    "Thank you for partnering with the OSU Computer Science Capstone.",
+    "This survey is about one team: <b>${e://Field/Team}</b>",
+    `It scores the team on ${facets} facets of its work with you this term. Each facet shows what it looks like and its written anchors; choose the anchor that fits the team. When the team sits between two anchors, choose the between answer, worth ${between.join("% or ")}% of the facet's points. <b>Please submit it by \${e://Field/FinalCloseDate}.</b>`,
+    ...ladderNote,
+    `Your answers set ${finalWeight}% of each student's grade this term.`,
+    "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
+    "You can also leave comments on the course at the end.",
+    `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
+  ].join("<br><br>");
+}
+
+/**
+ * The ladder's last choice, for a partner whose Definition of Shipped
+ * records a custom scale (#18): its text box takes the share of the points,
+ * from `min` to `max` percent.
+ */
+export const customScaleText = ({ max, min }) =>
+  `We agreed a custom scale in the Definition of Shipped. Enter the score, ${min} to ${max}:`;
+
+/** The end-of-term distribution email: one survey for every term. */
+const finalEmail = {
+  body: [
+    "Hello,",
+    "",
+    "This is the end-of-term survey for your capstone team ${e://Field/Team}: it scores the team's work with you this term, facet by facet.",
+    "",
+    "Please answer for ${e://Field/Team} by ${e://Field/FinalCloseDate}.",
+    "",
+    "${l://SurveyLink?d=Take the survey}",
+    "",
+    "If you work with more than one team, each team has its own email and its own link.",
+    "",
+    "Thank you,",
+    "The CS Capstone instruction team",
+    "",
+    "${l://OptOutLink?d=Unsubscribe}",
+  ].join("\n"),
+  subject: "CS Capstone end-of-term survey: ${e://Field/Team}",
+};
+
+/**
  * The distribution email, by survey variant. Qualtrics sets it on the
  * distribution, not in the .qsf, so the tools page shows it to copy. A
  * partner with two teams gets two emails; the team in the subject keeps mail
@@ -53,6 +105,9 @@ export function pulseIntro({
  * piped text: the personal survey link and the opt-out link it requires.
  */
 export const distributionEmails = {
+  "final-fall": finalEmail,
+  "final-spring": finalEmail,
+  "final-winter": finalEmail,
   pulse: {
     body: [
       "Hello,",

@@ -174,20 +174,26 @@ export const singleLine = (qid, tag, text) =>
 
 /**
  * One answer from a vertical list; choice i + 1 is `options[i]`, recoded
- * i + 1. `reversed` lists the last option first; `forced` requires an answer.
+ * i + 1. `reversed` lists the last option first; `forced` requires an
+ * answer; `textEntry` lists the choice IDs that carry a text box, exported
+ * as `<tag>_<id>_TEXT`.
  */
 export function singleChoice(
   qid,
   tag,
   text,
   options,
-  { forced = false, reversed = false } = {}
+  { forced = false, reversed = false, textEntry = [] } = {}
 ) {
   const ids = options.map((_, i) => i + 1);
+  const choice = (option, id) =>
+    textEntry.includes(id)
+      ? { Display: option, TextEntry: "true" }
+      : { Display: option };
   return question(qid, tag, "MC", "SAVR", text, {
     ChoiceOrder: reversed ? ids.toReversed() : ids,
     Choices: Object.fromEntries(
-      options.map((option, i) => [i + 1, { Display: option }])
+      options.map((option, i) => [i + 1, choice(option, i + 1)])
     ),
     NextChoiceId: ids.length + 1,
     RecodeValues: recodes(ids),
@@ -356,6 +362,21 @@ export const embeddedFields = (names) =>
     Description: name,
     Field: name,
     Type: "Recipient",
+    VariableType: "String",
+  }));
+
+/**
+ * Embedded data set in the Survey Flow to a fixed value, the same for every
+ * response: `values` maps each field to its value.
+ */
+export const staticFields = (values) =>
+  Object.entries(values).map(([name, value]) => ({
+    AnalyzeText: false,
+    DataVisibility: [],
+    Description: name,
+    Field: name,
+    Type: "Custom",
+    Value: value,
     VariableType: "String",
   }));
 

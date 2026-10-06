@@ -1,7 +1,8 @@
 ---
 import { getEntry } from "astro:content";
-// The project partner survey generator (#440) and scorer (#445). The
-// rubrics, the A lower bound, and the two surveys' weights are read here, at
+// The project partner survey generator (#440, #446) and scorer (#445). The
+// rubrics, the "What it looks like" lists, the A lower bound, and the two
+// surveys' weights are read here, at
 // build time, from the files the handbook renders, so the page can never
 // carry a second copy of a rating name, a point value, or a weight. The
 // components read the dropped files in the browser only.
@@ -10,11 +11,16 @@ import fallCsv from "/canvas/assignments/project-partner-evaluation/partner-fina
 import springCsv from "/canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv?raw";
 import winterCsv from "/canvas/assignments/project-partner-evaluation/partner-final-winter-rubric.csv?raw";
 import pulseCsv from "/canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv?raw";
+import partnerMdx from "/src/content/docs/assignments/project-partner-evaluation.mdx?raw";
 import gradingMdx from "/src/content/docs/learning-objectives/grading.mdx?raw";
 import PartnerEvaluationScorer from "../../components/tools/PartnerEvaluationScorer.svelte";
 import PartnerSurveyGenerator from "../../components/tools/PartnerSurveyGenerator.svelte";
 import { canvasRows } from "../../lib/canvas-entries.mjs";
 import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
+import {
+  BETWEEN_ANCHORS,
+  facetGuidance,
+} from "../../lib/tools/partner-facets.mjs";
 import { aLowerBound } from "../../lib/tools/partner-scoring.mjs";
 
 const rubrics = {
@@ -24,6 +30,8 @@ const rubrics = {
   winter: parseRubricCsv(winterCsv, "partner-final-winter-rubric.csv"),
 };
 const aBound = aLowerBound(gradingMdx);
+// Each facet's "What it looks like" list, as an object so it serializes.
+const guidance = Object.fromEntries(facetGuidance(partnerMdx));
 
 // The pulse and end-of-term weights, from the partner evaluation page's
 // Canvas entries, term by term, for the survey's opening page. The survey
@@ -53,7 +61,7 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
 <StarlightPage
   frontmatter={{
     description:
-      "Generate the project partner Midterm Pulse survey, and score the partner surveys into a Canvas rubric-assessment CSV.",
+      "Generate the project partner surveys, and score them into a Canvas rubric-assessment CSV.",
     editUrl: false,
     head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
     pagefind: false,
@@ -61,20 +69,25 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
   }}
 >
   <p>
-    Generate the Midterm Pulse survey before it goes out, then score its
-    export once it closes. Every file is read in your browser and never
-    uploaded. The Midterm Pulse is generated and scored; the End-of-Term
-    Survey is recognized but not generated or scored yet.
+    Generate the Midterm Pulse or a term's End-of-Term Survey before it goes
+    out, then score its export once it closes. Every file is read in your
+    browser and never uploaded. Both surveys are generated; the Midterm Pulse
+    is scored, and the End-of-Term Survey is recognized but not scored yet.
   </p>
 
   <h2>Generate the survey</h2>
   <p>
-    The matrix's statements and its labels come from the pulse rubric
-    CSV, the labels the scorer below maps, so the survey and the scorer
-    cannot drift apart.
+    The pulse's statements and labels come from the pulse rubric CSV. The
+    End-of-Term Survey asks one question per facet of the term's rubric CSV:
+    its anchors (or, in spring, the outcome ladder's rungs) by their rating
+    names, a between answer at {BETWEEN_ANCHORS.join("% or ")}% of the points in each gap, and,
+    above it, the facet's "What it looks like" list from the partner
+    evaluation page. The labels are the ones the scorer maps, so the survey
+    and the scorer cannot drift apart. The End-of-Term Survey sets a
+    <code>Term</code> field in its Survey Flow, so its export names its term.
   </p>
 
-  <PartnerSurveyGenerator client:only="svelte" {pageUrl} rubric={rubrics.pulse} {weights} />
+  <PartnerSurveyGenerator client:only="svelte" {guidance} {pageUrl} {rubrics} {weights} />
 
   <ol>
     <li>
@@ -93,8 +106,10 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
       like a partner.
     </li>
     <li>
-      Pick the close date: it goes into the contact list as <code>MidtermCloseDate</code>,
-      and the survey's first page shows it.
+      Pick the survey, the term for the End-of-Term Survey (the current one
+      by default), and the close date: it goes into the contact list as
+      <code>MidtermCloseDate</code> or <code>FinalCloseDate</code>, and the
+      survey's first page shows it.
     </li>
     <li>
       In Qualtrics, Create project, Survey, From a file: import the <code>.qsf</code>.
@@ -102,7 +117,7 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
     <li>
       In the Directory, create a mailing list from the contact-list CSV.
       Every column maps by its header: <code>Email</code>, <code>Team</code>,
-      and <code>MidtermCloseDate</code>. If a partner has two teams, check
+      and the close-date field. If a partner has two teams, check
       that the list kept both rows.
     </li>
     <li>

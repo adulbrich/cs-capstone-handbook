@@ -1,27 +1,36 @@
-// The project partner surveys as Qualtrics .qsf files (#440). Pure: no DOM,
-// no I/O. The rubric CSV gives the questions' criteria, statements, and
-// scale (#437), so the labels the export carries are the rating names the
-// scorer (partner-scoring.mjs) maps; the rest of the wording is in
-// src/data/partner-evaluation.mjs.
+// The project partner surveys as Qualtrics .qsf files: the Midterm Pulse
+// (#440) and the End-of-Term Survey of each term (#446). Pure: no DOM, no
+// I/O. The rubric CSV gives the questions' criteria, statements, and choices
+// (#437), so the labels the export carries are the ones the scorer
+// (partner-scoring.mjs) maps; the end-of-term facets' choices and the
+// "What it looks like" lists come through partner-facets.mjs, and the rest
+// of the wording is in src/data/partner-evaluation.mjs.
 //
 // Survey Flow, in order:
-//   1. Embedded data, declared with no value so the contact list's values stand.
+//   1. Embedded data: the contact list's fields, declared with no value so
+//      its values stand, then any field the variant sets to a fixed value
+//      (the end-of-term survey's Term, so the export names its term).
 //   2. Guard: when Team is empty (not a personal link), one page telling the
 //      respondent to use the personal link, then the end of the survey.
 //   3. The variant's rating page.
 //   4. The concern and comment questions every partner survey shares: Q2
 //      (Yes or No), Q2 Names and Q2 Comments shown on Yes, and Q3.
-//
-// One variant so far, the Midterm Pulse. The end-of-term surveys (#446) add
-// an entry to VARIANTS with their own rating page and embedded fields.
 
 import {
   concernText,
   criterionNotes,
+  customScaleText,
+  finalIntro,
   guardText,
   pulseIntro,
   pulsePrompt,
 } from "../../data/partner-evaluation.mjs";
+import {
+  BETWEEN_ANCHORS,
+  customScaleChoice,
+  facetChoices,
+  isLadder,
+} from "./partner-facets.mjs";
 import {
   createSurvey,
   descriptive,
@@ -33,6 +42,7 @@ import {
   shownWhenSelected,
   singleChoice,
   singleLine,
+  staticFields,
   surveyName,
 } from "./qsf.mjs";
 
@@ -75,13 +85,108 @@ export function pulseScale(rubric) {
   };
 }
 
+/** A facet's rating, as the guidance page lists it. */
+const anchorItem = (rating) =>
+  rating.description === ""
+    ? `<li><b>${rating.name}</b></li>`
+    : `<li><b>${rating.name}</b>: ${rating.description}</li>`;
+
 /**
- * The survey variants. `title` is the name partners see; `fields` the
- * embedded data the contact list carries, `Team` first; `metaDescription`
- * the survey's one-line summary; `ratings` adds the rating page's questions
- * and returns their IDs in page order.
+ * The text block above one facet's question: its name, its "What it looks
+ * like" list from the partner evaluation page, and its anchors or rungs
+ * with the CSV's descriptions, highest first.
+ */
+function facetGuide(criterion, bullets) {
+  const ratings = [...criterion.ratings].sort((a, b) => b.points - a.points);
+  return [
+    `<b>${criterion.title}</b>`,
+    `<b>What it looks like</b><ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`,
+    `<b>${isLadder(criterion) ? "The rungs" : "The anchors"}</b><ul>${ratings.map(anchorItem).join("")}</ul>`,
+  ].join("<br>");
+}
+
+/**
+ * The end-of-term facets' questions, checked against the rubric and the
+ * page: every criterion needs a statement and a "What it looks like" list.
+ */
+function facetQuestions(rubric, guidance) {
+  const problems = rubric.criteria.flatMap((criterion) => [
+    ...(criterion.description === ""
+      ? [`no statement (Criteria Description) for ${criterion.title}`]
+      : []),
+    ...(guidance?.get(criterion.title)?.length
+      ? []
+      : [`no "What it looks like" list for ${criterion.title}`]),
+  ]);
+  if (problems.length > 0) {
+    throw new Error(`The ${rubric.name} survey has ${problems.join("; ")}.`);
+  }
+  return rubric.criteria.map((criterion) => {
+    const custom = customScaleChoice(criterion, "");
+    return {
+      choices: [
+        ...facetChoices(criterion).map((choice) => choice.label),
+        ...(custom ? [customScaleText(custom)] : []),
+      ],
+      criterion,
+      guide: facetGuide(criterion, guidance.get(criterion.title)),
+      text: `${criterion.title}: ${criterion.description}`,
+      textEntry: custom ? [custom.id] : [],
+    };
+  });
+}
+
+/** The export tag of the end-of-term question on facet `i` (0-based). */
+export const facetTag = (i) => `F${i + 1}`;
+
+/** The End-of-Term Survey of one term: `term` names it in the Term field. */
+function finalVariant(term) {
+  return {
+    fields: ["Team", "FinalCloseDate"],
+    metaDescription:
+      "The project partner's end-of-term scores for one capstone team.",
+    ratings(survey, { guidance, pageUrl, rubric, weights }) {
+      const facets = facetQuestions(rubric, guidance);
+      const intro = finalIntro({
+        between: BETWEEN_ANCHORS,
+        facets: facets.length,
+        finalWeight: weights.final,
+        ladders: rubric.criteria.filter(isLadder).map((c) => c.title),
+        pageUrl,
+      });
+      const qids = [survey.add((qid) => descriptive(qid, "Start", intro))];
+      for (const [i, facet] of facets.entries()) {
+        qids.push(
+          survey.add((qid) =>
+            descriptive(qid, `${facetTag(i)} Guide`, facet.guide)
+          ),
+          survey.add((qid) =>
+            singleChoice(qid, facetTag(i), facet.text, facet.choices, {
+              forced: true,
+              textEntry: facet.textEntry,
+            })
+          )
+        );
+      }
+      return qids;
+    },
+    term,
+    title: "Project Partner End-of-Term Survey",
+    values: { Term: term },
+  };
+}
+
+/**
+ * The survey variants, keyed as the scorer's SURVEYS are. `title` is the
+ * name partners see; `fields` the embedded data the contact list carries,
+ * `Team` first; `values` the embedded data set to a fixed value in the flow;
+ * `metaDescription` the survey's one-line summary; `ratings` adds the rating
+ * page's questions and returns their IDs in page order.
  */
 export const VARIANTS = {
+  "final-fall": finalVariant("fall"),
+  "final-spring": finalVariant("spring"),
+  "final-winter": finalVariant("winter"),
   pulse: {
     fields: ["Team", "MidtermCloseDate"],
     metaDescription:
@@ -105,6 +210,7 @@ export const VARIANTS = {
       return [survey.add((qid) => descriptive(qid, "Start", intro)), matrix];
     },
     title: "Project Partner Midterm Pulse",
+    values: {},
   },
 };
 
@@ -134,10 +240,12 @@ function concernQuestions(survey) {
  * Options: `variant` (a key of VARIANTS), `rubric` (that survey's rubric,
  * from parseRubricCsv), `weights` (`{ pulse, final }`, percent of the term
  * grade, from the partner evaluation page), `pageUrl` (that page's address),
+ * `guidance` (the end-of-term surveys only: facetGuidance of that page),
  * `label` (course and term, put in front of the survey name), `now` (a Date,
  * for the file's timestamps), `seed` (a number, for the generated IDs).
  */
 export function buildPartnerSurvey({
+  guidance,
   label = "",
   now = new Date(),
   pageUrl,
@@ -153,7 +261,12 @@ export function buildPartnerSurvey({
   const survey = createSurvey(seed);
   const { block, defaultBlock, flowId, standard } = survey;
 
-  const rating = definition.ratings(survey, { pageUrl, rubric, weights });
+  const rating = definition.ratings(survey, {
+    guidance,
+    pageUrl,
+    rubric,
+    weights,
+  });
   const guard = survey.add((qid) => descriptive(qid, "Guard", guardText));
   const concerns = concernQuestions(survey);
 
@@ -165,7 +278,10 @@ export function buildPartnerSurvey({
 
   // Flow IDs are numbered in flow order, so the elements are built in order.
   const embedded = {
-    EmbeddedData: embeddedFields(definition.fields),
+    EmbeddedData: [
+      ...embeddedFields(definition.fields),
+      ...staticFields(definition.values),
+    ],
     FlowID: flowId(),
     Type: "EmbeddedData",
   };
