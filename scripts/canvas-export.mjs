@@ -212,22 +212,24 @@ function entries() {
 // ---- page-specific cuts no general rule covers ---------------------------------
 
 const OVERRIDES = {
+  // The CATME section belongs to the spring end-of-term survey alone. Its
+  // heading names no term, so the peer End-of-Term Survey here and the
+  // Midterm Survey below drop it by id, and --strict warns if it is renamed.
+  "End-of-Term Survey": (o, e) => {
+    if (e.page === "peer-evaluations") {
+      o.dropSection("the-catme-survey");
+    }
+  },
   // The spring end-of-term survey has no four criteria and no distribution;
   // its instrument and score are the CATME section and its own rubric.
   "End-of-Term Survey (CATME)": (o) => {
-    for (const id of [
-      "the-per-term-instrument",
-      "team-sizes",
-      "grade-calculation",
-    ]) {
-      o.dropSection(id);
-    }
+    o.dropSection("the-per-term-instrument", "team-sizes", "grade-calculation");
     o.dropBlock("The rubric is the calculation above");
   },
   "Midterm Pulse": (o) => {
     o.dropBlock("Fall and winter are progress-focused");
     o.dropBlock("The pulse has its own scale");
-    for (const id of [
+    o.dropSection(
       "how-the-scoring-works",
       "reflection",
       "requirements-and-specifications",
@@ -235,17 +237,12 @@ const OVERRIDES = {
       "verification-and-validation",
       "teamwork",
       "communication",
-      "individual-accountability",
-    ]) {
-      o.dropSection(id);
-    }
+      "individual-accountability"
+    );
   },
-  // The CATME section is the spring end-of-term survey's; the term rule
-  // already drops it from the fall and winter midterms.
-  "Midterm Survey": (o, e) => {
-    if (e.term === "spring") {
-      o.dropSection("catme-in-spring");
-    }
+  // The CATME section, as under End-of-Term Survey above.
+  "Midterm Survey": (o) => {
+    o.dropSection("the-catme-survey");
   },
   // The audit is part of the fall week 5 gate only.
   "Repo Checkpoint {n}": (o, e) => {
@@ -287,12 +284,15 @@ function ops(root, where) {
       }
       top.splice(i, count);
     },
-    dropSection(id) {
-      const i = find(id);
-      if (i < 0) {
-        return miss(`section #${id}`);
+    dropSection(...ids) {
+      for (const id of ids) {
+        const i = find(id);
+        if (i < 0) {
+          miss(`section #${id}`);
+          continue;
+        }
+        top.splice(i, sectionEnd(top, i) - i);
       }
-      top.splice(i, sectionEnd(top, i) - i);
     },
     // Keep only the named sections, in page order; drop the rest, the
     // page's intro included.
