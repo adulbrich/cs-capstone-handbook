@@ -6,6 +6,7 @@ import { defineConfig } from "astro/config";
 import mermaid from "astro-mermaid";
 import starlightLinksValidator from "starlight-links-validator";
 import starlightScrollToTop from "starlight-scroll-to-top";
+import { activitiesSidebar } from "./src/lib/activities-sidebar.mjs";
 // import starlightPageActions from 'starlight-page-actions';
 // import starlightImageZoom from "starlight-image-zoom";
 
@@ -87,16 +88,7 @@ export default defineConfig({
           ],
           label: "Learning Objectives and Grading",
         },
-        {
-          items: [
-            {
-              autogenerate: {
-                directory: "activities",
-              },
-            },
-          ],
-          label: "Activities",
-        },
+        activitiesSidebar,
         {
           items: [
             {
@@ -129,8 +121,8 @@ export default defineConfig({
     }),
   ],
 
-  // Two sections have been dissolved and their URLs were live, so they redirect
-  // rather than 404.
+  // Sections and pages that have been dissolved had live URLs, so they
+  // redirect rather than 404.
   //
   // Project Evaluation went into Assignments and Learning Objectives. Project
   // Selection, Team Formation, and Changing or Pivoting Projects merged into
@@ -142,7 +134,22 @@ export default defineConfig({
   // assignment, and the four example shipping paths to the Shipping guide. The five
   // redirects above chained through pages that no longer exist, so they now
   // point at the surviving destination directly.
+  //
+  // The activity library was regrouped by kind of work (#416): eleven theme
+  // pages became twelve, so each retired page points at the page that
+  // received most of its activities. AI Practice was dissolved, and its URL
+  // points at the Generative AI guide, which took its framing and links its
+  // activities. A redirect carries the page, not the anchor.
   redirects: {
+    "/activities/ai": "/guides/generative-ai/",
+    "/activities/communication": "/activities/presenting/",
+    "/activities/conflict": "/activities/team-and-workflow/",
+    "/activities/creative": "/activities/ideation/",
+    "/activities/design": "/activities/technical-design/",
+    "/activities/planning": "/activities/planning-and-risk/",
+    "/activities/reflective": "/activities/learning-and-reflection/",
+    "/activities/teamwork": "/activities/team-and-workflow/",
+    "/activities/user": "/activities/working-with-users/",
     "/practicalities/categories": "/guides/shipping/",
     "/practicalities/change":
       "/introduction/for-students/#if-the-project-or-the-team-has-to-change",
