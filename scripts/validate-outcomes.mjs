@@ -42,12 +42,15 @@ import { parseFrontmatter } from "./lib/content.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const CANVAS_DIR = "canvas/assignments";
+// The CSV a Canvas entry family declares, as the path the page imports.
+const rubricPath = (family) => `${CANVAS_DIR}/${family.rubric}`;
 const MIN_ABET = 2;
 
 // Canvas rubric CSV directory -> the handbook page that renders it. The CSV is
 // the rubric (#144), so this is not a mirror table: it is how the validator
 // tells whether a page imported its own assignment's rubric or a neighbour's.
 const CANVAS_TO_HANDBOOK = {
+  "bidding-survey": "bidding-survey",
   defense: "defense",
   "definition-of-shipped": "definition-of-shipped",
   "incident-postmortem": "incident-postmortem",
@@ -520,7 +523,7 @@ for (const [slug, assignment] of pages) {
   const declaredRubrics = new Set();
   for (const family of canvas) {
     if (family.rubric) {
-      const path = `${CANVAS_DIR}/${family.rubric}`;
+      const path = rubricPath(family);
       declaredRubrics.add(path);
       if (!rendered.has(path)) {
         console.error(
@@ -631,9 +634,7 @@ for (const [slug, assignment] of pages) {
 // imported by hand and still look current. Every file must belong to a family.
 const declaredCsvs = new Set(
   [...pages.values()].flatMap((a) =>
-    (a.canvas ?? [])
-      .filter((f) => f.rubric)
-      .map((f) => `${CANVAS_DIR}/${f.rubric}`)
+    (a.canvas ?? []).filter((f) => f.rubric).map(rubricPath)
   )
 );
 // Canvas lists a course's rubrics by the Rubric Name column, so two files
@@ -805,16 +806,29 @@ for (const file of files) {
     failed = true;
   }
 
-  // Rubric points total exactly 100, summed from each rendered CSV, and
-  // each table sits in the "## Rubric" section.
+  // Each rendered CSV totals the points of the Canvas entries that use it,
+  // since Canvas grades an entry out of its rubric, and each table sits in
+  // the "## Rubric" section. A CSV no entry uses is reported above.
   for (const table of pageTables.get(slug)) {
     if (!table.path) {
       continue; // already reported as RUBRIC IMPORT above
     }
+    const points = [
+      ...new Set(
+        (assignment.canvas ?? [])
+          .filter((f) => rubricPath(f) === table.path)
+          .map((f) => f.points)
+      ),
+    ];
     const total = rubricTotal(readRubric(table.path).criteria);
-    if (total !== 100) {
+    if (points.length > 1) {
       console.error(
-        `RUBRIC ${file}: ${table.path} totals ${total} points, not 100.`
+        `RUBRIC ${file}: ${table.path} is used by entries worth ${points.join(" and ")} points; entries sharing a rubric share its points.`
+      );
+      failed = true;
+    } else if (points.length === 1 && total !== points[0]) {
+      console.error(
+        `RUBRIC ${file}: ${table.path} totals ${total} points, but its Canvas entry is worth ${points[0]}.`
       );
       failed = true;
     }
@@ -829,7 +843,7 @@ for (const file of files) {
 }
 if (!failed) {
   console.log(
-    "  Every page has the summary card and the skeleton, carries AI use where it produces something, and totals 100."
+    "  Every page has the summary card and the skeleton, carries AI use where it produces something, and totals its entry's points."
   );
 }
 

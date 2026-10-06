@@ -151,7 +151,8 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    table inside `## Rubric`.
 6. **What You Produce ends its own text on one `**AI use:**` paragraph**,
    before any `###`, and a page without What You Produce has none.
-7. **Rubric points total exactly 100** per CSV (see **Rubric Rules**).
+7. **Rubric points total the entry's `points`** per CSV (see **Rubric
+   Rules**).
 8. **The `canvas` entries reconcile.** Per term, family weights sum to the page
    weight; within one Canvas group, every entry carries the same weight per
    point (Canvas weights a group's entries by points); every family's rubric
@@ -270,8 +271,8 @@ required; `validate-outcomes.mjs` checks the order.
    activity heading. Demoting an activity on the schedule's Optional line
    also means removing it from the schedule in the same commit.
 
-   Workshop Activities is the one page without it: its entries are
-   activities.
+   Two pages go without it: Workshop Activities, whose entries are
+   activities, and the Bidding Survey, which no activity prepares.
 
 ### Entries with a rubric of their own
 
@@ -298,9 +299,12 @@ course design talking to itself on a student page. Keep each to one idea.
 The rubric is a CSV, not a Markdown table (see **The Rubric Lives in the CSV**).
 The rules below are about its content.
 
-- **Points total exactly 100**, summed as each criterion's highest band. The
-  survey pages are no exception: their criteria carry the facet or score
-  weights as points (#300).
+- **Points total the Canvas entry's `points`**, summed as each criterion's
+  highest band, because Canvas grades an entry out of its rubric. An entry
+  is 100 points unless it shares a Canvas group with a heavier entry; then
+  its points are in proportion to its weight, since the group weights its
+  entries by points. The survey pages are no exception: their criteria
+  carry the facet or score weights as points (#300).
 - **One CSV per distinct rubric, not per entry.** Sprint Notes 1 to 4 share
   one CSV; every workshop shares one. The RFC's draft and final differ, so
   they have two. A page with several renders each under its entry's `###`
@@ -323,7 +327,7 @@ The rules below are about its content.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
-Startup); the individual contribution's Full, Partial, and Zero; `defense`,
+Startup, the Bidding Survey); the individual contribution's Full, Partial, and Zero; `defense`,
 which adds a fourth; and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
@@ -384,7 +388,8 @@ assuming a number:
 - **Three bands, 13 fields.** The default: `Exceeds Expectations` /
   `Meets Expectations` / `Does Not Meet Expectations`, at full / 80% / 20%.
 - **Two bands, 10 fields.** The sprint note's `Pass` at full and `Fail` at 0;
-  the workshops' and Term Startup's `Complete` at full and `Incomplete` at 0.
+  the workshops', Term Startup's, and the Bidding Survey's `Complete` at
+  full and `Incomplete` at 0.
 - **Individual contribution.** `Full` at 100, `Partial` at 99 with a range
   down to 1 at the grader's discretion, and `Zero` at 0.
 - **Four bands, 16 fields.** `defense` adds a `Missing` band at 0 for an
@@ -471,7 +476,7 @@ the student has to learn first.
 - Calendar dates or an academic year. `due` is a term and a week, and may
   add a weekday or a named holiday ("Fall, week 9, Wednesday before
   Thanksgiving"), never a date. `validate-dates.mjs` fails on one.
-- A rubric that does not total 100.
+- A rubric that does not total its entry's points.
 - Outcome tags whose counts disagree with the frontmatter.
 - Activity links in `## Activities That Prepare This` that you do not mean as recommendations: each one puts a Prepares badge on the activity.
 - Explanations that belong in a guide. Link to the guide instead; two

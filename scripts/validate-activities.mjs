@@ -474,6 +474,7 @@ const STANDALONE_EXEMPT = new Set([
 // industry practice.
 const ASSIGNMENT_NAMES = new Map([
   ["Assignments Overview", null], // a page, not a piece of work
+  ["Bidding Survey", /\bbidding[\s-]surveys?\b/i],
   [
     "Career and Individual Retrospective",
     /\bindividual[\s-]retrospectives?\b/i,

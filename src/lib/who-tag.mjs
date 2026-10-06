@@ -7,16 +7,13 @@ import { h } from "hastscript";
 // Links whose page `level` does not say who submits or is scored: the partner
 // completes the partner evaluation; the two Canvas-owned stubs carry no
 // `assignment:` block; Demo Day and the Expo are team events with no block
-// either; the bidding survey is the one section of For Students that is due;
-// the team sends the first email to its partner from the template.
+// either.
 const TAG_BY_PATH = {
   "assignments/career-retrospective": "Individual",
   "assignments/demo-day": "Team",
   "assignments/expo": "Team",
   "assignments/project-partner-evaluation": "Partner",
   "assignments/resume-and-intent": "Individual",
-  "email-template.txt": "Team",
-  "introduction/for-students#how-you-get-your-project-and-team": "Individual",
 };
 
 const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/g, "");

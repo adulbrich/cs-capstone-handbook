@@ -1,7 +1,7 @@
 # Assignment README
 
 - This directory holds one validated `<name>-rubric.csv` per distinct rubric of every live assignment except the two [owned in Canvas](#owned-in-canvas-resume-and-intent-and-the-career-retrospective-197), in the format of Canvas's rubric import, plus Canvas's own template in `_template/`. Nothing else: the pre-revision HTML bodies, the Markdown rubric copies and the retired assignment directories were removed under #30 (decided 2026-09-11), and git history keeps them.
-- `scripts/validate-outcomes.mjs` reads every CSV as the rubric: it reconciles the outcome tags in the Criteria Name column against the page's frontmatter, totals each rubric to 100, and checks that each page renders its own CSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
+- `scripts/validate-outcomes.mjs` reads every CSV as the rubric: it reconciles the outcome tags in the Criteria Name column against the page's frontmatter, totals each rubric to its entry's points, and checks that each page renders its own CSVs and that its `assignment.canvas` entries declare every one. Runs in CI and pre-commit.
 - The body of each assignment in Canvas is the handbook page itself, from the paste kit (`npm run build`, then `npm run canvas:export`, which writes one body per Canvas entry to `canvas-export/`), until the import package in `docs/decisions/2026-08-19-canvas-import-package-design.md` generates it (#5).
 - One CSV per distinct rubric, not per Canvas entry (#259). Every page lists its Canvas entries in `assignment.canvas` frontmatter: the exact name, the Canvas assignment group, the weeks due per term, the weight, the points, the submission type, and the CSV. That list is what to create in Canvas: the page renders it for students as the Submissions table (entries, due weeks, weights, submission), and the frontmatter adds the group and points each entry needs. Entries never bundle: four sprint notes are four Canvas assignments, not one column.
 
@@ -19,6 +19,18 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 **Nothing students or graders see changed.** Every criterion, description, band, point value and outcome tag was checked equal, file by file, between the old parser's reading of each TSV and the new parser's reading of its CSV. A rubric already in Canvas does not need re-importing for this change. The pending re-imports below now take the CSV named in each. An import may add a second rubric rather than replace the one already in the course, so after re-importing, check the course's rubric list and delete the old one if both are there. Import `defense/defense-rubric.csv` first as the check that Canvas takes a fourth rating group and the quoted fields.
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
+
+## Canvas Changes: Bidding Survey and Introduction Email (#413, #424)
+
+In CS 461 only:
+
+- Create a **Bidding Survey** group at 1% holding one **Bidding Survey** assignment: 100 points, individual, no submission, due at the end of fall week 0, graded Complete from the Qualtrics export. Fall week 0 is the partial week the term starts in, so the course has to be published when the term starts. Paste its body from the paste kit in place of the hand-written one, and import `bidding-survey/bidding-survey-rubric.csv` (Complete 100 / Incomplete 0).
+- Lower the **RFC Draft** group from 5% to 4%. RFC Final stays at 10%, so the RFC is 14% in fall. Its entries, points, and rubrics are unchanged.
+- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of one PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%. Paste its body from the paste kit, and import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0).
+- Re-paste the Term Startup body, the RFC Draft + Peer Review body (its weight line), the Assignments Overview (the grade grid gives Bidding Survey 1 and RFC 14 in fall), and the CS 461 syllabus.
+- The existing Term Startup assignment, its 100 points, and its rubric are unchanged. CS 462 and CS 463 are unchanged.
+
+The validator now totals each rubric to its entry's points rather than to 100, which is what lets the email's rubric carry 25.
 
 ## Re-paste Required: ABET SO1 Wording (#358)
 
@@ -202,7 +214,7 @@ section above).
 
 ## Grade Architecture (every term)
 
-Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: RFC 15% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
+Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: Bidding Survey 1% + RFC 14% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close at the end of week 6; final surveys are sent week 9 and close at the end of week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
@@ -386,9 +398,10 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 
 | Week | Due |
 |------|-----|
-| 1 | Resume and Intent |
+| 0 | Bidding Survey (1%, complete/incomplete) |
+| 1 | Resume and Intent; Introduction Email (0.2%, complete/incomplete) |
 | 2, 3, 7, 8 | Workshop Activities (5 items, complete/incomplete) |
-| 2 | Term Startup (1%); Team Charter |
+| 2 | Term Startup (0.8%); Team Charter |
 | 3 | Demo Day registration (0 points, omit from final grade) |
 | by 5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |

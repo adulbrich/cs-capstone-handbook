@@ -1,0 +1,46 @@
+---
+title: Bidding Survey
+description: How you rank the fall projects by the end of week 0, including when you proposed your own, so the instruction team can place you on a team.
+sidebar:
+  order: 0
+assignment:
+  level: individual
+  terms: [fall]
+  weight: 1
+  canvas:
+    - name: "Bidding Survey"
+      due_label: Fall end of week 0
+      group: Bidding Survey
+      weeks: { fall: [0] }
+      weight: 1
+      points: 100
+      submission: survey
+      rubric: bidding-survey/bidding-survey-rubric.csv
+---
+
+import AssignmentSummary from '/src/components/AssignmentSummary.astro';
+import RubricTable from '/src/components/RubricTable.astro';
+import rubricCsv from '/canvas/assignments/bidding-survey/bidding-survey-rubric.csv?raw';
+import { portal } from '/src/site';
+
+<AssignmentSummary />
+
+In this assignment you rank the six projects you most want to work on this year, by the end of fall week 0. The instruction team places every student from these rankings and announces teams in fall week 1. [How you get your project and team](/introduction/for-students/#how-you-get-your-project-and-team) covers team sizes, ranking with friends, and what a ranking can and can't guarantee.
+
+## Ranking Your Projects
+
+Watch for an email from [Qualtrics](https://www.qualtrics.com/) with your survey link. Before you rank, browse the <a href={portal.browse}>available projects</a>; the list can change until the first lecture. If you sign in to the project portal with your ONID and set your interests in your profile, the list is ordered by them.
+
+### If You Proposed Your Own Project
+
+If your proposal was accepted, you still submit the survey. Rank your own project first and note in the survey that it is pre-approved, then rank five others as usual. If you can't rank five others, ask an instructor for an override before the deadline.
+
+## What You Submit
+
+Nothing to upload: you submit the Qualtrics survey from the link sent by email, by the end of fall week 0.
+
+## Rubric
+
+<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/bidding-survey/bidding-survey-rubric.csv" />
+
+The survey closes when teams are formed, so it has no late window. If you don't submit it in time, it is Incomplete and you are placed on a project without your input.

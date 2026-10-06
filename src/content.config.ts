@@ -39,7 +39,8 @@ const termWeight = () =>
       })
       .strict(),
   ]);
-const weekList = () => z.array(z.number().int().min(1).max(11)).min(1);
+// Fall starts midweek, in week 0, when the bidding survey is due.
+const weekList = () => z.array(z.number().int().min(0).max(11)).min(1);
 const SUBMISSIONS = [
   "pdf",
   "video",
