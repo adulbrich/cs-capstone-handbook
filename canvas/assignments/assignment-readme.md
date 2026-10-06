@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Introduction Email Excusal (#442)
+
+No rubric changes. Re-paste the fall Introduction Email and Term Startup bodies: Fall Week 1 now excuses the email for a team whose every member already meets with its partner or mentor, and the Introduction Email's What You Submit says an excused team submits nothing. The team emails `cs-46x-help@oregonstate.edu`, and the entry is marked excused for each member of such a team.
+
 ## Re-import Required: RFC Tradeoff Wording (#257)
 
 `rfc/rfc-final-rubric.csv`: the Does Not Meet band of Technical tradeoff analysis now reads "Analysis is missing, not project-specific, or asserted without evidence." in place of "argued with vibes instead of evidence". Points, tags, and the other bands are unchanged. Re-import it on RFC Final Draft, in both terms, after any earlier re-import of the same file. Re-paste the RFC Draft + Peer Review, RFC Final Draft, and Project Retrospective bodies: each page's first paragraph now opens on what you write.
