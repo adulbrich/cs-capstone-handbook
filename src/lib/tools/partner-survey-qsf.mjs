@@ -29,6 +29,7 @@ import {
   essay,
   isEmpty,
   likertMatrix,
+  sharedScale,
   shownWhenSelected,
   singleChoice,
   singleLine,
@@ -54,16 +55,9 @@ export function pulseScale(rubric) {
       `The ${rubric.name} rubric CSV has no statement (Criteria Description) for ${missing.join(", ")}.`
     );
   }
-  const names = (criterion) => ascending(criterion).map((r) => r.name);
-  const columns = names(rubric.criteria[0]);
-  const differing = rubric.criteria
-    .filter((criterion) => names(criterion).join("|") !== columns.join("|"))
-    .map((criterion) => criterion.title);
-  if (differing.length > 0) {
-    throw new Error(
-      `The ${rubric.name} rubric's criteria must share one scale for the matrix; ${differing.join(", ")} differ from ${rubric.criteria[0].title}.`
-    );
-  }
+  const columns = sharedScale(rubric.name, rubric.criteria, (criterion) =>
+    ascending(criterion).map((r) => r.name)
+  );
   const middle = columns[Math.floor(columns.length / 2)];
   const notes = rubric.criteria
     .filter((criterion) => criterionNotes[criterion.title.toLowerCase()])

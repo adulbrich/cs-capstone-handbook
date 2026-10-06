@@ -44,9 +44,9 @@ export const commentPrompts = {
 /**
  * The survey variants. Midterm and end-of-term are the regular survey and
  * differ only in the title and the closing question; CATME rates the five
- * dimensions of its own rubric and has no 100-point split. `rubric` is the
- * CSV under canvas/assignments/peer-evaluation/ the variant reads, `label`
- * its line in the generator's picker.
+ * dimensions of its own rubric (catme-rubric.csv) and has no 100-point
+ * split. `instrument` picks the rubric and the survey's shape, `label` the
+ * variant's line in the generator's picker.
  */
 export const variants = {
   catme: {
@@ -54,7 +54,6 @@ export const variants = {
     label: "CATME (spring end-of-term)",
     question:
       "What did you learn about working in a team that you will carry into your next team?",
-    rubric: "catme-rubric.csv",
     title: "End-of-Term Peer Evaluation (CATME)",
   },
   final: {
@@ -63,7 +62,6 @@ export const variants = {
       "End-of-term (fall, winter): closes with what you will carry into the next term",
     question:
       "What did you learn about working in a team that you will carry into the next term?",
-    rubric: "peer-evaluation-rubric.csv",
     title: "End-of-Term Peer Evaluation",
   },
   midterm: {
@@ -71,10 +69,12 @@ export const variants = {
     label: "Midterm (every term): closes with a team experiment to try",
     question:
       "Propose one concrete team experiment or activity to try in the next sprint.",
-    rubric: "peer-evaluation-rubric.csv",
     title: "Midterm Peer Evaluation",
   },
 };
+
+/** The variants in the generator's picker order. */
+export const variantOrder = ["midterm", "final", "catme"];
 
 /**
  * Text that appears only in the generated survey. `${e://...}` is Qualtrics

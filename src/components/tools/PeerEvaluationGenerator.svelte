@@ -1,10 +1,8 @@
 <script>
 // Reads the roster in the browser and writes the survey and the contact
 // list as downloads. Nothing is uploaded: the file never leaves the page.
-import catmeCsv from "/canvas/assignments/peer-evaluation/catme-rubric.csv?raw";
-import peerCsv from "/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw";
-import { variants } from "../../data/peer-evaluation.mjs";
-import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
+// Each variant's parsed rubric arrives as a prop, read at build time.
+import { variantOrder, variants } from "../../data/peer-evaluation.mjs";
 import { download } from "../../lib/tools/download.mjs";
 import { readPicked, slug } from "../../lib/tools/files.mjs";
 import { buildContacts, contactsCsv } from "../../lib/tools/peer-contacts.mjs";
@@ -12,12 +10,7 @@ import { peerSurveyQsf } from "../../lib/tools/peer-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
 import { defaultLabel } from "../../lib/tools/term-label.mjs";
 
-// Each variant reads its rubric CSV, the one Canvas imports (#437).
-const RUBRIC_CSVS = {
-  "catme-rubric.csv": catmeCsv,
-  "peer-evaluation-rubric.csv": peerCsv,
-};
-const VARIANTS = ["midterm", "final", "catme"];
+const { rubrics } = $props();
 
 let rosterText = $state.raw("");
 let fileName = $state("");
@@ -54,11 +47,9 @@ const baseName = $derived(
 );
 
 function downloadSurvey() {
-  const file = variants[variant].rubric;
   let text;
   try {
-    const rubric = parseRubricCsv(RUBRIC_CSVS[file], file);
-    text = peerSurveyQsf({ label, mode, rubric, variant });
+    text = peerSurveyQsf({ label, mode, rubric: rubrics[variant], variant });
   } catch (error) {
     surveyError = error.message;
     return;
@@ -80,7 +71,7 @@ function downloadContacts() {
 
   <fieldset>
     <legend>Survey</legend>
-    {#each VARIANTS as key (key)}
+    {#each variantOrder as key (key)}
       <label class="inline">
         <input type="radio" name="variant" value={key} bind:group={variant} />
         {variants[key].label}

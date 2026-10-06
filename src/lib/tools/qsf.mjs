@@ -174,18 +174,18 @@ export const singleLine = (qid, tag, text) =>
 
 /**
  * One answer from a vertical list; choice i + 1 is `options[i]`, recoded
- * i + 1. `bestFirst` lists the last option first; `forced` requires an answer.
+ * i + 1. `reversed` lists the last option first; `forced` requires an answer.
  */
 export function singleChoice(
   qid,
   tag,
   text,
   options,
-  { bestFirst = false, forced = false } = {}
+  { forced = false, reversed = false } = {}
 ) {
   const ids = options.map((_, i) => i + 1);
   return question(qid, tag, "MC", "SAVR", text, {
-    ChoiceOrder: bestFirst ? ids.toReversed() : ids,
+    ChoiceOrder: reversed ? ids.toReversed() : ids,
     Choices: Object.fromEntries(
       options.map((option, i) => [i + 1, { Display: option }])
     ),
@@ -194,6 +194,26 @@ export function singleChoice(
     SubSelector: "TX",
     ...(forced ? { Validation: FORCED } : {}),
   });
+}
+
+/**
+ * The one scale a matrix's criteria share: `scaleOf(criterion)` for the
+ * first, when every criterion's is the same. Throws naming the criteria
+ * whose scale differs. `criteria` carry a `title`.
+ */
+export function sharedScale(rubricName, criteria, scaleOf) {
+  const [first] = criteria;
+  const scale = scaleOf(first);
+  const key = JSON.stringify(scale);
+  const differing = criteria
+    .filter((criterion) => JSON.stringify(scaleOf(criterion)) !== key)
+    .map((criterion) => criterion.title);
+  if (differing.length > 0) {
+    throw new Error(
+      `The ${rubricName} rubric's criteria must share one scale for the matrix; ${differing.join(", ")} differ from ${first.title}.`
+    );
+  }
+  return scale;
 }
 
 /**

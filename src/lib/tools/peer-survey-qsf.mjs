@@ -51,6 +51,7 @@ import {
   metaQuestion,
   question,
   recodes,
+  sharedScale,
   singleChoice,
   surveyName,
 } from "./qsf.mjs";
@@ -150,7 +151,7 @@ export function ratedCriteria(rubric) {
             criterion.ratings.find((r) => r.name === `Average of ${n}`)
               .description
         ),
-        name: criterion.title,
+        title: criterion.title,
       },
     ];
   });
@@ -174,20 +175,13 @@ function lookup(table, name, what) {
 const numbered = (anchors) => anchors.map((text, i) => `${i + 1}: ${text}`);
 
 /** The rated criteria as one forced radio matrix on their shared scale. */
-function ratingQuestion(qid, tag, ratee, rated) {
-  const [{ anchors }] = rated;
-  const shared = JSON.stringify(anchors);
-  const odd = rated.find((c) => JSON.stringify(c.anchors) !== shared);
-  if (odd) {
-    throw new Error(
-      `The matrix needs one scale, but "${odd.name}" has different rating descriptions from "${rated[0].name}".`
-    );
-  }
+function ratingQuestion(qid, tag, ratee, { rated, rubric }) {
+  const anchors = sharedScale(rubric.name, rated, (c) => c.anchors);
   return likertMatrix(
     qid,
     tag,
     surveyText.rating.replace("{ratee}", ratee),
-    rated.map((c) => lookup(criterionPrompts, c.name, "prompt")),
+    rated.map((c) => lookup(criterionPrompts, c.title, "prompt")),
     numbered(anchors)
   );
 }
@@ -201,12 +195,51 @@ function dimensionQuestion(qid, tag, dimension, ratee) {
     qid,
     tag,
     surveyText.catmeRating
-      .replace("{dimension}", dimension.name)
+      .replace("{dimension}", dimension.title)
       .replace("{ratee}", ratee),
     numbered(dimension.anchors),
-    { bestFirst: true, forced: true }
+    { forced: true, reversed: true }
   );
 }
+
+/**
+ * What each instrument puts on the survey. `ratings` adds one ratee's
+ * rating questions, their export tags behind `prefix`, and returns their
+ * IDs; `split` adds the questions between the ratings and the closing
+ * comments; `closingBlock` names the last block; `summary` is the survey's
+ * one-line description.
+ */
+const INSTRUMENTS = {
+  catme: {
+    closingBlock: "Comments",
+    ratings: (add, { prefix, ratee, rated }) =>
+      rated.map((dimension) => {
+        const tag = prefix + lookup(catmeTags, dimension.title, "export tag");
+        return add((qid) => dimensionQuestion(qid, tag, dimension, ratee));
+      }),
+    split: () => [],
+    summary: surveyText.summary.catme,
+  },
+  regular: {
+    closingBlock: "Split and comments",
+    ratings: (add, { prefix, ratee, ...scale }) => [
+      add((qid) => ratingQuestion(qid, `${prefix}Rating`, ratee, scale)),
+    ],
+    split: (add, roster) => [
+      add((qid) => ({
+        ...descriptive(qid, "SplitFloor", surveyText.splitFloor),
+        DisplayLogic: shownForLargerTeams(),
+      })),
+      add((qid) => ({
+        ...descriptive(qid, "SplitPair", surveyText.splitPair),
+        DisplayLogic: shownForPairs(),
+      })),
+      add((qid) => splitQuestion(qid, roster)),
+      add((qid) => essay(qid, "Allocations", commentPrompts.allocations)),
+    ],
+    summary: surveyText.summary.regular,
+  },
+};
 
 function splitQuestion(qid, rosterQid) {
   return question(qid, "Split", "CS", "VRTL", surveyText.split, {
@@ -235,11 +268,15 @@ function splitQuestion(qid, rosterQid) {
 /**
  * Builds the survey as a .qsf object.
  *
- * Options: `rubric` (the variant's rubric CSV, `variants[variant].rubric`,
- * parsed with parseRubricCsv; required), `variant` ("midterm", "final", or
- * "catme"), `label` (course and term, put in front of the survey name),
- * `mode` ("loop" or "slots"), `now` (a Date, for the file's timestamps),
- * `seed` (a number, for the generated IDs).
+ * Options: `rubric` (the variant's rubric CSV, parsed with parseRubricCsv;
+ * required), `variant` ("midterm", "final", or "catme"), `label` (course and
+ * term, put in front of the survey name), `mode` ("loop" or "slots"), `now`
+ * (a Date, for the file's timestamps), `seed` (a number, for the generated
+ * IDs).
+ *
+ * @param {{ label?: string, mode?: string, now?: Date,
+ *   rubric?: { name: string, criteria: object[] }, seed?: number,
+ *   variant?: string }} [options]
  */
 export function buildPeerSurvey({
   label = "",
@@ -257,10 +294,9 @@ export function buildPeerSurvey({
     throw new Error(`Unknown mode "${mode}".`);
   }
   if (!rubric) {
-    throw new Error(
-      `No rubric: the ${variant} survey reads ${wording.rubric}.`
-    );
+    throw new Error(`No rubric for the ${variant} survey.`);
   }
+  const instrument = INSTRUMENTS[wording.instrument];
   const rated = ratedCriteria(rubric);
   const { add, block, defaultBlock, finish, flowId, standard, trash } =
     createSurvey(seed);
@@ -273,15 +309,9 @@ export function buildPeerSurvey({
   trash();
   const guardBlock = block("Guard", [guard]);
 
-  const catme = wording.instrument === "catme";
   // The rating questions of one page, their tags behind `prefix`.
   const ratingQids = (prefix, ratee) =>
-    catme
-      ? rated.map((dimension) => {
-          const tag = prefix + lookup(catmeTags, dimension.name, "export tag");
-          return add((qid) => dimensionQuestion(qid, tag, dimension, ratee));
-        })
-      : [add((qid) => ratingQuestion(qid, `${prefix}Rating`, ratee, rated))];
+    instrument.ratings(add, { prefix, rated, ratee, rubric });
 
   const ratingFlow = [];
   if (mode === "loop") {
@@ -337,30 +367,13 @@ export function buildPeerSurvey({
     }
   }
 
-  const split = catme
-    ? []
-    : [
-        add((qid) => ({
-          ...descriptive(qid, "SplitFloor", surveyText.splitFloor),
-          DisplayLogic: shownForLargerTeams(),
-        })),
-        add((qid) => ({
-          ...descriptive(qid, "SplitPair", surveyText.splitPair),
-          DisplayLogic: shownForPairs(),
-        })),
-        add((qid) => splitQuestion(qid, roster)),
-        add((qid) => essay(qid, "Allocations", commentPrompts.allocations)),
-      ];
   const closing = [
-    ...split,
+    ...instrument.split(add, roster),
     add((qid) => essay(qid, "Overall", commentPrompts.overall)),
     add((qid) => essay(qid, "Closing", wording.question)),
     add((qid) => metaQuestion(qid)),
   ];
-  const closingBlock = block(
-    catme ? "Comments" : "Split and comments",
-    closing
-  );
+  const closingBlock = block(instrument.closingBlock, closing);
 
   // Flow IDs are numbered in flow order, so the elements are built in order.
   const embedded = {
@@ -388,7 +401,7 @@ export function buildPeerSurvey({
   const { title } = wording;
   return finish({
     flow: [embedded, guardFlow, introFlow, ...ratings, closingFlow],
-    metaDescription: surveyText.summary[wording.instrument],
+    metaDescription: instrument.summary,
     name: surveyName(label, title),
     now,
     title,

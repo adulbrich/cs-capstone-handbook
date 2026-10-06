@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
   catmeTags,
   criterionPrompts,
+  variantOrder,
   variants,
 } from "../../data/peer-evaluation.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
@@ -22,8 +24,8 @@ const readRubric = (file) =>
   parseRubricCsv(readFileSync(rubricPath(file), "utf8"), file);
 
 const RUBRICS = {
-  catme: readRubric(variants.catme.rubric),
-  regular: readRubric(variants.midterm.rubric),
+  catme: readRubric("catme-rubric.csv"),
+  regular: readRubric("peer-evaluation-rubric.csv"),
 };
 const rubricFor = (variant = "midterm") =>
   RUBRICS[variants[variant]?.instrument] ?? RUBRICS.regular;
@@ -410,7 +412,7 @@ test("unknown variant or mode throws", () => {
     /variant/
   );
   assert.throws(() => buildPeerSurvey({ mode: "per-page", rubric }), /mode/);
-  assert.throws(() => buildPeerSurvey({}), /peer-evaluation-rubric\.csv/);
+  assert.throws(() => buildPeerSurvey({}), /No rubric for the midterm survey/);
 });
 
 // The rubric CSVs feed the survey.
@@ -418,7 +420,7 @@ test("unknown variant or mode throws", () => {
 test("the regular survey rates the rubric's four criteria, not the point distribution", () => {
   const rated = ratedCriteria(RUBRICS.regular);
   assert.deepEqual(
-    rated.map((c) => c.name),
+    rated.map((c) => c.title),
     ["Quantity", "Quality", "Attitude as a team player", "Technical value"]
   );
   for (const criterion of rated) {
@@ -427,14 +429,14 @@ test("the regular survey rates the rubric's four criteria, not the point distrib
   const rating = questionByTag(make(), "Rating");
   assert.deepEqual(
     rating.ChoiceOrder.map((id) => rating.Choices[id].Display),
-    rated.map((c) => criterionPrompts[c.name])
+    rated.map((c) => criterionPrompts[c.title])
   );
 });
 
 test("every rated criterion of the regular rubric has a prompt, and no prompt is spare", () => {
   assert.deepEqual(
     ratedCriteria(RUBRICS.regular)
-      .map((c) => c.name)
+      .map((c) => c.title)
       .sort(),
     Object.keys(criterionPrompts).sort()
   );
@@ -454,6 +456,9 @@ test("a criterion with some but not all of the five bands stops the build", () =
     name: "Broken",
   };
   assert.throws(() => ratedCriteria(broken), /Average of 1" to "Average of 5/);
+  const rescaled = structuredClone(RUBRICS.regular);
+  rescaled.criteria[1].ratings[0].description = "Something else.";
+  assert.throws(() => make({ rubric: rescaled }), /share one scale.*Quality/);
   const renamed = structuredClone(RUBRICS.regular);
   renamed.criteria[0].title = "Effort";
   assert.throws(() => make({ rubric: renamed }), /prompt.*"Effort"/);
@@ -463,7 +468,7 @@ test("a criterion with some but not all of the five bands stops the build", () =
 
 const DIMENSIONS = ratedCriteria(RUBRICS.catme).map((dimension) => ({
   ...dimension,
-  tag: catmeTags[dimension.name],
+  tag: catmeTags[dimension.title],
 }));
 const TAGS = DIMENSIONS.map((dimension) => dimension.tag);
 const tagsOf = (survey) =>
@@ -471,7 +476,7 @@ const tagsOf = (survey) =>
 
 test("catme: the rubric's five dimensions, tags stripped, each with its export tag", () => {
   assert.deepEqual(
-    DIMENSIONS.map((dimension) => dimension.name),
+    DIMENSIONS.map((dimension) => dimension.title),
     [
       "Contributing to the team's work",
       "Interacting with teammates",
@@ -489,7 +494,7 @@ test("catme: the rubric's five dimensions, tags stripped, each with its export t
   ]);
   assert.deepEqual(
     Object.keys(catmeTags).sort(),
-    DIMENSIONS.map((d) => d.name).sort()
+    DIMENSIONS.map((d) => d.title).sort()
   );
   const missing = structuredClone(RUBRICS.catme);
   missing.criteria[0].title = "Showing up";
@@ -555,7 +560,7 @@ test("catme: each page rates five dimensions, forced, recodes 1 to 5", () => {
           `${value}: ${dimension.anchors[value - 1]}`
         );
       }
-      assert.ok(q.QuestionText.includes(dimension.name));
+      assert.ok(q.QuestionText.includes(dimension.title));
     }
     const comment = questionByTag(survey, `${prefix}Comment`);
     assert.equal(comment.Validation.Settings.ForceResponse, "OFF");
@@ -667,5 +672,38 @@ test("catme: head, display logic, and loop shapes match the regular survey", () 
         .DefaultChoices,
       questionByTag(make({ mode: "slots" }), `S${slot}_Ratee`).DefaultChoices
     );
+  }
+});
+
+test("the picker lists every variant once, midterm first", () => {
+  assert.deepEqual([...variantOrder].sort(), Object.keys(variants).sort());
+  assert.equal(variantOrder[0], "midterm");
+});
+
+test("midterm and final output is byte-identical to the reviewed build", () => {
+  // SHA-256 of the file at a fixed seed and time, recorded before the
+  // instruments moved into INSTRUMENTS (#448). A wording or rubric change
+  // changes them on purpose: regenerate and update the hashes then.
+  const expected = {
+    "final loop":
+      "20033dafef02273fdd54b2c3c859e205bd8a74ff1aac52ec14e15b0397b4af66",
+    "final slots":
+      "d5b2ad3acb4bb2295e2d536504c181f79b4ee379ce599850b02728d902f2eff3",
+    "midterm loop":
+      "e8eee039cd609106054b5633bebd7e78adb08ab30a66c76fe544e02762b7a676",
+    "midterm slots":
+      "882b554023bf0fd653592fd81e015be3bfacf589a0ff8ab10657ac55a5b1c1ca",
+  };
+  for (const [key, hash] of Object.entries(expected)) {
+    const [variant, mode] = key.split(" ");
+    const text = peerSurveyQsf({
+      label: "CS 461",
+      mode,
+      now: NOW,
+      rubric: RUBRICS.regular,
+      seed: 7,
+      variant,
+    });
+    assert.equal(createHash("sha256").update(text).digest("hex"), hash, key);
   }
 });
