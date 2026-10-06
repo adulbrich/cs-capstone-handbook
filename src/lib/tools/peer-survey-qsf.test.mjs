@@ -683,27 +683,34 @@ test("the picker lists every variant once, midterm first", () => {
 test("midterm and final output is byte-identical to the reviewed build", () => {
   // SHA-256 of the file at a fixed seed and time, recorded before the
   // instruments moved into INSTRUMENTS (#448). A wording or rubric change
-  // changes them on purpose: regenerate and update the hashes then.
+  // changes them on purpose: regenerate and update the hashes then. The two
+  // SurveyEntry timestamps are written in local time, so they are blanked
+  // before hashing; the hash then holds in every time zone.
   const expected = {
     "final loop":
-      "20033dafef02273fdd54b2c3c859e205bd8a74ff1aac52ec14e15b0397b4af66",
+      "5318744f3eb0879bccb2e202f3ecb129ef52544e57e9b6637f4f467806972ac1",
     "final slots":
-      "d5b2ad3acb4bb2295e2d536504c181f79b4ee379ce599850b02728d902f2eff3",
+      "1bd580db17aedec0bf19f9eca1fd457b2fd7bd2866a220cd42e50fcea7475c89",
     "midterm loop":
-      "e8eee039cd609106054b5633bebd7e78adb08ab30a66c76fe544e02762b7a676",
+      "00a127ba7ddd7d35a8dfeac8de50359410e5b64e19224de035244db26588bfe2",
     "midterm slots":
-      "882b554023bf0fd653592fd81e015be3bfacf589a0ff8ab10657ac55a5b1c1ca",
+      "84e15d5ee9c6914ac923826efa775e44382d597b436f08519947c44212eb24d6",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");
-    const text = peerSurveyQsf({
-      label: "CS 461",
-      mode,
-      now: NOW,
-      rubric: RUBRICS.regular,
-      seed: 7,
-      variant,
-    });
+    const survey = JSON.parse(
+      peerSurveyQsf({
+        label: "CS 461",
+        mode,
+        now: NOW,
+        rubric: RUBRICS.regular,
+        seed: 7,
+        variant,
+      })
+    );
+    survey.SurveyEntry.LastModified = "";
+    survey.SurveyEntry.SurveyCreationDate = "";
+    const text = JSON.stringify(survey);
     assert.equal(createHash("sha256").update(text).digest("hex"), hash, key);
   }
 });
