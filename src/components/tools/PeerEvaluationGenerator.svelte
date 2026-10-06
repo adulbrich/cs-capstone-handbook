@@ -1,7 +1,10 @@
 <script>
 // Reads the roster in the browser and writes the survey and the contact
 // list as downloads. Nothing is uploaded: the file never leaves the page.
+import catmeCsv from "/canvas/assignments/peer-evaluation/catme-rubric.csv?raw";
+import peerCsv from "/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw";
 import { variants } from "../../data/peer-evaluation.mjs";
+import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
 import { download } from "../../lib/tools/download.mjs";
 import { readPicked, slug } from "../../lib/tools/files.mjs";
 import { buildContacts, contactsCsv } from "../../lib/tools/peer-contacts.mjs";
@@ -9,11 +12,19 @@ import { peerSurveyQsf } from "../../lib/tools/peer-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
 import { defaultLabel } from "../../lib/tools/term-label.mjs";
 
+// Each variant reads its rubric CSV, the one Canvas imports (#437).
+const RUBRIC_CSVS = {
+  "catme-rubric.csv": catmeCsv,
+  "peer-evaluation-rubric.csv": peerCsv,
+};
+const VARIANTS = ["midterm", "final", "catme"];
+
 let rosterText = $state.raw("");
 let fileName = $state("");
 let variant = $state("midterm");
 let label = $state(defaultLabel());
 let mode = $state("loop");
+let surveyError = $state("");
 
 const result = $derived.by(() => {
   if (rosterText === "") {
@@ -43,15 +54,21 @@ const baseName = $derived(
 );
 
 function downloadSurvey() {
-  download(
-    `${baseName}.qsf`,
-    peerSurveyQsf({ label, mode, variant }),
-    "application/json"
-  );
+  const file = variants[variant].rubric;
+  let text;
+  try {
+    const rubric = parseRubricCsv(RUBRIC_CSVS[file], file);
+    text = peerSurveyQsf({ label, mode, rubric, variant });
+  } catch (error) {
+    surveyError = error.message;
+    return;
+  }
+  surveyError = "";
+  download(`${baseName}-qualtrics-survey.qsf`, text, "application/json");
 }
 
 function downloadContacts() {
-  download(`${baseName}-contacts.csv`, contactsCsv(result.rows));
+  download(`${baseName}-contact-list.csv`, contactsCsv(result.rows));
 }
 </script>
 
@@ -63,10 +80,10 @@ function downloadContacts() {
 
   <fieldset>
     <legend>Survey</legend>
-    {#each ["midterm", "final"] as key (key)}
+    {#each VARIANTS as key (key)}
       <label class="inline">
         <input type="radio" name="variant" value={key} bind:group={variant} />
-        {variants[key].title}
+        {variants[key].label}
       </label>
     {/each}
   </fieldset>
@@ -108,15 +125,23 @@ function downloadContacts() {
     </ul>
   {/if}
   <div class="actions">
-    <button type="button" onclick={downloadSurvey}>Download the survey (.qsf)</button>
+    <button type="button" onclick={downloadSurvey}>
+      Download the Qualtrics survey (.qsf): Create project, From a file
+    </button>
     <button
       type="button"
       onclick={downloadContacts}
       disabled={result.rows.length === 0}
     >
-      Download the contact list (.csv)
+      Download the contact list (.csv): Directory, mailing list
     </button>
   </div>
+  {#if surveyError}
+    <div class="problem" role="alert">
+      <strong>No survey generated.</strong>
+      <pre>{surveyError}</pre>
+    </div>
+  {/if}
 {/if}
 
 <style>

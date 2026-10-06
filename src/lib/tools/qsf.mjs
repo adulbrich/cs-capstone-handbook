@@ -172,17 +172,27 @@ export const singleLine = (qid, tag, text) =>
     SearchSource: { AllowFreeResponse: "false" },
   });
 
-/** One answer from a vertical list; choice i + 1 is `options[i]`. */
-export function singleChoice(qid, tag, text, options) {
+/**
+ * One answer from a vertical list; choice i + 1 is `options[i]`, recoded
+ * i + 1. `bestFirst` lists the last option first; `forced` requires an answer.
+ */
+export function singleChoice(
+  qid,
+  tag,
+  text,
+  options,
+  { bestFirst = false, forced = false } = {}
+) {
   const ids = options.map((_, i) => i + 1);
   return question(qid, tag, "MC", "SAVR", text, {
-    ChoiceOrder: ids,
+    ChoiceOrder: bestFirst ? ids.toReversed() : ids,
     Choices: Object.fromEntries(
       options.map((option, i) => [i + 1, { Display: option }])
     ),
     NextChoiceId: ids.length + 1,
     RecodeValues: recodes(ids),
     SubSelector: "TX",
+    ...(forced ? { Validation: FORCED } : {}),
   });
 }
 

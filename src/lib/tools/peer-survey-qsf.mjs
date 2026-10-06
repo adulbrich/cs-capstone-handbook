@@ -1,5 +1,8 @@
 // The peer evaluation survey as a Qualtrics .qsf, the JSON file Qualtrics
-// imports as a new survey. Pure: no DOM, no I/O.
+// imports as a new survey. Pure: no DOM, no I/O. The rated criteria and their
+// anchors come from the variant's rubric CSV, parsed by the caller with
+// parseRubricCsv (src/lib/rubric-csv.mjs); the rest of the wording comes from
+// src/data/peer-evaluation.mjs.
 //
 // Survey Flow, in order:
 //   1. Embedded data: Team, TeamSize, SelfFloor, Team Member 1 to 9, declared
@@ -8,15 +11,18 @@
 //      respondent to use the personal link, then the end of the survey.
 //   3. Intro and the roster question: choice 1 is "Yourself", choices 2 to 10
 //      pipe Team Member 1 to 9, each shown only when its field is not empty.
-//   4. Ratings, one page per displayed roster choice: the four criteria as a
-//      forced radio matrix, an optional comment, and a hidden text entry whose
+//   4. Ratings, one page per displayed roster choice: the rated criteria as a
+//      forced radio matrix (CATME: one forced single-choice question per
+//      dimension), an optional comment, and a hidden text entry whose
 //      default value names the ratee, so the export says whom each page rated.
 //      Two modes: "loop" loops one block over the roster's displayed choices
 //      (Loop & Merge); "slots" writes one block per slot, each behind a branch
 //      on its Team Member field, for when the loop fails the staff test.
 //   5. The 100-point split, carried forward from the roster's displayed
 //      choices, forced and totalling 100; then the optional comments, the
-//      variant question, and the Meta Info question on the same page.
+//      variant question, and the Meta Info question on the same page. CATME
+//      has no split: its last page is the overall comment, the variant
+//      question, and Meta Info.
 //
 // The floor on the self share (SelfFloor) is stated directly above the split,
 // on teams of three or more; teams of two see the review range instead. It is
@@ -24,9 +30,9 @@
 // total. The scorer raises a self share below the floor (#6).
 
 import {
-  anchors,
+  catmeTags,
   commentPrompts,
-  criteria,
+  criterionPrompts,
   surveyText,
   variants,
 } from "../../data/peer-evaluation.mjs";
@@ -45,6 +51,7 @@ import {
   metaQuestion,
   question,
   recodes,
+  singleChoice,
   surveyName,
 } from "./qsf.mjs";
 
@@ -111,13 +118,93 @@ function rateeQuestion(qid, tag, pipe) {
   });
 }
 
-function ratingQuestion(qid, tag, ratee) {
+/** The rating band a survey answer maps to: "Average of 1" to "Average of 5". */
+const BAND_RE = /^Average of ([1-5])$/;
+const LEVELS = [1, 2, 3, 4, 5];
+
+/**
+ * The criteria a respondent rates, from a parsed rubric: those whose bands
+ * are "Average of 1" to "Average of 5". Each comes with its five rating
+ * descriptions, lowest first, as the anchors. A criterion with no such band
+ * (the point distribution) is not rated; one with some but not all is an
+ * error.
+ */
+export function ratedCriteria(rubric) {
+  const rated = rubric.criteria.flatMap((criterion) => {
+    const levels = criterion.ratings.map((r) => BAND_RE.exec(r.name)?.[1]);
+    if (levels.every((level) => level === undefined)) {
+      return [];
+    }
+    if (
+      levels.length !== LEVELS.length ||
+      LEVELS.some((n) => !levels.includes(String(n)))
+    ) {
+      throw new Error(
+        `Rubric "${rubric.name}", criterion "${criterion.title}": a rated criterion needs exactly the bands "Average of 1" to "Average of 5".`
+      );
+    }
+    return [
+      {
+        anchors: LEVELS.map(
+          (n) =>
+            criterion.ratings.find((r) => r.name === `Average of ${n}`)
+              .description
+        ),
+        name: criterion.title,
+      },
+    ];
+  });
+  if (rated.length === 0) {
+    throw new Error(`Rubric "${rubric.name}" has no rated criteria.`);
+  }
+  return rated;
+}
+
+/** `table[name]`, or an error naming the criterion that has no entry. */
+function lookup(table, name, what) {
+  if (!Object.hasOwn(table, name)) {
+    throw new Error(
+      `No ${what} for the rubric criterion "${name}" in src/data/peer-evaluation.mjs.`
+    );
+  }
+  return table[name];
+}
+
+/** Anchors as answer text: "1: ..." to "5: ...". */
+const numbered = (anchors) => anchors.map((text, i) => `${i + 1}: ${text}`);
+
+/** The rated criteria as one forced radio matrix on their shared scale. */
+function ratingQuestion(qid, tag, ratee, rated) {
+  const [{ anchors }] = rated;
+  const shared = JSON.stringify(anchors);
+  const odd = rated.find((c) => JSON.stringify(c.anchors) !== shared);
+  if (odd) {
+    throw new Error(
+      `The matrix needs one scale, but "${odd.name}" has different rating descriptions from "${rated[0].name}".`
+    );
+  }
   return likertMatrix(
     qid,
     tag,
     surveyText.rating.replace("{ratee}", ratee),
-    criteria,
-    anchors.map((text, i) => `${i + 1}: ${text}`)
+    rated.map((c) => lookup(criterionPrompts, c.name, "prompt")),
+    numbered(anchors)
+  );
+}
+
+/**
+ * One CATME dimension, a rated criterion of the CATME rubric: its five
+ * anchors as forced single choices, best first.
+ */
+function dimensionQuestion(qid, tag, dimension, ratee) {
+  return singleChoice(
+    qid,
+    tag,
+    surveyText.catmeRating
+      .replace("{dimension}", dimension.name)
+      .replace("{ratee}", ratee),
+    numbered(dimension.anchors),
+    { bestFirst: true, forced: true }
   );
 }
 
@@ -148,24 +235,33 @@ function splitQuestion(qid, rosterQid) {
 /**
  * Builds the survey as a .qsf object.
  *
- * Options: `variant` ("midterm" or "final"), `label` (course and term, put in
- * front of the survey name), `mode` ("loop" or "slots"), `now` (a Date, for
- * the file's timestamps), `seed` (a number, for the generated IDs).
+ * Options: `rubric` (the variant's rubric CSV, `variants[variant].rubric`,
+ * parsed with parseRubricCsv; required), `variant` ("midterm", "final", or
+ * "catme"), `label` (course and term, put in front of the survey name),
+ * `mode` ("loop" or "slots"), `now` (a Date, for the file's timestamps),
+ * `seed` (a number, for the generated IDs).
  */
 export function buildPeerSurvey({
   label = "",
   mode = "loop",
   now = new Date(),
+  rubric,
   seed = now.getTime(),
   variant = "midterm",
 } = {}) {
-  const wording = variants[variant];
+  const wording = Object.hasOwn(variants, variant) ? variants[variant] : null;
   if (!wording) {
     throw new Error(`Unknown variant "${variant}".`);
   }
   if (!MODES.includes(mode)) {
     throw new Error(`Unknown mode "${mode}".`);
   }
+  if (!rubric) {
+    throw new Error(
+      `No rubric: the ${variant} survey reads ${wording.rubric}.`
+    );
+  }
+  const rated = ratedCriteria(rubric);
   const { add, block, defaultBlock, finish, flowId, standard, trash } =
     createSurvey(seed);
 
@@ -177,11 +273,21 @@ export function buildPeerSurvey({
   trash();
   const guardBlock = block("Guard", [guard]);
 
+  const catme = wording.instrument === "catme";
+  // The rating questions of one page, their tags behind `prefix`.
+  const ratingQids = (prefix, ratee) =>
+    catme
+      ? rated.map((dimension) => {
+          const tag = prefix + lookup(catmeTags, dimension.name, "export tag");
+          return add((qid) => dimensionQuestion(qid, tag, dimension, ratee));
+        })
+      : [add((qid) => ratingQuestion(qid, `${prefix}Rating`, ratee, rated))];
+
   const ratingFlow = [];
   if (mode === "loop") {
     const qids = [
       add((qid) => rateeQuestion(qid, "Ratee", loopField(2))),
-      add((qid) => ratingQuestion(qid, "Rating", loopField(1))),
+      ...ratingQids("", loopField(1)),
       add((qid) => essay(qid, "Comment", commentPrompts.perMember)),
     ];
     const locator = `q://${roster}/ChoiceGroup/DisplayedChoices`;
@@ -206,7 +312,7 @@ export function buildPeerSurvey({
       const ratee = id === 1 ? surveyText.self : field(memberField(id - 1));
       const qids = [
         add((qid) => rateeQuestion(qid, `S${id}_Ratee`, identityPipe(id))),
-        add((qid) => ratingQuestion(qid, `S${id}_Rating`, ratee)),
+        ...ratingQids(`S${id}_`, ratee),
         add((qid) => essay(qid, `S${id}_Comment`, commentPrompts.perMember)),
       ];
       const slotBlock = block(
@@ -231,22 +337,30 @@ export function buildPeerSurvey({
     }
   }
 
+  const split = catme
+    ? []
+    : [
+        add((qid) => ({
+          ...descriptive(qid, "SplitFloor", surveyText.splitFloor),
+          DisplayLogic: shownForLargerTeams(),
+        })),
+        add((qid) => ({
+          ...descriptive(qid, "SplitPair", surveyText.splitPair),
+          DisplayLogic: shownForPairs(),
+        })),
+        add((qid) => splitQuestion(qid, roster)),
+        add((qid) => essay(qid, "Allocations", commentPrompts.allocations)),
+      ];
   const closing = [
-    add((qid) => ({
-      ...descriptive(qid, "SplitFloor", surveyText.splitFloor),
-      DisplayLogic: shownForLargerTeams(),
-    })),
-    add((qid) => ({
-      ...descriptive(qid, "SplitPair", surveyText.splitPair),
-      DisplayLogic: shownForPairs(),
-    })),
-    add((qid) => splitQuestion(qid, roster)),
-    add((qid) => essay(qid, "Allocations", commentPrompts.allocations)),
+    ...split,
     add((qid) => essay(qid, "Overall", commentPrompts.overall)),
     add((qid) => essay(qid, "Closing", wording.question)),
     add((qid) => metaQuestion(qid)),
   ];
-  const closingBlock = block("Split and comments", closing);
+  const closingBlock = block(
+    catme ? "Comments" : "Split and comments",
+    closing
+  );
 
   // Flow IDs are numbered in flow order, so the elements are built in order.
   const embedded = {
@@ -274,8 +388,7 @@ export function buildPeerSurvey({
   const { title } = wording;
   return finish({
     flow: [embedded, guardFlow, introFlow, ...ratings, closingFlow],
-    metaDescription:
-      "Rate yourself and each teammate, then divide 100 points among the team.",
+    metaDescription: surveyText.summary[wording.instrument],
     name: surveyName(label, title),
     now,
     title,

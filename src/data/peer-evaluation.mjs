@@ -1,24 +1,36 @@
-// The peer evaluation's wording, in one place. The survey generator
-// (src/lib/tools/peer-survey-qsf.mjs) reads it, and the Peer Evaluations page
-// renders its criteria table from it (#439), so the survey and the page say
-// the same thing. Edit the wording here, never in a generated .qsf.
+// The peer evaluation's survey wording that no rubric holds. The rated
+// criteria and their anchors come from the rubric CSVs under
+// canvas/assignments/peer-evaluation/ (read through src/lib/rubric-csv.mjs),
+// so a survey's choices and the scorer's labels come from one file. This
+// module holds the rest: each criterion's prompt, the comment and closing
+// questions, and the text around them. Edit the wording here or in the CSV,
+// never in a generated .qsf.
 
-/** The four criteria, rated for every member of the team, self included. */
-export const criteria = [
-  "Did the member do an appropriate quantity of work?",
-  "How about the quality of the member's work?",
-  "Rate the member's attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.).",
-  "Rate the overall value of the member's technical contribution.",
-];
+/**
+ * The question asked for each rated criterion of the regular rubric, keyed by
+ * its Criteria Name with the outcome tag stripped. A test checks every rated
+ * criterion in the CSV has one.
+ */
+export const criterionPrompts = {
+  "Attitude as a team player":
+    "Rate the member's attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.).",
+  Quality: "How about the quality of the member's work?",
+  Quantity: "Did the member do an appropriate quantity of work?",
+  "Technical value":
+    "Rate the overall value of the member's technical contribution.",
+};
 
-/** The 1 to 5 scale, lowest first. The value of anchor i is i + 1. */
-export const anchors = [
-  "Better off without member, in this regard",
-  "Some obvious shortcomings",
-  "OK, but nothing special",
-  "Good solid effort; took initiative",
-  "Outstanding! Super asset to team",
-];
+/**
+ * Each CATME dimension's export tag, keyed by its Criteria Name in the CATME
+ * rubric. The scorer (#6) tells a CATME export from a regular one by these.
+ */
+export const catmeTags = {
+  "Contributing to the team's work": "Contributing",
+  "Expecting quality": "Quality",
+  "Having relevant knowledge, skills, and abilities": "Skills",
+  "Interacting with teammates": "Interacting",
+  "Keeping the team on track": "OnTrack",
+};
 
 /** The optional comment prompts, in survey order. */
 export const commentPrompts = {
@@ -30,42 +42,49 @@ export const commentPrompts = {
 };
 
 /**
- * The two variants of the regular survey. They differ only in the title and
- * the closing question.
+ * The survey variants. Midterm and end-of-term are the regular survey and
+ * differ only in the title and the closing question; CATME rates the five
+ * dimensions of its own rubric and has no 100-point split. `rubric` is the
+ * CSV under canvas/assignments/peer-evaluation/ the variant reads, `label`
+ * its line in the generator's picker.
  */
 export const variants = {
-  final: {
+  catme: {
+    instrument: "catme",
+    label: "CATME (spring end-of-term)",
     question:
-      "What did you learn about working in a team that you will carry into the future?",
+      "What did you learn about working in a team that you will carry into your next team?",
+    rubric: "catme-rubric.csv",
+    title: "End-of-Term Peer Evaluation (CATME)",
+  },
+  final: {
+    instrument: "regular",
+    label:
+      "End-of-term (fall, winter): closes with what you will carry into the next term",
+    question:
+      "What did you learn about working in a team that you will carry into the next term?",
+    rubric: "peer-evaluation-rubric.csv",
     title: "End-of-Term Peer Evaluation",
   },
   midterm: {
+    instrument: "regular",
+    label: "Midterm (every term): closes with a team experiment to try",
     question:
       "Propose one concrete team experiment or activity to try in the next sprint.",
+    rubric: "peer-evaluation-rubric.csv",
     title: "Midterm Peer Evaluation",
   },
 };
 
 /**
- * CATME: the five teamwork dimensions, for the spring end-of-term variant.
- *
- * TO FILL (#438 follow-up): each dimension's behavioral anchors, in the
- * instruction team's own words, keeping the published dimension names. Until
- * the anchors are filled the generator offers no CATME variant.
- */
-export const catmeDimensions = [
-  { anchors: [], name: "Contributing to the team's work" },
-  { anchors: [], name: "Interacting with teammates" },
-  { anchors: [], name: "Keeping the team on track" },
-  { anchors: [], name: "Expecting quality" },
-  { anchors: [], name: "Having relevant knowledge, skills, and abilities" },
-];
-
-/**
  * Text that appears only in the generated survey. `${e://...}` is Qualtrics
- * piped text; `{ratee}` is replaced with the person being rated.
+ * piped text; `{ratee}` is replaced with the person being rated, and
+ * `{dimension}` with a CATME dimension's name.
  */
 export const surveyText = {
+  // One CATME dimension, one question each, five to a page.
+  catmeRating:
+    "<b>{dimension}</b><br><br>Which description best fits <b>{ratee}</b>, for the whole term, not the last week?",
   guard:
     "This survey opens only from your personal link. Use the personal link from your email.",
   intro:
@@ -84,4 +103,10 @@ export const surveyText = {
   // Shown above the split on teams of two instead.
   splitPair:
     "An even split is 50 points each. The instruction team reviews any split outside 45 to 55.",
+  // Survey Options' meta description, per instrument.
+  summary: {
+    catme: "Rate yourself and each teammate on the five teamwork dimensions.",
+    regular:
+      "Rate yourself and each teammate, then divide 100 points among the team.",
+  },
 };
