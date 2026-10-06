@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
+import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import mermaid from "astro-mermaid";
@@ -14,7 +15,9 @@ import { activitiesSidebar } from "./src/lib/activities-sidebar.mjs";
 export default defineConfig({
   integrations: [
     mermaid(),
-    sitemap(),
+    // The instructor tools under /tools/ are noindex and stay out of the map.
+    sitemap({ filter: (page) => !page.includes("/tools/") }),
+    svelte(),
     starlight({
       components: {},
       customCss: [

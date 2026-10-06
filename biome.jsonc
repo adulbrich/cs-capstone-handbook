@@ -43,10 +43,22 @@
       }
     },
     {
-      // The validators are one-shot CLI scripts over a few dozen files.
-      // Hoisting every regex out of its loop buys nothing and moves the
-      // pattern away from the line that explains it.
-      "includes": ["scripts/**"],
+      // Qualtrics pipes text as ${e://Field/Name}: in the survey wording and
+      // the generator it is data, never a template literal gone wrong.
+      "includes": ["src/lib/tools/**", "src/data/peer-evaluation.mjs"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTemplateCurlyInString": "off"
+          }
+        }
+      }
+    },
+    {
+      // The validators are one-shot CLI scripts over a few dozen files, and
+      // the tests run once per run. Hoisting every regex out of its loop buys
+      // nothing and moves the pattern away from the line that explains it.
+      "includes": ["scripts/**", "**/*.test.mjs"],
       "linter": {
         "rules": {
           "performance": {

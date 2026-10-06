@@ -1,0 +1,25 @@
+---
+// The instructor tools. Outside the docs collection on purpose: not in the
+// sidebar, the sitemap, or search, and free to name Canvas (AGENTS.md).
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+---
+
+<StarlightPage
+  frontmatter={{
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    title: "Instructor Tools",
+  }}
+>
+  <p>
+    These tools read Canvas and Qualtrics files in your browser. Nothing is
+    uploaded: the files never leave this page.
+  </p>
+  <ul>
+    <li>
+      <a href="/tools/peer-evaluation/">Peer evaluation</a>: the Qualtrics
+      survey and its contact list, from the Canvas roster with groups.
+    </li>
+  </ul>
+</StarlightPage>
