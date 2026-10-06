@@ -10,7 +10,7 @@ pre-commit:
       fail_text: "never commit on main; branch first (AGENTS.md)"
     prose:
       # No em dash (literal or entity), no emoji, in the staged text files.
-      glob: "*.{md,mdx,astro,ts,tsx,js,mjs,cjs,json,jsonc,yml,yaml,css,csv,html,txt,sh}"
+      glob: "*.{md,mdx,astro,svelte,ts,tsx,js,mjs,cjs,json,jsonc,yml,yaml,css,csv,html,txt,sh}"
       run: node scripts/check-prose.mjs {staged_files}
     block-student-data:
       # data/ holds rosters, grades, and survey exports with student PII.
@@ -54,7 +54,7 @@ pre-commit:
     biome:
       # biome.json ignores some files this glob matches (package-lock.json),
       # and a commit staging only those would otherwise fail on "no files".
-      glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
+      glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,svelte,ts,mjs,css},astro.config.mjs,*.json,*.jsonc}"
       run: npx biome check --no-errors-on-unmatched {staged_files}
 
 commit-msg:
@@ -92,6 +92,8 @@ pre-push:
       run: node scripts/validate-sources.mjs
     test-hooks:
       run: node scripts/test-guard-git.mjs
+    test:
+      run: npm test
     build:
       # astro check + astro build; fails on a broken internal link or anchor.
       # The paste kit reads the built pages, so it runs in the same command.

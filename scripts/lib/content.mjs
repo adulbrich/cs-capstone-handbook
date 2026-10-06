@@ -15,6 +15,7 @@ export const TEXT_EXTENSIONS = new Set([
   ".md",
   ".mdx",
   ".mjs",
+  ".svelte",
   ".ts",
   ".txt",
   ".yml",

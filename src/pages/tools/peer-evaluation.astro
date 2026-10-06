@@ -1,0 +1,61 @@
+---
+// The peer evaluation generator (#438). The component reads the roster in
+// the browser only, so it mounts client-side and nothing reads files at
+// build time.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import PeerEvaluationGenerator from "../../components/tools/PeerEvaluationGenerator.svelte";
+---
+
+<StarlightPage
+  frontmatter={{
+    description:
+      "Generate the peer evaluation survey and its contact list from the Canvas roster.",
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    title: "Peer Evaluation Survey",
+  }}
+>
+  <p>
+    Drop the Canvas roster with groups to get the Qualtrics survey and the
+    contact list. The file is read in your browser and never uploaded.
+  </p>
+
+  <PeerEvaluationGenerator client:only="svelte" />
+
+  <h2>Where the inputs come from and what to do next</h2>
+  <ol>
+    <li>
+      In Canvas, People, Groups: export the group set's roster with groups as
+      CSV (<code>name, canvas_user_id, user_id, login_id, sections,
+      group_name, canvas_group_id, group_id</code>).
+    </li>
+    <li>
+      Drop it above, pick the survey and the course and term, and download
+      both files. Students alone on a team or in no team are listed above and
+      left out; a team over 10 stops the run.
+    </li>
+    <li>
+      In Qualtrics, Create a new project, Survey, From a file: import the
+      <code>.qsf</code>.
+    </li>
+    <li>
+      In the directory, create a mailing list from the contact-list CSV. Every
+      column maps by its header: <code>Email</code>, <code>Team</code>,
+      <code>TeamSize</code>, <code>SelfFloor</code>, and
+      <code>Team Member 1</code> to <code>9</code>.
+    </li>
+    <li>
+      Set the availability dates on the distribution, not in the survey.
+    </li>
+    <li>
+      Distribute by email with personal links only. The survey is by invitation,
+      so the anonymous link does not open it.
+    </li>
+  </ol>
+  <p>
+    If the Loop &amp; Merge version fails to import or the staff test shows a
+    wrong page, regenerate with "One block per teammate slot": same
+    questions, one block per slot behind a branch.
+  </p>
+</StarlightPage>

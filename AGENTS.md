@@ -21,11 +21,13 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
 | `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies come from the built pages through the paste kit (`npm run canvas:export`) and are not stored here. |
 | `public/` | Templates and scoresheets students download. |
+| `src/pages/tools/` | The instructor tools at `/tools/`: Svelte pages that read Canvas and Qualtrics files in the browser and never upload them. Outside the docs collection, so not in the sidebar, the sitemap, or search (`noindex`), and free to name Canvas; no handbook page links them. Their logic lives in pure modules under `src/lib/tools/`, their wording in `src/data/`. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
 | `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. Runs in CI and pre-commit. |
 | `scripts/lib/` | Shared by the scripts: the content-tree walker and its text extensions, and the frontmatter reader, which returns the body as well as the block. The outcome-tag pattern is `OUTCOME_TAG` in `src/lib/rubric-csv.mjs`, since the site's rubric parser reads it too. |
+| `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the instructor tools' pure modules (roster parsing, contact lists, `.qsf` generation) on invented fixtures, never `data/`. Runs in CI and pre-push. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
 | `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. The Activities group is listed page by page in `src/lib/activities-sidebar.mjs`, so it also checks that every page under `activities/` appears there exactly once and declares no `sidebar.order`. Runs in CI and pre-commit. |
 | `scripts/validate-sources.mjs` | Every `<Cite id>` names a file in `src/data/sources/`, every registry entry has its claims with locators and a `verified` value and is cited by some page, no two entries cite the same, and a citing page has `## References` then `<References />` directly above Additional Readings. Runs in CI and pre-commit. |
@@ -112,6 +114,7 @@ npm run check:prose      # no em dash, emoji, glossary-rejected synonym, or voic
 npm run check:commits    # Conventional Commits over origin/main..HEAD
 npm run check:branch     # the current branch is <type>/<slug>
 npm run test:hooks       # cases for the git guard hook
+npm test                 # the instructor tools' pure modules
 ```
 
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build

@@ -60,6 +60,8 @@ jobs:
         run: node scripts/validate-sources.mjs
       - name: Test the git guard hook
         run: node scripts/test-guard-git.mjs
+      - name: Test the instructor tools' pure modules
+        run: npm test
       - name: Build (includes astro check)
         run: npm run build
       # The paste kit reads the built pages, so it runs after the build.
