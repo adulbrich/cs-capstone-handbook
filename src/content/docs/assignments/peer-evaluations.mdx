@@ -1,6 +1,6 @@
 ---
 title: Peer Evaluations
-description: How you rate your teammates each term, what each rating looks like in practice, how the score is computed, and how CATME is added in spring.
+description: How you rate your teammates each term, what each rating looks like in practice, how the score is computed, and the CATME survey that closes spring.
 sidebar:
   order: 3
 assignment:
@@ -8,7 +8,7 @@ assignment:
   terms: [fall, winter, spring]
   weight: 25
   outcomes:
-    SO5: 2
+    SO5: 4
   canvas:
     - name: "Midterm Survey"
       due_label: Sent week 5, closes end of week 6
@@ -21,17 +21,26 @@ assignment:
     - name: "End-of-Term Survey"
       due_label: Sent week 9, closes end of week 10
       group: Peer Review Final
-      weeks: { fall: [10], winter: [10], spring: [10] }
+      weeks: { fall: [10], winter: [10] }
       weight: 20
       points: 100
       submission: survey
       rubric: peer-evaluation/peer-evaluation-rubric.csv
+    - name: "End-of-Term Survey (CATME)"
+      due_label: Sent week 9, closes end of week 10
+      group: Peer Review Final
+      weeks: { spring: [10] }
+      weight: 20
+      points: 100
+      submission: survey
+      rubric: peer-evaluation/catme-rubric.csv
 ---
 
 import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import Latex from '../../../components/Latex.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw';
+import catmeCsv from '/canvas/assignments/peer-evaluation/catme-rubric.csv?raw';
 
 <AssignmentSummary who="Individual, one survey per teammate">
   Anonymous. Results go to instructors only.
@@ -39,7 +48,7 @@ import rubricCsv from '/canvas/assignments/peer-evaluation/peer-evaluation-rubri
 
 Peer evaluations are how you evaluate the contributions of your teammates, and they evaluate yours. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
 
-Both surveys use the same instrument and the same rubric every term, scored per student from what your teammates answer.
+Both surveys are scored per student from what your teammates answer. The midterm survey every term and the end-of-term survey in fall and winter use [four criteria and a 100-point distribution](#the-per-term-instrument); the end-of-term survey in spring is the [CATME survey](#the-catme-survey), with a rubric of its own.
 
 :::caution
 Not completing a peer evaluation scores 50% on that survey's share of the grade for the student who did not complete it.
@@ -49,7 +58,7 @@ All answers are anonymous; results are shared with instructors only. Questions a
 
 ## The Per-Term Instrument
 
-Each term (midterm and final), you assess yourself and your teammates on four criteria, then allocate 100 points across all team members including yourself, and finally give qualitative feedback. The instrument, its scale, and the scoring below follow Gardner et al. [2].
+In every midterm survey, and in the end-of-term survey in fall and winter, you assess yourself and your teammates on four criteria, then allocate 100 points across all team members including yourself, and finally give qualitative feedback. The instrument, its scale, and the scoring below follow Gardner et al. [2].
 
 ### Quantitative Questions
 
@@ -120,11 +129,21 @@ Survey validation issues (self-rating below the floor, totals that do not sum to
 
 ## Teams of Two
 
-On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. Two protections apply: the self-allocation floor is relaxed, and any two-person team where the received ratings average below 3 (or the two teammates' ratings of each other diverge sharply) is reviewed by an instructor against the repo record and partner feedback before the score stands. A single teammate's ratings never finalize a low score on a team of two without corroboration.
+On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. Two protections apply: on the four-criteria survey, the self-allocation floor is relaxed, and any two-person team where the received ratings average below 3 (or the two teammates' ratings of each other diverge sharply) is reviewed by an instructor against the repo record and partner feedback before the score stands. A single teammate's ratings never finalize a low score on a team of two without corroboration.
 
-## CATME in Spring
+## The CATME Survey
 
-At the end of spring, the final peer evaluation additionally uses the [CATME Five Teamwork Dimensions](https://info.catme.org/features/catme-five-dimensions/) (contributing to the team's work, interacting with teammates, keeping the team on track, expecting quality, and having relevant knowledge, skills, and abilities), a behaviorally anchored instrument with a strong validity literature [1]. It is not scored: the instructors read it beside the four criteria and the point distribution, as the year's closing teamwork evidence, to corroborate them.
+The end-of-term survey in spring asks about the [CATME Five Teamwork Dimensions](https://info.catme.org/features/catme-five-dimensions/) [1] instead of the four criteria, and has no 100-point distribution. You rate yourself and each teammate on five dimensions: contributing to the team's work, interacting with teammates, keeping the team on track, expecting quality, and having relevant knowledge, skills, and abilities.
+
+Each dimension uses a 1 to 5 scale with a description of the behavior at 5, 3, and 1, and 4 and 2 sit between them. The descriptions are in the [rubric](#end-of-term-survey-catme); read them before you rate, and connect each rating to something in the record: the sprint notes, the repository, the tracker, and the meetings. The survey also asks for a comment on each teammate and on how the team is working.
+
+The score comes from the ratings alone:
+
+1. For each dimension, average the ratings you received, excluding your self-rating.
+2. Convert each average to the 50-100 scale: 1 = 50, 2 = 62.5, 3 = 75, 4 = 87.5, 5 = 100.
+3. Your score is the mean of the five converted averages. With no distribution, the maximum is 100.
+
+The completion penalty and the review on a team of two apply as they do to every other survey.
 
 ## What You Submit
 
@@ -132,15 +151,21 @@ Nothing to upload: you answer each [Qualtrics](https://www.qualtrics.com/) surve
 
 ## Rubric
 
-The rubric is the calculation above in points: each of the five numbers is worth 20 points, a fifth of its value.
+The rubric is the calculation above in points for the midterm survey every term and the end-of-term survey in fall and winter: each of the five numbers is worth 20 points, a fifth of its value.
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" />
 
+### End-of-Term Survey (CATME)
+
+Each of the five dimension scores is worth 20 points, a fifth of its value, and a rating's description is what that dimension looks like at that number.
+
+<RubricTable csv={catmeCsv} sourceLabel="canvas/assignments/peer-evaluation/catme-rubric.csv" />
+
 ## Activities That Prepare This
 
-- [Regular Stand-Up Meetings](/activities/team-and-workflow/#regular-stand-up-meetings): criteria 1 and 3; the habit that makes contribution visible every week.
-- [Team Dysfunctions Assessment](/activities/team-and-workflow/#team-dysfunctions-assessment): criterion 3 and the midterm comments; naming a problem before the survey does.
-- [Team Health Assessment](/activities/team-and-workflow/#team-health-assessment): the four criteria in spring, and the CATME dimensions.
+- [Regular Stand-Up Meetings](/activities/team-and-workflow/#regular-stand-up-meetings): criteria 1 and 3, or contributing to the team's work and interacting with teammates in CATME; the habit that makes contribution visible every week.
+- [Team Dysfunctions Assessment](/activities/team-and-workflow/#team-dysfunctions-assessment): criterion 3, or interacting with teammates in CATME, and the midterm comments; naming a problem before the survey does.
+- [Team Health Assessment](/activities/team-and-workflow/#team-health-assessment): the four criteria in the spring midterm survey, and the CATME dimensions at the end of spring.
 
 Browse [Team and Workflow](/activities/team-and-workflow/) when these run out.
 
