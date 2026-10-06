@@ -18,6 +18,14 @@ export const CONTACT_COLUMNS = [
   ...Array.from({ length: SLOTS }, (_, i) => `Team Member ${i + 1}`),
 ];
 
+/**
+ * The least a respondent may give themselves in the split: floor(100 / N),
+ * except 0 on a team of two, where the split is reviewed instead.
+ */
+export function selfFloor(teamSize) {
+  return teamSize === 2 ? 0 : Math.floor(100 / teamSize);
+}
+
 /** How a teammate appears in the survey: "First Last (email)". */
 export function memberLabel(student) {
   const name = [student.first, student.last].filter(Boolean).join(" ");
@@ -70,7 +78,7 @@ export function buildContacts(students) {
       .map(memberLabel);
     const row = {
       Email: student.email,
-      SelfFloor: String(Math.floor(100 / members.length)),
+      SelfFloor: String(selfFloor(members.length)),
       Team: student.team,
       TeamSize: String(members.length),
     };

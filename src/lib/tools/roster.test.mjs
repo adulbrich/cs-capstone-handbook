@@ -111,7 +111,7 @@ test("buildContacts: teams of 1, 2, and 10, and a student in no team", () => {
 
   const pair = rows.find((row) => row.Email === "pair1@example.edu");
   assert.equal(pair.TeamSize, "2");
-  assert.equal(pair.SelfFloor, "50");
+  assert.equal(pair.SelfFloor, "0");
   assert.equal(pair["Team Member 1"], "Pair Tester2 (pair2@example.edu)");
   for (let slot = 2; slot <= 9; slot += 1) {
     assert.equal(pair[`Team Member ${slot}`], "", `slot ${slot} is padded`);
@@ -128,9 +128,9 @@ test("buildContacts: teams of 1, 2, and 10, and a student in no team", () => {
   assert.ok(!slots.some((slot) => slot.includes("ten5@")), "self is excluded");
 });
 
-test("buildContacts: SelfFloor is floor(100 / TeamSize)", () => {
+test("buildContacts: SelfFloor is floor(100 / TeamSize), 0 on a team of two", () => {
   for (const [size, floor] of [
-    [2, "50"],
+    [2, "0"],
     [3, "33"],
     [4, "25"],
     [6, "16"],

@@ -77,5 +77,11 @@ export const surveyText = {
     "These are the members of your team. You will rate each of them, yourself first, on the pages that follow.<br><br>If this is not your team, stop here and email the instruction team. You do not need to select anything.",
   self: "Yourself",
   split:
-    "Take 100 points and divide them among your team, yourself included, by the share of the credit you think each member deserves. You may consider the quality and quantity of contributions, attitude as a team player, and anything else you find relevant. The total must be 100.<br><br>Give yourself at least <b>${e://Field/SelfFloor}</b> points, whether or not you feel you deserve them.",
+    "Take 100 points and divide them among your team, yourself included, by the share of the credit you think each member deserves. You may consider the quality and quantity of contributions, attitude as a team player, and anything else you find relevant. The total must be 100.",
+  // Shown above the split on teams of three or more.
+  splitFloor:
+    "Give yourself at least <b>${e://Field/SelfFloor}</b> points, whether or not you feel you deserve them.",
+  // Shown above the split on teams of two instead.
+  splitPair:
+    "An even split is 50 points each. The instruction team reviews any split outside 45 to 55.",
 };

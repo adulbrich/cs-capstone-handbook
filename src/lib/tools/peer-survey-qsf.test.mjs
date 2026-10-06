@@ -221,7 +221,44 @@ test("the split carries the roster forward, totals 100, and is forced", () => {
   assert.equal(split.Validation.Settings.Type, "ChoicesTotal");
   assert.equal(split.Validation.Settings.ChoiceTotal, "100");
   assert.equal(split.Validation.Settings.ForceResponse, "ON");
-  assert.match(split.QuestionText, /\$\{e:\/\/Field\/SelfFloor\}/);
+  assert.doesNotMatch(split.QuestionText, /SelfFloor/);
+});
+
+test("the floor shows on teams of three or more, the review range on teams of two", () => {
+  for (const mode of ["loop", "slots"]) {
+    const survey = make({ mode });
+    const floor = questionByTag(survey, "SplitFloor");
+    const pair = questionByTag(survey, "SplitPair");
+    assert.equal(floor.QuestionType, "DB");
+    assert.match(floor.QuestionText, /\$\{e:\/\/Field\/SelfFloor\}/);
+    assert.match(pair.QuestionText, /45 to 55/);
+    for (const [question, operator] of [
+      [floor, "GreaterThan"],
+      [pair, "EqualTo"],
+    ]) {
+      const logic = question.DisplayLogic;
+      assert.equal(logic.Type, "BooleanExpression");
+      assert.equal(logic.inPage, false);
+      assert.equal(logic[0].Type, "If");
+      assert.deepEqual(
+        {
+          LeftOperand: logic[0][0].LeftOperand,
+          LogicType: logic[0][0].LogicType,
+          Operator: logic[0][0].Operator,
+          RightOperand: logic[0][0].RightOperand,
+          Type: logic[0][0].Type,
+        },
+        {
+          LeftOperand: "TeamSize",
+          LogicType: "EmbeddedField",
+          Operator: operator,
+          RightOperand: "2",
+          Type: "Expression",
+        },
+        mode
+      );
+    }
+  }
 });
 
 test("Meta Info sits on the last page, with the last visible question", () => {
@@ -237,7 +274,15 @@ test("Meta Info sits on the last page, with the last visible question", () => {
         elements(survey, "SQ").find((q) => q.PrimaryAttribute === QuestionID)
           .Payload.DataExportTag
     ),
-    ["Split", "Allocations", "Overall", "Closing", "Meta"]
+    [
+      "SplitFloor",
+      "SplitPair",
+      "Split",
+      "Allocations",
+      "Overall",
+      "Closing",
+      "Meta",
+    ]
   );
 });
 

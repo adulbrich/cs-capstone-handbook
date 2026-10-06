@@ -18,7 +18,8 @@
 //      choices, forced and totalling 100; then the optional comments, the
 //      variant question, and the Meta Info question on the same page.
 //
-// The floor on the self share (SelfFloor) is stated in the split's text but
+// The floor on the self share (SelfFloor) is stated directly above the split,
+// on teams of three or more; teams of two see the review range instead. It is
 // not validated: a question takes one validation type, and the split's is the
 // total. The scorer raises a self share below the floor (#6).
 
@@ -121,11 +122,28 @@ function onField(name, operator, words) {
   };
 }
 
+/** A comparison of an embedded field with a value. */
+function fieldCompared(name, operator, words, value) {
+  const logic = onField(name, operator, `${words} ${value}`);
+  logic[0][0].RightOperand = String(value);
+  return logic;
+}
+
 const isEmpty = (name) => onField(name, "Empty", "Is Empty");
 const isNotEmpty = (name) => onField(name, "NotEmpty", "Is Not Empty");
 
 /** Display logic: shown only when the embedded field is not empty. */
 const shownWhenSet = (name) => ({ ...isNotEmpty(name), inPage: false });
+
+/** Display logic on team size: teams of two, or teams of three or more. */
+const shownForPairs = () => ({
+  ...fieldCompared("TeamSize", "EqualTo", "Is Equal to", 2),
+  inPage: false,
+});
+const shownForLargerTeams = () => ({
+  ...fieldCompared("TeamSize", "GreaterThan", "Is Greater Than", 2),
+  inPage: false,
+});
 
 const NO_VALIDATION = { Settings: { ForceResponse: "OFF", Type: "None" } };
 const FORCED = {
@@ -498,6 +516,14 @@ export function buildPeerSurvey({
   }
 
   const closing = [
+    add((qid) => ({
+      ...descriptive(qid, "SplitFloor", surveyText.splitFloor),
+      DisplayLogic: shownForLargerTeams(),
+    })),
+    add((qid) => ({
+      ...descriptive(qid, "SplitPair", surveyText.splitPair),
+      DisplayLogic: shownForPairs(),
+    })),
     add((qid) => splitQuestion(qid, roster)),
     add((qid) => essay(qid, "Allocations", commentPrompts.allocations)),
     add((qid) => essay(qid, "Overall", commentPrompts.overall)),
