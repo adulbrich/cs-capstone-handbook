@@ -21,6 +21,8 @@ export default defineConfig({
         // Path to your Tailwind base styles:
         "./src/styles/global.css",
       ],
+      // The 404 page is src/pages/404.astro; see it for why.
+      disable404Route: true,
       head: [
         {
           attrs: {
@@ -173,6 +175,10 @@ export default defineConfig({
   site: "https://capstone.alexulbrich.com",
 
   vite: {
+    // Mermaid's shared parser chunk is about 660 kB. It is the library's own
+    // code and loads only on a page with a diagram, so splitting it buys
+    // nothing. The limit sits just above it so a new oversized chunk warns.
+    build: { chunkSizeWarningLimit: 700 },
     plugins: [tailwindcss()],
     ssr: {
       noExternal: ["zod"],

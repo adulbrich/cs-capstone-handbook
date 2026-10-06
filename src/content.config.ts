@@ -1,7 +1,8 @@
-import { defineCollection, z } from "astro:content";
-import { docsLoader } from "@astrojs/starlight/loaders";
-import { docsSchema } from "@astrojs/starlight/schema";
+import { defineCollection } from "astro:content";
+import { docsLoader, i18nLoader } from "@astrojs/starlight/loaders";
+import { docsSchema, i18nSchema } from "@astrojs/starlight/schema";
 import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 // The sources registry: one YAML file per cited source, named by its id
 // (`src/data/sources/edmondson-1999.yaml` is `<Cite id="edmondson-1999" />`).
@@ -169,5 +170,9 @@ export const collections = {
       }),
     }),
   }),
+  // Starlight reads UI-string overrides from src/content/i18n/. The handbook
+  // overrides none, so en.json is {}; without a defined collection holding at
+  // least one entry, Astro 7 warns on every build that i18n is missing.
+  i18n: defineCollection({ loader: i18nLoader(), schema: i18nSchema() }),
   sources,
 };
