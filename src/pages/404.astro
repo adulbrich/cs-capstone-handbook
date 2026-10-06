@@ -1,0 +1,25 @@
+---
+// The 404 page. astro.config.mjs turns Starlight's injected /404 route off,
+// because a docs-collection 404 page collides with it on every build. A page
+// here at /404 is what both the build and the dev server serve for a missing
+// URL.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+---
+
+<StarlightPage
+  frontmatter={{
+    editUrl: false,
+    hero: { tagline: "Page Not Found", title: "404" },
+    template: "splash",
+    title: "404 Page Not Found",
+  }}
+>
+  <p>
+    Oops! It looks like this page is down for maintenance or lost in the{" "}
+    <code>/dev/null</code> void.
+  </p>
+  <p>
+    Try checking your URL or return to the <a href="/">index page</a> to
+    continue your Capstone journey.
+  </p>
+</StarlightPage>
