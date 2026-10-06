@@ -2,6 +2,7 @@
 // Reads the roster in the browser and writes the survey and the contact
 // list as downloads. Nothing is uploaded: the file never leaves the page.
 import { variants } from "../../data/peer-evaluation.mjs";
+import { download } from "../../lib/tools/download.mjs";
 import { buildContacts, contactsCsv } from "../../lib/tools/peer-contacts.mjs";
 import { peerSurveyQsf } from "../../lib/tools/peer-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
@@ -51,18 +52,6 @@ const baseName = $derived(
   [slug(label), "peer-evaluation", variant].filter(Boolean).join("-")
 );
 
-function download(name, text, type) {
-  const url = URL.createObjectURL(new Blob([text], { type }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = name;
-  document.body.append(link);
-  link.click();
-  link.remove();
-  // Revoked later: some browsers start the download asynchronously.
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
 function downloadSurvey() {
   download(
     `${baseName}.qsf`,
@@ -72,11 +61,7 @@ function downloadSurvey() {
 }
 
 function downloadContacts() {
-  download(
-    `${baseName}-contacts.csv`,
-    contactsCsv(result.rows),
-    "text/csv;charset=utf-8"
-  );
+  download(`${baseName}-contacts.csv`, contactsCsv(result.rows));
 }
 </script>
 
