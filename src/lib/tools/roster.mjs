@@ -45,22 +45,24 @@ export function parseRoster(text) {
   const seen = new Map();
   const students = [];
   for (const [index, cells] of rows.entries()) {
-    const line = index + 2;
+    const row = index + 1;
     const cell = (name) => (cells[at[name]] ?? "").trim();
     const fullName = cell("name");
     const email = cell("login_id");
     if (email === "") {
-      problems.push(`Line ${line} (${fullName || "no name"}) has no login_id.`);
+      problems.push(
+        `Data row ${row} (${fullName || "no name"}) has no login_id.`
+      );
       continue;
     }
     const key = email.toLowerCase();
     if (seen.has(key)) {
       problems.push(
-        `${email} appears on lines ${seen.get(key)} and ${line}; a student belongs to one team.`
+        `${email} appears on data rows ${seen.get(key)} and ${row}; a student belongs to one team.`
       );
       continue;
     }
-    seen.set(key, line);
+    seen.set(key, row);
     students.push({
       canvasUserId: cell("canvas_user_id"),
       email,

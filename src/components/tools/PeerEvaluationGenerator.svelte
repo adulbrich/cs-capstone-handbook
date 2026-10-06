@@ -28,12 +28,15 @@ const teamCount = $derived(
 );
 
 async function readRoster(event) {
-  const [file] = event.currentTarget.files;
+  const input = event.currentTarget;
+  const [file] = input.files;
   if (!file) {
     return;
   }
   fileName = file.name;
   rosterText = await file.text();
+  // Cleared so picking the same file again, after an edit, reads it again.
+  input.value = "";
 }
 
 const slug = (text) =>
@@ -52,9 +55,11 @@ function download(name, text, type) {
   const link = document.createElement("a");
   link.href = url;
   link.download = name;
+  document.body.append(link);
   link.click();
-  // Revoked a tick later: some browsers start the download asynchronously.
-  setTimeout(() => URL.revokeObjectURL(url), 0);
+  link.remove();
+  // Revoked later: some browsers start the download asynchronously.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function downloadSurvey() {
@@ -116,7 +121,7 @@ function downloadContacts() {
 {:else if result}
   <p>
     {fileName}: {result.rows.length} students on {teamCount}
-    {teamCount === 1 ? "team" : "teams"}.
+    {teamCount === 1 ? "team" : "teams"} get the survey.
   </p>
   {#if result.excluded.length > 0}
     <p>Left out of the contact list, so they get no survey:</p>

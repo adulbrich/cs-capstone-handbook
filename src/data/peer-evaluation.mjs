@@ -26,7 +26,7 @@ export const commentPrompts = {
     "For particularly high or low allocations, provide concrete examples. Which behaviors were particularly valuable or detrimental?",
   overall: "Overall, how effectively is your team working? Explain.",
   perMember:
-    "Optional: anything about this member's contribution the instructors should know.",
+    "Optional: anything about this member's contribution the instruction team should know.",
 };
 
 /**

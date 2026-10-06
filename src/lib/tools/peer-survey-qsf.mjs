@@ -336,7 +336,8 @@ function surveyOptions(title) {
     SurveyLinkExpirationMessageType: "DefaultMessage",
     SurveyMetaDescription:
       "Rate yourself and each teammate, then divide 100 points among the team.",
-    SurveyProtection: "ByInvitation",
+    // Public, so a response opened without a personal link reaches the guard.
+    SurveyProtection: "PublicSurvey",
     SurveyTermination: "DefaultMessage",
     SurveyTitle: title,
     ThankYouEmailMessage: null,

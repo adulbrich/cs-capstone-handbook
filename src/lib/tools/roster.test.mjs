@@ -76,8 +76,14 @@ test("parseRoster rejects a duplicate email and a missing one", () => {
   assert.throws(
     () => parseRoster(text),
     (error) => {
-      assert.match(error.message, /ADA@example\.edu appears on lines 2 and 3/);
-      assert.match(error.message, /Line 4 \(Hopper, Grace\) has no login_id/);
+      assert.match(
+        error.message,
+        /ADA@example\.edu appears on data rows 1 and 2/
+      );
+      assert.match(
+        error.message,
+        /Data row 3 \(Hopper, Grace\) has no login_id/
+      );
       return true;
     }
   );
