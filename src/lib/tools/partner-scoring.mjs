@@ -74,19 +74,20 @@ export function percentOf(points, percent) {
 }
 
 /**
- * The rating whose range contains `points`. With Criteria Enable Range on,
- * Canvas reads each rating as running from its own points down to, but not
- * including, the next lower rating's points ("25 to >22.5 pts"), and the
- * lowest rating down to 0.
+ * The rating a score between two ratings is named after: the highest rating
+ * whose points are at or below `points` (the instructor's rule for every
+ * scorer, #437, not Canvas's range reading). The points themselves stay
+ * exact. Throws on a score below the lowest rating or above the highest.
  */
 export function bandFor(criterion, points) {
-  if (points < 0 || points > criterion.maxPoints) {
+  const descending = [...criterion.ratings].sort((a, b) => b.points - a.points);
+  const rating = descending.find((r) => r.points <= points);
+  if (!rating || points > criterion.maxPoints) {
     throw new Error(
-      `${points} is outside ${criterion.title}'s 0 to ${criterion.maxPoints} points.`
+      `${points} is outside ${criterion.title}'s ${descending.at(-1).points} to ${criterion.maxPoints} points.`
     );
   }
-  const ascending = [...criterion.ratings].sort((a, b) => a.points - b.points);
-  return ascending.find((rating) => rating.points >= points);
+  return rating;
 }
 
 /** A criterion with three ratings is an end-of-term anchor facet. */
@@ -95,7 +96,8 @@ const isAnchorFacet = (criterion) => criterion.ratings.length === 3;
 /**
  * Every level a partner can score on one criterion: `{ points, rating }`,
  * plus `percent` for an end-of-term anchor facet. An anchor facet scores at
- * each of ANCHOR_PERCENTS, rated at the anchor whose range holds it; any
+ * each of ANCHOR_PERCENTS, named after the highest anchor at or below it
+ * (bandFor); any
  * other criterion (the pulse's five answers, the spring ladder's six rungs)
  * scores at its own ratings, by name.
  */
@@ -114,8 +116,8 @@ export function levelsFor(criterion) {
 
 /**
  * The no-response score for one criterion: the lower bound of an A, as a
- * share of the rubric's 100 points, times the criterion's maximum, rated at
- * the band that contains it.
+ * share of the rubric's 100 points, times the criterion's maximum, named
+ * after the highest rating at or below it (bandFor).
  */
 export function noResponseScore(criterion, aBound) {
   const points = percentOf(criterion.maxPoints, aBound);
@@ -206,6 +208,8 @@ function questionColumns(columns, rubric) {
   return map;
 }
 
+const NUMERIC = /^\d+(?:\.\d+)?$/;
+
 /** One response's answer to one criterion, scored, or an Error. */
 function scoreAnswer(response, { column, criterion }) {
   const answer = response[column.tag];
@@ -214,8 +218,11 @@ function scoreAnswer(response, { column, criterion }) {
   );
   if (!rating) {
     const said = answer === "" ? "No answer" : `The answer "${answer}"`;
+    const values = NUMERIC.test(answer)
+      ? " A number where a label belongs: this looks like a values export; export with choice labels (labels export only)."
+      : "";
     throw new Error(
-      `${said} to ${column.tag} ("${column.text}") from team ${response.Team || "(no team)"}, response ${response.ResponseId}, is not a rating of ${criterion.title}. The rubric names: ${criterion.ratings.map((r) => r.name).join(", ")}. Nothing was scored.`
+      `${said} to ${column.tag} ("${column.text}") from team ${response.Team || "(no team)"}, response ${response.ResponseId}, is not a rating of ${criterion.title}. The rubric names: ${criterion.ratings.map((r) => r.name).join(", ")}.${values} Nothing was scored.`
     );
   }
   return { comment: null, points: rating.points, rating: rating.name };

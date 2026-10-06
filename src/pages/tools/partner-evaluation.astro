@@ -54,8 +54,9 @@ const aBound = aLowerBound(gradingMdx);
     </li>
     <li>
       <strong>Qualtrics responses</strong>: in Data &amp; Analysis, Export
-      &amp; Import, Export Data, CSV, with "Use choice text" on. The file keeps
-      its three header rows.
+      &amp; Import, Export Data, CSV, with "Use choice text" on. The page reads
+      the labels export only and stops on a values export. The file keeps its
+      three header rows.
     </li>
   </ol>
 
@@ -90,7 +91,8 @@ const aBound = aLowerBound(gradingMdx);
     <li>
       Scores a roster team with no finished response at the lower bound of an <code>A</code>
       ({aBound} of 100): each criterion gets {aBound}% of its
-      points, rated at the band that contains that value.
+      points, named after the highest rating at or below that value. Points
+      between two ratings stay exact.
     </li>
     <li>
       Reports teams with no response, responses whose team matches no roster

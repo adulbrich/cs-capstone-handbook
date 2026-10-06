@@ -208,6 +208,33 @@ test("the metadata rows are skipped; previews and unfinished responses dropped",
   assert.match(parsed.columns[6].text, / - Responsiveness: /);
 });
 
+test("a values export is refused, by Finished or by a numeric answer", () => {
+  assert.throws(
+    () =>
+      parseQualtricsExport(
+        pulseExport([response("Engines", STRONG, { Finished: "1" })])
+      ),
+    /values export.*labels export only/
+  );
+  assert.throws(
+    () => run(pulseExport([response("Engines", ["5", "5", "4", "5"])])),
+    /"5" to Q1_1.*values export/
+  );
+});
+
+test("an export with no finished response is refused", () => {
+  assert.throws(
+    () =>
+      parseQualtricsExport(
+        pulseExport([
+          response("Engines", STRONG, { Status: "Survey Preview" }),
+          response("Compilers", STRONG, { Finished: "False" }),
+        ])
+      ),
+    /no finished response \(1 previews, 1 unfinished/
+  );
+});
+
 test("a file without the ImportId row is refused", () => {
   const text = toCsv([
     PULSE_COLUMNS.map(([tag]) => tag),
@@ -271,7 +298,7 @@ test("a team with no finished response scores the A lower bound", () => {
   const row = rowFor(result, "201");
   let total = 0;
   for (const name of EXPORT_CRITERIA) {
-    assert.equal(row[`${name} - Rating`], "Strongly agree");
+    assert.equal(row[`${name} - Rating`], "Somewhat agree");
     assert.equal(row[`${name} - Points`], "23.25");
     assert.match(row[`${name} - Comments`], /did not answer/);
     total += Number(row[`${name} - Points`]);
@@ -289,10 +316,15 @@ test("the no-response split totals the A lower bound on every rubric", () => {
       assert.equal(scores[i].rating, bandFor(c, scores[i].points).name);
     }
   }
-  // 93% of a fall facet sits between the top and middle anchors.
+  // 93% of a fall facet sits between the top and middle anchors, so it is
+  // named after the middle one, with its points kept exact.
   assert.deepEqual(noResponseScore(criterion("fall", "Reflection"), A), {
     points: 13.95,
-    rating: "Top anchor (full points)",
+    rating: "Middle anchor (80% of the points)",
+  });
+  assert.deepEqual(noResponseScore(criterion("pulse", "Responsiveness"), A), {
+    points: 23.25,
+    rating: "Somewhat agree",
   });
 });
 
@@ -382,7 +414,9 @@ test("a roster without canvas_user_id stops the run", () => {
     () =>
       scorePartnerSurvey({
         aBound: A,
-        qualtrics: parseQualtricsExport(pulseExport([])),
+        qualtrics: parseQualtricsExport(
+          pulseExport([response("Engines", STRONG)])
+        ),
         roster: [{ canvasUserId: "", team: "Engines" }],
         rubric: rubrics.pulse,
         rubricExport: parseRubricExport(EXPORT),
@@ -434,7 +468,9 @@ test("a rubric export for another rubric stops the run", () => {
 });
 
 test("the pulse is detected from its questions; anything else is not", () => {
-  const { columns } = parseQualtricsExport(pulseExport([]));
+  const { columns } = parseQualtricsExport(
+    pulseExport([response("Engines", STRONG)])
+  );
   assert.deepEqual(detectSurvey(columns, rubrics, "fall"), {
     guessed: false,
     kind: "pulse",
@@ -458,7 +494,9 @@ test("end-of-term scoring is refused until its export is known", () => {
     () =>
       scorePartnerSurvey({
         aBound: A,
-        qualtrics: parseQualtricsExport(pulseExport([])),
+        qualtrics: parseQualtricsExport(
+          pulseExport([response("Engines", STRONG)])
+        ),
         roster: [],
         rubric: rubrics.fall,
         rubricExport: parseRubricExport(EXPORT),
@@ -479,9 +517,9 @@ test("end-of-term anchor facets score at 100, 90, 80, 70, and 50 percent", () =>
         levelsFor(c).map((level) => [level.percent, level.rating]),
         [
           [100, top],
-          [90, top],
+          [90, middle],
           [80, middle],
-          [70, middle],
+          [70, low],
           [50, low],
         ],
         `${term} ${c.title}`
@@ -500,7 +538,7 @@ test("regression: 70% of spring Requirements is 3.5, not 3", () => {
   assert.deepEqual(level, {
     percent: 70,
     points: 3.5,
-    rating: "Middle anchor (80% of the points)",
+    rating: "Low anchor (half the points)",
   });
 });
 
@@ -516,11 +554,13 @@ test("spring Verification and Validation scores the six ladder rungs by name", (
   );
 });
 
-test("a between-anchors score is rated at the anchor whose range holds it", () => {
+test("a score between ratings is named after the highest rating at or below it", () => {
   const c = criterion("winter", "Design, Implementation, and Deployment");
   assert.equal(bandFor(c, 40).name, "Top anchor (full points)");
-  assert.equal(bandFor(c, 32.01).name, "Top anchor (full points)");
+  assert.equal(bandFor(c, 39.99).name, "Middle anchor (80% of the points)");
   assert.equal(bandFor(c, 32).name, "Middle anchor (80% of the points)");
-  assert.equal(bandFor(c, 0).name, "Low anchor (half the points)");
+  assert.equal(bandFor(c, 31.99).name, "Low anchor (half the points)");
+  assert.equal(bandFor(c, 20).name, "Low anchor (half the points)");
+  assert.throws(() => bandFor(c, 19.99), /outside/);
   assert.throws(() => bandFor(c, 41), /outside/);
 });

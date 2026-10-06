@@ -4,6 +4,7 @@
 // uploaded: the files never leave the page. The rubrics and the A lower
 // bound arrive parsed from the handbook's own files at build time.
 import { toCsv } from "../../lib/tools/csv.mjs";
+import { download } from "../../lib/tools/download.mjs";
 import {
   detectSurvey,
   SURVEY_ORDER,
@@ -34,27 +35,34 @@ const INPUTS = [
   },
 ];
 
-let texts = $state.raw({ qualtrics: "", roster: "", rubricExport: "" });
-let names = $state.raw({ qualtrics: "", roster: "", rubricExport: "" });
+// Deep state, so each parse below depends on its own file's text only.
+const texts = $state({ qualtrics: "", roster: "", rubricExport: "" });
+const names = $state({ qualtrics: "", roster: "", rubricExport: "" });
 let surveyOverride = $state(null);
 let ran = $state(false);
 let choices = $state({});
 
-/** Each input parsed, or its error. */
-const parsed = $derived.by(() => {
-  const out = {};
-  for (const { key, parse } of INPUTS) {
-    if (texts[key] === "") {
-      out[key] = null;
-      continue;
-    }
-    try {
-      out[key] = { value: parse(texts[key]) };
-    } catch (error) {
-      out[key] = { error: error.message };
-    }
+/** One input parsed, or its error; null before a file is dropped. */
+function parseInput(key) {
+  const text = texts[key];
+  if (text === "") {
+    return null;
   }
-  return out;
+  try {
+    return { value: INPUTS.find((input) => input.key === key).parse(text) };
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+// Derived one by one, so dropping one file never re-parses the other two.
+const parsedRoster = $derived(parseInput("roster"));
+const parsedRubricExport = $derived(parseInput("rubricExport"));
+const parsedQualtrics = $derived(parseInput("qualtrics"));
+const parsed = $derived({
+  qualtrics: parsedQualtrics,
+  roster: parsedRoster,
+  rubricExport: parsedRubricExport,
 });
 
 const ready = $derived(INPUTS.every(({ key }) => parsed[key]?.value));
@@ -95,8 +103,8 @@ async function readFile(key, event) {
     return;
   }
   const text = await file.text();
-  names = { ...names, [key]: file.name };
-  texts = { ...texts, [key]: text };
+  names[key] = file.name;
+  texts[key] = text;
   if (key === "qualtrics") {
     surveyOverride = null;
     choices = {};
@@ -109,20 +117,6 @@ async function readFile(key, event) {
 function chooseSurvey(event) {
   surveyOverride = event.currentTarget.value;
   ran = false;
-}
-
-function download(name, text) {
-  const url = URL.createObjectURL(
-    new Blob([text], { type: "text/csv;charset=utf-8" })
-  );
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = name;
-  document.body.append(link);
-  link.click();
-  link.remove();
-  // Revoked later: some browsers start the download asynchronously.
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function downloadScores() {
