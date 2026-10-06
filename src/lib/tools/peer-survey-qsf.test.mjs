@@ -1,11 +1,45 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { variants } from "../../data/peer-evaluation.mjs";
-import { buildPeerSurvey, peerSurveyQsf } from "./peer-survey-qsf.mjs";
+import {
+  catmeTags,
+  criterionPrompts,
+  variantOrder,
+  variants,
+} from "../../data/peer-evaluation.mjs";
+import { parseRubricCsv } from "../rubric-csv.mjs";
+import {
+  buildPeerSurvey,
+  peerSurveyQsf,
+  ratedCriteria,
+} from "./peer-survey-qsf.mjs";
+
+const rubricPath = (file) =>
+  new URL(
+    `../../../canvas/assignments/peer-evaluation/${file}`,
+    import.meta.url
+  );
+const readRubric = (file) =>
+  parseRubricCsv(readFileSync(rubricPath(file), "utf8"), file);
+
+const RUBRICS = {
+  catme: readRubric("catme-rubric.csv"),
+  regular: readRubric("peer-evaluation-rubric.csv"),
+};
+const rubricFor = (variant = "midterm") =>
+  RUBRICS[variants[variant]?.instrument] ?? RUBRICS.regular;
 
 const NOW = new Date(0);
-const make = (options) =>
-  JSON.parse(peerSurveyQsf({ now: NOW, seed: 7, ...options }));
+const make = (options = {}) =>
+  JSON.parse(
+    peerSurveyQsf({
+      now: NOW,
+      rubric: rubricFor(options.variant),
+      seed: 7,
+      ...options,
+    })
+  );
 
 const elements = (survey, name) =>
   survey.SurveyElements.filter((element) => element.Element === name);
@@ -66,10 +100,15 @@ test("the .qsf parses and mirrors the element types of a working survey", () => 
   assert.equal(options.SurveyProtection, "ByInvitation");
 });
 
+/** Every mode with every instrument. */
+const BUILDS = ["loop", "slots"].flatMap((mode) =>
+  ["midterm", "catme"].map((variant) => ({ mode, variant }))
+);
+
 test("each question's SecondaryAttribute is its description, at most 100 characters", () => {
   // A real export never writes more than 100 characters there.
-  for (const mode of ["loop", "slots"]) {
-    for (const question of elements(make({ mode }), "SQ")) {
+  for (const build of BUILDS) {
+    for (const question of elements(make(build), "SQ")) {
       assert.equal(
         question.SecondaryAttribute,
         question.Payload.QuestionDescription
@@ -83,11 +122,11 @@ test("each question's SecondaryAttribute is its description, at most 100 charact
 });
 
 test("export tags are unique", () => {
-  for (const mode of ["loop", "slots"]) {
-    const tags = elements(make({ mode }), "SQ").map(
+  for (const build of BUILDS) {
+    const tags = elements(make(build), "SQ").map(
       (q) => q.Payload.DataExportTag
     );
-    assert.equal(new Set(tags).size, tags.length, mode);
+    assert.equal(new Set(tags).size, tags.length, JSON.stringify(build));
   }
 });
 
@@ -104,8 +143,9 @@ test("loop mode: flow order", () => {
 });
 
 test("flow IDs are unique and counted", () => {
-  for (const mode of ["loop", "slots"]) {
-    const flow = payload(make({ mode }), "FL");
+  for (const build of BUILDS) {
+    const { mode } = build;
+    const flow = payload(make(build), "FL");
     const ids = [];
     const walk = (items) => {
       for (const item of items) {
@@ -196,8 +236,10 @@ test("the rating matrix is a forced radio grid with recodes 1 to 5", () => {
       4: "4",
       5: "5",
     });
-    assert.match(rating.Answers[1].Display, /Better off without member/);
-    assert.match(rating.Answers[5].Display, /Outstanding! Super asset to team/);
+    const [{ anchors }] = ratedCriteria(RUBRICS.regular);
+    assert.equal(rating.Answers[1].Display, `1: ${anchors[0]}`);
+    assert.equal(rating.Answers[5].Display, `5: ${anchors[4]}`);
+    assert.match(rating.Answers[1].Display, /Better off without the member/);
   }
 });
 
@@ -340,6 +382,10 @@ test("midterm and final differ only in the name, title, and closing question", (
     questionByTag(final, "Closing").QuestionText,
     variants.final.question
   );
+  assert.equal(
+    variants.final.question,
+    "What did you learn about working in a team that you will carry into the next term?"
+  );
 
   const mask = (survey, variant) =>
     JSON.stringify(survey)
@@ -356,6 +402,315 @@ test("midterm and final differ only in the name, title, and closing question", (
 });
 
 test("unknown variant or mode throws", () => {
-  assert.throws(() => buildPeerSurvey({ variant: "spring" }), /variant/);
-  assert.throws(() => buildPeerSurvey({ mode: "per-page" }), /mode/);
+  const rubric = RUBRICS.regular;
+  assert.throws(
+    () => buildPeerSurvey({ rubric, variant: "spring" }),
+    /variant/
+  );
+  assert.throws(
+    () => buildPeerSurvey({ rubric, variant: "toString" }),
+    /variant/
+  );
+  assert.throws(() => buildPeerSurvey({ mode: "per-page", rubric }), /mode/);
+  assert.throws(() => buildPeerSurvey({}), /No rubric for the midterm survey/);
+});
+
+// The rubric CSVs feed the survey.
+
+test("the regular survey rates the rubric's four criteria, not the point distribution", () => {
+  const rated = ratedCriteria(RUBRICS.regular);
+  assert.deepEqual(
+    rated.map((c) => c.title),
+    ["Quantity", "Quality", "Attitude as a team player", "Technical value"]
+  );
+  for (const criterion of rated) {
+    assert.equal(criterion.anchors.length, 5);
+  }
+  const rating = questionByTag(make(), "Rating");
+  assert.deepEqual(
+    rating.ChoiceOrder.map((id) => rating.Choices[id].Display),
+    rated.map((c) => criterionPrompts[c.title])
+  );
+});
+
+test("every rated criterion of the regular rubric has a prompt, and no prompt is spare", () => {
+  assert.deepEqual(
+    ratedCriteria(RUBRICS.regular)
+      .map((c) => c.title)
+      .sort(),
+    Object.keys(criterionPrompts).sort()
+  );
+});
+
+test("a criterion with some but not all of the five bands stops the build", () => {
+  const broken = {
+    criteria: [
+      {
+        ratings: [
+          { description: "Top", name: "Average of 5", points: 20 },
+          { description: "Bottom", name: "Average of 1", points: 10 },
+        ],
+        title: "Quantity",
+      },
+    ],
+    name: "Broken",
+  };
+  assert.throws(() => ratedCriteria(broken), /Average of 1" to "Average of 5/);
+  const rescaled = structuredClone(RUBRICS.regular);
+  rescaled.criteria[1].ratings[0].description = "Something else.";
+  assert.throws(() => make({ rubric: rescaled }), /share one scale.*Quality/);
+  const renamed = structuredClone(RUBRICS.regular);
+  renamed.criteria[0].title = "Effort";
+  assert.throws(() => make({ rubric: renamed }), /prompt.*"Effort"/);
+});
+
+// The spring end-of-term CATME variant.
+
+const DIMENSIONS = ratedCriteria(RUBRICS.catme).map((dimension) => ({
+  ...dimension,
+  tag: catmeTags[dimension.title],
+}));
+const TAGS = DIMENSIONS.map((dimension) => dimension.tag);
+const tagsOf = (survey) =>
+  elements(survey, "SQ").map((q) => q.Payload.DataExportTag);
+
+test("catme: the rubric's five dimensions, tags stripped, each with its export tag", () => {
+  assert.deepEqual(
+    DIMENSIONS.map((dimension) => dimension.title),
+    [
+      "Contributing to the team's work",
+      "Interacting with teammates",
+      "Keeping the team on track",
+      "Expecting quality",
+      "Having relevant knowledge, skills, and abilities",
+    ]
+  );
+  assert.deepEqual(TAGS, [
+    "Contributing",
+    "Interacting",
+    "OnTrack",
+    "Quality",
+    "Skills",
+  ]);
+  assert.deepEqual(
+    Object.keys(catmeTags).sort(),
+    DIMENSIONS.map((d) => d.title).sort()
+  );
+  const missing = structuredClone(RUBRICS.catme);
+  missing.criteria[0].title = "Showing up";
+  assert.throws(
+    () => make({ rubric: missing, variant: "catme" }),
+    /export tag.*"Showing up"/
+  );
+});
+
+test("catme: flow order, the split page replaced by a comments page", () => {
+  for (const mode of ["loop", "slots"]) {
+    const regular = outline(make({ mode }));
+    const catme = outline(make({ mode, variant: "catme" }));
+    assert.deepEqual(catme.slice(0, -1), regular.slice(0, -1), mode);
+    assert.deepEqual(catme.at(-1), ["Standard", "Comments"], mode);
+  }
+  assert.deepEqual(outline(make({ variant: "catme" })), [
+    ["EmbeddedData"],
+    ["Branch", "Team", "Empty"],
+    ["  ", "Standard", "Guard"],
+    ["  ", "EndSurvey"],
+    ["Block", "Intro"],
+    ["Standard", "Ratings"],
+    ["Standard", "Comments"],
+  ]);
+});
+
+test("catme: each page rates five dimensions, forced, recodes 1 to 5", () => {
+  for (const [mode, prefix] of [
+    ["loop", ""],
+    ["slots", "S1_"],
+    ["slots", "S3_"],
+  ]) {
+    const survey = make({ mode, variant: "catme" });
+    const ratee = questionByTag(survey, `${prefix}Ratee`);
+    const page = blockOf(survey, ratee.QuestionID).BlockElements.map(
+      ({ QuestionID }) =>
+        elements(survey, "SQ").find((q) => q.PrimaryAttribute === QuestionID)
+          .Payload.DataExportTag
+    );
+    assert.deepEqual(
+      page,
+      ["Ratee", ...TAGS, "Comment"].map((tag) => prefix + tag),
+      mode
+    );
+    for (const dimension of DIMENSIONS) {
+      const q = questionByTag(survey, prefix + dimension.tag);
+      assert.equal(q.QuestionType, "MC");
+      assert.equal(q.Selector, "SAVR");
+      assert.equal(q.SubSelector, "TX");
+      assert.equal(q.Validation.Settings.ForceResponse, "ON");
+      assert.deepEqual(q.ChoiceOrder, [5, 4, 3, 2, 1]);
+      assert.deepEqual(q.RecodeValues, {
+        1: "1",
+        2: "2",
+        3: "3",
+        4: "4",
+        5: "5",
+      });
+      for (let value = 1; value <= 5; value += 1) {
+        assert.equal(
+          q.Choices[value].Display,
+          `${value}: ${dimension.anchors[value - 1]}`
+        );
+      }
+      assert.ok(q.QuestionText.includes(dimension.title));
+    }
+    const comment = questionByTag(survey, `${prefix}Comment`);
+    assert.equal(comment.Validation.Settings.ForceResponse, "OFF");
+  }
+  assert.match(
+    questionByTag(make({ variant: "catme" }), "Quality").QuestionText,
+    /\$\{lm:\/\/Field\/1\}/
+  );
+});
+
+test("catme: no rating matrix and no split", () => {
+  for (const mode of ["loop", "slots"]) {
+    const survey = make({ mode, variant: "catme" });
+    const tags = tagsOf(survey);
+    for (const tag of [
+      "Rating",
+      "SplitFloor",
+      "SplitPair",
+      "Split",
+      "Allocations",
+    ]) {
+      assert.ok(
+        !tags.some((t) => t === tag || t.endsWith(`_${tag}`)),
+        `${mode}: ${tag}`
+      );
+    }
+    assert.ok(
+      elements(survey, "SQ").every(
+        (q) => !["Matrix", "CS"].includes(q.Payload.QuestionType)
+      ),
+      mode
+    );
+    assert.doesNotMatch(payload(survey, "SO").SurveyMetaDescription, /100/);
+  }
+});
+
+test("catme: tags tell its export from the regular one", () => {
+  const regular = new Set(tagsOf(make()));
+  const catme = new Set(tagsOf(make({ variant: "catme" })));
+  for (const tag of TAGS) {
+    assert.ok(catme.has(tag), tag);
+    assert.ok(!regular.has(tag), tag);
+  }
+});
+
+test("catme: the last page is the overall comment, the closing question, and Meta Info", () => {
+  const survey = make({ variant: "catme" });
+  const meta = questionByTag(survey, "Meta");
+  assert.deepEqual(
+    blockOf(survey, meta.QuestionID).BlockElements.map(
+      ({ QuestionID }) =>
+        elements(survey, "SQ").find((q) => q.PrimaryAttribute === QuestionID)
+          .Payload.DataExportTag
+    ),
+    ["Overall", "Closing", "Meta"]
+  );
+  assert.equal(
+    questionByTag(survey, "Closing").QuestionText,
+    "What did you learn about working in a team that you will carry into your next team?"
+  );
+  for (const tag of ["Overall", "Closing"]) {
+    assert.equal(
+      questionByTag(survey, tag).Validation.Settings.ForceResponse,
+      "OFF"
+    );
+  }
+  assert.equal(
+    make({ label: "CS 463", variant: "catme" }).SurveyEntry.SurveyName,
+    "CS 463 End-of-Term Peer Evaluation (CATME)"
+  );
+});
+
+test("catme: head, display logic, and loop shapes match the regular survey", () => {
+  for (const mode of ["loop", "slots"]) {
+    const regular = make({ mode });
+    const catme = make({ mode, variant: "catme" });
+    assert.deepEqual(
+      payload(catme, "FL").Flow.slice(0, 3),
+      payload(regular, "FL").Flow.slice(0, 3),
+      mode
+    );
+    for (const tag of ["Intro", "Roster", "Guard"]) {
+      assert.deepEqual(
+        questionByTag(catme, tag),
+        questionByTag(regular, tag),
+        `${mode}: ${tag}`
+      );
+    }
+    // The branches around each slot block, block IDs aside.
+    const branches = (survey) =>
+      payload(survey, "FL")
+        .Flow.filter((item) => item.Type === "Branch")
+        .map(({ BranchLogic, FlowID }) => ({ BranchLogic, FlowID }));
+    assert.deepEqual(branches(catme), branches(regular), mode);
+  }
+  const loopOptions = (survey) =>
+    blockOf(survey, questionByTag(survey, "Ratee").QuestionID).Options;
+  assert.deepEqual(
+    loopOptions(make({ variant: "catme" })),
+    loopOptions(make())
+  );
+  assert.equal(
+    questionByTag(make({ variant: "catme" }), "Ratee").DefaultChoices.TEXT.Text,
+    "${lm://Field/2}"
+  );
+  for (const slot of [1, 4, 10]) {
+    assert.deepEqual(
+      questionByTag(make({ mode: "slots", variant: "catme" }), `S${slot}_Ratee`)
+        .DefaultChoices,
+      questionByTag(make({ mode: "slots" }), `S${slot}_Ratee`).DefaultChoices
+    );
+  }
+});
+
+test("the picker lists every variant once, midterm first", () => {
+  assert.deepEqual([...variantOrder].sort(), Object.keys(variants).sort());
+  assert.equal(variantOrder[0], "midterm");
+});
+
+test("midterm and final output is byte-identical to the reviewed build", () => {
+  // SHA-256 of the file at a fixed seed and time, recorded before the
+  // instruments moved into INSTRUMENTS (#448). A wording or rubric change
+  // changes them on purpose: regenerate and update the hashes then. The two
+  // SurveyEntry timestamps are written in local time, so they are blanked
+  // before hashing; the hash then holds in every time zone.
+  const expected = {
+    "final loop":
+      "5318744f3eb0879bccb2e202f3ecb129ef52544e57e9b6637f4f467806972ac1",
+    "final slots":
+      "1bd580db17aedec0bf19f9eca1fd457b2fd7bd2866a220cd42e50fcea7475c89",
+    "midterm loop":
+      "00a127ba7ddd7d35a8dfeac8de50359410e5b64e19224de035244db26588bfe2",
+    "midterm slots":
+      "84e15d5ee9c6914ac923826efa775e44382d597b436f08519947c44212eb24d6",
+  };
+  for (const [key, hash] of Object.entries(expected)) {
+    const [variant, mode] = key.split(" ");
+    const survey = JSON.parse(
+      peerSurveyQsf({
+        label: "CS 461",
+        mode,
+        now: NOW,
+        rubric: RUBRICS.regular,
+        seed: 7,
+        variant,
+      })
+    );
+    survey.SurveyEntry.LastModified = "";
+    survey.SurveyEntry.SurveyCreationDate = "";
+    const text = JSON.stringify(survey);
+    assert.equal(createHash("sha256").update(text).digest("hex"), hash, key);
+  }
 });

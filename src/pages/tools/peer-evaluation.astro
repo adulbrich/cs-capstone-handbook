@@ -1,9 +1,29 @@
 ---
-// The peer evaluation generator (#438). The component reads the roster in
-// the browser only, so it mounts client-side and nothing reads files at
-// build time.
+// The peer evaluation generator (#438). The rubric CSVs are read here, at
+// build time, and every variant's survey is built once, so a CSV the
+// generator cannot use fails the build. The component reads the roster in
+// the browser only.
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import catmeCsv from "/canvas/assignments/peer-evaluation/catme-rubric.csv?raw";
+import peerCsv from "/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw";
 import PeerEvaluationGenerator from "../../components/tools/PeerEvaluationGenerator.svelte";
+import { variants } from "../../data/peer-evaluation.mjs";
+import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
+import { buildPeerSurvey } from "../../lib/tools/peer-survey-qsf.mjs";
+
+const byInstrument = {
+  catme: parseRubricCsv(catmeCsv, "catme-rubric.csv"),
+  regular: parseRubricCsv(peerCsv, "peer-evaluation-rubric.csv"),
+};
+const rubrics = Object.fromEntries(
+  Object.entries(variants).map(([key, { instrument }]) => [
+    key,
+    byInstrument[instrument as keyof typeof byInstrument],
+  ])
+);
+for (const [variant, rubric] of Object.entries(rubrics)) {
+  buildPeerSurvey({ rubric, variant });
+}
 ---
 
 <StarlightPage
@@ -21,7 +41,7 @@ import PeerEvaluationGenerator from "../../components/tools/PeerEvaluationGenera
     contact list. The file is read in your browser and never uploaded.
   </p>
 
-  <PeerEvaluationGenerator client:only="svelte" />
+  <PeerEvaluationGenerator client:only="svelte" {rubrics} />
 
   <h2>Where the inputs come from and what to do next</h2>
   <ol>
