@@ -66,7 +66,7 @@ not a lecture, and not an assignment. Three properties define it:
 ### Standalone
 
 **An activity page never refers to this course.** No link to an assignment
-page, no mention of a workshop, no week number, no term, no half of a class
+page, no assignment name, no mention of a workshop, no week number, no term, no half of a class
 session. A reader who is not enrolled should be able to run any activity here.
 The `guides/` directory has held this line since it was written and has zero
 assignment links across nineteen files; activities had drifted to sixty-one
@@ -85,6 +85,12 @@ activity. Prose on the page still may not.
 
 `validate-activities.mjs` enforces this per line, skipping the badge line,
 with two exemptions listed in the script for events outside the team.
+It also rejects an assignment's name in activity prose ("an RFC", "your
+sprint notes", "the Expo"): describe the practice instead ("a design
+document"). Every assignment title is classified in `ASSIGNMENT_NAMES` in
+the script, as a course name it rejects or as an industry practice's own
+name it allows ("team charter", "incident postmortem"), so a new assignment
+fails the check until someone classifies it.
 `activities/introduction.mdx` is exempt as a whole, because it is the page
 that explains what the badge line means.
 
@@ -370,8 +376,9 @@ and cost. The second names the artifact and the time.
 
 ## What Activities Must Not Contain
 
-- Links to assignment pages, the word "workshop", week numbers, term names, or
-  any other reference to this course's calendar. See **Standalone** above.
+- Links to assignment pages, assignment names, the word "workshop", week
+  numbers, term names, or any other reference to this course's calendar. See
+  **Standalone** above.
 - Point values, rubric bands, or any grading language.
 - Submission mechanics ("upload to Canvas"). The one exception is the Workshop
   tier, and even there the mechanics live on the assignment page, not here.

@@ -24,9 +24,9 @@ Technical design activities settle how the system will work: which technologies,
 Learn how the code you're inheriting or contributing to is actually built, tested, and reviewed before you change any of it: a predecessor team's repository, your partner's codebase, or the upstream FOSS project. Two to three hours, once, in your first weeks on the codebase: alone to learn a project, as a team for a formal audit. If your project starts from scratch, run it on a FOSS project close to yours instead; the practices you find are the ones to adopt.
 
 - **Run it**: fresh clone, follow their README or handoff document to a working build and a passing test run, and write down every step that failed or was undocumented.
-- **Read the process**: CONTRIBUTING file, review rules, CI configuration, branch and release conventions, issue templates; for a predecessor team, their handoff document, project retrospective, and risk register.
+- **Read the process**: CONTRIBUTING file, review rules, CI configuration, branch and release conventions, issue templates; for a predecessor team, their handoff document, retrospectives, and risk register.
 - **Map the state**: which tests exist and pass, how old the dependencies are, what the last ten merged changes touched and who reviewed them, where the known debt sits.
-- **Decide first moves**: what you adopt as is, what you change first and why, and what you won't touch this year.
+- **Decide first moves**: what you adopt as is, what you change first and why, and what you won't touch during the project.
 
 A good output is a one-page audit of the codebase you're inheriting: how it builds, how it's tested, how a change gets reviewed and released, what is undocumented, and what surprised you, ending with the first three changes you intend to make.
 
@@ -42,7 +42,7 @@ Choose a database, storage technology, language, framework, or library by compar
 - **Compare**: score each option in a comparison matrix against the criteria from the first step, plus how well it integrates with your existing project, its security features, and its community support.
 - **Decide**: pick one and justify it against the project's goals.
 
-A good output is a comparison matrix of two or three options scored against your criteria, with what running each quick-start taught you and a justification for the one you chose; it maps directly onto the alternatives section of an RFC.
+A good output is a comparison matrix of two or three options scored against your criteria, with what running each quick-start taught you and a justification for the one you chose; it maps directly onto the alternatives section of a design document.
 
 ## Map Your Hard-to-Reverse Decisions
 
@@ -53,7 +53,7 @@ Sort your team's upcoming decisions into the ones that deserve your attention an
 - **List ten decisions**: the next ten your team expects to make, written down before you classify any of them.
 - **Classify each**: a **hard-to-reverse decision** is expensive or impossible to undo; an **easy-to-reverse decision** is cheap to change once you learn something. Typical hard-to-reverse decisions are database schema, authentication and authorization, deployment topology, data migrations, public API shape, licensing, third-party commitments, and anything touching user data you can't regenerate. Typical easy-to-reverse decisions are most feature code, UI layout, internal module boundaries, and any library you could swap in a week.
 - **Assign a validator**: for each hard-to-reverse decision, name who checks it and what they check before the team commits.
-- **Revisit at the end of the term**: which classifications were wrong? Treating an easy-to-reverse decision as hard to reverse costs you time; the opposite error costs you a week on a migration you can't roll back.
+- **Revisit once the project has moved on**: which classifications were wrong? Treating an easy-to-reverse decision as hard to reverse costs you time; the opposite error costs you a week on a migration you can't roll back.
 
 Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
@@ -73,7 +73,7 @@ Draw the system your team is about to build, at the level of zoom your project p
 
 Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
-Keep the diagram in your repository docs; it anchors the design section of an RFC.
+Keep the diagram in your repository docs; it anchors the architecture section of any design document you write.
 
 A good output is a diagram of the architecture and a brief explanation of each component and its role in the system.
 
@@ -169,7 +169,7 @@ As a reviewer, question the other team's design:
 - What alternatives should the team consider, and would one of them make the least-sure decision easier?
 - What would you change first?
 
-Giving and receiving this kind of review is rehearsal for a formal RFC review round.
+Giving and receiving this kind of review is rehearsal for a formal design review.
 
 Your one-page design covers these three issues:
 
