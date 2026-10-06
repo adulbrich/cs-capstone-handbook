@@ -4,8 +4,6 @@
 // (src/lib/tools/partner-survey-qsf.mjs) reads both. Edit the wording here,
 // never in a generated .qsf. `${e://...}` is Qualtrics piped text.
 
-const NUMBERS = ["no", "one", "two", "three", "four", "five", "six", "seven"];
-
 /** The matrix question's text: each export column reads "<prompt> - <row>". */
 export const pulsePrompt =
   "Please rate your student team on the following dimensions for the current term.";
@@ -38,7 +36,7 @@ export function pulseIntro({
   return [
     "Thank you for partnering with the OSU Computer Science Capstone.",
     "This survey is about one team: <b>${e://Field/Team}</b>",
-    `It has ${NUMBERS[statements] ?? statements} statements about how the team works with you, each rated from ${lowest} to ${highest}. It takes about two minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
+    `It has ${statements} statements about how the team works with you, each rated from ${lowest} to ${highest}. It takes about two minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
     `Your answers set ${pulseWeight}% of each student's grade this term. The end-of-term survey sets ${finalWeight}% and goes into more depth. This midterm check exists so the team hears from you while there is still time to change course.`,
     ...notes,
     "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",

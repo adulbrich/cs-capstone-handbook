@@ -166,7 +166,8 @@ export function buildPeerSurvey({
   if (!MODES.includes(mode)) {
     throw new Error(`Unknown mode "${mode}".`);
   }
-  const { add, block, finish, flowId, standard, trash } = createSurvey(seed);
+  const { add, block, defaultBlock, finish, flowId, standard, trash } =
+    createSurvey(seed);
 
   const intro = add((qid) => descriptive(qid, "Intro", surveyText.intro));
   const roster = add((qid) => rosterQuestion(qid));
@@ -266,12 +267,7 @@ export function buildPeerSurvey({
     FlowID: guardId,
     Type: "Branch",
   };
-  const introFlow = {
-    Autofill: [],
-    FlowID: flowId(),
-    ID: introBlock,
-    Type: "Block",
-  };
+  const introFlow = defaultBlock(introBlock);
   const ratings = ratingFlow.flatMap((make) => make());
   const closingFlow = standard(closingBlock);
 

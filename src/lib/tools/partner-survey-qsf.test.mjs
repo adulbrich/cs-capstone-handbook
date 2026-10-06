@@ -19,7 +19,6 @@ import {
   pulseScale,
   VARIANTS,
 } from "./partner-survey-qsf.mjs";
-import { plain } from "./qsf.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
@@ -228,7 +227,7 @@ function exportColumns(survey) {
       for (const id of q.ChoiceOrder) {
         columns.push([
           `${q.DataExportTag}_${id}`,
-          `${plain(q.QuestionText)} - ${q.Choices[id].Display}`,
+          `${q.QuestionText} - ${q.Choices[id].Display}`,
           `${q.QuestionID}_${id}`,
         ]);
       }
@@ -236,7 +235,7 @@ function exportColumns(survey) {
       const suffix = q.QuestionType === "TE" ? "_TEXT" : "";
       columns.push([
         q.DataExportTag,
-        plain(q.QuestionText),
+        q.QuestionText,
         `${q.QuestionID}${suffix}`,
       ]);
     }
@@ -248,6 +247,27 @@ function exportColumns(survey) {
   }
   return columns;
 }
+
+test("the export's ImportIds match the reference survey's: QID1_1 to QID1_4, then QID4 to QID7", () => {
+  const ids = Object.fromEntries(
+    exportColumns(qsf).map(([tag, , id]) => [tag, id])
+  );
+  assert.deepEqual(
+    ["Q1_1", "Q1_2", "Q1_3", "Q1_4", "Q2", "Q2 Names", "Q2 Comments", "Q3"].map(
+      (tag) => ids[tag]
+    ),
+    [
+      "QID1_1",
+      "QID1_2",
+      "QID1_3",
+      "QID1_4",
+      "QID4",
+      "QID5_TEXT",
+      "QID6_TEXT",
+      "QID7_TEXT",
+    ]
+  );
+});
 
 test("a labels export of the generated survey scores with the merged scorer", () => {
   const columns = exportColumns(qsf);

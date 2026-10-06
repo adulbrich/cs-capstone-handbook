@@ -3,54 +3,13 @@
 // the columns by exact header name, and the survey reads them as embedded
 // data. Pure: no DOM, no I/O.
 //
-// The partner sheet is the one the staff letters read
-// (scripts/email/README.md): one row per team, with `Canvas Group Name` and
-// `Project Partner / Mentor Email` read here and every other column ignored.
-// A mentor standing in for a partner is listed the same way and gets the
-// same survey. Several addresses in one cell are several partners.
+// The partner sheet is read by src/lib/partner-sheet.mjs, as the staff
+// letters read it. A mentor standing in for a partner is listed the same way
+// and gets the same survey. Several addresses in one cell are several
+// partners, and so are addresses on a second row for the same team.
 
-import { parseCsv, toCsv } from "./csv.mjs";
-
-export const SHEET_TEAM = "Canvas Group Name";
-export const SHEET_EMAIL = "Project Partner / Mentor Email";
-
-/** Group names compare case-insensitively, with runs of spaces as one. */
-const tidy = (text) => text.replace(/\s+/g, " ").trim();
-const teamKey = (text) => tidy(text).toLowerCase();
-
-const SEPARATORS = /[\s,;]+/;
-
-/** Splits a cell into its email addresses, as the staff letters do. */
-const emailsIn = (cell) =>
-  cell.split(SEPARATORS).filter((part) => part.includes("@"));
-
-/**
- * Parses the partner sheet into `{ team, emails }` entries, in file order,
- * skipping rows with no group name. Throws when a column it reads is missing.
- */
-export function parsePartnerSheet(text) {
-  const [header, ...rows] = parseCsv(text);
-  if (!header) {
-    throw new Error("The partner sheet is empty.");
-  }
-  const columns = header.map((cell) => cell.trim());
-  const missing = [SHEET_TEAM, SHEET_EMAIL].filter(
-    (name) => !columns.includes(name)
-  );
-  if (missing.length > 0) {
-    throw new Error(
-      `The partner sheet is missing the column${missing.length > 1 ? "s" : ""} ${missing.join(", ")}. Save the staff partner sheet as CSV.`
-    );
-  }
-  const teamAt = columns.indexOf(SHEET_TEAM);
-  const emailAt = columns.indexOf(SHEET_EMAIL);
-  return rows
-    .map((cells) => ({
-      emails: emailsIn(cells[emailAt] ?? ""),
-      team: tidy(cells[teamAt] ?? ""),
-    }))
-    .filter((entry) => entry.team !== "");
-}
+import { teamKey } from "../partner-sheet.mjs";
+import { toCsv } from "./csv.mjs";
 
 /**
  * Builds the contact list from parsed roster students and partner sheet
@@ -62,7 +21,7 @@ export function parsePartnerSheet(text) {
  * joins on), and each `values` key, in roster team order; `noPartner` the
  * roster teams that get no survey, each with a `reason`; `notOnRoster` the
  * sheet's teams with no roster group; `repeated` the teams the sheet lists
- * twice (the first row is used, as the staff letters do); `shared` each
+ * on more than one row, whose addresses are merged; `shared` each
  * address that partners more than one team, with its teams.
  */
 export function buildPartnerContacts(students, sheet, values = {}) {
@@ -76,11 +35,15 @@ export function buildPartnerContacts(students, sheet, values = {}) {
   const repeated = [];
   for (const entry of sheet) {
     const key = teamKey(entry.team);
-    if (sheetByTeam.has(key)) {
+    const first = sheetByTeam.get(key);
+    if (first) {
+      // A second row for a team is a co-partner: its addresses join the
+      // first row's. The staff letters keep the first row instead.
       repeated.push(entry.team);
+      first.emails = [...first.emails, ...entry.emails];
       continue;
     }
-    sheetByTeam.set(key, entry);
+    sheetByTeam.set(key, { ...entry, emails: [...entry.emails] });
   }
 
   const rows = [];

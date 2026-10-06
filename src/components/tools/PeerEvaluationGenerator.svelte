@@ -3,6 +3,7 @@
 // list as downloads. Nothing is uploaded: the file never leaves the page.
 import { variants } from "../../data/peer-evaluation.mjs";
 import { download } from "../../lib/tools/download.mjs";
+import { readPicked, slug } from "../../lib/tools/files.mjs";
 import { buildContacts, contactsCsv } from "../../lib/tools/peer-contacts.mjs";
 import { peerSurveyQsf } from "../../lib/tools/peer-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
@@ -30,23 +31,12 @@ const teamCount = $derived(
 );
 
 async function readRoster(event) {
-  const input = event.currentTarget;
-  const [file] = input.files;
-  if (!file) {
-    return;
+  const picked = await readPicked(event);
+  if (picked) {
+    fileName = picked.name;
+    rosterText = picked.text;
   }
-  fileName = file.name;
-  rosterText = await file.text();
-  // Cleared so picking the same file again, after an edit, reads it again.
-  input.value = "";
 }
-
-const slug = (text) =>
-  text
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
 
 const baseName = $derived(
   [slug(label), "peer-evaluation", variant].filter(Boolean).join("-")

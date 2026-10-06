@@ -13,6 +13,7 @@ import pulseCsv from "/canvas/assignments/project-partner-evaluation/partner-pul
 import gradingMdx from "/src/content/docs/learning-objectives/grading.mdx?raw";
 import PartnerEvaluationScorer from "../../components/tools/PartnerEvaluationScorer.svelte";
 import PartnerSurveyGenerator from "../../components/tools/PartnerSurveyGenerator.svelte";
+import { canvasRows } from "../../lib/canvas-entries.mjs";
 import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
 import { aLowerBound } from "../../lib/tools/partner-scoring.mjs";
 
@@ -25,15 +26,16 @@ const rubrics = {
 const aBound = aLowerBound(gradingMdx);
 
 // The pulse and end-of-term weights, from the partner evaluation page's
-// Canvas entries, for the survey's opening page.
+// Canvas entries, term by term, for the survey's opening page. The survey
+// states one number for every term, so the terms must agree.
 const PAGE = "assignments/project-partner-evaluation";
 const page = await getEntry("docs", PAGE);
-const entries = page?.data.assignment?.canvas ?? [];
+const rows = canvasRows(page?.data.assignment?.canvas);
 const weightOf = (rubric: string) => {
   const found = new Set(
-    entries
-      .filter((family) => family.rubric.startsWith(rubric))
-      .map((family) => family.weight)
+    rows
+      .filter((row) => row.family.rubric.startsWith(rubric))
+      .map((row) => row.weight)
   );
   const [weight] = found;
   if (found.size !== 1 || typeof weight !== "number") {
@@ -77,15 +79,18 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
   <ol>
     <li>
       <strong>Roster with groups</strong>: in Canvas, People, Groups, export
-      the group set's roster as CSV. Its <code>group_name</code> becomes each
-      partner's <code>Team</code>, the value the scorer joins on.
+      the group set's roster as CSV (<code>name, canvas_user_id, user_id,
+      login_id, sections, group_name, canvas_group_id, group_id</code>).
+      Its <code>group_name</code> becomes each partner's <code>Team</code>,
+      the value the scorer joins on. Scoring reads the same file.
     </li>
     <li>
       <strong>Partner sheet</strong>: the staff sheet the team-contact letters
       read, saved as CSV.
       It reads only <code>Canvas Group Name</code> and <code>Project Partner / Mentor Email</code>;
-      a cell with two addresses gives each partner a row under the same team, and a mentor
-      standing in gets the survey like a partner.
+      two addresses in a cell, or a second row for the same team, give each
+      partner a row under that team, and a mentor standing in gets the survey
+      like a partner.
     </li>
     <li>
       Pick the close date: it goes into the contact list as <code>MidtermCloseDate</code>,
@@ -113,9 +118,8 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
   <h3>Where the inputs come from</h3>
   <ol>
     <li>
-      <strong>Roster with groups</strong>: in Canvas, People, Groups, export
-      the group set's roster as CSV (<code>name, canvas_user_id, user_id,
-      login_id, sections, group_name, canvas_group_id, group_id</code>).
+      <strong>Roster with groups</strong>: the same file as for generating
+      the survey, above.
     </li>
     <li>
       <strong>Rubric assessments</strong>: in the Gradebook, export the rubric

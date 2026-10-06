@@ -49,7 +49,7 @@ function timestamp(date) {
 }
 
 /** Question text without markup, for the descriptions Qualtrics lists. */
-export function plain(html) {
+function plain(html) {
   return html
     .replace(/<[^>]+>/g, " ")
     .replaceAll("&nbsp;", " ")
@@ -123,7 +123,7 @@ export function shownWhenSelected(source, choiceId) {
 }
 
 const NO_VALIDATION = { Settings: { ForceResponse: "OFF", Type: "None" } };
-export const FORCED = {
+const FORCED = {
   Settings: { ForceResponse: "ON", ForceResponseType: "ON", Type: "None" },
 };
 
@@ -388,6 +388,13 @@ export function createSurvey(seed) {
     ID: id,
     Type: "Standard",
   });
+  /** The flow element for the survey's Default block. */
+  const defaultBlock = (id) => ({
+    Autofill: [],
+    FlowID: flowId(),
+    ID: id,
+    Type: "Block",
+  });
 
   /**
    * The .qsf object. `flow` is the root's elements; `title` the survey
@@ -475,7 +482,16 @@ export function createSurvey(seed) {
     };
   };
 
-  return { add, block, finish, flowId, payload, standard, trash };
+  return {
+    add,
+    block,
+    defaultBlock,
+    finish,
+    flowId,
+    payload,
+    standard,
+    trash,
+  };
 }
 
 /** "<label> <title>", or the title alone when there is no label. */

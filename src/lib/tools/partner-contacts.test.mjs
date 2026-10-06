@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { parsePartnerSheet } from "../partner-sheet.mjs";
 import { parseCsv } from "./csv.mjs";
 import {
   buildPartnerContacts,
-  parsePartnerSheet,
   partnerContactsCsv,
 } from "./partner-contacts.mjs";
 import { parseRoster } from "./roster.mjs";
@@ -67,6 +67,12 @@ test("one row per partner, under the roster's spelling of the team", () => {
     },
     {
       Email: "countess@example.org",
+      MidtermCloseDate: "Friday of week 6",
+      Team: "Compilers",
+    },
+    // The sheet's second Compilers row is a co-partner.
+    {
+      Email: "other@example.org",
       MidtermCloseDate: "Friday of week 6",
       Team: "Compilers",
     },

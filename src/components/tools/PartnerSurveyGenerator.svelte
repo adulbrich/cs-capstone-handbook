@@ -3,10 +3,12 @@
 // downloads. The roster and the partner sheet are read in the browser only:
 // nothing is uploaded. The rubric, the weights, and the page address arrive
 // from the handbook's own files at build time.
+
+import { parsePartnerSheet } from "../../lib/partner-sheet.mjs";
 import { download } from "../../lib/tools/download.mjs";
+import { readPicked, slug } from "../../lib/tools/files.mjs";
 import {
   buildPartnerContacts,
-  parsePartnerSheet,
   partnerContactsCsv,
 } from "../../lib/tools/partner-contacts.mjs";
 import {
@@ -69,24 +71,13 @@ const teamCount = $derived(
 
 function reader(key) {
   return async (event) => {
-    const input = event.currentTarget;
-    const [file] = input.files;
-    if (!file) {
-      return;
+    const picked = await readPicked(event);
+    if (picked) {
+      names[key] = picked.name;
+      texts[key] = picked.text;
     }
-    names[key] = file.name;
-    texts[key] = await file.text();
-    // Cleared so picking the same file again, after an edit, reads it again.
-    input.value = "";
   };
 }
-
-const slug = (text) =>
-  text
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
 
 const baseName = $derived(
   [slug(label), "partner", variant].filter(Boolean).join("-")
@@ -158,7 +149,7 @@ function downloadContacts() {
     </ul>
   {/if}
   {#if contacts.repeated.length > 0}
-    <p>Teams the partner sheet lists twice; the first row is used:</p>
+    <p>Teams the partner sheet lists on more than one row; every row's addresses get the survey:</p>
     <ul>
       {#each contacts.repeated as team, i (`${team}-${i}`)}
         <li>{team}</li>

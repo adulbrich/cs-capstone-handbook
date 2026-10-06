@@ -82,9 +82,10 @@ export function pulseScale(rubric) {
 }
 
 /**
- * The survey variants. `fields` are the embedded data the contact list
- * carries, `Team` first; `metaDescription` the survey's one-line summary;
- * `ratings` adds the rating page's questions and returns their IDs.
+ * The survey variants. `title` is the name partners see; `fields` the
+ * embedded data the contact list carries, `Team` first; `metaDescription`
+ * the survey's one-line summary; `ratings` adds the rating page's questions
+ * and returns their IDs in page order.
  */
 export const VARIANTS = {
   pulse: {
@@ -102,13 +103,14 @@ export const VARIANTS = {
         pulseWeight: weights.pulse,
         statements: rows.length,
       });
-      return [
-        survey.add((qid) => descriptive(qid, "Start", intro)),
-        survey.add((qid) =>
-          likertMatrix(qid, "Q1", pulsePrompt, rows, columns)
-        ),
-      ];
+      // The matrix is QID1, as in the reference survey, so the export's
+      // ImportIds are QID1_1 to QID1_4; the intro shows above it.
+      const matrix = survey.add((qid) =>
+        likertMatrix(qid, "Q1", pulsePrompt, rows, columns)
+      );
+      return [survey.add((qid) => descriptive(qid, "Start", intro)), matrix];
     },
+    title: "Project Partner Midterm Pulse",
   },
 };
 
@@ -155,13 +157,14 @@ export function buildPartnerSurvey({
     throw new Error(`Unknown variant "${variant}".`);
   }
   const survey = createSurvey(seed);
-  const { block, flowId, standard } = survey;
+  const { block, defaultBlock, flowId, standard } = survey;
 
   const rating = definition.ratings(survey, { pageUrl, rubric, weights });
   const guard = survey.add((qid) => descriptive(qid, "Guard", guardText));
   const concerns = concernQuestions(survey);
 
-  const ratingBlock = block(rubric.name, rating, { type: "Default" });
+  const { title } = definition;
+  const ratingBlock = block(title, rating, { type: "Default" });
   survey.trash();
   const guardBlock = block("Guard", [guard]);
   const notesBlock = block("Notes", concerns);
@@ -180,15 +183,9 @@ export function buildPartnerSurvey({
     FlowID: guardId,
     Type: "Branch",
   };
-  const ratingFlow = {
-    Autofill: [],
-    FlowID: flowId(),
-    ID: ratingBlock,
-    Type: "Block",
-  };
+  const ratingFlow = defaultBlock(ratingBlock);
   const notesFlow = standard(notesBlock);
 
-  const title = rubric.name;
   return survey.finish({
     flow: [embedded, guardFlow, ratingFlow, notesFlow],
     metaDescription: definition.metaDescription,
