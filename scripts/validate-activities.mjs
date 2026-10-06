@@ -552,11 +552,12 @@ for (const key of activities.keys()) {
   counts[tier(key)] += 1;
 }
 
-// Two pages describe the size of the non-workshop library in prose. An exact
-// number went stale within a month, so the prose says "more than a hundred"
-// and this asserts both that the phrase is still there and that it is still
-// true. If the library shrinks below a hundred, change the phrase in both
-// places and here, in the same commit.
+// Two pages count the activities other than the workshops (Recommended plus
+// Library) in prose, not the Library tier alone. An exact number went stale
+// within a month, so the prose says "more than a hundred" and this asserts
+// both that the phrase is still there and that it is still true. If the count
+// drops below a hundred, change the phrase in both places and here, in the
+// same commit.
 const LIBRARY_CLAIM = /more than a hundred/i;
 const LIBRARY_CLAIM_MIN = 100;
 const LIBRARY_CLAIM_PAGES = [
