@@ -48,21 +48,21 @@ export function parseRoster(text) {
     const row = index + 1;
     const cell = (name) => (cells[at[name]] ?? "").trim();
     const fullName = cell("name");
-    const email = cell("login_id");
+    // Lowercased once, here, so every tool compares one spelling.
+    const email = cell("login_id").toLowerCase();
     if (email === "") {
       problems.push(
         `Data row ${row} (${fullName || "no name"}) has no login_id.`
       );
       continue;
     }
-    const key = email.toLowerCase();
-    if (seen.has(key)) {
+    if (seen.has(email)) {
       problems.push(
-        `${email} appears on data rows ${seen.get(key)} and ${row}; a student belongs to one team.`
+        `${email} appears on data rows ${seen.get(email)} and ${row}; a student belongs to one team.`
       );
       continue;
     }
-    seen.set(key, row);
+    seen.set(email, row);
     students.push({
       canvasUserId: cell("canvas_user_id"),
       email,

@@ -5,7 +5,6 @@ import { parseRubricCsv } from "../rubric-csv.mjs";
 import { parseCsv, toCsv } from "./csv.mjs";
 import {
   aLowerBound,
-  bandFor,
   detectSurvey,
   noResponseScore,
   percentOf,
@@ -13,6 +12,7 @@ import {
 } from "./partner-scoring.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
+import { bandFor } from "./rubric-bands.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 
 const root = new URL("../../../", import.meta.url);

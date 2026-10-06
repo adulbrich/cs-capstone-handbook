@@ -7,8 +7,15 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import catmeCsv from "/canvas/assignments/peer-evaluation/catme-rubric.csv?raw";
 import peerCsv from "/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw";
 import PeerEvaluationGenerator from "../../components/tools/PeerEvaluationGenerator.svelte";
+import PeerEvaluationScorer from "../../components/tools/PeerEvaluationScorer.svelte";
 import { variants } from "../../data/peer-evaluation.mjs";
 import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
+import {
+  NON_COMPLETION_SCORE,
+  PAIR_DIVERGENCE,
+  PAIR_LOW_AVERAGE,
+  PAIR_SELF_RANGE,
+} from "../../lib/tools/peer-score.mjs";
 import { buildPeerSurvey } from "../../lib/tools/peer-survey-qsf.mjs";
 
 const byInstrument = {
@@ -24,6 +31,8 @@ const rubrics = Object.fromEntries(
 for (const [variant, rubric] of Object.entries(rubrics)) {
   buildPeerSurvey({ rubric, variant });
 }
+// The scorer (#6) scores the regular survey against the same parse.
+const peerRubric = byInstrument.regular;
 ---
 
 <StarlightPage
@@ -78,4 +87,109 @@ for (const [variant, rubric] of Object.entries(rubrics)) {
     wrong page, regenerate with "One block per teammate slot": same
     questions, one block per slot behind a branch.
   </p>
+
+  <h2>Score the export</h2>
+  <p>
+    Drop the three files, check the survey type, and Run. The files are read
+    in your browser and never uploaded. CATME scoring (spring end-of-term) is
+    not available yet.
+  </p>
+
+  <PeerEvaluationScorer client:only="svelte" rubric={peerRubric} />
+
+  <h3>Where the inputs come from</h3>
+  <ol>
+    <li>
+      <strong>Qualtrics export.</strong> In the survey, Data &amp; Analysis,
+      Export &amp; Import, Export Data: CSV, Download all fields, and
+      "Use choice text" on. Labels exports only: a values export (numeric
+      codes) is refused. Keep the three header rows; the page skips them.
+    </li>
+    <li>
+      <strong>Roster with groups.</strong> The same Canvas People, Groups
+      export the generator reads. It decides who is on which team and N, the
+      team size.
+    </li>
+    <li>
+      <strong>Rubric assessment.</strong> In Canvas, the peer evaluation
+      assignment the grade goes to (midterm or end-of-term), its rubric,
+      export the assessments as CSV: <code>Student Id, Student Name</code>,
+      then <code>&lt;criterion&gt; - Rating, - Points, - Comments</code> per
+      criterion. The page fills it and you import it back on the same
+      assignment.
+    </li>
+  </ol>
+
+  <h3>What Run does</h3>
+  <ol>
+    <li>
+      Reads the export's columns by their tags and ImportIds: the four
+      ratings, the comment, and the hidden ratee on each looped page, the
+      split, and the embedded <code>Team</code>, <code>TeamSize</code>,
+      <code>SelfFloor</code>, and <code>Team Member 1</code> to <code>9</code>.
+      It names the survey type and stops on a header it cannot place.
+    </li>
+    <li>
+      Keeps responses with <code>Finished</code> true, previews only when the
+      box is checked, and the latest per
+      <code>RecipientEmail</code> by <code>RecordedDate</code>. A
+      <code>RecordedDate</code> not written as Qualtrics writes it stops the
+      run: export again rather than re-saving the file in a spreadsheet.
+    </li>
+    <li>
+      Names whom each page rated twice: the hidden ratee answer, and the loop
+      position (page 1 is the respondent, page N is
+      <code>Team Member N-1</code>). When they disagree, or the ratee is not
+      on the roster team, the page is reported and left out; it is never
+      guessed.
+    </li>
+    <li>
+      Checks the split totals 100. A self share below the floor, computed
+      from the roster's N, is raised to it and the rater's other shares
+      scaled to keep 100. Nothing is deducted.
+    </li>
+    <li>
+      Scores each student from what the teammates gave them, as the
+      <a href="/assignments/peer-evaluations/#grade-calculation">Grade
+      Calculation</a> specifies. A student with no finished response scores
+      {NON_COMPLETION_SCORE}. A student nobody rated gets no score and is
+      reported.
+    </li>
+    <li>
+      Flags, never changing a score: on a team of two, a self share outside
+      {PAIR_SELF_RANGE[0]} to {PAIR_SELF_RANGE[1]}, ratings received averaging
+      below {PAIR_LOW_AVERAGE}, and two partners whose ratings of each other
+      differ by {PAIR_DIVERGENCE} or more. The self-versus-peer gap
+      table lists everyone, largest first; its share gap uses the raw self
+      share, before any rescale.
+    </li>
+    <li>
+      Writes each rubric criterion's points (score times its points, divided
+      by 100) and the highest rating at or below those points, matched to
+      the export's columns by criterion name, with the names and points read
+      from the peer evaluation rubric CSV. A non-completer gets a
+      fifth of {NON_COMPLETION_SCORE} on every criterion (below the point
+      distribution's lowest band), totalling {NON_COMPLETION_SCORE}, with a
+      note.
+    </li>
+  </ol>
+
+  <h3>The downloads</h3>
+  <ul>
+    <li>
+      <strong>Rubric assessment</strong>: import it on the assignment's
+      rubric. Rows left as exported are named in the report; grade them by
+      hand.
+    </li>
+    <li>
+      <strong>Feedback for students</strong>: per criterion, the mean rating
+      received and its score, the normalized share, and the peer score. Means
+      only, no comments. On a team of two the mean is the one teammate's
+      rating.
+    </li>
+    <li>
+      <strong>Details</strong> and <strong>comments</strong>: instructor only.
+      Never send them to students.
+    </li>
+  </ul>
 </StarlightPage>

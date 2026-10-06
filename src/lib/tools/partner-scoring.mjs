@@ -6,7 +6,8 @@
 // src/content/docs/learning-objectives/grading.mdx. The caller loads those
 // files; this module is pure, so node --test and the browser run the same code.
 
-import { fillCriterion, nameKey } from "./rubric-export.mjs";
+import { bandFor } from "./rubric-bands.mjs";
+import { fillCriterion, matchRubricExport, nameKey } from "./rubric-export.mjs";
 
 /** The midterm pulse's concern questions, by export tag, from its .qsf. */
 const PULSE_CONCERNS = { flag: "Q2", text: ["Q2 Names", "Q2 Comments", "Q3"] };
@@ -67,23 +68,6 @@ export function percentOf(points, percent) {
 }
 
 /**
- * The rating a score between two ratings is named after: the highest rating
- * whose points are at or below `points` (the instructor's rule for every
- * scorer, #437, not Canvas's range reading). The points themselves stay
- * exact. Throws on a score below the lowest rating or above the highest.
- */
-export function bandFor(criterion, points) {
-  const descending = [...criterion.ratings].sort((a, b) => b.points - a.points);
-  const rating = descending.find((r) => r.points <= points);
-  if (!rating || points > criterion.maxPoints) {
-    throw new Error(
-      `${points} is outside ${criterion.title}'s ${descending.at(-1).points} to ${criterion.maxPoints} points.`
-    );
-  }
-  return rating;
-}
-
-/**
  * The no-response score for one criterion: the lower bound of an A, as a
  * share of the rubric's 100 points, times the criterion's maximum, named
  * after the highest rating at or below it (bandFor).
@@ -135,29 +119,6 @@ const COMPARE_TAGS = [
   "RecipientLastName",
   "RecipientEmail",
 ];
-
-/** Matches the rubric export's criteria to the rubric's, both ways. */
-function checkExportCriteria(rubric, exportCriteria) {
-  const rubricKeys = new Set(rubric.criteria.map((c) => nameKey(c.title)));
-  const extra = [...exportCriteria.values()]
-    .filter((entry) => !rubricKeys.has(nameKey(entry.name)))
-    .map((entry) => entry.name);
-  const missing = rubric.criteria
-    .filter((c) => !exportCriteria.has(nameKey(c.title)))
-    .map((c) => c.title);
-  if (extra.length > 0 || missing.length > 0) {
-    throw new Error(
-      [
-        `The rubric export does not match the ${rubric.name} rubric.`,
-        missing.length > 0 ? `Missing: ${missing.join(", ")}.` : "",
-        extra.length > 0 ? `Not in the rubric: ${extra.join(", ")}.` : "",
-        "Export the rubric assessments of the assignment this survey grades.",
-      ]
-        .filter(Boolean)
-        .join(" ")
-    );
-  }
-}
 
 /** The question columns, one per criterion, or an Error naming the gaps. */
 function questionColumns(columns, rubric) {
@@ -269,7 +230,7 @@ export function scorePartnerSurvey({
       "A student on a team has no canvas_user_id in the roster, so they cannot be matched to the rubric export. Export the roster with groups."
     );
   }
-  checkExportCriteria(rubric, rubricExport.criteria);
+  matchRubricExport(rubricExport, rubric);
   const questions = questionColumns(columns, rubric);
   const { concerns } = definition;
   const concernTags = [concerns.flag, ...concerns.text];

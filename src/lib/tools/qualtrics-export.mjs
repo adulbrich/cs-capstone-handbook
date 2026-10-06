@@ -12,14 +12,26 @@ const PREVIEW = "Survey Preview";
 /** A values export writes Finished as 1 or 0; a labels export, True or False. */
 const VALUES_FINISHED = new Set(["0", "1"]);
 
+/** The ImportId in a third-row cell, or "" when it holds none. */
+function importIdOf(cell) {
+  try {
+    const value = JSON.parse(cell);
+    return typeof value?.ImportId === "string" ? value.ImportId : "";
+  } catch {
+    return "";
+  }
+}
+
 /**
  * Parses the export into its columns and responses. Each column is
- * `{ tag, text }`; each response maps an export tag to its cell. Keeps only
- * finished responses that are not previews, and counts what it dropped.
- * Throws when the file is not a labels export with its three header rows,
- * when it is a values export, and when no finished response remains.
+ * `{ tag, text, importId }`; each response maps an export tag to its cell.
+ * Keeps only finished responses that are not previews (previews too with
+ * `includePreviews`, for a staff test), counts what it dropped, and returns
+ * the unfinished responses as `unfinished`, so a caller can say who stopped
+ * partway. Throws when the file is not a labels export with its three header
+ * rows, when it is a values export, and when no finished response remains.
  */
-export function parseQualtricsExport(text) {
+export function parseQualtricsExport(text, { includePreviews = false } = {}) {
   const [tags, texts, importIds, ...rows] = parseCsv(text);
   if (!(tags && texts && importIds)) {
     throw new Error(
@@ -32,6 +44,7 @@ export function parseQualtricsExport(text) {
     );
   }
   const columns = tags.map((tag, i) => ({
+    importId: importIdOf(importIds[i] ?? ""),
     tag: tag.trim(),
     text: (texts[i] ?? "").trim(),
   }));
@@ -45,6 +58,7 @@ export function parseQualtricsExport(text) {
   }
   const dropped = { preview: 0, unfinished: 0 };
   const responses = [];
+  const unfinished = [];
   for (const cells of rows) {
     const response = Object.fromEntries(
       columns.map((column, i) => [column.tag, (cells[i] ?? "").trim()])
@@ -54,12 +68,13 @@ export function parseQualtricsExport(text) {
         `Response ${response.ResponseId} has Finished "${response.Finished}": this is a values export. Export the responses again with "Use choice text" on (labels export only).`
       );
     }
-    if (response.Status === PREVIEW) {
+    if (response.Status === PREVIEW && !includePreviews) {
       dropped.preview += 1;
     } else if (response.Finished.toLowerCase() === "true") {
       responses.push(response);
     } else {
       dropped.unfinished += 1;
+      unfinished.push(response);
     }
   }
   if (responses.length === 0) {
@@ -67,5 +82,5 @@ export function parseQualtricsExport(text) {
       `The Qualtrics file holds no finished response (${dropped.preview} previews, ${dropped.unfinished} unfinished dropped). Export the responses once the survey has closed.`
     );
   }
-  return { columns, dropped, responses };
+  return { columns, dropped, responses, unfinished };
 }

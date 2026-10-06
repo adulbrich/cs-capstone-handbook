@@ -10,8 +10,15 @@ import { parseCsv, toCsv } from "./csv.mjs";
 const FIELDS = ["Rating", "Points", "Comments"];
 const CRITERION_COLUMN = / - (Rating|Points|Comments)$/;
 
-/** Criterion names compare trimmed and case-insensitive ("Delivery Quality"). */
-export const nameKey = (name) => name.trim().toLowerCase();
+const TRAILING_TAGS = /\s*\[[^\]]*\]\s*$/;
+
+/**
+ * Criterion names compare trimmed, case-insensitive, and without a trailing
+ * bracket ("Delivery Quality"; "Attitude as a team player [SO5]" matches the
+ * rubric CSV's tag-free title).
+ */
+export const nameKey = (name) =>
+  name.replace(TRAILING_TAGS, "").trim().toLowerCase();
 
 /**
  * Parses the export: `{ header, criteria, students }`. `criteria` maps each
@@ -76,6 +83,38 @@ export function fillCriterion(cells, columnsAt, { comment, points, rating }) {
   if (comment !== null) {
     cells[columnsAt.Comments] = comment;
   }
+}
+
+/**
+ * Pairs each rubric criterion (parseRubricCsv), in rubric order, with the
+ * rubric export's columns of the same name (nameKey): `[{ criterion,
+ * columnsAt }]`. Throws naming every criterion missing from the export and
+ * every export criterion not in the rubric.
+ */
+export function matchRubricExport(rubricExport, rubric) {
+  const rubricKeys = new Set(rubric.criteria.map((c) => nameKey(c.title)));
+  const extra = [...rubricExport.criteria.values()]
+    .filter((entry) => !rubricKeys.has(nameKey(entry.name)))
+    .map((entry) => entry.name);
+  const missing = rubric.criteria
+    .filter((c) => !rubricExport.criteria.has(nameKey(c.title)))
+    .map((c) => c.title);
+  if (extra.length > 0 || missing.length > 0) {
+    throw new Error(
+      [
+        `The rubric export does not match the ${rubric.name} rubric.`,
+        missing.length > 0 ? `Missing: ${missing.join(", ")}.` : "",
+        extra.length > 0 ? `Not in the rubric: ${extra.join(", ")}.` : "",
+        "Export the rubric assessments of the assignment this survey grades.",
+      ]
+        .filter(Boolean)
+        .join(" ")
+    );
+  }
+  return rubric.criteria.map((criterion) => ({
+    columnsAt: rubricExport.criteria.get(nameKey(criterion.title)),
+    criterion,
+  }));
 }
 
 /** Writes the header and each student's cells back out as CSV. */
