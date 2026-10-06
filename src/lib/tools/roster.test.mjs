@@ -67,6 +67,13 @@ test("parseRoster names a missing column", () => {
   );
 });
 
+test("parseRoster lowercases emails once, for every tool", () => {
+  const [student] = parseRoster(
+    roster([line("Lovelace, Ada", "Ada@Example.edu", "Engines")])
+  );
+  assert.equal(student.email, "ada@example.edu");
+});
+
 test("parseRoster rejects a duplicate email and a missing one", () => {
   const text = roster([
     line("Lovelace, Ada", "ada@example.edu", "Engines"),
@@ -78,7 +85,7 @@ test("parseRoster rejects a duplicate email and a missing one", () => {
     (error) => {
       assert.match(
         error.message,
-        /ADA@example\.edu appears on data rows 1 and 2/
+        /ada@example\.edu appears on data rows 1 and 2/
       );
       assert.match(
         error.message,
