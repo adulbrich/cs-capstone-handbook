@@ -110,13 +110,32 @@ const hasAny = wholeTeam || effort || workshop || prepares.length > 0;
     gap: 0.375rem;
   }
 
+  /* inline-flex shrinks the anchor to its badge. As a plain flex item it
+     takes the body line height, so a linked badge sat lower than an
+     unlinked one and made its row taller. */
   .activity-meta a {
+    display: inline-flex;
+    border-radius: 0.25rem;
     text-decoration: none;
   }
 
-  .activity-meta a:hover :global(.sl-badge),
-  .activity-meta a:focus-visible :global(.sl-badge) {
-    text-decoration: underline;
+  .activity-meta a :global(.sl-badge) {
+    transition: background-color 0.15s;
+  }
+
+  /* Each variant sets its own bg and border colors on the badge, so mixing
+     the two tints every variant toward its border without naming a color. */
+  .activity-meta a:hover :global(.sl-badge) {
+    background-color: color-mix(
+      in srgb,
+      var(--sl-color-bg-badge),
+      var(--sl-color-border-badge) 35%
+    );
+  }
+
+  .activity-meta a:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
   }
 
   .activity-meta__label {
