@@ -20,6 +20,15 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Canvas Changes: Spring End-of-Term Peer Survey Is CATME, and Graded (#441)
+
+New rubric `peer-evaluation/catme-rubric.csv` (CATME Peer Evaluation): the five CATME teamwork dimensions at 20 points each, rated Average of 5 (20) down to Average of 1 (10) like the peer rubric, with the instruction team's behavioral anchors as the rating descriptions. Interacting with teammates and Keeping the team on track carry SO5.
+
+- In CS 463, rename the spring **End-of-Term Survey** in the **Peer Review Final** group to **End-of-Term Survey (CATME)**, keeping 100 points and 20%. Import `catme-rubric.csv` and attach it there in place of `peer-evaluation-rubric.csv`, with "Use this rubric for assignment grading" off as on the other survey entries.
+- Fall and winter End-of-Term Survey and every Midterm Survey keep `peer-evaluation-rubric.csv`.
+- The CATME score has no point distribution, so it tops out at 100.
+- Re-paste the Peer Evaluations bodies in every term (the intro and the CATME section changed), the Project Partner End-of-Term Survey bodies in every term (their Teamwork line), and the CS 463 syllabus.
+
 ## Re-paste Required: Introduction Email Excusal (#442)
 
 No rubric changes. Re-paste the fall Introduction Email and Term Startup bodies: Fall Week 1 now excuses the email for a team whose every member already meets with its partner or mentor, and the Introduction Email's What You Submit says an excused team submits nothing. The team emails `cs-46x-help@oregonstate.edu`, and the entry is marked excused for each member of such a team.
@@ -222,7 +231,7 @@ section above).
 
 ## Grade Architecture (every term)
 
-Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%), Individual Evidence (fall: Bidding Survey 1% + RFC 14% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
+Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%; the spring final is the CATME survey, on its own rubric), Individual Evidence (fall: Bidding Survey 1% + RFC 14% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
 There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close at the end of week 6; final surveys are sent week 9 and close at the end of week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 

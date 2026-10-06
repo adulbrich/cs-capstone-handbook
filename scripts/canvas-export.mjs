@@ -212,6 +212,18 @@ function entries() {
 // ---- page-specific cuts no general rule covers ---------------------------------
 
 const OVERRIDES = {
+  // The spring end-of-term survey has no four criteria and no distribution;
+  // its instrument and score are the CATME section and its own rubric.
+  "End-of-Term Survey (CATME)": (o) => {
+    for (const id of [
+      "the-per-term-instrument",
+      "team-sizes",
+      "grade-calculation",
+    ]) {
+      o.dropSection(id);
+    }
+    o.dropBlock("The rubric is the calculation above");
+  },
   "Midterm Pulse": (o) => {
     o.dropBlock("Fall and winter are progress-focused");
     o.dropBlock("The pulse has its own scale");
