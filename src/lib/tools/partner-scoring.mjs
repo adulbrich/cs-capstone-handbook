@@ -221,10 +221,14 @@ function scoreAnswer(response, { column, criterion }) {
   return { comment: null, points: rating.points, rating: rating.name };
 }
 
+/** Whether the export has a column with this export tag. */
+const hasColumn = (columns, tag) =>
+  columns.some((column) => column.tag === tag);
+
 /** The concerns rows: every finished response that raised something. */
 function concernRows(columns, responses, concerns) {
   const tags = [concerns.flag, ...concerns.text];
-  const absent = tags.filter((tag) => !columns.some((c) => c.tag === tag));
+  const absent = tags.filter((tag) => !hasColumn(columns, tag));
   if (absent.length > 0) {
     throw new Error(
       `The Qualtrics file has no ${absent.join(", ")} column for the concerns table.`
@@ -282,15 +286,27 @@ export function scorePartnerSurvey({
     );
   }
   const { columns, responses } = qualtrics;
-  if (!columns.some((column) => column.tag === "Team")) {
+  if (!hasColumn(columns, "Team")) {
     throw new Error(
       "The Qualtrics file has no Team column. The survey's contact list carries Team as embedded data."
+    );
+  }
+  if (roster.some((s) => s.team !== "" && s.canvasUserId === "")) {
+    throw new Error(
+      "A student on a team has no canvas_user_id in the roster, so they cannot be matched to the rubric export. Export the roster with groups."
     );
   }
   checkExportCriteria(rubric, rubricExport.criteria);
   const questions = questionColumns(columns, rubric);
 
-  const responsesByTeam = byTeam(responses);
+  // Only responses from a roster group are scored or need a choice; the rest
+  // are reported, and their concerns still reach the concerns table.
+  const rosterTeams = new Set(
+    roster.map((student) => student.team).filter((team) => team !== "")
+  );
+  const responsesByTeam = byTeam(
+    responses.filter((response) => rosterTeams.has(response.Team))
+  );
   const duplicates = [...responsesByTeam]
     .filter(([, list]) => list.length > 1)
     .map(([team, list]) => ({
@@ -301,15 +317,16 @@ export function scorePartnerSurvey({
       team,
     }));
   const compare = [
-    ...COMPARE_TAGS.filter((tag) => columns.some((c) => c.tag === tag)).map(
-      (tag) => ({ label: tag, tag })
-    ),
+    ...COMPARE_TAGS.filter((tag) => hasColumn(columns, tag)).map((tag) => ({
+      label: tag,
+      tag,
+    })),
     ...questions.map(({ column, criterion }) => ({
       label: criterion.title,
       tag: column.tag,
     })),
     ...[definition.concerns.flag, ...definition.concerns.text]
-      .filter((tag) => columns.some((c) => c.tag === tag))
+      .filter((tag) => hasColumn(columns, tag))
       .map((tag) => ({ label: tag, tag })),
   ];
   const pending = duplicates.some((d) => d.chosen === null);
@@ -317,9 +334,6 @@ export function scorePartnerSurvey({
     return { compare, duplicates, pending };
   }
 
-  const rosterTeams = new Set(
-    roster.map((student) => student.team).filter((team) => team !== "")
-  );
   const teamScores = new Map();
   for (const [team, list] of responsesByTeam) {
     const counted =
@@ -383,8 +397,7 @@ export function scorePartnerSurvey({
       notInExport: roster
         .filter((s) => s.team !== "" && !exportIds.has(s.canvasUserId))
         .map((s) => ({ name: s.name, team: s.team })),
-      responded: [...responsesByTeam.keys()].filter((t) => rosterTeams.has(t))
-        .length,
+      responded: responsesByTeam.size,
       scored: rows.length - noTeam.length,
       unmatchedTeams: responses
         .filter((r) => !rosterTeams.has(r.Team))

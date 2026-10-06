@@ -363,6 +363,35 @@ test("the validation report names every gap", () => {
   assert.equal(rowFor(result, "999")["Responsiveness - Points"], "");
 });
 
+test("responses from no roster group never block the run", () => {
+  const result = run(
+    pulseExport([
+      response("Engines", STRONG),
+      response("Looms", ["Mostly agree", "", "", ""], { Q3: "Hello" }),
+      response("Looms", STRONG),
+    ])
+  );
+  assert.equal(result.pending, false);
+  assert.deepEqual(result.duplicates, []);
+  assert.equal(result.report.unmatchedTeams.length, 2);
+  assert.deepEqual(result.concerns.rows, [["Looms", "No", "", "", "Hello"]]);
+});
+
+test("a roster without canvas_user_id stops the run", () => {
+  assert.throws(
+    () =>
+      scorePartnerSurvey({
+        aBound: A,
+        qualtrics: parseQualtricsExport(pulseExport([])),
+        roster: [{ canvasUserId: "", team: "Engines" }],
+        rubric: rubrics.pulse,
+        rubricExport: parseRubricExport(EXPORT),
+        survey: "pulse",
+      }),
+    /canvas_user_id/
+  );
+});
+
 test("the concerns table holds only responses that raised something", () => {
   const result = run(
     pulseExport([
@@ -464,7 +493,7 @@ test("end-of-term anchor facets score at 100, 90, 80, 70, and 50 percent", () =>
   }
 });
 
-test("s2026 regression: 70% of spring Requirements is 3.5, not 3", () => {
+test("regression: 70% of spring Requirements is 3.5, not 3", () => {
   const level = levelsFor(
     criterion("spring", "Requirements and Specifications")
   ).find((l) => l.percent === 70);
