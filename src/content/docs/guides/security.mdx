@@ -193,7 +193,7 @@ Injection and XSS share a cause: untrusted input treated as trusted code or data
 
 Projects that handle datasets, machine learning models, or research data have concerns that a typical web application doesn't:
 
-- Data privacy: if your dataset contains personally identifiable information (PII), such as names, emails, health records, or locations, pseudonymize or anonymize it before processing and store the raw data with restricted access. If the project involves human subjects, find out early whether it needs approval from an institutional review board (IRB), because review runs on the board's schedule, not yours; [Complete an IRB Application](/activities/user/#complete-an-irb-application) walks through the filing.
+- Data privacy: if your dataset contains personally identifiable information (PII), such as names, emails, health records, or locations, pseudonymize or anonymize it before processing and store the raw data with restricted access. If the project involves human subjects, find out early whether it needs approval from an institutional review board (IRB), because review runs on the board's schedule, not yours; [Complete an IRB Application](/activities/planning-and-risk/#complete-an-irb-application) walks through the filing.
 - Model security: a machine learning model can be attacked through its inputs, with evasion attacks that craft an input to force a wrong prediction, and through its training data, with poisoning. [NIST AI 100-2](https://csrc.nist.gov/pubs/ai/100/2/e2025/final) is NIST's taxonomy of these attacks. If your model makes decisions that affect people, work out how someone could manipulate it.
 - Notebook hygiene: a [Jupyter](https://jupyter.org/) notebook stores each cell's outputs in the file next to its code ([nbformat](https://nbformat.readthedocs.io/en/latest/format_description.html)), so a cell that prints a connection string commits it. Clear outputs before committing, or strip them automatically with [nbstripout](https://github.com/kynan/nbstripout), and read credentials from environment variables.
 
@@ -249,9 +249,9 @@ In academia, security research handles the same material it studies, and its pra
 
 **Activities that exercise this**
 
-- [Describe your Architecture](/activities/design/#describe-your-architecture): the diagram a threat model is drawn on top of.
-- [Designing for System Security](/activities/design/#designing-for-system-security): the design-time version of this guide.
-- [Apply the Privacy by Design (PbD) Guidelines](/activities/design/#apply-the-privacy-by-design-pbd-guidelines): privacy decided up front rather than retrofitted.
-- [Audit Your Safety Net](/activities/ai/#audit-your-safety-net): whether your gates would catch a bad change before it merges.
-- [Risk Management Plan](/activities/planning/#risk-management-plan): where a security risk gets an owner and a date.
-- [Complete an IRB Application](/activities/user/#complete-an-irb-application): for projects handling human-subjects data, where the security question becomes a compliance question.
+- [Describe your Architecture](/activities/technical-design/#describe-your-architecture): the diagram a threat model is drawn on top of.
+- [Designing for System Security](/activities/technical-design/#designing-for-system-security): the design-time version of this guide.
+- [Apply the Privacy by Design (PbD) Guidelines](/activities/technical-design/#apply-the-privacy-by-design-pbd-guidelines): privacy decided up front rather than retrofitted.
+- [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net): whether your gates would catch a bad change before it merges.
+- [Risk Management Plan](/activities/planning-and-risk/#risk-management-plan): where a security risk gets an owner and a date.
+- [Complete an IRB Application](/activities/planning-and-risk/#complete-an-irb-application): for projects handling human-subjects data, where the security question becomes a compliance question.

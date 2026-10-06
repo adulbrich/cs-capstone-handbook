@@ -1,0 +1,163 @@
+---
+title: Interaction Design and Accessibility
+description: Interfaces, play, and accessibility.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
+
+These activities shape what a person sees and does with your software: prototypes at rising fidelity, the guidelines and loops that make an interface or a game work, and the checks that let everyone use it. Prototype at the lowest fidelity that answers your question, and check accessibility while the design is still cheap to change.
+
+<LinkCard
+  title="Accessibility Testing guide"
+  href="/guides/accessibility/"
+  description="The three checks that find what a mouse and a good pair of eyes miss: automated rules, a manual pass, and a session with an assistive-technology user."
+/>
+
+
+## Prototype an Interface
+
+<ActivityMeta anchor="prototype-an-interface" />
+
+Build a clickable prototype to check your requirements and your design with stakeholders or users before you write the code.
+
+- **Pick the fidelity**: low or medium while the functional requirements are still settling, to clarify and validate what the software does and its key user flows; high once the shape has settled, to visualize and refine how it looks and behaves.
+- **Define key features**: identify the main features and user flows the prototype has to show.
+- **Create the prototype**: use tools like Figma or [Penpot](https://penpot.app/) (open source, free) to build a clickable prototype that demonstrates those flows.
+- **Check alignment**: at high fidelity, check the design against UI/UX principles, any branding guidelines, and your technical requirements.
+- **Gather feedback**: review the prototype with stakeholders or users, and change the requirements or the design based on what they tell you.
+
+Read this [blog post about a SoundCloud iOS redesign](https://www.freecodecamp.org/news/my-friends-hate-soundcloud-ios-so-i-redesigned-it-for-them-d3038cdd020b).
+
+A good output is the prototype link with a brief reflection naming the fidelity you chose and what the review changed in your requirements or design.
+
+## UI Design Guidelines
+
+<ActivityMeta anchor="ui-design-guidelines" />
+
+Select an appropriate set of user interface guidelines and apply them.
+There are user interface guidelines published by free/open-source
+organizations, corporations, and even government. Here are some
+examples:
+
+- [Microsoft's Fluent 2 Design System](https://fluent2.microsoft.design/)
+- [Google's Material 3 Design System](https://m3.material.io/)
+- [Adobe's Spectrum Design System](https://spectrum.adobe.com/)
+- [Firefox's Acorn Design System](https://acorn.firefox.com/)
+- [Atlassian's Design Language](https://atlassian.design/)
+- [KDE Human Interface Guidelines](https://develop.kde.org/hig/)
+- [GNOME Human Interface Guidelines](https://developer.gnome.org/hig/index.html)
+- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/)
+- [Digital.gov's Usability](https://digital.gov/topics/usability/)
+
+Feel free to come up with another design system or your own exhaustive one.
+
+A good output is your updated UI wireframes or a demo of your updated software with a summary of what changed and why.
+
+## Design the Core Experience
+
+<ActivityMeta anchor="design-the-core-experience" />
+
+For game projects. Write down the intended player experience and the mechanics that produce it before development begins, then check the core loop against them. Doing it early is what lets the team argue about design goals instead of about code. Fix the loop here, before you build content around it.
+
+- **State the experience**: write the intended player experience first, as the aesthetics of the [MDA (Mechanics, Dynamics, Aesthetics) framework](https://users.cs.northwestern.edu/~hunicke/MDA.pdf).
+- **Write the mechanics and dynamics**: the mechanics that produce that experience, and the dynamics you expect to emerge from them. Split mechanics, dynamics, and aesthetics among team members.
+- **Name the core loop**: the repeatable actions that drive engagement and progression.
+- **Check each step**: confirm each step of the loop gives the player a meaningful action and a reward.
+
+A good output is a one-page design note: the intended player experience first, the mechanics and dynamics justified against it, and the core loop with each step's player action and reward, plus what you changed after checking it.
+
+## Map the Player Journey
+
+<ActivityMeta anchor="map-the-player-journey" />
+
+For game projects. Map the player's journey from the First Time User Experience (FTUE) through the mid-game, and decide what your next playtest has to check.
+
+- **Map the journey**: onboarding, learning curve, progression, from the first session through the mid-game.
+- **Mark the drop-off points**: where a player is likely to quit, and one fix proposed for each.
+- **Write the fun hypotheses**: your team's claims about what will make the game fun, each attached to the point in the journey where it should show. They're what you test first and what you cut when a playtest says otherwise.
+- **Plan the playtest**: for each hypothesis and each fix, how a playtest will confirm or refute it.
+
+A good output is a journey map from first-time experience through mid-game, with the likely drop-off points marked, one fix proposed for each, and the fun hypotheses placed along it, with how a playtest will check each fix and each hypothesis.
+
+## Designing for Accessibility
+
+<ActivityMeta anchor="designing-for-accessibility" />
+
+Review one screen or output of your system against accessibility basics before it's built, while a fix is a design change rather than a rebuild.
+
+- Contrast and color: text meets [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA contrast ratios, and no information is carried by color alone (a red border meaning "error" is invisible to some users; a red border plus the word "error" isn't).
+- Target size and spacing: interactive elements are large enough and far enough apart to hit reliably, including on a phone and for users with motor impairments.
+- Focus states: every interactive element shows clearly when it has keyboard focus, and the tab order follows the visual order.
+- Semantics before ARIA: a real `<button>` is accessible by default; a `<div>` with a click handler and four ARIA attributes usually isn't. Reach for the correct element first.
+- Labels: every input has a programmatically associated label, not just placeholder text.
+
+Then check your work with the [manual accessibility pass](/guides/accessibility/#manual-accessibility-testing): keyboard only, screen reader, 200% zoom. To automate the mechanical parts, see [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci).
+
+If your project has no user interface, the equivalent targets are your error messages, output formats, and documentation.
+
+A good output is a marked-up screenshot or a short list of specific fixes, each tied to the guideline it addresses.
+
+## Write for Accessibility and ESL
+
+<ActivityMeta anchor="write-for-accessibility-and-esl" />
+
+If your software includes text, videos, or images for users, consider revising them according to accessibility and English as a Second Language (ESL) guidelines. 
+
+To start, here's an excellent interactive article about [what makes writing more readable](https://pudding.cool/2022/02/plain).
+
+Readable text is one part of accessibility. The rest of the cluster: [Designing for Accessibility](/activities/interaction-design/#designing-for-accessibility) for interfaces, [Test with an Assistive Technology User](/activities/interaction-design/#test-with-an-assistive-technology-user) for validation, and [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci) to automate the mechanical checks.
+
+- Resources at the federal level include [plainlanguage.gov](https://www.plainlanguage.gov/) and [Section508.gov](https://www.section508.gov/).
+- Oregon State University also has an article on [Language and Disability](https://accessibility.oregonstate.edu/language-and-disability).
+- Another good resource is the [Simplified Technical English (STE) international standard](https://asd-ste100.org/), great for an ESL audience.
+
+There are different ways to test the readability score of your text or accessibility of your content. Here are some examples:
+
+- [WebFX Readability Test](https://www.webfx.com/tools/read-able/)
+- [Hemingway](https://hemingwayapp.com/)
+- [WAVE Web Accessibility Evaluation Tool](https://wave.webaim.org/)
+
+Decide on an approach to improve your content's accessibility depending on your audience, write a brief summary of what you learned and how you plan to adapt your content. Sharing your revised content or text is a plus.
+
+A good output is a before-and-after of at least one real piece of your product's text, with the guideline each change came from.
+
+## Apply the GenderMag Method
+
+<ActivityMeta anchor="apply-the-gendermag-method" />
+
+The [GenderMag Method](https://gendermag.org/index.php) enables software practitioners (e.g., developers, managers, UX professionals) to find gender-inclusivity "bugs" in their software, and then fix the bugs they find.
+
+Apply the method and write a summary of your findings and what you'll change in your software.
+
+A good output is a list of the inclusivity bugs you found and what you'll change in the software because of them.
+
+## Wire an Accessibility Audit Into CI
+
+<ActivityMeta anchor="wire-an-accessibility-audit-into-ci" effort="1 to 2 h" />
+
+Get automated accessibility checks running on every change, then practice the judgment of telling a real finding from noise. One to two hours.
+
+- **Add [axe-core](https://github.com/dequelabs/axe-core)** to your test suite so a rendered component fails a test when it violates an accessibility rule, and add a page-level check to CI.
+- **Have an agent triage the first report**, then go through it yourself: which findings are real, which are noise, which need a human looking at the actual screen.
+- **Follow up manually**: the [manual pass](/guides/accessibility/#manual-accessibility-testing) covers keyboard only, screen reader, and 200% zoom.
+
+Automated tools miss much of what WCAG (Web Content Accessibility Guidelines) covers, so the manual pass has to follow (the [accessibility guide](/guides/accessibility/#manual-accessibility-testing) has the numbers). Telling "this input has no label, so screen reader users can't fill this form" from "this decorative divider lacks a role" is judgment you build by doing it once with attention.
+
+**If your project has no user interface:** the equivalent is your output formats and documentation. Can someone consume your API errors, your CSV exports, or your README with a screen reader?
+
+A good output is a CI job that fails on accessibility violations, plus a short triage note naming which findings you fixed and which you dismissed and why.
+
+## Test with an Assistive Technology User
+
+<ActivityMeta anchor="test-with-an-assistive-technology-user" />
+
+Run one task-based session with someone who uses assistive technology (a screen reader, voice control, switch access, or magnification) as part of their normal day. Use the same structure as any other usability session: pick two or three real tasks, watch, and don't help.
+
+Daily users navigate faster and in different patterns than you will when simulating, and they find problems a checklist misses. Recruit through campus disability services, local accessibility meetups, or your project partner's own users.
+
+If that isn't feasible in your timeline, the closest substitute is a session under simulated constraint: a teammate who didn't build the feature completes the flow keyboard-only or with a screen reader on. Say plainly in your write-up that it was simulated, since simulation finds broken things but can't tell you what daily use feels like.
+
+See [testing with assistive technology users](/guides/accessibility/#testing-with-assistive-technology-users) for how this fits your wider testing strategy, and [Designing for Accessibility](/activities/interaction-design/#designing-for-accessibility) for what to fix before you get here.
+
+A good output is a list of observed failures with the task each one blocked, prioritized by whether it stops a user or merely slows them.

@@ -256,12 +256,20 @@ required; `validate-outcomes.mjs` checks the order.
 7. **`## Activities That Prepare This`.** The shared recommendations first,
    naming the criterion each one serves. Then, where projects actually
    differ, an **Examples** table whose first column reads "If your project is". Then a `Browse ... when these run
-   out.` line naming one or two activity categories. Nothing follows it but
+   out.` line naming the activity pages to browse,
+   usually one or two. Nothing follows it but
    `## References` on a page that cites sources.
 
-   Every activity you link here must carry a `Recommended` or `Workshop` badge;
-   `scripts/validate-activities.mjs` fails otherwise. Promote and link in the
-   same commit.
+   This section drives the activity badges. Linking an activity here makes
+   it Recommended and adds a Prepares badge naming this page, linking back to
+   this section, to the activity's badge line (`<ActivityMeta>`, computed by
+   `src/lib/activity-links.mjs` from the page's MDX); removing the link
+   demotes it. So the section's heading stays exactly
+   `## Activities That Prepare This`, it ends at the next `## `, and every
+   activity link inside it counts, prose and Examples table alike.
+   `scripts/validate-activities.mjs` fails on a link whose anchor matches no
+   activity heading. Demoting an activity on the schedule's Optional line
+   also means removing it from the schedule in the same commit.
 
    Two pages go without it: Workshop Activities, whose entries are
    activities, and the Bidding Survey, which no activity prepares.
@@ -470,7 +478,7 @@ the student has to learn first.
   Thanksgiving"), never a date. `validate-dates.mjs` fails on one.
 - A rubric that does not total its entry's points.
 - Outcome tags whose counts disagree with the frontmatter.
-- Links to activities that carry no tier badge.
+- Activity links in `## Activities That Prepare This` that you do not mean as recommendations: each one puts a Prepares badge on the activity.
 - Explanations that belong in a guide. Link to the guide instead; two
   descriptions of one practice drift, and students read the assignment.
 - Grading language on any page other than an assignment page. This section is

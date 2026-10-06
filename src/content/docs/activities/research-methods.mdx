@@ -1,0 +1,85 @@
+---
+title: Research Methods
+description: Research questions, data, baselines, and records that let a result be checked.
+---
+
+import ActivityMeta from '/src/components/ActivityMeta.astro';
+
+Research activities turn a question into a result someone else can check: what you're asking, what data answers it, a baseline you've reproduced before claiming to beat it, and a record of every run. They suit a project whose deliverable is a finding rather than a product, and most of them start before any code does.
+
+
+## Write a Literature Review
+
+<ActivityMeta anchor="write-a-literature-review" />
+
+Write a [literature review](https://owl.purdue.edu/owl/research_and_citation/conducting_research/writing_a_literature_review.html) of your research topic: a summary and analysis of the existing research, so you can name the gap your project fills and build on what's already known.
+
+A good output is a literature review that names the gap your project addresses and cites the sources establishing it.
+
+## Define Your Research Questions
+
+<ActivityMeta anchor="define-your-research-questions" effort="1 to 2 h" />
+
+For research and R&D projects, this does the job user stories do for everyone else: it decides what you build and how you'll know it worked. One to two hours with your faculty partner, after a [literature review](/activities/research-methods/#write-a-literature-review).
+
+- **Write the question** in one sentence, specific enough to be answerable before the project ends: "does fine-tuning on Y reduce false negatives on Z below the current baseline" rather than "can transformer models help with X". This [guide to writing research questions](https://research.com/research/how-to-write-a-research-question) helps if you're starting cold.
+- **Say whether the research is primary or secondary**: are you collecting original data, or analyzing data someone else collected? The answer changes your whole timeline, because primary research usually means [an IRB application](/activities/planning-and-risk/#complete-an-irb-application).
+- **State the hypothesis and its negation**: what result would support it, and what result would refute it. If no observable result would change your mind, you have a topic rather than a hypothesis.
+- **Name the baseline** you'll compare against, with a citation and a code link if one exists.
+- **Name the metric** and the threshold that counts as success. Agree it with your partner now, in writing.
+- **Write down what you aren't asking**, because research scope creep stays invisible until you run out of time.
+
+A good output is a page in `docs/requirements.md` carrying the question, whether it's primary or secondary, the hypothesis with its refutation condition, the named baseline with a citation, and the success metric your faculty partner agreed to.
+
+## Define The Data To Collect
+
+<ActivityMeta anchor="define-the-data-to-collect" />
+
+Decide what data answers your research questions: existing data or literature others collected, if you're conducting secondary research, and the original data you'll collect, if you're [conducting primary research](https://owl.purdue.edu/owl/research_and_citation/conducting_research/conducting_primary_research/index.html). Many projects do both.
+
+- **List existing data sources**: for secondary research, list every relevant data source, who created it, when, its format/schema, and how to access or download it.
+- **Define the data you'll collect**: for primary research, define what type of data you need (qualitative, quantitative, mixed) and what methodologies you'll use (surveys/questionnaires, interviews or focus groups, experiments or observations).
+- **Tie each to a question**: explain the purpose of each source and each category of data collected with regard to your research question(s).
+
+A good output is a written data plan whose table lists every data source, existing or to be collected, with its type, creator or collection method, date, format, access method, and purpose against your research questions.
+
+## Reproduce Your Baseline
+
+<ActivityMeta anchor="reproduce-your-baseline" effort="Multi-day" />
+
+Get the number you intend to beat running on your own machine, before you try to beat it. Budget about a week of calendar time.
+
+- **Pick the specific published result**: paper, table, row, number.
+- **Get the authors' code running** if it exists. Expect broken dependencies, missing data, and undocumented preprocessing.
+- **Run it on the data it was published on**, and compare your number to theirs.
+- **Write down the gap and why it exists**: different hardware, a different data version, a preprocessing step the paper never mentioned, or a genuine failure to reproduce.
+- **If you can't reproduce it, say so explicitly** and choose a baseline you can, since you can't claim to beat a number you couldn't reproduce.
+
+A good output is your reproduced number next to the published one, with a written explanation of any gap, committed to the repository.
+
+## Keep an Experiment Log
+
+<ActivityMeta anchor="keep-an-experiment-log" effort="Ongoing" />
+
+Record every run you make, so that at the end you can say what you tried and what it showed instead of reconstructing six months from shell history. Ten minutes per experiment.
+
+- **One entry per run**: date, the question it was meant to answer, the exact configuration and commit hash, the result, and what you concluded.
+- **Log the failures too.** The runs that went nowhere are the ones you'll otherwise repeat, and they're what a paper's limitations section is made of.
+- **Note what you changed** relative to the previous run, one thing at a time wherever you can.
+- **Review the log at every sprint boundary** and pull the interesting entries into any sprint write-up.
+
+A good output is a running log in which any entry can be traced to a commit and re-run.
+
+## Make Your Artifact Reproducible
+
+<ActivityMeta anchor="make-your-artifact-reproducible" effort="Half day" />
+
+Get your project to the state where a stranger runs one command and gets your numbers. Half a day.
+
+- **Pin your dependencies**: a lock file or a container image, not a list of package names.
+- **Version or precisely reference your data**, including which split and which preprocessing.
+- **Seed every run**, and record the seeds.
+- **Write the one command** that goes from clean checkout to result table, and put it in the README.
+- **Test it literally**: have a teammate who didn't build it, or your partner's graduate student, run it fresh on a different machine and check that the numbers match.
+
+A good output is a repository tag plus a README command that a teammate ran on a different machine and got your result table from.

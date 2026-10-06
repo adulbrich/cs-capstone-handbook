@@ -33,9 +33,11 @@ Sort requirements into three kinds, and give each kind its own section in the do
 - **Non-functional**: how well it does it, with a number. "The dashboard loads in under 3 seconds on the partner's office Wi-Fi." "A fresh clone runs the full pipeline in one documented command."
 - **Constraints**: limits you didn't choose. "Must run on the partner's existing Postgres 14." "No personal data leaves the partner's network." "Ships under the upstream project's license." An inherited codebase belongs here too, because its CI, its review rules, and its hosting bind you before you write a line.
 
+[ISO/IEC 25010](https://www.iso.org/standard/78176.html) defines nine quality characteristics, and they make a checklist for the non-functional section: functional suitability, performance efficiency, compatibility, interaction capability, reliability, security, maintainability, flexibility, and safety. Ask of each whether your partner would notice it missing, write a measured requirement for each one they would, and leave the rest out on purpose.
+
 Textbooks divide requirements further: Wiegers and Beatty's [*Software Requirements*](https://www.microsoftpressstore.com/store/software-requirements-9780735679665), for example, gives business requirements and user requirements a chapter each. Those categories answer whose requirement it is, which makes them good questions to ask in an interview and poor headings for a document, since a reader looking for a requirement searches by what it's about.
 
-The formal treatment is [ISO/IEC/IEEE 29148](https://standards.ieee.org/ieee/29148/6937/), the international standard for requirements engineering of systems and software. It defines the construct of a good requirement, the attributes and characteristics a requirement carries, and the information items a requirements process produces. Read its overview once to see what full rigor involves, and adopt it when a contract or a regulator asks you to; short of that, the time its formality costs is better spent confirming requirements with users.
+The formal treatment is [ISO/IEC/IEEE 29148](https://standards.ieee.org/ieee/29148/6937/), the international standard for requirements engineering of systems and software, which replaced IEEE 830. It defines the construct of a good requirement, the attributes and characteristics a requirement carries, and the information items a requirements process produces. For an overview of what it formalizes, read the Software Requirements chapter of the [*Guide to the Software Engineering Body of Knowledge*](https://www.computer.org/education/bodies-of-knowledge/software-engineering), and adopt the standard itself when a contract or a regulator asks you to; short of that, the time its formality costs is better spent confirming requirements with users.
 
 Requirements come from the people who have the problem: your partner, the people who will use the product, the maintainers of the project you're joining. Start with interviews and a few observed sessions of the current workflow, then look at what existing tools already do. In an interview, ask what people did the last time the problem came up rather than what they would want, because a question about the future gets an opinion and a question about the past gets a fact. Rob Fitzpatrick's [The Mom Test](https://www.momtestbook.com/) is a book on asking those questions without collecting biased feedback.
 
@@ -187,20 +189,19 @@ In research, the equivalent is the research question and a [preregistered](https
 **Activities that exercise this**
 
 - [User Story Mapping](/activities/requirements/#user-story-mapping): produces the first real version of this document in a single session.
-- [The Mom Test](/activities/creative/#the-mom-test): interviews that surface requirements without leading the person to the answer you wanted.
-- [Stakeholder Mapping](/activities/planning/#stakeholder-mapping): who has a requirement to give you, and whose you haven't heard yet.
-- [User Manual](/activities/requirements/#user-manual): writing the manual first surfaces requirements you hadn't noticed.
-- [Prioritization](/activities/planning/#prioritization): the ranking this document depends on.
-- [Define your Personas](/activities/user/#define-your-personas) and [Find Users](/activities/user/#find-users): how an assumed requirement becomes a confirmed one.
-- [Identify Success Metrics](/activities/planning/#identify-success-metrics): the metrics this document records, chosen before the data comes in.
-- [Definition of Done](/activities/planning/#definition-of-done): the bar a requirement has to clear to count as met.
+- [The Mom Test](/activities/working-with-users/#the-mom-test): interviews that surface requirements without leading the person to the answer you wanted.
+- [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping): who has a requirement to give you, and whose you haven't heard yet.
+- [User Manual](/activities/testing-release-and-handoff/#user-manual): writing the manual first surfaces requirements you hadn't noticed.
+- [Prioritization](/activities/requirements/#prioritization): the ranking this document depends on.
+- [Define your Personas](/activities/requirements/#define-your-personas) and [Find Users](/activities/working-with-users/#find-users): how an assumed requirement becomes a confirmed one.
+- [Identify Success Metrics](/activities/requirements/#identify-success-metrics): the metrics this document records, chosen before the data comes in.
+- [Definition of Done](/activities/team-and-workflow/#definition-of-done): the bar a requirement has to clear to count as met.
 - [Domain Model](/activities/requirements/#domain-model): the shared vocabulary your requirements are written in.
-- [Analyze an Existing Codebase](/activities/reflective/#analyze-an-existing-codebase): the constraints an inherited codebase puts on you, written down before you change it.
+- [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase): the constraints an inherited codebase puts on you, written down before you change it.
 - [Lean Canvas](/activities/requirements/#lean-canvas) and [Jobs to Be Done Theory](/activities/requirements/#jobs-to-be-done-theory): framing what the product is for before listing what it does.
 - [Current vs Ideal Workflow](/activities/requirements/#current-vs-ideal-workflow) and [Is / Is-Not](/activities/requirements/#is--is-not): two fast ways to bound scope with a partner.
 - [User's Emotional Objectives](/activities/requirements/#users-emotional-objectives): the requirements people don't state directly.
-- [Low or Medium Fidelity Prototype](/activities/requirements/#low-or-medium-fidelity-prototype): the cheapest way to confirm a requirement before building it.
-- [High Fidelity Prototype](/activities/design/#high-fidelity-prototype): the same check once the shape has settled.
-- [Create Good Survey or Interview Questions](/activities/design/#create-good-survey-or-interview-questions): how you avoid leading the partner to the answer you wanted.
-- [Define your Research Questions](/activities/requirements/#define-your-research-questions), [Collect Data Sources](/activities/requirements/#collect-data-sources), [Define the Data to Collect](/activities/requirements/#define-the-data-to-collect), and [Hypothesis Testing](/activities/requirements/#hypothesis-testing): the research project's equivalents of a requirements list.
-- [Ideate About User Activities](/activities/user/#ideate-about-user-activities) and [Do a User Activity](/activities/user/#do-a-user-activity): requirements found by watching rather than asking.
+- [Prototype an Interface](/activities/interaction-design/#prototype-an-interface): the cheapest way to confirm a requirement before building it, at low fidelity first and high fidelity once the shape has settled.
+- [Create Good Survey or Interview Questions](/activities/working-with-users/#create-good-survey-or-interview-questions): how you avoid leading the partner to the answer you wanted.
+- [Define your Research Questions](/activities/research-methods/#define-your-research-questions), [Define the Data to Collect](/activities/research-methods/#define-the-data-to-collect), and [Hypothesis Testing](/activities/requirements/#hypothesis-testing): the research project's equivalents of a requirements list.
+- [Ideate About User Activities](/activities/working-with-users/#ideate-about-user-activities) and [Do a User Activity](/activities/working-with-users/#do-a-user-activity): requirements found by watching rather than asking.

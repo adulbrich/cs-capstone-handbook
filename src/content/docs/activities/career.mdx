@@ -1,11 +1,9 @@
 ---
-title: Career Preparation Activities
-description: Career preparation for computer science students, including resume building, portfolio development, public repositories, mock interviews, personal branding, and networking. Practical steps to turn a year of capstone work into things you can prove.
-sidebar:
-  order: 2
+title: Career
+description: Turning a long project into a resume, a portfolio, and interviews.
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 
 {/* Checked at the annual review: all external links verified live. The market framing
     below is deliberately free of statistics and named tools so it ages slowly.
@@ -21,7 +19,7 @@ These activities also build the record you draw on when you write about your own
 
 ## Resume Building
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="resume-building" />
 
 Get your resume to the state where the capstone entry does real work for you, and practice the peer review exchange with a teammate. Two to three hours, plus a peer round.
 
@@ -40,7 +38,7 @@ A good output is the original resume, the peer feedback, and the revised version
 
 ## Portfolio Development
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="portfolio-development" effort="Half day" />
 
 Build the page you send someone instead of explaining yourself in a paragraph. Half a day to build, then short updates as work lands.
 
@@ -53,7 +51,7 @@ A good output is a live portfolio link plus the peer feedback you acted on.
 
 ## Public Code Repository
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="public-code-repository" effort="Half day" />
 
 Get one repository to the standard where a stranger can run it and a reviewer can read it. Half a day.
 
@@ -66,7 +64,7 @@ A good output is the repository link plus the peer feedback you acted on.
 
 ## Mock Interviews
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="mock-interviews" />
 
 Find out whether your account of your own work actually lands on someone who wasn't there. About an hour each, two of them.
 
@@ -79,7 +77,7 @@ A good output is a written summary of both interviews naming what you'd change.
 
 ## Personal Branding
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="personal-branding" />
 
 Write up one real problem you solved, publicly, so there's something with your name on it that isn't a resume. Two to three hours for the post.
 
@@ -92,7 +90,7 @@ A good output is a published post about a real problem you solved, plus your wri
 
 ## Practice LeetCode
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="practice-leetcode" />
 
 Keep the live-coding muscle warm. About an hour per problem, at least three.
 
@@ -104,7 +102,7 @@ A good output is your list of problems solved plus a brief reflection on the con
 
 ## LinkedIn Optimization
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="linkedin-optimization" />
 
 Get your profile to say something specific about what you've built. About an hour, plus a peer round.
 
@@ -115,7 +113,7 @@ A good output is your updated profile link plus a short note on what you changed
 
 ## Write a Cover Letter
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="write-a-cover-letter" />
 
 Write one letter that could only have been written by you, for one job. Ninety minutes, plus a peer round.
 
@@ -127,7 +125,7 @@ A good output is the job description, the peer feedback, and the final letter ke
 
 ## Attend a Guest Speaker Event
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="attend-a-guest-speaker-event" />
 
 Hear how careers actually went, rather than how they look in retrospect on a profile. Two events plus a write-up.
 
@@ -139,7 +137,7 @@ A good output is your reflection, including the questions you asked and the answ
 
 ## Attend Job Fairs or Industry Networking Events
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="attend-job-fairs-or-industry-networking-events" />
 
 Meet employers in a setting where the conversation isn't an application. Two events.
 
@@ -151,7 +149,7 @@ A good output is a summary per event, with date, contacts made, companies of int
 
 ## Join a Professional Association
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="join-a-professional-association" />
 
 Get access to a professional community that outlasts the course. Membership plus two events.
 
@@ -162,7 +160,7 @@ A good output is your membership confirmation plus a summary of the events and t
 
 ## Complete an Online Certification Course
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="complete-an-online-certification-course" effort="Multi-day" />
 
 Close a specific gap between what your project needs and what you currently know. Effort varies widely by course, from a weekend to several weeks.
 
@@ -173,9 +171,9 @@ A good output is the certification plus a summary of the new skills and how they
 
 ## Participate in a Hackathon
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
+<ActivityMeta anchor="participate-in-a-hackathon" effort="Multi-day" />
 
-Build something end to end under a hard deadline, which is a different skill from building something well over ten weeks. A weekend.
+Build something end to end under a hard deadline, which is a different skill from building something well over several months. A weekend.
 
 - **Join a hackathon or codefest**, such as BeaverHacks.
 - **Ship something that runs**, however small.
@@ -185,7 +183,7 @@ A good output is a summary of the project with screenshots, the challenges you h
 
 ## Job Shadowing
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="job-shadowing" />
 
 Find out what the job is actually like on an ordinary day. One day, plus a few weeks of lead time to arrange it.
 
@@ -196,7 +194,7 @@ A good output is a reflection on what surprised you about the day-to-day work an
 
 ## Read Wait But Why on Picking a Career
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="read-wait-but-why-on-picking-a-career" effort="1 h" />
 
 Get a framework for career decisions rather than a list of options. About an hour to read; it's a long post.
 
@@ -207,7 +205,7 @@ A good output is your written reflection, applied to your actual situation rathe
 
 ## Read a Recruiting Advice Blog Post
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="read-a-recruiting-advice-blog-post" />
 
 Learn how hiring works from people who have watched it from both sides. Thirty minutes to read, plus a reflection.
 

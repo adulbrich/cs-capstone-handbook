@@ -1,22 +1,28 @@
 ---
-title: Requirements Activities
-description: Explore various requirements activities for your computer science capstone project, including Lean Canvas, hypothesis testing, user story mapping, and domain modeling. Enhance your project by addressing user emotional objectives and creating effective user manuals.
-sidebar:
-  order: 9
+title: Requirements
+description: Deciding what to build and for whom, and how you will know it worked.
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 import LeanCanvas from '../../../components/LeanCanvas.astro';
 
-Your requirements create a shared understanding of the problem being solved and what needs to be built. These activities help you frame them.
+Your requirements create a shared understanding of the problem being solved, what needs to be built, and how you'll know it worked. These activities run from testing whether the problem is real, through who has it and what they're trying to get done, to what to build first and what to measure.
 
 Your requirements live in the repository as continuously updated docs, and the user-facing ones determine whether real people can use what you build. Before running any interview-based activity on this page, read the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md), because it steers an interview toward what people have done rather than compliments on your idea. Then check the [Shipping guide](/guides/shipping/) to see where your requirements work is heading.
 
 > "The hardest single part of building a software system is deciding precisely what to build." (Fred Brooks)
 
+<LinkCard
+  title="Planning and Prioritization guide"
+  href="/guides/planning/"
+  description="The prioritization methods (MoSCoW, the three matrices, Scrum ordering, MIT) and the success-metric frameworks (PMF, AARRR, HEART) explained."
+/>
+
+
 ## OSU Advantage Accelerator's Iterate Program
 
-<Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="osu-advantage-accelerators-iterate-program" effort="1 h" />
 
 Attend the OSU Advantage Accelerator's [Iterate](https://advantage.oregonstate.edu/advantage-accelerator/programs/iterate) workshop to pressure-test your project idea as a venture. It's a one-hour interactive virtual workshop covering what separates a startup from an idea, how to identify a problem worth solving, the Value Proposition Canvas, and how to pitch clearly. Sessions run periodically over Zoom; check the page for the next date and register.
 
@@ -32,7 +38,7 @@ A good output is the list of hypotheses the session changed, each with the user 
 
 ## Lean Canvas
 
-<Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="lean-canvas" />
 
 Complete the [Lean Canvas](https://www.leanfoundry.com/tools/lean-canvas) with as much detail as you can.
 
@@ -46,7 +52,7 @@ A good output is your completed Lean Canvas with any additional information that
 
 ## Hypothesis Testing
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="hypothesis-testing" />
 
 Most of the information in your [Lean Canvas](#lean-canvas) is hypotheses. Identify five of the riskiest hypotheses in your plan's customer segments, problems, and competition.
 
@@ -61,9 +67,65 @@ If working on this activity as a team, have each person focus on a different set
 
 A good output is five riskiest hypotheses, each with its pass/fail test, anonymized data from at least five interviews, and a written result including a pivot wherever the hypothesis failed.
 
+## Jobs to Be Done Theory
+
+<ActivityMeta anchor="jobs-to-be-done-theory" />
+
+The [Jobs to Be Done (JTBD) Theory](https://www.coursera.org/articles/jobs-to-be-done) is a framework for understanding the underlying tasks or "jobs" users are trying to accomplish with your product. Instead of focusing solely on features, JTBD helps you uncover the real motivations and desired outcomes of your users.
+
+1. Identify a primary user segment for your project.
+2. Interview or observe users to understand what "job" they're hiring your product to do.
+3. Write at least two JTBD statements in the format:  
+   *"When [situation], I want to [motivation], so I can [expected outcome] without [pain point]."*
+
+Capture your JTBD statements and a brief explanation of how these insights will influence your requirements or design decisions. Interview with the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md) in hand.
+
+A good output is the job statement for your primary user segment, backed by what you heard in interviews or observation, and the features it reprioritizes.
+
+## Current vs. Ideal Workflow
+
+<ActivityMeta anchor="current-vs-ideal-workflow" />
+
+Analyzing the current workflow versus the ideal workflow helps you identify pain points, inefficiencies, and opportunities for improvement in your project's domain.
+
+1. Document the current workflow for your target users as a step-by-step process.
+2. Identify bottlenecks, frustrations, or areas for improvement.
+3. Describe or diagram the ideal workflow that your solution aims to enable.
+
+A good output is a comparison of the current and ideal workflows (as text or diagrams), highlighting key differences and how your project addresses the gaps.
+
+## User's Emotional Objectives
+
+<ActivityMeta anchor="users-emotional-objectives" />
+
+Look past your users' functional goals to the emotional objectives behind them, since those shape whether people choose your software and keep using it.
+
+- What emotions is the user seeking when using the software?
+- How does the software impact their relationships or self-perception?
+
+For example, a peer resume critique website might meet the functional goal of reviewing resumes, but the emotional objective is to ease job search anxiety. Similarly, in the auto industry, messaging focuses on emotions: a car might make someone feel wealthy or adventurous. How can your software address these emotional needs?
+
+Write an analysis of your project from the perspective of the user emotional objectives, explaining which user segment or audience you're targeting. Share it with your team.
+
+A good output is a written list of the emotional objectives behind your users' functional goals, and one design decision each one changes.
+
+## Define your Personas
+
+<ActivityMeta anchor="define-your-personas" />
+
+Read/browse [Personas: Study Guide](https://www.nngroup.com/articles/personas-study-guide/) then create 2-3 personas relevant for your project and explain how they are being used to ideate or prioritize features. Consider splitting the content of the article between team members.
+
+Some ideas to define personas:
+
+- What is your ideal user's current behavior? 
+- What do they want to achieve? 
+- Define the demographic profiles, goals, and a scenario use case.
+
+A good output is 2 to 3 personas with demographics, goals, and behaviors, plus a note on which features they caused you to prioritize or drop.
+
 ## User Story Mapping
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="user-story-mapping" effort="1 to 2 h" />
 
 Read the Nielsen Norman Group's [User Story Mapping](https://www.nngroup.com/articles/user-story-mapping/) article, about ten minutes, then map your project's main user flows and write the initial epics and user stories under them. The map defines your use cases and scenarios; it grows later, so map the main flows rather than every edge case. About an hour and a half as a team.
 
@@ -82,26 +144,11 @@ When writing user stories, ensure they meet the INVEST criteria:
 
 Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
-A good output is a user story map with epics and written user stories, each marked as in or out of scope for this year.
-
-## User's Emotional Objectives
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-
-Look past your users' functional goals to the emotional objectives behind them, since those shape whether people choose your software and keep using it.
-
-- What emotions is the user seeking when using the software?
-- How does the software impact their relationships or self-perception?
-
-For example, a peer resume critique website might meet the functional goal of reviewing resumes, but the emotional objective is to ease job search anxiety. Similarly, in the auto industry, messaging focuses on emotions: a car might make someone feel wealthy or adventurous. How can your software address these emotional needs?
-
-Write an analysis of your project from the perspective of the user emotional objectives, explaining which user segment or audience you're targeting. Share it with your team.
-
-A good output is a written list of the emotional objectives behind your users' functional goals, and one design decision each one changes.
+A good output is a user story map with epics and written user stories, each marked as in or out of scope for the project.
 
 ## Domain Model
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="domain-model" />
 
 Create a [Domain Model](https://simplea.com/Articles/domain-model) that represents the key entities and relationships within your project's problem space.
 
@@ -112,98 +159,9 @@ Create a [Domain Model](https://simplea.com/Articles/domain-model) that represen
 
 A good output is a diagram along with a brief explanation of the entities and their relationships.
 
-## User Manual
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" /> <Badge text="Recommended" variant="tip" class="mb-6"/>
-
-Develop a preliminary user manual that outlines how end-users will interact with your software.
-
-- Identify Key Features: List the core features users need to know about.
-- User Instructions: Provide step-by-step guides on how to use the system, including screen navigation and input details.
-- Common Issues and Solutions: Include troubleshooting tips for common problems users may face.
-- Interface Overview: Provide a brief description of the user interface.
-
-If working on this activity as a team, have each person focus on a different subset of the manual.
-
-A good output is a draft of the user manual with clear instructions on using the main features of your system.
-
-## Define Your Research Questions
-
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
-
-For research and R&D projects, this does the job user stories do for everyone else: it decides what you build and how you'll know it worked. One to two hours with your faculty partner, after a [literature review](/activities/creative/#write-a-literature-review).
-
-- **Write the question** in one sentence, specific enough to be answerable in three terms: "does fine-tuning on Y reduce false negatives on Z below the current baseline" rather than "can transformer models help with X". This [guide to writing research questions](https://research.com/research/how-to-write-a-research-question) helps if you're starting cold.
-- **Say whether the research is primary or secondary**: are you collecting original data, or analyzing data someone else collected? The answer changes your whole timeline, because primary research usually means [an IRB application](/activities/user/#complete-an-irb-application).
-- **State the hypothesis and its negation**: what result would support it, and what result would refute it. If no observable result would change your mind, you have a topic rather than a hypothesis.
-- **Name the baseline** you'll compare against, with a citation and a code link if one exists.
-- **Name the metric** and the threshold that counts as success. Agree it with your partner now, in writing.
-- **Write down what you aren't asking**, because research scope creep stays invisible until you run out of time.
-
-A good output is a page in `docs/requirements.md` carrying the question, whether it's primary or secondary, the hypothesis with its refutation condition, the named baseline with a citation, and the success metric your faculty partner agreed to.
-
-## Collect Data Sources
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-
-If you're conducting secondary research, i.e., analyzing existing data or literature collected by others, list all the relevant data sources needed to answer your research questions.
-
-Specifically, list the data sources, who created them, when, their format/schema, how to access or download them, and what their purpose is in the context of your research.
-
-A good output is a table of every data source with its creator, date, format, access method, and role in answering your research question.
-
-## Define The Data To Collect
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-
-If you're [conducting primary research](https://owl.purdue.edu/owl/research_and_citation/conducting_research/conducting_primary_research/index.html), i.e., collecting original data, define what type of data (i.e., qualitative, quantitative, mixed) you need to collect, and what methodologies you'll use (i.e., surveys/questionnaires, interviews or focus groups, experiments or observations). Explain the purpose of each category of data collected with regard to your research question(s).
-
-A good output is a written data collection plan naming the data types, the methodologies, and the purpose of each category against your research questions.
-
-## Low or Medium-Fidelity Prototype
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-
-Create a low or medium-fidelity prototype to clarify and validate the project's functional requirements.
-
-- Define Key Features: Identify the main features to be included in the prototype.
-- Create the Prototype: Use tools like Figma, [Penpot](https://penpot.app/), or similar to build a clickable prototype that demonstrates key user flows.
-- Validate Requirements: Review the prototype with stakeholders or users to ensure it meets functional requirements.
-
-Read this [blog post about a SoundCloud iOS redesign](https://www.freecodecamp.org/news/my-friends-hate-soundcloud-ios-so-i-redesigned-it-for-them-d3038cdd020b).
-
-A good output is the prototype link and a brief reflection on how it clarified or influenced the project's requirements.
-
-## Jobs to Be Done Theory
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-
-The [Jobs to Be Done (JTBD) Theory](https://www.coursera.org/articles/jobs-to-be-done) is a framework for understanding the underlying tasks or "jobs" users are trying to accomplish with your product. Instead of focusing solely on features, JTBD helps you uncover the real motivations and desired outcomes of your users.
-
-1. Identify a primary user segment for your project.
-2. Interview or observe users to understand what "job" they're hiring your product to do.
-3. Write at least two JTBD statements in the format:  
-   *"When [situation], I want to [motivation], so I can [expected outcome] without [pain point]."*
-
-Capture your JTBD statements and a brief explanation of how these insights will influence your requirements or design decisions. Interview with the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md) in hand.
-
-A good output is the job statement for your primary user segment, backed by what you heard in interviews or observation, and the features it reprioritizes.
-
-## Current vs. Ideal Workflow
-
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
-
-Analyzing the current workflow versus the ideal workflow helps you identify pain points, inefficiencies, and opportunities for improvement in your project's domain.
-
-1. Document the current workflow for your target users as a step-by-step process.
-2. Identify bottlenecks, frustrations, or areas for improvement.
-3. Describe or diagram the ideal workflow that your solution aims to enable.
-
-A good output is a comparison of the current and ideal workflows (as text or diagrams), highlighting key differences and how your project addresses the gaps.
-
 ## Is / Is-Not
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="is--is-not" />
 
 The Is / Is-Not analysis helps clarify the scope and boundaries of your project by explicitly stating what the project is and is not.
 
@@ -214,3 +172,76 @@ The Is / Is-Not analysis helps clarify the scope and boundaries of your project 
 An explicit "Is-Not" column makes it easier to state accurately, later, what you committed to ship.
 
 A good output is your Is / Is-Not table or list, with a short explanation of how this analysis will help keep your project focused and aligned.
+
+## Prioritization
+
+<ActivityMeta anchor="prioritization" />
+
+Turn your backlog of requirements or tasks into a ranked list with a reason next to each rank, so that sprint planning pulls from the top instead of re-arguing the order. Forty-five minutes as a team, then a few minutes after every project partner meeting.
+
+- **Pick one method** from the [guide](/guides/planning/#prioritization-methods): MoSCoW for a first pass, impact-effort or cost-value when the argument is about return on time, Eisenhower for tasks rather than features.
+- **Estimate before you plot**: put a rough effort in hours on each item first, or the matrix becomes a vote on enthusiasm.
+- **Apply it to the whole backlog**: every item gets a bucket or a quadrant, including the ones you'd rather not discuss.
+- **Check dependencies**: an item is only ready when nothing above it blocks it. Move blocked items down.
+- **Write the reason**: one line per item explaining its rank, readable by a teammate who wasn't in the room.
+
+A good output is your prioritized list of requirements or tasks, the method you used named, and a stated reason for each item's rank.
+
+## Identify Success Metrics
+
+<ActivityMeta anchor="identify-success-metrics" effort="1 to 2 h" />
+
+Decide what "it worked" will mean, in numbers, while you're still far enough from the deadline that the result can't sway you. About an hour and a half as a team, once when you first commit to what shipping will mean, and again when the deadline is close enough to check the number.
+
+Every project commits to 2 or 3 metrics, and what makes a good one differs by project, so start with the subsection closest to yours. Product and game teams can borrow from the PMF question, AARRR, and HEART in the [guide](/guides/planning/#success-metric-frameworks).
+
+Four rules hold whatever you build:
+
+- **Write the metric and the decision rule together**: which value is success, which is failure, and what you do in each case.
+- **Commit it, dated, before you measure.** A metric chosen after seeing results can be picked, even unintentionally, to fit whatever the data already shows.
+- **Name the instrument**: analytics (Plausible, Google Analytics, Hotjar), database counts, benchmark output, interviews, surveys.
+- **Beware vanity metrics.** Downloads count people who tried it once; retention counts the people who came back. Ask what number would make your partner call it a success.
+
+### New Product or Game
+
+Usage and retention are the point, so measure people, not code:
+
+- Downloads or sign-ups, monthly active users, churn rate
+- Average session duration, task success rate
+- Net Promoter Score, positive mentions or up-votes
+
+AARRR's activation and retention and HEART's task success are good first picks; ProductPlan's [metrics list](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf) has more.
+
+### Research
+
+Your metric decides what counts as a result, so it's a hard-to-reverse decision: change it late and every earlier run stops being comparable.
+
+- **The primary metric**, and why it's right for the question rather than easiest to compute.
+- **The comparison**: against which baseline, on which data split, over how many runs, with which seeds.
+- **The decision rule**: what value supports the hypothesis, what value refutes it.
+- **Secondary metrics you'll report regardless of outcome**, including the ones that could make you look bad.
+
+Pair this with [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline); a metric only means something next to a number you've reproduced.
+
+### FOSS
+
+Your success is measured in someone else's repository, so read what the project itself tracks:
+
+- Patches submitted, reviewed, merged, and still merged a month later
+- Review turnaround, and whether maintainers start assigning you work
+- Issues closed, and whether your changes appear in a tagged release
+
+A trivial patch merged early is a stronger signal than a large one still unmerged at the end; it proves the pipeline works.
+
+### Consultancy
+
+Your top rungs describe actions the partner takes, so measure their adoption rather than your output:
+
+- Is it running in their environment, and whose environment is it
+- How many of their people use it, and for what task
+- Has it cleared their security or IT review, and when
+- What would have to be true for them to call it production
+
+Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
+
+A good output is 2 or 3 metrics with their decision rules and a named instrumentation method for at least one, written down and dated.
