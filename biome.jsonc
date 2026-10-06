@@ -45,7 +45,11 @@
     {
       // Qualtrics pipes text as ${e://Field/Name}: in the survey wording and
       // the generator it is data, never a template literal gone wrong.
-      "includes": ["src/lib/tools/**", "src/data/peer-evaluation.mjs"],
+      "includes": [
+        "src/lib/tools/**",
+        "src/data/peer-evaluation.mjs",
+        "src/data/partner-evaluation.mjs"
+      ],
       "linter": {
         "rules": {
           "suspicious": {
