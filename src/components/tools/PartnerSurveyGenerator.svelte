@@ -18,7 +18,7 @@ import {
   VARIANTS,
 } from "../../lib/tools/partner-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
-import { defaultLabel, termOf } from "../../lib/tools/term-label.mjs";
+import { labelFor, termOf } from "../../lib/tools/term-label.mjs";
 
 const { guidance, pageUrl, rubrics, weights } = $props();
 
@@ -27,15 +27,16 @@ const guidanceMap = $derived(new Map(Object.entries(guidance)));
 
 const TERMS = ["fall", "winter", "spring"];
 
-/** Which survey: "pulse" or "final", and the term, the current one first. */
+/** Which survey, "pulse" or "final", and its term, the current one first. */
 let kind = $state("pulse");
 let term = $state(termOf(new Date()));
 
-const variant = $derived(kind === "pulse" ? "pulse" : `final-${term}`);
-const rubric = $derived(kind === "pulse" ? rubrics.pulse : rubrics[term]);
-const fields = $derived(VARIANTS[variant].fields);
-/** The contact list's close-date field: MidtermCloseDate or FinalCloseDate. */
-const closeField = $derived(fields[1]);
+const { rubric, variant } = $derived(
+  kind === "pulse"
+    ? { rubric: rubrics.pulse, variant: "pulse" }
+    : { rubric: rubrics[term], variant: `final-${term}` }
+);
+const { closeField, fields } = $derived(VARIANTS[variant]);
 const email = $derived(distributionEmails[variant]);
 
 /** Which copy button was last used, for its "Copied" label. */
@@ -48,7 +49,8 @@ async function copy(key, text) {
 
 const texts = $state({ roster: "", sheet: "" });
 const names = $state({ roster: "", sheet: "" });
-let label = $state(defaultLabel());
+/** The term's label until edited; picking another term resets it. */
+let label = $derived(labelFor(term));
 let closeDate = $state("");
 
 /** The close date as partners read it: weekday, month, and day. */
@@ -132,16 +134,14 @@ function downloadContacts() {
       <option value="final">End-of-Term Survey</option>
     </select>
   </label>
-  {#if kind === "final"}
-    <label>
-      <span>Term, set in the survey as the <code>Term</code> field</span>
-      <select bind:value={term}>
-        {#each TERMS as option (option)}
-          <option value={option}>{option}</option>
-        {/each}
-      </select>
-    </label>
-  {/if}
+  <label>
+    <span>Term: names the survey, and the End-of-Term Survey sets it as its <code>Term</code> field</span>
+    <select bind:value={term}>
+      {#each TERMS as option (option)}
+        <option value={option}>{option}</option>
+      {/each}
+    </select>
+  </label>
   <label>
     <span>Roster with groups (CSV)</span>
     <input type="file" accept=".csv,text/csv" onchange={reader("roster")} />

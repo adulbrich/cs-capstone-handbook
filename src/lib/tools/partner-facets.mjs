@@ -22,7 +22,8 @@ export const BETWEEN_ANCHORS = [90, 70];
 /** A three-anchor facet's anchors are named "<Top|Middle|Low> anchor (...)". */
 const ANCHOR_NAME = /^(\w+) anchor\b/;
 
-const descending = (criterion) =>
+/** A criterion's ratings, highest points first. */
+export const descending = (criterion) =>
   [...criterion.ratings].sort((a, b) => b.points - a.points);
 
 /** A rating's share of the criterion's points, in percent. */
@@ -33,7 +34,7 @@ const shareOf = (criterion, points) =>
  * Whether the criterion is scored on a ladder of its own (spring
  * Verification and Validation, six rungs) rather than on three anchors.
  */
-export const isLadder = (criterion) => criterion.ratings.length !== 3;
+export const isLadder = (criterion) => criterion.ratings.length > 3;
 
 /** The between choice's label, from the two anchors' names and the share. */
 function betweenLabel(upper, lower, percent, criterion) {
@@ -97,16 +98,17 @@ export function facetChoices(criterion) {
  * selects it and enters a share of the points. The export writes the share
  * in `<tag>_<id>_TEXT`. `min` and `max` are the lowest and highest rungs'
  * shares, the range the page gives a custom scale ("from 50% to 100% of the
- * facet's points"). Null for a three-anchor facet.
+ * facet's points"). The share is free text: the survey does not validate it,
+ * so the scorer stops on anything but a number from `min` to `max`. Null for
+ * a three-anchor facet.
  */
-export function customScaleChoice(criterion, label) {
+export function customScaleChoice(criterion) {
   if (!isLadder(criterion)) {
     return null;
   }
   const ratings = descending(criterion);
   return {
     id: ratings.length + 1,
-    label,
     max: shareOf(criterion, ratings[0].points),
     min: shareOf(criterion, ratings.at(-1).points),
   };

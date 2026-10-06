@@ -473,7 +473,7 @@ test("each end-of-term survey asks one forced question per facet, in CSV order, 
         `${criterion.title}: ${criterion.description}`
       );
       assert.equal(q.Validation.Settings.ForceResponse, "ON");
-      const custom = customScaleChoice(criterion, "");
+      const custom = customScaleChoice(criterion);
       const expected = [
         ...facetChoices(criterion).map((c) => c.label),
         ...(custom ? [customScaleText(custom)] : []),
@@ -654,7 +654,7 @@ test("a labels export of each end-of-term survey carries the tags and labels the
       ladder === -1
         ? []
         : [
-            `${facetTag(ladder)}_${customScaleChoice(rubric.criteria[ladder], "").id}_TEXT`,
+            `${facetTag(ladder)}_${customScaleChoice(rubric.criteria[ladder]).id}_TEXT`,
           ],
       term
     );

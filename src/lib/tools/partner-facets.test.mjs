@@ -110,11 +110,11 @@ test("spring Requirements between the middle and low anchors is 3.5, not 3", () 
 
 test("the ladder's custom scale runs from its lowest to its highest rung; anchored facets have none", () => {
   for (const { criterion, term } of criteria) {
-    const custom = customScaleChoice(criterion, "label");
+    const custom = customScaleChoice(criterion);
     if (isLadder(criterion)) {
       assert.deepEqual(
         custom,
-        { id: criterion.ratings.length + 1, label: "label", max: 100, min: 50 },
+        { id: criterion.ratings.length + 1, max: 100, min: 50 },
         term
       );
     } else {

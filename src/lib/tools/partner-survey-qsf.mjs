@@ -28,6 +28,7 @@ import {
 import {
   BETWEEN_ANCHORS,
   customScaleChoice,
+  descending,
   facetChoices,
   isLadder,
 } from "./partner-facets.mjs";
@@ -97,7 +98,7 @@ const anchorItem = (rating) =>
  * with the CSV's descriptions, highest first.
  */
 function facetGuide(criterion, bullets) {
-  const ratings = [...criterion.ratings].sort((a, b) => b.points - a.points);
+  const ratings = descending(criterion);
   return [
     `<b>${criterion.title}</b>`,
     `<b>What it looks like</b><ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`,
@@ -122,7 +123,7 @@ function facetQuestions(rubric, guidance) {
     throw new Error(`The ${rubric.name} survey has ${problems.join("; ")}.`);
   }
   return rubric.criteria.map((criterion) => {
-    const custom = customScaleChoice(criterion, "");
+    const custom = customScaleChoice(criterion);
     return {
       choices: [
         ...facetChoices(criterion).map((choice) => choice.label),
@@ -142,6 +143,7 @@ export const facetTag = (i) => `F${i + 1}`;
 /** The End-of-Term Survey of one term: `term` names it in the Term field. */
 function finalVariant(term) {
   return {
+    closeField: "FinalCloseDate",
     fields: ["Team", "FinalCloseDate"],
     metaDescription:
       "The project partner's end-of-term scores for one capstone team.",
@@ -170,7 +172,6 @@ function finalVariant(term) {
       }
       return qids;
     },
-    term,
     title: "Project Partner End-of-Term Survey",
     values: { Term: term },
   };
@@ -179,7 +180,7 @@ function finalVariant(term) {
 /**
  * The survey variants, keyed as the scorer's SURVEYS are. `title` is the
  * name partners see; `fields` the embedded data the contact list carries,
- * `Team` first; `values` the embedded data set to a fixed value in the flow;
+ * `Team` first; `closeField` the one of them the close date fills; `values` the embedded data set to a fixed value in the flow;
  * `metaDescription` the survey's one-line summary; `ratings` adds the rating
  * page's questions and returns their IDs in page order.
  */
@@ -188,6 +189,7 @@ export const VARIANTS = {
   "final-spring": finalVariant("spring"),
   "final-winter": finalVariant("winter"),
   pulse: {
+    closeField: "MidtermCloseDate",
     fields: ["Team", "MidtermCloseDate"],
     metaDescription:
       "Statements about how one capstone team works with its project partner.",

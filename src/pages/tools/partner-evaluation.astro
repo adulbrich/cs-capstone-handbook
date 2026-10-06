@@ -2,10 +2,10 @@
 import { getEntry } from "astro:content";
 // The project partner survey generator (#440, #446) and scorer (#445). The
 // rubrics, the "What it looks like" lists, the A lower bound, and the two
-// surveys' weights are read here, at
-// build time, from the files the handbook renders, so the page can never
-// carry a second copy of a rating name, a point value, or a weight. The
-// components read the dropped files in the browser only.
+// surveys' weights are read here, at build time, from the files the handbook
+// renders, so the page can never carry a second copy of a rating name, a
+// point value, or a weight. The components read the dropped files in the
+// browser only.
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import fallCsv from "/canvas/assignments/project-partner-evaluation/partner-final-fall-rubric.csv?raw";
 import springCsv from "/canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv?raw";
@@ -71,8 +71,9 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
   <p>
     Generate the Midterm Pulse or a term's End-of-Term Survey before it goes
     out, then score its export once it closes. Every file is read in your
-    browser and never uploaded. Both surveys are generated; the Midterm Pulse
-    is scored, and the End-of-Term Survey is recognized but not scored yet.
+    browser and never uploaded. Both surveys are generated; only the Midterm
+    Pulse is scored so far, and the scorer below refuses an End-of-Term
+    export.
   </p>
 
   <h2>Generate the survey</h2>
@@ -106,8 +107,8 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
       like a partner.
     </li>
     <li>
-      Pick the survey, the term for the End-of-Term Survey (the current one
-      by default), and the close date: it goes into the contact list as
+      Pick the survey, the term (the current one by default; it sets the
+      label in front of the survey name), and the close date: it goes into the contact list as
       <code>MidtermCloseDate</code> or <code>FinalCloseDate</code>, and the
       survey's first page shows it.
     </li>

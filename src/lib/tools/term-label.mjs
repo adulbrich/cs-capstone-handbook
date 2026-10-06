@@ -18,8 +18,18 @@ export function termOf(date) {
   return month < 6 ? "spring" : "fall";
 }
 
-/** The label for `date`'s term, section 001: `CS_461_001_F` and the year. */
-export function defaultLabel(date = new Date()) {
-  const { course, letter } = TERMS[termOf(date)];
-  return `CS_${course}_001_${letter}${date.getFullYear()}`;
+/**
+ * The label for `term` in the course year `date` falls in, section 001:
+ * `CS_461_001_F` and the year. A course year runs fall, winter, spring, so
+ * winter and spring carry the year after fall's.
+ */
+export function labelFor(term, date = new Date()) {
+  const { course, letter } = TERMS[term];
+  const fallYear =
+    termOf(date) === "fall" ? date.getFullYear() : date.getFullYear() - 1;
+  const year = term === "fall" ? fallYear : fallYear + 1;
+  return `CS_${course}_001_${letter}${year}`;
 }
+
+/** The label for `date`'s own term. */
+export const defaultLabel = (date = new Date()) => labelFor(termOf(date), date);

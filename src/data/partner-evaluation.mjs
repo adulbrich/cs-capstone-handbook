@@ -18,6 +18,19 @@ export const criterionNotes = {
     "If you have not given the team feedback yet, answer {middle} on {criterion}.",
 };
 
+/** The lines every partner survey's opening page starts with. */
+const introHead = [
+  "Thank you for partnering with the OSU Computer Science Capstone.",
+  "This survey is about one team: <b>${e://Field/Team}</b>",
+];
+
+/** The lines every partner survey's opening page ends with. */
+const introTail = (pageUrl) => [
+  "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
+  "You can also leave comments on the course at the end.",
+  `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
+];
+
 /**
  * The pulse's opening page. `statements` is how many the matrix rates,
  * `lowest` and `highest` the scale's ends, `notes` the filled
@@ -34,14 +47,11 @@ export function pulseIntro({
   statements,
 }) {
   return [
-    "Thank you for partnering with the OSU Computer Science Capstone.",
-    "This survey is about one team: <b>${e://Field/Team}</b>",
+    ...introHead,
     `It has ${statements} statements about how the team works with you, each rated from ${lowest} to ${highest}. It takes about two minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
     `Your answers set ${pulseWeight}% of each student's grade this term. The end-of-term survey sets ${finalWeight}% and goes into more depth. This midterm check exists so the team hears from you while there is still time to change course.`,
     ...notes,
-    "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
-    "You can also leave comments on the course at the end.",
-    `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
+    ...introTail(pageUrl),
   ].join("<br><br>");
 }
 
@@ -57,14 +67,11 @@ export function finalIntro({ between, facets, finalWeight, ladders, pageUrl }) {
       `${title} is scored on the outcome ladder instead: pick the highest rung that is true today. Your team's Definition of Shipped says what each rung means for this project.`
   );
   return [
-    "Thank you for partnering with the OSU Computer Science Capstone.",
-    "This survey is about one team: <b>${e://Field/Team}</b>",
+    ...introHead,
     `It scores the team on ${facets} facets of its work with you this term. Each facet shows what it looks like and its written anchors; choose the anchor that fits the team. When the team sits between two anchors, choose the between answer, worth ${between.join("% or ")}% of the facet's points. <b>Please submit it by \${e://Field/FinalCloseDate}.</b>`,
     ...ladderNote,
     `Your answers set ${finalWeight}% of each student's grade this term.`,
-    "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
-    "You can also leave comments on the course at the end.",
-    `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
+    ...introTail(pageUrl),
   ].join("<br><br>");
 }
 
