@@ -77,6 +77,9 @@ function idMaker(seed) {
   };
 }
 
+/** How an export writes an unset timestamp. */
+const UNSET = "0000-00-00 00:00:00";
+
 const pad = (n) => String(n).padStart(2, "0");
 
 /** Qualtrics's timestamp format, "YYYY-MM-DD HH:MM:SS". */
@@ -587,7 +590,7 @@ export function buildPeerSurvey({
         element(
           "SQ",
           payload.QuestionID,
-          plain(payload.QuestionText),
+          payload.QuestionDescription,
           null,
           payload
         )
@@ -601,19 +604,19 @@ export function buildPeerSurvey({
       CreatorID: ids.id("UR"),
       Deleted: null,
       DivisionID: null,
-      LastAccessed: "0000-00-00 00:00:00",
-      LastActivated: "0000-00-00 00:00:00",
+      LastAccessed: UNSET,
+      LastActivated: UNSET,
       LastModified: stamp,
       SurveyActiveResponseSet: responseSet,
       SurveyBrandID: "oregonstate",
       SurveyCreationDate: stamp,
       SurveyDescription: null,
-      SurveyExpirationDate: null,
+      SurveyExpirationDate: UNSET,
       SurveyID: surveyId,
       SurveyLanguage: "EN",
       SurveyName: [label.trim(), title].filter(Boolean).join(" "),
       SurveyOwnerID: ids.id("UR"),
-      SurveyStartDate: null,
+      SurveyStartDate: UNSET,
       SurveyStatus: "Inactive",
     },
   };

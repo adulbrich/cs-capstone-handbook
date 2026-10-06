@@ -5,11 +5,12 @@ import { variants } from "../../data/peer-evaluation.mjs";
 import { buildContacts, contactsCsv } from "../../lib/tools/peer-contacts.mjs";
 import { peerSurveyQsf } from "../../lib/tools/peer-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
+import { defaultLabel } from "../../lib/tools/term-label.mjs";
 
 let rosterText = $state.raw("");
 let fileName = $state("");
 let variant = $state("midterm");
-let label = $state("");
+let label = $state(defaultLabel());
 let mode = $state("loop");
 
 const result = $derived.by(() => {
@@ -97,7 +98,7 @@ function downloadContacts() {
 
   <label>
     <span>Course and term, put in front of the survey name</span>
-    <input type="text" bind:value={label} placeholder="CS 461 001 fall" />
+    <input type="text" bind:value={label} />
   </label>
 
   <fieldset>

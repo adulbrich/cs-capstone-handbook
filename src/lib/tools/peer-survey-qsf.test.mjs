@@ -55,12 +55,30 @@ test("the .qsf parses and mirrors the element types of a working survey", () => 
     elements(survey, "QC")[0].SecondaryAttribute,
     String(elements(survey, "SQ").length)
   );
-  assert.equal(survey.SurveyEntry.SurveyStartDate, null);
-  assert.equal(survey.SurveyEntry.SurveyExpirationDate, null);
+  // A real export writes every SurveyEntry timestamp as a string; unset is
+  // all zeros, as LastAccessed is.
+  assert.equal(survey.SurveyEntry.SurveyStartDate, "0000-00-00 00:00:00");
+  assert.equal(survey.SurveyEntry.SurveyExpirationDate, "0000-00-00 00:00:00");
   const options = payload(survey, "SO");
   assert.equal(options.AnonymizeResponse, "No");
   assert.equal(options.PartialDeletion, null);
   assert.equal(options.SurveyExpiration, "off");
+});
+
+test("each question's SecondaryAttribute is its description, at most 100 characters", () => {
+  // A real export never writes more than 100 characters there.
+  for (const mode of ["loop", "slots"]) {
+    for (const question of elements(make({ mode }), "SQ")) {
+      assert.equal(
+        question.SecondaryAttribute,
+        question.Payload.QuestionDescription
+      );
+      assert.ok(
+        question.SecondaryAttribute.length <= 100,
+        question.PrimaryAttribute
+      );
+    }
+  }
 });
 
 test("export tags are unique", () => {
