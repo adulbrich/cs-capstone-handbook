@@ -314,7 +314,7 @@ function surveyOptions(title) {
     NewScoring: 1,
     NextButton: "",
     NoIndex: "Yes",
-    PartialData: "+1 week",
+    PartialData: "+1 month",
     PartialDataCloseAfter: "LastActivity",
     PartialDeletion: null,
     PasswordProtection: "No",
@@ -331,7 +331,9 @@ function surveyOptions(title) {
     Skin: { brandingId: "6337647077", overrides: null, templateId: "*simple" },
     SkinLibrary: "oregonstate",
     SkinType: "component",
-    SurveyExpiration: "off",
+    // Qualtrics accepts "on", "DateRange", "None", or "". The dates are set
+    // on the distribution, so the survey itself never expires.
+    SurveyExpiration: "None",
     SurveyLinkCompletedMessage: null,
     SurveyLinkCompletedMessageLibrary: null,
     SurveyLinkExpirationMessage: null,
@@ -339,8 +341,9 @@ function surveyOptions(title) {
     SurveyLinkExpirationMessageType: "DefaultMessage",
     SurveyMetaDescription:
       "Rate yourself and each teammate, then divide 100 points among the team.",
-    // Public, so a response opened without a personal link reaches the guard.
-    SurveyProtection: "PublicSurvey",
+    // By invitation, as the real exports are: only a personal link opens it.
+    // The empty-Team guard still catches a contact with no team.
+    SurveyProtection: "ByInvitation",
     SurveyTermination: "DefaultMessage",
     SurveyTitle: title,
     ThankYouEmailMessage: null,

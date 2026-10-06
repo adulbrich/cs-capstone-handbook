@@ -62,7 +62,8 @@ test("the .qsf parses and mirrors the element types of a working survey", () => 
   const options = payload(survey, "SO");
   assert.equal(options.AnonymizeResponse, "No");
   assert.equal(options.PartialDeletion, null);
-  assert.equal(options.SurveyExpiration, "off");
+  assert.equal(options.SurveyExpiration, "None");
+  assert.equal(options.SurveyProtection, "ByInvitation");
 });
 
 test("each question's SecondaryAttribute is its description, at most 100 characters", () => {
