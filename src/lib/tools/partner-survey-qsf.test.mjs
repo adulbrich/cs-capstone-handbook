@@ -186,7 +186,9 @@ test("every variant's distribution email names the team in its subject and body"
     assert.ok(email, key);
     assert.ok(email.subject.includes("${e://Field/Team}"), key);
     assert.ok(email.body.includes("${e://Field/Team}"), key);
-    assert.ok(email.body.includes("${l://SurveyLink"), key);
+    assert.ok(email.body.includes("${l://SurveyLink?d=Take the survey}"), key);
+    // No piped text nested inside a link's display text.
+    assert.doesNotMatch(email.body, /\$\{l:\/\/[^}]*\$\{/, key);
     assert.ok(email.body.includes("${l://OptOutLink"), key);
   }
   assert.ok(
