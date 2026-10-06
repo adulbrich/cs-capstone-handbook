@@ -66,7 +66,7 @@ not a lecture, and not an assignment. Three properties define it:
 ### Standalone
 
 **An activity page never refers to this course.** No link to an assignment
-page, no mention of a workshop, no week number, no term, no half of a class
+page, no assignment name, no mention of a workshop, no week number, no term, no half of a class
 session. A reader who is not enrolled should be able to run any activity here.
 The `guides/` directory has held this line since it was written and has zero
 assignment links across nineteen files; activities had drifted to sixty-one
