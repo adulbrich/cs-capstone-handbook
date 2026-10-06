@@ -9,6 +9,11 @@
 
 import { parseArgs } from "node:util";
 import {
+  emailsIn,
+  teamKey as norm,
+  tidy,
+} from "../../src/lib/partner-sheet.mjs";
+import {
   esc,
   linkify,
   quoted,
@@ -113,8 +118,6 @@ const sheet = readTable(args.partners, [
   "Notes",
 ]);
 
-const tidy = (s) => s.replace(/\s+/g, " ").trim();
-const norm = (s) => tidy(s).toLowerCase();
 const problems = [];
 
 const teams = new Map();
@@ -165,9 +168,7 @@ for (const [key, team] of teams) {
     );
     continue;
   }
-  const contactEmails = row["Project Partner / Mentor Email"]
-    .split(/[\s,;]+/)
-    .filter((e) => e.includes("@"));
+  const contactEmails = emailsIn(row["Project Partner / Mentor Email"]);
   if (contactEmails.length === 0) {
     problems.push(`${team.team} has no partner or mentor email: no letter`);
     continue;

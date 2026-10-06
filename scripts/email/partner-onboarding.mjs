@@ -12,6 +12,11 @@
 
 import { parseArgs } from "node:util";
 import {
+  emailsIn,
+  teamKey as norm,
+  tidy,
+} from "../../src/lib/partner-sheet.mjs";
+import {
   boldLead,
   esc,
   linkify,
@@ -146,8 +151,6 @@ const roster = args.roster
   ? readTable(args.roster, ["name", "login_id", "group_name"])
   : null;
 
-const tidy = (s) => s.replace(/\s+/g, " ").trim();
-const norm = (s) => tidy(s).toLowerCase();
 const byTeamName = (a, b) => a.localeCompare(b, undefined, { numeric: true });
 const problems = [];
 
@@ -175,9 +178,7 @@ for (const r of sheet) {
     continue;
   }
   seenTeams.add(norm(team));
-  const emails = r["Project Partner / Mentor Email"]
-    .split(/[\s,;]+/)
-    .filter((e) => e.includes("@"));
+  const emails = emailsIn(r["Project Partner / Mentor Email"]);
   if (emails.length === 0) {
     problems.push(`${team} has no partner or mentor email: not in any letter`);
     continue;

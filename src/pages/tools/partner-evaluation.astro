@@ -1,8 +1,10 @@
 ---
-// The project partner survey scorer (#445). The rubrics and the A lower bound
-// are parsed here, at build time, from the files the handbook renders, so the
-// page can never carry a second copy of a rating name or a point value. The
-// component reads the three exports in the browser only.
+import { getEntry } from "astro:content";
+// The project partner survey generator (#440) and scorer (#445). The
+// rubrics, the A lower bound, and the two surveys' weights are read here, at
+// build time, from the files the handbook renders, so the page can never
+// carry a second copy of a rating name, a point value, or a weight. The
+// components read the dropped files in the browser only.
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import fallCsv from "/canvas/assignments/project-partner-evaluation/partner-final-fall-rubric.csv?raw";
 import springCsv from "/canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv?raw";
@@ -10,6 +12,8 @@ import winterCsv from "/canvas/assignments/project-partner-evaluation/partner-fi
 import pulseCsv from "/canvas/assignments/project-partner-evaluation/partner-pulse-rubric.csv?raw";
 import gradingMdx from "/src/content/docs/learning-objectives/grading.mdx?raw";
 import PartnerEvaluationScorer from "../../components/tools/PartnerEvaluationScorer.svelte";
+import PartnerSurveyGenerator from "../../components/tools/PartnerSurveyGenerator.svelte";
+import { canvasRows } from "../../lib/canvas-entries.mjs";
 import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
 import { aLowerBound } from "../../lib/tools/partner-scoring.mjs";
 
@@ -20,30 +24,102 @@ const rubrics = {
   winter: parseRubricCsv(winterCsv, "partner-final-winter-rubric.csv"),
 };
 const aBound = aLowerBound(gradingMdx);
+
+// The pulse and end-of-term weights, from the partner evaluation page's
+// Canvas entries, term by term, for the survey's opening page. The survey
+// states one number for every term, so the terms must agree.
+const PAGE = "assignments/project-partner-evaluation";
+const page = await getEntry("docs", PAGE);
+const rows = canvasRows(page?.data.assignment?.canvas);
+const weightOf = (rubric: string) => {
+  const found = new Set(
+    rows
+      .filter((row) => row.family.rubric.startsWith(rubric))
+      .map((row) => row.weight)
+  );
+  const [weight] = found;
+  if (found.size !== 1 || typeof weight !== "number") {
+    throw new Error(`${PAGE}.mdx lists no single weight for ${rubric}.`);
+  }
+  return weight;
+};
+const weights = {
+  final: weightOf("project-partner-evaluation/partner-final-"),
+  pulse: weightOf("project-partner-evaluation/partner-pulse-rubric.csv"),
+};
+const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
 ---
 
 <StarlightPage
   frontmatter={{
     description:
-      "Score the project partner surveys into a Canvas rubric-assessment CSV.",
+      "Generate the project partner Midterm Pulse survey, and score the partner surveys into a Canvas rubric-assessment CSV.",
     editUrl: false,
     head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
     pagefind: false,
-    title: "Project Partner Evaluation Scorer",
+    title: "Project Partner Evaluation",
   }}
 >
   <p>
-    Drop the three files, check the survey, and Run. The files are read in
-    your browser and never uploaded. The Midterm Pulse is scored; the
-    End-of-Term Survey is recognized but not scored yet.
+    Generate the Midterm Pulse survey before it goes out, then score its
+    export once it closes. Every file is read in your browser and never
+    uploaded. The Midterm Pulse is generated and scored; the End-of-Term
+    Survey is recognized but not generated or scored yet.
   </p>
 
-  <h2>Where the inputs come from</h2>
+  <h2>Generate the survey</h2>
+  <p>
+    The matrix's statements and its labels come from the pulse rubric
+    CSV, the labels the scorer below maps, so the survey and the scorer
+    cannot drift apart.
+  </p>
+
+  <PartnerSurveyGenerator client:only="svelte" {pageUrl} rubric={rubrics.pulse} {weights} />
+
   <ol>
     <li>
       <strong>Roster with groups</strong>: in Canvas, People, Groups, export
       the group set's roster as CSV (<code>name, canvas_user_id, user_id,
       login_id, sections, group_name, canvas_group_id, group_id</code>).
+      Its <code>group_name</code> becomes each partner's <code>Team</code>,
+      the value the scorer joins on. Scoring reads the same file.
+    </li>
+    <li>
+      <strong>Partner sheet</strong>: the staff sheet the team-contact letters
+      read, saved as CSV.
+      It reads only <code>Canvas Group Name</code> and <code>Project Partner / Mentor Email</code>;
+      two addresses in a cell, or a second row for the same team, give each
+      partner a row under that team, and a mentor standing in gets the survey
+      like a partner.
+    </li>
+    <li>
+      Pick the close date: it goes into the contact list as <code>MidtermCloseDate</code>,
+      and the survey's first page shows it.
+    </li>
+    <li>
+      In Qualtrics, Create project, Survey, From a file: import the <code>.qsf</code>.
+    </li>
+    <li>
+      In the Directory, create a mailing list from the contact-list CSV.
+      Every column maps by its header: <code>Email</code>, <code>Team</code>,
+      and <code>MidtermCloseDate</code>. If a partner has two teams, check
+      that the list kept both rows.
+    </li>
+    <li>
+      Set the availability dates on the distribution, not in the survey, and
+      distribute by email with personal links only. The survey is by
+      invitation, so the anonymous link does not open it.
+    </li>
+  </ol>
+
+  <h2>Score the survey</h2>
+  <p>Drop the three files, check the survey, and Run.</p>
+
+  <h3>Where the inputs come from</h3>
+  <ol>
+    <li>
+      <strong>Roster with groups</strong>: the same file as for generating
+      the survey, above.
     </li>
     <li>
       <strong>Rubric assessments</strong>: in the Gradebook, export the rubric
@@ -62,7 +138,7 @@ const aBound = aLowerBound(gradingMdx);
 
   <PartnerEvaluationScorer client:only="svelte" {aBound} {rubrics} />
 
-  <h2>What Run does</h2>
+  <h3>What Run does</h3>
   <ol>
     <li>
       Skips the two Qualtrics rows under the header, then keeps the responses
@@ -98,7 +174,7 @@ const aBound = aLowerBound(gradingMdx);
     </li>
   </ol>
 
-  <h2>What to do with the downloads</h2>
+  <h3>What to do with the downloads</h3>
   <ul>
     <li>
       <strong>Rubric assessments</strong>: import it back on the same
