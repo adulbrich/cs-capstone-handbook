@@ -24,6 +24,14 @@
     "validate:sidebar": "node scripts/validate-sidebar.mjs",
     "validate:sources": "node scripts/validate-sources.mjs"
   },
+  "overrides": {
+    "@expressive-code/core": {
+      "postcss-nested": "^7.0.2"
+    },
+    "mermaid": {
+      "katex": "$katex"
+    }
+  },
   "dependencies": {
     "@astrojs/check": "0.9.10",
     "@astrojs/sitemap": "^3.7.4",
