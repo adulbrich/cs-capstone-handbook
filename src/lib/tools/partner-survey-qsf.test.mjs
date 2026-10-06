@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { concernText, pulsePrompt } from "../../data/partner-evaluation.mjs";
+import {
+  concernText,
+  criterionNotes,
+  pulsePrompt,
+} from "../../data/partner-evaluation.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
 import { toCsv } from "./csv.mjs";
 import {
@@ -165,13 +169,15 @@ test("the intro pipes the team and close date and names the rubric's own words",
   assert.match(intro, /sets 20%/);
   assert.match(intro, /from Strongly disagree to Strongly agree/);
   assert.ok(intro.includes(OPTIONS.pageUrl));
-  // The Reflection note names a rating and a criterion of the pulse rubric.
-  const reflection = pulseRubric.criteria.find((c) => c.title === "Reflection");
-  assert.ok(reflection);
-  assert.ok(
-    reflection.ratings.some((r) => r.name === "Neither agree nor disagree")
-  );
-  assert.match(intro, /answer Neither agree nor disagree on Reflection/);
+  // The note's rating and criterion come from the CSV.
+  assert.match(intro, /answer Neither agree nor disagree on Reflection\./);
+});
+
+test("every criterion note names a pulse rubric criterion", () => {
+  const titles = pulseRubric.criteria.map((c) => c.title.toLowerCase());
+  for (const key of Object.keys(criterionNotes)) {
+    assert.ok(titles.includes(key), key);
+  }
 });
 
 test("a criterion with no statement, or criteria on different scales, stop the build", () => {

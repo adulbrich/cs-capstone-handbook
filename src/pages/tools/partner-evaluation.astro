@@ -30,11 +30,16 @@ const PAGE = "assignments/project-partner-evaluation";
 const page = await getEntry("docs", PAGE);
 const entries = page?.data.assignment?.canvas ?? [];
 const weightOf = (rubric: string) => {
-  const entry = entries.find((family) => family.rubric.startsWith(rubric));
-  if (typeof entry?.weight !== "number") {
+  const found = new Set(
+    entries
+      .filter((family) => family.rubric.startsWith(rubric))
+      .map((family) => family.weight)
+  );
+  const [weight] = found;
+  if (found.size !== 1 || typeof weight !== "number") {
     throw new Error(`${PAGE}.mdx lists no single weight for ${rubric}.`);
   }
-  return entry.weight;
+  return weight;
 };
 const weights = {
   final: weightOf("project-partner-evaluation/partner-final-"),
@@ -62,7 +67,7 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
 
   <h2>Generate the survey</h2>
   <p>
-    The matrix's statements and its five labels come from the pulse rubric
+    The matrix's statements and its labels come from the pulse rubric
     CSV, the labels the scorer below maps, so the survey and the scorer
     cannot drift apart.
   </p>

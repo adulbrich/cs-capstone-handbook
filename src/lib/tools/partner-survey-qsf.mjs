@@ -5,7 +5,7 @@
 // src/data/partner-evaluation.mjs.
 //
 // Survey Flow, in order:
-//   1. Embedded data, declared with no value so the contact list's stand.
+//   1. Embedded data, declared with no value so the contact list's values stand.
 //   2. Guard: when Team is empty (not a personal link), one page telling the
 //      respondent to use the personal link, then the end of the survey.
 //   3. The variant's rating page.
@@ -17,6 +17,7 @@
 
 import {
   concernText,
+  criterionNotes,
   guardText,
   pulseIntro,
   pulsePrompt,
@@ -40,7 +41,8 @@ const ascending = (criterion) =>
 
 /**
  * The matrix rows and columns from a rubric whose criteria share one scale:
- * each row "<criterion>: <statement>", each column a rating name. Throws when
+ * each row "<criterion>: <statement>", each column a rating name, lowest
+ * first, and `notes` the criterionNotes filled for the rubric. Throws when
  * a criterion has no statement or the criteria's ratings differ.
  */
 export function pulseScale(rubric) {
@@ -62,8 +64,17 @@ export function pulseScale(rubric) {
       `The ${rubric.name} rubric's criteria must share one scale for the matrix; ${differing.join(", ")} differ from ${rubric.criteria[0].title}.`
     );
   }
+  const middle = columns[Math.floor(columns.length / 2)];
+  const notes = rubric.criteria
+    .filter((criterion) => criterionNotes[criterion.title.toLowerCase()])
+    .map((criterion) =>
+      criterionNotes[criterion.title.toLowerCase()]
+        .replace("{middle}", middle)
+        .replace("{criterion}", criterion.title)
+    );
   return {
     columns,
+    notes,
     rows: rubric.criteria.map(
       (criterion) => `${criterion.title}: ${criterion.description}`
     ),
@@ -79,13 +90,14 @@ export const VARIANTS = {
   pulse: {
     fields: ["Team", "MidtermCloseDate"],
     metaDescription:
-      "Four statements about how one capstone team works with its project partner.",
+      "Statements about how one capstone team works with its project partner.",
     ratings(survey, { pageUrl, rubric, weights }) {
-      const { columns, rows } = pulseScale(rubric);
+      const { columns, notes, rows } = pulseScale(rubric);
       const intro = pulseIntro({
         finalWeight: weights.final,
         highest: columns.at(-1),
         lowest: columns[0],
+        notes,
         pageUrl,
         pulseWeight: weights.pulse,
         statements: rows.length,

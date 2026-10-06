@@ -11,15 +11,26 @@ export const pulsePrompt =
   "Please rate your student team on the following dimensions for the current term.";
 
 /**
+ * Notes on how to answer one criterion, keyed by its rubric name in lower
+ * case. `{middle}` is the scale's middle rating and `{criterion}` the
+ * criterion's name, both filled from the rubric CSV.
+ */
+export const criterionNotes = {
+  reflection:
+    "If you have not given the team feedback yet, answer {middle} on {criterion}.",
+};
+
+/**
  * The pulse's opening page. `statements` is how many the matrix rates,
- * `lowest` and `highest` the scale's ends, `pulseWeight` and `finalWeight`
- * the two surveys' percent of the term grade, `pageUrl` the partner
- * evaluation page.
+ * `lowest` and `highest` the scale's ends, `notes` the filled
+ * criterionNotes, `pulseWeight` and `finalWeight` the two surveys' percent
+ * of the term grade, `pageUrl` the partner evaluation page.
  */
 export function pulseIntro({
   finalWeight,
   highest,
   lowest,
+  notes,
   pageUrl,
   pulseWeight,
   statements,
@@ -29,7 +40,7 @@ export function pulseIntro({
     "This survey is about one team: <b>${e://Field/Team}</b>",
     `It has ${NUMBERS[statements] ?? statements} statements about how the team works with you, each rated from ${lowest} to ${highest}. It takes about two minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
     `Your answers set ${pulseWeight}% of each student's grade this term. The end-of-term survey sets ${finalWeight}% and goes into more depth. This midterm check exists so the team hears from you while there is still time to change course.`,
-    "If you have not given the team feedback yet, answer Neither agree nor disagree on Reflection.",
+    ...notes,
     "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
     "You can also leave comments on the course at the end.",
     `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
