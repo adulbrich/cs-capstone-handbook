@@ -125,7 +125,8 @@ const hasAny = wholeTeam || effort || workshop || prepares.length > 0;
 
   /* Each variant sets its own bg and border colors on the badge, so mixing
      the two tints every variant toward its border without naming a color.
-     Past 20% the light-theme caution badge drops below 4.5:1 contrast. */
+     At 35% the light-theme caution badge fell to 4.1:1 contrast; 20% keeps
+     every variant above 5:1 in both themes. */
   .activity-meta a:hover :global(.sl-badge) {
     background-color: color-mix(
       in srgb,

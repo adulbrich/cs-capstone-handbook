@@ -318,8 +318,8 @@ The title names the work, never a project category, and carries no
 `src/lib/activities-sidebar.mjs` (one flat list: project pages in first-use
 order, then Learning and Reflection and Career), which ignores `order`, so a
 new page must be added there; `validate:sidebar` fails until it is, and fails
-on an activity page that declares an `order`. Retiring a page needs a redirect in
-`astro.config.mjs` and every inbound link rewritten.
+on an activity page that declares an `order`. Retiring a page needs a
+redirect in `astro.config.mjs` and every inbound link rewritten.
 
 The `description` field is YAML: **an unquoted colon inside it breaks the
 build** with `bad indentation of a mapping entry`, which does not obviously
