@@ -240,6 +240,13 @@ const OVERRIDES = {
       o.dropSection(id);
     }
   },
+  // The CATME section is the spring end-of-term survey's; the term rule
+  // already drops it from the fall and winter midterms.
+  "Midterm Survey": (o, e) => {
+    if (e.term === "spring") {
+      o.dropSection("catme-in-spring");
+    }
+  },
   // The audit is part of the fall week 5 gate only.
   "Repo Checkpoint {n}": (o, e) => {
     if (!(e.term === "fall" && e.week === 5)) {
