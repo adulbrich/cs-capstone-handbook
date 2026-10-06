@@ -1,6 +1,6 @@
 ---
 name: cs46x-activities
-description: Use when creating or editing activity pages (MDX files in src/content/docs/activities/) for the CS 461/462/463 capstone handbook. Defines the required section shape, badge vocabulary, tiering, and heading rules. Always load this skill before writing or editing any activity file.
+description: Use when creating or editing activity pages (MDX files in src/content/docs/activities/) for the CS 461/462/463 capstone handbook. Defines the required section shape, the generated badge line, tiering, and heading rules. Always load this skill before writing or editing any activity file.
 ---
 
 # Activity Style Guide
@@ -73,21 +73,27 @@ assignment links across nineteen files; activities had drifted to sixty-one
 `Feeds:` backlinks and ten activities describing their slot by the clock.
 
 The direction of travel is one way. **Assignments link to activities**, in
-their "Activities That Prepare This" section, and that link is what earns a
-Recommended badge. An activity does not link back. What stays: guide links,
-LinkCards, and external sources, which should grow rather than shrink.
+their "Activities That Prepare This" section, and that link is what puts a
+Prepares badge on the activity. An activity does not link back. What stays:
+guide links, LinkCards, and external sources, which should grow rather than
+shrink.
 
-`validate-activities.mjs` enforces this per line, with two exemptions listed in
-the script for events outside the team. `activities/introduction.mdx` is
-exempt as a whole, because it is the page that explains what a Workshop badge
-means.
+**The one exception is the generated badge line.** `<ActivityMeta>` names
+the workshop and the assignments an activity serves, with links, because it
+computes them from the assignment pages; nobody writes those names into the
+activity. Prose on the page still may not.
 
-**Mechanically, an activity is a `##` section carrying an audience badge.**
-That is the definition the validator uses, and it is why the badge is
-load-bearing rather than decorative. Page framing and closing prose also use
-`##`, so a heading count alone silently counts non-activities as activities.
-A section with no audience badge is prose; a section with one is an activity
-and must satisfy everything below.
+`validate-activities.mjs` enforces this per line, skipping the badge line,
+with two exemptions listed in the script for events outside the team.
+`activities/introduction.mdx` is exempt as a whole, because it is the page
+that explains what the badge line means.
+
+**Mechanically, an activity is a `##` section carrying an `<ActivityMeta>`
+badge line.** That is the definition the validator uses, and it is why the
+line is load-bearing rather than decorative. Page framing and closing prose
+also use `##`, so a heading count alone silently counts non-activities as
+activities. A section with no badge line is prose; a section with one is an
+activity and must satisfy everything below.
 
 ### Explanation versus instrument
 
@@ -113,39 +119,45 @@ into an activity page.
 
 ## Tiers
 
-Every activity sits in one of three tiers, expressed as a badge:
+Every activity sits in one of three tiers. **The tier is computed, never
+written**: `src/lib/activity-links.mjs` reads it from the assignment pages,
+and the badge line shows it.
 
-| Tier | Badge | Meaning |
-|---|---|---|
-| Workshop | `Workshop`, `variant="caution"` | Everyone does it. Runs in class, graded complete/incomplete via [Workshop Activities](/assignments/workshop-activities/). |
-| Recommended | `Recommended`, `variant="tip"` | Named on a specific assignment page as the cheapest route to a specific rubric criterion. |
-| Library | no tier badge | Kept because it is good and some project will need it. Nobody is expected to do most of these. |
+| Tier | Comes from | Badge line shows | Meaning |
+|---|---|---|---|
+| Workshop | a `### Workshop N:` section on `assignments/workshop-activities.mdx` naming the activity | `Workshop N, <term>`, linking that section | Everyone does it. Runs in class, graded complete/incomplete. |
+| Recommended | an assignment's "Activities That Prepare This" section linking the activity | `Prepares:`, then one badge per linking assignment, each linking that section | The cheapest route to a specific rubric criterion. |
+| Library | neither | no tier badge | Kept because it is good and some project will need it. Nobody is expected to do most of these. |
 
-Tier is decided by which assignment pages link to the activity, so **do not
-promote an activity to Recommended without adding it to an assignment page's
-"Activities That Prepare This" section in the same commit.** A `Recommended`
-badge that no assignment references is a lie to the student.
+A workshop that assignments also link shows both: the Workshop badge first,
+then Prepares, and it counts as Workshop.
 
-This is enforced, not merely requested. `npm run validate:activities` fails if a
-linked activity carries no badge, if a Recommended badge has no assignment
-linking to it, or if an assignment links to an anchor matching no heading. It
-also reconciles the week-by-week schedule on `introduction/schedule.mdx`,
-reading it by term, week and line label: an activity on any line but
-**In class** must be Workshop or Recommended tier, an **In class** line may
-link an untiered activity, and every Workshop activity must sit on an In class
-line in the same week `assignments/workshop-activities.mdx` gives it. Demoting an activity
+So **promoting or demoting an activity is an edit to an assignment page**,
+never to the activity. Add it to, or remove it from, that page's "Activities
+That Prepare This" section (the `cs46x-assignments` skill owns its shape), and
+the badge line follows at the next build.
+
+`npm run validate:activities` computes the tiers through the same lib and
+prints the counts. It fails if an assignment links an anchor matching no
+heading. It also reconciles the week-by-week schedule on
+`introduction/schedule.mdx`, reading it by term, week and line label: an
+activity on any line but **In class** must be Workshop or Recommended tier,
+an **In class** line may link a library activity, and every Workshop
+activity must sit on an In class line in the same week
+`assignments/workshop-activities.mdx` gives it. Demoting an activity
 therefore means removing it from the schedule in the same commit. It runs in
 CI and pre-commit.
 
-The same validator also enforces the section shape below: a tier badge with
-no audience badge; audience badge variants (Team is `note`, Individual is
-`success`); all badges on one line, two lines below the heading; the closing
-"A good output" line being last, with nothing after it; the standalone rule
-above; no outcome tags and no point values or percentages next to grading
-words, on activity and guide pages alike; and the "more than a hundred"
-library figure on the index and the workshop page.
-What it does not check: heading case, the `mb-6` class, the effort clause,
-the 400-word test, and the opener rules. Those are still on you.
+The same validator also enforces the section shape below: the badge line two
+lines below the heading, once, with `anchor` equal to the heading's slug and
+`effort` on the scale; no hand-written Individual, Team, Workshop, or
+Recommended badge; the closing "A good output" line being last, with nothing
+after it; the standalone rule above; no outcome tags and no point values or
+percentages next to grading words, on activity and guide pages alike; and the
+"more than a hundred" library figure on the index and the workshop page.
+What it does not check: heading case, whether `wholeTeam` is warranted, the
+effort clause in prose, the 400-word test, the opener rules, and the AI
+substitute rule. Those are still on you.
 
 ## Required Section Shape
 
@@ -154,7 +166,7 @@ Every activity is one `##` section with exactly this structure:
 ````mdx
 ## Activity Name
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="activity-name" effort="1 h" />
 
 One or two sentences saying what this produces and why it is worth the time.
 
@@ -174,29 +186,40 @@ because renaming a heading breaks every inbound anchor. Never re-case an
 existing heading.
 
 **Badge line.** Always present, always immediately after the heading, always
-one blank line below it. The audience badge comes first and is mandatory. There
-are exactly three legal states:
+one blank line below it, one per activity. It takes three props, and only
+two of them are yours to judge:
 
-- `<Badge text="Individual Activity" variant="success" class="mb-6"/>`
-- `<Badge text="Team Activity" variant="note" class="mb-6"/>`
-- **both**, on the same line, when the activity works either way.
-  This is a real pattern used across the library, not drift, and the validator
-  allows it. Use it only when solo and team both make sense; defaulting to both
-  because you cannot decide makes the badge useless.
+- `anchor` (required): the heading's slug, as Starlight derives it:
+  lowercase, punctuation dropped, each space a hyphen, runs of hyphens kept
+  (`Is / Is-Not` is `is--is-not`). It is how the component finds the
+  activity, and the validator fails when it differs from the heading.
+  Renaming a heading means changing its `anchor` too.
+- `effort` (optional): one value from the fixed scale `15 min`, `30 min`,
+  `1 h`, `1 to 2 h`, `Half day`, `Multi-day`, `Ongoing`, for the whole
+  activity as one team or student runs it once. Set it only when the
+  opening's effort clause states one that sits on the scale; a wrong badge is
+  worse than none. Every activity will carry one once the backfill lands.
+- `wholeTeam` (optional, a bare flag): only when the activity fails without
+  everyone present, such as a team agreement every member must accept or an
+  assessment that needs every member's view. It is not "a team activity":
+  most team activities work with whoever shows up, and an individual activity
+  carries no badge at all.
 
-The tier badge, if any, comes last on the same line. Never invent a fourth
-badge. `class="mb-6"` is required on every badge; without it the badge collides
-with the paragraph below.
+The Workshop and Prepares badges are not props. The component computes them
+(see **Tiers**), so never write a `<Badge>` for audience or tier: the
+Individual, Team, Workshop, and Recommended badges are retired, and the
+validator fails on one.
 
 Import once per page, after the frontmatter:
 
 ```mdx
-import { Badge } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 ```
 
-Forgetting this import is the most common way to break the build, and the error
-message (`Expected component 'Badge' to be defined`) does not name the file
-helpfully. If you add the first badge to a page, check the import.
+Forgetting this import is the most common way to break the build, and the
+error message (`Expected component 'ActivityMeta' to be defined`) does not
+name the file helpfully. If you add the first activity to a page, check the
+import.
 
 **Opening sentences.** One or two, no heading, no list. Say what the student
 ends up with and why it matters for their project. Do not open with "In this
@@ -205,7 +228,8 @@ activity you will" or "This activity helps you". Start with the substance.
 Close the opening with a plain **effort clause** where you can state one
 with confidence: "Thirty minutes as a team, once a term." "One to two hours, once."
 "Two to three hours to set up, minutes per run after." Write it as a sentence,
-not as an italic metadata line above the prose. Effort is the single most
+not as an italic metadata line above the prose, and set the matching `effort`
+on the badge line when it sits on the scale. Effort is the single most
 useful thing a student weighing an activity wants to know, and a wrong estimate
 is worse than none, so omit it rather than guess.
 
@@ -343,20 +367,26 @@ and cost. The second names the artifact and the time.
   them. An activity tagged with an outcome creates the appearance of coverage
   that the validator will not count, which is worse than no tag.
 - Tool requirements presented as mandatory when a cheaper substitute exists. If
-  an activity assumes a capable AI agent, a paid service, or specific hardware,
-  state the substitute for students who do not have it.
+  an activity assumes a paid service or specific hardware, state the
+  substitute for students who do not have it.
+- **An activity that needs a capable AI agent without ending on a
+  substitute.** Its steps close with one step that starts "If your tooling
+  can't ..." and says how to get the same artifact without the agent: by
+  hand, with a smaller model, or by pairing with a teammate who has access.
+  Tool access is unequal, and the artifact is what the activity is for.
 - Calendar dates or an academic year. Terms and weeks only.
   `validate-dates.mjs` fails on a date.
 
 ## Before Finishing
 
-1. Run `npm run validate:activities`. It reconciles badges against assignment
-   links, checks the section shape, and prints the tier counts. Run
+1. Run `npm run validate:activities`. It checks every badge line and the
+   section shape, resolves the assignment links, and prints the tier counts. Run
    `npm run validate:dashes` too; it catches the em dashes the grep below would.
 2. Run `npm run build`. It runs `astro check`, compiles the MDX, and validates
    every internal link and anchor, which is the only reliable check of the
    anchors you just wrote.
-3. If you promoted or demoted any activity, check the tier counts the
+3. If you promoted or demoted any activity (on an assignment page), check
+   the tier counts the
    validator prints against the library-size claim on
    `activities/introduction.mdx` and `assignments/workshop-activities.mdx`.
 4. Grep for em dashes in what you wrote.

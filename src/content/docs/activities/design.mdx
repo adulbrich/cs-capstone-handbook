@@ -5,7 +5,8 @@ sidebar:
   order: 6
 ---
 
-import { Badge, LinkCard } from '@astrojs/starlight/components';
+import { LinkCard } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 
 Design activities cover the technical and the visual side of your project, one or the other per activity. They help you figure out what to implement and how you'll make your software available (deployment).
 
@@ -24,7 +25,7 @@ The technical design activities on this page are direct preparation for writing 
 {/* consider moving this to another section */}
 ## Complete a Tutorial
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="complete-a-tutorial" />
 
 Gain hands-on experience and enhance your technical skills by completing a tutorial relevant to your project.
 
@@ -41,7 +42,7 @@ A good output is a summary of what you learned and the specific features or conc
 
 ## Select a Database or Storage Technology
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="select-a-database-or-storage-technology" />
 
 Choose the most suitable database or storage technology for your project based on data requirements, scalability, and use case.
 
@@ -54,7 +55,7 @@ A good output details the options considered, pros/cons, and the rationale for y
 
 ## Define your Database Schema
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="define-your-database-schema" />
 
 Design a structured database schema to organize and store your project's data effectively.
 
@@ -69,7 +70,7 @@ A good output is your database schema diagram with explanations of the relations
 
 ## Evaluate Different Technologies
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="evaluate-different-technologies" />
 
 Compare and assess multiple technologies (e.g., languages, frameworks, libraries, ...) to choose the best fit for your project's requirements.
 
@@ -82,7 +83,7 @@ A good output is a comparison matrix and a justification for the chosen technolo
 
 ## Describe your Architecture
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="describe-your-architecture" effort="1 to 2 h" />
 
 Draw the system your team is about to build, at the level of zoom your project partner can follow, and write one paragraph per box. One to two hours as a team, once at the start, then updated when the architecture changes.
 
@@ -100,7 +101,7 @@ A good output is a diagram of the architecture and a brief explanation of each c
 
 ## High-Fidelity Prototype
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="high-fidelity-prototype" />
 
 Develop a high-fidelity prototype to visualize and refine the design of your project, ensuring alignment with user experience and technical requirements.
 
@@ -114,7 +115,7 @@ A good output is the prototype link and a reflection on design choices and feedb
 
 ## Proof-of-Concept
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="proof-of-concept" />
 
 Build a small-scale prototype or demo to test the feasibility of a specific idea, technology, or approach within your project.
 
@@ -126,7 +127,7 @@ A good output is the proof-of-concept itself and a brief write-up on its feasibi
 
 ## Test Plan
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="test-plan" effort="1 to 2 h" />
 
 Write a [test plan](https://en.wikipedia.org/wiki/Test_plan) for the paths that must work before anyone relies on the project, not for every feature. About an hour and a half as a team.
 
@@ -141,7 +142,7 @@ A good output is a test plan covering the paths that must work, with their test 
 
 ## Deployment Plan
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="deployment-plan" />
 
 [Software deployment](https://en.wikipedia.org/wiki/Software_deployment) is all the things that need to happen for a software system to be available for use.
 
@@ -162,7 +163,7 @@ A good output is a deployment plan detailing environment, steps, and rollback pr
 
 ## Describe your API Reference
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="describe-your-api-reference" />
 
 Develop a comprehensive API reference to document the functions, endpoints, and data structures of your project's application programming interface (API).
 
@@ -174,7 +175,7 @@ A good output is the complete API reference document and a sample request/respon
 
 ## Apply the Privacy by Design (PbD) Guidelines
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="apply-the-privacy-by-design-pbd-guidelines" />
 
 [Privacy by Design](https://en.wikipedia.org/wiki/Privacy_by_design) is a systems engineering approach developed by Ann Cavoukian, former Information & Privacy Commissioner of Ontario. 
 
@@ -194,7 +195,7 @@ A good output is your project assessed against the seven principles, naming whic
 
 ## UI Design Guidelines
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="ui-design-guidelines" />
 
 Select an appropriate set of user interface guidelines and apply them.
 There are user interface guidelines published by free/open-source
@@ -217,7 +218,7 @@ A good output is your updated UI wireframes or a demo of your updated software w
 
 ## Apply the GenderMag Method
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="apply-the-gendermag-method" />
 
 The [GenderMag Method](https://gendermag.org/index.php) enables software practitioners (e.g., developers, managers, UX professionals) to find gender-inclusivity "bugs" in their software, and then fix the bugs they find.
 
@@ -227,7 +228,7 @@ A good output is a list of the inclusivity bugs you found and what you'll change
 
 ## Peer Technical Design Review
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Workshop" variant="caution" class="mb-6"/>
+<ActivityMeta anchor="peer-technical-design-review" effort="1 to 2 h" />
 
 Put your technical design in front of another team and review theirs in return, in one sitting; the [presentations guide](/guides/presentations/#design-reviews) covers what a design review is for. About 75 minutes for two or three teams in one room or on one call.
 
@@ -278,7 +279,7 @@ A good output is your one-page design, the findings the other team gave you, and
 
 ## Read a Book on Approaches to Software Design
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
+<ActivityMeta anchor="read-a-book-on-approaches-to-software-design" />
 
 Take a look at a book about software design, and discuss in the context of your project. One good approach is that each team member skims several chapters, so that collectively you've examined the entire book. The books listed here are a starting point; you might find other interesting books worth reading.
 
@@ -295,7 +296,7 @@ A good output is a written summary of what the team learned and the specific des
 
 ## Create Good Survey or Interview Questions
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="create-good-survey-or-interview-questions" />
 
 If you're collecting data through surveys or interviews, write clear, unbiased, non-leading questions, i.e., [good questions](https://owl.purdue.edu/owl/research_and_citation/conducting_research/conducting_primary_research/interview_and_survey_questions.html). You'll also have to consider what type of data (qualitative, quantitative) you're collecting, their purpose, and how you're going to analyze the answers.
 
@@ -305,7 +306,7 @@ A good output is your question set, with the data type and purpose of each quest
 
 ## Planning for Maintenance and Long-Term Support
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="planning-for-maintenance-and-long-term-support" />
 
 Identify key factors for maintaining and supporting the system post-deployment to ensure long-term sustainability.
 
@@ -320,7 +321,7 @@ A good output is a detailed plan addressing maintenance, scalability, and user s
 
 ## Optimizing System Performance
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="optimizing-system-performance" />
 
 Identify and address factors that influence system performance to ensure optimal operation under different loads.
 
@@ -333,7 +334,7 @@ A good output is a performance plan with identified bottlenecks and optimization
 
 ## Designing for System Security
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="designing-for-system-security" />
 
 Ensure the system is designed with robust security measures to protect data and user privacy.
 
@@ -346,7 +347,7 @@ A good output is a security plan that details risks, countermeasures, and compli
 
 ## Designing for Accessibility
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="designing-for-accessibility" />
 
 Review one screen or output of your system against accessibility basics before it's built, while a fix is a design change rather than a rebuild.
 
@@ -364,7 +365,7 @@ A good output is a marked-up screenshot or a short list of specific fixes, each 
 
 ## Reproduce Your Baseline
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="reproduce-your-baseline" effort="Multi-day" />
 
 Get the number you intend to beat running on your own machine, before you try to beat it. Budget about a week of calendar time.
 
@@ -378,7 +379,7 @@ A good output is your reproduced number next to the published one, with a writte
 
 ## Make Your Artifact Reproducible
 
-<Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="make-your-artifact-reproducible" effort="Half day" />
 
 Get your project to the state where a stranger runs one command and gets your numbers. Half a day.
 
@@ -392,7 +393,7 @@ A good output is a repository tag plus a README command that a teammate ran on a
 
 ## MDA Framework
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
+<ActivityMeta anchor="mda-framework" />
 
 For game projects. Write down the intended player experience, the mechanics that produce it, and the dynamics you expect to emerge, using the [MDA (Mechanics, Dynamics, Aesthetics) framework](https://users.cs.northwestern.edu/~hunicke/MDA.pdf), before development begins. Doing it early is what lets the team argue about design goals instead of about code. Split the three parts among team members.
 
@@ -400,7 +401,7 @@ A good output is your mechanics, dynamics, and aesthetics written out, with the 
 
 ## Fun Hypotheses
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
+<ActivityMeta anchor="fun-hypotheses" />
 
 For game projects. Write down your team's hypotheses about what will make the game fun, each as a claim a playtest can confirm or refute. They're what you test first and what you cut when a playtest says otherwise.
 
@@ -408,7 +409,7 @@ A good output is a written list of your fun hypotheses, each with how you plan t
 
 ## Core Loop Analysis
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
+<ActivityMeta anchor="core-loop-analysis" />
 
 For game projects. Name the repeatable actions that drive engagement and progression, the core loop, and check that each step gives the player a meaningful action and a reward. A loop that reads flat on paper plays flat, so fix it here before building content around it.
 
@@ -416,7 +417,7 @@ A good output is a description of the core loop naming each step's player action
 
 ## Player Journey
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/>
+<ActivityMeta anchor="player-journey" />
 
 For game projects. Map the player's journey from the First Time User Experience (FTUE) through the mid-game: onboarding, learning curve, progression. The map exists to find the points where players drop off and to propose a fix for each before a playtest confirms it.
 

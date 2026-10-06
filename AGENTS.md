@@ -23,7 +23,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `public/` | Templates and scoresheets students download. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, and that its `assignment.canvas` entries reconcile (hard rule 6). Runs in CI and pre-commit. |
-| `scripts/validate-activities.mjs` | The activity tier validator, plus badge shape, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
+| `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. Runs in CI and pre-commit. |
 | `scripts/lib/` | Shared by the scripts: the content-tree walker and its text extensions, and the frontmatter reader, which returns the body as well as the block. The outcome-tag pattern is `OUTCOME_TAG` in `src/lib/rubric-csv.mjs`, since the site's rubric parser reads it too. |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`, `decks/`. Runs in CI and pre-commit. |
@@ -117,7 +117,11 @@ npm run test:hooks       # cases for the git guard hook
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build
 fails on any broken internal link **including anchors**. This matters: heading
 text determines anchor slugs, so renaming a heading breaks every inbound
-`#anchor` link. Let the build tell you rather than guessing slugs.
+`#anchor` link. Let the build tell you rather than guessing slugs. The links
+in an activity's generated badge line are the exception: a component renders
+them, so the build never sees them. `validate-activities.mjs` checks what they
+depend on instead: the exact "Activities That Prepare This" heading and unique
+workshop heading slugs.
 
 ## How outcome coverage stays true
 
@@ -150,14 +154,20 @@ without being in either list fails the check rather than being skipped.
 
 ## How activity tiers stay true
 
-An activity is Recommended because an assignment page links to it, but the tier
-is *displayed* as a badge on the activity page. Two files, one fact, so it
-drifts. `scripts/validate-activities.mjs` reconciles them and fails if a
-linked activity carries no badge, if a Recommended badge has no assignment
-linking to it, or if an assignment links to an anchor that matches no heading.
+An activity's tier is never written on its page. It is Workshop when a
+`### Workshop N:` section on `assignments/workshop-activities.mdx` names it,
+Recommended when an assignment's "Activities That Prepare This" section links
+it, and library otherwise. `src/lib/activity-links.mjs` reads both from the
+assignment pages, and two consumers share it: `<ActivityMeta>`, the badge line
+under every activity heading, which renders the Workshop badge and one
+Prepares badge per linking assignment, and `scripts/validate-activities.mjs`,
+which computes the tier counts and checks the schedule against them.
 
-Workshop tier is exempt from the second rule: those are assigned centrally
-through `assignments/workshop-activities.mdx`, not per assignment page.
+So promoting or demoting an activity is an edit to an assignment page, never
+to the activity. The validator checks the badge line itself: placed under
+its heading, `anchor` equal to the heading's slug, `effort` on the fixed
+scale, no hand-written audience or tier badge left over, and every linked
+anchor resolving. See `docs/decisions/2026-10-05-activity-badges.md`.
 
 ## Downloads in `public/`
 

@@ -6,7 +6,7 @@ sidebar:
   order: 8
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import ActivityMeta from '/src/components/ActivityMeta.astro';
 
 Reflective activities help you apply what you learn to your project. Regular reflection also gives you concrete material for any retrospective you have to write, about the project or about your own growth in it.
 
@@ -14,7 +14,7 @@ Reflective activities help you apply what you learn to your project. Regular ref
 
 ## Analyze an Existing Codebase
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="analyze-an-existing-codebase" />
 
 Learn how the code you're inheriting or contributing to is actually built, tested, and reviewed before you change any of it: a predecessor team's repository, your partner's codebase, or the upstream FOSS project. Two to three hours, once, in your first weeks on the codebase: alone to learn a project, as a team for a formal audit. If your project starts from scratch, run it on a FOSS project close to yours instead; the practices you find are the ones to adopt.
 
@@ -27,7 +27,7 @@ A good output is a one-page audit of the codebase you're inheriting: how it buil
 
 ## Read ACM Queue Articles
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="read-acm-queue-articles" />
 
 Find an [ACM Queue Article](https://queue.acm.org/) of some relevance to your project, read it, and write a summary of what you learned that could or should be applied to your project. Include specifics. Share it with your team.
 
@@ -35,7 +35,7 @@ A good output is a written summary, shared with your team, naming specifics from
 
 ## Read a Book
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="read-a-book" />
 
 Find a good book on software engineering, read it, and write a summary of what you learned that could or should be applied to your project. Include specifics. Share it with your team.
 
@@ -49,7 +49,7 @@ A good output is a written summary, shared with your team, naming specifics from
 
 ## Watch ACM Tech Talks
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="watch-acm-tech-talks" />
 
 Find an [ACM Tech Talk](https://learning.acm.org/techtalks-archive) of some relevance to your project, watch it, and write a summary of what you learned that could or should be applied to your project. Include specifics. Share it with your team.
 
@@ -57,7 +57,7 @@ A good output is a written summary, shared with your team, naming specifics from
 
 ## Watch a Documentary
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Team Activity" variant="note" class="mb-6" />
+<ActivityMeta anchor="watch-a-documentary" />
 
 Watch a documentary film related to your project. Each team member writes a paragraph about a different aspect of the film that is relevant to the project.
 
@@ -80,7 +80,7 @@ A good output is one paragraph per team member, each on a different aspect of th
 
 ## Listen to a Podcast
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/>
+<ActivityMeta anchor="listen-to-a-podcast" />
 
 Find a podcast episode of some relevance to your project, listen to it, and write a summary of what you learned that could or should be applied to your project. Include specifics. Share it with your team.
 
@@ -96,7 +96,7 @@ A good output is a written summary, shared with your team, naming specifics from
 
 ## External Feedback Session
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="external-feedback-session" />
 
 Find someone who has relevant expertise to review your project. It can be a technical person or a knowledge domain expert. The person should have little knowledge of your project. 
 
@@ -106,7 +106,7 @@ A good output is a written summary of the feedback with the specific changes you
 
 ## Learning Journal
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="learning-journal" />
 
 A learning journal is a personal record where you reflect on your learning experiences, capturing insights, challenges, and progress over time. It's all about metacognition (thinking about thinking).
 
@@ -120,7 +120,7 @@ A good output is a term of weekly entries you can quote from directly.
 
 ## Keep an Experiment Log
 
-<Badge text="Individual Activity" variant="success" class="mb-6"/> <Badge text="Recommended" variant="tip" class="mb-6"/>
+<ActivityMeta anchor="keep-an-experiment-log" effort="Ongoing" />
 
 Record every run you make, so that at the end you can say what you tried and what it showed instead of reconstructing six months from shell history. Ten minutes per experiment.
 
