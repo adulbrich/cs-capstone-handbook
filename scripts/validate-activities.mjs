@@ -37,6 +37,9 @@
 //      sources stay, and the direction of travel is one way: assignments link
 //      to both. The generated badge line is the one exception: it names the
 //      course pages an activity serves, and it is computed, not prose.
+//      An activity page also never names an assignment in prose ("an RFC",
+//      "your sprint notes"), and every assignment title must be classified
+//      in ASSIGNMENT_NAMES, so a new assignment cannot slip past the list.
 //
 //   4. Every activity carries a closing "A good output is..." line. The
 //      deliverable line is the only quality signal an activity has, and it is
@@ -461,6 +464,56 @@ const STANDALONE_EXEMPT = new Set([
   // "Present at a conference or workshop" is an outreach channel.
   "activities/working-with-users#find-users",
 ]);
+// An activity page also never names a course assignment, because a reader
+// outside the course has no RFC or Expo to prepare. Every assignment title is
+// a key here, so a new assignment fails the check until someone decides how
+// prose may name it. A pattern is the course's name for the work; null means
+// the title is the industry practice's own name ("team charter", "incident
+// postmortem"), which any reader resolves, or is already covered above.
+// Guides are not read: they cite the industry names, RFC among them, as
+// industry practice.
+const ASSIGNMENT_NAMES = new Map([
+  ["Assignments Overview", null],
+  ["Career and Individual Retrospective", /\bindividual retrospectives?\b/i],
+  // Bare "defense" is ordinary English and opens a quoted attribution.
+  ["Defense", /\b(?:design|project|technical|final) defen[cs]es?\b/i],
+  ["Definition of Shipped", /\bdefinitions? of shipped\b/i],
+  ["Demo Day", /\bdemo days?\b/i],
+  ["Engineering Expo", /\bexpos?\b/i],
+  ["Incident Postmortem", null],
+  ["Landing Page", null],
+  ["Peer Evaluations", /\bpeer evaluations?\b/i],
+  ["Project Handoff", null],
+  ["Project Partner Evaluation", /\bpartner evaluations?\b/i],
+  ["Project Retrospective", null],
+  ["Release and Metrics", /\brelease and metrics\b/i],
+  ["Repo Checkpoints", /\brepo(?:sitory)? checkpoints?\b/i],
+  ["Resume and Intent", /\bresume and intent\b/i],
+  ["RFC (Request for Comments)", /\bRFCs?\b|\brequests? for comments?\b/i],
+  ["Sprint Notes and Demos", /\bsprint notes?\b/i],
+  ["Team Charter", null],
+  ["Term Retrospective", /\bterm retrospectives?\b/i],
+  ["Term Startup", /\bterm startups?\b/i],
+  ["Workshop Activities", null],
+]);
+const assignmentTitles = new Set(assignments.map((a) => a.title));
+for (const { file, title } of assignments) {
+  if (!ASSIGNMENT_NAMES.has(title)) {
+    problems.push(
+      `unclassified assignment title: assignments/${file} is titled ${JSON.stringify(title)}; add it to ASSIGNMENT_NAMES in scripts/validate-activities.mjs`
+    );
+  }
+}
+for (const title of ASSIGNMENT_NAMES.keys()) {
+  if (!assignmentTitles.has(title)) {
+    problems.push(
+      `stale assignment title: ASSIGNMENT_NAMES lists ${JSON.stringify(title)}, which no assignment page is titled`
+    );
+  }
+}
+const ASSIGNMENT_NAME_RULES = [...ASSIGNMENT_NAMES]
+  .filter(([, pattern]) => pattern)
+  .map(([title, pattern]) => [pattern, `names the ${title} assignment`]);
 // A third-party URL is someone else's slug, not this page's prose: a link
 // whose slug ends in "-workshop" is not the page saying "workshop". Internal
 // links are kept, because the assignment-link rule reads them.
@@ -490,6 +543,10 @@ for (const { dir, kind, file } of activityAndGuidePages()) {
     continue;
   }
   const page = `${kind}/${file.slice(0, -4)}`;
+  const rules =
+    kind === "activities"
+      ? [...STANDALONE_RULES, ...ASSIGNMENT_NAME_RULES]
+      : STANDALONE_RULES;
   let section = null;
   for (const line of readFileSync(join(dir, file), "utf8").split("\n")) {
     if (line.startsWith("## ")) {
@@ -501,7 +558,7 @@ for (const { dir, kind, file } of activityAndGuidePages()) {
       continue;
     }
     const prose = line.replace(EXTERNAL_LINK_TARGET_RE, "]()");
-    for (const [pattern, what] of STANDALONE_RULES) {
+    for (const [pattern, what] of rules) {
       if (pattern.test(prose)) {
         problems.push(
           `not standalone: ${kind}/${file} ${what}: ${JSON.stringify(line.trim().slice(0, 110))}`
