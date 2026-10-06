@@ -4,6 +4,7 @@
 // nothing is uploaded. The rubric, the weights, and the page address arrive
 // from the handbook's own files at build time.
 
+import { distributionEmails } from "../../data/partner-evaluation.mjs";
 import { parsePartnerSheet } from "../../lib/partner-sheet.mjs";
 import { download } from "../../lib/tools/download.mjs";
 import { readPicked, slug } from "../../lib/tools/files.mjs";
@@ -23,6 +24,15 @@ const { pageUrl, rubric, weights } = $props();
 /** The one variant so far; the end-of-term surveys add theirs (#446). */
 const variant = "pulse";
 const { fields } = VARIANTS[variant];
+const email = distributionEmails[variant];
+
+/** Which copy button was last used, for its "Copied" label. */
+let copied = $state("");
+
+async function copy(key, text) {
+  await navigator.clipboard.writeText(text);
+  copied = key;
+}
 
 const texts = $state({ roster: "", sheet: "" });
 const names = $state({ roster: "", sheet: "" });
@@ -186,6 +196,28 @@ function downloadContacts() {
   <p class="hint">Pick the close date to download the contact list.</p>
 {/if}
 
+<h3>Distribution email</h3>
+<p>
+  Paste these into the distribution's email. Send by email to the mailing
+  list; each partner email and team pair gets its own message.
+</p>
+<div class="email">
+  <div class="copy-row">
+    <strong>Subject</strong>
+    <button type="button" onclick={() => copy("subject", email.subject)}>
+      {copied === "subject" ? "Copied" : "Copy the subject"}
+    </button>
+  </div>
+  <pre>{email.subject}</pre>
+  <div class="copy-row">
+    <strong>Body</strong>
+    <button type="button" onclick={() => copy("body", email.body)}>
+      {copied === "body" ? "Copied" : "Copy the body"}
+    </button>
+  </div>
+  <pre>{email.body}</pre>
+</div>
+
 <style>
   .generator {
     display: grid;
@@ -221,6 +253,15 @@ function downloadContacts() {
   button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+  .copy-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .email pre {
+    white-space: pre-wrap;
   }
   .hint {
     color: var(--sl-color-gray-3);

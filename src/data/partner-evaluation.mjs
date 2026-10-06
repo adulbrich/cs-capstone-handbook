@@ -45,6 +45,35 @@ export function pulseIntro({
   ].join("<br><br>");
 }
 
+/**
+ * The distribution email, by survey variant. Qualtrics sets it on the
+ * distribution, not in the .qsf, so the tools page shows it to copy. A
+ * partner with two teams gets two emails; the team in the subject keeps mail
+ * clients from threading them into one. `${l://...}` is Qualtrics's link
+ * piped text: the personal survey link and the opt-out link it requires.
+ */
+export const distributionEmails = {
+  pulse: {
+    body: [
+      "Hello,",
+      "",
+      "This is the midterm pulse for your capstone team ${e://Field/Team}: a short survey about how the team works with you, about two minutes.",
+      "",
+      "Please answer by ${e://Field/MidtermCloseDate}.",
+      "",
+      "${l://SurveyLink?d=Take the survey for ${e://Field/Team}}",
+      "",
+      "If you work with more than one team, each team has its own email and its own link.",
+      "",
+      "Thank you,",
+      "The CS Capstone instruction team",
+      "",
+      "${l://OptOutLink?d=Unsubscribe}",
+    ].join("\n"),
+    subject: "CS Capstone midterm pulse: ${e://Field/Team}",
+  },
+};
+
 /** The concern and comment questions every partner survey ends with. */
 export const concernText = {
   comments: "Explain your concern for each student listed above.",

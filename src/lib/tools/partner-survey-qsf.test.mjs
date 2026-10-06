@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   concernText,
   criterionNotes,
+  distributionEmails,
   pulsePrompt,
 } from "../../data/partner-evaluation.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
@@ -177,6 +178,20 @@ test("every criterion note names a pulse rubric criterion", () => {
   for (const key of Object.keys(criterionNotes)) {
     assert.ok(titles.includes(key), key);
   }
+});
+
+test("every variant's distribution email names the team in its subject and body", () => {
+  for (const key of Object.keys(VARIANTS)) {
+    const email = distributionEmails[key];
+    assert.ok(email, key);
+    assert.ok(email.subject.includes("${e://Field/Team}"), key);
+    assert.ok(email.body.includes("${e://Field/Team}"), key);
+    assert.ok(email.body.includes("${l://SurveyLink"), key);
+    assert.ok(email.body.includes("${l://OptOutLink"), key);
+  }
+  assert.ok(
+    distributionEmails.pulse.body.includes("${e://Field/MidtermCloseDate}")
+  );
 });
 
 test("a criterion with no statement, or criteria on different scales, stop the build", () => {
