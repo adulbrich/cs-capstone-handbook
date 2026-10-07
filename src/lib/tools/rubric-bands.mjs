@@ -1,5 +1,10 @@
-// Which rubric rating a score is named after, for every scorer (#437).
-// Pure: no DOM, no I/O.
+// Which rubric rating a score is named after, for every scorer (#437), and
+// the one way a share of a criterion's points is computed. Pure: no DOM, no I/O.
+
+/** `percent` of `points`, multiplied before dividing: 70% of 5 is 3.5. */
+export function percentOf(points, percent) {
+  return Math.round(points * percent * 100) / 10_000;
+}
 
 /** A criterion's ratings, highest points first. */
 export const descending = (criterion) =>

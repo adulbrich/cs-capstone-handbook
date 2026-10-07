@@ -1,8 +1,9 @@
 <script>
 // Scores a project partner survey export in the browser and writes the
 // rubric-assessment CSV and the concerns CSV as downloads. Nothing is
-// uploaded: the files never leave the page. The rubrics and the A lower
-// bound arrive parsed from the handbook's own files at build time.
+// uploaded: the files never leave the page. The rubrics, the A lower bound,
+// and the between-anchor shares arrive parsed from the handbook's own files
+// at build time.
 import { toCsv } from "../../lib/tools/csv.mjs";
 import { download } from "../../lib/tools/download.mjs";
 import {
@@ -17,9 +18,8 @@ import {
   parseRubricExport,
   rubricExportCsv,
 } from "../../lib/tools/rubric-export.mjs";
-import { termOf } from "../../lib/tools/term-label.mjs";
 
-const { aBound, rubrics } = $props();
+const { aBound, between, rubrics } = $props();
 
 const INPUTS = [
   { key: "roster", label: "Roster with groups (CSV)", parse: parseRoster },
@@ -68,9 +68,7 @@ const parsed = $derived({
 const ready = $derived(INPUTS.every(({ key }) => parsed[key]?.value));
 
 const detected = $derived(
-  parsed.qualtrics?.value
-    ? detectSurvey(parsed.qualtrics.value.columns, rubrics, termOf(new Date()))
-    : null
+  parsed.qualtrics?.value ? detectSurvey(parsed.qualtrics.value, rubrics) : null
 );
 
 const survey = $derived(surveyOverride ?? detected?.kind ?? null);
@@ -83,6 +81,7 @@ const result = $derived.by(() => {
   try {
     return scorePartnerSurvey({
       aBound,
+      between,
       choices: { ...choices },
       qualtrics: parsed.qualtrics.value,
       roster: parsed.roster.value,
@@ -156,8 +155,8 @@ function downloadConcerns() {
     <label>
       <span>
         Survey: {detected.kind
-          ? `detected ${SURVEYS[detected.kind].title}${detected.guessed ? " (term guessed from today; check it)" : ""}`
-          : "not recognized, pick it"}
+          ? `detected ${SURVEYS[detected.kind].title}`
+          : `not recognized (${detected.reason}), pick it`}
       </span>
       <select value={survey ?? ""} onchange={chooseSurvey}>
         <option value="" disabled>Pick the survey</option>
@@ -166,14 +165,6 @@ function downloadConcerns() {
         {/each}
       </select>
     </label>
-    {#if definition && !definition.supported}
-      <div class="problem" role="alert">
-        <strong>{definition.title} scoring is not supported yet.</strong>
-        Its export header is not recorded (issue #445), so the questions cannot
-        be mapped to the rubric. Use
-        <code>scripts/project-partner-end-of-term-surveys.R</code> for now.
-      </div>
-    {/if}
   {/if}
 
   <div class="actions">

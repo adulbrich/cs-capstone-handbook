@@ -33,6 +33,7 @@ import {
 } from "./partner-survey-qsf.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
+import { bandFor } from "./rubric-bands.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
 
@@ -342,15 +343,8 @@ test("a labels export of the generated survey scores with the merged scorer", ()
     ])
   );
   assert.deepEqual(
-    detectSurvey(
-      qualtrics.columns,
-      { fall: fallRubric, pulse: pulseRubric },
-      "fall"
-    ),
-    {
-      guessed: false,
-      kind: "pulse",
-    }
+    detectSurvey(qualtrics, { fall: fallRubric, pulse: pulseRubric }),
+    { kind: "pulse", reason: "" }
   );
 
   const roster = parseRoster(
@@ -809,4 +803,229 @@ test("the spring export's columns and ImportIds", () => {
       "Term",
     ]
   );
+});
+
+// The end-of-term contract with the scorer (#445): a labels export of each
+// generated End-of-Term Survey scores by the same choice list the survey
+// offers, label in, points out.
+
+/** A labels export of `survey`, one row per cell map. */
+function labelsExport(survey, rows) {
+  const columns = exportColumns(survey);
+  return parseQualtricsExport(
+    toCsv([
+      columns.map(([tag]) => tag),
+      columns.map(([, text]) => text),
+      columns.map(([, , id]) => JSON.stringify({ ImportId: id })),
+      ...rows.map((cells) => columns.map(([tag]) => cells[tag] ?? "")),
+    ])
+  );
+}
+
+let finalCount = 0;
+
+/** One finished end-of-term response: the top choice on every facet. */
+function finalResponse(term, team, overrides = {}) {
+  finalCount += 1;
+  const cells = {
+    Finished: "True",
+    Q2: "No",
+    RecordedDate: "recorded",
+    ResponseId: `R_final_${finalCount}`,
+    StartDate: "started",
+    Status: "Email",
+    Team: team,
+    Term: term,
+  };
+  for (const criterion of finalRubrics[term].criteria) {
+    cells[facetTag(criterion)] = choicesOf(criterion)[0].label;
+  }
+  return { ...cells, ...overrides };
+}
+
+const FINAL_ROSTER = parseRoster(
+  [
+    "name,canvas_user_id,user_id,login_id,sections,group_name,canvas_group_id,group_id",
+    '"Lovelace, Ada",101,0,ada@example.edu,CS 461 001,Engines,0,0',
+    '"Hopper, Grace",201,0,grace@example.edu,CS 461 001,Compilers,0,0',
+  ].join("\r\n")
+);
+
+const finalRubricExport = (term) => {
+  const names = finalRubrics[term].criteria.map((c) => c.title);
+  return parseRubricExport(
+    toCsv([
+      [
+        "Student Id",
+        "Student Name",
+        ...names.flatMap((n) => [
+          `${n} - Rating`,
+          `${n} - Points`,
+          `${n} - Comments`,
+        ]),
+      ],
+      ["101", "Lovelace, Ada", ...names.flatMap(() => ["", "", ""])],
+      ["201", "Hopper, Grace", ...names.flatMap(() => ["", "", ""])],
+    ])
+  );
+};
+
+const scoreFinal = (term, rows, survey = finalSurvey(term)) =>
+  scorePartnerSurvey({
+    aBound: A,
+    between: rules.between,
+    qualtrics: labelsExport(finals[term], rows),
+    roster: FINAL_ROSTER,
+    rubric: finalRubrics[term],
+    rubricExport: finalRubricExport(term),
+    survey,
+  });
+
+/** One criterion's Rating and Points in the row of `id`. */
+function scoreOf(result, term, id, criterion) {
+  const exported = finalRubricExport(term);
+  const at = exported.criteria.get(criterion.title.toLowerCase());
+  const row = result.rows.find((cells) => cells[0] === id);
+  return { points: row[at.Points], rating: row[at.Rating] };
+}
+
+test("each generated end-of-term export is detected by its Term and facet tags", () => {
+  const all = { ...finalRubrics, pulse: pulseRubric };
+  for (const term of TERMS) {
+    const qualtrics = labelsExport(finals[term], [
+      finalResponse(term, "Engines"),
+    ]);
+    assert.deepEqual(detectSurvey(qualtrics, all), {
+      kind: finalSurvey(term),
+      reason: "",
+    });
+    assert.equal(SURVEYS[finalSurvey(term)].supported, true);
+  }
+  const mixed = labelsExport(finals.fall, [
+    finalResponse("fall", "Engines"),
+    finalResponse("fall", "Compilers", { Term: "winter" }),
+  ]);
+  assert.equal(detectSurvey(mixed, all).kind, null);
+  assert.match(detectSurvey(mixed, all).reason, /fall, winter/);
+  const summer = labelsExport(finals.fall, [
+    finalResponse("fall", "Engines", { Term: "summer" }),
+  ]);
+  assert.equal(detectSurvey(summer, all).kind, null);
+  // A facet column missing from the export is named.
+  const noFacet = labelsExport(finals.winter, [
+    finalResponse("winter", "Engines"),
+  ]);
+  noFacet.columns = noFacet.columns.filter((c) => c.tag !== "Teamwork");
+  assert.match(detectSurvey(noFacet, all).reason, /no Teamwork column/);
+});
+
+test("every choice of every end-of-term facet scores its points, named by bandFor", () => {
+  for (const term of TERMS) {
+    for (const criterion of finalRubrics[term].criteria) {
+      for (const choice of choicesOf(criterion)) {
+        const result = scoreFinal(term, [
+          finalResponse(term, "Engines", {
+            [facetTag(criterion)]: choice.label,
+          }),
+          finalResponse(term, "Compilers"),
+        ]);
+        assert.deepEqual(
+          scoreOf(result, term, "101", criterion),
+          {
+            points: String(choice.points),
+            rating: bandFor(criterion, choice.points).name,
+          },
+          `${term} ${criterion.title}: ${choice.label}`
+        );
+      }
+    }
+  }
+  // Spring Requirements at 70% is 3.5 points, named after the low anchor.
+  const requirements = finalRubrics.spring.criteria.find(
+    (c) => facetTag(c) === "Requirements"
+  );
+  const seventy = choicesOf(requirements).find((c) => c.percent === 70);
+  const result = scoreFinal("spring", [
+    finalResponse("spring", "Engines", { Requirements: seventy.label }),
+  ]);
+  assert.deepEqual(scoreOf(result, "spring", "101", requirements), {
+    points: "3.5",
+    rating: "Low anchor (half the points)",
+  });
+});
+
+test("the spring custom scale scores its share of the points, and stops out of range", () => {
+  const ladder = finalRubrics.spring.criteria.find(isLadder);
+  const custom = customOf(ladder);
+  const tag = facetTag(ladder);
+  const column = `${tag}_${custom.id}_TEXT`;
+  assert.equal(column, "VnV_7_TEXT");
+  const answer = (share) =>
+    finalResponse("spring", "Engines", {
+      [column]: share,
+      [tag]: customScaleText(custom),
+    });
+  for (const [share, points] of [
+    ["50", "20"],
+    ["75", "30"],
+    ["100", "40"],
+  ]) {
+    const result = scoreFinal("spring", [answer(share)]);
+    assert.deepEqual(scoreOf(result, "spring", "101", ladder), {
+      points,
+      rating: bandFor(ladder, Number(points)).name,
+    });
+  }
+  for (const bad of ["", "49", "101", "120", "abc"]) {
+    assert.throws(
+      () => scoreFinal("spring", [answer(bad)]),
+      /custom-scale share in VnV_7_TEXT.*from 50 to 100/,
+      bad
+    );
+  }
+});
+
+test("an end-of-term label the survey does not offer stops the run", () => {
+  assert.throws(
+    () =>
+      scoreFinal("fall", [
+        finalResponse("fall", "Engines", { Teamwork: "Mostly fine" }),
+      ]),
+    /"Mostly fine" to Teamwork .* not a choice for Teamwork/
+  );
+});
+
+test("an end-of-term export scored as another term stops the run", () => {
+  assert.throws(
+    () =>
+      scoreFinal(
+        "winter",
+        [finalResponse("winter", "Engines")],
+        finalSurvey("fall")
+      ),
+    /Term column holds winter.*End-of-Term Survey, fall/
+  );
+});
+
+test("an end-of-term team with no response scores the A lower bound; concerns are kept", () => {
+  for (const term of TERMS) {
+    const result = scoreFinal(term, [
+      finalResponse(term, "Engines", {
+        Q2: "Yes",
+        "Q2 Comments": "Quiet in meetings.",
+        "Q2 Names": "Ada",
+      }),
+    ]);
+    assert.deepEqual(result.report.noResponse, ["Compilers"]);
+    let total = 0;
+    for (const criterion of finalRubrics[term].criteria) {
+      const { points, rating } = scoreOf(result, term, "201", criterion);
+      assert.equal(rating, bandFor(criterion, Number(points)).name);
+      total += Number(points);
+    }
+    assert.equal(Math.round(total * 1e6) / 1e6, A, term);
+    assert.deepEqual(result.concerns.rows, [
+      ["Engines", "Yes", "Ada", "Quiet in meetings.", ""],
+    ]);
+  }
 });

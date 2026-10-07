@@ -7,12 +7,11 @@ import {
   aLowerBound,
   detectSurvey,
   noResponseScore,
-  percentOf,
   scorePartnerSurvey,
 } from "./partner-scoring.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
-import { bandFor } from "./rubric-bands.mjs";
+import { bandFor, percentOf } from "./rubric-bands.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 
 const root = new URL("../../../", import.meta.url);
@@ -468,42 +467,19 @@ test("a rubric export for another rubric stops the run", () => {
 });
 
 test("the pulse is detected from its questions; anything else is not", () => {
-  const { columns } = parseQualtricsExport(
+  const qualtrics = parseQualtricsExport(
     pulseExport([response("Engines", STRONG)])
   );
-  assert.deepEqual(detectSurvey(columns, rubrics, "fall"), {
-    guessed: false,
+  assert.deepEqual(detectSurvey(qualtrics, rubrics), {
     kind: "pulse",
+    reason: "",
   });
-  const facets = rubrics.fall.criteria.map((c, i) => ({
-    tag: `Q${i + 1}`,
-    text: `Rate the team. - ${c.title}: ${c.description}`,
-  }));
-  assert.deepEqual(detectSurvey(facets, rubrics, "winter"), {
-    guessed: true,
-    kind: "final-winter",
-  });
-  assert.deepEqual(detectSurvey(columns.slice(0, 6), rubrics, "fall"), {
-    guessed: false,
-    kind: null,
-  });
-});
-
-test("end-of-term scoring is refused until its export is known", () => {
-  assert.throws(
-    () =>
-      scorePartnerSurvey({
-        aBound: A,
-        qualtrics: parseQualtricsExport(
-          pulseExport([response("Engines", STRONG)])
-        ),
-        roster: [],
-        rubric: rubrics.fall,
-        rubricExport: parseRubricExport(EXPORT),
-        survey: "final-fall",
-      }),
-    /not supported yet/
+  const { kind, reason } = detectSurvey(
+    { ...qualtrics, columns: qualtrics.columns.slice(0, 6) },
+    rubrics
   );
+  assert.equal(kind, null);
+  assert.match(reason, /no Term column/);
 });
 
 test("a score between ratings is named after the highest rating at or below it", () => {

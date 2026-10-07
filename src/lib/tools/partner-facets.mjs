@@ -8,8 +8,7 @@
 // shares and the lists are read from the partner evaluation page,
 // src/content/docs/assignments/project-partner-evaluation.mdx, by pageRules.
 
-import { percentOf } from "./partner-scoring.mjs";
-import { descending } from "./rubric-bands.mjs";
+import { descending, percentOf } from "./rubric-bands.mjs";
 
 /** A three-anchor facet's anchors are named "<Top|Middle|Low> anchor (...)". */
 const ANCHOR_NAME = /^(\w+) anchor\b/;
