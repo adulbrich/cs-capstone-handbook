@@ -250,6 +250,14 @@ function downloadConcerns() {
             .join(", ")}.
         </li>
       {/if}
+      {#if report.blankTerm.length > 0}
+        <li>
+          Responses with a blank Term, not scored:
+          {report.blankTerm
+            .map((r) => `${r.team || "(empty)"} (${r.responseId})`)
+            .join(", ")}.
+        </li>
+      {/if}
       {#if report.noTeam.length > 0}
         <li>
           Students in the rubric export with no team, left as exported:

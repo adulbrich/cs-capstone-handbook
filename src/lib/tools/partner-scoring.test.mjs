@@ -9,9 +9,10 @@ import {
   noResponseScore,
   scorePartnerSurvey,
 } from "./partner-scoring.mjs";
+import { percentOf } from "./points.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
-import { bandFor, percentOf } from "./rubric-bands.mjs";
+import { bandFor } from "./rubric-bands.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 
 const root = new URL("../../../", import.meta.url);

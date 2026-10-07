@@ -44,6 +44,19 @@ import {
 import { descending } from "./rubric-bands.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
 
+/**
+ * The export tags of the concern questions every partner survey asks, and
+ * the field that names an end-of-term survey's term: the scorer
+ * (partner-scoring.mjs) reads the export by these names.
+ */
+export const CONCERN_TAGS = {
+  comments: "Q2 Comments",
+  flag: "Q2",
+  names: "Q2 Names",
+  other: "Q3",
+};
+export const TERM_FIELD = "Term";
+
 /** A rubric's ratings, lowest points first: the scale's columns, in order. */
 const ascending = (criterion) =>
   [...criterion.ratings].sort((a, b) => a.points - b.points);
@@ -128,10 +141,10 @@ function facetQuestions(rubric, rules) {
   if (problems.length > 0) {
     throw new Error(`The ${rubric.name} survey has ${problems.join("; ")}.`);
   }
-  return rubric.criteria.map((criterion, i) => {
-    const { choices, custom } = facetOffer(criterion, rules.between);
+  return rubric.criteria.map((criterion) => {
+    const { choices, custom, tag } = facetOffer(criterion, rules.between);
     const prompt = isLadder(criterion)
-      ? ladderPrompts[tags[i]]
+      ? ladderPrompts[tag]
       : criterion.description;
     return {
       choices: [
@@ -140,7 +153,7 @@ function facetQuestions(rubric, rules) {
       ],
       custom,
       guide: facetGuide(criterion, rules.guidance[criterion.title]),
-      tag: tags[i],
+      tag,
       text: `${criterion.title}: ${prompt}`,
     };
   });
@@ -185,7 +198,7 @@ function finalVariant(term) {
       return elements;
     },
     title: "Project Partner End-of-Term Survey",
-    values: { Term: term },
+    values: { [TERM_FIELD]: term },
   };
 }
 
@@ -232,20 +245,20 @@ export const VARIANTS = {
 /** The concern and comment questions, with the tags the scorer reads. */
 function concernQuestions(survey) {
   const flag = survey.add((qid) =>
-    singleChoice(qid, "Q2", concernText.flag, ["Yes", "No"])
+    singleChoice(qid, CONCERN_TAGS.flag, concernText.flag, ["Yes", "No"])
   );
   const onYes = shownWhenSelected(survey.payload(flag), 1);
   return [
     flag,
     survey.add((qid) => ({
-      ...singleLine(qid, "Q2 Names", concernText.names),
+      ...singleLine(qid, CONCERN_TAGS.names, concernText.names),
       DisplayLogic: onYes,
     })),
     survey.add((qid) => ({
-      ...essay(qid, "Q2 Comments", concernText.comments),
+      ...essay(qid, CONCERN_TAGS.comments, concernText.comments),
       DisplayLogic: onYes,
     })),
-    survey.add((qid) => essay(qid, "Q3", concernText.other)),
+    survey.add((qid) => essay(qid, CONCERN_TAGS.other, concernText.other)),
   ];
 }
 

@@ -31,6 +31,7 @@ import {
   pulseScale,
   VARIANTS,
 } from "./partner-survey-qsf.mjs";
+import { choiceTextColumn } from "./qsf.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
 import { bandFor } from "./rubric-bands.mjs";
@@ -272,7 +273,7 @@ function exportColumns(survey) {
       for (const id of q.ChoiceOrder ?? []) {
         if (q.Choices[id].TextEntry === "true") {
           columns.push([
-            `${q.DataExportTag}_${id}_TEXT`,
+            choiceTextColumn(q.DataExportTag, id),
             `${q.QuestionText} - ${q.Choices[id].Display} - Text`,
             `${q.QuestionID}_${id}_TEXT`,
           ]);
@@ -763,7 +764,7 @@ test("a labels export of each end-of-term survey carries the tags and labels the
       .filter((tag) => tag.endsWith("_TEXT"));
     assert.deepEqual(
       textTags,
-      ladder ? [`${facetTag(ladder)}_${customOf(ladder).id}_TEXT`] : [],
+      ladder ? [choiceTextColumn(facetTag(ladder), customOf(ladder).id)] : [],
       term
     );
   }
@@ -958,7 +959,7 @@ test("the spring custom scale scores its share of the points, and stops out of r
   const ladder = finalRubrics.spring.criteria.find(isLadder);
   const custom = customOf(ladder);
   const tag = facetTag(ladder);
-  const column = `${tag}_${custom.id}_TEXT`;
+  const column = choiceTextColumn(tag, custom.id);
   assert.equal(column, "VnV_7_TEXT");
   const answer = (share) =>
     finalResponse("spring", "Engines", {
@@ -1005,10 +1006,18 @@ test("an end-of-term export scored as another term stops the run", () => {
       ),
     /Term column holds winter.*End-of-Term Survey, fall/
   );
-  assert.throws(
-    () => scoreFinal("fall", [finalResponse("fall", "Engines", { Term: "" })]),
-    /Term column holds 1 blank.*every response must name its term/
-  );
+});
+
+test("an end-of-term response with a blank Term is reported, not scored", () => {
+  const result = scoreFinal("fall", [
+    finalResponse("fall", "Engines", { ResponseId: "R_blank", Term: "" }),
+    finalResponse("fall", "Compilers"),
+  ]);
+  assert.deepEqual(result.report.blankTerm, [
+    { responseId: "R_blank", team: "Engines" },
+  ]);
+  assert.deepEqual(result.report.noResponse, ["Engines"]);
+  assert.equal(result.report.responded, 1);
 });
 
 test("two end-of-term responses for one team wait for a choice", () => {

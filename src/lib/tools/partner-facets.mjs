@@ -9,7 +9,9 @@
 // src/content/docs/assignments/project-partner-evaluation.mdx, by pageRules.
 
 import { customScaleText } from "../../data/partner-evaluation.mjs";
-import { descending, percentOf } from "./rubric-bands.mjs";
+import { percentOf } from "./points.mjs";
+import { choiceTextColumn } from "./qsf.mjs";
+import { descending } from "./rubric-bands.mjs";
 
 /** A three-anchor facet's anchors are named "<Top|Middle|Low> anchor (...)". */
 const ANCHOR_NAME = /^(\w+) anchor\b/;
@@ -151,12 +153,6 @@ export function customScaleChoice(criterion, choices) {
     min: shareOf(criterion, ratings.at(-1).points),
   };
 }
-
-/**
- * The column a choice's text box exports under, `<tag>_<id>_TEXT`, as
- * Qualtrics names it for a single-choice question (qsf.mjs, singleChoice).
- */
-export const choiceTextColumn = (tag, id) => `${tag}_${id}_TEXT`;
 
 /**
  * What one facet's question offers, for the generator and the scorer alike:

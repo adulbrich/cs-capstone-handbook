@@ -243,10 +243,16 @@ function numberEntryValidation(qid, { id, max, min }) {
 }
 
 /**
+ * The column a choice's text box exports under, `<tag>_<id>_TEXT`, as
+ * Qualtrics names it for a singleChoice question with `numberEntry`.
+ */
+export const choiceTextColumn = (tag, id) => `${tag}_${id}_TEXT`;
+
+/**
  * One answer from a vertical list; choice i + 1 is `options[i]`, recoded
  * i + 1. `reversed` lists the last option first; `forced` requires an
  * answer. `numberEntry` (`{ id, min, max }`) gives choice `id` a text box,
- * exported as `<tag>_<id>_TEXT`, that must hold a number from `min` to
+ * exported as choiceTextColumn(tag, id), that must hold a number from `min` to
  * `max` when the choice is selected; it implies `forced`.
  */
 export function singleChoice(
