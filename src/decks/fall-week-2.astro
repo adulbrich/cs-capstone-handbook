@@ -1,0 +1,746 @@
+---
+// Fall week 2, Workshop 1: User Story Mapping (#466). A 50-minute session:
+// talk for the first 15 minutes, teams map in the template until minute 45
+// with the self-check up and a volunteer clinic at about minute 30, then the
+// wrap. The talk slides' target times stay at 15:00 or less in total; the
+// work-time and wrap slides carry the session clock in their cues. Every
+// claim on a slide traces to a URL on the sources slide. The AI demo output
+// box is a placeholder the instructor fills before class. Served at
+// /decks/fall-week-2/.
+import Notes from "../components/deck/Notes.astro";
+import Slide from "../components/deck/Slide.astro";
+import StoryMap from "../components/deck/StoryMap.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+
+export const title = "Fall Week 2: User Story Mapping";
+
+// Shown twice, either side of the clinic, so the room keeps it in view.
+const selfCheck = [
+  "The backbone is what the user or the input does, never a screen or a component",
+  "The walking skeleton has a story under every backbone column",
+  "Every story is known, or starts with ? when it is assumed",
+  "The backbone type is chosen, with one line saying why",
+  "Every ? has a question on the Questions for our partner tab",
+];
+// The ephira day-one map: drawn once, shown on its own slide and again
+// beside the AI tool's output.
+const ephiraMap = {
+  backbone: [
+    "Get in safely",
+    "Log a day",
+    "Review the calendar",
+    "Read cycle insights",
+    "Get reminders",
+    "Take the data out",
+  ],
+  releases: [
+    {
+      name: "Walking skeleton",
+      stories: [
+        "Set a password, unlock with it",
+        "Log today's flow, edit a past day",
+        "Logged days on a month view",
+        "Current cycle day",
+        "Daily reminder to log",
+        "Delete all my data",
+      ],
+    },
+    {
+      name: "Release 1",
+      stories: [
+        "Biometric unlock, guided tour",
+        ["Symptoms, moods, notes", "? Custom symptoms, medications"],
+        "Filter the legend by entry type",
+        "Predict after 2 cycles, phase tips",
+        "? Reminder before a period",
+        "? PDF export for a doctor",
+      ],
+    },
+    {
+      name: "Out of scope this year",
+      stories: [
+        "Color themes",
+        "Pregnancy mode",
+        undefined,
+        undefined,
+        "Birth control reminders",
+        "Cloud backup",
+      ],
+    },
+  ],
+};
+// Shown without its protocol, as the room would type it.
+const templateUrl = new URL("/story-map-template.xlsx", Astro.site);
+const template = `${templateUrl.host}${templateUrl.pathname}`;
+---
+
+<TitleSlide
+  kicker="CS 461, fall week 2: Workshop 1"
+  title="User Story Mapping"
+  subtitle="A backbone, a release line, and a walking skeleton for your project"
+  byline="CS 461: the instruction team"
+>
+  <Notes time="0:20" cue="Teams sit together by team number; one laptop per team opens the template.">
+    <p>
+      Fifteen minutes of talk, thirty minutes of mapping in teams, five
+      minutes of wrap. By the end of class each team has a backbone, a
+      walking-skeleton row, and its assumptions flagged.
+    </p>
+  </Notes>
+</TitleSlide>
+
+<Slide kicker="Four words for today" title="What a story map is made of">
+  <ul>
+    <li>
+      <strong>Backbone:</strong> the big activities across the top, in the
+      order they happen
+    </li>
+    <li class="fragment">
+      <strong>Stories:</strong> the smaller steps under each activity, higher
+      when more necessary
+    </li>
+    <li class="fragment">
+      <strong>Release line:</strong> a cut across the map; everything above it
+      ships first
+    </li>
+    <li class="fragment">
+      <strong>Walking skeleton:</strong> the first slice, a story under every
+      activity, so the whole thing runs end to end
+    </li>
+  </ul>
+  <Notes time="1:30" cue="Press the arrow for each line; ask the room which line is the hardest to draw.">
+    <p>
+      Patton, whose article is on the next slide, does not prioritize the
+      backbone: it is the set of things the system has to do at all. He
+      prioritizes the stories hanging under it, moving them up or down, and
+      lays tape across the map to make one lane per release.
+    </p>
+    <p>
+      The stories placed highest form the smallest system that works end to
+      end. Patton credits the term walking skeleton to Alistair Cockburn; use
+      Patton's description here and don't paraphrase Cockburn's.
+    </p>
+    <p>
+      One convention for today: a story nobody has checked with the project
+      partner starts with a question mark, and the template turns it amber.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Where it comes from" title="Jeff Patton's map for Mimi">
+  <ul>
+    <li>Mimi: a Music Industry Marketing Interface, mapped in one day</li>
+    <li class="fragment">
+      The map narrowed the first release to one activity: a band member
+      promoting a gig
+    </li>
+    <li class="fragment">
+      Design the mailer, build the audience list, send it, track the
+      responses
+    </li>
+    <li class="fragment">
+      Mimi shipped; the other music features moved below the line
+    </li>
+  </ul>
+  <Notes time="1:00" cue="One sentence on why a flat backlog loses this.">
+    <p>
+      From Patton's article "The New User Story Backlog is a Map". The product
+      set out to do many music-industry things. Laying the whole thing out
+      showed that one activity, promoting a gig, already took most of the
+      map, and the rest looked like a tall order by comparison.
+    </p>
+    <p>
+      Patton's complaint about a flat backlog is that it strips the context:
+      a list in build order can't tell a stakeholder what the system does,
+      and it can't show you what you missed. The map can, because you can
+      walk it left to right with a user.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="A real scope cut" title="Allegro: two years of work, six months to ship">
+  <ul>
+    <li>A new shipment platform, integrated with a large ERP (enterprise resource planning) system</li>
+    <li class="fragment">
+      Estimated at about two years; the partner's release cycle allowed six
+      months
+    </li>
+    <li class="fragment">
+      Mapped as a whole team: a minimum viable product of 120 story points,
+      against a pace of about 80
+    </li>
+    <li class="fragment">
+      Cut and thinned stories to fit, built the API on mocks first so the
+      partner could start
+    </li>
+    <li class="fragment">Released on time, with most of the features they wanted</li>
+  </ul>
+  <Notes time="1:15" cue="Ask: what is your partner's equivalent of the ERP release cycle?">
+    <p>
+      From the second part of Allegro's engineering blog series on delivering
+      products. They combined a minimum viable product, a walking skeleton, and
+      story mapping. The estimate after mapping still did not fit their
+      velocity, so they cut the minimum viable product further and made some
+      stories thinner.
+    </p>
+    <p>
+      The first version gave no business value on its own: an API backed by
+      mocks. It let the ERP partner start integrating, which was the real
+      constraint. Your partner has clocks like that too.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Worked example: ephira, day one" title="The map a team could have drawn from the proposal" wide>
+  <StoryMap {...ephiraMap} />
+  <Notes time="2:00" cue="Point at the walking-skeleton row and read it left to right as one user's first day.">
+    <p>
+      ephira is an encrypted, local-first menstrual cycle tracker for iOS and
+      Android, MIT licensed and published on both app stores. This is the map
+      a team could have drawn in week 2, before knowing what the users wanted.
+    </p>
+    <p>
+      The backbone names what the user does, never a screen: "Log a day", not
+      "Day view". The walking skeleton is ugly on purpose: a password, one
+      flow entry, a month view, a cycle day, one reminder, and a delete
+      button. It runs end to end, and every later story hangs off something
+      that already works.
+    </p>
+    <p>
+      The three amber cards are the team's guesses. None of them is checked
+      with a user yet, so each becomes a question for the partner.
+    </p>
+  </Notes>
+</Slide>
+
+<TwoColumnSlide kicker="Worked example: ephira, the reveal" title="What the first store version held" divider>
+  <div slot="left">
+    <h3>In the first store version</h3>
+    <ul>
+      <li>Password and biometric lock; delete all data</li>
+      <li>A full day log, the calendar and its filter, custom entries</li>
+      <li>Color themes, which day one had ruled out</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Later, or never</h3>
+    <ul>
+      <li>Later: predictions, cycle insights, PDF export, reminders, the guided tour</li>
+      <li>Later: pregnancy mode, now a separate mode</li>
+      <li>Never: cloud backup, since the data never leaves the device</li>
+    </ul>
+  </div>
+  <Notes time="1:00" cue="Ask: which card on the day-one map turned out to be the hardest unknown?">
+    <p>
+      The first version the repository marks for the app store is 1.1.0: its
+      app.json commit reads "Update version for appstore upload". At that
+      commit the code has the password and biometric lock, the day view
+      (flow, symptoms, moods, medications, birth control, notes), the
+      calendar and its filter, custom entries, a theme selector, and delete
+      all data. Its README still lists cycle prediction, data export, and
+      cycle insight as open goals.
+    </p>
+    <p>
+      Everything on the right of this slide is in today's README and came in
+      later versions. So the first release was thinner than the day-one map:
+      the cycle-day and reminder stories in its walking skeleton were not
+      there yet. Color themes moved up from out of scope; the line moves both
+      ways. Pregnancy mode was started after the first release and now runs
+      as its own set of tabs. Cloud backup is the deliberate one: the app
+      promises data that never leaves the device, so backup would break the
+      product's main promise. Writing it below the line, on purpose, settles
+      the question before anyone asks for it.
+    </p>
+  </Notes>
+</TwoColumnSlide>
+
+<Slide kicker="Three backbones, one map" title="Choose the backbone where your hardest unknowns live">
+  <div class="backbones">
+    <div class="type">
+      <h3>User journey</h3>
+      <p>What a user does, in order</p>
+      <p class="skeleton">Skeleton: one user gets through every activity once</p>
+    </div>
+    <div class="type fragment">
+      <h3>Pipeline stages</h3>
+      <p>What happens to one input on its way to an output</p>
+      <p class="skeleton">Skeleton: one real input reaches an output, stubs allowed</p>
+    </div>
+    <div class="type fragment">
+      <h3>Research chain</h3>
+      <p>Question, data, baseline, method, evaluation, result</p>
+      <p class="skeleton">Skeleton: the baseline runs end to end and produces one number</p>
+    </div>
+  </div>
+  <p class="fragment rule-line">
+    Same rows, release line, <code>?</code> flags, and partner questions for all
+    three. Write one line saying why you chose yours.
+  </p>
+  <Notes time="1:00" cue="Ask for hands: who is not sure their project has a user?">
+    <p>
+      Why it matters: the walking skeleton should exercise the riskiest part
+      of the project first, so the backbone has to run through it. In a
+      recent year, about half the project listings had no clean user journey
+      to map, so a good part of the room needs this slide.
+    </p>
+    <p>
+      A game is a user journey with the player as the user; a library or an
+      API is a user journey with the adopting developer as the user. Pick
+      the backbone where the hardest unknowns are: if the scary part is
+      whether a model beats a baseline, map the research chain, even if
+      there is a web front end too.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Pipeline backbone: a sketch from the project page" title="Measuring waves from an ocean glider" wide>
+  <StoryMap
+    backbone={[
+      "Sense",
+      "Calibrate",
+      "Spectral analysis",
+      "Wave height on board",
+      "Serial link to the glider",
+      "Shore",
+    ]}
+    releases={[
+      {
+        name: "Walking skeleton",
+        stories: [
+          "Log raw accelerations",
+          "Apply a bench calibration",
+          "Wave spectrum on a laptop",
+          "Wave height from one spectrum",
+          "Send one value over serial",
+          "? Glider relays it to shore",
+        ],
+      },
+      {
+        name: "Release 1",
+        stories: [
+          "? Sample within the power budget",
+          "Model the glider's own motion",
+          ["Directional spectrum", "Spectrum visualization"],
+          "Spectrum computed on board",
+          "? Serial API the glider accepts",
+          undefined,
+        ],
+      },
+    ]}
+  />
+  <p class="caption">
+    Inferred from the project page, not the team's own map. The instruction
+    team found no public repository.
+  </p>
+  <Notes time="1:15" cue="Ask: what is the input here, and who is the user?">
+    <p>
+      A capstone project with an oceanography lab: put an accelerometer
+      package on an autonomous underwater glider and turn its readings into
+      wave height, frequency, and direction. There is no user clicking
+      through anything; the backbone is what happens to one burst of
+      accelerations on its way to shore.
+    </p>
+    <p>
+      The stages come from the project page's objectives and deliverables.
+      The amber cards are what the page leaves open: the power budget of a
+      low-power system at sea, and whether the glider takes the serial API.
+      The instruction team found no public repository for this project.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Pipeline backbone: the walking skeleton" title="One thin path, sensor to shore, climbing a test ladder">
+  <ol>
+    <li>On a benchtop</li>
+    <li class="fragment">In a ballast tank</li>
+    <li class="fragment">In a wave flume with well-defined waves</li>
+    <li class="fragment">In Yaquina Bay</li>
+    <li class="fragment">In the open ocean near shore</li>
+    <li class="fragment">In the open ocean beside a buoy with a calibrated wave sensor</li>
+  </ol>
+  <Notes time="0:45" cue="Ask: which rung would you be on at the end of fall?">
+    <p>
+      This ladder is in the project's own proposal. Read it as a walking
+      skeleton: the same end-to-end path, from accelerations to one wave
+      height on shore, runs at every rung, and each rung adds one kind of
+      risk. A team that builds the full spectral package before the
+      benchtop path works has nothing to take into the tank.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Research backbone: a sketch from the project page" title="Predicting a species' body mass from its name" wide>
+  <StoryMap
+    backbone={[
+      "Question",
+      "Data",
+      "Baseline: genus mean",
+      "Method",
+      "Held-out error",
+      "Result",
+    ]}
+    releases={[
+      {
+        name: "Walking skeleton",
+        stories: [
+          "Predict mass from a species name",
+          "Measured masses, a small slice",
+          "Mean mass of the species' genus",
+          "Same as the baseline, a stub",
+          "Error on species held out",
+          "One number on the metric",
+        ],
+      },
+      {
+        name: "Release 1",
+        stories: [
+          "? Taxonomy beats the genus mean",
+          "Whole database, fixed train and test split",
+          undefined,
+          ["? Fine-tuned language model", "? Tree-based model"],
+          "Error by taxonomic rank",
+          ["Estimate with uncertainty", "Single and batch queries on the web"],
+        ],
+      },
+    ]}
+  />
+  <p class="caption">Inferred from the project page, not the team's own map.</p>
+  <Notes time="1:15" cue="Ask: what single number would tell this team its method works?">
+    <p>
+      TaxonBodyMassML: ecologists have measured the body mass of thousands
+      of species, a small fraction of all described species, and the
+      project predicts the rest from the scientific name and taxonomy.
+    </p>
+    <p>
+      The walking skeleton never touches the clever method. It takes a slice
+      of the data, predicts each held-out species with its genus's mean, and
+      reports one error number. Every method after that has a number to
+      beat. The genus-mean baseline is this deck's choice, not something the
+      project page names.
+    </p>
+  </Notes>
+</Slide>
+
+<TwoColumnSlide kicker="Research backbone: what happened" title="The method changed; the chain held" divider>
+  <div slot="left">
+    <h3>The proposal</h3>
+    <ul>
+      <li>Fine-tune a large language model on name and mass pairs</li>
+      <li>A web interface for single and batch queries</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>The repository</h3>
+    <ul>
+      <li>Fall: the train and test split</li>
+      <li class="fragment">Winter: a gradient-boosted model on the taxonomy</li>
+      <li class="fragment">That model is what shipped</li>
+    </ul>
+  </div>
+  <Notes time="0:45" cue="Point at the Method column on the previous map: only that cell changed.">
+    <p>
+      The project page asked for a fine-tuned language model. The
+      repository's history shows the data split in fall and an XGBoost
+      regressor, a gradient-boosted tree model, in winter, and that model is
+      what the team shipped. The backbone survived the change because the
+      method was one column, not the whole map.
+    </p>
+    <p>
+      The repository also shows packages and releases after the team's
+      year. Those are the partner's maintenance; don't credit them to the
+      team.
+    </p>
+  </Notes>
+</TwoColumnSlide>
+
+<Slide kicker="The other half of the room" title="Games and developer tools are user journeys too">
+  <ul>
+    <li>
+      <strong>A game:</strong> the player launches it, learns the controls,
+      plays a level, fails and retries, and finishes
+    </li>
+    <li class="fragment">
+      <strong>A library or an API:</strong> the adopting developer finds it,
+      installs it, gets a first call working, integrates it, and upgrades
+    </li>
+  </ul>
+  <Notes time="0:45" cue="Ask a game team to name its first backbone column out loud.">
+    <p>
+      For a game, the walking skeleton is one level, ugly, from launch to the
+      end screen. For a library, it's a first call that works from a fresh
+      install, documented in the README. The developer is the user, and
+      "installs it" is an activity on the map like any other.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="AI demo: ephira's proposal" title="The same proposal, mapped by an AI tool">
+  <pre class="prompt">Here is a software project proposal, as it was advertised to students:
+
+[ADVERTISED PROJECT PROPOSAL]
+
+Draft a user story map for the team's first release. Give a backbone of
+four to seven activities in the order they happen, then a walking-skeleton
+row with one story under every activity, then a Release 1 row and an
+out-of-scope row. Keep each story under eight words.</pre>
+  <Notes time="0:30" cue="Read the last two sentences aloud.">
+    <p>
+      Tool and model, named here only: [FILL IN THE TOOL AND MODEL YOU
+      PRE-RAN]. Run it before class with ephira's proposal, as it was
+      advertised, pasted in place of the placeholder, and keep the output as
+      returned. The human map for the same proposal is the day-one map from
+      earlier, shown again after the output.
+    </p>
+    <p>
+      The prompt does not ask the tool to mark its assumptions, on purpose:
+      the point is to see what it states as fact.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="AI demo: the output" title="What the tool drew from ephira's proposal">
+  <div class="placeholder">
+    <p class="placeholder-label">Placeholder</p>
+    <p>Paste the pre-run tool output here</p>
+  </div>
+  <ul class="marks">
+    <li><strong>Invented:</strong> [one story the proposal never mentions]</li>
+    <li><strong>Stated as fact:</strong> [one assumption nobody has checked]</li>
+  </ul>
+  <Notes time="1:00" cue="Ask the room to find the invented story before you point at it.">
+    <p>
+      Placeholder: fill it before class. Replace the dashed box with the
+      tool's output (an image, or a StoryMap), and fill the two bracketed
+      lines with the story the tool invented and the assumption it stated as
+      fact.
+    </p>
+    <p>
+      The lesson for the room: the tool's map looks finished, which is the
+      danger. Treat its output as a draft full of unflagged question marks,
+      and check each one with the partner.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="AI demo: the human map" title="The day-one map for the same proposal" wide>
+  <StoryMap {...ephiraMap} />
+  <Notes time="0:30" cue="Go back one slide if the room wants to compare a column.">
+    <p>
+      The same map as the worked example. Point at one column where the tool
+      and the team disagree, and at the amber cards: the human map flags its
+      guesses, and the tool's map, asked the same way, did not.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Work time: minute 15 to 45" title="Self-check while you map">
+  <ul class="checks">{selfCheck.map((item) => <li>{item}</li>)}</ul>
+  <p class="caption">Template: {template}</p>
+  <Notes time="15:00" cue="Minute 15 to 30. Walk the aisles; at minute 30, move to the clinic slide.">
+    <p>
+      Teams open the template and map. The in-class target is the backbone,
+      the walking-skeleton row, and the question marks. Release 1 can wait
+      until after class.
+    </p>
+    <p>
+      The two mistakes to look for as you walk: backbone columns named after
+      screens or components ("Login page", "Database"), and a walking
+      skeleton with gaps, which means it does not run end to end.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Clinic: minute 30" title="Put your backbone on the screen">
+  <ul>
+    <li>Two teams volunteer; two minutes of critique each</li>
+    <li>The critique uses the self-check, nothing else</li>
+    <li>If your project is under NDA, don't volunteer</li>
+  </ul>
+  <Notes time="5:00" cue="Minute 30 to 35. Then press left to put the self-check back up.">
+    <p>
+      Project the team's sheet from the lectern machine. Read the backbone
+      left to right and ask the team to tell it as one story. Check the
+      self-check in order: verbs, not screens; a skeleton story under every
+      column; question marks where they're guessing.
+    </p>
+    <p>
+      Name one thing that works before one thing to change. Two minutes
+      each, hard stop, then back to work.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Work time: minute 35 to 45" title="Back to your map: the self-check">
+  <ul class="checks">{selfCheck.map((item) => <li>{item}</li>)}</ul>
+  <p class="caption">Template: {template}</p>
+  <Notes time="10:00" cue="Minute 35 to 45. At minute 45, move to the wrap.">
+    <p>
+      The same checklist as before the clinic. A team without a full
+      walking-skeleton row by minute 40 should stop polishing Release 1 and
+      fill the gaps, however uncertain the stories are.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Wrap: minute 45" title="Due by the end of the week">
+  <ul>
+    <li>One PDF of the whole workbook, both tabs: in Google Sheets, export the workbook, not the current sheet</li>
+    <li>
+      At least four backbone columns and one complete walking-skeleton row,
+      however uncertain
+    </li>
+    <li>The backbone type, with one line saying why</li>
+    <li>
+      The Questions for our partner tab: the agenda for your first partner
+      meeting
+    </li>
+  </ul>
+  <Notes time="4:30" cue="Minute 45 to 49. End on the partner questions.">
+    <p>
+      The full map is due by the end of the week, as the Workshop Activities
+      page says. A default PDF export from Google Sheets takes only the sheet
+      on screen, so choose the whole workbook in the export dialog; the
+      template prints each tab one page wide.
+    </p>
+    <p>
+      The questions tab is the part to use this week: every amber card is a
+      question, and the first partner meeting is where to ask them. Bring
+      the map, walk it left to right with the partner, and move the line
+      where they disagree.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Sources" title="Every claim in this deck, by URL">
+  <ul class="sources">
+    <li>
+      Jeff Patton, The New User Story Backlog is a Map: <a href="https://jpattonassociates.com/the-new-backlog/">jpattonassociates.com/the-new-backlog/</a>
+    </li>
+    <li>
+      Allegro Tech, building a minimum viable product with story mapping: <a href="https://blog.allegro.tech/2015/01/story-about-delivering-products-part2.html">blog.allegro.tech/2015/01/story-about-delivering-products-part2.html</a>
+    </li>
+    <li>
+      ephira: <a href="https://github.com/adulbrich/ephira">github.com/adulbrich/ephira</a>
+    </li>
+    <li>
+      Wave-sensing glider, project page: <a href="https://capstone.eecs.oregonstate.edu/projects/a75ffc21-b16f-5849-880a-d7667e6ae208">capstone.eecs.oregonstate.edu/projects/a75ffc21-b16f-5849-880a-d7667e6ae208</a>
+    </li>
+    <li>
+      TaxonBodyMassML, project page: <a href="https://capstone.eecs.oregonstate.edu/projects/1e6e1a34-dee3-54bf-8c53-f876fb2d1519">capstone.eecs.oregonstate.edu/projects/1e6e1a34-dee3-54bf-8c53-f876fb2d1519</a>
+    </li>
+    <li>
+      TaxonBodyMassML, repository: <a href="https://github.com/TaxonBodyMassML/TaxonBodyMassML">github.com/TaxonBodyMassML/TaxonBodyMassML</a>
+    </li>
+  </ul>
+  <Notes time="0:30" cue="Leave up while teams pack.">
+    <p>
+      The backbones on the glider and TaxonBodyMassML slides are inferred
+      from their project pages. The share of this year's listings that fit a
+      story map is the instruction team's own count, so it stays in the
+      notes.
+    </p>
+  </Notes>
+</Slide>
+
+<style>
+  .backbones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 48px;
+  }
+
+  .type {
+    padding: 32px 36px;
+    background: var(--deck-backbone);
+    border: 3px solid var(--deck-backbone-edge);
+    border-block-start-width: 12px;
+    border-radius: 12px;
+    color: var(--deck-backbone-ink);
+  }
+
+  .type h3 {
+    margin-block-end: 20px;
+    color: var(--deck-backbone-ink);
+  }
+
+  .type p {
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.25;
+  }
+
+  .type .skeleton {
+    margin-block-start: 20px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  .rule-line {
+    margin-block-start: 48px;
+    font-size: 40px;
+  }
+
+  .caption {
+    margin-block-start: auto;
+    padding-block-start: 24px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  .prompt {
+    margin: 0;
+    padding: 36px 44px;
+    font-family: var(--deck-mono);
+    font-size: var(--deck-text-min);
+    line-height: 1.4;
+    white-space: pre-wrap;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 12px;
+  }
+
+  .placeholder {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    font-size: 40px;
+    text-align: center;
+    color: var(--deck-ink-soft);
+    border: 6px dashed var(--deck-ink-soft);
+    border-radius: 16px;
+  }
+
+  .placeholder p {
+    margin: 0;
+  }
+
+  .placeholder-label {
+    margin-block-end: 16px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--deck-accent-ink);
+  }
+
+  .marks {
+    margin-block-start: 36px;
+    font-size: 36px;
+  }
+
+  .checks {
+    font-size: 40px;
+  }
+
+  .sources {
+    font-size: var(--deck-text-min);
+  }
+
+  .sources a {
+    overflow-wrap: anywhere;
+  }
+</style>
