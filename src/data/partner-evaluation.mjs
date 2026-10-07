@@ -4,6 +4,8 @@
 // (src/lib/tools/partner-survey-qsf.mjs) reads both. Edit the wording here,
 // never in a generated .qsf. `${e://...}` is Qualtrics piped text.
 
+import { finalSurvey, TERMS } from "../lib/tools/term-label.mjs";
+
 /** The matrix question's text: each export column reads "<prompt> - <row>". */
 export const pulsePrompt =
   "Please rate your student team on the following dimensions for the current term.";
@@ -17,6 +19,19 @@ export const criterionNotes = {
   reflection:
     "If you have not given the team feedback yet, answer {middle} on {criterion}.",
 };
+
+/** The lines every partner survey's opening page starts with. */
+const introHead = [
+  "Thank you for partnering with the OSU Computer Science Capstone.",
+  "This survey is about one team: <b>${e://Field/Team}</b>",
+];
+
+/** The lines every partner survey's opening page ends with. */
+const introTail = (pageUrl) => [
+  "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
+  "You can also leave comments on the course at the end.",
+  `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
+];
 
 /**
  * The pulse's opening page. `statements` is how many the matrix rates,
@@ -34,16 +49,65 @@ export function pulseIntro({
   statements,
 }) {
   return [
-    "Thank you for partnering with the OSU Computer Science Capstone.",
-    "This survey is about one team: <b>${e://Field/Team}</b>",
+    ...introHead,
     `It has ${statements} statements about how the team works with you, each rated from ${lowest} to ${highest}. It takes about two minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
     `Your answers set ${pulseWeight}% of each student's grade this term. The end-of-term survey sets ${finalWeight}% and goes into more depth. This midterm check exists so the team hears from you while there is still time to change course.`,
     ...notes,
-    "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
-    "You can also leave comments on the course at the end.",
-    `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
+    ...introTail(pageUrl),
   ].join("<br><br>");
 }
+
+/**
+ * The End-of-Term Survey's opening page. `facets` is how many it scores,
+ * `between` the between-anchor shares in percent, `finalWeight` its percent
+ * of the term grade, `pageUrl` the partner evaluation page.
+ */
+export function finalIntro({ between, facets, finalWeight, pageUrl }) {
+  return [
+    ...introHead,
+    `It scores the team on ${facets} facets of its work with you this term, one page each. Each facet shows what it looks like and its written anchors; choose the anchor that fits the team. When the team sits between two anchors, choose the between answer, worth ${between.join("% or ")}% of the facet's points. <b>Please submit it by \${e://Field/FinalCloseDate}.</b>`,
+    `Your answers set ${finalWeight}% of each student's grade this term.`,
+    ...introTail(pageUrl),
+  ].join("<br><br>");
+}
+
+/**
+ * The question a facet scored on a ladder asks, after "<facet>: ", keyed by
+ * the facet's export tag (facetTag). It replaces the rubric's description,
+ * which speaks about the partner to the student.
+ */
+export const ladderPrompts = {
+  VnV: "Who has run the team's software? Pick the highest rung that is true today; your team's Definition of Shipped says what each rung means for this project. If it records a custom scale, score on that scale with the last choice.",
+};
+
+/**
+ * The ladder's last choice, for a partner whose Definition of Shipped
+ * records a custom scale (#18): its text box takes the share of the points,
+ * from `min` to `max` percent.
+ */
+export const customScaleText = ({ max, min }) =>
+  `We agreed a custom scale in the Definition of Shipped. Enter the score as a percent of the points, ${min} to ${max}:`;
+
+/** The end-of-term distribution email: one survey for every term. */
+const finalEmail = {
+  body: [
+    "Hello,",
+    "",
+    "This is the end-of-term survey for your capstone team ${e://Field/Team}: it scores the team's work with you this term, facet by facet.",
+    "",
+    "Please answer for ${e://Field/Team} by ${e://Field/FinalCloseDate}.",
+    "",
+    "${l://SurveyLink?d=Take the survey}",
+    "",
+    "If you work with more than one team, each team has its own email and its own link.",
+    "",
+    "Thank you,",
+    "The CS Capstone instruction team",
+    "",
+    "${l://OptOutLink?d=Unsubscribe}",
+  ].join("\n"),
+  subject: "CS Capstone end-of-term survey: ${e://Field/Team}",
+};
 
 /**
  * The distribution email, by survey variant. Qualtrics sets it on the
@@ -53,6 +117,7 @@ export function pulseIntro({
  * piped text: the personal survey link and the opt-out link it requires.
  */
 export const distributionEmails = {
+  ...Object.fromEntries(TERMS.map((term) => [finalSurvey(term), finalEmail])),
   pulse: {
     body: [
       "Hello,",

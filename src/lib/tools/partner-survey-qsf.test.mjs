@@ -4,14 +4,25 @@ import { test } from "node:test";
 import {
   concernText,
   criterionNotes,
+  customScaleText,
   distributionEmails,
+  ladderPrompts,
   pulsePrompt,
 } from "../../data/partner-evaluation.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
 import { toCsv } from "./csv.mjs";
 import {
+  customScaleChoice,
+  facetChoices,
+  facetTag,
+  isLadder,
+  pageRules,
+} from "./partner-facets.mjs";
+import {
   aLowerBound,
   detectSurvey,
+  SURVEY_ORDER,
+  SURVEYS,
   scorePartnerSurvey,
 } from "./partner-scoring.mjs";
 import {
@@ -23,6 +34,7 @@ import {
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
+import { finalSurvey, TERMS } from "./term-label.mjs";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), "utf8");
@@ -255,6 +267,16 @@ function exportColumns(survey) {
         q.QuestionText,
         `${q.QuestionID}${suffix}`,
       ]);
+      // A choice with a text box adds its own column after the question's.
+      for (const id of q.ChoiceOrder ?? []) {
+        if (q.Choices[id].TextEntry === "true") {
+          columns.push([
+            `${q.DataExportTag}_${id}_TEXT`,
+            `${q.QuestionText} - ${q.Choices[id].Display} - Text`,
+            `${q.QuestionID}_${id}_TEXT`,
+          ]);
+        }
+      }
     }
   }
   const fields = survey.SurveyElements.find((e) => e.Element === "FL").Payload
@@ -373,4 +395,418 @@ test("a labels export of the generated survey scores with the merged scorer", ()
     ["Engines", "Yes", "Charles Babbage", "Missed two meetings.", ""],
   ]);
   assert.deepEqual(result.report.noResponse, []);
+});
+
+// The End-of-Term Survey of each term (#446).
+
+const PAGE = read(
+  "src/content/docs/assignments/project-partner-evaluation.mdx"
+);
+const rules = pageRules(PAGE);
+const finalRubrics = Object.fromEntries(
+  TERMS.map((term) => [
+    term,
+    parseRubricCsv(
+      read(rubricFile(`final-${term}`)),
+      rubricFile(`final-${term}`)
+    ),
+  ])
+);
+const finalOptions = (term) => ({
+  ...OPTIONS,
+  rubric: finalRubrics[term],
+  rules,
+  variant: finalSurvey(term),
+});
+const finals = Object.fromEntries(
+  TERMS.map((term) => [term, buildPartnerSurvey(finalOptions(term))])
+);
+const questionsOf = (survey) =>
+  survey.SurveyElements.filter((e) => e.Element === "SQ").map((e) => e.Payload);
+const tagged = (survey, tag) =>
+  questionsOf(survey).find((q) => q.DataExportTag === tag);
+const choicesOf = (criterion) => facetChoices(criterion, rules.between);
+const customOf = (criterion) =>
+  customScaleChoice(criterion, choicesOf(criterion));
+
+test("each end-of-term survey keeps the import-proven settings and names itself", () => {
+  for (const term of TERMS) {
+    const survey = finals[term];
+    assert.deepEqual(JSON.parse(partnerSurveyQsf(finalOptions(term))), survey);
+    for (const element of survey.SurveyElements.filter(
+      (e) => e.Element === "SQ"
+    )) {
+      assert.equal(
+        element.SecondaryAttribute,
+        element.Payload.QuestionDescription
+      );
+      assert.ok(element.SecondaryAttribute.length <= 100);
+    }
+    const so = survey.SurveyElements.find((e) => e.Element === "SO").Payload;
+    assert.equal(so.SurveyExpiration, "None");
+    assert.equal(so.SurveyProtection, "ByInvitation");
+    assert.equal(so.PartialData, "+1 month");
+    assert.equal(survey.SurveyEntry.SurveyStartDate, "0000-00-00 00:00:00");
+    assert.equal(
+      survey.SurveyEntry.SurveyName,
+      "CS_461_001_F2000 Project Partner End-of-Term Survey"
+    );
+  }
+});
+
+test("each end-of-term survey asks one forced question per facet, tagged by facet, then the shared concern questions", () => {
+  for (const term of TERMS) {
+    const rubric = finalRubrics[term];
+    const tags = questionsOf(finals[term]).map((q) => q.DataExportTag);
+    assert.equal(new Set(tags).size, tags.length, term);
+    assert.deepEqual(tags, [
+      "Start",
+      ...rubric.criteria.flatMap((c) => [`${facetTag(c)} Guide`, facetTag(c)]),
+      "Guard",
+      "Q2",
+      "Q2 Names",
+      "Q2 Comments",
+      "Q3",
+    ]);
+    for (const criterion of rubric.criteria) {
+      const q = tagged(finals[term], facetTag(criterion));
+      assert.equal(q.QuestionType, "MC");
+      assert.equal(q.Selector, "SAVR");
+      assert.equal(q.Validation.Settings.ForceResponse, "ON");
+      const custom = customOf(criterion);
+      const expected = [
+        ...choicesOf(criterion).map((c) => c.label),
+        ...(custom ? [customScaleText(custom)] : []),
+      ];
+      assert.deepEqual(
+        q.ChoiceOrder.map((id) => q.Choices[id].Display),
+        expected,
+        `${term} ${criterion.title}`
+      );
+      // Recodes pinned to the choice IDs, highest choice first.
+      assert.deepEqual(
+        q.RecodeValues,
+        Object.fromEntries(expected.map((_, j) => [j + 1, String(j + 1)]))
+      );
+      const boxes = q.ChoiceOrder.filter(
+        (id) => q.Choices[id].TextEntry === "true"
+      );
+      assert.deepEqual(boxes, custom ? [custom.id] : []);
+    }
+    // The concern questions are the pulse's, word for word.
+    for (const tag of ["Q2", "Q2 Names", "Q2 Comments", "Q3"]) {
+      assert.equal(
+        tagged(finals[term], tag).QuestionText,
+        byTag(tag).QuestionText,
+        tag
+      );
+    }
+  }
+});
+
+test("a facet's question is its CSV statement, except a ladder, which asks the partner in the second person", () => {
+  for (const term of TERMS) {
+    for (const criterion of finalRubrics[term].criteria) {
+      const tag = facetTag(criterion);
+      const text = tagged(finals[term], tag).QuestionText;
+      assert.equal(
+        text,
+        `${criterion.title}: ${isLadder(criterion) ? ladderPrompts[tag] : criterion.description}`
+      );
+      assert.doesNotMatch(text, /the partner scores/);
+    }
+  }
+  for (const tag of Object.keys(ladderPrompts)) {
+    assert.ok(
+      TERMS.some((term) =>
+        finalRubrics[term].criteria.some(
+          (c) => isLadder(c) && facetTag(c) === tag
+        )
+      ),
+      `${tag} names a ladder facet`
+    );
+  }
+});
+
+test("the custom-scale entry must be a number from the lowest to the highest rung's share", () => {
+  const criterion = finalRubrics.spring.criteria.find(isLadder);
+  const q = tagged(finals.spring, facetTag(criterion));
+  const { id, max, min } = customOf(criterion);
+  assert.equal(
+    q.Choices[id].Display,
+    `We agreed a custom scale in the Definition of Shipped. Enter the score as a percent of the points, ${min} to ${max}:`
+  );
+  const settings = q.Validation.Settings;
+  assert.equal(settings.Type, "CustomValidation");
+  assert.equal(settings.ForceResponse, "ON");
+  const logic = settings.CustomValidation.Logic;
+  assert.equal(logic[0][0].Operator, "NotSelected");
+  assert.equal(
+    logic[0][0].LeftOperand,
+    `q://${q.QuestionID}/SelectableChoice/${id}`
+  );
+  assert.equal(logic[1].Type, "Or");
+  const entry = `q://${q.QuestionID}/ChoiceTextEntryValue/${id}`;
+  assert.deepEqual(
+    [logic[1][0], logic[1][1]].map((e) => [
+      e.LeftOperand,
+      e.Operator,
+      e.RightOperand,
+    ]),
+    [
+      [entry, "GreaterThanOrEqual", String(min)],
+      [entry, "LessThanOrEqual", String(max)],
+    ]
+  );
+  assert.equal(logic[1][1].Conjuction, "And");
+  for (const term of ["fall", "winter"]) {
+    for (const anchored of finalRubrics[term].criteria) {
+      const { Type } = tagged(finals[term], facetTag(anchored)).Validation
+        .Settings;
+      assert.equal(Type, "None");
+    }
+  }
+});
+
+test("each facet is a page: its guide above its question, the intro on the first", () => {
+  for (const term of TERMS) {
+    const survey = finals[term];
+    const flowPayload = survey.SurveyElements.find(
+      (e) => e.Element === "FL"
+    ).Payload;
+    const ratingBlock = survey.SurveyElements.find(
+      (e) => e.Element === "BL"
+    ).Payload.find((b) => b.ID === flowPayload.Flow[2].ID);
+    const pages = [[]];
+    for (const element of ratingBlock.BlockElements) {
+      if (element.Type === "Page Break") {
+        pages.push([]);
+      } else {
+        pages
+          .at(-1)
+          .push(
+            questionsOf(survey).find((q) => q.QuestionID === element.QuestionID)
+              .DataExportTag
+          );
+      }
+    }
+    assert.deepEqual(
+      pages,
+      finalRubrics[term].criteria.map((c, i) => [
+        ...(i === 0 ? ["Start"] : []),
+        `${facetTag(c)} Guide`,
+        facetTag(c),
+      ])
+    );
+  }
+});
+
+test("the text above each facet holds the page's What it looks like list and the CSV's anchor descriptions", () => {
+  for (const term of TERMS) {
+    for (const criterion of finalRubrics[term].criteria) {
+      const guide = tagged(
+        finals[term],
+        `${facetTag(criterion)} Guide`
+      ).QuestionText;
+      for (const bullet of rules.guidance[criterion.title]) {
+        assert.ok(guide.includes(`<li>${bullet}</li>`), bullet);
+      }
+      for (const rating of criterion.ratings) {
+        assert.ok(guide.includes(`<b>${rating.name}</b>`), rating.name);
+        assert.ok(guide.includes(rating.description), rating.name);
+      }
+      assert.match(guide, isLadder(criterion) ? /The rungs/ : /The anchors/);
+    }
+  }
+});
+
+test("the end-of-term flow sets Term to its term and declares the contact list's fields empty", () => {
+  for (const term of TERMS) {
+    const survey = finals[term];
+    const flowPayload = survey.SurveyElements.find(
+      (e) => e.Element === "FL"
+    ).Payload;
+    const [embedded, guard, ratings, notes] = flowPayload.Flow;
+    assert.deepEqual(
+      embedded.EmbeddedData.map((f) => [f.Field, f.Type, f.Value]),
+      [
+        ["Team", "Recipient", undefined],
+        ["FinalCloseDate", "Recipient", undefined],
+        ["Term", "Custom", term],
+      ]
+    );
+    assert.deepEqual(VARIANTS[finalSurvey(term)].fields, [
+      "Team",
+      "FinalCloseDate",
+    ]);
+    assert.equal(VARIANTS[finalSurvey(term)].closeField, "FinalCloseDate");
+    assert.equal(guard.BranchLogic[0][0].LeftOperand, "Team");
+    assert.equal(guard.Flow.at(-1).Type, "EndSurvey");
+    assert.equal(ratings.Type, "Block");
+    assert.equal(notes.Type, "Standard");
+    const ids = JSON.stringify(flowPayload).match(/FL_\d+/g);
+    assert.equal(new Set(ids).size, ids.length);
+    assert.equal(flowPayload.Properties.Count, ids.length);
+  }
+});
+
+test("the variants, the emails, and the scorer's surveys share one term list", () => {
+  const finalKeys = TERMS.map(finalSurvey);
+  assert.deepEqual(
+    Object.keys(VARIANTS)
+      .filter((k) => k !== "pulse")
+      .sort(),
+    [...finalKeys].sort()
+  );
+  for (const key of finalKeys) {
+    assert.ok(distributionEmails[key], key);
+    assert.ok(SURVEYS[key], key);
+  }
+  assert.deepEqual(SURVEY_ORDER, ["pulse", ...finalKeys]);
+});
+
+test("the end-of-term intro pipes the team and close date, and states the page's between rule and weight", () => {
+  for (const term of TERMS) {
+    const intro = tagged(finals[term], "Start").QuestionText;
+    assert.match(intro, /\$\{e:\/\/Field\/Team\}/);
+    assert.match(intro, /\$\{e:\/\/Field\/FinalCloseDate\}/);
+    assert.ok(
+      intro.includes(
+        `worth ${rules.between.join("% or ")}% of the facet's points`
+      )
+    );
+    assert.match(intro, /set 20% of each student's grade/);
+    assert.match(intro, /on 6 facets/);
+    assert.ok(intro.includes(OPTIONS.pageUrl));
+  }
+  assert.ok(
+    distributionEmails["final-fall"].body.includes(
+      "${e://Field/FinalCloseDate}"
+    )
+  );
+});
+
+test("an end-of-term survey without a What it looks like list for a facet stops the build", () => {
+  const { Teamwork: _dropped, ...partial } = rules.guidance;
+  assert.throws(
+    () =>
+      buildPartnerSurvey({
+        ...finalOptions("fall"),
+        rules: { ...rules, guidance: partial },
+      }),
+    /no "What it looks like" list for Teamwork/
+  );
+  assert.throws(
+    () => buildPartnerSurvey({ ...finalOptions("fall"), rules: undefined }),
+    /no "What it looks like" list for Reflection/
+  );
+});
+
+// The contract with the end-of-term scorer (#445): a labels export shaped as
+// Qualtrics writes it for each generated survey. The scorer finds a facet's
+// column by its tag (facetTag) and its text "<criterion>: ...", maps the
+// label through facetChoices to points, reads the custom share from
+// <tag>_<id>_TEXT, the term from Term, and the concerns from Q2 to Q3.
+
+test("a labels export of each end-of-term survey carries the tags and labels the scorer reads", () => {
+  for (const term of TERMS) {
+    const survey = finals[term];
+    const rubric = finalRubrics[term];
+    const columns = exportColumns(survey);
+    const cells = {
+      FinalCloseDate: "the Friday of week 10",
+      Finished: "True",
+      Q2: "No",
+      "Q2 Comments": "",
+      "Q2 Names": "",
+      Q3: "Thank you.",
+      RecipientEmail: "partner@example.com",
+      RecordedDate: "recorded",
+      ResponseId: "R_1",
+      StartDate: "started",
+      Status: "Email",
+      Team: "Engines",
+      Term: term,
+    };
+    // Each facet answers its i-th choice, wrapping, so every kind of
+    // choice (anchor, between, rung) appears across the terms.
+    const picked = rubric.criteria.map((criterion, i) => {
+      const choices = choicesOf(criterion);
+      return choices[i % choices.length];
+    });
+    for (const [i, choice] of picked.entries()) {
+      cells[facetTag(rubric.criteria[i])] = choice.label;
+    }
+    const qualtrics = parseQualtricsExport(
+      toCsv([
+        columns.map(([tag]) => tag),
+        columns.map(([, text]) => text),
+        columns.map(([, , id]) => JSON.stringify({ ImportId: id })),
+        columns.map(([tag]) => cells[tag] ?? ""),
+      ])
+    );
+    const [response] = qualtrics.responses;
+    assert.equal(response.Term, term);
+    for (const tag of ["Team", "Q2", "Q2 Names", "Q2 Comments", "Q3"]) {
+      assert.ok(
+        qualtrics.columns.some((c) => c.tag === tag),
+        `${term} ${tag}`
+      );
+    }
+    for (const [i, criterion] of rubric.criteria.entries()) {
+      const tag = facetTag(criterion);
+      const column = qualtrics.columns.find((c) => c.tag === tag);
+      assert.ok(column.text.startsWith(`${criterion.title}: `), column.text);
+      const choice = choicesOf(criterion).find(
+        (c) => c.label === response[tag]
+      );
+      assert.ok(choice, `${term} ${criterion.title}: ${response[tag]}`);
+      assert.equal(choice.points, picked[i].points);
+    }
+    const ladder = rubric.criteria.find(isLadder);
+    const textTags = qualtrics.columns
+      .map((c) => c.tag)
+      .filter((tag) => tag.endsWith("_TEXT"));
+    assert.deepEqual(
+      textTags,
+      ladder ? [`${facetTag(ladder)}_${customOf(ladder).id}_TEXT`] : [],
+      term
+    );
+  }
+});
+
+test("the spring export's columns and ImportIds", () => {
+  const ids = Object.fromEntries(
+    exportColumns(finals.spring).map(([tag, , id]) => [tag, id])
+  );
+  assert.deepEqual(
+    [
+      "Reflection",
+      "Requirements",
+      "Design",
+      "VnV",
+      "VnV_7_TEXT",
+      "Teamwork",
+      "Communication",
+      "Q2",
+      "Q2 Names",
+      "Q2 Comments",
+      "Q3",
+      "Term",
+    ].map((tag) => ids[tag]),
+    [
+      "QID3",
+      "QID5",
+      "QID7",
+      "QID9",
+      "QID9_7_TEXT",
+      "QID11",
+      "QID13",
+      "QID15",
+      "QID16_TEXT",
+      "QID17_TEXT",
+      "QID18_TEXT",
+      "Term",
+    ]
+  );
 });

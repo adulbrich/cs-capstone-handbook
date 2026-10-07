@@ -1,8 +1,9 @@
 <script>
-// Writes the project partner survey (.qsf) and its contact list as
-// downloads. The roster and the partner sheet are read in the browser only:
-// nothing is uploaded. The rubric, the weights, and the page address arrive
-// from the handbook's own files at build time.
+// Writes a project partner survey (.qsf), the Midterm Pulse or a term's
+// End-of-Term Survey, and its contact list as downloads. The roster and the
+// partner sheet are read in the browser only: nothing is uploaded. The
+// rubrics, the partner page's rules, the weights, and the page address
+// arrive from the handbook's own files at build time.
 
 import { distributionEmails } from "../../data/partner-evaluation.mjs";
 import { parsePartnerSheet } from "../../lib/partner-sheet.mjs";
@@ -17,14 +18,26 @@ import {
   VARIANTS,
 } from "../../lib/tools/partner-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
-import { defaultLabel } from "../../lib/tools/term-label.mjs";
+import {
+  finalSurvey,
+  labelFor,
+  TERMS,
+  termOf,
+} from "../../lib/tools/term-label.mjs";
 
-const { pageUrl, rubric, weights } = $props();
+const { pageUrl, rubrics, rules, weights } = $props();
 
-/** The one variant so far; the end-of-term surveys add theirs (#446). */
-const variant = "pulse";
-const { fields } = VARIANTS[variant];
-const email = distributionEmails[variant];
+/** Which survey, "pulse" or "final", and its term, the current one first. */
+let kind = $state("pulse");
+let term = $state(termOf(new Date()));
+
+const { rubric, variant } = $derived(
+  kind === "pulse"
+    ? { rubric: rubrics.pulse, variant: "pulse" }
+    : { rubric: rubrics[term], variant: finalSurvey(term) }
+);
+const { closeField, fields } = $derived(VARIANTS[variant]);
+const email = $derived(distributionEmails[variant]);
 
 /** Which copy button was last used, for its "Copied" label. */
 let copied = $state("");
@@ -36,7 +49,8 @@ async function copy(key, text) {
 
 const texts = $state({ roster: "", sheet: "" });
 const names = $state({ roster: "", sheet: "" });
-let label = $state(defaultLabel());
+/** The term's label until edited; picking another term resets it. */
+let label = $derived(labelFor(term));
 let closeDate = $state("");
 
 /** The close date as partners read it: weekday, month, and day. */
@@ -53,7 +67,14 @@ const closeText = $derived(
 const survey = $derived.by(() => {
   try {
     return {
-      text: partnerSurveyQsf({ label, pageUrl, rubric, variant, weights }),
+      text: partnerSurveyQsf({
+        label,
+        pageUrl,
+        rubric,
+        rules,
+        variant,
+        weights,
+      }),
     };
   } catch (error) {
     return { error: error.message };
@@ -68,7 +89,7 @@ const contacts = $derived.by(() => {
     return buildPartnerContacts(
       parseRoster(texts.roster),
       parsePartnerSheet(texts.sheet),
-      { MidtermCloseDate: closeText }
+      { [closeField]: closeText }
     );
   } catch (error) {
     return { error: error.message };
@@ -107,6 +128,21 @@ function downloadContacts() {
 
 <form class="generator" onsubmit={(event) => event.preventDefault()}>
   <label>
+    <span>Survey</span>
+    <select bind:value={kind}>
+      <option value="pulse">Midterm Pulse (every term)</option>
+      <option value="final">End-of-Term Survey</option>
+    </select>
+  </label>
+  <label>
+    <span>Term: names the survey, and the End-of-Term Survey sets it as its <code>Term</code> field</span>
+    <select bind:value={term}>
+      {#each TERMS as option (option)}
+        <option value={option}>{option}</option>
+      {/each}
+    </select>
+  </label>
+  <label>
     <span>Roster with groups (CSV)</span>
     <input type="file" accept=".csv,text/csv" onchange={reader("roster")} />
   </label>
@@ -119,7 +155,7 @@ function downloadContacts() {
     <input type="text" bind:value={label} />
   </label>
   <label>
-    <span>Close date, shown to partners in the survey</span>
+    <span>Close date, shown to partners in the survey as <code>{closeField}</code></span>
     <input type="date" bind:value={closeDate} />
   </label>
 </form>
@@ -228,7 +264,8 @@ function downloadContacts() {
     gap: 0.25rem;
   }
   input[type="text"],
-  input[type="date"] {
+  input[type="date"],
+  select {
     max-width: 24rem;
     padding: 0.25rem 0.5rem;
     border: 1px solid var(--sl-color-gray-4);

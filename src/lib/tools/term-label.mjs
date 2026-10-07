@@ -2,8 +2,14 @@
 // CS_461_001_F<year>, from the month alone, as src/lib/term-tabs.js picks
 // the current term: no date is written down (AGENTS.md, hard rule 5).
 
+/** The terms of a course year, in order. */
+export const TERMS = ["fall", "winter", "spring"];
+
+/** The survey key of a term's End-of-Term Survey, as the tools name it. */
+export const finalSurvey = (term) => `final-${term}`;
+
 /** Each term's course and letter. */
-const TERMS = {
+const COURSES = {
   fall: { course: 461, letter: "F" },
   spring: { course: 463, letter: "S" },
   winter: { course: 462, letter: "W" },
@@ -18,8 +24,18 @@ export function termOf(date) {
   return month < 6 ? "spring" : "fall";
 }
 
-/** The label for `date`'s term, section 001: `CS_461_001_F` and the year. */
-export function defaultLabel(date = new Date()) {
-  const { course, letter } = TERMS[termOf(date)];
-  return `CS_${course}_001_${letter}${date.getFullYear()}`;
+/**
+ * The label for `term` in the course year `date` falls in, section 001:
+ * `CS_461_001_F` and the year. A course year runs fall, winter, spring, so
+ * winter and spring carry the year after fall's.
+ */
+export function labelFor(term, date = new Date()) {
+  const { course, letter } = COURSES[term];
+  const fallYear =
+    termOf(date) === "fall" ? date.getFullYear() : date.getFullYear() - 1;
+  const year = term === "fall" ? fallYear : fallYear + 1;
+  return `CS_${course}_001_${letter}${year}`;
 }
+
+/** The label for `date`'s own term. */
+export const defaultLabel = (date = new Date()) => labelFor(termOf(date), date);
