@@ -899,7 +899,7 @@ test("each generated end-of-term export is detected by its Term and facet tags",
       kind: finalSurvey(term),
       reason: "",
     });
-    assert.equal(SURVEYS[finalSurvey(term)].supported, true);
+    assert.equal(SURVEYS[finalSurvey(term)].term, term);
   }
   const mixed = labelsExport(finals.fall, [
     finalResponse("fall", "Engines"),
@@ -1005,6 +1005,43 @@ test("an end-of-term export scored as another term stops the run", () => {
       ),
     /Term column holds winter.*End-of-Term Survey, fall/
   );
+  assert.throws(
+    () => scoreFinal("fall", [finalResponse("fall", "Engines", { Term: "" })]),
+    /Term column holds 1 blank.*every response must name its term/
+  );
+});
+
+test("two end-of-term responses for one team wait for a choice", () => {
+  const rows = [
+    finalResponse("winter", "Engines", { ResponseId: "R_top" }),
+    finalResponse("winter", "Engines", {
+      ResponseId: "R_low",
+      Teamwork: "Low anchor (half the points)",
+    }),
+  ];
+  const waiting = scoreFinal("winter", rows);
+  assert.equal(waiting.pending, true);
+  assert.deepEqual(
+    waiting.duplicates[0].responses.map((r) => r.ResponseId),
+    ["R_top", "R_low"]
+  );
+  const teamwork = finalRubrics.winter.criteria.find(
+    (c) => facetTag(c) === "Teamwork"
+  );
+  const chosen = scorePartnerSurvey({
+    aBound: A,
+    between: rules.between,
+    choices: { Engines: "R_low" },
+    qualtrics: labelsExport(finals.winter, rows),
+    roster: FINAL_ROSTER,
+    rubric: finalRubrics.winter,
+    rubricExport: finalRubricExport("winter"),
+    survey: finalSurvey("winter"),
+  });
+  assert.deepEqual(scoreOf(chosen, "winter", "101", teamwork), {
+    points: "5",
+    rating: "Low anchor (half the points)",
+  });
 });
 
 test("an end-of-term team with no response scores the A lower bound; concerns are kept", () => {

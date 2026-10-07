@@ -75,7 +75,7 @@ const survey = $derived(surveyOverride ?? detected?.kind ?? null);
 const definition = $derived(survey ? SURVEYS[survey] : null);
 
 const result = $derived.by(() => {
-  if (!(runRequested && ready && definition?.supported)) {
+  if (!(runRequested && ready && definition)) {
     return null;
   }
   try {
@@ -171,7 +171,7 @@ function downloadConcerns() {
     <button
       type="button"
       onclick={() => (runRequested = true)}
-      disabled={!(ready && definition?.supported)}
+      disabled={!(ready && definition)}
     >
       Run
     </button>

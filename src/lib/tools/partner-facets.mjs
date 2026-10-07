@@ -8,6 +8,7 @@
 // shares and the lists are read from the partner evaluation page,
 // src/content/docs/assignments/project-partner-evaluation.mdx, by pageRules.
 
+import { customScaleText } from "../../data/partner-evaluation.mjs";
 import { descending, percentOf } from "./rubric-bands.mjs";
 
 /** A three-anchor facet's anchors are named "<Top|Middle|Low> anchor (...)". */
@@ -149,6 +150,30 @@ export function customScaleChoice(criterion, choices) {
     max: shareOf(criterion, ratings[0].points),
     min: shareOf(criterion, ratings.at(-1).points),
   };
+}
+
+/**
+ * The column a choice's text box exports under, `<tag>_<id>_TEXT`, as
+ * Qualtrics names it for a single-choice question (qsf.mjs, singleChoice).
+ */
+export const choiceTextColumn = (tag, id) => `${tag}_${id}_TEXT`;
+
+/**
+ * What one facet's question offers, for the generator and the scorer alike:
+ * `{ tag, choices, custom }`. `choices` are facetChoices; `custom` is
+ * customScaleChoice plus its `label` (the choice text the export carries)
+ * and its `column` (where the export writes the share), or null.
+ */
+export function facetOffer(criterion, between) {
+  const tag = facetTag(criterion);
+  const choices = facetChoices(criterion, between);
+  const scale = customScaleChoice(criterion, choices);
+  const custom = scale && {
+    ...scale,
+    column: choiceTextColumn(tag, scale.id),
+    label: customScaleText(scale),
+  };
+  return { choices, custom, tag };
 }
 
 const HEADING = /^(#{2,6})\s+(.+?)\s*$/;

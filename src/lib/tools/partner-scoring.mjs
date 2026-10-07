@@ -9,12 +9,7 @@
 // caller loads those files; this module is pure, so node --test and the
 // browser run the same code.
 
-import { customScaleText } from "../../data/partner-evaluation.mjs";
-import {
-  customScaleChoice,
-  facetChoices,
-  facetTag,
-} from "./partner-facets.mjs";
+import { facetOffer, facetTag } from "./partner-facets.mjs";
 import { bandFor, percentOf } from "./rubric-bands.mjs";
 import { fillCriterion, matchRubricExport, nameKey } from "./rubric-export.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
@@ -27,8 +22,8 @@ const CONCERNS = { flag: "Q2", text: ["Q2 Names", "Q2 Comments", "Q3"] };
 
 /**
  * The four surveys. `rubric` names the rubric CSV each one scores against;
- * an end-of-term survey also names its `term`, which its export's Term
- * column must hold.
+ * an end-of-term survey also names its `term`, which every response's Term
+ * must hold.
  */
 export const SURVEYS = {
   ...Object.fromEntries(
@@ -37,7 +32,6 @@ export const SURVEYS = {
       {
         concerns: CONCERNS,
         rubric: term,
-        supported: true,
         term,
         title: `End-of-Term Survey, ${term}`,
       },
@@ -46,7 +40,6 @@ export const SURVEYS = {
   pulse: {
     concerns: CONCERNS,
     rubric: "pulse",
-    supported: true,
     title: "Midterm Pulse",
   },
 };
@@ -169,18 +162,11 @@ function surveyQuestions(columns, rubric, definition, between) {
       }));
       return { choices, column, criterion, custom: null };
     }
-    const tag = facetTag(criterion);
+    const { choices, custom, tag } = facetOffer(criterion, between);
     const column = columns.find((c) => c.tag === tag);
     if (!column) {
       missing.push(`${criterion.title} (${tag})`);
     }
-    const choices = facetChoices(criterion, between);
-    const scale = customScaleChoice(criterion, choices);
-    const custom = scale && {
-      ...scale,
-      column: `${tag}_${scale.id}_TEXT`,
-      label: customScaleText(scale),
-    };
     if (custom && !hasColumn(columns, custom.column)) {
       missing.push(`${criterion.title}'s custom scale (${custom.column})`);
     }
@@ -299,10 +285,8 @@ export function scorePartnerSurvey({
   survey,
 }) {
   const definition = SURVEYS[survey];
-  if (!definition?.supported) {
-    throw new Error(
-      `${definition?.title ?? survey} scoring is not supported yet.`
-    );
+  if (!definition) {
+    throw new Error(`Unknown survey ${survey}.`);
   }
   const { columns, responses } = qualtrics;
   if (!hasColumn(columns, "Team")) {
@@ -321,10 +305,12 @@ export function scorePartnerSurvey({
         "The between-anchor shares (pageRules) are missing, so the end-of-term choices cannot be built."
       );
     }
+    const blank = responses.filter((r) => (r.Term ?? "") === "").length;
     const terms = termsOf(responses);
-    if (terms.some((term) => term !== definition.term)) {
+    if (blank > 0 || terms.some((term) => term !== definition.term)) {
+      const holds = [...terms, ...(blank > 0 ? [`${blank} blank`] : [])];
       throw new Error(
-        `The Qualtrics file's Term column holds ${terms.join(", ")}, but the survey picked is ${definition.title}. Pick the survey its Term names.`
+        `The Qualtrics file's Term column holds ${holds.join(", ")}, but the survey picked is ${definition.title}: every response must name its term. Pick the survey its Term names.`
       );
     }
   }

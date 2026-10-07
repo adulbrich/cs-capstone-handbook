@@ -19,19 +19,13 @@
 import {
   concernText,
   criterionNotes,
-  customScaleText,
   finalIntro,
   guardText,
   ladderPrompts,
   pulseIntro,
   pulsePrompt,
 } from "../../data/partner-evaluation.mjs";
-import {
-  customScaleChoice,
-  facetChoices,
-  facetTag,
-  isLadder,
-} from "./partner-facets.mjs";
+import { facetOffer, facetTag, isLadder } from "./partner-facets.mjs";
 import {
   createSurvey,
   descriptive,
@@ -135,15 +129,14 @@ function facetQuestions(rubric, rules) {
     throw new Error(`The ${rubric.name} survey has ${problems.join("; ")}.`);
   }
   return rubric.criteria.map((criterion, i) => {
-    const choices = facetChoices(criterion, rules.between);
-    const custom = customScaleChoice(criterion, choices);
+    const { choices, custom } = facetOffer(criterion, rules.between);
     const prompt = isLadder(criterion)
       ? ladderPrompts[tags[i]]
       : criterion.description;
     return {
       choices: [
         ...choices.map((choice) => choice.label),
-        ...(custom ? [customScaleText(custom)] : []),
+        ...(custom ? [custom.label] : []),
       ],
       custom,
       guide: facetGuide(criterion, rules.guidance[criterion.title]),
