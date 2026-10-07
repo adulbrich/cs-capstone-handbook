@@ -7,17 +7,18 @@
 import { SLOTS } from "./peer-contacts.mjs";
 import {
   emailIn,
+  INSTRUMENTS,
   mapColumns,
   readNumber,
   readRating,
   rosterChoiceOf,
-  SURVEY_TYPE,
 } from "./peer-export-columns.mjs";
 import { ratedCriteria } from "./peer-survey-qsf.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 
 /** One response, keyed by tag, as the scorer reads it. */
 function reshape(map, rated, row, index) {
+  const { ratingTag } = INSTRUMENTS[map.type];
   const at = (tag) => (tag ? (row[tag] ?? "") : "");
   const fixed = (key) => at(map.fixed[key]);
   const members = Array.from({ length: SLOTS }, (_, slot) =>
@@ -29,7 +30,9 @@ function reshape(map, rated, row, index) {
 
   const iterations = [];
   for (const [prefix, columns] of Object.entries(map.loop)) {
-    const ratings = rated.map((_, r) => readRating(at(columns.ratings[r])));
+    const ratings = rated.map((criterion, r) =>
+      readRating(at(ratingTag(columns, criterion, r)))
+    );
     const comment = at(columns.comment);
     const rateeAnswer = columns.ratee === "" ? null : at(columns.ratee);
     if (ratings.every((r) => r === null) && comment === "" && !rateeAnswer) {
@@ -109,47 +112,70 @@ export function latestPerStudent(responses) {
 }
 
 /**
- * Parses the export text against the parsed peer evaluation rubric, whose
- * rated criteria (ratedCriteria) are the matrix rows. Returns `{ type, problems, warnings, responses,
- * dropped, stopped }`. `type` is one of SURVEY_TYPE;
- * `responses` (the latest finished response per student) is empty unless it
- * is "regular" with no `problems` (header errors). `dropped` counts previews,
- * unfinished, and superseded responses; `stopped` lists who started and
- * never finished, by their latest attempt. Throws what parseQualtricsExport
- * throws: a values export, missing header rows, no finished response.
+ * Header problems between the export and its rubric: a rated criterion with
+ * no column on some loop page, or a regular matrix with more rows than the
+ * rubric rates.
+ */
+function checkAgainstRubric(map, rated, rubric) {
+  const { ratingTag } = INSTRUMENTS[map.type];
+  const missing = rated.filter((criterion, r) =>
+    Object.values(map.loop).some(
+      (entry) => ratingTag(entry, criterion, r) === ""
+    )
+  );
+  const rows = Math.max(
+    0,
+    ...Object.values(map.loop).map((entry) => entry.ratings.length)
+  );
+  if (missing.length > 0 || rows > rated.length) {
+    map.problems.push(
+      `The export does not carry the ${rubric.name} rubric's rated criteria${missing.length > 0 ? ` (no column for ${missing.map((c) => c.title).join(", ")})` : ""}. Generate the survey from the current rubric.`
+    );
+  }
+}
+
+/**
+ * Parses the export text. `rubrics` holds the parsed rubric of each scored
+ * instrument (`{ regular, catme }`), whose rated criteria (ratedCriteria)
+ * are what each loop page rates; the detected type picks one. Returns
+ * `{ type, rubric, problems, warnings, responses, dropped, stopped }`.
+ * `type` is one of SURVEY_TYPE and `rubric` the one it is scored against;
+ * `responses` (the latest finished response per student) is empty unless
+ * the type is scored ("regular" or "catme") with no `problems` (header
+ * errors). `dropped` counts previews, unfinished, and superseded
+ * responses; `stopped` lists who started and never finished, by their
+ * latest attempt. Throws what parseQualtricsExport throws: a values export,
+ * missing header rows, no finished response.
  *
  * Each response: `{ row, responseId, email, recordedDate, lastSeen, team,
  * teamSize, selfFloor, members, iterations, shares, open }`.
  * `members[slot - 1]` is the email in Team Member `slot`, or "".
  * `iterations` are the looped pages with any answer: `{ prefix, choice,
- * rateeAnswer, ratings, comment }`, `rateeAnswer` being the hidden
- * question's text, or null when the export has no Ratee column. `shares`
- * maps roster choice to the points given. `open` maps the open question
- * tags to text.
+ * rateeAnswer, ratings, comment }`, `ratings` in rubric order and
+ * `rateeAnswer` the hidden question's text, or null when the export has no
+ * Ratee column. `shares` maps roster choice to the points given (empty for
+ * CATME). `open` maps the open question tags to text.
  */
-export function parsePeerExport(text, { includePreviews = false, rubric }) {
+export function parsePeerExport(text, { includePreviews = false, rubrics }) {
   const parsed = parseQualtricsExport(text, { includePreviews });
   const map = mapColumns(parsed.columns);
-  const rated = ratedCriteria(rubric);
-  const rows = Math.max(
-    0,
-    ...Object.values(map.loop).map((it) => it.ratings.length)
-  );
-  if (map.type === SURVEY_TYPE.regular && rows !== rated.length) {
-    map.problems.push(
-      `The export's rating matrix has ${rows} rows; the ${rubric.name} rubric rates ${rated.length} criteria. Generate the survey from the current rubric.`
-    );
+  const scored = Object.hasOwn(INSTRUMENTS, map.type);
+  const rubric = scored ? rubrics[map.type] : null;
+  const rated = scored ? ratedCriteria(rubric) : [];
+  if (scored) {
+    checkAgainstRubric(map, rated, rubric);
   }
   const dropped = { ...parsed.dropped, superseded: 0 };
   const result = {
     dropped,
     problems: map.problems,
     responses: [],
+    rubric,
     stopped: [],
     type: map.type,
     warnings: map.warnings,
   };
-  if (map.type !== SURVEY_TYPE.regular || map.problems.length > 0) {
+  if (!scored || map.problems.length > 0) {
     return result;
   }
   const finishedRows = parsed.responses.map((row, i) =>

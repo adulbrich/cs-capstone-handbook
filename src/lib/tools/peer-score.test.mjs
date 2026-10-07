@@ -7,6 +7,7 @@ import {
   people,
   rosterCsv,
   rubric,
+  rubrics,
   stamp,
   teamResponses,
 } from "./peer-export.fixture.mjs";
@@ -22,10 +23,14 @@ import {
   feedbackCsv,
   fillPeerAssessment,
   gapRows,
-  peerCriteria,
   ratingFor,
 } from "./peer-outputs.mjs";
-import { distributionScore, round, scorePeers } from "./peer-score.mjs";
+import {
+  distributionScore,
+  peerCriteria,
+  round,
+  scorePeers,
+} from "./peer-score.mjs";
 import { parseRoster } from "./roster.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 
@@ -33,14 +38,15 @@ import { parseRubricExport } from "./rubric-export.mjs";
 function run(teams, responses, options = {}) {
   const parsed = parsePeerExport(exportCsv(responses, options), {
     ...options,
-    rubric,
+    rubrics,
   });
   assert.deepEqual(parsed.problems, []);
   return {
     parsed,
     ...scorePeers({
+      instrument: parsed.type,
       responses: parsed.responses,
-      rubric,
+      rubric: parsed.rubric,
       students: parseRoster(rosterCsv(teams)),
     }),
   };
@@ -104,12 +110,12 @@ test("a values export is refused: labels only", () => {
   assert.throws(
     () =>
       parsePeerExport(exportCsv(workedExample(), { labels: false }), {
-        rubric,
+        rubrics,
       }),
     /values export/
   );
   assert.equal(
-    parsePeerExport(exportCsv(workedExample()), { rubric }).type,
+    parsePeerExport(exportCsv(workedExample()), { rubrics }).type,
     "regular"
   );
 });
@@ -334,7 +340,7 @@ test("the latest finished response per student counts", () => {
     response("b@example.edu", false, 3),
     response("c@example.edu", true, 4, "Survey Preview"),
   ]);
-  const parsed = parsePeerExport(csv, { rubric });
+  const parsed = parsePeerExport(csv, { rubrics });
   assert.deepEqual(
     parsed.responses.map((r) => [r.email, r.recordedDate]),
     [["a@example.edu", stamp(9)]]
@@ -345,7 +351,7 @@ test("the latest finished response per student counts", () => {
     parsed.stopped.map((r) => [r.email, r.recordedDate]),
     [["b@example.edu", stamp(3)]]
   );
-  const withPreviews = parsePeerExport(csv, { includePreviews: true, rubric });
+  const withPreviews = parsePeerExport(csv, { includePreviews: true, rubrics });
   assert.equal(withPreviews.responses.length, 2);
 });
 
@@ -395,7 +401,7 @@ test("a RecordedDate a spreadsheet rewrote stops the run", () => {
   const responses = workedExample();
   responses[0].recordedDate = "1/1/99 10:00";
   assert.throws(
-    () => parsePeerExport(exportCsv(responses), { rubric }),
+    () => parsePeerExport(exportCsv(responses), { rubrics }),
     /RecordedDate "1\/1\/99 10:00".*Export the responses again/
   );
 });
@@ -573,7 +579,7 @@ test("the feedback download holds means, never a comment or a rater", () => {
   responses[1].pages[2].comment = "Invented private remark";
   responses[1].open = { Overall: "Invented overall remark" };
   const { comments, results } = run({ Owls: owls }, responses);
-  const feedback = feedbackCsv(results, rubric);
+  const feedback = feedbackCsv(results, peerCriteria(rubric));
   assert.doesNotMatch(feedback, /Invented/);
   assert.match(feedback, /Quantity: mean rating \(1 to 5\)/);
   const instructor = commentsCsv(comments);

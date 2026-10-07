@@ -11,15 +11,18 @@ import {
   feedbackCsv,
   fillPeerAssessment,
   gapRows,
-  peerCriteria,
   cell as show,
 } from "../../lib/tools/peer-outputs.mjs";
-import { STATUS, scorePeers } from "../../lib/tools/peer-score.mjs";
+import {
+  peerCriteria,
+  STATUS,
+  scorePeers,
+} from "../../lib/tools/peer-score.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
 import { parseRubricExport } from "../../lib/tools/rubric-export.mjs";
 
-/** The peer evaluation rubric, parsed at build time by the Astro page. */
-let { rubric } = $props();
+/** The rubrics by instrument (`{ regular, catme }`), parsed at build time by the Astro page. */
+let { rubrics } = $props();
 
 const files = $state({
   assessment: { name: "", text: "" },
@@ -34,7 +37,7 @@ const parsed = $derived.by(() => {
     return null;
   }
   try {
-    return parsePeerExport(files.export.text, { includePreviews, rubric });
+    return parsePeerExport(files.export.text, { includePreviews, rubrics });
   } catch (error) {
     return {
       problems: [error.message],
@@ -47,7 +50,7 @@ const parsed = $derived.by(() => {
 
 const TYPES = {
   [SURVEY_TYPE.catme]:
-    "CATME (the spring end-of-term survey). CATME scoring is not available on this page yet.",
+    "CATME (the spring end-of-term survey): the five dimensions, no split.",
   [SURVEY_TYPE.regular]:
     "Regular survey: the four criteria and the 100-point split.",
   [SURVEY_TYPE.slots]:
@@ -56,7 +59,8 @@ const TYPES = {
 };
 
 const ready = $derived(
-  parsed?.type === SURVEY_TYPE.regular &&
+  (parsed?.type === SURVEY_TYPE.regular ||
+    parsed?.type === SURVEY_TYPE.catme) &&
     parsed.problems.length === 0 &&
     files.roster.text !== "" &&
     files.assessment.text !== ""
@@ -78,14 +82,17 @@ function reader(key) {
 
 function run() {
   try {
-    const peer = peerCriteria(rubric);
+    const { rubric, type: instrument } = parsed;
+    const peer = peerCriteria(rubric, instrument);
     const students = parseRoster(files.roster.text);
     const scored = scorePeers({
+      instrument,
       responses: parsed.responses,
       rubric,
       students,
     });
     const filled = fillPeerAssessment({
+      instrument,
       results: scored.results,
       rubric,
       rubricExport: parseRubricExport(files.assessment.text),
@@ -246,7 +253,7 @@ const baseName = $derived(
       onclick={() =>
         download(
           "peer-evaluation-feedback.csv",
-          feedbackCsv(outcome.results, outcome.rubric)
+          feedbackCsv(outcome.results, outcome.peer)
         )}
     >
       Feedback for students (.csv)
@@ -256,7 +263,7 @@ const baseName = $derived(
       onclick={() =>
         download(
           "peer-evaluation-details.csv",
-          detailsCsv(outcome.results, outcome.rubric)
+          detailsCsv(outcome.results, outcome.peer)
         )}
     >
       Details, instructor only (.csv)
@@ -281,7 +288,7 @@ const baseName = $derived(
           <th>Status</th>
           <th>Score</th>
           <th>Raters</th>
-          {#each [...outcome.peer.rated, outcome.peer.distribution] as criterion (criterion.title)}
+          {#each [...outcome.peer.rated, outcome.peer.distribution].filter(Boolean) as criterion (criterion.title)}
             <th>{criterion.title}</th>
           {/each}
         </tr>
@@ -298,7 +305,9 @@ const baseName = $derived(
             {#each result.criterionScores as score, c (c)}
               <td>{show(score)}</td>
             {/each}
-            <td>{show(result.distribution?.score)}</td>
+            {#if outcome.peer.distribution}
+              <td>{show(result.distribution?.score)}</td>
+            {/if}
           </tr>
         {/each}
       </tbody>
@@ -307,14 +316,21 @@ const baseName = $derived(
 
   <h3>Self versus peers</h3>
   <p>
-    Largest first. Ratings: the self rating's mean over the four criteria
-    minus the mean received. Share: the self share minus the mean share
-    received, times N, divided by 5. A queue for a look; no score changes.
+    Largest first. Ratings: the self rating's mean over the rated criteria
+    minus the mean received.
+    {#if outcome.peer.distribution}
+      Share: the raw self share, before any rescale, minus the mean share
+      received, times N, divided by 5.
+    {/if}
+    A queue for a look; no score changes.
   </p>
   <div class="table">
     <table>
       <thead>
-        <tr><th>Student</th><th>Team</th><th>Ratings gap</th><th>Share gap</th></tr>
+        <tr>
+          <th>Student</th><th>Team</th><th>Ratings gap</th>
+          {#if outcome.peer.distribution}<th>Share gap</th>{/if}
+        </tr>
       </thead>
       <tbody>
         {#each gaps as row, i (i)}
@@ -322,7 +338,7 @@ const baseName = $derived(
             <td>{row.name}</td>
             <td>{row.team}</td>
             <td>{show(row.ratings)}</td>
-            <td>{show(row.share)}</td>
+            {#if outcome.peer.distribution}<td>{show(row.share)}</td>{/if}
           </tr>
         {/each}
       </tbody>

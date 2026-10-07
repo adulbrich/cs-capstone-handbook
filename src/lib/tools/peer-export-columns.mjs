@@ -10,6 +10,8 @@
 //   respondent, N > 1 is Team Member N - 1. An empty middle slot skips a
 //   number. If the staff test shows the prefix counts iterations instead,
 //   switch PREFIX_FOLLOWS to "iteration".
+// - The CATME survey's dimensions export one single-choice column each per
+//   loop page, `N_<tag>`, the tag from catmeTags (`3_OnTrack`).
 // - The split's carried-forward choices export as `Split_x<choice>` or
 //   `Split_<choice>`, the choice ID being the roster choice ID.
 // - Embedded data columns are named as the field: Team, TeamSize, SelfFloor,
@@ -54,7 +56,25 @@ const REQUIRED_FIXED = ["email", "recordedDate", "team"];
 /** The embedded field holding Team Member `slot`. */
 const memberColumn = (slot) => `Team Member ${slot}`;
 
-/** Looped questions of the regular survey, by tag. */
+/**
+ * What differs between the two scored surveys, as data. `ratingTag(entry,
+ * criterion, row)` names the loop page's column for a rated criterion of
+ * the rubric (`row` counts from 0, in rubric order); `split` says whether
+ * the export carries the 100-point split.
+ */
+export const INSTRUMENTS = Object.freeze({
+  catme: {
+    ratingTag: (entry, criterion) =>
+      entry.dimensions[catmeTags[criterion.title]] ?? "",
+    split: false,
+  },
+  regular: {
+    ratingTag: (entry, _criterion, row) => entry.ratings[row] ?? "",
+    split: true,
+  },
+});
+
+/** Looped questions shared by both surveys, and the regular matrix, by tag. */
 const LOOP_TAG = /^(\d+)_(Ratee|Rating|Comment)(?:_(\w+))?$/;
 /** The generator's fallback mode, one block per slot: S1_Rating_1 and so on. */
 const SLOT_TAG = /^S(\d+)_(Ratee|Rating|Comment)/;
@@ -70,7 +90,9 @@ const IMPORT_ID = /^(?:(\d+)_)?(QID\d+)(?:_(\w+))?$/;
 const X_PREFIX = /^x/;
 const idNumber = (suffix) => Number(String(suffix).replace(X_PREFIX, ""));
 /** A CATME dimension's looped column: `N_` and one of catmeTags. */
-const CATME_TAG = new RegExp(`^\\d+_(${Object.values(catmeTags).join("|")})$`);
+const CATME_TAG = new RegExp(
+  `^(\\d+)_(${Object.values(catmeTags).join("|")})$`
+);
 
 /** The fixed and embedded columns' tags, found by ImportId first, then by tag. */
 function placeFixed(columns) {
@@ -98,7 +120,7 @@ function placeLooped(map, tag, importId) {
   if (id && (id[1] !== prefix || (sub && id[3] !== sub))) {
     return `Column ${tag} has the ImportId ${importId}: the loop prefix or row disagrees.`;
   }
-  map.loop[prefix] ??= { comment: "", ratee: "", ratings: [] };
+  map.loop[prefix] ??= loopEntry();
   if (role === "Rating") {
     map.loop[prefix].ratings[Number(sub) - 1] = tag;
   } else if (role === "Ratee") {
@@ -106,6 +128,26 @@ function placeLooped(map, tag, importId) {
   } else {
     map.loop[prefix].comment = tag;
   }
+  return "";
+}
+
+/** A loop page's columns before any is placed. */
+const loopEntry = () => ({
+  comment: "",
+  dimensions: {},
+  ratee: "",
+  ratings: [],
+});
+
+/** Places one CATME dimension column, or says why its ImportId disagrees. */
+function placeDimension(map, tag, importId) {
+  const [, prefix, dimension] = CATME_TAG.exec(tag);
+  const id = IMPORT_ID.exec(importId);
+  if (id && id[1] !== prefix) {
+    return `Column ${tag} has the ImportId ${importId}: the loop prefix disagrees.`;
+  }
+  map.loop[prefix] ??= loopEntry();
+  map.loop[prefix].dimensions[dimension] = tag;
   return "";
 }
 
@@ -125,14 +167,14 @@ function surveyType(map, counts) {
   if (Object.values(map.loop).some((it) => it.ratings.length > 0)) {
     return SURVEY_TYPE.regular;
   }
-  if (counts.catme > 0) {
+  if (Object.values(map.loop).some((it) => Object.keys(it.dimensions).length)) {
     return SURVEY_TYPE.catme;
   }
   return counts.slots > 0 ? SURVEY_TYPE.slots : SURVEY_TYPE.unknown;
 }
 
-/** What a regular export needs, and what the scorer works around. */
-function checkRegular(map) {
+/** What a scored export needs, and what the scorer works around. */
+function checkScored(map) {
   if (Object.values(map.loop).every((it) => it.ratee === "")) {
     map.warnings.push(
       "The export has no Ratee column, so whom each page rated comes from the loop position alone, with no cross-check."
@@ -141,7 +183,7 @@ function checkRegular(map) {
   const missing = REQUIRED_FIXED.filter(
     (key) => map.fixed[key] === undefined
   ).map((key) => FIXED_COLUMNS[key].tag);
-  if (Object.keys(map.split).length === 0) {
+  if (INSTRUMENTS[map.type].split && Object.keys(map.split).length === 0) {
     missing.push("Split");
   }
   if (missing.length > 0) {
@@ -158,8 +200,8 @@ function checkRegular(map) {
  * Returns `{ type, fixed, members, loop, split, open, problems, warnings }`:
  * `type` is one of SURVEY_TYPE; `fixed` maps
  * FIXED_COLUMNS keys to tags; `members[slot]` is the Team Member tag; `loop`
- * maps each loop prefix to `{ ratee, comment, ratings: [tag per criterion
- * row] }`, "" where a column is missing; `split` maps each choice ID to its
+ * maps each loop prefix to `{ ratee, comment, ratings: [tag per matrix
+ * row], dimensions: { catmeTag: tag } }`, "" where a column is missing; `split` maps each choice ID to its
  * tag; `open` maps each OPEN_QUESTIONS tag to itself; `problems` lists header
  * errors, each fatal; `warnings` lists what the scorer works around.
  */
@@ -172,12 +214,14 @@ export function mapColumns(columns) {
     split: {},
     warnings: [],
   };
-  const counts = { catme: 0, slots: 0 };
+  const counts = { slots: 0 };
 
   for (const { tag, importId = "" } of columns) {
     let problem = "";
     if (LOOP_TAG.test(tag)) {
       problem = placeLooped(map, tag, importId);
+    } else if (CATME_TAG.test(tag)) {
+      problem = placeDimension(map, tag, importId);
     } else if (SPLIT_TAG.test(tag)) {
       problem = placeSplit(map, tag, importId);
     } else if (OPEN_QUESTIONS.includes(tag)) {
@@ -185,17 +229,14 @@ export function mapColumns(columns) {
     } else if (SLOT_TAG.test(tag)) {
       counts.slots += 1;
     }
-    if (CATME_TAG.test(tag)) {
-      counts.catme += 1;
-    }
     if (problem) {
       map.problems.push(problem);
     }
   }
 
   map.type = surveyType(map, counts);
-  if (map.type === SURVEY_TYPE.regular) {
-    checkRegular(map);
+  if (Object.hasOwn(INSTRUMENTS, map.type)) {
+    checkScored(map);
   }
   return map;
 }
