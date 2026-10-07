@@ -2,36 +2,41 @@
 // The Canvas roster: where it comes from, the drop zone, and the students
 // added because they are enrolled in another section. Shared by the Prepare
 // and Score pages, which save the same roster. `roster` and `added` are
-// saved values (saved.svelte.js); `model` is rosterModel's result.
-import { addedStudentProblems } from "../../../lib/tools/peer-roster.mjs";
+// saved values (saved.svelte.js); `model` is rosterModel's result; `replace`
+// adds the Score page's Replace action. The wording is in
+// src/data/peer-tools.mjs.
+import { rosterText as text } from "../../../data/peer-tools.mjs";
+import { checkAddedStudent } from "../../../lib/tools/peer-roster.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
+import Checkbox from "../ui/Checkbox.svelte";
+import ClickPath from "../ui/ClickPath.svelte";
 import Field from "../ui/Field.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
 
-let { added, model, roster } = $props();
+let { added, model, replace = false, roster } = $props();
 
 const blank = { email: "", name: "", team: "" };
 let entry = $state({ ...blank });
-let problems = $state([]);
+let newTeam = $state(false);
+let check = $state({ problems: [], suggestions: [] });
 
 const teamNames = $derived(model.summary?.teams.map((t) => t.team) ?? []);
 
 function add(event) {
   event.preventDefault();
-  problems = addedStudentProblems(entry, model.students ?? []);
-  if (problems.length > 0) {
+  check = checkAddedStudent(entry, model.students ?? [], { newTeam });
+  if (check.problems.length > 0) {
     return;
   }
-  added.set([
-    ...added.value,
-    {
-      email: entry.email.trim(),
-      name: entry.name.trim(),
-      team: entry.team.trim(),
-    },
-  ]);
+  added.set([...added.value, check.entry]);
   entry = { ...blank };
+  newTeam = false;
+}
+
+function pick(team) {
+  entry.team = team;
+  check = { problems: [], suggestions: [] };
 }
 
 function remove(email) {
@@ -39,47 +44,41 @@ function remove(email) {
 }
 </script>
 
-<p>
-  In Canvas: <strong>People</strong> › the group set's tab › the group set's
-  options menu (three lines) › <strong>Download Course Roster CSV</strong>.
-  The file has <code>name</code>, <code>login_id</code>, and
-  <code>group_name</code> among its columns.
-</p>
+{#if replace}<p>{text.scoreIntro}</p>{/if}
+<ClickPath path={text.path} after={text.columns} />
 
 <div class="not-content">
   <FileDrop
-    label="Canvas roster with groups (.csv)"
+    label={text.drop}
     fileName={roster.value?.name ?? ""}
+    action={replace && roster.value ? text.replace : ""}
     onfile={(file) => roster.set(file)}
   />
+  {#if replace && roster.value}<p class="note">{text.replaceNote}</p>{/if}
 </div>
 
 {#if model.error}
-  <Callout title="This roster cannot be read" variant="danger">
+  <Callout title={text.unreadable} variant="danger">
     <pre>{model.error}</pre>
   </Callout>
 {/if}
 
-<Callout title="Teammates in another section" variant="caution">
-  <p>
-    A teammate enrolled in another section is not in this roster. Add them
-    here, or they get no survey and nobody rates them. Added students are
-    saved with the roster and marked in the preview.
-  </p>
+<Callout title={text.other.title} variant="caution">
+  <p>{text.other.body}</p>
 </Callout>
 
-<form class="add not-content" onsubmit={add} aria-label="Add a student from another section">
-  <Field label="Name" help="As Canvas shows it: Last, First.">
+<form class="add not-content" onsubmit={add} aria-label={text.form.label}>
+  <Field label={text.form.name.label} help={text.form.name.help}>
     {#snippet children({ describedby, id })}
       <input {id} type="text" aria-describedby={describedby} bind:value={entry.name} autocomplete="off" />
     {/snippet}
   </Field>
-  <Field label="Email" help="Their login, the address the survey goes to.">
+  <Field label={text.form.email.label} help={text.form.email.help}>
     {#snippet children({ describedby, id })}
       <input {id} type="email" aria-describedby={describedby} bind:value={entry.email} autocomplete="off" />
     {/snippet}
   </Field>
-  <Field label="Team" help="Spelled exactly as the team in the roster.">
+  <Field label={text.form.team.label} help={text.form.team.help}>
     {#snippet children({ describedby, id })}
       <input
         {id}
@@ -95,20 +94,39 @@ function remove(email) {
     {/snippet}
   </Field>
   <div>
-    <Button type="submit" variant="secondary">Add the student</Button>
+    <Button type="submit" variant="secondary">{text.form.add}</Button>
   </div>
-  {#if problems.length > 0}
-    <ul class="problems" role="alert">
-      {#each problems as problem (problem)}<li>{problem}</li>{/each}
-    </ul>
+  {#if check.problems.length > 0}
+    <div class="problems" role="alert">
+      <ul>
+        {#each check.problems as problem (problem)}<li>{problem}</li>{/each}
+      </ul>
+      {#if check.suggestions.length > 0}
+        <p class="suggestions">
+          {#each check.suggestions as team (team)}
+            <Button variant="secondary" onclick={() => pick(team)}>{team}</Button>
+          {/each}
+        </p>
+        <Checkbox checked={newTeam} onchange={(event) => {
+          newTeam = event.currentTarget.checked;
+        }}>
+          {text.form.newTeam}
+        </Checkbox>
+      {/if}
+    </div>
   {/if}
 </form>
 
 {#if added.value.length > 0}
   <table class="added">
-    <caption>Added from another section</caption>
+    <caption>{text.added}</caption>
     <thead>
-      <tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Team</th><th scope="col"><span class="visually-hidden">Remove</span></th></tr>
+      <tr>
+        <th scope="col">{text.form.name.label}</th>
+        <th scope="col">{text.form.email.label}</th>
+        <th scope="col">{text.form.team.label}</th>
+        <th scope="col"><span class="visually-hidden">{text.remove("")}</span></th>
+      </tr>
     </thead>
     <tbody>
       {#each added.value as student (student.email)}
@@ -117,8 +135,8 @@ function remove(email) {
           <td>{student.email}</td>
           <td>{student.team}</td>
           <td class="not-content">
-            <Button variant="link" onclick={() => remove(student.email)} aria-label="Remove {student.name}">
-              Remove
+            <Button variant="link" onclick={() => remove(student.email)} aria-label={text.remove(student.name)}>
+              {text.remove("")}
             </Button>
           </td>
         </tr>
@@ -127,11 +145,8 @@ function remove(email) {
   </table>
 {/if}
 {#if model.skipped.length > 0}
-  <Callout title="Already in the roster" variant="note">
-    <p>
-      Now in the roster, so the added entry is ignored:
-      {model.skipped.map((s) => s.email).join(", ")}. Remove it above.
-    </p>
+  <Callout title={text.skippedTitle} variant="note">
+    <p>{text.skipped(model.skipped.map((s) => s.email))}</p>
   </Callout>
 {/if}
 
@@ -145,9 +160,24 @@ function remove(email) {
   }
   .problems {
     grid-column: 1 / -1;
+    display: grid;
+    gap: 0.5rem;
+    font-size: var(--sl-text-sm);
+  }
+  .problems ul {
     margin: 0;
     color: var(--sl-color-red-high);
+  }
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+  }
+  .note {
+    margin: 0.5rem 0 0;
     font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
   }
   .added {
     margin-top: 1rem;

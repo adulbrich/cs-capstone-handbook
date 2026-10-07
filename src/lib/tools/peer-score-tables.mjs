@@ -49,7 +49,10 @@ export const criteriaTable = (rubricExport, pairs) => ({
   ]),
 });
 
-/** The report's kinds, in the order they are listed. */
+/** The report's order: what changed a score first, notes last. */
+export const REPORT_ORDER = ["error", "review", "warning", "note"];
+
+/** Each report level's name in the table. */
 export const REPORT_KINDS = {
   error: "Error: left out of the score",
   note: "Note: self share rescaled",
@@ -64,10 +67,10 @@ export const REPORT_KINDS = {
 export const reportTable = (problems, rubricProblems) => ({
   header: ["Kind", "Who", "What"],
   rows: [
-    ...Object.entries(REPORT_KINDS).flatMap(([level, kind]) =>
+    ...REPORT_ORDER.flatMap((level) =>
       problems
         .filter((p) => p.level === level)
-        .map((p) => [kind, p.who, p.message])
+        .map((p) => [REPORT_KINDS[level], p.who, p.message])
     ),
     ...rubricProblems.map((message) => ["Rubric export", "", message]),
   ],

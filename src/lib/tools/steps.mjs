@@ -21,7 +21,8 @@ export const STEP = Object.freeze({
 export const initialSteps = () => ({ done: {}, reopened: [] });
 
 /**
- * Each step's view, in `ids` order: `{ id, number, status, open }`.
+ * Each step's view, in `ids` order: `{ id, number, status, open, done }`,
+ * `done` what its Done box shows: checked, and its input still usable.
  * `state` is `{ done: { [id]: boolean }, reopened: [id] }`; `ready` maps a
  * step to false while its input is not usable (a missing entry is ready).
  */
@@ -39,6 +40,7 @@ export function stepView(ids, state, ready = {}) {
       blocked = true;
     }
     return {
+      done: Boolean(done[id]) && ready[id] !== false,
       id,
       number: i + 1,
       open:

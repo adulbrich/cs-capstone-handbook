@@ -4,11 +4,15 @@ import { buildContacts } from "./peer-contacts.mjs";
 import { people, rosterCsv } from "./peer-export.fixture.mjs";
 import {
   addedStudent,
-  addedStudentProblems,
+  checkAddedStudent,
+  closestTeams,
+  isSurveyedTeam,
   LEFT_OUT,
   leftOutTable,
+  matchTeam,
   rosterModel,
   rosterSummary,
+  surveyedCount,
   teamsTable,
   withAdded,
 } from "./peer-roster.mjs";
@@ -42,15 +46,59 @@ test("an added student has the roster's shape, no Canvas ID, and the marker", ()
 });
 
 test("the form refuses a blank field, a bad email, and an email already listed", () => {
-  assert.deepEqual(addedStudentProblems(ada, roster), []);
+  assert.deepEqual(checkAddedStudent(ada, roster).problems, []);
   assert.equal(
-    addedStudentProblems({ email: "x", name: " ", team: "" }, roster).length,
+    checkAddedStudent({ email: "x", name: " ", team: "" }, roster).problems
+      .length,
     3
   );
   assert.deepEqual(
-    addedStudentProblems({ ...ada, email: "TRIO1@example.edu" }, roster),
+    checkAddedStudent({ ...ada, email: "TRIO1@example.edu" }, roster).problems,
     ["trio1@example.edu is already on the roster."]
   );
+});
+
+test("a team matches the roster without case or extra spaces, in the roster's spelling", () => {
+  const teams = ["Trio", "Pair", "Big Team"];
+  assert.equal(matchTeam("  big   TEAM ", teams), "Big Team");
+  assert.equal(matchTeam("Quartet", teams), null);
+  const { entry, problems } = checkAddedStudent(
+    { ...ada, team: " trio " },
+    roster
+  );
+  assert.deepEqual(problems, []);
+  assert.equal(entry.team, "Trio");
+});
+
+test("an unknown team is refused with the closest teams, unless confirmed new", () => {
+  const typo = { ...ada, team: "Trioo" };
+  const refused = checkAddedStudent(typo, roster);
+  assert.equal(refused.problems.length, 1);
+  assert.match(
+    refused.problems[0],
+    /No team "Trioo" in the roster; closest: Trio/
+  );
+  assert.equal(refused.suggestions[0], "Trio");
+  assert.deepEqual(closestTeams("Par", ["Trio", "Pair", "Big"], 2), [
+    "Pair",
+    "Big",
+  ]);
+  const confirmed = checkAddedStudent(typo, roster, { newTeam: true });
+  assert.deepEqual(confirmed.problems, []);
+  assert.equal(confirmed.entry.team, "Trioo");
+});
+
+test("a surveyed team has two members up to the largest the survey holds", () => {
+  assert.deepEqual([1, 2, 10, 11].map(isSurveyedTeam), [
+    false,
+    true,
+    true,
+    false,
+  ]);
+  assert.deepEqual(surveyedCount(rosterSummary(roster)), {
+    students: 5,
+    teams: 2,
+  });
 });
 
 test("withAdded appends added students; the roster wins on a clash", () => {

@@ -1,16 +1,12 @@
 <script>
-// A native checkbox with its label. Starlight's reset sets accent-color, so
+// A native checkbox with its label. `checked` comes from the page's state
+// and `onchange` writes it back. Starlight's reset sets accent-color, so
 // the box takes the site's accent in either theme with no CSS here.
-let {
-  checked = $bindable(false),
-  children,
-  disabled = false,
-  onchange,
-} = $props();
+let { checked = false, children, disabled = false, onchange } = $props();
 </script>
 
 <label class={["checkbox", { disabled }]}>
-  <input type="checkbox" bind:checked {disabled} {onchange} />
+  <input type="checkbox" {checked} {disabled} {onchange} />
   <span>{@render children()}</span>
 </label>
 

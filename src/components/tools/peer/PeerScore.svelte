@@ -1,10 +1,17 @@
 <script>
 // Score: the Qualtrics export, the roster, the Canvas rubric export, then
 // the results, the grades to import, and the instructor's comments. The
-// page composes the pure modules under src/lib/tools/; everything it reads
-// or makes stays in the browser. `rubrics` are the parsed rubrics by
-// instrument (`{ regular, catme }`), read at build time by the Astro page.
-import { toolText } from "../../../data/peer-evaluation.mjs";
+// page composes the pure modules under src/lib/tools/ and the wording in
+// src/data/; everything it reads or makes stays in the browser. `rubrics`
+// are the parsed rubrics by instrument (`{ regular, catme }`), read at
+// build time.
+import {
+  NO_FILE,
+  rosterText,
+  savedText,
+  scoreText as text,
+} from "../../../data/peer-tools.mjs";
+import { attempt } from "../../../lib/tools/attempt.mjs";
 import { download } from "../../../lib/tools/download.mjs";
 import { parsePeerExport } from "../../../lib/tools/peer-export.mjs";
 import { isScored } from "../../../lib/tools/peer-export-columns.mjs";
@@ -32,9 +39,11 @@ import {
   parseRubricExport,
 } from "../../../lib/tools/rubric-export.mjs";
 import { tableFromCsv } from "../../../lib/tools/table-view.mjs";
+import { SHARED_KEYS } from "../../../lib/tools/tool-storage.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
+import ClickPath from "../ui/ClickPath.svelte";
 import DataPreview from "../ui/DataPreview.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
 import Step from "../ui/Step.svelte";
@@ -50,24 +59,24 @@ const STEPS = ["export", "roster", "rubric", "results", "grades", "comments"];
 
 const storage = new PeerStorage();
 const exported = storage.saved("score:export", null);
-const roster = storage.saved("roster", null);
-const added = storage.saved("added", []);
+const roster = storage.saved(SHARED_KEYS.roster, null);
+const added = storage.saved(SHARED_KEYS.added, []);
 const rubricFile = storage.saved("score:rubric", null);
 const options = storage.saved("score:options", { includePreviews: false });
 const steps = new PageSteps(storage, "score:steps", STEPS);
 
+/** The export as parsed, or `{ error }`; null with no file. */
 const parsed = $derived.by(() => {
   if (!exported.value) {
     return null;
   }
-  try {
-    return parsePeerExport(exported.value.text, {
+  const { error, value } = attempt(() =>
+    parsePeerExport(exported.value.text, {
       includePreviews: options.value.includePreviews,
       rubrics,
-    });
-  } catch (error) {
-    return { error: error.message };
-  }
+    })
+  );
+  return error ? { error } : value;
 });
 const scorable = $derived(
   Boolean(
@@ -83,51 +92,41 @@ const nameOf = $derived(
   new Map((model.students ?? []).map((s) => [s.email, s.name]))
 );
 
-const rubricExport = $derived.by(() => {
-  if (!rubricFile.value) {
-    return null;
-  }
-  try {
-    const value = parseRubricExport(rubricFile.value.text);
-    return {
-      error: "",
-      pairs: scorable ? matchRubricExport(value, parsed.rubric) : null,
-      value,
-    };
-  } catch (error) {
-    return { error: error.message, pairs: null, value: null };
-  }
-});
+/** The rubric export, and its columns matched to the rubric once scorable. */
+const rubricExport = $derived(
+  rubricFile.value
+    ? attempt(() => {
+        const value = parseRubricExport(rubricFile.value.text);
+        return {
+          pairs: scorable ? matchRubricExport(value, parsed.rubric) : null,
+          value,
+        };
+      })
+    : null
+);
+const pairs = $derived(rubricExport?.value?.pairs ?? null);
 
-const outcome = $derived.by(() => {
-  if (!(scorable && model.students && rubricExport?.pairs)) {
-    return null;
-  }
-  try {
-    const { instrument, rubric } = parsed;
-    const scored = scorePeers({
-      instrument,
-      responses: parsed.responses,
-      rubric,
-      students: model.students,
-    });
-    const filled = fillPeerAssessment({
-      instrument,
-      results: scored.results,
-      rubric,
-      rubricExport: rubricExport.value,
-    });
-    return {
-      error: "",
-      filled,
-      peer: peerCriteria(rubric, instrument),
-      ...scored,
-    };
-  } catch (error) {
-    return { error: error.message };
-  }
-});
-const scored = $derived(Boolean(outcome && !outcome.error));
+const outcome = $derived(
+  scorable && model.students && pairs
+    ? attempt(() => {
+        const { instrument, rubric } = parsed;
+        const scored = scorePeers({
+          instrument,
+          responses: parsed.responses,
+          rubric,
+          students: model.students,
+        });
+        const filled = fillPeerAssessment({
+          instrument,
+          results: scored.results,
+          rubric,
+          rubricExport: rubricExport.value.value,
+        });
+        return { filled, peer: peerCriteria(rubric, instrument), ...scored };
+      })
+    : null
+);
+const scored = $derived(outcome?.value ?? null);
 
 const counts = $derived(
   scorable ? responseCounts(parsed, options.value.includePreviews) : null
@@ -136,71 +135,80 @@ const stopped = $derived(
   scorable ? stoppedTable(parsed.stopped, nameOf) : null
 );
 const criteria = $derived(
-  rubricExport?.pairs
-    ? criteriaTable(rubricExport.value, rubricExport.pairs)
-    : null
+  pairs ? criteriaTable(rubricExport.value.value, pairs) : null
 );
 const report = $derived(
-  scored ? reportTable(outcome.problems, outcome.filled.problems) : null
+  scored ? reportTable(scored.problems, scored.filled.problems) : null
 );
-const gaps = $derived(scored ? gapsTable(outcome.results) : null);
-const details = $derived(
-  scored ? detailsCsv(outcome.results, outcome.peer) : ""
-);
+const gaps = $derived(scored ? gapsTable(scored.results) : null);
+const details = $derived(scored ? detailsCsv(scored.results, scored.peer) : "");
 const notCompleted = $derived(
   scored
-    ? outcome.results.filter((r) => r.status === STATUS.didNotComplete).length
+    ? scored.results.filter((r) => r.status === STATUS.didNotComplete).length
     : 0
 );
-const comments = $derived(scored ? commentsCsv(outcome.comments) : "");
+const comments = $derived(scored ? commentsCsv(scored.comments) : "");
 
 const baseName = $derived(
   rubricFile.value?.name.replace(/\.csv$/i, "") || "peer-evaluation"
 );
+const files = $derived({
+  comments: `${baseName}-comments.csv`,
+  details: `${baseName}-details.csv`,
+  other: `${baseName}-other-sections.csv`,
+  scored: `${baseName}-scored.csv`,
+});
 
 const ready = $derived({
-  comments: scored,
+  comments: Boolean(scored),
   export: scorable,
-  grades: scored,
-  results: scored,
+  grades: Boolean(scored),
+  results: Boolean(scored),
   roster: Boolean(model.students && model.students.length > 0),
-  rubric: Boolean(rubricExport?.pairs),
+  rubric: Boolean(pairs),
 });
-const view = $derived(steps.view(ready));
-const stepProps = (id) => steps.props(id, view, ready);
 const summaries = $derived({
-  comments: `${outcome?.comments?.length ?? 0} comments, instructor only.`,
-  export: `${exported.value?.name ?? "No file"}: ${parsed?.responses?.length ?? 0} finished responses.`,
-  grades: `${baseName}-scored.csv${outcome?.filled?.otherSections ? `, and ${baseName}-other-sections.csv` : ""}.`,
-  results: `${outcome?.results?.length ?? 0} students scored, ${report?.rows.length ?? 0} report lines.`,
-  roster: `${roster.value?.name ?? "No file"}: ${model.students?.length ?? 0} students${added.value.length > 0 ? `, ${added.value.length} from another section` : ""}.`,
-  rubric: `${rubricFile.value?.name ?? "No file"}: ${rubricExport?.value?.students.length ?? 0} students, ${rubricExport?.pairs?.length ?? 0} criteria matched.`,
+  comments: text.comments.summary(scored?.comments.length ?? 0),
+  export: text.export.summary({
+    file: exported.value?.name ?? NO_FILE,
+    finished: parsed?.responses?.length ?? 0,
+  }),
+  grades: text.grades.summary({
+    base: baseName,
+    other: Boolean(scored?.filled.otherSections),
+  }),
+  results: text.results.summary({
+    lines: report?.rows.length ?? 0,
+    students: scored?.results.length ?? 0,
+  }),
+  roster: text.roster.summary({
+    added: added.value.length,
+    file: roster.value?.name ?? NO_FILE,
+    students: model.students?.length ?? 0,
+  }),
+  rubric: text.rubric.summary({
+    criteria: pairs?.length ?? 0,
+    file: rubricFile.value?.name ?? NO_FILE,
+    students: rubricExport?.value?.value.students.length ?? 0,
+  }),
 });
 </script>
 
-<SavedData
-  {storage}
-  what="the three files, the students you added (the roster and added students are shared with the Prepare page), the preview setting, and each step's done box."
-/>
+<SavedData {storage} what={savedText.score} />
 
-<Stepper label="Score the peer evaluation">
+<Stepper label={text.label}>
   <Step
-    {...stepProps("export")}
-    title="Qualtrics export"
+    {...steps.props("export", ready)}
+    title={text.export.title}
     summary={summaries.export}
-    waiting="Drop a labels export of a regular or CATME peer survey."
+    waiting={text.export.waiting}
+    usedIn={text.export.usedIn}
   >
     {#snippet source()}
-      <p>
-        In the survey: <strong>Data &amp; Analysis</strong> ›
-        <strong>Export &amp; Import</strong> › <strong>Export Data</strong> ›
-        <strong>CSV</strong> › <strong>Export labels</strong>. A values export
-        (numeric codes) is refused. Export after the links expire, and do not
-        re-save the file in a spreadsheet.
-      </p>
+      <ClickPath path={text.export.path} after={text.export.pathAfter} />
       <div class="drop not-content">
         <FileDrop
-          label="Qualtrics responses, labels export (.csv)"
+          label={text.export.drop}
           fileName={exported.value?.name ?? ""}
           onfile={(file) => exported.set(file)}
         />
@@ -209,34 +217,34 @@ const summaries = $derived({
           onchange={(event) =>
             options.set({ includePreviews: event.currentTarget.checked })}
         >
-          Count survey previews and test responses (the staff test only)
+          {text.export.previews}
         </Checkbox>
       </div>
     {/snippet}
     {#snippet preview()}
       {#if parsed?.error}
-        <Callout title="This export cannot be scored" variant="danger">
+        <Callout title={text.export.error} variant="danger">
           <pre>{parsed.error}</pre>
         </Callout>
       {:else if parsed}
-        <p><strong>Detected:</strong> {toolText.surveyTypes[parsed.type]}</p>
+        <p><strong>{text.export.detected}</strong> {text.surveyTypes[parsed.type]}</p>
         {#if parsed.problems.length > 0}
-          <Callout title="The export's columns do not fit the survey" variant="danger">
+          <Callout title={text.export.problems} variant="danger">
             <pre>{parsed.problems.join("\n")}</pre>
           </Callout>
         {/if}
         {#if parsed.warnings.length > 0}
-          <Callout title="Warnings" variant="caution">
+          <Callout title={text.export.warnings} variant="caution">
             <ul>{#each parsed.warnings as warning (warning)}<li>{warning}</li>{/each}</ul>
           </Callout>
         {/if}
         {#if counts}
-          <DataPreview title="Responses" table={counts} />
-          <h4>Started without finishing</h4>
+          <DataPreview title={counts.header[0]} table={counts} />
+          <h4>{text.export.stopped}</h4>
           {#if stopped.rows.length > 0}
-            <DataPreview title="Started without finishing" table={stopped} />
+            <DataPreview title={text.export.stopped} table={stopped} />
           {:else}
-            <p class="muted">Nobody.</p>
+            <p class="muted">{text.export.nobody}</p>
           {/if}
         {/if}
       {/if}
@@ -244,17 +252,13 @@ const summaries = $derived({
   </Step>
 
   <Step
-    {...stepProps("roster")}
-    title="Canvas roster"
+    {...steps.props("roster", ready)}
+    title={rosterText.title}
     summary={summaries.roster}
+    usedIn={text.roster.usedIn}
   >
     {#snippet source()}
-      <p>
-        The roster saved on the Prepare page is used, with its added
-        students. Drop the roster again only if the teams changed since the
-        survey went out.
-      </p>
-      <RosterInput {added} {model} {roster} />
+      <RosterInput {added} {model} {roster} replace />
     {/snippet}
     {#snippet preview()}
       <RosterPreview {model} />
@@ -262,21 +266,16 @@ const summaries = $derived({
   </Step>
 
   <Step
-    {...stepProps("rubric")}
-    title="Canvas rubric export"
+    {...steps.props("rubric", ready)}
+    title={text.rubric.title}
     summary={summaries.rubric}
+    usedIn={text.rubric.usedIn}
   >
     {#snippet source()}
-      <p>
-        In Canvas: <strong>Grades</strong> › the assignment's
-        <strong>Options</strong> menu › <strong>Bulk Download Rubrics</strong>,
-        on the assignment this survey grades (midterm, end-of-term, or the
-        spring CATME entry). It needs Enhanced Rubrics, and is not available
-        on an anonymously graded assignment.
-      </p>
+      <ClickPath path={text.rubric.path} after={text.rubric.pathAfter} />
       <div class="not-content">
         <FileDrop
-          label="Canvas rubric export (.csv)"
+          label={text.rubric.drop}
           fileName={rubricFile.value?.name ?? ""}
           onfile={(file) => rubricFile.set(file)}
         />
@@ -284,98 +283,77 @@ const summaries = $derived({
     {/snippet}
     {#snippet preview()}
       {#if rubricExport?.error}
-        <Callout title="This rubric export does not fit" variant="danger">
+        <Callout title={text.rubric.error} variant="danger">
           <pre>{rubricExport.error}</pre>
         </Callout>
       {:else if rubricExport && !scorable}
-        <p class="muted">Read; it is matched to the rubric once step 1's export is scored.</p>
+        <p class="muted">{text.rubric.waitingExport}</p>
       {:else if criteria}
-        <p>
-          {rubricExport.value.students.length} students in the export; each
-          rubric criterion matched to its columns:
-        </p>
-        <DataPreview title="Rubric criteria and export columns" table={criteria} />
+        <p>{text.rubric.count(rubricExport.value.value.students.length)}</p>
+        <DataPreview title={text.rubric.matched} table={criteria} />
       {/if}
     {/snippet}
   </Step>
 
   <Step
-    {...stepProps("results")}
-    title="Results"
-    sourceTitle="What it is"
+    {...steps.props("results", ready)}
+    title={text.results.title}
+    sourceTitle={text.whatItIs}
     summary={summaries.results}
   >
     {#snippet source()}
-      <p>
-        Each student scored from what their teammates gave them, as the Peer
-        Evaluations page's Grade Calculation states. A student with no
-        finished response scores {NON_COMPLETION_SCORE}
-        ({notCompleted} this time). Flags for teams of two and rescaled
-        splits never change a score.
-      </p>
+      <p>{text.results.what({ notCompleted, score: NON_COMPLETION_SCORE })}</p>
       {#if outcome?.error}
-        <Callout title="Nothing scored" variant="danger"><pre>{outcome.error}</pre></Callout>
+        <Callout title={text.results.error} variant="danger"><pre>{outcome.error}</pre></Callout>
       {/if}
     {/snippet}
     {#snippet preview()}
-      {#if report}
-        <h4>Report</h4>
+      {#if scored}
+        <h4>{text.results.report}</h4>
         {#if report.rows.length > 0}
-          <DataPreview title="Report" table={report} />
+          <DataPreview title={text.results.report} table={report} />
         {:else}
-          <p class="muted">Nothing to report.</p>
+          <p class="muted">{text.results.nothing}</p>
         {/if}
-        <h4>Self versus peers</h4>
-        <p class="muted">
-          Largest first. Ratings: the self rating's mean minus the mean
-          received. Share: the raw self share minus the mean share received,
-          times N, divided by 5 (none on CATME). A queue for a look.
-        </p>
-        <DataPreview title="Self versus peers" table={gaps} />
-        <h4>Scores and details</h4>
-        <DataPreview title="Scores and details" table={tableFromCsv(details)} />
+        <h4>{text.results.gaps}</h4>
+        <p class="muted">{text.results.gapsHow}</p>
+        <DataPreview title={text.results.gaps} table={gaps} />
+        <h4>{text.results.details}</h4>
+        <DataPreview title={text.results.details} table={tableFromCsv(details)} />
       {/if}
     {/snippet}
     {#snippet destination()}
-      <p>Instructor only: nothing in this step goes to students.</p>
+      <p>{text.results.after}</p>
       <p class="not-content">
         <Button
           variant="secondary"
-          onclick={() => download(`${baseName}-details.csv`, details)}
+          onclick={() => download(files.details, details)}
           disabled={!details}
         >
-          Download {baseName}-details.csv
+          {text.results.download(files.details)}
         </Button>
       </p>
     {/snippet}
   </Step>
 
   <Step
-    {...stepProps("grades")}
-    title="Grades"
-    sourceTitle="What it is"
+    {...steps.props("grades", ready)}
+    title={text.grades.title}
+    sourceTitle={text.whatItIs}
     summary={summaries.grades}
   >
     {#snippet source()}
-      <p>
-        The rubric export from step 3, filled in: each criterion's points and
-        rating. These rubric scores are the anonymized feedback students
-        receive; nothing else goes to students.
-      </p>
+      <p>{text.grades.what}</p>
     {/snippet}
     {#snippet preview()}
-      {#if outcome?.filled}
-        <DataPreview title="Rubric assessment to import" table={tableFromCsv(outcome.filled.csv)} />
-        {#if outcome.filled.otherSections}
-          <h4>Students from other sections</h4>
-          <p>
-            Scored like everyone, and their ratings count toward their
-            teammates, but they are not in this course's rubric export. Their
-            rows, Student Id left empty, are for whoever grades their section.
-          </p>
+      {#if scored}
+        <DataPreview title={text.grades.preview} table={tableFromCsv(scored.filled.csv)} />
+        {#if scored.filled.otherSections}
+          <h4>{text.grades.other.title}</h4>
+          <p>{text.grades.other.body}</p>
           <DataPreview
-            title="Students from other sections"
-            table={tableFromCsv(outcome.filled.otherSections)}
+            title={text.grades.other.title}
+            table={tableFromCsv(scored.filled.otherSections)}
           />
         {/if}
       {/if}
@@ -383,60 +361,52 @@ const summaries = $derived({
     {#snippet destination()}
       <p class="not-content">
         <Button
-          onclick={() => download(`${baseName}-scored.csv`, outcome.filled.csv)}
-          disabled={!outcome?.filled}
+          onclick={() => download(files.scored, scored.filled.csv)}
+          disabled={!scored}
         >
-          Download {baseName}-scored.csv
+          {text.grades.download(files.scored)}
         </Button>
       </p>
-      <p>
-        In Canvas: <strong>Grades</strong> › the assignment's
-        <strong>Options</strong> menu › <strong>Import Rubrics</strong>, on the
-        same assignment.
-      </p>
-      {#if outcome?.filled?.otherSections}
+      <ClickPath path={text.grades.path} after={text.grades.pathAfter} />
+      {#if scored?.filled.otherSections}
         <p class="not-content">
           <Button
             variant="secondary"
-            onclick={() =>
-              download(`${baseName}-other-sections.csv`, outcome.filled.otherSections)}
+            onclick={() => download(files.other, scored.filled.otherSections)}
           >
-            Download {baseName}-other-sections.csv
+            {text.grades.download(files.other)}
           </Button>
         </p>
-        <p>Send it to whoever grades those students' section.</p>
+        <p>{text.grades.other.send}</p>
       {/if}
     {/snippet}
   </Step>
 
   <Step
-    {...stepProps("comments")}
-    title="Instructor-only comments"
-    sourceTitle="What it is"
+    {...steps.props("comments", ready)}
+    title={text.comments.title}
+    sourceTitle={text.whatItIs}
     summary={summaries.comments}
   >
     {#snippet source()}
-      <p>
-        Every comment students wrote, with who wrote it and about whom. For
-        the instruction team only.
-      </p>
+      <p>{text.comments.what}</p>
     {/snippet}
     {#snippet preview()}
       {#if comments}
-        <DataPreview title="Comments" table={tableFromCsv(comments)} />
+        <DataPreview title={text.comments.title} table={tableFromCsv(comments)} />
       {/if}
     {/snippet}
     {#snippet destination()}
       <p class="not-content">
         <Button
           variant="secondary"
-          onclick={() => download(`${baseName}-comments.csv`, comments)}
+          onclick={() => download(files.comments, comments)}
           disabled={!comments}
         >
-          Download {baseName}-comments.csv
+          {text.comments.download(files.comments)}
         </Button>
       </p>
-      <p>Keep it with the course records. It is never imported or sent to students.</p>
+      <p>{text.comments.after}</p>
     {/snippet}
   </Step>
 </Stepper>

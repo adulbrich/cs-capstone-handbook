@@ -3,6 +3,7 @@
 // in another section, and the summary a page previews: each team with its
 // members, and who is left out of the survey and why. Pure: no DOM, no I/O.
 
+import { attempt } from "./attempt.mjs";
 import { MAX_TEAM_SIZE } from "./peer-contacts.mjs";
 import { parseRoster, splitName } from "./roster.mjs";
 
@@ -32,13 +33,66 @@ export function addedStudent({ email, name, team }) {
   };
 }
 
+/** A team the survey goes to: two members up to MAX_TEAM_SIZE. */
+export const isSurveyedTeam = (size) => size >= 2 && size <= MAX_TEAM_SIZE;
+
+/** How many students and teams of a summary (rosterSummary) get the survey. */
+export function surveyedCount(summary) {
+  const teams = summary.teams.filter((team) => isSurveyedTeam(team.size));
+  return {
+    students: teams.reduce((sum, team) => sum + team.size, 0),
+    teams: teams.length,
+  };
+}
+
+const SPACES = /\s+/g;
+
+/** A team name as compared: trimmed, single-spaced, lower case. */
+const teamKey = (name) => name.trim().replace(SPACES, " ").toLowerCase();
+
+/** Edits from one string to the other (Levenshtein). */
+function distance(a, b) {
+  let row = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i += 1) {
+    const next = [i];
+    for (let j = 1; j <= b.length; j += 1) {
+      const swap = a[i - 1] === b[j - 1] ? 0 : 1;
+      next[j] = Math.min(row[j] + 1, next[j - 1] + 1, row[j - 1] + swap);
+    }
+    row = next;
+  }
+  return row[b.length];
+}
+
 /**
- * What is wrong with a student about to be added, as messages: a name, an
- * email that looks like one, a team, and an email on neither the roster nor
- * the students already added. `students` is everyone so far.
+ * The roster's spelling of team `name`, compared without case or extra
+ * spaces, or null when no team matches.
  */
-export function addedStudentProblems(entry, students) {
+export function matchTeam(name, teams) {
+  const key = teamKey(name);
+  return teams.find((team) => teamKey(team) === key) ?? null;
+}
+
+/** The `count` roster teams closest to `name`, closest first. */
+export const closestTeams = (name, teams, count = 3) =>
+  teams
+    .map((team) => ({ d: distance(teamKey(name), teamKey(team)), team }))
+    .sort((a, b) => a.d - b.d || a.team.localeCompare(b.team))
+    .slice(0, count)
+    .map(({ team }) => team);
+
+/**
+ * Checks a student about to be added: a name, an email that looks like
+ * one and is on neither the roster nor the students already added
+ * (`students`), and a team. The team must match a roster team (matchTeam),
+ * and is stored in the roster's spelling, unless `newTeam` confirms a team
+ * the roster does not have. Returns `{ entry, problems, suggestions }`:
+ * the entry to save, the messages, and the closest roster teams when the
+ * team matched none.
+ */
+export function checkAddedStudent(entry, students, { newTeam = false } = {}) {
   const problems = [];
+  let suggestions = [];
   if (entry.name.trim() === "") {
     problems.push("Enter the student's name.");
   }
@@ -50,10 +104,25 @@ export function addedStudentProblems(entry, students) {
   } else {
     problems.push("Enter the student's email address.");
   }
-  if (entry.team.trim() === "") {
-    problems.push("Enter the student's team, spelled as in the roster.");
+  const teams = [
+    ...new Set(students.map((s) => s.team).filter((name) => name !== "")),
+  ];
+  let team = entry.team.trim().replace(SPACES, " ");
+  if (team === "") {
+    problems.push("Enter the student's team.");
+  } else if (matchTeam(team, teams)) {
+    team = matchTeam(team, teams);
+  } else if (!newTeam) {
+    suggestions = closestTeams(team, teams);
+    problems.push(
+      `No team "${team}" in the roster${suggestions.length > 0 ? `; closest: ${suggestions.join(", ")}` : ""}. Pick one, or confirm it is a new team.`
+    );
   }
-  return problems;
+  return {
+    entry: { email: entry.email.trim(), name: entry.name.trim(), team },
+    problems,
+    suggestions,
+  };
 }
 
 /**
@@ -104,9 +173,12 @@ export function rosterSummary(students) {
     team,
   }));
   for (const { members, size } of teams) {
+    if (isSurveyedTeam(size)) {
+      continue;
+    }
     if (size === 1) {
       leftOut.push({ ...pick(members[0]), reason: LEFT_OUT.alone });
-    } else if (size > MAX_TEAM_SIZE) {
+    } else {
       leftOut.push(
         ...members.map((m) => ({ ...pick(m), reason: LEFT_OUT.oversized }))
       );
@@ -136,12 +208,14 @@ export function rosterModel(file, added = []) {
   if (!file) {
     return { error: "", skipped: [], students: null, summary: null };
   }
-  try {
-    const { skipped, students } = withAdded(parseRoster(file.text), added);
-    return { error: "", skipped, students, summary: rosterSummary(students) };
-  } catch (error) {
-    return { error: error.message, skipped: [], students: null, summary: null };
+  const { error, value } = attempt(() =>
+    withAdded(parseRoster(file.text), added)
+  );
+  if (error) {
+    return { error, skipped: [], students: null, summary: null };
   }
+  const { skipped, students } = value;
+  return { error: "", skipped, students, summary: rosterSummary(students) };
 }
 
 const OTHER = " (another section)";
@@ -150,13 +224,12 @@ const named = (student) =>
 
 /** What a team's row says about it beyond its members. */
 function teamNote({ otherSection, size }) {
-  if (size === 1) {
-    return "Alone: no survey";
+  if (isSurveyedTeam(size)) {
+    return otherSection > 0 ? `${otherSection} from another section` : "";
   }
-  if (size > MAX_TEAM_SIZE) {
-    return `Over ${MAX_TEAM_SIZE}: split the team`;
-  }
-  return otherSection > 0 ? `${otherSection} from another section` : "";
+  return size === 1
+    ? "Alone: no survey"
+    : `Over ${MAX_TEAM_SIZE}: split the team`;
 }
 
 /** The summary's teams as a table preview's `{ header, rows }`. */

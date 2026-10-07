@@ -16,6 +16,9 @@ export const PEER_NAMESPACE = "cs46x-tools:peer:";
  */
 export const PEER_VERSION = 1;
 
+/** The keys both peer pages read: the roster file and the added students. */
+export const SHARED_KEYS = Object.freeze({ added: "added", roster: "roster" });
+
 /** Why the store fell back to memory, as a page tells the instructor. */
 export const STORAGE_PROBLEM = Object.freeze({
   blocked:

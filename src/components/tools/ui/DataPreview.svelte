@@ -12,7 +12,8 @@ import Button from "./Button.svelte";
 let { inline = 5, table, title } = $props();
 const id = $props.id();
 
-let dialog = $state();
+// biome-ignore lint/suspicious/noUnassignedVariables: bind:this assigns it
+let dialog;
 let filter = $state("");
 let sort = $state(null);
 
@@ -270,7 +271,7 @@ const ariaSort = (column) => {
     cursor: pointer;
   }
   .arrow {
-    font-size: 0.7em;
+    font-size: var(--sl-text-xs);
     color: var(--sl-color-text-accent);
   }
   .full td {

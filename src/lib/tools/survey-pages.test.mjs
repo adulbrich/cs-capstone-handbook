@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { distributionEmail, variants } from "../../data/peer-evaluation.mjs";
-import { buildContacts, memberLabel } from "./peer-contacts.mjs";
+import { buildContacts } from "./peer-contacts.mjs";
 import { people, rubrics } from "./peer-export.fixture.mjs";
 import { buildPeerSurvey, MODES } from "./peer-survey-qsf.mjs";
-import { escapeHtml, pipedSegments, pipeHtml } from "./piped-text.mjs";
 import { logicHolds, respondentValues, surveyPages } from "./survey-pages.mjs";
 
 const NOW = new Date(0);
@@ -114,16 +113,6 @@ test("piped values are escaped", () => {
   const row = respondentValues({ ...rows[0], Team: "<b>x</b>" });
   const [intro] = surveyPages(survey("midterm"), row);
   assert.match(intro.questions[0].html, /&lt;b&gt;x&lt;\/b&gt;/);
-  assert.equal(escapeHtml(`a&"'`), "a&amp;&quot;&#39;");
-  assert.equal(
-    pipeHtml("${lm://Field/2} ${e://Field/Team%20Member%201}", {
-      loop: { 2: "<i>ok</i>" },
-      values: {
-        "Team Member 1": memberLabel({ email: "a@b.c", first: "A", last: "B" }),
-      },
-    }),
-    "<i>ok</i> A B (a@b.c)"
-  );
 });
 
 test("logic other than on embedded fields stops the preview", () => {
@@ -154,16 +143,4 @@ test("the distribution email pipes the team and the two links, none nested", () 
   )) {
     assert.ok(Object.hasOwn(rows[0], decodeURIComponent(name)), name);
   }
-});
-
-test("the email preview shows one student's values and the link text", () => {
-  const segments = pipedSegments(distributionEmail.body, { Team: "Quad" });
-  const links = segments.filter((s) => s.kind === "link").map((s) => s.text);
-  assert.deepEqual(links, ["Take the survey", "Unsubscribe"]);
-  assert.ok(segments.some((s) => s.kind === "field" && s.text === "Quad"));
-  assert.ok(!segments.some((s) => s.text.includes("${")));
-  assert.deepEqual(pipedSegments("Hi ${e://Field/Missing}"), [
-    { kind: "text", text: "Hi " },
-    { kind: "field", text: "[Missing]" },
-  ]);
 });

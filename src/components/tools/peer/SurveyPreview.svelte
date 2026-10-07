@@ -4,19 +4,21 @@
 // written from. The answers are drawn disabled: it is a picture, not a
 // form. Question HTML comes from the survey's own wording with every piped
 // value escaped.
+import { previewText as text } from "../../../data/peer-tools.mjs";
+
 let { pages } = $props();
 </script>
 
 <!-- A scrolling region takes focus so the keyboard can scroll it. -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<div class="survey" role="region" aria-label="Survey preview" tabindex="0">
+<div class="survey" role="region" aria-label={text.region} tabindex="0">
   {#each pages as page, p (p)}
-    <section class="page" aria-label="Page {p + 1} of {pages.length}">
-      <p class="page-title">Page {p + 1} of {pages.length}: {@html page.title}</p>
+    <section class="page" aria-label={text.page(p + 1, pages.length)}>
+      <p class="page-title">{text.page(p + 1, pages.length)}: {@html page.title}</p>
       {#each page.questions as question, q (q)}
         <div class="question">
           <div class="text">
-            {@html question.html}{#if question.forced}<span class="forced" title="Required"> *</span>{/if}
+            {@html question.html}{#if question.forced}<span class="forced" title={text.required}> *</span>{/if}
           </div>
           {#if question.kind === "single" || question.kind === "multiple"}
             <ul class="choices">
@@ -32,11 +34,13 @@ let { pages } = $props();
               {/each}
             </ul>
           {:else if question.kind === "matrix"}
+            <!-- Wide: Qualtrics's grid. Narrow: one question per criterion,
+                 the scale as a list, as Qualtrics shows it on a phone. -->
             <div class="matrix">
-              <table>
+              <table class="grid">
                 <thead>
                   <tr>
-                    <th scope="col"><span class="visually-hidden">Criterion</span></th>
+                    <th scope="col"><span class="visually-hidden">{text.criterion}</span></th>
                     {#each question.columns as column, c (c)}<th scope="col">{column}</th>{/each}
                   </tr>
                 </thead>
@@ -51,6 +55,19 @@ let { pages } = $props();
                   {/each}
                 </tbody>
               </table>
+              <div class="stacked">
+                {#each question.rows as row, r (r)}
+                  <p class="criterion">{row}</p>
+                  <ul class="choices">
+                    {#each question.columns as column, c (c)}
+                      <li>
+                        <input type="radio" disabled aria-hidden="true" />
+                        <span>{column}</span>
+                      </li>
+                    {/each}
+                  </ul>
+                {/each}
+              </div>
             </div>
           {:else if question.kind === "essay"}
             <textarea disabled rows="3" aria-hidden="true"></textarea>
@@ -64,7 +81,7 @@ let { pages } = $props();
                   <input type="text" disabled size="4" aria-hidden="true" />
                 </li>
               {/each}
-              <li class="total"><span>Total</span><span>{question.total}</span></li>
+              <li class="total"><span>{text.total}</span><span>{question.total}</span></li>
             </ul>
           {/if}
         </div>
@@ -141,21 +158,43 @@ let { pages } = $props();
     font-weight: 600;
   }
   .matrix {
-    overflow-x: auto;
+    container-type: inline-size;
   }
-  .matrix table {
+  /* The grid wraps its scale labels to fit the width it has. */
+  .grid {
     display: table;
+    table-layout: fixed;
     width: 100%;
     margin: 0;
     font-size: var(--sl-text-xs);
   }
-  .matrix thead th {
-    min-width: 6rem;
-    overflow-wrap: normal;
+  .grid th,
+  .grid td {
+    padding: 0.4rem;
+    overflow-wrap: break-word;
     word-break: normal;
+    hyphens: auto;
   }
-  .matrix td {
+  .grid thead th:first-child {
+    width: 30%;
+  }
+  .grid td {
     text-align: center;
+  }
+  .stacked {
+    display: none;
+  }
+  .criterion {
+    margin: 0.75rem 0 0.35rem;
+    font-weight: 600;
+  }
+  @container (max-width: 28rem) {
+    .grid {
+      display: none;
+    }
+    .stacked {
+      display: block;
+    }
   }
   textarea,
   input[type="text"] {

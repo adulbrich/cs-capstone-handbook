@@ -4,7 +4,8 @@
 // from stepView (src/lib/tools/steps.mjs): a locked step shows only its
 // title, a done step its one-line `summary` and an Edit button. The heading
 // takes focus (`step-<id>`), so a page can move the reader to a step that
-// just opened. `ready` false disables Done, with `waiting` saying why.
+// just opened. `ready` false disables Done, with `waiting` saying why. An
+// input step names the later steps that consume it in `usedIn`.
 import { STEP } from "../../../lib/tools/steps.mjs";
 import Button from "./Button.svelte";
 import Checkbox from "./Checkbox.svelte";
@@ -25,6 +26,7 @@ let {
   status,
   summary = "",
   title,
+  usedIn = "",
   waiting = "",
 } = $props();
 </script>
@@ -62,10 +64,11 @@ let {
         {@render preview()}
       </section>
     {/if}
-    {#if destination}
+    {#if destination || usedIn}
       <section class="part">
         <h3>Where it goes</h3>
-        {@render destination()}
+        {#if usedIn}<p><strong>Used in:</strong> {usedIn}</p>{/if}
+        {@render destination?.()}
       </section>
     {/if}
     <div class="finish not-content">

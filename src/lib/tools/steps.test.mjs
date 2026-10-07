@@ -89,6 +89,10 @@ test("a done step whose input breaks counts as not done until fixed", () => {
     [STEP.current, STEP.locked, STEP.locked, STEP.locked]
   );
   assert.equal(broken[0].open, true);
+  // Its Done box shows unchecked, and checks again once the input is fixed.
+  assert.equal(broken[0].done, false);
+  assert.equal(stepView(IDS, state)[0].done, true);
+  assert.equal(stepView(IDS, initialSteps())[0].done, false);
   assert.deepEqual(
     stepView(IDS, state, { roster: true }).map((s) => s.status),
     [STEP.done, STEP.done, STEP.current, STEP.locked]

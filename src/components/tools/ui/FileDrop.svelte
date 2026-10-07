@@ -3,8 +3,18 @@
 // <input type="file">, so the keyboard reaches it with Tab and opens it with
 // Enter or Space, and a file dropped anywhere on the zone is read the same
 // way. The file is read in the browser and handed to `onfile` as
-// `{ name, text }`; nothing is uploaded. `fileName` is the file in use.
-let { accept = ".csv,text/csv", fileName = "", label, onfile } = $props();
+// `{ name, text }`; nothing is uploaded. `fileName` is the file in use;
+// `action`, when set, adds a button of that name that opens the picker.
+import Button from "./Button.svelte";
+
+let {
+  accept = ".csv,text/csv",
+  action = "",
+  fileName = "",
+  label,
+  onfile,
+} = $props();
+let input;
 let dragging = $state(false);
 let error = $state("");
 
@@ -21,10 +31,10 @@ async function take(file) {
 }
 
 async function picked(event) {
-  const input = event.currentTarget;
-  await take(input.files?.[0]);
+  const picker = event.currentTarget;
+  await take(picker.files?.[0]);
   // Cleared, so picking the same file again after an edit reads it again.
-  input.value = "";
+  picker.value = "";
 }
 
 function dropped(event) {
@@ -55,9 +65,14 @@ function dropped(event) {
       Drop the file here, or choose it.
     {/if}
   </span>
-  <input type="file" {accept} onchange={picked} />
+  <input type="file" {accept} onchange={picked} bind:this={input} />
   {#if error}<span class="error" role="alert">{error}</span>{/if}
 </label>
+{#if action}
+  <p class="action">
+    <Button variant="secondary" onclick={() => input.click()}>{action}</Button>
+  </p>
+{/if}
 
 <style>
   .drop {
@@ -90,6 +105,9 @@ function dropped(event) {
   input {
     font: inherit;
     font-size: var(--sl-text-sm);
+  }
+  .action {
+    margin: 0.5rem 0 0;
   }
   .error {
     color: var(--sl-color-red-high);

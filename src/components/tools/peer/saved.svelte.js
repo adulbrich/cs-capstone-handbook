@@ -71,16 +71,6 @@ export class PageSteps {
     this.#saved = storage.saved(key, initialSteps());
   }
 
-  /** Each step's view by id, given which steps' inputs are `ready`. */
-  view(ready) {
-    return Object.fromEntries(
-      stepView(this.#ids, this.#saved.value, ready).map((step) => [
-        step.id,
-        step,
-      ])
-    );
-  }
-
   async #focus(id) {
     await tick();
     document.getElementById(`step-${id}`)?.focus();
@@ -94,11 +84,15 @@ export class PageSteps {
     this.#focus(value && next ? next.id : id);
   }
 
-  /** A <Step>'s props for `id`: `view` from view(ready), `ready` the same map. */
-  props(id, view, ready) {
+  /**
+   * A <Step>'s props for `id`: its view (stepView, given which steps'
+   * inputs are `ready`), its handlers, and whether it is ready.
+   */
+  props(id, ready) {
     return {
-      ...view[id],
-      done: Boolean(this.#saved.value.done[id]) && ready[id] !== false,
+      ...stepView(this.#ids, this.#saved.value, ready).find(
+        (step) => step.id === id
+      ),
       oncollapse: () => {
         this.#saved.set(collapse(this.#saved.value, id));
         this.#focus(id);

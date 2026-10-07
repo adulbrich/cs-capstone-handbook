@@ -15,6 +15,7 @@ import {
   criteriaTable,
   gapsTable,
   REPORT_KINDS,
+  REPORT_ORDER,
   reportTable,
   responseCounts,
   stoppedTable,
@@ -93,7 +94,8 @@ test("the report lists errors first and the rubric export's problems last", () =
   );
   assert.equal(rows.at(-1)[0], "Rubric export");
   const kinds = rows.slice(0, -1).map((row) => row[0]);
-  const order = Object.values(REPORT_KINDS);
+  const order = REPORT_ORDER.map((level) => REPORT_KINDS[level]);
+  assert.deepEqual(REPORT_ORDER, ["error", "review", "warning", "note"]);
   assert.deepEqual(
     kinds,
     kinds.toSorted((a, b) => order.indexOf(a) - order.indexOf(b))

@@ -1,18 +1,17 @@
 <script>
 // What the page keeps in this browser, a notice when it cannot, and the
-// button that removes it all after a confirm.
+// button that removes it all after a confirm. `what` says what this page
+// saves (savedText in src/data/peer-tools.mjs).
+import { savedText as text } from "../../../data/peer-tools.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 
 let { storage, what } = $props();
 
-const QUESTION =
-  "Remove every file, added student, setting, and done box both peer evaluation pages saved in this browser?";
-
 function clear() {
   // A native confirm: modal, keyboard-ready, and read by screen readers.
   // biome-ignore lint/suspicious/noAlert: the clear needs a confirm, and the native one is accessible
-  const sure = window.confirm(QUESTION);
+  const sure = window.confirm(text.confirm);
   if (sure) {
     storage.clearAll();
   }
@@ -20,17 +19,14 @@ function clear() {
 </script>
 
 {#if storage.problem}
-  <Callout title="Not saved" variant="caution">
+  <Callout title={text.notSaved} variant="caution">
     <p>{storage.problem}</p>
   </Callout>
 {/if}
 
 <div class="saved not-content">
-  <p>
-    Saved in this browser only, never uploaded: {what} Leaving the page and
-    coming back picks up where you stopped.
-  </p>
-  <Button variant="secondary" onclick={clear}>Clear saved data</Button>
+  <p>{what} {text.after}</p>
+  <Button variant="secondary" onclick={clear}>{text.clear}</Button>
 </div>
 
 <style>

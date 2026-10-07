@@ -1,6 +1,12 @@
 // The peer rubrics, read at build time by the peer tools pages. Every
 // variant's survey is built once here, so a rubric CSV the generator cannot
 // use fails the build rather than the page.
+//
+// It lives beside the pages, not under src/lib/tools/, because it reads the
+// CSVs through Vite's `?raw` imports, which only the build resolves; node
+// --test cannot load it. The logic it calls (parseRubricCsv,
+// buildPeerSurvey) is tested on the same CSVs read from disk
+// (peer-export.fixture.mjs).
 
 import catmeCsv from "/canvas/assignments/peer-evaluation/catme-rubric.csv?raw";
 import peerCsv from "/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw";

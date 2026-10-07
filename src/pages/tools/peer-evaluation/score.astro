@@ -5,26 +5,19 @@
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import PeerScore from "../../../components/tools/peer/PeerScore.svelte";
 import { byInstrument } from "../../../components/tools/peer/peer-rubrics.mjs";
+import { pages } from "../../../data/peer-tools.mjs";
 ---
 
 <StarlightPage
   frontmatter={{
-    description:
-      "Score the peer evaluation export and fill the Canvas rubric assessment.",
+    description: pages.score.description,
     editUrl: false,
     head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
     pagefind: false,
     tableOfContents: false,
-    title: "Score the Peer Evaluation",
+    title: pages.score.title,
   }}
 >
-  <p>
-    Six steps from the Qualtrics export to the grades. It scores the regular
-    survey (midterm, and the fall and winter end-of-term) and CATME (spring
-    end-of-term), as the
-    <a href="/assignments/peer-evaluations/#grade-calculation">Grade Calculation</a>
-    and <a href="/assignments/peer-evaluations/#the-catme-survey">The CATME Survey</a>
-    state.
-  </p>
+  <p>{pages.score.intro}</p>
   <PeerScore client:only="svelte" rubrics={byInstrument} />
 </StarlightPage>
