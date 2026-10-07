@@ -250,6 +250,26 @@ const OVERRIDES = {
       o.dropSection("the-inherited-codebase-audit");
     }
   },
+  // The page's sprint calendar spans the year, and after term trimming its
+  // one row still lists every sprint in the term. A note needs only its own
+  // sprint, so the table goes and the intro names it, read from the row.
+  "Sprint Notes {n}": (o, e) => {
+    const [, sprints, windows] = o.takeTable("Term")?.[0] ?? [];
+    const i = e.family.weeks[e.term].indexOf(e.week);
+    const sprint = Number.parseInt(sprints, 10) + i;
+    const window = windows?.replace(/^Weeks /, "").split(", ")[i];
+    if (
+      e.name !== `Sprint Notes ${sprint}` ||
+      !window?.endsWith(` to ${e.week}`)
+    ) {
+      warnings.push(`${e.term}/${e.name}: the sprint calendar does not match`);
+      return;
+    }
+    o.replaceTail(
+      "; the windows below",
+      `; this note covers sprint ${sprint}, weeks ${window}.`
+    );
+  },
   // The individual half is its own blocks under What You Submit and Rubric;
   // nothing else on the page is it.
   "Sprint Notes {n}: Individual Contribution": (o) => {
@@ -310,6 +330,43 @@ function ops(root, where) {
         .sort((a, b) => a[0] - b[0])
         .flatMap(([i, j]) => top.slice(i, j));
       top.splice(0, top.length, ...nodes);
+    },
+    // In the first top-level text that contains `start`, replace it and
+    // the rest of that text with `to`.
+    replaceTail(start, to) {
+      for (const block of top) {
+        let done = false;
+        visit(block, "text", (node) => {
+          const k = node.value.indexOf(start);
+          if (k < 0) {
+            return;
+          }
+          node.value = node.value.slice(0, k) + to;
+          done = true;
+          return false;
+        });
+        if (done) {
+          return;
+        }
+      }
+      miss(`text "${start}"`);
+    },
+    // Drop the first table headed by `header` and return its body rows, each
+    // an array of cell texts.
+    takeTable(header) {
+      const i = top.findIndex(
+        (n) =>
+          isEl(n) &&
+          n.tagName === "table" &&
+          text(select("th", n) ?? n).trim() === header
+      );
+      if (i < 0) {
+        return miss(`table "${header}"`);
+      }
+      const [table] = top.splice(i, 1);
+      return selectAll("tbody tr", table).map((tr) =>
+        tr.children.filter(isEl).map((c) => text(c).trim())
+      );
     },
   };
 }
