@@ -71,10 +71,10 @@ const anyAssumed = [
   ...rows.flatMap((row) => row.cells.flat()),
 ].some((c) => c.assumed);
 // Fewer columns leave room for larger type; six or seven sit on the floor.
-const text = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
+const mapText = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
 ---
 
-<div class="story-map" style={`--columns: ${backbone.length}; --map-text: ${text};`}>
+<div class="story-map" style={`--columns: ${backbone.length}; --map-text: ${mapText};`}>
   <table>
     <colgroup>
       <col class="label-col" />

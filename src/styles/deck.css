@@ -5,13 +5,10 @@
  *
  * Colors are the handbook's: its accent and gray palettes (palette.css) over
  * the Tailwind palette the docs theme is generated from. The type is the
- * docs' sans stack. On top sit the auditorium rules from #465: a light
- * background always, because projectors wash out dark slides; body text at
- * least 32px on the 1920x1080 slide; one idea per slide.
- *
- * Sizes are in px on purpose. The route sets reveal's slide to 1920x1080
- * with no margin, so at a 1920x1080 viewport one CSS pixel is one projected
- * pixel and the 32px floor can be measured as written.
+ * docs' sans stack. The auditorium rules this theme enforces (light always,
+ * the 32px floor, one idea per slide) are in
+ * `docs/decisions/2026-10-07-slide-decks.md`. Sizes are in px because the
+ * slide is a fixed 1920x1080; --deck-text-min below is the floor.
  */
 /*
  * The type and layout defaults sit in the deck layer, so a slide
@@ -175,7 +172,8 @@ body {
   .reveal code {
     padding: 0.05em 0.25em;
     font-family: var(--deck-mono);
-    font-size: 0.9em;
+    /* Monospace reads smaller, but never under the floor. */
+    font-size: max(0.9em, var(--deck-text-min));
     background: var(--color-gray-200);
     border-radius: 8px;
   }

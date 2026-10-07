@@ -64,17 +64,17 @@ const { Deck, title } = Astro.props;
         }
       }
 
-      // Pacing for a slide with no <Notes time>, in seconds. Without a
-      // default the speaker view shows no pacing timer at all. reveal.js
-      // 6.0.2 types the option as null, so it goes in past the type.
-      const pacing = { defaultTiming: 60 } as unknown as RevealConfig;
-
-      const deck = new Reveal({
-        ...pacing,
+      // Typed apart from the call, so the one wrong type below is flagged on
+      // its own line and any other mistake in the config still fails the check.
+      const config: RevealConfig = {
         backgroundTransition: "none",
         center: false,
         controls: true,
         controlsTutorial: false,
+        // Pacing for a slide with no <Notes time>, in seconds. Without a
+        // default the speaker view shows no pacing timer at all.
+        // @ts-expect-error reveal.js 6.0.2 types defaultTiming as null, though the speaker view reads it as seconds.
+        defaultTiming: 60,
         hash: true,
         height: 1080,
         margin: 0,
@@ -84,8 +84,8 @@ const { Deck, title } = Astro.props;
         transition: "fade",
         transitionSpeed: "fast",
         width: 1920,
-      });
-      deck.initialize();
+      };
+      new Reveal(config).initialize();
     </script>
   </body>
 </html>
