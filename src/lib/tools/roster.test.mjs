@@ -5,6 +5,7 @@ import {
   buildContacts,
   CONTACT_COLUMNS,
   contactsCsv,
+  formatCloseDate,
 } from "./peer-contacts.mjs";
 import { parseRoster, splitName } from "./roster.mjs";
 
@@ -157,16 +158,44 @@ test("buildContacts stops on a team of 11 and names it", () => {
 });
 
 test("contactsCsv writes the exact headers Qualtrics maps", () => {
-  const { rows } = buildContacts(parseRoster(roster(team("Pair", 2))));
+  const closeDate = new Date(2030, 0, 4, 17, 0);
+  const { rows } = buildContacts(parseRoster(roster(team("Pair", 2))), {
+    closeDate,
+  });
   const [header, first] = parseCsv(contactsCsv(rows));
   assert.deepEqual(header, CONTACT_COLUMNS);
-  assert.deepEqual(header.slice(0, 4), [
+  assert.deepEqual(header.slice(0, 5), [
     "Email",
     "Team",
     "TeamSize",
     "SelfFloor",
+    "CloseDate",
   ]);
   assert.equal(header.at(-1), "Team Member 9");
-  assert.equal(header.length, 13);
-  assert.equal(first.length, 13);
+  assert.equal(header.length, 14);
+  assert.equal(first.length, 14);
+  assert.equal(first[4], formatCloseDate(closeDate));
+});
+
+test("every row carries the close date; none without one", () => {
+  const students = parseRoster(roster(team("Trio", 3)));
+  const closeDate = new Date(2030, 0, 7, 9, 0);
+  const { rows } = buildContacts(students, { closeDate });
+  assert.ok(rows.every((row) => row.CloseDate === formatCloseDate(closeDate)));
+  assert.ok(buildContacts(students).rows.every((row) => row.CloseDate === ""));
+});
+
+test("the close date reads as weekday, day, time, and zone, in plain spaces", () => {
+  // A fixed local time: a Friday, the 4th, at 17:00. The parts are checked,
+  // not the separators, which differ between ICU versions.
+  const date = new Date(2030, 0, 4, 17, 0);
+  const text = formatCloseDate(date);
+  const zone = new Intl.DateTimeFormat("en-US", { timeZoneName: "short" })
+    .formatToParts(date)
+    .find((part) => part.type === "timeZoneName").value;
+  assert.match(text, /\bFriday\b/);
+  assert.match(text, /\b4\b/);
+  assert.match(text, /\b5:00 PM\b/);
+  assert.ok(text.endsWith(zone), `${text} ends with ${zone}`);
+  assert.doesNotMatch(text, /[^\S ]/);
 });

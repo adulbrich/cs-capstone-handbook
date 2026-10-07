@@ -134,6 +134,8 @@ test("the distribution email pipes the team and the two links, none nested", () 
   assert.ok(subject.includes("${e://Field/Team}"));
   assert.ok(body.includes("${e://Field/Team}"));
   assert.ok(body.includes("${l://SurveyLink?d=Take the survey}"));
+  assert.ok(body.includes("${e://Field/CloseDate}"));
+  assert.doesNotMatch(body, /\[close/);
   assert.ok(body.includes("${l://OptOutLink?d=Unsubscribe}"));
   // No piped text nested inside a link's display text.
   assert.doesNotMatch(body, /\$\{l:\/\/[^}]*\$\{/);

@@ -1,10 +1,16 @@
 <script>
 // Copies `text` to the clipboard and says so in a live region, so a screen
 // reader hears the confirmation. A browser that refuses the clipboard is
-// told to select and copy by hand.
+// told to select and copy by hand. `disabled` holds it until the page is
+// ready for the text to leave it.
 import Button from "./Button.svelte";
 
-let { label = "Copy", text, variant = "secondary" } = $props();
+let {
+  disabled = false,
+  label = "Copy",
+  text,
+  variant = "secondary",
+} = $props();
 let status = $state("");
 let timer;
 
@@ -23,7 +29,7 @@ async function copy() {
 </script>
 
 <span class="copy">
-  <Button {variant} onclick={copy}>{label}</Button>
+  <Button {variant} {disabled} onclick={copy}>{label}</Button>
   <span class="status" role="status">{status}</span>
 </span>
 

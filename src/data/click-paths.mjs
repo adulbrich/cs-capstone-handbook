@@ -22,6 +22,10 @@ export const clickPaths = {
     app: "Canvas",
     steps: ["Grades", "the assignment's Options menu", "Import Rubrics"],
   },
+  qualtricsCloseInProgress: {
+    app: "the survey",
+    steps: ["Data & Analysis", "Data", "Responses in Progress"],
+  },
   qualtricsEmail: {
     app: "the survey",
     steps: ["Distributions", "Emails", "Send a message"],

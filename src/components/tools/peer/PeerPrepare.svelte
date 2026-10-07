@@ -4,7 +4,6 @@
 // in src/data/; everything it reads or makes stays in the browser.
 // `rubrics` are each variant's parsed rubric, read at build time.
 import {
-  CLOSE_PLACEHOLDER,
   distributionEmail,
   variantOrder,
   variants,
@@ -21,6 +20,7 @@ import { slug } from "../../../lib/tools/files.mjs";
 import {
   buildContacts,
   contactsCsv,
+  formatCloseDate,
 } from "../../../lib/tools/peer-contacts.mjs";
 import { rosterModel, surveyedCount } from "../../../lib/tools/peer-roster.mjs";
 import { buildPeerSurvey } from "../../../lib/tools/peer-survey-qsf.mjs";
@@ -52,7 +52,7 @@ import { PageSteps, PeerStorage } from "./saved.svelte.js";
 let { rubrics } = $props();
 
 const STEPS = ["roster", "survey", "contacts", "email", "send"];
-const SEND = Object.keys(text.send.checklist);
+const SEND = text.send.order;
 
 const storage = new PeerStorage();
 const roster = storage.saved(SHARED_KEYS.roster, null);
@@ -68,9 +68,14 @@ const sent = storage.saved("prepare:send", {});
 let sampleEmail = $state("");
 
 const model = $derived(rosterModel(roster.value, added.value));
+/** The close date as every contact row and the email show it, or "". */
+const closeAt = $derived(
+  settings.value.closeDate ? new Date(settings.value.closeDate) : null
+);
+const closeDate = $derived(closeAt ? formatCloseDate(closeAt) : "");
 const contacts = $derived(
   model.students && model.summary.oversized.length === 0
-    ? attempt(() => buildContacts(model.students)).value
+    ? attempt(() => buildContacts(model.students, { closeDate: closeAt })).value
     : null
 );
 const sample = $derived(
@@ -107,10 +112,11 @@ const files = $derived({
   survey: `${baseName}-qualtrics-survey.qsf`,
 });
 
+const hasContacts = $derived(Boolean(contacts && contacts.rows.length > 0));
 const ready = $derived({
-  contacts: Boolean(contacts && contacts.rows.length > 0),
-  email: true,
-  roster: Boolean(contacts && contacts.rows.length > 0),
+  contacts: Boolean(closeAt) && hasContacts,
+  email: Boolean(closeAt),
+  roster: hasContacts,
   send: SEND.every((key) => sent.value[key]),
   survey: Boolean(survey.value),
 });
@@ -252,9 +258,28 @@ const modeCards = Object.entries(text.survey.modes).map(
     title={text.contacts.title}
     sourceTitle={text.whatItIs}
     summary={summaries.contacts}
+    waiting={text.contacts.waiting}
   >
     {#snippet source()}
       <p>{text.contacts.what}</p>
+      <div class="form not-content">
+        <Field
+          label={text.contacts.close.label}
+          help={text.contacts.close.help}
+          error={closeDate ? "" : text.contacts.close.missing}
+        >
+          {#snippet children({ describedby, id })}
+            <input
+              {id}
+              type="datetime-local"
+              aria-describedby={describedby}
+              value={settings.value.closeDate ?? ""}
+              onchange={(event) => setting("closeDate", event.currentTarget.value)}
+            />
+          {/snippet}
+        </Field>
+        {#if closeDate}<p class="muted">{closeDate}</p>{/if}
+      </div>
     {/snippet}
     {#snippet preview()}
       {#if contactTable}
@@ -265,10 +290,11 @@ const modeCards = Object.entries(text.survey.modes).map(
       <p class="not-content">
         <Button
           onclick={() => download(files.contacts, contactsCsv(contacts.rows))}
-          disabled={!contacts}
+          disabled={!(closeAt && contacts)}
         >
           {text.contacts.download(files.contacts)}
         </Button>
+        {#if !closeAt}<span class="muted">{text.contacts.waiting}</span>{/if}
       </p>
       <ClickPath path={text.contacts.path} after={text.contacts.columns} />
     {/snippet}
@@ -279,9 +305,10 @@ const modeCards = Object.entries(text.survey.modes).map(
     title={text.email.title}
     sourceTitle={text.whatItIs}
     summary={summaries.email}
+    waiting={text.email.waiting}
   >
     {#snippet source()}
-      <p>{text.email.what(CLOSE_PLACEHOLDER)}</p>
+      <p>{text.email.what}</p>
     {/snippet}
     {#snippet preview()}
       {#if sample}
@@ -296,8 +323,9 @@ const modeCards = Object.entries(text.survey.modes).map(
     {#snippet destination()}
       <ClickPath path={text.email.path} after={text.email.pathAfter} />
       <p class="copies not-content">
-        <CopyButton label={text.email.copySubject} text={distributionEmail.subject} />
-        <CopyButton label={text.email.copyBody} text={distributionEmail.body} />
+        <CopyButton label={text.email.copySubject} text={distributionEmail.subject} disabled={!closeAt} />
+        <CopyButton label={text.email.copyBody} text={distributionEmail.body} disabled={!closeAt} />
+        {#if !closeAt}<span class="muted">{text.email.waiting}</span>{/if}
       </p>
     {/snippet}
   </Step>
