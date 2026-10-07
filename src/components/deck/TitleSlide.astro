@@ -1,0 +1,72 @@
+---
+// The opening slide: a kicker (course and week), the title, a subtitle, and
+// a byline at the foot. Only the title is required; the slot takes <Notes>.
+//
+//   <TitleSlide kicker="CS 461, fall week 1" title="Story Mapping"
+//     subtitle="From a backbone to a first release" byline="The instruction team">
+//     <Notes time="0:30">...</Notes>
+//   </TitleSlide>
+//
+// Other attributes land on the <section>, as on <Slide>.
+import type { ComponentProps } from "astro/types";
+import Slide from "./Slide.astro";
+
+interface Props extends Omit<ComponentProps<typeof Slide>, "title" | "wide"> {
+  byline?: string;
+  subtitle?: string;
+  title: string;
+}
+
+const {
+  byline,
+  class: className,
+  kicker,
+  subtitle,
+  title,
+  ...attrs
+} = Astro.props;
+---
+
+<Slide class:list={["deck-title", className]} {...attrs}>
+  <div class="lockup">
+    <span class="bar" aria-hidden="true"></span>
+    {kicker && <p class="deck-kicker">{kicker}</p>}
+    <h1>{title}</h1>
+    {subtitle && <p class="subtitle">{subtitle}</p>}
+  </div>
+  {byline && <p class="byline">{byline}</p>}
+  <slot />
+</Slide>
+
+<style>
+  .lockup {
+    margin-block: auto 0;
+    max-width: 1500px;
+  }
+
+  .bar {
+    display: block;
+    width: 200px;
+    height: 16px;
+    margin-block-end: 56px;
+    background: var(--deck-accent);
+    border-radius: 2px;
+  }
+
+  .subtitle {
+    margin-block-start: 40px;
+    font-size: var(--deck-text-lead);
+    line-height: 1.25;
+    color: var(--deck-ink-soft);
+    text-wrap: balance;
+  }
+
+  .byline {
+    margin-block: auto 0;
+    padding-block-start: 40px;
+    font-size: var(--deck-text-min);
+    font-weight: 600;
+    color: var(--deck-ink-soft);
+    border-block-start: 3px solid var(--deck-rule);
+  }
+</style>

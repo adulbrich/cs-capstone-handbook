@@ -1,0 +1,56 @@
+---
+// Two things side by side under one title: a contrast, a before and after,
+// or text beside a picture. The columns are the `left` and `right` slots;
+// the default slot takes <Notes>.
+//
+//   <TwoColumnSlide title="Backbone and slices">
+//     <div slot="left"><h3>Backbone</h3><p>...</p></div>
+//     <div slot="right"><h3>Slices</h3><p>...</p></div>
+//     <Notes time="1:30">...</Notes>
+//   </TwoColumnSlide>
+//
+// `divider` draws a rule between the columns. Other attributes land on the
+// <section>, as on <Slide>.
+import type { ComponentProps } from "astro/types";
+import Slide from "./Slide.astro";
+
+interface Props extends ComponentProps<typeof Slide> {
+  divider?: boolean;
+}
+
+const { divider = false, ...attrs } = Astro.props;
+---
+
+<Slide {...attrs}>
+  <div class:list={["columns", { divided: divider }]}>
+    <div class="column"><slot name="left" /></div>
+    <div class="column"><slot name="right" /></div>
+  </div>
+  <slot />
+</Slide>
+
+<style>
+  .columns {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 120px;
+    align-content: start;
+  }
+
+  .divided .column + .column {
+    padding-inline-start: 120px;
+    margin-inline-start: -120px;
+    border-inline-start: 4px solid var(--deck-rule);
+  }
+
+  .column :global(h3) {
+    margin-block-end: 28px;
+  }
+
+  .column :global(img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+</style>

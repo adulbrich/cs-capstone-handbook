@@ -1,0 +1,73 @@
+---
+// A picture as the slide: a diagram, a screenshot, a photo. `src` is an
+// image imported from src/assets (optimized at build) or a URL; `alt` is
+// required, and "" marks a purely decorative image. `title`, `kicker` and
+// `caption` are optional; the slot takes <Notes>.
+//
+//   ---
+//   import sprint from "../assets/design-sprint.png";
+//   ---
+//   <ImageSlide src={sprint} alt="The five days of a design sprint"
+//     title="A sprint in five days" caption="Each day ends with a decision." />
+//
+// Other attributes land on the <section>, as on <Slide>.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import type { ComponentProps } from "astro/types";
+import Slide from "./Slide.astro";
+
+interface Props extends ComponentProps<typeof Slide> {
+  alt: string;
+  caption?: string;
+  src: ImageMetadata | string;
+}
+
+const { alt, caption, src, ...attrs } = Astro.props;
+---
+
+<Slide {...attrs}>
+  <figure>
+    <div class="frame">
+      {
+        typeof src === "string" ? (
+          <img src={src} alt={alt} />
+        ) : (
+          <Image src={src} alt={alt} widths={[960, 1920]} sizes="1920px" />
+        )
+      }
+    </div>
+    {caption && <figcaption>{caption}</figcaption>}
+  </figure>
+  <slot />
+</Slide>
+
+<style>
+  figure {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    margin: 0;
+  }
+
+  .frame {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  .frame :global(img) {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  figcaption {
+    margin-block-start: 40px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+    text-align: center;
+  }
+</style>

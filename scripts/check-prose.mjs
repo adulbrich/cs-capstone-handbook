@@ -138,6 +138,7 @@ const VOCABULARY = [
 ];
 const VOCABULARY_PATHS = [
   "src/content/docs/",
+  "src/decks/",
   "canvas/",
   "public/",
   "decks/",
@@ -152,12 +153,14 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * downloads in `public/`. A CSV renders on its assignment page and imports
  * into Canvas, a syllabus is pasted into Canvas, and the scoresheet and
  * templates quote the criteria, so a banned word in any of them reaches
- * students as surely as one on a page. The rest of `canvas/` and the runbook
- * keep the vocabulary check alone.
+ * students as surely as one on a page. The slide decks under `src/decks/`
+ * are projected to the same students, so they get both checks. The rest of
+ * `canvas/` and the runbook keep the vocabulary check alone.
  */
 const BOLD_AND_OPENER_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
+  { prefix: "src/decks/" },
   { prefix: "canvas/assignments/", suffix: RUBRIC_CSV_SUFFIX },
   { prefix: "canvas/syllabus/", suffix: ".html" },
   { prefix: "public/", suffix: ".md" },
@@ -618,7 +621,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, and public/ Markdown no banned word and no percentage in a heading (docs/agents/voice.md).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, public/ Markdown, and src/decks/ no banned word and no percentage in a heading (docs/agents/voice.md).\n"
     );
     process.exit(1);
   }

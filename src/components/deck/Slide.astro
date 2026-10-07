@@ -1,0 +1,38 @@
+---
+// One slide: the <section> reveal.js shows, its frame, an optional kicker
+// and title, and the body. The other slide components wrap this one, so a
+// new kind of slide is one file in this directory that renders <Slide>.
+//
+//   <Slide kicker="Workshop 1" title="What a story map is">
+//     <ul><li>...</li></ul>
+//     <Notes time="1:30">...</Notes>
+//   </Slide>
+//
+// Props: kicker and title, both optional; wide, for narrower margins under a
+// story map or a table. Any other attribute (id, class, data-transition,
+// data-background-color) lands on the <section>, so reveal's per-slide
+// options work. <Notes> may sit anywhere inside.
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends Omit<HTMLAttributes<"section">, "title"> {
+  kicker?: string;
+  title?: string;
+  wide?: boolean;
+}
+
+const { class: className, kicker, title, wide = false, ...attrs } = Astro.props;
+---
+
+<section class:list={["deck-slide", className]} {...attrs}>
+  <div class:list={["deck-frame", { "deck-frame--wide": wide }]}>
+    {
+      (kicker || title) && (
+        <header class="deck-header">
+          {kicker && <p class="deck-kicker">{kicker}</p>}
+          {title && <h2>{title}</h2>}
+        </header>
+      )
+    }
+    <div class="deck-body"><slot /></div>
+  </div>
+</section>

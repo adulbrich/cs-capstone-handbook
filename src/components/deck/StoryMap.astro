@@ -1,0 +1,254 @@
+---
+// A user story map as a grid, for a <Slide wide>. The columns are the
+// backbone, the user's activities left to right; each row is a release
+// slice, with a heavy rule at every cut. A story is a string, or a list of
+// strings when a cell holds more than one.
+//
+//   <StoryMap
+//     backbone={["Find a book", "Borrow it", "Return it"]}
+//     releases={[
+//       { name: "Walking skeleton", stories: ["Search by title", "Check out", "Return"] },
+//       { name: "Release 1", goal: "Staff stop using paper",
+//         stories: [["Filter by subject", "? Browse new arrivals"], "Renew online", undefined] },
+//     ]}
+//   />
+//
+// `stories` has one entry per backbone column; undefined leaves a cell
+// empty. A story or an activity that is assumed rather than confirmed starts
+// with "?" or is written { text, assumed: true }; either way it is drawn in
+// amber with the "?" showing. Seven columns is the most a projected slide
+// holds legibly, so an eighth fails the build.
+type Story = string | { assumed?: boolean; text: string };
+
+interface Release {
+  goal?: string;
+  name: string;
+  stories: (Story | Story[] | undefined)[];
+}
+
+interface Props {
+  backbone: Story[];
+  releases: Release[];
+}
+
+const MAX_COLUMNS = 7;
+const { backbone, releases } = Astro.props;
+
+if (backbone.length === 0 || backbone.length > MAX_COLUMNS) {
+  throw new Error(
+    `<StoryMap>: the backbone has ${backbone.length} columns; use 1 to ${MAX_COLUMNS}.`
+  );
+}
+for (const release of releases) {
+  if (release.stories.length > backbone.length) {
+    throw new Error(
+      `<StoryMap>: release "${release.name}" has ${release.stories.length} cells for ${backbone.length} backbone columns.`
+    );
+  }
+}
+
+function card(story: Story) {
+  const raw = typeof story === "string" ? story : story.text;
+  const marked = raw.trimStart().startsWith("?");
+  const assumed = marked || (typeof story !== "string" && story.assumed);
+  const text = marked ? raw.trimStart().slice(1).trimStart() : raw;
+  return { assumed: Boolean(assumed), text };
+}
+
+const columns = backbone.map(card);
+const rows = releases.map((release) => ({
+  ...release,
+  cells: backbone.map((_, i) => {
+    const cell = release.stories[i];
+    if (cell === undefined) {
+      return [];
+    }
+    return (Array.isArray(cell) ? cell : [cell]).map(card);
+  }),
+}));
+const anyAssumed = [
+  ...columns,
+  ...rows.flatMap((row) => row.cells.flat()),
+].some((c) => c.assumed);
+// Fewer columns leave room for larger type; six or seven sit on the floor.
+const text = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
+---
+
+<div class="story-map" style={`--columns: ${backbone.length}; --map-text: ${text};`}>
+  <table>
+    <colgroup>
+      <col class="label-col" />
+      {columns.map(() => <col />)}
+    </colgroup>
+    <thead>
+      <tr>
+        <td class="corner"></td>
+        {
+          columns.map((c) => (
+            <th scope="col">
+              <div class:list={["card", "activity", { assumed: c.assumed }]}>
+                {c.assumed && <span class="mark">?</span>}
+                {c.text}
+              </div>
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            <th scope="row">
+              <span class="release">{row.name}</span>
+              {row.goal && <span class="goal">{row.goal}</span>}
+            </th>
+            {row.cells.map((cards) => (
+              <td>
+                {cards.map((c) => (
+                  <div class:list={["card", "story", { assumed: c.assumed }]}>
+                    {c.assumed && <span class="mark">?</span>}
+                    {c.text}
+                  </div>
+                ))}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  {
+    anyAssumed && (
+      <p class="legend">
+        <span class="card story assumed swatch">
+          <span class="mark">?</span>
+        </span>
+        Assumed: not yet checked with a user or the project partner
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .story-map {
+    font-size: var(--map-text);
+    line-height: 1.2;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .label-col {
+    width: 232px;
+  }
+
+  th,
+  td {
+    padding: 6px;
+    vertical-align: top;
+    text-align: start;
+  }
+
+  /* A 1px height lets every backbone card stretch to the tallest one. */
+  thead th {
+    height: 1px;
+    padding-block-end: 18px;
+  }
+
+  .card {
+    box-sizing: border-box;
+    padding: 10px 14px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--deck-ink);
+    overflow-wrap: break-word;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 10px;
+  }
+
+  .card + .card {
+    margin-block-start: 12px;
+  }
+
+  .activity {
+    height: 100%;
+    font-weight: 700;
+    color: var(--deck-backbone-ink);
+    background: var(--deck-backbone);
+    border-color: var(--deck-backbone-edge);
+    border-block-start-width: 10px;
+  }
+
+  .card.assumed {
+    color: var(--deck-assumed-ink);
+    background: var(--deck-assumed);
+    border-style: dashed;
+    border-color: var(--deck-assumed-edge);
+  }
+
+  .activity.assumed {
+    border-block-start-style: solid;
+  }
+
+  .mark {
+    display: inline-block;
+    min-width: 1.15em;
+    margin-inline-end: 0.3em;
+    font-weight: 800;
+    line-height: 1.15em;
+    color: var(--deck-paper);
+    text-align: center;
+    background: var(--deck-assumed-edge);
+    border-radius: 999px;
+  }
+
+  /* The release cuts: a heavy rule above every slice. */
+  tbody tr {
+    border-block-start: 8px solid var(--deck-ink);
+  }
+
+  tbody td,
+  tbody th {
+    padding-block: 14px;
+  }
+
+  tbody th {
+    padding-inline-end: 24px;
+    font-weight: 400;
+  }
+
+  .release {
+    display: block;
+    font-weight: 750;
+    line-height: 1.1;
+  }
+
+  .goal {
+    display: block;
+    margin-block-start: 8px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-block-start: 24px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  .swatch {
+    padding: 4px 10px;
+  }
+
+  .swatch .mark {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+// The slide decks: one page per src/decks/<slug>.astro, served at
+// /decks/<slug>/ as a reveal.js presentation. A deck file is a list of
+// <section> slides, usually the components in src/components/deck/, and
+// may export a `title` for the browser tab; the slug stands in otherwise.
+//
+// Outside Starlight on purpose: a deck is full-screen, always light, and
+// themed by src/styles/deck.css alone. Decks are unlinked for now (#465),
+// so they are noindex and kept out of the sitemap.
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import "reveal.js/reveal.css";
+import "../../styles/deck.css";
+
+interface DeckModule {
+  default: AstroComponentFactory;
+  title?: string;
+}
+
+export function getStaticPaths() {
+  const decks = import.meta.glob<DeckModule>("/src/decks/*.astro", {
+    eager: true,
+  });
+  return Object.entries(decks).map(([path, deck]) => {
+    // getStaticPaths runs in its own scope, so no module-level pattern.
+    const slug = path.slice(path.lastIndexOf("/") + 1, -".astro".length);
+    return {
+      params: { slug },
+      props: { Deck: deck.default, title: deck.title ?? slug },
+    };
+  });
+}
+
+const { Deck, title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <Deck />
+      </div>
+    </div>
+    <script>
+      import Reveal, { type RevealConfig } from "reveal.js";
+      import Notes from "reveal.js/plugin/notes";
+
+      // <Notes time="m:ss"> writes its target as data-time on the aside;
+      // the speaker view's pacing timer reads data-timing on the slide.
+      for (const notes of document.querySelectorAll<HTMLElement>(
+        "aside.notes[data-time]"
+      )) {
+        const slide = notes.closest("section");
+        if (slide && notes.dataset.time) {
+          slide.dataset.timing = notes.dataset.time;
+        }
+      }
+
+      // Pacing for a slide with no <Notes time>, in seconds. Without a
+      // default the speaker view shows no pacing timer at all. reveal.js
+      // 6.0.2 types the option as null, so it goes in past the type.
+      const pacing = { defaultTiming: 60 } as unknown as RevealConfig;
+
+      const deck = new Reveal({
+        ...pacing,
+        backgroundTransition: "none",
+        center: false,
+        controls: true,
+        controlsTutorial: false,
+        hash: true,
+        height: 1080,
+        margin: 0,
+        plugins: [Notes],
+        progress: true,
+        slideNumber: false,
+        transition: "fade",
+        transitionSpeed: "fast",
+        width: 1920,
+      });
+      deck.initialize();
+    </script>
+  </body>
+</html>

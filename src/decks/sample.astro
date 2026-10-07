@@ -1,0 +1,160 @@
+---
+// The sample deck: every slide component once, at auditorium size. It is
+// the reference for writing a deck and the page to check after a change to
+// src/styles/deck.css or src/components/deck/. Served at /decks/sample/.
+import sprint from "../assets/design-sprint.png";
+import ImageSlide from "../components/deck/ImageSlide.astro";
+import Notes from "../components/deck/Notes.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import StoryMap from "../components/deck/StoryMap.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+
+export const title = "Deck Components";
+---
+
+<TitleSlide
+  kicker="Handbook decks"
+  title="The Deck Components"
+  subtitle="Every kind of slide in one deck, at the size the back row reads"
+  byline="CS 461, 462, 463: the instruction team"
+>
+  <Notes time="0:30" cue="Press S now to check the speaker view opens.">
+    <p>
+      This deck exists to be looked at, not presented. Each slide shows one
+      component from src/components/deck/.
+    </p>
+  </Notes>
+</TitleSlide>
+
+<StatementSlide kicker="The auditorium rule">
+  One idea per slide, set large enough for the last row to read.
+  <Notes time="0:45" cue="Walk to the back of the room once before the term.">
+    <p>
+      A 250-seat room puts the last row about twenty meters from the screen.
+      Body text never goes under 32px on the 1920x1080 slide.
+    </p>
+  </Notes>
+</StatementSlide>
+
+<Slide kicker="Slide" title="What a deck file holds">
+  <ul>
+    <li>One <code>.astro</code> file per deck, under <code>src/decks/</code></li>
+    <li class="fragment">One <code>&lt;section&gt;</code> per slide, usually a component</li>
+    <li class="fragment">Speaker notes in <code>&lt;Notes&gt;</code>, with a target time</li>
+    <li class="fragment">Served at <code>/decks/&lt;file name&gt;/</code></li>
+  </ul>
+  <Notes time="1:00" cue="Each arrow press reveals the next line.">
+    <p>
+      The list items after the first carry class="fragment", so they appear
+      one at a time.
+    </p>
+  </Notes>
+</Slide>
+
+<TwoColumnSlide kicker="Two columns" title="Two views of one deck" divider>
+  <div slot="left">
+    <h3>The room sees</h3>
+    <ul>
+      <li>A light slide, whatever the laptop's theme</li>
+      <li>Body text at 32px or more</li>
+      <li>A progress bar along the foot</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>The speaker sees</h3>
+    <ul>
+      <li>This slide and the next</li>
+      <li>The notes and the cue</li>
+      <li>A pacing timer from each target time</li>
+    </ul>
+  </div>
+  <Notes time="1:00" cue="Press S to open the speaker view, Esc for the overview.">
+    <p>The speaker view opens in its own window; drag it to the laptop screen.</p>
+  </Notes>
+</TwoColumnSlide>
+
+<ImageSlide
+  kicker="Image"
+  title="A design sprint in five days"
+  src={sprint}
+  alt="The five days of a design sprint: map, sketch, decide, prototype, and test"
+  caption="Line art projects well. Text inside an image has to be as large as the slide's own."
+>
+  <Notes time="0:45">
+    <p>An image imported from src/assets is optimized at build time.</p>
+  </Notes>
+</ImageSlide>
+
+<Slide kicker="Story map" title="A story map at seven columns" wide>
+  <StoryMap
+    backbone={[
+      "Sign up",
+      "Find a book",
+      "Reserve it",
+      "Pick it up",
+      "Renew it",
+      "Return it",
+      "? Get reminders",
+    ]}
+    releases={[
+      {
+        goal: "End to end, once",
+        name: "Walking skeleton",
+        stories: [
+          "Student ID sign-in",
+          "Search by title",
+          "Place a hold",
+          "Show hold at desk",
+          undefined,
+          "Scan it in",
+          undefined,
+        ],
+      },
+      {
+        goal: "Staff stop using paper",
+        name: "Release 1",
+        stories: [
+          undefined,
+          ["Filter by subject", "? Browse new arrivals"],
+          "Cancel a hold",
+          "Text when ready",
+          "Renew online",
+          undefined,
+          "Due soon email",
+        ],
+      },
+      {
+        name: "Later",
+        stories: [
+          "? Library card sign-in",
+          { assumed: true, text: "Suggest books" },
+          undefined,
+          "Locker pickup",
+          "Renew in the app",
+          "Drop box return",
+          "? Push alerts",
+        ],
+      },
+    ]}
+  />
+  <Notes time="2:00" cue="Point at one amber card and ask how the team would check it.">
+    <p>
+      Blue cells are the backbone, the user's activities in order. Each row is
+      a release; the heavy rule is the cut. Amber cells marked with a question
+      mark are assumptions nobody has checked yet.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Adding a component" title="A new kind of slide is one file">
+  <ol>
+    <li>Add a file to <code>src/components/deck/</code> that renders <code>&lt;Slide&gt;</code></li>
+    <li>Describe its props in a short comment at the top</li>
+    <li>Import it in the deck and use it once in this sample</li>
+  </ol>
+  <Notes time="0:30">
+    <p>No registry to update: a deck imports the components it uses.</p>
+  </Notes>
+</Slide>
