@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Fall Workshop 1 Story Map Template (#466)
+
+No rubric changes. Re-paste the fall Workshop 1 (User Story Mapping) body: its complete submission now names the backbone type with its reason and the list of questions for the project partner, and a new paragraph says a project with no user journey maps its pipeline stages or research steps in the same template and points research teams to Define Your Research Questions.
+
 ## Re-paste Required: Peer Evaluations Match the Generated Survey (#439)
 
 No rubric changes. Re-paste the Peer Evaluations bodies in every term. The Midterm Survey and the fall and winter End-of-Term Survey: the summary line says one survey with one page per team member; the criteria and the 1 to 5 scale now read as the survey shows them; the 100-point task says a self share below the floor is raised and a team of two has none; the closing questions, Team Sizes (up to 10), and Teams of Two (its review thresholds) changed; and the paragraph on deductions for survey validation issues is gone. The spring End-of-Term Survey (CATME): the summary line and Teams of Two.
