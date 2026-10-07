@@ -161,10 +161,10 @@ A good output is a draft of the user manual with clear instructions on using the
 
 <ActivityMeta anchor="describe-your-api-reference" />
 
-Develop a comprehensive API reference to document the functions, endpoints, and data structures of your project's application programming interface (API).
+Document the interface other code or people build on: an HTTP API's endpoints, a library's public functions, a command-line tool's commands and flags, a device's message or register format, or a game's modding or scripting hooks. If nothing outside your codebase calls into your product, skip this one.
 
-1. List API Endpoints: Document each endpoint, including URL paths and methods (GET, POST, etc.).
-2. Define Inputs/Outputs: Clearly specify the required parameters, data types, and response formats for each endpoint.
-3. Document Error Handling: Include examples of error messages and how to handle them.
+1. List the Entry Points: every endpoint, public function, command, or message type, with how it is invoked (a method and URL path, a function signature, a command and its flags).
+2. Define Inputs/Outputs: the parameters, data types, and return or response formats for each entry point.
+3. Document Error Handling: the errors each entry point can produce, with an example of each, and what the caller should do about them.
 
-A good output is the complete API reference document and a sample request/response for each endpoint, living alongside the code in your repository.
+A good output is the reference document, living alongside the code in your repository, with one example call and its result for each entry point.
