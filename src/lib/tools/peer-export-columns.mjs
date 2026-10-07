@@ -10,6 +10,8 @@
 //   respondent, N > 1 is Team Member N - 1. An empty middle slot skips a
 //   number. If the staff test shows the prefix counts iterations instead,
 //   switch PREFIX_FOLLOWS to "iteration".
+// - The CATME survey's dimensions export one single-choice column each per
+//   loop page, `N_<tag>`, the tag from catmeTags (`3_OnTrack`).
 // - The split's carried-forward choices export as `Split_x<choice>` or
 //   `Split_<choice>`, the choice ID being the roster choice ID.
 // - Embedded data columns are named as the field: Team, TeamSize, SelfFloor,
@@ -23,8 +25,13 @@
 // question: they differ between the generator's two modes. Responses are
 // read by tag, as qualtrics-export.mjs keys them.
 
-import { catmeTags } from "../../data/peer-evaluation.mjs";
+import {
+  catmeTags,
+  criterionPrompts,
+  instruments,
+} from "../../data/peer-evaluation.mjs";
 import { SLOTS } from "./peer-contacts.mjs";
+import { catmeTagOf } from "./peer-survey-qsf.mjs";
 
 /** Loop prefix N names roster choice N ("choice"), or the Nth page shown ("iteration"). */
 export const PREFIX_FOLLOWS = "choice";
@@ -54,7 +61,19 @@ const REQUIRED_FIXED = ["email", "recordedDate", "team"];
 /** The embedded field holding Team Member `slot`. */
 const memberColumn = (slot) => `Team Member ${slot}`;
 
-/** Looped questions of the regular survey, by tag. */
+/**
+ * The instrument (`instruments` in the data module) each scored survey type
+ * is, stated rather than inferred from equal strings.
+ */
+export const INSTRUMENT_OF = Object.freeze({
+  [SURVEY_TYPE.catme]: "catme",
+  [SURVEY_TYPE.regular]: "regular",
+});
+
+/** True for a survey type the page scores (one of INSTRUMENT_OF). */
+export const isScored = (type) => Object.hasOwn(INSTRUMENT_OF, type);
+
+/** Looped questions shared by both surveys, and the regular matrix, by tag. */
 const LOOP_TAG = /^(\d+)_(Ratee|Rating|Comment)(?:_(\w+))?$/;
 /** The generator's fallback mode, one block per slot: S1_Rating_1 and so on. */
 const SLOT_TAG = /^S(\d+)_(Ratee|Rating|Comment)/;
@@ -70,7 +89,9 @@ const IMPORT_ID = /^(?:(\d+)_)?(QID\d+)(?:_(\w+))?$/;
 const X_PREFIX = /^x/;
 const idNumber = (suffix) => Number(String(suffix).replace(X_PREFIX, ""));
 /** A CATME dimension's looped column: `N_` and one of catmeTags. */
-const CATME_TAG = new RegExp(`^\\d+_(${Object.values(catmeTags).join("|")})$`);
+const CATME_TAG = new RegExp(
+  `^(\\d+)_(${Object.values(catmeTags).join("|")})$`
+);
 
 /** The fixed and embedded columns' tags, found by ImportId first, then by tag. */
 function placeFixed(columns) {
@@ -92,20 +113,42 @@ function placeFixed(columns) {
 }
 
 /** Places one looped column, or says why its ImportId disagrees with its tag. */
-function placeLooped(map, tag, importId) {
+function placeLooped(map, tag, importId, text) {
   const [, prefix, role, sub] = LOOP_TAG.exec(tag);
   const id = IMPORT_ID.exec(importId);
   if (id && (id[1] !== prefix || (sub && id[3] !== sub))) {
     return `Column ${tag} has the ImportId ${importId}: the loop prefix or row disagrees.`;
   }
-  map.loop[prefix] ??= { comment: "", ratee: "", ratings: [] };
+  map.loop[prefix] ??= loopEntry();
   if (role === "Rating") {
     map.loop[prefix].ratings[Number(sub) - 1] = tag;
+    map.loop[prefix].rowText[Number(sub) - 1] = text;
   } else if (role === "Ratee") {
     map.loop[prefix].ratee = tag;
   } else {
     map.loop[prefix].comment = tag;
   }
+  return "";
+}
+
+/** A loop page's columns before any is placed. */
+const loopEntry = () => ({
+  comment: "",
+  dimensions: {},
+  ratee: "",
+  ratings: [],
+  rowText: [],
+});
+
+/** Places one CATME dimension column, or says why its ImportId disagrees. */
+function placeDimension(map, tag, importId) {
+  const [, prefix, dimension] = CATME_TAG.exec(tag);
+  const id = IMPORT_ID.exec(importId);
+  if (id && id[1] !== prefix) {
+    return `Column ${tag} has the ImportId ${importId}: the loop prefix disagrees.`;
+  }
+  map.loop[prefix] ??= loopEntry();
+  map.loop[prefix].dimensions[dimension] = tag;
   return "";
 }
 
@@ -125,14 +168,14 @@ function surveyType(map, counts) {
   if (Object.values(map.loop).some((it) => it.ratings.length > 0)) {
     return SURVEY_TYPE.regular;
   }
-  if (counts.catme > 0) {
+  if (Object.values(map.loop).some((it) => Object.keys(it.dimensions).length)) {
     return SURVEY_TYPE.catme;
   }
   return counts.slots > 0 ? SURVEY_TYPE.slots : SURVEY_TYPE.unknown;
 }
 
-/** What a regular export needs, and what the scorer works around. */
-function checkRegular(map) {
+/** What a scored export needs, and what the scorer works around. */
+function checkScored(map, columns) {
   if (Object.values(map.loop).every((it) => it.ratee === "")) {
     map.warnings.push(
       "The export has no Ratee column, so whom each page rated comes from the loop position alone, with no cross-check."
@@ -141,7 +184,10 @@ function checkRegular(map) {
   const missing = REQUIRED_FIXED.filter(
     (key) => map.fixed[key] === undefined
   ).map((key) => FIXED_COLUMNS[key].tag);
-  if (Object.keys(map.split).length === 0) {
+  if (
+    instruments[INSTRUMENT_OF[map.type]].split &&
+    !columns.some(({ tag }) => SPLIT_TAG.test(tag))
+  ) {
     missing.push("Split");
   }
   if (missing.length > 0) {
@@ -152,16 +198,17 @@ function checkRegular(map) {
 }
 
 /**
- * Maps the export's columns (`{ tag, importId }`, from parseQualtricsExport)
- * to the tags the scorer reads.
+ * Maps the export's columns (`{ tag, importId, text }`, from
+ * parseQualtricsExport) to the tags the scorer reads.
  *
  * Returns `{ type, fixed, members, loop, split, open, problems, warnings }`:
- * `type` is one of SURVEY_TYPE; `fixed` maps
- * FIXED_COLUMNS keys to tags; `members[slot]` is the Team Member tag; `loop`
- * maps each loop prefix to `{ ratee, comment, ratings: [tag per criterion
- * row] }`, "" where a column is missing; `split` maps each choice ID to its
- * tag; `open` maps each OPEN_QUESTIONS tag to itself; `problems` lists header
- * errors, each fatal; `warnings` lists what the scorer works around.
+ * `type` is one of SURVEY_TYPE; `fixed` maps FIXED_COLUMNS keys to tags;
+ * `members[slot]` is the Team Member tag; `loop` maps each loop prefix to
+ * `{ ratee, comment, ratings: [tag per matrix row], rowText: [header text
+ * per matrix row], dimensions: { catmeTag: tag } }`, "" where a column is
+ * missing; `split` maps each choice ID to its tag; `open` maps each
+ * OPEN_QUESTIONS tag to itself; `problems` lists header errors, each fatal;
+ * `warnings` lists what the scorer works around.
  */
 export function mapColumns(columns) {
   const map = {
@@ -172,12 +219,14 @@ export function mapColumns(columns) {
     split: {},
     warnings: [],
   };
-  const counts = { catme: 0, slots: 0 };
+  const counts = { slots: 0 };
 
-  for (const { tag, importId = "" } of columns) {
+  for (const { tag, importId = "", text = "" } of columns) {
     let problem = "";
     if (LOOP_TAG.test(tag)) {
-      problem = placeLooped(map, tag, importId);
+      problem = placeLooped(map, tag, importId, text);
+    } else if (CATME_TAG.test(tag)) {
+      problem = placeDimension(map, tag, importId);
     } else if (SPLIT_TAG.test(tag)) {
       problem = placeSplit(map, tag, importId);
     } else if (OPEN_QUESTIONS.includes(tag)) {
@@ -185,19 +234,103 @@ export function mapColumns(columns) {
     } else if (SLOT_TAG.test(tag)) {
       counts.slots += 1;
     }
-    if (CATME_TAG.test(tag)) {
-      counts.catme += 1;
-    }
     if (problem) {
       map.problems.push(problem);
     }
   }
 
   map.type = surveyType(map, counts);
-  if (map.type === SURVEY_TYPE.regular) {
-    checkRegular(map);
+  if (isScored(map.type)) {
+    checkScored(map, columns);
   }
   return map;
+}
+
+const WHITESPACE = /\s+/g;
+const LOOP_PREFIX = /^\d+_/;
+
+/** Whitespace collapsed, for comparing header text with a prompt. */
+const squeeze = (text) => text.replace(WHITESPACE, " ").trim();
+
+/** A looped tag with its prefix as `N_`, to name a column once for all pages. */
+const anyPage = (tag) => tag.replace(LOOP_PREFIX, "N_");
+
+/**
+ * The rated criteria a regular matrix row's header text names: Qualtrics
+ * writes "<question> - <row>", and the row is the criterion's prompt
+ * (criterionPrompts).
+ */
+function criteriaOfRow(text, rated) {
+  const row = squeeze(text);
+  return rated.filter((criterion) => {
+    const prompt = squeeze(criterionPrompts[criterion.title] ?? "");
+    return prompt !== "" && (row === prompt || row.endsWith(` - ${prompt}`));
+  });
+}
+
+/** One regular loop page's rating columns, by criterion, from its row text. */
+function regularColumns(entry, rated, report) {
+  const byCriterion = new Map();
+  for (const [r, tag] of entry.ratings.entries()) {
+    if (!tag) {
+      continue;
+    }
+    const matched = criteriaOfRow(entry.rowText[r] ?? "", rated);
+    if (matched.length !== 1) {
+      report(
+        `Matrix column ${anyPage(tag)} ("${squeeze(entry.rowText[r] ?? "")}") names ${matched.length === 0 ? "no rated criterion" : "more than one rated criterion"} of the rubric.`
+      );
+      continue;
+    }
+    const [criterion] = matched;
+    if (byCriterion.has(criterion.title)) {
+      report(`Two matrix rows name the rubric criterion "${criterion.title}".`);
+    }
+    byCriterion.set(criterion.title, tag);
+  }
+  return rated.map((criterion) => byCriterion.get(criterion.title) ?? "");
+}
+
+/** One CATME loop page's rating columns, by criterion, from catmeTagOf. */
+function catmeColumns(entry, rated, report) {
+  const tags = new Set(rated.map((criterion) => catmeTagOf(criterion.title)));
+  for (const [dimension, tag] of Object.entries(entry.dimensions)) {
+    if (!tags.has(dimension)) {
+      report(
+        `Column ${anyPage(tag)} is a CATME dimension the rubric does not rate.`
+      );
+    }
+  }
+  return rated.map(
+    (criterion) => entry.dimensions[catmeTagOf(criterion.title)] ?? ""
+  );
+}
+
+/**
+ * Each loop page's rating columns, one tag per rated criterion of the
+ * rubric, in rubric order: the regular matrix's rows matched by their
+ * header text to the criteria's prompts, so a reordered rubric still reads
+ * each row as its criterion; CATME's dimension columns by catmeTagOf.
+ * Returns `{ columns: { prefix: [tag] }, problems }`. A row or column that
+ * names no rated criterion, two rows naming one, and a rated criterion with
+ * no column are problems, each named once.
+ */
+export function ratingColumns(map, instrument, rated) {
+  const problems = new Set();
+  const report = (message) => problems.add(message);
+  const resolve = instrument === "catme" ? catmeColumns : regularColumns;
+  const columns = {};
+  for (const [prefix, entry] of Object.entries(map.loop)) {
+    columns[prefix] = resolve(entry, rated, report);
+    for (const [r, tag] of columns[prefix].entries()) {
+      if (tag === "") {
+        report(
+          `The export has no column for the rubric criterion "${rated[r].title}". Generate the survey from the current rubric.`
+        );
+      }
+    }
+  }
+  return { columns, problems: [...problems] };
 }
 
 /**

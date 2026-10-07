@@ -33,6 +33,7 @@ import {
   catmeTags,
   commentPrompts,
   criterionPrompts,
+  instruments,
   surveyText,
   variants,
 } from "../../data/peer-evaluation.mjs";
@@ -203,10 +204,17 @@ function dimensionQuestion(qid, tag, dimension, ratee) {
 }
 
 /**
+ * A CATME dimension's export tag, by its rubric title (catmeTags): the
+ * generator writes it and the scorer reads it, behind the loop prefix.
+ */
+export const catmeTagOf = (title) => lookup(catmeTags, title, "export tag");
+
+/**
  * What each instrument puts on the survey. `ratings` adds one ratee's
  * rating questions, their export tags behind `prefix`, and returns their
- * IDs; `split` adds the questions between the ratings and the closing
- * comments; `closingBlock` names the last block; `summary` is the survey's
+ * IDs; `splitQuestions` adds the split's questions, between the ratings and
+ * the closing comments, on an instrument with a split (`instruments` in the
+ * data module); `closingBlock` names the last block; `summary` is the survey's
  * one-line description.
  */
 const INSTRUMENTS = {
@@ -214,10 +222,9 @@ const INSTRUMENTS = {
     closingBlock: "Comments",
     ratings: (add, { prefix, ratee, rated }) =>
       rated.map((dimension) => {
-        const tag = prefix + lookup(catmeTags, dimension.title, "export tag");
+        const tag = prefix + catmeTagOf(dimension.title);
         return add((qid) => dimensionQuestion(qid, tag, dimension, ratee));
       }),
-    split: () => [],
     summary: surveyText.summary.catme,
   },
   regular: {
@@ -225,7 +232,7 @@ const INSTRUMENTS = {
     ratings: (add, { prefix, ratee, ...scale }) => [
       add((qid) => ratingQuestion(qid, `${prefix}Rating`, ratee, scale)),
     ],
-    split: (add, roster) => [
+    splitQuestions: (add, roster) => [
       add((qid) => ({
         ...descriptive(qid, "SplitFloor", surveyText.splitFloor),
         DisplayLogic: shownForLargerTeams(),
@@ -368,7 +375,9 @@ export function buildPeerSurvey({
   }
 
   const closing = [
-    ...instrument.split(add, roster),
+    ...(instruments[wording.instrument].split
+      ? instrument.splitQuestions(add, roster)
+      : []),
     add((qid) => essay(qid, "Overall", commentPrompts.overall)),
     add((qid) => essay(qid, "Closing", wording.question)),
     add((qid) => metaQuestion(qid)),

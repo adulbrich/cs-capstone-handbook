@@ -3,8 +3,13 @@
 // details, the self-versus-peer gaps, and the comments. Pure: no DOM, no I/O.
 
 import { toCsv } from "./csv.mjs";
-import { NON_COMPLETION_SCORE, round, STATUS } from "./peer-score.mjs";
-import { ratedCriteria } from "./peer-survey-qsf.mjs";
+import {
+  hasSplit,
+  NON_COMPLETION_SCORE,
+  peerCriteria,
+  round,
+  STATUS,
+} from "./peer-score.mjs";
 import { bandFor } from "./rubric-bands.mjs";
 import {
   fillCriterion,
@@ -14,41 +19,23 @@ import {
 } from "./rubric-export.mjs";
 
 /**
- * The rubric's peer criteria: `{ rated, distribution }`. `rated` are the
- * rated criteria (ratedCriteria: bands "Average of 1" to "Average of 5"), in
- * rubric order, one per survey matrix row; `distribution` is the one other
- * criterion, the point distribution. Throws when there is not exactly one.
- */
-export function peerCriteria(rubric) {
-  const rated = ratedCriteria(rubric);
-  const titles = new Set(rated.map((c) => c.title));
-  const others = rubric.criteria.filter((c) => !titles.has(c.title));
-  if (others.length !== 1) {
-    throw new Error(
-      `The ${rubric.name} rubric has ${others.length} criteria besides the rated ones; the scorer expects 1, the point distribution.`
-    );
-  }
-  return { distribution: others[0], rated };
-}
-
-/**
  * A result as rubric scores on the 0 to 100 scale, keyed by criterion name
- * (nameKey): each rated criterion, then the distribution. A student who did
- * not complete scores 50 on each; a student with nothing to score from is
- * left to the instructor (null).
+ * (nameKey): each rated criterion, then the distribution when the survey has
+ * one (`peer` from peerCriteria). A student who did not complete scores 50
+ * on each; a student with nothing to score from is left to the instructor
+ * (null).
  */
-export function peerRubricScores(result, { distribution, rated }) {
+export function peerRubricScores(result, peer) {
+  const { distribution, rated } = peer;
+  const criteria = hasSplit(peer) ? [...rated, distribution] : rated;
   const keyed = (scores) =>
     new Map(
-      [...rated, distribution].map((criterion, i) => [
-        nameKey(criterion.title),
-        scores[i],
-      ])
+      criteria.map((criterion, i) => [nameKey(criterion.title), scores[i]])
     );
   if (result.status === STATUS.didNotComplete) {
     return {
       comment: `Survey not completed: scores ${NON_COMPLETION_SCORE}.`,
-      scores: keyed([...rated, distribution].map(() => NON_COMPLETION_SCORE)),
+      scores: keyed(criteria.map(() => NON_COMPLETION_SCORE)),
     };
   }
   if (result.status !== STATUS.scored) {
@@ -56,7 +43,11 @@ export function peerRubricScores(result, { distribution, rated }) {
   }
   return {
     comment: null,
-    scores: keyed([...result.criterionScores, result.distribution.score]),
+    scores: keyed(
+      hasSplit(peer)
+        ? [...result.criterionScores, result.distribution.score]
+        : result.criterionScores
+    ),
   };
 }
 
@@ -79,10 +70,15 @@ export function ratingFor(criterion, points) {
  * non-completer's note goes on the first criterion. A student with no
  * score, or not on a scored team, keeps the exported row. Returns `{ csv,
  * problems }`, `problems` naming each of those and every result with no
- * exported row.
+ * exported row. `instrument` is "regular" or "catme".
  */
-export function fillPeerAssessment({ rubricExport, rubric, results }) {
-  const peer = peerCriteria(rubric);
+export function fillPeerAssessment({
+  instrument,
+  rubricExport,
+  rubric,
+  results,
+}) {
+  const peer = peerCriteria(rubric, instrument);
   const pairs = matchRubricExport(rubricExport, rubric);
   const byId = new Map(
     results.map((result) => [String(result.student.canvasUserId), result])
@@ -125,17 +121,22 @@ export function fillPeerAssessment({ rubricExport, rubric, results }) {
   return { csv: rubricExportCsv(rubricExport.header, rows), problems };
 }
 
+/** Columns that exist only on a survey with a split (hasSplit). */
+const splitOnly = (peer) => (make) => (hasSplit(peer) ? make() : []);
+
 /** A number for a table or a CSV: two decimals by default, empty when absent. */
 export const cell = (value, places = 2) =>
   value === null || value === undefined ? "" : round(value, places);
 
 /**
- * The feedback students may see: per criterion, the mean rating received
- * across raters and its score; the normalized share and its score; the peer
- * score. Means only: no rater, no single rating, no comment.
+ * The feedback students may see: per rated criterion, the mean rating
+ * received across raters and its score; the normalized share and its score
+ * when the survey has a split; the peer score. Means only: no rater, no
+ * single rating, no comment. `peer` is peerCriteria's.
  */
-export function feedbackCsv(results, rubric) {
-  const { distribution, rated } = peerCriteria(rubric);
+export function feedbackCsv(results, peer) {
+  const { distribution, rated } = peer;
+  const split = splitOnly(peer);
   const header = [
     "Student Name",
     "Email",
@@ -145,8 +146,10 @@ export function feedbackCsv(results, rubric) {
       `${title}: mean rating (1 to 5)`,
       `${title}: score (50 to 100)`,
     ]),
-    `${distribution.title}: normalized share`,
-    `${distribution.title}: score`,
+    ...split(() => [
+      `${distribution.title}: normalized share`,
+      `${distribution.title}: score`,
+    ]),
     "Peer score",
   ];
   const rows = results.map((result) => [
@@ -158,16 +161,23 @@ export function feedbackCsv(results, rubric) {
       cell(m),
       cell(result.criterionScores[c]),
     ]),
-    cell(result.distribution?.normalized),
-    cell(result.distribution?.score),
+    ...split(() => [
+      cell(result.distribution?.normalized),
+      cell(result.distribution?.score),
+    ]),
     cell(result.total),
   ]);
   return toCsv([header, ...rows]);
 }
 
-/** Everything the scorer computed, one row per student, for the instructor. */
-export function detailsCsv(results, rubric) {
-  const names = peerCriteria(rubric).rated.map(({ title }) => title);
+/**
+ * Everything the scorer computed, one row per student, for the instructor.
+ * `peer` is peerCriteria's; the split's columns appear only with a split.
+ */
+export function detailsCsv(results, peer) {
+  const { rated } = peer;
+  const split = splitOnly(peer);
+  const names = rated.map(({ title }) => title);
   const header = [
     "Student Name",
     "Email",
@@ -179,13 +189,15 @@ export function detailsCsv(results, rubric) {
     "Raters",
     ...names.map((name) => `${name}: mean`),
     ...names.map((name) => `${name}: score`),
-    "Mean share received",
-    "Normalized share",
-    "Clamped",
-    "Multiplier",
-    "Distribution score",
+    ...split(() => [
+      "Mean share received",
+      "Normalized share",
+      "Clamped",
+      "Multiplier",
+      "Distribution score",
+    ]),
     "Gap: ratings",
-    "Gap: share",
+    ...split(() => ["Gap: share"]),
   ];
   const rows = results.map((result) => [
     result.student.name,
@@ -198,13 +210,15 @@ export function detailsCsv(results, rubric) {
     result.raters,
     ...result.means.map((m) => cell(m)),
     ...result.criterionScores.map((s) => cell(s)),
-    cell(result.meanShare),
-    cell(result.distribution?.normalized),
-    cell(result.distribution?.clamped),
-    cell(result.distribution?.multiplier, 4),
-    cell(result.distribution?.score),
+    ...split(() => [
+      cell(result.meanShare),
+      cell(result.distribution?.normalized),
+      cell(result.distribution?.clamped),
+      cell(result.distribution?.multiplier, 4),
+      cell(result.distribution?.score),
+    ]),
     cell(result.gap?.ratings),
-    cell(result.gap?.share),
+    ...split(() => [cell(result.gap?.share)]),
   ]);
   return toCsv([header, ...rows]);
 }
@@ -214,7 +228,9 @@ export function detailsCsv(results, rubric) {
  * criteria minus the mean received (on the 1 to 5 scale), and the raw self
  * share, before any rescale, minus the mean share received, normalized for
  * team size (times N, divided by 5). It queues a look; it never changes a
- * score. Students without both sides are left out.
+ * score. A student is listed whenever both sides of the ratings gap exist;
+ * the share gap is null on a survey without a split, or when the student's
+ * own split or every share they received was left out.
  */
 export function gapRows(results) {
   return results
@@ -225,7 +241,7 @@ export function gapRows(results) {
       share: result.gap.share,
       team: result.team,
     }))
-    .sort((a, b) => b.ratings - a.ratings || b.share - a.share);
+    .sort((a, b) => b.ratings - a.ratings || (b.share ?? 0) - (a.share ?? 0));
 }
 
 /** The comments, instructor only: never part of the feedback. */

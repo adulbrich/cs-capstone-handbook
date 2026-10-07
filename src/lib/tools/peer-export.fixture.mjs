@@ -6,33 +6,95 @@
 // is invented.
 
 import { readFileSync } from "node:fs";
+import { instruments, variants } from "../../data/peer-evaluation.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
 import { toCsv } from "./csv.mjs";
 import { memberLabel, SLOTS, selfFloor } from "./peer-contacts.mjs";
-import { buildPeerSurvey, ratedCriteria } from "./peer-survey-qsf.mjs";
+import {
+  buildPeerSurvey,
+  catmeTagOf,
+  ratedCriteria,
+} from "./peer-survey-qsf.mjs";
 
-const RUBRIC_PATH =
-  "canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv";
+const readRubric = (file) => {
+  const path = `canvas/assignments/peer-evaluation/${file}`;
+  return parseRubricCsv(
+    readFileSync(new URL(`../../../${path}`, import.meta.url), "utf8"),
+    path
+  );
+};
 
 /** The regular peer evaluation rubric, parsed as the page parses it. */
-export const rubric = parseRubricCsv(
-  readFileSync(new URL(`../../../${RUBRIC_PATH}`, import.meta.url), "utf8"),
-  RUBRIC_PATH
-);
-
-/** The rated criteria's shared anchors, lowest first. */
-const { anchors } = ratedCriteria(rubric)[0];
-
-const qids = Object.fromEntries(
-  buildPeerSurvey({ now: new Date(0), rubric, seed: 1 })
-    .SurveyElements.filter((element) => element.Element === "SQ")
-    .map(({ Payload }) => [Payload.DataExportTag, Payload.QuestionID])
-);
+export const rubric = readRubric(instruments.regular.rubric);
+/** The CATME rubric, parsed as the page parses it. */
+export const catmeRubric = readRubric(instruments.catme.rubric);
+/** Both, keyed by instrument, as parsePeerExport takes them. */
+export const rubrics = { catme: catmeRubric, regular: rubric };
 
 const CHOICES = SLOTS + 1;
+const prefixes = Array.from({ length: CHOICES }, (_, i) => `${i + 1}_`);
 
-/** The columns, each `[tag, text, importId]`, in Qualtrics' order. */
-function columns({ ratee = true } = {}) {
+/**
+ * One question's export columns, `[tag, text, importId]`, as Qualtrics
+ * writes them: a matrix row each, a multi-answer choice each, a split
+ * choice each (carried forward, `x` IDs), a text answer as `_TEXT`.
+ */
+function questionColumns(q, prefix = "") {
+  const tag = prefix + q.DataExportTag;
+  const id = prefix + q.QuestionID;
+  switch (q.QuestionType) {
+    case "Matrix":
+      // The header text is "<question> - <row>", as Qualtrics writes it.
+      return q.ChoiceOrder.map((row) => [
+        `${tag}_${row}`,
+        `${q.QuestionText} - ${q.Choices[row].Display}`,
+        `${id}_${row}`,
+      ]);
+    case "CS":
+      return prefixes.map((_, c) => [
+        `${tag}_x${c + 1}`,
+        tag,
+        `${id}_x${c + 1}`,
+      ]);
+    case "MC":
+      return q.Selector === "MAVR"
+        ? q.ChoiceOrder.map((c) => [`${tag}_${c}`, tag, `${id}_${c}`])
+        : [[tag, tag, id]];
+    case "TE":
+      return [[tag, tag, `${id}_TEXT`]];
+    default:
+      return [];
+  }
+}
+
+/** The survey the generator builds for `variant`. */
+const surveyFor = (variant) =>
+  buildPeerSurvey({
+    now: new Date(0),
+    rubric: rubrics[variants[variant].instrument],
+    seed: 1,
+    variant,
+  });
+
+/**
+ * The export's columns for the survey the generator builds for `variant`,
+ * each `[tag, text, importId]`: the metadata, then each question in survey
+ * order, the looped block's once per roster choice behind its `N_` prefix,
+ * then the embedded data. A contract test: the scorer reads what the
+ * generated survey exports.
+ */
+function columns(variant, { ratee = true } = {}) {
+  const survey = surveyFor(variant);
+  const element = (name) =>
+    survey.SurveyElements.find((e) => e.Element === name).Payload;
+  const looped = new Set(
+    element("BL")
+      .filter((block) => block.Options?.Looping)
+      .flatMap((block) => block.BlockElements.map((e) => e.QuestionID))
+  );
+  const questions = survey.SurveyElements.filter((e) => e.Element === "SQ").map(
+    (e) => e.Payload
+  );
   const cols = [
     ["StartDate", "Start Date", "startDate"],
     ["Status", "Response Type", "status"],
@@ -41,33 +103,51 @@ function columns({ ratee = true } = {}) {
     ["ResponseId", "Response ID", "_recordId"],
     ["RecipientEmail", "Recipient Email", "recipientEmail"],
     ["Last Seen Question IDs", "Last Seen Question IDs", "LastSeenQuestions"],
+    ...questions
+      .filter((q) => !looped.has(q.QuestionID))
+      .flatMap((q) => questionColumns(q)),
+    ...prefixes.flatMap((prefix) =>
+      questions
+        .filter((q) => looped.has(q.QuestionID))
+        .filter((q) => ratee || q.DataExportTag !== "Ratee")
+        .flatMap((q) => questionColumns(q, prefix))
+    ),
+    ...element("FL").Flow[0].EmbeddedData.map(({ Field: name }) => [
+      name,
+      name,
+      name,
+    ]),
   ];
-  for (let choice = 1; choice <= CHOICES; choice += 1) {
-    cols.push([`Roster_${choice}`, "Roster", `${qids.Roster}_${choice}`]);
-  }
-  for (let n = 1; n <= CHOICES; n += 1) {
-    if (ratee) {
-      cols.push([`${n}_Ratee`, "Ratee", `${n}_${qids.Ratee}_TEXT`]);
-    }
-    for (let row = 1; row <= 4; row += 1) {
-      cols.push([`${n}_Rating_${row}`, "Rating", `${n}_${qids.Rating}_${row}`]);
-    }
-    cols.push([`${n}_Comment`, "Comment", `${n}_${qids.Comment}_TEXT`]);
-  }
-  for (let choice = 1; choice <= CHOICES; choice += 1) {
-    cols.push([`Split_x${choice}`, "Split", `${qids.Split}_x${choice}`]);
-  }
-  for (const tag of ["Allocations", "Overall", "Closing"]) {
-    cols.push([tag, tag, `${qids[tag]}_TEXT`]);
-  }
-  for (const name of ["Team", "TeamSize", "SelfFloor"]) {
-    cols.push([name, name, name]);
-  }
-  for (let slot = 1; slot <= SLOTS; slot += 1) {
-    const name = `Team Member ${slot}`;
-    cols.push([name, name, name]);
-  }
   return cols;
+}
+
+/**
+ * Where each rated criterion's answer goes, and its choice labels by value,
+ * read from the generated survey's questions: the regular matrix's answers,
+ * or each CATME dimension's choices. A change to the label format the
+ * generator writes shows up here.
+ */
+function ratingsOf(variant) {
+  const { instrument } = variants[variant];
+  const questions = surveyFor(variant)
+    .SurveyElements.filter((e) => e.Element === "SQ")
+    .map((e) => e.Payload);
+  const byTag = (tag) => questions.find((q) => q.DataExportTag === tag);
+  return ratedCriteria(rubrics[instrument]).map((criterion, r) => {
+    if (instrument === "catme") {
+      const tag = catmeTagOf(criterion.title);
+      const { Choices } = byTag(tag);
+      return {
+        label: (value) => Choices[value].Display,
+        tag: (prefix) => `${prefix}_${tag}`,
+      };
+    }
+    const { Answers } = byTag("Rating");
+    return {
+      label: (value) => Answers[value].Display,
+      tag: (prefix) => `${prefix}_Rating_${r + 1}`,
+    };
+  });
 }
 
 /** A timestamp in Qualtrics' format, `minute` minutes after a fixed start. */
@@ -75,8 +155,8 @@ export const stamp = (minute) =>
   `1999-01-01 10:${String(minute).padStart(2, "0")}:00`;
 
 /** A rating as the export writes it: the value, or its choice text. */
-const ratingCell = (value, labels) =>
-  labels && value ? `${value}: ${anchors[value - 1]}` : (value ?? "");
+const ratingCell = (value, label, labels) =>
+  labels && value ? label(value) : (value ?? "");
 
 const finishedCell = (finished, labels) => {
   if (labels) {
@@ -86,7 +166,7 @@ const finishedCell = (finished, labels) => {
 };
 
 /** One response's cells, by tag. */
-function cellsOf(r, i, labels) {
+function cellsOf(r, i, labels, ratings) {
   const values = {
     Finished: finishedCell(r.finished, labels),
     RecipientEmail: r.email,
@@ -104,8 +184,8 @@ function cellsOf(r, i, labels) {
   for (const [prefix, page] of Object.entries(r.pages ?? {})) {
     values[`${prefix}_Ratee`] = page.ratee ?? "";
     values[`${prefix}_Comment`] = page.comment ?? "";
-    for (const [c, value] of (page.ratings ?? []).entries()) {
-      values[`${prefix}_Rating_${c + 1}`] = ratingCell(value, labels);
+    for (const [c, { label, tag }] of ratings.entries()) {
+      values[tag(prefix)] = ratingCell(page.ratings?.[c], label, labels);
     }
   }
   for (const [choice, points] of Object.entries(r.split ?? {})) {
@@ -118,18 +198,23 @@ function cellsOf(r, i, labels) {
  * A labels export from response objects: `{ email, team, teamSize,
  * selfFloor, members: [label per slot], finished, status, recordedDate,
  * pages: { prefix: { ratee, ratings, comment } }, split: { choice: points },
- * open }`. `labels: false` writes a values export instead, which the tools
- * refuse; `ratee: false` drops the Ratee columns.
+ * open }`, for the survey the generator builds for `variant` ("midterm" by
+ * default, or "catme"). `labels: false` writes a values export instead,
+ * which the tools refuse; `ratee: false` drops the Ratee columns.
  */
-export function exportCsv(responses, { labels = true, ratee = true } = {}) {
-  const cols = columns({ ratee });
+export function exportCsv(
+  responses,
+  { labels = true, ratee = true, variant = "midterm" } = {}
+) {
+  const cols = columns(variant, { ratee });
+  const ratings = ratingsOf(variant);
   const header = [
     cols.map(([tag]) => tag),
     cols.map(([, text]) => text),
     cols.map(([, , id]) => JSON.stringify({ ImportId: id })),
   ];
   const rows = responses.map((r, i) =>
-    cols.map(([tag]) => cellsOf(r, i, labels)[tag] ?? "")
+    cols.map(([tag]) => cellsOf(r, i, labels, ratings)[tag] ?? "")
   );
   return toCsv([...header, ...rows]);
 }
@@ -174,12 +259,15 @@ export function rosterCsv(teams) {
 
 /**
  * The responses a whole team would send. `ratings[r][e]` is what member r
- * gave member e (four values; a number repeats); `split[r]` is member r's
- * points, by member. Members in `skip` send nothing. Each respondent's
+ * gave member e (one value per rated criterion; a number repeats);
+ * `split[r]` is member r's points, by member, left out for CATME. Members
+ * in `skip` send nothing. Each respondent's
  * Team Member slots list the others in roster order, as the contact list
  * does.
  */
 export function teamResponses(team, members, { ratings, skip = [], split }) {
+  // Enough repeats for either rubric; the export writes as many as it rates.
+  const repeat = (value) => Array.from({ length: 5 }, () => value);
   const n = members.length;
   return members.flatMap((rater, r) => {
     if (skip.includes(r)) {
@@ -193,9 +281,11 @@ export function teamResponses(team, members, { ratings, skip = [], split }) {
       const given = ratings[r][e];
       pages[position + 1] = {
         ratee: position === 0 ? rater.email : memberLabel(members[e]),
-        ratings: Array.isArray(given) ? given : [given, given, given, given],
+        ratings: Array.isArray(given) ? given : repeat(given),
       };
-      shares[position + 1] = split[r][e];
+      if (split) {
+        shares[position + 1] = split[r][e];
+      }
     }
     return [
       {
