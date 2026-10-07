@@ -1,0 +1,30 @@
+---
+// Speaker notes for the slide it sits in, shown only in reveal's speaker
+// view (press S). The slot is the talk track; `time` is the target for the
+// slide as m:ss; `cue` is the one line that moves the room on.
+//
+//   <Notes time="2:30" cue="Ask who has written a user story before.">
+//     <p>What to say.</p>
+//   </Notes>
+//
+// The deck route copies `time` onto the slide's data-timing, which is what
+// the speaker view's pacing timer reads. A malformed time fails the build.
+interface Props {
+  cue?: string;
+  time: string;
+}
+
+const { cue, time } = Astro.props;
+const match = /^(\d{1,2}):([0-5]\d)$/.exec(time);
+if (!match) {
+  throw new Error(
+    `<Notes time="${time}">: write the target as m:ss, such as 2:30.`
+  );
+}
+const seconds = Number(match[1]) * 60 + Number(match[2]);
+---
+
+<aside class="notes" data-time={seconds}>
+  <p><strong>Target {time}.</strong>{cue && ` Cue: ${cue}`}</p>
+  <slot />
+</aside>

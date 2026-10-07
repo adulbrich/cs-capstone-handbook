@@ -1,0 +1,267 @@
+/*
+ * The deck theme for the slide decks under /decks/. It replaces reveal.js's
+ * own themes, none of which loads: the core layout comes from
+ * reveal.js/reveal.css, and everything visible comes from here.
+ *
+ * Colors are the handbook's: its accent and gray palettes (palette.css) over
+ * the Tailwind palette the docs theme is generated from. The type is the
+ * docs' sans stack. The auditorium rules this theme enforces (light always,
+ * the 32px floor, one idea per slide) are in
+ * `docs/decisions/2026-10-07-slide-decks.md`. Sizes are in px because the
+ * slide is a fixed 1920x1080; --deck-text-min below is the floor.
+ */
+/*
+ * The type and layout defaults sit in the deck layer, so a slide
+ * component's own scoped styles always win over them without a specificity
+ * contest. Reveal's core and the overrides of it below stay unlayered.
+ */
+@layer theme, deck;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "./palette.css";
+
+:root {
+  --deck-paper: var(--color-white);
+  --deck-ink: var(--color-gray-900);
+  --deck-ink-soft: var(--color-gray-700);
+  --deck-rule: var(--color-gray-300);
+  --deck-card: var(--color-gray-100);
+
+  --deck-accent: var(--color-accent-600);
+  --deck-accent-ink: var(--color-accent-900);
+  --deck-accent-wash: var(--color-accent-200);
+
+  /* The story map's two marks. Blue for the backbone and amber for an
+     assumption, so neither can be mistaken for the orange accent. */
+  --deck-backbone: var(--color-blue-200);
+  --deck-backbone-edge: var(--color-blue-700);
+  --deck-backbone-ink: var(--color-blue-950);
+  --deck-assumed: var(--color-amber-100);
+  --deck-assumed-edge: var(--color-amber-600);
+  --deck-assumed-ink: var(--color-amber-950);
+
+  --deck-font: var(--font-sans);
+  --deck-mono: var(--font-mono);
+
+  /* The type scale. --deck-text-min is the floor; nothing goes under it. */
+  --deck-text-min: 32px;
+  --deck-text-body: 44px;
+  --deck-text-lead: 52px;
+  --deck-text-h2: 76px;
+  --deck-text-h1: 132px;
+  --deck-text-statement: 92px;
+
+  --deck-pad-x: 136px;
+  --deck-pad-y: 104px;
+  color-scheme: light;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--deck-paper);
+}
+
+@layer deck {
+  .reveal {
+    font-family: var(--deck-font);
+    font-size: var(--deck-text-body);
+    font-weight: 400;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.35;
+    color: var(--deck-ink);
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The frame every slide component renders inside its section. */
+  .reveal .deck-frame {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--deck-pad-y) var(--deck-pad-x);
+  }
+
+  .reveal .deck-frame--wide {
+    --deck-pad-x: 72px;
+    --deck-pad-y: 72px;
+  }
+
+  .reveal .deck-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* Headings */
+
+  .reveal h1,
+  .reveal h2,
+  .reveal h3 {
+    margin: 0;
+    font-weight: 750;
+    color: var(--deck-ink);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .reveal h1 {
+    font-size: var(--deck-text-h1);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .reveal h2 {
+    font-size: var(--deck-text-h2);
+    line-height: 1.08;
+  }
+
+  .reveal h3 {
+    font-size: var(--deck-text-lead);
+    line-height: 1.15;
+  }
+
+  .reveal .deck-kicker {
+    margin: 0 0 28px;
+    font-size: var(--deck-text-min);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--deck-accent-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .reveal .deck-header {
+    margin-block-end: 64px;
+  }
+
+  .reveal .deck-frame--wide .deck-header {
+    margin-block-end: 44px;
+  }
+
+  /* Body copy */
+
+  .reveal p {
+    margin: 0 0 0.6em;
+    text-wrap: pretty;
+  }
+
+  .reveal p:last-child {
+    margin-block-end: 0;
+  }
+
+  .reveal strong {
+    font-weight: 700;
+  }
+
+  .reveal em {
+    font-style: italic;
+  }
+
+  .reveal a {
+    color: var(--deck-accent-ink);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+  }
+
+  .reveal code {
+    padding: 0.05em 0.25em;
+    font-family: var(--deck-mono);
+    /* Monospace reads smaller, but never under the floor. */
+    font-size: max(0.9em, var(--deck-text-min));
+    background: var(--color-gray-200);
+    border-radius: 8px;
+  }
+
+  .reveal ul,
+  .reveal ol {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .reveal li {
+    position: relative;
+    padding-inline-start: 1.1em;
+    margin-block-end: 0.55em;
+    text-wrap: pretty;
+  }
+
+  .reveal li:last-child {
+    margin-block-end: 0;
+  }
+
+  .reveal ul > li::before {
+    position: absolute;
+    inset-block-start: 0.5em;
+    inset-inline-start: 0.1em;
+    width: 0.4em;
+    height: 0.4em;
+    content: "";
+    background: var(--deck-accent);
+    border-radius: 3px;
+  }
+
+  .reveal ol {
+    counter-reset: deck-item;
+  }
+
+  .reveal ol > li {
+    counter-increment: deck-item;
+  }
+
+  .reveal ol > li::before {
+    position: absolute;
+    inset-inline-start: 0;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+    color: var(--deck-accent-ink);
+    content: counter(deck-item);
+  }
+
+  .reveal .deck-small {
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+}
+
+/* Overrides of reveal's core, which is unlayered, so these are too. */
+.reveal .slides {
+  text-align: start;
+}
+
+.reveal .slides > section {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+/* Reveal's chrome, recolored: the progress bar and the arrows. */
+
+.reveal .progress {
+  height: 10px;
+  color: var(--deck-accent);
+  background: var(--color-gray-200);
+}
+
+.reveal .controls {
+  color: var(--deck-accent);
+}
+
+/* The overview (Esc): a thin edge so white slides read as tiles. */
+.reveal.overview .slides > section {
+  outline: 2px solid var(--deck-rule);
+}
+
+.reveal.overview .slides > section.present {
+  outline: 8px solid var(--deck-accent);
+}
+
+/* Fragments fade in at the reading pace of a room, not a laptop. */
+.reveal .fragment {
+  transition-duration: 0.35s;
+}

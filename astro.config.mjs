@@ -15,8 +15,11 @@ import { activitiesSidebar } from "./src/lib/activities-sidebar.mjs";
 export default defineConfig({
   integrations: [
     mermaid(),
-    // The instructor tools under /tools/ are noindex and stay out of the map.
-    sitemap({ filter: (page) => !page.includes("/tools/") }),
+    // The instructor tools under /tools/ and the decks under /decks/ are
+    // noindex and stay out of the map.
+    sitemap({
+      filter: (page) => !(page.includes("/tools/") || page.includes("/decks/")),
+    }),
     svelte(),
     starlight({
       components: {},

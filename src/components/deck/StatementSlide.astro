@@ -1,0 +1,53 @@
+---
+// One sentence, set large: the idea the room should leave with. The slot is
+// the statement (and any <Notes>); `kicker` sits above it and `source`
+// below, for a quotation or the evidence behind the claim.
+//
+//   <StatementSlide kicker="Before you build">
+//     A story you have not checked with a user is an assumption.
+//     <Notes time="1:00">...</Notes>
+//   </StatementSlide>
+//
+// Keep it to one sentence of about fifteen words; past that, use <Slide>.
+// Other attributes land on the <section>, as on <Slide>.
+import type { ComponentProps } from "astro/types";
+import Slide from "./Slide.astro";
+
+interface Props extends Omit<ComponentProps<typeof Slide>, "title" | "wide"> {
+  source?: string;
+}
+
+const { class: className, kicker, source, ...attrs } = Astro.props;
+---
+
+<Slide class:list={["deck-statement", className]} {...attrs}>
+  <div class="statement">
+    {kicker && <p class="deck-kicker">{kicker}</p>}
+    <div class="text"><slot /></div>
+    {source && <p class="source">{source}</p>}
+  </div>
+</Slide>
+
+<style>
+  .statement {
+    margin-block: auto;
+    padding-inline-start: 72px;
+    border-inline-start: 20px solid var(--deck-accent);
+  }
+
+  .text {
+    max-width: 1460px;
+    font-size: var(--deck-text-statement);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .source {
+    margin-block-start: 48px;
+    font-size: var(--deck-text-min);
+    font-weight: 600;
+    color: var(--deck-ink-soft);
+  }
+</style>
