@@ -146,7 +146,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 
 ## Surveys (per term: 4 processing runs)
 
-Peer midterm, peer end-of-term, partner midterm (the Midterm Pulse), partner end-of-term. Each is generated and scored on an instructor tools page: the peer surveys on [`/tools/peer-evaluation/`](/tools/peer-evaluation/), the partner surveys on [`/tools/partner-evaluation/`](/tools/partner-evaluation/). Both pages read the files in the browser and upload nothing. Rating names and points come from the rubric CSVs under `canvas/assignments/`, so the survey, the scorer, and the Canvas rubric cannot disagree.
+Peer midterm, peer end-of-term, partner midterm (the Midterm Pulse), partner end-of-term. Each is generated and scored on an instructor tools page: the peer surveys on [the peer evaluation page](https://capstone.alexulbrich.com/tools/peer-evaluation/), the partner surveys on [the partner evaluation page](https://capstone.alexulbrich.com/tools/partner-evaluation/). Both pages read the files in the browser and upload nothing. Rating names and points come from the rubric CSVs under `canvas/assignments/`, so the survey, the scorer, and the Canvas rubric cannot disagree.
 
 Per run:
 

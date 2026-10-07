@@ -10,7 +10,7 @@ import { ratingMatrix } from "../lib/tools/peer-survey-qsf.mjs";
  * (through `ratingMatrix`). The page shows the survey's own wording, so the
  * two cannot drift. A CSV the generator cannot use fails the build here too.
  *
- * `part="criteria"` renders the criteria, numbered in the CSV's order, with
+ * `part="criteria"` renders the criteria, in the CSV's order, with
  * the question the survey asks; `part="scale"` renders the 1 to 5 scale as
  * the survey's answer choices read.
  *
@@ -31,7 +31,7 @@ interface Props {
 }
 
 const { csv, part, sourceLabel } = Astro.props;
-const { columns, rows } = ratingMatrix(parseRubricCsv(csv, sourceLabel));
+const { rows, scale } = ratingMatrix(parseRubricCsv(csv, sourceLabel));
 ---
 
 {
@@ -45,11 +45,9 @@ const { columns, rows } = ratingMatrix(parseRubricCsv(csv, sourceLabel));
         </tr>
       </thead>
       <tbody>
-        {rows.map((row, i) => (
+        {rows.map((row) => (
           <tr>
-            <th scope="row">
-              {i + 1}. {row.title}
-            </th>
+            <th scope="row">{row.title}</th>
             <td>{row.prompt}</td>
           </tr>
         ))}
@@ -57,7 +55,7 @@ const { columns, rows } = ratingMatrix(parseRubricCsv(csv, sourceLabel));
     </table>
   ) : (
     <ul>
-      {columns.map((choice) => (
+      {scale.map((choice) => (
         <li>{choice}</li>
       ))}
     </ul>

@@ -63,7 +63,7 @@ In every midterm survey, and in the end-of-term survey in fall and winter, you a
 
 ### Quantitative Questions
 
-The **first task** is to rate each member of the team, including yourself, on four criteria, one page per member:
+The **first task** is to rate each member of the team, including yourself, one page per member, on these criteria:
 
 <PeerCriteria csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" part="criteria" />
 
@@ -75,20 +75,20 @@ The numbers only compare across teams if everyone means the same thing by them. 
 
 | Criterion | A 5 looks like | A 3 looks like | A 1 looks like |
 |---|---|---|---|
-| 1. Quantity | Took a fair share every sprint and picked up slack when someone was blocked; the contribution line in every [sprint note](/assignments/sprint-notes/) names work they owned. | Did what was assigned, on time, most sprints; nothing beyond it. | Contribution lines empty, or written by a teammate on their behalf, as a pattern. |
-| 2. Quality | Their work is accepted after few review rounds, code arrives with tests, and nothing is reopened as a bug. | Work passes review after the normal back-and-forth. | Work is redone by others, or ships without tests and breaks things. |
-| 3. Attitude | At every meeting they did not excuse in advance, on time; answers messages within one working day; volunteers for unowned work; says early when blocked. | Attends, responds within two working days, does what is asked when asked. | Misses meetings without notice, goes quiet for days, and teammates have stopped assigning them work. |
-| 4. Technical value | Owns a part of the system others depend on, and the team asks them when it breaks. | Contributes working pieces that fit; nothing of theirs is called or imported by others' work. | No technical contribution the team can point to. |
+| Quantity | Took a fair share every sprint and picked up slack when someone was blocked; the contribution line in every [sprint note](/assignments/sprint-notes/) names work they owned. | Did what was assigned, on time, most sprints; nothing beyond it. | Contribution lines empty, or written by a teammate on their behalf, as a pattern. |
+| Quality | Their work is accepted after few review rounds, code arrives with tests, and nothing is reopened as a bug. | Work passes review after the normal back-and-forth. | Work is redone by others, or ships without tests and breaks things. |
+| Attitude as a team player | At every meeting they did not excuse in advance, on time; answers messages within one working day; volunteers for unowned work; says early when blocked. | Attends, responds within two working days, does what is asked when asked. | Misses meetings without notice, goes quiet for days, and teammates have stopped assigning them work. |
+| Technical value | Owns a part of the system others depend on, and the team asks them when it breaks. | Contributes working pieces that fit; nothing of theirs is called or imported by others' work. | No technical contribution the team can point to. |
 
 Check before you rate. Open the sprint notes and look for the contribution line each sprint; open the repository and the team's tracker and count the work each person owned, reviews given, and issues closed; think back over who was at the meetings. A rating you cannot connect to something you saw is a guess, and the instructor reads the comments against the same record (NDA teams: at the walkthrough or the defense).
 
-For the **second task**, you distribute 100 points among team members, including yourself. Each member can receive between 0 and 100, and the survey does not submit until the total is 100. Give yourself at least 100/N points, rounded down, where N is the number of team members, to avoid an unrealistic "self-incrimination" requirement; the survey shows your minimum. A self share below the minimum is raised to it, and your teammates' shares are scaled down so the total stays 100. A team of two has no minimum: an even split is 50 points each, and a split outside 45 to 55 is reviewed by an instructor.
+For the **second task**, you distribute 100 points among team members, including yourself. Each member can receive between 0 and 100, and the survey does not submit until the total is 100. Give yourself at least 100/N points, rounded down, where N is the number of team members; the survey shows your minimum. A self share below the minimum is raised to it, and your teammates' shares are scaled down so the total stays 100. A team of two has no minimum and its own review rule (see [Teams of Two](#teams-of-two)).
 
 ### Qualitative Feedback
 
-You're also asked for comments, which help the instruction team understand team dynamics:
+You're also asked for comments, which help the instructors understand team dynamics:
 
-- On each member's page, anything about that member's contribution the instruction team should know.
+- On each member's page, anything about that member's contribution the instructors should know.
 - For particularly high or low allocations, provide concrete examples. Which behaviors were particularly valuable or detrimental?
 - Overall, how effectively is your team working? Explain.
 - To close the midterm survey: Propose one concrete team experiment or activity to try in the next sprint.
@@ -107,7 +107,7 @@ For the **four criteria**:
 
 For the **100-point distribution**:
 
-1. Verify that each rater's total is 100, which the survey enforces, and raise a self-allocation below 100/N points, rounded down, to that floor, scaling the rater's other allocations so the total stays 100. A team of two has no floor.
+1. Verify that each rater's total is 100, which the survey enforces, and raise a self-allocation below 100/N points, rounded down, to that floor, scaling the rater's other allocations so the total stays 100 (a team of two has no floor; see [Teams of Two](#teams-of-two)).
 2. Average the points each member received, excluding self-allocation.
 3. Normalize for team size: multiply the average by N, divide by 5.
 4. Clamp the result to [10, 40].
@@ -121,7 +121,7 @@ Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four 
 
 ## Teams of Two
 
-On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. On the four-criteria survey, there is no self-allocation floor. On either survey, an instructor reviews a two-person team against the repo record and partner feedback before the score stands when the ratings you received average below 3 on the 1 to 5 scale, or when your average rating of your teammate and theirs of you are 1.5 points or more apart. A single teammate's ratings never finalize a low score on a team of two without corroboration.
+On a team of two, every score you receive comes from your one teammate. On the four-criteria survey, there is no self-allocation floor: an even split is 50 points each, and an instructor reviews a split outside 45 to 55. On either survey, an instructor reviews a two-person team against the repo record and partner feedback before the score stands when the ratings you received average below 3 on the 1 to 5 scale, or when your average rating of your teammate and theirs of you are 1.5 points or more apart. A single teammate's ratings never finalize a low score on a team of two without corroboration.
 
 ## The CATME Survey
 
@@ -155,8 +155,8 @@ Each of the five dimension scores is worth 20 points, a fifth of its value, and 
 
 ## Activities That Prepare This
 
-- [Regular Stand-Up Meetings](/activities/team-and-workflow/#regular-stand-up-meetings): criteria 1 and 3, or contributing to the team's work and interacting with teammates in CATME; the habit that makes contribution visible every week.
-- [Team Dysfunctions Assessment](/activities/team-and-workflow/#team-dysfunctions-assessment): criterion 3, or interacting with teammates in CATME, and the midterm comments; naming a problem before the survey does.
+- [Regular Stand-Up Meetings](/activities/team-and-workflow/#regular-stand-up-meetings): Quantity and Attitude as a team player, or contributing to the team's work and interacting with teammates in CATME; the habit that makes contribution visible every week.
+- [Team Dysfunctions Assessment](/activities/team-and-workflow/#team-dysfunctions-assessment): Attitude as a team player, or interacting with teammates in CATME, and the midterm comments; naming a problem before the survey does.
 - [Team Health Assessment](/activities/team-and-workflow/#team-health-assessment): the four criteria in the spring midterm survey, and the CATME dimensions at the end of spring.
 
 Browse [Team and Workflow](/activities/team-and-workflow/) when these run out.

@@ -177,32 +177,30 @@ const numbered = (anchors) => anchors.map((text, i) => `${i + 1}: ${text}`);
 
 /**
  * The regular survey's rating matrix: a row per rated criterion (its title
- * and the prompt the survey shows) and a column per anchor of their shared
- * scale, numbered as the survey shows it. The survey and the Peer
- * Evaluations page (src/components/PeerCriteria.astro) both render this, so
- * the page shows the survey's wording.
+ * and the prompt the survey shows), and the scale, the anchors the criteria
+ * share, numbered as the survey's answer columns show them.
  *
- * @returns {{columns: string[], rows: {prompt: string, title: string}[]}}
+ * @returns {{rows: {prompt: string, title: string}[], scale: string[]}}
  */
 export function ratingMatrix(rubric, rated = ratedCriteria(rubric)) {
   return {
-    columns: numbered(sharedScale(rubric.name, rated, (c) => c.anchors)),
     rows: rated.map((c) => ({
       prompt: lookup(criterionPrompts, c.title, "prompt"),
       title: c.title,
     })),
+    scale: numbered(sharedScale(rubric.name, rated, (c) => c.anchors)),
   };
 }
 
 /** The rated criteria as one forced radio matrix on their shared scale. */
 function ratingQuestion(qid, tag, ratee, { rated, rubric }) {
-  const { columns, rows } = ratingMatrix(rubric, rated);
+  const { rows, scale } = ratingMatrix(rubric, rated);
   return likertMatrix(
     qid,
     tag,
     surveyText.rating.replace("{ratee}", ratee),
     rows.map((row) => row.prompt),
-    columns
+    scale
   );
 }
 
