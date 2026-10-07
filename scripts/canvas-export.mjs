@@ -23,7 +23,7 @@ import { select, selectAll } from "hast-util-select";
 import { toHtml } from "hast-util-to-html";
 import { toString as text } from "hast-util-to-string";
 import { h } from "hastscript";
-import { SKIP, visit } from "unist-util-visit";
+import { EXIT, SKIP, visit } from "unist-util-visit";
 import { parse } from "yaml";
 import {
   canvasRows,
@@ -72,7 +72,7 @@ npm run build
 npm run canvas:export
 \`\`\`
 
-A \`WARN\` line means a page-specific cut in \`OVERRIDES\` no longer matches its page, or a page gained an element the transform does not handle; \`--strict\` turns either into a failure.
+A \`WARN\` line means a page-specific cut or rewrite in \`OVERRIDES\` no longer matches its page, or a page gained an element the transform does not handle; \`--strict\` turns either into a failure.
 
 ## Layout
 
@@ -98,7 +98,7 @@ Then trimmed to the entry, by rules that read the page rather than name it:
 3. A section, row or paragraph naming another member of a numbered family goes ("### Workshop 4: ..." leaves Workshop 2).
 4. A column headed by another term's course number goes ("CS 462" leaves the fall partner survey).
 
-\`OVERRIDES\` in \`scripts/canvas-export.mjs\` holds the page-specific cuts no rule sees.
+\`OVERRIDES\` in \`scripts/canvas-export.mjs\` holds the page-specific cuts and rewrites no rule sees.
 
 Mentions of other terms that remain are cross-term context a student needs ("Winter's instrumentation commitment comes due here").
 
@@ -209,7 +209,7 @@ function entries() {
   return all;
 }
 
-// ---- page-specific cuts no general rule covers ---------------------------------
+// ---- page-specific cuts and rewrites no general rule covers --------------------
 
 const OVERRIDES = {
   // The CATME section belongs to the spring end-of-term survey alone. Its
@@ -254,20 +254,20 @@ const OVERRIDES = {
   // one row still lists every sprint in the term. A note needs only its own
   // sprint, so the table goes and the intro names it, read from the row.
   "Sprint Notes {n}": (o, e) => {
-    const [, sprints, windows] = o.takeTable("Term")?.[0] ?? [];
+    const [, sprintRange, windowCell] = o.takeTable("Term")[0] ?? [];
     const i = e.family.weeks[e.term].indexOf(e.week);
-    const sprint = Number.parseInt(sprints, 10) + i;
-    const window = windows?.replace(/^Weeks /, "").split(", ")[i];
+    const sprint = Number.parseInt(sprintRange, 10) + i;
+    const span = windowCell?.replace(/^Weeks /, "").split(", ")[i];
     if (
       e.name !== `Sprint Notes ${sprint}` ||
-      !window?.endsWith(` to ${e.week}`)
+      !span?.endsWith(` to ${e.week}`)
     ) {
       warnings.push(`${e.term}/${e.name}: the sprint calendar does not match`);
       return;
     }
     o.replaceTail(
       "; the windows below",
-      `; this note covers sprint ${sprint}, weeks ${window}.`
+      `; this note covers sprint ${sprint}, weeks ${span}.`
     );
   },
   // The individual half is its own blocks under What You Submit and Rubric;
@@ -343,7 +343,7 @@ function ops(root, where) {
           }
           node.value = node.value.slice(0, k) + to;
           done = true;
-          return false;
+          return EXIT;
         });
         if (done) {
           return;
@@ -361,7 +361,8 @@ function ops(root, where) {
           text(select("th", n) ?? n).trim() === header
       );
       if (i < 0) {
-        return miss(`table "${header}"`);
+        miss(`table "${header}"`);
+        return [];
       }
       const [table] = top.splice(i, 1);
       return selectAll("tbody tr", table).map((tr) =>
