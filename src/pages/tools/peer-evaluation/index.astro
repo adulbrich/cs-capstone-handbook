@@ -1,0 +1,33 @@
+---
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { pages } from "../../../data/peer-tools.mjs";
+
+// The peer evaluation tools: two guided pages, one per process. This URL
+// is the one the staff runbook links, so it stays as the chooser.
+const { chooser } = pages;
+---
+
+<StarlightPage
+  frontmatter={{
+    description: chooser.description,
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    title: chooser.title,
+  }}
+>
+  <p>{chooser.intro}</p>
+  <CardGrid>
+    <LinkCard
+      title={chooser.prepare.title}
+      description={chooser.prepare.description}
+      href="/tools/peer-evaluation/prepare/"
+    />
+    <LinkCard
+      title={chooser.score.title}
+      description={chooser.score.description}
+      href="/tools/peer-evaluation/score/"
+    />
+  </CardGrid>
+</StarlightPage>

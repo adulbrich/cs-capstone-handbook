@@ -1,0 +1,22 @@
+---
+// Prepare the peer evaluation (#463). The rubrics are read at build time;
+// the roster is read in the browser only.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import PeerPrepare from "../../../components/tools/peer/PeerPrepare.svelte";
+import { byVariant } from "../../../components/tools/peer/peer-rubrics.mjs";
+import { pages } from "../../../data/peer-tools.mjs";
+---
+
+<StarlightPage
+  frontmatter={{
+    description: pages.prepare.description,
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    tableOfContents: false,
+    title: pages.prepare.title,
+  }}
+>
+  <p>{pages.prepare.intro}</p>
+  <PeerPrepare client:only="svelte" rubrics={byVariant} />
+</StarlightPage>

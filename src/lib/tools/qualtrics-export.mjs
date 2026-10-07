@@ -5,6 +5,7 @@
 // then one `{"ImportId":...}` JSON cell per column. Responses follow.
 // Pure: no DOM, no I/O, so node --test covers it and the browser runs it.
 
+import { clickPaths, pathSteps } from "../../data/click-paths.mjs";
 import { parseCsv } from "./csv.mjs";
 
 const IMPORT_ID = /^\{"ImportId"/;
@@ -65,7 +66,7 @@ export function parseQualtricsExport(text, { includePreviews = false } = {}) {
     );
     if (VALUES_FINISHED.has(response.Finished)) {
       throw new Error(
-        `Response ${response.ResponseId} has Finished "${response.Finished}": this is a values export. Export the responses again with "Use choice text" on (labels export only).`
+        `Response ${response.ResponseId} has Finished "${response.Finished}": this is a values export, and the tools read the labels export only. Export again: ${pathSteps(clickPaths.qualtricsLabelsExport)}.`
       );
     }
     if (response.Status === PREVIEW && !includePreviews) {
