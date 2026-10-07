@@ -44,7 +44,7 @@ function run(teams, responses, options = {}) {
   return {
     parsed,
     ...scorePeers({
-      instrument: parsed.type,
+      instrument: parsed.instrument,
       responses: parsed.responses,
       rubric: parsed.rubric,
       students: parseRoster(rosterCsv(teams)),
@@ -423,7 +423,7 @@ test("the self floor comes from the roster; a differing survey value warns", () 
       /showed SelfFloor 20; a team of 3 has 33/.test(m)
     )
   );
-  // 30 is below the computed 33, so it is raised even though the survey said 20.
+  // 30 is below the computed 33, so it is raised; the survey said 20.
   assert.ok(messages(problems, "note").some((m) => /raised to 33/.test(m)));
 });
 
@@ -477,6 +477,7 @@ test("ratings: the highest at or below the points, the nearest band outside", ()
 /** Fills a rubric export for `students`, criteria named as in `names`. */
 function fill(results, students, names) {
   return fillPeerAssessment({
+    instrument: "regular",
     results,
     rubric,
     rubricExport: parseRubricExport(assessmentCsv(students, names)),
@@ -496,32 +497,87 @@ test("criteria match by name, with or without outcome tags", () => {
   );
 });
 
-test("criteria are paired by name: a reordered rubric scores the same", () => {
+test("a reordered rubric scores an export generated from the old order the same", () => {
   const { results } = run({ Owls: owls }, workedExample());
-  // The distribution moved first: position-based pairing would swap it with
-  // Quantity. The rated criteria keep their order, the survey matrix's.
-  const reordered = {
-    ...rubric,
-    criteria: [rubric.criteria.at(-1), ...rubric.criteria.slice(0, -1)],
-  };
-  const peer = peerCriteria(reordered);
+  // Every criterion moved: the distribution first, the rated ones reversed.
+  // Matrix rows are matched to criteria by their question text, and rubric
+  // columns by name, so nothing is read by position.
+  const reordered = { ...rubric, criteria: [...rubric.criteria].reverse() };
+  const peer = peerCriteria(reordered, "regular");
   assert.equal(peer.distribution.title, "Point distribution");
+  assert.equal(peer.rated[0].title, "Technical value");
+  const parsed = parsePeerExport(exportCsv(workedExample()), {
+    rubrics: { ...rubrics, regular: reordered },
+  });
+  assert.deepEqual(parsed.problems, []);
+  const rescored = scorePeers({
+    instrument: parsed.instrument,
+    responses: parsed.responses,
+    rubric: reordered,
+    students: parseRoster(rosterCsv({ Owls: owls })),
+  }).results;
+  const owls1 = resultFor(rescored, "owls1@example.edu");
+  // Technical value, Attitude, Quality, Quantity: 4, 5, 4, 4.
+  assert.deepEqual(owls1.means, [4, 5, 4, 4]);
+  assert.equal(round(owls1.total, 1), 93.1);
   const byName = (csv) => {
     const [header, row] = parseCsv(csv);
     return Object.fromEntries(header.map((name, i) => [name, row[i]]));
   };
-  const plain = fill(results, owls, plainNames);
   const shuffled = fillPeerAssessment({
-    results,
+    instrument: "regular",
+    results: rescored,
     rubric: reordered,
     rubricExport: parseRubricExport(assessmentCsv(owls, plainNames)),
   });
+  const plain = fill(results, owls, plainNames);
   assert.deepEqual(byName(shuffled.csv), byName(plain.csv));
-  assert.equal(byName(plain.csv)["Technical value - Points"], "17.5");
   assert.equal(byName(plain.csv)["Attitude as a team player - Points"], "20");
   assert.throws(
-    () => peerCriteria({ ...rubric, criteria: rubric.criteria.slice(0, 4) }),
-    /no rated criteria|expects 1, the point distribution/
+    () =>
+      peerCriteria(
+        { ...rubric, criteria: rubric.criteria.slice(0, 4) },
+        "regular"
+      ),
+    /expects 1, the point distribution/
+  );
+  assert.throws(() => peerCriteria(rubric), /Unknown peer instrument/);
+});
+
+test("a matrix row naming no rated criterion, or two rows naming one, stops the run", () => {
+  const csv = exportCsv(workedExample());
+  const quality = "How about the quality of the member's work?";
+  const quantity = "Did the member do an appropriate quantity of work?";
+  const none = parsePeerExport(csv.replaceAll(quality, "An invented row"), {
+    rubrics,
+  });
+  assert.ok(none.problems.some((m) => /names no rated criterion/.test(m)));
+  assert.ok(
+    none.problems.some((m) =>
+      /no column for the rubric criterion "Quality"/.test(m)
+    )
+  );
+  assert.deepEqual(none.responses, []);
+  const twice = parsePeerExport(csv.replaceAll(quality, quantity), {
+    rubrics,
+  });
+  assert.ok(
+    twice.problems.some((m) =>
+      /Two matrix rows name the rubric criterion "Quantity"/.test(m)
+    )
+  );
+  // A rubric that rates fewer criteria than the matrix has rows.
+  const fewer = {
+    ...rubric,
+    criteria: rubric.criteria.filter((c) => c.title !== "Quality"),
+  };
+  const extra = parsePeerExport(csv, {
+    rubrics: { ...rubrics, regular: fewer },
+  });
+  assert.ok(
+    extra.problems.some((m) =>
+      /Matrix column N_Rating_2 .* names no rated criterion/.test(m)
+    )
   );
 });
 
@@ -579,7 +635,7 @@ test("the feedback download holds means, never a comment or a rater", () => {
   responses[1].pages[2].comment = "Invented private remark";
   responses[1].open = { Overall: "Invented overall remark" };
   const { comments, results } = run({ Owls: owls }, responses);
-  const feedback = feedbackCsv(results, peerCriteria(rubric));
+  const feedback = feedbackCsv(results, peerCriteria(rubric, "regular"));
   assert.doesNotMatch(feedback, /Invented/);
   assert.match(feedback, /Quantity: mean rating \(1 to 5\)/);
   const instructor = commentsCsv(comments);

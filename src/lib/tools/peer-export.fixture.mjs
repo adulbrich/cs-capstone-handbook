@@ -6,11 +6,15 @@
 // is invented.
 
 import { readFileSync } from "node:fs";
-import { catmeTags, variants } from "../../data/peer-evaluation.mjs";
+import { instruments, variants } from "../../data/peer-evaluation.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
 import { toCsv } from "./csv.mjs";
 import { memberLabel, SLOTS, selfFloor } from "./peer-contacts.mjs";
-import { buildPeerSurvey, ratedCriteria } from "./peer-survey-qsf.mjs";
+import {
+  buildPeerSurvey,
+  catmeTagOf,
+  ratedCriteria,
+} from "./peer-survey-qsf.mjs";
 
 const readRubric = (file) => {
   const path = `canvas/assignments/peer-evaluation/${file}`;
@@ -21,9 +25,9 @@ const readRubric = (file) => {
 };
 
 /** The regular peer evaluation rubric, parsed as the page parses it. */
-export const rubric = readRubric("peer-evaluation-rubric.csv");
+export const rubric = readRubric(instruments.regular.rubric);
 /** The CATME rubric, parsed as the page parses it. */
-export const catmeRubric = readRubric("catme-rubric.csv");
+export const catmeRubric = readRubric(instruments.catme.rubric);
 /** Both, keyed by instrument, as parsePeerExport takes them. */
 export const rubrics = { catme: catmeRubric, regular: rubric };
 
@@ -40,7 +44,12 @@ function questionColumns(q, prefix = "") {
   const id = prefix + q.QuestionID;
   switch (q.QuestionType) {
     case "Matrix":
-      return q.ChoiceOrder.map((row) => [`${tag}_${row}`, tag, `${id}_${row}`]);
+      // The header text is "<question> - <row>", as Qualtrics writes it.
+      return q.ChoiceOrder.map((row) => [
+        `${tag}_${row}`,
+        `${q.QuestionText} - ${q.Choices[row].Display}`,
+        `${id}_${row}`,
+      ]);
     case "CS":
       return prefixes.map((_, c) => [
         `${tag}_x${c + 1}`,
@@ -126,7 +135,7 @@ function ratingsOf(variant) {
   const byTag = (tag) => questions.find((q) => q.DataExportTag === tag);
   return ratedCriteria(rubrics[instrument]).map((criterion, r) => {
     if (instrument === "catme") {
-      const tag = catmeTags[criterion.title];
+      const tag = catmeTagOf(criterion.title);
       const { Choices } = byTag(tag);
       return {
         label: (value) => Choices[value].Display,

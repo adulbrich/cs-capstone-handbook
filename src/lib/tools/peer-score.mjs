@@ -1,19 +1,20 @@
 // Scores the peer evaluations as the Peer Evaluations page publishes them:
-// the regular survey (the four criteria and the 100-point split) and CATME
-// (the five dimensions, no split). Pure: no DOM, no I/O.
+// the regular survey (its rubric's rated criteria and the 100-point split)
+// and CATME (its rubric's dimensions, no split). Pure: no DOM, no I/O.
 //
 // Per student, from what the teammates answered, self excluded:
 //   - each rated criterion: the mean rating received, 1 to 5 onto 50 to 100;
 //   - the split (regular only): the mean share received, times N, divided by
 //     5, clamped to [10, 40], through 0.65 + 0.0225x - 0.00025x^2, times 100;
-//   - the score: the mean of those numbers (five each way).
+//   - the score: the mean of those numbers.
 // A student with no finished response scores 50. A self share below the
 // floor is raised to it and the rater's other shares scaled to keep the
 // total at 100; nothing is deducted. Flags queue a review and never change a
 // score.
 
+import { instruments } from "../../data/peer-evaluation.mjs";
 import { selfFloor } from "./peer-contacts.mjs";
-import { EXPORT_SHAPES, emailIn } from "./peer-export-columns.mjs";
+import { emailIn } from "./peer-export-columns.mjs";
 import { ratedCriteria } from "./peer-survey-qsf.mjs";
 
 /**
@@ -23,11 +24,14 @@ import { ratedCriteria } from "./peer-survey-qsf.mjs";
  * distribution, the one other criterion, on an instrument with a split, and
  * null on one without (CATME). Throws when the rubric has another shape.
  */
-export function peerCriteria(rubric, instrument = "regular") {
+export function peerCriteria(rubric, instrument) {
+  if (!Object.hasOwn(instruments, instrument)) {
+    throw new Error(`Unknown peer instrument "${instrument}".`);
+  }
   const rated = ratedCriteria(rubric);
   const titles = new Set(rated.map((c) => c.title));
   const others = rubric.criteria.filter((c) => !titles.has(c.title));
-  const expected = EXPORT_SHAPES[instrument].split ? 1 : 0;
+  const expected = instruments[instrument].split ? 1 : 0;
   if (others.length !== expected) {
     throw new Error(
       `The ${rubric.name} rubric has ${others.length} criteria besides the rated ones; the ${instrument} survey expects ${expected}${expected ? ", the point distribution" : ""}.`
@@ -35,6 +39,9 @@ export function peerCriteria(rubric, instrument = "regular") {
   }
   return { distribution: others[0] ?? null, rated };
 }
+
+/** True when the survey has a split: the one test of it, on peerCriteria's result. */
+export const hasSplit = (peer) => peer.distribution !== null;
 
 /** A result's status. */
 export const STATUS = Object.freeze({
@@ -164,7 +171,7 @@ function checkEmbedded(ctx, response, rater) {
   // only tells the rater what they saw.
   const floor = selfFloor(teamSize);
   if (
-    ctx.split &&
+    hasSplit(ctx.peer) &&
     response.selfFloor !== null &&
     response.selfFloor !== floor
   ) {
@@ -301,7 +308,7 @@ function scoreResponse(ctx, response) {
   const mine = { ratings: null, share: null };
   ctx.own.set(rater.email, mine);
   scorePages(ctx, response, rater, mine);
-  if (ctx.split) {
+  if (hasSplit(ctx.peer)) {
     scoreSplit(ctx, response, rater, mine, floor);
   }
   for (const [question, text] of Object.entries(response.open)) {
@@ -346,7 +353,7 @@ function buildResult(ctx, email, { student, team }) {
     total = NON_COMPLETION_SCORE;
   } else if (
     criterionScores.includes(null) ||
-    (ctx.split && distribution === null)
+    (hasSplit(ctx.peer) && distribution === null)
   ) {
     status = STATUS.noRatings;
     ctx.report(
@@ -356,7 +363,9 @@ function buildResult(ctx, email, { student, team }) {
     );
   } else {
     total = mean(
-      ctx.split ? [...criterionScores, distribution.score] : criterionScores
+      hasSplit(ctx.peer)
+        ? [...criterionScores, distribution.score]
+        : criterionScores
     );
   }
   return {
@@ -380,7 +389,7 @@ function buildResult(ctx, email, { student, team }) {
  * `students` is the parsed roster; `responses` are the responses that count
  * (parsePeerExport); `rubric` is the rubric they are scored against, whose
  * rated criteria (ratedCriteria) each loop page rates; `instrument` is
- * "regular" or "catme" (EXPORT_SHAPES). Returns `{ results, problems,
+ * "regular" or "catme" (`instruments`), required. Returns `{ results, problems,
  * comments }`:
  *
  * - `results`, in roster order: `{ student, team, teamSize, status, raters,
@@ -395,13 +404,9 @@ function buildResult(ctx, email, { student, team }) {
  * - `comments`: every comment, for the instructor only: `{ team, rater,
  *   ratee, question, text }`.
  */
-export function scorePeers({
-  instrument = "regular",
-  responses,
-  rubric,
-  students,
-}) {
-  const { rated } = peerCriteria(rubric, instrument);
+export function scorePeers({ instrument, responses, rubric, students }) {
+  const peer = peerCriteria(rubric, instrument);
+  const { rated } = peer;
   const problems = [];
   const report = (level, who, message) =>
     problems.push({ level, message, who });
@@ -413,6 +418,7 @@ export function scorePeers({
     own: new Map(),
     /** rater -> mean of the ratings they gave, on teams of two. */
     pairMeans: new Map(),
+    peer,
     received: new Map(
       [...byEmail.keys()].map((email) => [
         email,
@@ -420,7 +426,6 @@ export function scorePeers({
       ])
     ),
     report,
-    split: EXPORT_SHAPES[instrument].split,
     teams,
   };
   for (const response of responses) {

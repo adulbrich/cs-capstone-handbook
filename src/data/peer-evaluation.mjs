@@ -42,6 +42,18 @@ export const commentPrompts = {
 };
 
 /**
+ * The two peer instruments, one home for what they differ in: the rubric
+ * CSV under canvas/assignments/peer-evaluation/ each is rated and scored
+ * against, and whether the survey carries the 100-point split. The
+ * generator builds the split's questions only where `split` is true, and
+ * the scorer expects the rubric's point distribution criterion only there.
+ */
+export const instruments = {
+  catme: { rubric: "catme-rubric.csv", split: false },
+  regular: { rubric: "peer-evaluation-rubric.csv", split: true },
+};
+
+/**
  * The survey variants. Midterm and end-of-term are the regular survey and
  * differ only in the title and the closing question; CATME rates the five
  * dimensions of its own rubric (catme-rubric.csv) and has no 100-point

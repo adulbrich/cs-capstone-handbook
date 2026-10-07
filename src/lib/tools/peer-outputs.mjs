@@ -4,6 +4,7 @@
 
 import { toCsv } from "./csv.mjs";
 import {
+  hasSplit,
   NON_COMPLETION_SCORE,
   peerCriteria,
   round,
@@ -24,8 +25,9 @@ import {
  * on each; a student with nothing to score from is left to the instructor
  * (null).
  */
-export function peerRubricScores(result, { distribution, rated }) {
-  const criteria = distribution ? [...rated, distribution] : rated;
+export function peerRubricScores(result, peer) {
+  const { distribution, rated } = peer;
+  const criteria = hasSplit(peer) ? [...rated, distribution] : rated;
   const keyed = (scores) =>
     new Map(
       criteria.map((criterion, i) => [nameKey(criterion.title), scores[i]])
@@ -42,7 +44,7 @@ export function peerRubricScores(result, { distribution, rated }) {
   return {
     comment: null,
     scores: keyed(
-      distribution
+      hasSplit(peer)
         ? [...result.criterionScores, result.distribution.score]
         : result.criterionScores
     ),
@@ -71,7 +73,7 @@ export function ratingFor(criterion, points) {
  * exported row. `instrument` is "regular" or "catme".
  */
 export function fillPeerAssessment({
-  instrument = "regular",
+  instrument,
   rubricExport,
   rubric,
   results,
@@ -119,8 +121,8 @@ export function fillPeerAssessment({
   return { csv: rubricExportCsv(rubricExport.header, rows), problems };
 }
 
-/** Columns that exist only on a survey with a split (`distribution` set). */
-const splitOnly = (distribution) => (columns) => (distribution ? columns : []);
+/** Columns that exist only on a survey with a split (hasSplit). */
+const splitOnly = (peer) => (make) => (hasSplit(peer) ? make() : []);
 
 /** A number for a table or a CSV: two decimals by default, empty when absent. */
 export const cell = (value, places = 2) =>
@@ -132,8 +134,9 @@ export const cell = (value, places = 2) =>
  * when the survey has a split; the peer score. Means only: no rater, no
  * single rating, no comment. `peer` is peerCriteria's.
  */
-export function feedbackCsv(results, { distribution, rated }) {
-  const split = splitOnly(distribution);
+export function feedbackCsv(results, peer) {
+  const { distribution, rated } = peer;
+  const split = splitOnly(peer);
   const header = [
     "Student Name",
     "Email",
@@ -143,9 +146,9 @@ export function feedbackCsv(results, { distribution, rated }) {
       `${title}: mean rating (1 to 5)`,
       `${title}: score (50 to 100)`,
     ]),
-    ...split([
-      `${distribution?.title}: normalized share`,
-      `${distribution?.title}: score`,
+    ...split(() => [
+      `${distribution.title}: normalized share`,
+      `${distribution.title}: score`,
     ]),
     "Peer score",
   ];
@@ -158,7 +161,7 @@ export function feedbackCsv(results, { distribution, rated }) {
       cell(m),
       cell(result.criterionScores[c]),
     ]),
-    ...split([
+    ...split(() => [
       cell(result.distribution?.normalized),
       cell(result.distribution?.score),
     ]),
@@ -171,8 +174,9 @@ export function feedbackCsv(results, { distribution, rated }) {
  * Everything the scorer computed, one row per student, for the instructor.
  * `peer` is peerCriteria's; the split's columns appear only with a split.
  */
-export function detailsCsv(results, { distribution, rated }) {
-  const split = splitOnly(distribution);
+export function detailsCsv(results, peer) {
+  const { rated } = peer;
+  const split = splitOnly(peer);
   const names = rated.map(({ title }) => title);
   const header = [
     "Student Name",
@@ -185,7 +189,7 @@ export function detailsCsv(results, { distribution, rated }) {
     "Raters",
     ...names.map((name) => `${name}: mean`),
     ...names.map((name) => `${name}: score`),
-    ...split([
+    ...split(() => [
       "Mean share received",
       "Normalized share",
       "Clamped",
@@ -193,7 +197,7 @@ export function detailsCsv(results, { distribution, rated }) {
       "Distribution score",
     ]),
     "Gap: ratings",
-    ...split(["Gap: share"]),
+    ...split(() => ["Gap: share"]),
   ];
   const rows = results.map((result) => [
     result.student.name,
@@ -206,7 +210,7 @@ export function detailsCsv(results, { distribution, rated }) {
     result.raters,
     ...result.means.map((m) => cell(m)),
     ...result.criterionScores.map((s) => cell(s)),
-    ...split([
+    ...split(() => [
       cell(result.meanShare),
       cell(result.distribution?.normalized),
       cell(result.distribution?.clamped),
@@ -214,7 +218,7 @@ export function detailsCsv(results, { distribution, rated }) {
       cell(result.distribution?.score),
     ]),
     cell(result.gap?.ratings),
-    ...split([cell(result.gap?.share)]),
+    ...split(() => [cell(result.gap?.share)]),
   ]);
   return toCsv([header, ...rows]);
 }
@@ -223,8 +227,10 @@ export function detailsCsv(results, { distribution, rated }) {
  * Self versus peers, largest first: the self rating's mean over the rated
  * criteria minus the mean received (on the 1 to 5 scale), and the raw self
  * share, before any rescale, minus the mean share received, normalized for
- * team size (times N, divided by 5), null without a split. It queues a
- * look; it never changes a score. Students without both sides are left out.
+ * team size (times N, divided by 5). It queues a look; it never changes a
+ * score. A student is listed whenever both sides of the ratings gap exist;
+ * the share gap is null on a survey without a split, or when the student's
+ * own split or every share they received was left out.
  */
 export function gapRows(results) {
   return results

@@ -33,7 +33,7 @@ function run(teams, responses) {
   return {
     parsed,
     ...scorePeers({
-      instrument: parsed.type,
+      instrument: parsed.instrument,
       responses: parsed.responses,
       rubric: parsed.rubric,
       students: parseRoster(rosterCsv(teams)),
@@ -87,6 +87,7 @@ test("the export of the generated CATME survey is detected and carries no split"
   const parsed = parsePeerExport(csv, { rubrics });
   assert.equal(parsed.type, "catme");
   assert.equal(parsed.rubric, catmeRubric);
+  assert.equal(parsed.instrument, "catme");
   assert.deepEqual(parsed.warnings, []);
 });
 
@@ -157,6 +158,24 @@ test("the CATME rubric assessment: five criteria, by name", () => {
     "15",
     "",
   ]);
+});
+
+test("a CATME dimension column the rubric does not rate stops the run", () => {
+  const fewer = {
+    ...catmeRubric,
+    criteria: catmeRubric.criteria.filter(
+      (c) => c.title !== "Expecting quality"
+    ),
+  };
+  const parsed = parsePeerExport(exportCsv(workedExample(), CATME), {
+    rubrics: { ...rubrics, catme: fewer },
+  });
+  assert.ok(
+    parsed.problems.some((m) =>
+      /Column N_Quality is a CATME dimension the rubric does not rate/.test(m)
+    )
+  );
+  assert.deepEqual(parsed.responses, []);
 });
 
 test("a CATME team of ten fills every loop prefix", () => {

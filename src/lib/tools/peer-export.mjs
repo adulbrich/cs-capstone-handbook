@@ -6,10 +6,11 @@
 
 import { SLOTS } from "./peer-contacts.mjs";
 import {
-  EXPORT_SHAPES,
   emailIn,
+  INSTRUMENT_OF,
   isScored,
   mapColumns,
+  ratingColumns,
   readNumber,
   readRating,
   rosterChoiceOf,
@@ -18,8 +19,7 @@ import { ratedCriteria } from "./peer-survey-qsf.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 
 /** One response, keyed by tag, as the scorer reads it. */
-function reshape(map, rated, row, index) {
-  const { ratingTag } = EXPORT_SHAPES[map.type];
+function reshape(map, ratingTags, row, index) {
   const at = (tag) => (tag ? (row[tag] ?? "") : "");
   const fixed = (key) => at(map.fixed[key]);
   const members = Array.from({ length: SLOTS }, (_, slot) =>
@@ -31,9 +31,7 @@ function reshape(map, rated, row, index) {
 
   const iterations = [];
   for (const [prefix, columns] of Object.entries(map.loop)) {
-    const ratings = rated.map((criterion, r) =>
-      readRating(at(ratingTag(columns, criterion, r)))
-    );
+    const ratings = ratingTags[prefix].map((tag) => readRating(at(tag)));
     const comment = at(columns.comment);
     const rateeAnswer = columns.ratee === "" ? null : at(columns.ratee);
     if (ratings.every((r) => r === null) && comment === "" && !rateeAnswer) {
@@ -113,34 +111,12 @@ export function latestPerStudent(responses) {
 }
 
 /**
- * Header problems between the export and its rubric: a rated criterion with
- * no column on some loop page, or a regular matrix with more rows than the
- * rubric rates.
- */
-function checkAgainstRubric(map, rated, rubric) {
-  const { ratingTag } = EXPORT_SHAPES[map.type];
-  const missing = rated.filter((criterion, r) =>
-    Object.values(map.loop).some(
-      (entry) => ratingTag(entry, criterion, r) === ""
-    )
-  );
-  const rows = Math.max(
-    0,
-    ...Object.values(map.loop).map((entry) => entry.ratings.length)
-  );
-  if (missing.length > 0 || rows > rated.length) {
-    map.problems.push(
-      `The export does not carry the ${rubric.name} rubric's rated criteria${missing.length > 0 ? ` (no column for ${missing.map((c) => c.title).join(", ")})` : ""}. Generate the survey from the current rubric.`
-    );
-  }
-}
-
-/**
- * Parses the export text. `rubrics` holds the parsed rubric of each scored
+ * Parses the export text. `rubrics` holds the parsed rubric of each
  * instrument (`{ regular, catme }`), whose rated criteria (ratedCriteria)
  * are what each loop page rates; the detected type picks one. Returns
- * `{ type, rubric, problems, warnings, responses, dropped, stopped }`.
- * `type` is one of SURVEY_TYPE and `rubric` the one it is scored against;
+ * `{ type, instrument, rubric, problems, warnings, responses, dropped,
+ * stopped }`. `type` is one of SURVEY_TYPE; `instrument` (INSTRUMENT_OF)
+ * and `rubric` are what it is scored as, or null when it is not scored;
  * `responses` (the latest finished response per student) is empty unless
  * the type is scored ("regular" or "catme") with no `problems` (header
  * errors). `dropped` counts previews, unfinished, and superseded
@@ -161,14 +137,18 @@ export function parsePeerExport(text, { includePreviews = false, rubrics }) {
   const parsed = parseQualtricsExport(text, { includePreviews });
   const map = mapColumns(parsed.columns);
   const scored = isScored(map.type);
-  const rubric = scored ? rubrics[map.type] : null;
-  const rated = scored ? ratedCriteria(rubric) : [];
+  const instrument = scored ? INSTRUMENT_OF[map.type] : null;
+  const rubric = scored ? rubrics[instrument] : null;
+  let ratingTags = {};
   if (scored) {
-    checkAgainstRubric(map, rated, rubric);
+    const resolved = ratingColumns(map, instrument, ratedCriteria(rubric));
+    ratingTags = resolved.columns;
+    map.problems.push(...resolved.problems);
   }
   const dropped = { ...parsed.dropped, superseded: 0 };
   const result = {
     dropped,
+    instrument,
     problems: map.problems,
     responses: [],
     rubric,
@@ -180,7 +160,7 @@ export function parsePeerExport(text, { includePreviews = false, rubrics }) {
     return result;
   }
   const finishedRows = parsed.responses.map((row, i) =>
-    reshape(map, rated, row, i)
+    reshape(map, ratingTags, row, i)
   );
   checkRecordedDates(finishedRows);
   const { kept, superseded } = latestPerStudent(finishedRows);
@@ -188,7 +168,7 @@ export function parsePeerExport(text, { includePreviews = false, rubrics }) {
   const finished = new Set(kept.map((response) => response.email));
   result.responses = kept;
   result.stopped = latestPerStudent(
-    parsed.unfinished.map((row, i) => reshape(map, rated, row, i))
+    parsed.unfinished.map((row, i) => reshape(map, ratingTags, row, i))
   ).kept.filter((response) => !finished.has(response.email));
   return result;
 }

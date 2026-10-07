@@ -14,6 +14,7 @@ import {
   cell as show,
 } from "../../lib/tools/peer-outputs.mjs";
 import {
+  hasSplit,
   peerCriteria,
   STATUS,
   scorePeers,
@@ -21,7 +22,10 @@ import {
 import { parseRoster } from "../../lib/tools/roster.mjs";
 import { parseRubricExport } from "../../lib/tools/rubric-export.mjs";
 
-/** The rubrics by instrument (`{ regular, catme }`), parsed at build time by the Astro page. */
+/**
+ * The rubrics by instrument (`{ regular, catme }`), parsed at build time by
+ * the Astro page.
+ */
 let { rubrics } = $props();
 
 const files = $state({
@@ -50,9 +54,9 @@ const parsed = $derived.by(() => {
 
 const TYPES = {
   [SURVEY_TYPE.catme]:
-    "CATME (the spring end-of-term survey): the five dimensions, no split.",
+    "CATME (the spring end-of-term survey): the CATME rubric's dimensions, no split.",
   [SURVEY_TYPE.regular]:
-    "Regular survey: the four criteria and the 100-point split.",
+    "Regular survey: the peer evaluation rubric's criteria and the 100-point split.",
   [SURVEY_TYPE.slots]:
     "Regular survey generated as one block per slot. This export shape is not scored here yet; the scorer reads the Loop & Merge export.",
   [SURVEY_TYPE.unknown]: "Not a peer evaluation export this page recognizes.",
@@ -81,7 +85,7 @@ function reader(key) {
 
 function run() {
   try {
-    const { rubric, type: instrument } = parsed;
+    const { instrument, rubric } = parsed;
     const peer = peerCriteria(rubric, instrument);
     const students = parseRoster(files.roster.text);
     const scored = scorePeers({
@@ -131,6 +135,13 @@ const stoppedAt = $derived(
       r.lastSeen || "an unknown question",
     ])
   )
+);
+/** Whether the scored survey has a split, and the criteria its table shows. */
+const split = $derived(outcome?.peer ? hasSplit(outcome.peer) : false);
+const shownCriteria = $derived(
+  outcome?.peer
+    ? [...outcome.peer.rated, ...(split ? [outcome.peer.distribution] : [])]
+    : []
 );
 const gaps = $derived(outcome?.results ? gapRows(outcome.results) : []);
 
@@ -287,7 +298,7 @@ const baseName = $derived(
           <th>Status</th>
           <th>Score</th>
           <th>Raters</th>
-          {#each [...outcome.peer.rated, outcome.peer.distribution].filter(Boolean) as criterion (criterion.title)}
+          {#each shownCriteria as criterion (criterion.title)}
             <th>{criterion.title}</th>
           {/each}
         </tr>
@@ -304,7 +315,7 @@ const baseName = $derived(
             {#each result.criterionScores as score, c (c)}
               <td>{show(score)}</td>
             {/each}
-            {#if outcome.peer.distribution}
+            {#if split}
               <td>{show(result.distribution?.score)}</td>
             {/if}
           </tr>
@@ -317,7 +328,7 @@ const baseName = $derived(
   <p>
     Largest first. Ratings: the self rating's mean over the rated criteria
     minus the mean received.
-    {#if outcome.peer.distribution}
+    {#if split}
       Share: the raw self share, before any rescale, minus the mean share
       received, times N, divided by 5.
     {/if}
@@ -328,7 +339,7 @@ const baseName = $derived(
       <thead>
         <tr>
           <th>Student</th><th>Team</th><th>Ratings gap</th>
-          {#if outcome.peer.distribution}<th>Share gap</th>{/if}
+          {#if split}<th>Share gap</th>{/if}
         </tr>
       </thead>
       <tbody>
@@ -337,7 +348,7 @@ const baseName = $derived(
             <td>{row.name}</td>
             <td>{row.team}</td>
             <td>{show(row.ratings)}</td>
-            {#if outcome.peer.distribution}<td>{show(row.share)}</td>{/if}
+            {#if split}<td>{show(row.share)}</td>{/if}
           </tr>
         {/each}
       </tbody>
