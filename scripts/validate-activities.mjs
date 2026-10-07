@@ -87,20 +87,16 @@ import {
 } from "../src/lib/activity-links.mjs";
 import { canvasRows, TERMS } from "../src/lib/canvas-entries.mjs";
 import { OUTCOME_TAG } from "../src/lib/rubric-csv.mjs";
+import { scheduleLines } from "../src/lib/schedule-lines.mjs";
 import { parseFrontmatter } from "./lib/content.mjs";
 
 const ASSIGNMENTS_DIR = "src/content/docs/assignments";
 const ACTIVITIES_DIR = "src/content/docs/activities";
 const GUIDES_DIR = "src/content/docs/guides";
 const SCHEDULE_PAGE = "src/content/docs/introduction/schedule.mdx";
+const scheduleSource = readFileSync(SCHEDULE_PAGE, "utf8");
 const WORKSHOP_PAGE = "src/content/docs/assignments/workshop-activities.mdx";
 const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
-// The schedule heads its term sections "## Fall (CS 461)".
-const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
-const WEEK_HEADING_RE = /^### Week (\d+)\b/;
-// A schedule line is a list item labelled in bold: Due, In class, Read,
-// Optional. A nested item carries no label and belongs to the line above it.
-const ROW_LABEL_RE = /^- \*\*([A-Za-z][A-Za-z -]*?):?\*\*/;
 
 // The badge line belongs on the line after the blank line under the heading.
 // The scan window is wider than that only so a badge line pushed down by a
@@ -215,29 +211,11 @@ function readAssignments() {
 // an Optional one, which is how the fall week 3 contradiction survived CI.
 function readSchedulePlacements() {
   const placements = [];
-  let term = null;
-  let week = null;
-  let label = null;
-  for (const line of readFileSync(SCHEDULE_PAGE, "utf8").split("\n")) {
-    if (line.startsWith("## ")) {
-      term = line.match(TERM_HEADING_RE)?.[1].toLowerCase() ?? null;
-      week = null;
-      label = null;
-      continue;
-    }
-    const weekHeading = line.match(WEEK_HEADING_RE);
-    if (weekHeading) {
-      week = Number(weekHeading[1]);
-      label = null;
-      continue;
-    }
-    // A nested item or a wrapped continuation belongs to the line above it.
-    label = line.match(ROW_LABEL_RE)?.[1] ?? label;
-    const row = label;
+  for (const { row, term, text, week } of scheduleLines(scheduleSource)) {
     if (!row) {
       continue;
     }
-    for (const m of line.matchAll(ACTIVITY_LINK_RE)) {
+    for (const m of text.matchAll(ACTIVITY_LINK_RE)) {
       placements.push({ key: activityKey(m[1], m[2]), row, term, week });
     }
   }
@@ -420,11 +398,11 @@ const GUIDES_NEVER_SCHEDULED = new Set([
   "git-and-github",
 ]);
 const scheduledGuides = new Set();
-for (const line of readFileSync(SCHEDULE_PAGE, "utf8").split("\n")) {
-  if (line.match(ROW_LABEL_RE)?.[1] !== "Read") {
+for (const { labelled, row, text } of scheduleLines(scheduleSource)) {
+  if (!labelled || row !== "Read") {
     continue;
   }
-  for (const m of line.matchAll(GUIDE_LINK_RE)) {
+  for (const m of text.matchAll(GUIDE_LINK_RE)) {
     scheduledGuides.add(m[1]);
   }
 }

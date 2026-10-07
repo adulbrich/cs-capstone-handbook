@@ -1,0 +1,95 @@
+---
+// Who is in the room: a row of portraits with a name under each, and the
+// slot beside them for what to say about them (and <Notes>). Portraits are
+// images imported from src/assets, cropped square and optimized at build.
+//
+//   ---
+//   import ada from "../assets/decks/ada.jpg";
+//   ---
+//   <PeopleSlide title="Your instructors"
+//     people={[{ name: "Ada Lovelace", src: ada }]}>
+//     <p>One address reaches both of us.</p>
+//   </PeopleSlide>
+//
+// Two or three people fit beside the text. Other attributes land on the
+// <section>, as on <Slide>.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import type { ComponentProps } from "astro/types";
+import Slide from "./Slide.astro";
+
+interface Person {
+  name: string;
+  src: ImageMetadata;
+}
+
+interface Props extends Omit<ComponentProps<typeof Slide>, "wide"> {
+  people: Person[];
+}
+
+const { people, ...attrs } = Astro.props;
+---
+
+<Slide {...attrs}>
+  <div class="people">
+    <ul class="portraits">
+      {
+        people.map((person) => (
+          <li>
+            <Image
+              src={person.src}
+              alt={`Portrait of ${person.name}`}
+              widths={[420]}
+              sizes="420px"
+            />
+            <p class="name">{person.name}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="text"><slot /></div>
+  </div>
+</Slide>
+
+<style>
+  .people {
+    display: flex;
+    flex: 1;
+    gap: 96px;
+    align-items: center;
+    min-height: 0;
+  }
+
+  .portraits {
+    display: flex;
+    flex: none;
+    gap: 48px;
+  }
+
+  .portraits li {
+    padding: 0;
+    margin: 0;
+  }
+
+  .portraits li::before {
+    display: none;
+  }
+
+  .portraits :global(img) {
+    display: block;
+    width: 420px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .name {
+    margin-block-start: 24px;
+    font-size: var(--deck-text-body);
+    font-weight: 700;
+  }
+
+  .text {
+    min-width: 0;
+  }
+</style>

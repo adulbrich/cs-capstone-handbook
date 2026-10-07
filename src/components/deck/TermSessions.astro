@@ -1,0 +1,175 @@
+---
+// A term's weeks from the week-by-week schedule (introduction/schedule.mdx),
+// read through termWeeks in src/lib/schedule-lines.mjs, the reader
+// scripts/validate-activities.mjs checks the schedule with. Nothing here is
+// retyped: an edit to the schedule changes the slide at the next build.
+//
+//   <Slide kicker="Fall" title="When the class meets" wide>
+//     <TermSessions term="fall" />
+//   </Slide>
+//
+//   <Slide title="Your first three weeks" wide>
+//     <TermSessions term="fall" from={0} to={2} rows={["Due", "In class"]} />
+//   </Slide>
+//
+// With the default rows, ["In class"], it lists every week of the term in
+// two columns, and a week with no In class line reads "No session", as the
+// schedule defines it. With more than one row it shows one card per week,
+// so keep that to three or four weeks. `from` and `to` bound the weeks,
+// inclusive. Links on the schedule become plain text.
+import schedule from "../../content/docs/introduction/schedule.mdx?raw";
+import { termWeeks } from "../../lib/schedule-lines.mjs";
+
+interface Props {
+  from?: number;
+  rows?: ("Due" | "In class" | "Optional" | "Read")[];
+  term: "fall" | "winter" | "spring";
+  to?: number;
+}
+
+const { from = 0, rows = ["In class"], term, to = 99 } = Astro.props;
+const MD_LINK_RE = /\[([^\]]+)\]\([^)]*\)/g;
+const BOLD_RE = /\*\*([^*]+)\*\*/g;
+const plain = (md: string) => {
+  const text = md.replace(MD_LINK_RE, "$1").replace(BOLD_RE, "$1");
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
+const weeks = termWeeks(schedule, term)
+  .filter(({ week }) => week >= from && week <= to)
+  .map(({ rows: found, week }) => ({
+    rows: rows.map((label) => {
+      const row = found.get(label);
+      return {
+        items: row?.items.map(plain) ?? [],
+        label,
+        text: row?.text ? plain(row.text) : null,
+      };
+    }),
+    week,
+  }));
+if (weeks.length === 0) {
+  throw new Error(
+    `<TermSessions term="${term}">: no weeks ${from} to ${to} on the schedule.`
+  );
+}
+const sessionsOnly = rows.length === 1 && rows[0] === "In class";
+---
+
+{
+  sessionsOnly ? (
+    <ol class="sessions" style={`--rows: ${Math.ceil(weeks.length / 2)}`}>
+      {weeks.map(({ rows: [session], week }) => (
+        <li class:list={{ none: !session.text }}>
+          <span class="week">Week {week}</span>
+          <span>{session.text ?? "No session"}</span>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <div class="weeks" style={`--weeks: ${weeks.length}`}>
+      {weeks.map(({ rows: found, week }) => (
+        <article class="card">
+          <h3>Week {week}</h3>
+          {found.every((row) => !row.text && row.items.length === 0) && (
+            <p class="empty">Nothing on the schedule</p>
+          )}
+          {found.map((row) =>
+            row.text || row.items.length > 0 ? (
+              <div class="row">
+                <p class="label">{row.label}</p>
+                {row.text && <p>{row.text}</p>}
+                {row.items.length > 0 && (
+                  <ul>
+                    {row.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ) : null
+          )}
+        </article>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .sessions {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(var(--rows), auto);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 80px;
+    align-content: start;
+    font-size: var(--deck-text-min);
+    line-height: 1.3;
+  }
+
+  .sessions li {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 24px;
+    padding: 0 0 22px;
+    margin: 0;
+    border-block-end: 3px solid var(--deck-rule);
+  }
+
+  .sessions li::before {
+    display: none;
+  }
+
+  .week {
+    font-weight: 750;
+    color: var(--deck-accent-ink);
+    white-space: nowrap;
+  }
+
+  .none span:last-child {
+    color: var(--deck-ink-soft);
+  }
+
+  .weeks {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(var(--weeks), minmax(0, 1fr));
+    gap: 36px;
+    align-items: start;
+    max-width: calc(var(--weeks) * 600px);
+    min-height: 0;
+  }
+
+  .card {
+    padding: 36px 36px 40px;
+    font-size: var(--deck-text-min);
+    line-height: 1.3;
+    background: var(--deck-card);
+    border-block-start: 12px solid var(--deck-accent);
+    border-radius: 6px;
+  }
+
+  .card h3 {
+    margin-block-end: 28px;
+  }
+
+  .row + .row {
+    margin-block-start: 28px;
+  }
+
+  .label {
+    margin-block-end: 8px;
+    font-weight: 700;
+    color: var(--deck-accent-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .empty {
+    color: var(--deck-ink-soft);
+  }
+
+  .card li {
+    margin-block-end: 0.3em;
+  }
+</style>

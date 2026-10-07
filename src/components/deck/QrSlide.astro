@@ -1,0 +1,90 @@
+---
+// A link the room opens on their phones: a QR code large enough to scan from
+// the back row, the address written out beside it, and an optional line of
+// text. The code is an inline SVG generated at build time by lean-qr, so
+// there is no image to go stale. The slot takes the text and <Notes>.
+//
+//   <QrSlide kicker="Projects" title="Find the projects you like"
+//     url="https://capstone.eecs.oregonstate.edu/">
+//     <p>Sign in with your ONID to sort the list by your interests.</p>
+//     <Notes time="1:00">...</Notes>
+//   </QrSlide>
+//
+// Pass the URL from src/site.ts or Astro.site rather than typing it. Other
+// attributes land on the <section>, as on <Slide>.
+import type { ComponentProps } from "astro/types";
+import { generate } from "lean-qr";
+import { toSvgPath } from "lean-qr/extras/svg";
+import Slide from "./Slide.astro";
+
+interface Props extends Omit<ComponentProps<typeof Slide>, "wide"> {
+  url: string;
+}
+
+const { url, ...attrs } = Astro.props;
+// The four-module quiet zone the QR specification asks for.
+const QUIET = 4;
+const code = generate(url);
+const side = code.size + QUIET * 2;
+// The address as the room reads it, breaking only after a slash.
+const shown = url
+  .replace(/^https?:\/\//, "")
+  .replace(/\/$/, "")
+  .split("/");
+---
+
+<Slide {...attrs}>
+  <div class="qr">
+    <svg
+      viewBox={`${-QUIET} ${-QUIET} ${side} ${side}`}
+      role="img"
+      aria-label={`QR code for ${url}`}
+      shape-rendering="crispEdges"
+    >
+      <rect x={-QUIET} y={-QUIET} width={side} height={side} class="off" />
+      <path d={toSvgPath(code)} class="on" />
+    </svg>
+    <div class="text">
+      <p class="url">
+        <a href={url}>
+          {shown.map((part, i) => (i === 0 ? part : <>/<wbr />{part}</>))}
+        </a>
+      </p>
+      <slot />
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .qr {
+    display: flex;
+    flex: 1;
+    gap: 96px;
+    align-items: center;
+    min-height: 0;
+  }
+
+  svg {
+    flex: none;
+    width: 640px;
+    height: 640px;
+  }
+
+  .off {
+    fill: var(--deck-paper);
+  }
+
+  .on {
+    fill: var(--deck-ink);
+  }
+
+  .text {
+    max-width: 900px;
+  }
+
+  .url {
+    margin-block-end: 40px;
+    font-size: var(--deck-text-lead);
+    font-weight: 700;
+  }
+</style>

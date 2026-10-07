@@ -16,6 +16,74 @@ import { tagFor, tagNode } from "./who-tag.mjs";
 // A weight is a whole percent; scripts/validate-outcomes.mjs reads the same rule.
 export const WEIGHT_RE = /^\d+$/;
 
+const GRID_RE = /<GradeGrid>\n([\s\S]*?)\n<\/GradeGrid>/;
+const GRID_ITEM_RE = /^\[([^\]]+)\]\(\/assignments\/([a-z0-9-]+)\/[^)]*\)$/;
+const BOLD_LEAD_RE = /^\*\*(.+?)\*\*\s*(.*)$/;
+
+const tableCells = (row) =>
+  row
+    .trim()
+    .slice(1, -1)
+    .split("|")
+    .map((c) => c.trim());
+
+function gridRow([first, ...cells]) {
+  const values = cells.map((c) => {
+    if (c === "") {
+      return null;
+    }
+    return WEIGHT_RE.test(c) ? Number(c) : Number.NaN;
+  });
+  const bold = first.match(BOLD_LEAD_RE);
+  if (bold?.[1] === "Total") {
+    return { cells, first, kind: "total", values };
+  }
+  if (bold) {
+    return {
+      cells,
+      first,
+      kind: "component",
+      name: bold[1],
+      values,
+      who: bold[2],
+    };
+  }
+  const item = first.match(GRID_ITEM_RE);
+  if (item) {
+    return {
+      cells,
+      first,
+      kind: "item",
+      label: item[1],
+      slug: item[2],
+      values,
+    };
+  }
+  return { cells, first, kind: "unknown", values };
+}
+
+// The grade grid read as text, for the two readers that never render it:
+// scripts/validate-outcomes.mjs, which sums it, and the deck component
+// src/components/deck/GradeGrid.astro, which projects one term of it.
+// `source` is assignments/introduction.mdx. Returns null when no Markdown
+// table sits inside <GradeGrid>; otherwise the header's term names and one
+// entry per body row: a bold `component` (its name and the "who scores it"
+// text after it), an `item` that is one link to an assignment page (its link
+// text and slug), the bold `total`, or `unknown`. `cells` are the term cells
+// as written, and `values` their weights: null for an empty cell, NaN for one
+// that is not a whole number.
+export function readGradeGrid(source) {
+  const rows = (source.match(GRID_RE)?.[1] ?? "")
+    .split("\n")
+    .filter((l) => l.trim().startsWith("|"))
+    .map(tableCells);
+  if (rows.length === 0) {
+    return null;
+  }
+  const [[, ...terms], , ...body] = rows;
+  return { rows: body.map(gridRow), terms };
+}
+
 const isBlank = (n) => n.type === "text" && !n.value.trim();
 const isEl = (n, tag) => n?.type === "element" && (!tag || n.tagName === tag);
 const cellsOf = (tr) => tr.children.filter((c) => isEl(c, "td"));

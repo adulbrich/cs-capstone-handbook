@@ -29,7 +29,7 @@ import {
   TERMS,
   termWeight,
 } from "../src/lib/canvas-entries.mjs";
-import { WEIGHT_RE } from "../src/lib/grade-grid.mjs";
+import { readGradeGrid, WEIGHT_RE } from "../src/lib/grade-grid.mjs";
 import {
   ABET_OUTCOMES,
   OTHER_OUTCOMES,
@@ -273,64 +273,43 @@ if (parsed === 0) {
 // the Canvas readme, so a re-cut that misses one leaves students' grades not
 // adding up.
 const COMPONENT_WEIGHT = 25;
-const GRID_ITEM_RE = /^\[[^\]]+\]\(\/assignments\/([a-z0-9-]+)\/[^)]*\)$/;
-const overview = readFileSync(
-  join(ASSIGNMENTS_DIR, "introduction.mdx"),
-  "utf8"
-);
-const tableCells = (row) =>
-  row
-    .trim()
-    .slice(1, -1)
-    .split("|")
-    .map((c) => c.trim());
 // term -> (slug -> percent), summed over every row linking the page: the
 // partner and peer pages each own a midterm row and an end-of-term row.
 const gridWeights = new Map(TERMS.map((t) => [t, new Map()]));
-const grid = overview.match(/<GradeGrid>\n([\s\S]*?)\n<\/GradeGrid>/)?.[1];
-const gridRows = (grid ?? "")
-  .split("\n")
-  .filter((l) => l.trim().startsWith("|"));
+const grid = readGradeGrid(
+  readFileSync(join(ASSIGNMENTS_DIR, "introduction.mdx"), "utf8")
+);
 const gridFail = (message) => {
   console.error(`GRADE GRID: ${message}`);
   failed = true;
 };
-if (gridRows.length === 0) {
+if (!grid) {
   gridFail("no Markdown table inside <GradeGrid> in introduction.mdx.");
-} else if (
-  tableCells(gridRows[0])
-    .slice(1)
-    .map((c) => c.toLowerCase())
-    .join() === TERMS.join()
-) {
+} else if (grid.terms.map((c) => c.toLowerCase()).join() === TERMS.join()) {
   const components = [];
   let total = null;
-  for (const row of gridRows.slice(2)) {
-    const [first, ...rest] = tableCells(row);
-    const bad = rest.find((c) => c !== "" && !WEIGHT_RE.test(c));
-    if (rest.length !== TERMS.length || bad !== undefined) {
-      gridFail(`"${first}" needs one weight or an empty cell per term.`);
+  for (const row of grid.rows) {
+    const bad = row.cells.find((c) => c !== "" && !WEIGHT_RE.test(c));
+    if (row.cells.length !== TERMS.length || bad !== undefined) {
+      gridFail(`"${row.first}" needs one weight or an empty cell per term.`);
       continue;
     }
-    const values = rest.map((c) => (c === "" ? null : Number(c)));
-    const name = first.match(/^\*\*(.+?)\*\*/)?.[1];
-    if (name === "Total") {
-      total = values;
-    } else if (name) {
-      components.push({ items: [], name, values });
+    if (row.kind === "total") {
+      total = row.values;
+    } else if (row.kind === "component") {
+      components.push({ items: [], name: row.name, values: row.values });
     } else {
-      const slug = first.match(GRID_ITEM_RE)?.[1];
-      if (!(slug && components.length > 0)) {
+      if (!(row.kind === "item" && components.length > 0)) {
         gridFail(
-          `"${first}" is neither a bold component nor an item that is one link to an assignment page, under a component.`
+          `"${row.first}" is neither a bold component nor an item that is one link to an assignment page, under a component.`
         );
         continue;
       }
-      components.at(-1).items.push(values);
+      components.at(-1).items.push(row.values);
       TERMS.forEach((term, i) => {
-        if (values[i] !== null) {
+        if (row.values[i] !== null) {
           const m = gridWeights.get(term);
-          m.set(slug, (m.get(slug) ?? 0) + values[i]);
+          m.set(row.slug, (m.get(row.slug) ?? 0) + row.values[i]);
         }
       });
     }
@@ -365,7 +344,7 @@ if (gridRows.length === 0) {
     }
   });
 } else {
-  gridFail(`the header must name the terms in order: ${gridRows[0]}`);
+  gridFail(`the header must name the terms in order: ${grid.terms.join(", ")}`);
 }
 
 // --- Frontmatter weight reconciliation ---------------------------------------

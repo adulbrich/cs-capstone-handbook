@@ -1,0 +1,138 @@
+---
+// One term of the grade grid, as four component cards: each component's
+// weight, who scores it, and the assignments under it with their weights.
+// Read from the grid on assignments/introduction.mdx through readGradeGrid
+// in src/lib/grade-grid.mjs, the reader scripts/validate-outcomes.mjs sums,
+// so a weight edited there changes this slide at the next build. Put it in a
+// <Slide wide>; the handbook page's own grid is src/components/GradeGrid.astro.
+//
+//   <Slide kicker="Your fall grade" title="Four equal components" wide>
+//     <GradeGrid term="fall" />
+//   </Slide>
+//
+// An assignment that does not run in `term` is left out; an unknown term
+// fails the build.
+import overview from "../../content/docs/assignments/introduction.mdx?raw";
+import { readGradeGrid } from "../../lib/grade-grid.mjs";
+
+interface Props {
+  term: "fall" | "winter" | "spring";
+}
+
+const { term } = Astro.props;
+const MD_LINK_RE = /\[([^\]]+)\]\([^)]*\)/g;
+const plain = (md: string) => md.replace(MD_LINK_RE, "$1");
+
+const grid = readGradeGrid(overview);
+const column = grid?.terms.findIndex((t: string) => t.toLowerCase() === term);
+if (!grid || column === undefined || column < 0) {
+  throw new Error(
+    `<GradeGrid term="${term}">: no ${term} column in the grade grid on assignments/introduction.mdx.`
+  );
+}
+
+interface Card {
+  items: { label: string; weight: number }[];
+  name: string;
+  weight: number;
+  who: string;
+}
+const cards: Card[] = [];
+for (const row of grid.rows) {
+  const weight = row.values[column];
+  if (row.kind === "component") {
+    cards.push({ items: [], name: row.name, weight, who: plain(row.who) });
+  } else if (row.kind === "item" && weight !== null && cards.length > 0) {
+    cards.at(-1)?.items.push({ label: row.label, weight });
+  }
+}
+---
+
+<div class="grid">
+  {
+    cards.map((card) => (
+      <article class="card">
+        <div class="head">
+          <h3>{card.name}</h3>
+          <p class="weight">{card.weight}%</p>
+        </div>
+        <p class="who">{card.who}</p>
+        <ul>
+          {card.items.map((item) => (
+            <li>
+              <span>{item.label}</span>
+              <span class="num">{item.weight}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 36px;
+    min-height: 0;
+  }
+
+  .card {
+    padding: 28px 32px;
+    background: var(--deck-card);
+    border-block-start: 12px solid var(--deck-accent);
+    border-radius: 6px;
+  }
+
+  .head {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-block-end: 16px;
+  }
+
+  h3 {
+    font-size: var(--deck-text-body);
+  }
+
+  .weight {
+    margin: 0;
+    font-size: var(--deck-text-lead);
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--deck-accent-ink);
+  }
+
+  .who {
+    margin-block-end: 20px;
+    font-size: var(--deck-text-min);
+    line-height: 1.3;
+    color: var(--deck-ink-soft);
+  }
+
+  ul {
+    font-size: var(--deck-text-min);
+    border-block-start: 3px solid var(--deck-rule);
+  }
+
+  li {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    padding: 8px 0 0;
+    margin: 0;
+  }
+
+  li::before {
+    display: none;
+  }
+
+  .num {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

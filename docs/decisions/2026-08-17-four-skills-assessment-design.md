@@ -229,7 +229,7 @@ Files touched: `src/content/docs/activities/introduction.mdx`, all 10 themed act
 
 `STAFF-RUNBOOK.md` specifies a needed deck series (spec-writing for agents, AI-diff review, testing workshop) that `IMPLEMENTED.md` open item 3 admits does not exist. Build those decks from the promoted activity pages plus the new `ai.mdx`. This closes an owed open item and makes activity usefulness a function of attendance rather than opt-in.
 
-Deck targets: one-way doors and delegation triage; building the agent-operated verification harness; specification for agents. Existing `decks/Fall.md` week 1 is done and unaffected.
+Deck targets: one-way doors and delegation triage; building the agent-operated verification harness; specification for agents. Existing `decks/Fall.md` week 1 is done and unaffected (since replaced by `src/decks/fall-week-0.astro`, #467).
 
 ### 4.7 `generative-ai.mdx`: one section revised
 

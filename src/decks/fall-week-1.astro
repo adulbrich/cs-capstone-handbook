@@ -1,0 +1,206 @@
+---
+// Fall week 1: teams are announced and sit together for the first time.
+// Five minutes of information, fifteen to find the team on the seating map,
+// twenty for Two truths and a bug, then the Team Charter kickoff for the rest
+// of the session. Served at /decks/fall-week-1/. The seating map is the live
+// decks/auditorium-seating.html, served by src/pages/decks/.
+import FrameSlide from "../components/deck/FrameSlide.astro";
+import Notes from "../components/deck/Notes.astro";
+import QrSlide from "../components/deck/QrSlide.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import TermSessions from "../components/deck/TermSessions.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+
+export const title = "Team Introductions and Charter";
+
+const charter = new URL("/assignments/team-charter/", Astro.site).href;
+---
+
+<TitleSlide
+  kicker="CS 461, fall week 1"
+  title="Team Introductions and Charter"
+  subtitle="Meet your team, then start the agreement you'll work under"
+  byline="Kirsten Winters and Alex Ulbrich, your instructors"
+>
+  <Notes time="0:15">
+    <p>Five minutes of information, then the room moves.</p>
+  </Notes>
+</TitleSlide>
+
+<Slide kicker="Today" title="Agenda">
+  <ol>
+    <li>Information from the instruction team</li>
+    <li>Find your team and sit together</li>
+    <li>Icebreaker: Two truths and a bug</li>
+    <li>Start the Team Charter, and ask questions</li>
+  </ol>
+  <Notes time="0:30" cue="Information is five minutes; keep to it.">
+    <p>
+      The budget: 5 minutes of information, 15 to find your team, 20 for the
+      icebreaker (the activity itself is fifteen minutes; the other five are
+      for settling and wants), then the charter for the rest of the session.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="This week" title="Email your project partner">
+  <ul>
+    <li>Meet as a team, then draft from the introduction email template</li>
+    <li class="fragment">Send it by the end of week 1, every teammate on Cc</li>
+    <li class="fragment">Be professional, be brief, and adapt the template as you see fit</li>
+    <li class="fragment">
+      Does every teammate already meet with them? Don't send it: message the
+      instructors at cs-46x-help@oregonstate.edu by the end of week 1
+    </li>
+  </ul>
+  <Notes time="1:15" cue="Send it today if you can.">
+    <p>
+      The template is linked from Term Startup and already carries the
+      questions worth asking before the first meeting. The meeting you're
+      asking for has to fit someone else's calendar, so send it as soon as you
+      know your team. Your partner's contact details arrive by email.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Due next" title="Weeks 1 and 2" wide>
+  <TermSessions term="fall" from={1} to={2} rows={["Due", "In class"]} />
+  <Notes time="1:30">
+    <p>
+      From the schedule. Week 2 is the first TA check-in, which goes through
+      the Term Startup list while it's still in progress.
+    </p>
+  </Notes>
+</Slide>
+
+<TwoColumnSlide kicker="This term" title="Check announcements" divider>
+  <div slot="left">
+    <h3>This week</h3>
+    <ul>
+      <li>Your team's TA, who sets up your check-ins</li>
+      <li>Your project partner's contact details</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Several teams, one project?</h3>
+    <ul>
+      <li>Agree with your partner what your team owns</li>
+      <li>Agree how the teams talk to each other</li>
+    </ul>
+  </div>
+  <Notes time="1:15">
+    <p>
+      Which projects may split into two teams this year is in announcements.
+      A team on a multi-team project negotiates what it owns (an interface, a
+      repository, or a milestone) and writes its part into its Definition of
+      Shipped in winter.
+    </p>
+  </Notes>
+</TwoColumnSlide>
+
+<StatementSlide kicker="Teams are announced">
+  Find your team number on the map, and sit together.
+  <Notes time="0:15">
+    <p>Next slide is the live map. Leave it up while people move.</p>
+  </Notes>
+</StatementSlide>
+
+<FrameSlide
+  src="/decks/auditorium-seating.html?slide"
+  label="Auditorium seating map by team number"
+>
+  <Notes time="15:00" cue="Hover a team's seats to highlight them for a lost team.">
+    <p>
+      The live seating map. Hovering a block highlights one team; left and
+      right are as the room faces the screen. Fifteen minutes to find seats
+      and say hello.
+    </p>
+  </Notes>
+</FrameSlide>
+
+<Slide kicker="Icebreaker, fifteen minutes" title="Two truths and a bug">
+  <ul>
+    <li><strong>Write three claims each:</strong> two true and one invented, all about your life with computers</li>
+    <li class="fragment"><strong>Guess before the reveal:</strong> the team votes on the lie, then the author says. A minute each, no deliberating</li>
+    <li class="fragment"><strong>Chase the interesting one:</strong> ask for the story behind the claim that caused the most argument</li>
+    <li class="fragment"><strong>End with a want:</strong> one sentence each on what you most want to be better at by the end of the project</li>
+  </ul>
+  <Notes time="20:00" cue="Call time at fifteen, then give five for wants.">
+    <p>
+      Specific beats impressive: "I took down production with a missing
+      semicolon", "I learned to program on a graphing calculator", "I have
+      never once used a debugger". Nobody collects the wants; people say them
+      out loud so teammates know what each person is here for.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Team Charter kickoff" title="Three artifacts, one submission">
+  <ol>
+    <li><strong>The charter:</strong> roles, decision process, cadence and tools, conflict and accountability, inclusion norms, AI and confidentiality</li>
+    <li class="fragment"><strong><code>CONTRIBUTING.md</code>:</strong> setup, the PR workflow, the Definition of Done, and the Contribution Norm</li>
+    <li class="fragment"><strong>The AI context file:</strong> <code>AGENTS.md</code> or your tool's equivalent</li>
+  </ol>
+  <p class="deck-small after-list fragment">
+    You won't know everything yet. Write down what you know, and name what
+    gets added later and who adds it.
+  </p>
+  <Notes time="3:00" cue="Teams start writing after the next slide.">
+    <p>
+      The charter is 2 to 4 pages; the other two live in the repository. In
+      week 2 there may be little code: a Definition of Done can name the gate
+      the team will add, the sprint it lands in, and its owner. Set Up Your
+      Repository's Skills prepares the AI context file and is this week's
+      optional activity.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Team Charter kickoff" title="Three roles, one owner each">
+  <ul>
+    <li><strong>Project Manager:</strong> the board and the partner communication cadence</li>
+    <li class="fragment"><strong>AI Coordinator:</strong> the AI context file and the confidentiality boundary</li>
+    <li class="fragment"><strong>Quality Owner:</strong> CI health, the Definition of Done, and releases</li>
+  </ul>
+  <p class="deck-small after-list fragment">
+    Rotate at least once a term. Everyone chairs at least one decision per
+    term.
+  </p>
+  <Notes time="2:00">
+    <p>
+      Keep these three names: the defense asks about them. On a team of five,
+      the students who hold none of the three name an ownership area instead,
+      so everyone owns something nameable.
+    </p>
+  </Notes>
+</Slide>
+
+<QrSlide kicker="Start now" title="The Team Charter page" url={charter}>
+  <p>Every required section, and the rubric it's scored on.</p>
+  <Notes time="1:00" cue="Teams work on the charter for the rest of the session.">
+    <p>Walk the room; the instruction team takes questions table by table.</p>
+  </Notes>
+</QrSlide>
+
+<Slide kicker="Sources" title="Where this deck comes from">
+  <ul class="deck-small">
+    <li>The introduction email: Term Startup</li>
+    <li>Due weeks and class sessions: Schedule</li>
+    <li>Several teams on one project: For Students</li>
+    <li>The icebreaker: Two truths and a bug, in Team and Workflow activities</li>
+    <li>The charter, its sections and roles: Team Charter</li>
+    <li>The seating map: decks/auditorium-seating.html</li>
+  </ul>
+  <Notes time="0:15">
+    <p>Leave the charter QR code up instead if teams are still scanning.</p>
+  </Notes>
+</Slide>
+
+<style>
+  /* A closing line under a list, set apart from its last item. */
+  .after-list {
+    margin-block-start: 56px;
+  }
+</style>
