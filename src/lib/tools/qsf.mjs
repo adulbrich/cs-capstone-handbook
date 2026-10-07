@@ -172,24 +172,101 @@ export const singleLine = (qid, tag, text) =>
     SearchSource: { AllowFreeResponse: "false" },
   });
 
+/** One expression of question logic on choice `choiceId` of question `qid`. */
+function choiceExpression(qid, locator, operator, words, extra = {}) {
+  return {
+    ChoiceLocator: locator,
+    Description: `<span class="ConjDesc">If</span> <span class="QuestionDesc">${qid}</span> <span class="OpDesc">${words}</span> `,
+    LeftOperand: locator,
+    LogicType: "Question",
+    Operator: operator,
+    QuestionID: qid,
+    QuestionIDFromLocator: qid,
+    QuestionIsInLoop: "no",
+    Type: "Expression",
+    ...extra,
+  };
+}
+
+/**
+ * Custom validation for a forced single choice whose choice `id` has a text
+ * box: valid when that choice is not selected, or when its text is a number
+ * from `min` to `max`.
+ */
+function numberEntryValidation(qid, { id, max, min }) {
+  const selected = `q://${qid}/SelectableChoice/${id}`;
+  const entry = `q://${qid}/ChoiceTextEntryValue/${id}`;
+  return {
+    Settings: {
+      CustomValidation: {
+        Logic: {
+          0: {
+            0: choiceExpression(
+              qid,
+              selected,
+              "NotSelected",
+              "Is Not Selected"
+            ),
+            Type: "If",
+          },
+          1: {
+            0: choiceExpression(
+              qid,
+              entry,
+              "GreaterThanOrEqual",
+              `Is Greater Than or Equal to ${min}`,
+              { RightOperand: String(min) }
+            ),
+            1: choiceExpression(
+              qid,
+              entry,
+              "LessThanOrEqual",
+              `Is Less Than or Equal to ${max}`,
+              { Conjuction: "And", RightOperand: String(max) }
+            ),
+            Type: "Or",
+          },
+          Type: "BooleanExpression",
+        },
+        Message: {
+          description: `Enter a number from ${min} to ${max}.`,
+          libraryID: null,
+          messageID: null,
+          subMessageID: "VE_ERROR",
+        },
+      },
+      ForceResponse: "ON",
+      ForceResponseType: "ON",
+      Type: "CustomValidation",
+    },
+  };
+}
+
 /**
  * One answer from a vertical list; choice i + 1 is `options[i]`, recoded
  * i + 1. `reversed` lists the last option first; `forced` requires an
- * answer; `textEntry` lists the choice IDs that carry a text box, exported
- * as `<tag>_<id>_TEXT`.
+ * answer. `numberEntry` (`{ id, min, max }`) gives choice `id` a text box,
+ * exported as `<tag>_<id>_TEXT`, that must hold a number from `min` to
+ * `max` when the choice is selected; it implies `forced`.
  */
 export function singleChoice(
   qid,
   tag,
   text,
   options,
-  { forced = false, reversed = false, textEntry = [] } = {}
+  { forced = false, numberEntry = null, reversed = false } = {}
 ) {
   const ids = options.map((_, i) => i + 1);
   const choice = (option, id) =>
-    textEntry.includes(id)
+    id === numberEntry?.id
       ? { Display: option, TextEntry: "true" }
       : { Display: option };
+  let validation = {};
+  if (numberEntry) {
+    validation = { Validation: numberEntryValidation(qid, numberEntry) };
+  } else if (forced) {
+    validation = { Validation: FORCED };
+  }
   return question(qid, tag, "MC", "SAVR", text, {
     ChoiceOrder: reversed ? ids.toReversed() : ids,
     Choices: Object.fromEntries(
@@ -198,7 +275,7 @@ export function singleChoice(
     NextChoiceId: ids.length + 1,
     RecodeValues: recodes(ids),
     SubSelector: "TX",
-    ...(forced ? { Validation: FORCED } : {}),
+    ...validation,
   });
 }
 
@@ -351,34 +428,39 @@ export const blockOptions = {
   RandomizeQuestions: "false",
 };
 
+/** In a block's question list, starts a new page. */
+export const PAGE_BREAK = Symbol("page break");
+
 const questionsOf = (qids) =>
-  qids.map((qid) => ({ QuestionID: qid, Type: "Question" }));
+  qids.map((qid) =>
+    qid === PAGE_BREAK
+      ? { Type: "Page Break" }
+      : { QuestionID: qid, Type: "Question" }
+  );
+
+/** One embedded data field of the Survey Flow. */
+const embeddedField = (name, type, extra = {}) => ({
+  AnalyzeText: false,
+  DataVisibility: [],
+  Description: name,
+  Field: name,
+  Type: type,
+  VariableType: "String",
+  ...extra,
+});
 
 /** Embedded data declared with no value, so the contact list's values stand. */
 export const embeddedFields = (names) =>
-  names.map((name) => ({
-    AnalyzeText: false,
-    DataVisibility: [],
-    Description: name,
-    Field: name,
-    Type: "Recipient",
-    VariableType: "String",
-  }));
+  names.map((name) => embeddedField(name, "Recipient"));
 
 /**
  * Embedded data set in the Survey Flow to a fixed value, the same for every
  * response: `values` maps each field to its value.
  */
 export const staticFields = (values) =>
-  Object.entries(values).map(([name, value]) => ({
-    AnalyzeText: false,
-    DataVisibility: [],
-    Description: name,
-    Field: name,
-    Type: "Custom",
-    Value: value,
-    VariableType: "String",
-  }));
+  Object.entries(values).map(([name, value]) =>
+    embeddedField(name, "Custom", { Value: value })
+  );
 
 /**
  * A survey under construction. `seed` fixes the generated IDs. Questions get

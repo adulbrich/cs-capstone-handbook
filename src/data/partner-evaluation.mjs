@@ -4,6 +4,8 @@
 // (src/lib/tools/partner-survey-qsf.mjs) reads both. Edit the wording here,
 // never in a generated .qsf. `${e://...}` is Qualtrics piped text.
 
+import { finalSurvey, TERMS } from "../lib/tools/term-label.mjs";
+
 /** The matrix question's text: each export column reads "<prompt> - <row>". */
 export const pulsePrompt =
   "Please rate your student team on the following dimensions for the current term.";
@@ -57,23 +59,26 @@ export function pulseIntro({
 
 /**
  * The End-of-Term Survey's opening page. `facets` is how many it scores,
- * `between` the between-anchor shares in percent, `ladders` the facets
- * scored on a ladder instead, `finalWeight` its percent of the term grade,
- * `pageUrl` the partner evaluation page.
+ * `between` the between-anchor shares in percent, `finalWeight` its percent
+ * of the term grade, `pageUrl` the partner evaluation page.
  */
-export function finalIntro({ between, facets, finalWeight, ladders, pageUrl }) {
-  const ladderNote = ladders.map(
-    (title) =>
-      `${title} is scored on the outcome ladder instead: pick the highest rung that is true today. Your team's Definition of Shipped says what each rung means for this project.`
-  );
+export function finalIntro({ between, facets, finalWeight, pageUrl }) {
   return [
     ...introHead,
-    `It scores the team on ${facets} facets of its work with you this term. Each facet shows what it looks like and its written anchors; choose the anchor that fits the team. When the team sits between two anchors, choose the between answer, worth ${between.join("% or ")}% of the facet's points. <b>Please submit it by \${e://Field/FinalCloseDate}.</b>`,
-    ...ladderNote,
+    `It scores the team on ${facets} facets of its work with you this term, one page each. Each facet shows what it looks like and its written anchors; choose the anchor that fits the team. When the team sits between two anchors, choose the between answer, worth ${between.join("% or ")}% of the facet's points. <b>Please submit it by \${e://Field/FinalCloseDate}.</b>`,
     `Your answers set ${finalWeight}% of each student's grade this term.`,
     ...introTail(pageUrl),
   ].join("<br><br>");
 }
+
+/**
+ * The question a facet scored on a ladder asks, after "<facet>: ", keyed by
+ * the facet's export tag (facetTag). It replaces the rubric's description,
+ * which speaks about the partner to the student.
+ */
+export const ladderPrompts = {
+  VnV: "Who has run the team's software? Pick the highest rung that is true today; your team's Definition of Shipped says what each rung means for this project. If it records a custom scale, score on that scale with the last choice.",
+};
 
 /**
  * The ladder's last choice, for a partner whose Definition of Shipped
@@ -81,7 +86,7 @@ export function finalIntro({ between, facets, finalWeight, ladders, pageUrl }) {
  * from `min` to `max` percent.
  */
 export const customScaleText = ({ max, min }) =>
-  `We agreed a custom scale in the Definition of Shipped. Enter the score, ${min} to ${max}:`;
+  `We agreed a custom scale in the Definition of Shipped. Enter the score as a percent of the points, ${min} to ${max}:`;
 
 /** The end-of-term distribution email: one survey for every term. */
 const finalEmail = {
@@ -112,9 +117,7 @@ const finalEmail = {
  * piped text: the personal survey link and the opt-out link it requires.
  */
 export const distributionEmails = {
-  "final-fall": finalEmail,
-  "final-spring": finalEmail,
-  "final-winter": finalEmail,
+  ...Object.fromEntries(TERMS.map((term) => [finalSurvey(term), finalEmail])),
   pulse: {
     body: [
       "Hello,",

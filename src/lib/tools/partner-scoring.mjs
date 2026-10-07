@@ -8,6 +8,7 @@
 
 import { bandFor } from "./rubric-bands.mjs";
 import { fillCriterion, matchRubricExport, nameKey } from "./rubric-export.mjs";
+import { finalSurvey, TERMS } from "./term-label.mjs";
 
 /** The midterm pulse's concern questions, by export tag, from its .qsf. */
 const PULSE_CONCERNS = { flag: "Q2", text: ["Q2 Names", "Q2 Comments", "Q3"] };
@@ -18,21 +19,16 @@ const PULSE_CONCERNS = { flag: "Q2", text: ["Q2 Names", "Q2 Comments", "Q3"] };
  * those three are detected and named but not scored.
  */
 export const SURVEYS = {
-  "final-fall": {
-    rubric: "fall",
-    supported: false,
-    title: "End-of-Term Survey, fall",
-  },
-  "final-spring": {
-    rubric: "spring",
-    supported: false,
-    title: "End-of-Term Survey, spring",
-  },
-  "final-winter": {
-    rubric: "winter",
-    supported: false,
-    title: "End-of-Term Survey, winter",
-  },
+  ...Object.fromEntries(
+    TERMS.map((term) => [
+      finalSurvey(term),
+      {
+        rubric: term,
+        supported: false,
+        title: `End-of-Term Survey, ${term}`,
+      },
+    ])
+  ),
   pulse: {
     concerns: PULSE_CONCERNS,
     rubric: "pulse",
@@ -42,12 +38,7 @@ export const SURVEYS = {
 };
 
 /** The surveys in the order a term runs them. */
-export const SURVEY_ORDER = [
-  "pulse",
-  "final-fall",
-  "final-winter",
-  "final-spring",
-];
+export const SURVEY_ORDER = ["pulse", ...TERMS.map(finalSurvey)];
 
 const A_ROW = /^A\s*\|\s*(\d+(?:\.\d+)?)\s*\|/m;
 
@@ -106,7 +97,7 @@ export function detectSurvey(columns, rubrics, term) {
     return { guessed: false, kind: "pulse" };
   }
   if (asksAbout(columns, rubrics.fall)) {
-    return { guessed: true, kind: `final-${term}` };
+    return { guessed: true, kind: finalSurvey(term) };
   }
   return { guessed: false, kind: null };
 }

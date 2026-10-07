@@ -2,7 +2,7 @@
 // Writes a project partner survey (.qsf), the Midterm Pulse or a term's
 // End-of-Term Survey, and its contact list as downloads. The roster and the
 // partner sheet are read in the browser only: nothing is uploaded. The
-// rubrics, the "What it looks like" lists, the weights, and the page address
+// rubrics, the partner page's rules, the weights, and the page address
 // arrive from the handbook's own files at build time.
 
 import { distributionEmails } from "../../data/partner-evaluation.mjs";
@@ -18,14 +18,14 @@ import {
   VARIANTS,
 } from "../../lib/tools/partner-survey-qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
-import { labelFor, termOf } from "../../lib/tools/term-label.mjs";
+import {
+  finalSurvey,
+  labelFor,
+  TERMS,
+  termOf,
+} from "../../lib/tools/term-label.mjs";
 
-const { guidance, pageUrl, rubrics, weights } = $props();
-
-/** The facets' lists by facet name, as buildPartnerSurvey reads them. */
-const guidanceMap = $derived(new Map(Object.entries(guidance)));
-
-const TERMS = ["fall", "winter", "spring"];
+const { pageUrl, rubrics, rules, weights } = $props();
 
 /** Which survey, "pulse" or "final", and its term, the current one first. */
 let kind = $state("pulse");
@@ -34,7 +34,7 @@ let term = $state(termOf(new Date()));
 const { rubric, variant } = $derived(
   kind === "pulse"
     ? { rubric: rubrics.pulse, variant: "pulse" }
-    : { rubric: rubrics[term], variant: `final-${term}` }
+    : { rubric: rubrics[term], variant: finalSurvey(term) }
 );
 const { closeField, fields } = $derived(VARIANTS[variant]);
 const email = $derived(distributionEmails[variant]);
@@ -68,10 +68,10 @@ const survey = $derived.by(() => {
   try {
     return {
       text: partnerSurveyQsf({
-        guidance: guidanceMap,
         label,
         pageUrl,
         rubric,
+        rules,
         variant,
         weights,
       }),

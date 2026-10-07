@@ -1,7 +1,7 @@
 ---
 import { getEntry } from "astro:content";
 // The project partner survey generator (#440, #446) and scorer (#445). The
-// rubrics, the "What it looks like" lists, the A lower bound, and the two
+// rubrics, the between-anchor rule and the "What it looks like" lists, the A lower bound, and the two
 // surveys' weights are read here, at build time, from the files the handbook
 // renders, so the page can never carry a second copy of a rating name, a
 // point value, or a weight. The components read the dropped files in the
@@ -17,10 +17,7 @@ import PartnerEvaluationScorer from "../../components/tools/PartnerEvaluationSco
 import PartnerSurveyGenerator from "../../components/tools/PartnerSurveyGenerator.svelte";
 import { canvasRows } from "../../lib/canvas-entries.mjs";
 import { parseRubricCsv } from "../../lib/rubric-csv.mjs";
-import {
-  BETWEEN_ANCHORS,
-  facetGuidance,
-} from "../../lib/tools/partner-facets.mjs";
+import { pageRules } from "../../lib/tools/partner-facets.mjs";
 import { aLowerBound } from "../../lib/tools/partner-scoring.mjs";
 
 const rubrics = {
@@ -30,8 +27,9 @@ const rubrics = {
   winter: parseRubricCsv(winterCsv, "partner-final-winter-rubric.csv"),
 };
 const aBound = aLowerBound(gradingMdx);
-// Each facet's "What it looks like" list, as an object so it serializes.
-const guidance = Object.fromEntries(facetGuidance(partnerMdx));
+// The between-anchor shares and each facet's "What it looks like" list, read
+// from the partner evaluation page as aBound is from the grading page.
+const rules = pageRules(partnerMdx);
 
 // The pulse and end-of-term weights, from the partner evaluation page's
 // Canvas entries, term by term, for the survey's opening page. The survey
@@ -79,16 +77,17 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
   <h2>Generate the survey</h2>
   <p>
     The pulse's statements and labels come from the pulse rubric CSV. The
-    End-of-Term Survey asks one question per facet of the term's rubric CSV:
-    its anchors (or, in spring, the outcome ladder's rungs) by their rating
-    names, a between answer at {BETWEEN_ANCHORS.join("% or ")}% of the points in each gap, and,
-    above it, the facet's "What it looks like" list from the partner
-    evaluation page. The labels are the ones the scorer maps, so the survey
+    End-of-Term Survey gives each facet of the term's rubric CSV a page: the
+    facet's "What it looks like" list from the partner evaluation page, then
+    one question whose choices are its anchors (or, in spring, the outcome
+    ladder's rungs and a validated custom-scale entry) by their rating names,
+    with a between answer at {rules.between.join("% or ")}% of the points in
+    each gap. The labels are the ones the scorer maps, so the survey
     and the scorer cannot drift apart. The End-of-Term Survey sets a
     <code>Term</code> field in its Survey Flow, so its export names its term.
   </p>
 
-  <PartnerSurveyGenerator client:only="svelte" {guidance} {pageUrl} {rubrics} {weights} />
+  <PartnerSurveyGenerator client:only="svelte" {pageUrl} {rubrics} {rules} {weights} />
 
   <ol>
     <li>
