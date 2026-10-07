@@ -54,8 +54,12 @@ cheap. Cut restatement, not precision.
 
 **Name the source the first time the page names a tool, standard, format, or
 technique.** If the assignment says "follow conventional commits", link the
-specification. If it says "WCAG AA", link the standard. If it says "use a
-lockfile", link the tool's documentation on lockfiles.
+specification. If it says "WCAG AA", link the standard. A practice every
+stack has, such as pinning dependency versions, is not a named technique and
+has no single owner: state it plainly and link nothing. A named tool,
+standard, or technique still gets its link. Projects range from web apps to
+game engines to firmware, and one ecosystem's documentation tells the rest
+that the page was not written for them.
 
 There is no numeric target here yet. The current assignment pages sit at 0.2
 external links per 1,000 words, which is effectively zero, and that is the

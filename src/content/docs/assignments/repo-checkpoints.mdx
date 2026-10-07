@@ -56,7 +56,7 @@ What that looks like depends on the project:
 
 | If your project is | Realization |
 |---|---|
-| New Product or Game, Consultancy | A workflow that installs from a [lockfile](https://docs.npmjs.com/cli/v10/configuring-npm/package-lock-json), builds, lints, and runs the test suite on every pull request |
+| New Product or Game, Consultancy | A workflow that runs on every pull request: it builds with pinned dependency versions, runs the test suite, and runs at least one static check (a linter, a type checker, or compiler warnings treated as errors, whichever your stack has) |
 | FOSS | Upstream's CI passes on your pull request, and your fork documents the build-and-test command a maintainer expects you to have run before submitting |
 | Research | The pipeline runs end to end on a small sample dataset in CI, with at least one test asserting a known result rather than the pipeline merely exiting zero |
 
@@ -125,13 +125,13 @@ Checkpoints happen four times across fall and winter, and each gate needs differ
 
 **Fall week 5, rails stood up:** [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the inherited-codebase audit if you start in someone else's code; [Describe your Architecture](/activities/technical-design/#describe-your-architecture) and [User Story Mapping](/activities/requirements/#user-story-mapping) for the living docs; [Kanban Board Setup](/activities/team-and-workflow/#kanban-board-setup) and [Definition of Done](/activities/team-and-workflow/#definition-of-done) once, for the gate and build health; [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) for the safety-net half; [Risk Management Plan](/activities/planning-and-risk/#risk-management-plan) for the first entries in the risk register.
 
-**Fall week 10, "hello, production":** [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan), [Plan Prototype](/activities/planning-and-risk/#plan-prototype), and [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for the gate; [Put a Browser Agent on Your Critical Flow](/activities/testing-release-and-handoff/#put-a-browser-agent-on-your-critical-flow) for build health.
+**Fall week 10, "hello, production":** [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan), [Plan Prototype](/activities/planning-and-risk/#plan-prototype), and [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for the gate; [Put a Browser Agent on Your Critical Flow](/activities/testing-release-and-handoff/#put-a-browser-agent-on-your-critical-flow) for build health if your product runs in a browser.
 
-**Winter week 5, integration health:** [Test Plan](/activities/testing-release-and-handoff/#test-plan) and [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci) for build health; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the scheduled real-user session.
+**Winter week 5, integration health:** [Test Plan](/activities/testing-release-and-handoff/#test-plan) for build health, and [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci) too if your product runs in a browser; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the scheduled real-user session.
 
-**Winter week 10, release candidate:** [Test with an Assistive Technology User](/activities/interaction-design/#test-with-an-assistive-technology-user) and [Run an Acceptance Pass](/activities/testing-release-and-handoff/#run-an-acceptance-pass) for the real-user evidence; [Describe your API Reference](/activities/testing-release-and-handoff/#describe-your-api-reference) for the living docs; [Fishbone Diagram](/activities/planning-and-risk/#fishbone-diagram) for risk hygiene.
+**Winter week 10, release candidate:** [Run an Acceptance Pass](/activities/testing-release-and-handoff/#run-an-acceptance-pass) for the real-user evidence, and [Test with an Assistive Technology User](/activities/interaction-design/#test-with-an-assistive-technology-user) too if your product has a user interface; [Describe your API Reference](/activities/testing-release-and-handoff/#describe-your-api-reference) for the living docs if other code or people build on your product; [Fishbone Diagram](/activities/planning-and-risk/#fishbone-diagram) for risk hygiene.
 
-**Examples:** the gate lists above are the same for everyone; these are the ones a project like yours usually needs.
+**Examples:** the gate lists above apply to everyone, except where an entry names a condition; these are the ones a project like yours usually needs.
 
 | If your project is | Activities |
 |---|---|
