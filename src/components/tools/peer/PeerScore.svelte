@@ -4,19 +4,14 @@
 // page composes the pure modules under src/lib/tools/; everything it reads
 // or makes stays in the browser. `rubrics` are the parsed rubrics by
 // instrument (`{ regular, catme }`), read at build time by the Astro page.
-import { tick } from "svelte";
+import { toolText } from "../../../data/peer-evaluation.mjs";
 import { download } from "../../../lib/tools/download.mjs";
 import { parsePeerExport } from "../../../lib/tools/peer-export.mjs";
-import {
-  isScored,
-  SURVEY_TYPE,
-} from "../../../lib/tools/peer-export-columns.mjs";
+import { isScored } from "../../../lib/tools/peer-export-columns.mjs";
 import {
   commentsCsv,
   detailsCsv,
   fillPeerAssessment,
-  gapRows,
-  cell as show,
 } from "../../../lib/tools/peer-outputs.mjs";
 import { rosterModel } from "../../../lib/tools/peer-roster.mjs";
 import {
@@ -26,16 +21,16 @@ import {
   scorePeers,
 } from "../../../lib/tools/peer-score.mjs";
 import {
+  criteriaTable,
+  gapsTable,
+  reportTable,
+  responseCounts,
+  stoppedTable,
+} from "../../../lib/tools/peer-score-tables.mjs";
+import {
   matchRubricExport,
   parseRubricExport,
 } from "../../../lib/tools/rubric-export.mjs";
-import {
-  collapse,
-  initialSteps,
-  reopen,
-  setDone,
-  stepView,
-} from "../../../lib/tools/steps.mjs";
 import { tableFromCsv } from "../../../lib/tools/table-view.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
@@ -47,7 +42,7 @@ import Stepper from "../ui/Stepper.svelte";
 import RosterInput from "./RosterInput.svelte";
 import RosterPreview from "./RosterPreview.svelte";
 import SavedData from "./SavedData.svelte";
-import { PeerStorage } from "./saved.svelte.js";
+import { PageSteps, PeerStorage } from "./saved.svelte.js";
 
 let { rubrics } = $props();
 
@@ -59,17 +54,7 @@ const roster = storage.saved("roster", null);
 const added = storage.saved("added", []);
 const rubricFile = storage.saved("score:rubric", null);
 const options = storage.saved("score:options", { includePreviews: false });
-const steps = storage.saved("score:steps", initialSteps());
-
-const TYPES = {
-  [SURVEY_TYPE.catme]:
-    "CATME, the spring end-of-term survey: the CATME rubric's five dimensions, no split.",
-  [SURVEY_TYPE.regular]:
-    "The regular survey (midterm, or fall and winter end-of-term): the peer evaluation rubric's criteria and the 100-point split.",
-  [SURVEY_TYPE.slots]:
-    "The regular survey generated as one block per teammate slot. This page scores the Loop & Merge export only.",
-  [SURVEY_TYPE.unknown]: "Not a peer evaluation export this page recognizes.",
-};
+const steps = new PageSteps(storage, "score:steps", STEPS);
 
 const parsed = $derived.by(() => {
   if (!exported.value) {
@@ -142,127 +127,47 @@ const outcome = $derived.by(() => {
     return { error: error.message };
   }
 });
+const scored = $derived(Boolean(outcome && !outcome.error));
 
 const counts = $derived(
-  scorable
-    ? {
-        header: ["Responses", "Count", "What happens"],
-        rows: [
-          [
-            "Finished",
-            String(parsed.responses.length),
-            "Scored: the latest per student.",
-          ],
-          [
-            "Earlier submissions",
-            String(parsed.dropped.superseded),
-            "Left out: a later one counts.",
-          ],
-          ["Unfinished", String(parsed.dropped.unfinished), "Left out."],
-          [
-            "Previews",
-            String(parsed.dropped.preview),
-            options.value.includePreviews
-              ? "Counted (staff test)."
-              : "Left out.",
-          ],
-        ],
-      }
-    : null
+  scorable ? responseCounts(parsed, options.value.includePreviews) : null
 );
 const stopped = $derived(
-  scorable
-    ? {
-        header: ["Student", "Email", "Team", "Last question seen"],
-        rows: parsed.stopped.map((r) => [
-          nameOf.get(r.email) ?? "",
-          r.email,
-          r.team,
-          r.lastSeen || "unknown",
-        ]),
-      }
-    : null
+  scorable ? stoppedTable(parsed.stopped, nameOf) : null
 );
-
-const criteriaTable = $derived(
+const criteria = $derived(
   rubricExport?.pairs
-    ? {
-        header: ["Rubric criterion", "Points", "Export columns"],
-        rows: rubricExport.pairs.map(({ columnsAt, criterion }) => [
-          criterion.title,
-          String(criterion.maxPoints),
-          ["Rating", "Points", "Comments"]
-            .map((field) => rubricExport.value.header[columnsAt[field]])
-            .join("; "),
-        ]),
-      }
+    ? criteriaTable(rubricExport.value, rubricExport.pairs)
     : null
 );
-
-const LEVELS = {
-  error: "Error: left out of the score",
-  note: "Note: self share rescaled",
-  review: "Review: the score stands",
-  rubric: "Rubric export",
-  warning: "Warning",
-};
 const report = $derived(
-  outcome?.problems
-    ? {
-        header: ["Kind", "Who", "What"],
-        rows: [
-          ...["error", "review", "warning", "note"].flatMap((level) =>
-            outcome.problems
-              .filter((p) => p.level === level)
-              .map((p) => [LEVELS[level], p.who, p.message])
-          ),
-          ...outcome.filled.problems.map((message) => [
-            LEVELS.rubric,
-            "",
-            message,
-          ]),
-        ],
-      }
-    : null
+  scored ? reportTable(outcome.problems, outcome.filled.problems) : null
 );
-const gaps = $derived(
-  outcome?.results
-    ? {
-        header: ["Student", "Team", "Ratings gap", "Share gap"],
-        rows: gapRows(outcome.results).map((row) => [
-          row.name,
-          row.team,
-          String(show(row.ratings)),
-          String(show(row.share)),
-        ]),
-      }
-    : null
-);
+const gaps = $derived(scored ? gapsTable(outcome.results) : null);
 const details = $derived(
-  outcome?.results ? detailsCsv(outcome.results, outcome.peer) : ""
+  scored ? detailsCsv(outcome.results, outcome.peer) : ""
 );
 const notCompleted = $derived(
-  outcome?.results?.filter((r) => r.status === STATUS.didNotComplete).length ??
-    0
+  scored
+    ? outcome.results.filter((r) => r.status === STATUS.didNotComplete).length
+    : 0
 );
-const comments = $derived(
-  outcome?.comments ? commentsCsv(outcome.comments) : ""
-);
+const comments = $derived(scored ? commentsCsv(outcome.comments) : "");
 
 const baseName = $derived(
   rubricFile.value?.name.replace(/\.csv$/i, "") || "peer-evaluation"
 );
 
 const ready = $derived({
-  comments: Boolean(outcome && !outcome.error),
+  comments: scored,
   export: scorable,
-  grades: Boolean(outcome && !outcome.error),
-  results: Boolean(outcome && !outcome.error),
+  grades: scored,
+  results: scored,
   roster: Boolean(model.students && model.students.length > 0),
   rubric: Boolean(rubricExport?.pairs),
 });
-const view = $derived(stepView(STEPS, steps.value));
-const at = $derived(Object.fromEntries(view.map((step) => [step.id, step])));
+const view = $derived(steps.view(ready));
+const stepProps = (id) => steps.props(id, view, ready);
 const summaries = $derived({
   comments: `${outcome?.comments?.length ?? 0} comments, instructor only.`,
   export: `${exported.value?.name ?? "No file"}: ${parsed?.responses?.length ?? 0} finished responses.`,
@@ -271,27 +176,6 @@ const summaries = $derived({
   roster: `${roster.value?.name ?? "No file"}: ${model.students?.length ?? 0} students${added.value.length > 0 ? `, ${added.value.length} from another section` : ""}.`,
   rubric: `${rubricFile.value?.name ?? "No file"}: ${rubricExport?.value?.students.length ?? 0} students, ${rubricExport?.pairs?.length ?? 0} criteria matched.`,
 });
-
-async function focusStep(id) {
-  await tick();
-  document.getElementById(`step-${id}`)?.focus();
-}
-
-function done(id, value) {
-  steps.set(setDone(steps.value, id, value));
-  const next = stepView(STEPS, steps.value).find((s) => s.open && s.id !== id);
-  focusStep(value && next ? next.id : id);
-}
-
-function edit(id) {
-  steps.set(reopen(steps.value, id));
-  focusStep(id);
-}
-
-function close(id) {
-  steps.set(collapse(steps.value, id));
-  focusStep(id);
-}
 </script>
 
 <SavedData
@@ -301,15 +185,10 @@ function close(id) {
 
 <Stepper label="Score the peer evaluation">
   <Step
-    {...at.export}
+    {...stepProps("export")}
     title="Qualtrics export"
     summary={summaries.export}
-    done={Boolean(steps.value.done.export)}
-    ready={ready.export}
     waiting="Drop a labels export of a regular or CATME peer survey."
-    ondone={(value) => done("export", value)}
-    onedit={() => edit("export")}
-    oncollapse={() => close("export")}
   >
     {#snippet source()}
       <p>
@@ -340,7 +219,7 @@ function close(id) {
           <pre>{parsed.error}</pre>
         </Callout>
       {:else if parsed}
-        <p><strong>Detected:</strong> {TYPES[parsed.type]}</p>
+        <p><strong>Detected:</strong> {toolText.surveyTypes[parsed.type]}</p>
         {#if parsed.problems.length > 0}
           <Callout title="The export's columns do not fit the survey" variant="danger">
             <pre>{parsed.problems.join("\n")}</pre>
@@ -365,14 +244,9 @@ function close(id) {
   </Step>
 
   <Step
-    {...at.roster}
+    {...stepProps("roster")}
     title="Canvas roster"
     summary={summaries.roster}
-    done={Boolean(steps.value.done.roster)}
-    ready={ready.roster}
-    ondone={(value) => done("roster", value)}
-    onedit={() => edit("roster")}
-    oncollapse={() => close("roster")}
   >
     {#snippet source()}
       <p>
@@ -388,14 +262,9 @@ function close(id) {
   </Step>
 
   <Step
-    {...at.rubric}
+    {...stepProps("rubric")}
     title="Canvas rubric export"
     summary={summaries.rubric}
-    done={Boolean(steps.value.done.rubric)}
-    ready={ready.rubric}
-    ondone={(value) => done("rubric", value)}
-    onedit={() => edit("rubric")}
-    oncollapse={() => close("rubric")}
   >
     {#snippet source()}
       <p>
@@ -420,26 +289,21 @@ function close(id) {
         </Callout>
       {:else if rubricExport && !scorable}
         <p class="muted">Read; it is matched to the rubric once step 1's export is scored.</p>
-      {:else if criteriaTable}
+      {:else if criteria}
         <p>
           {rubricExport.value.students.length} students in the export; each
           rubric criterion matched to its columns:
         </p>
-        <DataPreview title="Rubric criteria and export columns" table={criteriaTable} />
+        <DataPreview title="Rubric criteria and export columns" table={criteria} />
       {/if}
     {/snippet}
   </Step>
 
   <Step
-    {...at.results}
+    {...stepProps("results")}
     title="Results"
     sourceTitle="What it is"
     summary={summaries.results}
-    done={Boolean(steps.value.done.results)}
-    ready={ready.results}
-    ondone={(value) => done("results", value)}
-    onedit={() => edit("results")}
-    oncollapse={() => close("results")}
   >
     {#snippet source()}
       <p>
@@ -487,15 +351,10 @@ function close(id) {
   </Step>
 
   <Step
-    {...at.grades}
+    {...stepProps("grades")}
     title="Grades"
     sourceTitle="What it is"
     summary={summaries.grades}
-    done={Boolean(steps.value.done.grades)}
-    ready={ready.grades}
-    ondone={(value) => done("grades", value)}
-    onedit={() => edit("grades")}
-    oncollapse={() => close("grades")}
   >
     {#snippet source()}
       <p>
@@ -523,7 +382,10 @@ function close(id) {
     {/snippet}
     {#snippet destination()}
       <p class="not-content">
-        <Button onclick={() => download(`${baseName}-scored.csv`, outcome.filled.csv)}>
+        <Button
+          onclick={() => download(`${baseName}-scored.csv`, outcome.filled.csv)}
+          disabled={!outcome?.filled}
+        >
           Download {baseName}-scored.csv
         </Button>
       </p>
@@ -548,15 +410,10 @@ function close(id) {
   </Step>
 
   <Step
-    {...at.comments}
+    {...stepProps("comments")}
     title="Instructor-only comments"
     sourceTitle="What it is"
     summary={summaries.comments}
-    done={Boolean(steps.value.done.comments)}
-    ready={ready.comments}
-    ondone={(value) => done("comments", value)}
-    onedit={() => edit("comments")}
-    oncollapse={() => close("comments")}
   >
     {#snippet source()}
       <p>

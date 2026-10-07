@@ -4,7 +4,6 @@ import {
   compareCells,
   nextSort,
   tableFromCsv,
-  tableFromObjects,
   viewRows,
 } from "./table-view.mjs";
 
@@ -18,16 +17,6 @@ test("a CSV becomes a header and rows padded to its width", () => {
   assert.deepEqual(table.header, ["Team", "Name", "Score"]);
   assert.deepEqual(table.rows[3], ["Team 1", "Edsger", ""]);
   assert.deepEqual(tableFromCsv(""), { header: [], rows: [] });
-});
-
-test("objects become a table in the columns' order", () => {
-  assert.deepEqual(tableFromObjects(["b", "a"], [{ a: 1, b: "x" }, { a: 2 }]), {
-    header: ["b", "a"],
-    rows: [
-      ["x", "1"],
-      ["", "2"],
-    ],
-  });
 });
 
 test("the filter matches any cell, any case", () => {

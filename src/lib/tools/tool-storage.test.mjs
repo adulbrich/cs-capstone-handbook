@@ -37,7 +37,7 @@ test("values round-trip as JSON under the versioned namespace", () => {
   assert.deepEqual(store.read("roster", null), { name: "r.csv", text: "a,b" });
   assert.ok(storage.data.has(`${PEER_NAMESPACE}v1:roster`));
   assert.equal(store.read("missing", "fallback"), "fallback");
-  assert.deepEqual(store.keys(), ["roster"]);
+  assert.deepEqual([...storage.data.keys()], [`${PEER_NAMESPACE}v1:roster`]);
   assert.equal(store.problem(), null);
 });
 
@@ -71,7 +71,6 @@ test("clearAll removes every key in the namespace and nothing else", () => {
   store.write("prepare:steps", { roster: true });
   store.clearAll();
   assert.deepEqual([...storage.data.keys()], ["unrelated"]);
-  assert.deepEqual(store.keys(), []);
   assert.equal(store.read("roster", null), null);
 });
 
@@ -93,7 +92,7 @@ test("a full storage keeps the value in memory and says so", () => {
   assert.equal(store.write("big", "y".repeat(500)), false);
   assert.equal(store.problem(), STORAGE_PROBLEM.full);
   assert.equal(store.read("big", null), "y".repeat(500));
-  assert.deepEqual(store.keys(), ["big", "small"]);
+  assert.deepEqual([...storage.data.keys()], [`${PEER_NAMESPACE}v1:small`]);
 });
 
 test("a value that is not JSON reads as the fallback", () => {

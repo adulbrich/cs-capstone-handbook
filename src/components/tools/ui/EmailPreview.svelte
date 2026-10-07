@@ -1,10 +1,9 @@
 <script>
-// A distribution email as one recipient receives it, with a copy button for
-// the subject and the body as they are pasted into Qualtrics, piped text
-// and all. `values` are the sample recipient's embedded data; the piped
-// values show highlighted, the links as their display text.
+// A distribution email as one recipient receives it. `values` are the
+// sample recipient's embedded data; the piped values show highlighted, the
+// links as their display text. The page puts CopyButtons for the raw
+// subject and body where the email goes.
 import { pipedSegments } from "../../../lib/tools/piped-text.mjs";
-import CopyButton from "./CopyButton.svelte";
 
 let { body, subject, values = {} } = $props();
 const subjectParts = $derived(pipedSegments(subject, values));
@@ -30,10 +29,6 @@ const bodyParts = $derived(pipedSegments(body, values));
   </p>
   <div class="body">{@render rendered(bodyParts)}</div>
 </div>
-<p class="copies not-content">
-  <CopyButton label="Copy the subject" text={subject} />
-  <CopyButton label="Copy the body" text={body} />
-</p>
 
 <style>
   .email {
@@ -67,11 +62,5 @@ const bodyParts = $derived(pipedSegments(body, values));
   .link {
     color: var(--sl-color-text-accent);
     text-decoration: underline;
-  }
-  .copies {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 0.75rem 0 0;
   }
 </style>

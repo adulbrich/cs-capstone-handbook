@@ -1,6 +1,6 @@
 // The downloads made from the peer scores: what goes into the rubric
-// assessment, the anonymized feedback for students, the instructor's
-// details, the self-versus-peer gaps, and the comments. Pure: no DOM, no I/O.
+// assessment, the only thing students see, then the instructor's details,
+// the self-versus-peer gaps, and the comments. Pure: no DOM, no I/O.
 
 import { toCsv } from "./csv.mjs";
 import {
@@ -167,48 +167,6 @@ export const cell = (value, places = 2) =>
   value === null || value === undefined ? "" : round(value, places);
 
 /**
- * The feedback students may see: per rated criterion, the mean rating
- * received across raters and its score; the normalized share and its score
- * when the survey has a split; the peer score. Means only: no rater, no
- * single rating, no comment. `peer` is peerCriteria's.
- */
-export function feedbackCsv(results, peer) {
-  const { distribution, rated } = peer;
-  const split = splitOnly(peer);
-  const header = [
-    "Student Name",
-    "Email",
-    "Team",
-    "Raters",
-    ...rated.flatMap(({ title }) => [
-      `${title}: mean rating (1 to 5)`,
-      `${title}: score (50 to 100)`,
-    ]),
-    ...split(() => [
-      `${distribution.title}: normalized share`,
-      `${distribution.title}: score`,
-    ]),
-    "Peer score",
-  ];
-  const rows = results.map((result) => [
-    result.student.name,
-    result.student.email,
-    result.team,
-    result.raters,
-    ...result.means.flatMap((m, c) => [
-      cell(m),
-      cell(result.criterionScores[c]),
-    ]),
-    ...split(() => [
-      cell(result.distribution?.normalized),
-      cell(result.distribution?.score),
-    ]),
-    cell(result.total),
-  ]);
-  return toCsv([header, ...rows]);
-}
-
-/**
  * Everything the scorer computed, one row per student, for the instructor.
  * `peer` is peerCriteria's; the split's columns appear only with a split.
  */
@@ -282,7 +240,7 @@ export function gapRows(results) {
     .sort((a, b) => b.ratings - a.ratings || (b.share ?? 0) - (a.share ?? 0));
 }
 
-/** The comments, instructor only: never part of the feedback. */
+/** The comments, instructor only: never in the rubric assessment. */
 export function commentsCsv(comments) {
   return toCsv([
     ["Team", "Rater", "About", "Question", "Comment"],

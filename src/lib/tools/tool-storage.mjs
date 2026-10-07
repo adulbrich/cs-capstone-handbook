@@ -30,9 +30,9 @@ const PROBE = "probe";
  * throw, as `window.localStorage` does when blocked); `namespace` and
  * `version` name the keys, `<namespace>v<version>:<key>`.
  *
- * Returns `{ read, write, remove, clearAll, keys, problem }`. `read(key,
- * fallback)` gives the stored value or `fallback`; `write(key, value)` saves
- * a JSON value and returns false when it could only keep it in memory;
+ * Returns `{ read, write, clearAll, problem }`. `read(key, fallback)` gives
+ * the stored value or `fallback`; `write(key, value)` saves a JSON value and
+ * returns false when it could only keep it in memory;
  * `clearAll()` removes every key under the namespace, every version, and
  * the memory copy; `problem()` is null or one of STORAGE_PROBLEM.
  */
@@ -83,15 +83,6 @@ export function openStore(
         storage.removeItem(key);
       }
     },
-    keys: () =>
-      [
-        ...new Set([
-          ...namespaced()
-            .filter((key) => key.startsWith(prefix))
-            .map((key) => key.slice(prefix.length)),
-          ...memory.keys(),
-        ]),
-      ].sort(),
     problem: () => problem,
     read(key, fallback) {
       if (memory.has(key)) {
@@ -106,10 +97,6 @@ export function openStore(
       } catch {
         return fallback;
       }
-    },
-    remove(key) {
-      memory.delete(key);
-      storage?.removeItem(prefix + key);
     },
     write(key, value) {
       if (storage) {

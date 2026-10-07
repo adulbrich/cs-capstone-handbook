@@ -20,7 +20,6 @@ import {
 } from "./peer-export-columns.mjs";
 import {
   commentsCsv,
-  feedbackCsv,
   fillPeerAssessment,
   gapRows,
   ratingFor,
@@ -670,14 +669,12 @@ test("the rubric assessment is filled from the scores", () => {
   assert.ok(problems.some((p) => /Tester1, Ibis: no score/.test(p)));
 });
 
-test("the feedback download holds means, never a comment or a rater", () => {
+test("what students see, the filled rubric, never holds a comment; the instructor's file does", () => {
   const responses = workedExample();
   responses[1].pages[2].comment = "Invented private remark";
   responses[1].open = { Overall: "Invented overall remark" };
   const { comments, results } = run({ Owls: owls }, responses);
-  const feedback = feedbackCsv(results, peerCriteria(rubric, "regular"));
-  assert.doesNotMatch(feedback, /Invented/);
-  assert.match(feedback, /Quantity: mean rating \(1 to 5\)/);
+  assert.doesNotMatch(fill(results, owls, plainNames).csv, /Invented/);
   const instructor = commentsCsv(comments);
   assert.match(instructor, /Invented private remark/);
   assert.match(instructor, /Invented overall remark/);

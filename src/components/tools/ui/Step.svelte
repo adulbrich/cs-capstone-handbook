@@ -5,6 +5,7 @@
 // title, a done step its one-line `summary` and an Edit button. The heading
 // takes focus (`step-<id>`), so a page can move the reader to a step that
 // just opened. `ready` false disables Done, with `waiting` saying why.
+import { STEP } from "../../../lib/tools/steps.mjs";
 import Button from "./Button.svelte";
 import Checkbox from "./Checkbox.svelte";
 
@@ -31,15 +32,15 @@ let {
 <li
   class={["step", status]}
   data-number={number}
-  aria-current={status === "current" ? "step" : undefined}
+  aria-current={status === STEP.current ? "step" : undefined}
 >
   <h2 class="title" id="step-{id}" tabindex="-1">
     <span class="visually-hidden">Step {number}:</span>
     {title}
-    {#if status === "done"}<span class="visually-hidden">(done)</span>{/if}
+    {#if status === STEP.done}<span class="visually-hidden">(done)</span>{/if}
   </h2>
 
-  {#if status === "locked"}
+  {#if status === STEP.locked}
     <p class="muted">Opens when step {number - 1} is done.</p>
   {:else if !open}
     <p class="summary not-content">

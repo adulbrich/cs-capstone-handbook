@@ -3,10 +3,10 @@
 // The page composes the pure modules under src/lib/tools/; everything it
 // reads or makes stays in the browser. `rubrics` are each variant's parsed
 // rubric, read at build time by the Astro page.
-import { tick } from "svelte";
 import {
   CLOSE_PLACEHOLDER,
   distributionEmail,
+  toolText,
   variantOrder,
   variants,
 } from "../../../data/peer-evaluation.mjs";
@@ -14,18 +14,14 @@ import { download } from "../../../lib/tools/download.mjs";
 import { slug } from "../../../lib/tools/files.mjs";
 import {
   buildContacts,
+  CONTACT_COLUMNS,
   contactsCsv,
+  MAX_TEAM_SIZE,
+  SLOTS,
 } from "../../../lib/tools/peer-contacts.mjs";
 import { rosterModel } from "../../../lib/tools/peer-roster.mjs";
 import { buildPeerSurvey } from "../../../lib/tools/peer-survey-qsf.mjs";
 import { surveyName } from "../../../lib/tools/qsf.mjs";
-import {
-  collapse,
-  initialSteps,
-  reopen,
-  setDone,
-  stepView,
-} from "../../../lib/tools/steps.mjs";
 import {
   respondentValues,
   surveyPages,
@@ -35,6 +31,7 @@ import { defaultLabel } from "../../../lib/tools/term-label.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
+import CopyButton from "../ui/CopyButton.svelte";
 import DataPreview from "../ui/DataPreview.svelte";
 import EmailPreview from "../ui/EmailPreview.svelte";
 import Field from "../ui/Field.svelte";
@@ -45,29 +42,12 @@ import RosterInput from "./RosterInput.svelte";
 import RosterPreview from "./RosterPreview.svelte";
 import SavedData from "./SavedData.svelte";
 import SurveyPreview from "./SurveyPreview.svelte";
-import { PeerStorage } from "./saved.svelte.js";
+import { PageSteps, PeerStorage } from "./saved.svelte.js";
 
 let { rubrics } = $props();
 
 const STEPS = ["roster", "survey", "contacts", "email", "send"];
-const SEND = [
-  [
-    "expiration",
-    "On the distribution, set the availability end: Advanced options › Link expiration. Students can start and finish until then.",
-  ],
-  [
-    "personal",
-    "Send with Individual links only. The survey is by invitation, so the anonymous link does not open it.",
-  ],
-  [
-    "reminder",
-    "Schedule a reminder halfway to the link expiration, to those who have not finished.",
-  ],
-  [
-    "closure",
-    "In the survey, Survey options › Responses › Automatic survey closure is on, so a response still in progress is recorded when the links expire. Turn it on if the import left it off.",
-  ],
-];
+const SEND = Object.keys(toolText.send);
 
 const storage = new PeerStorage();
 const roster = storage.saved("roster", null);
@@ -77,7 +57,7 @@ const settings = storage.saved("prepare:settings", {
   mode: "loop",
   variant: "midterm",
 });
-const steps = storage.saved("prepare:steps", initialSteps());
+const steps = new PageSteps(storage, "prepare:steps", STEPS);
 const sent = storage.saved("prepare:send", {});
 
 let sampleEmail = $state("");
@@ -130,11 +110,11 @@ const ready = $derived({
   contacts: Boolean(contacts && contacts.rows.length > 0),
   email: true,
   roster: Boolean(contacts && contacts.rows.length > 0),
-  send: SEND.every(([key]) => sent.value[key]),
+  send: SEND.every((key) => sent.value[key]),
   survey: Boolean(survey.qsf),
 });
-const view = $derived(stepView(STEPS, steps.value));
-const at = $derived(Object.fromEntries(view.map((step) => [step.id, step])));
+const view = $derived(steps.view(ready));
+const stepProps = (id) => steps.props(id, view, ready);
 
 const teamCount = $derived(
   contacts ? new Set(contacts.rows.map((row) => row.Team)).size : 0
@@ -147,27 +127,6 @@ const summaries = $derived({
   survey: `${variants[variant].label}, ${settings.value.mode === "loop" ? "Loop & Merge" : "one block per teammate"}: "${surveyName(settings.value.label, variants[variant].title)}".`,
 });
 
-async function focusStep(id) {
-  await tick();
-  document.getElementById(`step-${id}`)?.focus();
-}
-
-function done(id, value) {
-  steps.set(setDone(steps.value, id, value));
-  const next = stepView(STEPS, steps.value).find((s) => s.open && s.id !== id);
-  focusStep(value && next ? next.id : id);
-}
-
-function edit(id) {
-  steps.set(reopen(steps.value, id));
-  focusStep(id);
-}
-
-function close(id) {
-  steps.set(collapse(steps.value, id));
-  focusStep(id);
-}
-
 const setting = (key, value) =>
   settings.set({ ...settings.value, [key]: value });
 
@@ -176,18 +135,10 @@ const variantCards = variantOrder.map((key) => ({
   lines: [variants[key].asks, variants[key].closes],
   value: key,
 }));
-const modeCards = [
-  {
-    label: "Loop & Merge over the roster",
-    lines: ["One rating page looped over the team. The default."],
-    value: "loop",
-  },
-  {
-    label: "One block per teammate slot",
-    lines: ["The same questions, one block per slot behind a branch."],
-    value: "slots",
-  },
-];
+const modeCards = Object.entries(toolText.modes).map(([value, mode]) => ({
+  ...mode,
+  value,
+}));
 
 function downloadSurvey() {
   download(
@@ -205,15 +156,10 @@ function downloadSurvey() {
 
 <Stepper label="Prepare the peer evaluation">
   <Step
-    {...at.roster}
+    {...stepProps("roster")}
     title="Canvas roster"
     summary={summaries.roster}
-    done={Boolean(steps.value.done.roster)}
-    ready={ready.roster}
-    waiting="Drop a roster with at least one team of two or more, and no team over 10."
-    ondone={(value) => done("roster", value)}
-    onedit={() => edit("roster")}
-    oncollapse={() => close("roster")}
+    waiting="Drop a roster with at least one team of two or more, and no team over {MAX_TEAM_SIZE}."
   >
     {#snippet source()}
       <RosterInput {added} {model} {roster} />
@@ -224,15 +170,10 @@ function downloadSurvey() {
   </Step>
 
   <Step
-    {...at.survey}
+    {...stepProps("survey")}
     title="Survey"
     sourceTitle="What it is"
     summary={summaries.survey}
-    done={Boolean(steps.value.done.survey)}
-    ready={ready.survey}
-    ondone={(value) => done("survey", value)}
-    onedit={() => edit("survey")}
-    oncollapse={() => close("survey")}
   >
     {#snippet source()}
       <p>
@@ -320,20 +261,15 @@ function downloadSurvey() {
   </Step>
 
   <Step
-    {...at.contacts}
+    {...stepProps("contacts")}
     title="Contact list"
     sourceTitle="What it is"
     summary={summaries.contacts}
-    done={Boolean(steps.value.done.contacts)}
-    ready={ready.contacts}
-    ondone={(value) => done("contacts", value)}
-    onedit={() => edit("contacts")}
-    oncollapse={() => close("contacts")}
   >
     {#snippet source()}
       <p>
         One row per student who gets the survey: email, team, team size, the
-        least they may give themselves in the split, and up to nine
+        least they may give themselves in the split, and up to {SLOTS}
         teammates, which the survey shows. Built from step 1's roster,
         added students included.
       </p>
@@ -358,21 +294,16 @@ function downloadSurvey() {
         › <strong>Upload a File</strong>. Check that every column maps by its
         header: <code>Email</code>, <code>Team</code>, <code>TeamSize</code>,
         <code>SelfFloor</code>, and <code>Team Member 1</code> to
-        <code>Team Member 9</code>.
+        <code>{CONTACT_COLUMNS.at(-1)}</code>.
       </p>
     {/snippet}
   </Step>
 
   <Step
-    {...at.email}
+    {...stepProps("email")}
     title="Distribution email"
     sourceTitle="What it is"
     summary={summaries.email}
-    done={Boolean(steps.value.done.email)}
-    ready={ready.email}
-    ondone={(value) => done("email", value)}
-    onedit={() => edit("email")}
-    oncollapse={() => close("email")}
   >
     {#snippet source()}
       <p>
@@ -399,39 +330,38 @@ function downloadSurvey() {
         <strong>Individual links</strong> (the default), and paste the subject
         and the body.
       </p>
+      <p class="copies not-content">
+        <CopyButton label="Copy the subject" text={distributionEmail.subject} />
+        <CopyButton label="Copy the body" text={distributionEmail.body} />
+      </p>
     {/snippet}
   </Step>
 
   <Step
-    {...at.send}
+    {...stepProps("send")}
     title="Send and close"
     sourceTitle="Before you send"
     summary={summaries.send}
-    done={Boolean(steps.value.done.send)}
-    ready={ready.send}
     waiting="Check every line first."
-    ondone={(value) => done("send", value)}
-    onedit={() => edit("send")}
-    oncollapse={() => close("send")}
   >
     {#snippet source()}
       <ul class="checklist not-content">
-        {#each SEND as [key, text] (key)}
+        {#each SEND as key (key)}
           <li>
             <Checkbox
               checked={Boolean(sent.value[key])}
               onchange={(event) =>
                 sent.set({ ...sent.value, [key]: event.currentTarget.checked })}
             >
-              {text}
+              {toolText.send[key]}
             </Checkbox>
           </li>
         {/each}
       </ul>
       <p>
-        No manual close is needed: when the links expire, Qualtrics records
-        the responses still in progress. Then export the responses and score
-        them on the Score page.
+        With automatic survey closure on, nothing needs closing by hand: when
+        the links expire, Qualtrics records the responses still in progress.
+        Then export the responses and score them on the Score page.
       </p>
     {/snippet}
   </Step>
@@ -475,6 +405,11 @@ function downloadSurvey() {
   }
   .checklist :global(label) {
     align-items: flex-start;
+  }
+  .copies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
   .muted {
     margin: 0 0 0.5rem;

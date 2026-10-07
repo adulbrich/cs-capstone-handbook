@@ -140,8 +140,19 @@ let { pages } = $props();
     padding-top: 0.25rem;
     font-weight: 600;
   }
+  .matrix {
+    overflow-x: auto;
+  }
   .matrix table {
+    display: table;
+    width: 100%;
+    margin: 0;
     font-size: var(--sl-text-xs);
+  }
+  .matrix thead th {
+    min-width: 6rem;
+    overflow-wrap: normal;
+    word-break: normal;
   }
   .matrix td {
     text-align: center;

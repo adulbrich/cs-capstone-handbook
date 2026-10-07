@@ -15,14 +15,6 @@ export function tableFromCsv(text) {
   };
 }
 
-/** A table from objects: `columns` are the keys, in order, and the header. */
-export const tableFromObjects = (columns, objects) => ({
-  header: columns,
-  rows: objects.map((object) =>
-    columns.map((column) => String(object[column] ?? ""))
-  ),
-});
-
 const NUMBER = /^-?\d+(\.\d+)?$/;
 const collator = new Intl.Collator("en", {
   numeric: true,

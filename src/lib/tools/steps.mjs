@@ -6,7 +6,9 @@
 // to its summary; Edit reopens it without undoing it, and an earlier step can
 // always be reopened. Unchecking a step's done box makes it current again and
 // locks the steps after it, which keep their own done state for when it is
-// checked again.
+// checked again. A done step whose input stops being usable (a roster
+// replaced by a broken one) counts as not done until it is fixed, so the
+// steps after it lock again.
 
 /** A step's status. */
 export const STEP = Object.freeze({
@@ -20,9 +22,10 @@ export const initialSteps = () => ({ done: {}, reopened: [] });
 
 /**
  * Each step's view, in `ids` order: `{ id, number, status, open }`.
- * `state` is `{ done: { [id]: boolean }, reopened: [id] }`.
+ * `state` is `{ done: { [id]: boolean }, reopened: [id] }`; `ready` maps a
+ * step to false while its input is not usable (a missing entry is ready).
  */
-export function stepView(ids, state) {
+export function stepView(ids, state, ready = {}) {
   const done = state.done ?? {};
   const reopened = new Set(state.reopened ?? []);
   let blocked = false;
@@ -30,7 +33,7 @@ export function stepView(ids, state) {
     let status = STEP.current;
     if (blocked) {
       status = STEP.locked;
-    } else if (done[id]) {
+    } else if (done[id] && ready[id] !== false) {
       status = STEP.done;
     } else {
       blocked = true;

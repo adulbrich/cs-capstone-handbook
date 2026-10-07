@@ -14,12 +14,7 @@ import {
   teamResponses,
 } from "./peer-export.fixture.mjs";
 import { parsePeerExport } from "./peer-export.mjs";
-import {
-  detailsCsv,
-  feedbackCsv,
-  fillPeerAssessment,
-  gapRows,
-} from "./peer-outputs.mjs";
+import { detailsCsv, fillPeerAssessment, gapRows } from "./peer-outputs.mjs";
 import { peerCriteria, round, STATUS, scorePeers } from "./peer-score.mjs";
 import { parseRoster } from "./roster.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
@@ -267,14 +262,10 @@ test("a CATME response missing a ratee's page: reported, the ratee rated by the 
   assert.equal(emu3.total, 87.5);
 });
 
-test("CATME downloads: no split columns, no comments in the feedback", () => {
+test("CATME downloads: no split columns", () => {
   const responses = workedExample();
-  responses[1].pages[2].comment = "Invented private remark";
   const { results } = run({ Kea: kea }, responses);
   const peer = peerCriteria(catmeRubric, "catme");
-  const feedback = feedbackCsv(results, peer);
-  assert.doesNotMatch(feedback, /Invented|share/);
-  assert.match(feedback, /Keeping the team on track: mean rating/);
   assert.doesNotMatch(detailsCsv(results, peer), /share|Multiplier/);
   assert.ok(gapRows(results).every((row) => row.share === null));
 });

@@ -76,3 +76,21 @@ test("a reopened step that is later locked shows closed", () => {
   state = setDone(state, "roster", false);
   assert.deepEqual(opened(state), ["roster"]);
 });
+
+test("a done step whose input breaks counts as not done until fixed", () => {
+  const state = setDone(
+    setDone(initialSteps(), "roster", true),
+    "survey",
+    true
+  );
+  const broken = stepView(IDS, state, { roster: false });
+  assert.deepEqual(
+    broken.map((s) => s.status),
+    [STEP.current, STEP.locked, STEP.locked, STEP.locked]
+  );
+  assert.equal(broken[0].open, true);
+  assert.deepEqual(
+    stepView(IDS, state, { roster: true }).map((s) => s.status),
+    [STEP.done, STEP.done, STEP.current, STEP.locked]
+  );
+});
