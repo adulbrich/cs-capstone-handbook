@@ -46,32 +46,65 @@ export function scheduleLines(source) {
 // A nested item under a labelled line, such as one deliverable under Due.
 const NESTED_ITEM_RE = /^\s+- (.*)$/;
 
+const join = (a, b) => (a ? `${a} ${b}` : b);
+
 // One term's weeks in order, for the deck: each week's number and, for each
-// label, the text after the label on its line and the nested items under it.
-// A week with no In class line has no `In class` entry.
+// label, the text after the label and the nested items under it. A second
+// line with a label the week already has adds to it (its text joined with
+// "; "), and a wrapped line joins the line or item it continues, as Markdown
+// does: a non-blank line right after it that is not a nested item and not
+// MDX (a line opening with "<"). A week with no In class line has no
+// `In class` entry.
+// A labelled line: start the row, or add to the one the week already has.
+function labelledRow(rows, line) {
+  const own = line.text.replace(ROW_LABEL_RE, "").trim();
+  const row = rows.get(line.row) ?? { items: [], text: "" };
+  row.text = row.text && own ? `${row.text}; ${own}` : row.text || own;
+  rows.set(line.row, row);
+  return { item: false, row };
+}
+
+// Any other line of a week: a nested item, a wrapped line joining the
+// line or item it continues, or a break (blank or MDX). Returns where the
+// next wrapped line goes.
+function continueRow(rows, line, target) {
+  const text = line.text.trim();
+  const nested = line.text.match(NESTED_ITEM_RE)?.[1];
+  const row = line.row ? rows.get(line.row) : undefined;
+  if (nested && row) {
+    row.items.push(nested.trim());
+    return { item: true, row };
+  }
+  if (text === "" || text.startsWith("<") || !target) {
+    return null;
+  }
+  if (target.item) {
+    const { items } = target.row;
+    items[items.length - 1] = join(items.at(-1), text);
+  } else {
+    target.row.text = join(target.row.text, text);
+  }
+  return target;
+}
+
 /** @returns {{ rows: Map<string, { items: string[], text: string }>, week: number }[]} */
 export function termWeeks(source, term) {
   /** @type {Map<number, Map<string, { items: string[], text: string }>>} */
   const weeks = new Map();
+  // Where a wrapped line goes: the row's text, or its last item.
+  let target = null;
   for (const line of scheduleLines(source)) {
     if (line.term !== term || line.week === null) {
+      target = null;
       continue;
     }
     if (!weeks.has(line.week)) {
       weeks.set(line.week, new Map());
     }
     const rows = weeks.get(line.week);
-    if (line.labelled) {
-      rows.set(line.row, {
-        items: [],
-        text: line.text.replace(ROW_LABEL_RE, "").trim(),
-      });
-      continue;
-    }
-    const nested = line.text.match(NESTED_ITEM_RE)?.[1];
-    if (nested && line.row) {
-      rows.get(line.row)?.items.push(nested.trim());
-    }
+    target = line.labelled
+      ? labelledRow(rows, line)
+      : continueRow(rows, line, target);
   }
   return [...weeks].map(([week, rows]) => ({ rows, week }));
 }

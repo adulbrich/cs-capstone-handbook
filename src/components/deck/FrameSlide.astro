@@ -7,13 +7,17 @@
 //
 //   <FrameSlide src="/decks/auditorium-seating.html?slide"
 //     label="Auditorium seating map by team number">
-//     <Notes time="1:00">...</Notes>
+//     <Notes time="1:00" cue="...">...</Notes>
 //   </FrameSlide>
 //
-// Other attributes land on the <section>.
-import type { HTMLAttributes } from "astro/types";
+// It renders <Slide> with no title and the frame's padding removed, so the
+// page fills the slide. Other attributes land on the <section>, as on
+// <Slide>.
+import type { ComponentProps } from "astro/types";
+import Slide from "./Slide.astro";
 
-interface Props extends HTMLAttributes<"section"> {
+interface Props
+  extends Omit<ComponentProps<typeof Slide>, "kicker" | "title" | "wide"> {
   label: string;
   src: string;
 }
@@ -21,16 +25,21 @@ interface Props extends HTMLAttributes<"section"> {
 const { class: className, label, src, ...attrs } = Astro.props;
 ---
 
-<section class:list={["deck-slide", "deck-frame-slide", className]} {...attrs}>
+<Slide class:list={["deck-frame-slide", className]} {...attrs}>
   <iframe data-src={src} title={label}></iframe>
   <slot />
-</section>
+</Slide>
 
 <style>
+  :global(.reveal .deck-frame-slide .deck-frame) {
+    padding: 0;
+  }
+
   iframe {
     display: block;
+    flex: 1;
     width: 100%;
-    height: 100%;
+    min-height: 0;
     border: 0;
   }
 </style>

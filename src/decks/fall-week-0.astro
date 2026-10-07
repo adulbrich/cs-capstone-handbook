@@ -3,7 +3,8 @@
 // meets. About thirty minutes of talk, then questions while bidding opens.
 // Served at /decks/fall-week-0/. Year-specific facts (TAs, rooms, dates,
 // the multidisciplinary project list) stay in announcements; the grade and
-// the sessions are rendered from the handbook pages that own them.
+// the sessions are rendered from the handbook pages that own them, and a
+// line credited to a page uses that page's words.
 import alexUlbrich from "../assets/decks/alex-ulbrich.jpg";
 import kirstenWinters from "../assets/decks/kirsten-winters.jpg";
 import GradeGrid from "../components/deck/GradeGrid.astro";
@@ -38,17 +39,17 @@ const handbook = new URL("/", Astro.site).href;
 
 <PeopleSlide
   kicker="The instructors"
-  title="Ask us early"
+  title="Ask the instruction team early"
   people={[
     { name: "Kirsten Winters", src: kirstenWinters },
     { name: "Alex Ulbrich", src: alexUlbrich },
   ]}
 >
-  <p>One address reaches both of us:</p>
+  <p>One address reaches both instructors:</p>
   <p><strong>cs-46x-help@oregonstate.edu</strong></p>
   <p class="deck-small">
     Technical decisions, team dynamics, a project that's stuck: email, or
-    knock on our doors.
+    knock on an office door.
   </p>
   <Notes time="1:30" cue="Each instructor says one sentence about what they help with.">
     <p>
@@ -61,70 +62,64 @@ const handbook = new URL("/", Astro.site).href;
 
 <Slide kicker="What this course is" title="Not your usual class">
   <ul>
-    <li>No lectures to sit through, and no exams</li>
-    <li class="fragment">A real project for a real project partner</li>
-    <li class="fragment">Working under uncertainty, as a team, every week</li>
-    <li class="fragment">About nine hours a week in fall, meetings and class included</li>
-    <li class="fragment">Start each assignment at least a week before it's due</li>
+    <li>A real project for a real project partner, all year</li>
+    <li class="fragment">Each week's slot is a workshop, a guest speaker, a demo day, or no lecture at all</li>
+    <li class="fragment">About nine hours a week in fall, meetings and class time included</li>
+    <li class="fragment">Four equal components, and none of them can be crammed into week 10</li>
   </ul>
   <Notes time="2:00" cue="Pause on the nine hours; it surprises people.">
     <p>
-      The nine hours is the figure the partner page gives: nine a week in fall
-      and winter, six in spring, per student, meetings and class time
-      included. Nothing in this course can be crammed into week 10, because
-      the partner and your teammates are working on their own calendars.
+      The slot line is from For Students, the nine hours from For Partners
+      (nine a week in fall and winter, six in spring, per student), and the
+      components from For Students. Week 10 can't absorb the work because
+      your partner and your teammates work on their own calendars.
     </p>
   </Notes>
 </Slide>
 
-<StatementSlide
-  kicker="The top of the outcome ladder"
-  source="Shipping guide, The Ladder"
->
-  Shipped means people who aren't you depend on it.
+<StatementSlide kicker="What shipped means" source="Shipping guide, The Ladder">
+  The top of the ladder always means the same thing in different words:
+  people who aren't you depend on it.
   <Notes time="2:00" cue="Ask: who will run your software in spring?">
     <p>
       The Shipping guide measures shipped by one question: who ran the
-      software? The rungs depend on the kind of project; the top always means
-      people outside the team depend on it. Each team agrees with its partner
-      which rung it's aiming at, and that agreed rung is the target. The
+      software? The rungs depend on the kind of project. Each team agrees with
+      its partner which rung it's aiming at, and that rung is the target. The
       slow clocks (maintainer review, app store review, IRB, partner IT) start
       in the first weeks, so read the Shipping guide this week.
     </p>
   </Notes>
 </StatementSlide>
 
-<Slide kicker="AI policy" title="Use AI tools, and own the result">
-  <ul>
-    <li><strong>You own the result:</strong> correctness, security, and licensing, whatever produced it</li>
-    <li class="fragment"><strong>Delegate deliberately:</strong> say what you handed off and which checks made that reasonable</li>
-    <li class="fragment"><strong>Respect the confidentiality boundary</strong> your team charter sets with your partner</li>
-  </ul>
+<Slide kicker="AI policy" title="Generative AI tools may be used on any assignment">
+  <ol>
+    <li><strong>You own the result.</strong> Correctness, security, licensing, and professionalism of anything you submit</li>
+    <li class="fragment"><strong>Delegate deliberately, and build the checks that make it reasonable.</strong></li>
+    <li class="fragment"><strong>Respect the confidentiality boundary.</strong> Your Team Charter's AI and confidentiality section defines it</li>
+  </ol>
   <p class="deck-small after-list fragment">
-    A weaker model or a tighter budget is no disadvantage: it means tighter
-    checks and more validation of your own.
+    A weaker model or a tighter budget is not a disadvantage: it simply means
+    tighter gates and more validation of your own.
   </p>
   <Notes time="2:30" cue="Point at the third rule and mention NDA projects.">
     <p>
-      These are the three standing rules on the Assignments Overview. What's
-      graded is the fit between how far you delegated and how strong your
-      checks are, never which tool you used. You can work with little or no
-      AI if you prefer. What may go into which tool is set per project, in
-      the team charter's AI and confidentiality section, and for an NDA
-      project that section is written with the partner.
+      The three standing rules from the Assignments Overview, unless an
+      assignment page says otherwise. What is graded is the fit between how
+      far you delegated and how strong your checks are, never how
+      sophisticated your tooling is. What may be pasted into which tools is
+      set per project, in the charter, per your partner agreement.
     </p>
   </Notes>
 </Slide>
 
 <StatementSlide kicker="Where to delegate" source="Assignments Overview, AI Policy">
-  Delegate freely where your checks catch mistakes cheaply; validate yourself
-  where a decision is hard to reverse.
-  <Notes time="1:00">
+  Validate carefully where a decision is hard to reverse. Delegate freely
+  where your checks catch mistakes cheaply.
+  <Notes time="1:00" cue="Ask for one decision in their project that is hard to reverse.">
     <p>
       Hard to reverse: architecture, database schema, authentication,
-      deployment, data migrations, licensing. Cheap to check: anything your
-      tests, CI, review, or a rollback path will catch. The Generative AI guide
-      covers how to tell the two apart.
+      deployment, data migrations, licensing. The Generative AI guide covers
+      how to tell the two apart and how to build checks you can trust.
     </p>
   </Notes>
 </StatementSlide>
@@ -150,13 +145,12 @@ const handbook = new URL("/", Astro.site).href;
     <li class="fragment">Know where your project stands every week, and say so early when it slips</li>
     <li class="fragment">Ask the instruction team as soon as something blocks you</li>
   </ul>
-  <Notes time="1:30">
+  <Notes time="1:30" cue="Ask who has had to give a manager bad news.">
     <p>
       The partner evaluation runs as a midterm pulse and an end-of-term
-      survey. Teams that do well keep their partner informed, including when
-      the news is bad. Situational awareness, knowing where the project
-      stands and who needs to hear it, may be the most important skill you
-      take from capstone.
+      survey. Tell your partner when the project slips, before they find out
+      on their own: they score you on what they've seen of the work, and a
+      slip they heard about early is one they can plan around.
     </p>
   </Notes>
 </Slide>
@@ -166,9 +160,8 @@ const handbook = new URL("/", Astro.site).href;
   <Notes time="1:30" cue="Point out demo days in weeks 5 and 10.">
     <p>
       Drawn from the week-by-week schedule. Workshops are graded work done in
-      class; demo days are all-hands, and presenting at one earns extra
-      credit. A week with no session has no class unless an announcement says
-      otherwise.
+      class; presenting at a demo day earns extra credit. A week with no
+      session has no class unless an announcement says otherwise.
     </p>
   </Notes>
 </Slide>
@@ -179,8 +172,7 @@ const handbook = new URL("/", Astro.site).href;
     <p>
       Also from the schedule. Teams are announced in week 1, and the
       introduction email goes out that week. Week 2 brings the first TA
-      check-in, the Term Startup list, and the Team Charter. Use the time
-      before your team forms to read the assignment pages.
+      check-in, the Term Startup list, and the Team Charter.
     </p>
   </Notes>
 </Slide>
@@ -192,12 +184,11 @@ const handbook = new URL("/", Astro.site).href;
     <li>The exact due date and time of each assignment</li>
     <li>The multidisciplinary projects, and any project that may split into two teams</li>
   </ul>
-  <Notes time="1:00">
+  <Notes time="1:00" cue="Show where announcements appear before moving on.">
     <p>
       The handbook is reused every year, so it names terms and weeks only.
       Anything tied to this year's calendar or this year's people is in
-      announcements. Every team has a TA, with a standing check-in in the
-      weeks the schedule marks.
+      announcements.
     </p>
   </Notes>
 </Slide>
@@ -205,9 +196,9 @@ const handbook = new URL("/", Astro.site).href;
 <Slide kicker="Resume and Intent" title="Think beyond OSU">
   <ul>
     <li>Your project is something you'll put on your resume: pick one you'd want to talk about</li>
-    <li class="fragment">You meet an instructor about your resume this term; check announcements for the sign-up</li>
+    <li class="fragment">You meet an instructor about your resume by week 5; check announcements for the sign-up</li>
   </ul>
-  <Notes time="1:00">
+  <Notes time="1:00" cue="Ask who already has a resume they'd send today.">
     <p>
       The assignment itself carries the details. The resume meeting is in
       person; the sign-up link and the room are in announcements.
@@ -220,24 +211,25 @@ const handbook = new URL("/", Astro.site).href;
     <li>The range of projects is wide: read past the first few</li>
     <li class="fragment">Know yourself: what you want to learn, and how you like to work</li>
     <li class="fragment">Expect to meet new people; they're your future colleagues</li>
-    <li class="fragment">Joining an ECE or multidisciplinary (ENGR) team means enrolling in that section instead</li>
+    <li class="fragment">Joining an ECE or multidisciplinary (ENGR) team outright means enrolling in that section instead of this one</li>
   </ul>
   <Notes time="1:30" cue="Name this year's multidisciplinary projects only if the announcement is out.">
     <p>
-      This year's multidisciplinary list, and who to talk to about it, is in
-      announcements. Some project descriptions invite questions to the
-      partner; asking doesn't reserve a spot.
+      Your team may still collaborate with a separate ECE capstone team on a
+      shared project without changing section. This year's multidisciplinary
+      list is in announcements. Asking a partner a question doesn't reserve a
+      spot.
     </p>
   </Notes>
 </Slide>
 
-<QrSlide kicker="Projects" title="Find the projects you like" url={portal.home}>
+<QrSlide kicker="Projects" title="Find the projects you like" url={portal.browse}>
   <p>
-    Sign in with your ONID and set your interests in your profile, and the
-    list is ordered by them.
+    Sign in to the project portal with your ONID and set your interests in
+    your profile, and the list is ordered by them.
   </p>
   <Notes time="1:00" cue="Leave this up until most phones are down.">
-    <p>The project list can change until the first lecture.</p>
+    <p>The list can change until the first lecture.</p>
   </Notes>
 </QrSlide>
 
@@ -246,9 +238,9 @@ const handbook = new URL("/", Astro.site).href;
     <li>Rank six projects in the Bidding Survey, by the end of this week</li>
     <li class="fragment">The instructors place every student, balancing skills and preferences across teams</li>
     <li class="fragment">Teams are 3 to 4 students in the usual case</li>
-    <li class="fragment">Friends: rank the same projects in the same order; it helps, and guarantees nothing</li>
+    <li class="fragment">Friends: rank the same projects in the same order; that helps, but it guarantees nothing</li>
     <li class="fragment">Proposed your own project? Rank it first, then five others</li>
-    <li class="fragment">Teams are announced in class in week 1</li>
+    <li class="fragment">Teams are announced in week 1</li>
   </ul>
   <Notes time="2:30" cue="Take questions on bidding here.">
     <p>
@@ -262,11 +254,9 @@ const handbook = new URL("/", Astro.site).href;
 </Slide>
 
 <QrSlide kicker="The handbook" title="Everything else is in the handbook" url={handbook}>
-  <p>
-    Every assignment page says what is due, when, and how it is scored.
-  </p>
-  <Notes time="1:00">
-    <p>The schedule and the Assignments Overview are the two pages to bookmark.</p>
+  <p>An assignment's own page says what is due, when, and how it is scored.</p>
+  <Notes time="1:00" cue="Ask everyone to bookmark the schedule.">
+    <p>The schedule and the Assignments Overview are the two pages to keep open.</p>
   </Notes>
 </QrSlide>
 
@@ -281,18 +271,11 @@ const handbook = new URL("/", Astro.site).href;
   <ul class="deck-small">
     <li>Grade and AI policy: Assignments Overview</li>
     <li>Class sessions and due weeks: Schedule</li>
-    <li>Bidding and team formation: For Students, and the Bidding Survey</li>
+    <li>Lectures, components, bidding, and teams: For Students, and the Bidding Survey</li>
     <li>The outcome ladder: the Shipping guide</li>
     <li>Nine hours a week: For Partners</li>
   </ul>
-  <Notes time="0:30">
-    <p>Questions until the end of the session.</p>
+  <Notes time="0:30" cue="Take questions until the end of the session.">
+    <p>Every line credited to a page above uses that page's words.</p>
   </Notes>
 </Slide>
-
-<style>
-  /* A closing line under a list, set apart from its last item. */
-  .after-list {
-    margin-block-start: 56px;
-  }
-</style>

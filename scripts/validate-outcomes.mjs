@@ -344,7 +344,7 @@ if (!grid) {
     }
   });
 } else {
-  gridFail(`the header must name the terms in order: ${grid.terms.join(", ")}`);
+  gridFail(`the header must name the terms in order: ${grid.header}`);
 }
 
 // --- Frontmatter weight reconciliation ---------------------------------------

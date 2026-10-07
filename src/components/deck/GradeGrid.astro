@@ -10,9 +10,11 @@
 //     <GradeGrid term="fall" />
 //   </Slide>
 //
-// An assignment that does not run in `term` is left out; an unknown term
+// An assignment that does not run in `term` is left out. An unknown term, a
+// component with no weight in it, or a weight that is not a whole number
 // fails the build.
 import overview from "../../content/docs/assignments/introduction.mdx?raw";
+import { plainText } from "../../lib/deck-text.mjs";
 import { readGradeGrid } from "../../lib/grade-grid.mjs";
 
 interface Props {
@@ -20,9 +22,6 @@ interface Props {
 }
 
 const { term } = Astro.props;
-const MD_LINK_RE = /\[([^\]]+)\]\([^)]*\)/g;
-const plain = (md: string) => md.replace(MD_LINK_RE, "$1");
-
 const grid = readGradeGrid(overview);
 const column = grid?.terms.findIndex((t: string) => t.toLowerCase() === term);
 if (!grid || column === undefined || column < 0) {
@@ -38,10 +37,26 @@ interface Card {
   who: string;
 }
 const cards: Card[] = [];
+const fail = (row: { first: string }, what: string) => {
+  throw new Error(
+    `<GradeGrid term="${term}">: "${row.first}" has ${what} for ${term} in the grade grid on assignments/introduction.mdx.`
+  );
+};
 for (const row of grid.rows) {
-  const weight = row.values[column];
+  const weight: number | null = row.values[column];
+  if (Number.isNaN(weight)) {
+    fail(row, "a weight that is not a whole number");
+  }
   if (row.kind === "component") {
-    cards.push({ items: [], name: row.name, weight, who: plain(row.who) });
+    if (weight === null) {
+      fail(row, "no weight");
+    }
+    cards.push({
+      items: [],
+      name: row.name,
+      weight: weight as number,
+      who: plainText(row.who),
+    });
   } else if (row.kind === "item" && weight !== null && cards.length > 0) {
     cards.at(-1)?.items.push({ label: row.label, weight });
   }

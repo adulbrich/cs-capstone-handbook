@@ -66,22 +66,21 @@ function gridRow([first, ...cells]) {
 // scripts/validate-outcomes.mjs, which sums it, and the deck component
 // src/components/deck/GradeGrid.astro, which projects one term of it.
 // `source` is assignments/introduction.mdx. Returns null when no Markdown
-// table sits inside <GradeGrid>; otherwise the header's term names and one
-// entry per body row: a bold `component` (its name and the "who scores it"
-// text after it), an `item` that is one link to an assignment page (its link
-// text and slug), the bold `total`, or `unknown`. `cells` are the term cells
+// table sits inside <GradeGrid>; otherwise the header row as written, its
+// term names, and one entry per body row: a bold `component` (its name and
+// the "who scores it" text after it), an `item` that is one link to an
+// assignment page (its link text and slug), the bold `total`, or `unknown`. `cells` are the term cells
 // as written, and `values` their weights: null for an empty cell, NaN for one
 // that is not a whole number.
 export function readGradeGrid(source) {
-  const rows = (source.match(GRID_RE)?.[1] ?? "")
+  const lines = (source.match(GRID_RE)?.[1] ?? "")
     .split("\n")
-    .filter((l) => l.trim().startsWith("|"))
-    .map(tableCells);
-  if (rows.length === 0) {
+    .filter((l) => l.trim().startsWith("|"));
+  if (lines.length === 0) {
     return null;
   }
-  const [[, ...terms], , ...body] = rows;
-  return { rows: body.map(gridRow), terms };
+  const [[, ...terms], , ...body] = lines.map(tableCells);
+  return { header: lines[0], rows: body.map(gridRow), terms };
 }
 
 const isBlank = (n) => n.type === "text" && !n.value.trim();

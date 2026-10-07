@@ -16,8 +16,10 @@
 // two columns, and a week with no In class line reads "No session", as the
 // schedule defines it. With more than one row it shows one card per week,
 // so keep that to three or four weeks. `from` and `to` bound the weeks,
-// inclusive. Links on the schedule become plain text.
+// inclusive, and default to the whole term. Links on the schedule become
+// plain text.
 import schedule from "../../content/docs/introduction/schedule.mdx?raw";
+import { plainLine } from "../../lib/deck-text.mjs";
 import { termWeeks } from "../../lib/schedule-lines.mjs";
 
 interface Props {
@@ -27,13 +29,12 @@ interface Props {
   to?: number;
 }
 
-const { from = 0, rows = ["In class"], term, to = 99 } = Astro.props;
-const MD_LINK_RE = /\[([^\]]+)\]\([^)]*\)/g;
-const BOLD_RE = /\*\*([^*]+)\*\*/g;
-const plain = (md: string) => {
-  const text = md.replace(MD_LINK_RE, "$1").replace(BOLD_RE, "$1");
-  return text.charAt(0).toUpperCase() + text.slice(1);
-};
+const {
+  from = 0,
+  rows = ["In class"],
+  term,
+  to = Number.POSITIVE_INFINITY,
+} = Astro.props;
 
 const weeks = termWeeks(schedule, term)
   .filter(({ week }) => week >= from && week <= to)
@@ -41,16 +42,16 @@ const weeks = termWeeks(schedule, term)
     rows: rows.map((label) => {
       const row = found.get(label);
       return {
-        items: row?.items.map(plain) ?? [],
+        items: row?.items.map(plainLine) ?? [],
         label,
-        text: row?.text ? plain(row.text) : null,
+        text: row?.text ? plainLine(row.text) : null,
       };
     }),
     week,
   }));
 if (weeks.length === 0) {
   throw new Error(
-    `<TermSessions term="${term}">: no weeks ${from} to ${to} on the schedule.`
+    `<TermSessions term="${term}">: no weeks from ${from} to ${Number.isFinite(to) ? to : "the end of the term"} on the schedule.`
   );
 }
 const sessionsOnly = rows.length === 1 && rows[0] === "In class";
