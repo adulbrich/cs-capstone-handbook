@@ -1,0 +1,45 @@
+---
+// A live page as the slide, full bleed: an interactive map or a demo the
+// presenter can point at, served from this site. reveal.js loads the frame
+// when the slide comes up and unloads it after, so a heavy page costs nothing
+// until then. `src` is a root-relative path; `label` names the frame for
+// screen readers. The slot takes <Notes>.
+//
+//   <FrameSlide src="/decks/auditorium-seating.html?slide"
+//     label="Auditorium seating map by team number">
+//     <Notes time="1:00" cue="...">...</Notes>
+//   </FrameSlide>
+//
+// It renders <Slide> with no title and the frame's padding removed, so the
+// page fills the slide. Other attributes land on the <section>, as on
+// <Slide>.
+import type { ComponentProps } from "astro/types";
+import Slide from "./Slide.astro";
+
+interface Props
+  extends Omit<ComponentProps<typeof Slide>, "kicker" | "title" | "wide"> {
+  label: string;
+  src: string;
+}
+
+const { class: className, label, src, ...attrs } = Astro.props;
+---
+
+<Slide class:list={["deck-frame-slide", className]} {...attrs}>
+  <iframe data-src={src} title={label}></iframe>
+  <slot />
+</Slide>
+
+<style>
+  :global(.reveal .deck-frame-slide .deck-frame) {
+    padding: 0;
+  }
+
+  iframe {
+    display: block;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    border: 0;
+  }
+</style>

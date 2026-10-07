@@ -1,0 +1,281 @@
+---
+// Fall week 0: the welcome and bidding session, the first time the class
+// meets. About thirty minutes of talk, then questions while bidding opens.
+// Served at /decks/fall-week-0/. Year-specific facts (TAs, rooms, dates,
+// the multidisciplinary project list) stay in announcements; the grade and
+// the sessions are rendered from the handbook pages that own them, and a
+// line credited to a page uses that page's words.
+import alexUlbrich from "../assets/decks/alex-ulbrich.jpg";
+import kirstenWinters from "../assets/decks/kirsten-winters.jpg";
+import GradeGrid from "../components/deck/GradeGrid.astro";
+import Notes from "../components/deck/Notes.astro";
+import PeopleSlide from "../components/deck/PeopleSlide.astro";
+import QrSlide from "../components/deck/QrSlide.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import TermSessions from "../components/deck/TermSessions.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import { portal } from "../site";
+
+export const title = "Welcome to Capstone";
+
+const handbook = new URL("/", Astro.site).href;
+---
+
+<TitleSlide
+  kicker="CS 461, fall week 0"
+  title="Welcome to Capstone"
+  subtitle="One team, one project partner, one project for the whole year"
+  byline="Kirsten Winters and Alex Ulbrich, your instructors"
+>
+  <Notes time="0:30" cue="Wait for the room to settle, then introduce yourselves.">
+    <p>
+      Today covers what the course asks of you, how the grade works, and how
+      you get onto a project. Bidding opens today and closes at the end of
+      this week.
+    </p>
+  </Notes>
+</TitleSlide>
+
+<PeopleSlide
+  kicker="The instructors"
+  title="Ask the instruction team early"
+  people={[
+    { name: "Kirsten Winters", src: kirstenWinters },
+    { name: "Alex Ulbrich", src: alexUlbrich },
+  ]}
+>
+  <p>One address reaches both instructors:</p>
+  <p><strong>cs-46x-help@oregonstate.edu</strong></p>
+  <p class="deck-small">
+    Technical decisions, team dynamics, a project that's stuck: email, or
+    knock on an office door.
+  </p>
+  <Notes time="1:30" cue="Each instructor says one sentence about what they help with.">
+    <p>
+      Office rooms change from year to year, so they're in announcements, not
+      on this slide. The shared address goes to both instructors; use it
+      rather than either personal email so nothing waits on one inbox.
+    </p>
+  </Notes>
+</PeopleSlide>
+
+<Slide kicker="What this course is" title="Not your usual class">
+  <ul>
+    <li>A real project for a real project partner, all year</li>
+    <li class="fragment">Each week's slot is a workshop, a guest speaker, a demo day, or no lecture at all</li>
+    <li class="fragment">About nine hours a week in fall, meetings and class time included</li>
+    <li class="fragment">Four equal components, and none of them can be crammed into week 10</li>
+  </ul>
+  <Notes time="2:00" cue="Pause on the nine hours; it surprises people.">
+    <p>
+      The slot line is from For Students, the nine hours from For Partners
+      (nine a week in fall and winter, six in spring, per student), and the
+      components from For Students. Week 10 can't absorb the work because
+      your partner and your teammates work on their own calendars.
+    </p>
+  </Notes>
+</Slide>
+
+<StatementSlide kicker="What shipped means" source="Shipping guide, The Ladder">
+  The top of the ladder always means the same thing in different words:
+  people who aren't you depend on it.
+  <Notes time="2:00" cue="Ask: who will run your software in spring?">
+    <p>
+      The Shipping guide measures shipped by one question: who ran the
+      software? The rungs depend on the kind of project. Each team agrees with
+      its partner which rung it's aiming at, and that rung is the target. The
+      slow clocks (maintainer review, app store review, IRB, partner IT) start
+      in the first weeks, so read the Shipping guide this week.
+    </p>
+  </Notes>
+</StatementSlide>
+
+<Slide kicker="AI policy" title="Generative AI tools may be used on any assignment">
+  <ol>
+    <li><strong>You own the result.</strong> Correctness, security, licensing, and professionalism of anything you submit</li>
+    <li class="fragment"><strong>Delegate deliberately, and build the checks that make it reasonable.</strong></li>
+    <li class="fragment"><strong>Respect the confidentiality boundary.</strong> Your Team Charter's AI and confidentiality section defines it</li>
+  </ol>
+  <p class="deck-small after-list fragment">
+    A weaker model or a tighter budget is not a disadvantage: it simply means
+    tighter gates and more validation of your own.
+  </p>
+  <Notes time="2:30" cue="Point at the third rule and mention NDA projects.">
+    <p>
+      The three standing rules from the Assignments Overview, unless an
+      assignment page says otherwise. What is graded is the fit between how
+      far you delegated and how strong your checks are, never how
+      sophisticated your tooling is. What may be pasted into which tools is
+      set per project, in the charter, per your partner agreement.
+    </p>
+  </Notes>
+</Slide>
+
+<StatementSlide kicker="Where to delegate" source="Assignments Overview, AI Policy">
+  Validate carefully where a decision is hard to reverse. Delegate freely
+  where your checks catch mistakes cheaply.
+  <Notes time="1:00" cue="Ask for one decision in their project that is hard to reverse.">
+    <p>
+      Hard to reverse: architecture, database schema, authentication,
+      deployment, data migrations, licensing. The Generative AI guide covers
+      how to tell the two apart and how to build checks you can trust.
+    </p>
+  </Notes>
+</StatementSlide>
+
+<Slide kicker="Your fall grade" title="Four equal components" wide>
+  <GradeGrid term="fall" />
+  <Notes time="3:00" cue="Half the grade is individual: peer evaluation and individual evidence.">
+    <p>
+      This slide is drawn from the grade grid on the Assignments Overview, so
+      it's always this year's numbers. Your project partner scores a quarter;
+      your teammates score a quarter, for you alone; your own work is a
+      quarter; your team's deliverables are the last quarter, where half of
+      each sprint note is your individual contribution. The Bidding Survey
+      counts: it's this week.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Grades and your partner" title="The work runs through your project partner">
+  <ul>
+    <li>Your partner scores a quarter of your grade, twice a term</li>
+    <li class="fragment">The assignments are there to support that work, not to compete with it</li>
+    <li class="fragment">Know where your project stands every week, and say so early when it slips</li>
+    <li class="fragment">Ask the instruction team as soon as something blocks you</li>
+  </ul>
+  <Notes time="1:30" cue="Ask who has had to give a manager bad news.">
+    <p>
+      The partner evaluation runs as a midterm pulse and an end-of-term
+      survey. Tell your partner when the project slips, before they find out
+      on their own: they score you on what they've seen of the work, and a
+      slip they heard about early is one they can plan around.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Fall" title="When the class meets" wide>
+  <TermSessions term="fall" />
+  <Notes time="1:30" cue="Point out demo days in weeks 5 and 10.">
+    <p>
+      Drawn from the week-by-week schedule. Workshops are graded work done in
+      class; presenting at a demo day earns extra credit. A week with no
+      session has no class unless an announcement says otherwise.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="The first three weeks" title="What's due, and what happens in class" wide>
+  <TermSessions term="fall" from={0} to={2} rows={["Due", "In class"]} />
+  <Notes time="1:30" cue="Use weeks 0 and 1 to read ahead.">
+    <p>
+      Also from the schedule. Teams are announced in week 1, and the
+      introduction email goes out that week. Week 2 brings the first TA
+      check-in, the Term Startup list, and the Team Charter.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="This term" title="This year's details are in announcements">
+  <ul>
+    <li>Your team's TA, and how to reach them</li>
+    <li>Rooms, office hours, and meeting times</li>
+    <li>The exact due date and time of each assignment</li>
+    <li>The multidisciplinary projects, and any project that may split into two teams</li>
+  </ul>
+  <Notes time="1:00" cue="Show where announcements appear before moving on.">
+    <p>
+      The handbook is reused every year, so it names terms and weeks only.
+      Anything tied to this year's calendar or this year's people is in
+      announcements.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Resume and Intent" title="Think beyond OSU">
+  <ul>
+    <li>Your project is something you'll put on your resume: pick one you'd want to talk about</li>
+    <li class="fragment">You meet an instructor about your resume by week 5; check announcements for the sign-up</li>
+  </ul>
+  <Notes time="1:00" cue="Ask who already has a resume they'd send today.">
+    <p>
+      The assignment itself carries the details. The resume meeting is in
+      person; the sign-up link and the room are in announcements.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Choosing a project" title="Choose on interest">
+  <ul>
+    <li>The range of projects is wide: read past the first few</li>
+    <li class="fragment">Know yourself: what you want to learn, and how you like to work</li>
+    <li class="fragment">Expect to meet new people; they're your future colleagues</li>
+    <li class="fragment">Joining an ECE or multidisciplinary (ENGR) team outright means enrolling in that section instead of this one</li>
+  </ul>
+  <Notes time="1:30" cue="Name this year's multidisciplinary projects only if the announcement is out.">
+    <p>
+      Your team may still collaborate with a separate ECE capstone team on a
+      shared project without changing section. This year's multidisciplinary
+      list is in announcements. Asking a partner a question doesn't reserve a
+      spot.
+    </p>
+  </Notes>
+</Slide>
+
+<QrSlide kicker="Projects" title="Find the projects you like" url={portal.browse}>
+  <p>
+    Sign in to the project portal with your ONID and set your interests in
+    your profile, and the list is ordered by them.
+  </p>
+  <Notes time="1:00" cue="Leave this up until most phones are down.">
+    <p>The list can change until the first lecture.</p>
+  </Notes>
+</QrSlide>
+
+<Slide kicker="Bidding" title="How you get your project and team">
+  <ul>
+    <li>Rank six projects in the Bidding Survey, by the end of this week</li>
+    <li class="fragment">The instructors place every student, balancing skills and preferences across teams</li>
+    <li class="fragment">Teams are 3 to 4 students in the usual case</li>
+    <li class="fragment">Friends: rank the same projects in the same order; that helps, but it guarantees nothing</li>
+    <li class="fragment">Proposed your own project? Rank it first, then five others</li>
+    <li class="fragment">Teams are announced in week 1</li>
+  </ul>
+  <Notes time="2:30" cue="Take questions on bidding here.">
+    <p>
+      From For Students and the Bidding Survey page. Placement does its best
+      for a top choice and can't guarantee one. Teams run from 2 to 5
+      depending on enrollment and what the project needs. The survey link
+      arrives by email from Qualtrics; a survey not submitted in time means
+      you're placed without your input.
+    </p>
+  </Notes>
+</Slide>
+
+<QrSlide kicker="The handbook" title="Everything else is in the handbook" url={handbook}>
+  <p>An assignment's own page says what is due, when, and how it is scored.</p>
+  <Notes time="1:00" cue="Ask everyone to bookmark the schedule.">
+    <p>The schedule and the Assignments Overview are the two pages to keep open.</p>
+  </Notes>
+</QrSlide>
+
+<Slide kicker="This week" title="Before teams form" wide>
+  <TermSessions term="fall" from={0} to={0} rows={["Due", "Read"]} />
+  <Notes time="1:00" cue="End here and open the floor.">
+    <p>From the schedule's week 0. The Bidding Survey closes when teams are formed, so it has no late window.</p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Sources" title="Where this deck comes from">
+  <ul class="deck-small">
+    <li>Grade and AI policy: Assignments Overview</li>
+    <li>Class sessions and due weeks: Schedule</li>
+    <li>Lectures, components, bidding, and teams: For Students, and the Bidding Survey</li>
+    <li>The outcome ladder: the Shipping guide</li>
+    <li>Nine hours a week: For Partners</li>
+  </ul>
+  <Notes time="0:30" cue="Take questions until the end of the session.">
+    <p>Every line credited to a page above uses that page's words.</p>
+  </Notes>
+</Slide>

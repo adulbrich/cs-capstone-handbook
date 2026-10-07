@@ -2,16 +2,25 @@
 // The sample deck: every slide component once, at auditorium size. It is
 // the reference for writing a deck and the page to check after a change to
 // src/styles/deck.css or src/components/deck/. Served at /decks/sample/.
+import alexUlbrich from "../assets/decks/alex-ulbrich.jpg";
+import kirstenWinters from "../assets/decks/kirsten-winters.jpg";
 import sprint from "../assets/design-sprint.png";
+import FrameSlide from "../components/deck/FrameSlide.astro";
+import GradeGrid from "../components/deck/GradeGrid.astro";
 import ImageSlide from "../components/deck/ImageSlide.astro";
 import Notes from "../components/deck/Notes.astro";
+import PeopleSlide from "../components/deck/PeopleSlide.astro";
+import QrSlide from "../components/deck/QrSlide.astro";
 import Slide from "../components/deck/Slide.astro";
 import StatementSlide from "../components/deck/StatementSlide.astro";
 import StoryMap from "../components/deck/StoryMap.astro";
+import TermSessions from "../components/deck/TermSessions.astro";
 import TitleSlide from "../components/deck/TitleSlide.astro";
 import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 
 export const title = "Deck Components";
+
+const handbook = new URL("/", Astro.site).href;
 ---
 
 <TitleSlide
@@ -147,6 +156,60 @@ export const title = "Deck Components";
     </p>
   </Notes>
 </Slide>
+
+<PeopleSlide
+  kicker="People"
+  title="Who is in the room"
+  people={[
+    { name: "Kirsten Winters", src: kirstenWinters },
+    { name: "Alex Ulbrich", src: alexUlbrich },
+  ]}
+>
+  <p>Portraits sit beside the text, cropped square.</p>
+  <Notes time="0:30">
+    <p>Import each portrait from src/assets; the build resizes it.</p>
+  </Notes>
+</PeopleSlide>
+
+<Slide kicker="Grade grid" title="One term of the grade grid" wide>
+  <GradeGrid term="winter" />
+  <Notes time="0:45">
+    <p>
+      Read from the grid on the Assignments Overview at build time; edit a
+      weight there and this slide follows.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Term sessions" title="A term's In class lines" wide>
+  <TermSessions term="winter" />
+  <Notes time="0:45">
+    <p>Read from the week-by-week schedule at build time.</p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Term sessions" title="A few weeks, several lines" wide>
+  <TermSessions term="spring" from={1} to={3} rows={["Due", "In class"]} />
+  <Notes time="0:45">
+    <p>With more than one row, one card per week.</p>
+  </Notes>
+</Slide>
+
+<QrSlide kicker="QR code" title="A link the room scans" url={handbook}>
+  <p>Generated at build time; the address is written out beside it.</p>
+  <Notes time="0:30">
+    <p>Scan it from the back row before the term to check the size.</p>
+  </Notes>
+</QrSlide>
+
+<FrameSlide
+  src="/decks/auditorium-seating.html?slide"
+  label="Auditorium seating map by team number"
+>
+  <Notes time="0:45">
+    <p>A live page, full bleed, loaded when the slide comes up.</p>
+  </Notes>
+</FrameSlide>
 
 <Slide kicker="Adding a component" title="A new kind of slide is one file">
   <ol>
