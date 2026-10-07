@@ -159,11 +159,14 @@ let { pages } = $props();
   }
   .matrix {
     container-type: inline-size;
+    overflow-x: auto;
   }
-  /* The grid wraps its scale labels to fit the width it has. */
+  /* The grid wraps its scale labels between words, never inside one: a
+     column is as wide as its longest word, and a grid wider than the
+     preview scrolls. */
   .grid {
     display: table;
-    table-layout: fixed;
+    table-layout: auto;
     width: 100%;
     margin: 0;
     font-size: var(--sl-text-xs);
@@ -171,9 +174,9 @@ let { pages } = $props();
   .grid th,
   .grid td {
     padding: 0.4rem;
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
     word-break: normal;
-    hyphens: auto;
+    hyphens: manual;
   }
   .grid thead th:first-child {
     width: 30%;

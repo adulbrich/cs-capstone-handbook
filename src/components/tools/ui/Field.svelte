@@ -37,7 +37,7 @@ const describedby = $derived(
   .error {
     color: var(--sl-color-red-high);
   }
-  .field :global(:is(input:not([type]), input[type="text"], input[type="email"], input[type="search"])) {
+  .field :global(:is(input:not([type]), input[type="text"], input[type="email"], input[type="search"], input[type="datetime-local"])) {
     max-width: 28rem;
     padding: 0.35rem 0.6rem;
     border: 1px solid var(--sl-color-gray-4);

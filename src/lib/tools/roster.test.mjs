@@ -5,6 +5,7 @@ import {
   buildContacts,
   CONTACT_COLUMNS,
   contactsCsv,
+  formatCloseDate,
 } from "./peer-contacts.mjs";
 import { parseRoster, splitName } from "./roster.mjs";
 
@@ -157,16 +158,34 @@ test("buildContacts stops on a team of 11 and names it", () => {
 });
 
 test("contactsCsv writes the exact headers Qualtrics maps", () => {
-  const { rows } = buildContacts(parseRoster(roster(team("Pair", 2))));
+  const { rows } = buildContacts(parseRoster(roster(team("Pair", 2))), {
+    closeDate: "Friday at 5:00 PM",
+  });
   const [header, first] = parseCsv(contactsCsv(rows));
   assert.deepEqual(header, CONTACT_COLUMNS);
-  assert.deepEqual(header.slice(0, 4), [
+  assert.deepEqual(header.slice(0, 5), [
     "Email",
     "Team",
     "TeamSize",
     "SelfFloor",
+    "CloseDate",
   ]);
   assert.equal(header.at(-1), "Team Member 9");
-  assert.equal(header.length, 13);
-  assert.equal(first.length, 13);
+  assert.equal(header.length, 14);
+  assert.equal(first.length, 14);
+  assert.equal(first[4], "Friday at 5:00 PM");
+});
+
+test("every row carries the close date; none without one", () => {
+  const students = parseRoster(roster(team("Trio", 3)));
+  const { rows } = buildContacts(students, { closeDate: "Monday at 9:00 AM" });
+  assert.ok(rows.every((row) => row.CloseDate === "Monday at 9:00 AM"));
+  assert.ok(buildContacts(students).rows.every((row) => row.CloseDate === ""));
+});
+
+test("the close date reads as weekday, day, and time, in plain spaces", () => {
+  // A fixed local time: a Friday, the 4th, at 17:00.
+  const text = formatCloseDate(new Date(2030, 0, 4, 17, 0));
+  assert.match(text, /^Friday, \p{L}+ 4 at 5:00 PM$/u);
+  assert.doesNotMatch(text, /[^\S ]/);
 });

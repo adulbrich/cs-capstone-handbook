@@ -130,14 +130,12 @@ export const surveyText = {
   },
 };
 
-/** What the instructor replaces in the email before sending it. */
-export const CLOSE_PLACEHOLDER = "[close day and time]";
-
 /**
  * The peer survey's distribution email. Qualtrics sets it on the
  * distribution, not in the .qsf, so the tools page shows it to copy. The
  * team in the subject keeps a student's two surveys in a term from
- * threading into one. `${e://...}` pipes the contact list's Team;
+ * threading into one. `${e://...}` pipes the contact list's Team and
+ * CloseDate;
  * `${l://...}` is Qualtrics's link piped text: the personal survey link and
  * the opt-out link it requires. No piped text sits inside a link.
  */
@@ -147,7 +145,7 @@ export const distributionEmail = {
     "",
     "This is the peer evaluation for your capstone team, ${e://Field/Team}. You rate yourself and each teammate. Your answers go to the instruction team only and are never shown to your teammates.",
     "",
-    `Please submit it by ${CLOSE_PLACEHOLDER}. It takes about ten minutes, and you can leave and come back to it from the same link.`,
+    "Please submit it by ${e://Field/CloseDate}. It takes about ten minutes, and you can leave and come back to it from the same link.",
     "",
     "${l://SurveyLink?d=Take the survey}",
     "",

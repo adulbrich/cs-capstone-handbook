@@ -31,7 +31,13 @@ test("pipeHtml fills embedded and loop fields, escaping the values", () => {
 });
 
 test("pipedSegments shows one recipient's values and each link's text", () => {
-  const segments = pipedSegments(distributionEmail.body, { Team: "Quad" });
+  const segments = pipedSegments(distributionEmail.body, {
+    CloseDate: "Friday at 5:00 PM",
+    Team: "Quad",
+  });
+  assert.ok(
+    segments.some((s) => s.kind === "field" && s.text === "Friday at 5:00 PM")
+  );
   const links = segments.filter((s) => s.kind === "link").map((s) => s.text);
   assert.deepEqual(links, ["Take the survey", "Unsubscribe"]);
   assert.ok(segments.some((s) => s.kind === "field" && s.text === "Quad"));

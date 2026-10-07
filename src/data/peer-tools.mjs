@@ -9,7 +9,7 @@ import {
   MAX_TEAM_SIZE,
   SLOTS,
 } from "../lib/tools/peer-contacts.mjs";
-import { clickPaths } from "./click-paths.mjs";
+import { clickPaths, pathSteps } from "./click-paths.mjs";
 
 const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 
@@ -120,12 +120,19 @@ export const previewText = {
 /** The Prepare page's steps after the roster. */
 export const prepareText = {
   contacts: {
-    columns: `. Check that every column maps by its header: ${CONTACT_COLUMNS.slice(0, 4).join(", ")}, and ${CONTACT_COLUMNS[4]} to ${CONTACT_COLUMNS.at(-1)}.`,
+    close: {
+      help: "When the survey closes. Every contact row carries it, and the email tells each student.",
+      label: "Close date and time",
+      missing:
+        "Set the close date first: the contact list and the email carry it.",
+    },
+    columns: `. Check that every column maps by its header: ${CONTACT_COLUMNS.slice(0, -SLOTS).join(", ")}, and ${CONTACT_COLUMNS.at(-SLOTS)} to ${CONTACT_COLUMNS.at(-1)}.`,
     download: (name) => `Download ${name}`,
     path: clickPaths.qualtricsList,
     summary: ({ file, rows }) => `${file}: ${plural(rows, "row")}.`,
     title: "Contact list",
-    what: `One row per student who gets the survey: email, team, team size, the least they may give themselves in the split, and up to ${SLOTS} teammates, which the survey shows. Built from step 1's roster, added students included.`,
+    waiting: "Set the close date first.",
+    what: `One row per student who gets the survey: email, team, team size, the least they may give themselves in the split, the close date, and up to ${SLOTS} teammates, which the survey shows. Built from step 1's roster, added students included.`,
   },
   email: {
     as: (email) => `As ${email} receives it.`,
@@ -136,8 +143,8 @@ export const prepareText = {
       ", to the list from step 3. Keep Individual links (the default), and paste the subject and the body.",
     summary: "Subject and body ready to paste into the distribution.",
     title: "Distribution email",
-    what: (placeholder) =>
-      `The email Qualtrics sends each student, with the student's team and their own survey link piped in. Replace ${placeholder} with when the links expire before you send it.`,
+    waiting: "Set the close date in step 3 first.",
+    what: "The email Qualtrics sends each student, with the student's team, the close date from step 3, and their own survey link piped in.",
   },
   label: "Prepare the peer evaluation",
   roster: {
@@ -148,12 +155,10 @@ export const prepareText = {
     waiting: `Drop a roster with at least one team of two or more, and no team over ${MAX_TEAM_SIZE}.`,
   },
   send: {
-    after:
-      "With automatic survey closure on, nothing needs closing by hand: when the links expire, Qualtrics records the responses still in progress. Then export the responses and score them on the Score page.",
+    after: "Then export the responses and score them on the Score page.",
     // Each line a box to check before the step is done.
     checklist: {
-      closure:
-        "In the survey, Survey options › Responses › Automatic survey closure is on, so a response still in progress is recorded when the links expire. Turn it on if the import left it off.",
+      close: `At the deadline, close the responses still in progress, so a student who stopped partway is recorded: in the survey, ${pathSteps(clickPaths.qualtricsCloseInProgress)}, select them, and close them.`,
       expiration:
         "On the distribution, set the availability end: Advanced options › Link expiration. Students can start and finish until then.",
       personal:
@@ -161,7 +166,9 @@ export const prepareText = {
       reminder:
         "Schedule a reminder halfway to the link expiration, to those who have not finished.",
     },
-    sourceTitle: "Before you send",
+    // The checklist in the order it happens: the close comes last.
+    order: ["expiration", "personal", "reminder", "close"],
+    sourceTitle: "Send, then close",
     summary: "Distribution set and sent.",
     title: "Send and close",
     waiting: "Check every line first.",

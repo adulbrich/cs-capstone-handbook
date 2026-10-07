@@ -4,7 +4,6 @@
 // in src/data/; everything it reads or makes stays in the browser.
 // `rubrics` are each variant's parsed rubric, read at build time.
 import {
-  CLOSE_PLACEHOLDER,
   distributionEmail,
   variantOrder,
   variants,
@@ -21,6 +20,7 @@ import { slug } from "../../../lib/tools/files.mjs";
 import {
   buildContacts,
   contactsCsv,
+  formatCloseDate,
 } from "../../../lib/tools/peer-contacts.mjs";
 import { rosterModel, surveyedCount } from "../../../lib/tools/peer-roster.mjs";
 import { buildPeerSurvey } from "../../../lib/tools/peer-survey-qsf.mjs";
@@ -52,7 +52,7 @@ import { PageSteps, PeerStorage } from "./saved.svelte.js";
 let { rubrics } = $props();
 
 const STEPS = ["roster", "survey", "contacts", "email", "send"];
-const SEND = Object.keys(text.send.checklist);
+const SEND = text.send.order;
 
 const storage = new PeerStorage();
 const roster = storage.saved(SHARED_KEYS.roster, null);
@@ -68,9 +68,15 @@ const sent = storage.saved("prepare:send", {});
 let sampleEmail = $state("");
 
 const model = $derived(rosterModel(roster.value, added.value));
+/** The close date as every contact row and the email show it, or "". */
+const closeDate = $derived(
+  settings.value.closeDate
+    ? formatCloseDate(new Date(settings.value.closeDate))
+    : ""
+);
 const contacts = $derived(
   model.students && model.summary.oversized.length === 0
-    ? attempt(() => buildContacts(model.students)).value
+    ? attempt(() => buildContacts(model.students, { closeDate })).value
     : null
 );
 const sample = $derived(
@@ -108,8 +114,8 @@ const files = $derived({
 });
 
 const ready = $derived({
-  contacts: Boolean(contacts && contacts.rows.length > 0),
-  email: true,
+  contacts: Boolean(closeDate && contacts && contacts.rows.length > 0),
+  email: Boolean(closeDate),
   roster: Boolean(contacts && contacts.rows.length > 0),
   send: SEND.every((key) => sent.value[key]),
   survey: Boolean(survey.value),
@@ -252,9 +258,28 @@ const modeCards = Object.entries(text.survey.modes).map(
     title={text.contacts.title}
     sourceTitle={text.whatItIs}
     summary={summaries.contacts}
+    waiting={text.contacts.waiting}
   >
     {#snippet source()}
       <p>{text.contacts.what}</p>
+      <div class="form not-content">
+        <Field
+          label={text.contacts.close.label}
+          help={text.contacts.close.help}
+          error={closeDate ? "" : text.contacts.close.missing}
+        >
+          {#snippet children({ describedby, id })}
+            <input
+              {id}
+              type="datetime-local"
+              aria-describedby={describedby}
+              value={settings.value.closeDate ?? ""}
+              onchange={(event) => setting("closeDate", event.currentTarget.value)}
+            />
+          {/snippet}
+        </Field>
+        {#if closeDate}<p class="muted">{closeDate}</p>{/if}
+      </div>
     {/snippet}
     {#snippet preview()}
       {#if contactTable}
@@ -279,9 +304,10 @@ const modeCards = Object.entries(text.survey.modes).map(
     title={text.email.title}
     sourceTitle={text.whatItIs}
     summary={summaries.email}
+    waiting={text.email.waiting}
   >
     {#snippet source()}
-      <p>{text.email.what(CLOSE_PLACEHOLDER)}</p>
+      <p>{text.email.what}</p>
     {/snippet}
     {#snippet preview()}
       {#if sample}

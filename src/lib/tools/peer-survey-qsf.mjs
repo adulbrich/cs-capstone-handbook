@@ -5,7 +5,7 @@
 // src/data/peer-evaluation.mjs.
 //
 // Survey Flow, in order:
-//   1. Embedded data: Team, TeamSize, SelfFloor, Team Member 1 to 9, declared
+//   1. Embedded data: Team, TeamSize, SelfFloor, CloseDate, Team Member 1 to 9, declared
 //      with no value so the contact list's values stand.
 //   2. Guard: when Team is empty (not a personal link), one page telling the
 //      respondent to use the personal link, then the end of the survey.
@@ -407,6 +407,7 @@ export function buildPeerSurvey({
       "Team",
       "TeamSize",
       "SelfFloor",
+      "CloseDate",
       ...Array.from({ length: SLOTS }, (_, i) => memberField(i + 1)),
     ]),
     FlowID: flowId(),

@@ -168,6 +168,7 @@ test("embedded data is declared first, with no values", () => {
       "Team",
       "TeamSize",
       "SelfFloor",
+      "CloseDate",
       ...Array.from({ length: 9 }, (_, i) => `Team Member ${i + 1}`),
     ]
   );
@@ -700,19 +701,21 @@ test("the picker lists every variant once, midterm first", () => {
 
 test("midterm and final output is byte-identical to the reviewed build", () => {
   // SHA-256 of the file at a fixed seed and time, recorded before the
-  // instruments moved into INSTRUMENTS (#448). A wording or rubric change
+  // instruments moved into INSTRUMENTS (#448), then regenerated when the
+  // CloseDate embedded field was added (#463): with that one field removed,
+  // the file hashes to the earlier values. A wording or rubric change
   // changes them on purpose: regenerate and update the hashes then. The two
   // SurveyEntry timestamps are written in local time, so they are blanked
   // before hashing; the hash then holds in every time zone.
   const expected = {
     "final loop":
-      "5318744f3eb0879bccb2e202f3ecb129ef52544e57e9b6637f4f467806972ac1",
+      "323bd6fc2fbd70d589fa09a66fde93301ca4e23a5ac2542d8620913d16c0cbcf",
     "final slots":
-      "1bd580db17aedec0bf19f9eca1fd457b2fd7bd2866a220cd42e50fcea7475c89",
+      "8fd1d5c0b989fbea0112737b03b83c372f889d9e8b9c92eea4115aa65c58fe45",
     "midterm loop":
-      "00a127ba7ddd7d35a8dfeac8de50359410e5b64e19224de035244db26588bfe2",
+      "22c52bdfe168c80dadabfd225129dd58b3db9dfbddbb2a143412db50f24a7775",
     "midterm slots":
-      "84e15d5ee9c6914ac923826efa775e44382d597b436f08519947c44212eb24d6",
+      "122782ef9a709ff88cf968ace106a2f7c411664a5fe47e0d88cbc31a96fa1b63",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");
