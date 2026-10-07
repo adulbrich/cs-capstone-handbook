@@ -6,8 +6,9 @@
 
 import { SLOTS } from "./peer-contacts.mjs";
 import {
+  EXPORT_SHAPES,
   emailIn,
-  INSTRUMENTS,
+  isScored,
   mapColumns,
   readNumber,
   readRating,
@@ -18,7 +19,7 @@ import { parseQualtricsExport } from "./qualtrics-export.mjs";
 
 /** One response, keyed by tag, as the scorer reads it. */
 function reshape(map, rated, row, index) {
-  const { ratingTag } = INSTRUMENTS[map.type];
+  const { ratingTag } = EXPORT_SHAPES[map.type];
   const at = (tag) => (tag ? (row[tag] ?? "") : "");
   const fixed = (key) => at(map.fixed[key]);
   const members = Array.from({ length: SLOTS }, (_, slot) =>
@@ -117,7 +118,7 @@ export function latestPerStudent(responses) {
  * rubric rates.
  */
 function checkAgainstRubric(map, rated, rubric) {
-  const { ratingTag } = INSTRUMENTS[map.type];
+  const { ratingTag } = EXPORT_SHAPES[map.type];
   const missing = rated.filter((criterion, r) =>
     Object.values(map.loop).some(
       (entry) => ratingTag(entry, criterion, r) === ""
@@ -159,7 +160,7 @@ function checkAgainstRubric(map, rated, rubric) {
 export function parsePeerExport(text, { includePreviews = false, rubrics }) {
   const parsed = parseQualtricsExport(text, { includePreviews });
   const map = mapColumns(parsed.columns);
-  const scored = Object.hasOwn(INSTRUMENTS, map.type);
+  const scored = isScored(map.type);
   const rubric = scored ? rubrics[map.type] : null;
   const rated = scored ? ratedCriteria(rubric) : [];
   if (scored) {

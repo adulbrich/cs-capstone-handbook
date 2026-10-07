@@ -62,7 +62,7 @@ const memberColumn = (slot) => `Team Member ${slot}`;
  * the rubric (`row` counts from 0, in rubric order); `split` says whether
  * the export carries the 100-point split.
  */
-export const INSTRUMENTS = Object.freeze({
+export const EXPORT_SHAPES = Object.freeze({
   catme: {
     ratingTag: (entry, criterion) =>
       entry.dimensions[catmeTags[criterion.title]] ?? "",
@@ -73,6 +73,9 @@ export const INSTRUMENTS = Object.freeze({
     split: true,
   },
 });
+
+/** True for a survey type the page scores (one of EXPORT_SHAPES). */
+export const isScored = (type) => Object.hasOwn(EXPORT_SHAPES, type);
 
 /** Looped questions shared by both surveys, and the regular matrix, by tag. */
 const LOOP_TAG = /^(\d+)_(Ratee|Rating|Comment)(?:_(\w+))?$/;
@@ -183,7 +186,7 @@ function checkScored(map) {
   const missing = REQUIRED_FIXED.filter(
     (key) => map.fixed[key] === undefined
   ).map((key) => FIXED_COLUMNS[key].tag);
-  if (INSTRUMENTS[map.type].split && Object.keys(map.split).length === 0) {
+  if (EXPORT_SHAPES[map.type].split && Object.keys(map.split).length === 0) {
     missing.push("Split");
   }
   if (missing.length > 0) {
@@ -235,7 +238,7 @@ export function mapColumns(columns) {
   }
 
   map.type = surveyType(map, counts);
-  if (Object.hasOwn(INSTRUMENTS, map.type)) {
+  if (isScored(map.type)) {
     checkScored(map);
   }
   return map;

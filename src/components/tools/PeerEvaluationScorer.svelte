@@ -4,7 +4,7 @@
 // never leave the page.
 import { download } from "../../lib/tools/download.mjs";
 import { parsePeerExport } from "../../lib/tools/peer-export.mjs";
-import { SURVEY_TYPE } from "../../lib/tools/peer-export-columns.mjs";
+import { isScored, SURVEY_TYPE } from "../../lib/tools/peer-export-columns.mjs";
 import {
   commentsCsv,
   detailsCsv,
@@ -59,8 +59,7 @@ const TYPES = {
 };
 
 const ready = $derived(
-  (parsed?.type === SURVEY_TYPE.regular ||
-    parsed?.type === SURVEY_TYPE.catme) &&
+  isScored(parsed?.type) &&
     parsed.problems.length === 0 &&
     files.roster.text !== "" &&
     files.assessment.text !== ""
@@ -97,7 +96,7 @@ function run() {
       rubric,
       rubricExport: parseRubricExport(files.assessment.text),
     });
-    outcome = { error: "", filled, parsed, peer, rubric, ...scored };
+    outcome = { error: "", filled, parsed, peer, ...scored };
   } catch (error) {
     outcome = { error: error.message };
   }

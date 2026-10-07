@@ -13,7 +13,7 @@
 // score.
 
 import { selfFloor } from "./peer-contacts.mjs";
-import { emailIn, INSTRUMENTS } from "./peer-export-columns.mjs";
+import { EXPORT_SHAPES, emailIn } from "./peer-export-columns.mjs";
 import { ratedCriteria } from "./peer-survey-qsf.mjs";
 
 /**
@@ -27,7 +27,7 @@ export function peerCriteria(rubric, instrument = "regular") {
   const rated = ratedCriteria(rubric);
   const titles = new Set(rated.map((c) => c.title));
   const others = rubric.criteria.filter((c) => !titles.has(c.title));
-  const expected = INSTRUMENTS[instrument].split ? 1 : 0;
+  const expected = EXPORT_SHAPES[instrument].split ? 1 : 0;
   if (others.length !== expected) {
     throw new Error(
       `The ${rubric.name} rubric has ${others.length} criteria besides the rated ones; the ${instrument} survey expects ${expected}${expected ? ", the point distribution" : ""}.`
@@ -61,7 +61,7 @@ export const PAIR_SELF_RANGE = [45, 55];
 export const PAIR_LOW_AVERAGE = 3;
 /**
  * On a team of two, ratings of each other that differ by this much or more
- * (each rater's mean over the four criteria) are reviewed. The page says
+ * (each rater's mean over the rated criteria) are reviewed. The page says
  * "diverge sharply" and names no number; this is the number.
  */
 export const PAIR_DIVERGENCE = 1.5;
@@ -380,7 +380,7 @@ function buildResult(ctx, email, { student, team }) {
  * `students` is the parsed roster; `responses` are the responses that count
  * (parsePeerExport); `rubric` is the rubric they are scored against, whose
  * rated criteria (ratedCriteria) each loop page rates; `instrument` is
- * "regular" or "catme" (INSTRUMENTS). Returns `{ results, problems,
+ * "regular" or "catme" (EXPORT_SHAPES). Returns `{ results, problems,
  * comments }`:
  *
  * - `results`, in roster order: `{ student, team, teamSize, status, raters,
@@ -420,7 +420,7 @@ export function scorePeers({
       ])
     ),
     report,
-    split: INSTRUMENTS[instrument].split,
+    split: EXPORT_SHAPES[instrument].split,
     teams,
   };
   for (const response of responses) {

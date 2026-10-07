@@ -119,6 +119,9 @@ export function fillPeerAssessment({
   return { csv: rubricExportCsv(rubricExport.header, rows), problems };
 }
 
+/** Columns that exist only on a survey with a split (`distribution` set). */
+const splitOnly = (distribution) => (columns) => (distribution ? columns : []);
+
 /** A number for a table or a CSV: two decimals by default, empty when absent. */
 export const cell = (value, places = 2) =>
   value === null || value === undefined ? "" : round(value, places);
@@ -130,7 +133,7 @@ export const cell = (value, places = 2) =>
  * single rating, no comment. `peer` is peerCriteria's.
  */
 export function feedbackCsv(results, { distribution, rated }) {
-  const split = (columns) => (distribution ? columns : []);
+  const split = splitOnly(distribution);
   const header = [
     "Student Name",
     "Email",
@@ -169,7 +172,7 @@ export function feedbackCsv(results, { distribution, rated }) {
  * `peer` is peerCriteria's; the split's columns appear only with a split.
  */
 export function detailsCsv(results, { distribution, rated }) {
-  const split = (columns) => (distribution ? columns : []);
+  const split = splitOnly(distribution);
   const names = rated.map(({ title }) => title);
   const header = [
     "Student Name",

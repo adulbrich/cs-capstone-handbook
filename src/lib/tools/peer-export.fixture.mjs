@@ -58,6 +58,15 @@ function questionColumns(q, prefix = "") {
   }
 }
 
+/** The survey the generator builds for `variant`. */
+const surveyFor = (variant) =>
+  buildPeerSurvey({
+    now: new Date(0),
+    rubric: rubrics[variants[variant].instrument],
+    seed: 1,
+    variant,
+  });
+
 /**
  * The export's columns for the survey the generator builds for `variant`,
  * each `[tag, text, importId]`: the metadata, then each question in survey
@@ -66,12 +75,7 @@ function questionColumns(q, prefix = "") {
  * generated survey exports.
  */
 function columns(variant, { ratee = true } = {}) {
-  const survey = buildPeerSurvey({
-    now: new Date(0),
-    rubric: rubrics[variants[variant].instrument],
-    seed: 1,
-    variant,
-  });
+  const survey = surveyFor(variant);
   const element = (name) =>
     survey.SurveyElements.find((e) => e.Element === name).Payload;
   const looped = new Set(
@@ -108,17 +112,33 @@ function columns(variant, { ratee = true } = {}) {
   return cols;
 }
 
-/** Where each rated criterion's answer goes, and its anchors, per variant. */
+/**
+ * Where each rated criterion's answer goes, and its choice labels by value,
+ * read from the generated survey's questions: the regular matrix's answers,
+ * or each CATME dimension's choices. A change to the label format the
+ * generator writes shows up here.
+ */
 function ratingsOf(variant) {
   const { instrument } = variants[variant];
-  const rated = ratedCriteria(rubrics[instrument]);
-  return rated.map((criterion, r) => ({
-    anchors: criterion.anchors,
-    tag: (prefix) =>
-      instrument === "catme"
-        ? `${prefix}_${catmeTags[criterion.title]}`
-        : `${prefix}_Rating_${r + 1}`,
-  }));
+  const questions = surveyFor(variant)
+    .SurveyElements.filter((e) => e.Element === "SQ")
+    .map((e) => e.Payload);
+  const byTag = (tag) => questions.find((q) => q.DataExportTag === tag);
+  return ratedCriteria(rubrics[instrument]).map((criterion, r) => {
+    if (instrument === "catme") {
+      const tag = catmeTags[criterion.title];
+      const { Choices } = byTag(tag);
+      return {
+        label: (value) => Choices[value].Display,
+        tag: (prefix) => `${prefix}_${tag}`,
+      };
+    }
+    const { Answers } = byTag("Rating");
+    return {
+      label: (value) => Answers[value].Display,
+      tag: (prefix) => `${prefix}_Rating_${r + 1}`,
+    };
+  });
 }
 
 /** A timestamp in Qualtrics' format, `minute` minutes after a fixed start. */
@@ -126,8 +146,8 @@ export const stamp = (minute) =>
   `1999-01-01 10:${String(minute).padStart(2, "0")}:00`;
 
 /** A rating as the export writes it: the value, or its choice text. */
-const ratingCell = (value, anchors, labels) =>
-  labels && value ? `${value}: ${anchors[value - 1]}` : (value ?? "");
+const ratingCell = (value, label, labels) =>
+  labels && value ? label(value) : (value ?? "");
 
 const finishedCell = (finished, labels) => {
   if (labels) {
@@ -155,8 +175,8 @@ function cellsOf(r, i, labels, ratings) {
   for (const [prefix, page] of Object.entries(r.pages ?? {})) {
     values[`${prefix}_Ratee`] = page.ratee ?? "";
     values[`${prefix}_Comment`] = page.comment ?? "";
-    for (const [c, { anchors, tag }] of ratings.entries()) {
-      values[tag(prefix)] = ratingCell(page.ratings?.[c], anchors, labels);
+    for (const [c, { label, tag }] of ratings.entries()) {
+      values[tag(prefix)] = ratingCell(page.ratings?.[c], label, labels);
     }
   }
   for (const [choice, points] of Object.entries(r.split ?? {})) {
