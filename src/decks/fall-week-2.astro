@@ -2,10 +2,11 @@
 // Fall week 2, Workshop 1: User Story Mapping (#466). A 50-minute session:
 // talk for the first 15 minutes, teams map in the template until minute 45
 // with the self-check up and a volunteer clinic at about minute 30, then the
-// wrap. The talk slides' target times sum to 14:35; the work-time and wrap
-// slides carry the session clock in their cues. Every claim on a slide
-// traces to a URL on the sources slide. The AI demo output slide is a
-// placeholder the instructor fills before class. Served at /decks/fall-week-2/.
+// wrap. The talk slides' target times stay at 15:00 or less in total; the
+// work-time and wrap slides carry the session clock in their cues. Every
+// claim on a slide traces to a URL on the sources slide. The AI demo output
+// box is a placeholder the instructor fills before class. Served at
+// /decks/fall-week-2/.
 import Notes from "../components/deck/Notes.astro";
 import Slide from "../components/deck/Slide.astro";
 import StoryMap from "../components/deck/StoryMap.astro";
@@ -22,7 +23,56 @@ const selfCheck = [
   "The backbone type is chosen, with one line saying why",
   "Every ? has a question on the Questions for our partner tab",
 ];
-const template = "capstone.alexulbrich.com/story-map-template.xlsx";
+// The ephira day-one map: drawn once, shown on its own slide and again
+// beside the AI tool's output.
+const ephiraMap = {
+  backbone: [
+    "Get in safely",
+    "Log a day",
+    "Review the calendar",
+    "Read cycle insights",
+    "Get reminders",
+    "Take the data out",
+  ],
+  releases: [
+    {
+      name: "Walking skeleton",
+      stories: [
+        "Set a password, unlock with it",
+        "Log today's flow, edit a past day",
+        "Logged days on a month view",
+        "Current cycle day",
+        "Daily reminder to log",
+        "Delete all my data",
+      ],
+    },
+    {
+      name: "Release 1",
+      stories: [
+        "Biometric unlock, guided tour",
+        ["Symptoms, moods, notes", "? Custom symptoms, medications"],
+        "Filter the legend by entry type",
+        "Predict after 2 cycles, phase tips",
+        "? Reminder before a period",
+        "? PDF export for a doctor",
+      ],
+    },
+    {
+      name: "Out of scope this year",
+      stories: [
+        "Color themes",
+        "Pregnancy mode",
+        undefined,
+        undefined,
+        "Birth control reminders",
+        "Cloud backup",
+      ],
+    },
+  ],
+};
+// Shown without its protocol, as the room would type it.
+const templateUrl = new URL("/story-map-template.xlsx", Astro.site);
+const template = `${templateUrl.host}${templateUrl.pathname}`;
 ---
 
 <TitleSlide
@@ -131,8 +181,8 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
       From the second part of Allegro's engineering blog series on delivering
       products. They combined a minimum viable product, a walking skeleton, and
       story mapping. The estimate after mapping still did not fit their
-      velocity, so they cut again and thinned stories rather than dropping
-      columns.
+      velocity, so they cut the minimum viable product further and made some
+      stories thinner.
     </p>
     <p>
       The first version gave no business value on its own: an API backed by
@@ -143,51 +193,7 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
 </Slide>
 
 <Slide kicker="Worked example: ephira, day one" title="The map a team could have drawn from the proposal" wide>
-  <StoryMap
-    backbone={[
-      "Get in safely",
-      "Log a day",
-      "Review the calendar",
-      "Read cycle insights",
-      "Get reminders",
-      "Take the data out",
-    ]}
-    releases={[
-      {
-        name: "Walking skeleton",
-        stories: [
-          "Set a password, unlock with it",
-          "Log today's flow, edit a past day",
-          "Logged days on a month view",
-          "Current cycle day",
-          "Daily reminder to log",
-          "Delete all my data",
-        ],
-      },
-      {
-        name: "Release 1",
-        stories: [
-          "Biometric unlock, guided tour",
-          ["Symptoms, moods, notes", "? Custom symptoms, medications"],
-          "Filter the legend by entry type",
-          "Predict after 2 cycles, phase tips",
-          "? Reminder before a period",
-          "? PDF export for a doctor",
-        ],
-      },
-      {
-        name: "Out of scope this year",
-        stories: [
-          "Color themes",
-          "Pregnancy mode",
-          undefined,
-          undefined,
-          "Birth control reminders",
-          "Cloud backup",
-        ],
-      },
-    ]}
-  />
+  <StoryMap {...ephiraMap} />
   <Notes time="2:00" cue="Point at the walking-skeleton row and read it left to right as one user's first day.">
     <p>
       ephira is an encrypted, local-first menstrual cycle tracker for iOS and
@@ -208,37 +214,43 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
   </Notes>
 </Slide>
 
-<TwoColumnSlide kicker="Worked example: ephira, the reveal" title="What shipped, and what stayed out" divider>
+<TwoColumnSlide kicker="Worked example: ephira, the reveal" title="What the first store version held" divider>
   <div slot="left">
-    <h3>Shipped, on both app stores</h3>
+    <h3>In the first store version</h3>
     <ul>
-      <li>Everything above the line, all three amber guesses included</li>
+      <li>Password and biometric lock; delete all data</li>
+      <li>A full day log, the calendar and its filter, custom entries</li>
       <li>Color themes, which day one had ruled out</li>
     </ul>
   </div>
   <div slot="right">
-    <h3>Not in the release</h3>
+    <h3>Later, or never</h3>
     <ul>
-      <li>Pregnancy mode: partly built, kept apart as its own mode</li>
-      <li>Cloud backup: excluded by design, since data never leaves the device</li>
-      <li>Birth control reminders</li>
+      <li>Later: predictions, cycle insights, PDF export, reminders, the guided tour</li>
+      <li>Later: pregnancy mode, now a separate mode</li>
+      <li>Never: cloud backup, since the data never leaves the device</li>
     </ul>
   </div>
-  <Notes time="1:00" cue="Ask: which out-of-scope card would have broken the product if it had shipped?">
+  <Notes time="1:00" cue="Ask: which card on the day-one map turned out to be the hardest unknown?">
     <p>
-      All of this traces to the ephira README and repository. Custom
-      symptoms and medications, reminders before a predicted period, and the
-      PDF export all shipped. Predictions need two complete cycles, as the
-      map guessed. Color themes moved up from out of scope: the line moves
-      when the team has room.
+      The first version the repository marks for the app store is 1.1.0: its
+      app.json commit reads "Update version for appstore upload". At that
+      commit the code has the password and biometric lock, the day view
+      (flow, symptoms, moods, medications, birth control, notes), the
+      calendar and its filter, custom entries, a theme selector, and delete
+      all data. Its README still lists cycle prediction, data export, and
+      cycle insight as open goals.
     </p>
     <p>
-      Pregnancy mode exists in the code as a separate set of tabs and
-      storage (the repository's ADR 0001 keeps the two modes apart), but it
-      is not in the feature list. Cloud backup is the deliberate one: the app
-      promises data that never leaves the device, so a backup feature would
-      break the product's main promise. Writing it below the line, on
-      purpose, settles the question before a partner asks for it in winter.
+      Everything on the right of this slide is in today's README and came in
+      later versions. So the first release was thinner than the day-one map:
+      the cycle-day and reminder stories in its walking skeleton were not
+      there yet. Color themes moved up from out of scope; the line moves both
+      ways. Pregnancy mode was started after the first release and now runs
+      as its own set of tabs. Cloud backup is the deliberate one: the app
+      promises data that never leaves the device, so backup would break the
+      product's main promise. Writing it below the line, on purpose, settles
+      the question before anyone asks for it.
     </p>
   </Notes>
 </TwoColumnSlide>
@@ -267,9 +279,10 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
   </p>
   <Notes time="1:00" cue="Ask for hands: who is not sure their project has a user?">
     <p>
-      The instruction team read this year's 60 project listings: 29 fit a
-      user story map cleanly, 16 partly, and 15 poorly. So about half the
-      room needs this slide.
+      Why it matters: the walking skeleton should exercise the riskiest part
+      of the project first, so the backbone has to run through it. In a
+      recent year, about half the project listings had no clean user journey
+      to map, so a good part of the room needs this slide.
     </p>
     <p>
       A game is a user journey with the player as the user; a library or an
@@ -281,7 +294,7 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
   </Notes>
 </Slide>
 
-<Slide kicker="Pipeline backbone: how we would map it" title="Measuring waves from an ocean glider" wide>
+<Slide kicker="Pipeline backbone: a sketch from the project page" title="Measuring waves from an ocean glider" wide>
   <StoryMap
     backbone={[
       "Sense",
@@ -357,7 +370,7 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
   </Notes>
 </Slide>
 
-<Slide kicker="Research backbone: how we would map it" title="Predicting a species' body mass from its name" wide>
+<Slide kicker="Research backbone: a sketch from the project page" title="Predicting a species' body mass from its name" wide>
   <StoryMap
     backbone={[
       "Question",
@@ -403,8 +416,8 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
       The walking skeleton never touches the clever method. It takes a slice
       of the data, predicts each held-out species with its genus's mean, and
       reports one error number. Every method after that has a number to
-      beat. The genus-mean baseline is our choice for the slide, not
-      something the project page names.
+      beat. The genus-mean baseline is this deck's choice, not something the
+      project page names.
     </p>
   </Notes>
 </Slide>
@@ -457,13 +470,12 @@ const template = "capstone.alexulbrich.com/story-map-template.xlsx";
       For a game, the walking skeleton is one level, ugly, from launch to the
       end screen. For a library, it's a first call that works from a fresh
       install, documented in the README. The developer is the user, and
-      "installs it" is an activity worth mapping because it's where most
-      adopters give up.
+      "installs it" is an activity on the map like any other.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="AI demo: the prompt" title="The same proposal, mapped by an AI tool">
+<Slide kicker="AI demo: ephira's proposal" title="The same proposal, mapped by an AI tool">
   <pre class="prompt">Here is a software project proposal, as it was advertised to students:
 
 [ADVERTISED PROJECT PROPOSAL]
@@ -475,8 +487,10 @@ out-of-scope row. Keep each story under eight words.</pre>
   <Notes time="0:30" cue="Read the last two sentences aloud.">
     <p>
       Tool and model, named here only: [FILL IN THE TOOL AND MODEL YOU
-      PRE-RAN]. Run it before class on the proposal as it was advertised,
-      pasted in place of the placeholder, and keep the output as returned.
+      PRE-RAN]. Run it before class with ephira's proposal, as it was
+      advertised, pasted in place of the placeholder, and keep the output as
+      returned. The human map for the same proposal is the day-one map from
+      earlier, shown again after the output.
     </p>
     <p>
       The prompt does not ask the tool to mark its assumptions, on purpose:
@@ -485,32 +499,37 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-<Slide kicker="AI demo: the output" title="Tool output beside the human map">
-  <div class="placeholder-grid">
-    <div class="placeholder">
-      <p class="placeholder-label">Placeholder</p>
-      <p>Paste the pre-run tool output here</p>
-    </div>
-    <div class="placeholder">
-      <p class="placeholder-label">Placeholder</p>
-      <p>Paste the human map for the same proposal here</p>
-    </div>
+<Slide kicker="AI demo: the output" title="What the tool drew from ephira's proposal">
+  <div class="placeholder">
+    <p class="placeholder-label">Placeholder</p>
+    <p>Paste the pre-run tool output here</p>
   </div>
   <ul class="marks">
     <li><strong>Invented:</strong> [one story the proposal never mentions]</li>
     <li><strong>Stated as fact:</strong> [one assumption nobody has checked]</li>
   </ul>
-  <Notes time="1:15" cue="Ask the room to find the invented story before you point at it.">
+  <Notes time="1:00" cue="Ask the room to find the invented story before you point at it.">
     <p>
-      Placeholder slide: fill it before class. Replace the two dashed boxes
-      with the tool's output and the human map for the same proposal (an
-      image, or a StoryMap), and fill the two bracketed lines with the story
-      the tool invented and the assumption it stated as fact.
+      Placeholder: fill it before class. Replace the dashed box with the
+      tool's output (an image, or a StoryMap), and fill the two bracketed
+      lines with the story the tool invented and the assumption it stated as
+      fact.
     </p>
     <p>
       The lesson for the room: the tool's map looks finished, which is the
       danger. Treat its output as a draft full of unflagged question marks,
       and check each one with the partner.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="AI demo: the human map" title="The day-one map for the same proposal" wide>
+  <StoryMap {...ephiraMap} />
+  <Notes time="0:30" cue="Go back one slide if the room wants to compare a column.">
+    <p>
+      The same map as the worked example. Point at one column where the tool
+      and the team disagree, and at the amber cards: the human map flags its
+      guesses, and the tool's map, asked the same way, did not.
     </p>
   </Notes>
 </Slide>
@@ -566,7 +585,7 @@ out-of-scope row. Keep each story under eight words.</pre>
 
 <Slide kicker="Wrap: minute 45" title="Due by the end of the week">
   <ul>
-    <li>The full map as one PDF: the template prints one page wide</li>
+    <li>One PDF of the whole workbook, both tabs: in Google Sheets, export the workbook, not the current sheet</li>
     <li>
       At least four backbone columns and one complete walking-skeleton row,
       however uncertain
@@ -580,8 +599,9 @@ out-of-scope row. Keep each story under eight words.</pre>
   <Notes time="4:30" cue="Minute 45 to 49. End on the partner questions.">
     <p>
       The full map is due by the end of the week, as the Workshop Activities
-      page says. A submission is complete when it is the activity's output;
-      there is no quality bar.
+      page says. A default PDF export from Google Sheets takes only the sheet
+      on screen, so choose the whole workbook in the export dialog; the
+      template prints each tab one page wide.
     </p>
     <p>
       The questions tab is the part to use this week: every amber card is a
@@ -680,16 +700,10 @@ out-of-scope row. Keep each story under eight words.</pre>
     border-radius: 12px;
   }
 
-  .placeholder-grid {
-    display: grid;
-    flex: 1;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 48px;
-    min-height: 0;
-  }
-
   .placeholder {
     display: flex;
+    flex: 1;
+    min-height: 0;
     flex-direction: column;
     align-items: center;
     justify-content: center;

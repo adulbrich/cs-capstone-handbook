@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-paste Required: Fall Workshop 1 Story Map Template (#466)
 
-No rubric changes. Re-paste the fall Workshop 1 (User Story Mapping) body: its complete submission now names the backbone type with its reason and the list of questions for the project partner, and a new paragraph says a project with no user journey maps its pipeline stages or research steps in the same template and points research teams to Define Your Research Questions.
+No rubric changes. Re-paste the fall Workshop 1 (User Story Mapping) body: its complete submission now names at least four backbone columns and one complete walking-skeleton row, the backbone type with its reason, and the list of questions for the project partner, and a new paragraph says a project with no user journey maps its pipeline stages or research chain in the same template and points research teams to Define Your Research Questions.
 
 ## Re-paste Required: Peer Evaluations Match the Generated Survey (#439)
 
