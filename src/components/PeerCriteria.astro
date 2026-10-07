@@ -1,0 +1,63 @@
+---
+import { parseRubricCsv } from "../lib/rubric-csv.mjs";
+import { ratingMatrix } from "../lib/tools/peer-survey-qsf.mjs";
+
+/**
+ * PeerCriteria: the peer evaluation survey's rating matrix on the Peer
+ * Evaluations page, from the same source the survey generator reads: the
+ * rated criteria and their anchors from the rubric CSV, each criterion's
+ * question from `criterionPrompts` in `src/data/peer-evaluation.mjs`
+ * (through `ratingMatrix`). The page shows the survey's own wording, so the
+ * two cannot drift. A CSV the generator cannot use fails the build here too.
+ *
+ * `part="criteria"` renders the criteria, in the CSV's order, with
+ * the question the survey asks; `part="scale"` renders the 1 to 5 scale as
+ * the survey's answer choices read.
+ *
+ * Plain table and list markup, no `rubric` class: the Canvas export keeps
+ * this in the body (it strips the `rubric` class).
+ *
+ * Usage in MDX:
+ *
+ *   <PeerCriteria csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" part="criteria" />
+ */
+interface Props {
+  /** The CSV file's contents, imported with `?raw`. */
+  csv: string;
+  /** Which half of the matrix to show. */
+  part: "criteria" | "scale";
+  /** Repository-relative path, used in error messages. */
+  sourceLabel: string;
+}
+
+const { csv, part, sourceLabel } = Astro.props;
+const { rows, scale } = ratingMatrix(parseRubricCsv(csv, sourceLabel));
+---
+
+{
+  part === "criteria" ? (
+    <table>
+      <caption>The criteria you rate each member on</caption>
+      <thead>
+        <tr>
+          <th scope="col">Criterion</th>
+          <th scope="col">The survey asks</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            <th scope="row">{row.title}</th>
+            <td>{row.prompt}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <ul>
+      {scale.map((choice) => (
+        <li>{choice}</li>
+      ))}
+    </ul>
+  )
+}

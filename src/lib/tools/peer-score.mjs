@@ -68,8 +68,8 @@ export const PAIR_SELF_RANGE = [45, 55];
 export const PAIR_LOW_AVERAGE = 3;
 /**
  * On a team of two, ratings of each other that differ by this much or more
- * (each rater's mean over the rated criteria) are reviewed. The page says
- * "diverge sharply" and names no number; this is the number.
+ * (each rater's mean over the rated criteria) are reviewed, as Teams of Two
+ * on the Peer Evaluations page states.
  */
 export const PAIR_DIVERGENCE = 1.5;
 

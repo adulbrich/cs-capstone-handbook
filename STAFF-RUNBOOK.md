@@ -69,7 +69,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 | Weeks | Staff activity |
 |---|---|
 | 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
-| 1-2 | Team-to-TA assignments made; charters graded (TAs); Qualtrics contact lists built |
+| 1-2 | Team-to-TA assignments made; charters graded (TAs) |
 | 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; checkpoint 1 (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
 | 5 | All-hands demo day 1 (sampled lineup, ~15 teams in the hour) |
 | 7 and 9 | Defense sessions, separate from check-ins (calibration session first; see below) |
@@ -146,12 +146,27 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 
 ## Surveys (per term: 4 processing runs)
 
-- Peer midterm, peer final, partner midterm, partner final. Scripts in `scripts/` until the instructor-tools page exists.
-- Partner scoring (#264): the Midterm Pulse rubric and the no-response rule are on the handbook's partner evaluation page. `generate-project-partner-midterm-score.R` applies the pulse rubric and writes the Canvas score; it needs the Qualtrics export with choice text, not numeric values, and stops on an answer it cannot map. Neither partner script sees a survey nobody answered: enter those teams by hand at the A lower bound, scaled to the entry's Canvas points, never as a zero or a blank.
-- The spring end-of-term peer survey is CATME only and graded, against `canvas/assignments/peer-evaluation/catme-rubric.csv`; the spring midterm stays on the regular survey. The R peer script does not score CATME; the instructor tools page (`/tools/peer-evaluation`) generates and scores the CATME survey.
-- Known issues fixed on this branch: peer-eval corrected score now posted to the gradebook; s2026 Requirements facet 3.5 mapping.
-- Known issues still open: team-size cap at 6 including self in the peer scripts (teams of 7+ break); Q7 individual-concern extraction stubbed in partner scripts (concerns must be read manually from the export until fixed).
-- Per run: export from Qualtrics (values; choice text for the partner midterm run), update filenames and Canvas assignment IDs at the top of the script, run, eyeball the distribution plot, import the updated gradebook CSV into Canvas, send feedback emails.
+Peer midterm, peer end-of-term, partner midterm (the Midterm Pulse), partner end-of-term. Each is generated and scored on an instructor tools page: the peer surveys on [the peer evaluation page](https://capstone.alexulbrich.com/tools/peer-evaluation/), the partner surveys on [the partner evaluation page](https://capstone.alexulbrich.com/tools/partner-evaluation/). Both pages read the files in the browser and upload nothing. Rating names and points come from the rubric CSVs under `canvas/assignments/`, so the survey, the scorer, and the Canvas rubric cannot disagree.
+
+Per run:
+
+1. On the tools page, generate the survey (`.qsf`) and its contact list from the Canvas roster with groups (the partner list also reads the partner sheet). For the peer survey, pick the variant: Midterm, End-of-term (fall, winter), or CATME (spring end-of-term).
+2. In Qualtrics, import the `.qsf` (Create project, Survey, From a file), and create a mailing list from the contact list; every column maps by its header.
+3. Partner surveys: copy the distribution email (subject and body) from the tools page into the distribution.
+4. Set the availability dates on the distribution, not in the survey.
+5. Distribute by email with personal links only. The survey is by invitation, so the anonymous link does not open it.
+6. At the deadline, close the responses still in progress, so a student who stopped partway is recorded.
+7. Export the responses as CSV with "Use choice text" on. The scorers read the labels export only and refuse a values export.
+8. On the tools page, score the export against the roster and the assignment's rubric-assessment export from Canvas, and read the report: missing responses, flagged teams of two, the self-versus-peer gap, and the partner concerns table.
+9. Import the filled rubric-assessment CSV on the same Canvas assignment.
+10. Peer surveys: return the anonymized feedback file (per-criterion means, no comments) to each student. The details and comments files are instructor only.
+
+- The spring end-of-term peer survey is CATME only and graded, against `canvas/assignments/peer-evaluation/catme-rubric.csv`; the spring midterm stays on the regular survey. The peer tools page generates and scores it.
+- Partner scoring: the rubrics and the no-response rule are on the handbook's partner evaluation page, and the scorer applies the no-response rule to a team whose partner never answered.
+- The R scripts in `scripts/` stay as the fallback for one term, until the tools pages have scored a full term (#52). They need hand edits per run (file names and Canvas assignment IDs at the top of each script), and they have known gaps:
+  - The peer script reads the previous peer survey's export, not the generated one, so falling back on it means running that survey as well. It caps teams at 6 including self (score larger teams by hand) and does not score CATME.
+  - Neither partner script sees a survey nobody answered: enter those teams by hand at the A lower bound, scaled to the entry's Canvas points, never as a zero or a blank.
+  - The partner scripts do not extract the individual concerns; read them from the export.
 
 ## Partner Touchpoints
 
@@ -207,7 +222,7 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 - [ ] Every term: an Extra Credit group (1%) holding one Demo Day Presentation entry, 100 points, no submission, group assignment. Enter 100 for each student on a team that presented that term; leave everyone else blank, never zero.
 - [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1), and the funds and cloud request form
 - [ ] Spring only: Engineering Expo created by hand (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
-- [ ] Qualtrics surveys updated (contact lists from the roster script)
+- [ ] No survey carried over from last term: each run's survey and contact list are generated on the instructor tools pages (see Surveys)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)
 - [ ] NDA teams identified and flagged in the check-in sheet, with whether the partner allows the instruction team read access

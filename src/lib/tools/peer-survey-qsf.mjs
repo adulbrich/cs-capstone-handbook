@@ -175,15 +175,32 @@ function lookup(table, name, what) {
 /** Anchors as answer text: "1: ..." to "5: ...". */
 const numbered = (anchors) => anchors.map((text, i) => `${i + 1}: ${text}`);
 
+/**
+ * The regular survey's rating matrix: a row per rated criterion (its title
+ * and the prompt the survey shows), and the scale, the anchors the criteria
+ * share, numbered as the survey's answer columns show them.
+ *
+ * @returns {{rows: {prompt: string, title: string}[], scale: string[]}}
+ */
+export function ratingMatrix(rubric, rated = ratedCriteria(rubric)) {
+  return {
+    rows: rated.map((c) => ({
+      prompt: lookup(criterionPrompts, c.title, "prompt"),
+      title: c.title,
+    })),
+    scale: numbered(sharedScale(rubric.name, rated, (c) => c.anchors)),
+  };
+}
+
 /** The rated criteria as one forced radio matrix on their shared scale. */
 function ratingQuestion(qid, tag, ratee, { rated, rubric }) {
-  const anchors = sharedScale(rubric.name, rated, (c) => c.anchors);
+  const { rows, scale } = ratingMatrix(rubric, rated);
   return likertMatrix(
     qid,
     tag,
     surveyText.rating.replace("{ratee}", ratee),
-    rated.map((c) => lookup(criterionPrompts, c.title, "prompt")),
-    numbered(anchors)
+    rows.map((row) => row.prompt),
+    scale
   );
 }
 
