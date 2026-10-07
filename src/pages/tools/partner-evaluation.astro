@@ -69,9 +69,7 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
   <p>
     Generate the Midterm Pulse or a term's End-of-Term Survey before it goes
     out, then score its export once it closes. Every file is read in your
-    browser and never uploaded. Both surveys are generated; only the Midterm
-    Pulse is scored so far, and the scorer below refuses an End-of-Term
-    export.
+    browser and never uploaded.
   </p>
 
   <h2>Generate the survey</h2>
@@ -151,7 +149,12 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
     </li>
   </ol>
 
-  <PartnerEvaluationScorer client:only="svelte" {aBound} {rubrics} />
+  <PartnerEvaluationScorer
+    client:only="svelte"
+    {aBound}
+    between={rules.between}
+    {rubrics}
+  />
 
   <h3>What Run does</h3>
   <ol>
@@ -160,8 +163,13 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
       with <code>Finished</code> true that are not a Survey Preview.
     </li>
     <li>
-      Finds the survey from its question text and shows it; correct it in the
-      list if it is wrong.
+      Finds the survey and shows it. The pulse is found by its four
+      statements; an End-of-Term Survey by its <code>Term</code> field and a
+      column for each facet of that term's rubric, so its term is fixed by
+      <code>Term</code>: a response whose <code>Term</code> names another
+      term stops the run, and one with a blank <code>Term</code> is reported
+      and not scored. Pick the survey in the list only when it is not
+      recognized.
     </li>
     <li>
       Joins each response's <code>Team</code> to the roster's <code>group_name</code>,
@@ -169,11 +177,13 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
       team's scores.
     </li>
     <li>
-      Maps each answer to the rubric rating of the same name and its points,
-      from the rubric CSV under <code>canvas/assignments/project-partner-evaluation/</code>.
-      An answer
-      the rubric does not name stops the run and names the answer and the
-      question.
+      Maps each answer to its points by the same choice list the generator
+      wrote into the survey, from the rubric CSV under <code>canvas/assignments/project-partner-evaluation/</code>:
+      a rating name scores its points, a between answer its share of the
+      facet's points, and a ladder's custom scale the percent entered
+      (stopping on a missing or out-of-range entry). The rating is the
+      highest one at or below the points. An answer the survey does not offer
+      stops the run and names the answer and the question.
     </li>
     <li>
       Stops on a team with two finished responses and shows them side by

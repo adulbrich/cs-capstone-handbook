@@ -8,7 +8,9 @@
 // shares and the lists are read from the partner evaluation page,
 // src/content/docs/assignments/project-partner-evaluation.mdx, by pageRules.
 
-import { percentOf } from "./partner-scoring.mjs";
+import { customScaleText } from "../../data/partner-evaluation.mjs";
+import { percentOf } from "./points.mjs";
+import { choiceTextColumn } from "./qsf.mjs";
 import { descending } from "./rubric-bands.mjs";
 
 /** A three-anchor facet's anchors are named "<Top|Middle|Low> anchor (...)". */
@@ -150,6 +152,24 @@ export function customScaleChoice(criterion, choices) {
     max: shareOf(criterion, ratings[0].points),
     min: shareOf(criterion, ratings.at(-1).points),
   };
+}
+
+/**
+ * What one facet's question offers, for the generator and the scorer alike:
+ * `{ tag, choices, custom }`. `choices` are facetChoices; `custom` is
+ * customScaleChoice plus its `label` (the choice text the export carries)
+ * and its `column` (where the export writes the share), or null.
+ */
+export function facetOffer(criterion, between) {
+  const tag = facetTag(criterion);
+  const choices = facetChoices(criterion, between);
+  const scale = customScaleChoice(criterion, choices);
+  const custom = scale && {
+    ...scale,
+    column: choiceTextColumn(tag, scale.id),
+    label: customScaleText(scale),
+  };
+  return { choices, custom, tag };
 }
 
 const HEADING = /^(#{2,6})\s+(.+?)\s*$/;

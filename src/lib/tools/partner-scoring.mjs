@@ -3,36 +3,48 @@
 // name and point value comes from the rubric CSVs under
 // canvas/assignments/project-partner-evaluation/, parsed by
 // src/lib/rubric-csv.mjs; the lower bound of an A comes from
-// src/content/docs/learning-objectives/grading.mdx. The caller loads those
-// files; this module is pure, so node --test and the browser run the same code.
+// src/content/docs/learning-objectives/grading.mdx. An end-of-term answer is
+// scored by the same choice list the generator wrote into the survey
+// (partner-facets.mjs), so a label and its points have one source. The
+// caller loads those files; this module is pure, so node --test and the
+// browser run the same code.
 
+import { facetOffer, facetTag } from "./partner-facets.mjs";
+import { CONCERN_TAGS, TERM_FIELD } from "./partner-survey-qsf.mjs";
+import { percentOf } from "./points.mjs";
 import { bandFor } from "./rubric-bands.mjs";
 import { fillCriterion, matchRubricExport, nameKey } from "./rubric-export.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
 
-/** The midterm pulse's concern questions, by export tag, from its .qsf. */
-const PULSE_CONCERNS = { flag: "Q2", text: ["Q2 Names", "Q2 Comments", "Q3"] };
+/** The concern questions every partner survey asks, by export tag. */
+const CONCERNS = {
+  flag: CONCERN_TAGS.flag,
+  text: [CONCERN_TAGS.names, CONCERN_TAGS.comments, CONCERN_TAGS.other],
+};
 
 /**
- * The four surveys. `rubric` names the rubric CSV each one scores against.
- * End-of-term scoring waits for the end-of-term export's header (#445), so
- * those three are detected and named but not scored.
+ * The four surveys. `rubric` names the rubric CSV each one scores against;
+ * `question` finds one criterion's question in the export (pulseQuestion or
+ * facetQuestion). An end-of-term survey also names its `term`, which a
+ * response's Term must not contradict.
  */
 export const SURVEYS = {
   ...Object.fromEntries(
     TERMS.map((term) => [
       finalSurvey(term),
       {
+        concerns: CONCERNS,
+        question: facetQuestion,
         rubric: term,
-        supported: false,
+        term,
         title: `End-of-Term Survey, ${term}`,
       },
     ])
   ),
   pulse: {
-    concerns: PULSE_CONCERNS,
+    concerns: CONCERNS,
+    question: pulseQuestion,
     rubric: "pulse",
-    supported: true,
     title: "Midterm Pulse",
   },
 };
@@ -51,11 +63,6 @@ export function aLowerBound(gradingText) {
     );
   }
   return Number(match[1]);
-}
-
-/** `percent` of `points`, multiplied before dividing: 70% of 5 is 3.5. */
-export function percentOf(points, percent) {
-  return Math.round(points * percent * 100) / 10_000;
 }
 
 /**
@@ -82,24 +89,61 @@ export function columnFor(columns, criterion) {
   return found.length === 1 ? found[0] : null;
 }
 
+/** Whether the export has a column with this export tag. */
+const hasColumn = (columns, tag) =>
+  columns.some((column) => column.tag === tag);
+
 const asksAbout = (columns, rubric) =>
   rubric.criteria.every((criterion) => columnFor(columns, criterion));
 
 /**
- * Which survey the export holds, from its question text: `{ kind, guessed }`.
- * The pulse names its four statements; an end-of-term export names the six
- * facets, and the term is `term` (the current one) until the user corrects
- * it, since fall and winter ask the same questions. `kind` is null when
- * neither matches.
+ * What the responses' Term column says: `terms`, each value once, and
+ * `blank`, the responses that carry none.
  */
-export function detectSurvey(columns, rubrics, term) {
+function termValues(responses) {
+  const blank = responses.filter((r) => (r[TERM_FIELD] ?? "") === "");
+  const terms = [
+    ...new Set(
+      responses.map((r) => r[TERM_FIELD] ?? "").filter((t) => t !== "")
+    ),
+  ];
+  return { blank, terms };
+}
+
+/**
+ * Which survey a parsed export holds: `{ kind, reason }`. The pulse names its
+ * four statements in a matrix. An end-of-term export carries a Term column
+ * naming one term, and a column tagged by each of that term's facets
+ * (facetTag). `kind` is null when neither matches, and `reason` says why.
+ */
+export function detectSurvey({ columns, responses }, rubrics) {
   if (asksAbout(columns, rubrics.pulse)) {
-    return { guessed: false, kind: "pulse" };
+    return { kind: "pulse", reason: "" };
   }
-  if (asksAbout(columns, rubrics.fall)) {
-    return { guessed: true, kind: finalSurvey(term) };
+  if (!hasColumn(columns, TERM_FIELD)) {
+    return {
+      kind: null,
+      reason: `no pulse questions and no ${TERM_FIELD} column`,
+    };
   }
-  return { guessed: false, kind: null };
+  const { terms } = termValues(responses);
+  if (terms.length !== 1 || !TERMS.includes(terms[0])) {
+    return {
+      kind: null,
+      reason: `${TERM_FIELD} holds ${terms.length === 0 ? "nothing" : terms.join(", ")}, not one of ${TERMS.join(", ")}`,
+    };
+  }
+  const [term] = terms;
+  const missing = rubrics[term].criteria
+    .map(facetTag)
+    .filter((tag) => !hasColumn(columns, tag));
+  if (missing.length > 0) {
+    return {
+      kind: null,
+      reason: `${TERM_FIELD} is ${term}, but there is no ${missing.join(", ")} column`,
+    };
+  }
+  return { kind: finalSurvey(term), reason: "" };
 }
 
 /** Comparing two responses from one team: the columns worth reading. */
@@ -111,47 +155,103 @@ const COMPARE_TAGS = [
   "RecipientEmail",
 ];
 
-/** The question columns, one per criterion, or an Error naming the gaps. */
-function questionColumns(columns, rubric) {
-  const missing = [];
-  const map = rubric.criteria.map((criterion) => {
-    const column = columnFor(columns, criterion);
-    if (!column) {
-      missing.push(criterion.title);
-    }
-    return { column, criterion };
-  });
+/**
+ * A pulse criterion's question: its matrix row, its choices the criterion's
+ * ratings. Returns `{ question, missing }`, `missing` naming what the export
+ * lacks. A question is `{ criterion, column, choices, custom }`, `choices`
+ * being `{ label, points }`, the labels the export carries.
+ */
+function pulseQuestion(columns, criterion) {
+  const column = columnFor(columns, criterion);
+  const choices = criterion.ratings.map((r) => ({
+    label: r.name,
+    points: r.points,
+  }));
+  return {
+    missing: column ? [] : [criterion.title],
+    question: { choices, column, criterion, custom: null },
+  };
+}
+
+/**
+ * An end-of-term facet's question, as pulseQuestion: the column tagged by
+ * the facet, its choices those the generator offers (facetOffer), and for a
+ * ladder the custom-scale choice, whose share is in `custom.column`.
+ */
+function facetQuestion(columns, criterion, between) {
+  const { choices, custom, tag } = facetOffer(criterion, between);
+  const column = columns.find((c) => c.tag === tag);
+  const missing = column ? [] : [`${criterion.title} (${tag})`];
+  if (custom && !hasColumn(columns, custom.column)) {
+    missing.push(`${criterion.title}'s custom scale (${custom.column})`);
+  }
+  return { missing, question: { choices, column, criterion, custom } };
+}
+
+/** One question per criterion, or an Error naming every one missing. */
+function surveyQuestions(columns, rubric, definition, between) {
+  const found = rubric.criteria.map((criterion) =>
+    definition.question(columns, criterion, between)
+  );
+  const missing = found.flatMap((f) => f.missing);
+  const questions = found.map((f) => f.question);
   if (missing.length > 0) {
     throw new Error(
       `No single question in the Qualtrics file asks about ${missing.join(", ")}. Is this the right survey?`
     );
   }
-  return map;
+  return questions;
 }
 
 const NUMERIC = /^\d+(?:\.\d+)?$/;
 
-/** One response's answer to one criterion, scored, or an Error. */
-function scoreAnswer(response, { column, criterion }) {
+/** Where an answer came from, for an error message. */
+const answerSource = (response, column) =>
+  `${column.tag} ("${column.text}") from team ${response.Team || "(no team)"}, response ${response.ResponseId}`;
+
+/** The custom-scale share as points, or an Error when it is missing or out of range. */
+function customPoints(response, { column, criterion, custom }) {
+  const entry = response[custom.column] ?? "";
+  const share = Number(entry);
+  if (
+    entry === "" ||
+    !Number.isFinite(share) ||
+    share < custom.min ||
+    share > custom.max
+  ) {
+    throw new Error(
+      `The custom-scale share in ${custom.column} is "${entry}" for ${answerSource(response, column)}: it must be a percent of the points from ${custom.min} to ${custom.max}. Nothing was scored.`
+    );
+  }
+  return percentOf(criterion.maxPoints, share);
+}
+
+/**
+ * One response's answer to one question, scored: label in, points out, the
+ * rating named by bandFor. Throws on a label the question does not offer.
+ */
+function scoreAnswer(response, question) {
+  const { choices, column, criterion, custom } = question;
   const answer = response[column.tag];
-  const rating = criterion.ratings.find(
-    (r) => nameKey(r.name) === nameKey(answer)
-  );
-  if (!rating) {
+  const choice = choices.find((c) => nameKey(c.label) === nameKey(answer));
+  let points = choice?.points;
+  if (!choice && custom && nameKey(answer) === nameKey(custom.label)) {
+    points = customPoints(response, question);
+  } else if (!choice) {
     const said = answer === "" ? "No answer" : `The answer "${answer}"`;
     const values = NUMERIC.test(answer)
       ? " A number where a label belongs: this looks like a values export; export with choice labels (labels export only)."
       : "";
+    const offered = [
+      ...choices.map((c) => c.label),
+      ...(custom ? [custom.label] : []),
+    ];
     throw new Error(
-      `${said} to ${column.tag} ("${column.text}") from team ${response.Team || "(no team)"}, response ${response.ResponseId}, is not a rating of ${criterion.title}. The rubric names: ${criterion.ratings.map((r) => r.name).join(", ")}.${values} Nothing was scored.`
+      `${said} to ${answerSource(response, column)} is not a choice for ${criterion.title}. The survey offers: ${offered.join("; ")}.${values} Nothing was scored.`
     );
   }
-  return { comment: null, points: rating.points, rating: rating.name };
+  return { comment: null, points, rating: bandFor(criterion, points).name };
 }
-
-/** Whether the export has a column with this export tag. */
-const hasColumn = (columns, tag) =>
-  columns.some((column) => column.tag === tag);
 
 /**
  * The concerns rows: every finished response that raised something. A flag
@@ -186,17 +286,20 @@ function byTeam(responses) {
  *
  * Inputs are parsed already: `roster` from parseRoster, `rubricExport` from
  * parseRubricExport, `qualtrics` from parseQualtricsExport, `rubric` from
- * parseRubricCsv, `aBound` from aLowerBound. `choices` maps a team to the
- * ResponseId that counts when the team sent more than one.
+ * parseRubricCsv, `aBound` from aLowerBound, and, for an end-of-term survey,
+ * `between`, the between-anchor shares (pageRules in partner-facets.mjs). `choices` maps a team to
+ * the ResponseId that counts when the team sent more than one.
  *
  * Returns `{ duplicates, pending, compare, ... }`. While any duplicate team
  * has no valid choice, `pending` is true and nothing is scored. Otherwise it
  * also returns `rows` (the rubric export's rows, filled), `concerns`, and
  * `report`. Throws on anything that must stop the run: a mismatched rubric
- * export, a missing question, an answer the rubric does not name.
+ * export, a missing question, an answer the survey does not offer, a
+ * custom-scale share out of range, a Term that names another term.
  */
 export function scorePartnerSurvey({
   aBound,
+  between,
   choices = {},
   qualtrics,
   roster,
@@ -205,10 +308,8 @@ export function scorePartnerSurvey({
   survey,
 }) {
   const definition = SURVEYS[survey];
-  if (!definition?.supported) {
-    throw new Error(
-      `${definition?.title ?? survey} scoring is not supported yet.`
-    );
+  if (!definition) {
+    throw new Error(`Unknown survey ${survey}.`);
   }
   const { columns, responses } = qualtrics;
   if (!hasColumn(columns, "Team")) {
@@ -221,8 +322,26 @@ export function scorePartnerSurvey({
       "A student on a team has no canvas_user_id in the roster, so they cannot be matched to the rubric export. Export the roster with groups."
     );
   }
+  // An end-of-term response whose Term names another term stops the run; one
+  // with a blank Term is reported and not scored.
+  let blankTerm = [];
+  if (definition.term) {
+    if (!Array.isArray(between)) {
+      throw new Error(
+        "The between-anchor shares from the partner evaluation page are missing, so the end-of-term choices cannot be built."
+      );
+    }
+    const { blank, terms } = termValues(responses);
+    const other = terms.filter((term) => term !== definition.term);
+    if (other.length > 0) {
+      throw new Error(
+        `The Qualtrics file's ${TERM_FIELD} column holds ${other.join(", ")}, but the survey picked is ${definition.title}. Pick the survey its ${TERM_FIELD} names.`
+      );
+    }
+    blankTerm = blank;
+  }
   matchRubricExport(rubricExport, rubric);
-  const questions = questionColumns(columns, rubric);
+  const questions = surveyQuestions(columns, rubric, definition, between);
   const { concerns } = definition;
   const concernTags = [concerns.flag, ...concerns.text];
   const absent = concernTags.filter((tag) => !hasColumn(columns, tag));
@@ -232,13 +351,17 @@ export function scorePartnerSurvey({
     );
   }
 
-  // Only responses from a roster group are scored or need a choice; the rest
-  // are reported, and their concerns still reach the concerns table.
+  // Only responses from a roster group, with no blank Term, are scored or
+  // need a choice; the rest are reported, and their concerns still reach
+  // the concerns table.
   const rosterTeams = new Set(
     roster.map((student) => student.team).filter((team) => team !== "")
   );
   const responsesByTeam = byTeam(
-    responses.filter((response) => rosterTeams.has(response.Team))
+    responses.filter(
+      (response) =>
+        rosterTeams.has(response.Team) && !blankTerm.includes(response)
+    )
   );
   // The response that counts for each team: its only one, or the one chosen.
   const counted = new Map(
@@ -261,10 +384,10 @@ export function scorePartnerSurvey({
       label: tag,
       tag,
     })),
-    ...questions.map(({ column, criterion }) => ({
-      label: criterion.title,
-      tag: column.tag,
-    })),
+    ...questions.flatMap(({ column, criterion, custom }) => [
+      { label: criterion.title, tag: column.tag },
+      ...(custom ? [{ label: custom.column, tag: custom.column }] : []),
+    ]),
     ...concernTags.map((tag) => ({ label: tag, tag })),
   ];
   const pending = duplicates.some((d) => d.chosen === null);
@@ -320,6 +443,10 @@ export function scorePartnerSurvey({
     duplicates,
     pending,
     report: {
+      blankTerm: blankTerm.map((r) => ({
+        responseId: r.ResponseId,
+        team: r.Team,
+      })),
       dropped: qualtrics.dropped,
       noResponse,
       noTeam,
