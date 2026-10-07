@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-paste Required: Peer Evaluations Match the Generated Survey (#439)
 
-No rubric changes. Re-paste the Peer Evaluations bodies in every term (the Midterm Survey, the End-of-Term Survey in fall and winter, and the End-of-Term Survey (CATME) in spring): the summary line says one survey with one page per team member; the criteria and the 1 to 5 scale now read as the survey shows them; the 100-point task says a self share below the floor is raised and a team of two has none; the closing questions, Team Sizes (up to 10), and Teams of Two (its review thresholds) changed; and the paragraph on deductions for survey validation issues is gone.
+No rubric changes. Re-paste the Peer Evaluations bodies in every term. The Midterm Survey and the fall and winter End-of-Term Survey: the summary line says one survey with one page per team member; the criteria and the 1 to 5 scale now read as the survey shows them; the 100-point task says a self share below the floor is raised and a team of two has none; the closing questions, Team Sizes (up to 10), and Teams of Two (its review thresholds) changed; and the paragraph on deductions for survey validation issues is gone. The spring End-of-Term Survey (CATME): the summary line and Teams of Two.
 
 ## Canvas Changes: Spring End-of-Term Peer Survey Is CATME, and Graded (#441)
 

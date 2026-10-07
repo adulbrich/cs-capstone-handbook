@@ -162,8 +162,11 @@ Per run:
 10. Peer surveys: return the anonymized feedback file (per-criterion means, no comments) to each student. The details and comments files are instructor only.
 
 - The spring end-of-term peer survey is CATME only and graded, against `canvas/assignments/peer-evaluation/catme-rubric.csv`; the spring midterm stays on the regular survey. The peer tools page generates and scores it.
-- Partner scoring (#264): the rubrics and the no-response rule are on the handbook's partner evaluation page, and the scorer applies the no-response rule to a team whose partner never answered.
-- The R scripts in `scripts/` stay as the fallback for one term, until the tools pages have scored a full term (#52). They need hand edits per run (file names and Canvas assignment IDs at the top of each script). In the fallback, neither partner script sees a survey nobody answered: enter those teams by hand at the A lower bound, scaled to the entry's Canvas points, never as a zero or a blank; and the partner scripts do not extract the individual concerns, so read them from the export.
+- Partner scoring: the rubrics and the no-response rule are on the handbook's partner evaluation page, and the scorer applies the no-response rule to a team whose partner never answered.
+- The R scripts in `scripts/` stay as the fallback for one term, until the tools pages have scored a full term (#52). They need hand edits per run (file names and Canvas assignment IDs at the top of each script), and they have known gaps:
+  - The peer script reads the previous peer survey's export, not the generated one, so falling back on it means running that survey as well. It caps teams at 6 including self (score larger teams by hand) and does not score CATME.
+  - Neither partner script sees a survey nobody answered: enter those teams by hand at the A lower bound, scaled to the entry's Canvas points, never as a zero or a blank.
+  - The partner scripts do not extract the individual concerns; read them from the export.
 
 ## Partner Touchpoints
 
