@@ -38,28 +38,31 @@ const CLOSE_FORMAT = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
   minute: "2-digit",
   month: "long",
+  timeZoneName: "short",
   weekday: "long",
 });
 
 /**
- * The close date as the email shows it: the weekday, the day, and the time,
- * such as "Friday, <month> 4 at 5:00 PM", from a Date. The month's name comes
- * from Intl at run time. Narrow spaces become plain ones, so the text pastes
- * cleanly.
+ * The close date as the email shows it: the weekday, the day, the time, and
+ * the instructor's time zone, such as "Friday, <month> 4 at 5:00 PM PST",
+ * from a Date. The month's name comes from Intl at run time. Narrow spaces
+ * become plain ones, so the text pastes cleanly.
  */
 export const formatCloseDate = (date) =>
   CLOSE_FORMAT.format(date).replace(/\s/g, " ");
 
 /**
- * Builds the contact list from parsed roster students. `closeDate` is the
- * close date as the email shows it (formatCloseDate), the same on every row.
+ * Builds the contact list from parsed roster students. `closeDate` is a
+ * Date, written on every row as the email shows it (formatCloseDate); with
+ * none, the column is empty.
  *
  * Returns `{ rows, excluded }`: `rows` are objects keyed by CONTACT_COLUMNS,
  * in roster order; `excluded` lists the students left out, each with a
  * `reason` ("alone on a team" or "in no team"). Throws an Error naming every
  * team larger than MAX_TEAM_SIZE: such a team is never truncated.
  */
-export function buildContacts(students, { closeDate = "" } = {}) {
+export function buildContacts(students, { closeDate = null } = {}) {
+  const closeText = closeDate ? formatCloseDate(closeDate) : "";
   const teams = new Map();
   for (const student of students) {
     if (student.team === "") {
@@ -96,7 +99,7 @@ export function buildContacts(students, { closeDate = "" } = {}) {
       .filter((member) => member !== student)
       .map(memberLabel);
     const row = {
-      CloseDate: closeDate,
+      CloseDate: closeText,
       Email: student.email,
       SelfFloor: String(selfFloor(members.length)),
       Team: student.team,

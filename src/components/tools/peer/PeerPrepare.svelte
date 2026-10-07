@@ -69,14 +69,13 @@ let sampleEmail = $state("");
 
 const model = $derived(rosterModel(roster.value, added.value));
 /** The close date as every contact row and the email show it, or "". */
-const closeDate = $derived(
-  settings.value.closeDate
-    ? formatCloseDate(new Date(settings.value.closeDate))
-    : ""
+const closeAt = $derived(
+  settings.value.closeDate ? new Date(settings.value.closeDate) : null
 );
+const closeDate = $derived(closeAt ? formatCloseDate(closeAt) : "");
 const contacts = $derived(
   model.students && model.summary.oversized.length === 0
-    ? attempt(() => buildContacts(model.students, { closeDate })).value
+    ? attempt(() => buildContacts(model.students, { closeDate: closeAt })).value
     : null
 );
 const sample = $derived(
@@ -113,10 +112,11 @@ const files = $derived({
   survey: `${baseName}-qualtrics-survey.qsf`,
 });
 
+const hasContacts = $derived(Boolean(contacts && contacts.rows.length > 0));
 const ready = $derived({
-  contacts: Boolean(closeDate && contacts && contacts.rows.length > 0),
-  email: Boolean(closeDate),
-  roster: Boolean(contacts && contacts.rows.length > 0),
+  contacts: Boolean(closeAt) && hasContacts,
+  email: Boolean(closeAt),
+  roster: hasContacts,
   send: SEND.every((key) => sent.value[key]),
   survey: Boolean(survey.value),
 });
@@ -290,10 +290,11 @@ const modeCards = Object.entries(text.survey.modes).map(
       <p class="not-content">
         <Button
           onclick={() => download(files.contacts, contactsCsv(contacts.rows))}
-          disabled={!contacts}
+          disabled={!(closeAt && contacts)}
         >
           {text.contacts.download(files.contacts)}
         </Button>
+        {#if !closeAt}<span class="muted">{text.contacts.waiting}</span>{/if}
       </p>
       <ClickPath path={text.contacts.path} after={text.contacts.columns} />
     {/snippet}
@@ -322,8 +323,9 @@ const modeCards = Object.entries(text.survey.modes).map(
     {#snippet destination()}
       <ClickPath path={text.email.path} after={text.email.pathAfter} />
       <p class="copies not-content">
-        <CopyButton label={text.email.copySubject} text={distributionEmail.subject} />
-        <CopyButton label={text.email.copyBody} text={distributionEmail.body} />
+        <CopyButton label={text.email.copySubject} text={distributionEmail.subject} disabled={!closeAt} />
+        <CopyButton label={text.email.copyBody} text={distributionEmail.body} disabled={!closeAt} />
+        {#if !closeAt}<span class="muted">{text.email.waiting}</span>{/if}
       </p>
     {/snippet}
   </Step>
