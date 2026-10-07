@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Peer Evaluations Match the Generated Survey (#439)
+
+No rubric changes. Re-paste the Peer Evaluations bodies in every term (the Midterm Survey, the End-of-Term Survey in fall and winter, and the End-of-Term Survey (CATME) in spring): the summary line says one survey with one page per team member; the criteria and the 1 to 5 scale now read as the survey shows them; the 100-point task says a self share below the floor is raised and a team of two has none; the closing questions, Team Sizes (up to 10), and Teams of Two (its review thresholds) changed; and the paragraph on deductions for survey validation issues is gone.
+
 ## Canvas Changes: Spring End-of-Term Peer Survey Is CATME, and Graded (#441)
 
 New rubric `peer-evaluation/catme-rubric.csv` (CATME Peer Evaluation): the five CATME teamwork dimensions at 20 points each, rated Average of 5 (20) down to Average of 1 (10) like the peer rubric, with the instruction team's behavioral anchors as the rating descriptions. Interacting with teammates and Keeping the team on track carry SO5.

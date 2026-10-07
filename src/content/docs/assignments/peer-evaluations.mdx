@@ -38,11 +38,12 @@ assignment:
 
 import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import Latex from '../../../components/Latex.astro';
+import PeerCriteria from '/src/components/PeerCriteria.astro';
 import RubricTable from '/src/components/RubricTable.astro';
 import rubricCsv from '/canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv?raw';
 import catmeCsv from '/canvas/assignments/peer-evaluation/catme-rubric.csv?raw';
 
-<AssignmentSummary who="Individual, one survey per teammate">
+<AssignmentSummary who="Individual, one survey with one page per team member">
   Anonymous. Results go to instructors only.
 </AssignmentSummary>
 
@@ -62,22 +63,13 @@ In every midterm survey, and in the end-of-term survey in fall and winter, you a
 
 ### Quantitative Questions
 
-The **first task** is to rate each member of the team, including yourself, on four criteria:
+The **first task** is to rate each member of the team, including yourself, on four criteria, one page per member:
 
-| Criteria | Description |
-|----------|-------------|
-| 1       | Did the member do an appropriate quantity of work? |
-| 2       | How about the quality of the member's work? |
-| 3       | Rate the member's attitude as a team player (eager to do assigned work, communicated with others, kept appointments, etc.). |
-| 4       | Rate the overall value of the member's technical contribution. |
+<PeerCriteria csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" part="criteria" />
 
-Each rating uses a 1 to 5 scale:
+Each rating uses a 1 to 5 scale, the same for every criterion:
 
-- 1 = Better off without member, in this regard
-- 2 = Some obvious shortcomings
-- 3 = OK, but nothing special
-- 4 = Good solid effort; took initiative
-- 5 = Outstanding! Super asset to team
+<PeerCriteria csv={rubricCsv} sourceLabel="canvas/assignments/peer-evaluation/peer-evaluation-rubric.csv" part="scale" />
 
 The numbers only compare across teams if everyone means the same thing by them. This is what each rating looks like; rate the term, not the last week.
 
@@ -90,19 +82,21 @@ The numbers only compare across teams if everyone means the same thing by them. 
 
 Check before you rate. Open the sprint notes and look for the contribution line each sprint; open the repository and the team's tracker and count the work each person owned, reviews given, and issues closed; think back over who was at the meetings. A rating you cannot connect to something you saw is a guess, and the instructor reads the comments against the same record (NDA teams: at the walkthrough or the defense).
 
-For the **second task**, you distribute 100 points among team members, including yourself. Each member can receive between 0 and 100, but the total must equal 100. You must give yourself at least 100/N points, where N is the number of team members, to avoid an unrealistic "self-incrimination" requirement (on teams of two, this rule is relaxed and the distribution task carries less signal; the four criteria dominate).
+For the **second task**, you distribute 100 points among team members, including yourself. Each member can receive between 0 and 100, and the survey does not submit until the total is 100. Give yourself at least 100/N points, rounded down, where N is the number of team members, to avoid an unrealistic "self-incrimination" requirement; the survey shows your minimum. A self share below the minimum is raised to it, and your teammates' shares are scaled down so the total stays 100. A team of two has no minimum: an even split is 50 points each, and a split outside 45 to 55 is reviewed by the instruction team.
 
 ### Qualitative Feedback
 
-You're also asked for comments, which help the instructors understand team dynamics:
+You're also asked for comments, which help the instruction team understand team dynamics:
 
+- On each member's page, anything about that member's contribution the instruction team should know.
 - For particularly high or low allocations, provide concrete examples. Which behaviors were particularly valuable or detrimental?
 - Overall, how effectively is your team working? Explain.
-- What did you learn about working in a team that you will carry forward?
+- To close the midterm survey: Propose one concrete team experiment or activity to try in the next sprint.
+- To close the end-of-term survey in fall and winter: What did you learn about working in a team that you will carry into the next term?
 
 ## Team Sizes
 
-Real teams range from 2 to 5 or more ([For Students](/introduction/for-students/#how-you-get-your-project-and-team) has how they're formed). The score calculation below is normalized around a team of five and explicitly corrects for team size; it is applied identically to all team sizes that occur.
+The survey and the score work for any team of up to 10 members, yourself included ([For Students](/introduction/for-students/#how-you-get-your-project-and-team) has how teams are formed). The score calculation below is normalized around a team of five and explicitly corrects for team size; it is applied identically to every team size.
 
 ## Grade Calculation
 
@@ -113,7 +107,7 @@ For the **four criteria**:
 
 For the **100-point distribution**:
 
-1. Verify that self-evaluation is at least 100/N points and that each survey's total is 100.
+1. Verify that each rater's total is 100, which the survey enforces, and raise a self-allocation below 100/N points, rounded down, to that floor, scaling the rater's other allocations so the total stays 100. A team of two has no floor.
 2. Average the points each member received, excluding self-allocation.
 3. Normalize for team size: multiply the average by N, divide by 5.
 4. Clamp the result to [10, 40].
@@ -125,11 +119,9 @@ The final peer score is the average of five numbers: the four criteria scores an
 
 Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four criteria, converting to 87.5, 87.5, 100, 87.5. On the distribution, teammates gave the student an average of 28 points; normalized for team size (× 4 ÷ 5) that is 22.4, within the [10, 40] clamp; the formula gives 0.65 + 0.0225(22.4) − 0.00025(22.4²) = 1.03, so the distribution score is 103. Final peer score: (87.5 + 87.5 + 100 + 87.5 + 103) / 5 = **93.1**.
 
-Survey validation issues (self-rating below the floor, totals that do not sum to 100, out-of-range ratings) each deduct from the rater's own score; these deductions are reflected in the posted grade, not just in the feedback email.
-
 ## Teams of Two
 
-On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. Two protections apply: on the four-criteria survey, the self-allocation floor is relaxed, and any two-person team where the received ratings average below 3 (or the two teammates' ratings of each other diverge sharply) is reviewed by an instructor against the repo record and partner feedback before the score stands. A single teammate's ratings never finalize a low score on a team of two without corroboration.
+On a team of two, every score you receive comes from exactly one rater, which is a structural fairness risk. Two protections apply. On the four-criteria survey, there is no self-allocation floor. On either survey, an instructor reviews a two-person team against the repo record and partner feedback before the score stands when the ratings you received average below 3 on the 1 to 5 scale, or when your average rating of your teammate and theirs of you are 1.5 points or more apart. A single teammate's ratings never finalize a low score on a team of two without corroboration.
 
 ## The CATME Survey
 

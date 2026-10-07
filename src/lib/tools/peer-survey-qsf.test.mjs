@@ -13,6 +13,7 @@ import {
   buildPeerSurvey,
   peerSurveyQsf,
   ratedCriteria,
+  ratingMatrix,
 } from "./peer-survey-qsf.mjs";
 
 const rubricPath = (file) =>
@@ -430,6 +431,23 @@ test("the regular survey rates the rubric's four criteria, not the point distrib
   assert.deepEqual(
     rating.ChoiceOrder.map((id) => rating.Choices[id].Display),
     rated.map((c) => criterionPrompts[c.title])
+  );
+});
+
+test("the Peer Evaluations page's matrix is the survey's: same rows, same columns, same order", () => {
+  const { columns, rows } = ratingMatrix(RUBRICS.regular);
+  const rating = questionByTag(make(), "Rating");
+  assert.deepEqual(
+    rows.map((row) => row.prompt),
+    rating.ChoiceOrder.map((id) => rating.Choices[id].Display)
+  );
+  assert.deepEqual(
+    columns,
+    rating.AnswerOrder.map((id) => rating.Answers[id].Display)
+  );
+  assert.deepEqual(
+    rows.map((row) => row.title),
+    ratedCriteria(RUBRICS.regular).map((c) => c.title)
   );
 });
 
