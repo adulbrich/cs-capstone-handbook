@@ -89,6 +89,7 @@ let {
     --bullet-size: calc(var(--sl-line-height) * 1rem);
     --bullet-margin: 0.375rem;
     position: relative;
+    min-width: 0;
     margin: 0;
     padding-inline-start: calc(var(--bullet-size) + 1rem);
     padding-bottom: 1.5rem;

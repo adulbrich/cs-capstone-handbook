@@ -47,6 +47,7 @@ const ariaSort = (column) => {
   {#if table.rows.length === 0}
     <p class="meta">No rows.</p>
   {:else}
+    <div class="scroll-x">
     <table class="inline">
       <caption class="visually-hidden">{title}, first rows</caption>
       <thead>
@@ -60,6 +61,7 @@ const ariaSort = (column) => {
         {/each}
       </tbody>
     </table>
+    </div>
     <p class="meta not-content">
       <span>
         {table.rows.length}
@@ -136,8 +138,25 @@ const ariaSort = (column) => {
   .preview {
     margin-top: 0.5rem;
   }
+  /* A wide table scrolls inside its own box, never the page. */
+  .scroll-x {
+    max-width: 100%;
+    overflow-x: auto;
+  }
   .inline {
+    display: table;
+    overflow: visible;
+    margin: 0;
     font-size: var(--sl-text-sm);
+  }
+  /* Words stay whole: a long cell widens its column and the table scrolls. */
+  table :is(th, td) {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  .inline th,
+  .sort {
+    white-space: nowrap;
   }
   .meta {
     display: flex;
@@ -160,6 +179,7 @@ const ariaSort = (column) => {
     background: var(--sl-color-bg);
     color: var(--sl-color-text);
     box-shadow: var(--sl-shadow-lg);
+    overflow: hidden;
   }
   .dialog[open] {
     display: flex;
@@ -173,6 +193,7 @@ const ariaSort = (column) => {
     flex-direction: column;
     flex-grow: 1;
     gap: 0.75rem;
+    min-width: 0;
     min-height: 0;
     padding: 1rem 1.25rem;
   }
@@ -209,6 +230,7 @@ const ariaSort = (column) => {
   }
   .scroll {
     flex-grow: 1;
+    min-width: 0;
     min-height: 0;
     overflow: auto;
     border: 1px solid var(--sl-color-gray-5);
