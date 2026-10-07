@@ -64,13 +64,38 @@ export function ratingFor(criterion, points) {
 }
 
 /**
+ * Writes one result's rubric scores into a row's cells, in place: each
+ * criterion gets its score times its points over 100, to two decimals, and
+ * the rating ratingFor names; a non-completer's note goes on the first
+ * criterion. Returns false, leaving the row, when the result has no score.
+ */
+function fillRow(out, result, { pairs, peer }) {
+  const filled = peerRubricScores(result, peer);
+  if (!filled) {
+    return false;
+  }
+  for (const [i, { columnsAt, criterion }] of pairs.entries()) {
+    const score = filled.scores.get(nameKey(criterion.title));
+    const points = round((score * criterion.maxPoints) / 100);
+    fillCriterion(out, columnsAt, {
+      comment: i === 0 ? filled.comment : null,
+      points,
+      rating: ratingFor(criterion, points),
+    });
+  }
+  return true;
+}
+
+/**
  * Fills the rubric export (parseRubricExport) from the scored results, each
- * criterion matched by name. Each criterion gets its score times its points
- * over 100, to two decimals, and the rating ratingFor names; a
- * non-completer's note goes on the first criterion. A student with no
- * score, or not on a scored team, keeps the exported row. Returns `{ csv,
- * problems }`, `problems` naming each of those and every result with no
- * exported row. `instrument` is "regular" or "catme".
+ * criterion matched by name (fillRow). A student with no score, or not on a
+ * scored team, keeps the exported row. Students added from another section
+ * (`otherSection`, peer-roster.mjs) are not in this course's export: they
+ * are filled into rows of their own under the same header, Student Id left
+ * empty, as `otherSections` (null when there are none), for whoever grades
+ * their section. Returns `{ csv, otherSections, problems }`, `problems`
+ * naming each row left as exported and every result with no exported row.
+ * `instrument` is "regular" or "catme".
  */
 export function fillPeerAssessment({
   instrument,
@@ -78,10 +103,14 @@ export function fillPeerAssessment({
   rubric,
   results,
 }) {
-  const peer = peerCriteria(rubric, instrument);
-  const pairs = matchRubricExport(rubricExport, rubric);
+  const context = {
+    pairs: matchRubricExport(rubricExport, rubric),
+    peer: peerCriteria(rubric, instrument),
+  };
+  const own = results.filter((result) => !result.student.otherSection);
+  const others = results.filter((result) => result.student.otherSection);
   const byId = new Map(
-    results.map((result) => [String(result.student.canvasUserId), result])
+    own.map((result) => [String(result.student.canvasUserId), result])
   );
   const problems = [];
   const used = new Set();
@@ -95,30 +124,39 @@ export function fillPeerAssessment({
       return out;
     }
     used.add(id);
-    const filled = peerRubricScores(result, peer);
-    if (!filled) {
+    if (!fillRow(out, result, context)) {
       problems.push(`${name}: no score. Row left as exported; grade by hand.`);
-      return out;
-    }
-    for (const [i, { columnsAt, criterion }] of pairs.entries()) {
-      const score = filled.scores.get(nameKey(criterion.title));
-      const points = round((score * criterion.maxPoints) / 100);
-      fillCriterion(out, columnsAt, {
-        comment: i === 0 ? filled.comment : null,
-        points,
-        rating: ratingFor(criterion, points),
-      });
     }
     return out;
   });
-  for (const result of results) {
+  for (const result of own) {
     if (!used.has(String(result.student.canvasUserId))) {
       problems.push(
         `${result.student.name}: scored but not in the rubric export (Canvas user ID "${result.student.canvasUserId}").`
       );
     }
   }
-  return { csv: rubricExportCsv(rubricExport.header, rows), problems };
+  const nameAt = rubricExport.header
+    .map((column) => column.trim())
+    .indexOf("Student Name");
+  const otherRows = others.map((result) => {
+    const out = rubricExport.header.map(() => "");
+    out[nameAt] = result.student.name;
+    if (!fillRow(out, result, context)) {
+      problems.push(
+        `${result.student.name} (another section): no score. Grade by hand.`
+      );
+    }
+    return out;
+  });
+  return {
+    csv: rubricExportCsv(rubricExport.header, rows),
+    otherSections:
+      others.length > 0
+        ? rubricExportCsv(rubricExport.header, otherRows)
+        : null,
+    problems,
+  };
 }
 
 /** Columns that exist only on a survey with a split (hasSplit). */

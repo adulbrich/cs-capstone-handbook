@@ -1,0 +1,37 @@
+---
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+
+// The peer evaluation tools: two guided pages, one per process. This URL
+// is the one the staff runbook links, so it stays as the chooser.
+---
+
+<StarlightPage
+  frontmatter={{
+    description:
+      "Prepare the peer evaluation survey, or score its export, step by step.",
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    title: "Peer Evaluation",
+  }}
+>
+  <p>
+    Two guided pages. Each reads the Canvas and Qualtrics files in your
+    browser, shows every output before you download it, and says where it
+    goes. Nothing is uploaded. Both pages share the roster you drop, saved in
+    this browser.
+  </p>
+  <CardGrid>
+    <LinkCard
+      title="Prepare"
+      description="From the Canvas roster: the Qualtrics survey, the contact list, and the distribution email, then send."
+      href="/tools/peer-evaluation/prepare/"
+    />
+    <LinkCard
+      title="Score"
+      description="From the Qualtrics export and the Canvas rubric export: the report, the scores, and the rubric assessment to import."
+      href="/tools/peer-evaluation/score/"
+    />
+  </CardGrid>
+</StarlightPage>

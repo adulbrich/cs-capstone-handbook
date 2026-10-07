@@ -65,7 +65,7 @@ export function parseQualtricsExport(text, { includePreviews = false } = {}) {
     );
     if (VALUES_FINISHED.has(response.Finished)) {
       throw new Error(
-        `Response ${response.ResponseId} has Finished "${response.Finished}": this is a values export. Export the responses again with "Use choice text" on (labels export only).`
+        `Response ${response.ResponseId} has Finished "${response.Finished}": this is a values export, and the tools read the labels export only. Export again: Data & Analysis › Export & Import › Export Data › CSV › "Export labels".`
       );
     }
     if (response.Status === PREVIEW && !includePreviews) {

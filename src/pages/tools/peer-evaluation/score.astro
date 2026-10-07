@@ -1,0 +1,30 @@
+---
+// Score the peer evaluation (#463). The rubrics are read at build time;
+// the export, the roster, and the rubric export are read in the browser
+// only.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import PeerScore from "../../../components/tools/peer/PeerScore.svelte";
+import { byInstrument } from "../../../components/tools/peer/peer-rubrics.mjs";
+---
+
+<StarlightPage
+  frontmatter={{
+    description:
+      "Score the peer evaluation export and fill the Canvas rubric assessment.",
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    tableOfContents: false,
+    title: "Score the Peer Evaluation",
+  }}
+>
+  <p>
+    Six steps from the Qualtrics export to the grades. It scores the regular
+    survey (midterm, and the fall and winter end-of-term) and CATME (spring
+    end-of-term), as the
+    <a href="/assignments/peer-evaluations/#grade-calculation">Grade Calculation</a>
+    and <a href="/assignments/peer-evaluations/#the-catme-survey">The CATME Survey</a>
+    state.
+  </p>
+  <PeerScore client:only="svelte" rubrics={byInstrument} />
+</StarlightPage>

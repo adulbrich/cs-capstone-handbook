@@ -57,11 +57,14 @@ export const instruments = {
  * The survey variants. Midterm and end-of-term are the regular survey and
  * differ only in the title and the closing question; CATME rates the five
  * dimensions of its own rubric (catme-rubric.csv) and has no 100-point
- * split. `instrument` picks the rubric and the survey's shape, `label` the
- * variant's line in the generator's picker.
+ * split. `instrument` picks the rubric and the survey's shape; `label`,
+ * `asks`, and `closes` are the variant's card in the generator's picker.
  */
 export const variants = {
   catme: {
+    asks: "Rates yourself and each teammate on CATME's five teamwork dimensions; no point split.",
+    closes:
+      "Closes by asking what the student will carry into their next team.",
     instrument: "catme",
     label: "CATME (spring end-of-term)",
     question:
@@ -69,16 +72,20 @@ export const variants = {
     title: "End-of-Term Peer Evaluation (CATME)",
   },
   final: {
+    asks: "Rates yourself and each teammate on the four criteria, then splits 100 points across the team.",
+    closes: "Closes by asking what the student will carry into the next term.",
     instrument: "regular",
-    label:
-      "End-of-term (fall, winter): closes with what you will carry into the next term",
+    label: "End-of-term (fall, winter)",
     question:
       "What did you learn about working in a team that you will carry into the next term?",
     title: "End-of-Term Peer Evaluation",
   },
   midterm: {
+    asks: "Rates yourself and each teammate on the four criteria, then splits 100 points across the team.",
+    closes:
+      "Closes by asking for one team experiment to try in the next sprint.",
     instrument: "regular",
-    label: "Midterm (every term): closes with a team experiment to try",
+    label: "Midterm (every term)",
     question:
       "Propose one concrete team experiment or activity to try in the next sprint.",
     title: "Midterm Peer Evaluation",
@@ -121,4 +128,35 @@ export const surveyText = {
     regular:
       "Rate yourself and each teammate, then divide 100 points among the team.",
   },
+};
+
+/** What the instructor replaces in the email before sending it. */
+export const CLOSE_PLACEHOLDER = "[close day and time]";
+
+/**
+ * The peer survey's distribution email. Qualtrics sets it on the
+ * distribution, not in the .qsf, so the tools page shows it to copy. The
+ * team in the subject keeps a student's two surveys in a term from
+ * threading into one. `${e://...}` pipes the contact list's Team;
+ * `${l://...}` is Qualtrics's link piped text: the personal survey link and
+ * the opt-out link it requires. No piped text sits inside a link.
+ */
+export const distributionEmail = {
+  body: [
+    "Hello,",
+    "",
+    "This is the peer evaluation for your capstone team, ${e://Field/Team}. You rate yourself and each teammate. Your answers go to the instruction team only and are never shown to your teammates.",
+    "",
+    `Please submit it by ${CLOSE_PLACEHOLDER}. It takes about ten minutes, and you can leave and come back to it from the same link.`,
+    "",
+    "${l://SurveyLink?d=Take the survey}",
+    "",
+    "The link is yours alone: it opens your own survey, so do not forward it.",
+    "",
+    "Thank you,",
+    "The CS Capstone instruction team",
+    "",
+    "${l://OptOutLink?d=Unsubscribe}",
+  ].join("\n"),
+  subject: "CS Capstone peer evaluation: ${e://Field/Team}",
 };

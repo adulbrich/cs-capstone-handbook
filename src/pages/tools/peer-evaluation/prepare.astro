@@ -1,0 +1,26 @@
+---
+// Prepare the peer evaluation (#463). The rubrics are read at build time;
+// the roster is read in the browser only.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import PeerPrepare from "../../../components/tools/peer/PeerPrepare.svelte";
+import { byVariant } from "../../../components/tools/peer/peer-rubrics.mjs";
+---
+
+<StarlightPage
+  frontmatter={{
+    description:
+      "Generate the peer evaluation survey, its contact list, and its email from the Canvas roster.",
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    tableOfContents: false,
+    title: "Prepare the Peer Evaluation",
+  }}
+>
+  <p>
+    Five steps from the Canvas roster to a sent survey. Each step says where
+    its file comes from, shows what it makes, and says where that goes.
+    Check Done to move on; Edit reopens a finished step.
+  </p>
+  <PeerPrepare client:only="svelte" rubrics={byVariant} />
+</StarlightPage>

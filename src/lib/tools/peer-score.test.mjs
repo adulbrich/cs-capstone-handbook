@@ -25,6 +25,7 @@ import {
   gapRows,
   ratingFor,
 } from "./peer-outputs.mjs";
+import { withAdded } from "./peer-roster.mjs";
 import {
   distributionScore,
   peerCriteria,
@@ -494,6 +495,45 @@ test("criteria match by name, with or without outcome tags", () => {
   assert.throws(
     () => fill(results, owls, ["Quantity", "Effort"]),
     /Missing: Quality.*Not in the rubric: Effort/s
+  );
+});
+
+test("a student from another section is scored and written to a CSV of their own", () => {
+  // Owls 4 is enrolled in another section: not in this course's roster or
+  // rubric export, added by hand. Their ratings count toward their
+  // teammates, and their own row goes to the other-section CSV.
+  const [visitor] = owls.slice(3);
+  const rostered = parseRoster(rosterCsv({ Owls: owls.slice(0, 3) }));
+  const { students } = withAdded(rostered, [
+    {
+      email: visitor.email,
+      name: `${visitor.last}, ${visitor.first}`,
+      team: "Owls",
+    },
+  ]);
+  const parsed = parsePeerExport(exportCsv(workedExample()), { rubrics });
+  const scored = scorePeers({
+    instrument: parsed.instrument,
+    responses: parsed.responses,
+    rubric,
+    students,
+  });
+  assert.equal(round(resultFor(scored.results, owls[0].email).total, 1), 93.1);
+  assert.equal(resultFor(scored.results, visitor.email).status, "scored");
+  const filled = fill(scored.results, owls.slice(0, 3), plainNames);
+  assert.deepEqual(filled.problems, []);
+  const [header, ...rows] = parseCsv(filled.csv);
+  assert.equal(rows.length, 3);
+  const [otherHeader, other, ...more] = parseCsv(filled.otherSections);
+  assert.deepEqual(otherHeader, header);
+  assert.equal(more.length, 0);
+  assert.equal(other[0], "");
+  assert.equal(other[1], `${visitor.last}, ${visitor.first}`);
+  assert.match(other[2], /^Average of [1-5]$/);
+  assert.equal(
+    fill(scored.results.slice(0, 3), owls.slice(0, 3), plainNames)
+      .otherSections,
+    null
   );
 });
 
