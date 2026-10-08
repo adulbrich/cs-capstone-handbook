@@ -273,3 +273,29 @@ body {
     margin-block-start: 56px;
   }
 }
+
+/* A box the instructor fills before class (<div class="deck-placeholder">,
+   its first line <p class="deck-placeholder-label">): dashed, so a slide
+   left unfilled is obvious on the projector. */
+@layer deck {
+  .reveal .deck-placeholder {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    padding: 48px 64px;
+    color: var(--deck-ink-soft);
+    border: 6px dashed var(--deck-ink-soft);
+    border-radius: 16px;
+  }
+
+  .reveal .deck-placeholder-label {
+    margin-block-end: 36px;
+    font-size: var(--deck-text-min);
+    font-weight: 800;
+    color: var(--deck-accent-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}

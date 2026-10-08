@@ -1,9 +1,11 @@
 ---
 // Fall week 0: the welcome and bidding session, the first time the class
-// meets. About thirty minutes of talk, then questions while bidding opens.
-// Served at /decks/fall-week-0/. Year-specific facts (TAs, rooms, dates,
-// the multidisciplinary project list) stay in announcements; the grade and
-// the sessions are rendered from the handbook pages that own them, and a
+// meets. About thirty minutes of talk, then questions while bidding opens,
+// with the handbook QR code left up as the last slide. Served at
+// /decks/fall-week-0/. Year-specific facts (TAs, rooms, dates, the
+// multidisciplinary project list) stay in Canvas; a deck is projected, never
+// pasted into Canvas, so the "This term" slide may name it (#478). The grade
+// and the sessions are rendered from the handbook pages that own them, and a
 // line credited to a page uses that page's words.
 import alexUlbrich from "../assets/decks/alex-ulbrich.jpg";
 import kirstenWinters from "../assets/decks/kirsten-winters.jpg";
@@ -177,18 +179,18 @@ const handbook = new URL("/", Astro.site).href;
   </Notes>
 </Slide>
 
-<Slide kicker="This term" title="This year's details are in announcements">
+<Slide kicker="This term" title="This year's details are in Canvas">
   <ul>
     <li>Your team's TA, and how to reach them</li>
     <li>Rooms, office hours, and meeting times</li>
     <li>The exact due date and time of each assignment</li>
     <li>The multidisciplinary projects, and any project that may split into two teams</li>
   </ul>
-  <Notes time="1:00" cue="Show where announcements appear before moving on.">
+  <Notes time="1:00" cue="Show where Canvas announcements appear before moving on.">
     <p>
       The handbook is reused every year, so it names terms and weeks only.
       Anything tied to this year's calendar or this year's people is in
-      announcements.
+      Canvas.
     </p>
   </Notes>
 </Slide>
@@ -223,7 +225,7 @@ const handbook = new URL("/", Astro.site).href;
   </Notes>
 </Slide>
 
-<QrSlide kicker="Projects" title="Find the projects you like" url={portal.browse}>
+<QrSlide kicker="Projects" title="Find the projects you like" url={portal.browseCs46x}>
   <p>
     Sign in to the project portal with your ONID and set your interests in
     your profile, and the list is ordered by them.
@@ -255,27 +257,11 @@ const handbook = new URL("/", Astro.site).href;
 
 <QrSlide kicker="The handbook" title="Everything else is in the handbook" url={handbook}>
   <p>An assignment's own page says what is due, when, and how it is scored.</p>
-  <Notes time="1:00" cue="Ask everyone to bookmark the schedule.">
-    <p>The schedule and the Assignments Overview are the two pages to keep open.</p>
+  <Notes time="1:00" cue="Ask everyone to bookmark the schedule, then open the floor.">
+    <p>
+      The schedule and the Assignments Overview are the two pages to keep
+      open. This is the last slide: leave it up and take questions on bidding
+      until the end of the session.
+    </p>
   </Notes>
 </QrSlide>
-
-<Slide kicker="This week" title="Before teams form" wide>
-  <TermSessions term="fall" from={0} to={0} rows={["Due", "Read"]} />
-  <Notes time="1:00" cue="End here and open the floor.">
-    <p>From the schedule's week 0. The Bidding Survey closes when teams are formed, so it has no late window.</p>
-  </Notes>
-</Slide>
-
-<Slide kicker="Sources" title="Where this deck comes from">
-  <ul class="deck-small">
-    <li>Grade and AI policy: Assignments Overview</li>
-    <li>Class sessions and due weeks: Schedule</li>
-    <li>Lectures, components, bidding, and teams: For Students, and the Bidding Survey</li>
-    <li>The outcome ladder: the Shipping guide</li>
-    <li>Nine hours a week: For Partners</li>
-  </ul>
-  <Notes time="0:30" cue="Take questions until the end of the session.">
-    <p>Every line credited to a page above uses that page's words.</p>
-  </Notes>
-</Slide>

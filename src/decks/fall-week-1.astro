@@ -1,8 +1,10 @@
 ---
 // Fall week 1: teams are announced and sit together for the first time.
-// Five minutes of information, fifteen to find the team on the seating map,
-// twenty for Two truths and a bug, then the Team Charter kickoff for the rest
-// of the session. Served at /decks/fall-week-1/. The seating map is the live
+// Five minutes of information, the Two truths and a bug rules and the
+// instructor's own round (a placeholder slide the instructor fills before
+// class), fifteen minutes to find the team on the seating map, fifteen to
+// play, then the Team Charter kickoff for the rest of the session. Served
+// at /decks/fall-week-1/. The seating map is the live
 // decks/auditorium-seating.html, served by src/pages/decks/. A line credited
 // to a handbook page uses that page's words; the charter is linked, not
 // retyped.
@@ -34,14 +36,14 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
 <Slide kicker="Today" title="Agenda">
   <ol>
     <li>Information from the instruction team</li>
-    <li>Find your team and sit together</li>
-    <li>Icebreaker: Two truths and a bug</li>
+    <li>Icebreaker: Two truths and a bug, with the instructor's round first</li>
+    <li>Find your team, sit together, and play</li>
     <li>Start the Team Charter, and ask questions</li>
   </ol>
   <Notes time="0:30" cue="Information is five minutes; keep to it.">
     <p>
-      The budget: 5 minutes of information, 15 to find your team, 20 for the
-      icebreaker slot (the activity itself is fifteen minutes, wants
+      The budget: 5 minutes of information, about 4 for the icebreaker rules
+      and the instructor's round, 15 to find your team, 15 to play (wants
       included), then the charter for the rest of the session.
     </p>
   </Notes>
@@ -56,8 +58,9 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
   </ul>
   <Notes time="1:15" cue="Send it today if you can.">
     <p>
-      All four lines are from Term Startup, which links the template. Check
-      announcements for your partner's contact details.
+      All four lines are from Term Startup, which links the template. Your
+      partner's contact details arrive by email at 11 AM, as the slide after
+      next says.
     </p>
   </Notes>
 </Slide>
@@ -72,28 +75,58 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
   </Notes>
 </Slide>
 
-<TwoColumnSlide kicker="This term" title="Check announcements" divider>
-  <div slot="left">
-    <h3>This week</h3>
-    <ul>
-      <li>Your team's TA; check-ins are at a time your team and your TA agree</li>
-      <li>Your project partner's contact details</li>
-    </ul>
-  </div>
-  <div slot="right">
-    <h3>Several teams, one project?</h3>
-    <ul>
-      <li>Negotiate with the partner what your team owns, and how the teams talk to each other</li>
-    </ul>
-  </div>
-  <Notes time="1:15" cue="Say which projects may split only if the announcement is out.">
+<Slide kicker="After this session" title="Your partner, your TA, and shared projects">
+  <ul>
+    <li>Your project partner's contact details arrive by email at 11 AM</li>
+    <li class="fragment">Your team's TA is assigned soon, and reaches out to your team</li>
+    <li class="fragment">Some projects run more than one team: those teams agree with their partner how to split the work</li>
+  </ul>
+  <Notes time="1:15" cue="Ask who is on a project with more than one team.">
     <p>
-      Which projects may split into two teams this year is in announcements.
-      For Students: what a team owns can be an interface, a repository, or a
-      milestone, and the team writes its part into its Definition of Shipped.
+      TA check-ins are at a time your team and your TA agree. For Students:
+      what a team owns on a shared project can be an interface, a
+      repository, or a milestone, and each team writes its part into its
+      Definition of Shipped.
     </p>
   </Notes>
-</TwoColumnSlide>
+</Slide>
+
+<Slide kicker="Icebreaker, fifteen minutes" title="Two truths and a bug">
+  <ul>
+    <li><strong>Write three claims each:</strong> two true and one invented, all about your life with computers</li>
+    <li class="fragment"><strong>Guess before the reveal:</strong> the team votes on which claim is the lie, then the author says. One round per person, a minute each, no deliberating</li>
+    <li class="fragment"><strong>Chase the interesting one:</strong> whichever claim caused the most argument, ask for the story behind it</li>
+    <li class="fragment"><strong>End with a want:</strong> one sentence each on what you most want to be better at by the time this project ends</li>
+  </ul>
+  <Notes time="1:30" cue="Explain the rules here; the instructor's round on the next slide shows them.">
+    <p>
+      Teams play once they're seated, after the map. Specific beats
+      impressive: "I took down production with a missing semicolon", "I
+      learned to program on a graphing calculator", "I have never once used a
+      debugger". Nobody collects the wants.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Two truths and a bug: the instructor's round" title="Which one is the bug?">
+  <div class="deck-placeholder">
+    <p class="deck-placeholder-label">Placeholder: the instructor's three claims</p>
+    <ol>
+      <li>[First claim]</li>
+      <li>[Second claim]</li>
+      <li>[Third claim]</li>
+    </ol>
+  </div>
+  <Notes time="2:00" cue="Read all three, take a show of hands on each, then say which is the bug.">
+    <p>
+      Placeholder: replace the three bracketed claims with your own two
+      truths and a bug, about your life with computers, before class, and
+      remove the dashed box. One round for the whole room shows the pace the
+      teams play at: a minute, a vote, the reveal, and a question about the
+      claim that caused the most argument.
+    </p>
+  </Notes>
+</Slide>
 
 <StatementSlide kicker="Teams are announced">
   Find your team number on the map, and sit together.
@@ -106,31 +139,16 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
   src="/decks/auditorium-seating.html?slide"
   label="Auditorium seating map by team number"
 >
-  <Notes time="15:00" cue="Hover a team's seats to highlight them for a lost team.">
+  <Notes time="30:00" cue="Minute 15: teams start the icebreaker. Minute 27: call for wants.">
     <p>
       The live seating map. Hovering a block highlights one team; left and
       right are as the room faces the screen. Fifteen minutes to find seats
-      and say hello.
+      and say hello, then fifteen for Two truths and a bug at the table,
+      wants included, with the map still up. Hover a team's seats to
+      highlight them for a lost team.
     </p>
   </Notes>
 </FrameSlide>
-
-<Slide kicker="Icebreaker, fifteen minutes" title="Two truths and a bug">
-  <ul>
-    <li><strong>Write three claims each:</strong> two true and one invented, all about your life with computers</li>
-    <li class="fragment"><strong>Guess before the reveal:</strong> the team votes on which claim is the lie, then the author says. One round per person, a minute each, no deliberating</li>
-    <li class="fragment"><strong>Chase the interesting one:</strong> whichever claim caused the most argument, ask for the story behind it</li>
-    <li class="fragment"><strong>End with a want:</strong> one sentence each on what you most want to be better at by the time this project ends</li>
-  </ul>
-  <Notes time="20:00" cue="Call for wants at minute twelve, so the activity ends at fifteen, wants included.">
-    <p>
-      Specific beats impressive: "I took down production with a missing
-      semicolon", "I learned to program on a graphing calculator", "I have
-      never once used a debugger". Nobody collects the wants. The slot's
-      last five minutes are for questions before the charter.
-    </p>
-  </Notes>
-</Slide>
 
 <TwoColumnSlide kicker="Team Charter kickoff" title="What the Team Charter page requires" divider>
   <div slot="left">
@@ -165,17 +183,3 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
     <p>Walk the room; the instruction team takes questions table by table.</p>
   </Notes>
 </QrSlide>
-
-<Slide kicker="Sources" title="Where this deck comes from">
-  <ul class="deck-small">
-    <li>The introduction email: Term Startup</li>
-    <li>Due weeks, class sessions, and TA check-ins: Schedule</li>
-    <li>Several teams on one project: For Students</li>
-    <li>The icebreaker: Two truths and a bug, in Team and Workflow activities</li>
-    <li>The charter's required sections: Team Charter</li>
-    <li>The seating map: decks/auditorium-seating.html</li>
-  </ul>
-  <Notes time="0:15" cue="Go back to the charter QR code if teams are still scanning.">
-    <p>Every line credited to a page above uses that page's words.</p>
-  </Notes>
-</Slide>
