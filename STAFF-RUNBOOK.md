@@ -27,7 +27,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 
 1. Last time's decision needed. Decided or not, and by whom.
 2. Demos, two to three minutes per student, in an order you choose. The student names the artifact and opens it: the diff, then a run. For a written artifact, the findings and what changed the plan. Check it is on their contribution line and not last time's. One probe each.
-3. Top risk and the one decision the team needs now. Everything else goes async. In winter and spring week 2, take the risk from the team's Term Startup report: any item still not done, and whether the partner is answering. In fall week 4, the week before Repo Checkpoint 1, this slot also covers that checkpoint: go through what it asks for against the team's repository, ungraded, so the team knows what is missing. The demos are never cut for it.
+3. Top risk and the one decision the team needs now. Everything else goes async. In winter and spring week 2, take the risk from the team's Term Startup report: any item still not done, and whether the partner is answering. In fall week 4, the week before Repo Checkpoint 1, this slot goes to that checkpoint instead: go through what it asks for against the team's repository, ungraded, so the team knows what is missing. The demos are never cut for it.
 4. Your challenge.
 5. Actions with an owner and a week. Write the per-student lines before the next team arrives.
 
