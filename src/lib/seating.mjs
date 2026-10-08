@@ -177,9 +177,11 @@ export function seatingLayout(teams, { labelSize = 30 } = {}) {
       `seating: the rows in ROOM (src/lib/seating.mjs) add up to ${totalSeats} seats, not the expected ${ROOM.expectedSeats}. Check the row counts.`
     );
   }
-  if (teams > totalSeats) {
+  // Every row pair needs a team of its own, and every team needs a seat.
+  const pairCount = sections.reduce((a, s) => a + s.pairs.length, 0);
+  if (teams < pairCount || teams > totalSeats) {
     throw new Error(
-      `seating: ${teams} teams do not fit in ${totalSeats} seats.`
+      `seating: ${teams} teams; the room seats ${pairCount} to ${totalSeats} teams (at least one team per row pair, at least one seat per team).`
     );
   }
   const perPairAll = allocate(

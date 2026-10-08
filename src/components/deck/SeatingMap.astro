@@ -52,6 +52,16 @@ for (let pass = 0; pass < 4; pass += 1) {
   size = needed;
   layout = seatingLayout(teams, { labelSize: size });
 }
+// Four passes settle every team count the room seats; if one ever does not,
+// fail rather than draw type under the floor.
+const rendered =
+  size *
+  Math.min(BODY.width / layout.box.width, BODY.height / layout.box.height);
+if (rendered < FLOOR) {
+  throw new Error(
+    `<SeatingMap>: the labels render at ${rendered.toFixed(1)}px for ${teams} teams, under the ${FLOOR}px floor; the sizing did not settle in four passes.`
+  );
+}
 
 for (const s of layout.sections) {
   if (!COLORS.has(s.color)) {

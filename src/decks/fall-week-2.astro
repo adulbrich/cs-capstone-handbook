@@ -83,7 +83,7 @@ const ephiraMap = {
         "? Easier data entry",
         "? Clearer cycle charts",
         "Predict from history",
-        "? Period and log reminders",
+        ["? Period alerts", "Log reminders"],
         "? Encrypted export, import",
       ],
     },
@@ -149,7 +149,7 @@ const comparison: {
   {
     activity: "Reminders",
     ai: "One alert, then times, daily nudge",
-    human: "? Period and log reminders",
+    human: "? Period alerts. Log reminders",
     mark: "agree",
   },
   {
@@ -418,13 +418,14 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       both stores when the advertised team started.
     </p>
     <p>
-      So the first row of the map is not a plan. It is what the repository
-      already does, read from the code before anyone plans anything.
+      So the map's first row holds what the repository already does, read
+      from the code before anyone plans anything; the plans go in the rows
+      under it.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Example 1: ephira, the map" title="Start the map from what already ships" wide>
+<Slide title="ephira: start the map from what already ships" wide>
   <StoryMap {...ephiraMap} />
   <p class="caption caption-tight">
     Also on the <a href={ephira.page.href}>project page</a>: beta tests, docs, a
@@ -442,9 +443,12 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
     <p>
       Release 1 is the advertised deliverables. Prediction from history is
       stated plainly, so it's known. The other four are questions for the
-      partner. Reminders: the proposal names two kinds, period alerts and
-      data-entry reminders, and asks for push notifications, which sit
-      awkwardly with an app that keeps everything on the phone. Encrypted
+      partner. Reminders come in the two kinds the proposal names: alerts
+      about upcoming cycle events, and data-entry reminders. The alerts get
+      the question mark because the proposal asks for push notifications,
+      and a server-sent alert about a predicted period means the prediction
+      leaves the phone; a daily reminder to log needs no data, so it's
+      known. Encrypted
       export and import: the proposal says encrypted, but not how the key is
       made or kept, and nobody had designed it. The two cards about data
       entry and charts are the team's reading of "UI/UX improvements".
@@ -486,14 +490,14 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </div>
   <Notes time="0:45" cue="Ask: which amber card would you have checked with the partner first?">
     <p>
-      From the repository history over the team's three terms. The Release
-      1 cards that didn't fully land were amber ones: the encrypted export
-      and import, and the log reminders half of the reminders card.
+      From the repository history over the team's three terms. Two Release
+      1 cards didn't land: the encrypted export and import, an amber card,
+      and the log reminders, a known one.
     </p>
     <p>
-      The proposal asked for push notifications; the team scheduled alerts
-      on the phone instead, which keeps the product's promise that nothing
-      leaves the device. The template for a reminder to log more data exists
+      The proposal asked for push notifications; the team scheduled the
+      period alerts on the phone instead, which settles the amber card in
+      favor of the product's promise that nothing leaves the device. The template for a reminder to log more data exists
       in the code, but nothing ever schedules it. The tests are unit tests;
       the advertised integration and end-to-end tests aren't in the
       repository. The commits after the team's year are the maintainer's;
@@ -532,9 +536,14 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       Luminance is how bright a surface looks, measured in candela per
       square meter. The technique is high dynamic range imaging: several
       exposures of one scene, merged and corrected step by step, give the
-      same measurement as the expensive camera. Those steps come from a
-      published tutorial, and doing them by hand takes command-line tools
-      and some programming.
+      same measurement as the expensive camera. The steps come from the
+      tutorial the repository's README cites, Pierson, Cauwerts, Bodart, and
+      Wienold, "Tutorial: Luminance Maps for Daylighting Studies from High
+      Dynamic Range Photography" (<a
+        href="https://doi.org/10.1080/15502724.2019.1684319"
+        >doi.org/10.1080/15502724.2019.1684319</a
+      >), and doing them by hand takes command-line tools and some
+      programming.
     </p>
     <p>
       A previous capstone team had built a first desktop app for it. The
@@ -602,18 +611,18 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </Slide>
 
-<Slide kicker="Example 2: LumiLab, the walking skeleton" title="The whole path by week 10, then the rest">
+<Slide kicker="Example 2: LumiLab, the walking skeleton" title="The whole path by week 9, then the rest">
   <ol>
-    <li>Fall week 7: the app runs its first pipeline command</li>
-    <li class="fragment">Week 8: merge, crop, and resize each work, with fixed settings</li>
-    <li class="fragment">Week 9: the two lens fixes</li>
+    <li>Fall week 6: the app runs its first pipeline command</li>
+    <li class="fragment">Week 7: merge, crop, and resize each work, with fixed settings</li>
+    <li class="fragment">Week 8: the two lens fixes</li>
     <li class="fragment">
-      Week 10: one button sends the chosen photos through six stages; every
+      Week 9: one button sends the chosen photos through six stages; every
       other setting is still fixed in the code
     </li>
     <li class="fragment">
-      A week later: the filter, calibration, and file-header stages, and a
-      form for the settings
+      Week 10: the filter, calibration, and file-header stages, and a form
+      for the settings
     </li>
   </ol>
   <p class="caption">
@@ -622,7 +631,7 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   <Notes time="0:45" cue="Ask: which rung would your project be on at the end of fall?">
     <p>
       From the commit history of the team's fall term, which rewrote the
-      app with a Rust back end. The week 10 commit wires the app's Generate
+      app with a Rust back end. The week 9 commit wires the app's Generate
       button to the whole pipeline: the user's own photos go in, and the
       camera file, the crop and size numbers, and the folders are written
       into the code. The history doesn't say whether that first run produced
@@ -860,6 +869,13 @@ out-of-scope row. Keep each story under eight words.</pre>
       where the proposal says "Start design and implementation". It also put
       shareable doctor reports out of scope, when the inherited export
       already made a PDF for sharing.
+    </p>
+    <p>
+      Two rows carry one mark but not the whole story. Data out is marked
+      Agree, yet the tool's walking skeleton, "Export and re-import an
+      encrypted file", also re-plans the plain export the app already had:
+      half of that card was done. Pregnancy is marked AI misreads, yet the
+      human map demoted it too, to a caption line instead of a card.
     </p>
     <p>
       The human map has its own misses: the store update, an advertised
