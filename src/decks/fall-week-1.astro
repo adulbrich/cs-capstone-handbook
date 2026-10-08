@@ -3,7 +3,8 @@
 // Five minutes of information, the Two truths and a bug rules and the
 // instructor's own round (a placeholder slide the instructor fills before
 // class), fifteen minutes to find the team on the seating map, fifteen to
-// play, then the Team Charter kickoff for the rest of the session. Served
+// play, then one slide for teams that inherit a codebase, then the Team
+// Charter kickoff for the rest of the session. Served
 // at /decks/fall-week-1/. The seating map is <SeatingMap>, drawn at build
 // time from the room in src/lib/seating.mjs. A line credited
 // to a handbook page uses that page's words; the charter is linked, not
@@ -20,6 +21,14 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 export const title = "Team Introductions and Charter";
 
 const charter = new URL("/assignments/team-charter/", Astro.site).href;
+const audit = new URL(
+  "/assignments/repo-checkpoints/#the-inherited-codebase-audit",
+  Astro.site
+).href;
+const analyze = new URL(
+  "/activities/technical-design/#analyze-an-existing-codebase",
+  Astro.site
+).href;
 ---
 
 <TitleSlide
@@ -38,13 +47,14 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
     <li>Information from the instruction team</li>
     <li>Icebreaker: Two truths and a bug, with the instructor's round first</li>
     <li>Find your team, sit together, and play</li>
-    <li>Start the Team Charter, and ask questions</li>
+    <li>Inherited codebases, then the Team Charter and your questions</li>
   </ol>
   <Notes time="0:30" cue="Information is five minutes; keep to it.">
     <p>
       The budget: 5 minutes of information, about 4 for the icebreaker rules
       and the instructor's round, 15 to find your team, 15 to play (wants
-      included), then the charter for the rest of the session.
+      included), about 1.5 for the inherited-codebase slide, then the charter
+      for the rest of the session.
     </p>
   </Notes>
 </Slide>
@@ -142,6 +152,20 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
   </Notes>
 </SeatingMap>
 
+<Slide kicker="Before the charter" title="If you inherit a codebase">
+  <ul>
+    <li>Inheriting means your project starts in someone else's code: a predecessor team's, your partner's, or an upstream open-source project</li>
+    <li class="fragment">Audit what you inherited in weeks 1 to 5: <a href={audit}>one page</a> in your Repo Checkpoint 1 PDF, due week 5</li>
+    <li class="fragment"><a href={analyze}>Analyze an Existing Codebase</a> is the exercise that produces it</li>
+  </ul>
+  <Notes time="1:30" cue="Ask who starts in an existing codebase; those teams note the audit now.">
+    <p>
+      Teams starting from scratch skip this. The audit's list is on Repo
+      Checkpoints and isn't repeated here.
+    </p>
+  </Notes>
+</Slide>
+
 <TwoColumnSlide kicker="Team Charter kickoff" title="What the Team Charter page requires" divider>
   <div slot="left">
     <h3>Required Charter Sections</h3>
@@ -171,6 +195,7 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
 
 <QrSlide kicker="Start now" title="The Team Charter page" url={charter}>
   <p>Every required section, and the rubric it's scored on.</p>
+  <p>Already have a <code>CONTRIBUTING.md</code> or an AI context file? Extend it, and keep what still holds.</p>
   <Notes time="1:00" cue="Teams work on the charter for the rest of the session.">
     <p>Walk the room; the instruction team takes questions table by table.</p>
   </Notes>
