@@ -70,11 +70,11 @@ An item fails for the team because the note is wrong or missing. An individual's
 |---|---|
 | 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
 | 1-2 | Team-to-TA assignments made; charters graded (TAs) |
-| 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; checkpoint 1 (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
+| 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; the week 5 repo checkpoint (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
 | 5 | All-hands demo day 1 (sampled lineup, ~15 teams in the hour) |
 | 7 and 9 | Defense sessions, separate from check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
-| 9-10 | Term deliverable grading; checkpoint 2 (graded in finals week); final surveys out in week 9, closing end of week 10; demo day 2 (fall and winter) |
+| 9-10 | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing end of week 10; demo day 2 (fall and winter) |
 
 ## Defense Logistics
 
@@ -119,7 +119,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 
 ## Repo Checkpoints
 
-- Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist: the documents from the PDF, and the build, gate and history from the repository at the named commit. Spot-check one document against the commit; a PDF that does not match counts against the living-docs criterion. Leave feedback as issues where useful. Checkpoint 1 is graded in week 5; checkpoint 2 in finals week, after the week-10 check-ins, so that week stays at check-in load.
+- Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist: the documents from the PDF, and the build, gate and history from the repository at the named commit. Spot-check one document against the commit; a PDF that does not match counts against the living-docs criterion. Leave feedback as issues where useful. The week 5 checkpoint (Repo Checkpoint 1 or 3) is graded in week 5; the week 10 checkpoint (2 or 4) in finals week, after the week-10 check-ins, so that week stays at check-in load.
 - NDA teams whose partner rules out read access: 15-minute walkthrough of the repository at the named commit, in its own slot in the checkpoint week, scheduled with the team, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing beyond the sanitized PDF the team submits where its partner permits. It never displaces a demo.
 - Consistency anchors live on the assignment page ("How Graders Review"). Calibrate by having all TAs review one volunteer staff-accessible repo together in week 4.
 

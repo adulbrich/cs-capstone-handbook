@@ -94,8 +94,8 @@ The handbook page for that entry, with:
 Then trimmed to the entry, by rules that read the page rather than name it:
 
 1. A section headed by another entry's name goes: the RFC Final body drops "RFC Draft + Peer Review", a sprint note drops "Sprint Notes N: Individual Contribution", the Midterm Pulse section leaves the end-of-term survey.
-2. A heading, aside title, table row's first cell, bold paragraph lead, or list item opening "In spring" that names only other terms goes. In a numbered family, a row or bold lead for another week goes too ("Fall, week 10" leaves Repo Checkpoint 1).
-3. A section, row or paragraph naming another member of a numbered family goes ("### Workshop 4: ..." leaves Workshop 2).
+2. A heading, aside title, table row's first cell, bold paragraph lead, or list item opening "In spring" that names only other terms goes.
+3. A section, row or paragraph naming another member of a numbered family goes ("### Workshop 4: ..." leaves Workshop 2), and so does a paragraph whose bold lead names another entry on the page ("**Repo Checkpoint 2, fall week 10:**" leaves Repo Checkpoint 1).
 4. A column headed by another term's course number goes ("CS 462" leaves the fall partner survey).
 
 \`OVERRIDES\` in \`scripts/canvas-export.mjs\` holds the page-specific cuts and rewrites no rule sees.
@@ -244,12 +244,6 @@ const OVERRIDES = {
   "Midterm Survey": (o) => {
     o.dropSection("the-catme-survey");
   },
-  // The audit is part of the fall week 5 gate only.
-  "Repo Checkpoint {n}": (o, e) => {
-    if (!(e.term === "fall" && e.week === 5)) {
-      o.dropSection("the-inherited-codebase-audit");
-    }
-  },
   // The page's sprint calendar spans the year, and after term trimming its
   // one row still lists every sprint in the term. A note needs only its own
   // sprint, so the table goes and the intro names it, read from the row.
@@ -376,8 +370,12 @@ const familyBase = (f) =>
   f.name.includes("{n}") ? f.name.slice(0, f.name.indexOf("{n}")) : null;
 
 // An aside, table row, list item, or top-level paragraph about another term,
-// another week, or another member of a numbered family.
-function outOfScope(node, parent, { offTerm, otherMember, root, term }) {
+// or another entry on the page.
+function outOfScope(
+  node,
+  parent,
+  { offTerm, otherFamily, otherMember, root, term }
+) {
   return (
     (hasClass(node, "starlight-aside") &&
       offTerm(text(select(".starlight-aside__title", node) ?? node))) ||
@@ -402,7 +400,9 @@ function outOfScope(node, parent, { offTerm, otherMember, root, term }) {
           (c) => isEl(c) || (c.type === "text" && c.value.trim())
         );
         return (
-          (lead?.tagName === "strong" && offTerm(text(lead))) || otherMember(s)
+          (lead?.tagName === "strong" &&
+            (offTerm(text(lead)) || otherFamily(text(lead)))) ||
+          otherMember(s)
         );
       })())
   );
@@ -472,11 +472,11 @@ function dropOtherSections(top, family, owner, offScope) {
 
 function trim(e, root) {
   const top = root.children;
-  const { term, week, family } = e;
-  const weeksInTerm = family.weeks?.[term]?.length ?? 1;
+  const { term, family } = e;
 
-  // 1. Sections owned by another entry family on the same page. A heading
-  // belongs to the family with the longest name it starts with: an "##" on a
+  // 1. Sections owned by another entry family on the same page. A heading,
+  // or a bold paragraph lead (rule 3), belongs to the family with the
+  // longest name it starts with: an "##" on a
   // page that gives each entry its own section, an "###" under "What You
   // Submit" and "Rubric" on the fixed skeleton (#331). On the skeleton the
   // entry's own "###" heading goes too, since the Canvas entry carries the
@@ -485,22 +485,22 @@ function trim(e, root) {
     e.families
       .filter((f) => heading.startsWith(familyHeading(f)))
       .sort((a, b) => b.name.length - a.name.length)[0];
-  // 2. Sections, asides, rows, bold-lead paragraphs about another term, or
-  // another week of a numbered family ("Fall, week 10" in Repo Checkpoint 1).
-  const offTerm = (s) => {
-    if (otherTerm(s, term)) {
-      return true;
-    }
-    const w = s.match(/^\W*(?:fall|winter|spring),? weeks? (\d+)\b/i);
-    return Boolean(w && weeksInTerm > 1 && Number(w[1]) !== week);
-  };
-  // 3. Rows and paragraphs naming another member of a numbered family.
+  // 2. Sections, asides, rows, bold-lead paragraphs about another term.
+  const offTerm = (s) => otherTerm(s, term);
+  // 3. Rows and paragraphs naming another member of a numbered family
+  // ("Workshop 4" in Workshop 2), and bold paragraph leads naming another
+  // family on the page ("Repo Checkpoint 2, fall week 10:" in Repo
+  // Checkpoint 1).
   const base = familyBase(family);
   const memberRe = base ? new RegExp(`^${base}(\\d+)\\b`) : null;
   const own = memberRe ? e.name.match(memberRe)?.[1] : null;
   const otherMember = (s) => {
     const m = memberRe ? s.match(memberRe) : null;
     return Boolean(m && m[1] !== own);
+  };
+  const otherFamily = (s) => {
+    const f = owner(s);
+    return Boolean(f && f !== family);
   };
 
   dropOtherSections(
@@ -510,7 +510,7 @@ function trim(e, root) {
     (heading) => offTerm(heading) || otherMember(heading)
   );
 
-  const scope = { offTerm, otherMember, root, term };
+  const scope = { offTerm, otherFamily, otherMember, root, term };
   visit(root, "element", (node, index, parent) => {
     if (outOfScope(node, parent, scope)) {
       parent.children.splice(index, 1);
