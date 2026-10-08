@@ -240,7 +240,7 @@ required; `validate-outcomes.mjs` checks the order.
    A page whose student makes nothing to hand in (Defense, Term Startup, the
    two evaluation pages) has no What You Produce and no AI-use paragraph.
 
-4. *Explanation sections*, optional: how a session runs, the term gates, the
+4. *Explanation sections*, optional: how a session runs, what CI must do, the
    partner's facets, the demo cadence. Named for their content.
 
 5. **`## What You Submit`**, in one or two lines: the format and what goes in

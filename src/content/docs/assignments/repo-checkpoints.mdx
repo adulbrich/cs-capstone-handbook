@@ -88,11 +88,41 @@ What that looks like depends on the project:
 | FOSS | Upstream's CI passes on your pull request, and your fork documents the build-and-test command a maintainer expects you to have run before submitting |
 | Research | The pipeline runs end to end on a small sample dataset in CI, with at least one test asserting a known result rather than the pipeline merely exiting zero |
 
-## The Inherited-Codebase Audit
+## What You Submit
+
+Read the path closest to your project in the [Shipping guide](/guides/shipping/) before you plan for the gates below.
+
+Each checkpoint is one PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, that names the repository URL and the full hash of the commit you want graded. After the cover come the living docs at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, each decision record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file. Your checkpoint's section below says what else the cover links and the PDF carries, and gives the gate as items you can check against your own repository at the named commit, each with the one place its evidence goes.
+
+Push everything before you submit: the living docs in the PDF must match the named commit.
+
+:::note[If your project is under NDA]
+If your partner rules out read access for the instruction team, the checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your TA schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; its living docs match the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. In the walkthrough the TA checks each gate item the cover links (the CI run, the board, the deployment, the release) live, in the fixed order, so a link a grader cannot open does not fail the gate. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
+:::
+
+### Repo Checkpoint 1
+
+Fall, week 5. The gate: your CI and board are in place, and the week 10 production target is agreed with your partner. The cover also links the CI run and the board. After the living docs, the PDF carries the inherited-codebase audit if your team starts in an existing codebase.
+
+| Gate item | Met when, at the named commit | Evidence |
+|---|---|---|
+| CI | Your CI, in the form [What CI Must Do](#what-ci-must-do) gives for your project, ran on the named commit and passed | A link on the cover to that run |
+| Board | Every item in the current sprint has an owner and a status | A link on the cover to the board |
+| Production target | One paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) will run in week 10, who owns the account or infrastructure, and who agreed it: your partner, or your mentor where you have no partner | `docs/design.md`, its deployment section |
+| The target's approval | If the target needs an approval, an entry names it, who is asking for it, and when they asked | `docs/risks.md` |
+| Inherited-codebase audit, if you start in an existing codebase | One page covering everything [the audit](#the-inherited-codebase-audit) below lists | A document in the PDF, after the living docs |
+
+:::caution[Agree the production target in week 5, not week 9]
+"Hello, production" at [Repo Checkpoint 2](#repo-checkpoint-2) is the one gate your team may not be able to meet alone: it can need an account, a hosting decision, a security review, or a maintainer's willingness to look at your pull request, and every one of those is somebody else's calendar. So this checkpoint asks for the target and any approval it needs now, while there is time to chase them.
+
+If the answer is "there will be no deployment", that's a fine answer, and it goes in the same paragraph of `docs/design.md` in week 5, so the instruction team can agree an equivalent gate while there is still time to hit it.
+:::
+
+#### The Inherited-Codebase Audit
 
 Some teams don't start from scratch. Three origins, one situation: a predecessor capstone team's repository (read its `docs/risks.md` first, with the [handoff document](/assignments/project-handoff/) and the forward-looking section of the predecessor's project retrospective, which your partner holds), a project partner's codebase (their conventions, CI, review process, and hosting bind you from day one, which is the [RFC](/assignments/rfc/) page's "your partner already decided" case), or an upstream open-source project (their [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), review culture, and release cadence bind you). In all three, someone else's decisions, tests, debt, and review process are yours before you write a line.
 
-Audit what you inherited in fall weeks 1 to 5. [Repo Checkpoint 1](#repo-checkpoint-1) checks it for every team that starts in an existing codebase, and it covers:
+Audit what you inherited in fall weeks 1 to 5. This checkpoint checks it for every team that starts in an existing codebase, and it covers:
 
 - what runs and how, and what does not;
 - the state of the tests and the CI;
@@ -102,38 +132,7 @@ Audit what you inherited in fall weeks 1 to 5. [Repo Checkpoint 1](#repo-checkpo
 - the upstream project's contribution rules, if there are any;
 - what you will change first.
 
-One page, submitted in the Repo Checkpoint 1 PDF. What it finds that the code depends on goes into the repository where the next person looks: constraints in `docs/requirements.md`, conventions and pitfalls in the AI context file, and a decision to keep or replace something in an ADR. [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) is the exercise that produces it.
-
-## What You Submit
-
-Each checkpoint carries a gate that pulls the year's risk forward. The spring outcome bar depends on lead times that start now, and the gates make you start them. See the [Shipping guide](/guides/shipping/) for the path closest to your project.
-
-Each checkpoint is one PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, that names the repository URL and the full hash of the commit you want graded. After the cover come the living docs at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, each decision record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file. Your checkpoint's section below says what else the cover links and the PDF carries, and gives the gate as items you can check against your own repository at the named commit, each with the one place its evidence goes.
-
-Push everything before you submit: the living docs in the PDF must match the named commit.
-
-:::note[If your project is under NDA]
-If your partner rules out read access for the instruction team, the checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your TA schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; its living docs match the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
-:::
-
-### Repo Checkpoint 1
-
-Fall, week 5. The gate: your CI, board, and living docs are in place, and the week 10 production target is agreed with your partner. The cover also links the CI run and the board. After the living docs, the PDF carries the inherited-codebase audit if your team starts in an existing codebase.
-
-| Gate item | Met when, at the named commit | Evidence |
-|---|---|---|
-| CI | Your CI, in the form [What CI Must Do](#what-ci-must-do) gives for your project, ran on the named commit and passed | A link on the cover to that run |
-| Board | Every item in the current sprint has an owner and a status | A link on the cover to the board |
-| Living docs | Each living doc exists and describes your project, with no template placeholder left in it | The documents in the PDF |
-| Production target | One paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) will run in week 10, who owns the account or infrastructure, and who agreed it on your partner's side, or your mentor | `docs/design.md`, its deployment section |
-| The target's approval | An entry names the approval the target needs, who is asking for it, and when they asked | `docs/risks.md` |
-| Inherited-codebase audit, if you start in an existing codebase | One page covering everything [the audit](#the-inherited-codebase-audit) lists | A document in the PDF, after the living docs |
-
-:::caution[Agree the production target in week 5, not week 9]
-"Hello, production" at [Repo Checkpoint 2](#repo-checkpoint-2) is the one gate your team may not be able to meet alone: it can need an account, a hosting decision, a security review, or a maintainer's willingness to look at your pull request, and every one of those is somebody else's calendar. So this checkpoint asks for the target and its approval now, while there is time to chase them.
-
-If the answer is "there will be no deployment", that's a fine answer, and it goes in the same paragraph of `docs/design.md` in week 5, so the instruction team can agree an equivalent gate while there is still time to hit it.
-:::
+One page, submitted in this checkpoint's PDF after the living docs. What it finds that the code depends on goes into the repository where the next person looks: constraints in `docs/requirements.md`, conventions and pitfalls in the AI context file, and a decision to keep or replace something in an ADR. [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) is the exercise that produces it.
 
 ### Repo Checkpoint 2
 
@@ -141,7 +140,7 @@ Fall, week 10. The gate is "hello, production": a [walking skeleton](https://wik
 
 | Gate item | Met when, at the named commit | Evidence |
 |---|---|---|
-| Walking skeleton deployed | The skeleton built from the named commit runs where `docs/design.md` says it will, in the shape the next table gives for your project | A link on the cover, to what the next table names |
+| Walking skeleton deployed | Met in the shape the next table gives for your project, built from or submitted at the named commit | A link on the cover, to what the next table names |
 | Definition of Shipped v0 | A draft of every item the Definition of Shipped asks for, whether or not your partner has agreed it yet | A document in the PDF, after the living docs |
 
 | If your project is | Deployed means | The cover links |
@@ -150,17 +149,18 @@ Fall, week 10. The gate is "hello, production": a [walking skeleton](https://wik
 | A mobile app, game, desktop application, or firmware | A build of the skeleton installs from the channel `docs/design.md` names (a store test track, a release page, a device image) on a machine or device outside the team's own | The build's page on that channel |
 | FOSS | Your first pull request to the upstream project is submitted | The pull request |
 | Research | The pipeline runs end to end on sample data in CI | That CI run |
-| Without a deployment, by agreement at Repo Checkpoint 1 | The equivalent gate `docs/design.md` records | The evidence that gate names |
+| Without a deployment, by agreement at Repo Checkpoint 1 | The equivalent gate `docs/design.md` records | The evidence recorded with that gate in `docs/design.md` |
 
 ### Repo Checkpoint 3
 
-Winter, week 5. The gate is integration health: the stories planned for this term run on real components, your CI tests them, and a session with a real user is scheduled. The cover also links the CI run. `CONTRIBUTING.md` in the PDF shows the winter charter refresh: the Definition of Done and the Contribution Norm as your team now works.
+Winter, week 5. The gate is integration health: the stories planned for this term run on real components, your CI tests them, and a session with a real user is scheduled; `CONTRIBUTING.md` also shows the winter charter refresh. The cover also links the CI run.
 
 | Gate item | Met when, at the named commit | Evidence |
 |---|---|---|
 | Integration | The stories `docs/requirements.md` marks for this term run end to end, against real components rather than stubs | `docs/requirements.md`, where each marked story says how to run it: the steps or the test |
 | CI | The run on the named commit ran your tests and passed, and at least one test covers a story marked for this term | A link on the cover to that run |
 | Real-user session scheduled | An entry gives the session's week, the participant's role (not their name), and who confirmed the session | `docs/risks.md`, as an external prerequisite |
+| Charter refresh | The Definition of Done and the Contribution Norm reflect the winter charter refresh: changed since Repo Checkpoint 2, or marked as kept unchanged by the refresh | `CONTRIBUTING.md` in the PDF |
 
 ### Repo Checkpoint 4
 
