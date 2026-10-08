@@ -158,6 +158,41 @@ const handbook = new URL("/", Astro.site).href;
   </Notes>
 </Slide>
 
+<Slide kicker="Story map" title="A story map with its parts labeled" wide>
+  <StoryMap
+    backbone={["Find a book", "Reserve it", "Pick it up", "Return it"]}
+    releases={[
+      {
+        name: "Walking skeleton",
+        stories: ["Search by title", "Place a hold", "Show hold at desk", "Scan it in"],
+      },
+      {
+        name: "Release 1",
+        stories: [
+          "Filter by subject",
+          "Cancel a hold",
+          "Text when ready",
+          ["Drop box return", "? Due soon email"],
+        ],
+      },
+    ]}
+    callouts={[
+      { at: "backbone", term: "Backbone", text: "what the user does, in order" },
+      { at: "row", row: 0, term: "Walking skeleton", text: "one thin path through every column" },
+      { at: "line", row: 1, term: "Release line", text: "everything above it ships first" },
+      { at: "card", row: 1, column: 3, item: 1, term: "A card", text: "one story" },
+    ]}
+    stepped
+  />
+  <Notes time="1:00" cue="Press the arrow for each label.">
+    <p>
+      The callouts prop labels the parts of a map in a lane on the right.
+      With stepped, each label and the ring around its card appear on their
+      own arrow press. A map with callouts holds five columns at most.
+    </p>
+  </Notes>
+</Slide>
+
 <PeopleSlide
   kicker="People"
   title="Who is in the room"

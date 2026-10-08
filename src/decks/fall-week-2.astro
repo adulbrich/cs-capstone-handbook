@@ -1,10 +1,11 @@
 ---
 // Fall week 2, Workshop 1: User Story Mapping (#466, restructured in #485).
 // A 50-minute session in four parts, named with their minute marks on the
-// agenda slide: story maps (minute 1), three worked examples (minute 4),
-// the same proposal mapped by an AI tool (minute 11), and the teams' own
-// maps (minute 15), with a volunteer clinic at minute 30 and the wrap at
-// minute 45. The talk slides' target times sum to 15:00, and each part's
+// agenda slide: user stories and story maps (minute 1), three worked
+// examples (minute 4), the same proposal mapped by an AI tool (minute 11),
+// and the teams' own maps (minute 15), with two volunteer teams showing
+// their maps at minute 30 and the wrap at minute 45. The slides students
+// act on (Part 4) explain themselves to someone who missed the talk. The talk slides' target times sum to 15:00, and each part's
 // start on the agenda is the running total of the notes before it. Each
 // link sits on the slide that uses it. The AI demo output was pre-run
 // before class; the side-by-side slide shortens it, and its notes hold it
@@ -18,14 +19,17 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 
 export const title = "Fall Week 2: User Story Mapping";
 
-// Shown twice, either side of the clinic, so the room keeps it in view.
-const selfCheck = [
-  "The backbone is what the user or the input does, never a screen or a component",
-  "The walking skeleton has a story under every backbone column",
-  "Every story is known, or starts with ? when it is assumed",
-  "The backbone type is chosen, with one line saying why",
-  "Every ? has a question on the Questions for our partner tab",
-];
+// A made-up campus lunch app, the one map Part 1 labels part by part and
+// Part 4's self-check holds up against a map of screens.
+const lunch = {
+  backbone: ["Find food", "Order it", "Pay", "Pick it up"],
+  skeleton: [
+    "List open cafes",
+    "Choose from a menu",
+    "Pay by card",
+    "Show a pickup code",
+  ],
+};
 
 // Each example's links, shown without the protocol, as the room would type
 // them.
@@ -273,12 +277,12 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
 
 <Slide kicker="Agenda" title="Today, in four parts">
   <ol class="agenda">
-    <li><span class="minute">Minute 1</span>Story maps in three minutes</li>
+    <li><span class="minute">Minute 1</span>User stories and story maps</li>
     <li><span class="minute">Minute 4</span>Three examples: ephira, LumiLab, TaxonBodyMassML</li>
     <li><span class="minute">Minute 11</span>The same proposal, mapped by AI</li>
     <li>
-      <span class="minute">Minute 15</span>Your turn: map in teams, a clinic at
-      minute 30, the wrap at minute 45
+      <span class="minute">Minute 15</span>Your turn: map in teams; two teams
+      show their maps at minute 30; the wrap at minute 45
     </li>
   </ol>
   <Notes time="0:40" cue="Point at minute 15: that is when the laptops open.">
@@ -292,53 +296,96 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </Slide>
 
-<Slide kicker="Part 1: story maps in three minutes" title="What a story map is made of">
-  <ul>
-    <li>
-      <strong>Backbone:</strong> the big activities across the top, in the
-      order they happen
-    </li>
-    <li class="fragment">
-      <strong>Stories:</strong> the smaller steps under each activity, higher
-      when more necessary
-    </li>
-    <li class="fragment">
-      <strong>Release line:</strong> a cut across the map; everything above it
-      ships first
-    </li>
-    <li class="fragment">
-      <strong>Walking skeleton:</strong> the first slice, a story under every
-      activity, so the whole thing runs end to end
-    </li>
-  </ul>
-  <p class="caption">
-    Jeff Patton, The New User Story Backlog is a Map:{" "}
-    <a href={patton.href}>{patton.text}</a>
+<Slide kicker="Part 1: user stories and story maps" title="A user story is one thing a person can do">
+  <p class="story-def">
+    Small enough to finish in one sprint (two weeks), and written so anyone
+    can check it works
   </p>
-  <Notes time="1:30" cue="Press the arrow for each line; ask the room which line is the hardest to draw.">
+  <div class="story-shape fragment">
+    <div class="story-part">
+      <p class="slot">As a <span class="blank">who</span></p>
+      <p class="fill">someone tracking their cycle,</p>
+    </div>
+    <div class="story-part">
+      <p class="slot">I want <span class="blank">what</span></p>
+      <p class="fill">my next period predicted from my own history,</p>
+    </div>
+    <div class="story-part">
+      <p class="slot">so that <span class="blank">why</span></p>
+      <p class="fill">I can plan around it</p>
+    </div>
+  </div>
+  <div class="story-card fragment">
+    <span class="card-arrow" aria-hidden="true"></span>
+    <span class="map-card">Predict from history</span>
+    <p>On a story map, the card holds only the short version</p>
+  </div>
+  <p class="caption fragment">
+    On a pipeline or research map, a card is one piece of work instead: one
+    stage, one experiment.
+  </p>
+  <Notes time="1:00" cue="Press the arrow three times: the sentence, the card, the pipeline line.">
     <p>
-      Jeff Patton's article, linked on the slide, is where the map comes
-      from. He does not prioritize the backbone: it is the set of things the
-      system has to do at all. He prioritizes the stories hanging under it,
-      moving them up or down, and lays tape across the map to make one lane
-      per release.
+      A user story states one requirement from the user's side. The example
+      is a real card from the ephira map coming up in example 1, written out
+      in the common sentence shape: who, what, and why. The "so that" part is
+      where the reason gets written down, and it's the part teams skip.
     </p>
     <p>
-      The stories placed highest form the smallest system that works end to
-      end. Patton credits the term walking skeleton to Alistair Cockburn; use
-      Patton's description here and don't paraphrase Cockburn's. His
-      complaint about a flat backlog is that a list in build order can't
-      tell anyone what the system does, or show what you missed; a map can,
-      because you can walk it left to right with a user.
-    </p>
-    <p>
-      One convention for today: a story nobody has checked with the project
-      partner starts with a question mark, and the template turns it amber.
+      Mike Cohn's point, from the requirements guide: the written story is a
+      reminder to have a conversation with the partner, not the whole
+      requirement. The map only needs the short card. A team with no user,
+      a pipeline or a research project, writes cards the same size: one
+      stage, one experiment.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Part 1: story maps in three minutes" title="Choose the backbone where your hardest unknowns live">
+<Slide kicker="Part 1: user stories and story maps" title="What a story map is made of" wide>
+  <StoryMap
+    backbone={lunch.backbone}
+    releases={[
+      { name: "Walking skeleton", stories: lunch.skeleton },
+      {
+        name: "Release 1",
+        stories: [
+          "Filter by diet",
+          "Save a usual order",
+          "Pay with dining dollars",
+          ["Choose a pickup time", "Text me when ready"],
+        ],
+      },
+    ]}
+    callouts={[
+      { at: "backbone", term: "Backbone: the top row", text: "what people do, in order" },
+      { at: "row", row: 0, term: "Walking skeleton", text: "the first row: one thin path through every column" },
+      { at: "line", row: 1, term: "Release line", text: "everything above it ships first" },
+      { at: "card", row: 1, column: 3, item: 1, term: "A card", text: "one story, in a few words" },
+    ]}
+    stepped
+  />
+  <p class="caption caption-tight">
+    A made-up campus lunch app. Jeff Patton, The New User Story Backlog is a
+    Map: <a href={patton.href}>{patton.text}</a>
+  </p>
+  <Notes time="1:00" cue="Press the arrow for each label, top to bottom.">
+    <p>
+      Jeff Patton's article, linked on the slide, is where the map comes
+      from. The backbone is everything the system has to do at all, so it
+      isn't prioritized; the cards under it are, higher when more necessary.
+      The walking skeleton is the smallest system that works end to end,
+      however thin each card is.
+    </p>
+    <p>
+      His complaint about a flat backlog: a list in build order can't tell
+      anyone what the system does, or show what's missing. A map can, because
+      you can walk it left to right with a user. One convention for today: a
+      card nobody has checked with the partner starts with a question mark.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Part 1: user stories and story maps" title="Choose the backbone where your hardest unknowns live">
   <div class="backbones">
     <div class="type">
       <h3>User journey</h3>
@@ -360,22 +407,18 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
     Same rows, release line, <code>?</code> flags, and partner questions for all
     three. Write one line saying why you chose yours.
   </p>
-  <Notes time="1:30" cue="Ask for hands: who is not sure their project has a user?">
+  <Notes time="1:00" cue="Ask for hands: who is not sure their project has a user?">
     <p>
-      Why it matters: the walking skeleton should exercise the riskiest part
-      of the project first, so the backbone has to run through it. In a
-      recent year, about half the project listings had no clean user journey
-      to map (the instruction team's own count), so a good part of the room
-      needs this slide.
+      The walking skeleton should run through the riskiest part of the
+      project first, so the backbone has to follow it. In a recent year,
+      about half the project listings had no clean user journey to map (the
+      instruction team's own count).
     </p>
     <p>
-      A game is a user journey with the player as the user: launch, learn the
-      controls, play a level, fail and retry, finish. A library or an API is
-      a user journey with the adopting developer as the user: find it,
-      install it, get a first call working, integrate it, upgrade. Pick the
-      backbone where the hardest unknowns are: if the scary part is whether
-      a model beats a baseline, map the research chain, even if there is a
-      web front end too.
+      A game is a user journey with the player as the user; a library is one
+      with the adopting developer as the user. If the scary part is whether a
+      model beats a baseline, map the research chain, even if there is a web
+      front end too.
     </p>
   </Notes>
 </Slide>
@@ -947,21 +990,43 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-<StatementSlide kicker="Part 4 of 4: minute 15" source="Map in teams, a clinic at minute 30, the wrap at minute 45">
+<StatementSlide kicker="Part 4 of 4: minute 15" source="Map in teams until minute 45; at minute 30, two teams show their maps">
   Your turn
   <Notes time="0:10" cue="One laptop per team opens the template now.">
-    <p>The self-check on the next slide stays up while teams work.</p>
+    <p>The steps on the next slide stay up while teams work.</p>
   </Notes>
 </StatementSlide>
 
-<Slide kicker="Work time: minute 15 to 45" title="Self-check while you map">
-  <ul class="checks">{selfCheck.map((item) => <li>{item}</li>)}</ul>
-  <p class="caption">Template: {template}</p>
-  <Notes time="15:00" cue="Minute 15 to 30. Walk the aisles; at minute 30, move to the clinic slide.">
+<Slide kicker="Work time: minute 15 to 30" title="Your next 15 minutes, as a team">
+  <ol class="steps" style="--steps: 5;">
+    <li>
+      <p>Open the story map template, one laptop per team</p>
+      <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Pick the backbone type: user journey, pipeline, or research chain</p>
+      <span class="art art-pick" aria-hidden="true">User journey</span>
+    </li>
+    <li>
+      <p>Fill the top row (Backbone): four or more steps, in order</p>
+      <span class="art art-row" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Fill one thin row under it (Walking skeleton): a card in every column</p>
+      <span class="art art-row art-two" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b><b></b><b></b><b></b></span>
+    </li>
+    <li>
+      <p>Start every guess with <code>?</code> and add a question for it on the second tab</p>
+      <span class="art art-guess" aria-hidden="true">?</span>
+    </li>
+  </ol>
+  <p class="caption">Template: <a href={templateUrl.href}>{template}</a></p>
+  <Notes time="15:00" cue="Minute 15 to 30. Walk the aisles; at minute 30, move to the next slide.">
     <p>
-      Teams open the template and map. The in-class target is the backbone,
-      the walking-skeleton row, and the question marks. Release 1 can wait
-      until after class.
+      The in-class target is steps 1 to 5: the backbone, the
+      walking-skeleton row, and the question marks. Release 1 can wait until
+      after class. The template labels the rows Backbone and Walking
+      skeleton, and the second tab is Questions for our partner.
     </p>
     <p>
       The two mistakes to look for as you walk: backbone columns named after
@@ -971,18 +1036,28 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-<Slide kicker="Clinic: minute 30" title="Put your backbone on the screen">
-  <ul>
-    <li>Two teams volunteer; two minutes of critique each</li>
-    <li>The critique uses the self-check, nothing else</li>
-    <li>If your project is under NDA, don't volunteer</li>
-  </ul>
-  <Notes time="5:00" cue="Minute 30 to 35. Then press right to put the self-check back up.">
+<Slide kicker="Minute 30: two teams show their maps" title="Two volunteer teams show their top row">
+  <ol class="steps" style="--steps: 3;">
+    <li>
+      <p>A team volunteers and puts its map on the big screen</p>
+    </li>
+    <li>
+      <p>It reads its top row aloud, left to right, as one story</p>
+    </li>
+    <li>
+      <p>Two minutes of feedback from the room: one thing that works, one thing to change</p>
+    </li>
+  </ol>
+  <p class="rule-line">
+    Two teams, two minutes each. If your partner asked you to keep the project
+    confidential (an NDA), don't volunteer.
+  </p>
+  <Notes time="5:00" cue="Minute 30 to 35. Then press right to put the check slide up.">
     <p>
       Project the team's sheet from the lectern machine. Read the backbone
-      left to right and ask the team to tell it as one story. Check the
-      self-check in order: verbs, not screens; a skeleton story under every
-      column; question marks where they're guessing.
+      left to right with the team, then check it the way the next slide
+      does: things the person does, not screens; a card under every column;
+      question marks where they're guessing.
     </p>
     <p>
       Name one thing that works before one thing to change. Two minutes
@@ -991,31 +1066,73 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-<Slide kicker="Work time: minute 35 to 45" title="Back to your map: the self-check">
-  <ul class="checks">{selfCheck.map((item) => <li>{item}</li>)}</ul>
-  <p class="caption">Template: {template}</p>
+<Slide kicker="Work time: minute 35 to 45" title="Check your map: steps people take, not screens" wide>
+  <p class="verdict verdict-yes">Like this</p>
+  <StoryMap
+    backbone={lunch.backbone}
+    releases={[
+      {
+        name: "Walking skeleton",
+        stories: [lunch.skeleton[0], lunch.skeleton[1], "? Pay with dining dollars", lunch.skeleton[3]],
+      },
+    ]}
+    callouts={[
+      { at: "backbone", term: "What people do, in order" },
+      { at: "row", row: 0, term: "A card in every column; a ? on each guess" },
+    ]}
+  />
+  <p class="verdict verdict-no">Not like this</p>
+  <StoryMap
+    backbone={["Home page", "Menu page", "Database", "Payment API"]}
+    releases={[
+      {
+        name: "Walking skeleton",
+        stories: ["Log in", "Show menu", undefined, "Charge card"],
+      },
+    ]}
+    callouts={[
+      { at: "backbone", term: "Screens and parts of the code" },
+      { at: "row", row: 0, term: "A gap: not end to end" },
+    ]}
+  />
+  <p class="caption caption-tight">
+    Also check: one line on why this backbone type, and a question on the
+    second tab for every <code>?</code><br />
+    Template: <a href={templateUrl.href}>{template}</a>
+  </p>
   <Notes time="10:00" cue="Minute 35 to 45. At minute 45, move to the wrap.">
     <p>
-      The same checklist as before the clinic. A team without a full
-      walking-skeleton row by minute 40 should stop polishing Release 1 and
-      fill the gaps, however uncertain the stories are.
+      Both maps are the same made-up lunch app from Part 1. The top one
+      names what a person does; the bottom one names the screens and the
+      parts of the code, and its skeleton stops at the database, so nothing
+      runs end to end.
+    </p>
+    <p>
+      A team without a full walking-skeleton row by minute 40 should stop
+      polishing Release 1 and fill the gaps, however uncertain the cards
+      are.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Wrap: minute 45" title="Due by the end of the week">
-  <ul>
-    <li>One PDF of the whole workbook, both tabs: in Google Sheets, export the workbook, not the current sheet</li>
+<Slide kicker="Wrap: minute 45" title="Due by the end of the week: one PDF" wide>
+  <StoryMap
+    backbone={["Step 1", "Step 2", "Step 3", "Step 4"]}
+    releases={[{ name: "Walking skeleton", stories: ["Card", "Card", "Card", "Card"] }]}
+    callouts={[
+      { at: "backbone", term: "At least four columns", text: "in the top row" },
+      { at: "row", row: 0, term: "One full row", text: "a card in every column, guesses count" },
+    ]}
+  />
+  <ul class="due">
+    <li>On the Story map tab: the backbone type, with one line saying why</li>
     <li>
-      At least four backbone columns and one complete walking-skeleton row,
-      however uncertain
+      On the Questions for our partner tab: one question per <code>?</code>,
+      the agenda for your first partner meeting
     </li>
-    <li>The backbone type, with one line saying why</li>
-    <li>
-      The Questions for our partner tab: the agenda for your first partner
-      meeting
-    </li>
+    <li>Export the whole workbook, both tabs: in Google Sheets, choose Workbook, not Current sheet</li>
   </ul>
+  <p class="caption">Template: <a href={templateUrl.href}>{template}</a></p>
   <Notes time="4:30" cue="Minute 45 to 49. End on the partner questions.">
     <p>
       The full map is due by the end of the week, as the Workshop Activities
@@ -1226,7 +1343,207 @@ out-of-scope row. Keep each story under eight words.</pre>
     margin-inline-start: auto;
   }
 
-  .checks {
-    font-size: 40px;
+  /* The user story slide: the sentence shape over its filled example, then
+     the card it becomes. */
+  .story-def {
+    font-size: var(--deck-text-body);
+    text-wrap: balance;
+    color: var(--deck-ink-soft);
+  }
+
+  .story-shape {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    margin-block-start: 48px;
+  }
+
+  .story-part {
+    padding: 24px 28px;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 12px;
+  }
+
+  .story-part p {
+    margin: 0;
+  }
+
+  .slot {
+    font-weight: 750;
+  }
+
+  .blank {
+    padding: 0 0.3em;
+    font-weight: 600;
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-radius: 8px;
+  }
+
+  .story-part .fill {
+    margin-block-start: 12px;
+    font-size: 36px;
+    line-height: 1.25;
+  }
+
+  .story-card {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-block-start: 40px;
+  }
+
+  .story-card p {
+    margin: 0;
+    font-size: 36px;
+    color: var(--deck-ink-soft);
+  }
+
+  .card-arrow {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    background: var(--deck-accent);
+    clip-path: polygon(0 30%, 55% 30%, 55% 0, 100% 50%, 55% 100%, 55% 70%, 0 70%);
+  }
+
+  .map-card {
+    flex: none;
+    padding: 10px 18px;
+    font-size: 36px;
+    font-weight: 500;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 10px;
+  }
+
+  /* Numbered steps drawn as tiles, left to right, each with a chevron into
+     the next. */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
+    gap: 56px;
+  }
+
+  .steps > li {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 104px 26px 28px;
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.22;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 14px;
+  }
+
+  .steps > li::before {
+    inset-block-start: 24px;
+    inset-inline-start: 24px;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+    color: var(--deck-paper);
+    background: var(--deck-accent-ink);
+    border-radius: 999px;
+  }
+
+  .steps > li + li::after {
+    position: absolute;
+    inset-block-start: 36px;
+    inset-inline-start: -44px;
+    content: "";
+    border-block: 18px solid transparent;
+    border-inline-start: 26px solid var(--deck-accent);
+  }
+
+  .steps p {
+    margin: 0;
+  }
+
+  .art {
+    margin-block-start: auto;
+  }
+
+  .art-sheet,
+  .art-row {
+    display: grid;
+    grid-template-columns: repeat(var(--cells, 3), 40px);
+    gap: 6px;
+  }
+
+  .art-row {
+    --cells: 4;
+  }
+
+  .art i,
+  .art b {
+    height: 28px;
+    border-radius: 4px;
+  }
+
+  .art-sheet i {
+    background: var(--deck-paper);
+    border: 2px solid var(--deck-rule);
+  }
+
+  .art-row i {
+    background: var(--deck-backbone);
+    border: 2px solid var(--deck-backbone-edge);
+  }
+
+  .art-row b {
+    background: var(--deck-paper);
+    border: 2px solid var(--deck-ink-soft);
+  }
+
+  .art-pick {
+    align-self: start;
+    padding: 6px 16px;
+    font-size: var(--deck-text-min);
+    font-weight: 600;
+    color: var(--deck-backbone-ink);
+    background: var(--deck-backbone);
+    border: 2px solid var(--deck-backbone-edge);
+    border-radius: 8px;
+  }
+
+  .art-guess {
+    align-self: start;
+    min-width: 1.15em;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.15em;
+    color: var(--deck-paper);
+    text-align: center;
+    background: var(--deck-assumed-edge);
+    border-radius: 999px;
+  }
+
+  /* The self-check's two maps, each under its verdict. */
+  .verdict {
+    margin: 0;
+    font-size: var(--deck-text-min);
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .verdict-yes {
+    color: var(--deck-backbone-edge);
+  }
+
+  .verdict-no {
+    margin-block-start: 0;
+    color: var(--deck-accent-ink);
+  }
+
+  .due {
+    margin-block-start: 32px;
+    font-size: 36px;
   }
 </style>
