@@ -40,6 +40,29 @@
   --deck-assumed-edge: var(--color-amber-600);
   --deck-assumed-ink: var(--color-amber-950);
 
+  /* The seating map's six sections (<SeatingMap>, src/lib/seating.mjs):
+     two tints that alternate team by team, and the range label under the
+     section. No orange or amber, which already mean the accent and an
+     assumption. */
+  --deck-seat-sky-a: var(--color-sky-200);
+  --deck-seat-sky-b: var(--color-sky-300);
+  --deck-seat-sky-label: var(--color-sky-700);
+  --deck-seat-emerald-a: var(--color-emerald-200);
+  --deck-seat-emerald-b: var(--color-emerald-300);
+  --deck-seat-emerald-label: var(--color-emerald-700);
+  --deck-seat-yellow-a: var(--color-yellow-200);
+  --deck-seat-yellow-b: var(--color-yellow-300);
+  --deck-seat-yellow-label: var(--color-yellow-700);
+  --deck-seat-violet-a: var(--color-violet-200);
+  --deck-seat-violet-b: var(--color-violet-300);
+  --deck-seat-violet-label: var(--color-violet-700);
+  --deck-seat-rose-a: var(--color-rose-200);
+  --deck-seat-rose-b: var(--color-rose-300);
+  --deck-seat-rose-label: var(--color-rose-700);
+  --deck-seat-lime-a: var(--color-lime-200);
+  --deck-seat-lime-b: var(--color-lime-300);
+  --deck-seat-lime-label: var(--color-lime-700);
+
   --deck-font: var(--font-sans);
   --deck-mono: var(--font-mono);
 
@@ -271,5 +294,31 @@ body {
 @layer deck {
   .reveal .after-list {
     margin-block-start: 56px;
+  }
+}
+
+/* A box the instructor fills before class (<div class="deck-placeholder">,
+   its first line <p class="deck-placeholder-label">): dashed, so a slide
+   left unfilled is obvious on the projector. */
+@layer deck {
+  .reveal .deck-placeholder {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    padding: 48px 64px;
+    color: var(--deck-ink-soft);
+    border: 6px dashed var(--deck-ink-soft);
+    border-radius: 16px;
+  }
+
+  .reveal .deck-placeholder-label {
+    margin-block-end: 36px;
+    font-size: var(--deck-text-min);
+    font-weight: 800;
+    color: var(--deck-accent-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 }

@@ -16,8 +16,29 @@
 // `stories` has one entry per backbone column; undefined leaves a cell
 // empty. A story or an activity that is assumed rather than confirmed starts
 // with "?" or is written { text, assumed: true }; either way it is drawn in
-// amber with the "?" showing. Seven columns is the most a projected slide
-// holds legibly, so an eighth fails the build.
+// amber with the "?" showing, and a legend under the map explains the
+// mark; `legend={false}` drops it where the slide explains "?" itself.
+// Seven columns is the most a projected slide holds legibly, so an eighth
+// fails the build.
+//
+// Callouts, optional, label the parts of a map for a room that has never
+// seen one. They sit in a lane to the right of the map, each with a
+// connector that points left at what it names:
+//
+//   callouts={[
+//     { at: "backbone", term: "Backbone", text: "what the person does, in order" },
+//     { at: "row", row: 0, term: "Walking skeleton", text: "one thin path" },
+//     { at: "line", row: 1, term: "Release line", text: "everything above ships first" },
+//     { at: "card", row: 1, column: 3, term: "A card", text: "one story" },
+//   ]}
+//
+// "backbone" points at the top row; "row" at release row `row` (0 is the
+// first row under the backbone); "line" at the heavy rule above that row;
+// "card" at one card, which gets an accent ring (`item` picks a card in a
+// stacked cell, 0 by default). Point a "card" callout at the last column,
+// where its connector touches the card. With `stepped`, each callout and its
+// ring appear on their own arrow press, in the order given. A map with
+// callouts holds five columns at most, since the lane takes the room of two.
 type Story = string | { assumed?: boolean; text: string };
 
 interface Release {
@@ -26,17 +47,36 @@ interface Release {
   stories: (Story | Story[] | undefined)[];
 }
 
+type Callout = { term: string; text?: string } & (
+  | { at: "backbone" }
+  | { at: "line"; row: number }
+  | { at: "row"; row: number }
+  | { at: "card"; column: number; item?: number; row: number }
+);
+
 interface Props {
   backbone: Story[];
+  callouts?: Callout[];
+  legend?: boolean;
   releases: Release[];
+  stepped?: boolean;
 }
 
 const MAX_COLUMNS = 7;
-const { backbone, releases } = Astro.props;
+const MAX_COLUMNS_WITH_CALLOUTS = 5;
+const {
+  backbone,
+  callouts = [],
+  legend = true,
+  releases,
+  stepped = false,
+} = Astro.props;
+const maxColumns =
+  callouts.length > 0 ? MAX_COLUMNS_WITH_CALLOUTS : MAX_COLUMNS;
 
-if (backbone.length === 0 || backbone.length > MAX_COLUMNS) {
+if (backbone.length === 0 || backbone.length > maxColumns) {
   throw new Error(
-    `<StoryMap>: the backbone has ${backbone.length} columns; use 1 to ${MAX_COLUMNS}.`
+    `<StoryMap>: the backbone has ${backbone.length} columns; use 1 to ${maxColumns}${callouts.length > 0 ? " with callouts" : ""}.`
   );
 }
 for (const release of releases) {
@@ -44,6 +84,25 @@ for (const release of releases) {
     throw new Error(
       `<StoryMap>: release "${release.name}" has ${release.stories.length} cells for ${backbone.length} backbone columns.`
     );
+  }
+}
+
+for (const callout of callouts) {
+  if (callout.at !== "backbone" && !releases[callout.row]) {
+    throw new Error(
+      `<StoryMap>: the callout "${callout.term}" points at row ${callout.row}, and the map has ${releases.length} rows.`
+    );
+  }
+  if (callout.at === "card") {
+    const cell = releases[callout.row].stories[callout.column];
+    const count = Array.isArray(cell)
+      ? cell.length
+      : Number(cell !== undefined);
+    if ((callout.item ?? 0) >= count) {
+      throw new Error(
+        `<StoryMap>: the callout "${callout.term}" points at an empty spot in row ${callout.row}, column ${callout.column}.`
+      );
+    }
   }
 }
 
@@ -56,29 +115,72 @@ function card(story: Story) {
 }
 
 const columns = backbone.map(card);
-const rows = releases.map((release) => ({
+// Each callout's arrow press, when stepped: its place in the list.
+const step = (callout: Callout) =>
+  stepped
+    ? { class: "fragment", "data-fragment-index": callouts.indexOf(callout) }
+    : {};
+const ringed = (r: number, column: number, item: number) =>
+  callouts.find(
+    (c) =>
+      c.at === "card" &&
+      c.row === r &&
+      c.column === column &&
+      (c.item ?? 0) === item
+  );
+const backboneCallouts = callouts.filter((c) => c.at === "backbone");
+const rows = releases.map((release, r) => ({
   ...release,
+  callouts: callouts.filter((c) => c.at !== "backbone" && c.row === r),
   cells: backbone.map((_, i) => {
     const cell = release.stories[i];
     if (cell === undefined) {
       return [];
     }
-    return (Array.isArray(cell) ? cell : [cell]).map(card);
+    return (Array.isArray(cell) ? cell : [cell]).map((story, item) => ({
+      ...card(story),
+      ring: ringed(r, i, item),
+    }));
   }),
 }));
+const hasCallouts = callouts.length > 0;
 const anyAssumed = [
   ...columns,
   ...rows.flatMap((row) => row.cells.flat()),
 ].some((c) => c.assumed);
 // Fewer columns leave room for larger type; six or seven sit on the floor.
 const mapText = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
+
+// A lane lists its line callouts first, at the top of the row, then the
+// rest. A card callout sits level with its card in a stacked cell.
+const lane = (list: Callout[]) =>
+  [...list]
+    .sort((a, b) => Number(b.at === "line") - Number(a.at === "line"))
+    .map((c) => {
+      let align = "middle";
+      if (c.at === "card") {
+        const cell = releases[c.row].stories[c.column];
+        const count = Array.isArray(cell) ? cell.length : 1;
+        const item = c.item ?? 0;
+        if (count > 1 && item === count - 1) {
+          align = "end";
+        } else if (count > 1 && item === 0) {
+          align = "start";
+        }
+      }
+      return { ...c, align, attrs: step(c) };
+    });
 ---
 
-<div class="story-map" style={`--columns: ${backbone.length}; --map-text: ${mapText};`}>
+<div
+  class:list={["story-map", { "has-callouts": hasCallouts }]}
+  style={`--columns: ${backbone.length}; --map-text: ${mapText};`}
+>
   <table>
     <colgroup>
       <col class="label-col" />
       {columns.map(() => <col />)}
+      {hasCallouts && <col class="callout-col" />}
     </colgroup>
     <thead>
       <tr>
@@ -92,6 +194,20 @@ const mapText = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
               </div>
             </th>
           ))
+        }
+        {
+          hasCallouts && (
+            <td class="callout-cell">
+              <div class="lane">
+                {lane(backboneCallouts).map((c) => (
+                  <p class:list={["callout", `callout-${c.at}`, `align-${c.align}`]} {...c.attrs}>
+                    <strong class="term">{c.term}</strong>
+                    {c.text && <span class="text">{c.text}</span>}
+                  </p>
+                ))}
+              </div>
+            </td>
+          )
         }
       </tr>
     </thead>
@@ -109,17 +225,30 @@ const mapText = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
                   <div class:list={["card", "story", { assumed: c.assumed }]}>
                     {c.assumed && <span class="mark">?</span>}
                     {c.text}
+                    {c.ring && <span class="ring" aria-hidden="true" {...step(c.ring)} />}
                   </div>
                 ))}
               </td>
             ))}
+            {hasCallouts && (
+              <td class="callout-cell">
+                <div class="lane">
+                  {lane(row.callouts).map((c) => (
+                    <p class:list={["callout", `callout-${c.at}`, `align-${c.align}`]} {...c.attrs}>
+                      <strong class="term">{c.term}</strong>
+                      {c.text && <span class="text">{c.text}</span>}
+                    </p>
+                  ))}
+                </div>
+              </td>
+            )}
           </tr>
         ))
       }
     </tbody>
   </table>
   {
-    anyAssumed && (
+    legend && anyAssumed && (
       <p class="legend">
         <span class="card story assumed swatch">
           <span class="mark">?</span>
@@ -207,8 +336,9 @@ const mapText = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
     border-radius: 999px;
   }
 
-  /* The release cuts: a heavy rule above every slice. */
-  tbody tr {
+  /* The release cuts: a heavy rule above every slice, stopping short of
+     the callout lane. */
+  tbody tr > :not(.callout-cell) {
     border-block-start: 8px solid var(--deck-ink);
   }
 
@@ -250,5 +380,112 @@ const mapText = backbone.length <= 5 ? "36px" : "var(--deck-text-min)";
 
   .swatch .mark {
     margin: 0;
+  }
+
+  /* Callouts: a lane right of the map, each label joined to what it names
+     by an accent connector, so the map's own blue and amber stay its own. */
+  .callout-col {
+    width: 500px;
+  }
+
+  .story-map th.callout-cell,
+  .story-map td.callout-cell {
+    height: 1px;
+    padding: 0;
+  }
+
+  .lane {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-block: 14px;
+  }
+
+  thead .lane {
+    padding-block: 0 18px;
+  }
+
+  .story .ring {
+    position: absolute;
+    inset: -11px;
+    border: 6px solid var(--deck-accent);
+    border-radius: 16px;
+    pointer-events: none;
+  }
+
+  .story {
+    position: relative;
+  }
+
+  .callout {
+    position: relative;
+    margin: 0 0 0 64px;
+    padding: 10px 18px;
+    font-size: var(--deck-text-min);
+    line-height: 1.2;
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-radius: 10px;
+  }
+
+  .callout + .callout {
+    margin-block-start: 16px;
+  }
+
+  .callout .term {
+    display: block;
+    font-weight: 750;
+  }
+
+  .callout::before {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: -58px;
+    width: 58px;
+    height: 5px;
+    content: "";
+    background: var(--deck-accent);
+    transform: translateY(-50%);
+  }
+
+  .callout::after {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: -64px;
+    content: "";
+    border-block: 13px solid transparent;
+    border-inline-end: 18px solid var(--deck-accent);
+    transform: translateY(-50%);
+  }
+
+  .align-middle {
+    margin-block: auto;
+  }
+
+  .align-end {
+    margin-block-start: auto;
+  }
+
+  /* A line callout hangs from the rule it names, which runs on into the
+     lane as its connector. */
+  .callout-line {
+    margin-block-start: -18px;
+    border-block-start: 8px solid var(--deck-ink);
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+
+  .callout-line::before {
+    inset-block-start: -8px;
+    inset-inline-start: -64px;
+    width: 64px;
+    height: 8px;
+    background: var(--deck-ink);
+    transform: none;
+  }
+
+  .callout-line::after {
+    content: none;
   }
 </style>

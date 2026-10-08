@@ -11,6 +11,7 @@ import ImageSlide from "../components/deck/ImageSlide.astro";
 import Notes from "../components/deck/Notes.astro";
 import PeopleSlide from "../components/deck/PeopleSlide.astro";
 import QrSlide from "../components/deck/QrSlide.astro";
+import SeatingMap from "../components/deck/SeatingMap.astro";
 import Slide from "../components/deck/Slide.astro";
 import StatementSlide from "../components/deck/StatementSlide.astro";
 import StoryMap from "../components/deck/StoryMap.astro";
@@ -157,6 +158,41 @@ const handbook = new URL("/", Astro.site).href;
   </Notes>
 </Slide>
 
+<Slide kicker="Story map" title="A story map with its parts labeled" wide>
+  <StoryMap
+    backbone={["Find a book", "Reserve it", "Pick it up", "Return it"]}
+    releases={[
+      {
+        name: "Walking skeleton",
+        stories: ["Search by title", "Place a hold", "Show hold at desk", "Scan it in"],
+      },
+      {
+        name: "Release 1",
+        stories: [
+          "Filter by subject",
+          "Cancel a hold",
+          "Text when ready",
+          ["Drop box return", "? Due soon email"],
+        ],
+      },
+    ]}
+    callouts={[
+      { at: "backbone", term: "Backbone", text: "what the user does, in order" },
+      { at: "row", row: 0, term: "Walking skeleton", text: "one thin path through every column" },
+      { at: "line", row: 1, term: "Release line", text: "everything above it ships first" },
+      { at: "card", row: 1, column: 3, item: 1, term: "A card", text: "one story" },
+    ]}
+    stepped
+  />
+  <Notes time="1:00" cue="Press the arrow for each label.">
+    <p>
+      The callouts prop labels the parts of a map in a lane on the right.
+      With stepped, each label and the ring around its card appear on their
+      own arrow press. A map with callouts holds five columns at most.
+    </p>
+  </Notes>
+</Slide>
+
 <PeopleSlide
   kicker="People"
   title="Who is in the room"
@@ -202,14 +238,20 @@ const handbook = new URL("/", Astro.site).href;
   </Notes>
 </QrSlide>
 
-<FrameSlide
-  src="/decks/auditorium-seating.html?slide"
-  label="Auditorium seating map by team number"
->
+<FrameSlide src="/tools/" label="The instructor tools">
   <Notes time="0:45">
     <p>A live page, full bleed, loaded when the slide comes up.</p>
   </Notes>
 </FrameSlide>
+
+<SeatingMap teams={40} kicker="Seating map" title="Teams placed in the auditorium">
+  <Notes time="0:45">
+    <p>
+      Drawn at build time from the room in the seating module; the team count
+      is a prop, and a room that does not add up fails the build.
+    </p>
+  </Notes>
+</SeatingMap>
 
 <Slide kicker="Adding a component" title="A new kind of slide is one file">
   <ol>

@@ -35,10 +35,10 @@ pre-commit:
       glob: "{public/*,src/content/docs/**/*.mdx}"
       run: node scripts/validate-downloads.mjs
     validate-dashes:
-      glob: "{src,canvas,public,decks}/**/*"
+      glob: "{src,canvas,public}/**/*"
       run: node scripts/validate-dashes.mjs
     validate-dates:
-      glob: "{src/**/*,canvas/**/*,public/**/*,decks/**/*,STAFF-RUNBOOK.md}"
+      glob: "{src/**/*,canvas/**/*,public/**/*,STAFF-RUNBOOK.md}"
       run: node scripts/validate-dates.mjs
     validate-sidebar:
       # A duplicate sidebar.order is silent: the build and the link validator

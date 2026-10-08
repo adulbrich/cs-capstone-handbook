@@ -32,7 +32,7 @@
 import { readFileSync } from "node:fs";
 import { walk } from "./lib/content.mjs";
 
-const ROOTS = ["src", "canvas", "public", "decks", "STAFF-RUNBOOK.md"];
+const ROOTS = ["src", "canvas", "public", "STAFF-RUNBOOK.md"];
 const SKIP_FILES = new Set([
   "canvas/assignments/assignment-readme.md",
   "src/content/docs/introduction/showcase.mdx",
