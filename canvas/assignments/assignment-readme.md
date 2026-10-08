@@ -439,7 +439,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 3 | Demo Day registration (0 points, omit from final grade) |
 | by 5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
-| 5 | Repo Checkpoint 1 (rails stood up); RFC peer review; Demo Day session 1 |
+| 5 | Repo Checkpoint 1 (CI, board, living docs, production target); RFC peer review; Demo Day session 1 |
 | 6 | Sprint Note 2 |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
