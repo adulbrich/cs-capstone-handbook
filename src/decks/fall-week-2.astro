@@ -71,7 +71,7 @@ const ephiraMap = {
         "Password or biometric lock",
         "Full day log",
         "Calendar with a filter",
-        "Last period plus 28 days",
+        "28-day guess, not working",
         undefined,
         "CSV, JSON, or PDF export",
       ],
@@ -143,7 +143,7 @@ const comparison: {
   {
     activity: "Predictions",
     ai: "Next date, averages, fertile window",
-    human: "Had: +28 days. Predict from history",
+    human: "Had: broken guess. Predict from history",
     mark: "invents",
   },
   {
@@ -436,7 +436,8 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       The inherited skeleton is what the repository already did the day the
       team started: a password or biometric lock, a full day log, the
       calendar and its filter, export as CSV, JSON, or PDF, and a first
-      prediction that adds 28 days to the last period. There were no
+      prediction that added 28 days to the last period but did not work, so
+      the card says so. There were no
       reminders, so the inherited skeleton has a gap, and the advertised
       notifications fill it.
     </p>
