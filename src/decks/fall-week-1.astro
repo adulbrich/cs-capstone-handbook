@@ -4,13 +4,13 @@
 // instructor's own round (a placeholder slide the instructor fills before
 // class), fifteen minutes to find the team on the seating map, fifteen to
 // play, then the Team Charter kickoff for the rest of the session. Served
-// at /decks/fall-week-1/. The seating map is the live
-// decks/auditorium-seating.html, served by src/pages/decks/. A line credited
+// at /decks/fall-week-1/. The seating map is <SeatingMap>, drawn at build
+// time from the room in src/lib/seating.mjs. A line credited
 // to a handbook page uses that page's words; the charter is linked, not
 // retyped.
-import FrameSlide from "../components/deck/FrameSlide.astro";
 import Notes from "../components/deck/Notes.astro";
 import QrSlide from "../components/deck/QrSlide.astro";
+import SeatingMap from "../components/deck/SeatingMap.astro";
 import Slide from "../components/deck/Slide.astro";
 import StatementSlide from "../components/deck/StatementSlide.astro";
 import TermSessions from "../components/deck/TermSessions.astro";
@@ -131,24 +131,20 @@ const charter = new URL("/assignments/team-charter/", Astro.site).href;
 <StatementSlide kicker="Teams are announced">
   Find your team number on the map, and sit together.
   <Notes time="0:15" cue="Advance to the map as soon as this is read.">
-    <p>Next slide is the live map. Leave it up while people move.</p>
+    <p>Next slide is the map. Leave it up while people move.</p>
   </Notes>
 </StatementSlide>
 
-<FrameSlide
-  src="/decks/auditorium-seating.html?slide"
-  label="Auditorium seating map by team number"
->
+<SeatingMap teams={65}>
   <Notes time="30:00" cue="Minute 15: teams start the icebreaker. Minute 27: call for wants.">
     <p>
-      The live seating map. Hovering a block highlights one team; left and
-      right are as the room faces the screen. Fifteen minutes to find seats
-      and say hello, then fifteen for Two truths and a bug at the table,
-      wants included, with the map still up. Hover a team's seats to
-      highlight them for a lost team.
+      The seating map. Left and right are as the room faces the screen.
+      Fifteen minutes to find seats and say hello, then fifteen for Two
+      truths and a bug at the table, wants included, with the map still up.
+      Point a lost team to its section's range label first, then its number.
     </p>
   </Notes>
-</FrameSlide>
+</SeatingMap>
 
 <TwoColumnSlide kicker="Team Charter kickoff" title="What the Team Charter page requires" divider>
   <div slot="left">

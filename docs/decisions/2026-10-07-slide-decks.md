@@ -23,7 +23,7 @@ The only deck in the repository was a Marp draft in the root `decks/`: outside t
 
 ## 3. How it works
 
-The route globs `src/decks/*.astro` in `getStaticPaths` and renders each inside `.reveal > .slides`. `deck.css` replaces every reveal theme: it imports the Tailwind palette and the handbook's `palette.css`, which `global.css` also imports, so the docs and the decks share one set of colors. Slide components wrap `Slide`, so a new kind of slide is one file in `src/components/deck/`.
+The route globs `src/decks/*.astro` in `getStaticPaths` and renders each inside `.reveal > .slides`. `deck.css` replaces every reveal theme: it imports the Tailwind palette and the handbook's `palette.css`, which `global.css` also imports, so the docs and the decks share one set of colors. Slide components wrap `Slide`, so a new kind of slide is one file in `src/components/deck/`. The fall week 1 seating map, once a standalone page in the root `decks/` shown in an iframe, is now `<SeatingMap>`, a deck component drawn at build time from the room in `src/lib/seating.mjs` (#479).
 
 ## 4. What it left open
 

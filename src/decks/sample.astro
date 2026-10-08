@@ -11,6 +11,7 @@ import ImageSlide from "../components/deck/ImageSlide.astro";
 import Notes from "../components/deck/Notes.astro";
 import PeopleSlide from "../components/deck/PeopleSlide.astro";
 import QrSlide from "../components/deck/QrSlide.astro";
+import SeatingMap from "../components/deck/SeatingMap.astro";
 import Slide from "../components/deck/Slide.astro";
 import StatementSlide from "../components/deck/StatementSlide.astro";
 import StoryMap from "../components/deck/StoryMap.astro";
@@ -202,14 +203,20 @@ const handbook = new URL("/", Astro.site).href;
   </Notes>
 </QrSlide>
 
-<FrameSlide
-  src="/decks/auditorium-seating.html?slide"
-  label="Auditorium seating map by team number"
->
+<FrameSlide src="/tools/" label="The instructor tools">
   <Notes time="0:45">
     <p>A live page, full bleed, loaded when the slide comes up.</p>
   </Notes>
 </FrameSlide>
+
+<SeatingMap teams={40} kicker="Seating map" title="Teams placed in the auditorium">
+  <Notes time="0:45">
+    <p>
+      Drawn at build time from the room in the seating module; the team count
+      is a prop, and a room that does not add up fails the build.
+    </p>
+  </Notes>
+</SeatingMap>
 
 <Slide kicker="Adding a component" title="A new kind of slide is one file">
   <ol>

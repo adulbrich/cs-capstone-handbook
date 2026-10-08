@@ -141,7 +141,6 @@ const VOCABULARY_PATHS = [
   "src/decks/",
   "canvas/",
   "public/",
-  "decks/",
   "STAFF-RUNBOOK.md",
 ];
 const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";

@@ -1,0 +1,205 @@
+---
+// The auditorium seating map, as a whole slide: every team's seats, numbered,
+// in the room's six sections, each section's range of teams under it. Drawn
+// at build time as an inline SVG from the room and the team layout in
+// src/lib/seating.mjs; nothing runs in the browser.
+//
+//   <SeatingMap teams={65}>
+//     <Notes time="30:00" cue="...">...</Notes>
+//   </SeatingMap>
+//
+// `teams` is the number of teams formed this term; kicker and title default
+// to the week 1 wording; keep the title to one line, since the type is
+// sized for the body under a one-line title and a second line would put the
+// numbers under the 32px floor. The slot takes <Notes>. A room whose rows do not
+// add up to its expected seats, or a team count the room cannot seat, fails
+// the build. Other attributes land on the <section>, as on <Slide>.
+import type { ComponentProps } from "astro/types";
+import { seatingLayout } from "../../lib/seating.mjs";
+import Slide from "./Slide.astro";
+
+interface Props extends Omit<ComponentProps<typeof Slide>, "wide"> {
+  teams: number;
+}
+
+const {
+  kicker = "Team seating",
+  teams,
+  title = "Find your team's seats",
+  ...attrs
+} = Astro.props;
+
+// The colors each section may take; deck.css defines three tokens for each.
+const COLORS = new Set(["sky", "emerald", "yellow", "violet", "rose", "lime"]);
+
+// The body of a <Slide wide> with a one-line title, in slide pixels: the
+// 1920x1080 slide less the wide frame's 72px padding and the header. The
+// type is sized against it so team numbers and labels clear the 32px floor.
+const BODY = { height: 742, width: 1776 };
+const FLOOR = 32;
+
+let size = FLOOR;
+let layout = seatingLayout(teams, { labelSize: size });
+for (let pass = 0; pass < 4; pass += 1) {
+  const scale = Math.min(
+    BODY.width / layout.box.width,
+    BODY.height / layout.box.height
+  );
+  const needed = Math.ceil(FLOOR / scale);
+  if (size >= needed) {
+    break;
+  }
+  size = needed;
+  layout = seatingLayout(teams, { labelSize: size });
+}
+
+for (const s of layout.sections) {
+  if (!COLORS.has(s.color)) {
+    throw new Error(
+      `<SeatingMap>: section "${s.name}" uses the color "${s.color}"; use one of ${[...COLORS].join(", ")}, or add its tokens to deck.css.`
+    );
+  }
+}
+
+const { box, labels, stage } = layout;
+const sectionStyle = (i: number) => {
+  const c = layout.sections[i].color;
+  return `--tint-a: var(--deck-seat-${c}-a); --tint-b: var(--deck-seat-${c}-b); --label: var(--deck-seat-${c}-label);`;
+};
+interface Point {
+  x: number;
+  y: number;
+}
+const points = (list: Point[]) =>
+  list.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+const summary = labels
+  .map((l) => `${layout.sections[l.section].name}: ${l.text.toLowerCase()}`)
+  .join("; ");
+---
+
+<Slide class="deck-seating" kicker={kicker} title={title} wide {...attrs}>
+  <svg
+    viewBox={`${box.x} ${box.y} ${box.width} ${box.height}`}
+    role="img"
+    aria-label={`Auditorium seating map by team number, ${teams} teams. ${summary}.`}
+    style={`--size: ${size}px;`}
+  >
+    <path class="stage" d={stage.path} />
+    <rect class="screen" rx="3" {...stage.screen} />
+    <text class="room-text" x="0" y={stage.wallY + 60}>SCREEN</text>
+    <text class="room-text" x="0" y={stage.edge - 30}>STAGE</text>
+    {
+      layout.teams.map((t) => (
+        <g class:list={["team", t.tint]} style={sectionStyle(t.section)}>
+          <polygon class="bench" points={points(t.outline)} />
+          {t.seats.map((p: Point) => (
+            <circle class="seat" cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r="6.5" />
+          ))}
+          <text class="num" x={t.x.toFixed(1)} y={t.y.toFixed(1)}>
+            {t.team}
+          </text>
+        </g>
+      ))
+    }
+    {
+      labels.map((l) => (
+        <g class="range" style={sectionStyle(l.section)}>
+          <rect
+            height={l.height}
+            rx={l.height / 2}
+            width={l.width}
+            x={(l.x - l.width / 2).toFixed(1)}
+            y={(l.y - l.height / 2).toFixed(1)}
+          />
+          <text x={l.x.toFixed(1)} y={(l.y + 1).toFixed(1)}>
+            {l.text}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+  <slot />
+</Slide>
+
+<style>
+  svg {
+    display: block;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .stage {
+    fill: var(--deck-card);
+    stroke: var(--deck-rule);
+    stroke-width: 3;
+  }
+
+  .screen {
+    fill: var(--deck-ink);
+  }
+
+  .room-text {
+    font-size: var(--size);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-anchor: middle;
+    fill: var(--deck-ink-soft);
+  }
+
+  .bench {
+    stroke-width: 20;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .a .bench {
+    fill: var(--tint-a);
+    stroke: var(--tint-a);
+  }
+
+  .b .bench {
+    fill: var(--tint-b);
+    stroke: var(--tint-b);
+  }
+
+  .seat {
+    fill: var(--deck-paper);
+    stroke: rgb(0 0 0 / 0.25);
+    stroke-width: 1;
+  }
+
+  .num {
+    font-size: var(--size);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    dominant-baseline: central;
+    text-anchor: middle;
+    fill: var(--deck-ink);
+    stroke-width: 8px;
+    stroke-linejoin: round;
+    paint-order: stroke;
+  }
+
+  /* The halo is the bench's own tint, so a number masks the seats under it
+     without a white patch competing with the white seats. */
+  .a .num {
+    stroke: var(--tint-a);
+  }
+
+  .b .num {
+    stroke: var(--tint-b);
+  }
+
+  .range rect {
+    fill: var(--label);
+  }
+
+  .range text {
+    font-size: var(--size);
+    font-weight: 800;
+    dominant-baseline: central;
+    text-anchor: middle;
+    fill: var(--deck-paper);
+  }
+</style>
