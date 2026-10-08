@@ -377,7 +377,7 @@ const familyBase = (f) =>
 
 // An aside, table row, list item, or top-level paragraph about another term,
 // or another entry on the page.
-function outOfScope(node, parent, { offTerm, otherMember, root, term }) {
+function outOfScope(node, parent, { offTerm, otherEntry, root, term }) {
   return (
     (hasClass(node, "starlight-aside") &&
       offTerm(text(select(".starlight-aside__title", node) ?? node))) ||
@@ -385,7 +385,7 @@ function outOfScope(node, parent, { offTerm, otherMember, root, term }) {
       (() => {
         const first = node.children.find(isEl);
         const s = first ? text(first).trim() : "";
-        return offTerm(s) || otherMember(s);
+        return offTerm(s) || otherEntry(s);
       })()) ||
     (node.tagName === "li" &&
       (() => {
@@ -402,7 +402,7 @@ function outOfScope(node, parent, { offTerm, otherMember, root, term }) {
           (c) => isEl(c) || (c.type === "text" && c.value.trim())
         );
         return (
-          (lead?.tagName === "strong" && offTerm(text(lead))) || otherMember(s)
+          (lead?.tagName === "strong" && offTerm(text(lead))) || otherEntry(s)
         );
       })())
   );
@@ -492,7 +492,7 @@ function trim(e, root) {
   const base = familyBase(family);
   const memberRe = base ? new RegExp(`^${base}(\\d+)\\b`) : null;
   const own = memberRe ? e.name.match(memberRe)?.[1] : null;
-  const otherMember = (s) => {
+  const otherEntry = (s) => {
     const m = memberRe ? s.match(memberRe) : null;
     const f = owner(s);
     return Boolean((m && m[1] !== own) || (f && f !== family));
@@ -502,10 +502,10 @@ function trim(e, root) {
     top,
     family,
     owner,
-    (heading) => offTerm(heading) || otherMember(heading)
+    (heading) => offTerm(heading) || otherEntry(heading)
   );
 
-  const scope = { offTerm, otherMember, root, term };
+  const scope = { offTerm, otherEntry, root, term };
   visit(root, "element", (node, index, parent) => {
     if (outOfScope(node, parent, scope)) {
       parent.children.splice(index, 1);
