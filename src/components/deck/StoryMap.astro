@@ -16,8 +16,10 @@
 // `stories` has one entry per backbone column; undefined leaves a cell
 // empty. A story or an activity that is assumed rather than confirmed starts
 // with "?" or is written { text, assumed: true }; either way it is drawn in
-// amber with the "?" showing. Seven columns is the most a projected slide
-// holds legibly, so an eighth fails the build.
+// amber with the "?" showing, and a legend under the map explains the
+// mark; `legend={false}` drops it where the slide explains "?" itself.
+// Seven columns is the most a projected slide holds legibly, so an eighth
+// fails the build.
 //
 // Callouts, optional, label the parts of a map for a room that has never
 // seen one. They sit in a lane to the right of the map, each with a
@@ -55,13 +57,20 @@ type Callout = { term: string; text?: string } & (
 interface Props {
   backbone: Story[];
   callouts?: Callout[];
+  legend?: boolean;
   releases: Release[];
   stepped?: boolean;
 }
 
 const MAX_COLUMNS = 7;
 const MAX_COLUMNS_WITH_CALLOUTS = 5;
-const { backbone, callouts = [], releases, stepped = false } = Astro.props;
+const {
+  backbone,
+  callouts = [],
+  legend = true,
+  releases,
+  stepped = false,
+} = Astro.props;
 const maxColumns =
   callouts.length > 0 ? MAX_COLUMNS_WITH_CALLOUTS : MAX_COLUMNS;
 
@@ -239,7 +248,7 @@ const lane = (list: Callout[]) =>
     </tbody>
   </table>
   {
-    anyAssumed && (
+    legend && anyAssumed && (
       <p class="legend">
         <span class="card story assumed swatch">
           <span class="mark">?</span>
