@@ -8,23 +8,51 @@ assignment:
   terms: [fall, winter]
   weight: 8
   outcomes:
-    SO1: 1
-    SO2: 2
-    SO5: 1
-    SO6: 1
+    SO1: 4
+    SO2: 8
+    SO5: 4
+    SO6: 4
   canvas:
-    - name: "Repo Checkpoint {n}"
+    - name: "Repo Checkpoint 1"
       group: Repo Checkpoints
-      weeks: { fall: [5, 10], winter: [5, 10] }
-      weight: 8
+      weeks: { fall: [5] }
+      due_label: Fall week 5
+      weight: 4
       points: 100
       submission: pdf
-      rubric: repo-checkpoint/repo-checkpoint-rubric.csv
+      rubric: repo-checkpoint/repo-checkpoint-1-rubric.csv
+    - name: "Repo Checkpoint 2"
+      group: Repo Checkpoints
+      weeks: { fall: [10] }
+      due_label: Fall week 10
+      weight: 4
+      points: 100
+      submission: pdf
+      rubric: repo-checkpoint/repo-checkpoint-2-rubric.csv
+    - name: "Repo Checkpoint 3"
+      group: Repo Checkpoints
+      weeks: { winter: [5] }
+      due_label: Winter week 5
+      weight: 4
+      points: 100
+      submission: pdf
+      rubric: repo-checkpoint/repo-checkpoint-3-rubric.csv
+    - name: "Repo Checkpoint 4"
+      group: Repo Checkpoints
+      weeks: { winter: [10] }
+      due_label: Winter week 10
+      weight: 4
+      points: 100
+      submission: pdf
+      rubric: repo-checkpoint/repo-checkpoint-4-rubric.csv
 ---
 
 import AssignmentSummary from '/src/components/AssignmentSummary.astro';
 import RubricTable from '/src/components/RubricTable.astro';
-import rubricCsv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-rubric.csv?raw';
+import rubric1Csv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-1-rubric.csv?raw';
+import rubric2Csv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-2-rubric.csv?raw';
+import rubric3Csv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-3-rubric.csv?raw';
+import rubric4Csv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-4-rubric.csv?raw';
 
 <AssignmentSummary />
 
@@ -39,7 +67,7 @@ The repository holds what an AI tool or a successor needs to work on the product
 - `docs/rfcs/` or `docs/adr/`: recorded decisions, each with what was rejected and why; the design document links them where they apply rather than listing them. Either directory is fine, and so is both; if your tooling already writes to `docs/adr/` (several published agent skill sets do by default), use it. See the [ADR guide](/guides/adr/).
 - `docs/risks.md`: one risk register for the whole project (business, technical, and team risks together), ranked, with owners, and listing every external prerequisite you need (an approval, an account, a review, recruitment) with who asked for it and when. This is the only risk register; do not maintain copies elsewhere. Your partner and the next team read it, so write each risk as a fact about the project, without blame ("partner review takes two weeks; we plan around it"). A problem between teammates goes to your Teaching Assistant (TA), not into the register. The [Project Risks guide](/guides/risks/) shows how to write and rank each entry.
 - `README.md`: a quickstart that a new contributor (or grader) can actually follow. [makeareadme.com](https://www.makeareadme.com/) lists what a reader looks for.
-- [`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), carrying your Definition of Done and Contribution Norm, and the AI context file (`AGENTS.md`, `CLAUDE.md`, or your tool's equivalent), which points at the documents above rather than copying them, both from your [Team Charter](/assignments/team-charter/). At the first winter checkpoint, `CONTRIBUTING.md` shows the winter charter refresh: the Definition of Done and the Contribution Norm as your team now works. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default; per-tool files should point at it rather than duplicate it, because two instruction files disagreeing with each other is worse than none.
+- [`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), carrying your Definition of Done and Contribution Norm, and the AI context file (`AGENTS.md`, `CLAUDE.md`, or your tool's equivalent), which points at the documents above rather than copying them, both from your [Team Charter](/assignments/team-charter/). [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default; per-tool files should point at it rather than duplicate it, because two instruction files disagreeing with each other is worse than none.
 
 **AI use:** AI may draft and maintain the living docs from your code and history, and may write the CI configuration; the checkpoint grades the repository, not who typed it. What fails the checkpoint is evidence that is not real: a green badge from a workflow that runs nothing, a requirements document describing features the code does not have, or a PR history dressed up after the fact.
 
@@ -60,30 +88,11 @@ What that looks like depends on the project:
 | FOSS | Upstream's CI passes on your pull request, and your fork documents the build-and-test command a maintainer expects you to have run before submitting |
 | Research | The pipeline runs end to end on a small sample dataset in CI, with at least one test asserting a known result rather than the pipeline merely exiting zero |
 
-## Term Gates
-
-Each checkpoint carries a gate that pulls the year's risk forward:
-
-| Checkpoint | Gate |
-|---|---|
-| Fall, week 5 | Rails stood up: repo, CI, board, living docs exist and are real, and the week 10 production target is written down and agreed with your partner, with the approval it needs in `docs/risks.md`; teams starting in an existing codebase also have their [inherited-codebase audit](#the-inherited-codebase-audit) written |
-| Fall, week 10 | **"Hello, production"**: a walking skeleton ([the thinnest end-to-end slice of your system that actually runs](https://wiki.c2.com/?WalkingSkeleton)) deployed to a production-like environment (or: first upstream PR submitted for FOSS; pipeline runs end to end on sample data for research), plus a Definition of Shipped v0 draft |
-| Winter, week 5 | Integration health: the skeleton has organs; CI meaningful; real-user session scheduled |
-| Winter, week 10 | **Release candidate**: installable/deployable by a stranger, plus evidence of at least one real-user session |
-
-The spring outcome bar depends on lead times that start now, and the gates make you start them. See the [Shipping guide](/guides/shipping/) for the path closest to your project.
-
-:::caution[Agree the production target in week 5, not week 9]
-"Hello, production" is the one gate your team may not be able to meet alone: it can need an account, a hosting decision, a security review, or a maintainer's willingness to look at your pull request, and every one of those is somebody else's calendar. So the week 5 checkpoint asks you to **record what "deployed" will mean for this project**, in `docs/design.md` under deployment: where the skeleton will run and who owns the account or infrastructure, in one paragraph agreed with your partner or mentor. The approval it needs, who is asking for it, and when they asked go in `docs/risks.md`.
-
-If the answer is "there will be no deployment", that's a fine answer, and it needs to be written down in week 5, so the instruction team can agree an equivalent gate while there is still time to hit it.
-:::
-
-### The Inherited-Codebase Audit
+## The Inherited-Codebase Audit
 
 Some teams don't start from scratch. Three origins, one situation: a predecessor capstone team's repository (read its `docs/risks.md` first, with the [handoff document](/assignments/project-handoff/) and the forward-looking section of the predecessor's project retrospective, which your partner holds), a project partner's codebase (their conventions, CI, review process, and hosting bind you from day one, which is the [RFC](/assignments/rfc/) page's "your partner already decided" case), or an upstream open-source project (their [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors), review culture, and release cadence bind you). In all three, someone else's decisions, tests, debt, and review process are yours before you write a line.
 
-Audit what you inherited in fall weeks 1 to 5. The fall week 5 gate checks it for every team that starts in an existing codebase, and it covers:
+Audit what you inherited in fall weeks 1 to 5. [Repo Checkpoint 1](#repo-checkpoint-1) checks it for every team that starts in an existing codebase, and it covers:
 
 - what runs and how, and what does not;
 - the state of the tests and the CI;
@@ -93,11 +102,13 @@ Audit what you inherited in fall weeks 1 to 5. The fall week 5 gate checks it fo
 - the upstream project's contribution rules, if there are any;
 - what you will change first.
 
-One page, submitted in the fall week 5 checkpoint PDF. What it finds that the code depends on goes into the repository where the next person looks: constraints in `docs/requirements.md`, conventions and pitfalls in the AI context file, and a decision to keep or replace something in an ADR. [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) is the exercise that produces it.
+One page, submitted in the Repo Checkpoint 1 PDF. What it finds that the code depends on goes into the repository where the next person looks: constraints in `docs/requirements.md`, conventions and pitfalls in the AI context file, and a decision to keep or replace something in an ADR. [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) is the exercise that produces it.
 
 ## What You Submit
 
-One PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, that names the repository URL and the full hash of the commit you want graded, then carries every living doc at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, each decision record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file. Two gate documents follow them in the same PDF: at fall week 5, the [inherited-codebase audit](#the-inherited-codebase-audit) if your team starts in an existing codebase, and at fall week 10, the [Definition of Shipped](/assignments/definition-of-shipped/) v0 draft.
+Each checkpoint carries a gate that pulls the year's risk forward. The spring outcome bar depends on lead times that start now, and the gates make you start them. See the [Shipping guide](/guides/shipping/) for the path closest to your project.
+
+Each checkpoint is one PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, that names the repository URL and the full hash of the commit you want graded. After the cover come the living docs at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, each decision record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file. Your checkpoint's section below says what else the cover links and the PDF carries, and gives the gate as items you can check against your own repository at the named commit, each with the one place its evidence goes.
 
 Push everything before you submit: the living docs in the PDF must match the named commit.
 
@@ -105,39 +116,108 @@ Push everything before you submit: the living docs in the PDF must match the nam
 If your partner rules out read access for the instruction team, the checkpoint is a 15-minute screen-shared walkthrough instead of an asynchronous review, in a slot your team and your TA schedule in the checkpoint week, separate from your sprint demo. A designated student drives; the TA follows the same checklist against the repository at the named commit, in a fixed order (quickstart, CI, docs spot-check, risk register, PR list), and retains nothing beyond the PDF. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits it; its living docs match the commit apart from what you redacted, and a redacted PR list and CI screenshots can support it. If your partner permits no copy, even sanitized, the PDF carries only the cover, the URL, and the hash, and the walkthrough stands in for the documents. The criteria and points are the same as for an asynchronous review. If even a walkthrough isn't possible, contact the instruction team.
 :::
 
+### Repo Checkpoint 1
+
+Fall, week 5. The gate: your CI, board, and living docs are in place, and the week 10 production target is agreed with your partner. The cover also links the CI run and the board. After the living docs, the PDF carries the inherited-codebase audit if your team starts in an existing codebase.
+
+| Gate item | Met when, at the named commit | Evidence |
+|---|---|---|
+| CI | Your CI, in the form [What CI Must Do](#what-ci-must-do) gives for your project, ran on the named commit and passed | A link on the cover to that run |
+| Board | Every item in the current sprint has an owner and a status | A link on the cover to the board |
+| Living docs | Each living doc exists and describes your project, with no template placeholder left in it | The documents in the PDF |
+| Production target | One paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) will run in week 10, who owns the account or infrastructure, and who agreed it on your partner's side, or your mentor | `docs/design.md`, its deployment section |
+| The target's approval | An entry names the approval the target needs, who is asking for it, and when they asked | `docs/risks.md` |
+| Inherited-codebase audit, if you start in an existing codebase | One page covering everything [the audit](#the-inherited-codebase-audit) lists | A document in the PDF, after the living docs |
+
+:::caution[Agree the production target in week 5, not week 9]
+"Hello, production" at [Repo Checkpoint 2](#repo-checkpoint-2) is the one gate your team may not be able to meet alone: it can need an account, a hosting decision, a security review, or a maintainer's willingness to look at your pull request, and every one of those is somebody else's calendar. So this checkpoint asks for the target and its approval now, while there is time to chase them.
+
+If the answer is "there will be no deployment", that's a fine answer, and it goes in the same paragraph of `docs/design.md` in week 5, so the instruction team can agree an equivalent gate while there is still time to hit it.
+:::
+
+### Repo Checkpoint 2
+
+Fall, week 10. The gate is "hello, production": a [walking skeleton](https://wiki.c2.com/?WalkingSkeleton), the thinnest end-to-end slice of your system that actually runs, deployed where Repo Checkpoint 1 recorded, plus a Definition of Shipped v0 draft. The cover also links the deployment. After the living docs, the PDF carries the [Definition of Shipped](/assignments/definition-of-shipped/) v0 draft.
+
+| Gate item | Met when, at the named commit | Evidence |
+|---|---|---|
+| Walking skeleton deployed | The skeleton built from the named commit runs where `docs/design.md` says it will, in the shape the next table gives for your project | A link on the cover, to what the next table names |
+| Definition of Shipped v0 | A draft of every item the Definition of Shipped asks for, whether or not your partner has agreed it yet | A document in the PDF, after the living docs |
+
+| If your project is | Deployed means | The cover links |
+|---|---|---|
+| A web app or a hosted service | The skeleton serves requests in the production target | Its URL |
+| A mobile app, game, desktop application, or firmware | A build of the skeleton installs from the channel `docs/design.md` names (a store test track, a release page, a device image) on a machine or device outside the team's own | The build's page on that channel |
+| FOSS | Your first pull request to the upstream project is submitted | The pull request |
+| Research | The pipeline runs end to end on sample data in CI | That CI run |
+| Without a deployment, by agreement at Repo Checkpoint 1 | The equivalent gate `docs/design.md` records | The evidence that gate names |
+
+### Repo Checkpoint 3
+
+Winter, week 5. The gate is integration health: the stories planned for this term run on real components, your CI tests them, and a session with a real user is scheduled. The cover also links the CI run. `CONTRIBUTING.md` in the PDF shows the winter charter refresh: the Definition of Done and the Contribution Norm as your team now works.
+
+| Gate item | Met when, at the named commit | Evidence |
+|---|---|---|
+| Integration | The stories `docs/requirements.md` marks for this term run end to end, against real components rather than stubs | `docs/requirements.md`, where each marked story says how to run it: the steps or the test |
+| CI | The run on the named commit ran your tests and passed, and at least one test covers a story marked for this term | A link on the cover to that run |
+| Real-user session scheduled | An entry gives the session's week, the participant's role (not their name), and who confirmed the session | `docs/risks.md`, as an external prerequisite |
+
+### Repo Checkpoint 4
+
+Winter, week 10. The gate is a release candidate: someone outside the team can install or deploy it, and at least one session with a real user has run. The cover also links the release candidate. After the living docs, the PDF carries your real-user session notes.
+
+| Gate item | Met when, at the named commit | Evidence |
+|---|---|---|
+| Release candidate | A release built from the named commit (a tagged version, a store build, or a release page) installs or deploys for someone outside the team, a grader included, using only `README.md` | A link on the cover to the release |
+| Real-user session | Notes from at least one session: the participant's role (not their name), what they tried, what went wrong or confused them, and the issue or change each finding produced | A document in the PDF, after the living docs |
+
 ## Rubric
 
-<RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-rubric.csv" />
-
-Each criterion has one thing graders check first, so you can check it yourself:
+The four checkpoints share every criterion but Term gate, which grades each checkpoint's own gate. Each criterion has one thing graders check first, so you can check it yourself:
 
 - **Living docs**: one recent feature, compared against `docs/design.md` in the PDF, and one document compared against the named commit. If the doc describes a system that no longer exists, or the PDF is not the commit, this criterion is where it shows.
-- **Term gate**: met or not met, judged against the [Term Gates](#term-gates) table and nothing else. For a team starting in an existing codebase, the fall week 5 gate includes the [inherited-codebase audit](#the-inherited-codebase-audit), present and covering everything listed there.
+- **Term gate**: met or not met, judged against the gate table for this checkpoint under [What You Submit](#what-you-submit) and nothing else.
 - **Build health**: the safety net is judged relative to how your team works, not against a fixed tool list. A team that delegates heavily to AI tools needs tighter automated gates than a team writing most code by hand, and neither approach is penalized: what is graded is whether the safety net catches what your way of working lets through. Gates belong on the changes that are expensive to undo (schema, authentication, deployment, migrations), not spread uniformly. A team with no CI that hand-merges agent output to production fails this regardless of whether anything has broken yet.
 - **Decision and risk hygiene**: does the risk register have owners and a ranking, and is there exactly one of it?
 - **Contribution traceability**: this grades whether the infrastructure for attribution exists, not whether every student contributed. Individual non-contribution is handled by the [individual contribution](/assignments/sprint-notes/#sprint-notes-n-individual-contribution) and never double-counted here.
 
 What "a history a maintainer could inherit" means is spelled out in the [git and GitHub guide](/guides/git-and-github/#a-history-a-maintainer-could-inherit); the checkpoint checks the five items listed there.
 
+### Repo Checkpoint 1
+
+<RubricTable csv={rubric1Csv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-1-rubric.csv" />
+
+### Repo Checkpoint 2
+
+<RubricTable csv={rubric2Csv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-2-rubric.csv" />
+
+### Repo Checkpoint 3
+
+<RubricTable csv={rubric3Csv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-3-rubric.csv" />
+
+### Repo Checkpoint 4
+
+<RubricTable csv={rubric4Csv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-4-rubric.csv" />
+
 ## Activities That Prepare This
 
-Checkpoints happen four times across fall and winter, and each gate needs different preparation, so the recommendations are grouped by gate rather than offered as one list.
+Checkpoints happen four times across fall and winter, and each gate needs different preparation, so the recommendations are grouped by checkpoint rather than offered as one list.
 
-**Fall week 5, rails stood up:** [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the inherited-codebase audit if you start in someone else's code; [Describe your Architecture](/activities/technical-design/#describe-your-architecture) and [User Story Mapping](/activities/requirements/#user-story-mapping) for the living docs; [Kanban Board Setup](/activities/team-and-workflow/#kanban-board-setup) and [Definition of Done](/activities/team-and-workflow/#definition-of-done) once, for the gate and build health; [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) for the safety-net half; [Risk Management Plan](/activities/planning-and-risk/#risk-management-plan) for the first entries in the risk register.
+**Repo Checkpoint 1, fall week 5:** [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the inherited-codebase audit if you start in someone else's code; [Describe your Architecture](/activities/technical-design/#describe-your-architecture) and [User Story Mapping](/activities/requirements/#user-story-mapping) for the living docs; [Kanban Board Setup](/activities/team-and-workflow/#kanban-board-setup) and [Definition of Done](/activities/team-and-workflow/#definition-of-done) once, for the gate and build health; [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) for the safety-net half; [Risk Management Plan](/activities/planning-and-risk/#risk-management-plan) for the first entries in the risk register.
 
-**Fall week 10, "hello, production":** [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan), [Plan Prototype](/activities/planning-and-risk/#plan-prototype), and [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for the gate; [Put a Browser Agent on Your Critical Flow](/activities/testing-release-and-handoff/#put-a-browser-agent-on-your-critical-flow) for build health if your product runs in a browser.
+**Repo Checkpoint 2, fall week 10, "hello, production":** [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan), [Plan Prototype](/activities/planning-and-risk/#plan-prototype), and [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for the gate; [Put a Browser Agent on Your Critical Flow](/activities/testing-release-and-handoff/#put-a-browser-agent-on-your-critical-flow) for build health if your product runs in a browser.
 
-**Winter week 5, integration health:** [Test Plan](/activities/testing-release-and-handoff/#test-plan) for build health, and [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci) too if your product runs in a browser; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the scheduled real-user session.
+**Repo Checkpoint 3, winter week 5, integration health:** [Test Plan](/activities/testing-release-and-handoff/#test-plan) for build health, and [Wire an Accessibility Audit Into CI](/activities/interaction-design/#wire-an-accessibility-audit-into-ci) too if your product runs in a browser; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the scheduled real-user session.
 
-**Winter week 10, release candidate:** [Run an Acceptance Pass](/activities/testing-release-and-handoff/#run-an-acceptance-pass) for the real-user evidence, and [Test with an Assistive Technology User](/activities/interaction-design/#test-with-an-assistive-technology-user) too if your product has a user interface; [Describe your API Reference](/activities/testing-release-and-handoff/#describe-your-api-reference) for the living docs if other code or people build on your product; [Fishbone Diagram](/activities/planning-and-risk/#fishbone-diagram) for risk hygiene.
+**Repo Checkpoint 4, winter week 10, release candidate:** [Run an Acceptance Pass](/activities/testing-release-and-handoff/#run-an-acceptance-pass) for the real-user evidence, and [Test with an Assistive Technology User](/activities/interaction-design/#test-with-an-assistive-technology-user) too if your product has a user interface; [Describe your API Reference](/activities/testing-release-and-handoff/#describe-your-api-reference) for the living docs if other code or people build on your product; [Fishbone Diagram](/activities/planning-and-risk/#fishbone-diagram) for risk hygiene.
 
 **Examples:** the gate lists above apply to everyone, except where an entry names a condition; these are the ones a project like yours usually needs.
 
 | If your project is | Activities |
 |---|---|
-| FOSS | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the inherited-codebase audit the fall week 5 gate checks, and to learn the upstream review culture while the stakes are low; [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for upstream conventions |
+| FOSS | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the inherited-codebase audit Repo Checkpoint 1 checks, and to learn the upstream review culture while the stakes are low; [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for upstream conventions |
 | Research | [Define Your Research Questions](/activities/research-methods/#define-your-research-questions) and [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) in fall weeks 1 to 2; [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline) before winter week 5; [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Keep an Experiment Log](/activities/research-methods/#keep-an-experiment-log) for winter week 10 |
-| Consultancy | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) when you start in the partner's codebase, for the audit the fall week 5 gate checks; [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) for the partner's IT and security review, which runs on the partner's schedule rather than yours; [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping); [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan) for the staging instance in the partner's environment |
-| New Product or Game | [Lean Canvas](/activities/requirements/#lean-canvas) and [Hypothesis Testing](/activities/requirements/#hypothesis-testing) in fall; [Plan Prototype](/activities/planning-and-risk/#plan-prototype) for the week 10 gate; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the winter real-user gate |
+| Consultancy | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) when you start in the partner's codebase, for the audit Repo Checkpoint 1 checks; [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) for the partner's IT and security review, which runs on the partner's schedule rather than yours; [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping); [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan) for the staging instance in the partner's environment |
+| New Product or Game | [Lean Canvas](/activities/requirements/#lean-canvas) and [Hypothesis Testing](/activities/requirements/#hypothesis-testing) in fall; [Plan Prototype](/activities/planning-and-risk/#plan-prototype) for Repo Checkpoint 2; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the real-user gates at Repo Checkpoints 3 and 4 |
 
 Browse [Testing, Release, and Handoff](/activities/testing-release-and-handoff/) and [Planning and Risk](/activities/planning-and-risk/) when these run out.

@@ -20,6 +20,15 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Canvas Changes: One Rubric per Repo Checkpoint (#474)
+
+The four repo checkpoints are now four entries with a rubric each, numbered 1 to 4 across the year as the sprint notes are. Fall is unchanged: Repo Checkpoint 1 and 2 keep their names, points, weights, and due weeks.
+
+- `repo-checkpoint/repo-checkpoint-rubric.csv` is renamed `repo-checkpoint/repo-checkpoint-1-rubric.csv`, its content byte-identical, Rubric Name still "Repo Checkpoint". Repo Checkpoint 1 keeps the rubric already attached; nothing to re-import for it.
+- Import `repo-checkpoint/repo-checkpoint-2-rubric.csv` before fall week 10, in place of the shared rubric on Repo Checkpoint 2, and `repo-checkpoint/repo-checkpoint-3-rubric.csv` and `repo-checkpoint/repo-checkpoint-4-rubric.csv` before winter, attaching each to the entry of the same number. Their Rubric Names are "Repo Checkpoint 2" to "Repo Checkpoint 4". Each is a copy of the first with its own Term gate bands; every other criterion, the points, and the tags are unchanged.
+- In CS 462 rename Repo Checkpoint 1 as **Repo Checkpoint 3** and Repo Checkpoint 2 as **Repo Checkpoint 4**. Points, weights, and due weeks are unchanged.
+- Re-paste all four bodies from the paste kit (each now carries only its own submission list and gate), and the CS 462 syllabus, whose Team Deliverables line names Repo Checkpoints 3 and 4. Re-paste the fall Introduction Email, Term Startup, Demo Day Registration, and Demo Day Presentation bodies too: their links into the checkpoint page now point at Repo Checkpoint 1 or 2 instead of the removed gate table.
+
 ## Re-paste Required: Fall Workshop 1 Story Map Template (#466)
 
 No rubric changes. Re-paste the fall Workshop 1 (User Story Mapping) body: its complete submission now names at least four backbone columns and one complete walking-skeleton row, the backbone type with its reason, and the list of questions for the project partner, and a new paragraph says a project with no user journey maps its pipeline stages or research chain in the same template and points research teams to Define Your Research Questions.
@@ -446,12 +455,12 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 1-3 | Workshop Activities (3 items, complete/incomplete) |
 | 3 | Definition of Shipped (v1, partner-agreed) |
 | 4 | Sprint Note 6; RFC draft |
-| 5 | Repo Checkpoint 1 (integration health); RFC peer review; Demo Day session 3 |
+| 5 | Repo Checkpoint 3 (integration health); RFC peer review; Demo Day session 3 |
 | 6 | Sprint Note 7 |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 8; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
-| 10 | Sprint Note 9; Repo Checkpoint 2 (release candidate gate); Demo Day session 4 |
+| 10 | Sprint Note 9; Repo Checkpoint 4 (release candidate gate); Demo Day session 4 |
 
 ### CS 463 (Spring Term)
 

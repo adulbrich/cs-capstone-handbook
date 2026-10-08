@@ -185,7 +185,7 @@ export function summaryRows(canvas) {
   });
 }
 
-// "Sprint Notes 1 to 12", "Repo Checkpoint 1 and 2", "Workshop 1 to 5".
+// "Sprint Notes 1 to 12", "Workshop 1 to 5".
 function familyName(family, rows) {
   const numbers = [
     ...new Set(rows.flatMap((r) => r.names.map((_, i) => r.first + i))),

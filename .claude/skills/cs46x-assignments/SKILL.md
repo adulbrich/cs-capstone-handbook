@@ -282,12 +282,13 @@ required; `validate-outcomes.mjs` checks the order.
 
 Where a page's Canvas entries are graded differently (the RFC's draft and
 final, a sprint's team note and individual contribution, the partner's pulse
-and survey), each gets one `###` under `## Rubric`, named exactly as the
+and survey, the four repo checkpoints' gates), each gets one `###` under
+`## Rubric`, named exactly as the
 `canvas` family with `{n}` written as `N` ("Sprint Notes N"). Where they also
 differ in what is handed in, each gets the same `###` under `## What You
 Submit`, with any procedure of its own (the RFC's peer review) as `####`
-inside it. Where every entry shares one rubric (Repo Checkpoints, the
-workshops, Peer Evaluations), there are no entry headings.
+inside it. Where every entry shares one rubric (the workshops, Peer
+Evaluations), there are no entry headings.
 
 The Canvas export gives each entry the `###` sections named for it and drops
 the others, so a misspelled entry heading puts the wrong text in Canvas. The
