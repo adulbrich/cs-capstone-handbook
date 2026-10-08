@@ -73,7 +73,7 @@ function paragraphs(t) {
   }
   p.push({ contact: true });
   p.push(
-    `Please send your introduction email to your ${role} as soon as you can. It should come from the team, not from one student: write it together and copy every teammate. The Term Startup assignment provides a template; adapt it to your team and your project rather than sending it as is. Your first meeting has to fit their calendar, so the earlier you ask, the better. By the end of week 2, your team needs to work through this list with your ${role}: ${WEEK2_LIST}`
+    `If you are not already in touch, please send your introduction email to your ${role} as soon as you can. It should come from the team, not from one student: write it together and copy every teammate. The Term Startup assignment provides a template; adapt it to your team and your project rather than sending it as is. Your first meeting has to fit their calendar, so the earlier you ask, the better. By the end of week 2, your team needs to work through this list with your ${role}: ${WEEK2_LIST}`
   );
   if (t.otherTeams.length) {
     p.push(
