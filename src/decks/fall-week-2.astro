@@ -1,15 +1,19 @@
 ---
 // Fall week 2, Workshop 1: User Story Mapping (#466, restructured in #485).
 // A 50-minute session in four parts, named with their minute marks on the
-// agenda slide: user stories and story maps (minute 1), three worked
-// examples (minute 4), the same proposal mapped by an AI tool (minute 11),
-// and the teams' own maps (minute 15), with two volunteer teams showing
-// their maps at minute 30 and the wrap at minute 45. The slides students
-// act on (Part 4) explain themselves to someone who missed the talk. The talk slides' target times sum to 15:00, and each part's
-// start on the agenda is the running total of the notes before it. Each
-// link sits on the slide that uses it. The AI demo output was pre-run
-// before class; the side-by-side slide shortens it, and its notes hold it
-// in full. Served at /decks/fall-week-2/.
+// agenda slide: user stories and story maps (minute 1), ephira mapped by
+// hand and then by an AI tool (minute 4), two more examples (minute 11),
+// and the teams' own maps (minute 15), with an optional show by two
+// volunteer teams at minute 30 and the wrap at minute 45. The slides
+// students act on (Part 4) explain themselves to someone who missed the
+// talk. The talk slides' target times sum to 15:00, and each part's start
+// on the agenda is the running total of the notes before it. Work time is
+// 30:00 whether or not the optional show runs. Each link sits on the slide
+// that uses it. The AI demo output was pre-run before class; the
+// side-by-side slide shortens it, and its notes hold it in full. Served at
+// /decks/fall-week-2/.
+import { Image } from "astro:assets";
+import lumiLabPhoto from "../assets/decks/lumilab.webp";
 import Notes from "../components/deck/Notes.astro";
 import Slide from "../components/deck/Slide.astro";
 import StatementSlide from "../components/deck/StatementSlide.astro";
@@ -278,20 +282,21 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
 <Slide kicker="Agenda" title="Today, in four parts">
   <ol class="agenda">
     <li><span class="minute">Minute 1</span>User stories and story maps</li>
-    <li><span class="minute">Minute 4</span>Three examples: ephira, LumiLab, TaxonBodyMassML</li>
-    <li><span class="minute">Minute 11</span>The same proposal, mapped by AI</li>
+    <li><span class="minute">Minute 4</span>One proposal, mapped twice: ephira by hand, then by AI</li>
+    <li><span class="minute">Minute 11</span>Two more examples: LumiLab, TaxonBodyMassML</li>
     <li>
-      <span class="minute">Minute 15</span>Your turn: map in teams; two teams
-      show their maps at minute 30; the wrap at minute 45
+      <span class="minute">Minute 15</span>Your turn: map in teams; at minute 30,
+      two teams show their maps (optional); the wrap at minute 45
     </li>
   </ol>
   <Notes time="0:40" cue="Point at minute 15: that is when the laptops open.">
     <p>
       Fifteen minutes of talk, thirty of mapping, five of wrap. The three
       examples use three different backbones, so every team should see one
-      that looks like its own project. The AI part maps one of those
-      examples again, with a tool, so the room can compare the two maps row
-      by row.
+      that looks like its own project. The AI tool maps the first example
+      again right after it, so the room compares two maps of a project it
+      has just seen, row by row. The show at minute 30 is optional; if it
+      is skipped, teams keep mapping.
     </p>
   </Notes>
 </Slide>
@@ -355,13 +360,16 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
           ["Choose a pickup time", "Text me when ready"],
         ],
       },
+      { name: "Release 2", stories: [undefined, undefined, undefined, "? Rate the meal"] },
     ]}
     callouts={[
       { at: "backbone", term: "Backbone: the top row", text: "what people do, in order" },
       { at: "row", row: 0, term: "Walking skeleton", text: "the first row: one thin path through every column" },
       { at: "line", row: 1, term: "Release line", text: "everything above it ships first" },
       { at: "card", row: 1, column: 3, item: 1, term: "A card", text: "one story, in a few words" },
+      { at: "card", row: 2, column: 3, term: "A ? card", text: "a guess nobody has checked with the partner yet" },
     ]}
+    legend={false}
     stepped
   />
   <p class="caption caption-tight">
@@ -379,8 +387,9 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
     <p>
       His complaint about a flat backlog: a list in build order can't tell
       anyone what the system does, or show what's missing. A map can, because
-      you can walk it left to right with a user. One convention for today: a
-      card nobody has checked with the partner starts with a question mark.
+      you can walk it left to right with a user. The last label is this
+      course's convention, not Patton's: a card nobody has checked with the
+      partner starts with a question mark, drawn in amber.
     </p>
   </Notes>
 </Slide>
@@ -423,12 +432,13 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </Slide>
 
-<StatementSlide kicker="Part 2 of 4: minute 4" source="ephira, a user journey; LumiLab, a pipeline; TaxonBodyMassML, a research chain">
-  Three examples
-  <Notes time="0:10" cue="One backbone type each, in the order of the last slide.">
+<StatementSlide kicker="Part 2 of 4: minute 4" source="ephira, a user journey: mapped by hand, then by an AI tool">
+  One proposal, mapped twice
+  <Notes time="0:10" cue="The first of three examples, one per backbone type: a user journey.">
     <p>
-      Each example opens with the project, then its map, then what the team
-      did in its year.
+      The example opens with the project, then its map, then what the team
+      did in its year. Then the same proposal goes to an AI tool, and the
+      two maps are compared before the other two examples.
     </p>
   </Notes>
 </StatementSlide>
@@ -550,32 +560,231 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </TwoColumnSlide>
 
-<Slide kicker="Example 2: LumiLab, a pipeline" title="Measuring glare from ordinary photos">
-  <ul>
-    <li>
-      <strong>Glare:</strong> light bright enough to make seeing
-      uncomfortable. Measuring it takes a luminance camera, which few can
-      afford
-    </li>
-    <li class="fragment">
-      <strong>What goes in:</strong> the same scene photographed several
-      times, dark to bright, with an ordinary camera, plus that camera's
-      calibration files
-    </li>
-    <li class="fragment">
-      <strong>What comes out:</strong> a luminance map, an image where every
-      pixel holds how bright that spot was, in measured units
-    </li>
-    <li class="fragment">
-      <strong>Who uses it:</strong> lighting designers and daylighting
-      researchers
+<StatementSlide kicker="Example 1 again: ephira, mapped by AI" source="ephira again: the proposal alone, given to an AI tool">
+  The same proposal, mapped by AI
+  <Notes time="0:10" cue="Ask the room to guess what the tool gets wrong.">
+    <p>
+      Same proposal as the map the room just saw, without the repository.
+      The comparison shows what a map built from the proposal alone misses.
+    </p>
+  </Notes>
+</StatementSlide>
+
+<Slide kicker="The prompt" title="One prompt, the proposal, no repository">
+  <pre class="prompt">Here is a software project proposal, as it was advertised to students:
+
+[ephira's project page, as advertised]
+
+Draft a user story map for the team's first release. Give a backbone of
+four to seven activities in the order they happen, then a walking-skeleton
+row with one story under every activity, then a Release 1 row and an
+out-of-scope row. Keep each story under eight words.</pre>
+  <p class="caption">
+    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+  </p>
+  <Notes time="0:30" cue="Read the last two sentences aloud.">
+    <p>
+      Tool and model, named here only: Sonnet 5.5, run as a Claude Code
+      sub-agent with its tools off, so it could not open the repository the
+      page links. It was pre-run before class with ephira's advertised
+      project page (title through preferred qualifications, contact left
+      out) in place of the bracket. The next slide sets its output beside
+      the human map; the full output is in that slide's notes.
+    </p>
+    <p>
+      The prompt does not ask the tool to mark its assumptions, on purpose:
+      the point is to see what it states as fact.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="ephira: the human map and the AI tool's" title="Row by row, both maps have mistakes" wide>
+  <span class="fragment marks-on" data-fragment-index="0" aria-hidden="true"></span>
+  <table class="compare">
+    <colgroup>
+      <col class="compare-activity" />
+      <col />
+      <col />
+      <col class="compare-mark" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">Activity</th>
+        <th scope="col">Human</th>
+        <th scope="col">AI</th>
+        <th scope="col">Mark</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        comparison.map((row) => (
+          <tr>
+            <th scope="row">{row.activity}</th>
+            <td>{flagged(row.human).map((part) => (part === "?" ? <span class="q">?</span> : part))}</td>
+            <td>{row.ai}</td>
+            <td>
+              <span class:list={["mark", `mark-${row.mark}`]}>{marks[row.mark].label}</span>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <ul class="legend">
+    {
+      legend.map((key) => (
+        <li>
+          <span class:list={["mark", `mark-${key}`]}>{marks[key].label}</span>
+          {marks[key].means}
+        </li>
+      ))
+    }
+    <li class="legend-link">
+      Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a>
     </li>
   </ul>
+  <Notes time="2:15" cue="Read the Human and AI cells first; press the arrow for the marks after the room has guessed.">
+    <p>
+      Each row is one activity. Human is the map from example 1, "Had:"
+      meaning the inherited skeleton. AI is the tool's map, shortened to fit;
+      the full output is below. The first arrow press shows the marks.
+    </p>
+    <p>
+      The tool re-planned what the app already did. The page says the
+      project "involves enhancing Ephira's functionality", yet its skeleton
+      and much of its Release 1 plan the passcode and biometric lock,
+      logging a day, the calendar, the filter, and a first prediction. Its
+      fertile window appears nowhere in the proposal; the team did later
+      build an ovulation phase card labeled "Peak fertility", close to it.
+      It cut pregnancy tracking to a design doc and stated that as settled,
+      where the proposal says "Start design and implementation". It also put
+      shareable doctor reports out of scope, when the inherited export
+      already made a PDF for sharing.
+    </p>
+    <p>
+      Two rows carry one mark but not the whole story. Data out is marked
+      Agree, yet the tool's walking skeleton, "Export and re-import an
+      encrypted file", also re-plans the plain export the app already had:
+      half of that card was done. Pregnancy is marked AI misreads, yet the
+      human map demoted it too, to a caption line instead of a card.
+    </p>
+    <p>
+      The human map has its own misses: the store update, an advertised
+      deliverable, is a caption line instead of a column, and both maps
+      invented cloud sync to rule it out. Where the proposal names the work
+      (reminders, backups, the stores), the tool's cards are more specific
+      and easier to test than the human ones.
+    </p>
+    <p>The tool's output as returned:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>Walking skeleton</th>
+          <th>Release 1</th>
+          <th>Out of scope</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          aiOutput.map((column) => (
+            <tr>
+              <td>{column.activity}</td>
+              <td>{column.skeleton}</td>
+              <td>{column.release1.join("; ")}</td>
+              <td>{column.outOfScope}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Notes>
+</Slide>
+
+<Slide kicker="ephira: what the comparison shows" title="Three takeaways">
+  <ol>
+    <li>Without the repository, the AI planned to rebuild an app already in both stores</li>
+    <li class="fragment">
+      Where the proposal names the work, the AI's cards are more specific and
+      easier to test
+    </li>
+    <li class="fragment">
+      The human map has misses too: the store update is a caption, not a
+      column
+    </li>
+  </ol>
+  <p class="deck-small after-list fragment">
+    Use a tool's map as a draft full of unflagged question marks: check each
+    card against the code, then with your partner.
+  </p>
+  <p class="caption">
+    Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a><br />
+    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+  </p>
+  <Notes time="1:20" cue="Ask: which of your own cards came from the proposal alone?">
+    <p>
+      The tool's map looks finished, which is the danger. It had the
+      proposal and nothing else, the same as a team that never opens the
+      repository. A human map isn't safe by default either: it drops what
+      doesn't fit its columns.
+    </p>
+    <p>
+      The instruction team recommends drafting with a tool if it helps,
+      because it's fast and it reads the proposal closely, then marking
+      every card you haven't checked with a question mark before the partner
+      meeting.
+    </p>
+  </Notes>
+</Slide>
+
+<StatementSlide kicker="Part 3 of 4: minute 11" source="LumiLab, a pipeline; TaxonBodyMassML, a research chain">
+  Two more examples
+  <Notes time="0:10" cue="The other two backbone types from Part 1, in its order.">
+    <p>
+      Same shape as ephira: the project, then its map, then what the team
+      did in its year.
+    </p>
+  </Notes>
+</StatementSlide>
+
+<Slide kicker="Example 2: LumiLab, a pipeline" title="Measuring glare from ordinary photos">
+  <div class="with-photo">
+    <ul>
+      <li>
+        <strong>Glare:</strong> light bright enough to make seeing
+        uncomfortable. Measuring it takes a luminance camera, which few can
+        afford
+      </li>
+      <li class="fragment">
+        <strong>What goes in:</strong> the same scene photographed several
+        times, dark to bright, with an ordinary camera, plus that camera's
+        calibration files
+      </li>
+      <li class="fragment">
+        <strong>What comes out:</strong> a luminance map, an image where every
+        pixel holds how bright that spot was, in measured units
+      </li>
+      <li class="fragment">
+        <strong>Who uses it:</strong> lighting designers and daylighting
+        researchers
+      </li>
+    </ul>
+    <Image
+      src={lumiLabPhoto}
+      alt="Two fisheye photos of office desks by a window, each beside its luminance map in false color, with the windows in yellow"
+      width={400}
+    />
+  </div>
   <p class="caption">
     Repository: <a href={lumiLab.repo.href}>{lumiLab.repo.text}</a><br />
     Project page: <a href={lumiLab.page.href}>{lumiLab.page.text}</a>
   </p>
   <Notes time="0:45" cue="Ask: is there a user clicking through anything here?">
+    <p>
+      The picture is from the project page: two fisheye photos, each beside
+      the luminance map made from its set, drawn in false color so the
+      brightest spots, the windows, show yellow.
+    </p>
     <p>
       Luminance is how bright a surface looks, measured in candela per
       square meter. The technique is high dynamic range imaging: several
@@ -599,92 +808,89 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </Slide>
 
-<Slide kicker="Example 2: LumiLab, the map" title="One set of photos on its way to a luminance map" wide>
+<Slide kicker="Example 2: LumiLab, the map" title="The tutorial's steps, first as a script, then as an app" wide>
   <StoryMap
     backbone={[
-      "Pick the photos",
-      "Merge into one image",
+      "Select exposures",
+      "Merge, nullify exposure",
       "Crop and resize",
-      "Correct the lens",
-      "Calibrate the brightness",
-      "Save the map",
+      "Projection, vignetting, ND filter",
+      "Scale to the meter",
+      "Edit the header",
+      "Check validity",
     ]}
     releases={[
       {
         name: "Walking skeleton",
+        goal: "one script, one photo set",
         stories: [
-          "Choose photos in the app",
-          "Merge with one camera's settings",
-          "Fixed numbers for one lens",
-          "Fisheye and dark-edge fixes",
-          "Pass it through unchanged",
-          "Write one .hdr file",
+          "Keep frames by pixel count",
+          ["Merge with hdrgen", "Nullify exposure"],
+          "Crop to the lens, shrink",
+          ["Fisheye file", "Vignetting file", "ND filter file"],
+          "One fixed factor",
+          "Write the view line",
+          "Lux against the meter",
         ],
       },
       {
         name: "Release 1",
+        goal: "the app over the script",
         stories: [
-          undefined,
-          "Load any camera's response file",
-          "Type the numbers in the app",
-          "Load the lens calibration files",
-          ["Correct for a lens filter", "? Scale to a meter reading"],
-          "Record the settings in the file",
+          "Pick photos or a folder",
+          "Upload the response file",
+          "Type crop and size numbers",
+          "Upload the .cal files",
+          "? Type a meter reading",
+          "Type the viewing angles",
+          ["Run all", "View the map"],
         ],
       },
     ]}
+    legend={false}
   />
-  <p class="caption">
-    Inferred from the <a href={lumiLab.page.href}>project page</a> and the{" "}
-    <a href={lumiLab.repo.href}>repository</a>, not the team's own map.
+  <p class="caption caption-tight">
+    Columns: steps 2 to 11 of the tutorial's Table 3, in order; step 1 is
+    taking the photos
   </p>
-  <Notes time="0:45" cue="Point at Pass it through unchanged: a stub is still a story.">
+  <Notes time="0:55" cue="Read the skeleton row left to right: every step runs, all of it from one script.">
     <p>
-      The columns are the steps of the published technique, in order.
-      Merging also resets the exposure, so the image starts from a known
-      brightness. Correcting the lens means two fixes: undoing the fisheye's
-      distortion, and brightening the edges a lens darkens.
+      The backbone is the tutorial's own procedure, its Table 3, steps 2 to
+      11 in its order and close to its names; step 1, capturing the
+      exposures, happens at the camera. Seven columns is the most a slide
+      holds, so two columns group steps: merging with nullifying the
+      exposure value (steps 3 and 4), and the three corrections that each
+      apply one calibration file, projection, vignetting, and the neutral
+      density (ND) filter (steps 6 to 8). Inside those columns, each step
+      keeps its own card.
     </p>
     <p>
-      The walking skeleton runs one real set of photos through every column
-      with the settings fixed for one camera and lens, and lets the
-      calibration column pass the image through untouched. The amber card is
-      the open question: which reference reading the scale comes from is
-      the partner's call, not the team's.
-    </p>
-  </Notes>
-</Slide>
-
-<Slide kicker="Example 2: LumiLab, the walking skeleton" title="The whole path by week 9, then the rest">
-  <ol>
-    <li>Fall week 6: the app runs its first pipeline command</li>
-    <li class="fragment">Week 7: merge, crop, and resize each work, with fixed settings</li>
-    <li class="fragment">Week 8: the two lens fixes</li>
-    <li class="fragment">
-      Week 9: one button sends the chosen photos through six stages; every
-      other setting is still fixed in the code
-    </li>
-    <li class="fragment">
-      Week 10: the filter, calibration, and file-header stages, and a form
-      for the settings
-    </li>
-  </ol>
-  <p class="caption">
-    Repository history: <a href={lumiLab.repo.href}>{lumiLab.repo.text}</a>
-  </p>
-  <Notes time="0:45" cue="Ask: which rung would your project be on at the end of fall?">
-    <p>
-      From the commit history of the team's fall term, which rewrote the
-      app with a Rust back end. The week 9 commit wires the app's Generate
-      button to the whole pipeline: the user's own photos go in, and the
-      camera file, the crop and size numbers, and the folders are written
-      into the code. The history doesn't say whether that first run produced
-      a correct map; it does show every stage chained, in order.
+      The walking skeleton is a script that reproduces the paper on one
+      photo set, every step with fixed settings. The skeleton's cards are
+      the tutorial's: frames kept by its pixel-count rule, merged by hdrgen,
+      the exposure value nullified, cropped to the lens circle and shrunk,
+      corrected with one calibration file per correction, scaled by one
+      fixed calibration factor, the fisheye view written into the header,
+      and the result's vertical illuminance, in lux, checked against an
+      illuminance meter's reading. Scale to the meter is the tutorial's
+      photometric adjustment, renamed to fit the column; its meter is a
+      different one, a spot luminance meter. The repository once held such
+      a script: extra/ldr-to-hdr.sh ran steps 3
+      to 11 in order, though it skipped the selection and its last step only
+      checked that evalglare returned a number.
     </p>
     <p>
-      That is a walking skeleton: thin, hard-coded, and end to end. The
-      calibration stages and the form for the settings came after, on a path
-      that already ran.
+      Release 1 is the app's screens over those steps, from the
+      repository's README: pick the photos, upload the response and
+      calibration files, type the numbers, press one button, and view the
+      result in the built-in viewer. The viewer is not a tutorial step, so
+      it shares the last column. The amber card is the open question: the
+      tutorial adjusts photometry from a measured spot luminance or a
+      calibration factor, and the app asks for a calibration file; which
+      one to support is the partner's call. In the team's fall term, by
+      week 9, one button already sent the chosen photos through the whole
+      pipeline the app had then, with every other setting fixed in the
+      code.
     </p>
   </Notes>
 </Slide>
@@ -813,184 +1019,7 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </TwoColumnSlide>
 
-<StatementSlide kicker="Part 3 of 4: minute 11" source="ephira again: the proposal alone, given to an AI tool">
-  The same proposal, mapped by AI
-  <Notes time="0:10" cue="Ask the room to guess what the tool gets wrong.">
-    <p>
-      Same proposal as example 1, without the repository. The comparison
-      shows what a map built from the proposal alone misses.
-    </p>
-  </Notes>
-</StatementSlide>
-
-<Slide kicker="The prompt" title="One prompt, the proposal, no repository">
-  <pre class="prompt">Here is a software project proposal, as it was advertised to students:
-
-[ephira's project page, as advertised]
-
-Draft a user story map for the team's first release. Give a backbone of
-four to seven activities in the order they happen, then a walking-skeleton
-row with one story under every activity, then a Release 1 row and an
-out-of-scope row. Keep each story under eight words.</pre>
-  <p class="caption">
-    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
-  </p>
-  <Notes time="0:30" cue="Read the last two sentences aloud.">
-    <p>
-      Tool and model, named here only: Sonnet 5.5, run as a Claude Code
-      sub-agent with its tools off, so it could not open the repository the
-      page links. It was pre-run before class with ephira's advertised
-      project page (title through preferred qualifications, contact left
-      out) in place of the bracket. The next slide sets its output beside
-      the human map; the full output is in that slide's notes.
-    </p>
-    <p>
-      The prompt does not ask the tool to mark its assumptions, on purpose:
-      the point is to see what it states as fact.
-    </p>
-  </Notes>
-</Slide>
-
-<Slide kicker="ephira: the human map and the AI tool's" title="Row by row, both maps have mistakes" wide>
-  <span class="fragment marks-on" data-fragment-index="0" aria-hidden="true"></span>
-  <table class="compare">
-    <colgroup>
-      <col class="compare-activity" />
-      <col />
-      <col />
-      <col class="compare-mark" />
-    </colgroup>
-    <thead>
-      <tr>
-        <th scope="col">Activity</th>
-        <th scope="col">Human</th>
-        <th scope="col">AI</th>
-        <th scope="col">Mark</th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        comparison.map((row) => (
-          <tr>
-            <th scope="row">{row.activity}</th>
-            <td>{flagged(row.human).map((part) => (part === "?" ? <span class="q">?</span> : part))}</td>
-            <td>{row.ai}</td>
-            <td>
-              <span class:list={["mark", `mark-${row.mark}`]}>{marks[row.mark].label}</span>
-            </td>
-          </tr>
-        ))
-      }
-    </tbody>
-  </table>
-  <ul class="legend">
-    {
-      legend.map((key) => (
-        <li>
-          <span class:list={["mark", `mark-${key}`]}>{marks[key].label}</span>
-          {marks[key].means}
-        </li>
-      ))
-    }
-    <li class="legend-link">
-      Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a>
-    </li>
-  </ul>
-  <Notes time="2:00" cue="Read the Human and AI cells first; press the arrow for the marks after the room has guessed.">
-    <p>
-      Each row is one activity. Human is the map from example 1, "Had:"
-      meaning the inherited skeleton. AI is the tool's map, shortened to fit;
-      the full output is below. The first arrow press shows the marks.
-    </p>
-    <p>
-      The tool re-planned what the app already did. The page says the
-      project "involves enhancing Ephira's functionality", yet its skeleton
-      and much of its Release 1 plan the passcode and biometric lock,
-      logging a day, the calendar, the filter, and a first prediction. Its
-      fertile window appears nowhere in the proposal; the team did later
-      build an ovulation phase card labeled "Peak fertility", close to it.
-      It cut pregnancy tracking to a design doc and stated that as settled,
-      where the proposal says "Start design and implementation". It also put
-      shareable doctor reports out of scope, when the inherited export
-      already made a PDF for sharing.
-    </p>
-    <p>
-      Two rows carry one mark but not the whole story. Data out is marked
-      Agree, yet the tool's walking skeleton, "Export and re-import an
-      encrypted file", also re-plans the plain export the app already had:
-      half of that card was done. Pregnancy is marked AI misreads, yet the
-      human map demoted it too, to a caption line instead of a card.
-    </p>
-    <p>
-      The human map has its own misses: the store update, an advertised
-      deliverable, is a caption line instead of a column, and both maps
-      invented cloud sync to rule it out. Where the proposal names the work
-      (reminders, backups, the stores), the tool's cards are more specific
-      and easier to test than the human ones.
-    </p>
-    <p>The tool's output as returned:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Activity</th>
-          <th>Walking skeleton</th>
-          <th>Release 1</th>
-          <th>Out of scope</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          aiOutput.map((column) => (
-            <tr>
-              <td>{column.activity}</td>
-              <td>{column.skeleton}</td>
-              <td>{column.release1.join("; ")}</td>
-              <td>{column.outOfScope}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-  </Notes>
-</Slide>
-
-<Slide kicker="ephira: what the comparison shows" title="Three takeaways">
-  <ol>
-    <li>Without the repository, the AI planned to rebuild an app already in both stores</li>
-    <li class="fragment">
-      Where the proposal names the work, the AI's cards are more specific and
-      easier to test
-    </li>
-    <li class="fragment">
-      The human map has misses too: the store update is a caption, not a
-      column
-    </li>
-  </ol>
-  <p class="deck-small after-list fragment">
-    Use a tool's map as a draft full of unflagged question marks: check each
-    card against the code, then with your partner.
-  </p>
-  <p class="caption">
-    Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a><br />
-    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
-  </p>
-  <Notes time="1:10" cue="Ask: which of your own cards came from the proposal alone?">
-    <p>
-      The tool's map looks finished, which is the danger. It had the
-      proposal and nothing else, the same as a team that never opens the
-      repository. A human map isn't safe by default either: it drops what
-      doesn't fit its columns.
-    </p>
-    <p>
-      The instruction team recommends drafting with a tool if it helps,
-      because it's fast and it reads the proposal closely, then marking
-      every card you haven't checked with a question mark before the partner
-      meeting.
-    </p>
-  </Notes>
-</Slide>
-
-<StatementSlide kicker="Part 4 of 4: minute 15" source="Map in teams until minute 45; at minute 30, two teams show their maps">
+<StatementSlide kicker="Part 4 of 4: minute 15" source="Map in teams until minute 45; at minute 30, two teams may show their maps">
   Your turn
   <Notes time="0:10" cue="One laptop per team opens the template now.">
     <p>The steps on the next slide stay up while teams work.</p>
@@ -1021,7 +1050,7 @@ out-of-scope row. Keep each story under eight words.</pre>
     </li>
   </ol>
   <p class="caption">Template: <a href={templateUrl.href}>{template}</a></p>
-  <Notes time="15:00" cue="Minute 15 to 30. Walk the aisles; at minute 30, move to the next slide.">
+  <Notes time="15:00" cue="Minute 15 to 30. Walk the aisles; at minute 30, move to the next slide, or past it if the show is skipped.">
     <p>
       The in-class target is steps 1 to 5: the backbone, the
       walking-skeleton row, and the question marks. Release 1 can wait until
@@ -1036,7 +1065,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-<Slide kicker="Minute 30: two teams show their maps" title="Two volunteer teams show their top row">
+<Slide kicker="Optional, minute 30: two teams show their maps" title="Two volunteer teams show their top row">
   <ol class="steps" style="--steps: 3;">
     <li>
       <p>A team volunteers and puts its map on the big screen</p>
@@ -1052,7 +1081,13 @@ out-of-scope row. Keep each story under eight words.</pre>
     Two teams, two minutes each. If your partner asked you to keep the project
     confidential (an NDA), don't volunteer.
   </p>
-  <Notes time="5:00" cue="Minute 30 to 35. Then press right to put the check slide up.">
+  <Notes time="5:00" cue="Minute 30 to 35, if it runs. Then press right to put the check slide up.">
+    <p>
+      Optional. Skip it when no team volunteers or the room needs the time:
+      press right at minute 30, and teams keep mapping with the check slide
+      up from minute 30 to 45, fifteen minutes instead of ten. Work time is
+      thirty minutes either way.
+    </p>
     <p>
       Project the team's sheet from the lectern machine. Read the backbone
       left to right with the team, then check it the way the next slide
@@ -1066,7 +1101,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-<Slide kicker="Work time: minute 35 to 45" title="Check your map: steps people take, not screens" wide>
+<Slide kicker="Work time: until minute 45" title="Check your map: steps people take, not screens" wide>
   <p class="verdict verdict-yes">Like this</p>
   <StoryMap
     backbone={lunch.backbone}
@@ -1101,9 +1136,10 @@ out-of-scope row. Keep each story under eight words.</pre>
     second tab for every <code>?</code><br />
     Template: <a href={templateUrl.href}>{template}</a>
   </p>
-  <Notes time="10:00" cue="Minute 35 to 45. At minute 45, move to the wrap.">
+  <Notes time="10:00" cue="Minute 35 to 45, or 30 to 45 if the show was skipped. At minute 45, move to the wrap.">
     <p>
-      Both maps are the same made-up lunch app from Part 1. The top one
+      Ten minutes after the show; fifteen, from minute 30, if it was
+      skipped. Both maps are the same made-up lunch app from Part 1. The top one
       names what a person does; the bottom one names the screens and the
       parts of the code, and its skeleton stops at the database, so nothing
       runs end to end.
@@ -1221,6 +1257,22 @@ out-of-scope row. Keep each story under eight words.</pre>
 
   .reveal-list {
     font-size: 36px;
+  }
+
+  /* The LumiLab intro: the bullets, with the project's own picture small
+     beside them. */
+  .with-photo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .with-photo :global(img) {
+    display: block;
+    width: 400px;
+    height: auto;
+    border-radius: 12px;
   }
 
   .prompt {
