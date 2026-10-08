@@ -2,9 +2,9 @@
 // Fall week 0: the welcome and bidding session, the first time the class
 // meets. About thirty minutes of talk, then questions while bidding opens,
 // with the handbook QR code left up as the last slide. Served at
-// /decks/fall-week-0/. Year-specific facts (TAs, rooms, dates, the
-// multidisciplinary project list) stay in Canvas; a deck is projected, never
-// pasted into Canvas, so the "This term" slide may name it (#478). The grade
+// /decks/fall-week-0/. Year-specific facts (TAs, rooms, dates) stay in
+// Canvas; a deck is projected, never pasted into Canvas, so the "This term"
+// slide may name it (#478). The grade
 // and the sessions are rendered from the handbook pages that own them, and a
 // line credited to a page uses that page's words.
 import alexUlbrich from "../assets/decks/alex-ulbrich.jpg";
@@ -181,10 +181,9 @@ const handbook = new URL("/", Astro.site).href;
 
 <Slide kicker="This term" title="This year's details are in Canvas">
   <ul>
-    <li>Your team's TA, and how to reach them</li>
+    <li>TAs and their contact details</li>
     <li>Rooms, office hours, and meeting times</li>
     <li>The exact due date and time of each assignment</li>
-    <li>The multidisciplinary projects, and any project that may split into two teams</li>
   </ul>
   <Notes time="1:00" cue="Show where Canvas announcements appear before moving on.">
     <p>
@@ -215,12 +214,11 @@ const handbook = new URL("/", Astro.site).href;
     <li class="fragment">Expect to meet new people; they're your future colleagues</li>
     <li class="fragment">Joining an ECE or multidisciplinary (ENGR) team outright means enrolling in that section instead of this one</li>
   </ul>
-  <Notes time="1:30" cue="Name this year's multidisciplinary projects only if the announcement is out.">
+  <Notes time="1:30" cue="Ask who is weighing an ECE or ENGR project.">
     <p>
       Your team may still collaborate with a separate ECE capstone team on a
-      shared project without changing section. This year's multidisciplinary
-      list is in announcements. Asking a partner a question doesn't reserve a
-      spot.
+      shared project without changing section. Asking a partner a question
+      doesn't reserve a spot.
     </p>
   </Notes>
 </Slide>
