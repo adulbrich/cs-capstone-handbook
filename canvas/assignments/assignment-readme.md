@@ -20,6 +20,10 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Team Charter Inherited Files (#487)
+
+No rubric changes. Re-paste the Team Charter body: What You Produce now says that a team whose inherited repository already has a `CONTRIBUTING.md` or an AI context file extends that file rather than starting a new one, and keeps what its previous maintainers wrote that still holds.
+
 ## Canvas Changes: One Rubric per Repo Checkpoint (#474)
 
 The four repo checkpoints are now four entries with a rubric each, numbered 1 to 4 across the year as the sprint notes are. Fall is unchanged: Repo Checkpoint 1 and 2 keep their names, points, weights, and due weeks.
