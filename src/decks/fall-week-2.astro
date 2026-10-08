@@ -1,14 +1,17 @@
 ---
-// Fall week 2, Workshop 1: User Story Mapping (#466). A 50-minute session:
-// talk for the first 15 minutes, teams map in the template until minute 45
-// with the self-check up and a volunteer clinic at about minute 30, then the
-// wrap. The talk slides' target times stay at 15:00 or less in total; the
-// work-time and wrap slides carry the session clock in their cues. Every
-// claim on a slide traces to a URL on the sources slide. The AI demo output
-// was pre-run before class and is shown as returned, split by columns over
-// two slides (#478). Served at /decks/fall-week-2/.
+// Fall week 2, Workshop 1: User Story Mapping (#466, restructured in #485).
+// A 50-minute session in four parts, named with their minute marks on the
+// agenda slide: story maps (minute 1), three worked examples (minute 4),
+// the same proposal mapped by an AI tool (minute 11), and the teams' own
+// maps (minute 15), with a volunteer clinic at minute 30 and the wrap at
+// minute 45. The talk slides' target times sum to 15:00, and each part's
+// start on the agenda is the running total of the notes before it. Each
+// link sits on the slide that uses it. The AI demo output was pre-run
+// before class; the side-by-side slide shortens it, and its notes hold it
+// in full. Served at /decks/fall-week-2/.
 import Notes from "../components/deck/Notes.astro";
 import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
 import StoryMap from "../components/deck/StoryMap.astro";
 import TitleSlide from "../components/deck/TitleSlide.astro";
 import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
@@ -23,10 +26,35 @@ const selfCheck = [
   "The backbone type is chosen, with one line saying why",
   "Every ? has a question on the Questions for our partner tab",
 ];
+
+// Each example's links, shown without the protocol, as the room would type
+// them.
+const PROTOCOL = /^https:\/\//;
+const link = (url: string) => ({ href: url, text: url.replace(PROTOCOL, "") });
+const ephira = {
+  page: link(
+    "https://capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a"
+  ),
+  repo: link("https://github.com/adulbrich/ephira"),
+};
+const lumiLab = {
+  page: link(
+    "https://capstone.eecs.oregonstate.edu/projects/4e8e30be-72ac-5203-83fd-f4515162ce75"
+  ),
+  repo: link("https://github.com/radiantlab/LumiLab"),
+};
+const taxon = {
+  page: link(
+    "https://capstone.eecs.oregonstate.edu/projects/1e6e1a34-dee3-54bf-8c53-f876fb2d1519"
+  ),
+  repo: link("https://github.com/TaxonBodyMassML/TaxonBodyMassML"),
+};
+const patton = link("https://jpattonassociates.com/the-new-backlog/");
+
 // The ephira map, drawn as an inherited codebase: the walking skeleton is
 // what the repository already did when the advertised team started, and
-// Release 1 is the advertised deliverables. Shown on its own slide and again
-// after the AI tool's output.
+// Release 1 is the advertised deliverables. The stretch goal keeps its own
+// row, as the proposal labels it.
 const ephiraMap = {
   backbone: [
     "Get in safely",
@@ -55,129 +83,175 @@ const ephiraMap = {
         "? Easier data entry",
         "? Clearer cycle charts",
         "Predict from history",
-        "Reminders and alerts",
-        "Encrypted export, import",
+        "? Period and log reminders",
+        "? Encrypted export, import",
+      ],
+    },
+    {
+      name: "Stretch goal",
+      stories: [
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        "Anonymized data, opt-in",
       ],
     },
     {
       name: "Out of scope",
-      stories: [
-        "Cloud sync",
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        "Opt-in anonymized data collection",
-      ],
+      stories: ["Cloud sync"],
     },
   ],
 };
-const ephiraRepo = "github.com/adulbrich/ephira";
-// The advertised work the map's columns don't hold, under both copies of it.
-const ephiraAlso =
-  "Also advertised: tests, docs, and a store update. Pregnancy mode: start design and implementation.";
-// The AI tool's ephira map, as returned (ephira's advertised project page in
-// place of the prompt's placeholder). Its seven columns are split over two
-// slides so the cells stay at the 32px floor. A mark is applied on the
-// slide's first fragment: "had" for a story the repository already did when
-// the advertised team started (planned again, or ruled out), "invented"
-// for one the proposal never mentions, "misread" for a proposal line the
-// tool restated wrongly as settled.
-interface AiCell {
-  mark?: "had" | "invented" | "misread";
-  text: string;
-}
-interface AiColumn {
+
+// The side-by-side of the human map above and the AI tool's map, one row per
+// activity, each row with one mark. The Human cells follow the map as the
+// room saw it; "Had:" is the inherited skeleton.
+type Mark = "agree" | "drops" | "invents" | "misreads" | "replans";
+const marks: Record<Mark, { label: string; means: string }> = {
+  agree: { label: "Agree", means: "both plan the work" },
+  drops: { label: "Human drops", means: "a deliverable off the grid" },
+  invents: { label: "AI invents", means: "not in the proposal" },
+  misreads: { label: "AI misreads", means: "misstates the proposal" },
+  replans: { label: "AI re-plans", means: "already in the app" },
+};
+const comparison: {
   activity: string;
-  outOfScope: AiCell;
-  release1: AiCell[];
-  skeleton: AiCell;
-}
-const aiColumns: AiColumn[] = [
+  ai: string;
+  human: string;
+  mark: Mark;
+}[] = [
+  {
+    activity: "Unlock",
+    ai: "Passcode, then biometrics, auto-lock",
+    human: "Had: lock. Release 1: nothing",
+    mark: "replans",
+  },
+  {
+    activity: "Log a day",
+    ai: "Period start, then symptoms, edits",
+    human: "Had: full log. ? Easier entry",
+    mark: "replans",
+  },
+  {
+    activity: "Calendar",
+    ai: "Calendar, then phase colors, charts",
+    human: "Had: filter. ? Clearer charts",
+    mark: "replans",
+  },
+  {
+    activity: "Predictions",
+    ai: "Next date, averages, fertile window",
+    human: "Had: +28 days. Predict from history",
+    mark: "invents",
+  },
+  {
+    activity: "Reminders",
+    ai: "One alert, then times, daily nudge",
+    human: "? Period and log reminders",
+    mark: "agree",
+  },
+  {
+    activity: "Data out",
+    ai: "Encrypted backup, restore, passphrase",
+    human: "Had: export. ? Encrypted export, import",
+    mark: "agree",
+  },
+  {
+    activity: "Stores",
+    ai: "TestFlight first, then listings, beta",
+    human: "No column: a caption line",
+    mark: "drops",
+  },
+  {
+    activity: "Pregnancy",
+    ai: "Out of scope: design doc only",
+    human: "Caption: start design and build",
+    mark: "misreads",
+  },
+];
+// The legend's order: the AI tool's mistakes, the human map's, agreement.
+const legend: Mark[] = ["replans", "invents", "misreads", "drops", "agree"];
+// Draws each "?" in a cell as the amber assumed mark.
+const QUESTION = /(\?)/;
+const flagged = (text: string) => text.split(QUESTION);
+
+// The AI tool's ephira map as returned, for the side-by-side slide's notes.
+const aiOutput = [
   {
     activity: "1. Unlock the app",
-    outOfScope: { text: "Cloud accounts or login" },
+    outOfScope: "Cloud accounts or login",
     release1: [
-      { mark: "had", text: "Unlock with biometrics" },
-      { text: "Change passcode" },
-      { text: "Auto-lock after inactivity" },
+      "Unlock with biometrics",
+      "Change passcode",
+      "Auto-lock after inactivity",
     ],
-    skeleton: { mark: "had", text: "Unlock with a passcode" },
+    skeleton: "Unlock with a passcode",
   },
   {
     activity: "2. Log a day",
-    outOfScope: {
-      mark: "misread",
-      text: "Pregnancy tracking (design doc only)",
-    },
+    outOfScope: "Pregnancy tracking (design doc only)",
     release1: [
-      { mark: "had", text: "Log flow level" },
-      { mark: "had", text: "Log symptoms and mood" },
-      { mark: "had", text: "Log medications" },
-      { mark: "had", text: "Edit past entries" },
+      "Log flow level",
+      "Log symptoms and mood",
+      "Log medications",
+      "Edit past entries",
     ],
-    skeleton: { mark: "had", text: "Log a period start date" },
+    skeleton: "Log a period start date",
   },
   {
     activity: "3. Review history",
-    outOfScope: { mark: "had", text: "Shareable doctor reports" },
+    outOfScope: "Shareable doctor reports",
     release1: [
-      { text: "Color-code cycle phases" },
-      { text: "Chart cycle length over time" },
-      { mark: "had", text: "Filter history by symptom" },
+      "Color-code cycle phases",
+      "Chart cycle length over time",
+      "Filter history by symptom",
     ],
-    skeleton: { mark: "had", text: "View logged days on calendar" },
+    skeleton: "View logged days on calendar",
   },
   {
     activity: "4. See predictions",
-    outOfScope: { text: "Machine learning predictions" },
+    outOfScope: "Machine learning predictions",
     release1: [
-      { text: "Predict from average cycle length" },
-      { mark: "invented", text: "Show fertile window" },
-      { text: "Flag low-confidence predictions" },
+      "Predict from average cycle length",
+      "Show fertile window",
+      "Flag low-confidence predictions",
     ],
-    skeleton: { mark: "had", text: "See next predicted period date" },
+    skeleton: "See next predicted period date",
   },
   {
     activity: "5. Get reminders",
-    outOfScope: { text: "Server-sent push notifications" },
+    outOfScope: "Server-sent push notifications",
     release1: [
-      { text: "Choose reminder times" },
-      { text: "Remind to log daily" },
-      { text: "Alert before predicted period" },
+      "Choose reminder times",
+      "Remind to log daily",
+      "Alert before predicted period",
     ],
-    skeleton: { text: "Receive one local notification" },
+    skeleton: "Receive one local notification",
   },
   {
     activity: "6. Back up and restore",
-    outOfScope: { text: "Cloud sync" },
+    outOfScope: "Cloud sync",
     release1: [
-      { text: "Protect backup with passphrase" },
-      { text: "Reject corrupt or wrong-key files" },
-      { text: "Restore without losing existing data" },
+      "Protect backup with passphrase",
+      "Reject corrupt or wrong-key files",
+      "Restore without losing existing data",
     ],
-    skeleton: { text: "Export and re-import an encrypted file" },
+    skeleton: "Export and re-import an encrypted file",
   },
   {
     activity: "7. Ship to stores",
-    outOfScope: { text: "Opt-in anonymized data collection" },
+    outOfScope: "Opt-in anonymized data collection",
     release1: [
-      { text: "Update both store listings" },
-      { text: "Run beta tester feedback round" },
-      { text: "Update user and developer docs" },
+      "Update both store listings",
+      "Run beta tester feedback round",
+      "Update user and developer docs",
     ],
-    skeleton: {
-      mark: "had",
-      text: "Build reaches TestFlight and Play testing",
-    },
+    skeleton: "Build reaches TestFlight and Play testing",
   },
 ];
-const aiSlides = [aiColumns.slice(0, 4), aiColumns.slice(4)];
-const aiRows = [
-  { cells: (c: AiColumn) => [c.skeleton], name: "Walking skeleton" },
-  { cells: (c: AiColumn) => c.release1, name: "Release 1" },
-  { cells: (c: AiColumn) => [c.outOfScope], name: "Out of scope" },
-];
+
 // Shown without its protocol, as the room would type it.
 const templateUrl = new URL("/story-map-template.xlsx", Astro.site);
 const template = `${templateUrl.host}${templateUrl.pathname}`;
@@ -191,14 +265,34 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
 >
   <Notes time="0:20" cue="Teams sit together by team number; one laptop per team opens the template.">
     <p>
-      Fifteen minutes of talk, thirty minutes of mapping in teams, five
-      minutes of wrap. By the end of class each team has a backbone, a
-      walking-skeleton row, and its assumptions flagged.
+      By the end of class each team has a backbone, a walking-skeleton row,
+      and its assumptions flagged. The next slide is the plan for the hour.
     </p>
   </Notes>
 </TitleSlide>
 
-<Slide kicker="Four words for today" title="What a story map is made of">
+<Slide kicker="Agenda" title="Today, in four parts">
+  <ol class="agenda">
+    <li><span class="minute">Minute 1</span>Story maps in three minutes</li>
+    <li><span class="minute">Minute 4</span>Three examples: ephira, LumiLab, TaxonBodyMassML</li>
+    <li><span class="minute">Minute 11</span>The same proposal, mapped by AI</li>
+    <li>
+      <span class="minute">Minute 15</span>Your turn: map in teams, a clinic at
+      minute 30, the wrap at minute 45
+    </li>
+  </ol>
+  <Notes time="0:40" cue="Point at minute 15: that is when the laptops open.">
+    <p>
+      Fifteen minutes of talk, thirty of mapping, five of wrap. The three
+      examples use three different backbones, so every team should see one
+      that looks like its own project. The AI part maps one of those
+      examples again, with a tool, so the room can compare the two maps row
+      by row.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Part 1: story maps in three minutes" title="What a story map is made of">
   <ul>
     <li>
       <strong>Backbone:</strong> the big activities across the top, in the
@@ -217,17 +311,25 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       activity, so the whole thing runs end to end
     </li>
   </ul>
-  <Notes time="1:15" cue="Press the arrow for each line; ask the room which line is the hardest to draw.">
+  <p class="caption">
+    Jeff Patton, The New User Story Backlog is a Map:{" "}
+    <a href={patton.href}>{patton.text}</a>
+  </p>
+  <Notes time="1:30" cue="Press the arrow for each line; ask the room which line is the hardest to draw.">
     <p>
-      Patton, whose article is on the next slide, does not prioritize the
-      backbone: it is the set of things the system has to do at all. He
-      prioritizes the stories hanging under it, moving them up or down, and
-      lays tape across the map to make one lane per release.
+      Jeff Patton's article, linked on the slide, is where the map comes
+      from. He does not prioritize the backbone: it is the set of things the
+      system has to do at all. He prioritizes the stories hanging under it,
+      moving them up or down, and lays tape across the map to make one lane
+      per release.
     </p>
     <p>
       The stories placed highest form the smallest system that works end to
       end. Patton credits the term walking skeleton to Alistair Cockburn; use
-      Patton's description here and don't paraphrase Cockburn's.
+      Patton's description here and don't paraphrase Cockburn's. His
+      complaint about a flat backlog is that a list in build order can't
+      tell anyone what the system does, or show what you missed; a map can,
+      because you can walk it left to right with a user.
     </p>
     <p>
       One convention for today: a story nobody has checked with the project
@@ -236,148 +338,7 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </Slide>
 
-<Slide kicker="Where it comes from" title="Jeff Patton's map for Mimi">
-  <ul>
-    <li>Mimi: a Music Industry Marketing Interface, mapped in one day</li>
-    <li class="fragment">
-      The map narrowed the first release to one activity: a band member
-      promoting a gig
-    </li>
-    <li class="fragment">
-      Design the mailer, build the audience list, send it, track the
-      responses
-    </li>
-    <li class="fragment">
-      Mimi shipped; the other music features moved below the line
-    </li>
-  </ul>
-  <Notes time="1:00" cue="One sentence on why a flat backlog loses this.">
-    <p>
-      From Patton's article "The New User Story Backlog is a Map". The product
-      set out to do many music-industry things. Laying the whole thing out
-      showed that one activity, promoting a gig, already took most of the
-      map, and the rest looked like a tall order by comparison.
-    </p>
-    <p>
-      Patton's complaint about a flat backlog is that it strips the context:
-      a list in build order can't tell a stakeholder what the system does,
-      and it can't show you what you missed. The map can, because you can
-      walk it left to right with a user.
-    </p>
-  </Notes>
-</Slide>
-
-<Slide kicker="A real scope cut" title="Allegro: two years of work, six months to ship">
-  <ul>
-    <li>A new shipment platform, integrated with a large ERP (enterprise resource planning) system</li>
-    <li class="fragment">
-      Estimated at about two years; the partner's release cycle allowed six
-      months
-    </li>
-    <li class="fragment">
-      Mapped as a whole team: a minimum viable product of 120 story points,
-      against a pace of about 80
-    </li>
-    <li class="fragment">
-      Cut and thinned stories to fit, built the API on mocks first so the
-      partner could start
-    </li>
-    <li class="fragment">Released on time, with most of the features they wanted</li>
-  </ul>
-  <Notes time="1:00" cue="Ask: what is your partner's equivalent of the ERP release cycle?">
-    <p>
-      From the second part of Allegro's engineering blog series on delivering
-      products. They combined a minimum viable product, a walking skeleton, and
-      story mapping. The estimate after mapping still did not fit their
-      velocity, so they cut the minimum viable product further and made some
-      stories thinner.
-    </p>
-    <p>
-      The first version gave no business value on its own: an API backed by
-      mocks. It let the ERP partner start integrating, which was the real
-      constraint. Your partner has clocks like that too.
-    </p>
-  </Notes>
-</Slide>
-
-<Slide kicker="Worked example: ephira, an inherited codebase" title="Start the map from what already ships" wide>
-  <StoryMap {...ephiraMap} />
-  <p class="caption caption-tight">
-    {ephiraAlso}<br />
-    Repository: <a href={`https://${ephiraRepo}`}>{ephiraRepo}</a>
-  </p>
-  <Notes time="1:45" cue="Read the inherited skeleton left to right, then point at the empty reminders cell.">
-    <p>
-      ephira is an encrypted, local-first menstrual cycle tracker for iOS and
-      Android, MIT licensed and published on both app stores. A previous
-      capstone team built it. The advertised project, on the sources slide,
-      asked the next team to enhance it: "This capstone project involves
-      enhancing Ephira's functionality."
-    </p>
-    <p>
-      So the inherited skeleton is what the repository
-      already did the day that team started. A password or biometric lock, a
-      full day log, the calendar and its filter, export as CSV, JSON, or PDF,
-      and a first prediction that adds 28 days to the last period. There
-      were no reminders, so the inherited skeleton has a gap, and the
-      advertised notification system fills it.
-    </p>
-    <p>
-      Release 1 is the advertised deliverables. Prediction, notifications,
-      and the encrypted export and import are stated in the proposal, so
-      they're known. The two amber cards are the team's reading of "UI/UX
-      improvements": the proposal names data entry and cycle visualization
-      but not what better means, so each is a question for the partner.
-    </p>
-    <p>
-      Below the line on purpose: the stretch goal, opt-in anonymized data
-      collection, under Take the data out because it's data leaving the
-      phone; and cloud sync, under Get in safely because syncing means an
-      account and a sign-in. Pregnancy mode was "start design and
-      implementation", so it goes under the grid rather than in a column.
-    </p>
-  </Notes>
-</Slide>
-
-<TwoColumnSlide kicker="Worked example: ephira, the reveal" title="What the team added in its year" divider>
-  <div slot="left">
-    <h3>Added</h3>
-    <ul>
-      <li>A Cycle tab: predictions after two full cycles, phases, and tips</li>
-      <li>Alerts before a predicted period, scheduled on the phone</li>
-      <li>A guided walkthrough, and the first pregnancy mode tabs</li>
-      <li>Tests, and app version 1.1.0 to 1.3.0</li>
-    </ul>
-  </div>
-  <div slot="right">
-    <h3>Not built</h3>
-    <ul>
-      <li>Encrypted export and import: the export is still the inherited CSV, JSON, or PDF, with no import</li>
-      <li>Cloud sync and anonymized data collection: out of scope, as planned</li>
-    </ul>
-  </div>
-  <Notes time="1:00" cue="Ask: which Release 1 card would you have checked with the partner first?">
-    <p>
-      From the repository history over the team's three terms. The team
-      reworked prediction, added a Cycle tab with phases and wellness tips
-      (the README says predictions need at least two complete cycles),
-      notifications before a predicted period and for a late one, an
-      onboarding walkthrough, unit tests, and pregnancy mode as its own set
-      of tabs. The app's version went from 1.1.0 to 1.3.0.
-    </p>
-    <p>
-      The proposal asked for push notifications; the team scheduled them on
-      the phone instead, which keeps the product's promise that nothing
-      leaves the device. The
-      encrypted export and import did not land: the export screen at the
-      end of the year is the inherited one, and the repository has no
-      import. The commits after the team's year are the maintainer's; don't
-      credit them to the team.
-    </p>
-  </Notes>
-</TwoColumnSlide>
-
-<Slide kicker="Three backbones, one map" title="Choose the backbone where your hardest unknowns live">
+<Slide kicker="Part 1: story maps in three minutes" title="Choose the backbone where your hardest unknowns live">
   <div class="backbones">
     <div class="type">
       <h3>User journey</h3>
@@ -399,139 +360,287 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
     Same rows, release line, <code>?</code> flags, and partner questions for all
     three. Write one line saying why you chose yours.
   </p>
-  <Notes time="1:00" cue="Ask for hands: who is not sure their project has a user?">
+  <Notes time="1:30" cue="Ask for hands: who is not sure their project has a user?">
     <p>
       Why it matters: the walking skeleton should exercise the riskiest part
       of the project first, so the backbone has to run through it. In a
       recent year, about half the project listings had no clean user journey
-      to map, so a good part of the room needs this slide.
+      to map (the instruction team's own count), so a good part of the room
+      needs this slide.
     </p>
     <p>
-      A game is a user journey with the player as the user; a library or an
-      API is a user journey with the adopting developer as the user. Pick
-      the backbone where the hardest unknowns are: if the scary part is
-      whether a model beats a baseline, map the research chain, even if
-      there is a web front end too.
+      A game is a user journey with the player as the user: launch, learn the
+      controls, play a level, fail and retry, finish. A library or an API is
+      a user journey with the adopting developer as the user: find it,
+      install it, get a first call working, integrate it, upgrade. Pick the
+      backbone where the hardest unknowns are: if the scary part is whether
+      a model beats a baseline, map the research chain, even if there is a
+      web front end too.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Pipeline backbone: the project" title="A robot glider that measures waves">
+<StatementSlide kicker="Part 2 of 4: minute 4" source="ephira, a user journey; LumiLab, a pipeline; TaxonBodyMassML, a research chain">
+  Three examples
+  <Notes time="0:10" cue="One backbone type each, in the order of the last slide.">
+    <p>
+      Each example opens with the project, then its map, then what the team
+      did in its year.
+    </p>
+  </Notes>
+</StatementSlide>
+
+<Slide kicker="Example 1: ephira, a user journey" title="A private period tracker, already in both app stores">
   <ul>
     <li>
-      <strong>The project:</strong> fit an ocean glider, a robot that stays at
-      sea for months, with a package of motion sensors that can feel the waves
+      <strong>The app:</strong> a menstrual cycle tracker for iOS and Android
+      that keeps every record on the phone
     </li>
     <li class="fragment">
-      <strong>Who uses the result:</strong> oceanographers, in place of wave
-      buoys that are expensive, can't move, and get wrecked by storms
+      <strong>Where it started:</strong> a previous capstone team built it and
+      published it in both app stores
     </li>
     <li class="fragment">
-      <strong>What goes in:</strong> the sensor's readings of how the glider
-      moves
-    </li>
-    <li class="fragment">
-      <strong>What comes out:</strong> significant wave height (how high the
-      biggest waves are), worked out on board and handed to the glider to
-      send to shore
+      <strong>The advertised project:</strong> enhance it, with predictions,
+      reminders, encrypted backups, easier data entry, tests, and a store
+      update
     </li>
   </ul>
-  <Notes time="0:45" cue="Ask: is there a user clicking through anything here?">
+  <p class="caption">
+    Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a><br />
+    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+  </p>
+  <Notes time="0:40" cue="Ask: what should the map's first row hold, for a project like this?">
     <p>
-      A capstone project with an oceanography lab, paired with an ECE
-      (electrical and computer engineering) team that builds the sensor
-      package; no one has fitted these sensors to a commercial glider yet.
-      The glider moves by changing its buoyancy, not with a propeller, which
-      is why it can stay out for months. Significant wave height is the
-      average height of the highest third of the waves. The page also asks
-      for analysis software that finds wave frequency and direction from the
-      recorded readings, but only the significant wave height goes through
-      the glider to shore. Nobody clicks through anything, so the backbone on
-      the next slide is what happens to the readings.
+      ephira is open source under the MIT license; its project page calls it
+      privacy-focused and local-first, and says the project "involves
+      enhancing Ephira's functionality". The app was at version 1.1.0 in
+      both stores when the advertised team started.
+    </p>
+    <p>
+      So the first row of the map is not a plan. It is what the repository
+      already does, read from the code before anyone plans anything.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Pipeline backbone: a sketch from the project page" title="Measuring waves from an ocean glider" wide>
+<Slide kicker="Example 1: ephira, the map" title="Start the map from what already ships" wide>
+  <StoryMap {...ephiraMap} />
+  <p class="caption caption-tight">
+    Also on the <a href={ephira.page.href}>project page</a>: beta tests, docs, a
+    store update; start designing and building pregnancy mode
+  </p>
+  <Notes time="1:10" cue="Read the inherited skeleton left to right, then point at the empty reminders cell.">
+    <p>
+      The inherited skeleton is what the repository already did the day the
+      team started: a password or biometric lock, a full day log, the
+      calendar and its filter, export as CSV, JSON, or PDF, and a first
+      prediction that adds 28 days to the last period. There were no
+      reminders, so the inherited skeleton has a gap, and the advertised
+      notifications fill it.
+    </p>
+    <p>
+      Release 1 is the advertised deliverables. Prediction from history is
+      stated plainly, so it's known. The other four are questions for the
+      partner. Reminders: the proposal names two kinds, period alerts and
+      data-entry reminders, and asks for push notifications, which sit
+      awkwardly with an app that keeps everything on the phone. Encrypted
+      export and import: the proposal says encrypted, but not how the key is
+      made or kept, and nobody had designed it. The two cards about data
+      entry and charts are the team's reading of "UI/UX improvements".
+    </p>
+    <p>
+      The stretch goal gets its own row because the proposal labels it one:
+      opt-in anonymized data collection, under Take the data out because
+      it's data leaving the phone. Cloud sync is the team's own assumption:
+      the proposal never mentions it, and it's below the line because
+      syncing means an account and a sign-in. Beta testing, docs, the store
+      update, and pregnancy mode are advertised but aren't activities on
+      this backbone, so they sit in the caption.
+    </p>
+  </Notes>
+</Slide>
+
+<TwoColumnSlide kicker="Example 1: ephira, what happened" title="What the team built in its year" divider>
+  <div slot="left">
+    <h3>Added</h3>
+    <ul class="reveal-list">
+      <li>Faster logging: a chip grid and one-tap birth control</li>
+      <li>A Cycle tab: predictions from average cycle length, phases, and tips</li>
+      <li>Alerts before a predicted period, scheduled on the phone</li>
+      <li>A guided walkthrough, and the first pregnancy mode tabs</li>
+      <li>Unit tests, and app version 1.1.0 to 1.3.0</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Not built</h3>
+    <ul class="reveal-list">
+      <li>Encrypted export and import: the export is still the inherited one, with no import</li>
+      <li>Reminders to log a day: a message template, never scheduled</li>
+      <li>Integration and end-to-end tests: unit tests only</li>
+      <li>Cloud sync and the stretch goal: not attempted</li>
+    </ul>
+    <p class="caption">
+      Repository history: <a href={ephira.repo.href}>{ephira.repo.text}</a>
+    </p>
+  </div>
+  <Notes time="0:45" cue="Ask: which amber card would you have checked with the partner first?">
+    <p>
+      From the repository history over the team's three terms. The Release
+      1 cards that didn't fully land were amber ones: the encrypted export
+      and import, and the log reminders half of the reminders card.
+    </p>
+    <p>
+      The proposal asked for push notifications; the team scheduled alerts
+      on the phone instead, which keeps the product's promise that nothing
+      leaves the device. The template for a reminder to log more data exists
+      in the code, but nothing ever schedules it. The tests are unit tests;
+      the advertised integration and end-to-end tests aren't in the
+      repository. The commits after the team's year are the maintainer's;
+      don't credit them to the team.
+    </p>
+  </Notes>
+</TwoColumnSlide>
+
+<Slide kicker="Example 2: LumiLab, a pipeline" title="Measuring glare from ordinary photos">
+  <ul>
+    <li>
+      <strong>Glare:</strong> light bright enough to make seeing
+      uncomfortable. Measuring it takes a luminance camera, which few can
+      afford
+    </li>
+    <li class="fragment">
+      <strong>What goes in:</strong> the same scene photographed several
+      times, dark to bright, with an ordinary camera, plus that camera's
+      calibration files
+    </li>
+    <li class="fragment">
+      <strong>What comes out:</strong> a luminance map, an image where every
+      pixel holds how bright that spot was, in measured units
+    </li>
+    <li class="fragment">
+      <strong>Who uses it:</strong> lighting designers and daylighting
+      researchers
+    </li>
+  </ul>
+  <p class="caption">
+    Repository: <a href={lumiLab.repo.href}>{lumiLab.repo.text}</a><br />
+    Project page: <a href={lumiLab.page.href}>{lumiLab.page.text}</a>
+  </p>
+  <Notes time="0:45" cue="Ask: is there a user clicking through anything here?">
+    <p>
+      Luminance is how bright a surface looks, measured in candela per
+      square meter. The technique is high dynamic range imaging: several
+      exposures of one scene, merged and corrected step by step, give the
+      same measurement as the expensive camera. Those steps come from a
+      published tutorial, and doing them by hand takes command-line tools
+      and some programming.
+    </p>
+    <p>
+      A previous capstone team had built a first desktop app for it. The
+      advertised project was to improve that app, "we expect refactoring",
+      with installers for Windows and macOS and documentation. The user
+      clicks one button; the hard part is what happens to the photos after
+      that, so the backbone on the next slide follows the photos.
+    </p>
+  </Notes>
+</Slide>
+
+<Slide kicker="Example 2: LumiLab, the map" title="One set of photos on its way to a luminance map" wide>
   <StoryMap
     backbone={[
-      "Read the sensor",
-      "Correct the readings",
-      "Find the wave pattern",
-      "Work out wave height",
-      "Hand it to the glider",
-      "Reach shore",
+      "Pick the photos",
+      "Merge into one image",
+      "Crop and resize",
+      "Correct the lens",
+      "Calibrate the brightness",
+      "Save the map",
     ]}
     releases={[
       {
         name: "Walking skeleton",
         stories: [
-          "Save the raw readings",
-          "A correction from a bench test",
-          "Wave pattern on a laptop",
-          "One height from one pattern",
-          "Send one number by cable",
-          "? Glider relays it to shore",
+          "Choose photos in the app",
+          "Merge with one camera's settings",
+          "Fixed numbers for one lens",
+          "Fisheye and dark-edge fixes",
+          "Pass it through unchanged",
+          "Write one .hdr file",
         ],
       },
       {
         name: "Release 1",
         stories: [
-          "? Stay within the battery budget",
-          "Remove the glider's own motion",
-          ["Which way waves travel", "Charts of the pattern"],
-          "Work it out on board",
-          "? A message format the glider accepts",
           undefined,
+          "Load any camera's response file",
+          "Type the numbers in the app",
+          "Load the lens calibration files",
+          ["Correct for a lens filter", "? Scale to a meter reading"],
+          "Record the settings in the file",
         ],
       },
     ]}
   />
   <p class="caption">
-    Inferred from the project page, not the team's own map. The instruction
-    team found no public repository.
+    Inferred from the <a href={lumiLab.page.href}>project page</a> and the{" "}
+    <a href={lumiLab.repo.href}>repository</a>, not the team's own map.
   </p>
-  <Notes time="0:45" cue="Point at the two amber cards: they are what the page leaves open.">
+  <Notes time="0:45" cue="Point at Pass it through unchanged: a stub is still a story.">
     <p>
-      The stages come from the project page's objectives and deliverables.
-      The wave pattern is the spectrum: how much of the motion comes at each
-      wave frequency, which is where height and direction come from. The
-      cable is the serial link the page asks for.
+      The columns are the steps of the published technique, in order.
+      Merging also resets the exposure, so the image starts from a known
+      brightness. Correcting the lens means two fixes: undoing the fisheye's
+      distortion, and brightening the edges a lens darkens.
     </p>
     <p>
-      The amber cards are what the page leaves open: the power budget of a
-      low-power system at sea, and whether the glider takes the serial
-      interface. The instruction team found no public repository for this
-      project.
+      The walking skeleton runs one real set of photos through every column
+      with the settings fixed for one camera and lens, and lets the
+      calibration column pass the image through untouched. The amber card is
+      the open question: which reference reading the scale comes from is
+      the partner's call, not the team's.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Pipeline backbone: the walking skeleton" title="One thin path, sensor to shore, climbing a test ladder">
+<Slide kicker="Example 2: LumiLab, the walking skeleton" title="The whole path by week 10, then the rest">
   <ol>
-    <li>On a benchtop</li>
-    <li class="fragment">In a ballast tank</li>
-    <li class="fragment">In a wave flume with well-defined waves</li>
-    <li class="fragment">In Yaquina Bay</li>
-    <li class="fragment">In the open ocean near shore</li>
-    <li class="fragment">In the open ocean beside a buoy with a calibrated wave sensor</li>
+    <li>Fall week 7: the app runs its first pipeline command</li>
+    <li class="fragment">Week 8: merge, crop, and resize each work, with fixed settings</li>
+    <li class="fragment">Week 9: the two lens fixes</li>
+    <li class="fragment">
+      Week 10: one button sends the chosen photos through six stages; every
+      other setting is still fixed in the code
+    </li>
+    <li class="fragment">
+      A week later: the filter, calibration, and file-header stages, and a
+      form for the settings
+    </li>
   </ol>
-  <Notes time="0:45" cue="Ask: which rung would you be on at the end of fall?">
+  <p class="caption">
+    Repository history: <a href={lumiLab.repo.href}>{lumiLab.repo.text}</a>
+  </p>
+  <Notes time="0:45" cue="Ask: which rung would your project be on at the end of fall?">
     <p>
-      This ladder is in the project's own proposal. Read it as a walking
-      skeleton: the same end-to-end path, from accelerations to one wave
-      height on shore, runs at every rung, and each rung adds one kind of
-      risk. A team that builds the full spectral package before the
-      benchtop path works has nothing to take into the tank.
+      From the commit history of the team's fall term, which rewrote the
+      app with a Rust back end. The week 10 commit wires the app's Generate
+      button to the whole pipeline: the user's own photos go in, and the
+      camera file, the crop and size numbers, and the folders are written
+      into the code. The history doesn't say whether that first run produced
+      a correct map; it does show every stage chained, in order.
+    </p>
+    <p>
+      That is a walking skeleton: thin, hard-coded, and end to end. The
+      calibration stages and the form for the settings came after, on a path
+      that already ran.
     </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Research backbone: the project" title="Estimating a species' weight from its name">
+<Slide kicker="Example 3: TaxonBodyMassML, a research chain" title="Estimating a species' weight from its name">
   <ul>
     <li>
-      <strong>The project:</strong> TaxonBodyMassML, a model that estimates
-      how much a species weighs from its scientific name and its relatives
+      <strong>The project:</strong> a model that estimates how much a species
+      weighs from its scientific name and its relatives
     </li>
     <li class="fragment">
       <strong>Who uses the result:</strong> ecologists, who need the weight of
@@ -545,12 +654,11 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       and how sure the model is
     </li>
   </ul>
-  <p class="deck-small after-list fragment">
-    On the map: the baseline is the simplest guess worth beating, the method
-    is the model, and the evaluation is how wrong it is on species kept
-    aside.
+  <p class="caption">
+    Repository: <a href={taxon.repo.href}>{taxon.repo.text}</a><br />
+    Project page: <a href={taxon.page.href}>{taxon.page.text}</a>
   </p>
-  <Notes time="0:45" cue="Ask: what would tell this team its model works?">
+  <Notes time="0:40" cue="Ask: what would tell this team its model works?">
     <p>
       Ecologists treat body mass as a master trait: it predicts metabolism,
       lifespan, and who eats whom. Thousands of species have been weighed,
@@ -559,10 +667,15 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       life. The page asks for an estimate with a provenance flag and an
       uncertainty descriptor, and a web page for single and batch queries.
     </p>
+    <p>
+      On the map, the baseline is the simplest guess worth beating, the
+      method is the model, and the evaluation is how wrong it is on species
+      kept aside.
+    </p>
   </Notes>
 </Slide>
 
-<Slide kicker="Research backbone: a sketch from the project page" title="The weight model as a research chain" wide>
+<Slide kicker="Example 3: TaxonBodyMassML, the map" title="The weight model as a research chain" wide>
   <StoryMap
     backbone={[
       "Question",
@@ -597,8 +710,11 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       },
     ]}
   />
-  <p class="caption">Inferred from the project page, not the team's own map.</p>
-  <Notes time="0:45" cue="Point at the Baseline column: every method after it has a number to beat.">
+  <p class="caption">
+    Inferred from the <a href={taxon.page.href}>project page</a>, not the team's
+    own map.
+  </p>
+  <Notes time="0:40" cue="Point at the Baseline column: every method after it has a number to beat.">
     <p>
       A genus is a group of close relatives: lions and tigers share one. The
       walking skeleton never touches the clever method. It takes a slice of
@@ -609,7 +725,7 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </Slide>
 
-<TwoColumnSlide kicker="Research backbone: what happened" title="The method changed; the chain held" divider>
+<TwoColumnSlide kicker="Example 3: TaxonBodyMassML, what happened" title="The method changed; the chain held" divider>
   <div slot="left">
     <h3>The proposal</h3>
     <ul>
@@ -625,7 +741,10 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       <li class="fragment">That model is what shipped</li>
     </ul>
   </div>
-  <Notes time="0:45" cue="Point at the Method column on the previous map: only that cell changed.">
+  <p class="caption">
+    Repository history: <a href={taxon.repo.href}>{taxon.repo.text}</a>
+  </p>
+  <Notes time="0:40" cue="Point at the Method column on the previous map: only that cell changed.">
     <p>
       The project page asked for a fine-tuned language model. The
       repository's history shows the data split in fall and an XGBoost
@@ -641,44 +760,36 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
   </Notes>
 </TwoColumnSlide>
 
-<Slide kicker="The other half of the room" title="Games and developer tools are user journeys too">
-  <ul>
-    <li>
-      <strong>A game:</strong> the player launches it, learns the controls,
-      plays a level, fails and retries, and finishes
-    </li>
-    <li class="fragment">
-      <strong>A library or an API:</strong> the adopting developer finds it,
-      installs it, gets a first call working, integrates it, and upgrades
-    </li>
-  </ul>
-  <Notes time="0:30" cue="Ask a game team to name its first backbone column out loud.">
+<StatementSlide kicker="Part 3 of 4: minute 11" source="ephira again: the proposal alone, given to an AI tool">
+  The same proposal, mapped by AI
+  <Notes time="0:10" cue="Ask the room to guess what the tool gets wrong.">
     <p>
-      For a game, the walking skeleton is one level, ugly, from launch to the
-      end screen. For a library, it's a first call that works from a fresh
-      install, documented in the README. The developer is the user, and
-      "installs it" is an activity on the map like any other.
+      Same proposal as example 1, without the repository. The comparison
+      shows what a map built from the proposal alone misses.
     </p>
   </Notes>
-</Slide>
+</StatementSlide>
 
-<Slide kicker="AI demo: ephira's proposal" title="The same proposal, mapped by an AI tool">
+<Slide kicker="The prompt" title="One prompt, the proposal, no repository">
   <pre class="prompt">Here is a software project proposal, as it was advertised to students:
 
-[ADVERTISED PROJECT PROPOSAL]
+[ephira's project page, as advertised]
 
 Draft a user story map for the team's first release. Give a backbone of
 four to seven activities in the order they happen, then a walking-skeleton
 row with one story under every activity, then a Release 1 row and an
 out-of-scope row. Keep each story under eight words.</pre>
+  <p class="caption">
+    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+  </p>
   <Notes time="0:30" cue="Read the last two sentences aloud.">
     <p>
       Tool and model, named here only: Sonnet 5.5, run as a Claude Code
       sub-agent with its tools off, so it could not open the repository the
       page links. It was pre-run before class with ephira's advertised
       project page (title through preferred qualifications, contact left
-      out) in place of the placeholder. The next two slides show its output
-      as returned.
+      out) in place of the bracket. The next slide sets its output beside
+      the human map; the full output is in that slide's notes.
     </p>
     <p>
       The prompt does not ask the tool to mark its assumptions, on purpose:
@@ -687,113 +798,144 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-{
-  aiSlides.map((columns, i) => (
-    <Slide
-      kicker={i === 0 ? "AI demo: the output, columns 1 to 4" : "AI demo: the output, columns 5 to 7"}
-      title={i === 0 ? "It re-planned what the app already did" : "The app was already in both stores"}
-      wide
-    >
-      <span class="fragment ai-marks-on" data-fragment-index="0" aria-hidden="true"></span>
-      <table class="ai-map">
-        <colgroup>
-          <col class="ai-label" />
-          {columns.map(() => <col />)}
-        </colgroup>
-        <thead>
-          <tr>
-            <td></td>
-            {columns.map((c) => <th scope="col">{c.activity}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {aiRows.map((row) => (
-            <tr>
-              <th scope="row">{row.name}</th>
-              {columns.map((c) => (
-                <td>
-                  {row.cells(c).map((cell) => (
-                    <p class:list={["ai-story", cell.mark && `ai-${cell.mark}`]}>{cell.text}</p>
-                  ))}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <ul class="ai-legend fragment" data-fragment-index="0">
-        <li><span class="ai-swatch ai-had"></span>Missed: the app already did this when the team started</li>
-        {i === 0 && (
-          <>
-            <li><span class="ai-swatch ai-invented"></span>Invented: the proposal never mentions it</li>
-            <li><span class="ai-swatch ai-misread"></span>Misread: the proposal says start design and implementation</li>
-          </>
-        )}
-      </ul>
+<Slide kicker="ephira: the human map and the AI tool's" title="Row by row, both maps have mistakes" wide>
+  <span class="fragment marks-on" data-fragment-index="0" aria-hidden="true"></span>
+  <table class="compare">
+    <colgroup>
+      <col class="compare-activity" />
+      <col />
+      <col />
+      <col class="compare-mark" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">Activity</th>
+        <th scope="col">Human</th>
+        <th scope="col">AI</th>
+        <th scope="col">Mark</th>
+      </tr>
+    </thead>
+    <tbody>
       {
-        i === 0 ? (
-          <Notes time="0:45" cue="Ask the room to find the invented story before you press the arrow for the marks.">
-            <p>
-              The tool's output as returned, split by columns over two slides
-              so every cell stays readable; nothing is abbreviated. The first
-              arrow press marks it up.
-            </p>
-            <p>
-              The main miss is the teaching point. The page says the project
-              "involves enhancing Ephira's functionality", yet the walking
-              skeleton and much of Release 1 re-plan what the app already did:
-              the passcode and biometric lock, logging a day, the calendar,
-              editing past entries, the filter, even a first prediction.
-            </p>
-            <p>
-              Missed, out of scope: "Shareable doctor reports". The inherited
-              export screen already offered a PDF, which it describes as
-              "convenient for viewing and sharing", and opened the phone's
-              share sheet. Invented: "Show fertile window" appears nowhere in
-              the proposal. Misread: the proposal says "Start design and
-              implementation of pregnancy tracking"; the tool cut it to a
-              design doc and stated that as settled.
-            </p>
-          </Notes>
-        ) : (
-          <Notes time="0:45" cue="Point at the TestFlight card: the app had been in both stores since winter of the first team's year.">
-            <p>
-              The second half of the same output. The skeleton plans a first
-              build into the stores' test tracks, for an app that was already
-              in both stores when the advertised team took it over. Its
-              reminders, backups, and
-              store updates match the advertised work; they're the columns
-              where the proposal and the repository agree.
-            </p>
-            <p>
-              The lesson for the room: the tool's map looks finished, which is
-              the danger. It had the proposal and nothing else, the same as a
-              team that never opens the repository. Treat its output as a draft
-              full of unflagged question marks, and check each one against
-              the code and with the partner.
-            </p>
-          </Notes>
-        )
+        comparison.map((row) => (
+          <tr>
+            <th scope="row">{row.activity}</th>
+            <td>{flagged(row.human).map((part) => (part === "?" ? <span class="q">?</span> : part))}</td>
+            <td>{row.ai}</td>
+            <td>
+              <span class:list={["mark", `mark-${row.mark}`]}>{marks[row.mark].label}</span>
+            </td>
+          </tr>
+        ))
       }
-    </Slide>
-  ))
-}
-
-<Slide kicker="AI demo: the human map" title="The inherited-codebase map for the same proposal" wide>
-  <StoryMap {...ephiraMap} />
-  <p class="caption caption-tight">
-    {ephiraAlso}<br />
-    Repository: <a href={`https://${ephiraRepo}`}>{ephiraRepo}</a>
-  </p>
-  <Notes time="0:30" cue="Go back to the output slides if the room wants to compare a column.">
+    </tbody>
+  </table>
+  <ul class="legend">
+    {
+      legend.map((key) => (
+        <li>
+          <span class:list={["mark", `mark-${key}`]}>{marks[key].label}</span>
+          {marks[key].means}
+        </li>
+      ))
+    }
+    <li class="legend-link">
+      Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a>
+    </li>
+  </ul>
+  <Notes time="2:00" cue="Read the Human and AI cells first; press the arrow for the marks after the room has guessed.">
     <p>
-      The same map as the worked example. It starts from the repository, so
-      its skeleton row is what was already there, and its amber cards flag
-      the guesses. The tool's map, asked the same way, re-planned the
-      skeleton and flagged nothing.
+      Each row is one activity. Human is the map from example 1, "Had:"
+      meaning the inherited skeleton. AI is the tool's map, shortened to fit;
+      the full output is below. The first arrow press shows the marks.
+    </p>
+    <p>
+      The tool re-planned what the app already did. The page says the
+      project "involves enhancing Ephira's functionality", yet its skeleton
+      and much of its Release 1 plan the passcode and biometric lock,
+      logging a day, the calendar, the filter, and a first prediction. Its
+      fertile window appears nowhere in the proposal; the team did later
+      build an ovulation phase card labeled "Peak fertility", close to it.
+      It cut pregnancy tracking to a design doc and stated that as settled,
+      where the proposal says "Start design and implementation". It also put
+      shareable doctor reports out of scope, when the inherited export
+      already made a PDF for sharing.
+    </p>
+    <p>
+      The human map has its own misses: the store update, an advertised
+      deliverable, is a caption line instead of a column, and both maps
+      invented cloud sync to rule it out. Where the proposal names the work
+      (reminders, backups, the stores), the tool's cards are more specific
+      and easier to test than the human ones.
+    </p>
+    <p>The tool's output as returned:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>Walking skeleton</th>
+          <th>Release 1</th>
+          <th>Out of scope</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          aiOutput.map((column) => (
+            <tr>
+              <td>{column.activity}</td>
+              <td>{column.skeleton}</td>
+              <td>{column.release1.join("; ")}</td>
+              <td>{column.outOfScope}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Notes>
+</Slide>
+
+<Slide kicker="ephira: what the comparison shows" title="Three takeaways">
+  <ol>
+    <li>Without the repository, the AI planned to rebuild an app already in both stores</li>
+    <li class="fragment">
+      Where the proposal names the work, the AI's cards are more specific and
+      easier to test
+    </li>
+    <li class="fragment">
+      The human map has misses too: the store update is a caption, not a
+      column
+    </li>
+  </ol>
+  <p class="deck-small after-list fragment">
+    Use a tool's map as a draft full of unflagged question marks: check each
+    card against the code, then with your partner.
+  </p>
+  <p class="caption">
+    Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a><br />
+    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+  </p>
+  <Notes time="1:10" cue="Ask: which of your own cards came from the proposal alone?">
+    <p>
+      The tool's map looks finished, which is the danger. It had the
+      proposal and nothing else, the same as a team that never opens the
+      repository. A human map isn't safe by default either: it drops what
+      doesn't fit its columns.
+    </p>
+    <p>
+      The instruction team recommends drafting with a tool if it helps,
+      because it's fast and it reads the proposal closely, then marking
+      every card you haven't checked with a question mark before the partner
+      meeting.
     </p>
   </Notes>
 </Slide>
+
+<StatementSlide kicker="Part 4 of 4: minute 15" source="Map in teams, a clinic at minute 30, the wrap at minute 45">
+  Your turn
+  <Notes time="0:10" cue="One laptop per team opens the template now.">
+    <p>The self-check on the next slide stays up while teams work.</p>
+  </Notes>
+</StatementSlide>
 
 <Slide kicker="Work time: minute 15 to 45" title="Self-check while you map">
   <ul class="checks">{selfCheck.map((item) => <li>{item}</li>)}</ul>
@@ -818,7 +960,7 @@ out-of-scope row. Keep each story under eight words.</pre>
     <li>The critique uses the self-check, nothing else</li>
     <li>If your project is under NDA, don't volunteer</li>
   </ul>
-  <Notes time="5:00" cue="Minute 30 to 35. Then press left to put the self-check back up.">
+  <Notes time="5:00" cue="Minute 30 to 35. Then press right to put the self-check back up.">
     <p>
       Project the team's sheet from the lectern machine. Read the backbone
       left to right and ask the team to tell it as one story. Check the
@@ -873,41 +1015,26 @@ out-of-scope row. Keep each story under eight words.</pre>
   </Notes>
 </Slide>
 
-<Slide kicker="Sources" title="Every claim in this deck, by URL">
-  <ul class="sources">
-    <li>
-      Jeff Patton, The New User Story Backlog is a Map: <a href="https://jpattonassociates.com/the-new-backlog/">jpattonassociates.com/the-new-backlog/</a>
-    </li>
-    <li>
-      Allegro Tech, building a minimum viable product with story mapping: <a href="https://blog.allegro.tech/2015/01/story-about-delivering-products-part2.html">blog.allegro.tech/2015/01/story-about-delivering-products-part2.html</a>
-    </li>
-    <li>
-      ephira, project page: <a href="https://capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a">capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a</a>
-    </li>
-    <li>
-      ephira, repository: <a href={`https://${ephiraRepo}`}>{ephiraRepo}</a>
-    </li>
-    <li>
-      Wave-sensing glider, project page: <a href="https://capstone.eecs.oregonstate.edu/projects/a75ffc21-b16f-5849-880a-d7667e6ae208">capstone.eecs.oregonstate.edu/projects/a75ffc21-b16f-5849-880a-d7667e6ae208</a>
-    </li>
-    <li>
-      TaxonBodyMassML, project page: <a href="https://capstone.eecs.oregonstate.edu/projects/1e6e1a34-dee3-54bf-8c53-f876fb2d1519">capstone.eecs.oregonstate.edu/projects/1e6e1a34-dee3-54bf-8c53-f876fb2d1519</a>
-    </li>
-    <li>
-      TaxonBodyMassML, repository: <a href="https://github.com/TaxonBodyMassML/TaxonBodyMassML">github.com/TaxonBodyMassML/TaxonBodyMassML</a>
-    </li>
-  </ul>
-  <Notes time="0:30" cue="Leave up while teams pack.">
-    <p>
-      The backbones on the glider and TaxonBodyMassML slides are inferred
-      from their project pages. The share of this year's listings that fit a
-      story map is the instruction team's own count, so it stays in the
-      notes.
-    </p>
-  </Notes>
-</Slide>
-
 <style>
+  .agenda li {
+    display: flex;
+    gap: 40px;
+    padding-inline-start: 0;
+    margin-block-end: 0.7em;
+  }
+
+  .agenda li::before {
+    content: none;
+  }
+
+  .minute {
+    flex: none;
+    width: 300px;
+    font-weight: 750;
+    color: var(--deck-accent-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
   .backbones {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -957,6 +1084,10 @@ out-of-scope row. Keep each story under eight words.</pre>
     padding-block-start: 4px;
   }
 
+  .reveal-list {
+    font-size: 36px;
+  }
+
   .prompt {
     margin: 0;
     padding: 36px 44px;
@@ -969,109 +1100,116 @@ out-of-scope row. Keep each story under eight words.</pre>
     border-radius: 12px;
   }
 
-  .ai-map {
+  .compare {
     width: 100%;
     font-size: var(--deck-text-min);
-    line-height: 1.15;
+    line-height: 1.2;
     table-layout: fixed;
     border-collapse: collapse;
   }
 
-  .ai-label {
-    width: 220px;
+  .compare-activity {
+    width: 205px;
   }
 
-  .ai-map th,
-  .ai-map td {
-    padding: 10px 12px;
-    vertical-align: top;
+  .compare-mark {
+    width: 255px;
+  }
+
+  .compare th,
+  .compare td {
+    padding: 8px 12px;
+    vertical-align: middle;
     text-align: start;
   }
 
-  .ai-map thead th {
+  .compare thead th {
     font-weight: 700;
     color: var(--deck-backbone-ink);
     background: var(--deck-backbone);
-    border: 3px solid var(--deck-paper);
-    border-block-start: 10px solid var(--deck-backbone-edge);
+    border-block-end: 6px solid var(--deck-backbone-edge);
   }
 
-  .ai-map tbody tr {
-    border-block-start: 6px solid var(--deck-ink);
+  .compare tbody tr {
+    border-block-end: 3px solid var(--deck-rule);
   }
 
-  .ai-map tbody th {
+  .compare tbody th {
     font-weight: 750;
   }
 
-  .ai-story {
-    margin: 0;
-    padding: 6px 10px;
+  .q {
+    font-weight: 800;
+    color: var(--deck-assumed-edge);
+  }
+
+  .mark {
+    display: inline-block;
+    padding: 2px 12px;
+    font-weight: 700;
+    white-space: nowrap;
     border: 3px solid transparent;
     border-radius: 8px;
   }
 
-  .ai-story + .ai-story {
-    margin-block-start: 8px;
+  /* The marks in the table show from the slide's first fragment on; the
+     legend's always show. AI mistakes in the accent, the human map's in
+     ink, agreement plain. */
+  .compare .mark {
+    visibility: hidden;
   }
 
-  /* The marks show from the slide's first fragment on. */
-  .ai-marks-on.visible ~ .ai-map .ai-had,
-  .ai-legend .ai-had {
+  .marks-on.visible ~ .compare .mark {
+    visibility: visible;
+  }
+
+  .mark-replans,
+  .mark-invents,
+  .mark-misreads {
+    color: var(--deck-accent-ink);
     background: var(--deck-accent-wash);
   }
 
-  /* Solid borders: dashed amber means "assumed" on the story maps. */
-  .ai-marks-on.visible ~ .ai-map .ai-invented,
-  .ai-legend .ai-invented {
-    border: 5px solid var(--deck-accent);
+  .mark-drops {
+    color: var(--deck-paper);
+    background: var(--deck-ink);
   }
 
-  .ai-marks-on.visible ~ .ai-map .ai-misread,
-  .ai-legend .ai-misread {
-    border: 5px solid var(--deck-ink);
+  .mark-agree {
+    color: var(--deck-ink-soft);
+    background: var(--deck-card);
+    border-color: var(--deck-rule);
   }
 
-  .ai-legend {
+  .legend {
     display: flex;
     flex-wrap: wrap;
     gap: 8px 40px;
     margin-block-start: auto;
-    padding-block-start: 20px;
+    padding-block-start: 16px;
     font-size: var(--deck-text-min);
     color: var(--deck-ink-soft);
   }
 
-  .ai-legend li {
+  .legend li {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     padding: 0;
     margin: 0;
   }
 
-  .ai-legend li::before {
+  .legend li::before {
     content: none;
   }
 
-  .ai-swatch {
-    display: inline-block;
-    flex: none;
-    width: 40px;
-    height: 32px;
-    border-radius: 6px;
-    box-sizing: border-box;
+  .legend .legend-link {
+    display: block;
+    align-self: center;
+    margin-inline-start: auto;
   }
 
   .checks {
     font-size: 40px;
-  }
-
-  .sources {
-    font-size: var(--deck-text-min);
-  }
-
-  .sources a {
-    overflow-wrap: anywhere;
   }
 </style>
