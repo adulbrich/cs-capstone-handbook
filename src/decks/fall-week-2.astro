@@ -54,20 +54,20 @@ const ephiraMap = {
         undefined,
         "? Easier data entry",
         "? Clearer cycle charts",
-        "? Predict from history",
-        "? Push or local alerts",
-        "? Encrypted export, import",
+        "Predict from history",
+        "Reminders and alerts",
+        "Encrypted export, import",
       ],
     },
     {
       name: "Out of scope",
       stories: [
+        "Cloud sync",
         undefined,
         undefined,
         undefined,
         undefined,
-        undefined,
-        "Cloud sync, data sharing",
+        "Opt-in anonymized data collection",
       ],
     },
   ],
@@ -80,10 +80,11 @@ const ephiraAlso =
 // place of the prompt's placeholder). Its seven columns are split over two
 // slides so the cells stay at the 32px floor. A mark is applied on the
 // slide's first fragment: "had" for a story the repository already did when
-// the advertised team started, "invented" for one the proposal never
-// mentions, "fact" for an assumption stated as settled.
+// the advertised team started (planned again, or ruled out), "invented"
+// for one the proposal never mentions, "misread" for a proposal line the
+// tool restated wrongly as settled.
 interface AiCell {
-  mark?: "fact" | "had" | "invented";
+  mark?: "had" | "invented" | "misread";
   text: string;
 }
 interface AiColumn {
@@ -105,7 +106,10 @@ const aiColumns: AiColumn[] = [
   },
   {
     activity: "2. Log a day",
-    outOfScope: { text: "Pregnancy tracking (design doc only)" },
+    outOfScope: {
+      mark: "misread",
+      text: "Pregnancy tracking (design doc only)",
+    },
     release1: [
       { mark: "had", text: "Log flow level" },
       { mark: "had", text: "Log symptoms and mood" },
@@ -116,7 +120,7 @@ const aiColumns: AiColumn[] = [
   },
   {
     activity: "3. Review history",
-    outOfScope: { mark: "fact", text: "Shareable doctor reports" },
+    outOfScope: { mark: "had", text: "Shareable doctor reports" },
     release1: [
       { text: "Color-code cycle phases" },
       { text: "Chart cycle length over time" },
@@ -298,11 +302,11 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
 
 <Slide kicker="Worked example: ephira, an inherited codebase" title="Start the map from what already ships" wide>
   <StoryMap {...ephiraMap} />
-  <p class="caption">
+  <p class="caption caption-tight">
     {ephiraAlso}<br />
     Repository: <a href={`https://${ephiraRepo}`}>{ephiraRepo}</a>
   </p>
-  <Notes time="1:45" cue="Read the walking-skeleton row left to right, then point at the empty reminders cell.">
+  <Notes time="1:45" cue="Read the inherited skeleton left to right, then point at the empty reminders cell.">
     <p>
       ephira is an encrypted, local-first menstrual cycle tracker for iOS and
       Android, MIT licensed and published on both app stores. A previous
@@ -311,7 +315,7 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       enhancing Ephira's functionality."
     </p>
     <p>
-      So the walking-skeleton row is what the repository
+      So the inherited skeleton is what the repository
       already did the day that team started. A password or biometric lock, a
       full day log, the calendar and its filter, export as CSV, JSON, or PDF,
       and a first prediction that adds 28 days to the last period. There
@@ -319,13 +323,18 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       advertised notification system fills it.
     </p>
     <p>
-      Release 1 is the advertised deliverables. The amber cards are where the
-      proposal leaves the how open: what makes a prediction accurate, push
-      notifications in an app whose data never leaves the device, and which
-      encrypted format the export uses. Each one is a question for the
-      partner. The stretch goal and cloud sync sit below the line on
-      purpose. Pregnancy mode was "start design and implementation", so it
-      goes under the grid rather than in a column.
+      Release 1 is the advertised deliverables. Prediction, notifications,
+      and the encrypted export and import are stated in the proposal, so
+      they're known. The two amber cards are the team's reading of "UI/UX
+      improvements": the proposal names data entry and cycle visualization
+      but not what better means, so each is a question for the partner.
+    </p>
+    <p>
+      Below the line on purpose: the stretch goal, opt-in anonymized data
+      collection, under Take the data out because it's data leaving the
+      phone; and cloud sync, under Get in safely because syncing means an
+      account and a sign-in. Pregnancy mode was "start design and
+      implementation", so it goes under the grid rather than in a column.
     </p>
   </Notes>
 </Slide>
@@ -341,13 +350,13 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
     </ul>
   </div>
   <div slot="right">
-    <h3>Still open</h3>
+    <h3>Not built</h3>
     <ul>
       <li>Encrypted export and import: the export is still the inherited CSV, JSON, or PDF, with no import</li>
-      <li>Cloud sync and data sharing: out, as planned</li>
+      <li>Cloud sync and anonymized data collection: out of scope, as planned</li>
     </ul>
   </div>
-  <Notes time="1:00" cue="Ask: which amber card would you have asked the partner about first?">
+  <Notes time="1:00" cue="Ask: which Release 1 card would you have checked with the partner first?">
     <p>
       From the repository history over the team's three terms. The team
       reworked prediction, added a Cycle tab with phases and wellness tips
@@ -357,8 +366,9 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       of tabs. The app's version went from 1.1.0 to 1.3.0.
     </p>
     <p>
-      The push-or-local card resolved toward the product's promise: the
-      notifications are scheduled on the device, so nothing leaves it. The
+      The proposal asked for push notifications; the team scheduled them on
+      the phone instead, which keeps the product's promise that nothing
+      leaves the device. The
       encrypted export and import did not land: the export screen at the
       end of the year is the inherited one, and the repository has no
       import. The commits after the team's year are the maintainer's; don't
@@ -409,8 +419,8 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
 <Slide kicker="Pipeline backbone: the project" title="A robot glider that measures waves">
   <ul>
     <li>
-      <strong>The project:</strong> an ocean glider, a robot that stays at sea
-      for months, carries a motion sensor that feels the waves
+      <strong>The project:</strong> fit an ocean glider, a robot that stays at
+      sea for months, with a package of motion sensors that can feel the waves
     </li>
     <li class="fragment">
       <strong>Who uses the result:</strong> oceanographers, in place of wave
@@ -421,18 +431,23 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       moves
     </li>
     <li class="fragment">
-      <strong>What comes out:</strong> how high the waves are, how often they
-      come, and which way they travel, sent to shore
+      <strong>What comes out:</strong> significant wave height (how high the
+      biggest waves are), worked out on board and handed to the glider to
+      send to shore
     </li>
   </ul>
   <Notes time="0:45" cue="Ask: is there a user clicking through anything here?">
     <p>
-      A capstone project with an oceanography lab, paired with an ECE team
-      that builds the sensor package. The glider moves by changing its
-      buoyancy, not with a propeller, which is why it can stay out for
-      months. The software side turns accelerometer readings into wave
-      height, frequency, and direction. Nobody clicks through anything, so
-      the backbone on the next slide is what happens to the readings.
+      A capstone project with an oceanography lab, paired with an ECE
+      (electrical and computer engineering) team that builds the sensor
+      package; no one has fitted these sensors to a commercial glider yet.
+      The glider moves by changing its buoyancy, not with a propeller, which
+      is why it can stay out for months. Significant wave height is the
+      average height of the highest third of the waves. The page also asks
+      for analysis software that finds wave frequency and direction from the
+      recorded readings, but only the significant wave height goes through
+      the glider to shore. Nobody clicks through anything, so the backbone on
+      the next slide is what happens to the readings.
     </p>
   </Notes>
 </Slide>
@@ -530,6 +545,11 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
       and how sure the model is
     </li>
   </ul>
+  <p class="deck-small after-list fragment">
+    On the map: the baseline is the simplest guess worth beating, the method
+    is the model, and the evaluation is how wrong it is on species kept
+    aside.
+  </p>
   <Notes time="0:45" cue="Ask: what would tell this team its model works?">
     <p>
       Ecologists treat body mass as a master trait: it predicts metabolism,
@@ -568,9 +588,9 @@ const template = `${templateUrl.host}${templateUrl.pathname}`;
         name: "Release 1",
         stories: [
           "? Relatives beat the average",
-          "All the data, one fixed split",
+          "Learn on most, test on the rest",
           undefined,
-          ["? Fine-tuned language model", "? Decision trees"],
+          ["? A language model, retrained on names", "? Decision trees"],
           "Error by closeness of relatives",
           ["Estimate and how sure", "Web page for one or many names"],
         ],
@@ -702,11 +722,11 @@ out-of-scope row. Keep each story under eight words.</pre>
         </tbody>
       </table>
       <ul class="ai-legend fragment" data-fragment-index="0">
-        <li><span class="ai-swatch ai-had"></span>The app already did this when the team started</li>
+        <li><span class="ai-swatch ai-had"></span>Missed: the app already did this when the team started</li>
         {i === 0 && (
           <>
             <li><span class="ai-swatch ai-invented"></span>Invented: the proposal never mentions it</li>
-            <li><span class="ai-swatch ai-fact"></span>Stated as fact: the app already exported a PDF to share</li>
+            <li><span class="ai-swatch ai-misread"></span>Misread: the proposal says start design and implementation</li>
           </>
         )}
       </ul>
@@ -726,10 +746,13 @@ out-of-scope row. Keep each story under eight words.</pre>
               editing past entries, the filter, even a first prediction.
             </p>
             <p>
-              Invented: "Show fertile window" appears nowhere in the proposal.
-              Stated as fact: "Shareable doctor reports" is out of scope, but
-              the app already exported a PDF, and its README says it's for
-              sharing with a healthcare provider.
+              Missed, out of scope: "Shareable doctor reports". The inherited
+              export screen already offered a PDF, which it describes as
+              "convenient for viewing and sharing", and opened the phone's
+              share sheet. Invented: "Show fertile window" appears nowhere in
+              the proposal. Misread: the proposal says "Start design and
+              implementation of pregnancy tracking"; the tool cut it to a
+              design doc and stated that as settled.
             </p>
           </Notes>
         ) : (
@@ -758,7 +781,7 @@ out-of-scope row. Keep each story under eight words.</pre>
 
 <Slide kicker="AI demo: the human map" title="The inherited-codebase map for the same proposal" wide>
   <StoryMap {...ephiraMap} />
-  <p class="caption">
+  <p class="caption caption-tight">
     {ephiraAlso}<br />
     Repository: <a href={`https://${ephiraRepo}`}>{ephiraRepo}</a>
   </p>
@@ -862,7 +885,7 @@ out-of-scope row. Keep each story under eight words.</pre>
       ephira, project page: <a href="https://capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a">capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a</a>
     </li>
     <li>
-      ephira, repository: <a href="https://github.com/adulbrich/ephira">github.com/adulbrich/ephira</a>
+      ephira, repository: <a href={`https://${ephiraRepo}`}>{ephiraRepo}</a>
     </li>
     <li>
       Wave-sensing glider, project page: <a href="https://capstone.eecs.oregonstate.edu/projects/a75ffc21-b16f-5849-880a-d7667e6ae208">capstone.eecs.oregonstate.edu/projects/a75ffc21-b16f-5849-880a-d7667e6ae208</a>
@@ -929,6 +952,11 @@ out-of-scope row. Keep each story under eight words.</pre>
     color: var(--deck-ink-soft);
   }
 
+  /* Under the ephira map, which fills the slide at the 32px floor. */
+  .caption-tight {
+    padding-block-start: 4px;
+  }
+
   .prompt {
     margin: 0;
     padding: 36px 44px;
@@ -993,14 +1021,15 @@ out-of-scope row. Keep each story under eight words.</pre>
     background: var(--deck-accent-wash);
   }
 
+  /* Solid borders: dashed amber means "assumed" on the story maps. */
   .ai-marks-on.visible ~ .ai-map .ai-invented,
   .ai-legend .ai-invented {
-    border: 5px dashed var(--deck-accent-ink);
+    border: 5px solid var(--deck-accent);
   }
 
-  .ai-marks-on.visible ~ .ai-map .ai-fact,
-  .ai-legend .ai-fact {
-    border: 5px solid var(--deck-accent-ink);
+  .ai-marks-on.visible ~ .ai-map .ai-misread,
+  .ai-legend .ai-misread {
+    border: 5px solid var(--deck-ink);
   }
 
   .ai-legend {
