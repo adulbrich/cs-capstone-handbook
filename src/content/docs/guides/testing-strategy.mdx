@@ -204,15 +204,15 @@ A **flaky test** passes and fails on the same code. <Cite id="luo-2014" /> class
 
 ## Testing Tools
 
-Pick the framework your stack's documentation uses, because that's the one its examples and tutorials assume. Defaults for the stacks projects most often use, which leave out many others:
+Pick the framework your stack's documentation uses, because that's the one its examples and tutorials assume. Defaults for several stacks follow; for any other, that first rule still applies:
 
 - Python: [pytest](https://docs.pytest.org/en/stable/).
 - JavaScript and TypeScript: [Vitest](https://vitest.dev/) or [Jest](https://jestjs.io/), with [Testing Library](https://testing-library.com/) for UI components.
-- Java: [JUnit](https://junit.org/); Go: the built-in [`testing`](https://pkg.go.dev/testing) package; C++: [GoogleTest](https://google.github.io/googletest/).
+- Java: [JUnit](https://junit.org/); Go: the built-in [`testing`](https://pkg.go.dev/testing) package; C#: [NUnit](https://nunit.org/); C++: [GoogleTest](https://google.github.io/googletest/).
 - Browser end-to-end, for a web app: [Playwright](https://playwright.dev/).
-- Unity games: the [Unity Test Framework](https://docs.unity3d.com/Packages/com.unity.test-framework@1.4/manual/index.html), built on NUnit, which runs Edit Mode tests in the editor and Play Mode tests with the game running. Unreal games: the [Automation Test Framework](https://dev.epicgames.com/documentation/en-us/unreal-engine/automation-test-framework-in-unreal-engine), whose feature and smoke tests run in the engine itself.
+- Unity games: the [Unity Test Framework](https://docs.unity3d.com/Packages/com.unity.test-framework@latest), built on NUnit, which runs Edit Mode tests in the editor and Play Mode tests with the game running. Unreal games: the [Automation Test Framework](https://dev.epicgames.com/documentation/en-us/unreal-engine/automation-test-framework-in-unreal-engine), whose feature and smoke tests run in the engine itself.
 - Mobile: [XCTest](https://developer.apple.com/documentation/xctest) for iOS unit and UI tests, [Espresso](https://developer.android.com/training/testing/espresso) for Android UI tests, and Flutter's [`integration_test`](https://docs.flutter.dev/testing/integration-tests) package, which drives the app on a device or emulator.
-- Embedded: unit-test the logic on your own machine with [Unity](https://www.throwtheswitch.org/unity) for C (no relation to the game engine) or GoogleTest for C++, then run tests on the board itself. That second step is **hardware-in-the-loop** testing: the test runs against the real microcontroller and its peripherals, which catches the timing, memory, and driver faults a laptop can't reproduce. Zephyr's [Twister](https://docs.zephyrproject.org/latest/develop/twister/index.html) runs the same test suite in an emulator or, with a board connected, flashes and runs it on the device.
+- Embedded: unit-test the logic on your own machine with [Unity](https://www.throwtheswitch.org/unity) for C (no relation to the game engine) or GoogleTest for C++, then run tests on the board itself, which catches the timing, memory, and driver faults a laptop can't reproduce. Zephyr's [Twister](https://docs.zephyrproject.org/latest/develop/twister/index.html) runs the same test suite in an emulator or, with a board connected, flashes and runs it on the device. **Hardware-in-the-loop** testing goes one step further: the real controller's signals are wired to a test system that [simulates the environment it controls](https://www.ni.com/en/solutions/transportation/hardware-in-the-loop/what-is-hardware-in-the-loop-.html), so you can test a motor controller without the motor, including the faults you couldn't safely cause on real equipment.
 
 Choose tools the team will run every day. A plain pytest suite that runs on every pull request catches more than an elaborate setup that only one person knows how to start.
 
