@@ -99,12 +99,26 @@ function termList(terms) {
     : `${terms.slice(0, -1).join(", ")}, and ${terms.at(-1)}`;
 }
 
-// "Week 4", "Weeks 5 and 10", "Weeks 4, 6, 8, and 10".
-function weekList(weeks) {
-  if (weeks.length === 1) {
-    return `Week ${weeks[0]}`;
-  }
-  return `Weeks ${termList(weeks.map(String))}`;
+// The pages whose surveys close on the date their invitation states, which
+// the instructor sets in the survey generator, so their due lines name the
+// week alone. Decided by page rather than by submission type, because the
+// Bidding Survey is a survey too and is due by Sunday like any submission
+// (Late Work, Absence, and Makeup on assignments/introduction.mdx).
+const INVITATION_CLOSE_PAGES = new Set([
+  "peer-evaluations",
+  "project-partner-evaluation",
+]);
+
+// Whether an entry on `page` (its file name, "peer-evaluations") closes on
+// its invitation date instead of by Sunday of its week.
+export const closesByInvitation = (page) => INVITATION_CLOSE_PAGES.has(page);
+
+// When entries are due, in lowercase after "Sunday": "Sunday of week 4",
+// "Sunday of fall weeks 2, 3, 7, and 8", or, for a survey that closes on its
+// invitation date, "closes week 6".
+export function dueWeeks(weeks, { term, invitation = false } = {}) {
+  const which = `${term ? `${term} ` : ""}${weeks.length === 1 ? "week" : "weeks"} ${termList(weeks.map(String))}`;
+  return invitation ? `closes ${which}` : `Sunday of ${which}`;
 }
 
 // What the page as a whole is worth: "15% of each term's grade",
@@ -130,15 +144,18 @@ export function pageTerms(assignment) {
 // when it is due, and what each entry is worth. Families sharing a name are
 // one line (the partner's End-of-Term Survey, one family per term because
 // each term has its own rubric). A titled family gets a line per term with
-// the term's total ("Workshop 1 to 5 · Fall weeks 2, 3, 7, and 8 · 2% in
-// all"), since its entries' shares are fractions nobody plans by. A family
-// due the same weeks and worth the same in every term reads as one line; one
-// that varies says so per term, unless `due_label` says it in words.
+// the term's total ("Workshop 1 to 5 · Sunday of fall weeks 2, 3, 7, and 8
+// · 2% in all"), since its entries' shares are fractions nobody plans by. A
+// family due the same weeks and worth the same in every term reads as one
+// line; one that varies says so per term, unless `due_label` says it in
+// words. Every due line names Sunday, except on the pages whose surveys close
+// on their invitation date (`closesByInvitation`).
 /**
  * @returns {{ due: string, family: any, heading: string, name: string,
  *   peerReview: string | null, repeats: boolean, weight: string }[]}
  */
-export function summaryRows(canvas) {
+export function summaryRows(canvas, page) {
+  const invitation = closesByInvitation(page);
   const rows = canvasRows(canvas);
   const groups = new Map();
   for (const family of canvas ?? []) {
@@ -153,7 +170,7 @@ export function summaryRows(canvas) {
       heading: familyHeading(family),
       name: familyName(family, rowsOf),
       peerReview: family.peer_review_week
-        ? `peer reviews week ${family.peer_review_week}`
+        ? `peer reviews Sunday of week ${family.peer_review_week}`
         : null,
       repeats: isRepeated,
       weight,
@@ -162,7 +179,7 @@ export function summaryRows(canvas) {
       return mine.map((r) =>
         line(
           [r],
-          cap(`${r.term} ${weekList([...new Set(r.weeks)]).toLowerCase()}`),
+          cap(dueWeeks([...new Set(r.weeks)], { invitation, term: r.term })),
           r.names.length > 1 ? `${pct(r.weight)} in all` : pct(r.weight),
           false
         )
@@ -170,10 +187,10 @@ export function summaryRows(canvas) {
     }
     const sameWeeks = new Set(mine.map((r) => r.weeks.join())).size === 1;
     const due = sameWeeks
-      ? weekList(mine[0].weeks)
+      ? cap(dueWeeks(mine[0].weeks, { invitation }))
       : cap(
           mine
-            .map((r) => `${r.term} ${weekList(r.weeks).toLowerCase()}`)
+            .map((r) => dueWeeks(r.weeks, { invitation, term: r.term }))
             .join("; ")
         );
     const each =

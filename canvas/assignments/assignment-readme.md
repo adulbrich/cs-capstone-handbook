@@ -22,11 +22,11 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-import Required: Deadlines Name Sunday (#496)
 
-A submission due in a given week is due by Sunday of that week, stated once under Late Work on the Assignments Overview, and every page now names the day ("by Sunday of week 4"). Survey close lines name only the week ("sent week 5, closes week 6"), because each survey's invitation states its close date.
+A submission due in a given week is due by Sunday of that week, stated once under Late Work on the Assignments Overview, and every page now names the day ("by Sunday of week 4"). The peer and partner evaluation surveys' close lines name only the week ("sent week 5, closes week 6"), because each invitation states its close date; the Bidding Survey is due by Sunday like any submission. The generated due lines follow the same rule: the summary card on each assignment page and the Due line in each paste-kit body now read "Sunday of week 4" (or "Fall, Sunday of week 4"), and "closes week 6" for the evaluation surveys.
 
 - `bidding-survey/bidding-survey-rubric.csv`: the Complete band now gives Sunday of fall week 0 as the deadline. Points and tags are unchanged. Re-import it on the Bidding Survey entry.
-- Check that every entry's due date falls on the Sunday of its due week, the workshops' "until" dates included. The surveys keep the close date entered in the survey generator.
-- Re-paste from the paste kit the bodies whose text changed: in fall, Bidding Survey, Introduction Email, Demo Day Registration, and Repo Checkpoint 1; Term Startup in every term; RFC Draft + Peer Review and RFC Final Draft in fall and winter; every workshop; Demo Day Presentation in every term; the Midterm Survey, Midterm Pulse, and end-of-term survey bodies in every term; and the spring Engineering Expo. Re-paste the Assignments Overview and the three syllabi.
+- Check that every entry's due date falls on the Sunday of its due week, the workshops' "until" dates included. The evaluation surveys keep the close date entered in the survey generator.
+- Re-paste every body from the paste kit, in every term: each changed in its Due line, its text, or both. Re-paste the Assignments Overview and the three syllabi.
 
 ## Re-import Required: Living Docs Check the Constraints (#163)
 
