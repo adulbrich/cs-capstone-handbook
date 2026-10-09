@@ -322,3 +322,10 @@ body {
     letter-spacing: 0.08em;
   }
 }
+
+/* Print mode (?print-pdf) moves each slide into a .pdf-page and leaves its
+   height to its content, so a slide body that fills the frame, such as
+   <SeatingMap>, grows past the page and prints blank. Hold it to the page. */
+html.reveal-print .reveal .slides .pdf-page > section {
+  height: 100%;
+}
