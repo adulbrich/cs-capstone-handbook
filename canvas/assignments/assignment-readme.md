@@ -20,6 +20,13 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Repo Checkpoint 1 Gate and Build Health (#481, #459)
+
+Points and tags are unchanged in all four files.
+
+- `repo-checkpoint/repo-checkpoint-1-rubric.csv`: the Term gate bands now name only Repo Checkpoint 1's gate items (CI passed on the named commit, the board, the production target in `docs/design.md`, its approval in `docs/risks.md`, and the inherited-codebase audit for a team in an existing codebase), and count them met as checkpoints 2 to 4 do. Its Rubric Name is now "Repo Checkpoint 1". Re-import it on Repo Checkpoint 1 before fall week 5, in place of the rubric "Repo Checkpoint" already attached. Repo Checkpoint 2 keeps "Repo Checkpoint" until its own import, so delete that rubric from the course's rubric list only once Repo Checkpoint 2 carries "Repo Checkpoint 2". This replaces the #474 line saying Repo Checkpoint 1 has nothing to re-import.
+- All four CSVs: the build-health description and Exceeds band say CI passed on the named commit and runs the tests on every pull request, in place of "CI green" and "CI is green and meaningful", and ask for changes exercised somewhere other than production before they reach users, with a staging or preview environment as one example among a store beta track, a dedicated test device, and a run on sample data; a FOSS project's CI is upstream's CI on its pull requests, or the build-and-test command its fork documents until its first one, and the Meets band names nowhere to exercise changes as a gap. The row is still identical across the four. Repo Checkpoint 2 to 4 take it at the imports #474 already schedules: Repo Checkpoint 2 before fall week 10, 3 and 4 before winter.
+
 ## Re-paste Required: Team Charter Inherited Files (#487)
 
 No rubric changes. Re-paste the Team Charter body: What You Produce now says that a team whose inherited repository already has a `CONTRIBUTING.md` or an AI context file extends that file rather than starting a new one, and keeps what its previous maintainers wrote that still holds.
