@@ -559,8 +559,8 @@ function metaBox(e) {
         : `${who}; ${kinds.map((k) => SUBMISSION[k] ?? k).join(" and ")}`;
     // A family due in one term only keeps its `due_label`, which may name a
     // day other than Sunday ("Week 9, Wednesday before Thanksgiving"). The
-    // evaluation surveys keep the generated close line, so every survey body
-    // reads alike.
+    // evaluation surveys keep the generated close line, so every evaluation
+    // survey body reads alike.
     const invitation = closesByInvitation(e.page);
     const oneTerm = Object.keys(e.family.weeks ?? {}).length === 1;
     due =

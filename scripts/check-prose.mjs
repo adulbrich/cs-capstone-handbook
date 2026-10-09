@@ -129,7 +129,7 @@ const VOCABULARY = [
     // Readers disagree on which day a week ends, so a deadline names Sunday.
     // The glossary names only fall; the rule rejects every term.
     avoid: /\bend of (?:the |this )?(?:(?:fall|winter|spring) )?week\b/i,
-    use: '"by Sunday of week N", or the week alone for a survey close',
+    use: '"by Sunday of week N", or the week alone for an evaluation survey\'s close',
   },
   {
     // Literal multiword phrases for instructors and TAs together. "The
