@@ -70,11 +70,11 @@ An item fails for the team because the note is wrong or missing. An individual's
 |---|---|
 | 2, 4, 6, 8, 10 | Check-in weeks: ~16 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
 | 1-2 | Team-to-TA assignments made; charters graded (TAs) |
-| 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; the week 5 repo checkpoint (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
+| 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; the week 5 repo checkpoint (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing week 6 |
 | 5 | All-hands demo day, every term (every team registered for that session, 5 minutes each; length under Lecture Plan) |
 | 7 and 9 | Defense sessions, separate from check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
-| 9-10 | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing end of week 10; the second demo day (fall and winter) |
+| 9-10 | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing week 10; the second demo day (fall and winter) |
 
 ## Defense Logistics
 
@@ -170,10 +170,10 @@ Per run:
 
 ## Partner Touchpoints
 
-- The intro email runs in **fall only**: the partner and mentor do not change during the year, so winter and spring start from the first meeting of the term instead, with that term's goal (winter: the Definition of Shipped; spring: the release target, the handoff recipient, and the Expo invitation). Term Startup lists all three terms. Fall is due at the end of week 2, because teams and partners are announced at the end of week 1.
-- A team whose every member already meets with its partner or mentor is excused from the intro email; Term Startup states who qualifies. The team emails `cs-46x-help@oregonstate.edu` by the end of fall week 1, since TAs may not be assigned yet; whoever answers marks the Introduction Email excused in Canvas for each member.
+- The intro email runs in **fall only**: the partner and mentor do not change during the year, so winter and spring start from the first meeting of the term instead, with that term's goal (winter: the Definition of Shipped; spring: the release target, the handoff recipient, and the Expo invitation). Term Startup lists all three terms. Fall is due Sunday of week 2, because teams and partners are announced in the week 1 class session.
+- A team whose every member already meets with its partner or mentor is excused from the intro email; Term Startup states who qualifies. The team emails `cs-46x-help@oregonstate.edu` by Sunday of fall week 1, since TAs may not be assigned yet; whoever answers marks the Introduction Email excused in Canvas for each member.
 - The Bcc to `cs-46x-help@oregonstate.edu` is gone from the template. It produced 70-plus untracked messages a term and nobody read them. What is lost is the **independent** signal, not all signal: the Term Startup status report runs every term and carries the email date (fall) and the first meeting date, so a partner nobody contacted is still visible in week 2, on the team's own word rather than on ours.
-- Two surveys per term, peer and partner alike: the midterm pulse is sent week 5 and closes at the end of week 6; the final survey is sent week 9 and closes at the end of week 10. Two sign-offs per year: Definition of Shipped (winter week 3) and Handoff confirmation (spring week 8, inside the handoff PDF).
+- Two surveys per term, peer and partner alike: the midterm pulse is sent week 5 and closes week 6; the final survey is sent week 9 and closes week 10. Two sign-offs per year: Definition of Shipped (winter week 3) and Handoff confirmation (spring week 8, inside the handoff PDF).
 - Canned emails for both sign-offs: state what the document is, that a reply-with-approval suffices, and the one-week window.
 - Non-responsive partner: after two documented attempts, mentor or instructor signs instead; the team is not penalized. This promise is in the handbook; honor it without friction.
 
@@ -219,11 +219,11 @@ Instructors carry no teams: calibration samples (RFC, defense, checkpoints), mod
 - [ ] Paste kit regenerated from `main`: `npm run build`, then `npm run canvas:export`, which writes `canvas-export/<term>/` with a body per entry, the rubric CSVs, the syllabus, and a README listing every entry's group, points, weight and due week
 - [ ] Canvas shells: rubrics imported from the `canvas/assignments/` CSVs (Canvas Rubrics page, Import), weights checked against the handbook tables
 - [ ] Every Canvas entry in each page's Submissions table created, never bundled: each sprint has its note and its Individual Contribution entry, 100 points each in the Sprint Notes group; group weights checked against the handbook tables
-- [ ] Term Startup: 100 points in its own Term Startup group (1%), text entry, group submission, due end of week 2 in fall and end of week 1 in winter and spring, with `term-startup/term-startup-rubric.csv` attached. TAs grade it complete or incomplete in the week it is due.
-- [ ] Fall only: Demo Day Registration created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due end of fall week 3. Announce the registration link with the five sessions
+- [ ] Term Startup: 100 points in its own Term Startup group (1%), text entry, group submission, due Sunday of week 2 in fall and Sunday of week 1 in winter and spring, with `term-startup/term-startup-rubric.csv` attached. TAs grade it complete or incomplete in the week it is due.
+- [ ] Fall only: Demo Day Registration created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due Sunday of fall week 3. Announce the registration link with the five sessions
 - [ ] Every term: an Extra Credit group (1%) holding one Demo Day Presentation entry, 100 points, no submission, group assignment. Enter 100 for each student on a team that presented that term; leave everyone else blank, never zero.
 - [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1), and the funds and cloud request form
-- [ ] Spring only: Engineering Expo created by hand (0 points, omit from final grade, text entry, group submission), due end of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
+- [ ] Spring only: Engineering Expo created by hand (0 points, omit from final grade, text entry, group submission), due Sunday of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] No survey carried over from last term: each run's survey and contact list are generated on the instructor tools pages (see Surveys)
 - [ ] Defense calibration hour scheduled; scoresheets printed
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)

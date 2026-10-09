@@ -125,8 +125,8 @@ are separate Canvas assignments with their own due dates and grades, however
 the page groups them for the reader. `docs/decisions/2026-09-23-canvas-entry-model.md`
 has the model; `peer_review_week` marks an entry using Canvas's own peer review.
 `due_label` replaces the weeks on the summary card where they mislead or run
-long ("End of each sprint", "Week 7 or 9"); the weeks still set the Canvas due
-dates.
+long ("Sunday of each sprint's second week", "Week 7 or 9"); the weeks still
+set the Canvas due dates.
 
 Eight rules the validators enforce, all of which have been gotten wrong before:
 

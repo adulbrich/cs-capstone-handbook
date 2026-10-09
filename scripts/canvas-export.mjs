@@ -27,6 +27,8 @@ import { EXIT, SKIP, visit } from "unist-util-visit";
 import { parse } from "yaml";
 import {
   canvasRows,
+  closesByInvitation,
+  dueWeeks,
   familyHeading,
   TERMS,
 } from "../src/lib/canvas-entries.mjs";
@@ -133,7 +135,7 @@ const otherTerm = (s, term) => {
 // career-retrospective are Canvas-owned (#197) and absent on purpose.
 const ZERO_POINT = [
   {
-    due: "Register by the end of fall week 3",
+    due: "Register by Sunday of fall week 3",
     name: "Demo Day Registration",
     page: "demo-day",
     submission: "Team; a screenshot of the registration confirmation",
@@ -141,7 +143,7 @@ const ZERO_POINT = [
     week: 3,
   },
   {
-    due: "Spring, end of week 10",
+    due: "Spring, Sunday of week 10",
     name: "Engineering Expo",
     page: "expo",
     submission: "Team; a short text entry",
@@ -555,11 +557,18 @@ function metaBox(e) {
       e.page === "project-partner-evaluation"
         ? "Completed by your project partner, not by you"
         : `${who}; ${kinds.map((k) => SUBMISSION[k] ?? k).join(" and ")}`;
-    due = kinds.includes("survey")
-      ? `${cap(e.term)}, closes end of week ${e.week}`
-      : `${cap(e.term)}, week ${e.week}`;
+    // A family due in one term only keeps its `due_label`, which may name a
+    // day other than Sunday ("Week 9, Wednesday before Thanksgiving"). The
+    // evaluation surveys keep the generated close line, so every evaluation
+    // survey body reads alike.
+    const invitation = closesByInvitation(e.page);
+    const oneTerm = Object.keys(e.family.weeks ?? {}).length === 1;
+    due =
+      e.family.due_label && oneTerm && !invitation
+        ? e.family.due_label
+        : `${cap(e.term)}, ${dueWeeks([e.week], { invitation })}`;
     if (e.family.peer_review_week) {
-      due += `; peer reviews end of week ${e.family.peer_review_week}`;
+      due += `; peer reviews ${dueWeeks([e.family.peer_review_week])}`;
     }
     weight = `${pct(e.weight)} of the ${e.term} grade`;
   }

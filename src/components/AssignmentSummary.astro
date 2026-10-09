@@ -47,7 +47,8 @@ const who =
   Astro.props.who ??
   (assignment.level === "individual" ? "Individual" : "Team");
 
-const rows = summaryRows(assignment.canvas).map((row) => ({
+const page = entry.id.split("/").pop();
+const rows = summaryRows(assignment.canvas, page).map((row) => ({
   ...row,
   rubric: rubricAnchor(row.family, headings),
   // The entry's own "###" under What You Submit, if the page has one.

@@ -126,6 +126,12 @@ const VOCABULARY = [
   { avoid: /\bstudent-driven\b/i, use: "student-proposed" },
   { avoid: /\bTrack [AB]\b/, use: "NDA project, with a local note" },
   {
+    // Readers disagree on which day a week ends, so a deadline names Sunday.
+    // The glossary names only fall; the rule rejects every term.
+    avoid: /\bend of (?:the |this )?(?:(?:fall|winter|spring) )?week\b/i,
+    use: '"by Sunday of week N", or the week alone for an evaluation survey\'s close',
+  },
+  {
     // Literal multiword phrases for instructors and TAs together. "The
     // instructors" stays legal, because a sentence about the faculty alone
     // (grade questions, late-work exceptions) must not widen to the TAs, and
