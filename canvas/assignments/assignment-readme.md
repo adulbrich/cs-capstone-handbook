@@ -20,6 +20,14 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Deadlines Name Sunday (#496)
+
+A submission due in a given week is due by Sunday of that week, stated once under Late Work on the Assignments Overview, and every page now names the day ("by Sunday of week 4"). Survey close lines name only the week ("sent week 5, closes week 6"), because each survey's invitation states its close date.
+
+- `bidding-survey/bidding-survey-rubric.csv`: the Complete band now gives Sunday of fall week 0 as the deadline. Points and tags are unchanged. Re-import it on the Bidding Survey entry.
+- Check that every entry's due date falls on the Sunday of its due week, the workshops' "until" dates included. The surveys keep the close date entered in the survey generator.
+- Re-paste from the paste kit the bodies whose text changed: in fall, Bidding Survey, Introduction Email, Demo Day Registration, and Repo Checkpoint 1; Term Startup in every term; RFC Draft + Peer Review and RFC Final Draft in fall and winter; every workshop; Demo Day Presentation in every term; the Midterm Survey, Midterm Pulse, and end-of-term survey bodies in every term; and the spring Engineering Expo. Re-paste the Assignments Overview and the three syllabi.
+
 ## Re-import Required: Living Docs Check the Constraints (#163)
 
 All four repo checkpoint CSVs: the Exceeds band of Living docs current and consistent with the code now has the spot-check confirm that `docs/requirements.md` lists, under Constraints, the limits the team did not choose. Points and tags are unchanged, and the row is still identical across the four.
@@ -78,9 +86,9 @@ No rubric changes. Re-paste the fall Introduction Email and Term Startup bodies:
 
 In CS 461 only:
 
-- Create a **Bidding Survey** group at 1% holding one **Bidding Survey** assignment: 100 points, individual, no submission, due at the end of fall week 0, graded Complete from the Qualtrics export. Fall week 0 is the partial week the term starts in, so the course has to be published when the term starts. Paste its body from the paste kit in place of the hand-written one, and import `bidding-survey/bidding-survey-rubric.csv` (Complete 100 / Incomplete 0).
+- Create a **Bidding Survey** group at 1% holding one **Bidding Survey** assignment: 100 points, individual, no submission, due Sunday of fall week 0, graded Complete from the Qualtrics export. Fall week 0 is the partial week the term starts in, so the course has to be published when the term starts. Paste its body from the paste kit in place of the hand-written one, and import `bidding-survey/bidding-survey-rubric.csv` (Complete 100 / Incomplete 0).
 - Lower the **RFC Draft** group from 5% to 4%. RFC Final stays at 10%, so the RFC is 14% in fall. Its entries, points, and rubrics are unchanged.
-- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due at the end of fall week 1, one submission per team, file upload of one PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%. Paste its body from the paste kit, and import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0).
+- Create the **Introduction Email** assignment in the existing **Term Startup** group, which stays at 1%: 25 points, due Sunday of fall week 1, one submission per team, file upload of one PDF. With the status report at 100 points, Canvas weights the email at 0.2% and the report at 0.8%. Paste its body from the paste kit, and import `term-startup/introduction-email-rubric.csv` (Complete 25 / Incomplete 0).
 - Re-paste the Term Startup body, the RFC Draft + Peer Review body (its weight line), the Assignments Overview (the grade grid gives Bidding Survey 1 and RFC 14 in fall), and the CS 461 syllabus.
 - The existing Term Startup assignment, its 100 points, and its rubric are unchanged. CS 462 and CS 463 are unchanged.
 
@@ -106,9 +114,9 @@ No rubric changes. Re-paste the Repo Checkpoint bodies (the risk register line n
 
 Sprint notes now run 1 to 12 across the year instead of restarting each term, so a sprint and its note carry one number all year. Fall is unchanged (Sprint Notes 1 to 4). In CS 462 rename Sprint Notes 1 to 5 as **Sprint Notes 5** to **Sprint Notes 9**, and each Individual Contribution entry with its note (Sprint Notes 1: Individual Contribution becomes **Sprint Notes 5: Individual Contribution**). Work from the highest number down, so old Sprint Notes 5 is already Sprint Notes 9 before old Sprint Notes 1 takes its name. In CS 463 rename Sprint Notes 1 to 3 as **Sprint Notes 10** to **Sprint Notes 12**, the same way. Re-paste those bodies from the paste kit, and re-paste the three syllabi, whose Team Deliverables line now names each term's sprint note numbers. Points, weights, due weeks, and rubrics are unchanged.
 
-## Canvas Changes: Resume and Intent Due at the End of Fall Week 1
+## Canvas Changes: Resume and Intent Due Sunday of Fall Week 1
 
-Resume and Intent is due at the end of fall week 1, a week earlier than before; the resume meetings still run by week 5. The co-instructor owns the entry, so its due date is set there. Re-paste the CS 461 syllabus, whose Individual Evidence row gives the new week.
+Resume and Intent is due Sunday of fall week 1, a week earlier than before; the resume meetings still run by week 5. The co-instructor owns the entry, so its due date is set there. Re-paste the CS 461 syllabus, whose Individual Evidence row gives the new week.
 
 ## Re-paste Required: Accessibility Checker (#329)
 
@@ -213,7 +221,7 @@ A contribution is owned work someone else accepted, wherever it lives: a merged 
 ## Canvas Changes: Workshops Named and Due That Week (#285)
 
 - Rename every workshop entry to its page title: **Workshop N: Activity Name**, as the Workshop Activities page's entries table lists them (fall "Workshop 1: User Story Mapping" to "Workshop 5: Identify Success Metrics", winter three, spring one).
-- A workshop earns credit only in class or by the end of the week its class happened. Set each entry's due date and "until" date to the end of that week, so no late submission is accepted. The end-of-term allowance is gone.
+- A workshop earns credit only in class or by Sunday of the week its class met. Set each entry's due date and "until" date to that Sunday, so no late submission is accepted. The end-of-term allowance is gone.
 - The rubric is unchanged.
 
 ## Canvas Changes: One Entry per Due Date (#259)
@@ -222,7 +230,7 @@ Each Canvas assignment has its own due date, late window, grade and submission, 
 
 | Canvas before #259 | Change | Rubric |
 |---|---|---|
-| RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due end of week 5, two reviews per student assigned by Canvas. | Import `rfc/rfc-draft-rubric.csv` (new) and `rfc/rfc-final-rubric.csv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
+| RFCs group (15%): RFC Draft + Peer Review, RFC Final Draft, 100 points each | Split into two groups: **RFC Draft** (5%) holding RFC Draft + Peer Review, **RFC Final** (10%) holding RFC Final Draft. Turn on Canvas peer review for the draft entry, reviews due Sunday of week 5, two reviews per student assigned by Canvas. | Import `rfc/rfc-draft-rubric.csv` (new) and `rfc/rfc-final-rubric.csv` (was `rfc-rubric-details.tsv`: Feedback given moved to the draft rubric, Revision now 15). |
 | Sprint Notes Individual Contributions, one 400-point entry | Delete it. Create **Sprint Notes 1: Individual Contribution** to **Sprint Notes 4: Individual Contribution**, 100 points each, in the Sprint Notes group, no submission, due with the matching note, full marks by Set Default Grade. Winter has 5, spring 3. | Import `individual-contribution/individual-contribution-rubric.csv` (one criterion, Full 100 / Half 50 / Zero 0) on every one. The three per-term TSVs are deleted. |
 | Workshop 1 to Workshop 5, 100 points each | No change to the entries. | Import `workshop-activities/workshop-activities-rubric.csv` (one criterion, Complete 100 / Incomplete 0) on every workshop entry, every term. The three per-term TSVs are deleted. |
 
@@ -270,7 +278,7 @@ section above).
 
 Four equal components (25% each): Project Partner Interactions (how the team works with the partner, scored by them: midterm pulse 5% + final survey 20%; the mentor, sometimes an instructor, stands in where a team has no partner), Peer Evaluation (midterm survey 5% + final survey 20%; the spring final is the CATME survey, on its own rubric), Individual Evidence (fall: Bidding Survey 1% + RFC 14% + Defense 8% + Resume and Intent 2%; winter: RFC 15% + Defense 10%; spring: Career and Individual Retrospective 15% + Defense 10%), and Team Deliverables (term-specific set with the individual contribution modifier).
 
-There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close at the end of week 6; final surveys are sent week 9 and close at the end of week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
+There are midterm and end-of-term peer evaluation surveys and project partner surveys every term; both now live in the handbook's Assignments section ([peer](https://capstone.alexulbrich.com/assignments/peer-evaluations/), [partner](https://capstone.alexulbrich.com/assignments/project-partner-evaluation/)). Midterm surveys are sent week 5 and close week 6; final surveys are sent week 9 and close week 10. Half of each Sprint Note's points are individual (see `individual-contribution/`).
 
 ## Four-Skills Pass (August 2026): What Changed in Canvas
 
@@ -427,7 +435,7 @@ Two assignment pages carry no points and no rubric, so there is nothing here to 
 | `omit_from_final_grade` | true |
 | Group | any; it contributes nothing, so the group choice does not affect the grade |
 | Submission type | file upload (screenshot of the registration confirmation) |
-| Due | end of fall week 3 |
+| Due | Sunday of fall week 3 |
 | Group assignment | yes, one submission per team |
 
 **Engineering Expo**, spring only:
@@ -439,7 +447,7 @@ Two assignment pages carry no points and no rubric, so there is nothing here to 
 | `omit_from_final_grade` | true |
 | Group | any; it contributes nothing, so the group choice does not affect the grade |
 | Submission type | text entry |
-| Due | end of spring week 10 |
+| Due | Sunday of spring week 10 |
 | Group assignment | yes, one submission per team |
 
 The zero points are the point: the item exists so the work reaches the student's Canvas to-do list and calendar, which the handbook schedule cannot do. Do not give any of them a rubric and do not put any of them in a weighted group's point total.

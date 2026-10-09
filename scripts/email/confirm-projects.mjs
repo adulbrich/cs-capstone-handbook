@@ -59,7 +59,7 @@ function partnerLetter({ name, projects }) {
     greeting: name ? `Dear ${name},` : "Hello,",
     intro:
       "We want to confirm with you the following list of projects and number of teams per project:",
-    outro: `Please let us know by ${args["reply-by"]}, if you want one or more projects cancelled or if you want to change the number of teams on a project. We are currently assigning students to teams. Students will reach out to you by the end of the week. We aim for 3-5 students per team, with a minimum of 3.`,
+    outro: `Please let us know by ${args["reply-by"]}, if you want one or more projects cancelled or if you want to change the number of teams on a project. We are currently assigning students to teams. Students will reach out to you by Sunday of week 1. We aim for 3-5 students per team, with a minimum of 3.`,
     projects,
   };
 }

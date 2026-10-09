@@ -362,7 +362,7 @@ often broken by an author trying to be helpful.
 Concretely, the body of a guide does not mention assignments, workshops,
 checkpoints, grades, terms, or weeks of the course. Not "your
 `docs/requirements.md` is checked at every repo checkpoint", not "this is the
-fall workshop", not "deploy the walking skeleton by the end of fall". Say what
+fall workshop", not "deploy the walking skeleton by fall week 10". Say what
 the practice is and why it matters, and let the reader decide when to apply it.
 
 Time in a guide is relative to the project, never to the course calendar. An

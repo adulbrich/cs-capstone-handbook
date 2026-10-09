@@ -133,7 +133,7 @@ const otherTerm = (s, term) => {
 // career-retrospective are Canvas-owned (#197) and absent on purpose.
 const ZERO_POINT = [
   {
-    due: "Register by the end of fall week 3",
+    due: "Register by Sunday of fall week 3",
     name: "Demo Day Registration",
     page: "demo-day",
     submission: "Team; a screenshot of the registration confirmation",
@@ -141,7 +141,7 @@ const ZERO_POINT = [
     week: 3,
   },
   {
-    due: "Spring, end of week 10",
+    due: "Spring, Sunday of week 10",
     name: "Engineering Expo",
     page: "expo",
     submission: "Team; a short text entry",
@@ -556,10 +556,10 @@ function metaBox(e) {
         ? "Completed by your project partner, not by you"
         : `${who}; ${kinds.map((k) => SUBMISSION[k] ?? k).join(" and ")}`;
     due = kinds.includes("survey")
-      ? `${cap(e.term)}, closes end of week ${e.week}`
+      ? `${cap(e.term)}, closes week ${e.week}`
       : `${cap(e.term)}, week ${e.week}`;
     if (e.family.peer_review_week) {
-      due += `; peer reviews end of week ${e.family.peer_review_week}`;
+      due += `; peer reviews by Sunday of week ${e.family.peer_review_week}`;
     }
     weight = `${pct(e.weight)} of the ${e.term} grade`;
   }
