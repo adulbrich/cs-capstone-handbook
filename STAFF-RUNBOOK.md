@@ -1,10 +1,10 @@
 # Staff Runbook
 
-Operational companion to the course design. Staff-facing; the student-facing rules live in the handbook (Assignments section). Numbers assume ~300 students, ~85 teams, 2 instructors, and **6 TAs** (the real ceiling). Every mechanism below is budgeted against that number; the TA-hours ledger at the bottom is the check.
+Operational companion to the course design. Staff-facing; the student-facing rules live in the handbook (Assignments section). Numbers assume ~230 students, 65 teams, 2 instructors, and **4 TAs**, about 16 teams each. Every mechanism below is budgeted against that number; the TA-hours ledger at the bottom is the check.
 
 ## TA Check-in Operations
 
-- Each TA owns ~14 teams. Check-ins are **in every sprint-note week, at a time the TA and the team agree**, plus fall week 2 and spring weeks 8 and 10, which have no note: five check-in weeks a term, 14 meetings at 25 to 30 minutes in each, about 7 hours, and none in the week between. The average is the same 3.5 hours a week; the shape is lumpy on purpose, so that every team demos the sprint it just finished and the TA grades the note against a demo seen that week (#23). Weekly per-team check-ins do not fit at 6 TAs; do not promise them.
+- Each TA owns ~16 teams. Check-ins are **in every sprint-note week, at a time the TA and the team agree**, plus fall week 2 and spring weeks 8 and 10, which have no note: five check-in weeks a term, 16 meetings at 25 to 30 minutes in each, about 8 hours, and none in the week between. The average is about 4 hours a week; the shape is lumpy on purpose, so that every team demos the sprint it just finished and the TA grades the note against a demo seen that week (#23). Weekly per-team check-ins do not fit at 4 TAs; do not promise them.
 - **Every check-in opens with the sprint demo, and every student on the team demos their own work** (2 to 3 minutes each, so 6 to 12 minutes for a team of three or four). This fits inside the existing 25-to-30-minute slot and does not extend it. What it displaces is open-ended coaching: after the demo, cover the team's top risk and the decision they need, and push everything else to async. If a team is running long, the demo is not the part to cut, because it is the only per-student live signal collected every sprint. Each student picks the artifact they demo, from their own contribution line for the sprint, and it cannot be the one they showed last time (see Check-in Format).
 - The defense is a **separate session in week 7 or 9**, the weeks with no check-ins, so the week-8 demo stays live (see Defense Logistics). An NDA checkpoint walkthrough is its own 15-minute slot in the checkpoint week, scheduled with the team, and never displaces a demo.
 - Demos are live. A video replaces one only when the student missed the check-in or you could not meet the team that week: on media.oregonstate.edu, unlisted, captioned, one timestamp per student, within 48 hours. Send back a video with no timestamps or no captions; it is not a per-student demo. Do not reschedule demos into another check-in: every check-in carries its own, so there is no spare slot.
@@ -68,19 +68,19 @@ An item fails for the team because the note is wrong or missing. An individual's
 
 | Weeks | Staff activity |
 |---|---|
-| 2, 4, 6, 8, 10 | Check-in weeks: 14 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
+| 2, 4, 6, 8, 10 | Check-in weeks: ~16 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
 | 1-2 | Team-to-TA assignments made; charters graded (TAs) |
 | 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; the week 5 repo checkpoint (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing end of week 6 |
-| 5 | All-hands demo day 1 (sampled lineup, ~15 teams in the hour) |
+| 5 | All-hands demo day, every term (every team registered for that session, 5 minutes each; length under Lecture Plan) |
 | 7 and 9 | Defense sessions, separate from check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
-| 9-10 | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing end of week 10; demo day 2 (fall and winter) |
+| 9-10 | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing end of week 10; the second demo day (fall and winter) |
 
 ## Defense Logistics
 
 - One calibration hour before week 7 each term: all graders score the same recorded or role-played walkthrough on the printed scoresheet and reconcile. Spend part of it on the Ownership-and-Delegation criterion specifically, because it is the one graders most often get backwards: **score the triage decision, not the luck.** A student who let an agent drive a schema migration with no checks scores low even though nothing broke; a student who stopped to validate an auth change scores high even with buggy feature code. Sophisticated tooling earns no points by itself, and a student on weaker tools who gated tightly has done the harder work. Spend a few minutes on the reviewer-side half of Communication as well, which is new: it asks what the student told someone whose work they reviewed and what changed because of it. "I left some comments" scores low; the discriminator is whether they can name the thing they said and the thing that moved. It is checkable against the RFC reviews in fall and winter and against sprint-note contribution lines in spring.
 - **Session length is 6 minutes per student plus ~10 minutes of setup and wrap.** Team of 2 = 22 min, 3 = 28, 4 = 34, 5 = 40, 6 = 46. Do not compress per-student time on a large team: the scoresheet anchors are calibrated at 6 minutes and stop comparing across TAs below that. The session simply runs longer. Book the slot from the roster before the cycle starts, since it is no longer a uniform 40 minutes.
-- Sessions run in **weeks 7 and 9**, which carry no check-ins, and are in addition to them: 14 sessions averaging about 31 minutes, **~7 h per TA per term** (#23). Fall week 9 is short (see Term Calendar), so most fall sessions land in week 7. Replacing the week-8 check-in instead would have been free, and was rejected because it turns every team's sprint-3 demo into a video and puts 14 defenses on top of RFC finals.
+- Sessions run in **weeks 7 and 9**, which carry no check-ins, and are in addition to them: ~16 sessions averaging about 31 minutes, **~8 h per TA per term** (#23). Fall week 9 is short (see Term Calendar), so most fall sessions land in week 7. Replacing the week-8 check-in instead would have been free, and was rejected because it turns every team's sprint-3 demo into a video and puts ~16 defenses on top of RFC finals.
 - **Anti-cueing protocol, mandatory.** Draw the speaking order at random in the room and never publish it in advance. Give each student a different artifact and a different "what breaks if X" question. The reviewer-side Communication question needs no variation: each student reviewed different work, so it is cueing-resistant by construction. Without this, whoever goes last has heard several rounds and is answering a question they have had ten minutes to prepare.
 - **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per group per term.
 - **A team is assessed by a TA or instructor who is not its regular TA, and the regular TA does not attend.** Presence defeats the independence the session buys. Pair TAs and swap rosters for the cycle: the total hours per TA are unchanged, because each still assesses about the same number of teams, but booking becomes a cross-product rather than each TA working down their own list, so do the pairing before the slots go out. Where two assessors attend, split the students between them.
@@ -91,7 +91,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 ## RFC Machinery
 
 - Pairing: Canvas peer review on the RFC Draft + Peer Review entry assigns each student two drafts at the start of week 5; staff do not pick the pairs. NDA students submit a sanitized draft or contact the instruction team, as the RFC page says.
-- Grading: TAs grade their teams' RFCs (~50 each per term in fall and winter, ~10 minutes each against the rubric; budget ~8 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
+- Grading: TAs grade their teams' RFCs (~57 each per term in fall and winter, ~10 minutes each against the rubric; budget ~9.5 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
 - Reviewer no-shows: the author is held harmless (the revision log takes the substitute staff review as its source); the no-show reviewer loses the feedback points.
 
 ## WIC Compliance (CS 462)
@@ -109,7 +109,7 @@ CS 462 is the certified Writing Intensive Curriculum course. This table holds th
 | 35% of the grade from writing assignments | Writing assignments are 30% of the winter grade, 38% if repo checkpoints (docs graded from the checkpoint PDF) count; the weights are on the assignments overview, in the grade grid, the RFC under Individual Evidence and the rest under Team Deliverables | Open (#60) |
 | Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final, plus a substitute review when a peer reviewer no-shows. Waiting on the WIC director | Open (#60) |
 | Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback through the revision log, one row per point with a decision (#348); its Source column already takes instruction-team feedback, so revision after instructor feedback waits only on the draft-feedback decision in #60 | Partial (#60) |
-| Student-to-instructor ratio of 25 to 1 or better | Two instructors, six TAs, about 300 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
+| Student-to-instructor ratio of 25 to 1 or better | Two instructors, four TAs, about 230 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
 | Instructor of record is not a graduate student | Faculty instructors | Met |
 | WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open (#60) |
 | Two distinct audiences and two writing types, one formal, with discipline-specific examples | RFC (formal, technical peers and staff); sprint notes (informal, staff); Definition of Shipped (partner contract). Examples: the RFC template, the ADR and requirements guides | Met |
@@ -179,30 +179,30 @@ Per run:
 
 ## Lecture Plan (Friday slot)
 
-Two hours are available; one is used. The slot carries demo days (fall and winter weeks 5 and 10, spring week 5), the workshops, and nothing else unless Canvas announces it. The week-by-week schedule on `introduction/schedule.mdx` is the one list of sessions, the nine graded workshops (#68) and the ungraded spring week-6 Resume Building session included; the fall week 0 welcome deck is `src/decks/fall-week-0.astro` and the week 1 team introductions deck `src/decks/fall-week-1.astro`, served at `/decks/fall-week-0/` and `/decks/fall-week-1/`. Every workshop runs the activity as its page describes, plus an optional second run with an AI agent (a skill such as brainstorming or wayfinder, or a structured prompt), and the team submits the output the activity page describes; there are no standalone AI sessions. Fall week 1 opens with teams seated together, so team assignments must be done before that Friday (bidding closes the Sunday of week 0). Decks to build are #51. Fall week 9 has no lecture. Spring week 10 holds the Expo; spring has one demo day so that each team demos once a year across the five demo days.
+The slot is 110 minutes. Workshops use 50 of them. Demo days (fall and winter weeks 5 and 10, spring week 5) run at five minutes per team, setup included, with questions only if time remains: the fall and winter ones use the full 110 minutes, and the spring one uses 50. The slot carries demo days, the workshops, and nothing else unless Canvas announces it. The week-by-week schedule on `introduction/schedule.mdx` is the one list of sessions, the nine graded workshops (#68) and the ungraded spring week-6 Resume Building session included; the fall week 0 welcome deck is `src/decks/fall-week-0.astro` and the week 1 team introductions deck `src/decks/fall-week-1.astro`, served at `/decks/fall-week-0/` and `/decks/fall-week-1/`. Every workshop runs the activity as its page describes, plus an optional second run with an AI agent (a skill such as brainstorming or wayfinder, or a structured prompt), and the team submits the output the activity page describes; there are no standalone AI sessions. Fall week 1 opens with teams seated together, so team assignments must be done before that Friday (bidding closes the Sunday of week 0). Decks to build are #51. Fall week 9 has no lecture. Spring week 10 holds the Expo; spring has one demo day so that each team demos once a year across the five demo days.
 
 To post a deck after the session, save it as a PDF: open `/decks/<file name>/?print-pdf` in Chrome, print, and choose Save as PDF with background graphics on; the deck sets the page size and margins itself. Each slide is one page with every fragment shown (#489). Post the PDF to Canvas beside the link: the live deck exposes one slide at a time to a screen reader, and the PDF holds every slide's text in order. A `<FrameSlide>` prints blank, since its page loads only when the slide is shown.
 
-## TA-Hours Ledger (per TA, per term, at 6 TAs / ~14 teams / ~50 students)
+## TA-Hours Ledger (per TA, per term, at 4 TAs / ~16 teams / ~57 students)
 
 The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 
 | Activity | Fall | Winter | Spring |
 |---|---|---|---|
-| Check-ins, five weeks a term (incl. demos) | ~35 h | ~35 h | ~35 h |
-| Sprint notes (pass/fail, ~5 min each) | ~5 h | ~6 h | ~3.5 h |
-| Repo checkpoints (~12 min per team, x2; an NDA team's walkthrough is a separate 15-minute slot instead) | ~6 h | ~6 h | n/a |
-| RFCs (~50 x ~10 min) | ~8 h | ~8 h | n/a |
-| Defense sessions (weeks 7 and 9, in addition to check-ins) + scoring, follow-ups, Canvas entry | ~9 h | ~9 h | ~9 h |
-| Term deliverable (charter / DoS + postmortem / spring set incl. release trailers) | ~5 h | ~5 h | ~7 h |
+| Check-ins, five weeks a term (incl. demos) | ~40 h | ~40 h | ~40 h |
+| Sprint notes (pass/fail, ~5 min each) | ~5.5 h | ~6.5 h | ~4 h |
+| Repo checkpoints (~12 min per team, x2; an NDA team's walkthrough is a separate 15-minute slot instead) | ~6.5 h | ~6.5 h | n/a |
+| RFCs (~57 x ~10 min) | ~9.5 h | ~9.5 h | n/a |
+| Defense sessions (weeks 7 and 9, in addition to check-ins) + scoring, follow-ups, Canvas entry | ~10 h | ~10 h | ~10 h |
+| Term deliverable (charter / DoS + postmortem / spring set incl. release trailers) | ~6 h | ~6 h | ~8 h |
 | Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
-| **Total** | **~69 h (~6.9 h/wk)** | **~70 h** | **~56 h** |
+| **Total** | **~79 h (~7.9 h/wk)** | **~80 h** | **~63 h** |
 
-The check-ins row is 14 teams x 5 check-in weeks x 30 minutes, all of it in the five check-in weeks of the term (about 7 h in a check-in week, none in between). The defense row is 14 sessions at 6 minutes per student plus buffer (about 7 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the 7 h is the price of keeping the week-8 demo live (#23). **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
+The check-ins row is 16 teams x 5 check-in weeks x 30 minutes, all of it in the five check-in weeks of the term (about 8 h in a check-in week, none in between). The defense row is 16 sessions at 6 minutes per student plus buffer (about 8 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the 8 h is the price of keeping the week-8 demo live (#23). **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
 
 The number that would break it is team size. At six or more students, 3 minutes each is 18 minutes and the rest of the agenda stops fitting. If a TA's teams are unusually large, either cap demo time at 2 minutes per student or extend those teams' slots and re-run this row.
 
-Check-in weeks run ~8 to 9 h (meetings plus note grading); weeks 7 and 9 carry ~3.5 h of defenses each; week 8 is the peak at ~11 h (check-ins, notes, RFC finals landing). Week 10 stays at check-in load because checkpoint 2 is graded in finals week; weeks 1 and 3 are nearly empty. This fits a standard 0.49 FTE appointment with headroom for office hours and admin. For comparison, the old design at 6 TAs meant ~200 fifteen-criterion progress-report gradings per TA per year before anything else.
+Check-in weeks run ~9 to 10 h (meetings plus note grading); weeks 7 and 9 carry ~4 h of defenses each; week 8 is the peak at ~12.5 h (check-ins, notes, RFC finals landing). Week 10 stays at check-in load because checkpoint 2 is graded in finals week; weeks 1 and 3 are nearly empty. This fits a standard 0.49 FTE appointment with headroom for office hours and admin. For comparison, the old design at 6 TAs meant ~200 fifteen-criterion progress-report gradings per TA per year before anything else.
 
 Instructors carry no teams: calibration samples (RFC, defense, checkpoints), modifier and appeal adjudication, the four survey runs per term, partner communication, lectures, and demo days.
 
