@@ -91,7 +91,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 ## RFC Machinery
 
 - Pairing: Canvas peer review on the RFC Draft + Peer Review entry assigns each student two drafts at the start of week 5; staff do not pick the pairs. NDA students submit a sanitized draft or contact the instruction team, as the RFC page says.
-- Grading: TAs grade their teams' RFCs (~50 each per term in fall and winter, ~10 minutes each against the rubric; budget ~8 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
+- Grading: TAs grade their teams' RFCs (~57 each per term in fall and winter, ~10 minutes each against the rubric; budget ~9.5 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
 - Reviewer no-shows: the author is held harmless (the revision log takes the substitute staff review as its source); the no-show reviewer loses the feedback points.
 
 ## WIC Compliance (CS 462)
