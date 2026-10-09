@@ -132,6 +132,12 @@ const VOCABULARY = [
     use: '"by Sunday of week N", or the week alone for an evaluation survey\'s close',
   },
   {
+    // "No late penalty" reads as "nothing happens if you're late" until the
+    // next sentence says zero; a rule names its late window instead.
+    avoid: /\blate penalt(?:y|ies)\b/i,
+    use: '"late window" ("no late window"), or the consequence itself',
+  },
+  {
     // Literal multiword phrases for instructors and TAs together. "The
     // instructors" stays legal, because a sentence about the faculty alone
     // (grade questions, late-work exceptions) must not widen to the TAs, and

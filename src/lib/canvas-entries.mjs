@@ -213,3 +213,57 @@ function familyName(family, rows) {
       : termList(numbers.map(String));
   return family.name.replace("{n}", span).replace(TITLE_SUFFIX_RE, "");
 }
+
+// What a late or missed entry costs, by its family's `late` key. Stated once
+// here, so the summary card, the Canvas box, and the late-work table on
+// assignments/introduction.mdx cannot disagree. `label` names the rule's row
+// in that table. `none` is an entry with nothing to submit of its own (the
+// sprint's individual contribution, which follows its note), and shows
+// nothing anywhere.
+export const LATE = {
+  "class-week": {
+    label: "Workshops",
+    text: "Full credit in class or by Sunday of the week the class met; no late window after that.",
+  },
+  none: { label: null, text: null },
+  "not-accepted": {
+    label: "Sprint notes",
+    text: "Not accepted late; a missed note scores zero. One missed note per term with a documented reason is excused on request.",
+  },
+  session: {
+    label: "Defense",
+    text: "Tell your TA before the session and you're rescheduled that term, with no penalty. An unexcused no-show scores Missing.",
+  },
+  standard: {
+    label: "Most submissions",
+    text: "Up to 48 hours late loses one rubric band on each criterion. After that it scores zero, unless you contacted the instructors before the deadline with a documented reason.",
+  },
+  "survey-closes": {
+    label: "Surveys",
+    text: "No late window: the survey closes at its posted time.",
+  },
+};
+
+// The late lines for a page's summary card. One line, naming no entries,
+// when every entry that has a rule shares it; one line per rule, naming the
+// entries it covers, when a page carries two or more. Entries are named as on
+// the card ("Sprint Notes 1 to 12"), families sharing a name once, and joined
+// by commas, since a name may hold an "and" of its own ("Draft 1 and 2").
+/** @returns {{ names: string | null, text: string }[]} */
+export function lateLines(canvas) {
+  const rows = canvasRows(canvas);
+  const byRule = new Map();
+  for (const family of canvas ?? []) {
+    if (family.late === "none") {
+      continue;
+    }
+    const sameName = rows.filter((r) => r.family.name === family.name);
+    const names = byRule.get(family.late) ?? new Set();
+    names.add(familyName(family, sameName));
+    byRule.set(family.late, names);
+  }
+  return [...byRule].map(([rule, names]) => ({
+    names: byRule.size > 1 ? [...names].join(", ") : null,
+    text: LATE[rule].text,
+  }));
+}

@@ -104,6 +104,7 @@ assignment:
       weight: <the family's percent of the term grade>
       points: 100
       submission: pdf | video | url | image | survey | text | none, or a list
+      late: standard | not-accepted | class-week | survey-closes | session | none
       rubric: <dir>/<name>-rubric.csv
 ---
 ```
@@ -128,7 +129,17 @@ has the model; `peer_review_week` marks an entry using Canvas's own peer review.
 long ("Sunday of each sprint's second week", "Week 7 or 9"); the weeks still
 set the Canvas due dates.
 
-Eight rules the validators enforce, all of which have been gotten wrong before:
+`late` is required on every family: what a late or missed entry costs. Each
+value's wording lives once, in `LATE` in `src/lib/canvas-entries.mjs`, and
+the summary card, the entry's Canvas box (its Late work row), and the table
+on `assignments/introduction.mdx` all render it. `standard` is the 48-hour
+rule most submissions follow; `not-accepted` is the sprint note's;
+`class-week` the workshops'; `survey-closes` every survey's; `session` the
+Defense's; and `none`, which shows nothing, is for an entry with nothing to
+submit of its own that follows another (the individual contribution). A new
+rule is a new key there, never a sentence on the page.
+
+Nine rules the validators enforce, all of which have been gotten wrong before:
 
 1. **`outcomes` counts must equal the number of CSV criteria carrying that
    tag.** `scripts/validate-outcomes.mjs` parses the Criteria Name column of
@@ -163,6 +174,10 @@ Eight rules the validators enforce, all of which have been gotten wrong before:
    is rendered on the page and every rendered CSV belongs to a family; every
    `###` under Rubric names a family, and the family `###`s under What You
    Submit, if any, match them.
+9. **`late` fits the submission.** Every family has a known `late` key;
+   `none` and `session` only with `submission: none`, and `survey-closes`
+   only with `survey`. The check runs one way: a survey may take another
+   rule.
 
 A page with no `assignment:` block is skipped by the validator entirely: no
 rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages
@@ -209,6 +224,11 @@ required; `validate-outcomes.mjs` checks the order.
      modifier"; "Completed by your project partner, not by you").
    - The slot is optional and holds **one** qualifying clause, in MDX.
      Anything longer belongs in the intro prose.
+   - The card ends on the late rule, from each family's `late` key: after
+     the slot when there is one, alone when there is none. A `none` family
+     adds nothing, so Sprint Notes shows only the note's rule; a page whose
+     families carry two different rules gets one line each, naming its
+     entries. Never restate the rule in the slot or the prose.
    - Nothing on the card is typed by hand. A due date the weeks state badly
      goes in the family's `due_label`.
 
@@ -253,9 +273,12 @@ required; `validate-outcomes.mjs` checks the order.
    `:::note[If your project is under NDA]`.
 
 6. **`## Rubric`**, exactly that, whose table is a `<RubricTable>` rather than
-   Markdown. Prose belongs under it: per-criterion grading notes and any late
-   or non-submission rule. One sentence may precede the table where it frames
-   the whole rubric. See **The Rubric Lives in the CSV** and **Rubric Rules**.
+   Markdown. Prose belongs under it: per-criterion grading notes and the
+   page's own consequences for not completing it (the Bidding Survey's
+   placement without your input), stated in place with no link to the late
+   policy; the late rule itself is the card's. One sentence may precede the
+   table where it frames the whole rubric. See **The Rubric Lives in the
+   CSV** and **Rubric Rules**.
 
 7. **`## Activities That Prepare This`.** The shared recommendations first,
    naming the criterion each one serves. Then, where projects actually

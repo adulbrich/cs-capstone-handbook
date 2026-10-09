@@ -3,6 +3,7 @@ import { docsLoader, i18nLoader } from "@astrojs/starlight/loaders";
 import { docsSchema, i18nSchema } from "@astrojs/starlight/schema";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { LATE } from "./lib/canvas-entries.mjs";
 
 // The sources registry: one YAML file per cited source, named by its id
 // (`src/data/sources/edmondson-1999.yaml` is `<Cite id="edmondson-1999" />`).
@@ -51,6 +52,13 @@ const SUBMISSIONS = [
   "text",
   "none",
 ] as const;
+
+// An entry's late rule, one of the keys of LATE, which holds each rule's
+// wording; validate-outcomes.mjs checks the same keys for pre-commit.
+const LATE_RULES = Object.keys(LATE) as [
+  keyof typeof LATE,
+  ...(keyof typeof LATE)[],
+];
 
 const sources = defineCollection({
   loader: glob({ base: "./src/data/sources", pattern: "*.yaml" }),
@@ -111,6 +119,9 @@ export const collections = {
                     due_label: text().optional(),
                     // Canvas assignment group; weights live on groups.
                     group: text(),
+                    // What a late or missed entry costs; the wording lives in
+                    // LATE in src/lib/canvas-entries.mjs.
+                    late: z.enum(LATE_RULES),
                     // Exact Canvas name; "{n}" numbers a family 1, 2, ...
                     name: text(),
                     // "year" continues "{n}" across terms (Sprint Notes 1
