@@ -78,6 +78,9 @@ const { Deck, title } = Astro.props;
         hash: true,
         height: 1080,
         margin: 0,
+        // A PDF (?print-pdf) gets one page per slide with every fragment
+        // shown, not one page per fragment step.
+        pdfSeparateFragments: false,
         plugins: [Notes],
         progress: true,
         slideNumber: false,
