@@ -316,8 +316,8 @@ The rules below are about its content.
   in `## Rubric`, and its outcome counts are the sum across them.
 - **Three to six criteria is the working range.** Fewer than three cannot
   discriminate. More is allowed when each criterion is a separable
-  observable check and the grading cost is accepted: at ~300 students and
-  6 TAs every criterion is a line a grader reads on every submission, so
+  observable check and the grading cost is accepted: at ~230 students and
+  4 TAs every criterion is a line a grader reads on every submission, so
   say in the commit why the extra ones earn it. `rfc.mdx` (eight on the final) and
   `team-charter.mdx` (seven) are the standing examples (#27, decided
   2026-09-14).
