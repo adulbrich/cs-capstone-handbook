@@ -20,6 +20,14 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Living Docs Check the Constraints (#163)
+
+All four repo checkpoint CSVs: the Exceeds band of Living docs current and consistent with the code now has the spot-check confirm that `docs/requirements.md` lists, under Constraints, the limits the team did not choose. Points and tags are unchanged, and the row is still identical across the four.
+
+- `repo-checkpoint/repo-checkpoint-1-rubric.csv`: re-import it on Repo Checkpoint 1 before fall week 5. If the #481 re-import below has not run yet, one import covers both.
+- `repo-checkpoint/repo-checkpoint-2-rubric.csv` to `repo-checkpoint-4-rubric.csv`: they take the change at the imports #474 already schedules, Repo Checkpoint 2 before fall week 10, 3 and 4 before winter.
+- Re-paste all four Repo Checkpoint bodies: the `docs/requirements.md` entry under What You Produce now names the constraints, and the Living docs grading note under Rubric checks them.
+
 ## Re-import Required: Repo Checkpoint 1 Gate and Build Health (#481, #459)
 
 Points and tags are unchanged in all four files.
