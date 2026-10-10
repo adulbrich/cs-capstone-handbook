@@ -44,7 +44,7 @@ const all = (n, value) =>
   Array.from({ length: n }, () => Array.from({ length: n }, () => value));
 
 // A worked example, team of 4. Kea1's three teammates rate them, in rubric
-// order (Contributing, Interacting, Keeping on track, Expecting quality,
+// order (Contributing, Interacting, Keeping on Track, Expecting Quality,
 // Skills):
 //   Kea2: 5 4 3 5 2
 //   Kea3: 4 4 4 5 3
@@ -159,7 +159,7 @@ test("a CATME dimension column the rubric does not rate stops the run", () => {
   const fewer = {
     ...catmeRubric,
     criteria: catmeRubric.criteria.filter(
-      (c) => c.title !== "Expecting quality"
+      (c) => c.title !== "Expecting Quality"
     ),
   };
   const parsed = parsePeerExport(exportCsv(workedExample(), CATME), {
