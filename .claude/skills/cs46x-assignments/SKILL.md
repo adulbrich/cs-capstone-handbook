@@ -137,7 +137,9 @@ rule most submissions follow; `not-accepted` is the sprint note's;
 `class-week` the workshops'; `survey-closes` every survey's; `session` the
 Defense's; and `none`, which shows nothing, is for an entry with nothing to
 submit of its own that follows another (the individual contribution). A new
-rule is a new key there, never a sentence on the page.
+rule is a new key in `LATE`, with its `needs` if it fits only one
+submission, plus its row in `ORDER` in `src/components/LateWorkTable.astro`
+(the build fails without one), never a sentence on the page.
 
 Nine rules the validators enforce, all of which have been gotten wrong before:
 
@@ -175,9 +177,9 @@ Nine rules the validators enforce, all of which have been gotten wrong before:
    `###` under Rubric names a family, and the family `###`s under What You
    Submit, if any, match them.
 9. **`late` fits the submission.** Every family has a known `late` key;
-   `none` and `session` only with `submission: none`, and `survey-closes`
-   only with `survey`. The check runs one way: a survey may take another
-   rule.
+   `none` and `session` only with `submission: none` alone, and
+   `survey-closes` only with `survey` alone (each rule's `needs` in
+   `LATE`). The check runs one way: a survey may take another rule.
 
 A page with no `assignment:` block is skipped by the validator entirely: no
 rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages

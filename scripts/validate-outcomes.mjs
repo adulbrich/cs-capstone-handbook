@@ -481,23 +481,16 @@ for (const dir of readdirSync(CANVAS_DIR)) {
 // arithmetic: an assignment group weights its entries by points, so within a
 // group every entry must carry the same weight per point.
 const TOLERANCE = 1e-6;
-// The late rules that fit only some submissions, and the submission each
-// needs: a rule for a session or for nothing to submit means nothing is
-// handed in, and a survey's close fits only a survey. One way only: a survey
-// may still take another rule.
-const LATE_NEEDS = {
-  none: "none",
-  session: "none",
-  "survey-closes": "survey",
-};
-// Why a family's `late` key is wrong, or undefined. The content schema checks
-// the key too, but this runs at pre-commit, without the build.
-function lateProblem(family) {
+// Why a family's `late` key is wrong, or undefined: unknown, or a rule whose
+// `needs` (in LATE) is not the family's only submission. One way only: a
+// survey may still take another rule. The content schema checks the key too,
+// but this runs at pre-commit, without the build.
+function lateError(family) {
   if (!Object.hasOwn(LATE, family.late ?? "")) {
     return `has late: ${family.late ?? "(missing)"}; use one of ${Object.keys(LATE).join(", ")}.`;
   }
-  const needs = LATE_NEEDS[family.late];
-  if (needs && ![family.submission].flat().includes(needs)) {
+  const { needs } = LATE[family.late];
+  if (needs && [family.submission].flat().join() !== needs) {
     return `has late: ${family.late}, which needs submission: ${needs}.`;
   }
 }
@@ -536,9 +529,9 @@ for (const [slug, assignment] of pages) {
       console.error(`CANVAS ${file}: entry "${family.name}" names no rubric.`);
       failed = true;
     }
-    const late = lateProblem(family);
-    if (late) {
-      console.error(`CANVAS ${file}: entry "${family.name}" ${late}`);
+    const lateErr = lateError(family);
+    if (lateErr) {
+      console.error(`CANVAS ${file}: entry "${family.name}" ${lateErr}`);
       failed = true;
     }
     for (const term of Object.keys(family.weeks ?? {})) {

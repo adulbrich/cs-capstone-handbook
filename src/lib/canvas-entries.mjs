@@ -217,21 +217,24 @@ function familyName(family, rows) {
 // What a late or missed entry costs, by its family's `late` key. Stated once
 // here, so the summary card, the Canvas box, and the late-work table on
 // assignments/introduction.mdx cannot disagree. `label` names the rule's row
-// in that table. `none` is an entry with nothing to submit of its own (the
-// sprint's individual contribution, which follows its note), and shows
-// nothing anywhere.
+// in that table. `needs` is the one submission a rule fits, where it fits
+// only one: a session or nothing to submit means nothing is handed in, and a
+// survey's close fits only a survey (validate-outcomes.mjs checks it). `none`
+// is an entry with nothing to submit of its own (the sprint's individual
+// contribution, which follows its note), and shows nothing anywhere.
 export const LATE = {
   "class-week": {
     label: "Workshops",
     text: "Full credit in class or by Sunday of the week the class met; no late window after that.",
   },
-  none: { label: null, text: null },
+  none: { label: null, needs: "none", text: null },
   "not-accepted": {
     label: "Sprint notes",
     text: "Not accepted late; a missed note scores zero. One missed note per term with a documented reason is excused on request.",
   },
   session: {
     label: "Defense",
+    needs: "none",
     text: "Tell your TA before the session and you're rescheduled that term, with no penalty. An unexcused no-show scores Missing.",
   },
   standard: {
@@ -240,7 +243,8 @@ export const LATE = {
   },
   "survey-closes": {
     label: "Surveys",
-    text: "No late window: the survey closes at its posted time.",
+    needs: "survey",
+    text: "No late window: the survey can't be submitted after it closes.",
   },
 };
 
@@ -257,7 +261,9 @@ export function lateLines(canvas) {
     if (family.late === "none") {
       continue;
     }
-    const sameName = rows.filter((r) => r.family.name === family.name);
+    const sameName = rows.filter(
+      (r) => r.family.name === family.name && r.family.late === family.late
+    );
     const names = byRule.get(family.late) ?? new Set();
     names.add(familyName(family, sameName));
     byRule.set(family.late, names);
