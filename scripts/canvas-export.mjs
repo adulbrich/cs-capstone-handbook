@@ -30,6 +30,7 @@ import {
   closesByInvitation,
   dueWeeks,
   familyHeading,
+  LATE,
   TERMS,
 } from "../src/lib/canvas-entries.mjs";
 import { parseFrontmatter } from "./lib/content.mjs";
@@ -89,7 +90,7 @@ A \`WARN\` line means a page-specific cut or rewrite in \`OVERRIDES\` no longer 
 
 The handbook page for that entry, with:
 
-- a link to the handbook page on top, then a Submission / Due / Weight box for this entry, replacing the page's own meta box and its Canvas-entries table;
+- a link to the handbook page on top, then a Submission / Due / Weight / Late work box for this entry (no Late work row on the hard-coded Demo Day and Expo entries, or where the entry has nothing to submit of its own), replacing the page's own meta box and its Canvas-entries table;
 - rubric tables removed, since Canvas shows the attached rubric below the body; prose under a rubric heading stays under **Grading**, an empty rubric heading goes; a single criterion shown in the body's prose (RubricCriterion, the spring outcome ladder) stays;
 - links made absolute, tabs reduced to this term's panel, math kept as MathML.
 
@@ -540,6 +541,9 @@ function metaBox(e) {
   let submission;
   let due;
   let weight;
+  // The entry's late rule, from the frontmatter alone: the hard-coded
+  // entries above (zero-point and extra credit) carry none.
+  let late = null;
   if (e.zero) {
     ({ submission, due } = e);
     weight = "No points; it does not change your grade";
@@ -571,12 +575,17 @@ function metaBox(e) {
       due += `; peer reviews ${dueWeeks([e.family.peer_review_week])}`;
     }
     weight = `${pct(e.weight)} of the ${e.term} grade`;
+    if (!Object.hasOwn(LATE, e.family.late ?? "")) {
+      throw new Error(`${e.page}/${e.name}: no known late rule`);
+    }
+    late = LATE[e.family.late].text;
   }
   return h("div", { style: BOX }, [
     h("dl", { style: "margin:0;" }, [
       ...row("Submission", submission),
       ...row("Due", due),
       ...row("Weight", weight),
+      ...(late ? row("Late work", late) : []),
     ]),
   ]);
 }

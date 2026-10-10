@@ -15,7 +15,8 @@
 // that each page imports the CSVs that belong to it rather than another
 // assignment's, which Vite cannot catch because both paths resolve, and that
 // each page's `assignment.canvas` entries reconcile with its weight and the
-// rubrics it renders (the Canvas entry model record in docs/decisions/).
+// rubrics it renders (the Canvas entry model record in docs/decisions/), and
+// that each entry's `late` rule is known and fits its submission.
 //
 // Run: node scripts/validate-outcomes.mjs
 
@@ -26,6 +27,7 @@ import {
   canvasRows,
   familyHeading,
   isTitled,
+  LATE,
   TERMS,
   termWeight,
 } from "../src/lib/canvas-entries.mjs";
@@ -479,6 +481,19 @@ for (const dir of readdirSync(CANVAS_DIR)) {
 // arithmetic: an assignment group weights its entries by points, so within a
 // group every entry must carry the same weight per point.
 const TOLERANCE = 1e-6;
+// Why a family's `late` key is wrong, or undefined: unknown, or a rule whose
+// `needs` (in LATE) is not the family's only submission. One way only: a
+// survey may still take another rule. The content schema checks the key too,
+// but this runs at pre-commit, without the build.
+function lateError(family) {
+  if (!Object.hasOwn(LATE, family.late ?? "")) {
+    return `has late: ${family.late ?? "(missing)"}; use one of ${Object.keys(LATE).join(", ")}.`;
+  }
+  const { needs } = LATE[family.late];
+  if (needs && [family.submission].flat().join() !== needs) {
+    return `has late: ${family.late}, which needs submission: ${needs}.`;
+  }
+}
 // term -> group -> weight per point of the first entry seen, and where.
 const groupRates = new Map();
 // term -> "group / entry name" -> page that declared it.
@@ -512,6 +527,11 @@ for (const [slug, assignment] of pages) {
       }
     } else {
       console.error(`CANVAS ${file}: entry "${family.name}" names no rubric.`);
+      failed = true;
+    }
+    const lateErr = lateError(family);
+    if (lateErr) {
+      console.error(`CANVAS ${file}: entry "${family.name}" ${lateErr}`);
       failed = true;
     }
     for (const term of Object.keys(family.weeks ?? {})) {

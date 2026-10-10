@@ -20,12 +20,19 @@
  * little ("Team, with an individual half"). The optional slot holds one
  * qualifying clause, as on AssignmentMeta.
  *
+ * The card ends on the late rule, from each family's `late` key and its
+ * wording in `LATE` (src/lib/canvas-entries.mjs): after the slot when the
+ * page has one, alone when it has none. Entries with `late: none` add
+ * nothing. A page whose entries carry two or more rules gets one line per
+ * rule, naming the entries it covers.
+ *
  * Accessibility: the rows are a list, the header is a paragraph, and colors
  * come from Starlight's custom properties, so both themes keep their
  * contrast ratios. Nothing here is a heading.
  */
 import {
   headingUnder,
+  lateLines,
   pageTerms,
   pageWeight,
   rubricAnchor,
@@ -57,6 +64,7 @@ const rows = summaryRows(assignment.canvas, page).map((row) => ({
 // A one-row card already states the row's weight in its header line.
 const showWeight = rows.length > 1 || rows.some((row) => row.repeats);
 const hasNote = Astro.slots.has("default");
+const late = lateLines(assignment.canvas);
 // The root keeps the "assignment-meta" class because scripts/canvas-export.mjs
 // strips it: each Canvas entry gets its own meta box there, built from the
 // same frontmatter.
@@ -108,9 +116,20 @@ const hasNote = Astro.slots.has("default");
     }
   </ul>
   {
-    hasNote && (
+    (hasNote || late.length > 0) && (
       <div class="assignment-summary__note">
-        <slot />
+        {hasNote && <slot />}
+        {late.map((line) => (
+          <p class="assignment-summary__late">
+            {line.names ? (
+              <>
+                <strong>{line.names}:</strong> {line.text}
+              </>
+            ) : (
+              line.text
+            )}
+          </p>
+        ))}
       </div>
     )
   }
@@ -194,6 +213,14 @@ const hasNote = Astro.slots.has("default");
   .assignment-summary__note :global(p) {
     color: var(--sl-color-gray-2);
     margin: 0;
+  }
+  /* The note's clause, then each late line, each on its own line. */
+  .assignment-summary__note :global(*) + .assignment-summary__late {
+    margin-block-start: 0.25rem;
+  }
+  .assignment-summary__late strong {
+    color: var(--sl-color-white);
+    font-weight: 600;
   }
 
   @media (prefers-contrast: more) {

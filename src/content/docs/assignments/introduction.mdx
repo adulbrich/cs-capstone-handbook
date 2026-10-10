@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import GradeGrid from '/src/components/GradeGrid.astro';
+import LateWorkTable from '/src/components/LateWorkTable.astro';
 
 This page holds the rules every assignment shares: how each term's grade is built, how to submit, how rubrics score your work, late work, AI use, and TA check-ins. An assignment's own page says what is due, when, and how it is scored, and notes any exception to these rules.
 
@@ -93,14 +94,7 @@ Rubric criteria also carry learning outcome tags, `SO1` through `SO6` and `L07` 
 
 Submissions are due at the posted time. A submission due in a given week is due by Sunday of that week, unless its page names another day; the peer and partner evaluation surveys close on the date their invitation states. Planned conflicts (interviews, travel) need at least 48 hours' notice.
 
-| Work | If it's late or missed |
-|---|---|
-| Most submissions | Up to 48 hours late loses one rubric band on each criterion (Exceeds grades as Meets, and so on). Beyond 48 hours it scores zero, unless you contacted the instructors before the deadline with a documented reason. |
-| Sprint notes | Not accepted late: a note is pass/fail evidence of the sprint that just happened, so a missed note scores zero. One missed note with a documented reason per term is excused on request. |
-| Workshops | Credit only when done in class or by Sunday of the week the class met. A [workshop](/assignments/workshop-activities/) submitted after that week scores zero. |
-| Defense | If you're sick or absent, tell your TA before the session and you'll be rescheduled that term, with no penalty. An unexcused no-show scores zero on your individual defense. |
-| Demos | Send your TA a video of your segment within 48 hours, recorded as the [demo cadence](/assignments/sprint-notes/#demo-cadence) describes; it costs you nothing. Every check-in carries its own demo, so there is no spare slot to reschedule into. |
-| Surveys | The peer and partner surveys' completion penalties are on their pages. A survey can't be made up after it closes: the peer and partner results feed grade computation, and the [Bidding Survey](/assignments/bidding-survey/) results form the teams. |
+<LateWorkTable>Send your TA a video of your segment within 48 hours, recorded as the [demo cadence](/assignments/sprint-notes/#demo-cadence) describes; it costs you nothing. Every check-in carries its own demo, so there is no spare slot to reschedule into.</LateWorkTable>
 
 For illness and emergencies, contact the instructors as soon as you reasonably can. The instructors will always find a path for a documented emergency; the one case they cannot recover is one they were never told about.
 

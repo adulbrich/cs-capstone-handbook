@@ -20,6 +20,14 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Each Assignment States Its Late Rule (#498)
+
+No rubric changes, so nothing to re-import. Every Canvas entry's box gains a fourth row, Late work, after Weight, generated from the `late` key each `assignment.canvas` family now carries; the wording of each rule lives once, in `src/lib/canvas-entries.mjs`, and the handbook's summary cards and the late-work table on the Assignments Overview read the same text. The Demo Day and Expo entries, which the paste kit hard-codes, gain no row, and neither do the Sprint Notes N: Individual Contribution entries, which have nothing to submit and follow their note.
+
+- Re-paste every body from the paste kit, in every term: each box changed. The Workshop, RFC, Defense, and Bidding Survey bodies also lost the sentence that pointed to the late policy (the Bidding Survey keeps what happens if it is not submitted), so the Workshop body has no Grading section any more.
+- Re-paste the three syllabi: each Late Assignments paragraph now gives the general rules, says each assignment states its own late rule at the top, and keeps the link to the handbook's table.
+- Re-paste the Assignments Overview: its late-work table now reads each rule's wording from the same source as the boxes.
+
 ## Re-import Required: Deadlines Name Sunday (#496)
 
 A submission due in a given week is due by Sunday of that week, stated once under Late Work on the Assignments Overview, and every page now names the day ("by Sunday of week 4"). The peer and partner evaluation surveys' close lines name only the week ("sent week 5, closes week 6"), because each invitation states its close date; the Bidding Survey is due by Sunday like any submission. The generated due lines follow the same rule: the summary card on each assignment page and the Due line in each paste-kit body now read "Sunday of week 4" (or "Fall, Sunday of week 4"), and "closes week 6" for the evaluation surveys.

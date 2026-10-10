@@ -1,0 +1,70 @@
+---
+/**
+ * LateWorkTable: the late-work table on assignments/introduction.mdx, a row
+ * per late rule, from the wording in `LATE` (src/lib/canvas-entries.mjs).
+ * The summary cards and the Canvas boxes read the same wording, so the table
+ * cannot drift from what each assignment states at its top.
+ *
+ * Demos have no `late` key, since a demo is part of a TA check-in rather than
+ * a Canvas entry, so their cell is written by hand in the default slot, in
+ * MDX: a link there is part of the page's Markdown, which
+ * starlight-links-validator checks, where a link in a string prop would not
+ * be.
+ *
+ * Usage in MDX:
+ *
+ *   import LateWorkTable from '/src/components/LateWorkTable.astro';
+ *
+ *   <LateWorkTable>Send your TA a video ... [demo cadence](/assignments/sprint-notes/#demo-cadence) ...</LateWorkTable>
+ *
+ * No class and no `not-content`, so Starlight styles it as the Markdown
+ * table it replaced.
+ */
+import { LATE } from "../lib/canvas-entries.mjs";
+
+// Row order, with the hand-written Demos row where "demos" stands. `none`
+// has no row: nothing to submit, nothing late.
+const ORDER = [
+  "standard",
+  "not-accepted",
+  "class-week",
+  "session",
+  "demos",
+  "survey-closes",
+] as const;
+// A rule added to LATE without a place here would silently miss the table.
+const missing = Object.keys(LATE).filter(
+  (key) => key !== "none" && !(ORDER as readonly string[]).includes(key)
+);
+if (missing.length > 0) {
+  throw new Error(`LateWorkTable: no row for late rule ${missing.join(", ")}`);
+}
+---
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Work</th>
+      <th scope="col">If it's late or missed</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      ORDER.map((key) =>
+        key === "demos" ? (
+          <tr>
+            <td>Demos</td>
+            <td>
+              <slot />
+            </td>
+          </tr>
+        ) : (
+          <tr>
+            <td>{LATE[key].label}</td>
+            <td>{LATE[key].text}</td>
+          </tr>
+        )
+      )
+    }
+  </tbody>
+</table>
