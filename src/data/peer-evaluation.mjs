@@ -25,11 +25,11 @@ export const criterionPrompts = {
  * rubric. The scorer (#6) tells a CATME export from a regular one by these.
  */
 export const catmeTags = {
-  "Contributing to the team's work": "Contributing",
-  "Expecting quality": "Quality",
-  "Having relevant knowledge, skills, and abilities": "Skills",
-  "Interacting with teammates": "Interacting",
-  "Keeping the team on track": "OnTrack",
+  "Contributing to the Team's Work": "Contributing",
+  "Expecting Quality": "Quality",
+  "Having Relevant Knowledge, Skills, and Abilities": "Skills",
+  "Interacting with Teammates": "Interacting",
+  "Keeping the Team on Track": "OnTrack",
 };
 
 /** The optional comment prompts, in survey order. */

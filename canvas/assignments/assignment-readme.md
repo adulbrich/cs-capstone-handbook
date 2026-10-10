@@ -20,6 +20,11 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Published CATME Anchors (#497)
+
+- `peer-evaluation/catme-rubric.csv`: every Rating Description is now Appendix B of Ohland et al. 2012, the behaviorally anchored version of CATME, and the dimension names take its capitalization. This replaces the #441 section's "the instruction team's behavioral anchors". Points, rating names, tags, and criteria descriptions are unchanged. Re-import it on the CS 463 End-of-Term Survey (CATME), and delete the old rubric from the course's rubric list if both are there.
+- Re-paste every Peer Evaluations body, in every term: the References list gains `[3]`, and the spring End-of-Term Survey (CATME) body also carries the rewritten CATME section.
+
 ## Re-paste Required: Each Assignment States Its Late Rule (#498)
 
 No rubric changes, so nothing to re-import. Every Canvas entry's box gains a fourth row, Late work, after Weight, generated from the `late` key each `assignment.canvas` family now carries; the wording of each rule lives once, in `src/lib/canvas-entries.mjs`, and the handbook's summary cards and the late-work table on the Assignments Overview read the same text. The Demo Day and Expo entries, which the paste kit hard-codes, gain no row, and neither do the Sprint Notes N: Individual Contribution entries, which have nothing to submit and follow their note.

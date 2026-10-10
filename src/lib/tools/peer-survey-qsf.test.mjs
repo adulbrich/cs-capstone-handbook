@@ -497,11 +497,11 @@ test("catme: the rubric's five dimensions, tags stripped, each with its export t
   assert.deepEqual(
     DIMENSIONS.map((dimension) => dimension.title),
     [
-      "Contributing to the team's work",
-      "Interacting with teammates",
-      "Keeping the team on track",
-      "Expecting quality",
-      "Having relevant knowledge, skills, and abilities",
+      "Contributing to the Team's Work",
+      "Interacting with Teammates",
+      "Keeping the Team on Track",
+      "Expecting Quality",
+      "Having Relevant Knowledge, Skills, and Abilities",
     ]
   );
   assert.deepEqual(TAGS, [
@@ -699,15 +699,21 @@ test("the picker lists every variant once, midterm first", () => {
   assert.equal(variantOrder[0], "midterm");
 });
 
-test("midterm and final output is byte-identical to the reviewed build", () => {
-  // SHA-256 of the file at a fixed seed and time, recorded before the
-  // instruments moved into INSTRUMENTS (#448), then regenerated when the
-  // CloseDate embedded field was added (#463): with that one field removed,
-  // the file hashes to the earlier values. A wording or rubric change
-  // changes them on purpose: regenerate and update the hashes then. The two
-  // SurveyEntry timestamps are written in local time, so they are blanked
-  // before hashing; the hash then holds in every time zone.
+test("every variant's output is byte-identical to the reviewed build", () => {
+  // SHA-256 of the file at a fixed seed and time. The midterm and final
+  // hashes were recorded before the instruments moved into INSTRUMENTS
+  // (#448), then regenerated when the CloseDate embedded field was added
+  // (#463): with that one field removed, the file hashes to the earlier
+  // values. The catme hashes pin the published CATME anchors (#497). A
+  // wording or rubric change changes them on purpose: regenerate and update
+  // the hashes then. The two SurveyEntry timestamps are written in local
+  // time, so they are blanked before hashing; the hash then holds in every
+  // time zone.
   const expected = {
+    "catme loop":
+      "0070edd4a060904920c011b9981cffacd4c220e608be7e660bbf9e9f803cf8ee",
+    "catme slots":
+      "efe2c1102b5efe22c6372a081c9bba9ce1654bcff57931e0bc64cc41f03107cb",
     "final loop":
       "323bd6fc2fbd70d589fa09a66fde93301ca4e23a5ac2542d8620913d16c0cbcf",
     "final slots":
@@ -724,7 +730,7 @@ test("midterm and final output is byte-identical to the reviewed build", () => {
         label: "CS 461",
         mode,
         now: NOW,
-        rubric: RUBRICS.regular,
+        rubric: rubricFor(variant),
         seed: 7,
         variant,
       })
