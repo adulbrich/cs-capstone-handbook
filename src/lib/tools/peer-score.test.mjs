@@ -114,6 +114,15 @@ test("ratings follow each rubric's bands: 12.5 a step on the regular, 3 = 85 on 
   );
 });
 
+test("a rated criterion whose 1 is not half its 5 is refused", () => {
+  const lowered = structuredClone(rubrics.catme);
+  lowered.criteria[0].ratings.find((r) => r.name === "Average of 1").points = 8;
+  assert.throws(
+    () => peerCriteria(lowered, "catme"),
+    /"Average of 1" must be worth 50% of "Average of 5".*8 of 20/
+  );
+});
+
 test("the distribution clamps the normalized share to [10, 40]", () => {
   assert.equal(distributionScore(1, 4).clamped, 10);
   assert.ok(Math.abs(distributionScore(1, 4).score - 85) < 1e-9);

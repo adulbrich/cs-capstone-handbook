@@ -461,6 +461,15 @@ test("every rated criterion of the regular rubric has a prompt, and no prompt is
   );
 });
 
+test("a rated criterion whose points do not rise from 1 to 5 stops the build", () => {
+  const typo = structuredClone(RUBRICS.catme);
+  typo.criteria[0].ratings.find((r) => r.name === "Average of 3").points = 1.7;
+  assert.throws(
+    () => ratedCriteria(typo),
+    /Contributing to the Team's Work.*must rise.*10, 13\.5, 1\.7, 18\.5, 20/
+  );
+});
+
 test("a criterion with some but not all of the five bands stops the build", () => {
   const broken = {
     criteria: [

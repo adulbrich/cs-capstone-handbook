@@ -129,7 +129,8 @@ const LEVELS = [1, 2, 3, 4, 5];
  * are "Average of 1" to "Average of 5". Each comes with its five rating
  * descriptions as the anchors and its five band points, both lowest first.
  * A criterion with no such band (the point distribution) is not rated; one
- * with some but not all is an error.
+ * with some but not all, or whose points do not rise from 1 to 5, is an
+ * error: the scorer reads its scale from those points (toScale).
  */
 export function ratedCriteria(rubric) {
   const rated = rubric.criteria.flatMap((criterion) => {
@@ -148,6 +149,11 @@ export function ratedCriteria(rubric) {
     const bands = LEVELS.map((n) =>
       criterion.ratings.find((r) => r.name === `Average of ${n}`)
     );
+    if (bands.some((band, i) => i > 0 && band.points <= bands[i - 1].points)) {
+      throw new Error(
+        `Rubric "${rubric.name}", criterion "${criterion.title}": the points must rise from "Average of 1" to "Average of 5" (${bands.map((band) => band.points).join(", ")}).`
+      );
+    }
     return [
       {
         anchors: bands.map((band) => band.description),

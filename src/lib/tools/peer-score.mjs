@@ -30,6 +30,13 @@ export function peerCriteria(rubric, instrument) {
     throw new Error(`Unknown peer instrument "${instrument}".`);
   }
   const rated = ratedCriteria(rubric);
+  for (const { points, title } of rated) {
+    if (points[0] * 100 !== points.at(-1) * NON_COMPLETION_SCORE) {
+      throw new Error(
+        `The ${rubric.name} rubric, criterion "${title}": "Average of 1" must be worth ${NON_COMPLETION_SCORE}% of "Average of 5", so a rating of 1 scores ${NON_COMPLETION_SCORE} like a non-completer (${points[0]} of ${points.at(-1)}).`
+      );
+    }
+  }
   const titles = new Set(rated.map((c) => c.title));
   const others = rubric.criteria.filter((c) => !titles.has(c.title));
   const expected = instruments[instrument].split ? 1 : 0;
@@ -79,13 +86,15 @@ const TOLERANCE = 1e-6;
 /**
  * A 1 to 5 rating (or mean) on the 50 to 100 scale, from the criterion's band
  * points, lowest first (ratedCriteria): straight lines between the bands,
- * the top band at 100. The regular rubric's bands give 1 = 50 to 5 = 100 in
- * steps of 12.5; CATME's put a 3 at 85.
+ * the top band at 100. peerCriteria holds the lowest band at half the top,
+ * so a 1 is 50, the non-completion score. The regular rubric's bands give
+ * 1 = 50 to 5 = 100 in steps of 12.5; CATME's put a 3 at 85.
  */
 export function toScale(rating, points) {
-  const low = Math.min(Math.floor(rating), points.length - 1);
+  const lowerRating = Math.min(Math.floor(rating), points.length - 1);
   const value =
-    points[low - 1] + (rating - low) * (points[low] - points[low - 1]);
+    points[lowerRating - 1] +
+    (rating - lowerRating) * (points[lowerRating] - points[lowerRating - 1]);
   return (100 * value) / points.at(-1);
 }
 
