@@ -31,7 +31,10 @@ export function peerCriteria(rubric, instrument) {
   }
   const rated = ratedCriteria(rubric);
   for (const { points, title } of rated) {
-    if (points[0] * 100 !== points.at(-1) * NON_COMPLETION_SCORE) {
+    if (
+      Math.abs(points[0] * 100 - points.at(-1) * NON_COMPLETION_SCORE) >
+      TOLERANCE
+    ) {
       throw new Error(
         `The ${rubric.name} rubric, criterion "${title}": "Average of 1" must be worth ${NON_COMPLETION_SCORE}% of "Average of 5", so a rating of 1 scores ${NON_COMPLETION_SCORE} like a non-completer (${points[0]} of ${points.at(-1)}).`
       );
