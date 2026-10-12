@@ -127,9 +127,9 @@ const LEVELS = [1, 2, 3, 4, 5];
 /**
  * The criteria a respondent rates, from a parsed rubric: those whose bands
  * are "Average of 1" to "Average of 5". Each comes with its five rating
- * descriptions, lowest first, as the anchors. A criterion with no such band
- * (the point distribution) is not rated; one with some but not all is an
- * error.
+ * descriptions as the anchors and its five band points, both lowest first.
+ * A criterion with no such band (the point distribution) is not rated; one
+ * with some but not all is an error.
  */
 export function ratedCriteria(rubric) {
   const rated = rubric.criteria.flatMap((criterion) => {
@@ -145,13 +145,13 @@ export function ratedCriteria(rubric) {
         `Rubric "${rubric.name}", criterion "${criterion.title}": a rated criterion needs exactly the bands "Average of 1" to "Average of 5".`
       );
     }
+    const bands = LEVELS.map((n) =>
+      criterion.ratings.find((r) => r.name === `Average of ${n}`)
+    );
     return [
       {
-        anchors: LEVELS.map(
-          (n) =>
-            criterion.ratings.find((r) => r.name === `Average of ${n}`)
-              .description
-        ),
+        anchors: bands.map((band) => band.description),
+        points: bands.map((band) => band.points),
         title: criterion.title,
       },
     ];

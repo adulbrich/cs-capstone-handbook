@@ -3,7 +3,8 @@
 // and CATME (its rubric's dimensions, no split). Pure: no DOM, no I/O.
 //
 // Per student, from what the teammates answered, self excluded:
-//   - each rated criterion: the mean rating received, 1 to 5 onto 50 to 100;
+//   - each rated criterion: the mean rating received, 1 to 5 onto 50 to 100
+//     along the criterion's band points (toScale);
 //   - the split (regular only): the mean share received, times N, divided by
 //     5, clamped to [10, 40], through 0.65 + 0.0225x - 0.00025x^2, times 100;
 //   - the score: the mean of those numbers.
@@ -75,8 +76,18 @@ export const PAIR_DIVERGENCE = 1.5;
 
 const TOLERANCE = 1e-6;
 
-/** A 1 to 5 rating (or mean) on the 50 to 100 scale: 1 = 50, 5 = 100. */
-export const toScale = (rating) => 50 + (rating - 1) * 12.5;
+/**
+ * A 1 to 5 rating (or mean) on the 50 to 100 scale, from the criterion's band
+ * points, lowest first (ratedCriteria): straight lines between the bands,
+ * the top band at 100. The regular rubric's bands give 1 = 50 to 5 = 100 in
+ * steps of 12.5; CATME's put a 3 at 85.
+ */
+export function toScale(rating, points) {
+  const low = Math.min(Math.floor(rating), points.length - 1);
+  const value =
+    points[low - 1] + (rating - low) * (points[low] - points[low - 1]);
+  return (100 * value) / points.at(-1);
+}
 
 /** The distribution multiplier, 0.85 at x = 10 to 1.15 at x = 40. */
 export const multiplier = (x) => 0.65 + 0.0225 * x - 0.000_25 * x * x;
@@ -342,7 +353,9 @@ function buildResult(ctx, email, { student, team }) {
   const teamSize = ctx.teams.get(team).length;
   const got = ctx.received.get(email);
   const means = got.ratings.map(mean);
-  const criterionScores = means.map((m) => (m === null ? null : toScale(m)));
+  const criterionScores = means.map((m, i) =>
+    m === null ? null : toScale(m, ctx.peer.rated[i].points)
+  );
   const meanShare = mean(got.shares);
   const distribution =
     meanShare === null ? null : distributionScore(meanShare, teamSize);
