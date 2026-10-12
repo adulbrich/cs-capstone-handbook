@@ -120,7 +120,7 @@ The formula's output is a multiplier bounded between 0.85 and 1.15; multiply it 
 
 The final peer score is the average of five numbers: the four criteria scores and the distribution score.
 
-Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four criteria, converting to 87.5, 87.5, 100, 87.5. On the distribution, teammates gave the student an average of 28 points; normalized for team size (× 4 ÷ 5) that is 22.4, within the [10, 40] clamp; the formula gives 0.65 + 0.0225(22.4) − 0.00025(22.4²) = 1.03, so the distribution score is 103. Final peer score: (87.5 + 87.5 + 100 + 87.5 + 103) / 5 = **93.1**.
+Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four criteria, converting to 87.5, 87.5, 100, 87.5. On the distribution, your teammates gave you an average of 28 points; normalized for team size (× 4 ÷ 5) that is 22.4, within the [10, 40] clamp; the formula gives 0.65 + 0.0225(22.4) − 0.00025(22.4²) = 1.03, so the distribution score is 103. Final peer score: (87.5 + 87.5 + 100 + 87.5 + 103) / 5 = **93.1**.
 
 ## Teams of Two
 
@@ -128,9 +128,9 @@ On a team of two, every score you receive comes from your one teammate. On the f
 
 ## The CATME Survey
 
-The end-of-term survey in spring uses CATME, the Comprehensive Assessment of Team Member Effectiveness, in its behaviorally anchored version [1, App. B], [3], instead of the four criteria, and has no 100-point distribution. You rate yourself and each teammate on Contributing to the Team's Work, Interacting with Teammates, Keeping the Team on Track, Expecting Quality, and Having Relevant Knowledge, Skills, and Abilities. The CATME project makes its peer evaluation instruments [available for instructional and research use](https://info.catme.org/instructor/teacher-materials/printable-surveys/), and its instrument document asks users of this version to cite [1] and [3].
+The end-of-term survey in spring replaces the four criteria and the 100-point distribution with CATME, the Comprehensive Assessment of Team Member Effectiveness [1], [3], [4]. You rate yourself and each teammate on five dimensions: Contributing to the Team's Work, Interacting with Teammates, Keeping the Team on Track, Expecting Quality, and Having Relevant Knowledge, Skills, and Abilities.
 
-Each dimension describes behaviors at 5, 3, and 1; a 4 is for a teammate who demonstrates behaviors described in both 3 and 5, and a 2 for one who demonstrates those in both 1 and 3. The descriptions are in the [rubric](#end-of-term-survey-catme); read them before you rate, and connect each rating to something in the record: the sprint notes, the repository, the tracker, and the meetings. The survey also asks for a comment on each teammate and on how the team is working.
+Each dimension describes the behaviors of a 5, a 3, and a 1 [1, App. B]. Rate a 4 when a teammate shows behaviors from both the 3 and the 5, and a 2 when they show behaviors from both the 1 and the 3. The descriptions are in the [rubric](#end-of-term-survey-catme); read them before you rate, and connect each rating to something in the record: the sprint notes, the repository, the tracker, and the meetings. The survey also asks for a comment on each teammate and on how the team is working.
 
 The score comes from the ratings alone:
 
@@ -152,7 +152,7 @@ The rubric is the calculation above in points for the midterm survey every term 
 
 ### End-of-Term Survey (CATME)
 
-Each of the five dimension scores is worth 20 points, a fifth of its value, and a rating's description is what that dimension looks like at that number.
+Each of the five dimension scores is worth 20 points, a fifth of its value.
 
 <RubricTable csv={catmeCsv} sourceLabel="canvas/assignments/peer-evaluation/catme-rubric.csv" />
 
@@ -171,3 +171,5 @@ Browse [Team and Workflow](/activities/team-and-workflow/) when these run out.
 [2] "Fairly Assessing Individual Contributions to Group Software Projects." Accessed: Mar. 31, 2025. [Online]. Available: https://www.cs.ubc.ca/wccce/Program03/papers/Gardner-Group/Gardner-Group.htm
 
 [3] M. L. Loughry, M. W. Ohland, and D. D. Moore, "Development of a Theory-Based Assessment of Team Member Effectiveness," Educational and Psychological Measurement, vol. 67, no. 3, pp. 505-524, 2007, doi: [10.1177/0013164406292085](https://doi.org/10.1177/0013164406292085).
+
+[4] M. L. Loughry, M. W. Ohland, and D. J. Woehr, "Assessing Teamwork Skills for Assurance of Learning Using CATME Team Tools," Journal of Marketing Education, vol. 36, no. 1, pp. 5-19, 2014, doi: [10.1177/0273475313499023](https://doi.org/10.1177/0273475313499023).

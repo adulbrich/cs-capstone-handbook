@@ -23,7 +23,7 @@ The sections below record each change as it was made. The ones from before the m
 ## Re-import Required: Published CATME Anchors (#497)
 
 - `peer-evaluation/catme-rubric.csv`: every Rating Description is now Appendix B of Ohland et al. 2012, the behaviorally anchored version of CATME, and the dimension names take its capitalization. This replaces the #441 section's "the instruction team's behavioral anchors". Points, rating names, tags, and criteria descriptions are unchanged. Re-import it on the CS 463 End-of-Term Survey (CATME), and delete the old rubric from the course's rubric list if both are there.
-- Re-paste every Peer Evaluations body, in every term: the References list gains `[3]`, and the spring End-of-Term Survey (CATME) body also carries the rewritten CATME section.
+- Re-paste every Peer Evaluations body, in every term: the References list gains `[3]` and `[4]`, the worked example now speaks to the reader, and the spring End-of-Term Survey (CATME) body also carries the rewritten CATME section.
 
 ## Re-paste Required: Each Assignment States Its Late Rule (#498)
 
