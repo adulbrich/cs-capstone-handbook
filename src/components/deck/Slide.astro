@@ -5,13 +5,12 @@
 //
 //   <Slide kicker="Workshop 1" title="What a story map is">
 //     <ul><li>...</li></ul>
-//     <Notes time="1:30">...</Notes>
 //   </Slide>
 //
 // Props: kicker and title, both optional; wide, for narrower margins under a
 // story map or a table. Any other attribute (id, class, data-transition,
 // data-background-color) lands on the <section>, so reveal's per-slide
-// options work. <Notes> may sit anywhere inside.
+// options work.
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends Omit<HTMLAttributes<"section">, "title"> {

@@ -39,6 +39,12 @@
 // where its connector touches the card. With `stepped`, each callout and its
 // ring appear on their own arrow press, in the order given. A map with
 // callouts holds five columns at most, since the lane takes the room of two.
+//
+// `users`, optional, marks the columns where a second kind of user acts,
+// on a map that follows one primary user: those columns are drawn in
+// violet, and a key under the map names both users.
+//
+//   users={{ primary: "Student", other: "Kitchen staff", columns: [3] }}
 type Story = string | { assumed?: boolean; text: string };
 
 interface Release {
@@ -54,12 +60,19 @@ type Callout = { term: string; text?: string } & (
   | { at: "card"; column: number; item?: number; row: number }
 );
 
+interface Users {
+  columns: number[];
+  other: string;
+  primary: string;
+}
+
 interface Props {
   backbone: Story[];
   callouts?: Callout[];
   legend?: boolean;
   releases: Release[];
   stepped?: boolean;
+  users?: Users;
 }
 
 const MAX_COLUMNS = 7;
@@ -70,6 +83,7 @@ const {
   legend = true,
   releases,
   stepped = false,
+  users,
 } = Astro.props;
 const maxColumns =
   callouts.length > 0 ? MAX_COLUMNS_WITH_CALLOUTS : MAX_COLUMNS;
@@ -105,6 +119,16 @@ for (const callout of callouts) {
     }
   }
 }
+
+for (const column of users?.columns ?? []) {
+  if (!backbone[column]) {
+    throw new Error(
+      `<StoryMap>: users marks column ${column}, and the backbone has ${backbone.length} columns.`
+    );
+  }
+}
+// True for a column where the second kind of user acts.
+const otherUser = (column: number) => users?.columns.includes(column) ?? false;
 
 function card(story: Story) {
   const raw = typeof story === "string" ? story : story.text;
@@ -186,9 +210,9 @@ const lane = (list: Callout[]) =>
       <tr>
         <td class="corner"></td>
         {
-          columns.map((c) => (
+          columns.map((c, i) => (
             <th scope="col">
-              <div class:list={["card", "activity", { assumed: c.assumed }]}>
+              <div class:list={["card", "activity", { assumed: c.assumed, "other-user": otherUser(i) }]}>
                 {c.assumed && <span class="mark">?</span>}
                 {c.text}
               </div>
@@ -219,10 +243,10 @@ const lane = (list: Callout[]) =>
               <span class="release">{row.name}</span>
               {row.goal && <span class="goal">{row.goal}</span>}
             </th>
-            {row.cells.map((cards) => (
+            {row.cells.map((cards, i) => (
               <td>
                 {cards.map((c) => (
-                  <div class:list={["card", "story", { assumed: c.assumed }]}>
+                  <div class:list={["card", "story", { assumed: c.assumed, "other-user": otherUser(i) }]}>
                     {c.assumed && <span class="mark">?</span>}
                     {c.text}
                     {c.ring && <span class="ring" aria-hidden="true" {...step(c.ring)} />}
@@ -247,6 +271,16 @@ const lane = (list: Callout[]) =>
       }
     </tbody>
   </table>
+  {
+    users && (
+      <p class="legend users-key">
+        <span class="card activity swatch" aria-hidden="true"></span>
+        <span>{users.primary}</span>
+        <span class="card activity other-user swatch" aria-hidden="true"></span>
+        <span>{users.other}</span>
+      </p>
+    )
+  }
   {
     legend && anyAssumed && (
       <p class="legend">
@@ -322,6 +356,28 @@ const lane = (list: Callout[]) =>
 
   .activity.assumed {
     border-block-start-style: solid;
+  }
+
+  .activity.other-user {
+    color: var(--deck-other-user-ink);
+    background: var(--deck-other-user);
+    border-color: var(--deck-other-user-edge);
+  }
+
+  .story.other-user:not(.assumed) {
+    background: var(--deck-other-user-wash);
+    border-color: var(--deck-other-user-edge);
+  }
+
+  .users-key .swatch {
+    flex: none;
+    width: 56px;
+    height: 36px;
+    padding: 0;
+  }
+
+  .users-key .swatch.other-user {
+    margin-inline-start: 32px;
   }
 
   .mark {

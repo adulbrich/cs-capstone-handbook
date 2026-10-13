@@ -2,7 +2,7 @@
 // A picture as the slide: a diagram, a screenshot, a photo. `src` is an
 // image imported from src/assets (optimized at build) or a URL; `alt` is
 // required, and "" marks a purely decorative image. `title`, `kicker` and
-// `caption` are optional; the slot takes <Notes>.
+// `caption` are optional.
 //
 //   ---
 //   import sprint from "../assets/design-sprint.png";
@@ -38,7 +38,6 @@ const { alt, caption, src, ...attrs } = Astro.props;
     </div>
     {caption && <figcaption>{caption}</figcaption>}
   </figure>
-  <slot />
 </Slide>
 
 <style>

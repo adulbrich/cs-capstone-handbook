@@ -1,15 +1,13 @@
 ---
 // Fall week 1: teams are announced and sit together for the first time.
-// Five minutes of information, the Two truths and a bug rules and the
-// instructor's own round (a placeholder slide the instructor fills before
-// class), fifteen minutes to find the team on the seating map, fifteen to
-// play, then one slide for teams that inherit a codebase, then the Team
-// Charter kickoff for the rest of the session. Served
-// at /decks/fall-week-1/. The seating map is <SeatingMap>, drawn at build
-// time from the room in src/lib/seating.mjs. A line credited
-// to a handbook page uses that page's words; the charter is linked, not
-// retyped.
-import Notes from "../components/deck/Notes.astro";
+// Information from the instruction team, the Two truths and a bug rules and
+// the instructor's own round (a placeholder slide the instructor fills
+// before class), the seating map while teams find their seats and play,
+// one slide for teams that inherit a codebase, then the Team Charter
+// kickoff for the rest of the session. Served at /decks/fall-week-1/. The
+// seating map is <SeatingMap>, drawn at build time from the room in
+// src/lib/seating.mjs. A line credited to a handbook page uses that page's
+// words; the charter is linked, not retyped.
 import QrSlide from "../components/deck/QrSlide.astro";
 import SeatingMap from "../components/deck/SeatingMap.astro";
 import Slide from "../components/deck/Slide.astro";
@@ -36,11 +34,7 @@ const analyze = new URL(
   title="Team Introductions and Charter"
   subtitle="Meet your team, then start the agreement you'll work under"
   byline="Kirsten Winters and Alex Ulbrich, your instructors"
->
-  <Notes time="0:15" cue="Keep the information to five minutes; the room moves next.">
-    <p>Five minutes of information, then teams find their seats.</p>
-  </Notes>
-</TitleSlide>
+/>
 
 <Slide kicker="Today" title="Agenda">
   <ol>
@@ -49,14 +43,6 @@ const analyze = new URL(
     <li>Find your team, sit together, and play</li>
     <li>Inherited codebases, then the Team Charter and your questions</li>
   </ol>
-  <Notes time="0:30" cue="Information is five minutes; keep to it.">
-    <p>
-      The budget: 5 minutes of information, about 4 for the icebreaker rules
-      and the instructor's round, 15 to find your team, 15 to play (wants
-      included), about 1.5 for the inherited-codebase slide, then the charter
-      for the rest of the session.
-    </p>
-  </Notes>
 </Slide>
 
 <Slide kicker="This week" title="Email your project partner">
@@ -66,23 +52,10 @@ const analyze = new URL(
     <li class="fragment">Send it as soon as you know your team: the meeting you're asking for has to fit somebody else's calendar</li>
     <li class="fragment">If every teammate already meets with them, don't send it: message your instructors at cs-46x-help@oregonstate.edu by Sunday of week 1</li>
   </ul>
-  <Notes time="1:15" cue="Send it today if you can.">
-    <p>
-      All four lines are from Term Startup, which links the template. Your
-      partner's contact details arrive by email at 11 AM, as the slide after
-      next says.
-    </p>
-  </Notes>
 </Slide>
 
 <Slide kicker="Due next" title="Weeks 1 and 2" wide>
-  <TermSessions term="fall" from={1} to={2} rows={["Due", "In class"]} />
-  <Notes time="1:30" cue="Point at week 2: the charter is due then.">
-    <p>
-      From the schedule. The fall week 2 check-in goes through your Term
-      Startup list while it is still in progress.
-    </p>
-  </Notes>
+  <TermSessions term="fall" from={1} to={2} rows={["Due", "In class", "Read"]} />
 </Slide>
 
 <Slide kicker="After this session" title="Your partner, your TA, and shared projects">
@@ -91,14 +64,6 @@ const analyze = new URL(
     <li class="fragment">Your team's TA is assigned soon, and reaches out to your team</li>
     <li class="fragment">Some projects run more than one team: those teams agree with their partner how to split the work</li>
   </ul>
-  <Notes time="1:15" cue="Ask who is on a project with more than one team.">
-    <p>
-      TA check-ins are at a time your team and your TA agree. For Students:
-      what a team owns on a shared project can be an interface, a
-      repository, or a milestone, and each team writes its part into its
-      Definition of Shipped.
-    </p>
-  </Notes>
 </Slide>
 
 <Slide kicker="Icebreaker, fifteen minutes" title="Two truths and a bug">
@@ -108,14 +73,6 @@ const analyze = new URL(
     <li class="fragment"><strong>Chase the interesting one:</strong> whichever claim caused the most argument, ask for the story behind it</li>
     <li class="fragment"><strong>End with a want:</strong> one sentence each on what you most want to be better at by the time this project ends</li>
   </ul>
-  <Notes time="1:30" cue="Explain the rules here; the instructor's round on the next slide shows them.">
-    <p>
-      Teams play once they're seated, after the map. Specific beats
-      impressive: "I took down production with a missing semicolon", "I
-      learned to program on a graphing calculator", "I have never once used a
-      debugger". Nobody collects the wants.
-    </p>
-  </Notes>
 </Slide>
 
 <Slide kicker="Two truths and a bug: the instructor's round" title="Which one is the bug?">
@@ -124,33 +81,13 @@ const analyze = new URL(
     <li>I have never fallen asleep at work</li>
     <li>I tried, and failed, to refactor a 20-year-old COBOL orchestration script</li>
   </ol>
-  <Notes time="2:00" cue="Read all three, take a show of hands on each, then say which is the bug.">
-    <p>
-      One round for the whole room shows the pace the teams play at: a
-      minute, a vote, the reveal, and a question about the claim that caused
-      the most argument. The claims are in the first person because they are
-      the instructor's own.
-    </p>
-  </Notes>
 </Slide>
 
 <StatementSlide kicker="Teams are announced">
   Find your team number on the map, and sit together.
-  <Notes time="0:15" cue="Advance to the map as soon as this is read.">
-    <p>Next slide is the map. Leave it up while people move.</p>
-  </Notes>
 </StatementSlide>
 
-<SeatingMap teams={65}>
-  <Notes time="30:00" cue="Minute 15: teams start the icebreaker. Minute 27: call for wants.">
-    <p>
-      The seating map. Left and right are as the room faces the screen.
-      Fifteen minutes to find seats and say hello, then fifteen for Two
-      truths and a bug at the table, wants included, with the map still up.
-      Point a lost team to its section's range label first, then its number.
-    </p>
-  </Notes>
-</SeatingMap>
+<SeatingMap teams={65} />
 
 <Slide kicker="Before the charter" title="If you inherit a codebase">
   <ul>
@@ -158,12 +95,6 @@ const analyze = new URL(
     <li class="fragment">Audit what you inherited in weeks 1 to 5: <a href={audit}>one page</a> in your Repo Checkpoint 1 PDF, due week 5</li>
     <li class="fragment"><a href={analyze}>Analyze an Existing Codebase</a> is the exercise that produces it</li>
   </ul>
-  <Notes time="1:30" cue="Ask who starts in an existing codebase; those teams note the audit now.">
-    <p>
-      Teams starting from scratch skip this. The audit's list is on Repo
-      Checkpoints and isn't repeated here.
-    </p>
-  </Notes>
 </Slide>
 
 <TwoColumnSlide kicker="Team Charter kickoff" title="What the Team Charter page requires" divider>
@@ -185,18 +116,9 @@ const analyze = new URL(
       <li>The Contribution Norm</li>
     </ul>
   </div>
-  <Notes time="2:00" cue="Teams open the page on the next slide and start writing.">
-    <p>
-      These are the page's own section headings; the page says what each one
-      needs and holds the rubric. Read it as a team before writing.
-    </p>
-  </Notes>
 </TwoColumnSlide>
 
 <QrSlide kicker="Start now" title="The Team Charter page" url={charter}>
   <p>Every required section, and the rubric it's scored on.</p>
   <p>Already have a <code>CONTRIBUTING.md</code> or an AI context file? Extend it, and keep what still holds.</p>
-  <Notes time="1:00" cue="Teams work on the charter for the rest of the session.">
-    <p>Walk the room; the instruction team takes questions table by table.</p>
-  </Notes>
 </QrSlide>

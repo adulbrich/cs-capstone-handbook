@@ -8,7 +8,6 @@ import sprint from "../assets/design-sprint.png";
 import FrameSlide from "../components/deck/FrameSlide.astro";
 import GradeGrid from "../components/deck/GradeGrid.astro";
 import ImageSlide from "../components/deck/ImageSlide.astro";
-import Notes from "../components/deck/Notes.astro";
 import PeopleSlide from "../components/deck/PeopleSlide.astro";
 import QrSlide from "../components/deck/QrSlide.astro";
 import SeatingMap from "../components/deck/SeatingMap.astro";
@@ -29,41 +28,22 @@ const handbook = new URL("/", Astro.site).href;
   title="The Deck Components"
   subtitle="Every kind of slide in one deck, at the size the back row reads"
   byline="CS 461, 462, 463: the instruction team"
->
-  <Notes time="0:30" cue="Press S now to check the speaker view opens.">
-    <p>
-      This deck exists to be looked at, not presented. Each slide shows one
-      component from src/components/deck/.
-    </p>
-  </Notes>
-</TitleSlide>
+/>
 
 <StatementSlide kicker="The auditorium rule">
   One idea per slide, set large enough for the last row to read.
-  <Notes time="0:45" cue="Walk to the back of the room once before the term.">
-    <p>
-      A 250-seat room puts the last row about twenty meters from the screen.
-      Body text never goes under 32px on the 1920x1080 slide.
-    </p>
-  </Notes>
 </StatementSlide>
 
 <Slide kicker="Slide" title="What a deck file holds">
   <ul>
     <li>One <code>.astro</code> file per deck, under <code>src/decks/</code></li>
     <li class="fragment">One <code>&lt;section&gt;</code> per slide, usually a component</li>
-    <li class="fragment">Speaker notes in <code>&lt;Notes&gt;</code>, with a target time</li>
+    <li class="fragment">No speaker notes: what the room needs is on the slide</li>
     <li class="fragment">Served at <code>/decks/&lt;file name&gt;/</code></li>
   </ul>
-  <Notes time="1:00" cue="Each arrow press reveals the next line.">
-    <p>
-      The list items after the first carry class="fragment", so they appear
-      one at a time.
-    </p>
-  </Notes>
 </Slide>
 
-<TwoColumnSlide kicker="Two columns" title="Two views of one deck" divider>
+<TwoColumnSlide kicker="Two columns" title="What holds a deck to the rules" divider>
   <div slot="left">
     <h3>The room sees</h3>
     <ul>
@@ -73,16 +53,13 @@ const handbook = new URL("/", Astro.site).href;
     </ul>
   </div>
   <div slot="right">
-    <h3>The speaker sees</h3>
+    <h3>The checks catch</h3>
     <ul>
-      <li>This slide and the next</li>
-      <li>The notes and the cue</li>
-      <li>A pacing timer from each target time</li>
+      <li>An em dash, on any slide</li>
+      <li>A calendar date or an academic year</li>
+      <li>A banned word in the slide text</li>
     </ul>
   </div>
-  <Notes time="1:00" cue="Press S to open the speaker view, Esc for the overview.">
-    <p>The speaker view opens in its own window; drag it to the laptop screen.</p>
-  </Notes>
 </TwoColumnSlide>
 
 <ImageSlide
@@ -91,11 +68,7 @@ const handbook = new URL("/", Astro.site).href;
   src={sprint}
   alt="The five days of a design sprint: map, sketch, decide, prototype, and test"
   caption="Text inside an image has to be as large as the slide's own, or the back row loses it."
->
-  <Notes time="0:45">
-    <p>An image imported from src/assets is optimized at build time.</p>
-  </Notes>
-</ImageSlide>
+/>
 
 <Slide kicker="Story map" title="A story map at seven columns" wide>
   <StoryMap
@@ -149,13 +122,6 @@ const handbook = new URL("/", Astro.site).href;
       },
     ]}
   />
-  <Notes time="2:00" cue="Point at one amber card and ask how the team would check it.">
-    <p>
-      Blue cells are the backbone, the user's activities in order. Each row is
-      a release; the heavy rule is the cut. Amber cells marked with a question
-      mark are assumptions nobody has checked yet.
-    </p>
-  </Notes>
 </Slide>
 
 <Slide kicker="Story map" title="A story map with its parts labeled" wide>
@@ -184,13 +150,6 @@ const handbook = new URL("/", Astro.site).href;
     ]}
     stepped
   />
-  <Notes time="1:00" cue="Press the arrow for each label.">
-    <p>
-      The callouts prop labels the parts of a map in a lane on the right.
-      With stepped, each label and the ring around its card appear on their
-      own arrow press. A map with callouts holds five columns at most.
-    </p>
-  </Notes>
 </Slide>
 
 <PeopleSlide
@@ -202,56 +161,27 @@ const handbook = new URL("/", Astro.site).href;
   ]}
 >
   <p>Portraits sit beside the text, cropped square.</p>
-  <Notes time="0:30">
-    <p>Import each portrait from src/assets; the build resizes it.</p>
-  </Notes>
 </PeopleSlide>
 
 <Slide kicker="Grade grid" title="One term of the grade grid" wide>
   <GradeGrid term="winter" />
-  <Notes time="0:45">
-    <p>
-      Read from the grid on the Assignments Overview at build time; edit a
-      weight there and this slide follows.
-    </p>
-  </Notes>
 </Slide>
 
 <Slide kicker="Term sessions" title="A term's In class lines" wide>
   <TermSessions term="winter" />
-  <Notes time="0:45">
-    <p>Read from the week-by-week schedule at build time.</p>
-  </Notes>
 </Slide>
 
 <Slide kicker="Term sessions" title="A few weeks, several lines" wide>
   <TermSessions term="spring" from={1} to={3} rows={["Due", "In class"]} />
-  <Notes time="0:45">
-    <p>With more than one row, one card per week.</p>
-  </Notes>
 </Slide>
 
 <QrSlide kicker="QR code" title="A link the room scans" url={handbook}>
   <p>Generated at build time; the address is written out beside it.</p>
-  <Notes time="0:30">
-    <p>Scan it from the back row before the term to check the size.</p>
-  </Notes>
 </QrSlide>
 
-<FrameSlide src="/tools/" label="The instructor tools">
-  <Notes time="0:45">
-    <p>A live page, full bleed, loaded when the slide comes up.</p>
-  </Notes>
-</FrameSlide>
+<FrameSlide src="/tools/" label="The instructor tools" />
 
-<SeatingMap teams={40} kicker="Seating map" title="Teams placed in the auditorium">
-  <Notes time="0:45">
-    <p>
-      Drawn at build time from the room in the seating module; the team count
-      is a prop, and a room that does not add up fails the build.
-    </p>
-  </Notes>
-</SeatingMap>
+<SeatingMap teams={40} kicker="Seating map" title="Teams placed in the auditorium" />
 
 <Slide kicker="Adding a component" title="A new kind of slide is one file">
   <ol>
@@ -259,7 +189,4 @@ const handbook = new URL("/", Astro.site).href;
     <li>Describe its props in a short comment at the top</li>
     <li>Import it in the deck and use it once in this sample</li>
   </ol>
-  <Notes time="0:30">
-    <p>No registry to update: a deck imports the components it uses.</p>
-  </Notes>
 </Slide>

@@ -1,11 +1,9 @@
 ---
 // The opening slide: a kicker (course and week), the title, a subtitle, and
-// a byline at the foot. Only the title is required; the slot takes <Notes>.
+// a byline at the foot. Only the title is required.
 //
 //   <TitleSlide kicker="CS 461, fall week 1" title="Story Mapping"
-//     subtitle="From a backbone to a first release" byline="The instruction team">
-//     <Notes time="0:30">...</Notes>
-//   </TitleSlide>
+//     subtitle="From a backbone to a first release" byline="The instruction team" />
 //
 // Other attributes land on the <section>, as on <Slide>.
 import type { ComponentProps } from "astro/types";
@@ -35,7 +33,6 @@ const {
     {subtitle && <p class="subtitle">{subtitle}</p>}
   </div>
   {byline && <p class="byline">{byline}</p>}
-  <slot />
 </Slide>
 
 <style>
