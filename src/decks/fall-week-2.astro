@@ -247,10 +247,6 @@ const guide = handbook("/guides/requirements/#story-mapping");
       <h3>User journey</h3>
       <p>What a user does, in order</p>
       <p class="skeleton">Skeleton: one user gets through every activity once</p>
-      <p class="skeleton">
-        More than one kind of user? One map: the primary user's flow, with
-        parallel columns only where another user's path diverges
-      </p>
     </div>
     <div class="type fragment">
       <h3>Pipeline stages</h3>
@@ -268,6 +264,34 @@ const guide = handbook("/guides/requirements/#story-mapping");
   <p class="fragment rule-line">
     Same rows and <code>?</code> flags for all three. Write one line saying
     why you chose yours.
+  </p>
+</Slide>
+
+<Slide kicker="Part 1 of 4: user stories and story maps" title="More than one kind of user? Still one map" wide>
+  <StoryMap
+    backbone={["Find food", "Order it", "Pay", "Kitchen: make it", "Pick it up"]}
+    releases={[
+      {
+        name: "Walking skeleton",
+        stories: [
+          "List open cafes",
+          "Choose from a menu",
+          "Pay by card",
+          "See new orders on a screen",
+          "Show a pickup code",
+        ],
+      },
+    ]}
+    callouts={[
+      { at: "backbone", term: "The primary user's flow", text: "the student, in order" },
+      { at: "row", row: 0, term: "A second kind of user", text: "gets a column only where their path diverges" },
+    ]}
+    legend={false}
+  />
+  <p class="caption caption-tight">
+    One map for the whole project, not one per persona: the student orders and
+    picks up, the kitchen staff make the order. Label a column with who does
+    it when it isn't the primary user.
   </p>
 </Slide>
 
@@ -331,48 +355,74 @@ const guide = handbook("/guides/requirements/#story-mapping");
   </div>
 </TwoColumnSlide>
 
-<StatementSlide kicker="Example: ephira, drafted with AI" source="ephira again: the proposal alone, given to an AI tool">
-  The same proposal, drafted by AI
+<StatementSlide kicker="Example: ephira, drafted with AI" source="ephira again: once from the proposal alone, once with the repository too">
+  The same proposal, drafted by AI twice
 </StatementSlide>
 
-<Slide kicker="The prompt" title="One prompt, the proposal, no repository">
+<Slide kicker="The prompt" title="One prompt, run twice" wide>
   <pre class="prompt">Here is a software project proposal, as it was advertised to students:
 
 [ephira's project page, as advertised]
+
+<span class="prompt-added">The project's repository, as it was the day the team started, is at
+[path]. Read it before drafting.</span>
 
 Draft a user story map for the team's first release. Give a backbone of
 four to seven activities in the order they happen, then a walking-skeleton
 row with one story under every activity, then a Release 1 row and an
 out-of-scope row. Keep each story under eight words.</pre>
   <p class="caption">
-    Run on Sonnet 5.5 as a Claude Code sub-agent with its tools off, so it
-    could not open the repository. Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+    Sonnet 5.5 as a Claude Code sub-agent. Run 1: without the highlighted
+    lines, tools off. Run 2: with them, reading only the repository at app
+    version 1.1.0. Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
   </p>
 </Slide>
 
-<StatementSlide kicker="What the tool did" source="Its walking skeleton planned the lock, the day log, and the calendar the app already had">
-  Given the proposal alone, the tool planned to rebuild an app already in both stores
-</StatementSlide>
+<TwoColumnSlide kicker="ephira: the two AI drafts" title="With the repository, the draft starts from what the app does" divider>
+  <div slot="left">
+    <h3>Proposal only</h3>
+    <ul class="reveal-list">
+      <li>Planned the lock, the day log, and the calendar the app already had</li>
+      <li>Added a fertile window the proposal never asks for</li>
+      <li>Cut pregnancy to a design document, stated as settled</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Proposal and repository</h3>
+    <ul class="reveal-list">
+      <li class="fragment">Found the 28-day guess and planned a prediction from average cycle length</li>
+      <li class="fragment">Found no reminders and no import, and planned both</li>
+      <li class="fragment">Found the database set up for encryption with no key set: a question the hand-drawn map missed</li>
+      <li class="fragment">Still cut pregnancy to a design draft, with no <code>?</code> on any card</li>
+    </ul>
+  </div>
+</TwoColumnSlide>
 
-<Slide kicker="Drafting a map with an AI tool" title="Give it all your context, and make it flag its guesses">
-  <ol>
-    <li>
-      Prompt with the project description and every piece of context you
-      have: the inherited code, papers your partner cites, earlier teams'
-      documents
-    </li>
-    <li class="fragment">Ask for the map in the template's rows</li>
-    <li class="fragment">
-      Ask it to start with <code>?</code> every card it can't trace to the
-      context you gave it
-    </li>
-    <li class="fragment">Check each card against the code, then with your partner</li>
-  </ol>
-  <p class="deck-small after-list fragment">
-    Give it only what your Team Charter's AI and Confidentiality section
-    allows.
-  </p>
-</Slide>
+<TwoColumnSlide kicker="Drafting a map with an AI tool" title="Give it all your context, then make it flag its guesses" divider>
+  <div slot="left">
+    <h3>Give it</h3>
+    <ul>
+      <li>The project description</li>
+      <li>The repository, if you inherit one: let the tool read the code</li>
+      <li>Papers your partner cites, earlier teams' documents, your partner meeting notes</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Then</h3>
+    <ul>
+      <li class="fragment">Ask for the map in the template's rows</li>
+      <li class="fragment">
+        Ask it to start with <code>?</code> every card it can't trace to what
+        you gave it
+      </li>
+      <li class="fragment">Check each card against the code, then with your partner</li>
+    </ul>
+    <p class="caption fragment">
+      Give it only what your Team Charter's AI and Confidentiality section
+      allows.
+    </p>
+  </div>
+</TwoColumnSlide>
 
 <StatementSlide kicker="Part 3 of 4" source="LumiLab, a pipeline; TaxonBodyMassML, a research chain">
   Reference maps for the other two backbones
@@ -744,6 +794,12 @@ out-of-scope row. Keep each story under eight words.</pre>
     background: var(--deck-card);
     border: 3px solid var(--deck-rule);
     border-radius: 12px;
+  }
+
+  /* The lines only the second run's prompt carried. */
+  .prompt-added {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
   }
 
   /* The user story slide: the sentence shape over its filled example, then
