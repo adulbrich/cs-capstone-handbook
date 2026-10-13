@@ -1,6 +1,6 @@
 # Contributing Guide
 
-How to make a change to this repository that meets our Definition of Done. Every command is exact and every rule gives its value. A command that does not exist yet names the gate that adds it, the sprint it lands in, and its owner.
+How to make a change to this repository that meets our Definition of Done.
 
 ## Development Setup
 
@@ -8,7 +8,7 @@ What a contributor needs beyond the README's quickstart: development dependencie
 
 ## Local Checks
 
-The exact commands that run the tests, the linter, and the formatter, the same ones CI runs.
+The exact commands that run the tests, the linter, and the formatter, the same ones CI runs. A command that does not exist yet names the gate that adds it.
 
 ## Branches and Commits
 
