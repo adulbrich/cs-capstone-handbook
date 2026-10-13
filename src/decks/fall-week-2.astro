@@ -46,8 +46,11 @@ const outcome = [
   "A ? on every card that is a guess",
   "A question for your partner for every ?",
 ];
-// Sets each ? in an outcome line as code, as the template writes it.
-const QUESTION = /(\?)/;
+// The outcome as list items, each ? set as code the way the template
+// writes it; the opening slide and the wrap render the same list.
+const outcomeItems = outcome
+  .map((line) => `<li>${line.replaceAll("?", "<code>?</code>")}</li>`)
+  .join("");
 
 // Each example's links, shown without the protocol, as the room would type
 // them.
@@ -124,7 +127,7 @@ const ephiraMap = {
       ],
     },
     {
-      name: "Out of scope",
+      name: "Out of scope this year",
       stories: ["Cloud sync"],
     },
   ],
@@ -144,18 +147,12 @@ const guide = handbook("/guides/requirements/#story-mapping");
 <TitleSlide
   kicker="CS 461, fall week 2: Workshop 1"
   title="User Story Mapping"
-  subtitle="A backbone, a release line, and a walking skeleton for your project"
+  subtitle="A backbone, a walking skeleton, and release rows for your project"
   byline="CS 461: the instruction team"
 />
 
 <Slide kicker="Today's outcome" title="By the end of the session, your team has a first map">
-  <ul>
-    {
-      outcome.map((line) => (
-        <li>{line.split(QUESTION).map((part) => (part === "?" ? <code>?</code> : part))}</li>
-      ))
-    }
-  </ul>
+  <ul set:html={outcomeItems} />
   <p class="deck-small after-list">
     Why it matters: the map becomes <code>docs/requirements.md</code> at Repo
     Checkpoint 1, and its <code>?</code> cards are the agenda for your first
@@ -231,7 +228,7 @@ const guide = handbook("/guides/requirements/#story-mapping");
     ]}
     callouts={[
       { at: "backbone", term: "Backbone: the top row", text: "what people do, in order" },
-      { at: "row", row: 0, term: "Walking skeleton", text: "the fall's: one thin path through every column" },
+      { at: "row", row: 0, term: "Walking skeleton", text: "built in the fall: one thin path through every column" },
       { at: "line", row: 1, term: "Release 1", text: "the first iteration after the skeleton" },
       { at: "card", row: 2, column: 3, term: "A ? card", text: "a guess nobody has checked with the partner yet" },
     ]}
@@ -301,7 +298,7 @@ const guide = handbook("/guides/requirements/#story-mapping");
 </Slide>
 
 <Slide title="ephira: start the map from what already ships" wide>
-  <StoryMap {...ephiraMap} />
+  <StoryMap {...ephiraMap} legend={false} />
   <p class="caption caption-tight">
     Also on the <a href={ephira.page.href}>project page</a>: beta tests, docs, a
     store update; start designing and building pregnancy mode
@@ -503,9 +500,9 @@ out-of-scope row. Keep each story under eight words.</pre>
         name: "Walking skeleton",
         goal: "as it should run in the fall",
         stories: [
-          "Mass from a species name",
+          "Mass from a name, 95 of 100 within 10x",
           "Measured masses, 90/10 split",
-          "? A simple model to beat",
+          "A simple model to beat",
           "Same as the baseline for now",
           "Error on the held-out tenth",
           "One estimate per name",
@@ -515,7 +512,7 @@ out-of-scope row. Keep each story under eight words.</pre>
         name: "Release 1",
         goal: "built in winter and spring",
         stories: [
-          "95 of 100 in the right order of magnitude",
+          undefined,
           ["Full taxonomy, GBIF and NCBI", "Masses in log10"],
           undefined,
           "Boosted trees on the taxonomy",
@@ -527,10 +524,10 @@ out-of-scope row. Keep each story under eight words.</pre>
     legend={false}
   />
   <p class="caption caption-tight">
-    Release 1 is read from the team's repository. The method changed from a language model to
-    boosted trees, and only the Method column moved. Amber marks the baseline
-    the repository never had: Baseline and Evaluation are the cards a
-    research team skips, and the 95 of 100 target was never computed.
+    Release 1 is read from the team's repository. The method changed from a
+    language model to boosted trees, and only the Method column moved. The
+    repository never had a baseline, and the 95 of 100 target was never
+    computed: Baseline and Evaluation are the cards this team left thin.
   </p>
 </Slide>
 
@@ -574,7 +571,7 @@ out-of-scope row. Keep each story under eight words.</pre>
       { name: "Out of scope this year", stories: [undefined, undefined, undefined, "Delivery to dorms"] },
     ]}
     callouts={[
-      { at: "row", row: 0, term: "Walking skeleton", text: "the fall's" },
+      { at: "row", row: 0, term: "Walking skeleton", text: "built in the fall" },
       { at: "row", row: 1, term: "Release 1", text: "the first iteration after it" },
       { at: "row", row: 2, term: "Release 2 and on", text: "insert a row per release" },
       { at: "row", row: 3, term: "Out of scope this year", text: "always the last row" },
@@ -643,13 +640,7 @@ out-of-scope row. Keep each story under eight words.</pre>
 </Slide>
 
 <Slide kicker="Wrap" title="Check your map against today's outcome">
-  <ul>
-    {
-      outcome.map((line) => (
-        <li>{line.split(QUESTION).map((part) => (part === "?" ? <code>?</code> : part))}</li>
-      ))
-    }
-  </ul>
+  <ul set:html={outcomeItems} />
   <p class="deck-small after-list">
     Stuck? The activity: <a href={activity.href}>{activity.text}</a><br />
     The Requirements guide, Story Mapping: <a href={guide.href}>{guide.text}</a>
