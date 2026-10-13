@@ -39,6 +39,12 @@
   --deck-assumed: var(--color-amber-100);
   --deck-assumed-edge: var(--color-amber-600);
   --deck-assumed-ink: var(--color-amber-950);
+  /* A second kind of user's columns (<StoryMap users>): violet, apart from
+     the blue backbone, the amber assumption, and the orange accent. */
+  --deck-other-user: var(--color-violet-300);
+  --deck-other-user-edge: var(--color-violet-700);
+  --deck-other-user-ink: var(--color-violet-950);
+  --deck-other-user-wash: var(--color-violet-50);
 
   /* The seating map's six sections (<SeatingMap>, src/lib/seating.mjs):
      two tints that alternate team by team, and the range label under the

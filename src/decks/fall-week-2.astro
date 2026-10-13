@@ -269,7 +269,7 @@ const guide = handbook("/guides/requirements/#story-mapping");
 
 <Slide kicker="Part 1 of 4: user stories and story maps" title="More than one kind of user? Still one map" wide>
   <StoryMap
-    backbone={["Find food", "Order it", "Pay", "Kitchen: make it", "Pick it up"]}
+    backbone={["Find food", "Order it", "Pay", "Kitchen cooks", "Pick it up"]}
     releases={[
       {
         name: "Walking skeleton",
@@ -282,16 +282,16 @@ const guide = handbook("/guides/requirements/#story-mapping");
         ],
       },
     ]}
-    callouts={[
-      { at: "backbone", term: "The primary user's flow", text: "the student, in order" },
-      { at: "row", row: 0, term: "A second kind of user", text: "gets a column only where their path diverges" },
-    ]}
+    users={{
+      primary: "Student, the primary user",
+      other: "Kitchen staff: a column only where their path diverges",
+      columns: [3],
+    }}
     legend={false}
   />
-  <p class="caption caption-tight">
+  <p class="caption">
     One map for the whole project, not one per persona: the student orders and
-    picks up, the kitchen staff make the order. Label a column with who does
-    it when it isn't the primary user.
+    picks up, and the kitchen staff cook the order in between.
   </p>
 </Slide>
 
