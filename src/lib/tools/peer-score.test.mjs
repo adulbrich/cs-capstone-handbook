@@ -30,6 +30,7 @@ import {
   peerCriteria,
   round,
   scorePeers,
+  toScale,
 } from "./peer-score.mjs";
 import { parseRoster } from "./roster.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
@@ -96,6 +97,30 @@ test("the published worked example scores 93.1", () => {
   assert.equal(student.raters, 3);
   assert.deepEqual(messages(problems, "error"), []);
   assert.deepEqual(messages(problems, "note"), []);
+});
+
+test("ratings follow each rubric's bands: 12.5 a step on the regular, 3 = 85 on CATME", () => {
+  const scale = (instrument) => {
+    const [{ points }] = peerCriteria(rubrics[instrument], instrument).rated;
+    return [1, 1.5, 2, 2.5, 3, 4, 4.5, 5].map((r) => toScale(r, points));
+  };
+  assert.deepEqual(
+    scale("regular"),
+    [50, 56.25, 62.5, 68.75, 75, 87.5, 93.75, 100]
+  );
+  assert.deepEqual(
+    scale("catme"),
+    [50, 58.75, 67.5, 76.25, 85, 92.5, 96.25, 100]
+  );
+});
+
+test("a rated criterion whose 1 is not half its 5 is refused", () => {
+  const lowered = structuredClone(rubrics.catme);
+  lowered.criteria[0].ratings.find((r) => r.name === "Average of 1").points = 8;
+  assert.throws(
+    () => peerCriteria(lowered, "catme"),
+    /"Average of 1" must be worth 50% of "Average of 5".*8 of 20/
+  );
 });
 
 test("the distribution clamps the normalized share to [10, 40]", () => {

@@ -44,14 +44,15 @@ const all = (n, value) =>
   Array.from({ length: n }, () => Array.from({ length: n }, () => value));
 
 // A worked example, team of 4. Kea1's three teammates rate them, in rubric
-// order (Contributing, Interacting, Keeping on track, Expecting quality,
+// order (Contributing, Interacting, Keeping on Track, Expecting Quality,
 // Skills):
 //   Kea2: 5 4 3 5 2
 //   Kea3: 4 4 4 5 3
 //   Kea4: 4 4 5 5 4
-// Means: 13/3, 4, 4, 5, 3. On 50 to 100 (1 = 50, each step 12.5):
-//   50 + (10/3)(12.5) = 91.667, 87.5, 87.5, 100, 75.
-// Score: (91.667 + 87.5 + 87.5 + 100 + 75) / 5 = 441.667 / 5 = 88.333.
+// Means: 13/3, 4, 4, 5, 3. On 50 to 100 along the CATME bands (1 = 50,
+// 2 = 67.5, 3 = 85, 4 = 92.5, 5 = 100, straight lines between):
+//   92.5 + (1/3)(7.5) = 95, 92.5, 92.5, 100, 85.
+// Score: (95 + 92.5 + 92.5 + 100 + 85) / 5 = 465 / 5 = 93.
 // Kea1 rates themselves 5 on every dimension; the self-ratings are left out.
 const kea = people("Kea", 4);
 const workedExample = () =>
@@ -86,7 +87,7 @@ test("the export of the generated CATME survey is detected and carries no split"
   assert.deepEqual(parsed.warnings, []);
 });
 
-test("the CATME worked example scores 88.33, self-ratings excluded", () => {
+test("the CATME worked example scores 93, self-ratings excluded", () => {
   const { results, problems } = run({ Kea: kea }, workedExample());
   const kea1 = resultFor(results, "kea1@example.edu");
   assert.equal(kea1.status, STATUS.scored);
@@ -96,9 +97,9 @@ test("the CATME worked example scores 88.33, self-ratings excluded", () => {
   );
   assert.deepEqual(
     kea1.criterionScores.map((s) => round(s, 3)),
-    [91.667, 87.5, 87.5, 100, 75]
+    [95, 92.5, 92.5, 100, 85]
   );
-  assert.equal(round(kea1.total, 3), 88.333);
+  assert.equal(round(kea1.total, 3), 93);
   assert.equal(kea1.distribution, null);
   assert.equal(kea1.raters, 3);
   // Self average 5 minus the mean received (13/3 + 4 + 4 + 5 + 3) / 5.
@@ -135,22 +136,22 @@ test("the CATME rubric assessment: five criteria, by name", () => {
     ),
   });
   const row = csv.split("\r\n")[1].split(",");
-  // 91.667, 87.5, 87.5, 100, 75 as a fifth: the highest band at or below.
+  // 95, 92.5, 92.5, 100, 85 as a fifth: the highest band at or below.
   assert.deepEqual(row.slice(2), [
     "Average of 4",
-    "18.33",
+    "19",
     "",
     "Average of 4",
-    "17.5",
+    "18.5",
     "",
     "Average of 4",
-    "17.5",
+    "18.5",
     "",
     "Average of 5",
     "20",
     "",
     "Average of 3",
-    "15",
+    "17",
     "",
   ]);
 });
@@ -159,7 +160,7 @@ test("a CATME dimension column the rubric does not rate stops the run", () => {
   const fewer = {
     ...catmeRubric,
     criteria: catmeRubric.criteria.filter(
-      (c) => c.title !== "Expecting quality"
+      (c) => c.title !== "Expecting Quality"
     ),
   };
   const parsed = parsePeerExport(exportCsv(workedExample(), CATME), {
@@ -182,7 +183,7 @@ test("a CATME team of ten fills every loop prefix", () => {
   assert.deepEqual(messages(problems, "error"), []);
   for (const result of results) {
     assert.equal(result.raters, 9);
-    assert.equal(result.total, 87.5);
+    assert.equal(result.total, 92.5);
   }
 });
 
@@ -202,7 +203,7 @@ test("a CATME team of two: low average and divergence flags over five dimensions
   assert.ok(reviews.some((m) => /rated each other 5 and 2/.test(m)));
   // No split on CATME: no 45 to 55 review.
   assert.ok(!reviews.some((m) => /gave themselves/.test(m)));
-  assert.equal(resultFor(results, "yak1@example.edu").total, 62.5);
+  assert.equal(resultFor(results, "yak1@example.edu").total, 67.5);
 });
 
 test("a CATME non-completer scores 50, 10 points on each dimension", () => {
@@ -259,7 +260,7 @@ test("a CATME response missing a ratee's page: reported, the ratee rated by the 
   );
   const emu3 = resultFor(results, "emu3@example.edu");
   assert.equal(emu3.raters, 1);
-  assert.equal(emu3.total, 87.5);
+  assert.equal(emu3.total, 92.5);
 });
 
 test("CATME downloads: no split columns", () => {
