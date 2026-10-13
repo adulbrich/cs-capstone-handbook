@@ -42,7 +42,7 @@ The charter is an agreement between the people on your team, so it lives with [y
 Three artifacts:
 
 1. **The charter** itself, 2 to 4 pages of focused, scannable policy ([sections below](#required-charter-sections)).
-2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**, in the repository: setup steps a new contributor can follow, local commands for tests and linting, the branch and PR workflow, code review expectations, where to ask for help, and the [Definition of Done and the Contribution Norm](#required-in-contributingmd). Start from the [CONTRIBUTING template](/CONTRIBUTING-template.md).
+2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**, in the repository, with the [sections below](#required-in-contributingmd). Start from the [CONTRIBUTING template](/CONTRIBUTING-template.md).
 3. **The AI context file**, in the repository (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
 
 If the repository you inherit already has a `CONTRIBUTING.md` or an AI context file, extend that file rather than starting a new one, and keep what its previous maintainers wrote that still holds.
@@ -91,13 +91,21 @@ For NDA teams, this section is the difference between normal tool use and a brea
 
 ### Required in CONTRIBUTING.md
 
+`CONTRIBUTING.md` is written for whoever makes the next change: a teammate, your partner's developers, the team after you, or an AI tool. It has these sections, in this order, each specific to your repository: every command exact, every rule with its value (the branch pattern, the number of approvals, the review window).
+
+1. **Development setup**: what a contributor needs beyond the README's quickstart, such as development dependencies, environment variables and how to get their values without committing them, and local services. Link the README for the rest rather than repeating it.
+2. **Local checks**: the commands that run the tests, the linter, and the formatter, the same ones CI runs.
+3. **Branches and commits**: the default branch, the branch naming rule, and the commit message convention, with one example of each.
+4. **Pull requests and review**: what a pull request includes, who reviews it and how many approvals it needs, how soon a review is expected, and how it merges.
+5. **Definition of Done**, below.
+6. **Where other work lives**: for each kind of work that does not land as a pull request (an issue, a design document, a ticket in your partner's system), where it lives and who accepts it there. If all of your work lands as pull requests, say so in one line.
+7. **Getting help**: where to ask, and how soon to expect an answer.
+
+In week 2 some commands may not exist yet; list each with the gate that adds it, as the Definition of Done does.
+
 #### Definition of Done
 
 The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the CI configuration, hook, or test that enforces each check. In week 2 some of them may not exist yet, because there is no code to check: name the gate you will add (a pre-commit hook, a CI job, a test suite), the sprint it lands in, and who owns it.
-
-#### The Contribution Norm
-
-Every student owns at least one piece of accepted work per sprint, as [Contribution lines](/assignments/sprint-notes/#contribution-lines) defines them. Record where your team's work lives (the repository, an issue tracker, your partner's system), what accepted means for each kind of work, and how your team makes the norm workable (sizing, pairing, review turnaround expectations). This norm feeds the individual contribution modifier on [Sprint Notes](/assignments/sprint-notes/), so write it as something you will actually follow.
 
 ## What You Submit
 

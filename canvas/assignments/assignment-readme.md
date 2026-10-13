@@ -20,6 +20,16 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: What CONTRIBUTING.md Holds (#507)
+
+The Team Charter's "Required in CONTRIBUTING.md" section is now the one list of what the file holds: development setup, local checks, branches and commits, pull requests and review, the Definition of Done, where other work lives, and getting help, each specific to the repository. The Contribution Norm is gone; the contribution floor stays on Sprint Notes, and the one repository fact the norm carried is the "Where other work lives" section. `public/CONTRIBUTING-template.md` has the same seven sections. Points and tags are unchanged. Re-import all five, and delete the old rubric from the course's rubric list if both are there:
+
+- `team-charter/team-charter-rubric.csv`: the CONTRIBUTING.md and AI context file criterion now says the Definition of Done is scored in its own criterion. Exceeds asks for every other required section, present and specific to the repository; Meets is a section missing or generic, or AI context file gaps with no owner; Does Not Meet is either file missing, or an unfilled template.
+- `repo-checkpoint/repo-checkpoint-{1,2,3,4}-rubric.csv`: the traceability criterion's Exceeds band reads "where CONTRIBUTING.md says it lives" in place of "where the Contribution Norm in CONTRIBUTING.md says it lives".
+- `repo-checkpoint/repo-checkpoint-3-rubric.csv` also: the Term gate met criterion's Exceeds band checks the Definition of Done and the pull request and review rules for the winter charter refresh, in place of the Definition of Done and the Contribution Norm.
+
+Re-paste the Team Charter body, every Sprint Notes body (the Contribution lines no longer say the floor is recorded in `CONTRIBUTING.md`, and other work lives in the tracker it names), every Repo Checkpoints body (What You Produce links the charter's list; Repo Checkpoint 3's charter refresh gate item changed), and the spring Workshop 1 body (the charter refresh line).
+
 ## Re-import Required: Published CATME Anchors (#497)
 
 - `peer-evaluation/catme-rubric.csv`: every Rating Description is now Appendix B of Ohland et al. 2012, the behaviorally anchored version of CATME, and the dimension names take its capitalization. This replaces the #441 section's "the instruction team's behavioral anchors". The rating points change too: Average of 4 is now 18.5, Average of 3 is 17, and Average of 2 is 13.5 (Average of 5 and Average of 1 stay 20 and 10), so a 3, which on Contributing to the Team's Work, for example, describes a teammate who completes a fair share of the team's work with acceptable quality and on time, scores 85 on the 50 to 100 scale instead of 75. Rating names, tags, and criteria descriptions are unchanged. Re-import it on the CS 463 End-of-Term Survey (CATME), and delete the old rubric from the course's rubric list if both are there.
