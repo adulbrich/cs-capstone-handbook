@@ -2,7 +2,7 @@
 
 Date: 2026-10-07
 Branch: `feat/465-reveal-decks`
-Status: implemented in #465, part of #51. The Workshop 1 deck (#466) and the week 0 and week 1 decks (#467) build on it.
+Status: implemented in #465, part of #51. The Workshop 1 deck (#466) and the week 0 and week 1 decks (#467) build on it. #510 changed rule 5: decks no longer carry speaker notes.
 Companion documents: `AGENTS.md` (the `src/decks/` row), `src/pages/decks/[slug].astro`, `src/styles/deck.css`, `src/components/deck/`, `src/decks/sample.astro`.
 
 ## 1. Why
@@ -18,7 +18,7 @@ The only deck in the repository was a Marp draft in the root `decks/`: outside t
 2. **Light background always.** Projectors wash out dark slides, so a deck ignores the viewer's color scheme.
 3. **Body text at least 32px on the 1920x1080 slide.** The decks are projected in a 250-seat auditorium. reveal's slide is fixed at 1920x1080 with no margin, so at that viewport one CSS pixel is one projected pixel and the floor is measured as written.
 4. **One idea per slide.** A slide that needs more is two slides.
-5. **Speaker notes in reveal's speaker view**, with a cue and a target time per slide (`<Notes time="m:ss">`).
+5. **No speaker notes; slides explain themselves.** The presenter works from the slides alone and never opens reveal's speaker view, so the notes hid facts from the room: the AI tool behind a demo, the citation behind a map, whose commits a repository history shows. A fact the room needs goes on its slide. The first decks carried a `<Notes>` component with a cue and a target time per slide, and a pacing timer in the route; #510 removed the component, the speaker-view plugin, and the timer.
 6. **Unlinked and `noindex` while no page links a deck**, and out of the sitemap, as the instructor tools are.
 
 ## 3. How it works
