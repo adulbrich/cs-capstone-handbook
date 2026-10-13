@@ -23,7 +23,7 @@ The sections below record each change as it was made. The ones from before the m
 ## Re-import Required: One RFC Length Band for Both WIC Terms (#512)
 
 - `rfc/rfc-final-rubric.csv`: CS 461 and CS 462 are both WIC courses, so the RFC has one length band, 1,500 to 2,500 words, and the final must reach the 2,000-word floor in fall as well as winter. The Writing criterion's Exceeds band now reads 2,000 to 2,500 words, in place of 800 to 1,500 in fall and 1,500 to 2,500 in winter, so the floor is scored. Points, tags, and the other bands are unchanged. Re-import it on RFC Final Draft, in both terms.
-- `rfc/rfc-draft-rubric.csv`: the Draft complete criterion says "the length band" in place of "the term's length band". Points and tags are unchanged. Re-import it on RFC Draft + Peer Review, in both terms.
+- `rfc/rfc-draft-rubric.csv`: the Draft complete criterion states the band, 1,500 to 2,500 words, in place of "the term's length band". Points and tags are unchanged. Re-import it on RFC Draft + Peer Review, in both terms.
 - Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms: What You Produce states the one band, and the length floor note covers both terms.
 
 ## Re-import Required: Published CATME Anchors (#497)
