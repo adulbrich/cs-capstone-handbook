@@ -2,12 +2,11 @@
 // A link the room opens on their phones: a QR code large enough to scan from
 // the back row, the address written out beside it, and an optional line of
 // text. The code is an inline SVG generated at build time by lean-qr, so
-// there is no image to go stale. The slot takes the text and <Notes>.
+// there is no image to go stale. The slot takes the text.
 //
 //   <QrSlide kicker="Projects" title="Find the projects you like"
 //     url="https://capstone.eecs.oregonstate.edu/">
 //     <p>Sign in with your ONID to sort the list by your interests.</p>
-//     <Notes time="1:00">...</Notes>
 //   </QrSlide>
 //
 // Pass the URL from src/site.ts or Astro.site rather than typing it. Other

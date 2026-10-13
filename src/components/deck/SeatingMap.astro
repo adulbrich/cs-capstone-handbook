@@ -4,15 +4,13 @@
 // at build time as an inline SVG from the room and the team layout in
 // src/lib/seating.mjs; nothing runs in the browser.
 //
-//   <SeatingMap teams={65}>
-//     <Notes time="30:00" cue="...">...</Notes>
-//   </SeatingMap>
+//   <SeatingMap teams={65} />
 //
 // `teams` is the number of teams formed this term; kicker and title default
 // to the week 1 wording; keep the title to one line, since the type is
 // sized for the body under a one-line title and a second line would put the
-// numbers under the 32px floor. The slot takes <Notes>. A room whose rows do not
-// add up to its expected seats, or a team count the room cannot seat, fails
+// numbers under the 32px floor. A room whose rows do not add up to its
+// expected seats, or a team count the room cannot seat, fails
 // the build. Other attributes land on the <section>, as on <Slide>.
 import type { ComponentProps } from "astro/types";
 import { seatingLayout } from "../../lib/seating.mjs";
@@ -128,7 +126,6 @@ const summary = labels
       ))
     }
   </svg>
-  <slot />
 </Slide>
 
 <style>

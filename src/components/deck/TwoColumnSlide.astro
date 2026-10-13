@@ -1,12 +1,10 @@
 ---
 // Two things side by side under one title: a contrast, a before and after,
-// or text beside a picture. The columns are the `left` and `right` slots;
-// the default slot takes <Notes>.
+// or text beside a picture. The columns are the `left` and `right` slots.
 //
 //   <TwoColumnSlide title="Backbone and slices">
 //     <div slot="left"><h3>Backbone</h3><p>...</p></div>
 //     <div slot="right"><h3>Slices</h3><p>...</p></div>
-//     <Notes time="1:30">...</Notes>
 //   </TwoColumnSlide>
 //
 // `divider` draws a rule between the columns. Other attributes land on the
@@ -26,7 +24,6 @@ const { divider = false, ...attrs } = Astro.props;
     <div class="column"><slot name="left" /></div>
     <div class="column"><slot name="right" /></div>
   </div>
-  <slot />
 </Slide>
 
 <style>

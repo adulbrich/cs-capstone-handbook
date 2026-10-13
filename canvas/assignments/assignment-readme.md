@@ -30,6 +30,12 @@ The Team Charter's "Required in CONTRIBUTING.md" section is now the one list of 
 
 Re-paste the Team Charter body, every Sprint Notes body (the Contribution lines no longer say the floor is recorded in `CONTRIBUTING.md`, and other work lives in the tracker it names), every Repo Checkpoints body (What You Produce links the charter's list; Repo Checkpoint 3's charter refresh gate item changed), and the spring Workshop 1 body (the charter refresh line).
 
+## Re-import Required: One RFC Length Band for Both WIC Terms (#512)
+
+- `rfc/rfc-final-rubric.csv`: CS 461 and CS 462 are both WIC courses, so the RFC has one length band, 1,500 to 2,500 words, and the final must reach the 2,000-word floor in fall as well as winter. The Writing criterion's Exceeds band now reads 2,000 to 2,500 words, in place of 800 to 1,500 in fall and 1,500 to 2,500 in winter, so the floor is scored. Points, tags, and the other bands are unchanged. Re-import it on RFC Final Draft, in both terms.
+- `rfc/rfc-draft-rubric.csv`: the Draft complete criterion states the band, 1,500 to 2,500 words, in place of "the term's length band". Points and tags are unchanged. Re-import it on RFC Draft + Peer Review, in both terms.
+- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms: What You Produce states the one band, and the length floor note covers both terms.
+
 ## Re-import Required: Published CATME Anchors (#497)
 
 - `peer-evaluation/catme-rubric.csv`: every Rating Description is now Appendix B of Ohland et al. 2012, the behaviorally anchored version of CATME, and the dimension names take its capitalization. This replaces the #441 section's "the instruction team's behavioral anchors". The rating points change too: Average of 4 is now 18.5, Average of 3 is 17, and Average of 2 is 13.5 (Average of 5 and Average of 1 stay 20 and 10), so a 3, which on Contributing to the Team's Work, for example, describes a teammate who completes a fair share of the team's work with acceptable quality and on time, scores 85 on the 50 to 100 scale instead of 75. Rating names, tags, and criteria descriptions are unchanged. Re-import it on the CS 463 End-of-Term Survey (CATME), and delete the old rubric from the course's rubric list if both are there.
