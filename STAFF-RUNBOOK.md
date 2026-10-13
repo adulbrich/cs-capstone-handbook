@@ -94,20 +94,20 @@ An item fails for the team because the note is wrong or missing. An individual's
 - Grading: TAs grade their teams' RFCs (~57 each per term in fall and winter, ~10 minutes each against the rubric; budget ~9.5 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length caps when grading; an RFC over the cap gets skimmed past the cap, not rewarded for volume.
 - Reviewer no-shows: the author is held harmless (the revision log takes the substitute staff review as its source); the no-show reviewer loses the feedback points.
 
-## WIC Compliance (CS 462)
+## WIC Compliance (CS 461 and CS 462)
 
-CS 462 is the certified Writing Intensive Curriculum course. This table holds the WIC office's criteria (https://wic.oregonstate.edu/propose-assess-wic-courses/wic-learning-outcomes-criteria-and-rationale) against the course as it runs; the student-facing outcomes are on the handbook's WIC page.
+CS 461 (fall) and CS 462 (winter) are both certified Writing Intensive Curriculum courses, and each must meet these criteria on its own; CS 463 is not WIC. This table holds the WIC office's criteria (https://wic.oregonstate.edu/propose-assess-wic-courses/wic-learning-outcomes-criteria-and-rationale) against each course as it runs; the student-facing outcomes are on the handbook's WIC page.
 
 | Criterion | How the course meets it | Status |
 |---|---|---|
-| 3 or more credits | CS 462 is 3 credits | Met |
-| 300 or 400 level, juniors and seniors | 462, capstone standing | Met |
-| Regular departmental number | 462 | Met |
+| 3 or more credits | CS 461 and CS 462 are 3 credits each (catalog) | Met |
+| 300 or 400 level, juniors and seniors | 461 and 462, capstone standing | Met |
+| Regular departmental number | 461 and 462 | Met |
 | 4,000 words per student across assignments | Unmeasured beyond the RFC | Open (#60) |
 | 1,500 words of low-stakes writing per student | Two written peer reviews, the RFC revision log (outside the RFC's length floor), five contribution lines, a share of five judgment layers; no length guideline today | Open (#60) |
-| One formal piece of 1,500 or more words using disciplinary sources | The winter RFC: its length floor (on the RFC page) clears this, and its analysis is argued from cited sources | Met |
+| One formal piece of 1,500 or more words using disciplinary sources | Each term's RFC: its length floor (on the RFC page) clears this in both terms, and its analysis is argued from cited sources | Met |
 | 35% of the grade from writing assignments | Writing assignments are 30% of the winter grade, 38% if repo checkpoints (docs graded from the checkpoint PDF) count; the weights are on the assignments overview, in the grade grid, the RFC under Individual Evidence and the rest under Team Deliverables | Open (#60) |
-| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | The winter RFC draft gets peer feedback in week 5; staff feedback lands on the final, plus a substitute review when a peer reviewer no-shows. Waiting on the WIC director | Open (#60) |
+| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | Each term's RFC draft gets peer feedback in week 5; staff feedback lands on the final, plus a substitute review when a peer reviewer no-shows. Waiting on the WIC director | Open (#60) |
 | Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback through the revision log, one row per point with a decision (#348); its Source column already takes instruction-team feedback, so revision after instructor feedback waits only on the draft-feedback decision in #60 | Partial (#60) |
 | Student-to-instructor ratio of 25 to 1 or better | Two instructors, four TAs, about 230 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
 | Instructor of record is not a graduate student | Faculty instructors | Met |

@@ -20,6 +20,11 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: One RFC Length Band for Both WIC Terms (#512)
+
+- `rfc/rfc-final-rubric.csv`: CS 461 and CS 462 are both WIC courses, so the RFC has one length band in both terms, 1,500 to 2,500 words, with the 2,000-word floor on the final in fall as well as winter. The Writing criterion's Exceeds band now states that one band in place of 800 to 1,500 in fall and 1,500 to 2,500 in winter. Points, tags, and the other bands are unchanged. Re-import it on RFC Final Draft, in both terms.
+- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms: What You Produce states the one band, and the length floor note covers both terms.
+
 ## Re-import Required: Published CATME Anchors (#497)
 
 - `peer-evaluation/catme-rubric.csv`: every Rating Description is now Appendix B of Ohland et al. 2012, the behaviorally anchored version of CATME, and the dimension names take its capitalization. This replaces the #441 section's "the instruction team's behavioral anchors". The rating points change too: Average of 4 is now 18.5, Average of 3 is 17, and Average of 2 is 13.5 (Average of 5 and Average of 1 stay 20 and 10), so a 3, which on Contributing to the Team's Work, for example, describes a teammate who completes a fair share of the team's work with acceptable quality and on time, scores 85 on the 50 to 100 scale instead of 75. Rating names, tags, and criteria descriptions are unchanged. Re-import it on the CS 463 End-of-Term Survey (CATME), and delete the old rubric from the course's rubric list if both are there.
