@@ -5,6 +5,7 @@
 import alexUlbrich from "../assets/decks/alex-ulbrich.jpg";
 import kirstenWinters from "../assets/decks/kirsten-winters.jpg";
 import sprint from "../assets/design-sprint.png";
+import DecisionList from "../components/deck/DecisionList.astro";
 import FrameSlide from "../components/deck/FrameSlide.astro";
 import GradeGrid from "../components/deck/GradeGrid.astro";
 import ImageSlide from "../components/deck/ImageSlide.astro";
@@ -147,6 +148,32 @@ const handbook = new URL("/", Astro.site).href;
       { at: "row", row: 0, term: "Walking skeleton", text: "one thin path through every column" },
       { at: "line", row: 1, term: "Release line", text: "everything above it ships first" },
       { at: "card", row: 1, column: 3, item: 1, term: "A card", text: "one story" },
+    ]}
+    stepped
+  />
+</Slide>
+
+<Slide kicker="Decision list" title="Ten decisions, the few hard ones marked" wide>
+  <DecisionList
+    decisions={[
+      { text: "Search by title or by subject first" },
+      {
+        hard: true,
+        text: "Sign in with student IDs",
+        validator: { who: "Library IT", what: "the ID service allows a new client" },
+      },
+      { text: "Hold list sorted by pickup date" },
+      { text: "Chart library for the staff dashboard" },
+      {
+        hard: true,
+        text: "Where borrowing history is stored",
+        validator: { who: "Partner", what: "the retention rule for patron records" },
+      },
+      { text: "Text or email when a hold is ready" },
+      { text: "Colors for the hold statuses" },
+      { text: "Jest or Vitest for unit tests" },
+      { text: "One page per book, or a modal" },
+      { text: "Folder layout for the API code" },
     ]}
     stepped
   />

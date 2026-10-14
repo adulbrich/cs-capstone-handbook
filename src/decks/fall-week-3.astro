@@ -1,0 +1,725 @@
+---
+// Fall week 3, Workshop 2: Map Your Hard-to-Reverse Decisions, in the week 2
+// deck's shape. Talk in four parts: what makes a decision hard to reverse;
+// ephira's decisions sorted by hand, revisited against its history, then
+// drafted with an AI tool; LumiLab as the reference for a pipeline project;
+// then the teams' own lists while the instruction team walks the room, and
+// a wrap. Workshop 3, Audit Your Safety Net, shares the session and its
+// slides come after these. Every slide explains itself to someone who
+// missed the talk. Each link sits on the slide that uses it. Served at
+// /decks/fall-week-3/.
+import DecisionList from "../components/deck/DecisionList.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+import { LATE } from "../lib/canvas-entries.mjs";
+
+export const title = "Fall Week 3: Map Your Hard-to-Reverse Decisions";
+
+// What a team leaves the session with: the opening slide promises it, and
+// the wrap checks it.
+const outcome = [
+  "Ten upcoming decisions, written down before you mark any",
+  "Each one marked hard to reverse or easy to reverse",
+  "For each hard one, a validator: who checks it, and what they check",
+  "Few hard ones: if eight of ten are hard, sort again",
+];
+
+// Each example's links, shown without the protocol, as the room would type
+// them.
+const PROTOCOL = /^https:\/\//;
+const link = (url: string) => ({ href: url, text: url.replace(PROTOCOL, "") });
+const ephira = {
+  page: link(
+    "https://capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a"
+  ),
+  repo: link("https://github.com/adulbrich/ephira"),
+};
+const lumiLab = {
+  page: link(
+    "https://capstone.eecs.oregonstate.edu/projects/4e8e30be-72ac-5203-83fd-f4515162ce75"
+  ),
+  repo: link("https://github.com/radiantlab/LumiLab"),
+};
+// The source of the distinction, as the RFC page cites it.
+const bezos =
+  "https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF";
+
+// ephira's next ten decisions as the second team faced them in the fall,
+// read from the repository: the list the stepped slide sorts, and the hard
+// ones the next slide gives validators.
+const ephiraDecisions = [
+  { text: "How to predict the next period" },
+  {
+    hard: true,
+    text: "Set the key that encrypts the database",
+    validator: {
+      what: "an old database survives; a copied file won't open",
+      who: "Partner",
+    },
+  },
+  { text: "A chip grid for faster logging" },
+  {
+    hard: true,
+    text: "Save predictions to measure their accuracy",
+    validator: {
+      what: "saving twice leaves one row, not two",
+      who: "A teammate who didn't write it",
+    },
+  },
+  { text: "Schedule reminders on the phone" },
+  {
+    hard: true,
+    text: "The backup file's format",
+    validator: {
+      what: "a version field; last release's file imports",
+      who: "Partner",
+    },
+  },
+  { text: "How the Cycle tab shows phases" },
+  {
+    hard: true,
+    text: "How pregnancy mode stores its data",
+    validator: {
+      what: "the migration runs on a copy of real data",
+      who: "Partner",
+    },
+  },
+  { text: "Jest for unit tests" },
+  { text: "A walkthrough on first launch" },
+];
+const ephiraHard = ephiraDecisions.filter((decision) => decision.hard);
+// The sorting slide leaves the validators to the slide after it.
+const ephiraSorted = ephiraDecisions.map(({ hard, text }) => ({ hard, text }));
+
+// LumiLab's decisions across its four teams, sorted the way its history
+// bears out.
+const lumiLabDecisions = [
+  { hard: true, text: "What the output header says: VIEW line, glare value" },
+  { text: "CSS framework" },
+  { hard: true, text: "Which calibration files it accepts" },
+  { text: "State management library" },
+  { hard: true, text: "The license, given the tools it bundles" },
+  { text: "Component library" },
+  { hard: true, text: "Python desktop app, or Tauri" },
+  { text: "Built-in image viewer, or an external one" },
+  { text: "Bundler" },
+  { text: "Unit test framework" },
+];
+
+// Handbook links, shown without their protocol, as the room would type
+// them.
+const handbook = (path: string) => {
+  const url = new URL(path, Astro.site);
+  return { href: url.href, text: `${url.host}${url.pathname}${url.hash}` };
+};
+const activity = handbook(
+  "/activities/technical-design/#map-your-hard-to-reverse-decisions"
+);
+const guide = handbook(
+  "/guides/technical-design/#some-truths-about-technical-design"
+);
+const rfc = handbook("/assignments/rfc/");
+---
+
+<TitleSlide
+  kicker="CS 461, fall week 3: Workshop 2"
+  title="Map Your Hard-to-Reverse Decisions"
+  subtitle="Ten upcoming decisions, the few that are hard to undo, and who checks each one"
+  byline="CS 461: the instruction team"
+/>
+
+<Slide kicker="Today's outcome" title="By the end of the session, your team has a sorted list">
+  <ul>{outcome.map((line) => <li>{line}</li>)}</ul>
+  <p class="deck-small after-list">
+    Why it matters: your RFC is about a real decision that is hard to reverse,
+    so one of today's hard ones is usually its topic. The RFC draft is due
+    Sunday of week 4.
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 2" title="Graded complete or incomplete">
+  <ul>
+    <li>Complete when it's the activity's output: there is no quality bar</li>
+    <li>{LATE["class-week"].text}</li>
+    <li>
+      Submitting an AI-generated output without running the activity as a
+      team scores Incomplete
+    </li>
+    <li>Workshop 3, after this one, is a second submission</li>
+  </ul>
+  <p class="caption">
+    Read for this session:<br />
+    Technical Design guide, Some Truths: <a href={guide.href}>{guide.text}</a>
+  </p>
+</Slide>
+
+<Slide kicker="Agenda" title="Workshop 2, in four parts">
+  <ol>
+    <li>Hard-to-reverse and easy-to-reverse decisions</li>
+    <li>ephira: sorted by hand, checked against its history, then drafted with AI</li>
+    <li>A reference list for a pipeline project: LumiLab</li>
+    <li>Your turn: list and sort in teams</li>
+  </ol>
+  <p class="caption">Then Workshop 3: Audit Your Safety Net.</p>
+</Slide>
+
+<TwoColumnSlide kicker="Part 1 of 4: hard and easy to reverse" title="A hard-to-reverse decision costs far more to undo than to get right" divider>
+  <div slot="left">
+    <h3>Hard to reverse, typically</h3>
+    <ul class="reveal-list">
+      <li>Database schema and data migrations</li>
+      <li>Authentication and authorization</li>
+      <li>Deployment topology</li>
+      <li>Public API shape, file formats other programs read</li>
+      <li>Licensing and third-party commitments</li>
+      <li>Anything touching user data you can't regenerate</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Easy to reverse, typically</h3>
+    <ul class="reveal-list">
+      <li>Most feature code</li>
+      <li>UI layout</li>
+      <li>Internal module boundaries</li>
+      <li>Any library you could swap in a week</li>
+    </ul>
+    <p class="caption">
+      Jeff Bezos's letter to Amazon shareholders calls them Type 1 and Type 2
+      decisions, and warns that the slow process Type 1 needs makes everything
+      slow when it's applied to Type 2: <a href={bezos}>2015 letter, PDF</a>
+    </p>
+  </div>
+</TwoColumnSlide>
+
+<Slide kicker="Part 1 of 4: hard and easy to reverse" title="Sort by how hard it is to undo, not by how important it feels">
+  <ul>
+    <li>
+      An important decision that's easy to reverse can wait until you know
+      more
+    </li>
+    <li class="fragment">
+      A hard-to-reverse one gets more expensive with every line built on it
+    </li>
+  </ul>
+  <div class="errors fragment">
+    <div class="error">
+      <h3>Easy, treated as hard</h3>
+      <p>Costs you time: review and debate on a choice you could change next week</p>
+    </div>
+    <div class="error error-worse">
+      <h3>Hard, treated as easy</h3>
+      <p>Costs you a week on a migration you can't roll back</p>
+    </div>
+  </div>
+  <p class="caption">
+    Technical Design guide, Some Truths: <a href={guide.href}>{guide.text}</a>
+  </p>
+</Slide>
+
+<StatementSlide kicker="Part 2 of 4" source="ephira: sorted by hand, checked against its history, then drafted with AI">
+  One app, two teams, and the decisions that stuck
+</StatementSlide>
+
+<Slide kicker="Example: ephira, a user journey" title="A private period tracker, already on users' phones">
+  <ul>
+    <li>
+      <strong>The app:</strong> a menstrual cycle tracker for iOS and Android
+      that keeps every record on the phone, and nowhere else
+    </li>
+    <li class="fragment">
+      <strong>Two teams:</strong> the first built it and published it in both
+      app stores; the second inherited version 1.1.0 and enhanced it
+    </li>
+    <li class="fragment">
+      <strong>What that means for decisions:</strong> every change to stored
+      data runs on phones nobody on the team can reach
+    </li>
+  </ul>
+  <p class="caption">
+    Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a><br />
+    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+  </p>
+</Slide>
+
+<Slide kicker="ephira, sorted by hand" title="The second team's next ten decisions" wide>
+  <DecisionList decisions={ephiraSorted} stepped />
+  <p class="caption caption-tight">
+    Read from the repository. Write all ten down before you mark any.
+  </p>
+</Slide>
+
+<Slide kicker="ephira, sorted by hand" title="Each hard one gets a validator before the team commits" wide>
+  <DecisionList decisions={ephiraHard} count={false} />
+  <p class="caption">
+    A validator is a person and a check, named before the work starts. A
+    teammate who didn't write the code catches what its author assumed.
+  </p>
+</Slide>
+
+<TwoColumnSlide kicker="ephira, checked against its history" title="The same change is free before the first install, and costly after" divider>
+  <div slot="left">
+    <h3>Before the first store release</h3>
+    <ul class="reveal-list">
+      <li>The first team deleted its four migrations and generated one in their place</li>
+      <li>It renamed the app from PrivyPeriod to ephira, package ID included</li>
+      <li>Nobody had installed it yet, so neither broke a thing</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>After it</h3>
+    <ul class="reveal-list">
+      <li class="fragment">A schema change is a new migration, run on every user's phone at the next update</li>
+      <li class="fragment">An older app can't open a database a newer one migrated</li>
+      <li class="fragment">A new package ID is a new app: users and their data stay on the old one</li>
+    </ul>
+  </div>
+</TwoColumnSlide>
+
+<TwoColumnSlide kicker="ephira, checked against its history" title="What the repository shows, after both teams" divider>
+  <div slot="left">
+    <h3>Hard, handled as easy</h3>
+    <ul class="reveal-list">
+      <li>
+        Foreign keys never turned on (first team): a re-seed deleted moods and
+        symptoms that entries still pointed at, and a hand-written migration
+        cleaned up every phone
+      </li>
+      <li>
+        Predictions saved with no key per row (second team): every phone
+        piled up duplicates, and the fix deleted them before it could add a
+        key
+      </li>
+      <li>
+        The encryption key, never set: version 1.4.0 still writes an
+        unencrypted file while the website says AES-256
+      </li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Easy, and stayed easy</h3>
+    <ul class="reveal-list">
+      <li>The 28-day guess, replaced by the average cycle length</li>
+      <li>A plugin for 16 KB memory pages, added, measured as a no-op, deleted</li>
+      <li>ESLint and Prettier, replaced by Biome without changing a file</li>
+    </ul>
+    <p class="caption">
+      Migrations <code>0004</code> and <code>0005</code>, and ADRs 0002 and
+      0003: <a href={ephira.repo.href}>{ephira.repo.text}</a>
+    </p>
+  </div>
+</TwoColumnSlide>
+
+<Slide kicker="ephira, drafted with AI" title="One prompt, run twice" wide>
+  <pre class="prompt">Here is a software project proposal, as it was advertised to students:
+
+[ephira's project page, as advertised]
+
+<span class="prompt-added">The project's repository, as it was the day the team started, is at
+[path]. Read it before answering.</span>
+
+List the next ten technical decisions this team will make, before
+classifying any of them. Then mark each one hard to reverse (expensive or
+impossible to undo) or easy to reverse (cheap to change once you learn
+something). For each hard-to-reverse decision, say who should check it and
+what they check before the team commits. Keep each decision under ten words.</pre>
+  <p class="caption">
+    Sonnet 5.5 as a Claude Code sub-agent. Run 1: without the highlighted
+    lines, tools off. Run 2: with them, reading only the repository at app
+    version 1.1.0.
+  </p>
+</Slide>
+
+<TwoColumnSlide kicker="ephira: the two AI drafts" title="With the repository, the draft found what the code had already decided" divider>
+  <div slot="left">
+    <h3>Proposal only: 7 of 10 hard</h3>
+    <ul class="reveal-list">
+      <li>Marked the database engine and the signing keys hard, then said both may already be settled</li>
+      <li>Planned an encryption layer the app's build already had</li>
+      <li>Gave checks that fit any app: none names a file, a table, or a version</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>With the repository: 6 of 10 hard</h3>
+    <ul class="reveal-list">
+      <li class="fragment">Found the key never set: an unencrypted file on the phone, while the website says AES-256</li>
+      <li class="fragment">Called predictions easy, since they were computed and never stored: true that day, false once the team saved them</li>
+      <li class="fragment">Like the first run, missed that the phone never enforces foreign keys</li>
+    </ul>
+  </div>
+</TwoColumnSlide>
+
+<TwoColumnSlide kicker="Sorting with an AI tool" title="Sort it as a team first, then compare with the tool" divider wide>
+  <div slot="left">
+    <h3>First, as a team</h3>
+    <ul>
+      <li>Write your ten and mark them before anyone opens a tool</li>
+      <li>Your list is what the comparison measures the tool against</li>
+    </ul>
+    <p class="caption">
+      Give it only what your Team Charter's AI and Confidentiality section
+      allows.
+    </p>
+  </div>
+  <div slot="right">
+    <h3>Then, with the tool</h3>
+    <ul>
+      <li class="fragment">Give it the repository, not only the description</li>
+      <li class="fragment">Ask which decisions the code has already made for you</li>
+      <li class="fragment">For each hard one, ask what undoing it would take</li>
+      <li class="fragment">Set the lists side by side; note where they differ</li>
+    </ul>
+  </div>
+</TwoColumnSlide>
+
+<StatementSlide kicker="Part 3 of 4" source="LumiLab, a pipeline: what four teams decided, and what stuck">
+  A reference list for a pipeline project
+</StatementSlide>
+
+<Slide kicker="Reference list: LumiLab, a pipeline" title="Hard means what other programs read" wide>
+  <DecisionList decisions={lumiLabDecisions} />
+  <p class="caption caption-tight">
+    LumiLab turns ordinary photos and a camera's calibration files into a
+    luminance map, an HDR image that glare tools such as evalglare read.
+    Repository: <a href={lumiLab.repo.href}>{lumiLab.repo.text}</a>
+  </p>
+</Slide>
+
+<Slide kicker="LumiLab, checked against its history" title="Three decisions handled as easy, and what they cost">
+  <ul class="history">
+    <li>
+      <strong>Write the glare value into the header</strong> (third team): it
+      moved evalglare ahead of the step that writes the view angles, so every
+      run's glare value was wrong until a fix more than a year later
+    </li>
+    <li class="fragment">
+      <strong>The name of that header key:</strong> four names, set by two
+      teams and the maintainer; a map saved under each version carries a
+      different one, and today's viewer features only the newest
+    </li>
+    <li class="fragment">
+      <strong>The rewrite to Tauri</strong> (second team): it dropped the
+      first team's Python app and, with it, the GPL license file, which came
+      back five months later
+    </li>
+  </ul>
+  <p class="caption">
+    A code fix takes one commit. The maps users already saved keep the wrong
+    value. Project page: <a href={lumiLab.page.href}>{lumiLab.page.text}</a>
+  </p>
+</Slide>
+
+<StatementSlide kicker="Part 4 of 4" source="List and sort in teams while the instruction team walks the room">
+  Your turn
+</StatementSlide>
+
+<Slide kicker="Work time" title="Start here, as a team">
+  <ol class="steps" style="--steps: 5;">
+    <li>
+      <p>Open a doc or a sheet, one laptop per team</p>
+      <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Write the next ten decisions your team expects to make. Don't mark any yet</p>
+      <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Mark each one hard to reverse or easy to reverse</p>
+      <span class="art art-chips" aria-hidden="true"><b>Hard</b><i>Easy</i></span>
+    </li>
+    <li>
+      <p>For each hard one, name who checks it and what they check</p>
+      <span class="art art-who" aria-hidden="true">Who: what</span>
+    </li>
+    <li>
+      <p>Count the hard ones. Eight of ten? Sort again</p>
+      <span class="art art-count" aria-hidden="true">3 of 10</span>
+    </li>
+  </ol>
+  <p class="caption">
+    The activity: <a href={activity.href}>{activity.text}</a>
+  </p>
+</Slide>
+
+<Slide kicker="Work time: check your list" title="Check your list: choices with options, and few hard ones" wide>
+  <div class="checks">
+    <div>
+      <p class="verdict verdict-yes">Like this</p>
+      <DecisionList
+        decisions={[
+          { text: "Menu layout on the phone" },
+          { hard: true, text: "Where order history is stored" },
+          { text: "Text or push for pickup" },
+          { text: "Sort the menu by cafe or by dish" },
+        ]}
+      />
+    </div>
+    <div>
+      <p class="verdict verdict-no">Not like this</p>
+      <DecisionList
+        decisions={[
+          { hard: true, text: "Build the menu page" },
+          { hard: true, text: "Set up the database" },
+          { hard: true, text: "Make it fast" },
+          { hard: true, text: "Fix the login bug" },
+        ]}
+      />
+    </div>
+  </div>
+  <p class="caption">
+    A decision has at least two options you could pick. "Build the menu page"
+    is a task; "text or push for pickup" is a decision. Partner already decided
+    the stack? Sort the decisions left inside it.
+  </p>
+</Slide>
+
+<Slide kicker="Wrap" title="Check your list against today's outcome">
+  <ul>{outcome.map((line) => <li>{line}</li>)}</ul>
+  <p class="deck-small after-list">
+    Stuck? The activity: <a href={activity.href}>{activity.text}</a><br />
+    The Technical Design guide, Some Truths: <a href={guide.href}>{guide.text}</a>
+  </p>
+</Slide>
+
+<Slide kicker="Wrap" title="Due by Sunday of week 3: one PDF per workshop">
+  <ul class="due">
+    <li>
+      Workshop 2: the list of upcoming decisions, with the few hard-to-reverse
+      ones marked
+    </li>
+    <li>
+      Workshop 3: one specific gap in your checks, and the smallest change that
+      closes it
+    </li>
+  </ul>
+  <p class="deck-small after-list">
+    Your RFC draft, due Sunday of week 4, is about one of your hard ones.
+    Nothing hard is open yet? The RFC page says what to write instead: <a href={rfc.href}>{rfc.text}</a>
+  </p>
+</Slide>
+
+<style>
+  .caption {
+    margin-block-start: auto;
+    padding-block-start: 24px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  /* Under a list that fills the slide at the 32px floor. */
+  .caption-tight {
+    padding-block-start: 4px;
+  }
+
+  .reveal-list {
+    font-size: 36px;
+  }
+
+  /* The two errors: the worse one carries the accent. */
+  .errors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px;
+    margin-block-start: 48px;
+  }
+
+  .error {
+    padding: 28px 36px;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-block-start-width: 12px;
+    border-radius: 12px;
+  }
+
+  .error-worse {
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .error h3 {
+    margin-block-end: 12px;
+  }
+
+  .error p {
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.25;
+  }
+
+  .history > li {
+    font-size: 40px;
+    line-height: 1.25;
+  }
+
+  .history > li + li {
+    margin-block-start: 28px;
+  }
+
+  .prompt {
+    margin: 0;
+    padding: 36px 44px;
+    font-family: var(--deck-mono);
+    font-size: var(--deck-text-min);
+    line-height: 1.4;
+    white-space: pre-wrap;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 12px;
+  }
+
+  /* The lines only the second run's prompt carried. */
+  .prompt-added {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+  }
+
+  /* Numbered steps drawn as tiles, left to right, each with a chevron into
+     the next. */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
+    gap: 56px;
+  }
+
+  .steps > li {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 104px 26px 28px;
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.22;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 14px;
+  }
+
+  .steps > li::before {
+    inset-block-start: 24px;
+    inset-inline-start: 24px;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+    color: var(--deck-paper);
+    background: var(--deck-accent-ink);
+    border-radius: 999px;
+  }
+
+  .steps > li + li::after {
+    position: absolute;
+    inset-block-start: 36px;
+    inset-inline-start: -44px;
+    content: "";
+    border-block: 18px solid transparent;
+    border-inline-start: 26px solid var(--deck-accent);
+  }
+
+  .steps p {
+    margin: 0;
+  }
+
+  .art {
+    margin-block-start: auto;
+  }
+
+  .art-sheet {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    gap: 6px;
+  }
+
+  .art-sheet i {
+    height: 28px;
+    background: var(--deck-paper);
+    border: 2px solid var(--deck-rule);
+    border-radius: 4px;
+  }
+
+  .art-lines {
+    display: grid;
+    gap: 8px;
+    width: 150px;
+  }
+
+  .art-lines i {
+    height: 14px;
+    background: var(--deck-ink-soft);
+    border-radius: 999px;
+  }
+
+  .art-lines i:last-child {
+    width: 60%;
+  }
+
+  .art-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .art-chips b,
+  .art-chips i,
+  .art-who,
+  .art-count {
+    align-self: start;
+    padding: 2px 14px;
+    font-size: var(--deck-text-min);
+    font-style: normal;
+    font-weight: 700;
+    border: 3px solid var(--deck-rule);
+    border-radius: 999px;
+  }
+
+  .art-chips b {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .art-chips i {
+    color: var(--deck-ink-soft);
+    background: var(--deck-paper);
+  }
+
+  .art-who {
+    color: var(--deck-ink);
+    background: var(--deck-paper);
+  }
+
+  .art-count {
+    color: var(--deck-accent-ink);
+    background: var(--deck-paper);
+    border-color: var(--deck-accent);
+  }
+
+  /* The self-check's two lists, each under its verdict. */
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 96px;
+  }
+
+  .verdict {
+    margin: 0 0 16px;
+    font-size: var(--deck-text-min);
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .verdict-yes {
+    color: var(--deck-backbone-edge);
+  }
+
+  .verdict-no {
+    color: var(--deck-accent-ink);
+  }
+
+  .due {
+    margin-block-start: 32px;
+    font-size: 36px;
+  }
+</style>
