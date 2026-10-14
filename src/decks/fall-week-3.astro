@@ -51,35 +51,41 @@ const lunchDecisions = [
     hard: true,
     text: "Front end: React or Svelte",
     validator: {
-      what: "what their developers can maintain after you leave",
-      who: "Partner",
+      what: "each of you builds one screen in it this week",
+      who: "The team",
     },
   },
   { text: "CSS: Tailwind or plain CSS" },
   {
-    cost: "Moving every account, and every table that points to a user",
+    cost: "Moving every account, and rewriting every access rule",
     hard: true,
-    text: "Login: Supabase Auth or Better Auth",
-    validator: { what: "which logins students already have", who: "Partner" },
-  },
-  { text: "Menu layout: a list or a grid" },
-  {
-    cost: "Rewriting every query, and moving the data",
-    hard: true,
-    text: "Database: Postgres or Firestore",
+    text: "Backend: Supabase, or Postgres plus Better Auth",
     validator: {
-      what: "the partner's reports, run on sample data in a one-day spike",
+      what: "who pays for it, and who runs it after you leave",
+      who: "Partner",
+    },
+  },
+  { text: "Hosting: Vercel or a server" },
+  {
+    cost: "Migrating every order already placed, and every query on it",
+    hard: true,
+    text: "Data model: how cafes, dishes, and orders relate",
+    validator: {
+      what: "the partner's reports, written as queries on sample data",
       who: "A teammate",
     },
   },
-  { text: "Pickup alerts: text or push" },
+  { text: "Menu layout: a list or a grid" },
   {
-    cost: "Reworking what runs between requests, like the live kitchen screen",
+    cost: "A new contract, and reworking checkout and refunds",
     hard: true,
-    text: "Hosting: Vercel functions or a server",
-    validator: { what: "where it may run, and who pays", who: "Partner's IT" },
+    text: "Payments: Stripe or dining dollars",
+    validator: {
+      what: "whether the campus lets the app take dining dollars",
+      who: "Partner",
+    },
   },
-  { text: "Components: shadcn or MUI" },
+  { text: "Pickup alerts: text or push" },
   { text: "Charts for the kitchen dashboard" },
   { text: "Unit tests: Vitest or Jest" },
 ];
@@ -173,13 +179,13 @@ const rfc = handbook("/assignments/rfc/");
   <p class="caption">Then Workshop 3: Audit Your Safety Net.</p>
 </Slide>
 
-<TwoColumnSlide kicker="Part 1 of 4: hard and easy to reverse" title="A hard-to-reverse decision costs far more to undo than to get right" divider>
+<TwoColumnSlide kicker="Part 1 of 4: hard and easy to reverse" title="A hard-to-reverse decision costs far more to undo than to get right" divider wide>
   <div slot="left">
     <h3>Hard to reverse, typically</h3>
     <ul class="reveal-list">
       <li>Database schema and data migrations</li>
       <li>Authentication and authorization</li>
-      <li>Deployment topology</li>
+      <li>Deployment topology: what runs where, not which host</li>
       <li>Public API shape, file formats other programs read</li>
       <li>Licensing and third-party commitments</li>
       <li>Anything touching user data you can't regenerate</li>
@@ -213,15 +219,16 @@ const rfc = handbook("/assignments/rfc/");
   <DecisionList decisions={lunchHard} count={false} marks={false} />
   <p class="caption">
     Each one is cheap to change this week and expensive by winter: the cost
-    grows with every screen, account, and table built on it.
+    grows with every screen, account, order, and contract built on it.
   </p>
 </Slide>
 
-<Slide kicker="Part 1 of 4: hard and easy to reverse" title="Sort by how hard it is to undo, not by how important it feels">
+<Slide kicker="Part 1 of 4: hard and easy to reverse" title="Sort by how hard it is to undo, not by how important it feels" wide>
   <ul>
     <li>
       An important decision that's easy to reverse can wait until you know
-      more
+      more: hosting feels big, yet a standard web app moves to a new host in
+      days
     </li>
     <li class="fragment">
       A hard-to-reverse one gets more expensive with every line built on it
