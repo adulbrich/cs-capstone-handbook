@@ -11,6 +11,7 @@ import GradeGrid from "../components/deck/GradeGrid.astro";
 import ImageSlide from "../components/deck/ImageSlide.astro";
 import PeopleSlide from "../components/deck/PeopleSlide.astro";
 import QrSlide from "../components/deck/QrSlide.astro";
+import SafetyNet from "../components/deck/SafetyNet.astro";
 import SeatingMap from "../components/deck/SeatingMap.astro";
 import Slide from "../components/deck/Slide.astro";
 import StatementSlide from "../components/deck/StatementSlide.astro";
@@ -153,27 +154,37 @@ const handbook = new URL("/", Astro.site).href;
   />
 </Slide>
 
-<Slide kicker="Decision list" title="Ten decisions, the few hard ones marked" wide>
+<Slide kicker="Decision list" title="Decisions sorted, the hard ones explained" wide>
   <DecisionList
     decisions={[
       { text: "Search by title or by subject first" },
       {
+        cost: "Moving every account to a new sign-in",
         hard: true,
         text: "Sign in with student IDs",
-        validator: { who: "Library IT", what: "the ID service allows a new client" },
+        validator: { what: "the ID service allows a new client", who: "Library IT" },
       },
-      { text: "Hold list sorted by pickup date" },
       { text: "Chart library for the staff dashboard" },
       {
+        cost: "Migrating every loan already recorded",
         hard: true,
         text: "Where borrowing history is stored",
-        validator: { who: "Partner", what: "the retention rule for patron records" },
+        validator: { what: "the retention rule for patron records", who: "Partner" },
       },
       { text: "Text or email when a hold is ready" },
-      { text: "Colors for the hold statuses" },
-      { text: "Jest or Vitest for unit tests" },
-      { text: "One page per book, or a modal" },
-      { text: "Folder layout for the API code" },
+    ]}
+    stepped
+  />
+</Slide>
+
+<Slide kicker="Safety net" title="A team's checks, and whether each would catch a bad change" wide>
+  <SafetyNet
+    checks={[
+      { catches: "partly", check: "Tests on the paths that matter", have: "Search tests; none on holds or renewals" },
+      { catches: "yes", check: "CI on every pull request", have: "Lint and unit tests, required to merge" },
+      { catches: "no", check: "Review on hard-to-undo paths", have: "None: anything merges" },
+      { catches: "partly", check: "Staging or preview", have: "A preview for each pull request" },
+      { catches: "no", check: "A rollback you've tried", have: "Never tried" },
     ]}
     stepped
   />
