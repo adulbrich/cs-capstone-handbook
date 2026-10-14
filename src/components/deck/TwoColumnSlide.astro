@@ -5,9 +5,13 @@
 //   <TwoColumnSlide title="Backbone and slices">
 //     <div slot="left"><h3>Backbone</h3><p>...</p></div>
 //     <div slot="right"><h3>Slices</h3><p>...</p></div>
+//     <p class="caption">Jeff Patton, The New User Story Backlog is a Map</p>
 //   </TwoColumnSlide>
 //
-// `divider` draws a rule between the columns. Other attributes land on the
+// Anything outside the two slots renders under both columns, full width, at
+// the foot of the slide: a caption or a source that belongs to the whole
+// slide rather than to one column. `divider` draws a rule between the
+// columns. Other attributes land on the
 // <section>, as on <Slide>.
 import type { ComponentProps } from "astro/types";
 import Slide from "./Slide.astro";
@@ -24,6 +28,7 @@ const { divider = false, ...attrs } = Astro.props;
     <div class="column"><slot name="left" /></div>
     <div class="column"><slot name="right" /></div>
   </div>
+  <slot />
 </Slide>
 
 <style>

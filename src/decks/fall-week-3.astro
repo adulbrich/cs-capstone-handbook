@@ -37,14 +37,12 @@ const outcomeSafetyNet = [
   "The smallest change that closes it",
 ];
 
-// Each example's links, shown without the protocol, as the room would type
-// them.
-const PROTOCOL = /^https:\/\//;
-const link = (url: string) => ({ href: url, text: url.replace(PROTOCOL, "") });
-const ephira = link("https://github.com/adulbrich/ephira");
-const lumiLab = link("https://github.com/radiantlab/LumiLab");
-const taxon = link("https://github.com/TaxonBodyMassML/TaxonBodyMassML");
-const eecsCapstone = link("https://github.com/adulbrich/eecs-capstone");
+// Each example's repository. The slides are shared with the class, so a
+// slide shows a link by its page's name, never its URL.
+const ephira = "https://github.com/adulbrich/ephira";
+const lumiLab = "https://github.com/radiantlab/LumiLab";
+const taxon = "https://github.com/TaxonBodyMassML/TaxonBodyMassML";
+const eecsCapstone = "https://github.com/adulbrich/eecs-capstone";
 // The source of the distinction, as the RFC page cites it.
 const bezos =
   "https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF";
@@ -187,24 +185,20 @@ const eecsChecks = [
   },
 ] as const;
 
-// Handbook links, shown without their protocol, as the room would type
-// them.
-const handbook = (path: string) => {
-  const url = new URL(path, Astro.site);
-  return { href: url.href, text: `${url.host}${url.pathname}${url.hash}` };
-};
+// Handbook links, each shown by its page's name. The four guides are the
+// week 3 Read line on the schedule.
+const handbook = (path: string) => new URL(path, Astro.site).href;
 const activityDecisions = handbook(
   "/activities/technical-design/#map-your-hard-to-reverse-decisions"
 );
 const activitySafetyNet = handbook(
   "/activities/testing-release-and-handoff/#audit-your-safety-net"
 );
-const designGuide = handbook(
+const designGuide = handbook("/guides/technical-design/");
+const designTruths = handbook(
   "/guides/technical-design/#some-truths-about-technical-design"
 );
-const testingGuide = handbook(
-  "/guides/testing-strategy/#testing-as-part-of-your-checks"
-);
+const testingGuide = handbook("/guides/testing-strategy/");
 const ciGuide = handbook("/guides/devops/#continuous-integration-ci");
 const docsGuide = handbook("/guides/documentation/#repository-documentation");
 const rfc = handbook("/assignments/rfc/");
@@ -248,10 +242,10 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
   </ul>
   <p class="caption">
     Read for this session:<br />
-    <a href={designGuide.href}>{designGuide.text}</a><br />
-    <a href={testingGuide.href}>{testingGuide.text}</a><br />
-    <a href={ciGuide.href}>{ciGuide.text}</a><br />
-    <a href={docsGuide.href}>{docsGuide.text}</a>
+    <a href={designGuide}>Technical Design</a><br />
+    <a href={testingGuide}>Testing Strategy</a><br />
+    <a href={ciGuide}>DevOps: Continuous Integration</a><br />
+    <a href={docsGuide}>Documentation: Repository Documentation</a>
   </p>
 </Slide>
 
@@ -293,12 +287,12 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       <li>Internal module boundaries</li>
       <li>Any library you could swap in a week</li>
     </ul>
-    <p class="caption">
-      Jeff Bezos's letter to Amazon shareholders calls them Type 1 and Type 2
-      decisions, and warns that the slow process Type 1 needs makes everything
-      slow when it's applied to Type 2: <a href={bezos}>2015 letter, PDF</a>
-    </p>
   </div>
+  <p class="caption">
+    Jeff Bezos's <a href={bezos}>2015 letter to Amazon shareholders</a> calls
+    them Type 1 and Type 2 decisions, and warns that the slow process Type 1
+    needs makes everything slow when it's applied to Type 2.
+  </p>
 </TwoColumnSlide>
 
 <Slide kicker="Workshop 2: a new app, sorted" title="Ten decisions for the campus lunch app, before any code" wide>
@@ -340,8 +334,8 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
   </div>
   <p class="caption">
     Easy isn't free: a new CSS library touches every component, but you can
-    switch one piece at a time. Technical Design guide, Some Truths:
-    <a href={designGuide.href}>{designGuide.text}</a>
+    switch one piece at a time. From the Technical Design guide:
+    <a href={designTruths}>Some Truths About Technical Design</a>
   </p>
 </Slide>
 
@@ -361,25 +355,25 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       <li class="fragment">Some phones update late, so each migration must be safe to run twice</li>
       <li class="fragment">A new store ID is a new app: users and their data stay on the old one</li>
     </ul>
-    <p class="caption">
-      ephira is a period tracker that keeps every record on the phone.
-      Repository: <a href={ephira.href}>{ephira.text}</a>
-    </p>
   </div>
+  <p class="caption">
+    ephira is a period tracker that keeps every record on the phone.
+    Repository: <a href={ephira}>ephira on GitHub</a>
+  </p>
 </TwoColumnSlide>
 
 <Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="Hard means what other programs read" wide>
   <DecisionList decisions={lumiLabDecisions} />
   <p class="caption caption-tight">
     LumiLab turns ordinary photos into a luminance map that glare tools read.
-    Repository: <a href={lumiLab.href}>{lumiLab.text}</a>
+    Repository: <a href={lumiLab}>LumiLab on GitHub</a>
   </p>
 </Slide>
 
 <Slide kicker="Workshop 2 reference: TaxonBodyMassML, a research chain" title="Hard means what every result is measured against" wide>
   <DecisionList decisions={taxonDecisions} />
   <p class="caption caption-tight">
-    TaxonBodyMassML estimates a species' weight from its name. Repository: <a href={taxon.href}>{taxon.text}</a>
+    TaxonBodyMassML estimates a species' weight from its name. Repository: <a href={taxon}>TaxonBodyMassML on GitHub</a>
   </p>
 </Slide>
 
@@ -390,10 +384,6 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       <li>Run the activity yourselves before anyone opens a tool</li>
       <li>Your version is what the comparison measures the tool against</li>
     </ul>
-    <p class="caption">
-      Give it only what your Team Charter's AI and Confidentiality section
-      allows.
-    </p>
   </div>
   <div slot="right">
     <h3>Then, with the tool</h3>
@@ -412,6 +402,10 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       </li>
     </ul>
   </div>
+  <p class="caption">
+    Give it only what your Team Charter's AI and Confidentiality section
+    allows.
+  </p>
 </TwoColumnSlide>
 
 <Slide kicker="Workshop 2: work time" title="Start here, as a team">
@@ -438,7 +432,7 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
     </li>
   </ol>
   <p class="caption">
-    The activity: <a href={activityDecisions.href}>{activityDecisions.text}</a>
+    The activity: <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
   </p>
 </Slide>
 
@@ -485,9 +479,6 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       <li>Roughly how much of your code AI tools write</li>
       <li>Stated plainly: "most of it" is an answer</li>
     </ul>
-    <p class="caption">
-      The more you hand off, the more your checks have to catch.
-    </p>
   </div>
   <div slot="right">
     <h3>What would catch a bad change</h3>
@@ -499,6 +490,9 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       <li class="fragment">A rollback you've tried, not only planned</li>
     </ul>
   </div>
+  <p class="caption">
+    The more you hand off, the more your checks have to catch.
+  </p>
 </TwoColumnSlide>
 
 <Slide kicker="Workshop 3: the lunch app, audited" title="The lunch app, a few weeks in, check by check" wide>
@@ -563,7 +557,7 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       <li><strong>Smallest change:</strong> one test step in the workflow</li>
     </ul>
     <p class="caption">
-      Repository: <a href={ephira.href}>{ephira.text}</a>
+      Repository: <a href={ephira}>ephira on GitHub</a>
     </p>
   </div>
   <div slot="right">
@@ -574,7 +568,7 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
       <li class="fragment"><strong>Smallest change:</strong> point pytest at the test files, and fail when it finds none</li>
     </ul>
     <p class="caption">
-      Repository: <a href={taxon.href}>{taxon.text}</a>
+      Repository: <a href={taxon}>TaxonBodyMassML on GitHub</a>
     </p>
   </div>
 </TwoColumnSlide>
@@ -586,7 +580,7 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
   </p>
   <SafetyNet checks={eecsChecks} />
   <p class="caption caption-tight">
-    Repository: <a href={eecsCapstone.href}>{eecsCapstone.text}</a>
+    Repository: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>
 
@@ -610,7 +604,7 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
   </div>
   <p class="caption">
     The drop then ships a release after the code stops reading the column.
-    Repository: <a href={eecsCapstone.href}>{eecsCapstone.text}</a>
+    Repository: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>
 
@@ -638,7 +632,7 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
     </li>
   </ol>
   <p class="caption">
-    The activity: <a href={activitySafetyNet.href}>{activitySafetyNet.text}</a>
+    The activity: <a href={activitySafetyNet}>Audit Your Safety Net</a>
   </p>
 </Slide>
 
@@ -647,14 +641,14 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
     <h3>Workshop 2: a sorted list</h3>
     <ul class="reveal-list">{outcomeDecisions.map((line) => <li>{line}</li>)}</ul>
     <p class="caption">
-      Stuck? <a href={activityDecisions.href}>{activityDecisions.text}</a>
+      Stuck? <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
     </p>
   </div>
   <div slot="right">
     <h3>Workshop 3: one named gap</h3>
     <ul class="reveal-list">{outcomeSafetyNet.map((line) => <li>{line}</li>)}</ul>
     <p class="caption">
-      Stuck? <a href={activitySafetyNet.href}>{activitySafetyNet.text}</a>
+      Stuck? <a href={activitySafetyNet}>Audit Your Safety Net</a>
     </p>
   </div>
 </TwoColumnSlide>
@@ -671,10 +665,9 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
     </li>
   </ul>
   <p class="deck-small after-list">
-    Next: your RFC draft, due Sunday of week 4, is about one of your hard ones;
-    Repo Checkpoint 1, due Sunday of week 5, judges your checks.<br />
-    <a href={rfc.href}>{rfc.text}</a><br />
-    <a href={checkpoint.href}>{checkpoint.text}</a>
+    Next: your <a href={rfc}>RFC</a> draft, due Sunday of week 4, is about one
+    of your hard ones; <a href={checkpoint}>Repo Checkpoint 1</a>, due Sunday
+    of week 5, judges your checks.
   </p>
 </Slide>
 

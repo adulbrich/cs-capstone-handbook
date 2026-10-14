@@ -16,10 +16,11 @@
 // two columns, and a week with no In class line reads "No session", as the
 // schedule defines it. With more than one row it shows one card per week,
 // so keep that to three or four weeks. `from` and `to` bound the weeks,
-// inclusive, and default to the whole term. Links on the schedule become
-// plain text.
+// inclusive, and default to the whole term. Links on the schedule stay
+// links, each shown by its name, since the slides are shared with the
+// class.
 import schedule from "../../content/docs/introduction/schedule.mdx?raw";
-import { plainLine } from "../../lib/deck-text.mjs";
+import { linkedLine } from "../../lib/deck-text.mjs";
 import { termWeeks } from "../../lib/schedule-lines.mjs";
 
 interface Props {
@@ -42,9 +43,9 @@ const weeks = termWeeks(schedule, term)
     rows: rows.map((label) => {
       const row = found.get(label);
       return {
-        items: row?.items.map(plainLine) ?? [],
+        items: row?.items.map(linkedLine) ?? [],
         label,
-        text: row?.text ? plainLine(row.text) : null,
+        text: row?.text ? linkedLine(row.text) : null,
       };
     }),
     week,
@@ -55,6 +56,8 @@ if (weeks.length === 0) {
   );
 }
 const sessionsOnly = rows.length === 1 && rows[0] === "In class";
+// A schedule link points at a handbook path; the slide links the full URL.
+const href = (path: string) => new URL(path, Astro.site).href;
 ---
 
 {
@@ -63,7 +66,11 @@ const sessionsOnly = rows.length === 1 && rows[0] === "In class";
       {weeks.map(({ rows: [session], week }) => (
         <li class:list={{ none: !session.text }}>
           <span class="week">Week {week}</span>
-          <span>{session.text ?? "No session"}</span>
+          <span>
+            {session.text
+              ? session.text.map((part) => (part.href ? <a href={href(part.href)}>{part.text}</a> : part.text))
+              : "No session"}
+          </span>
         </li>
       ))}
     </ol>
@@ -79,11 +86,11 @@ const sessionsOnly = rows.length === 1 && rows[0] === "In class";
             row.text || row.items.length > 0 ? (
               <div class="row">
                 <p class="label">{row.label}</p>
-                {row.text && <p>{row.text}</p>}
+                {row.text && <p>{row.text.map((part) => (part.href ? <a href={href(part.href)}>{part.text}</a> : part.text))}</p>}
                 {row.items.length > 0 && (
                   <ul>
                     {row.items.map((item) => (
-                      <li>{item}</li>
+                      <li>{item.map((part) => (part.href ? <a href={href(part.href)}>{part.text}</a> : part.text))}</li>
                     ))}
                   </ul>
                 )}
