@@ -271,7 +271,7 @@ const rfc = handbook("/assignments/rfc/");
     <h3>After it</h3>
     <ul class="reveal-list">
       <li class="fragment">A schema change is a new migration, run on every user's phone at the next update</li>
-      <li class="fragment">An older app can't open a database a newer one migrated</li>
+      <li class="fragment">Some phones have run a migration and some haven't, so each one must be safe to run again</li>
       <li class="fragment">A new package ID is a new app: users and their data stay on the old one</li>
     </ul>
   </div>
@@ -336,7 +336,7 @@ what they check before the team commits. Keep each decision under ten words.</pr
     <h3>Proposal only: 7 of 10 hard</h3>
     <ul class="reveal-list">
       <li>Marked the database engine and the signing keys hard, then said both may already be settled</li>
-      <li>Planned an encryption layer the app's build already had</li>
+      <li>Planned an encryption layer, which the app's SQLCipher build already had</li>
       <li>Gave checks that fit any app: none names a file, a table, or a version</li>
     </ul>
   </div>
