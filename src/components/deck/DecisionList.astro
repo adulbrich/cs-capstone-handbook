@@ -1,25 +1,30 @@
 ---
 // A team's upcoming decisions, each marked hard to reverse or easy to
 // reverse, as Map Your Hard-to-Reverse Decisions sorts them; for a
-// <Slide wide>. A hard-to-reverse decision may carry its validator: who
-// checks it, and what they check, before the team commits.
+// <Slide wide>. A hard-to-reverse decision may also say what undoing it
+// would cost, and carry its validator: who checks it, and what they check,
+// before the team commits.
 //
 //   <DecisionList
 //     decisions={[
-//       { text: "Where the database lives", hard: true,
-//         validator: { who: "Partner", what: "the hosting it already pays for" } },
-//       { text: "Chart library for the dashboard" },
+//       { text: "Database: Postgres or Firestore", hard: true,
+//         cost: "Rewriting every query and moving the data",
+//         validator: { who: "Partner", what: "the reports they need come out of it" } },
+//       { text: "CSS: Tailwind or plain CSS" },
 //     ]}
 //   />
 //
 // A decision without `hard` is easy to reverse. The count under the list
 // ("1 of 2 hard to reverse") is the activity's check that the hard ones are
-// few; `count={false}` drops it. With `stepped`, the list shows first and
-// the marks, validators, and count appear together on the next arrow press,
-// in the order the activity runs: write the decisions down, then classify.
+// few; `count={false}` drops it. `marks={false}` drops the Hard and Easy
+// column, for a list of hard ones explained. With `stepped`, the list shows
+// first and everything the sorting adds appears on the next arrow press, in
+// the order the activity runs: write the decisions down, then mark them.
 // Ten decisions is the activity's list and the most a slide holds, so an
-// eleventh fails the build, as does a validator on an easy-to-reverse one.
+// eleventh fails the build, as does a cost or a validator on an
+// easy-to-reverse decision.
 interface Decision {
+  cost?: string;
   hard?: boolean;
   text: string;
   validator?: { what: string; who: string };
@@ -28,11 +33,12 @@ interface Decision {
 interface Props {
   count?: boolean;
   decisions: Decision[];
+  marks?: boolean;
   stepped?: boolean;
 }
 
 const MAX_DECISIONS = 10;
-const { count = true, decisions, stepped = false } = Astro.props;
+const { count = true, decisions, marks = true, stepped = false } = Astro.props;
 
 if (decisions.length === 0 || decisions.length > MAX_DECISIONS) {
   throw new Error(
@@ -40,38 +46,56 @@ if (decisions.length === 0 || decisions.length > MAX_DECISIONS) {
   );
 }
 for (const decision of decisions) {
-  if (decision.validator && !decision.hard) {
+  if ((decision.cost || decision.validator) && !decision.hard) {
     throw new Error(
-      `<DecisionList>: "${decision.text}" has a validator and is easy to reverse; only a hard-to-reverse decision gets one.`
+      `<DecisionList>: "${decision.text}" is easy to reverse; only a hard-to-reverse decision gets a cost or a validator.`
     );
   }
 }
 
 const hardCount = decisions.filter((decision) => decision.hard).length;
+const hasCosts = decisions.some((decision) => decision.cost);
 const hasValidators = decisions.some((decision) => decision.validator);
-// Everything the classification adds, revealed on one press when stepped.
+// Everything the sorting adds, revealed on one press when stepped.
 const step = stepped ? { class: "fragment", "data-fragment-index": 0 } : {};
 ---
 
-<div class:list={["decision-list", { "with-validators": hasValidators }]}>
+<div
+  class:list={[
+    "decision-list",
+    { explained: hasCosts || hasValidators, "no-marks": !marks },
+  ]}
+>
   <table>
     <thead>
       <tr>
-        <th scope="col" class="mark-col">To reverse</th>
+        {marks && <th scope="col" class="mark-col">To reverse</th>}
         <th scope="col">Decision</th>
-        {hasValidators && <th scope="col">Validator: who checks, and what</th>}
+        {hasCosts && <th scope="col">Undoing it means</th>}
+        {hasValidators && <th scope="col">Validator: who checks it first, and what</th>}
       </tr>
     </thead>
     <tbody>
       {
         decisions.map((decision) => (
           <tr class:list={{ hard: decision.hard }}>
-            <td>
-              <span class:list={["mark", step.class]} data-fragment-index={step["data-fragment-index"]}>
-                {decision.hard ? "Hard" : "Easy"}
-              </span>
-            </td>
+            {marks && (
+              <td>
+                <span class:list={["mark", step.class]} data-fragment-index={step["data-fragment-index"]}>
+                  {decision.hard ? "Hard" : "Easy"}
+                </span>
+              </td>
+            )}
             <td class="text">{decision.text}</td>
+            {hasCosts && (
+              <td class="cost">
+                {decision.cost && (
+                  <span class={step.class} data-fragment-index={step["data-fragment-index"]}>
+                    {decision.cost}
+                  </span>
+                )}
+              </td>
+            )}
             {hasValidators && (
               <td class="validator">
                 {decision.validator && (
@@ -111,21 +135,22 @@ const step = stepped ? { class: "fragment", "data-fragment-index": 0 } : {};
     width: 190px;
   }
 
-  .with-validators th:nth-child(2) {
-    width: 46%;
-  }
-
   th {
-    padding: 0 16px 6px 0;
+    padding: 0 24px 6px 0;
     font-weight: 750;
     color: var(--deck-ink-soft);
     text-align: start;
   }
 
   td {
-    padding: 4px 16px 4px 0;
+    padding: 4px 24px 4px 0;
     vertical-align: top;
     border-block-start: 2px solid var(--deck-rule);
+  }
+
+  /* A list of hard ones explained: fewer rows, each with room to wrap. */
+  .explained td {
+    padding-block: 14px;
   }
 
   .mark {
@@ -146,6 +171,11 @@ const step = stepped ? { class: "fragment", "data-fragment-index": 0 } : {};
     border-color: var(--deck-accent);
   }
 
+  .no-marks .text {
+    font-weight: 650;
+  }
+
+  .cost,
   .validator {
     color: var(--deck-ink-soft);
   }
