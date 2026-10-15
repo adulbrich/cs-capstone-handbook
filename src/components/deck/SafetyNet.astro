@@ -1,0 +1,138 @@
+---
+// A team's safety net, check by check, as Audit Your Safety Net
+// inventories it; for a <Slide wide>. Each row is one check, what the team
+// has for it, and whether it would catch a bad change: yes, partly, or no.
+//
+//   <SafetyNet
+//     checks={[
+//       { check: "CI on every pull request", have: "Lint and unit tests, required to merge", catches: "yes" },
+//       { check: "Review on hard-to-undo paths", have: "None: anything merges", catches: "no" },
+//     ]}
+//   />
+//
+// With `stepped`, the verdicts appear together on the next arrow press,
+// after the room has read what the team has. The activity names five
+// checks, so a sixth row fails the build.
+type Catches = "no" | "partly" | "yes";
+
+interface Check {
+  catches: Catches;
+  check: string;
+  have: string;
+}
+
+interface Props {
+  checks: readonly Check[];
+  stepped?: boolean;
+}
+
+const MAX_CHECKS = 5;
+const LABELS: Record<Catches, string> = {
+  no: "No",
+  partly: "Partly",
+  yes: "Yes",
+};
+const { checks, stepped = false } = Astro.props;
+
+if (checks.length === 0 || checks.length > MAX_CHECKS) {
+  throw new Error(
+    `<SafetyNet>: ${checks.length} checks; use 1 to ${MAX_CHECKS}.`
+  );
+}
+
+const step = stepped ? { class: "fragment", "data-fragment-index": 0 } : {};
+---
+
+<table class="safety-net">
+  <thead>
+    <tr>
+      <th scope="col" class="check-col">Check</th>
+      <th scope="col">What the team has</th>
+      <th scope="col" class="verdict-col">Would it catch a bad change?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      checks.map((row) => (
+        <tr>
+          <th scope="row">{row.check}</th>
+          <td class="have">{row.have}</td>
+          <td>
+            <span class:list={["verdict", `verdict-${row.catches}`, step.class]} data-fragment-index={step["data-fragment-index"]}>
+              {LABELS[row.catches]}
+            </span>
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  .safety-net {
+    width: 100%;
+    font-size: var(--deck-text-min);
+    line-height: 1.2;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .check-col {
+    width: 30%;
+  }
+
+  .verdict-col {
+    width: 20%;
+  }
+
+  thead th {
+    padding: 0 24px 8px 0;
+    font-weight: 750;
+    color: var(--deck-ink-soft);
+    text-align: start;
+  }
+
+  tbody th,
+  td {
+    padding: 14px 24px 14px 0;
+    vertical-align: top;
+    text-align: start;
+    border-block-start: 2px solid var(--deck-rule);
+  }
+
+  tbody th {
+    font-weight: 650;
+  }
+
+  .have {
+    color: var(--deck-ink-soft);
+  }
+
+  .verdict {
+    display: inline-block;
+    min-width: 130px;
+    padding: 0 14px;
+    font-weight: 700;
+    text-align: center;
+    border: 2px solid;
+    border-radius: 999px;
+  }
+
+  .verdict-yes {
+    color: var(--deck-backbone-ink);
+    background: var(--deck-backbone);
+    border-color: var(--deck-backbone-edge);
+  }
+
+  .verdict-partly {
+    color: var(--deck-assumed-ink);
+    background: var(--deck-assumed);
+    border-color: var(--deck-assumed-edge);
+  }
+
+  .verdict-no {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+</style>

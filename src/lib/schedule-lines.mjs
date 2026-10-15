@@ -1,9 +1,10 @@
 // Reads the week-by-week schedule (introduction/schedule.mdx) as text, line
 // by line, for the readers that never render it: scripts/validate-activities.mjs,
-// which checks the activity and guide links on each line, and the deck
+// which checks the activity and guide links on each line; the deck
 // component src/components/deck/TermSessions.astro, which lists a term's
-// lines week by week. src/lib/schedule-weeks.mjs is the renderer's reader and
-// works on the built page instead.
+// lines week by week; and decks that place a due item in its week, such as
+// the fall week 3 timeline, through weekWhere. src/lib/schedule-weeks.mjs is
+// the renderer's reader and works on the built page instead.
 
 // The schedule heads its term sections "## Fall (CS 461)".
 const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
@@ -107,4 +108,21 @@ export function termWeeks(source, term) {
       : continueRow(rows, line, target);
   }
   return [...weeks].map(([week, rows]) => ({ rows, week }));
+}
+
+/**
+ * The first week in `weeks` (from termWeeks) whose `label` line, its text or
+ * one of its items, satisfies `test`; undefined when none does, so a caller
+ * that needs the week can fail the build.
+ * @param {{ rows: Map<string, { items: string[], text: string }>, week: number }[]} weeks
+ * @param {string} label
+ * @param {(line: string) => boolean} test
+ */
+export function weekWhere(weeks, label, test) {
+  return weeks.find(({ rows }) => {
+    const row = rows.get(label);
+    return row
+      ? [row.text, ...row.items].some((line) => line && test(line))
+      : false;
+  })?.week;
 }

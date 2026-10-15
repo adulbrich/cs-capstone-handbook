@@ -26,7 +26,7 @@ const lunch = {
   release1: [
     "Filter by diet",
     "Save a usual order",
-    "Pay with dining dollars",
+    "Pay with Orange Cash",
     "Text me when ready",
   ],
   release2: [undefined, undefined, undefined, "? Rate the meal"],
@@ -52,32 +52,24 @@ const outcomeItems = outcome
   .map((line) => `<li>${line.replaceAll("?", "<code>?</code>")}</li>`)
   .join("");
 
-// Each example's links, shown without the protocol, as the room would type
-// them.
-const PROTOCOL = /^https:\/\//;
-const link = (url: string) => ({ href: url, text: url.replace(PROTOCOL, "") });
+// Each example's links. The slides are shared with the class, so a slide
+// shows a link by its page's name, never its URL.
 const ephira = {
-  page: link(
-    "https://capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a"
-  ),
-  repo: link("https://github.com/adulbrich/ephira"),
+  page: "https://capstone.eecs.oregonstate.edu/projects/32032898-6457-5a14-b451-2f1c1a97501a",
+  repo: "https://github.com/adulbrich/ephira",
 };
 const lumiLab = {
-  page: link(
-    "https://capstone.eecs.oregonstate.edu/projects/4e8e30be-72ac-5203-83fd-f4515162ce75"
-  ),
-  repo: link("https://github.com/radiantlab/LumiLab"),
+  page: "https://capstone.eecs.oregonstate.edu/projects/4e8e30be-72ac-5203-83fd-f4515162ce75",
+  repo: "https://github.com/radiantlab/LumiLab",
 };
 const taxon = {
-  page: link(
-    "https://capstone.eecs.oregonstate.edu/projects/1e6e1a34-dee3-54bf-8c53-f876fb2d1519"
-  ),
-  repo: link("https://github.com/TaxonBodyMassML/TaxonBodyMassML"),
+  page: "https://capstone.eecs.oregonstate.edu/projects/1e6e1a34-dee3-54bf-8c53-f876fb2d1519",
+  repo: "https://github.com/TaxonBodyMassML/TaxonBodyMassML",
 };
-const patton = link("https://jpattonassociates.com/the-new-backlog/");
-const nngroup = link("https://www.nngroup.com/articles/user-story-mapping/");
+const patton = "https://jpattonassociates.com/the-new-backlog/";
+const nngroup = "https://www.nngroup.com/articles/user-story-mapping/";
 // The tutorial the LumiLab map's columns come from.
-const pierson = link("https://doi.org/10.1080/15502724.2019.1684319");
+const pierson = "https://doi.org/10.1080/15502724.2019.1684319";
 
 // The ephira map, drawn as an inherited codebase: the walking skeleton is
 // what the repository already did when the advertised team started, and
@@ -133,12 +125,8 @@ const ephiraMap = {
   ],
 };
 
-// Handbook links, shown without their protocol, as the room would type
-// them.
-const handbook = (path: string) => {
-  const url = new URL(path, Astro.site);
-  return { href: url.href, text: `${url.host}${url.pathname}${url.hash}` };
-};
+// Handbook links, each shown by its page's name.
+const handbook = (path: string) => new URL(path, Astro.site).href;
 const template = handbook("/story-map-template.xlsx");
 const activity = handbook("/activities/requirements/#user-story-mapping");
 const guide = handbook("/guides/requirements/#story-mapping");
@@ -171,8 +159,8 @@ const guide = handbook("/guides/requirements/#story-mapping");
   </ul>
   <p class="caption">
     Read for this session:<br />
-    Requirements guide, Story Mapping: <a href={guide.href}>{guide.text}</a><br />
-    Nielsen Norman Group, User Story Mapping: <a href={nngroup.href}>{nngroup.text}</a>
+    <a href={guide}>Requirements: Story Mapping</a><br />
+    <a href={nngroup}>Nielsen Norman Group: User Story Mapping</a>
   </p>
 </Slide>
 
@@ -237,7 +225,7 @@ const guide = handbook("/guides/requirements/#story-mapping");
   />
   <p class="caption caption-tight">
     Add Release 2 and later rows as you need; Out of scope this year is always
-    the last row. Jeff Patton, The New User Story Backlog is a Map: <a href={patton.href}>{patton.text}</a>
+    the last row. Jeff Patton, <a href={patton}>The New User Story Backlog is a Map</a>
   </p>
 </Slide>
 
@@ -316,20 +304,20 @@ const guide = handbook("/guides/requirements/#story-mapping");
     </li>
   </ul>
   <p class="caption">
-    Repository: <a href={ephira.repo.href}>{ephira.repo.text}</a><br />
-    Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+    Repository: <a href={ephira.repo}>ephira on GitHub</a><br />
+    Project page: <a href={ephira.page}>Ephira (iOS/Android)</a>
   </p>
 </Slide>
 
 <Slide title="ephira: start the map from what already ships" wide>
   <StoryMap {...ephiraMap} legend={false} />
   <p class="caption caption-tight">
-    Also on the <a href={ephira.page.href}>project page</a>: beta tests, docs, a
+    Also on the <a href={ephira.page}>project page</a>: beta tests, docs, a
     store update; start designing and building pregnancy mode
   </p>
 </Slide>
 
-<TwoColumnSlide kicker="Example: ephira, what happened" title="What the team built in its year" divider>
+<TwoColumnSlide kicker="Example: ephira, what happened" title="What the team built in its year" divider wide>
   <div slot="left">
     <h3>Added</h3>
     <ul class="reveal-list">
@@ -348,11 +336,11 @@ const guide = handbook("/guides/requirements/#story-mapping");
       <li>Integration and end-to-end tests: unit tests only</li>
       <li>Cloud sync and the stretch goal: not attempted</li>
     </ul>
-    <p class="caption">
-      Repository history over the team's year; later commits are the
-      maintainer's: <a href={ephira.repo.href}>{ephira.repo.text}</a>
-    </p>
   </div>
+  <p class="caption">
+    Repository history over the team's year; later commits are the
+    maintainer's: <a href={ephira.repo}>ephira on GitHub</a>
+  </p>
 </TwoColumnSlide>
 
 <StatementSlide kicker="Example: ephira, drafted with AI" source="ephira again: once from the proposal alone, once with the repository too">
@@ -374,7 +362,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   <p class="caption">
     Sonnet 5.5 as a Claude Code sub-agent. Run 1: without the highlighted
     lines, tools off. Run 2: with them, reading only the repository at app
-    version 1.1.0. Project page: <a href={ephira.page.href}>{ephira.page.text}</a>
+    version 1.1.0. Project page: <a href={ephira.page}>Ephira (iOS/Android)</a>
   </p>
 </Slide>
 
@@ -417,11 +405,11 @@ out-of-scope row. Keep each story under eight words.</pre>
       </li>
       <li class="fragment">Check each card against the code, then with your partner</li>
     </ul>
-    <p class="caption fragment">
-      Give it only what your Team Charter's AI and Confidentiality section
-      allows.
-    </p>
   </div>
+  <p class="caption fragment">
+    Give it only what your Team Charter's AI and Confidentiality section
+    allows.
+  </p>
 </TwoColumnSlide>
 
 <StatementSlide kicker="Part 3 of 4" source="LumiLab, a pipeline; TaxonBodyMassML, a research chain">
@@ -457,8 +445,8 @@ out-of-scope row. Keep each story under eight words.</pre>
     />
   </div>
   <p class="caption">
-    Repository: <a href={lumiLab.repo.href}>{lumiLab.repo.text}</a><br />
-    Project page: <a href={lumiLab.page.href}>{lumiLab.page.text}</a>
+    Repository: <a href={lumiLab.repo}>LumiLab on GitHub</a><br />
+    Project page: <a href={lumiLab.page}>Architectural Lighting Design: Image Processing and Analysis Software</a>
   </p>
 </Slide>
 
@@ -506,8 +494,8 @@ out-of-scope row. Keep each story under eight words.</pre>
   <p class="caption caption-tight">
     Simplified to fit the slide: two columns group the tutorial's steps (3
     and 4; 6 to 8). Columns: steps 2 to 11 of Table 3 in Pierson, Cauwerts,
-    Bodart, and Wienold, "Tutorial: Luminance Maps for Daylighting Studies
-    from High Dynamic Range Photography": <a href={pierson.href}>{pierson.text}</a>
+    Bodart, and Wienold, <a href={pierson}>"Tutorial: Luminance Maps for
+    Daylighting Studies from High Dynamic Range Photography"</a>
   </p>
 </Slide>
 
@@ -530,8 +518,8 @@ out-of-scope row. Keep each story under eight words.</pre>
     </li>
   </ul>
   <p class="caption">
-    Repository: <a href={taxon.repo.href}>{taxon.repo.text}</a><br />
-    Project page: <a href={taxon.page.href}>{taxon.page.text}</a>
+    Repository: <a href={taxon.repo}>TaxonBodyMassML on GitHub</a><br />
+    Project page: <a href={taxon.page}>TaxonBodyMassML: Phylogeny-informed prediction of species body weight</a>
   </p>
 </Slide>
 
@@ -608,7 +596,7 @@ out-of-scope row. Keep each story under eight words.</pre>
       <span class="art art-guess" aria-hidden="true">?</span>
     </li>
   </ol>
-  <p class="caption">Template: <a href={template.href}>{template.text}</a></p>
+  <p class="caption">Template: <a href={template}>the story map template</a></p>
 </Slide>
 
 <Slide kicker="Work time: after the skeleton" title="Then fill the rows under the skeleton" wide>
@@ -659,7 +647,7 @@ out-of-scope row. Keep each story under eight words.</pre>
     releases={[
       {
         name: "Walking skeleton",
-        stories: [lunch.skeleton[0], lunch.skeleton[1], "? Pay with dining dollars", lunch.skeleton[3]],
+        stories: [lunch.skeleton[0], lunch.skeleton[1], "? Pay with Orange Cash", lunch.skeleton[3]],
       },
     ]}
     callouts={[
@@ -692,8 +680,8 @@ out-of-scope row. Keep each story under eight words.</pre>
 <Slide kicker="Wrap" title="Check your map against today's outcome">
   <ul set:html={outcomeItems} />
   <p class="deck-small after-list">
-    Stuck? The activity: <a href={activity.href}>{activity.text}</a><br />
-    The Requirements guide, Story Mapping: <a href={guide.href}>{guide.text}</a>
+    Stuck? The activity: <a href={activity}>User Story Mapping</a><br />
+    The guide: <a href={guide}>Requirements: Story Mapping</a>
   </p>
 </Slide>
 
@@ -710,7 +698,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   </ul>
   <p class="deck-small after-list">
     Bring the questions to your first partner meeting: they're its agenda.<br />
-    Template: <a href={template.href}>{template.text}</a>
+    Template: <a href={template}>the story map template</a>
   </p>
 </Slide>
 

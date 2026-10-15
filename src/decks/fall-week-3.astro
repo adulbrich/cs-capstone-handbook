@@ -1,0 +1,1242 @@
+---
+// Fall week 3: Workshop 2, Map Your Hard-to-Reverse Decisions, and Workshop
+// 3, Audit Your Safety Net, in one session and one deck, each in the week 2
+// deck's shape. A shared opening (the two outcomes, scoring and reading,
+// the agenda); Workshop 2's talk (hard and easy to reverse, sorted for the
+// week 2 campus lunch app; ephira, LumiLab, and TaxonBodyMassML as the
+// inherited, pipeline, and research references) and its work time;
+// Workshop 3's talk (what can reach main with nothing to stop it, whoever
+// wrote it, audited on the same lunch app; two repositories whose tests
+// never ran; eecs-capstone, mostly right) and its work time; then one wrap
+// for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
+// weeks on the timeline, the Read line, and the week's other Due items come
+// from the schedule, as <TermSessions> reads it, and the two workshop
+// submissions from the workshop page.
+// Every slide explains itself to someone who missed the talk. Each link
+// sits on the slide that uses it. Served at /decks/fall-week-3/.
+import DecisionList from "../components/deck/DecisionList.astro";
+import LinkedText from "../components/deck/LinkedText.astro";
+import SafetyNet from "../components/deck/SafetyNet.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
+import schedule from "../content/docs/introduction/schedule.mdx?raw";
+import { LATE } from "../lib/canvas-entries.mjs";
+import { linkHrefs, plainText } from "../lib/deck-text.mjs";
+import { termWeeks, weekWhere } from "../lib/schedule-lines.mjs";
+
+export const title =
+  "Fall Week 3: Hard-to-Reverse Decisions and Your Safety Net";
+
+// What a team leaves each workshop with: the opening slide promises both,
+// and the wrap checks both.
+const outcomeDecisions = [
+  "Ten upcoming decisions, written down before you mark any",
+  "Each one marked hard to reverse or easy to reverse",
+  "For each hard one, a validator: who checks it, and what they check",
+  "Few hard ones: if eight of ten are hard, sort again",
+];
+const outcomeSafetyNet = [
+  "How a change reaches main: who writes it, and who reads it first",
+  "Your checks, in place or planned: tests, CI, review, staging, rollback",
+  "One specific gap, named in a sentence",
+  "The smallest change that closes it",
+];
+
+// Each example's repository. The slides are shared with the class, so a
+// slide shows a link by its page's name, never its URL.
+const ephira = "https://github.com/adulbrich/ephira";
+const lumiLab = "https://github.com/radiantlab/LumiLab";
+const taxon = "https://github.com/TaxonBodyMassML/TaxonBodyMassML";
+// eecs-capstone at the commit its figures were read from.
+const eecsCapstone = "https://github.com/adulbrich/eecs-capstone/tree/a86e08c";
+// The source of the distinction, as the RFC page cites it.
+const bezos =
+  "https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF";
+
+// A new app with nothing built yet: the week 2 campus lunch app. The
+// sorting slide shows the ten; the slide after it explains the hard ones.
+const lunchDecisions = [
+  {
+    cost: "Rewriting every screen",
+    hard: true,
+    text: "Front end: React or Svelte",
+    validator: {
+      what: "each of you builds one screen in it this week",
+      who: "The team",
+    },
+  },
+  { text: "CSS: Tailwind or plain CSS" },
+  {
+    cost: "Moving every account, and rewriting every access rule",
+    hard: true,
+    text: "Backend: Supabase, or Postgres plus Better Auth",
+    validator: {
+      what: "who pays for it, and who runs it after you leave",
+      who: "Partner",
+    },
+  },
+  { text: "Hosting: Vercel or a server" },
+  {
+    cost: "Migrating every order already placed, and every query on it",
+    hard: true,
+    text: "Data model: how cafes, dishes, and orders relate",
+    validator: {
+      what: "the partner's reports, written as queries on sample data",
+      who: "A teammate",
+    },
+  },
+  { text: "Menu layout: a list or a grid" },
+  {
+    cost: "A new contract, and reworking checkout and refunds",
+    hard: true,
+    text: "Payments: Stripe or Orange Cash",
+    validator: {
+      what: "whether the campus lets the app take Orange Cash",
+      who: "Partner",
+    },
+  },
+  { text: "Pickup alerts: text or push" },
+  { text: "Charts for the kitchen dashboard" },
+  { text: "Unit tests: Vitest or Jest" },
+];
+const lunchSorted = lunchDecisions.map(({ hard, text }) => ({ hard, text }));
+const lunchHard = lunchDecisions.filter((decision) => decision.hard);
+
+// LumiLab's decisions across its four teams, sorted the way its history
+// bears out.
+const lumiLabDecisions = [
+  { hard: true, text: "What the output header says: VIEW line, glare value" },
+  { text: "CSS framework" },
+  { hard: true, text: "Which calibration files it accepts" },
+  { text: "State management library" },
+  { hard: true, text: "The license, given the tools it bundles" },
+  { text: "Component library" },
+  { hard: true, text: "Python desktop app, or Tauri" },
+  { text: "Built-in image viewer, or an external one" },
+  { text: "Bundler" },
+  { text: "Unit test framework" },
+];
+
+// TaxonBodyMassML's decisions, a research chain: the hard ones are what
+// every result is measured against.
+const taxonDecisions = [
+  { hard: true, text: "The target: 95 of 100 species within 10x" },
+  { text: "Model: a language model or boosted trees" },
+  { hard: true, text: "Which species are held out for testing" },
+  { text: "Plotting library" },
+  { hard: true, text: "The baseline to beat" },
+  { text: "Tree depth and learning rate" },
+  { hard: true, text: "The metric you report" },
+  { text: "Notebooks or scripts" },
+  { text: "Docker for the two web services" },
+  { text: "Where results are logged" },
+];
+
+// The same lunch app a few weeks in, audited: its hardest decision, the
+// data model, is the one nothing guards.
+const lunchChecks = [
+  {
+    catches: "partly",
+    check: "Tests on the paths that matter",
+    have: "Menu and cart tests; none on checkout or refunds",
+  },
+  {
+    catches: "yes",
+    check: "CI on every pull request",
+    have: "Lint and unit tests, required to merge",
+  },
+  {
+    catches: "no",
+    check: "Review on hard-to-undo paths",
+    have: "None: anything merges, migrations included",
+  },
+  {
+    catches: "partly",
+    check: "Staging or preview",
+    have: "A preview for each pull request; migrations run on the real database",
+  },
+  {
+    catches: "partly",
+    check: "A rollback you've tried",
+    have: "Redeploying an old build, never tried after a migration",
+  },
+] as const;
+
+// eecs-capstone as its repository (commit a86e08c) and its main ruleset
+// show it: unit test files are what `npm test` runs, integration files what
+// `test:integration` runs, and smoke suites the @smoke describes that
+// `test:smoke` runs against the production build.
+const eecsChecks = [
+  {
+    catches: "yes",
+    check: "Tests on the paths that matter",
+    have: "224 unit test files, 51 integration files on a real database, 10 smoke suites on the production build",
+  },
+  {
+    catches: "yes",
+    check: "CI on every pull request",
+    have: "Five checks, required to merge into main",
+  },
+  {
+    catches: "no",
+    check: "Review on hard-to-undo paths",
+    have: "No second reviewer; nothing extra on migrations",
+  },
+  {
+    catches: "no",
+    check: "Staging or preview",
+    have: "None: deploys go straight to production, and only from main",
+  },
+  {
+    catches: "partly",
+    check: "A rollback you've tried",
+    have: "Documented, with 7 days of database backups; no rehearsal on record",
+  },
+] as const;
+
+// Handbook links, each shown by its page's name.
+const handbook = (path: string) => new URL(path, Astro.site).href;
+const activityDecisions = handbook(
+  "/activities/technical-design/#map-your-hard-to-reverse-decisions"
+);
+const activitySafetyNet = handbook(
+  "/activities/testing-release-and-handoff/#audit-your-safety-net"
+);
+const designTruths = handbook(
+  "/guides/technical-design/#some-truths-about-technical-design"
+);
+// The fall schedule, read as <TermSessions> reads it: this deck's week, its
+// Read line, its other Due items, and every week on the timeline. A line is
+// found by where its links point, so rewording it doesn't lose it, and the
+// build fails when the schedule drops one rather than the deck going stale.
+const WEEK = 3;
+const fall = termWeeks(schedule, "fall");
+const thisWeek = fall.find(({ week }) => week === WEEK)?.rows;
+const readLine = thisWeek?.get("Read")?.text;
+if (!(thisWeek && readLine)) {
+  throw new Error(
+    `fall-week-3: week ${WEEK} on the fall schedule has no Read line.`
+  );
+}
+const WORKSHOPS_PAGE = "/assignments/workshop-activities/";
+// Due this week besides the two workshop submissions the due slide spells out.
+const alsoDue = (thisWeek.get("Due")?.items ?? []).filter(
+  (item) => !linkHrefs(item).some((href) => href.startsWith(WORKSHOPS_PAGE))
+);
+
+const RFC_PAGE = "/assignments/rfc/";
+// A schedule line that links `href` and, when given, says `word`.
+const links = (href: string, word?: string) => (line: string) =>
+  linkHrefs(line).includes(href) && (!word || plainText(line).includes(word));
+function weekOf(label: string, test: (line: string) => boolean, what: string) {
+  const week = weekWhere(fall, label, test);
+  if (week === undefined) {
+    throw new Error(
+      `fall-week-3: no ${label} line on the fall schedule for ${what}.`
+    );
+  }
+  return week;
+}
+
+interface Feed {
+  day: string;
+  detail: string;
+  from?: 2 | 3;
+  href?: string;
+  today?: boolean;
+  week: number;
+  what: string;
+}
+// What today's two outputs feed. `from` marks the workshop whose output the
+// entry uses.
+const feedList: Feed[] = [
+  {
+    day: "Sunday",
+    detail: "Today's sorted list and named gap",
+    today: true,
+    week: WEEK,
+    what: "Workshops 2 and 3",
+  },
+  {
+    day: "Sunday",
+    detail: "Its topic: one of your hard-to-reverse decisions",
+    from: 2,
+    href: handbook(`${RFC_PAGE}#rfc-draft--peer-review`),
+    week: weekOf("Due", links(RFC_PAGE, "draft"), "the RFC draft"),
+    what: "RFC draft",
+  },
+  {
+    day: "Sunday",
+    detail: "You review two drafts; two students review yours",
+    href: handbook(`${RFC_PAGE}#the-peer-review`),
+    week: weekOf("Due", links(RFC_PAGE, "peer review"), "the RFC peer review"),
+    what: "RFC peer review",
+  },
+  {
+    day: "Sunday",
+    detail: "Build health and safety net: start from today's gap",
+    from: 3,
+    href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-1"),
+    week: weekOf(
+      "Due",
+      links("/assignments/repo-checkpoints/#repo-checkpoint-1"),
+      "Repo Checkpoint 1"
+    ),
+    what: "Repo Checkpoint 1",
+  },
+  {
+    day: "Sunday",
+    detail: "Each one becomes a row in your revision log",
+    href: handbook(`${RFC_PAGE}#instructor-comments`),
+    week: weekOf(
+      "Due",
+      links(`${RFC_PAGE}#instructor-comments`),
+      "the instructor comments"
+    ),
+    what: "Instructor comments on your RFC draft",
+  },
+  {
+    day: "Sunday",
+    detail: "Revised, with a log row for every peer and instructor comment",
+    from: 2,
+    href: handbook(`${RFC_PAGE}#rfc-final-draft`),
+    week: weekOf("Due", links(RFC_PAGE, "final"), "the RFC final"),
+    what: "RFC final",
+  },
+  {
+    day: "Sunday",
+    detail: "Build health and safety net, judged again",
+    from: 3,
+    href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-2"),
+    week: weekOf(
+      "Due",
+      links("/assignments/repo-checkpoints/#repo-checkpoint-2"),
+      "Repo Checkpoint 2"
+    ),
+    what: "Repo Checkpoint 2",
+  },
+];
+// In schedule order.
+const feeds = [...feedList].sort((a, b) => a.week - b.week);
+const lastWeek = feeds.at(-1)?.week;
+
+// The two complete-submission lines, as the workshop page states them under
+// its fall workshops.
+const fallWorkshops = workshops.slice(
+  workshops.indexOf("\n## Fall"),
+  workshops.indexOf("\n## Winter")
+);
+const SUBMISSION = "- **A complete submission:** ";
+function completeSubmission(workshop: number) {
+  const line = fallWorkshops
+    .split(`\n### Workshop ${workshop}:`)[1]
+    ?.split("\n")
+    .find((text) => text.startsWith(SUBMISSION));
+  if (!line) {
+    throw new Error(
+      `fall-week-3: the workshop page gives fall Workshop ${workshop} no complete submission.`
+    );
+  }
+  return plainText(line.slice(SUBMISSION.length));
+}
+const submissionDecisions = completeSubmission(2);
+const submissionSafetyNet = completeSubmission(3);
+---
+
+<TitleSlide
+  kicker="CS 461, fall week 3: Workshops 2 and 3"
+  title="Hard-to-Reverse Decisions and Your Safety Net"
+  subtitle="Find the decisions you can't walk back, then check what guards them"
+  byline="CS 461: the instruction team"
+/>
+
+<TwoColumnSlide kicker="Today's outcome" title="By the end of the session, your team has two outputs" divider wide>
+  <div slot="left">
+    <h3>Workshop 2: a sorted list</h3>
+    <ul class="reveal-list">{outcomeDecisions.map((line) => <li>{line}</li>)}</ul>
+  </div>
+  <div slot="right">
+    <h3>Workshop 3: one named gap</h3>
+    <ul class="reveal-list">{outcomeSafetyNet.map((line) => <li>{line}</li>)}</ul>
+  </div>
+</TwoColumnSlide>
+
+<Slide kicker="What today feeds" title={`Your list and your gap, through week ${lastWeek}`} wide>
+  <div class="timeline" role="list">
+    {
+      feeds.map((entry) => (
+        <div class:list={["entry", { today: entry.today }]} role="listitem">
+          <span class="when">
+            Week {entry.week}
+            , {entry.day}
+          </span>
+          <span class="dot" aria-hidden="true" />
+          <span class="what">
+            {entry.href ? <a href={entry.href}>{entry.what}</a> : entry.what}
+            <span class="detail">{entry.detail}</span>
+          </span>
+          {entry.from && <span class:list={["from", `from-${entry.from}`]}>Uses Workshop {entry.from}</span>}
+        </div>
+      ))
+    }
+  </div>
+</Slide>
+
+<Slide kicker="Workshops 2 and 3" title="Two submissions, each graded complete or incomplete">
+  <ul>
+    <li>Complete when it's the activity's output: there is no quality bar</li>
+    <li>{LATE["class-week"].text}</li>
+    <li>
+      Submitting an AI-generated output without running the activity as a
+      team scores Incomplete
+    </li>
+  </ul>
+  <p class="caption">
+    Read for this session:<br />
+    <LinkedText md={readLine} />
+  </p>
+</Slide>
+
+<Slide kicker="Agenda" title="Two workshops, each a short talk and then work">
+  <ol>
+    <li>
+      Workshop 2, Map Your Hard-to-Reverse Decisions: a new app sorted, three
+      reference projects, then your list
+    </li>
+    <li>
+      Workshop 3, Audit Your Safety Net: the same app audited, three
+      repositories, then your gap
+    </li>
+    <li>Wrap: both outcomes, and what's due</li>
+  </ol>
+</Slide>
+
+<StatementSlide kicker="Workshop 2" source="Sort the decisions you can't walk back from the ones you can">
+  Map Your Hard-to-Reverse Decisions
+</StatementSlide>
+
+<TwoColumnSlide kicker="Workshop 2: hard and easy to reverse" title="A hard-to-reverse decision costs far more to undo than to get right" divider wide>
+  <div slot="left">
+    <h3>Hard to reverse, typically</h3>
+    <ul class="reveal-list">
+      <li>Database schema and data migrations</li>
+      <li>Authentication and authorization</li>
+      <li>Deployment topology: what runs where, not which host</li>
+      <li>Public API shape, file formats other programs read</li>
+      <li>Licensing and third-party commitments</li>
+      <li>Anything touching user data you can't regenerate</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Easy to reverse, typically</h3>
+    <ul class="reveal-list">
+      <li>Most feature code</li>
+      <li>UI layout</li>
+      <li>Internal module boundaries</li>
+      <li>Any library you could swap in a week</li>
+    </ul>
+  </div>
+  <p class="caption">
+    Jeff Bezos's <a href={bezos}>2015 letter to Amazon shareholders</a> calls
+    them Type 1 and Type 2 decisions, and warns that the slow process Type 1
+    needs makes everything slow when it's applied to Type 2.
+  </p>
+</TwoColumnSlide>
+
+<Slide kicker="Workshop 2: a new app, sorted" title="Ten decisions for the campus lunch app, before any code" wide>
+  <DecisionList decisions={lunchSorted} stepped />
+  <p class="caption caption-tight">
+    The lunch app from last week's story map. Write all ten down before you
+    mark any.
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 2: a new app, sorted" title="Why each hard one is hard, and who checks it first" wide>
+  <DecisionList decisions={lunchHard} count={false} marks={false} />
+  <p class="caption">
+    Each one is cheap to change this week and expensive by winter: the cost
+    grows with every screen, account, order, and contract built on it.
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 2: hard and easy to reverse" title="Sort by how hard it is to undo, not by how important it feels" wide>
+  <ul>
+    <li>
+      An important decision that's easy to reverse can wait until you know
+      more: hosting feels big, yet a standard web app moves to a new host in
+      days
+    </li>
+    <li class="fragment">
+      A hard-to-reverse one gets more expensive with every line built on it
+    </li>
+  </ul>
+  <div class="errors fragment">
+    <div class="error">
+      <h3>Easy, treated as hard</h3>
+      <p>Costs you time: review and debate on a choice you could change next week</p>
+    </div>
+    <div class="error error-worse">
+      <h3>Hard, treated as easy</h3>
+      <p>Costs you a week on a migration you can't roll back</p>
+    </div>
+  </div>
+  <p class="caption">
+    Easy isn't free: a new CSS library touches every component, but you can
+    switch one piece at a time. From the Technical Design guide:
+    <a href={designTruths}>Some Truths About Technical Design</a>
+  </p>
+</Slide>
+
+<TwoColumnSlide kicker="Workshop 2 reference: ephira, an inherited app in both app stores" title="The same change is free before the first install, and costly after" divider wide>
+  <div slot="left">
+    <h3>Before the first store release</h3>
+    <ul class="reveal-list">
+      <li>The first team rewrote its database setup from scratch: four migrations became one</li>
+      <li>It renamed the app from PrivyPeriod to ephira, store ID included</li>
+      <li>Nobody had installed it yet, so neither broke a thing</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>After it</h3>
+    <ul class="reveal-list">
+      <li class="fragment">Every database change ships as a migration that runs on each user's phone at the next update</li>
+      <li class="fragment">Each migration runs on whatever data that phone holds, which no test database matches</li>
+      <li class="fragment">A new store ID is a new app: users and their data stay on the old one</li>
+    </ul>
+  </div>
+  <p class="caption">
+    ephira is a period tracker that keeps every record on the phone.
+    Repository: <a href={ephira}>ephira on GitHub</a>
+  </p>
+</TwoColumnSlide>
+
+<Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="Hard means what other programs read" wide>
+  <DecisionList decisions={lumiLabDecisions} />
+  <p class="caption caption-tight">
+    LumiLab turns ordinary photos into a luminance map that glare tools read.
+    Repository: <a href={lumiLab}>LumiLab on GitHub</a>
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 2 reference: TaxonBodyMassML, a research chain" title="Hard means what every result is measured against" wide>
+  <DecisionList decisions={taxonDecisions} />
+  <p class="caption caption-tight">
+    TaxonBodyMassML estimates a species' weight from its name. Repository: <a href={taxon}>TaxonBodyMassML on GitHub</a>
+  </p>
+</Slide>
+
+<TwoColumnSlide kicker="With an AI tool, in both workshops" title="Do your own version first, then compare with the tool" divider wide>
+  <div slot="left">
+    <h3>First, as a team</h3>
+    <ul>
+      <li>Run the activity yourselves before anyone opens a tool</li>
+      <li>Your version is what the comparison measures the tool against</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Then, with the tool</h3>
+    <ul>
+      <li class="fragment">
+        <strong>New project:</strong> give it the description, your partner's
+        constraints, and your version; ask what you missed
+      </li>
+      <li class="fragment">
+        <strong>Inherited code:</strong> give it the repository too, CI
+        configuration included; ask what the code has already decided
+      </li>
+      <li class="fragment">
+        <strong>Either way:</strong> note where its version differs from yours,
+        and why
+      </li>
+    </ul>
+  </div>
+  <p class="caption">
+    Give it only what your Team Charter's AI and Confidentiality section
+    allows.
+  </p>
+</TwoColumnSlide>
+
+<Slide kicker="Workshop 2: work time" title="Start here, as a team">
+  <ol class="steps" style="--steps: 5;">
+    <li>
+      <p>Open a doc or a sheet, one laptop per team</p>
+      <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Write the next ten decisions your team expects to make. Don't mark any yet</p>
+      <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Mark each one hard to reverse or easy to reverse</p>
+      <span class="art art-chips" aria-hidden="true"><b>Hard</b><i>Easy</i></span>
+    </li>
+    <li>
+      <p>For each hard one, name who checks it and what they check</p>
+      <span class="art art-who" aria-hidden="true">Who: what</span>
+    </li>
+    <li>
+      <p>Count the hard ones. Eight of ten? Sort again</p>
+      <span class="art art-count" aria-hidden="true">3 of 10</span>
+    </li>
+  </ol>
+  <p class="caption">
+    The activity: <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 2: check your list" title="Check your list for four mistakes" wide>
+  <table class="mistakes">
+    <thead>
+      <tr>
+        <th scope="col" class="mistake-col">Mistake</th>
+        <th scope="col">Instead of</th>
+        <th scope="col">Write</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">A task, not a decision</th>
+        <td class="instead">Set up the database</td>
+        <td>Backend: Supabase, or Postgres plus Better Auth</td>
+      </tr>
+      <tr>
+        <th scope="row">Marked by importance</th>
+        <td class="instead">
+          Menu layout <span class="chip chip-hard">Hard</span> because every
+          student sees it
+        </td>
+        <td>
+          Menu layout <span class="chip chip-easy">Easy</span> because you can
+          change it any week
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">A default nobody chose</th>
+        <td class="instead missing">Missing from the list</td>
+        <td>
+          What happens to past orders when a dish is deleted
+          <span class="chip chip-hard">Hard</span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Already decided for you</th>
+        <td class="instead">
+          Hosting: Vercel or a server, when the partner requires OSU servers
+        </td>
+        <td>Leave it off; sort the choices left inside that limit</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="caption">
+    Eight of ten hard? Ask what undoing each one would take. A week of rework
+    is easy; a migration, a contract, or users' data is hard.
+  </p>
+</Slide>
+
+<StatementSlide kicker="Workshop 3" source="Workshop 2 found what you can't walk back; Workshop 3 checks what guards it">
+  Audit Your Safety Net
+</StatementSlide>
+
+<TwoColumnSlide kicker="Workshop 3: your safety net" title="Your risk is what can reach main with nothing to stop it" divider wide>
+  <div slot="left">
+    <h3>How a change reaches main</h3>
+    <ul class="reveal-list">
+      <li>Who writes it: a teammate, an AI tool, or both</li>
+      <li>Who reads it before it merges, if anyone</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>What would stop a bad change</h3>
+    <ul class="reveal-list">
+      <li class="fragment">Tests on the paths that matter, that fail if they break</li>
+      <li class="fragment">CI on every pull request, and green</li>
+      <li class="fragment">Review on the hard-to-undo paths</li>
+      <li class="fragment">A staging or preview environment</li>
+      <li class="fragment">A rollback you've tried, not only planned</li>
+    </ul>
+  </div>
+  <p class="caption">
+    A rushed change from a teammate and an unread one from an AI tool slip
+    through the same gaps. The more that merges unread, the more your checks
+    have to catch.
+  </p>
+</TwoColumnSlide>
+
+<Slide kicker="Workshop 3: the lunch app, audited" title="The lunch app, a few weeks in, check by check" wide>
+  <p class="lead">
+    Four teammates, each merging their own pull requests, mostly unread by the
+    others.
+  </p>
+  <SafetyNet checks={lunchChecks} stepped />
+</Slide>
+
+<Slide kicker="Workshop 3: the lunch app, audited" title="Start from its hardest decision: the data model" wide>
+  <div class="gapfix">
+    <div class="gap">
+      <h3>The gap</h3>
+      <p>
+        Nothing stops a schema migration from merging without review, and it
+        runs straight on the real database
+      </p>
+    </div>
+    <div class="fix fragment">
+      <h3>The smallest change</h3>
+      <p>
+        Require one teammate's review on the migrations folder: a CODEOWNERS
+        line and a branch rule
+      </p>
+    </div>
+  </div>
+  <p class="caption">
+    Close it from the top: the check guarding the decision you can't walk back
+    comes before more tests on easy code.
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 3: name the gap" title="Name the change that slips through, not a general worry" wide>
+  <div class="checks">
+    <div>
+      <p class="verdict verdict-yes">Like this</p>
+      <ul class="says">
+        <li>Nothing stops a schema change from merging without review</li>
+        <li>No test fails if a refund charges twice</li>
+        <li>Deploys run migrations with no copy of the data to restore</li>
+      </ul>
+    </div>
+    <div>
+      <p class="verdict verdict-no">Not like this</p>
+      <ul class="says">
+        <li>We have no tests</li>
+        <li>CI could be better</li>
+        <li>We should review more</li>
+      </ul>
+    </div>
+  </div>
+  <p class="caption">
+    A named gap says which bad change gets through and which check isn't there
+    to stop it.
+  </p>
+</Slide>
+
+<TwoColumnSlide kicker="Workshop 3 reference: two repositories" title="Tests that exist, and nothing that runs them" divider wide>
+  <div slot="left">
+    <h3>ephira, an inherited app</h3>
+    <ul class="reveal-list">
+      <li>The second team wrote four test files</li>
+      <li>Its CI workflow ran only the linter, all year</li>
+      <li><strong>Smallest change:</strong> one test step in the workflow</li>
+    </ul>
+    <p class="caption">
+      Later commits are the maintainer's, and one added the tests to CI.
+      Repository: <a href={ephira}>ephira on GitHub</a>
+    </p>
+  </div>
+  <div slot="right">
+    <h3>TaxonBodyMassML, a research project</h3>
+    <ul class="reveal-list">
+      <li class="fragment">Its test files sat beside the code, in each service's folder</li>
+      <li class="fragment">CI ran pytest only if a <code>tests/</code> folder existed, and there wasn't one</li>
+      <li class="fragment">So its test step printed "No tests implemented yet." and passed</li>
+      <li class="fragment"><strong>Smallest change:</strong> point pytest at the test files, and fail when it finds none</li>
+    </ul>
+    <p class="caption">
+      Repository: <a href={taxon}>TaxonBodyMassML on GitHub</a>
+    </p>
+  </div>
+</TwoColumnSlide>
+
+<Slide kicker="Workshop 3 reference: a safety net mostly right" title="eecs-capstone: strong tests and CI, no review or staging" wide>
+  <p class="lead">
+    One maintainer, no second reviewer, and 881 of 1,033 commits co-written
+    with Claude: the checks do the reviewing.
+  </p>
+  <SafetyNet checks={eecsChecks} />
+  <p class="caption caption-tight">
+    Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 3 reference: a safety net mostly right" title="Its gap sits at its hardest decision: the database" wide>
+  <div class="gapfix">
+    <div class="gap">
+      <h3>The gap</h3>
+      <p>
+        Rolling back the code doesn't roll back the schema: seven migrations
+        since the first deploy drop columns or tables, and CI only ever
+        migrates an empty database
+      </p>
+    </div>
+    <div class="fix fragment">
+      <h3>The smallest change</h3>
+      <p>
+        A CI check that fails when a new migration drops or renames something,
+        unless the pull request says why
+      </p>
+    </div>
+  </div>
+  <p class="caption">
+    The drop then ships a release after the code stops reading the column.
+    Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 3: work time" title="Start here, as a team">
+  <ol class="steps" style="--steps: 5;">
+    <li>
+      <p>Say how a change reaches main: who writes it, who reads it first</p>
+      <span class="art art-who" aria-hidden="true">Who?</span>
+    </li>
+    <li>
+      <p>List your checks, or the ones you'll have when the first change lands</p>
+      <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Take your hardest decision from Workshop 2. What stops a bad change to it?</p>
+      <span class="art art-chips" aria-hidden="true"><b>Hard</b></span>
+    </li>
+    <li>
+      <p>Name the gap in one sentence</p>
+      <span class="art art-who" aria-hidden="true">1 sentence</span>
+    </li>
+    <li>
+      <p>Write the smallest change that closes it</p>
+      <span class="art art-count" aria-hidden="true">1 change</span>
+    </li>
+  </ol>
+  <p class="caption">
+    No code yet? Audit the checks you'll have when the first change lands, and
+    set them up now: like ephira's first migrations, they're free before
+    anything depends on them. The activity:
+    <a href={activitySafetyNet}>Audit Your Safety Net</a>
+  </p>
+</Slide>
+
+<TwoColumnSlide kicker="Wrap" title="Check both outputs against today's outcome" divider wide>
+  <div slot="left">
+    <h3>Workshop 2: a sorted list</h3>
+    <ul class="reveal-list">{outcomeDecisions.map((line) => <li>{line}</li>)}</ul>
+    <p class="caption">
+      Stuck? <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
+    </p>
+  </div>
+  <div slot="right">
+    <h3>Workshop 3: one named gap</h3>
+    <ul class="reveal-list">{outcomeSafetyNet.map((line) => <li>{line}</li>)}</ul>
+    <p class="caption">
+      Stuck? <a href={activitySafetyNet}>Audit Your Safety Net</a>
+    </p>
+  </div>
+</TwoColumnSlide>
+
+<Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
+  <ul class="due">
+    <li>Workshop 2, one PDF: {submissionDecisions}</li>
+    <li>Workshop 3, one PDF: {submissionSafetyNet}</li>
+    {
+      alsoDue.map((item) => (
+        <li>
+          <LinkedText md={item} />
+        </li>
+      ))
+    }
+  </ul>
+</Slide>
+
+<style>
+  .caption {
+    margin-block-start: auto;
+    padding-block-start: 24px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  /* Under a list that fills the slide at the 32px floor. */
+  .caption-tight {
+    padding-block-start: 4px;
+  }
+
+  .reveal-list {
+    font-size: 36px;
+  }
+
+  /* The two errors: the worse one carries the accent. */
+  .errors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px;
+    margin-block-start: 48px;
+  }
+
+  .error {
+    padding: 28px 36px;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-block-start-width: 12px;
+    border-radius: 12px;
+  }
+
+  .error-worse {
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .error h3 {
+    margin-block-end: 12px;
+  }
+
+  .error p {
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.25;
+  }
+
+  /* Numbered steps drawn as tiles, left to right, each with a chevron into
+     the next. */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
+    gap: 56px;
+  }
+
+  .steps > li {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 104px 26px 28px;
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.22;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 14px;
+  }
+
+  .steps > li::before {
+    inset-block-start: 24px;
+    inset-inline-start: 24px;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+    color: var(--deck-paper);
+    background: var(--deck-accent-ink);
+    border-radius: 999px;
+  }
+
+  .steps > li + li::after {
+    position: absolute;
+    inset-block-start: 36px;
+    inset-inline-start: -44px;
+    content: "";
+    border-block: 18px solid transparent;
+    border-inline-start: 26px solid var(--deck-accent);
+  }
+
+  .steps p {
+    margin: 0;
+  }
+
+  .art {
+    margin-block-start: auto;
+  }
+
+  .art-sheet {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    gap: 6px;
+  }
+
+  .art-sheet i {
+    height: 28px;
+    background: var(--deck-paper);
+    border: 2px solid var(--deck-rule);
+    border-radius: 4px;
+  }
+
+  .art-lines {
+    display: grid;
+    gap: 8px;
+    width: 150px;
+  }
+
+  .art-lines i {
+    height: 14px;
+    background: var(--deck-ink-soft);
+    border-radius: 999px;
+  }
+
+  .art-lines i:last-child {
+    width: 60%;
+  }
+
+  .art-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .art-chips b,
+  .art-chips i,
+  .art-who,
+  .art-count {
+    align-self: start;
+    padding: 2px 14px;
+    font-size: var(--deck-text-min);
+    font-style: normal;
+    font-weight: 700;
+    border: 3px solid var(--deck-rule);
+    border-radius: 999px;
+  }
+
+  .art-chips b {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .art-chips i {
+    color: var(--deck-ink-soft);
+    background: var(--deck-paper);
+  }
+
+  .art-who {
+    color: var(--deck-ink);
+    background: var(--deck-paper);
+  }
+
+  .art-count {
+    color: var(--deck-accent-ink);
+    background: var(--deck-paper);
+    border-color: var(--deck-accent);
+  }
+
+  /* The self-check's two lists, each under its verdict. */
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 96px;
+  }
+
+  .verdict {
+    margin: 0 0 16px;
+    font-size: var(--deck-text-min);
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .verdict-yes {
+    color: var(--deck-backbone-edge);
+  }
+
+  .verdict-no {
+    color: var(--deck-accent-ink);
+  }
+
+  .due {
+    margin-block-start: 32px;
+    font-size: 36px;
+  }
+  /* A one-line fact the slide's table or boxes depend on. */
+  .lead {
+    margin: 0 0 24px;
+    font-size: 36px;
+    color: var(--deck-ink-soft);
+  }
+
+  /* A named gap beside the smallest change that closes it. */
+  .gapfix {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px;
+  }
+
+  .gap,
+  .fix {
+    padding: 32px 40px;
+    border: 3px solid;
+    border-block-start-width: 12px;
+    border-radius: 12px;
+  }
+
+  .gap {
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .fix {
+    background: var(--deck-backbone);
+    border-color: var(--deck-backbone-edge);
+  }
+
+  .gap h3,
+  .fix h3 {
+    margin-block-end: 16px;
+  }
+
+  .gap p,
+  .fix p {
+    margin: 0;
+    font-size: 40px;
+    line-height: 1.25;
+  }
+
+  /* Gap statements, each the way a team would write it. */
+  .says {
+    margin: 0;
+    font-size: 36px;
+  }
+
+  .says li + li {
+    margin-block-start: 16px;
+  }
+  /* The four mistakes: each as a team writes it, then as it should read. */
+  .mistakes {
+    width: 100%;
+    font-size: 36px;
+    line-height: 1.25;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .mistake-col {
+    width: 26%;
+  }
+
+  .mistakes thead th {
+    padding: 0 32px 10px 0;
+    font-size: var(--deck-text-min);
+    font-weight: 750;
+    color: var(--deck-ink-soft);
+    text-align: start;
+  }
+
+  .mistakes tbody th,
+  .mistakes td {
+    padding: 20px 32px 20px 0;
+    vertical-align: top;
+    text-align: start;
+    border-block-start: 2px solid var(--deck-rule);
+  }
+
+  .mistakes tbody th {
+    font-weight: 700;
+  }
+
+  .instead {
+    color: var(--deck-ink-soft);
+  }
+
+  .missing {
+    font-style: italic;
+  }
+
+  .chip {
+    display: inline-block;
+    padding: 0 14px;
+    margin-inline: 6px;
+    font-size: var(--deck-text-min);
+    font-weight: 700;
+    border: 2px solid;
+    border-radius: 999px;
+  }
+
+  .chip-hard {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .chip-easy {
+    color: var(--deck-ink-soft);
+    background: var(--deck-card);
+    border-color: var(--deck-rule);
+  }
+  /* What today feeds: a week column, a line of dots, the entry, and the
+     workshop whose output it uses. */
+  .timeline {
+    display: grid;
+    font-size: var(--deck-text-min);
+    line-height: 1.2;
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 250px 56px minmax(0, 1fr) auto;
+    gap: 0 24px;
+    align-items: center;
+    padding-block: 18px;
+  }
+
+  .entry::before {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 300px;
+    width: 4px;
+    content: "";
+    background: var(--deck-rule);
+  }
+
+  .entry:first-child::before {
+    inset-block-start: 50%;
+  }
+
+  .entry:last-child::before {
+    inset-block-end: 50%;
+  }
+
+  .when {
+    font-weight: 650;
+    color: var(--deck-ink-soft);
+  }
+
+  .dot {
+    z-index: 1;
+    justify-self: center;
+    width: 24px;
+    height: 24px;
+    background: var(--deck-paper);
+    border: 4px solid var(--deck-ink-soft);
+    border-radius: 999px;
+  }
+
+  .today .dot {
+    background: var(--deck-accent);
+    border-color: var(--deck-accent-ink);
+  }
+
+  .what {
+    font-weight: 650;
+  }
+
+  .detail {
+    margin-inline-start: 16px;
+    font-weight: 400;
+    color: var(--deck-ink-soft);
+  }
+
+  .from {
+    padding: 0 14px;
+    white-space: nowrap;
+    font-weight: 700;
+    border: 2px solid;
+    border-radius: 999px;
+  }
+
+  .from-2 {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .from-3 {
+    color: var(--deck-backbone-ink);
+    background: var(--deck-backbone);
+    border-color: var(--deck-backbone-edge);
+  }
+</style>

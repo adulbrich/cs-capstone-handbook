@@ -1,0 +1,199 @@
+---
+// A team's upcoming decisions, each marked hard to reverse or easy to
+// reverse, as Map Your Hard-to-Reverse Decisions sorts them; for a
+// <Slide wide>. A hard-to-reverse decision may also say what undoing it
+// would cost, and carry its validator: who checks it, and what they check,
+// before the team commits.
+//
+//   <DecisionList
+//     decisions={[
+//       { text: "Database: Postgres or Firestore", hard: true,
+//         cost: "Rewriting every query and moving the data",
+//         validator: { who: "Partner", what: "the reports they need come out of it" } },
+//       { text: "CSS: Tailwind or plain CSS" },
+//     ]}
+//   />
+//
+// A decision without `hard` is easy to reverse. The count under the list
+// ("1 of 2 hard to reverse") is the activity's check that the hard ones are
+// few; `count={false}` drops it. `marks={false}` drops the Hard and Easy
+// column, for a list of hard ones explained. With `stepped`, the list shows
+// first and everything the sorting adds appears on the next arrow press, in
+// the order the activity runs: write the decisions down, then mark them.
+// Ten decisions is the activity's list and the most a slide holds, so an
+// eleventh fails the build. A list with costs or validators wraps each row,
+// so it holds six at most. A cost or a validator on an easy-to-reverse
+// decision also fails the build.
+interface Decision {
+  cost?: string;
+  hard?: boolean;
+  text: string;
+  validator?: { what: string; who: string };
+}
+
+interface Props {
+  count?: boolean;
+  decisions: Decision[];
+  marks?: boolean;
+  stepped?: boolean;
+}
+
+const MAX_DECISIONS = 10;
+const MAX_EXPLAINED = 6;
+const { count = true, decisions, marks = true, stepped = false } = Astro.props;
+
+if (decisions.length === 0 || decisions.length > MAX_DECISIONS) {
+  throw new Error(
+    `<DecisionList>: ${decisions.length} decisions; use 1 to ${MAX_DECISIONS}.`
+  );
+}
+for (const decision of decisions) {
+  if ((decision.cost || decision.validator) && !decision.hard) {
+    throw new Error(
+      `<DecisionList>: "${decision.text}" is easy to reverse; only a hard-to-reverse decision gets a cost or a validator.`
+    );
+  }
+}
+
+const hardCount = decisions.filter((decision) => decision.hard).length;
+const hasCosts = decisions.some((decision) => decision.cost);
+const hasValidators = decisions.some((decision) => decision.validator);
+if ((hasCosts || hasValidators) && decisions.length > MAX_EXPLAINED) {
+  throw new Error(
+    `<DecisionList>: ${decisions.length} decisions with costs or validators; use ${MAX_EXPLAINED} at most.`
+  );
+}
+// Everything the sorting adds, revealed on one press when stepped.
+const step = stepped ? { class: "fragment", "data-fragment-index": 0 } : {};
+---
+
+<div
+  class:list={[
+    "decision-list",
+    { explained: hasCosts || hasValidators, "no-marks": !marks },
+  ]}
+>
+  <table>
+    <thead>
+      <tr>
+        {marks && <th scope="col" class="mark-col">To reverse</th>}
+        <th scope="col">Decision</th>
+        {hasCosts && <th scope="col">Undoing it means</th>}
+        {hasValidators && <th scope="col">Validator: who checks it first, and what</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        decisions.map((decision) => (
+          <tr class:list={{ hard: decision.hard }}>
+            {marks && (
+              <td>
+                <span class:list={["mark", step.class]} data-fragment-index={step["data-fragment-index"]}>
+                  {decision.hard ? "Hard" : "Easy"}
+                </span>
+              </td>
+            )}
+            <td class="text">{decision.text}</td>
+            {hasCosts && (
+              <td class="cost">
+                {decision.cost && (
+                  <span class={step.class} data-fragment-index={step["data-fragment-index"]}>
+                    {decision.cost}
+                  </span>
+                )}
+              </td>
+            )}
+            {hasValidators && (
+              <td class="validator">
+                {decision.validator && (
+                  <span class={step.class} data-fragment-index={step["data-fragment-index"]}>
+                    <strong>{decision.validator.who}:</strong> {decision.validator.what}
+                  </span>
+                )}
+              </td>
+            )}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  {
+    count && (
+      <p class:list={["count", step.class]} data-fragment-index={step["data-fragment-index"]}>
+        {hardCount} of {decisions.length} hard to reverse
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .decision-list {
+    font-size: var(--deck-text-min);
+    line-height: 1.15;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .mark-col {
+    width: 190px;
+  }
+
+  th {
+    padding: 0 24px 6px 0;
+    font-weight: 750;
+    color: var(--deck-ink-soft);
+    text-align: start;
+  }
+
+  td {
+    padding: 4px 24px 4px 0;
+    vertical-align: top;
+    border-block-start: 2px solid var(--deck-rule);
+  }
+
+  /* A list of hard ones explained: fewer rows, each with room to wrap. */
+  .explained td {
+    padding-block: 14px;
+  }
+
+  .mark {
+    display: inline-block;
+    min-width: 130px;
+    padding: 0 14px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--deck-ink-soft);
+    background: var(--deck-card);
+    border: 2px solid var(--deck-rule);
+    border-radius: 999px;
+  }
+
+  .hard .mark {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .no-marks .text {
+    font-weight: 650;
+  }
+
+  .cost,
+  .validator {
+    color: var(--deck-ink-soft);
+  }
+
+  .validator strong {
+    color: var(--deck-ink);
+  }
+
+  .count {
+    margin: 10px 0 0;
+    font-weight: 750;
+    color: var(--deck-accent-ink);
+  }
+</style>
