@@ -101,7 +101,7 @@ Submit a sanitized draft: your reviewers read it, so replace partner-confidentia
 
 #### Instructor Comments
 
-By Sunday of week 6, an instructor returns two or three comments on the reasoning in your draft, as comments on your submission: the strongest objection to your recommendation, a credible option the draft leaves out, or a claim it does not support. Each comment becomes a row in your [revision log](#revision-log), the same as a point from a peer review.
+By Sunday of week 6, an instructor returns comments on your draft submission. Each comment becomes a row in your [revision log](#revision-log), the same as a point from a peer review.
 
 ### RFC Final Draft
 
@@ -115,7 +115,6 @@ After the RFC, add a table with one row for every point raised in the feedback y
 |---|---|---|---|
 | Reviewer 1 | No check in the verification plan would catch a migration that drops rows | Changed | Recommendation and Verification Plan: a row-count and checksum comparison now runs before cutover |
 | Reviewer 2 | A managed queue is a missing option | Declined | The partner's hosting agreement rules out a third-party processor for this data, so a managed queue is not a credible option |
-| Instructor | The analysis claims the queue keeps up with peak load but cites no measurement | Changed | Analysis: the claim now cites a load test at twice the partner's peak, with the pull request that ran it |
 
 Feedback is the point in your words, not a quote. For a change, Where or why names the section that moved and what moved in it, so the grader can find it in the final. For a decline, it gives the reason the point does not hold for this decision; a reasoned decline counts as much as a change.
 
@@ -131,7 +130,7 @@ The revised RFC, not counting the revision log, must total **at least 2,000 word
 
 <RubricTable csv={draftRubricCsv} sourceLabel="canvas/assignments/rfc/rfc-draft-rubric.csv" />
 
-The draft is graded for completeness, not for the quality of its reasoning, and the instructor comments on its reasoning carry no points.
+The draft is graded for completeness, not for the quality of its reasoning, and the instructor comments carry no points.
 
 ### RFC Final Draft
 

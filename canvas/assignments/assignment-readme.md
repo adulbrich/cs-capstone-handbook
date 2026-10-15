@@ -22,9 +22,9 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-paste Required: Instructor Comments on Every RFC Draft (#520)
 
-No rubric changes, so nothing to re-import: the Revision criterion already scores a row for every point of feedback received, and the instructor comments are rows. An instructor of record returns two or three comments on each RFC draft as submission comments on RFC Draft + Peer Review by Sunday of week 6, no later than Sunday of week 7, in both terms; the RFC Machinery section of `STAFF-RUNBOOK.md` has the rest.
+No rubric changes, so nothing to re-import: the Revision criterion already scores a row for every point of feedback received, and the instructor comments are rows. An instructor of record returns comments on each RFC draft as submission comments on RFC Draft + Peer Review by Sunday of week 6, no later than Sunday of week 7, in both terms; the RFC Machinery section of `STAFF-RUNBOOK.md` has the rest.
 
-- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms: the draft body gains an Instructor Comments section and a no-points line under its rubric, and the final body's revision log takes the comments, with an example row.
+- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms: the draft body gains an Instructor Comments section and a no-points line under its rubric, and the final body's revision log takes the comments.
 - Re-paste the CS 461 and CS 462 syllabi: the RFC line reads draft week 4, peer and instructor feedback weeks 5 to 6, revised final week 8.
 
 ## Re-import Required: One RFC Length Band for Both WIC Terms (#512)
