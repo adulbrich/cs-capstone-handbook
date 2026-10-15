@@ -20,6 +20,13 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Instructor Comments on Every RFC Draft (#520)
+
+No rubric changes, so nothing to re-import: the Revision criterion already scores a row for every point of feedback received, and the instructor comments are rows. An instructor of record returns two or three comments on each RFC draft as submission comments on RFC Draft + Peer Review by Sunday of week 6, no later than Sunday of week 7, in both terms; the RFC Machinery section of `STAFF-RUNBOOK.md` has the rest.
+
+- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms: the draft body gains an Instructor Comments section and a no-points line under its rubric, and the final body's revision log takes the comments, with an example row.
+- Re-paste the CS 461 and CS 462 syllabi: the RFC line reads draft week 4, peer and instructor feedback weeks 5 to 6, revised final week 8.
+
 ## Re-import Required: One RFC Length Band for Both WIC Terms (#512)
 
 - `rfc/rfc-final-rubric.csv`: CS 461 and CS 462 are both WIC courses, so the RFC has one length band, 1,500 to 2,500 words, and the final must reach the 2,000-word floor in fall as well as winter. The Writing criterion's Exceeds band now reads 2,000 to 2,500 words, in place of 800 to 1,500 in fall and 1,500 to 2,500 in winter, so the floor is scored. Points, tags, and the other bands are unchanged. Re-import it on RFC Final Draft, in both terms.
@@ -487,7 +494,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | by 5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (CI, board, living docs, production target); RFC peer review; Demo Day session 1 |
-| 6 | Sprint Note 2 |
+| 6 | Sprint Note 2; RFC draft comments returned (instructor of record) |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
 | 9 | Term Retrospective |
@@ -503,7 +510,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 3 | Definition of Shipped (v1, partner-agreed) |
 | 4 | Sprint Note 6; RFC draft |
 | 5 | Repo Checkpoint 3 (integration health); RFC peer review; Demo Day session 3 |
-| 6 | Sprint Note 7 |
+| 6 | Sprint Note 7; RFC draft comments returned (instructor of record) |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 8; RFC final (revision and decision) |
 | 9 | Incident Postmortem |
