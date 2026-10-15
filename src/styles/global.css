@@ -26,9 +26,9 @@
   @apply rounded-lg;
 }
 
-/* Who submits or is scored: the Team, Individual and Partner tags on the
-   Schedule's week cards and the Assignments Overview's grade grid, in the
-   audience colours the activity badges use. */
+/* Who submits or is scored: the Team, Individual, Partner and Instructor
+   tags on the Schedule's week cards and the Assignments Overview's grade
+   grid, in the audience colours the activity badges use. */
 .who-tag {
   display: inline-block;
   padding: 0.05rem 0.45rem;
@@ -51,4 +51,8 @@
   color: var(--sl-color-gray-2);
   background: var(--sl-color-gray-6);
   box-shadow: inset 0 0 0 1px var(--sl-color-gray-4);
+}
+.who-tag--instructor {
+  color: var(--sl-color-purple-high);
+  background: var(--sl-color-purple-low);
 }

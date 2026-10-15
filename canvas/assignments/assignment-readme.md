@@ -20,6 +20,23 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Instructor Comments on Every RFC Draft (#520)
+
+No rubric changes, so nothing to re-import: the Revision criterion already scores a row for every point of feedback received, and the instructor comments are rows. An instructor of record returns comments on each RFC draft as submission comments on RFC Draft + Peer Review by Sunday of week 6, no later than Sunday of week 7, in both terms; the RFC Machinery section of `STAFF-RUNBOOK.md` has the rest.
+
+- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms: the draft body gains an Instructor Comments section and a no-points line under its rubric, and the final body's revision log takes the comments.
+- Re-paste the CS 461 and CS 462 syllabi: the RFC line reads draft week 4, peer and instructor feedback weeks 5 to 6, revised final week 8.
+
+## Re-import Required: What CONTRIBUTING.md Holds (#507)
+
+The Team Charter's "Required in CONTRIBUTING.md" section is now the one list of what the file holds: development setup, local checks, branches and commits, pull requests and review, the Definition of Done, where other work lives, and getting help, each specific to the repository, plus any section the repository needs beyond these. The Contribution Norm is gone; the contribution floor stays on Sprint Notes, and the one repository fact the norm carried is the "Where other work lives" section. No page links `public/CONTRIBUTING-template.md` any more: the charter page lists the sections, so it is the template. The file stays in `public/`, cut to the same seven sections, so links in bodies pasted before this change still resolve; `validate-downloads.mjs` lists it as not a download. Points and tags are unchanged. Re-import all five, and delete the old rubric from the course's rubric list if both are there:
+
+- `team-charter/team-charter-rubric.csv`: the CONTRIBUTING.md and AI context file criterion now says the Definition of Done is scored in its own criterion. Exceeds asks for every other required section, present and specific to the repository, a command not built yet naming the hook, CI job, or test suite that will add it, and the AI context file published with any part that cannot be written before there is code listed with an owner; Meets is a section missing or generic (boilerplate text, placeholder commands), or AI context file gaps with no owner; Does Not Meet is either file missing, or a CONTRIBUTING.md with no section specific to the repository.
+- `repo-checkpoint/repo-checkpoint-{1,2,3,4}-rubric.csv`: the traceability criterion's Exceeds band reads "where CONTRIBUTING.md says it lives" in place of "where the Contribution Norm in CONTRIBUTING.md says it lives".
+- `repo-checkpoint/repo-checkpoint-3-rubric.csv` also: the Term gate met criterion's Exceeds band checks the Definition of Done and the pull request and review rules for the winter charter refresh, in place of the Definition of Done and the Contribution Norm.
+
+Re-paste the Team Charter body, every Sprint Notes body (the Contribution lines no longer say the floor is recorded in `CONTRIBUTING.md`, and other work lives in the tracker it names), every Repo Checkpoints body (What You Produce links the charter's list; Repo Checkpoint 3's charter refresh gate item changed), and the spring Workshop 1 body (the charter refresh line).
+
 ## Re-import Required: One RFC Length Band for Both WIC Terms (#512)
 
 - `rfc/rfc-final-rubric.csv`: CS 461 and CS 462 are both WIC courses, so the RFC has one length band, 1,500 to 2,500 words, and the final must reach the 2,000-word floor in fall as well as winter. The Writing criterion's Exceeds band now reads 2,000 to 2,500 words, in place of 800 to 1,500 in fall and 1,500 to 2,500 in winter, so the floor is scored. Points, tags, and the other bands are unchanged. Re-import it on RFC Final Draft, in both terms.
@@ -487,7 +504,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | by 5 | Resume meetings (co-instructor) |
 | 4 | Sprint Note 1; RFC draft |
 | 5 | Repo Checkpoint 1 (CI, board, living docs, production target); RFC peer review; Demo Day session 1 |
-| 6 | Sprint Note 2 |
+| 6 | Sprint Note 2; RFC draft comments returned (instructor of record) |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 3; RFC final (revision and decision) |
 | 9 | Term Retrospective |
@@ -503,7 +520,7 @@ The Expo has real external deadlines that land well before its Canvas due date: 
 | 3 | Definition of Shipped (v1, partner-agreed) |
 | 4 | Sprint Note 6; RFC draft |
 | 5 | Repo Checkpoint 3 (integration health); RFC peer review; Demo Day session 3 |
-| 6 | Sprint Note 7 |
+| 6 | Sprint Note 7; RFC draft comments returned (instructor of record) |
 | 7 or 9 | Defense (its own session, not a TA check-in; assessed by a TA or instructor other than the team's own) |
 | 8 | Sprint Note 8; RFC final (revision and decision) |
 | 9 | Incident Postmortem |

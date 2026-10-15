@@ -72,6 +72,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 | 1-2 | Team-to-TA assignments made; charters graded (TAs) |
 | 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; the week 5 repo checkpoint (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing week 6 |
 | 5 | All-hands demo day, every term (every team registered for that session, 5 minutes each; length under Lecture Plan) |
+| 5-6 (fall and winter) | Instructor draft comments: an instructor of record returns comments on each RFC draft by Sunday of week 6, Sunday of week 7 at the latest (see RFC Machinery) |
 | 7 and 9 | Defense sessions, separate from check-ins (calibration session first; see below) |
 | 8 | RFC finals land (TA-graded, instructor calibration sample) |
 | 9-10 | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing week 10; the second demo day (fall and winter) |
@@ -93,6 +94,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 - Pairing: Canvas peer review on the RFC Draft + Peer Review entry assigns each student two drafts at the start of week 5; staff do not pick the pairs. NDA students submit a sanitized draft or contact the instruction team, as the RFC page says.
 - Grading: TAs grade their teams' RFCs (~57 each per term in fall and winter, ~10 minutes each against the rubric; budget ~9.5 hours across weeks 8-10). Instructors re-grade a random sample of 3 per grader and reconcile. Enforce the length band when grading: a final under the 2,000-word floor is outside the band, and an RFC over the cap gets skimmed past the cap, not rewarded for volume.
 - Reviewer no-shows: the author is held harmless (the revision log takes the substitute staff review as its source); the no-show reviewer loses the feedback points.
+- Draft comments: an instructor of record returns comments on each draft as submission comments on the RFC Draft + Peer Review entry by Sunday of week 6, and no later than Sunday of week 7, in fall and winter alike. TA comments do not count: the WIC criterion needs instructor-of-record feedback at least a week before the final's due date (#60). The comments carry no points, and the draft keeps its completeness grade; each one becomes a row in the revision log, whose Source column takes it. They are separate from the substitute review above, which stands in for a missing peer reviewer. At about 230 students and two instructors that is about 115 drafts each per term, 5 to 8 minutes a draft: budget 10 to 15 hours per instructor across weeks 5 and 6 (#520).
 
 ## WIC Compliance (CS 461 and CS 462)
 
@@ -107,8 +109,8 @@ CS 461 (fall) and CS 462 (winter) are both certified Writing Intensive Curriculu
 | 1,500 words of low-stakes writing per student | Two written peer reviews, the RFC revision log (outside the RFC's length floor), five contribution lines, a share of five judgment layers; no length guideline today | Open (#60) |
 | One formal piece of 1,500 or more words using disciplinary sources | Each term's RFC: its length floor (on the RFC page) clears this in both terms, and its analysis is argued from cited sources | Met |
 | 35% of the grade from writing assignments | Writing assignments are 30% of the winter grade, 38% if repo checkpoints (docs graded from the checkpoint PDF) count; the weights are on the assignments overview, in the grade grid, the RFC under Individual Evidence and the rest under Team Deliverables | Open (#60) |
-| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | Each term's RFC draft gets peer feedback in week 5; staff feedback lands on the final, plus a substitute review when a peer reviewer no-shows. Waiting on the WIC director | Open (#60) |
-| Individually written work revised after instructor feedback is assessed | The RFC revision criterion assesses revision after peer feedback through the revision log, one row per point with a decision (#348); its Source column already takes instruction-team feedback, so revision after instructor feedback waits only on the draft-feedback decision in #60 | Partial (#60) |
+| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | Each term's RFC draft gets two peer reviews in week 5 and comments from an instructor of record by Sunday of week 6, no later than Sunday of week 7, a week or more before the final is due in week 8; TA comments do not count (RFC Machinery, #520) | Met |
+| Individually written work revised after instructor feedback is assessed | The RFC final's revision criterion checks the revision log, one row per point with a decision (#348), and each instructor comment on the draft is a row in it, so the final is graded on revision after instructor feedback as well as peer feedback (#520) | Met |
 | Student-to-instructor ratio of 25 to 1 or better | Two instructors, four TAs, about 230 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
 | Instructor of record is not a graduate student | Faculty instructors | Met |
 | WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open (#60) |
@@ -135,7 +137,7 @@ CS 461 (fall) and CS 462 (winter) are both certified Writing Intensive Curriculu
 **Per-sprint bands.** Every deduction needs an evidence note (what was checked, what was found) so the decision is reviewable.
 
 - **Full** (default): the contribution line lists one or more pieces of work the student owned that someone else accepted, and the record where they live corroborates it. A sprint where the whole team was blocked, stated in the note, is Full too.
-- **Partial** (1 to 99, your call): some contribution, short of the contribution floor: trivial changes only, review-only activity not agreed as that student's contribution mode in `CONTRIBUTING.md`, or work that is only weakly corroborated by the record. Dock from the first sprint it happens; waiting for a pattern teaches the team that a free sprint exists.
+- **Partial** (1 to 99, your call): some contribution, short of the contribution floor: trivial changes only, review-only activity, or work that is only weakly corroborated by the record. Dock from the first sprint it happens; waiting for a pattern teaches the team that a free sprint exists.
 - **Zero**: no contribution this sprint, or a contribution line the record contradicts. Being blocked is not an explanation on its own, since there is other work to pick up; only a whole-team block is.
 
 **Evidence sources**, in the order to check them: the contribution lines in the team's sprint notes (links or IDs; NDA teams list IDs only); the record where the work lives (authored or driven PRs, closed issues or tickets, approved documents, review responses); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which trigger the corroboration review on the partner evaluation page. Any owned, accepted work counts where `CONTRIBUTING.md` says it lives and the sprint note links it; a code change is its merged PR.
@@ -204,7 +206,7 @@ The number that would break it is team size. At six or more students, 3 minutes 
 
 Check-in weeks run ~9 to 10 h (meetings plus note grading); weeks 7 and 9 carry ~4 h of defenses each; week 8 is the peak at ~12.5 h (check-ins, notes, RFC finals landing). Week 10 stays at check-in load because checkpoint 2 is graded in finals week; weeks 1 and 3 are nearly empty. This fits a standard 0.49 FTE appointment with headroom for office hours and admin. For comparison, the old design at 6 TAs meant ~200 fifteen-criterion progress-report gradings per TA per year before anything else.
 
-Instructors carry no teams: calibration samples (RFC, defense, checkpoints), modifier and appeal adjudication, the four survey runs per term, partner communication, lectures, and demo days.
+Instructors carry no teams: comments on every RFC draft in fall and winter (10 to 15 hours each in weeks 5 and 6), calibration samples (RFC, defense, checkpoints), modifier and appeal adjudication, the four survey runs per term, partner communication, lectures, and demo days.
 
 ## Term Calendar (weeks and holidays, last verified against the registrar)
 
