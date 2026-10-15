@@ -1,19 +1,20 @@
-// The Team, Individual and Partner tags shared by the Schedule's week cards
-// (src/lib/schedule-weeks.mjs) and the Assignments Overview's grade grid
-// (src/lib/grade-grid.mjs): who submits an item, or whose grade it is.
+// The Team, Individual, Partner and Instructor tags shared by the Schedule's
+// week cards (src/lib/schedule-weeks.mjs) and the Assignments Overview's grade
+// grid (src/lib/grade-grid.mjs): who submits an item, or whose grade it is.
 
 import { h } from "hastscript";
 
 // Links whose page `level` does not say who submits or is scored: the partner
-// completes the partner evaluation; the two Canvas-owned stubs carry no
-// `assignment:` block; Demo Day and the Expo are team events with no block
-// either.
+// completes the partner evaluation; an instructor returns the comments on each
+// RFC draft; the two Canvas-owned stubs carry no `assignment:` block; Demo Day
+// and the Expo are team events with no block either.
 const TAG_BY_PATH = {
   "assignments/career-retrospective": "Individual",
   "assignments/demo-day": "Team",
   "assignments/expo": "Team",
   "assignments/project-partner-evaluation": "Partner",
   "assignments/resume-and-intent": "Individual",
+  "assignments/rfc#instructor-comments": "Instructor",
 };
 
 const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/g, "");
