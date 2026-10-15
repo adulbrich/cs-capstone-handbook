@@ -22,6 +22,7 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 // sits on the slide that uses it. Served at /decks/fall-week-3/.
 import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
+import { linkedLine } from "../lib/deck-text.mjs";
 import { termWeeks } from "../lib/schedule-lines.mjs";
 
 export const title =
@@ -251,15 +252,26 @@ function weekOf(label: string, ...needles: string[]) {
   }
   return found.week;
 }
-const RFC = "(/assignments/rfc/";
+// The RFC's own schedule lines link the page itself; a line linking a
+// section of it, such as the instructor comments, is another entry.
+const RFC_PAGE = "(/assignments/rfc/)";
+const RFC_ANY = "(/assignments/rfc/";
 const INSTRUCTOR_RE = /instruct/i;
 // Instructor comments on the RFC draft (#520) join the timeline once the
 // schedule names them.
-const commentsWeek = fall.find(({ rows }) =>
-  [...rows.values()].some((row) =>
-    rowLines(row).some((line) => line.includes(RFC) && INSTRUCTOR_RE.test(line))
+const comments = fall
+  .flatMap(({ rows, week }) =>
+    [...rows].flatMap(([label, row]) =>
+      rowLines(row)
+        .filter((line) => line.includes(RFC_ANY) && INSTRUCTOR_RE.test(line))
+        .map((line) => ({
+          href: linkedLine(line).find((part) => part.href)?.href,
+          label,
+          week,
+        }))
+    )
   )
-)?.week;
+  .at(0);
 
 interface Feed {
   day?: string;
@@ -285,14 +297,14 @@ const feeds: Feed[] = [
     detail: "Its topic: one of your hard-to-reverse decisions",
     from: 2,
     href: rfcDraft,
-    week: weekOf("Due", RFC, "draft"),
+    week: weekOf("Due", `${RFC_PAGE} draft`),
     what: "RFC draft",
   },
   {
     day: "Sunday",
     detail: "You review two drafts; two students review yours",
     href: rfcPeerReview,
-    week: weekOf("Due", RFC, "peer review"),
+    week: weekOf("Due", `${RFC_PAGE} peer review`),
     what: "RFC peer review",
   },
   {
@@ -303,11 +315,13 @@ const feeds: Feed[] = [
     week: weekOf("Due", "#repo-checkpoint-1"),
     what: "Repo Checkpoint 1",
   },
-  ...(commentsWeek
+  ...(comments
     ? [
         {
+          day: comments.label === "Due" ? "Sunday" : undefined,
           detail: "Two or three, on its reasoning",
-          week: commentsWeek,
+          href: comments.href ? handbook(comments.href) : undefined,
+          week: comments.week,
           what: "Instructor comments on your RFC draft",
         },
       ]
@@ -321,12 +335,12 @@ const feeds: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: commentsWeek
+    detail: comments
       ? "Revised, with a log row for every peer and instructor comment"
       : "Revised, with a log row for every point your reviews raised",
     from: 2,
     href: rfcFinal,
-    week: weekOf("Due", RFC, "final"),
+    week: weekOf("Due", `${RFC_PAGE} final`),
     what: "RFC final",
   },
   {
