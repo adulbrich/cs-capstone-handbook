@@ -22,7 +22,6 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 // sits on the slide that uses it. Served at /decks/fall-week-3/.
 import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
-import { linkedLine } from "../lib/deck-text.mjs";
 import { termWeeks } from "../lib/schedule-lines.mjs";
 
 export const title =
@@ -252,26 +251,10 @@ function weekOf(label: string, ...needles: string[]) {
   }
   return found.week;
 }
-// The RFC's own schedule lines link the page itself; a line linking a
-// section of it, such as the instructor comments, is another entry.
+// The RFC's own schedule lines link the page itself, followed by their
+// word; the instructor comments link their section of it.
 const RFC_PAGE = "(/assignments/rfc/)";
-const RFC_ANY = "(/assignments/rfc/";
-const INSTRUCTOR_RE = /instruct/i;
-// Instructor comments on the RFC draft (#520) join the timeline once the
-// schedule names them.
-const comments = fall
-  .flatMap(({ rows, week }) =>
-    [...rows].flatMap(([label, row]) =>
-      rowLines(row)
-        .filter((line) => line.includes(RFC_ANY) && INSTRUCTOR_RE.test(line))
-        .map((line) => ({
-          href: linkedLine(line).find((part) => part.href)?.href,
-          label,
-          week,
-        }))
-    )
-  )
-  .at(0);
+const RFC_COMMENTS = "/assignments/rfc/#instructor-comments";
 
 interface Feed {
   day?: string;
@@ -315,17 +298,13 @@ const feeds: Feed[] = [
     week: weekOf("Due", "#repo-checkpoint-1"),
     what: "Repo Checkpoint 1",
   },
-  ...(comments
-    ? [
-        {
-          day: comments.label === "Due" ? "Sunday" : undefined,
-          detail: "Two or three, on its reasoning",
-          href: comments.href ? handbook(comments.href) : undefined,
-          week: comments.week,
-          what: "Instructor comments on your RFC draft",
-        },
-      ]
-    : []),
+  {
+    day: "Sunday",
+    detail: "Each one becomes a row in your revision log",
+    href: handbook(RFC_COMMENTS),
+    week: weekOf("Due", `(${RFC_COMMENTS})`),
+    what: "Instructor comments on your RFC draft",
+  },
   {
     day: "in class",
     detail: "Another team reviews your design",
@@ -335,9 +314,7 @@ const feeds: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: comments
-      ? "Revised, with a log row for every peer and instructor comment"
-      : "Revised, with a log row for every point your reviews raised",
+    detail: "Revised, with a log row for every peer and instructor comment",
     from: 2,
     href: rfcFinal,
     week: weekOf("Due", `${RFC_PAGE} final`),
