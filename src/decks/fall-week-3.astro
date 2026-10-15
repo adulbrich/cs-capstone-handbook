@@ -203,6 +203,73 @@ const ciGuide = handbook("/guides/devops/#continuous-integration-ci");
 const docsGuide = handbook("/guides/documentation/#repository-documentation");
 const rfc = handbook("/assignments/rfc/");
 const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
+const checkpoint2 = handbook(
+  "/assignments/repo-checkpoints/#repo-checkpoint-2"
+);
+const rfcDraft = handbook("/assignments/rfc/#rfc-draft--peer-review");
+const rfcFinal = handbook("/assignments/rfc/#rfc-final-draft");
+const workshop4 = handbook(
+  "/assignments/workshop-activities/#workshop-4-peer-technical-design-review"
+);
+
+// What today's two outputs feed through fall week 10, from the RFC and Repo
+// Checkpoints pages and the schedule. The instructor comments on the draft
+// are #520's decision (an instructor of record, by Sunday of week 6), which
+// the RFC page and the schedule will carry once it lands. `from` marks the
+// workshop whose output the entry uses.
+const feeds = [
+  {
+    detail: "Today's sorted list and named gap",
+    today: true,
+    what: "Workshops 2 and 3",
+    when: "Week 3, Sunday",
+  },
+  {
+    detail: "Its topic: one of your hard-to-reverse decisions",
+    from: 2,
+    href: rfcDraft,
+    what: "RFC draft",
+    when: "Week 4, Sunday",
+  },
+  {
+    detail: "You review two drafts; two students review yours",
+    href: rfcDraft,
+    what: "RFC peer review",
+    when: "Week 5, Sunday",
+  },
+  {
+    detail: "Build health and safety net: start from today's gap",
+    from: 3,
+    href: checkpoint,
+    what: "Repo Checkpoint 1",
+    when: "Week 5, Sunday",
+  },
+  {
+    detail: "Two or three, on its reasoning",
+    what: "Instructor comments on your RFC draft",
+    when: "Week 6, Sunday",
+  },
+  {
+    detail: "Another team reviews your design",
+    href: workshop4,
+    what: "Workshop 4: Peer Technical Design Review",
+    when: "Week 7, in class",
+  },
+  {
+    detail: "Revised, with a log row for every peer and instructor comment",
+    from: 2,
+    href: rfcFinal,
+    what: "RFC final",
+    when: "Week 8, Sunday",
+  },
+  {
+    detail: "Build health and safety net, judged again",
+    from: 3,
+    href: checkpoint2,
+    what: "Repo Checkpoint 2",
+    when: "Week 10, Sunday",
+  },
+];
 ---
 
 <TitleSlide
@@ -216,20 +283,30 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
   <div slot="left">
     <h3>Workshop 2: a sorted list</h3>
     <ul class="reveal-list">{outcomeDecisions.map((line) => <li>{line}</li>)}</ul>
-    <p class="caption">
-      One of the hard ones is usually your RFC topic. The draft is due Sunday
-      of week 4.
-    </p>
   </div>
   <div slot="right">
     <h3>Workshop 3: one named gap</h3>
     <ul class="reveal-list">{outcomeSafetyNet.map((line) => <li>{line}</li>)}</ul>
-    <p class="caption">
-      Repo Checkpoint 1, due Sunday of week 5, judges whether your checks catch
-      what your way of working lets through.
-    </p>
   </div>
 </TwoColumnSlide>
+
+<Slide kicker="What today feeds" title="Your list and your gap, through week 10" wide>
+  <div class="timeline" role="list">
+    {
+      feeds.map((entry) => (
+        <div class:list={["entry", { today: entry.today }]} role="listitem">
+          <span class="when">{entry.when}</span>
+          <span class="dot" aria-hidden="true" />
+          <span class="what">
+            {entry.href ? <a href={entry.href}>{entry.what}</a> : entry.what}
+            <span class="detail">{entry.detail}</span>
+          </span>
+          {entry.from && <span class:list={["from", `from-${entry.from}`]}>Uses Workshop {entry.from}</span>}
+        </div>
+      ))
+    }
+  </div>
+</Slide>
 
 <Slide kicker="Workshops 2 and 3" title="Two submissions, each graded complete or incomplete">
   <ul>
@@ -1033,5 +1110,88 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
     color: var(--deck-ink-soft);
     background: var(--deck-card);
     border-color: var(--deck-rule);
+  }
+  /* What today feeds: a week column, a line of dots, the entry, and the
+     workshop whose output it uses. */
+  .timeline {
+    display: grid;
+    font-size: var(--deck-text-min);
+    line-height: 1.2;
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 250px 56px minmax(0, 1fr) auto;
+    gap: 0 24px;
+    align-items: center;
+    padding-block: 18px;
+  }
+
+  .entry::before {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 300px;
+    width: 4px;
+    content: "";
+    background: var(--deck-rule);
+  }
+
+  .entry:first-child::before {
+    inset-block-start: 50%;
+  }
+
+  .entry:last-child::before {
+    inset-block-end: 50%;
+  }
+
+  .when {
+    font-weight: 650;
+    color: var(--deck-ink-soft);
+  }
+
+  .dot {
+    z-index: 1;
+    justify-self: center;
+    width: 24px;
+    height: 24px;
+    background: var(--deck-paper);
+    border: 4px solid var(--deck-ink-soft);
+    border-radius: 999px;
+  }
+
+  .today .dot {
+    background: var(--deck-accent);
+    border-color: var(--deck-accent-ink);
+  }
+
+  .what {
+    font-weight: 650;
+  }
+
+  .detail {
+    margin-inline-start: 16px;
+    font-weight: 400;
+    color: var(--deck-ink-soft);
+  }
+
+  .from {
+    padding: 0 14px;
+    white-space: nowrap;
+    font-weight: 700;
+    border: 2px solid;
+    border-radius: 999px;
+  }
+
+  .from-2 {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .from-3 {
+    color: var(--deck-backbone-ink);
+    background: var(--deck-backbone);
+    border-color: var(--deck-backbone-edge);
   }
 </style>
