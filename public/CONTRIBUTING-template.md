@@ -1,63 +1,31 @@
 # Contributing Guide
 
-How to set up, code, test, review, and release so contributions meet our Definition of Done.
+How to make a change to this repository that meets our Definition of Done.
 
-## Code of Conduct
+## Development Setup
 
-Reference the project/community behavior expectations and reporting process.
+What a contributor needs beyond the README's quickstart: development dependencies, environment variables and how to get their values without committing them, and local services. Link the README for the rest.
 
-## Getting Started
+## Local Checks
 
-List prerequisites, setup steps, environment variables/secrets handling, and how to run the app locally.
+The exact commands that run the tests, the linter, and the formatter, the same ones CI runs. A command that does not exist yet names the hook, CI job, or test suite that will add it.
 
-## Branching & Workflow
+## Branches and Commits
 
-Describe the workflow (e.g., trunk-based or GitFlow), default branch, branch naming, and when to rebase vs. merge.
+The default branch, the branch naming rule, and the commit message convention, with one example of each.
 
-## Issues & Planning
+## Pull Requests and Review
 
-Explain how to file issues, required templates/labels, estimation, and triage/assignment practices.
-
-## Commit Messages
-
-State the convention (e.g., Conventional Commits), include examples, and how to reference issues.
-
-## Code Style, Linting & Formatting
-
-Name the formatter/linter, config file locations, and the exact commands to check/fix locally.
-
-## Testing
-
-Define required test types, how to run tests, expected coverage thresholds, and when new/updated tests are mandatory.
+What a pull request includes, who reviews it, how many approvals it needs, how soon a review is expected, and how it merges.
 
 ## Definition of Done
 
-List the checks a change must pass before it merges (tests, review, docs updated, lint and security checks), each with the CI job, hook, or test that enforces it. For a gate not built yet, name the sprint it lands in and its owner.
+The checks a change must pass before it merges (tests, review, docs updated, lint and security checks), each with the CI job, hook, or test that enforces it. For a gate not built yet, name the sprint it lands in and its owner.
 
-## Contribution Norm
+## Where Other Work Lives
 
-State the floor (every contributor lands at least one piece of accepted work per sprint), where each kind of work lives (the repository, the issue tracker, the partner's system), and what accepted means for each.
+For each kind of work that does not land as a pull request (an issue, a design document, a ticket in the partner's system), where it lives and who accepts it there. If all work lands as pull requests, say so in one line.
 
-## Pull Requests & Reviews
+## Getting Help
 
-Outline PR requirements (template, checklist, size limits), reviewer expectations, approval rules, and required status checks.
-
-## CI/CD
-
-Link to pipeline definitions, list mandatory jobs, how to view logs/re-run jobs, and what must pass before merge/release.
-
-## Security & Secrets
-
-State how to report vulnerabilities, prohibited patterns (hard-coded secrets), dependency update policy, and scanning tools.
-
-## Documentation Expectations
-
-Specify what must be updated (README, docs/, API refs, CHANGELOG) and docstring/comment standards.
-
-## Release Process
-
-Describe versioning scheme, tagging, changelog generation, packaging/publishing steps, and rollback process.
-
-## Support & Contact
-
-Provide maintainer contact channel, expected response windows, and where to ask questions.
+Where to ask, and how soon to expect an answer.

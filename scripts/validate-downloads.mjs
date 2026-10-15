@@ -24,7 +24,9 @@ const DOCS_DIR = "src/content/docs";
 
 // Build assets and site chrome, not student-facing downloads. Anything added
 // here is asserting "no page should link this", so keep the list short.
-const NOT_A_DOWNLOAD = new Set(["favicon.svg"]);
+// CONTRIBUTING-template.md is served only so links in bodies pasted before
+// #507 still resolve; the Team Charter page lists the sections instead.
+const NOT_A_DOWNLOAD = new Set(["favicon.svg", "CONTRIBUTING-template.md"]);
 
 const corpus = [...walk(DOCS_DIR, PAGE_EXTENSIONS)]
   .map((f) => readFileSync(f, "utf8"))
