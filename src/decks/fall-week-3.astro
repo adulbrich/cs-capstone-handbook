@@ -31,8 +31,8 @@ const outcomeDecisions = [
   "Few hard ones: if eight of ten are hard, sort again",
 ];
 const outcomeSafetyNet = [
-  "Roughly how much of your code AI tools write, stated plainly",
-  "Your checks, listed: tests, CI, review, staging, rollback",
+  "How a change reaches main: who writes it, and who reads it first",
+  "Your checks, in place or planned: tests, CI, review, staging, rollback",
   "One specific gap, named in a sentence",
   "The smallest change that closes it",
 ];
@@ -489,16 +489,16 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
   Audit Your Safety Net
 </StatementSlide>
 
-<TwoColumnSlide kicker="Workshop 3: your safety net" title="Your risk is the gap between what you hand off and what your checks catch" divider wide>
+<TwoColumnSlide kicker="Workshop 3: your safety net" title="Your risk is what can reach main with nothing to stop it" divider wide>
   <div slot="left">
-    <h3>What you hand off</h3>
+    <h3>How a change reaches main</h3>
     <ul class="reveal-list">
-      <li>Roughly how much of your code AI tools write</li>
-      <li>Stated plainly: "most of it" is an answer</li>
+      <li>Who writes it: a teammate, an AI tool, or both</li>
+      <li>Who reads it before it merges, if anyone</li>
     </ul>
   </div>
   <div slot="right">
-    <h3>What would catch a bad change</h3>
+    <h3>What would stop a bad change</h3>
     <ul class="reveal-list">
       <li class="fragment">Tests on the paths that matter, that fail if they break</li>
       <li class="fragment">CI on every pull request, and green</li>
@@ -508,12 +508,17 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
     </ul>
   </div>
   <p class="caption">
-    The more you hand off, the more your checks have to catch.
+    A rushed change from a teammate and an unread one from an AI tool slip
+    through the same gaps. The more that merges unread, the more your checks
+    have to catch.
   </p>
 </TwoColumnSlide>
 
 <Slide kicker="Workshop 3: the lunch app, audited" title="The lunch app, a few weeks in, check by check" wide>
-  <p class="lead">An AI agent writes most of its code.</p>
+  <p class="lead">
+    Four teammates, each merging their own pull requests, mostly unread by the
+    others.
+  </p>
   <SafetyNet checks={lunchChecks} stepped />
 </Slide>
 
@@ -592,8 +597,8 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
 
 <Slide kicker="Workshop 3 reference: a safety net mostly right" title="eecs-capstone: most of its checks would catch a bad change" wide>
   <p class="lead">
-    881 of its 1,033 commits name Claude as a co-author, so the checks carry
-    the weight.
+    One maintainer, no second reviewer, and 881 of 1,033 commits co-written
+    with Claude: the checks do the reviewing.
   </p>
   <SafetyNet checks={eecsChecks} />
   <p class="caption caption-tight">
@@ -628,11 +633,11 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
 <Slide kicker="Workshop 3: work time" title="Start here, as a team">
   <ol class="steps" style="--steps: 5;">
     <li>
-      <p>Say roughly how much of your code AI tools write</p>
-      <span class="art art-count" aria-hidden="true">most</span>
+      <p>Say how a change reaches main: who writes it, who reads it first</p>
+      <span class="art art-who" aria-hidden="true">Who?</span>
     </li>
     <li>
-      <p>List your checks: tests, CI, review, staging, rollback</p>
+      <p>List your checks, or the ones you'll have when the first change lands</p>
       <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
     </li>
     <li>
@@ -649,7 +654,10 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
     </li>
   </ol>
   <p class="caption">
-    The activity: <a href={activitySafetyNet}>Audit Your Safety Net</a>
+    No code yet? Audit the checks you'll have when the first change lands, and
+    set them up now: like ephira's first migrations, they're free before
+    anything depends on them. The activity:
+    <a href={activitySafetyNet}>Audit Your Safety Net</a>
   </p>
 </Slide>
 
