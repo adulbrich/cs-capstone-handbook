@@ -436,35 +436,52 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
   </p>
 </Slide>
 
-<Slide kicker="Workshop 2: check your list" title="Check your list: choices with options, and few hard ones" wide>
-  <div class="checks">
-    <div>
-      <p class="verdict verdict-yes">Like this</p>
-      <DecisionList
-        decisions={[
-          { hard: true, text: "Where order history is stored" },
-          { text: "Sort the menu by cafe or by dish" },
-          { text: "Show prices with or without tax" },
-          { text: "Email a receipt, or not" },
-        ]}
-      />
-    </div>
-    <div>
-      <p class="verdict verdict-no">Not like this</p>
-      <DecisionList
-        decisions={[
-          { hard: true, text: "Build the menu page" },
-          { hard: true, text: "Set up the database" },
-          { hard: true, text: "Make it fast" },
-          { hard: true, text: "Fix the login bug" },
-        ]}
-      />
-    </div>
-  </div>
+<Slide kicker="Workshop 2: check your list" title="Check your list for four mistakes" wide>
+  <table class="mistakes">
+    <thead>
+      <tr>
+        <th scope="col" class="mistake-col">Mistake</th>
+        <th scope="col">Instead of</th>
+        <th scope="col">Write</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">A task, not a decision</th>
+        <td class="instead">Set up the database</td>
+        <td>Backend: Supabase, or Postgres plus Better Auth</td>
+      </tr>
+      <tr>
+        <th scope="row">Marked by importance</th>
+        <td class="instead">
+          Menu layout <span class="chip chip-hard">Hard</span> because every
+          student sees it
+        </td>
+        <td>
+          Menu layout <span class="chip chip-easy">Easy</span> because you can
+          change it any week
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">A default nobody chose</th>
+        <td class="instead missing">Missing from the list</td>
+        <td>
+          What happens to past orders when a dish is deleted
+          <span class="chip chip-hard">Hard</span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Already decided for you</th>
+        <td class="instead">
+          Hosting: Vercel or a server, when the partner requires OSU servers
+        </td>
+        <td>Leave it off; sort the choices left inside that limit</td>
+      </tr>
+    </tbody>
+  </table>
   <p class="caption">
-    A decision has at least two options you could pick. "Build the menu page"
-    is a task; "sort the menu by cafe or by dish" is a decision. Partner already
-    decided the stack? Sort the decisions left inside it.
+    Eight of ten hard? Ask what undoing each one would take. A week of rework
+    is easy; a migration, a contract, or users' data is hard.
   </p>
 </Slide>
 
@@ -946,5 +963,67 @@ const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
 
   .says li + li {
     margin-block-start: 16px;
+  }
+  /* The four mistakes: each as a team writes it, then as it should read. */
+  .mistakes {
+    width: 100%;
+    font-size: 36px;
+    line-height: 1.25;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .mistake-col {
+    width: 26%;
+  }
+
+  .mistakes thead th {
+    padding: 0 32px 10px 0;
+    font-size: var(--deck-text-min);
+    font-weight: 750;
+    color: var(--deck-ink-soft);
+    text-align: start;
+  }
+
+  .mistakes tbody th,
+  .mistakes td {
+    padding: 20px 32px 20px 0;
+    vertical-align: top;
+    text-align: start;
+    border-block-start: 2px solid var(--deck-rule);
+  }
+
+  .mistakes tbody th {
+    font-weight: 700;
+  }
+
+  .instead {
+    color: var(--deck-ink-soft);
+  }
+
+  .missing {
+    font-style: italic;
+  }
+
+  .chip {
+    display: inline-block;
+    padding: 0 14px;
+    margin-inline: 6px;
+    font-size: var(--deck-text-min);
+    font-weight: 700;
+    border: 2px solid;
+    border-radius: 999px;
+  }
+
+  .chip-hard {
+    color: var(--deck-accent-ink);
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .chip-easy {
+    color: var(--deck-ink-soft);
+    background: var(--deck-card);
+    border-color: var(--deck-rule);
   }
 </style>
