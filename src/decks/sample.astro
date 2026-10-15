@@ -9,6 +9,7 @@ import DecisionList from "../components/deck/DecisionList.astro";
 import FrameSlide from "../components/deck/FrameSlide.astro";
 import GradeGrid from "../components/deck/GradeGrid.astro";
 import ImageSlide from "../components/deck/ImageSlide.astro";
+import LinkedText from "../components/deck/LinkedText.astro";
 import PeopleSlide from "../components/deck/PeopleSlide.astro";
 import QrSlide from "../components/deck/QrSlide.astro";
 import SafetyNet from "../components/deck/SafetyNet.astro";
@@ -188,6 +189,16 @@ const handbook = new URL("/", Astro.site).href;
     ]}
     stepped
   />
+</Slide>
+
+<Slide kicker="Linked text" title="A handbook line on a slide, its links shown by name">
+  <p>
+    <LinkedText md="read the [Testing Strategy](/guides/testing-strategy/) guide before the [Test Plan](/activities/testing-release-and-handoff/#test-plan) workshop" />
+  </p>
+  <p class="deck-small">
+    The line is Markdown, as the schedule writes it: the bold goes, the first
+    letter is capitalized, and each link shows its page's name.
+  </p>
 </Slide>
 
 <PeopleSlide

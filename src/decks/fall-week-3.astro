@@ -1,11 +1,4 @@
 ---
-import DecisionList from "../components/deck/DecisionList.astro";
-import LinkedText from "../components/deck/LinkedText.astro";
-import SafetyNet from "../components/deck/SafetyNet.astro";
-import Slide from "../components/deck/Slide.astro";
-import StatementSlide from "../components/deck/StatementSlide.astro";
-import TitleSlide from "../components/deck/TitleSlide.astro";
-import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 // Fall week 3: Workshop 2, Map Your Hard-to-Reverse Decisions, and Workshop
 // 3, Audit Your Safety Net, in one session and one deck, each in the week 2
 // deck's shape. A shared opening (the two outcomes, scoring and reading,
@@ -17,12 +10,22 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 // never ran; eecs-capstone, mostly right) and its work time; then one wrap
 // for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
 // weeks on the timeline, the Read line, and the week's other Due items come
-// from the schedule, as <TermSessions> reads it.
+// from the schedule, as <TermSessions> reads it, and the two workshop
+// submissions from the workshop page.
 // Every slide explains itself to someone who missed the talk. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-3/.
+import DecisionList from "../components/deck/DecisionList.astro";
+import LinkedText from "../components/deck/LinkedText.astro";
+import SafetyNet from "../components/deck/SafetyNet.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
 import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
-import { termWeeks } from "../lib/schedule-lines.mjs";
+import { linkHrefs, plainText } from "../lib/deck-text.mjs";
+import { termWeeks, weekWhere } from "../lib/schedule-lines.mjs";
 
 export const title =
   "Fall Week 3: Hard-to-Reverse Decisions and Your Safety Net";
@@ -47,7 +50,8 @@ const outcomeSafetyNet = [
 const ephira = "https://github.com/adulbrich/ephira";
 const lumiLab = "https://github.com/radiantlab/LumiLab";
 const taxon = "https://github.com/TaxonBodyMassML/TaxonBodyMassML";
-const eecsCapstone = "https://github.com/adulbrich/eecs-capstone";
+// eecs-capstone at the commit its figures were read from.
+const eecsCapstone = "https://github.com/adulbrich/eecs-capstone/tree/a86e08c";
 // The source of the distinction, as the RFC page cites it.
 const bezos =
   "https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF";
@@ -162,13 +166,14 @@ const lunchChecks = [
 ] as const;
 
 // eecs-capstone as its repository (commit a86e08c) and its main ruleset
-// show it: test files counted with git ls-files, smoke suites as the
-// @smoke-tagged files the smoke job runs.
+// show it: unit test files are what `npm test` runs, integration files what
+// `test:integration` runs, and smoke suites the @smoke describes that
+// `test:smoke` runs against the production build.
 const eecsChecks = [
   {
     catches: "yes",
     check: "Tests on the paths that matter",
-    have: "227 unit test files, 51 integration files on a real database, 13 smoke suites on the production build",
+    have: "224 unit test files, 51 integration files on a real database, 10 smoke suites on the production build",
   },
   {
     catches: "yes",
@@ -203,71 +208,51 @@ const activitySafetyNet = handbook(
 const designTruths = handbook(
   "/guides/technical-design/#some-truths-about-technical-design"
 );
-const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
-const checkpoint2 = handbook(
-  "/assignments/repo-checkpoints/#repo-checkpoint-2"
-);
-const rfcDraft = handbook("/assignments/rfc/#rfc-draft--peer-review");
-const rfcPeerReview = handbook("/assignments/rfc/#the-peer-review");
-const rfcFinal = handbook("/assignments/rfc/#rfc-final-draft");
-const workshop4 = handbook(
-  "/assignments/workshop-activities/#workshop-4-peer-technical-design-review"
-);
-
 // The fall schedule, read as <TermSessions> reads it: this deck's week, its
-// Read line, its other Due items, and every week on the timeline. Nothing
-// below retypes a week from the schedule.
+// Read line, its other Due items, and every week on the timeline. A line is
+// found by where its links point, so rewording it doesn't lose it, and the
+// build fails when the schedule drops one rather than the deck going stale.
 const WEEK = 3;
 const fall = termWeeks(schedule, "fall");
 const thisWeek = fall.find(({ week }) => week === WEEK)?.rows;
-if (!thisWeek) {
-  throw new Error(`fall-week-3: no week ${WEEK} on the fall schedule.`);
+const readLine = thisWeek?.get("Read")?.text;
+if (!(thisWeek && readLine)) {
+  throw new Error(
+    `fall-week-3: week ${WEEK} on the fall schedule has no Read line.`
+  );
 }
-const readLine = thisWeek.get("Read")?.text ?? "";
+const WORKSHOPS_PAGE = "/assignments/workshop-activities/";
 // Due this week besides the two workshop submissions the due slide spells out.
 const alsoDue = (thisWeek.get("Due")?.items ?? []).filter(
-  (item) => !item.includes("(/assignments/workshop-activities/)")
+  (item) => !linkHrefs(item).some((href) => href.startsWith(WORKSHOPS_PAGE))
 );
 
-interface Row {
-  items: string[];
-  text: string;
-}
-// A row's own text and its items, as written.
-const rowLines = (row?: Row) =>
-  row ? [row.text, ...row.items].filter(Boolean) : [];
-// The fall week whose `label` line holds every needle. The build fails when
-// the schedule drops one, rather than the timeline going stale.
-function weekOf(label: string, ...needles: string[]) {
-  const found = fall.find(({ rows }) =>
-    rowLines(rows.get(label)).some((line) =>
-      needles.every((needle) => line.includes(needle))
-    )
-  );
-  if (!found) {
+const RFC_PAGE = "/assignments/rfc/";
+// A schedule line that links `href` and, when given, says `word`.
+const links = (href: string, word?: string) => (line: string) =>
+  linkHrefs(line).includes(href) && (!word || plainText(line).includes(word));
+function weekOf(label: string, test: (line: string) => boolean, what: string) {
+  const week = weekWhere(fall, label, test);
+  if (week === undefined) {
     throw new Error(
-      `fall-week-3: no ${label} line on the fall schedule holds ${needles.join(" and ")}.`
+      `fall-week-3: no ${label} line on the fall schedule for ${what}.`
     );
   }
-  return found.week;
+  return week;
 }
-// The RFC's own schedule lines link the page itself, followed by their
-// word; the instructor comments link their section of it.
-const RFC_PAGE = "(/assignments/rfc/)";
-const RFC_COMMENTS = "/assignments/rfc/#instructor-comments";
 
 interface Feed {
-  day?: string;
+  day: string;
   detail: string;
-  from?: number;
+  from?: 2 | 3;
   href?: string;
   today?: boolean;
   week: number;
   what: string;
 }
-// What today's two outputs feed, in schedule order. `from` marks the
-// workshop whose output the entry uses.
-const feeds: Feed[] = [
+// What today's two outputs feed. `from` marks the workshop whose output the
+// entry uses.
+const feedList: Feed[] = [
   {
     day: "Sunday",
     detail: "Today's sorted list and named gap",
@@ -279,57 +264,86 @@ const feeds: Feed[] = [
     day: "Sunday",
     detail: "Its topic: one of your hard-to-reverse decisions",
     from: 2,
-    href: rfcDraft,
-    week: weekOf("Due", `${RFC_PAGE} draft`),
+    href: handbook(`${RFC_PAGE}#rfc-draft--peer-review`),
+    week: weekOf("Due", links(RFC_PAGE, "draft"), "the RFC draft"),
     what: "RFC draft",
   },
   {
     day: "Sunday",
     detail: "You review two drafts; two students review yours",
-    href: rfcPeerReview,
-    week: weekOf("Due", `${RFC_PAGE} peer review`),
+    href: handbook(`${RFC_PAGE}#the-peer-review`),
+    week: weekOf("Due", links(RFC_PAGE, "peer review"), "the RFC peer review"),
     what: "RFC peer review",
   },
   {
     day: "Sunday",
     detail: "Build health and safety net: start from today's gap",
     from: 3,
-    href: checkpoint,
-    week: weekOf("Due", "#repo-checkpoint-1"),
+    href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-1"),
+    week: weekOf(
+      "Due",
+      links("/assignments/repo-checkpoints/#repo-checkpoint-1"),
+      "Repo Checkpoint 1"
+    ),
     what: "Repo Checkpoint 1",
   },
   {
     day: "Sunday",
     detail: "Each one becomes a row in your revision log",
-    href: handbook(RFC_COMMENTS),
-    week: weekOf("Due", `(${RFC_COMMENTS})`),
+    href: handbook(`${RFC_PAGE}#instructor-comments`),
+    week: weekOf(
+      "Due",
+      links(`${RFC_PAGE}#instructor-comments`),
+      "the instructor comments"
+    ),
     what: "Instructor comments on your RFC draft",
-  },
-  {
-    day: "in class",
-    detail: "Another team reviews your design",
-    href: workshop4,
-    week: weekOf("In class", "#peer-technical-design-review"),
-    what: "Workshop 4: Peer Technical Design Review",
   },
   {
     day: "Sunday",
     detail: "Revised, with a log row for every peer and instructor comment",
     from: 2,
-    href: rfcFinal,
-    week: weekOf("Due", `${RFC_PAGE} final`),
+    href: handbook(`${RFC_PAGE}#rfc-final-draft`),
+    week: weekOf("Due", links(RFC_PAGE, "final"), "the RFC final"),
     what: "RFC final",
   },
   {
     day: "Sunday",
     detail: "Build health and safety net, judged again",
     from: 3,
-    href: checkpoint2,
-    week: weekOf("Due", "#repo-checkpoint-2"),
+    href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-2"),
+    week: weekOf(
+      "Due",
+      links("/assignments/repo-checkpoints/#repo-checkpoint-2"),
+      "Repo Checkpoint 2"
+    ),
     what: "Repo Checkpoint 2",
   },
-].sort((a, b) => a.week - b.week);
+];
+// In schedule order.
+const feeds = [...feedList].sort((a, b) => a.week - b.week);
 const lastWeek = feeds.at(-1)?.week;
+
+// The two complete-submission lines, as the workshop page states them under
+// its fall workshops.
+const fallWorkshops = workshops.slice(
+  workshops.indexOf("\n## Fall"),
+  workshops.indexOf("\n## Winter")
+);
+const SUBMISSION = "- **A complete submission:** ";
+function completeSubmission(workshop: number) {
+  const line = fallWorkshops
+    .split(`\n### Workshop ${workshop}:`)[1]
+    ?.split("\n")
+    .find((text) => text.startsWith(SUBMISSION));
+  if (!line) {
+    throw new Error(
+      `fall-week-3: the workshop page gives fall Workshop ${workshop} no complete submission.`
+    );
+  }
+  return plainText(line.slice(SUBMISSION.length));
+}
+const submissionDecisions = completeSubmission(2);
+const submissionSafetyNet = completeSubmission(3);
 ---
 
 <TitleSlide
@@ -357,7 +371,7 @@ const lastWeek = feeds.at(-1)?.week;
         <div class:list={["entry", { today: entry.today }]} role="listitem">
           <span class="when">
             Week {entry.week}
-            {entry.day && `, ${entry.day}`}
+            , {entry.day}
           </span>
           <span class="dot" aria-hidden="true" />
           <span class="what">
@@ -741,7 +755,7 @@ const lastWeek = feeds.at(-1)?.week;
   </p>
   <SafetyNet checks={eecsChecks} />
   <p class="caption caption-tight">
-    Repository: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
+    Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>
 
@@ -765,7 +779,7 @@ const lastWeek = feeds.at(-1)?.week;
   </div>
   <p class="caption">
     The drop then ships a release after the code stops reading the column.
-    Repository: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
+    Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>
 
@@ -819,14 +833,8 @@ const lastWeek = feeds.at(-1)?.week;
 
 <Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
   <ul class="due">
-    <li>
-      Workshop 2, one PDF: the list of upcoming decisions with the few
-      hard-to-reverse ones marked
-    </li>
-    <li>
-      Workshop 3, one PDF: one specific named gap in your checks and the
-      smallest change that closes it
-    </li>
+    <li>Workshop 2, one PDF: {submissionDecisions}</li>
+    <li>Workshop 3, one PDF: {submissionSafetyNet}</li>
     {
       alsoDue.map((item) => (
         <li>

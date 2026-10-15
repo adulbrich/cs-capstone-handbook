@@ -1,8 +1,10 @@
-// Handbook Markdown made into slide text, for the deck components that
-// render a page's own words, without the bold marks: GradeGrid.astro shows a
-// link's text only, and LinkedText.astro (which TermSessions.astro uses)
-// keeps the links, since the slides are shared with the class, and shows
-// each by its name rather than its URL.
+// Handbook Markdown made into slide text, for the decks and deck components
+// that render a page's own words, without the bold marks: GradeGrid.astro
+// shows a link's text only, and LinkedText.astro (used by TermSessions.astro
+// and by decks directly) keeps the links, since the slides are shared with
+// the class, and shows each by its name rather than its URL. linkHrefs lists
+// a line's link targets, for a deck that finds a schedule line by where it
+// points rather than by its wording.
 const MD_LINK_RE = /\[([^\]]+)\]\(([^)]*)\)/g;
 const BOLD_RE = /\*\*([^*]+)\*\*/g;
 
@@ -39,4 +41,12 @@ export function linkedLine(md) {
     parts[0] = { ...parts[0], text: capitalize(parts[0].text) };
   }
   return parts;
+}
+
+/**
+ * Every link target in a line, as the page wrote it.
+ * @param {string} md
+ */
+export function linkHrefs(md) {
+  return linkedLine(md).flatMap((part) => (part.href ? [part.href] : []));
 }

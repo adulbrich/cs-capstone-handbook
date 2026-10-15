@@ -6,7 +6,7 @@ description: Checking the work, shipping it, and leaving it maintainable for the
 import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 
-These activities check the work, ship it, and leave it maintainable for whoever inherits it. Start with the test plan and the checks that decide how far you can delegate, then plan how the software reaches its users, how versions are released, and what the next maintainer needs to keep it running.
+These activities check the work, ship it, and leave it maintainable for whoever inherits it. Start with the test plan and the checks that stop a bad change, whoever wrote it, then plan how the software reaches its users, how versions are released, and what the next maintainer needs to keep it running.
 
 <LinkCard
   title="Testing Strategy guide"
@@ -36,11 +36,11 @@ A good output is a test plan covering the paths that must work, with their test 
 
 Find the gap between what can reach your main branch and what would stop a bad change there, whoever wrote it: that gap is your team's actual risk. One hour as a team.
 
+- **If you have no code yet**: run the steps below on how changes will reach main and the checks you'll have when the first one lands, then set those checks up now, while nothing depends on them.
 - **Say how a change reaches main**: who writes the code (teammates, AI tools, or both), and who reads it before it merges, if anyone.
 - **Inventory what would stop a bad change**: do tests exist for the paths that matter, and would they fail if the behavior broke? Does CI run on every pull request, and is it green? Are the hard-to-undo paths gated by review, or can anything merge? Is there a staging or preview environment? Can you roll back, and have you ever tried?
 - **Name the gap**: a change that can reach main with nothing on that inventory to stop it, in one sentence.
 - **Close it from the top**: the highest-value check is always the one guarding the decision you can't walk back.
-- **If you have no code yet**: run the same steps on how changes will reach main and the checks you'll have when the first one lands, then set those checks up now, while nothing depends on them.
 
 Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 
