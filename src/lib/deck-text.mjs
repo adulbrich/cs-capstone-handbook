@@ -1,8 +1,8 @@
 // Handbook Markdown made into slide text, for the deck components that
-// render a page's own words (src/components/deck/GradeGrid.astro and
-// TermSessions.astro), without the bold marks. GradeGrid shows a link's
-// text only; TermSessions keeps the links, since the slides are shared with
-// the class, and shows each by its name rather than its URL.
+// render a page's own words, without the bold marks: GradeGrid.astro shows a
+// link's text only, and LinkedText.astro (which TermSessions.astro uses)
+// keeps the links, since the slides are shared with the class, and shows
+// each by its name rather than its URL.
 const MD_LINK_RE = /\[([^\]]+)\]\(([^)]*)\)/g;
 const BOLD_RE = /\*\*([^*]+)\*\*/g;
 
@@ -12,11 +12,6 @@ const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 /** @param {string} md */
 export function plainText(md) {
   return md.replace(MD_LINK_RE, "$1").replace(BOLD_RE, "$1");
-}
-
-/** The same, with its first letter capitalized, for text that opens a line. */
-export function plainLine(md) {
-  return capitalize(plainText(md));
 }
 
 /**

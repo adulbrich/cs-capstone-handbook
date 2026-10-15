@@ -12,8 +12,7 @@
 //
 // With `stepped`, the verdicts appear together on the next arrow press,
 // after the room has read what the team has. The activity names five
-// checks, so a sixth row is the most the component takes; a seventh fails
-// the build.
+// checks, so a sixth row fails the build.
 type Catches = "no" | "partly" | "yes";
 
 interface Check {
@@ -27,7 +26,7 @@ interface Props {
   stepped?: boolean;
 }
 
-const MAX_CHECKS = 6;
+const MAX_CHECKS = 5;
 const LABELS: Record<Catches, string> = {
   no: "No",
   partly: "Partly",

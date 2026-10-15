@@ -38,10 +38,9 @@ Find the gap between what can reach your main branch and what would stop a bad c
 
 - **Say how a change reaches main**: who writes the code (teammates, AI tools, or both), and who reads it before it merges, if anyone.
 - **Inventory what would stop a bad change**: do tests exist for the paths that matter, and would they fail if the behavior broke? Does CI run on every pull request, and is it green? Are the hard-to-undo paths gated by review, or can anything merge? Is there a staging or preview environment? Can you roll back, and have you ever tried?
-- **Name the gap**: the distance between those two lists. The more that merges without anyone else reading it, the more the checks have to catch.
+- **Name the gap**: a change that can reach main with nothing on that inventory to stop it, in one sentence.
 - **Close it from the top**: the highest-value check is always the one guarding the decision you can't walk back.
-
-No code yet? Run the same steps on how changes will reach main and on the checks you'll have when the first one lands, then set those checks up now, while nothing depends on them.
+- **If you have no code yet**: run the same steps on how changes will reach main and the checks you'll have when the first one lands, then set those checks up now, while nothing depends on them.
 
 Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 

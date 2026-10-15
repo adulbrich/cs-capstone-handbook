@@ -1,23 +1,28 @@
 ---
+import DecisionList from "../components/deck/DecisionList.astro";
+import LinkedText from "../components/deck/LinkedText.astro";
+import SafetyNet from "../components/deck/SafetyNet.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 // Fall week 3: Workshop 2, Map Your Hard-to-Reverse Decisions, and Workshop
 // 3, Audit Your Safety Net, in one session and one deck, each in the week 2
 // deck's shape. A shared opening (the two outcomes, scoring and reading,
 // the agenda); Workshop 2's talk (hard and easy to reverse, sorted for the
 // week 2 campus lunch app; ephira, LumiLab, and TaxonBodyMassML as the
 // inherited, pipeline, and research references) and its work time;
-// Workshop 3's talk (the gap between what a team hands off and what its
-// checks catch, audited on the same lunch app; two repositories whose tests
+// Workshop 3's talk (what can reach main with nothing to stop it, whoever
+// wrote it, audited on the same lunch app; two repositories whose tests
 // never ran; eecs-capstone, mostly right) and its work time; then one wrap
-// for both. Workshop 3 starts from the hard decisions Workshop 2 found.
+// for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
+// weeks on the timeline, the Read line, and the week's other Due items come
+// from the schedule, as <TermSessions> reads it.
 // Every slide explains itself to someone who missed the talk. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-3/.
-import DecisionList from "../components/deck/DecisionList.astro";
-import SafetyNet from "../components/deck/SafetyNet.astro";
-import Slide from "../components/deck/Slide.astro";
-import StatementSlide from "../components/deck/StatementSlide.astro";
-import TitleSlide from "../components/deck/TitleSlide.astro";
-import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
+import { termWeeks } from "../lib/schedule-lines.mjs";
 
 export const title =
   "Fall Week 3: Hard-to-Reverse Decisions and Your Safety Net";
@@ -156,12 +161,14 @@ const lunchChecks = [
   },
 ] as const;
 
-// eecs-capstone as its repository and its main ruleset show it.
+// eecs-capstone as its repository (commit a86e08c) and its main ruleset
+// show it: test files counted with git ls-files, smoke suites as the
+// @smoke-tagged files the smoke job runs.
 const eecsChecks = [
   {
     catches: "yes",
     check: "Tests on the paths that matter",
-    have: "227 unit, 51 on a real database, 13 smoke tests on the production build",
+    have: "227 unit test files, 51 integration files on a real database, 13 smoke suites on the production build",
   },
   {
     catches: "yes",
@@ -169,9 +176,9 @@ const eecsChecks = [
     have: "Five checks, required to merge into main",
   },
   {
-    catches: "partly",
+    catches: "no",
     check: "Review on hard-to-undo paths",
-    have: "No required approvals; nothing extra on migrations",
+    have: "No second reviewer; nothing extra on migrations",
   },
   {
     catches: "no",
@@ -185,8 +192,7 @@ const eecsChecks = [
   },
 ] as const;
 
-// Handbook links, each shown by its page's name. The four guides are the
-// week 3 Read line on the schedule.
+// Handbook links, each shown by its page's name.
 const handbook = (path: string) => new URL(path, Astro.site).href;
 const activityDecisions = handbook(
   "/activities/technical-design/#map-your-hard-to-reverse-decisions"
@@ -194,82 +200,145 @@ const activityDecisions = handbook(
 const activitySafetyNet = handbook(
   "/activities/testing-release-and-handoff/#audit-your-safety-net"
 );
-const designGuide = handbook("/guides/technical-design/");
 const designTruths = handbook(
   "/guides/technical-design/#some-truths-about-technical-design"
 );
-const testingGuide = handbook("/guides/testing-strategy/");
-const ciGuide = handbook("/guides/devops/#continuous-integration-ci");
-const docsGuide = handbook("/guides/documentation/#repository-documentation");
-const rfc = handbook("/assignments/rfc/");
 const checkpoint = handbook("/assignments/repo-checkpoints/#repo-checkpoint-1");
 const checkpoint2 = handbook(
   "/assignments/repo-checkpoints/#repo-checkpoint-2"
 );
 const rfcDraft = handbook("/assignments/rfc/#rfc-draft--peer-review");
+const rfcPeerReview = handbook("/assignments/rfc/#the-peer-review");
 const rfcFinal = handbook("/assignments/rfc/#rfc-final-draft");
 const workshop4 = handbook(
   "/assignments/workshop-activities/#workshop-4-peer-technical-design-review"
 );
 
-// What today's two outputs feed through fall week 10, from the RFC and Repo
-// Checkpoints pages and the schedule. The instructor comments on the draft
-// are #520's decision (an instructor of record, by Sunday of week 6), which
-// the RFC page and the schedule will carry once it lands. `from` marks the
+// The fall schedule, read as <TermSessions> reads it: this deck's week, its
+// Read line, its other Due items, and every week on the timeline. Nothing
+// below retypes a week from the schedule.
+const WEEK = 3;
+const fall = termWeeks(schedule, "fall");
+const thisWeek = fall.find(({ week }) => week === WEEK)?.rows;
+if (!thisWeek) {
+  throw new Error(`fall-week-3: no week ${WEEK} on the fall schedule.`);
+}
+const readLine = thisWeek.get("Read")?.text ?? "";
+// Due this week besides the two workshop submissions the due slide spells out.
+const alsoDue = (thisWeek.get("Due")?.items ?? []).filter(
+  (item) => !item.includes("(/assignments/workshop-activities/)")
+);
+
+interface Row {
+  items: string[];
+  text: string;
+}
+// A row's own text and its items, as written.
+const rowLines = (row?: Row) =>
+  row ? [row.text, ...row.items].filter(Boolean) : [];
+// The fall week whose `label` line holds every needle. The build fails when
+// the schedule drops one, rather than the timeline going stale.
+function weekOf(label: string, ...needles: string[]) {
+  const found = fall.find(({ rows }) =>
+    rowLines(rows.get(label)).some((line) =>
+      needles.every((needle) => line.includes(needle))
+    )
+  );
+  if (!found) {
+    throw new Error(
+      `fall-week-3: no ${label} line on the fall schedule holds ${needles.join(" and ")}.`
+    );
+  }
+  return found.week;
+}
+const RFC = "(/assignments/rfc/";
+const INSTRUCTOR_RE = /instruct/i;
+// Instructor comments on the RFC draft (#520) join the timeline once the
+// schedule names them.
+const commentsWeek = fall.find(({ rows }) =>
+  [...rows.values()].some((row) =>
+    rowLines(row).some((line) => line.includes(RFC) && INSTRUCTOR_RE.test(line))
+  )
+)?.week;
+
+interface Feed {
+  day?: string;
+  detail: string;
+  from?: number;
+  href?: string;
+  today?: boolean;
+  week: number;
+  what: string;
+}
+// What today's two outputs feed, in schedule order. `from` marks the
 // workshop whose output the entry uses.
-const feeds = [
+const feeds: Feed[] = [
   {
+    day: "Sunday",
     detail: "Today's sorted list and named gap",
     today: true,
+    week: WEEK,
     what: "Workshops 2 and 3",
-    when: "Week 3, Sunday",
   },
   {
+    day: "Sunday",
     detail: "Its topic: one of your hard-to-reverse decisions",
     from: 2,
     href: rfcDraft,
+    week: weekOf("Due", RFC, "draft"),
     what: "RFC draft",
-    when: "Week 4, Sunday",
   },
   {
+    day: "Sunday",
     detail: "You review two drafts; two students review yours",
-    href: rfcDraft,
+    href: rfcPeerReview,
+    week: weekOf("Due", RFC, "peer review"),
     what: "RFC peer review",
-    when: "Week 5, Sunday",
   },
   {
+    day: "Sunday",
     detail: "Build health and safety net: start from today's gap",
     from: 3,
     href: checkpoint,
+    week: weekOf("Due", "#repo-checkpoint-1"),
     what: "Repo Checkpoint 1",
-    when: "Week 5, Sunday",
   },
+  ...(commentsWeek
+    ? [
+        {
+          detail: "Two or three, on its reasoning",
+          week: commentsWeek,
+          what: "Instructor comments on your RFC draft",
+        },
+      ]
+    : []),
   {
-    detail: "Two or three, on its reasoning",
-    what: "Instructor comments on your RFC draft",
-    when: "Week 6, Sunday",
-  },
-  {
+    day: "in class",
     detail: "Another team reviews your design",
     href: workshop4,
+    week: weekOf("In class", "#peer-technical-design-review"),
     what: "Workshop 4: Peer Technical Design Review",
-    when: "Week 7, in class",
   },
   {
-    detail: "Revised, with a log row for every peer and instructor comment",
+    day: "Sunday",
+    detail: commentsWeek
+      ? "Revised, with a log row for every peer and instructor comment"
+      : "Revised, with a log row for every point your reviews raised",
     from: 2,
     href: rfcFinal,
+    week: weekOf("Due", RFC, "final"),
     what: "RFC final",
-    when: "Week 8, Sunday",
   },
   {
+    day: "Sunday",
     detail: "Build health and safety net, judged again",
     from: 3,
     href: checkpoint2,
+    week: weekOf("Due", "#repo-checkpoint-2"),
     what: "Repo Checkpoint 2",
-    when: "Week 10, Sunday",
   },
-];
+].sort((a, b) => a.week - b.week);
+const lastWeek = feeds.at(-1)?.week;
 ---
 
 <TitleSlide
@@ -290,12 +359,15 @@ const feeds = [
   </div>
 </TwoColumnSlide>
 
-<Slide kicker="What today feeds" title="Your list and your gap, through week 10" wide>
+<Slide kicker="What today feeds" title={`Your list and your gap, through week ${lastWeek}`} wide>
   <div class="timeline" role="list">
     {
       feeds.map((entry) => (
         <div class:list={["entry", { today: entry.today }]} role="listitem">
-          <span class="when">{entry.when}</span>
+          <span class="when">
+            Week {entry.week}
+            {entry.day && `, ${entry.day}`}
+          </span>
           <span class="dot" aria-hidden="true" />
           <span class="what">
             {entry.href ? <a href={entry.href}>{entry.what}</a> : entry.what}
@@ -319,10 +391,7 @@ const feeds = [
   </ul>
   <p class="caption">
     Read for this session:<br />
-    <a href={designGuide}>Technical Design</a><br />
-    <a href={testingGuide}>Testing Strategy</a><br />
-    <a href={ciGuide}>DevOps: Continuous Integration</a><br />
-    <a href={docsGuide}>Documentation: Repository Documentation</a>
+    <LinkedText md={readLine} />
   </p>
 </Slide>
 
@@ -429,7 +498,7 @@ const feeds = [
     <h3>After it</h3>
     <ul class="reveal-list">
       <li class="fragment">Every database change ships as a migration that runs on each user's phone at the next update</li>
-      <li class="fragment">Some phones update late, so each migration must be safe to run twice</li>
+      <li class="fragment">Each migration runs on whatever data that phone holds, which no test database matches</li>
       <li class="fragment">A new store ID is a new app: users and their data stay on the old one</li>
     </ul>
   </div>
@@ -656,14 +725,16 @@ const feeds = [
       <li><strong>Smallest change:</strong> one test step in the workflow</li>
     </ul>
     <p class="caption">
+      Later commits are the maintainer's, and one added the tests to CI.
       Repository: <a href={ephira}>ephira on GitHub</a>
     </p>
   </div>
   <div slot="right">
     <h3>TaxonBodyMassML, a research project</h3>
     <ul class="reveal-list">
-      <li class="fragment">CI ran pytest only if a <code>tests/</code> folder existed</li>
-      <li class="fragment">There wasn't one: every run printed "No tests implemented yet." and passed</li>
+      <li class="fragment">Its test files sat beside the code, in each service's folder</li>
+      <li class="fragment">CI ran pytest only if a <code>tests/</code> folder existed, and there wasn't one</li>
+      <li class="fragment">So its test step printed "No tests implemented yet." and passed</li>
       <li class="fragment"><strong>Smallest change:</strong> point pytest at the test files, and fail when it finds none</li>
     </ul>
     <p class="caption">
@@ -672,7 +743,7 @@ const feeds = [
   </div>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 3 reference: a safety net mostly right" title="eecs-capstone: most of its checks would catch a bad change" wide>
+<Slide kicker="Workshop 3 reference: a safety net mostly right" title="eecs-capstone: strong tests and CI, no review or staging" wide>
   <p class="lead">
     One maintainer, no second reviewer, and 881 of 1,033 commits co-written
     with Claude: the checks do the reviewing.
@@ -755,22 +826,24 @@ const feeds = [
   </div>
 </TwoColumnSlide>
 
-<Slide kicker="Wrap" title="Due by Sunday of week 3: one PDF per workshop">
+<Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
   <ul class="due">
     <li>
-      Workshop 2: the list of upcoming decisions, with the few hard-to-reverse
-      ones marked
+      Workshop 2, one PDF: the list of upcoming decisions with the few
+      hard-to-reverse ones marked
     </li>
     <li>
-      Workshop 3: one specific gap in your checks, and the smallest change that
-      closes it
+      Workshop 3, one PDF: one specific named gap in your checks and the
+      smallest change that closes it
     </li>
+    {
+      alsoDue.map((item) => (
+        <li>
+          <LinkedText md={item} />
+        </li>
+      ))
+    }
   </ul>
-  <p class="deck-small after-list">
-    Next: your <a href={rfc}>RFC</a> draft, due Sunday of week 4, is about one
-    of your hard ones; <a href={checkpoint}>Repo Checkpoint 1</a>, due Sunday
-    of week 5, judges your checks.
-  </p>
 </Slide>
 
 <style>
@@ -819,33 +892,6 @@ const feeds = [
     margin: 0;
     font-size: 36px;
     line-height: 1.25;
-  }
-
-  .history > li {
-    font-size: 40px;
-    line-height: 1.25;
-  }
-
-  .history > li + li {
-    margin-block-start: 28px;
-  }
-
-  .prompt {
-    margin: 0;
-    padding: 36px 44px;
-    font-family: var(--deck-mono);
-    font-size: var(--deck-text-min);
-    line-height: 1.4;
-    white-space: pre-wrap;
-    background: var(--deck-card);
-    border: 3px solid var(--deck-rule);
-    border-radius: 12px;
-  }
-
-  /* The lines only the second run's prompt carried. */
-  .prompt-added {
-    color: var(--deck-accent-ink);
-    background: var(--deck-accent-wash);
   }
 
   /* Numbered steps drawn as tiles, left to right, each with a chevron into

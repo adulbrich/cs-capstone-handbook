@@ -20,8 +20,8 @@
 // links, each shown by its name, since the slides are shared with the
 // class.
 import schedule from "../../content/docs/introduction/schedule.mdx?raw";
-import { linkedLine } from "../../lib/deck-text.mjs";
 import { termWeeks } from "../../lib/schedule-lines.mjs";
+import LinkedText from "./LinkedText.astro";
 
 interface Props {
   from?: number;
@@ -43,9 +43,9 @@ const weeks = termWeeks(schedule, term)
     rows: rows.map((label) => {
       const row = found.get(label);
       return {
-        items: row?.items.map(linkedLine) ?? [],
+        items: row?.items ?? [],
         label,
-        text: row?.text ? linkedLine(row.text) : null,
+        text: row?.text || null,
       };
     }),
     week,
@@ -56,8 +56,6 @@ if (weeks.length === 0) {
   );
 }
 const sessionsOnly = rows.length === 1 && rows[0] === "In class";
-// A schedule link points at a handbook path; the slide links the full URL.
-const href = (path: string) => new URL(path, Astro.site).href;
 ---
 
 {
@@ -67,9 +65,7 @@ const href = (path: string) => new URL(path, Astro.site).href;
         <li class:list={{ none: !session.text }}>
           <span class="week">Week {week}</span>
           <span>
-            {session.text
-              ? session.text.map((part) => (part.href ? <a href={href(part.href)}>{part.text}</a> : part.text))
-              : "No session"}
+            {session.text ? <LinkedText md={session.text} /> : "No session"}
           </span>
         </li>
       ))}
@@ -86,11 +82,17 @@ const href = (path: string) => new URL(path, Astro.site).href;
             row.text || row.items.length > 0 ? (
               <div class="row">
                 <p class="label">{row.label}</p>
-                {row.text && <p>{row.text.map((part) => (part.href ? <a href={href(part.href)}>{part.text}</a> : part.text))}</p>}
+                {row.text && (
+                  <p>
+                    <LinkedText md={row.text} />
+                  </p>
+                )}
                 {row.items.length > 0 && (
                   <ul>
                     {row.items.map((item) => (
-                      <li>{item.map((part) => (part.href ? <a href={href(part.href)}>{part.text}</a> : part.text))}</li>
+                      <li>
+                        <LinkedText md={item} />
+                      </li>
                     ))}
                   </ul>
                 )}

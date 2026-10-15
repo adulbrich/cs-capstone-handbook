@@ -1,0 +1,18 @@
+---
+// One line of handbook Markdown, such as a schedule line, as slide text: its
+// links stay links, each shown by its name rather than its URL, since the
+// slides are shared with the class; its bold marks are dropped and its first
+// letter capitalized. A root-relative link resolves against the site.
+//
+//   <LinkedText md="[RFC](/assignments/rfc/) draft" />
+import { linkedLine } from "../../lib/deck-text.mjs";
+
+interface Props {
+  md: string;
+}
+
+const parts = linkedLine(Astro.props.md);
+const siteUrl = (path: string) => new URL(path, Astro.site).href;
+---
+
+{parts.map((part) => (part.href ? <a href={siteUrl(part.href)}>{part.text}</a> : part.text))}

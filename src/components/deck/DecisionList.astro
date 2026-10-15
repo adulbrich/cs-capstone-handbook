@@ -21,8 +21,9 @@
 // first and everything the sorting adds appears on the next arrow press, in
 // the order the activity runs: write the decisions down, then mark them.
 // Ten decisions is the activity's list and the most a slide holds, so an
-// eleventh fails the build, as does a cost or a validator on an
-// easy-to-reverse decision.
+// eleventh fails the build. A list with costs or validators wraps each row,
+// so it holds six at most. A cost or a validator on an easy-to-reverse
+// decision also fails the build.
 interface Decision {
   cost?: string;
   hard?: boolean;
@@ -38,6 +39,7 @@ interface Props {
 }
 
 const MAX_DECISIONS = 10;
+const MAX_EXPLAINED = 6;
 const { count = true, decisions, marks = true, stepped = false } = Astro.props;
 
 if (decisions.length === 0 || decisions.length > MAX_DECISIONS) {
@@ -56,6 +58,11 @@ for (const decision of decisions) {
 const hardCount = decisions.filter((decision) => decision.hard).length;
 const hasCosts = decisions.some((decision) => decision.cost);
 const hasValidators = decisions.some((decision) => decision.validator);
+if ((hasCosts || hasValidators) && decisions.length > MAX_EXPLAINED) {
+  throw new Error(
+    `<DecisionList>: ${decisions.length} decisions with costs or validators; use ${MAX_EXPLAINED} at most.`
+  );
+}
 // Everything the sorting adds, revealed on one press when stepped.
 const step = stepped ? { class: "fragment", "data-fragment-index": 0 } : {};
 ---
