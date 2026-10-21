@@ -447,6 +447,21 @@ export const blockOptions = {
   RandomizeQuestions: "false",
 };
 
+/**
+ * The options of a survey's last block, a single page: its Next button reads
+ * Submit. The fields are the ones Qualtrics saves when a block's Next button
+ * text is set (#535, from a survey saved in Qualtrics).
+ */
+export const lastPageOptions = {
+  ...blockOptions,
+  NextButton: "Submit",
+  nextButtonLibraryID: "",
+  nextButtonMID: "",
+  PreviousButton: "",
+  previousButtonLibraryID: "",
+  previousButtonMID: "",
+};
+
 /** In a block's question list, starts a new page. */
 export const PAGE_BREAK = Symbol("page break");
 

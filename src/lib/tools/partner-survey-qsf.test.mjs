@@ -1275,3 +1275,31 @@ test("an end-of-term facet's comment, ladder included, fills its Comments cell",
     "Run it with three real users before handoff."
   );
 });
+
+test("only the last page, the notes, has a Submit button, in the options Qualtrics saves", () => {
+  const each = [qsf, ...TERMS.map((term) => finals[term])];
+  for (const survey of each) {
+    const blocks = survey.SurveyElements.find(
+      (e) => e.Element === "BL"
+    ).Payload;
+    const flowPayload = survey.SurveyElements.find(
+      (e) => e.Element === "FL"
+    ).Payload;
+    const last = blocks.find((b) => b.ID === flowPayload.Flow.at(-1).ID);
+    assert.equal(last.Description, "Notes");
+    assert.deepEqual(last.Options, {
+      BlockLocking: "false",
+      BlockVisibility: "Expanded",
+      NextButton: "Submit",
+      nextButtonLibraryID: "",
+      nextButtonMID: "",
+      PreviousButton: "",
+      previousButtonLibraryID: "",
+      previousButtonMID: "",
+      RandomizeQuestions: "false",
+    });
+    for (const block of blocks.filter((b) => b !== last)) {
+      assert.equal(block.Options?.NextButton, undefined, block.Description);
+    }
+  }
+});

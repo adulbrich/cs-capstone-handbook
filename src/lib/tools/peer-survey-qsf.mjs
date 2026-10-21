@@ -22,7 +22,7 @@
 //      choices, forced and totalling 100; then the optional comments, the
 //      variant question, and the Meta Info question on the same page. CATME
 //      has no split: its last page is the overall comment, the variant
-//      question, and Meta Info.
+//      question, and Meta Info. The last page's button reads Submit.
 //
 // The floor on the self share (SelfFloor) is stated directly above the split,
 // on teams of three or more; teams of two see the review range instead. It is
@@ -48,6 +48,7 @@ import {
   fieldCompared,
   isEmpty,
   isNotEmpty,
+  lastPageOptions,
   likertMatrix,
   metaQuestion,
   question,
@@ -405,7 +406,9 @@ export function buildPeerSurvey({
     add((qid) => essay(qid, "Closing", wording.question)),
     add((qid) => metaQuestion(qid)),
   ];
-  const closingBlock = block(instrument.closingBlock, closing);
+  const closingBlock = block(instrument.closingBlock, closing, {
+    options: lastPageOptions,
+  });
 
   // Flow IDs are numbered in flow order, so the elements are built in order.
   const embedded = {

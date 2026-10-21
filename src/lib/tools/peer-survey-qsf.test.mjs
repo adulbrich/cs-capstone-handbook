@@ -713,24 +713,26 @@ test("every variant's output is byte-identical to the reviewed build", () => {
   // hashes were recorded before the instruments moved into INSTRUMENTS
   // (#448), then regenerated when the CloseDate embedded field was added
   // (#463): with that one field removed, the file hashes to the earlier
-  // values. The catme hashes pin the published CATME anchors (#497). A
+  // values. The catme hashes pin the published CATME anchors (#497). All
+  // six moved when the last block's Next button became Submit (#535): with
+  // that block's options reset, the file hashes to the previous values. A
   // wording or rubric change changes them on purpose: regenerate and update
   // the hashes then. The two SurveyEntry timestamps are written in local
   // time, so they are blanked before hashing; the hash then holds in every
   // time zone.
   const expected = {
     "catme loop":
-      "0070edd4a060904920c011b9981cffacd4c220e608be7e660bbf9e9f803cf8ee",
+      "bc4c0093af20b24bd52c4100d793df2d5dc46067e2f9e37a15ba2e9676457388",
     "catme slots":
-      "efe2c1102b5efe22c6372a081c9bba9ce1654bcff57931e0bc64cc41f03107cb",
+      "7e452f6bcc510d48b912225a88d4903c343b8b3ed43abdabfa6b383b3fd75e2d",
     "final loop":
-      "323bd6fc2fbd70d589fa09a66fde93301ca4e23a5ac2542d8620913d16c0cbcf",
+      "68fb07ccd73bfabaf39ad649c1009a90406e10fa07abe8b57a74b72f06efeecd",
     "final slots":
-      "8fd1d5c0b989fbea0112737b03b83c372f889d9e8b9c92eea4115aa65c58fe45",
+      "70b26e4e331f36834e32df36924e79a2068bab99dd924e8ee39514b4c4fec67f",
     "midterm loop":
-      "22c52bdfe168c80dadabfd225129dd58b3db9dfbddbb2a143412db50f24a7775",
+      "ba669f77777eef993c56b10cbac9f5b24f6f1529b79ffe6d4112b002a23ea315",
     "midterm slots":
-      "122782ef9a709ff88cf968ace106a2f7c411664a5fe47e0d88cbc31a96fa1b63",
+      "ad43bf1bdfb24d9ef52ef13ac4b130870c995b21057e43669c8b8d5c50f9ce0d",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");
@@ -748,5 +750,16 @@ test("every variant's output is byte-identical to the reviewed build", () => {
     survey.SurveyEntry.SurveyCreationDate = "";
     const text = JSON.stringify(survey);
     assert.equal(createHash("sha256").update(text).digest("hex"), hash, key);
+  }
+});
+
+test("only the last page, the closing block, has a Submit button", () => {
+  for (const build of BUILDS) {
+    const survey = make(build);
+    const last = blockById(survey, payload(survey, "FL").Flow.at(-1).ID);
+    assert.equal(last.Options.NextButton, "Submit", build.variant);
+    for (const block of payload(survey, "BL").filter((b) => b !== last)) {
+      assert.equal(block.Options?.NextButton, undefined, block.Description);
+    }
   }
 });

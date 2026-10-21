@@ -17,7 +17,8 @@
 //      (the end-of-term survey's Term, so the export names its term).
 //   2. The variant's rating pages.
 //   3. The concern and comment questions every partner survey shares: Q2
-//      (Yes or No), Q2 Names and Q2 Comments shown on its page on Yes, and Q3.
+//      (Yes or No), Q2 Names and Q2 Comments shown on its page on Yes, and Q3,
+//      on the last page, whose button reads Submit.
 
 import {
   commentText,
@@ -33,6 +34,7 @@ import {
   descriptive,
   embeddedFields,
   essay,
+  lastPageOptions,
   PAGE_BREAK,
   sharedScale,
   shownInPageWhen,
@@ -353,7 +355,7 @@ export function buildPartnerSurvey({
   const { title } = definition;
   const ratingBlock = block(title, rating, { type: "Default" });
   survey.trash();
-  const notesBlock = block("Notes", concerns);
+  const notesBlock = block("Notes", concerns, { options: lastPageOptions });
 
   // Flow IDs are numbered in flow order, so the elements are built in order.
   const embedded = {
