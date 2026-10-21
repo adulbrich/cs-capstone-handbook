@@ -436,7 +436,8 @@ function surveyOptions(title, metaDescription) {
     SurveyLinkExpirationMessageType: "DefaultMessage",
     SurveyMetaDescription: metaDescription,
     // By invitation, as the real exports are: only a personal link opens it.
-    // The empty-Team guard still catches a contact with no team.
+    // The peer survey's empty-Team guard still catches a contact with no
+    // team; a partner response with no team is reported by the scorer.
     SurveyProtection: "ByInvitation",
     SurveyTermination: "DefaultMessage",
     SurveyTitle: title,

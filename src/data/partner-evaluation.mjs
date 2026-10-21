@@ -159,7 +159,3 @@ export const concernText = {
   names: `Please list the names of the students you wish to comment on.<br>${privateNote}`,
   other: `What else would you like to share with the course instructors?<br>${privateNote}`,
 };
-
-/** The page a respondent sees when the survey opened without a team. */
-export const guardText =
-  "This survey opens only from your personal link. Use the personal link from your email.";

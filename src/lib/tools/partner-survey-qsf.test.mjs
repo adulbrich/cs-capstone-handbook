@@ -117,7 +117,6 @@ test("export tags are unique: each statement, its two comment boxes, then the co
   assert.deepEqual(tags, [
     "Start",
     ...pulseRubric.criteria.flatMap((c) => ratedTags(facetTag(c))),
-    "Guard",
     "Q2",
     "Q2 Names",
     "Q2 Comments",
@@ -218,15 +217,15 @@ test("the concern questions: Q2 Yes or No, its follow-ups shown on Yes, then Q3"
   }
 });
 
-test("embedded data is declared first, then the guard, the ratings, and the notes", () => {
-  const [embedded, guard, ratings, notes] = flow.Flow;
+test("embedded data is declared first, then the ratings and the notes, with no guard", () => {
+  assert.equal(flow.Flow.length, 3);
+  const [embedded, ratings, notes] = flow.Flow;
   assert.deepEqual(
     embedded.EmbeddedData.map((f) => f.Field),
     VARIANTS.pulse.fields
   );
   assert.ok(embedded.EmbeddedData.every((f) => f.Value === undefined));
-  assert.equal(guard.BranchLogic[0][0].LeftOperand, "Team");
-  assert.equal(guard.Flow.at(-1).Type, "EndSurvey");
+  assert.ok(!JSON.stringify(flow).includes("EndSurvey"));
   const blocks = elements("BL")[0].Payload;
   const blockOf = (id) => blocks.find((b) => b.ID === id);
   const tagsIn = (id) =>
@@ -391,8 +390,8 @@ test("the pulse export's columns and ImportIds", () => {
       "QID4_TEXT",
       "QID11",
       "QID13_TEXT",
-      "QID15",
-      "QID18_TEXT",
+      "QID14",
+      "QID17_TEXT",
     ]
   );
 });
@@ -555,7 +554,6 @@ test("each end-of-term survey asks one forced question per facet, tagged by face
         `${facetTag(c)} Guide`,
         ...ratedTags(facetTag(c), isLadder(c)),
       ]),
-      "Guard",
       "Q2",
       "Q2 Names",
       "Q2 Comments",
@@ -669,7 +667,7 @@ test("each facet is a page: its guide above its question, the intro on the first
     ).Payload;
     const ratingBlock = survey.SurveyElements.find(
       (e) => e.Element === "BL"
-    ).Payload.find((b) => b.ID === flowPayload.Flow[2].ID);
+    ).Payload.find((b) => b.ID === flowPayload.Flow[1].ID);
     const pages = [[]];
     for (const element of ratingBlock.BlockElements) {
       if (element.Type === "Page Break") {
@@ -752,7 +750,8 @@ test("the end-of-term flow sets Term to its term and declares the contact list's
     const flowPayload = survey.SurveyElements.find(
       (e) => e.Element === "FL"
     ).Payload;
-    const [embedded, guard, ratings, notes] = flowPayload.Flow;
+    assert.equal(flowPayload.Flow.length, 3);
+    const [embedded, ratings, notes] = flowPayload.Flow;
     assert.deepEqual(
       embedded.EmbeddedData.map((f) => [f.Field, f.Type, f.Value]),
       [
@@ -766,8 +765,6 @@ test("the end-of-term flow sets Term to its term and declares the contact list's
       "FinalCloseDate",
     ]);
     assert.equal(VARIANTS[finalSurvey(term)].closeField, "FinalCloseDate");
-    assert.equal(guard.BranchLogic[0][0].LeftOperand, "Team");
-    assert.equal(guard.Flow.at(-1).Type, "EndSurvey");
     assert.equal(ratings.Type, "Block");
     assert.equal(notes.Type, "Standard");
     const ids = JSON.stringify(flowPayload).match(/FL_\d+/g);
@@ -936,10 +933,10 @@ test("the spring export's columns and ImportIds", () => {
       "QID16_TEXT",
       "QID18",
       "QID22",
-      "QID26",
+      "QID25",
+      "QID26_TEXT",
       "QID27_TEXT",
       "QID28_TEXT",
-      "QID29_TEXT",
       "Term",
     ]
   );

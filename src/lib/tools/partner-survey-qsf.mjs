@@ -15,10 +15,8 @@
 //   1. Embedded data: the contact list's fields, declared with no value so
 //      its values stand, then any field the variant sets to a fixed value
 //      (the end-of-term survey's Term, so the export names its term).
-//   2. Guard: when Team is empty (not a personal link), one page telling the
-//      respondent to use the personal link, then the end of the survey.
-//   3. The variant's rating pages.
-//   4. The concern and comment questions every partner survey shares: Q2
+//   2. The variant's rating pages.
+//   3. The concern and comment questions every partner survey shares: Q2
 //      (Yes or No), Q2 Names and Q2 Comments shown on Yes, and Q3.
 
 import {
@@ -26,7 +24,6 @@ import {
   concernText,
   facetTop,
   finalIntro,
-  guardText,
   ladderPrompts,
   pulseIntro,
 } from "../../data/partner-evaluation.mjs";
@@ -36,7 +33,6 @@ import {
   descriptive,
   embeddedFields,
   essay,
-  isEmpty,
   PAGE_BREAK,
   sharedScale,
   shownInPageWhenAny,
@@ -353,13 +349,11 @@ export function buildPartnerSurvey({
     rules,
     weights,
   });
-  const guard = survey.add((qid) => descriptive(qid, "Guard", guardText));
   const concerns = concernQuestions(survey);
 
   const { title } = definition;
   const ratingBlock = block(title, rating, { type: "Default" });
   survey.trash();
-  const guardBlock = block("Guard", [guard]);
   const notesBlock = block("Notes", concerns);
 
   // Flow IDs are numbered in flow order, so the elements are built in order.
@@ -371,19 +365,11 @@ export function buildPartnerSurvey({
     FlowID: flowId(),
     Type: "EmbeddedData",
   };
-  const guardId = flowId();
-  const guardFlow = {
-    BranchLogic: isEmpty("Team"),
-    Description: "New Branch",
-    Flow: [standard(guardBlock), { FlowID: flowId(), Type: "EndSurvey" }],
-    FlowID: guardId,
-    Type: "Branch",
-  };
   const ratingFlow = defaultBlock(ratingBlock);
   const notesFlow = standard(notesBlock);
 
   return survey.finish({
-    flow: [embedded, guardFlow, ratingFlow, notesFlow],
+    flow: [embedded, ratingFlow, notesFlow],
     metaDescription: definition.metaDescription,
     name: surveyName(label, title),
     now,
