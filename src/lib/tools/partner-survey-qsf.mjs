@@ -274,6 +274,13 @@ export const VARIANTS = {
         pulseWeight: weights.pulse,
         statements: rubric.criteria.length,
       });
+      const tags = rubric.criteria.map(facetTag);
+      const repeated = tags.filter((tag, i) => tags.indexOf(tag) !== i);
+      if (repeated.length > 0) {
+        throw new Error(
+          `The ${rubric.name} survey has the tag ${repeated.join(", ")} twice: two statements' names start with the same word.`
+        );
+      }
       // One page: the intro, then each statement with its comment boxes.
       return [
         survey.add((qid) => descriptive(qid, "Start", intro)),

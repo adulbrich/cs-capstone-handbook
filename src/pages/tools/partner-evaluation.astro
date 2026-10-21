@@ -193,8 +193,10 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
     <li>
       Writes each criterion's comment into its <code>Comments</code> column,
       as written, for every student on the team: the team reads it with the
-      score once imported. A criterion with no comment keeps the exported
-      cell. A missing comment column stops the run.
+      score once imported. The box the answer showed is the one read: the
+      optional one at the top answer, the required one below it. A criterion
+      with no comment clears the cell, so nothing from an earlier import
+      stays. A missing comment column stops the run.
     </li>
     <li>
       Stops on a team with two finished responses and shows them side by

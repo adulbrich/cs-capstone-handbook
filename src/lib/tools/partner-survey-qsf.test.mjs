@@ -271,7 +271,7 @@ test("the intro pipes the team and close date and names the rubric's own words",
 });
 
 test("the concern questions say only the instruction team sees them", () => {
-  for (const tag of ["Q2", "Q2 Comments", "Q3"]) {
+  for (const tag of ["Q2", "Q2 Names", "Q2 Comments", "Q3"]) {
     assert.match(
       byTag(tag).QuestionText,
       /Only the instruction team sees this\./,
@@ -319,6 +319,16 @@ test("a criterion with no statement, or criteria on different scales, stop the b
   assert.throws(
     () => buildPartnerSurvey({ ...OPTIONS, variant: "nope" }),
     /Unknown variant/
+  );
+  const twice = {
+    ...pulseRubric,
+    criteria: pulseRubric.criteria.map((c, i) =>
+      i === 3 ? { ...c, title: "Delivery speed" } : c
+    ),
+  };
+  assert.throws(
+    () => buildPartnerSurvey({ ...OPTIONS, rubric: twice }),
+    /the tag Delivery twice/
   );
 });
 

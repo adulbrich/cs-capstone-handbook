@@ -317,6 +317,8 @@ test("a criterion's comment reaches every student on the team, as written", () =
         {
           "Professionalism Comment":
             "  Bring an agenda; Charles never speaks.  ",
+          // Typed before the answer moved off Strongly agree, then hidden.
+          "Professionalism Keep": "Great agendas.",
           "Responsiveness Keep": "Same-day answers, every time.",
         }
       ),
@@ -333,8 +335,8 @@ test("a criterion's comment reaches every student on the team, as written", () =
       row["Professionalism - Comments"],
       "Bring an agenda; Charles never speaks."
     );
-    // A criterion with no comment keeps the exported cell.
-    assert.equal(row["Delivery quality - Comments"], "Imported earlier.");
+    // A criterion with no comment clears what an earlier import left.
+    assert.equal(row["Delivery quality - Comments"], "");
   }
 });
 

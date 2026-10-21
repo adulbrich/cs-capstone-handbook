@@ -97,37 +97,11 @@ export const isEmpty = (name) => onField(name, "Empty", "Is Empty");
 export const isNotEmpty = (name) => onField(name, "NotEmpty", "Is Not Empty");
 
 /**
- * Display logic: shown only when choice `choiceId` of multiple-choice
- * question `source` (a payload) is selected.
+ * Display logic: shown when any of the choices `choiceIds` of
+ * multiple-choice question `source` (a payload) is selected. `inPage` shows
+ * and hides it on the same page as `source`, as the answer changes.
  */
-export function shownWhenSelected(source, choiceId) {
-  const locator = `q://${source.QuestionID}/SelectableChoice/${choiceId}`;
-  return {
-    0: {
-      0: {
-        ChoiceLocator: locator,
-        Description: `<span class="ConjDesc">If</span> <span class="QuestionDesc">${source.QuestionDescription}</span> <span class="LeftOpDesc">${source.Choices[choiceId].Display}</span> <span class="OpDesc">Is Selected</span> `,
-        LeftOperand: locator,
-        LogicType: "Question",
-        Operator: "Selected",
-        QuestionID: source.QuestionID,
-        QuestionIDFromLocator: source.QuestionID,
-        QuestionIsInLoop: "no",
-        Type: "Expression",
-      },
-      Type: "If",
-    },
-    inPage: false,
-    Type: "BooleanExpression",
-  };
-}
-
-/**
- * In-page display logic: shown, on the same page as `source` (a payload),
- * as soon as any of its choices `choiceIds` is selected, and hidden again
- * when the answer moves off them.
- */
-export function shownInPageWhenAny(source, choiceIds) {
+function shownWhenAny(source, choiceIds, inPage) {
   const expressions = choiceIds.map((choiceId, i) => {
     const locator = `q://${source.QuestionID}/SelectableChoice/${choiceId}`;
     return {
@@ -145,10 +119,25 @@ export function shownInPageWhenAny(source, choiceIds) {
   });
   return {
     0: { ...Object.fromEntries(expressions.entries()), Type: "If" },
-    inPage: true,
+    inPage,
     Type: "BooleanExpression",
   };
 }
+
+/**
+ * Display logic: shown only when choice `choiceId` of multiple-choice
+ * question `source` (a payload) is selected, on a later page.
+ */
+export const shownWhenSelected = (source, choiceId) =>
+  shownWhenAny(source, [choiceId], false);
+
+/**
+ * In-page display logic: shown, on the same page as `source`, as soon as any
+ * of its choices `choiceIds` is selected, and hidden again when the answer
+ * moves off them.
+ */
+export const shownInPageWhenAny = (source, choiceIds) =>
+  shownWhenAny(source, choiceIds, true);
 
 const NO_VALIDATION = { Settings: { ForceResponse: "OFF", Type: "None" } };
 const FORCED = {

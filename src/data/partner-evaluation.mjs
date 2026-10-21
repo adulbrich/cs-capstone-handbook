@@ -156,7 +156,7 @@ const privateNote = "<i>Only the instruction team sees this.</i>";
 export const concernText = {
   comments: `Explain your concern for each student listed above.<br>${privateNote}`,
   flag: `Do you have any specific concerns with one or more students on your team?<br>${privateNote}`,
-  names: "Please list the names of the students you wish to comment on.",
+  names: `Please list the names of the students you wish to comment on.<br>${privateNote}`,
   other: `What else would you like to share with the course instructors?<br>${privateNote}`,
 };
 

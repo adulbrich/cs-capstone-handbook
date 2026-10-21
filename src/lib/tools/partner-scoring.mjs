@@ -152,8 +152,8 @@ const COMPARE_TAGS = [
  * what the export lacks. A question is `{ criterion, column, choices,
  * custom, comments }`: `column` the one tagged `tag`, `choices` `{ label,
  * points }` with the labels the export carries, `custom` a ladder's
- * custom-scale choice or null, and `comments` the tags of its comment
- * boxes (commentTags).
+ * custom-scale choice or null, and `comments` its comment boxes' tags
+ * (commentTags: `keep` and `comment`).
  */
 function ratedQuestion(columns, criterion, { choices, custom, ladder, tag }) {
   const column = columns.find((c) => c.tag === tag);
@@ -161,9 +161,8 @@ function ratedQuestion(columns, criterion, { choices, custom, ladder, tag }) {
   if (custom && !hasColumn(columns, custom.column)) {
     missing.push(`${criterion.title}'s custom scale (${custom.column})`);
   }
-  const { comment, keep } = commentTags(tag, { ladder });
-  const comments = [keep, comment].filter(Boolean);
-  for (const commentTag of comments) {
+  const comments = commentTags(tag, { ladder });
+  for (const commentTag of [comments.keep, comments.comment].filter(Boolean)) {
     if (!hasColumn(columns, commentTag)) {
       missing.push(`${criterion.title}'s comment (${commentTag})`);
     }
@@ -244,15 +243,18 @@ function customPoints(response, { column, criterion, custom }) {
 }
 
 /**
- * A response's comment on one question: its non-empty boxes, trimmed, as
- * written, or null when it left them all empty. Display logic shows one box
- * at a time, so there is normally one.
+ * A response's comment on one question, trimmed, as written: the box its
+ * answer showed, `keep` at the top answer and `comment` below it (a ladder
+ * has only `comment`). Text left in a box the answer then hid is ignored.
+ * An empty box gives "", which clears the Comments cell, so a comment from
+ * an earlier import never stays beside a new score.
  */
-function commentOf(response, question) {
-  const written = question.comments
-    .map((tag) => (response[tag] ?? "").trim())
-    .filter((text) => text !== "");
-  return written.length > 0 ? written.join("\n\n") : null;
+function commentOf(response, { comments, criterion }, points) {
+  const tag =
+    comments.keep && points === criterion.maxPoints
+      ? comments.keep
+      : comments.comment;
+  return (response[tag] ?? "").trim();
 }
 
 /**
@@ -281,7 +283,7 @@ function scoreAnswer(response, question) {
     );
   }
   return {
-    comment: commentOf(response, question),
+    comment: commentOf(response, question, points),
     points,
     rating: bandFor(criterion, points).name,
   };
@@ -421,7 +423,9 @@ export function scorePartnerSurvey({
     ...questions.flatMap(({ column, comments, criterion, custom }) => [
       { label: criterion.title, tag: column.tag },
       ...(custom ? [{ label: custom.column, tag: custom.column }] : []),
-      ...comments.map((tag) => ({ label: tag, tag })),
+      ...[comments.keep, comments.comment]
+        .filter(Boolean)
+        .map((tag) => ({ label: tag, tag })),
     ]),
     ...concernTags.map((tag) => ({ label: tag, tag })),
   ];
