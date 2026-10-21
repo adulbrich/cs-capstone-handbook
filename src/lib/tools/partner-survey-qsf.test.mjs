@@ -143,7 +143,8 @@ test("each statement is a forced question: its CSV statement, its CSV rating nam
 
 /** The choice IDs a box's display logic shows it on, and whether in-page. */
 function shownOn(box) {
-  const logic = box.DisplayLogic;
+  assert.equal(box.DisplayLogic, undefined);
+  const logic = box.InPageDisplayLogic;
   const group = logic["0"];
   const expressions = Object.keys(group)
     .filter((key) => key !== "Type")
@@ -156,6 +157,40 @@ function shownOn(box) {
     questions: [...new Set(expressions.map((e) => e.QuestionID))],
   };
 }
+
+// The in-page logic of Responsiveness Keep as Qualtrics wrote it after the
+// generated pulse was imported and saved (#535). Under DisplayLogic, even
+// with inPage true, Qualtrics moved each box to the page after its rating.
+const SAVED_IN_PAGE = {
+  InPageDisplayLogic: {
+    0: {
+      0: {
+        ChoiceLocator: "q://QID2/SelectableChoice/1",
+        Description:
+          '<span class="ConjDesc">If</span> <span class="QuestionDesc">Responsiveness: The team answers my messages within one working day, with an answer or a date.</span> <span class="LeftOpDesc">Strongly agree</span> <span class="OpDesc">Is Selected</span> ',
+        LeftOperand: "q://QID2/SelectableChoice/1",
+        LogicType: "Question",
+        Operator: "Selected",
+        QuestionID: "QID2",
+        QuestionIDFromLocator: "QID2",
+        QuestionIsInLoop: "no",
+        Type: "Expression",
+      },
+      Type: "If",
+    },
+    inPage: true,
+    Type: "BooleanExpression",
+  },
+};
+
+test("a comment box's in-page logic is the shape Qualtrics saves", () => {
+  const box = byTag("Responsiveness Keep");
+  assert.equal(box.QuestionID, "QID3");
+  assert.deepEqual(
+    { InPageDisplayLogic: box.InPageDisplayLogic },
+    SAVED_IN_PAGE
+  );
+});
 
 test("under each statement: an optional box at Strongly agree, a required one below it, both shown in-page", () => {
   for (const criterion of pulseRubric.criteria) {
@@ -204,7 +239,9 @@ test("the concern questions: Q2 Yes or No, its follow-ups shown on Yes, then Q3"
   );
   for (const tag of ["Q2 Names", "Q2 Comments"]) {
     // Qualtrics logic is keyed "0", "1", ...: an object, not an array.
-    const logic = byTag(tag).DisplayLogic["0"]["0"];
+    assert.equal(byTag(tag).DisplayLogic, undefined);
+    assert.equal(byTag(tag).InPageDisplayLogic.inPage, true);
+    const logic = byTag(tag).InPageDisplayLogic["0"]["0"];
     assert.equal(
       logic.LeftOperand,
       `q://${flag.QuestionID}/SelectableChoice/1`
@@ -212,6 +249,7 @@ test("the concern questions: Q2 Yes or No, its follow-ups shown on Yes, then Q3"
     assert.equal(logic.Operator, "Selected");
   }
   assert.equal(byTag("Q3").DisplayLogic, undefined);
+  assert.equal(byTag("Q3").InPageDisplayLogic, undefined);
   for (const tag of ["Q2", "Q2 Names", "Q2 Comments", "Q3"]) {
     assert.equal(byTag(tag).Validation.Settings.ForceResponse, "OFF", tag);
   }
@@ -706,6 +744,7 @@ test("under each facet: an optional box at the top anchor and a required one bel
         assert.equal(below.QuestionText, commentText.ladder(criterion.title));
         assert.equal(below.Validation.Settings.ForceResponse, "OFF");
         assert.equal(below.DisplayLogic, undefined);
+        assert.equal(below.InPageDisplayLogic, undefined);
         continue;
       }
       const choices = rating.ChoiceOrder;

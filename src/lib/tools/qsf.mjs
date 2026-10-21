@@ -97,11 +97,15 @@ export const isEmpty = (name) => onField(name, "Empty", "Is Empty");
 export const isNotEmpty = (name) => onField(name, "NotEmpty", "Is Not Empty");
 
 /**
- * Display logic: shown when any of the choices `choiceIds` of
- * multiple-choice question `source` (a payload) is selected. `inPage` shows
- * and hides it on the same page as `source`, as the answer changes.
+ * In-page display logic: the question is shown, on the same page as `source`
+ * (a multiple-choice payload), as soon as any of its choices `choiceIds` is
+ * selected, and hidden again when the answer moves off them. Returns the
+ * property to spread into the question's payload. Qualtrics reads in-page
+ * logic only under InPageDisplayLogic: the same logic under DisplayLogic,
+ * even with `inPage` true, imports as page-break logic and moves the
+ * question to the next page (#535, from a survey saved in Qualtrics).
  */
-function shownWhenAny(source, choiceIds, inPage) {
+export function shownInPageWhen(source, choiceIds) {
   const expressions = choiceIds.map((choiceId, i) => {
     const locator = `q://${source.QuestionID}/SelectableChoice/${choiceId}`;
     return {
@@ -118,26 +122,13 @@ function shownWhenAny(source, choiceIds, inPage) {
     };
   });
   return {
-    0: { ...Object.fromEntries(expressions.entries()), Type: "If" },
-    inPage,
-    Type: "BooleanExpression",
+    InPageDisplayLogic: {
+      0: { ...Object.fromEntries(expressions.entries()), Type: "If" },
+      inPage: true,
+      Type: "BooleanExpression",
+    },
   };
 }
-
-/**
- * Display logic: shown only when choice `choiceId` of multiple-choice
- * question `source` (a payload) is selected, on a later page.
- */
-export const shownWhenSelected = (source, choiceId) =>
-  shownWhenAny(source, [choiceId], false);
-
-/**
- * In-page display logic: shown, on the same page as `source`, as soon as any
- * of its choices `choiceIds` is selected, and hidden again when the answer
- * moves off them.
- */
-export const shownInPageWhenAny = (source, choiceIds) =>
-  shownWhenAny(source, choiceIds, true);
 
 const NO_VALIDATION = { Settings: { ForceResponse: "OFF", Type: "None" } };
 const FORCED = {

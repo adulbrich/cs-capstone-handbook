@@ -17,7 +17,7 @@
 //      (the end-of-term survey's Term, so the export names its term).
 //   2. The variant's rating pages.
 //   3. The concern and comment questions every partner survey shares: Q2
-//      (Yes or No), Q2 Names and Q2 Comments shown on Yes, and Q3.
+//      (Yes or No), Q2 Names and Q2 Comments shown on its page on Yes, and Q3.
 
 import {
   commentText,
@@ -35,8 +35,7 @@ import {
   essay,
   PAGE_BREAK,
   sharedScale,
-  shownInPageWhenAny,
-  shownWhenSelected,
+  shownInPageWhen,
   singleChoice,
   singleLine,
   staticFields,
@@ -120,13 +119,13 @@ function ratedQuestion(
     rating,
     survey.add((qid) => ({
       ...essay(qid, tags.keep, commentText.keep(title)),
-      DisplayLogic: shownInPageWhenAny(source, [1]),
+      ...shownInPageWhen(source, [1]),
     })),
     survey.add((qid) => ({
       ...essay(qid, tags.comment, commentText.improve(title, top), {
         forced: true,
       }),
-      DisplayLogic: shownInPageWhenAny(source, below),
+      ...shownInPageWhen(source, below),
     })),
   ];
 }
@@ -301,16 +300,16 @@ function concernQuestions(survey) {
   const flag = survey.add((qid) =>
     singleChoice(qid, CONCERN_TAGS.flag, concernText.flag, ["Yes", "No"])
   );
-  const onYes = shownWhenSelected(survey.payload(flag), 1);
+  const onYes = shownInPageWhen(survey.payload(flag), [1]);
   return [
     flag,
     survey.add((qid) => ({
       ...singleLine(qid, CONCERN_TAGS.names, concernText.names),
-      DisplayLogic: onYes,
+      ...onYes,
     })),
     survey.add((qid) => ({
       ...essay(qid, CONCERN_TAGS.comments, concernText.comments),
-      DisplayLogic: onYes,
+      ...onYes,
     })),
     survey.add((qid) => essay(qid, CONCERN_TAGS.other, concernText.other)),
   ];
