@@ -17,7 +17,7 @@ import {
   TERM_FIELD,
 } from "./partner-survey-qsf.mjs";
 import { percentOf } from "./points.mjs";
-import { bandFor } from "./rubric-bands.mjs";
+import { bandFor, descending } from "./rubric-bands.mjs";
 import { fillCriterion, matchRubricExport, nameKey } from "./rubric-export.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
 
@@ -155,7 +155,7 @@ const COMPARE_TAGS = [
  * custom-scale choice or null, and `comments` its comment boxes' tags
  * (commentTags: `keep` and `comment`).
  */
-function ratedQuestion(columns, criterion, { choices, custom, ladder, tag }) {
+function questionColumns(columns, criterion, { choices, custom, ladder, tag }) {
   const column = columns.find((c) => c.tag === tag);
   const missing = column ? [] : [`${criterion.title} (${tag})`];
   if (custom && !hasColumn(columns, custom.column)) {
@@ -175,11 +175,12 @@ function ratedQuestion(columns, criterion, { choices, custom, ladder, tag }) {
 
 /**
  * A pulse criterion's question: tagged by the criterion (facetTag), its
- * choices the criterion's ratings.
+ * choices the criterion's ratings, highest first, as the generator lists
+ * them.
  */
 function pulseQuestion(columns, criterion) {
-  return ratedQuestion(columns, criterion, {
-    choices: criterion.ratings.map((r) => ({
+  return questionColumns(columns, criterion, {
+    choices: descending(criterion).map((r) => ({
       label: r.name,
       points: r.points,
     })),
@@ -196,7 +197,7 @@ function pulseQuestion(columns, criterion) {
  */
 function facetQuestion(columns, criterion, between) {
   const { choices, custom, tag } = facetOffer(criterion, between);
-  return ratedQuestion(columns, criterion, {
+  return questionColumns(columns, criterion, {
     choices,
     custom,
     ladder: isLadder(criterion),
@@ -244,16 +245,15 @@ function customPoints(response, { column, criterion, custom }) {
 
 /**
  * A response's comment on one question, trimmed, as written: the box its
- * answer showed, `keep` at the top answer and `comment` below it (a ladder
- * has only `comment`). Text left in a box the answer then hid is ignored.
+ * answer showed, `keep` at the first choice (the top answer) and `comment`
+ * at any other, as the generator's display logic does; a ladder has only
+ * `comment`. Text left in a box the answer then hid is ignored.
  * An empty box gives "", which clears the Comments cell, so a comment from
  * an earlier import never stays beside a new score.
  */
-function commentOf(response, { comments, criterion }, points) {
+function commentOf(response, { choices, comments }, choice) {
   const tag =
-    comments.keep && points === criterion.maxPoints
-      ? comments.keep
-      : comments.comment;
+    comments.keep && choice === choices[0] ? comments.keep : comments.comment;
   return (response[tag] ?? "").trim();
 }
 
@@ -283,7 +283,7 @@ function scoreAnswer(response, question) {
     );
   }
   return {
-    comment: commentOf(response, question, points),
+    comment: commentOf(response, question, choice),
     points,
     rating: bandFor(criterion, points).name,
   };

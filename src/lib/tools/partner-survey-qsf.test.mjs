@@ -266,7 +266,7 @@ test("the intro pipes the team and close date and names the rubric's own words",
   );
   assert.match(
     intro,
-    /comment on each statement is shared with the team as written.*seen only by the instruction team/
+    /comment on each statement is shared with the team as written.*about specific students and about the course, are seen only by the instruction team/
   );
 });
 

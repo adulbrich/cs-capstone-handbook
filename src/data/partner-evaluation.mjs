@@ -17,7 +17,7 @@ const introHead = [
  * the survey rates, "statement" or "facet".
  */
 const introTail = (pageUrl, item) => [
-  `Your comment on each ${item} is shared with the team as written, including any names. The questions about specific students at the end are seen only by the instruction team.`,
+  `Your comment on each ${item} is shared with the team as written, including any names. The questions at the end, about specific students and about the course, are seen only by the instruction team.`,
   "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
   "You can also leave comments on the course at the end.",
   `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
@@ -63,7 +63,7 @@ export function finalIntro({ between, facets, finalWeight, pageUrl }) {
 
 /** Under every criterion comment box: who reads it. */
 const sharedNote =
-  "<i>Shared with the team as written, including any names. To raise a concern about one student, use the private question at the end.</i>";
+  "<i>Shared with the team as written, including any names. To raise a concern about one student, use the private questions at the end.</i>";
 
 /**
  * The comment boxes under each rated criterion, by `criterion` (its name).

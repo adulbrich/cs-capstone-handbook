@@ -413,9 +413,13 @@ test("an answer the rubric does not name stops the run", () => {
 
 test("two finished responses for one team wait for a choice", () => {
   const text = pulseExport([
-    response("Engines", STRONG, { ResponseId: "R_first" }),
+    response("Engines", STRONG, {
+      ResponseId: "R_first",
+      "Responsiveness Keep": "Fast replies.",
+    }),
     response("Engines", new Array(4).fill("Strongly disagree"), {
       ResponseId: "R_second",
+      "Responsiveness Comment": "Reply within a day.",
     }),
   ]);
   const waiting = run(text);
@@ -433,6 +437,11 @@ test("two finished responses for one team wait for a choice", () => {
   const chosen = run(text, { choices: { Engines: "R_second" } });
   assert.equal(chosen.pending, false);
   assert.equal(rowFor(chosen, "101")["Responsiveness - Points"], "12.5");
+  // The comment comes from the chosen response, as the score does.
+  assert.equal(
+    rowFor(chosen, "101")["Responsiveness - Comments"],
+    "Reply within a day."
+  );
 });
 
 test("the validation report names every gap", () => {
