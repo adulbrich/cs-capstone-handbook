@@ -2,12 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
+  commentText,
   concernText,
-  criterionNotes,
   customScaleText,
   distributionEmails,
+  facetTop,
   ladderPrompts,
-  pulsePrompt,
 } from "../../data/partner-evaluation.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
 import { toCsv } from "./csv.mjs";
@@ -27,6 +27,7 @@ import {
 } from "./partner-scoring.mjs";
 import {
   buildPartnerSurvey,
+  commentTags,
   partnerSurveyQsf,
   pulseScale,
   VARIANTS,
@@ -34,7 +35,7 @@ import {
 import { choiceTextColumn } from "./qsf.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
-import { bandFor } from "./rubric-bands.mjs";
+import { bandFor, descending } from "./rubric-bands.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
 
@@ -104,30 +105,94 @@ test("the .qsf is JSON and keeps the choices that made the peer survey import", 
   assert.equal(elements("QC")[0].SecondaryAttribute, String(questions.length));
 });
 
-test("export tags are unique and match the reference survey's", () => {
+/** A rated question's tag, then its comment boxes' tags. */
+const ratedTags = (tag, ladder = false) => {
+  const { comment, keep } = commentTags(tag, { ladder });
+  return [tag, ...(keep ? [keep] : []), comment];
+};
+
+test("export tags are unique: each statement, its two comment boxes, then the concern questions", () => {
   const tags = questions.map((q) => q.DataExportTag);
   assert.equal(new Set(tags).size, tags.length);
-  for (const tag of ["Start", "Q1", "Q2", "Q2 Names", "Q2 Comments", "Q3"]) {
-    assert.ok(tags.includes(tag), tag);
+  assert.deepEqual(tags, [
+    "Start",
+    ...pulseRubric.criteria.flatMap((c) => ratedTags(facetTag(c))),
+    "Guard",
+    "Q2",
+    "Q2 Names",
+    "Q2 Comments",
+    "Q3",
+  ]);
+});
+
+test("each statement is a forced question: its CSV statement, its CSV rating names highest first", () => {
+  for (const criterion of pulseRubric.criteria) {
+    const q = byTag(facetTag(criterion));
+    assert.equal(q.QuestionType, "MC");
+    assert.equal(q.Selector, "SAVR");
+    assert.equal(q.Validation.Settings.ForceResponse, "ON");
+    assert.equal(
+      q.QuestionText,
+      `${criterion.title}: ${criterion.description}`
+    );
+    assert.deepEqual(
+      q.ChoiceOrder.map((id) => q.Choices[id].Display),
+      descending(criterion).map((r) => r.name)
+    );
   }
 });
 
-test("the matrix rows are the CSV statements and its columns the CSV rating names, lowest first", () => {
-  const matrix = byTag("Q1");
-  assert.equal(matrix.QuestionType, "Matrix");
-  assert.equal(matrix.QuestionText, pulsePrompt);
-  assert.equal(matrix.Validation.Settings.ForceResponse, "ON");
-  assert.deepEqual(
-    matrix.ChoiceOrder.map((id) => matrix.Choices[id].Display),
-    pulseRubric.criteria.map((c) => `${c.title}: ${c.description}`)
-  );
+/** The choice IDs a box's display logic shows it on, and whether in-page. */
+function shownOn(box) {
+  const logic = box.DisplayLogic;
+  const group = logic["0"];
+  const expressions = Object.keys(group)
+    .filter((key) => key !== "Type")
+    .map((key) => group[key]);
+  return {
+    choices: expressions.map((e) => Number(e.LeftOperand.split("/").at(-1))),
+    conjunctions: expressions.map((e) => e.Conjuction ?? null),
+    inPage: logic.inPage,
+    operators: [...new Set(expressions.map((e) => e.Operator))],
+    questions: [...new Set(expressions.map((e) => e.QuestionID))],
+  };
+}
+
+test("under each statement: an optional box at Strongly agree, a required one below it, both shown in-page", () => {
   for (const criterion of pulseRubric.criteria) {
-    assert.deepEqual(
-      matrix.AnswerOrder.map((id) => matrix.Answers[id].Display),
-      [...criterion.ratings]
-        .sort((a, b) => a.points - b.points)
-        .map((r) => r.name)
+    const tag = facetTag(criterion);
+    const rating = byTag(tag);
+    const { comment, keep } = commentTags(tag);
+    const top = byTag(keep);
+    const below = byTag(comment);
+    assert.equal(top.QuestionType, "TE");
+    assert.equal(top.QuestionText, commentText.keep(criterion.title));
+    assert.equal(top.Validation.Settings.ForceResponse, "OFF");
+    assert.deepEqual(shownOn(top), {
+      choices: [1],
+      conjunctions: [null],
+      inPage: true,
+      operators: ["Selected"],
+      questions: [rating.QuestionID],
+    });
+    assert.equal(
+      below.QuestionText,
+      commentText.improve(criterion.title, "Strongly agree")
     );
+    assert.equal(below.Validation.Settings.ForceResponse, "ON");
+    assert.deepEqual(shownOn(below), {
+      choices: [2, 3, 4, 5],
+      conjunctions: [null, "Or", "Or", "Or"],
+      inPage: true,
+      operators: ["Selected"],
+      questions: [rating.QuestionID],
+    });
+    for (const box of [top, below]) {
+      assert.match(
+        box.QuestionText,
+        /Shared with the team as written, including any names/
+      );
+    }
   }
 });
 
@@ -168,7 +233,14 @@ test("embedded data is declared first, then the guard, the ratings, and the note
     blockOf(id).BlockElements.map(
       (e) => questions.find((q) => q.QuestionID === e.QuestionID).DataExportTag
     );
-  assert.deepEqual(tagsIn(ratings.ID), ["Start", "Q1"]);
+  assert.deepEqual(tagsIn(ratings.ID), [
+    "Start",
+    ...pulseRubric.criteria.flatMap((c) => ratedTags(facetTag(c))),
+  ]);
+  // One page: no page break in the pulse.
+  assert.ok(
+    blockOf(ratings.ID).BlockElements.every((e) => e.Type === "Question")
+  );
   assert.deepEqual(tagsIn(notes.ID), ["Q2", "Q2 Names", "Q2 Comments", "Q3"]);
   const ids = JSON.stringify(flow).match(/FL_\d+/g);
   assert.equal(new Set(ids).size, ids.length);
@@ -181,16 +253,30 @@ test("the intro pipes the team and close date and names the rubric's own words",
   assert.match(intro, /\$\{e:\/\/Field\/MidtermCloseDate\}/);
   assert.match(intro, /set 5% of each student's grade/);
   assert.match(intro, /sets 20%/);
-  assert.match(intro, /from Strongly disagree to Strongly agree/);
+  assert.match(intro, /from Strongly agree down to Strongly disagree/);
   assert.ok(intro.includes(OPTIONS.pageUrl));
-  // The note's rating and criterion come from the CSV.
-  assert.match(intro, /answer Neither agree nor disagree on Reflection\./);
+  // The scale's top and middle come from the CSV.
+  assert.match(
+    intro,
+    /below Strongly agree asks for one sentence on what would make it Strongly agree\./
+  );
+  assert.match(
+    intro,
+    /answer Neither agree nor disagree and say so in its comment\./
+  );
+  assert.match(
+    intro,
+    /comment on each statement is shared with the team as written.*seen only by the instruction team/
+  );
 });
 
-test("every criterion note names a pulse rubric criterion", () => {
-  const titles = pulseRubric.criteria.map((c) => c.title.toLowerCase());
-  for (const key of Object.keys(criterionNotes)) {
-    assert.ok(titles.includes(key), key);
+test("the concern questions say only the instruction team sees them", () => {
+  for (const tag of ["Q2", "Q2 Comments", "Q3"]) {
+    assert.match(
+      byTag(tag).QuestionText,
+      /Only the instruction team sees this\./,
+      tag
+    );
   }
 });
 
@@ -254,30 +340,16 @@ function exportColumns(survey) {
     if (element.Element !== "SQ" || q.QuestionType === "DB") {
       continue;
     }
-    if (q.QuestionType === "Matrix") {
-      for (const id of q.ChoiceOrder) {
+    const suffix = q.QuestionType === "TE" ? "_TEXT" : "";
+    columns.push([q.DataExportTag, q.QuestionText, `${q.QuestionID}${suffix}`]);
+    // A choice with a text box adds its own column after the question's.
+    for (const id of q.ChoiceOrder ?? []) {
+      if (q.Choices[id].TextEntry === "true") {
         columns.push([
-          `${q.DataExportTag}_${id}`,
-          `${q.QuestionText} - ${q.Choices[id].Display}`,
-          `${q.QuestionID}_${id}`,
+          choiceTextColumn(q.DataExportTag, id),
+          `${q.QuestionText} - ${q.Choices[id].Display} - Text`,
+          `${q.QuestionID}_${id}_TEXT`,
         ]);
-      }
-    } else {
-      const suffix = q.QuestionType === "TE" ? "_TEXT" : "";
-      columns.push([
-        q.DataExportTag,
-        q.QuestionText,
-        `${q.QuestionID}${suffix}`,
-      ]);
-      // A choice with a text box adds its own column after the question's.
-      for (const id of q.ChoiceOrder ?? []) {
-        if (q.Choices[id].TextEntry === "true") {
-          columns.push([
-            choiceTextColumn(q.DataExportTag, id),
-            `${q.QuestionText} - ${q.Choices[id].Display} - Text`,
-            `${q.QuestionID}_${id}_TEXT`,
-          ]);
-        }
       }
     }
   }
@@ -289,23 +361,28 @@ function exportColumns(survey) {
   return columns;
 }
 
-test("the export's ImportIds match the reference survey's: QID1_1 to QID1_4, then QID4 to QID7", () => {
+test("the pulse export's columns and ImportIds", () => {
   const ids = Object.fromEntries(
     exportColumns(qsf).map(([tag, , id]) => [tag, id])
   );
   assert.deepEqual(
-    ["Q1_1", "Q1_2", "Q1_3", "Q1_4", "Q2", "Q2 Names", "Q2 Comments", "Q3"].map(
-      (tag) => ids[tag]
-    ),
     [
-      "QID1_1",
-      "QID1_2",
-      "QID1_3",
-      "QID1_4",
-      "QID4",
-      "QID5_TEXT",
-      "QID6_TEXT",
-      "QID7_TEXT",
+      "Responsiveness",
+      "Responsiveness Keep",
+      "Responsiveness Comment",
+      "Reflection",
+      "Reflection Comment",
+      "Q2",
+      "Q3",
+    ].map((tag) => ids[tag]),
+    [
+      "QID2",
+      "QID3_TEXT",
+      "QID4_TEXT",
+      "QID11",
+      "QID13_TEXT",
+      "QID15",
+      "QID18_TEXT",
     ]
   );
 });
@@ -333,8 +410,10 @@ test("a labels export of the generated survey scores with the merged scorer", ()
     Team: "Engines",
   };
   for (const [i, answer] of answers.entries()) {
-    cells[`Q1_${i + 1}`] = answer;
+    cells[facetTag(pulseRubric.criteria[i])] = answer;
   }
+  cells["Responsiveness Keep"] = "Answers the same day.";
+  cells["Reflection Comment"] = "Tell me which feedback you set aside.";
   const qualtrics = parseQualtricsExport(
     toCsv([
       columns.map(([tag]) => tag),
@@ -379,9 +458,15 @@ test("a labels export of the generated survey scores with the merged scorer", ()
     rubricExport,
     survey: "pulse",
   });
+  const comments = [
+    "Answers the same day.",
+    "",
+    "",
+    "Tell me which feedback you set aside.",
+  ];
   const expected = pulseRubric.criteria.flatMap((criterion, i) => {
     const rating = criterion.ratings.find((r) => r.name === answers[i]);
-    return [rating.name, String(rating.points), ""];
+    return [rating.name, String(rating.points), comments[i]];
   });
   for (const row of result.rows) {
     assert.deepEqual(row.slice(2), expected);
@@ -456,7 +541,10 @@ test("each end-of-term survey asks one forced question per facet, tagged by face
     assert.equal(new Set(tags).size, tags.length, term);
     assert.deepEqual(tags, [
       "Start",
-      ...rubric.criteria.flatMap((c) => [`${facetTag(c)} Guide`, facetTag(c)]),
+      ...rubric.criteria.flatMap((c) => [
+        `${facetTag(c)} Guide`,
+        ...ratedTags(facetTag(c), isLadder(c)),
+      ]),
       "Guard",
       "Q2",
       "Q2 Names",
@@ -590,9 +678,42 @@ test("each facet is a page: its guide above its question, the intro on the first
       finalRubrics[term].criteria.map((c, i) => [
         ...(i === 0 ? ["Start"] : []),
         `${facetTag(c)} Guide`,
-        facetTag(c),
+        ...ratedTags(facetTag(c), isLadder(c)),
       ])
     );
+  }
+});
+
+test("under each facet: an optional box at the top anchor and a required one below it; a ladder, one optional box", () => {
+  for (const term of TERMS) {
+    for (const criterion of finalRubrics[term].criteria) {
+      const tag = facetTag(criterion);
+      const rating = tagged(finals[term], tag);
+      const { comment, keep } = commentTags(tag, {
+        ladder: isLadder(criterion),
+      });
+      const below = tagged(finals[term], comment);
+      if (isLadder(criterion)) {
+        assert.equal(keep, null);
+        assert.equal(below.QuestionText, commentText.ladder(criterion.title));
+        assert.equal(below.Validation.Settings.ForceResponse, "OFF");
+        assert.equal(below.DisplayLogic, undefined);
+        continue;
+      }
+      const choices = rating.ChoiceOrder;
+      assert.deepEqual(shownOn(tagged(finals[term], keep)).choices, [1]);
+      assert.equal(
+        tagged(finals[term], keep).Validation.Settings.ForceResponse,
+        "OFF"
+      );
+      assert.equal(
+        below.QuestionText,
+        commentText.improve(criterion.title, facetTop)
+      );
+      assert.equal(below.Validation.Settings.ForceResponse, "ON");
+      assert.deepEqual(shownOn(below).choices, choices.slice(1));
+      assert.equal(shownOn(below).inPage, true);
+    }
   }
 });
 
@@ -673,6 +794,8 @@ test("the end-of-term intro pipes the team and close date, and states the page's
     assert.match(intro, /set 20% of each student's grade/);
     assert.match(intro, /on 6 facets/);
     assert.ok(intro.includes(OPTIONS.pageUrl));
+    assert.match(intro, /below the top anchor asks for one sentence/);
+    assert.match(intro, /comment on each facet is shared with the team/);
   }
   assert.ok(
     distributionEmails["final-fall"].body.includes(
@@ -777,10 +900,13 @@ test("the spring export's columns and ImportIds", () => {
   assert.deepEqual(
     [
       "Reflection",
+      "Reflection Keep",
+      "Reflection Comment",
       "Requirements",
       "Design",
       "VnV",
       "VnV_7_TEXT",
+      "VnV Comment",
       "Teamwork",
       "Communication",
       "Q2",
@@ -791,16 +917,19 @@ test("the spring export's columns and ImportIds", () => {
     ].map((tag) => ids[tag]),
     [
       "QID3",
-      "QID5",
+      "QID4_TEXT",
+      "QID5_TEXT",
       "QID7",
-      "QID9",
-      "QID9_7_TEXT",
       "QID11",
-      "QID13",
       "QID15",
+      "QID15_7_TEXT",
       "QID16_TEXT",
-      "QID17_TEXT",
-      "QID18_TEXT",
+      "QID18",
+      "QID22",
+      "QID26",
+      "QID27_TEXT",
+      "QID28_TEXT",
+      "QID29_TEXT",
       "Term",
     ]
   );
@@ -1074,4 +1203,29 @@ test("an end-of-term team with no response scores the A lower bound; concerns ar
       ["Engines", "Yes", "Ada", "Quiet in meetings.", ""],
     ]);
   }
+});
+
+test("an end-of-term facet's comment, ladder included, fills its Comments cell", () => {
+  const ladder = finalRubrics.spring.criteria.find(isLadder);
+  const teamwork = finalRubrics.spring.criteria.find(
+    (c) => facetTag(c) === "Teamwork"
+  );
+  const result = scoreFinal("spring", [
+    finalResponse("spring", "Engines", {
+      Teamwork: "Middle anchor (80% of the points)",
+      "Teamwork Comment": "Demos always come from the same student.",
+      "VnV Comment": "Run it with three real users before handoff.",
+    }),
+  ]);
+  const at = (criterion) =>
+    finalRubricExport("spring").criteria.get(criterion.title.toLowerCase());
+  const row = result.rows.find((cells) => cells[0] === "101");
+  assert.equal(
+    row[at(teamwork).Comments],
+    "Demos always come from the same student."
+  );
+  assert.equal(
+    row[at(ladder).Comments],
+    "Run it with three real users before handoff."
+  );
 });

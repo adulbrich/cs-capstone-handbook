@@ -6,54 +6,44 @@
 
 import { finalSurvey, TERMS } from "../lib/tools/term-label.mjs";
 
-/** The matrix question's text: each export column reads "<prompt> - <row>". */
-export const pulsePrompt =
-  "Please rate your student team on the following dimensions for the current term.";
-
-/**
- * Notes on how to answer one criterion, keyed by its rubric name in lower
- * case. `{middle}` is the scale's middle rating and `{criterion}` the
- * criterion's name, both filled from the rubric CSV.
- */
-export const criterionNotes = {
-  reflection:
-    "If you have not given the team feedback yet, answer {middle} on {criterion}.",
-};
-
 /** The lines every partner survey's opening page starts with. */
 const introHead = [
   "Thank you for partnering with the OSU Computer Science Capstone.",
   "This survey is about one team: <b>${e://Field/Team}</b>",
 ];
 
-/** The lines every partner survey's opening page ends with. */
-const introTail = (pageUrl) => [
+/**
+ * The lines every partner survey's opening page ends with. `item` names what
+ * the survey rates, "statement" or "facet".
+ */
+const introTail = (pageUrl, item) => [
+  `Your comment on each ${item} is shared with the team as written, including any names. The questions about specific students at the end are seen only by the instruction team.`,
   "If a specific student is not contributing, name them below. That starts a review against peer evaluations and the team's records; it does not change a grade by itself.",
   "You can also leave comments on the course at the end.",
   `<a href="${pageUrl}">Learn more about project partner evaluations and how they are used to assess students.</a>`,
 ];
 
 /**
- * The pulse's opening page. `statements` is how many the matrix rates,
- * `lowest` and `highest` the scale's ends, `notes` the filled
- * criterionNotes, `pulseWeight` and `finalWeight` the two surveys' percent
- * of the term grade, `pageUrl` the partner evaluation page.
+ * The pulse's opening page. `statements` is how many it rates, `lowest`,
+ * `middle`, and `highest` the scale's ends and middle, `pulseWeight` and
+ * `finalWeight` the two surveys' percent of the term grade, `pageUrl` the
+ * partner evaluation page.
  */
 export function pulseIntro({
   finalWeight,
   highest,
   lowest,
-  notes,
+  middle,
   pageUrl,
   pulseWeight,
   statements,
 }) {
   return [
     ...introHead,
-    `It has ${statements} statements about how the team works with you, each rated from ${lowest} to ${highest}. It takes about two minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
+    `It has ${statements} statements about how the team works with you, each rated from ${highest} down to ${lowest}, with a comment under each. It takes about five minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
     `Your answers set ${pulseWeight}% of each student's grade this term. The end-of-term survey sets ${finalWeight}% and goes into more depth. This midterm check exists so the team hears from you while there is still time to change course.`,
-    ...notes,
-    ...introTail(pageUrl),
+    `Any answer below ${highest} asks for one sentence on what would make it ${highest}. If you have not seen enough to judge a statement, answer ${middle} and say so in its comment.`,
+    ...introTail(pageUrl, "statement"),
   ].join("<br><br>");
 }
 
@@ -66,10 +56,32 @@ export function finalIntro({ between, facets, finalWeight, pageUrl }) {
   return [
     ...introHead,
     `It scores the team on ${facets} facets of its work with you this term, one page each. Each facet shows what it looks like and its written anchors; choose the anchor that fits the team. When the team sits between two anchors, choose the between answer, worth ${between.join("% or ")}% of the facet's points. <b>Please submit it by \${e://Field/FinalCloseDate}.</b>`,
-    `Your answers set ${finalWeight}% of each student's grade this term.`,
-    ...introTail(pageUrl),
+    `Your answers set ${finalWeight}% of each student's grade this term. Any answer below the top anchor asks for one sentence on what would make it the top anchor.`,
+    ...introTail(pageUrl, "facet"),
   ].join("<br><br>");
 }
+
+/** Under every criterion comment box: who reads it. */
+const sharedNote =
+  "<i>Shared with the team as written, including any names. To raise a concern about one student, use the private question at the end.</i>";
+
+/**
+ * The comment boxes under each rated criterion, by `criterion` (its name).
+ * `keep` shows at the top answer, optional; `improve` below it, required,
+ * `top` naming the top answer ("Strongly agree", "the top anchor"); `ladder`
+ * under a ladder, optional on every rung.
+ */
+export const commentText = {
+  improve: (criterion, top) =>
+    `<b>${criterion}</b>: what would make this ${top}? One sentence is enough.<br>${sharedNote}`,
+  keep: (criterion) =>
+    `<b>${criterion}</b>: anything the team should keep doing? Optional.<br>${sharedNote}`,
+  ladder: (criterion) =>
+    `<b>${criterion}</b>: what kept the team from the next rung? Optional.<br>${sharedNote}`,
+};
+
+/** What an end-of-term facet's required comment asks to reach. */
+export const facetTop = "the top anchor";
 
 /**
  * The question a facet scored on a ladder asks, after "<facet>: ", keyed by
@@ -122,7 +134,7 @@ export const distributionEmails = {
     body: [
       "Hello,",
       "",
-      "This is the midterm pulse for your capstone team ${e://Field/Team}: a short survey about how the team works with you, about two minutes.",
+      "This is the midterm pulse for your capstone team ${e://Field/Team}: a short survey about how the team works with you, about five minutes.",
       "",
       "Please answer for ${e://Field/Team} by ${e://Field/MidtermCloseDate}.",
       "",
@@ -140,11 +152,12 @@ export const distributionEmails = {
 };
 
 /** The concern and comment questions every partner survey ends with. */
+const privateNote = "<i>Only the instruction team sees this.</i>";
 export const concernText = {
-  comments: "Explain your concern for each student listed above.",
-  flag: "Do you have any specific concerns with one or more students on your team?",
+  comments: `Explain your concern for each student listed above.<br>${privateNote}`,
+  flag: `Do you have any specific concerns with one or more students on your team?<br>${privateNote}`,
   names: "Please list the names of the students you wish to comment on.",
-  other: "What else would you like to share with the course instructors?",
+  other: `What else would you like to share with the course instructors?<br>${privateNote}`,
 };
 
 /** The page a respondent sees when the survey opened without a team. */

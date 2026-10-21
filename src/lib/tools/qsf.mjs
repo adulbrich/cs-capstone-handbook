@@ -122,6 +122,34 @@ export function shownWhenSelected(source, choiceId) {
   };
 }
 
+/**
+ * In-page display logic: shown, on the same page as `source` (a payload),
+ * as soon as any of its choices `choiceIds` is selected, and hidden again
+ * when the answer moves off them.
+ */
+export function shownInPageWhenAny(source, choiceIds) {
+  const expressions = choiceIds.map((choiceId, i) => {
+    const locator = `q://${source.QuestionID}/SelectableChoice/${choiceId}`;
+    return {
+      ChoiceLocator: locator,
+      ...(i > 0 ? { Conjuction: "Or" } : {}),
+      Description: `<span class="ConjDesc">${i > 0 ? "Or" : "If"}</span> <span class="QuestionDesc">${source.QuestionDescription}</span> <span class="LeftOpDesc">${source.Choices[choiceId].Display}</span> <span class="OpDesc">Is Selected</span> `,
+      LeftOperand: locator,
+      LogicType: "Question",
+      Operator: "Selected",
+      QuestionID: source.QuestionID,
+      QuestionIDFromLocator: source.QuestionID,
+      QuestionIsInLoop: "no",
+      Type: "Expression",
+    };
+  });
+  return {
+    0: { ...Object.fromEntries(expressions.entries()), Type: "If" },
+    inPage: true,
+    Type: "BooleanExpression",
+  };
+}
+
 const NO_VALIDATION = { Settings: { ForceResponse: "OFF", Type: "None" } };
 const FORCED = {
   Settings: { ForceResponse: "ON", ForceResponseType: "ON", Type: "None" },
@@ -155,8 +183,11 @@ export const descriptive = (qid, tag, text) =>
     Validation: { Settings: { Type: "None" } },
   });
 
-/** A multi-line text answer. */
-export const essay = (qid, tag, text) =>
+/**
+ * A multi-line text answer. `forced` requires one; Qualtrics does not
+ * enforce it while display logic hides the question.
+ */
+export const essay = (qid, tag, text, { forced = false } = {}) =>
   question(qid, tag, "TE", "ESTB", text, {
     Configuration: {
       InputHeight: 65,
@@ -164,6 +195,7 @@ export const essay = (qid, tag, text) =>
       QuestionDescriptionOption: "UseText",
     },
     SearchSource: { AllowFreeResponse: "false" },
+    ...(forced ? { Validation: FORCED } : {}),
   });
 
 /** A one-line text answer. */
@@ -299,7 +331,7 @@ export function sharedScale(rubricName, criteria, scaleOf) {
     .map((criterion) => criterion.title);
   if (differing.length > 0) {
     throw new Error(
-      `The ${rubricName} rubric's criteria must share one scale for the matrix; ${differing.join(", ")} differ from ${first.title}.`
+      `The ${rubricName} rubric's criteria must share one scale; ${differing.join(", ")} differ from ${first.title}.`
     );
   }
   return scale;
