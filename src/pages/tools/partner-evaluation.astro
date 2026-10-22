@@ -74,14 +74,19 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
 
   <h2>Generate the survey</h2>
   <p>
-    The pulse's statements and labels come from the pulse rubric CSV. The
+    The pulse's statements and labels come from the pulse rubric CSV: one
+    page, each statement a question of its own, its ratings highest first. The
     End-of-Term Survey gives each facet of the term's rubric CSV a page: the
     facet's "What it looks like" list from the partner evaluation page, then
     one question whose choices are its anchors (or, in spring, the outcome
     ladder's rungs and a validated custom-scale entry) by their rating names,
     with a between answer at {rules.between.join("% or ")}% of the points in
     each gap. The labels are the ones the scorer maps, so the survey
-    and the scorer cannot drift apart. The End-of-Term Survey sets a
+    and the scorer cannot drift apart. Under every rating are two comment
+    boxes, shown on the same page by the answer: an optional one at the top
+    answer, tagged <code>&lt;tag&gt; Keep</code>, and a required one below
+    it, <code>&lt;tag&gt; Comment</code>; a ladder has only an optional
+    <code>&lt;tag&gt; Comment</code>. The End-of-Term Survey sets a
     <code>Term</code> field in its Survey Flow, so its export names its term.
   </p>
 
@@ -163,8 +168,8 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
       with <code>Finished</code> true that are not a Survey Preview.
     </li>
     <li>
-      Finds the survey and shows it. The pulse is found by its four
-      statements; an End-of-Term Survey by its <code>Term</code> field and a
+      Finds the survey and shows it. The pulse is found by a column tagged
+      by each statement and no <code>Term</code>; an End-of-Term Survey by its <code>Term</code> field and a
       column for each facet of that term's rubric, so its term is fixed by
       <code>Term</code>: a response whose <code>Term</code> names another
       term stops the run, and one with a blank <code>Term</code> is reported
@@ -184,6 +189,14 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
       (stopping on a missing or out-of-range entry). The rating is the
       highest one at or below the points. An answer the survey does not offer
       stops the run and names the answer and the question.
+    </li>
+    <li>
+      Writes each criterion's comment into its <code>Comments</code> column,
+      as written, for every student on the team: the team reads it with the
+      score once imported. The box the answer showed is the one read: the
+      optional one at the top answer, the required one below it. A criterion
+      with no comment clears the cell, so nothing from an earlier import
+      stays. A missing comment column stops the run.
     </li>
     <li>
       Stops on a team with two finished responses and shows them side by

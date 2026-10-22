@@ -6,24 +6,27 @@
 // "What it looks like" lists come through partner-facets.mjs, and the rest
 // of the wording is in src/data/partner-evaluation.mjs.
 //
+// Every rated question has comment boxes under it, shown on the same page
+// by its answer (#535): at the top answer an optional one, below it a
+// required one; a ladder has one optional box on every rung. The scorer
+// writes them into the rubric's Comments cells, which the team reads.
+//
 // Survey Flow, in order:
 //   1. Embedded data: the contact list's fields, declared with no value so
 //      its values stand, then any field the variant sets to a fixed value
 //      (the end-of-term survey's Term, so the export names its term).
-//   2. Guard: when Team is empty (not a personal link), one page telling the
-//      respondent to use the personal link, then the end of the survey.
-//   3. The variant's rating page.
-//   4. The concern and comment questions every partner survey shares: Q2
-//      (Yes or No), Q2 Names and Q2 Comments shown on Yes, and Q3.
+//   2. The variant's rating pages.
+//   3. The concern and comment questions every partner survey shares: Q2
+//      (Yes or No), Q2 Names and Q2 Comments shown on its page on Yes, and Q3,
+//      on the last page, whose button reads Submit.
 
 import {
+  commentText,
   concernText,
-  criterionNotes,
+  facetTop,
   finalIntro,
-  guardText,
   ladderPrompts,
   pulseIntro,
-  pulsePrompt,
 } from "../../data/partner-evaluation.mjs";
 import { facetOffer, facetTag, isLadder } from "./partner-facets.mjs";
 import {
@@ -31,11 +34,10 @@ import {
   descriptive,
   embeddedFields,
   essay,
-  isEmpty,
-  likertMatrix,
+  lastPageOptions,
   PAGE_BREAK,
   sharedScale,
-  shownWhenSelected,
+  shownInPageWhen,
   singleChoice,
   singleLine,
   staticFields,
@@ -57,15 +59,20 @@ export const CONCERN_TAGS = {
 };
 export const TERM_FIELD = "Term";
 
-/** A rubric's ratings, lowest points first: the scale's columns, in order. */
-const ascending = (criterion) =>
-  [...criterion.ratings].sort((a, b) => a.points - b.points);
+/**
+ * The export tags of a rated question's comment boxes, from its own tag:
+ * `keep`, shown at the top answer, and `comment`, shown below it. A ladder
+ * has only `comment`, shown on every rung; its `keep` is null.
+ */
+export const commentTags = (tag, { ladder = false } = {}) => ({
+  comment: `${tag} Comment`,
+  keep: ladder ? null : `${tag} Keep`,
+});
 
 /**
- * The matrix rows and columns from a rubric whose criteria share one scale:
- * each row "<criterion>: <statement>", each column a rating name, lowest
- * first, and `notes` the criterionNotes filled for the rubric. Throws when
- * a criterion has no statement or the criteria's ratings differ.
+ * The pulse's one scale, from a rubric whose criteria share it: `ratings`,
+ * its rating names highest first, and `lowest`, `middle`, and `highest`.
+ * Throws when a criterion has no statement or the criteria's ratings differ.
  */
 export function pulseScale(rubric) {
   const missing = rubric.criteria
@@ -76,24 +83,53 @@ export function pulseScale(rubric) {
       `The ${rubric.name} rubric CSV has no statement (Criteria Description) for ${missing.join(", ")}.`
     );
   }
-  const columns = sharedScale(rubric.name, rubric.criteria, (criterion) =>
-    ascending(criterion).map((r) => r.name)
+  const ratings = sharedScale(rubric.name, rubric.criteria, (criterion) =>
+    descending(criterion).map((r) => r.name)
   );
-  const middle = columns[Math.floor(columns.length / 2)];
-  const notes = rubric.criteria
-    .filter((criterion) => criterionNotes[criterion.title.toLowerCase()])
-    .map((criterion) =>
-      criterionNotes[criterion.title.toLowerCase()]
-        .replace("{middle}", middle)
-        .replace("{criterion}", criterion.title)
-    );
   return {
-    columns,
-    notes,
-    rows: rubric.criteria.map(
-      (criterion) => `${criterion.title}: ${criterion.description}`
-    ),
+    highest: ratings[0],
+    lowest: ratings.at(-1),
+    middle: ratings[Math.floor(ratings.length / 2)],
+    ratings,
   };
+}
+
+/**
+ * Adds one rated question and the comment boxes under it, on the same page,
+ * and returns their IDs. `choices` are the answers, the top one first;
+ * `numberEntry` a ladder's custom-scale box (singleChoice); `title` the
+ * criterion's name; `top` what the required comment asks to reach;
+ * `ladder` gives one optional box on every answer instead.
+ */
+function ratedQuestion(
+  survey,
+  { choices, ladder = false, numberEntry = null, tag, text, title, top }
+) {
+  const rating = survey.add((qid) =>
+    singleChoice(qid, tag, text, choices, { forced: true, numberEntry })
+  );
+  const tags = commentTags(tag, { ladder });
+  if (ladder) {
+    return [
+      rating,
+      survey.add((qid) => essay(qid, tags.comment, commentText.ladder(title))),
+    ];
+  }
+  const source = survey.payload(rating);
+  const below = choices.map((_, i) => i + 1).slice(1);
+  return [
+    rating,
+    survey.add((qid) => ({
+      ...essay(qid, tags.keep, commentText.keep(title)),
+      ...shownInPageWhen(source, [1]),
+    })),
+    survey.add((qid) => ({
+      ...essay(qid, tags.comment, commentText.improve(title, top), {
+        forced: true,
+      }),
+      ...shownInPageWhen(source, below),
+    })),
+  ];
 }
 
 /** A facet's rating, as the guidance page lists it. */
@@ -153,16 +189,18 @@ function facetQuestions(rubric, rules) {
       ],
       custom,
       guide: facetGuide(criterion, rules.guidance[criterion.title]),
+      ladder: isLadder(criterion),
       tag,
       text: `${criterion.title}: ${prompt}`,
+      title: criterion.title,
     };
   });
 }
 
 /**
  * The End-of-Term Survey of one term: `term` names it in the Term field.
- * Each facet is a page of its own, its guide above its question; the intro
- * shares the first.
+ * Each facet is a page of its own, its guide above its question and its
+ * comment boxes; the intro shares the first.
  */
 function finalVariant(term) {
   return {
@@ -187,12 +225,15 @@ function finalVariant(term) {
           survey.add((qid) =>
             descriptive(qid, `${facet.tag} Guide`, facet.guide)
           ),
-          survey.add((qid) =>
-            singleChoice(qid, facet.tag, facet.text, facet.choices, {
-              forced: true,
-              numberEntry: facet.custom,
-            })
-          )
+          ...ratedQuestion(survey, {
+            choices: facet.choices,
+            ladder: facet.ladder,
+            numberEntry: facet.custom,
+            tag: facet.tag,
+            text: facet.text,
+            title: facet.title,
+            top: facetTop,
+          })
         );
       }
       return elements;
@@ -220,22 +261,36 @@ export const VARIANTS = {
     metaDescription:
       "Statements about how one capstone team works with its project partner.",
     ratings(survey, { pageUrl, rubric, weights }) {
-      const { columns, notes, rows } = pulseScale(rubric);
+      const { highest, lowest, middle, ratings } = pulseScale(rubric);
       const intro = pulseIntro({
         finalWeight: weights.final,
-        highest: columns.at(-1),
-        lowest: columns[0],
-        notes,
+        highest,
+        lowest,
+        middle,
         pageUrl,
         pulseWeight: weights.pulse,
-        statements: rows.length,
+        statements: rubric.criteria.length,
       });
-      // The matrix is QID1, as in the reference survey, so the export's
-      // ImportIds are QID1_1 to QID1_4; the intro shows above it.
-      const matrix = survey.add((qid) =>
-        likertMatrix(qid, "Q1", pulsePrompt, rows, columns)
-      );
-      return [survey.add((qid) => descriptive(qid, "Start", intro)), matrix];
+      const tags = rubric.criteria.map(facetTag);
+      const repeated = tags.filter((tag, i) => tags.indexOf(tag) !== i);
+      if (repeated.length > 0) {
+        throw new Error(
+          `The ${rubric.name} survey has the tag ${repeated.join(", ")} twice: two statements' names start with the same word.`
+        );
+      }
+      // One page: the intro, then each statement with its comment boxes.
+      return [
+        survey.add((qid) => descriptive(qid, "Start", intro)),
+        ...rubric.criteria.flatMap((criterion) =>
+          ratedQuestion(survey, {
+            choices: ratings,
+            tag: facetTag(criterion),
+            text: `${criterion.title}: ${criterion.description}`,
+            title: criterion.title,
+            top: highest,
+          })
+        ),
+      ];
     },
     title: "Project Partner Midterm Pulse",
     values: {},
@@ -247,16 +302,16 @@ function concernQuestions(survey) {
   const flag = survey.add((qid) =>
     singleChoice(qid, CONCERN_TAGS.flag, concernText.flag, ["Yes", "No"])
   );
-  const onYes = shownWhenSelected(survey.payload(flag), 1);
+  const onYes = shownInPageWhen(survey.payload(flag), [1]);
   return [
     flag,
     survey.add((qid) => ({
       ...singleLine(qid, CONCERN_TAGS.names, concernText.names),
-      DisplayLogic: onYes,
+      ...onYes,
     })),
     survey.add((qid) => ({
       ...essay(qid, CONCERN_TAGS.comments, concernText.comments),
-      DisplayLogic: onYes,
+      ...onYes,
     })),
     survey.add((qid) => essay(qid, CONCERN_TAGS.other, concernText.other)),
   ];
@@ -295,14 +350,12 @@ export function buildPartnerSurvey({
     rules,
     weights,
   });
-  const guard = survey.add((qid) => descriptive(qid, "Guard", guardText));
   const concerns = concernQuestions(survey);
 
   const { title } = definition;
   const ratingBlock = block(title, rating, { type: "Default" });
   survey.trash();
-  const guardBlock = block("Guard", [guard]);
-  const notesBlock = block("Notes", concerns);
+  const notesBlock = block("Notes", concerns, { options: lastPageOptions });
 
   // Flow IDs are numbered in flow order, so the elements are built in order.
   const embedded = {
@@ -313,19 +366,11 @@ export function buildPartnerSurvey({
     FlowID: flowId(),
     Type: "EmbeddedData",
   };
-  const guardId = flowId();
-  const guardFlow = {
-    BranchLogic: isEmpty("Team"),
-    Description: "New Branch",
-    Flow: [standard(guardBlock), { FlowID: flowId(), Type: "EndSurvey" }],
-    FlowID: guardId,
-    Type: "Branch",
-  };
   const ratingFlow = defaultBlock(ratingBlock);
   const notesFlow = standard(notesBlock);
 
   return survey.finish({
-    flow: [embedded, guardFlow, ratingFlow, notesFlow],
+    flow: [embedded, ratingFlow, notesFlow],
     metaDescription: definition.metaDescription,
     name: surveyName(label, title),
     now,

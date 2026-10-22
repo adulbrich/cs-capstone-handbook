@@ -5,14 +5,19 @@
 // src/lib/rubric-csv.mjs; the lower bound of an A comes from
 // src/content/docs/learning-objectives/grading.mdx. An end-of-term answer is
 // scored by the same choice list the generator wrote into the survey
-// (partner-facets.mjs), so a label and its points have one source. The
-// caller loads those files; this module is pure, so node --test and the
-// browser run the same code.
+// (partner-facets.mjs), so a label and its points have one source. A
+// criterion's comment boxes (#535) go into its Comments cell, verbatim, for
+// every student on the team. The caller loads those files; this module is
+// pure, so node --test and the browser run the same code.
 
-import { facetOffer, facetTag } from "./partner-facets.mjs";
-import { CONCERN_TAGS, TERM_FIELD } from "./partner-survey-qsf.mjs";
+import { facetOffer, facetTag, isLadder } from "./partner-facets.mjs";
+import {
+  CONCERN_TAGS,
+  commentTags,
+  TERM_FIELD,
+} from "./partner-survey-qsf.mjs";
 import { percentOf } from "./points.mjs";
-import { bandFor } from "./rubric-bands.mjs";
+import { bandFor, descending } from "./rubric-bands.mjs";
 import { fillCriterion, matchRubricExport, nameKey } from "./rubric-export.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
 
@@ -75,26 +80,12 @@ export function noResponseScore(criterion, aBound) {
   return { points, rating: bandFor(criterion, points).name };
 }
 
-/**
- * The column that asks about `criterion`: a matrix row whose question text
- * reads "<prompt> - <criterion>: <statement>", matched case-insensitively.
- * Returns null when no column or more than one does.
- */
-export function columnFor(columns, criterion) {
-  const name = ` - ${nameKey(criterion.title)}`;
-  const found = columns.filter((column) => {
-    const text = column.text.toLowerCase();
-    return text.includes(`${name}:`) || text.endsWith(name);
-  });
-  return found.length === 1 ? found[0] : null;
-}
-
 /** Whether the export has a column with this export tag. */
 const hasColumn = (columns, tag) =>
   columns.some((column) => column.tag === tag);
 
 const asksAbout = (columns, rubric) =>
-  rubric.criteria.every((criterion) => columnFor(columns, criterion));
+  rubric.criteria.every((criterion) => hasColumn(columns, facetTag(criterion)));
 
 /**
  * What the responses' Term column says: `terms`, each value once, and
@@ -111,13 +102,14 @@ function termValues(responses) {
 }
 
 /**
- * Which survey a parsed export holds: `{ kind, reason }`. The pulse names its
- * four statements in a matrix. An end-of-term export carries a Term column
+ * Which survey a parsed export holds: `{ kind, reason }`. The pulse has a
+ * column tagged by each statement (facetTag) and no Term column, since an
+ * end-of-term survey may share a tag. An end-of-term export carries a Term column
  * naming one term, and a column tagged by each of that term's facets
  * (facetTag). `kind` is null when neither matches, and `reason` says why.
  */
 export function detectSurvey({ columns, responses }, rubrics) {
-  if (asksAbout(columns, rubrics.pulse)) {
+  if (!hasColumn(columns, TERM_FIELD) && asksAbout(columns, rubrics.pulse)) {
     return { kind: "pulse", reason: "" };
   }
   if (!hasColumn(columns, TERM_FIELD)) {
@@ -156,36 +148,61 @@ const COMPARE_TAGS = [
 ];
 
 /**
- * A pulse criterion's question: its matrix row, its choices the criterion's
- * ratings. Returns `{ question, missing }`, `missing` naming what the export
- * lacks. A question is `{ criterion, column, choices, custom }`, `choices`
- * being `{ label, points }`, the labels the export carries.
+ * A rated question's columns: `{ question, missing }`, `missing` naming
+ * what the export lacks. A question is `{ criterion, column, choices,
+ * custom, comments }`: `column` the one tagged `tag`, `choices` `{ label,
+ * points }` with the labels the export carries, `custom` a ladder's
+ * custom-scale choice or null, and `comments` its comment boxes' tags
+ * (commentTags: `keep` and `comment`).
  */
-function pulseQuestion(columns, criterion) {
-  const column = columnFor(columns, criterion);
-  const choices = criterion.ratings.map((r) => ({
-    label: r.name,
-    points: r.points,
-  }));
-  return {
-    missing: column ? [] : [criterion.title],
-    question: { choices, column, criterion, custom: null },
-  };
-}
-
-/**
- * An end-of-term facet's question, as pulseQuestion: the column tagged by
- * the facet, its choices those the generator offers (facetOffer), and for a
- * ladder the custom-scale choice, whose share is in `custom.column`.
- */
-function facetQuestion(columns, criterion, between) {
-  const { choices, custom, tag } = facetOffer(criterion, between);
+function questionColumns(columns, criterion, { choices, custom, ladder, tag }) {
   const column = columns.find((c) => c.tag === tag);
   const missing = column ? [] : [`${criterion.title} (${tag})`];
   if (custom && !hasColumn(columns, custom.column)) {
     missing.push(`${criterion.title}'s custom scale (${custom.column})`);
   }
-  return { missing, question: { choices, column, criterion, custom } };
+  const comments = commentTags(tag, { ladder });
+  for (const commentTag of [comments.keep, comments.comment].filter(Boolean)) {
+    if (!hasColumn(columns, commentTag)) {
+      missing.push(`${criterion.title}'s comment (${commentTag})`);
+    }
+  }
+  return {
+    missing,
+    question: { choices, column, comments, criterion, custom },
+  };
+}
+
+/**
+ * A pulse criterion's question: tagged by the criterion (facetTag), its
+ * choices the criterion's ratings, highest first, as the generator lists
+ * them.
+ */
+function pulseQuestion(columns, criterion) {
+  return questionColumns(columns, criterion, {
+    choices: descending(criterion).map((r) => ({
+      label: r.name,
+      points: r.points,
+    })),
+    custom: null,
+    ladder: false,
+    tag: facetTag(criterion),
+  });
+}
+
+/**
+ * An end-of-term facet's question: its choices those the generator offers
+ * (facetOffer), and for a ladder the custom-scale choice, whose share is in
+ * `custom.column`.
+ */
+function facetQuestion(columns, criterion, between) {
+  const { choices, custom, tag } = facetOffer(criterion, between);
+  return questionColumns(columns, criterion, {
+    choices,
+    custom,
+    ladder: isLadder(criterion),
+    tag,
+  });
 }
 
 /** One question per criterion, or an Error naming every one missing. */
@@ -227,8 +244,23 @@ function customPoints(response, { column, criterion, custom }) {
 }
 
 /**
+ * A response's comment on one question, trimmed, as written: the box its
+ * answer showed, `keep` at the first choice (the top answer) and `comment`
+ * at any other, as the generator's display logic does; a ladder has only
+ * `comment`. Text left in a box the answer then hid is ignored.
+ * An empty box gives "", which clears the Comments cell, so a comment from
+ * an earlier import never stays beside a new score.
+ */
+function commentOf(response, { choices, comments }, choice) {
+  const tag =
+    comments.keep && choice === choices[0] ? comments.keep : comments.comment;
+  return (response[tag] ?? "").trim();
+}
+
+/**
  * One response's answer to one question, scored: label in, points out, the
- * rating named by bandFor. Throws on a label the question does not offer.
+ * rating named by bandFor, and the partner's comment. Throws on a label the
+ * question does not offer.
  */
 function scoreAnswer(response, question) {
   const { choices, column, criterion, custom } = question;
@@ -250,7 +282,11 @@ function scoreAnswer(response, question) {
       `${said} to ${answerSource(response, column)} is not a choice for ${criterion.title}. The survey offers: ${offered.join("; ")}.${values} Nothing was scored.`
     );
   }
-  return { comment: null, points, rating: bandFor(criterion, points).name };
+  return {
+    comment: commentOf(response, question, choice),
+    points,
+    rating: bandFor(criterion, points).name,
+  };
 }
 
 /**
@@ -384,9 +420,12 @@ export function scorePartnerSurvey({
       label: tag,
       tag,
     })),
-    ...questions.flatMap(({ column, criterion, custom }) => [
+    ...questions.flatMap(({ column, comments, criterion, custom }) => [
       { label: criterion.title, tag: column.tag },
       ...(custom ? [{ label: custom.column, tag: custom.column }] : []),
+      ...[comments.keep, comments.comment]
+        .filter(Boolean)
+        .map((tag) => ({ label: tag, tag })),
     ]),
     ...concernTags.map((tag) => ({ label: tag, tag })),
   ];

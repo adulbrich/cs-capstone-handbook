@@ -97,28 +97,36 @@ export const isEmpty = (name) => onField(name, "Empty", "Is Empty");
 export const isNotEmpty = (name) => onField(name, "NotEmpty", "Is Not Empty");
 
 /**
- * Display logic: shown only when choice `choiceId` of multiple-choice
- * question `source` (a payload) is selected.
+ * In-page display logic: the question is shown, on the same page as `source`
+ * (a multiple-choice payload), as soon as any of its choices `choiceIds` is
+ * selected, and hidden again when the answer moves off them. Returns the
+ * property to spread into the question's payload. Qualtrics reads in-page
+ * logic only under InPageDisplayLogic: the same logic under DisplayLogic,
+ * even with `inPage` true, imports as page-break logic and moves the
+ * question to the next page (#535, from a survey saved in Qualtrics).
  */
-export function shownWhenSelected(source, choiceId) {
-  const locator = `q://${source.QuestionID}/SelectableChoice/${choiceId}`;
+export function shownInPageWhen(source, choiceIds) {
+  const expressions = choiceIds.map((choiceId, i) => {
+    const locator = `q://${source.QuestionID}/SelectableChoice/${choiceId}`;
+    return {
+      ChoiceLocator: locator,
+      ...(i > 0 ? { Conjuction: "Or" } : {}),
+      Description: `<span class="ConjDesc">${i > 0 ? "Or" : "If"}</span> <span class="QuestionDesc">${source.QuestionDescription}</span> <span class="LeftOpDesc">${source.Choices[choiceId].Display}</span> <span class="OpDesc">Is Selected</span> `,
+      LeftOperand: locator,
+      LogicType: "Question",
+      Operator: "Selected",
+      QuestionID: source.QuestionID,
+      QuestionIDFromLocator: source.QuestionID,
+      QuestionIsInLoop: "no",
+      Type: "Expression",
+    };
+  });
   return {
-    0: {
-      0: {
-        ChoiceLocator: locator,
-        Description: `<span class="ConjDesc">If</span> <span class="QuestionDesc">${source.QuestionDescription}</span> <span class="LeftOpDesc">${source.Choices[choiceId].Display}</span> <span class="OpDesc">Is Selected</span> `,
-        LeftOperand: locator,
-        LogicType: "Question",
-        Operator: "Selected",
-        QuestionID: source.QuestionID,
-        QuestionIDFromLocator: source.QuestionID,
-        QuestionIsInLoop: "no",
-        Type: "Expression",
-      },
-      Type: "If",
+    InPageDisplayLogic: {
+      0: { ...Object.fromEntries(expressions.entries()), Type: "If" },
+      inPage: true,
+      Type: "BooleanExpression",
     },
-    inPage: false,
-    Type: "BooleanExpression",
   };
 }
 
@@ -155,8 +163,11 @@ export const descriptive = (qid, tag, text) =>
     Validation: { Settings: { Type: "None" } },
   });
 
-/** A multi-line text answer. */
-export const essay = (qid, tag, text) =>
+/**
+ * A multi-line text answer. `forced` requires one; Qualtrics does not
+ * enforce it while display logic hides the question.
+ */
+export const essay = (qid, tag, text, { forced = false } = {}) =>
   question(qid, tag, "TE", "ESTB", text, {
     Configuration: {
       InputHeight: 65,
@@ -164,6 +175,7 @@ export const essay = (qid, tag, text) =>
       QuestionDescriptionOption: "UseText",
     },
     SearchSource: { AllowFreeResponse: "false" },
+    ...(forced ? { Validation: FORCED } : {}),
   });
 
 /** A one-line text answer. */
@@ -299,7 +311,7 @@ export function sharedScale(rubricName, criteria, scaleOf) {
     .map((criterion) => criterion.title);
   if (differing.length > 0) {
     throw new Error(
-      `The ${rubricName} rubric's criteria must share one scale for the matrix; ${differing.join(", ")} differ from ${first.title}.`
+      `The ${rubricName} rubric's criteria must share one scale; ${differing.join(", ")} differ from ${first.title}.`
     );
   }
   return scale;
@@ -415,7 +427,8 @@ function surveyOptions(title, metaDescription) {
     SurveyLinkExpirationMessageType: "DefaultMessage",
     SurveyMetaDescription: metaDescription,
     // By invitation, as the real exports are: only a personal link opens it.
-    // The empty-Team guard still catches a contact with no team.
+    // The peer survey's empty-Team guard still catches a contact with no
+    // team; a partner response with no team is reported by the scorer.
     SurveyProtection: "ByInvitation",
     SurveyTermination: "DefaultMessage",
     SurveyTitle: title,
@@ -432,6 +445,21 @@ export const blockOptions = {
   BlockLocking: "false",
   BlockVisibility: "Expanded",
   RandomizeQuestions: "false",
+};
+
+/**
+ * The options of a survey's last block, a single page: its Next button reads
+ * Submit. The fields are the ones Qualtrics saves when a block's Next button
+ * text is set (#535, from a survey saved in Qualtrics).
+ */
+export const lastPageOptions = {
+  ...blockOptions,
+  NextButton: "Submit",
+  nextButtonLibraryID: "",
+  nextButtonMID: "",
+  PreviousButton: "",
+  previousButtonLibraryID: "",
+  previousButtonMID: "",
 };
 
 /** In a block's question list, starts a new page. */

@@ -37,9 +37,27 @@ const criterion = (rubric, title) =>
   rubrics[rubric].criteria.find((c) => c.title === title);
 
 // The pulse export's three header rows, as Qualtrics writes them, trimmed to
-// the columns the scorer reads plus a few it must ignore.
-const PROMPT =
-  "Please rate your student team on the following dimensions for the current term.";
+// the columns the scorer reads plus a few it must ignore. Each statement is
+// a question tagged by its criterion, with its two comment boxes after it.
+const STATEMENTS = [
+  [
+    "Responsiveness",
+    "Responsiveness: The team answers my messages within one working day, with an answer or a date.",
+  ],
+  [
+    "Professionalism",
+    "Professionalism: The team arrives at our meetings with a written agenda or status, and every student speaks.",
+  ],
+  [
+    "Delivery",
+    "Delivery quality: What the team has shown me so far matches what we agreed and works as demonstrated.",
+  ],
+  [
+    "Reflection",
+    "Reflection: The team acted on the feedback I gave since our last meetings, or told me why not.",
+  ],
+];
+const TAGS = STATEMENTS.map(([tag]) => tag);
 const PULSE_COLUMNS = [
   ["StartDate", "Start Date", "startDate"],
   ["Status", "Response Type", "status"],
@@ -47,45 +65,38 @@ const PULSE_COLUMNS = [
   ["RecordedDate", "Recorded Date", "recordedDate"],
   ["ResponseId", "Response ID", "_recordId"],
   ["RecipientEmail", "Recipient Email", "recipientEmail"],
-  [
-    "Q1_1",
-    `${PROMPT} - Responsiveness: The team answers my messages within one working day, with an answer or a date.`,
-    "QID1_1",
-  ],
-  [
-    "Q1_2",
-    `${PROMPT} - Professionalism: The team arrives at our meetings with a written agenda or status, and every student speaks.`,
-    "QID1_2",
-  ],
-  [
-    "Q1_3",
-    `${PROMPT} - Delivery Quality: What the team has shown me so far matches what we agreed and works as demonstrated.`,
-    "QID1_3",
-  ],
-  [
-    "Q1_4",
-    `${PROMPT} - Reflection: The team acted on the feedback I gave since our last meetings, or told me why not.`,
-    "QID1_4",
-  ],
+  ...STATEMENTS.flatMap(([tag, text], i) => [
+    [tag, text, `QID${3 * i + 2}`],
+    [
+      `${tag} Keep`,
+      "Anything the team should keep doing?",
+      `QID${3 * i + 3}_TEXT`,
+    ],
+    [
+      `${tag} Comment`,
+      "What would make this Strongly agree?",
+      `QID${3 * i + 4}_TEXT`,
+    ],
+  ]),
   [
     "Q2",
     "Do you have any specific concerns with one or more students on your team?",
-    "QID4",
+    "QID15",
   ],
   [
     "Q2 Names",
     "Please list the names of the students you wish to comment on.",
-    "QID5_TEXT",
+    "QID16_TEXT",
   ],
   [
     "Q2 Comments",
     "Explain your concern for each student listed above.",
-    "QID6_TEXT",
+    "QID17_TEXT",
   ],
   [
     "Q3",
     "What else would you like to share with the course instructors?",
-    "QID7_TEXT",
+    "QID18_TEXT",
   ],
   ["SC0", "Score", "SC_x"],
   ["Team", "Team", "Team"],
@@ -98,10 +109,7 @@ function response(team, answers, extra = {}) {
   responseCount += 1;
   const cells = {
     Finished: "True",
-    Q1_1: answers[0],
-    Q1_2: answers[1],
-    Q1_3: answers[2],
-    Q1_4: answers[3],
+    ...Object.fromEntries(TAGS.map((tag, i) => [tag, answers[i]])),
     Q2: "No",
     RecipientEmail: "partner@example.com",
     RecordedDate: "recorded",
@@ -204,8 +212,8 @@ test("the metadata rows are skipped; previews and unfinished responses dropped",
   assert.equal(parsed.responses.length, 1);
   assert.equal(parsed.responses[0].Team, "Engines");
   assert.deepEqual(parsed.dropped, { preview: 1, unfinished: 1 });
-  assert.equal(parsed.columns[6].tag, "Q1_1");
-  assert.match(parsed.columns[6].text, / - Responsiveness: /);
+  assert.equal(parsed.columns[6].tag, "Responsiveness");
+  assert.match(parsed.columns[6].text, /^Responsiveness: /);
 });
 
 test("a values export is refused, by Finished or by a numeric answer", () => {
@@ -218,7 +226,7 @@ test("a values export is refused, by Finished or by a numeric answer", () => {
   );
   assert.throws(
     () => run(pulseExport([response("Engines", ["5", "5", "4", "5"])])),
-    /"5" to Q1_1.*values export/
+    /"5" to Responsiveness .*values export/
   );
 });
 
@@ -274,7 +282,7 @@ test("every rating of every pulse criterion scores through the whole run", () =>
   }
 });
 
-test("Qualtrics's Delivery Quality maps to the rubric's Delivery quality", () => {
+test("the Delivery tag scores the rubric's Delivery quality", () => {
   const result = run(
     pulseExport([
       response("Engines", [
@@ -286,6 +294,64 @@ test("Qualtrics's Delivery Quality maps to the rubric's Delivery quality", () =>
     ])
   );
   assert.equal(rowFor(result, "102")["Delivery quality - Points"], "17.5");
+});
+
+test("a criterion's comment reaches every student on the team, as written", () => {
+  // Delivery quality's Comments cell already holds text from an earlier import.
+  const [header, ...rows] = parseCsv(EXPORT);
+  const delivery = header.indexOf("Delivery quality - Comments");
+  const exportCsv = toCsv([
+    header,
+    ...rows.map((row) => row.with(delivery, "Imported earlier.")),
+  ]);
+  const result = run(
+    pulseExport([
+      response(
+        "Engines",
+        [
+          "Strongly agree",
+          "Somewhat agree",
+          "Strongly agree",
+          "Strongly agree",
+        ],
+        {
+          "Professionalism Comment":
+            "  Bring an agenda; Charles never speaks.  ",
+          // Typed before the answer moved off Strongly agree, then hidden.
+          "Professionalism Keep": "Great agendas.",
+          "Responsiveness Keep": "Same-day answers, every time.",
+        }
+      ),
+    ]),
+    { exportCsv }
+  );
+  for (const id of ["101", "102"]) {
+    const row = rowFor(result, id, exportCsv);
+    assert.equal(
+      row["Responsiveness - Comments"],
+      "Same-day answers, every time."
+    );
+    assert.equal(
+      row["Professionalism - Comments"],
+      "Bring an agenda; Charles never speaks."
+    );
+    // A criterion with no comment clears what an earlier import left.
+    assert.equal(row["Delivery quality - Comments"], "");
+  }
+});
+
+test("an export missing a comment column stops the run", () => {
+  const text = toCsv(
+    [
+      PULSE_COLUMNS.map(([tag]) => tag),
+      PULSE_COLUMNS.map(([, label]) => label),
+      PULSE_COLUMNS.map(([, , id]) => JSON.stringify({ ImportId: id })),
+      response("Engines", STRONG),
+    ].map((row) =>
+      row.filter((_, i) => PULSE_COLUMNS[i][0] !== "Reflection Keep")
+    )
+  );
+  assert.throws(() => run(text), /Reflection's comment \(Reflection Keep\)/);
 });
 
 test("a team with no finished response scores the A lower bound", () => {
@@ -335,21 +401,25 @@ test("an answer the rubric does not name stops the run", () => {
     () => run(pulseExport([response("Engines", answers)])),
     (error) =>
       error.message.includes('"Mostly agree"') &&
-      error.message.includes("Q1_2") &&
+      error.message.includes("to Professionalism ") &&
       error.message.includes("Professionalism")
   );
   answers[1] = "";
   assert.throws(
     () => run(pulseExport([response("Engines", answers)])),
-    /No answer to Q1_2/
+    /No answer to Professionalism /
   );
 });
 
 test("two finished responses for one team wait for a choice", () => {
   const text = pulseExport([
-    response("Engines", STRONG, { ResponseId: "R_first" }),
+    response("Engines", STRONG, {
+      ResponseId: "R_first",
+      "Responsiveness Keep": "Fast replies.",
+    }),
     response("Engines", new Array(4).fill("Strongly disagree"), {
       ResponseId: "R_second",
+      "Responsiveness Comment": "Reply within a day.",
     }),
   ]);
   const waiting = run(text);
@@ -360,12 +430,18 @@ test("two finished responses for one team wait for a choice", () => {
     waiting.duplicates[0].responses.map((r) => r.ResponseId),
     ["R_first", "R_second"]
   );
-  assert.ok(waiting.compare.some((field) => field.tag === "Q1_3"));
+  assert.ok(waiting.compare.some((field) => field.tag === "Delivery"));
+  assert.ok(waiting.compare.some((field) => field.tag === "Delivery Comment"));
   assert.equal(run(text, { choices: { Engines: "R_gone" } }).pending, true);
 
   const chosen = run(text, { choices: { Engines: "R_second" } });
   assert.equal(chosen.pending, false);
   assert.equal(rowFor(chosen, "101")["Responsiveness - Points"], "12.5");
+  // The comment comes from the chosen response, as the score does.
+  assert.equal(
+    rowFor(chosen, "101")["Responsiveness - Comments"],
+    "Reply within a day."
+  );
 });
 
 test("the validation report names every gap", () => {
