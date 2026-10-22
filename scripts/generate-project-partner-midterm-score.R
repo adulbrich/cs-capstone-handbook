@@ -71,7 +71,10 @@ likert_map <- setNames(
   as.numeric(names(likert_scale)),
   unlist(likert_scale, use.names = FALSE)
 )
-q1_cols <- paste0("Q1_", 1:4)
+# The generated pulse (#535) tags each statement by its criterion's first word
+# and puts two comment boxes under it: "<tag> Keep" at Strongly agree,
+# "<tag> Comment" below it.
+q1_cols <- c("Responsiveness", "Professionalism", "Delivery", "Reflection")
 q1_numeric_cols <- paste0(q1_cols, "_numeric")
 
 input_qualtrics[,
@@ -114,6 +117,16 @@ input_qualtrics[,
 
 input_qualtrics[, CanvasScore := ProjectPartnerMidtermScore * canvas_points / 100]
 
+# Each statement's comment, shared with the team as written: the box its
+# answer showed, so text left in a box the answer then hid is ignored.
+comment_cols <- paste0(q1_cols, "_shared")
+for (i in seq_along(q1_cols)) {
+  tag <- q1_cols[i]
+  input_qualtrics[, (comment_cols[i]) := str_trim(ifelse(
+    get(tag) == "Strongly agree", get(paste(tag, "Keep")), get(paste(tag, "Comment"))
+  ))]
+}
+
 # Teams whose partner never answered are not in this export: enter them by
 # hand at the A lower bound on the grading scale (learning-objectives/
 # grading.mdx), scaled to canvas_points, never as a zero or a blank.
@@ -122,16 +135,20 @@ input_qualtrics[, CanvasScore := ProjectPartnerMidtermScore * canvas_points / 10
 item_points <- function(value) ifelse(is.na(value), 0, value / length(q1_cols))
 output <- input_qualtrics[,
   .(Team,
-    `Responsiveness` = item_points(Q1_1_numeric),
-    `Professionalism` = item_points(Q1_2_numeric),
-    `Delivery quality` = item_points(Q1_3_numeric),
-    `Reflection` = item_points(Q1_4_numeric),
+    `Responsiveness` = item_points(Responsiveness_numeric),
+    `Responsiveness comment` = Responsiveness_shared,
+    `Professionalism` = item_points(Professionalism_numeric),
+    `Professionalism comment` = Professionalism_shared,
+    `Delivery quality` = item_points(Delivery_numeric),
+    `Delivery quality comment` = Delivery_shared,
+    `Reflection` = item_points(Reflection_numeric),
+    `Reflection comment` = Reflection_shared,
     `Score (/100)` = ProjectPartnerMidtermScore,
     `Canvas score` = CanvasScore,
-    Comment = str_c("Responsiveness", item_points(Q1_1_numeric),
-                    "Professionalism", item_points(Q1_2_numeric),
-                    "Delivery quality", item_points(Q1_3_numeric),
-                    "Reflection", item_points(Q1_4_numeric),
+    Comment = str_c("Responsiveness", item_points(Responsiveness_numeric),
+                    "Professionalism", item_points(Professionalism_numeric),
+                    "Delivery quality", item_points(Delivery_numeric),
+                    "Reflection", item_points(Reflection_numeric),
                     "Each item out of 25, total out of 100.", sep = "\n")
   )
 ]

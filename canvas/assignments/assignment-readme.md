@@ -20,6 +20,13 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Partner Comments Shared with the Team (#535)
+
+No rubric changes, so nothing to re-import. The partner surveys now ask for a comment under every rating, shared with the team as written; the concern questions stay with the instruction team. The scorer writes each comment into its criterion's Comments column of the rubric-assessment CSV, so students see it beside the score once the CSV is imported.
+
+- Re-paste the Midterm Pulse and End-of-Term Survey bodies from the paste kit, in every term: the pulse line reads "each with a comment box, answered in about five minutes", How the scoring works gains the comment rule and says the student flag is not shared, and the Reflection-only note becomes the general one (a partner who cannot judge a statement answers Neither agree nor disagree and says so in the comment).
+- In Qualtrics, regenerate every survey from the tools pages before its next run and import the new `.qsf`: the pulse is four questions with comment boxes in place of the Q1 matrix, the End-of-Term Surveys gain comment boxes, the partner surveys drop the empty-team guard, and every survey's last page, peer surveys included, reads Submit. The partner scorer stops on a survey generated before this change. `generate-project-partner-midterm-score.R`, the fallback, reads the new tags and writes each statement's comment.
+
 ## Re-paste Required: Instructor Comments on Every RFC Draft (#520)
 
 No rubric changes, so nothing to re-import: the Revision criterion already scores a row for every point of feedback received, and the instructor comments are rows. An instructor of record returns comments on each RFC draft as submission comments on RFC Draft + Peer Review by Sunday of week 6, no later than Sunday of week 7, in both terms; the RFC Machinery section of `STAFF-RUNBOOK.md` has the rest.
