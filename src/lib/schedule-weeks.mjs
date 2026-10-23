@@ -21,7 +21,8 @@ const AFTER_LAST_SPRINT = "Project Handoff";
 const LABELS = new Set(["Due", "In class", "Read", "Optional"]);
 
 // The In class line a card shows for a week the source gives none, the way
-// it shows "Nothing due" for a week with no Due items.
+// it shows "Nothing due" for a week with no Due items. The decks'
+// src/components/deck/TermSessions.astro shows the short form, "No session".
 const NO_SESSION = "no class session; use the time to work with your team";
 
 const WEEK_HEADING_RE = /^Week (\d+)$/;
