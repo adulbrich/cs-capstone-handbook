@@ -6,7 +6,7 @@
 
 **Term:** ______________ **Assessor:** ______________________ **Date:** ______________
 
-**Artifact/PR under discussion:** ______________________ **Repo record checked:** yes / no / NDA live
+**Artifact/PR under discussion:** ______________________ **Repo record checked:** yes / no / NDA live **RFC, decision record, and sprint notes at hand:** yes / no
 
 **Speaking position:** ____ of ____ (order drawn at random) **Individual follow-up needed:** yes / no
 
@@ -22,16 +22,16 @@ If a score comes out borderline, or a student's part of the session ran short, t
 
 ## 1. Ownership and delegation (SO2, SO4): ____ / 20
 
-- High (17-20): Presents work they demonstrably own end to end (authored or drove it, responded to review, merged it); claims match the repo record when spot-checked. Explains what was handed to AI tools, the checks that made that reasonable (tests, CI, review gates, staging, rollback), and the specific points where they stopped to validate, with a defensible reason for choosing those points.
-- Middle (5-16): Ownership is credible and some delegation reasoning is present, but the account of the checks or of where they validated is thin, generic, or partly reconstructed after the fact.
-- Low (1-4): Cannot credibly demonstrate ownership of the work presented, or describes delegating a hard-to-reverse change with no checks and no validation, or claims contradict the repo record.
+- High (17-20): Presents work they demonstrably own end to end (authored or drove it, responded to review, merged it); claims match the repo record when spot-checked. Explains what was handed to AI tools, the checks that made that reasonable (tests, CI, review gates, staging, rollback), and the specific points where they stopped to validate, each with a reason tied to what was hard to reverse (schema, authentication, deployment, data migration).
+- Middle (5-16): Claims match the repo record and some delegation reasoning is present, but the checks are named only in general terms ("we had tests"), no specific point where they stopped to validate is named, or the reasons given for the delegation do not match the RFC, the decision record, or the sprint notes.
+- Low (1-4): Cannot say what they authored, reviewed, or merged in the work presented, describes delegating a hard-to-reverse change with no checks and no validation, or makes claims about what they authored, reviewed, or merged that contradict the repo record.
 
 Notes: __________________________________________________________________
 
 ## 2. Judgment: why this approach, what was rejected, what was hard to reverse (SO1): ____ / 20
 
 - High (17-20): Explains why this approach was chosen, names the credible alternatives that were rejected with the actual reasons, and identifies which parts of the decision were hard to reverse.
-- Middle (5-16): Explains the chosen approach but alternatives are thin, generic, or clearly reconstructed after the fact, or shows no sense of which parts were hard to reverse.
+- Middle (5-16): Explains the chosen approach, but names alternatives without the reason each was rejected, gives alternatives or reasons that do not match the RFC, the decision record, or the sprint notes, or cannot say which parts were hard to reverse.
 - Low (1-4): Cannot explain why the work was done this way or name any alternative that was considered.
 
 Notes: __________________________________________________________________
@@ -39,7 +39,7 @@ Notes: __________________________________________________________________
 ## 3. Technical depth: "what breaks if X" (SO6): ____ / 20
 
 - High (17-20): Answers "what breaks if X changes" questions with correct, specific reasoning about the system's behavior and limits, including where they chose to verify the system's behavior themselves rather than rely on generated output.
-- Middle (5-16): Answers are mostly correct but stay at a surface level, or reasoning falters on follow-up questions.
+- Middle (5-16): Answers are mostly correct but do not name the specific behavior or limit that breaks, or reasoning falters on follow-up questions.
 - Low (1-4): Answers are incorrect, evasive, or reveal no working understanding of the system's behavior and limits.
 
 Notes: __________________________________________________________________
@@ -54,9 +54,9 @@ Notes: __________________________________________________________________
 
 ## 5. Communication, both directions (SO3): ____ / 20
 
-- High (17-20): Clear and candid at the right level of detail for the audience; handles not-knowing gracefully ("I don't know, but here is how I would find out" scores; bluffing does not). Names a specific thing they told someone whose work they reviewed, and what changed in that work because of it; in fall and winter, where the reviewed RFC is not revised yet, the author's response to the comment (the reply, or the revision the author committed to) counts as what changed.
-- Middle (5-16): Generally clear but occasionally too vague or too deep for the audience, or hesitant when reaching the edge of their knowledge. Names a real review comment but cannot say what changed, or describes their reviewing only in general terms.
-- Low (1-4): Unclear, evasive, or bluffs instead of acknowledging what they do not know. Cannot name anything they told a reviewee, or offers feedback that named no line and requested no change.
+- High (17-20): Answers the question asked, at a level of detail the assessor does not have to correct; at the edge of their knowledge, says "I don't know, but here is how I would find out" (that scores; bluffing does not). Names a specific thing they told someone whose work they reviewed, and what changed in that work because of it; in fall and winter, where the reviewed RFC is not revised yet, the author's response to the comment (the reply, or the revision the author committed to) counts as what changed.
+- Middle (5-16): Answers, but the assessor has to ask for a more concrete or a shorter answer, or hesitates at the edge of their knowledge without saying how they would find out. Names a real review comment but cannot say what changed, or describes their reviewing only in general terms.
+- Low (1-4): Does not answer the question asked, or bluffs instead of saying what they do not know. Cannot name anything they told a reviewee, or offers feedback that named no line and requested no change.
 
 Notes: __________________________________________________________________
 
