@@ -46,7 +46,7 @@ Notes: __________________________________________________________________
 
 ## 4. Role, team accountability, and work distribution (SO5): ____ / 20
 
-- High (17-20): Articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, with concrete examples; names a decision they chaired to a conclusion this term that matches the sprint-note record, or, where their turn to chair is still ahead, the decision they are scheduled to chair and when; and explains how the team's decisions actually got made and how work was distributed.
+- High (17-20): Articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, with concrete examples; names a decision they chaired to a conclusion this term that matches the sprint-note record, or, where their turn to chair is still ahead, the decision the charter's rotation schedules them to chair and when; and explains how the team's decisions actually got made and how work was distributed.
 - Middle (5-16): Describes the role and team process in general terms, with few concrete examples of what the role required in practice or of how work was distributed.
 - Low (1-4): Cannot articulate what their role or ownership area required, how the team makes decisions, or who did what.
 
