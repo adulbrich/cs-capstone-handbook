@@ -22,7 +22,8 @@ export default defineConfig({
     }),
     svelte(),
     starlight({
-      components: {},
+      // Adds the Canvas note under assignment titles; see the file for why.
+      components: { PageTitle: "./src/components/PageTitle.astro" },
       customCss: [
         // Path to your Tailwind base styles:
         "./src/styles/global.css",
