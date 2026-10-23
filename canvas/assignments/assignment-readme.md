@@ -24,7 +24,10 @@ The sections below record each change as it was made. The ones from before the m
 
 No rubric changes. The fall RFC Draft + Peer Review body was edited directly in Canvas; re-pasting it from the paste kit replaces those edits with the handbook text, which now keeps five of them: the intro's "The RFC is not a hypothetical" in place of the sentence fragment, "what you propose based on the analysis", "the draft's grade" in place of "its grade", "Submit both peer reviews", and "your reviews of other students' drafts" in place of "your own reviews". The rest are not kept: the "What You Present" heading (the section skeleton fixes "What You Produce"), the fall length band (one band in both terms since #512), "a new reviewer" (the instruction team supplies the review itself), the bolded sentence and the bold italics, "for example" before the winter list (the rubric reads it as the complete list), "how the team will know it was the right choice" (the plan detects failure), and the Analysis and peer-review wording changes.
 
-- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit, in both terms.
+The RFC page also says "You submit the RFC twice, each time as one PDF", the draft in week 4 and the revised final in week 8, in place of "Both entries take it as one PDF". Submitting Your Work on the Assignments Overview drops the sentence naming tools that turn Markdown into a PDF.
+
+- Re-paste the RFC Draft + Peer Review and RFC Final Draft bodies from the paste kit before each entry opens; where one has already opened this fall, leave it as it is until next year. The fall RFC Draft + Peer Review has opened, so it keeps the Canvas edit this fall.
+- Re-paste the Assignments Overview.
 
 ## Re-import Required: Observable Rubric Criteria (#149)
 
