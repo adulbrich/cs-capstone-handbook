@@ -16,7 +16,7 @@ Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for th
 
 If a score comes out borderline, or a student's part of the session ran short, tick the follow-up box below and arrange a 5-minute one-to-one in the same or the next cycle. Tell the student it is routine.
 
-**The reviewer-side half of criterion 5 is checkable.** In fall and winter it is the RFC peer review; in spring it is code review, and the team's sprint notes name the one change each student asked for. Both are graded records. "I left some comments" is not an answer, and neither is anything that named no line and requested no change.
+**The reviewer-side half of criterion 5 is checkable.** In fall and winter it is the RFC peer review, where the author's reply to the comment, or the revision the author committed to, counts as what changed; in spring it is code review, and the team's sprint notes name the change each student asked for or what they checked before approving. Both are graded records. "I left some comments" is not an answer, and neither is anything that named no line and requested no change.
 
 **Score the decision, not the luck.** A student who delegated a hard-to-reverse change (schema, auth, deployment, data migration) with no checks scores low on criterion 1 even if nothing broke. A student who stopped and validated at the right point scores high even if some reversible feature code has bugs. Sophisticated tooling is not itself worth points: a student with a weaker model who gated tightly and validated more has done the harder work, and the anchors are written so that reads as strength.
 
@@ -46,7 +46,7 @@ Notes: __________________________________________________________________
 
 ## 4. Role, team accountability, and work distribution (SO5): ____ / 20
 
-- High (17-20): Articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, with concrete examples; names a decision they chaired to a conclusion that matches the sprint-note record; and explains how the team's decisions actually got made and how work was distributed.
+- High (17-20): Articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, with concrete examples; names a decision they chaired to a conclusion this term that matches the sprint-note record, or, where their turn to chair is still ahead, the decision the charter's rotation schedules them to chair and when; and explains how the team's decisions actually got made and how work was distributed.
 - Middle (5-16): Describes the role and team process in general terms, with few concrete examples of what the role required in practice or of how work was distributed.
 - Low (1-4): Cannot articulate what their role or ownership area required, how the team makes decisions, or who did what.
 
@@ -54,7 +54,7 @@ Notes: __________________________________________________________________
 
 ## 5. Communication, both directions (SO3): ____ / 20
 
-- High (17-20): Clear and candid at the right level of detail for the audience; handles not-knowing gracefully ("I don't know, but here is how I would find out" scores; bluffing does not). Names a specific thing they told someone whose work they reviewed, and what changed in that work because of it.
+- High (17-20): Clear and candid at the right level of detail for the audience; handles not-knowing gracefully ("I don't know, but here is how I would find out" scores; bluffing does not). Names a specific thing they told someone whose work they reviewed, and what changed in that work because of it; in fall and winter, where the reviewed RFC is not revised yet, the author's response to the comment (the reply, or the revision the author committed to) counts as what changed.
 - Middle (5-16): Generally clear but occasionally too vague or too deep for the audience, or hesitant when reaching the edge of their knowledge. Names a real review comment but cannot say what changed, or describes their reviewing only in general terms.
 - Low (1-4): Unclear, evasive, or bluffs instead of acknowledging what they do not know. Cannot name anything they told a reviewee, or offers feedback that named no line and requested no change.
 

@@ -22,7 +22,7 @@ Everything the team finished this sprint. Each item concrete (someone could go l
 (the project is meaningfully further along). It does not have to be code; non-code work counts when someone can open it (the repository, an issue or ticket, your partner's system). Activity without a result does not
 belong here: "worked on the API" and "researched options" are not done things.
 
-- Board link:
+- Where the work is tracked (board, issue list, or pull requests):
 - Done this sprint:
 -
 -
@@ -38,7 +38,7 @@ The single biggest threat to shipping (in fall, before the Definition of Shipped
 
 One line per student, three parts:
   (a) the work you owned this sprint, one or more pieces, each with a link or ID (NDA teams: IDs only);
-  (b) whose work you reviewed (a pull request, a spec, a document) and the one change you asked for, named specifically ("LGTM" is not a review);
+  (b) a review you gave (a pull request, spec, design, test plan, document, or dataset), with its link or ID where the review is recorded, and either the change you asked for or, for an approval, what you checked before approving ("LGTM" alone is not a review; if you reviewed nothing this sprint, say so);
   (c) one human-written sentence: the most consequential thing you shipped, and how the team knows it works.
 If a student has nothing this sprint, their line says so plainly. Mechanical changes (formatter runs, lockfile bumps,
 generated files, bulk renames) are normal work but are not evidence; leave them out.

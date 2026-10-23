@@ -20,6 +20,21 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Fall Requirements That Failed Work Done as Asked (#537)
+
+Points and tags are unchanged in every file. Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw.
+
+- `sprint-note/sprint-note-rubric.csv`, on Sprint Notes 2 onward (fall week 6): the Contribution lines review part takes a review of any artifact, with a link or ID where the review is recorded, naming the change asked for or, for an approval, what was checked before approving; a review part that says the student reviewed nothing counts as that part, and a bare "LGTM" fails. What got done fails only with no link to where the work is tracked (the board, the issue list, or the pull requests), in place of "no board link".
+- `defense/defense-rubric.csv`, on Individual Defense (week 7 or 9, every term): in fall and winter the Communication Exceeds band takes the RFC author's response to the comment (the reply, or the revision the author committed to) as what changed; the Role Exceeds band takes a decision chaired so far this term or, where the student's turn is still ahead, the decision the charter's rotation schedules them to chair and when. Reprint `public/defense-scoresheet.md`, which carries both bands word for word.
+- `repo-checkpoint/repo-checkpoint-1-rubric.csv`, on Repo Checkpoint 1 (fall week 5): the Decision and risk hygiene Exceeds band takes RFC drafts committed with status Proposed, or with their outcome if the team has decided since, plus an ADR for any decision already taken, in place of "RFCs and ADRs are recorded with outcomes".
+- `rfc/rfc-draft-rubric.csv`, on RFC Draft + Peer Review (week 4, fall and winter): Draft complete counts the six sections before Decision, in place of "all six required sections".
+- `rfc/rfc-final-rubric.csv`, on RFC Final Draft (week 8, fall and winter): Problem framing takes a fall decision that was open when the draft was submitted, whether or not the team has decided since, in place of "still open in fall"; Does Not Meet names a fall decision already made at the draft and a winter RFC that justifies a decision it no longer changes. Writing counts the six sections before Decision, in place of "the required sections".
+- `team-charter/team-charter-rubric.csv`, on Team Charter (fall week 2), held for next year: this fall's charters are graded. AI and confidentiality grades against what the partner has stated about confidentiality (any NDA, the rules for their data, and which tools may see the code), in place of the undefined "partner agreement", and accepts an assumed boundary with the week the team will confirm it where the partner has not stated it yet.
+
+No rubric change for peer evaluations: the page now states that a student who does not complete a survey scores a flat 50 on that survey's entry, in place of the rubric score, which the scorer already does.
+
+Re-paste from the paste kit the bodies of every Sprint Notes entry, Individual Defense, all four Repo Checkpoints (the shared What You Submit text and the FOSS row of What CI Must Do changed), RFC Draft + Peer Review and RFC Final Draft, every Peer Evaluations entry, the Team Charter, and the Assignments Overview (the AI policy's confidentiality line names what the partner has stated in place of "your partner agreement").
+
 ## Re-paste Required: Partner Comments Shared with the Team (#535)
 
 No rubric changes, so nothing to re-import. The partner surveys now ask for a comment under every rating, shared with the team as written; the concern questions stay with the instruction team. The scorer writes each comment into its criterion's Comments column of the rubric-assessment CSV, so students see it beside the score once the CSV is imported.
