@@ -20,6 +20,26 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Observable Rubric Criteria (#149)
+
+Points and outcome tags are unchanged in every file.
+
+- `defense/defense-rubric.csv`
+- `definition-of-shipped/definition-of-shipped-rubric.csv`
+- `incident-postmortem/incident-postmortem-rubric.csv`
+- `individual-contribution/individual-contribution-rubric.csv`
+- `project-handoff/project-handoff-rubric.csv`
+- `project-landing-page/project-landing-page-rubric.csv`
+- `project-partner-evaluation/partner-final-fall-rubric.csv`, `partner-final-winter-rubric.csv`, `partner-final-spring-rubric.csv`
+- `project-retrospective/project-retrospective-rubric.csv`
+- `repo-checkpoint/repo-checkpoint-1-rubric.csv` to `repo-checkpoint-4-rubric.csv`
+- `rfc/rfc-draft-rubric.csv`, `rfc/rfc-final-rubric.csv`
+- `spring-release/spring-release-rubric.csv`
+- `sprint-note/sprint-note-rubric.csv`
+- `team-charter/team-charter-rubric.csv`
+- `term-retrospective/term-retrospective-rubric.csv`
+- `workshop-activities/workshop-activities-rubric.csv`
+
 ## Re-import Required: Fall Requirements That Failed Work Done as Asked (#537)
 
 Points and tags are unchanged in every file. Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw.

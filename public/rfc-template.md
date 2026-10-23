@@ -21,7 +21,7 @@ What decision is needed, why now, and what happens if the team does nothing. Wri
 
 ## Options
 
-At least three credible options, **including "do nothing"**. Give each option a short name and an account of its real costs. An option you would be embarrassed to recommend is not credible; a strawman weakens the whole document.
+At least three options, **including "do nothing"**. Give each option a short name, an account of its real costs, and the condition under which it would be the right choice. An option with no such condition is a strawman, and a strawman weakens the whole document.
 
 ### Option A: [Name]
 

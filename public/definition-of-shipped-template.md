@@ -10,7 +10,7 @@
 
 ## 1. What Shipped Means Here
 
-What you and your project partner agreed shipped means for this project, and which rung of the outcome ladder you are committing to, in your own words. "Merged upstream" or "in production" means what, exactly, here? Be realistic about ambition: a defended 90 beats a fantasy 100.
+What you and your project partner agreed shipped means for this project, and which rung of the outcome ladder you are committing to, in your own words. "Merged upstream" or "in production" means what, exactly, here? If other teams work on this project, record the agreed split in section 6. Pick a rung whose prerequisites in section 3 can start in time: a defended 90 beats a fantasy 100.
 
 ## 2. Success Metrics
 
@@ -23,7 +23,7 @@ What you and your project partner agreed shipped means for this project, and whi
 
 ## 3. Prerequisites and Lead Times
 
-Everything the target rung requires that your team does not control: accounts, reviews, approvals, recruitment. Each row needs an owner and a start-by date. The test: nothing discoverable in week 8 of spring should be missing from this table. See the Shipping guide for the lead-time bombs each path involves.
+Everything the target rung requires that your team does not control: accounts, reviews, approvals, recruitment. Each row needs an owner and a start-by date before the term it is needed. Include every lead time the Shipping guide names for the path closest to your project.
 
 | Prerequisite | Estimated lead time | Owner | Start by | Status |
 | --- | --- | --- | --- | --- |

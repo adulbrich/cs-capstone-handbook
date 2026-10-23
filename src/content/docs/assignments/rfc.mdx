@@ -64,13 +64,13 @@ What you can direct an agent or a teammate to build is bounded by how precisely 
 ## What You Produce
 
 1. **Problem and context**: what decision is needed, why now, what happens if the team does nothing.
-2. **Options**: at least three credible options including "do nothing", each with its real costs.
+2. **Options**: at least three options including "do nothing", each with its real costs and the condition under which it would be the right choice.
 3. **Analysis**: the technical tradeoffs that matter (performance, complexity, maintainability, security, cost), argued from cited sources and your own project evidence.
 4. **Recommendation and verification plan**: what you propose and, concretely, how the team will know it worked (tests, metrics, acceptance criteria).
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
 6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-Write it in the sections of the [RFC template](/rfc-template.md): the six above, then Decision. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision set to Proposed. When your team decides, before or after the reviews, record the outcome in both; the [ADR guide](/guides/adr/) covers keeping it as a record from then on. Both entries take it as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)). The length is 1,500 to 2,500 words, with a 2,000-word floor on the final (see [RFC Final Draft](#rfc-final-draft)).
+Write it in the sections of the [RFC template](/rfc-template.md): the six above, then Decision. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision set to Proposed. When your team decides, before or after the reviews, record the outcome in both; the [ADR guide](/guides/adr/) covers keeping it as a record from then on. Both entries take it as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)). The draft is 1,500 to 2,500 words and the final 2,000 to 2,500, in fall and in winter, not counting the revision log (see [RFC Final Draft](#rfc-final-draft)).
 
 **AI use:** AI may research options, draft sections, and sharpen the argument; the Delegation and validation criterion is where you say what you handed off and how you checked it. Presenting a generated analysis you did not verify as your own judgment, or inventing evidence (benchmarks, quotes, references that do not exist), fails the assignment. The defense will ask you to explain the decision without the tool.
 
@@ -78,11 +78,11 @@ Write it in the sections of the [RFC template](/rfc-template.md): the six above,
 
 ### RFC Draft + Peer Review
 
-Submit a complete draft by Sunday of week 4: every section above, within the length band. You don't need its grade before revising: start as soon as your peer reviews arrive.
+Submit a complete draft by Sunday of week 4: every section above, 1,500 to 2,500 words. You don't need its grade before revising: start as soon as your peer reviews arrive.
 
 #### The Peer Review
 
-In week 5 you review two drafts by other students, and two students review yours. Your reviews carry most of this entry's points, and they are the part graded on quality.
+In week 5 you review two drafts by other students, and two students review yours. Your reviews carry most of this entry's points, and the larger share goes to how specific each one is to its draft.
 
 1. **Get your pairings.** At the start of week 5, you are assigned two drafts through the peer review on this entry.
 2. **Answer four questions for each draft**, in writing:
@@ -147,7 +147,7 @@ Different activities suit the fall and winter RFCs, so you're not redoing the sa
 | Fall | [Map Your Hard-to-Reverse Decisions](/activities/technical-design/#map-your-hard-to-reverse-decisions) | Choosing the topic, and problem framing |
 | Fall | [Choose a Storage or Technology](/activities/technical-design/#choose-a-storage-or-technology) | Options, and technical tradeoff analysis |
 | Fall | [Six Thinking Hats](/activities/ideation/#six-thinking-hats) | Options, including "do nothing" |
-| Fall | [Peer Technical Design Review](/activities/technical-design/#peer-technical-design-review) | Review quality, and revision |
+| Fall | [Peer Technical Design Review](/activities/technical-design/#peer-technical-design-review) | Reviews specific to the draft, and revision |
 | Winter | [Write a Literature Review](/activities/research-methods/#write-a-literature-review) | Tradeoff analysis, and sourced claims |
 | Winter | [Proof-of-Concept](/activities/technical-design/#proof-of-concept) | Recommendation with a verification plan |
 | Both | [Apply the Privacy by Design Guidelines](/activities/technical-design/#apply-the-privacy-by-design-pbd-guidelines) | Constraints |

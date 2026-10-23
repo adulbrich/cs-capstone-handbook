@@ -4,24 +4,24 @@ Run the 4Ls session first (Liked, Learned, Lacked, Longed for), then distill it 
 
 ## Themes (from the 4Ls)
 
-2 or 3 patterns that explain the term, not a list of events.
+2 or 3 patterns, each seen in more than one event during the term, not a list of events.
 
 ### Theme A: _<name the pattern>_
 
 - **What we saw (examples):**
-- **Why this happened (plausible causes):**
+- **Why this happened (a cause in how the team works):**
 - **So what for next term:**
 
 ### Theme B: _<name the pattern>_
 
 - **What we saw (examples):**
-- **Why this happened (plausible causes):**
+- **Why this happened (a cause in how the team works):**
 - **So what for next term:**
 
 ### Theme C (optional): _<name the pattern>_
 
 - **What we saw (examples):**
-- **Why this happened (plausible causes):**
+- **Why this happened (a cause in how the team works):**
 - **So what for next term:**
 
 ## Evidence
