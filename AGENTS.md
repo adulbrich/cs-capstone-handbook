@@ -92,9 +92,10 @@ it. Content lives in `src/content/docs/**` as MDX.
    "check Canvas" reads as a second authority once it is there. Only the
    syllabi and the note under each assignment title say which source wins:
    Canvas, once the assignments are in it. The note comes from
-   `src/components/PageTitle.astro`, on every assignment page but the two
-   Canvas-owned stubs; it renders outside `.sl-markdown-content`, the only
-   part of a page `canvas-export.mjs` copies, so it never reaches Canvas.
+   `src/components/PageTitle.astro`, on every page under `assignments/` but
+   the two Canvas-owned stubs; it renders outside `.sl-markdown-content`,
+   the only part of a page `canvas-export.mjs` copies, so it never reaches
+   Canvas, and `--strict` fails if it does.
    Write "submit", "your submission", "the gradebook". Something that
    exists only in Canvas, such as a registration link or a published
    schedule, is "check announcements for the link". The two Canvas-owned

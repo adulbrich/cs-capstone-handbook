@@ -599,6 +599,11 @@ function body(e) {
   if (!root) {
     throw new Error(`${e.page}: no .sl-markdown-content`);
   }
+  // The note under the title (src/components/PageTitle.astro) may name Canvas
+  // only because it sits outside this root (AGENTS.md hard rule 7).
+  if (select(".canvas-note", root)) {
+    warnings.push(`${e.term}/${e.name}: the Canvas note reached the body`);
+  }
 
   // Tabs: keep the panel for this term, else show every panel under its label.
   visit(root, "element", (node, index, parent) => {
