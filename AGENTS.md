@@ -87,14 +87,20 @@ it. Content lives in `src/content/docs/**` as MDX.
    rubric; `validate-outcomes.mjs` reconciles the list with the
    page weight, the rendered rubrics, and Canvas's per-group points. See
    `docs/decisions/2026-09-23-canvas-entry-model.md`.
-7. **Pages do not mention Canvas.** Assignment bodies are pasted into
+7. **Page bodies do not mention Canvas.** Assignment bodies are pasted into
    Canvas, so a page that says "confirm in Canvas", "the handbook wins", or
    "check Canvas" reads as a second authority once it is there. Only the
-   syllabi say which source wins: Canvas, once the assignments are in it.
-   Write "submit", "your submission", "the gradebook". Something that exists
-   only in Canvas, such as a registration link or a published schedule, is
-   "check announcements for the link". The two Canvas-owned stubs and the
-   Acknowledgments tools list are the only pages that name Canvas.
+   syllabi and the note under each assignment title say which source wins:
+   Canvas, once the assignments are in it. The note comes from
+   `src/components/PageTitle.astro`, on every page under `assignments/` but
+   the two Canvas-owned stubs; it renders outside `.sl-markdown-content`,
+   the only part of a page `canvas-export.mjs` copies, so it never reaches
+   Canvas, and `--strict` fails if it does.
+   Write "submit", "your submission", "the gradebook". Something that
+   exists only in Canvas, such as a registration link or a published
+   schedule, is "check announcements for the link". The two Canvas-owned
+   stubs and the Acknowledgments tools list are the only pages whose body
+   names Canvas.
 
 ## Validation
 

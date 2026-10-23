@@ -1,0 +1,69 @@
+---
+/**
+ * PageTitle: Starlight's page title, overridden in astro.config.mjs to add
+ * one note under the title of every assignment page saying Canvas is
+ * authoritative for the current term: the handbook can already hold next
+ * year's changes while Canvas holds what students are graded on.
+ *
+ * The title renders outside `.sl-markdown-content`, the only part of a page
+ * scripts/canvas-export.mjs copies, so the note never reaches a Canvas body.
+ * That is why it may name Canvas when page bodies may not (AGENTS.md hard
+ * rule 7). The two Canvas-owned stubs (hard rule 4) already send students to
+ * Canvas and get no note.
+ *
+ * Accessibility: the note is a paragraph after the h1, not part of it, so the
+ * page title stays the bare title; the icon is decorative and colors come
+ * from Starlight's custom properties, so both themes keep their contrast.
+ */
+import { Icon } from "@astrojs/starlight/components";
+import Default from "@astrojs/starlight/components/PageTitle.astro";
+
+const CANVAS_OWNED = new Set([
+  "assignments/career-retrospective",
+  "assignments/resume-and-intent",
+]);
+
+const { id } = Astro.locals.starlightRoute.entry;
+const showNote = id.startsWith("assignments/") && !CANVAS_OWNED.has(id);
+---
+
+<Default />
+{
+  showNote && (
+    <p class="canvas-note" data-pagefind-ignore>
+      <Icon name="information" class="canvas-note__icon" />
+      <span>
+        Canvas is the source of truth for this term’s assignments. This page
+        may already show changes Canvas does not have yet.
+      </span>
+    </p>
+  )
+}
+
+<style>
+  .canvas-note {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-block: 0.75rem 0;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+    background: var(--sl-color-blue-low);
+    border-inline-start: 3px solid var(--sl-color-blue);
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+
+  .canvas-note :global(.canvas-note__icon) {
+    flex: none;
+    margin-block-start: 0.15rem;
+    color: var(--sl-color-blue-high);
+  }
+
+  @media print {
+    .canvas-note {
+      background: none;
+      border-inline-start-color: #000;
+    }
+  }
+</style>
