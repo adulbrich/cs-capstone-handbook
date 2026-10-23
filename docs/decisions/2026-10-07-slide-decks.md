@@ -2,7 +2,7 @@
 
 Date: 2026-10-07
 Branch: `feat/465-reveal-decks`
-Status: implemented in #465, part of #51. The Workshop 1 deck (#466) and the week 0 and week 1 decks (#467) build on it. #510 changed rule 5: decks no longer carry speaker notes. #521 added rule 7.
+Status: implemented in #465, part of #51. The Workshop 1 deck (#466) and the week 0 and week 1 decks (#467) build on it. #510 changed rule 5: decks no longer carry speaker notes. #521 added rule 7. #549 settled rule 6: no page links a deck.
 Companion documents: `AGENTS.md` (the `src/decks/` row), `src/pages/decks/[slug].astro`, `src/styles/deck.css`, `src/components/deck/`, `src/decks/sample.astro`.
 
 ## 1. Why
@@ -19,7 +19,7 @@ The only deck in the repository was a Marp draft in the root `decks/`: outside t
 3. **Body text at least 32px on the 1920x1080 slide.** The decks are projected in a 250-seat auditorium. reveal's slide is fixed at 1920x1080 with no margin, so at that viewport one CSS pixel is one projected pixel and the floor is measured as written.
 4. **One idea per slide.** A slide that needs more is two slides.
 5. **No speaker notes; slides explain themselves.** The presenter works from the slides alone and never opens reveal's speaker view, so the notes hid facts from the room: the AI tool behind a demo, the citation behind a map, whose commits a repository history shows. A fact the room needs goes on its slide. The first decks carried a `<Notes>` component with a cue and a target time per slide, and a pacing timer in the route; #510 removed the component, the speaker-view plugin, and the timer.
-6. **Unlinked and `noindex` while no page links a deck**, and out of the sitemap, as the instructor tools are.
+6. **Unlinked and `noindex`**, and out of the sitemap, as the instructor tools are. A deck is session material that reaches the class through announcements, so the schedule tells students to check announcements for each session's slides rather than linking the deck from its week (#549).
 7. **A link shows its page's name, never its URL.** The slides are shared with the class at the start of each session, so a link is clicked, not typed; the first decks printed URLs "as the room would type them", which put long project-page addresses on slides nobody needed to read. `<TermSessions>` keeps the schedule's links for the same reason. A QR slide keeps its printed URL, the fallback for anyone who cannot scan.
 
 ## 3. How it works
@@ -28,5 +28,4 @@ The route globs `src/decks/*.astro` in `getStaticPaths` and renders each inside 
 
 ## 4. What it left open
 
-- No page links a deck yet. Linking one ends rule 6 and needs `exclude: ['/decks/**']` in `starlight-links-validator` only if the validator rejects the link.
 - `check-prose` applies the banned words to `src/decks/`, not to fixed text inside `src/components/deck/`.

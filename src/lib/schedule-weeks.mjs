@@ -5,7 +5,8 @@
 //
 // A week in the source is a `### Week N` heading, an optional TA check-in
 // badge, and a list: a `**Due**` item whose nested items are the deliverables,
-// then `**In class:**`, `**Read:**` and `**Optional:**` lines.
+// then `**In class:**`, `**Read:**` and `**Optional:**` lines. A week with no
+// In class line has no class session, and its card says so.
 
 import { toString as textOf } from "hast-util-to-string";
 import { h } from "hastscript";
@@ -18,6 +19,11 @@ const AFTER_LAST_SPRINT = "Project Handoff";
 
 // The lines a week may carry, and the icon each one's `data-row` selects.
 const LABELS = new Set(["Due", "In class", "Read", "Optional"]);
+
+// The In class line a card shows for a week the source gives none, the way
+// it shows "Nothing due" for a week with no Due items. The decks'
+// src/components/deck/TermSessions.astro shows the short form, "No session".
+const NO_SESSION = "no class session; use the time to work with your team";
 
 const WEEK_HEADING_RE = /^Week (\d+)$/;
 const LABEL_COLON_RE = /:$/;
@@ -178,6 +184,9 @@ function card(week, ctx) {
     );
   }
   const more = items.filter((li) => li !== due);
+  if (!more.some((li) => labelOf(li) === "In class")) {
+    more.unshift(h("li", [h("strong", "In class:"), ` ${NO_SESSION}`]));
+  }
   const dueItems = due
     ? (due.children.find((c) => isEl(c, "ul"))?.children ?? []).filter((c) =>
         isEl(c, "li")
