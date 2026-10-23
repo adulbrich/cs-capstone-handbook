@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-import Required: Observable Rubric Criteria (#149)
 
-Points and outcome tags are unchanged in every file.
+Points and outcome tags are unchanged in every file. Import each before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year. The three `partner-final-*` files are also the End-of-Term Surveys' question text and anchors: regenerate those surveys from the tools pages and import the new `.qsf` before each one's next run.
 
 - `defense/defense-rubric.csv`
 - `definition-of-shipped/definition-of-shipped-rubric.csv`
