@@ -53,7 +53,7 @@ Every two-week [sprint](https://scrumguides.org/scrum-guide.html) ends with a on
 The sprint note is one page with five items:
 
 1. **Working software evidence**: a URL, tagged release, or demo video, plus the CI run. If nothing works yet, say so plainly and say why.
-2. **What got done**: the things the team actually finished this sprint, each one concrete and consequential. Link the board.
+2. **What got done**: the things the team actually finished this sprint, each one concrete and consequential. Link where the work is tracked: the board, the issue list, or the pull requests.
 3. **Top risk and one decision needed**: the single biggest threat to shipping (in fall, before your [Definition of Shipped](/assignments/definition-of-shipped/) exists, the biggest threat to the term gate), and one concrete decision the team needs from the partner, the instruction team, or itself. Take the risk from the top of your `docs/risks.md`.
 4. **Contribution lines**: one per student, in the shape below.
 5. **Judgment layer** (about five lines, human-written): what the team learned this sprint and what it changes about the plan.
@@ -79,10 +79,10 @@ A piece of work is something you owned that a grader can check. A code change is
 One line per student, three parts:
 
 1. **The work you owned this sprint**, one or more pieces, each with a link or ID. NDA teams list IDs only. Owning it means you authored or drove it, answered review, and saw it accepted. A rename, a formatter run, a lockfile bump, or a status update does not count. If a grader cannot open it (your partner's system, an NDA), give its ID and show it at your check-in demo.
-2. **Whose work you reviewed (a pull request, a spec, a document), and the one change you asked for.** Name it specifically: "asked Priya to handle the empty-cart case in checkout" is a review; "LGTM" is not, and neither is a comment that names no line and requests no change.
+2. **A review you gave this sprint, and what it said.** Any artifact counts: a pull request, a spec, a design, a test plan, a document, a dataset. Link it or give its ID where the review is recorded (a pull request review, a document comment, an issue thread), and name either the change you asked for ("asked Priya to handle the empty-cart case in checkout") or, for an approval, what you checked before approving ("ran the migration against a copy of the seed data and compared row counts"). A bare "LGTM" is not a review, and neither is a comment that names nothing checked and requests no change. If you reviewed nothing this sprint, say so here.
 3. **The most consequential thing you shipped this sprint, in one sentence, and how the team knows it works.** This is the part with judgment in it, and it's the part that's read.
 
-If a teammate has nothing this sprint, their line says so plainly. The team's Contribution lines item still passes; whether it costs that student anything is their individual contribution's question.
+If a teammate has nothing this sprint, their line says so plainly, and so does a review part with no review behind it. The team's Contribution lines item still passes either way; whether it costs that student anything is their individual contribution's question.
 
 [Google's code review standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is worth reading on where that bar sits: approve once the change improves the overall code health of the system, even when it is not perfect, and say what would need to change if it does not.
 

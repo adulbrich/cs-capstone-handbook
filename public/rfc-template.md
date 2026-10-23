@@ -2,15 +2,15 @@
 
 # RFC: [Short, Specific Title]
 
-<!-- Decision record header. Leave Status as "Draft" while the RFC is under review.
-     When your team decides, fill in the outcome and the decision date. The
-     document stays where it is; this header is what makes it a record. -->
+<!-- Decision record header. Leave Status as "Proposed" until your team decides,
+     before or after the reviews. Then fill in the outcome and the decision date.
+     The document stays where it is; this header is what makes it a record. -->
 
 | Field | Value |
 | --- | --- |
 | Author | |
 | Date | YYYY-MM-DD |
-| Status | Draft / In Review / Accepted / Rejected / Superseded |
+| Status | Proposed / Accepted / Rejected / Superseded |
 | Decision Date | (fill when decided) |
 | Deciders | (who agreed to the outcome) |
 | Superseded By | (link, if applicable) |
@@ -57,4 +57,4 @@ What is assessed is in the [AI policy](https://capstone.alexulbrich.com/assignme
 
 ## Decision
 
-Accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
+Proposed, until your team decides. Then accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
