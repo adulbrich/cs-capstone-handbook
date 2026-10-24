@@ -6,6 +6,7 @@
 // rubrics, the partner page's rules, the weights, and the page address
 // arrive from the handbook's own files at build time.
 
+import { clickPaths, pathSteps } from "../../data/click-paths.mjs";
 import { distributionEmails } from "../../data/partner-evaluation.mjs";
 import { parsePartnerSheet } from "../../lib/partner-sheet.mjs";
 import { download } from "../../lib/tools/download.mjs";
@@ -28,6 +29,8 @@ import {
 } from "../../lib/tools/term-label.mjs";
 
 const { pageUrl, rubrics, rules, weights } = $props();
+
+const importPath = pathSteps(clickPaths.qualtricsImport);
 
 /** Which survey, "pulse" or "final", and its term, the current one first. */
 let kind = $state("pulse");
@@ -223,7 +226,7 @@ function downloadContacts() {
 
 <div class="actions">
   <button type="button" onclick={downloadSurvey} disabled={!survey.text}>
-    Download the survey (.qsf) for Create project, From a file
+    Download the survey (.qsf) for Import a QSF file
   </button>
   <button
     type="button"
@@ -282,7 +285,7 @@ function downloadContacts() {
     survey's first page shows it.
   </li>
   <li>
-    In Qualtrics, Create project, Survey, From a file: import the <code>.qsf</code>.
+    In Qualtrics, {importPath}, and choose the <code>.qsf</code>.
     <span class="copy-row">
       <span>Name the survey <strong>{name}</strong>.</span>
       <button type="button" onclick={() => copy("survey name", name)}>
