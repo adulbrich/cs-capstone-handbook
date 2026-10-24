@@ -254,7 +254,7 @@ export const scoreText = {
     summary: ({ base, other }) =>
       `${base}-scored.csv${other ? `, and ${base}-other-sections.csv` : ""}.`,
     title: "Grades",
-    what: "The rubric export from step 3, filled in: each criterion's points and rating. These rubric scores are the anonymized feedback students receive; nothing else goes to students.",
+    what: "The rubric export from step 3, filled in: each criterion's points and rating. These rubric scores are the only feedback students receive, and where only one teammate's answers count (a team of two, or the others did not submit) they are that teammate's ratings and split.",
   },
   label: "Score the peer evaluation",
   results: {
