@@ -340,6 +340,7 @@ const modeCards = Object.entries(text.survey.modes).map(
         <CopyButton label={text.email.copyBody} text={distributionEmail.body} disabled={!closeAt} />
         {#if !closeAt}<span class="muted">{text.email.waiting}</span>{/if}
       </p>
+      <p>{text.email.send}</p>
     {/snippet}
   </Step>
 

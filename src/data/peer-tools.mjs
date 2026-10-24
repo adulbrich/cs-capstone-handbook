@@ -142,8 +142,9 @@ export const prepareText = {
     copySubject: "Copy the subject",
     path: clickPaths.qualtricsEmail,
     pathAfter:
-      ", to the list from step 3. Keep Individual links (the default), and paste the subject and the body.",
-    summary: "Subject and body ready to paste into the distribution.",
+      ", to the list from step 3. Keep Individual links (the default): the survey is by invitation, so the anonymous link does not open it. Paste the subject and the body.",
+    send: "Before sending, set the close date from step 3 under Advanced options › Link expiration: students can start and finish until then. Then send it now or schedule it.",
+    summary: "Sent or scheduled to the list from step 3.",
     title: "Distribution email",
     waiting: "Set the close date in step 3 first.",
     what: "The email Qualtrics sends each student, with the student's team, the close date from step 3, and their own survey link piped in.",
@@ -161,18 +162,14 @@ export const prepareText = {
     // Each line a box to check before the step is done.
     checklist: {
       close: `At the deadline, close the responses still in progress, so a student who stopped partway is recorded: in the survey, ${pathSteps(clickPaths.qualtricsCloseInProgress)}, select them, and close them.`,
-      expiration:
-        "On the distribution, set the availability end: Advanced options › Link expiration. Students can start and finish until then.",
-      personal:
-        "Send with Individual links only. The survey is by invitation, so the anonymous link does not open it.",
       reminder:
         "Schedule a reminder halfway to the link expiration, to those who have not finished.",
     },
     // The checklist in the order it happens: the close comes last.
-    order: ["expiration", "personal", "reminder", "close"],
-    sourceTitle: "Send, then close",
-    summary: "Distribution set and sent.",
-    title: "Send and close",
+    order: ["reminder", "close"],
+    sourceTitle: "Once it is sent",
+    summary: "Reminder scheduled and responses closed.",
+    title: "Remind and close",
     waiting: "Check every line first.",
   },
   survey: {
