@@ -154,7 +154,7 @@ Peer midterm, peer end-of-term, partner midterm (the Midterm Pulse), partner end
 Per run:
 
 1. On the tools page, generate the survey (`.qsf`) and its contact list from the Canvas roster with groups (the partner list also reads the partner sheet). For the peer survey, pick the variant: Midterm, End-of-term (fall, winter), or CATME (spring end-of-term).
-2. In Qualtrics, import the `.qsf` (Catalog › Survey › Get started › Import a QSF file), and create a mailing list from the contact list; every column maps by its header.
+2. In Qualtrics, import the `.qsf` (Catalog › Survey › Get started › Import a QSF file), and create a mailing list from the contact list (Directories › Segments & lists › Lists › Create a list › Upload a File); every column maps by its header.
 3. Partner surveys: copy the distribution email (subject and body) from the tools page into the distribution.
 4. Set the availability dates on the distribution, not in the survey.
 5. Distribute by email with personal links only. The survey is by invitation, so the anonymous link does not open it.

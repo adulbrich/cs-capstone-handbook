@@ -31,6 +31,7 @@ import {
 const { pageUrl, rubrics, rules, weights } = $props();
 
 const importPath = pathSteps(clickPaths.qualtricsImport);
+const listPath = pathSteps(clickPaths.qualtricsList);
 
 /** Which survey, "pulse" or "final", and its term, the current one first. */
 let kind = $state("pulse");
@@ -233,7 +234,7 @@ function downloadContacts() {
     onclick={downloadContacts}
     disabled={!contacts?.rows?.length || closeText === ""}
   >
-    Download the contact list (.csv) for Directory, mailing list
+    Download the contact list (.csv) for Create a list
   </button>
 </div>
 {#if contacts?.rows?.length && closeText === ""}
@@ -294,7 +295,7 @@ function downloadContacts() {
     </span>
   </li>
   <li>
-    In the Directory, create a mailing list from the contact-list CSV.
+    In Qualtrics, {listPath}, and choose the contact-list CSV.
     Every column maps by its header: <code>Email</code>, <code>Team</code>,
     and the close-date field. If a partner has two teams, check
     that the list kept both rows.
