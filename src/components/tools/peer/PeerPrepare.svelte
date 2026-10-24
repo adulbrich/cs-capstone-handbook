@@ -121,6 +121,11 @@ const ready = $derived({
   survey: Boolean(survey.value),
 });
 
+/** What the survey and its mailing list are called in Qualtrics. */
+const name = $derived(
+  surveyName(settings.value.label, variants[variant].title)
+);
+
 const summaries = $derived({
   contacts: text.contacts.summary({
     file: files.contacts,
@@ -137,7 +142,7 @@ const summaries = $derived({
   send: text.send.summary,
   survey: text.survey.summary({
     mode: text.survey.modes[settings.value.mode].short,
-    name: surveyName(settings.value.label, variants[variant].title),
+    name,
     variant: variants[variant].label,
   }),
 });
@@ -250,6 +255,10 @@ const modeCards = Object.entries(text.survey.modes).map(
         </Button>
       </p>
       <ClickPath path={text.survey.path} after={text.survey.pathAfter} />
+      <p class="copies not-content">
+        <span>{text.survey.name} <strong>{name}</strong>.</span>
+        <CopyButton label={text.copyName} text={name} />
+      </p>
     {/snippet}
   </Step>
 
@@ -297,6 +306,10 @@ const modeCards = Object.entries(text.survey.modes).map(
         {#if !closeAt}<span class="muted">{text.contacts.waiting}</span>{/if}
       </p>
       <ClickPath path={text.contacts.path} after={text.contacts.columns} />
+      <p class="copies not-content">
+        <span>{text.contacts.name} <strong>{name}</strong>.</span>
+        <CopyButton label={text.copyName} text={name} />
+      </p>
     {/snippet}
   </Step>
 
@@ -327,6 +340,7 @@ const modeCards = Object.entries(text.survey.modes).map(
         <CopyButton label={text.email.copyBody} text={distributionEmail.body} disabled={!closeAt} />
         {#if !closeAt}<span class="muted">{text.email.waiting}</span>{/if}
       </p>
+      <p>{text.email.send}</p>
     {/snippet}
   </Step>
 

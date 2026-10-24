@@ -93,7 +93,6 @@ export function fieldCompared(name, operator, words, value) {
   return logic;
 }
 
-export const isEmpty = (name) => onField(name, "Empty", "Is Empty");
 export const isNotEmpty = (name) => onField(name, "NotEmpty", "Is Not Empty");
 
 /**
@@ -427,8 +426,7 @@ function surveyOptions(title, metaDescription) {
     SurveyLinkExpirationMessageType: "DefaultMessage",
     SurveyMetaDescription: metaDescription,
     // By invitation, as the real exports are: only a personal link opens it.
-    // The peer survey's empty-Team guard still catches a contact with no
-    // team; a partner response with no team is reported by the scorer.
+    // A response from a contact with no team is reported by the scorer.
     SurveyProtection: "ByInvitation",
     SurveyTermination: "DefaultMessage",
     SurveyTitle: title,

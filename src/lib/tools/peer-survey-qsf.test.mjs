@@ -134,13 +134,18 @@ test("export tags are unique", () => {
 test("loop mode: flow order", () => {
   assert.deepEqual(outline(make()), [
     ["EmbeddedData"],
-    ["Branch", "Team", "Empty"],
-    ["  ", "Standard", "Guard"],
-    ["  ", "EndSurvey"],
     ["Block", "Intro"],
     ["Standard", "Ratings"],
     ["Standard", "Split and comments"],
   ]);
+});
+
+test("no variant ends the survey early on an empty Team", () => {
+  for (const build of BUILDS) {
+    const flow = JSON.stringify(payload(make(build), "FL"));
+    assert.ok(!flow.includes("EndSurvey"), JSON.stringify(build));
+    assert.ok(!flow.includes('"Empty"'), JSON.stringify(build));
+  }
 });
 
 test("flow IDs are unique and counted", () => {
@@ -333,16 +338,13 @@ test("Meta Info sits on the last page, with the last visible question", () => {
 test("slots mode: one block per slot, each teammate behind its branch", () => {
   const survey = make({ mode: "slots" });
   const flow = outline(survey);
-  assert.deepEqual(flow.slice(0, 6), [
+  assert.deepEqual(flow.slice(0, 3), [
     ["EmbeddedData"],
-    ["Branch", "Team", "Empty"],
-    ["  ", "Standard", "Guard"],
-    ["  ", "EndSurvey"],
     ["Block", "Intro"],
     ["Standard", "Rate yourself"],
   ]);
   for (let slot = 1; slot <= 9; slot += 1) {
-    const at = 6 + (slot - 1) * 2;
+    const at = 3 + (slot - 1) * 2;
     assert.deepEqual(flow[at], ["Branch", `Team Member ${slot}`, "NotEmpty"]);
     assert.deepEqual(flow[at + 1], [
       "  ",
@@ -541,9 +543,6 @@ test("catme: flow order, the split page replaced by a comments page", () => {
   }
   assert.deepEqual(outline(make({ variant: "catme" })), [
     ["EmbeddedData"],
-    ["Branch", "Team", "Empty"],
-    ["  ", "Standard", "Guard"],
-    ["  ", "EndSurvey"],
     ["Block", "Intro"],
     ["Standard", "Ratings"],
     ["Standard", "Comments"],
@@ -666,11 +665,11 @@ test("catme: head, display logic, and loop shapes match the regular survey", () 
     const regular = make({ mode });
     const catme = make({ mode, variant: "catme" });
     assert.deepEqual(
-      payload(catme, "FL").Flow.slice(0, 3),
-      payload(regular, "FL").Flow.slice(0, 3),
+      payload(catme, "FL").Flow.slice(0, 2),
+      payload(regular, "FL").Flow.slice(0, 2),
       mode
     );
-    for (const tag of ["Intro", "Roster", "Guard"]) {
+    for (const tag of ["Intro", "Roster"]) {
       assert.deepEqual(
         questionByTag(catme, tag),
         questionByTag(regular, tag),
@@ -715,24 +714,25 @@ test("every variant's output is byte-identical to the reviewed build", () => {
   // (#463): with that one field removed, the file hashes to the earlier
   // values. The catme hashes pin the published CATME anchors (#497). All
   // six moved when the last block's Next button became Submit (#535): with
-  // that block's options reset, the file hashes to the previous values. A
-  // wording or rubric change changes them on purpose: regenerate and update
-  // the hashes then. The two SurveyEntry timestamps are written in local
-  // time, so they are blanked before hashing; the hash then holds in every
-  // time zone.
+  // that block's options reset, the file hashes to the previous values. All
+  // six moved again when the empty-Team guard was dropped: every other
+  // question is unchanged but for its renumbered ID. A wording or rubric
+  // change changes them on purpose: regenerate and update the hashes then.
+  // The two SurveyEntry timestamps are written in local time, so they are
+  // blanked before hashing; the hash then holds in every time zone.
   const expected = {
     "catme loop":
-      "bc4c0093af20b24bd52c4100d793df2d5dc46067e2f9e37a15ba2e9676457388",
+      "a6d35011e50dc7b34b3e87280806f3103d3e45cea0aa5a7c61227c1db5d858a2",
     "catme slots":
-      "7e452f6bcc510d48b912225a88d4903c343b8b3ed43abdabfa6b383b3fd75e2d",
+      "131b3f5abf5ed9df0d7d891ab262fa6437810f99ca0b22bfca23d94948fff13d",
     "final loop":
-      "68fb07ccd73bfabaf39ad649c1009a90406e10fa07abe8b57a74b72f06efeecd",
+      "037dff621c41966b8260ce549bf833f370d4a6cc7897e5d94ef8e2cd15cc7299",
     "final slots":
-      "70b26e4e331f36834e32df36924e79a2068bab99dd924e8ee39514b4c4fec67f",
+      "5601ab7e42a2f5e67b8c8614b400fc33c48db9c8f6ebd3c0fd8d059d47ab2469",
     "midterm loop":
-      "ba669f77777eef993c56b10cbac9f5b24f6f1529b79ffe6d4112b002a23ea315",
+      "249fd9d02696b2686a25f5abb2ae2737cdca53e7a472a123a49d723580691752",
     "midterm slots":
-      "ad43bf1bdfb24d9ef52ef13ac4b130870c995b21057e43669c8b8d5c50f9ce0d",
+      "f41814ea784ce4b61118e7f3be54f9e8ac0ac73d97241da67a797a5e0eac3a2b",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");

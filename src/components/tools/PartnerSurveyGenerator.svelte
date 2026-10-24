@@ -1,10 +1,12 @@
 <script>
 // Writes a project partner survey (.qsf), the Midterm Pulse or a term's
-// End-of-Term Survey, and its contact list as downloads. The roster and the
+// End-of-Term Survey, and its contact list as downloads, then the steps that
+// take them into Qualtrics, with the name to give both. The roster and the
 // partner sheet are read in the browser only: nothing is uploaded. The
 // rubrics, the partner page's rules, the weights, and the page address
 // arrive from the handbook's own files at build time.
 
+import { clickPaths, pathSteps } from "../../data/click-paths.mjs";
 import { distributionEmails } from "../../data/partner-evaluation.mjs";
 import { parsePartnerSheet } from "../../lib/partner-sheet.mjs";
 import { download } from "../../lib/tools/download.mjs";
@@ -17,6 +19,7 @@ import {
   partnerSurveyQsf,
   VARIANTS,
 } from "../../lib/tools/partner-survey-qsf.mjs";
+import { surveyName } from "../../lib/tools/qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
 import {
   finalSurvey,
@@ -26,6 +29,10 @@ import {
 } from "../../lib/tools/term-label.mjs";
 
 const { pageUrl, rubrics, rules, weights } = $props();
+
+const importPath = pathSteps(clickPaths.qualtricsImport);
+const listPath = pathSteps(clickPaths.qualtricsList);
+const emailPath = pathSteps(clickPaths.qualtricsEmail);
 
 /** Which survey, "pulse" or "final", and its term, the current one first. */
 let kind = $state("pulse");
@@ -109,6 +116,9 @@ function reader(key) {
     }
   };
 }
+
+/** What the survey and its mailing list are called in Qualtrics. */
+const name = $derived(surveyName(label, VARIANTS[variant].title));
 
 const baseName = $derived(
   [slug(label), "partner", variant].filter(Boolean).join("-")
@@ -218,14 +228,14 @@ function downloadContacts() {
 
 <div class="actions">
   <button type="button" onclick={downloadSurvey} disabled={!survey.text}>
-    Download the survey (.qsf) for Create project, From a file
+    Download the survey (.qsf) for Import a QSF file
   </button>
   <button
     type="button"
     onclick={downloadContacts}
     disabled={!contacts?.rows?.length || closeText === ""}
   >
-    Download the contact list (.csv) for Directory, mailing list
+    Download the contact list (.csv) for Create a list
   </button>
 </div>
 {#if contacts?.rows?.length && closeText === ""}
@@ -253,6 +263,58 @@ function downloadContacts() {
   </div>
   <pre>{email.body}</pre>
 </div>
+
+<ol>
+  <li>
+    <strong>Roster with groups</strong>: in Canvas, People, Groups, export
+    the group set's roster as CSV (<code>name, canvas_user_id, user_id,
+    login_id, sections, group_name, canvas_group_id, group_id</code>).
+    Its <code>group_name</code> becomes each partner's <code>Team</code>,
+    the value the scorer joins on. Scoring reads the same file.
+  </li>
+  <li>
+    <strong>Partner sheet</strong>: the staff sheet the team-contact letters
+    read, saved as CSV.
+    It reads only <code>Canvas Group Name</code> and <code>Project Partner / Mentor Email</code>;
+    two addresses in a cell, or a second row for the same team, give each
+    partner a row under that team, and a mentor standing in gets the survey
+    like a partner.
+  </li>
+  <li>
+    Pick the survey, the term (the current one by default; it sets the
+    label in front of the survey name), and the close date: it goes into the contact list as
+    <code>MidtermCloseDate</code> or <code>FinalCloseDate</code>, and the
+    survey's first page shows it.
+  </li>
+  <li>
+    In Qualtrics, {importPath}, and choose the <code>.qsf</code>.
+    <span class="copy-row">
+      <span>Name the survey <strong>{name}</strong>.</span>
+      <button type="button" onclick={() => copy("survey name", name)}>
+        {copied === "survey name" ? "Copied" : "Copy the name"}
+      </button>
+    </span>
+  </li>
+  <li>
+    In Qualtrics, {listPath}, and choose the contact-list CSV.
+    Every column maps by its header: <code>Email</code>, <code>Team</code>,
+    and the close-date field. If a partner has two teams, check
+    that the list kept both rows.
+    <span class="copy-row">
+      <span>Name the list <strong>{name}</strong>.</span>
+      <button type="button" onclick={() => copy("list name", name)}>
+        {copied === "list name" ? "Copied" : "Copy the name"}
+      </button>
+    </span>
+  </li>
+  <li>
+    In the survey, {emailPath}, to the list from step 5. Keep Individual
+    links: the survey is by invitation, so the anonymous link does not open
+    it. Paste the subject and the body from Distribution email above, set the
+    close date under Advanced options › Link expiration, then send it now or
+    schedule it.
+  </li>
+</ol>
 
 <style>
   .generator {
@@ -293,9 +355,13 @@ function downloadContacts() {
   }
   .copy-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 1rem;
     margin-top: 0.5rem;
+  }
+  .copy-row button {
+    flex-shrink: 0;
   }
   .email pre {
     white-space: pre-wrap;

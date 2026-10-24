@@ -104,8 +104,6 @@ export const surveyText = {
   // One CATME dimension, one question each, five to a page.
   catmeRating:
     "<b>{dimension}</b><br><br>Which description best fits <b>{ratee}</b>, for the whole term, not the last week?",
-  guard:
-    "This survey opens only from your personal link. Use the personal link from your email.",
   intro:
     "This evaluation is <b>confidential</b>: your answers go to the instruction team only and are never shown to your teammates.<br><br>You are on team: <b>${e://Field/Team}</b>",
   ratee: "Ratee (filled in automatically; leave as is)",
