@@ -115,10 +115,12 @@ const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
       survey's first page shows it.
     </li>
     <li>
-      In Qualtrics, Create project, Survey, From a file: import the <code>.qsf</code>.
+      In Qualtrics, Create project, Survey, From a file: import the <code>.qsf</code>,
+      and give the survey the name shown above the steps.
     </li>
     <li>
-      In the Directory, create a mailing list from the contact-list CSV.
+      In the Directory, create a mailing list from the contact-list CSV,
+      named as the survey is.
       Every column maps by its header: <code>Email</code>, <code>Team</code>,
       and the close-date field. If a partner has two teams, check
       that the list kept both rows.

@@ -17,6 +17,7 @@ import {
   partnerSurveyQsf,
   VARIANTS,
 } from "../../lib/tools/partner-survey-qsf.mjs";
+import { surveyName } from "../../lib/tools/qsf.mjs";
 import { parseRoster } from "../../lib/tools/roster.mjs";
 import {
   finalSurvey,
@@ -109,6 +110,9 @@ function reader(key) {
     }
   };
 }
+
+/** What the survey and its mailing list are called in Qualtrics. */
+const name = $derived(surveyName(label, VARIANTS[variant].title));
 
 const baseName = $derived(
   [slug(label), "partner", variant].filter(Boolean).join("-")
@@ -231,6 +235,12 @@ function downloadContacts() {
 {#if contacts?.rows?.length && closeText === ""}
   <p class="hint">Pick the close date to download the contact list.</p>
 {/if}
+<div class="copy-row">
+  <span>Name the survey and the mailing list <strong>{name}</strong>.</span>
+  <button type="button" onclick={() => copy("name", name)}>
+    {copied === "name" ? "Copied" : "Copy the name"}
+  </button>
+</div>
 
 <h3>Distribution email</h3>
 <p>
@@ -296,6 +306,9 @@ function downloadContacts() {
     align-items: center;
     gap: 1rem;
     margin-top: 0.5rem;
+  }
+  .copy-row button {
+    flex-shrink: 0;
   }
   .email pre {
     white-space: pre-wrap;

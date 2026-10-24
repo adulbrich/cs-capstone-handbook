@@ -128,12 +128,14 @@ export const prepareText = {
     },
     columns: `. Check that every column maps by its header: ${CONTACT_COLUMNS.slice(0, -SLOTS).join(", ")}, and ${CONTACT_COLUMNS.at(-SLOTS)} to ${CONTACT_COLUMNS.at(-1)}.`,
     download: (name) => `Download ${name}`,
+    name: "Name the list",
     path: clickPaths.qualtricsList,
     summary: ({ file, rows }) => `${file}: ${plural(rows, "row")}.`,
     title: "Contact list",
     waiting: "Set the close date first.",
     what: `One row per student who gets the survey: email, team, team size, the least they may give themselves in the split, the close date, and up to ${SLOTS} teammates, which the survey shows. Built from step 1's roster, added students included.`,
   },
+  copyName: "Copy the name",
   email: {
     as: (email) => `As ${email} receives it.`,
     copyBody: "Copy the body",
@@ -196,6 +198,7 @@ export const prepareText = {
       },
     },
     modesLegend: "Rating pages",
+    name: "Name the survey",
     path: clickPaths.qualtricsImport,
     pathAfter: ", and choose this file.",
     sample: {
