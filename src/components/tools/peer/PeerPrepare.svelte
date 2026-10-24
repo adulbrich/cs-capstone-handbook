@@ -121,7 +121,7 @@ const ready = $derived({
   survey: Boolean(survey.value),
 });
 
-/** What the survey and its list are called in Qualtrics. */
+/** What the survey and its mailing list are called in Qualtrics. */
 const name = $derived(
   surveyName(settings.value.label, variants[variant].title)
 );

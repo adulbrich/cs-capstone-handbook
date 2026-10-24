@@ -1,6 +1,7 @@
 <script>
 // Writes a project partner survey (.qsf), the Midterm Pulse or a term's
-// End-of-Term Survey, and its contact list as downloads. The roster and the
+// End-of-Term Survey, and its contact list as downloads, then the steps that
+// take them into Qualtrics, with the name to give both. The roster and the
 // partner sheet are read in the browser only: nothing is uploaded. The
 // rubrics, the partner page's rules, the weights, and the page address
 // arrive from the handbook's own files at build time.
@@ -235,12 +236,6 @@ function downloadContacts() {
 {#if contacts?.rows?.length && closeText === ""}
   <p class="hint">Pick the close date to download the contact list.</p>
 {/if}
-<div class="copy-row">
-  <span>Name the survey and the mailing list <strong>{name}</strong>.</span>
-  <button type="button" onclick={() => copy("name", name)}>
-    {copied === "name" ? "Copied" : "Copy the name"}
-  </button>
-</div>
 
 <h3>Distribution email</h3>
 <p>
@@ -263,6 +258,56 @@ function downloadContacts() {
   </div>
   <pre>{email.body}</pre>
 </div>
+
+<ol>
+  <li>
+    <strong>Roster with groups</strong>: in Canvas, People, Groups, export
+    the group set's roster as CSV (<code>name, canvas_user_id, user_id,
+    login_id, sections, group_name, canvas_group_id, group_id</code>).
+    Its <code>group_name</code> becomes each partner's <code>Team</code>,
+    the value the scorer joins on. Scoring reads the same file.
+  </li>
+  <li>
+    <strong>Partner sheet</strong>: the staff sheet the team-contact letters
+    read, saved as CSV.
+    It reads only <code>Canvas Group Name</code> and <code>Project Partner / Mentor Email</code>;
+    two addresses in a cell, or a second row for the same team, give each
+    partner a row under that team, and a mentor standing in gets the survey
+    like a partner.
+  </li>
+  <li>
+    Pick the survey, the term (the current one by default; it sets the
+    label in front of the survey name), and the close date: it goes into the contact list as
+    <code>MidtermCloseDate</code> or <code>FinalCloseDate</code>, and the
+    survey's first page shows it.
+  </li>
+  <li>
+    In Qualtrics, Create project, Survey, From a file: import the <code>.qsf</code>.
+    <span class="copy-row">
+      <span>Name the survey <strong>{name}</strong>.</span>
+      <button type="button" onclick={() => copy("survey name", name)}>
+        {copied === "survey name" ? "Copied" : "Copy the name"}
+      </button>
+    </span>
+  </li>
+  <li>
+    In the Directory, create a mailing list from the contact-list CSV.
+    Every column maps by its header: <code>Email</code>, <code>Team</code>,
+    and the close-date field. If a partner has two teams, check
+    that the list kept both rows.
+    <span class="copy-row">
+      <span>Name the list <strong>{name}</strong>.</span>
+      <button type="button" onclick={() => copy("list name", name)}>
+        {copied === "list name" ? "Copied" : "Copy the name"}
+      </button>
+    </span>
+  </li>
+  <li>
+    Set the availability dates on the distribution, not in the survey, and
+    distribute by email with personal links only. The survey is by
+    invitation, so the anonymous link does not open it.
+  </li>
+</ol>
 
 <style>
   .generator {

@@ -110,6 +110,7 @@ test("a contact with no team still sees the survey, rating only themself", () =>
     )
   );
   const pages = surveyPages(survey("midterm"), values);
+  // Intro, the self-rating, and the split.
   assert.equal(pages.length, 1 + 1 + 1);
   assert.deepEqual(
     pages[0].questions[1].choices.map((c) => c.html),
