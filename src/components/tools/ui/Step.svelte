@@ -138,10 +138,11 @@ let {
   .locked {
     color: var(--sl-color-gray-3);
   }
+  /* One line of the title is the bullet's height, so the number centers on it. */
   .title {
     margin: 0;
     font-size: var(--sl-text-h4);
-    line-height: var(--sl-line-height);
+    line-height: var(--bullet-size);
   }
   .locked .title {
     color: var(--sl-color-gray-3);
