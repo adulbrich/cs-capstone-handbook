@@ -716,23 +716,25 @@ test("every variant's output is byte-identical to the reviewed build", () => {
   // six moved when the last block's Next button became Submit (#535): with
   // that block's options reset, the file hashes to the previous values. All
   // six moved again when the empty-Team guard was dropped: every other
-  // question is unchanged but for its renumbered ID. A wording or rubric
+  // question is unchanged but for its renumbered ID. All six moved when
+  // the intro stopped promising that teammates never see a rating, which a
+  // team of two reads back from its scores. A wording or rubric
   // change changes them on purpose: regenerate and update the hashes then.
   // The two SurveyEntry timestamps are written in local time, so they are
   // blanked before hashing; the hash then holds in every time zone.
   const expected = {
     "catme loop":
-      "a6d35011e50dc7b34b3e87280806f3103d3e45cea0aa5a7c61227c1db5d858a2",
+      "9474feab39c55c19c5451b957cec2da745d2b1e8f8a10d105fd44a828073d488",
     "catme slots":
-      "131b3f5abf5ed9df0d7d891ab262fa6437810f99ca0b22bfca23d94948fff13d",
+      "2d5ae91434fd56d4dd938977bc0a7603637def08b3e531b4677b6812f79a112d",
     "final loop":
-      "037dff621c41966b8260ce549bf833f370d4a6cc7897e5d94ef8e2cd15cc7299",
+      "3ed4235c138c1ac6581a30bd82c77c00233483d444a178fe0bd65d322b198d93",
     "final slots":
-      "5601ab7e42a2f5e67b8c8614b400fc33c48db9c8f6ebd3c0fd8d059d47ab2469",
+      "9ff8020bfb5d1a04a2468c0d61608db4970ec33b709a6a6816cddffb03e877ce",
     "midterm loop":
-      "249fd9d02696b2686a25f5abb2ae2737cdca53e7a472a123a49d723580691752",
+      "1ae338f97d48c1652ff801d16e53061a66ec28b987263e94922e80fbe82aa9c2",
     "midterm slots":
-      "f41814ea784ce4b61118e7f3be54f9e8ac0ac73d97241da67a797a5e0eac3a2b",
+      "f6320f67614365aa4e947d8819bae7d06cf9922a2fd6896ece764aba3663e286",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");

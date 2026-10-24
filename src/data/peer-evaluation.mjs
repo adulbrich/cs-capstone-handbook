@@ -105,7 +105,7 @@ export const surveyText = {
   catmeRating:
     "<b>{dimension}</b><br><br>Which description best fits <b>{ratee}</b>, for the whole term, not the last week?",
   intro:
-    "This evaluation is <b>confidential</b>: your answers go to the instruction team only and are never shown to your teammates.<br><br>You are on team: <b>${e://Field/Team}</b>",
+    "Your comments and your individual ratings go to the instruction team only. Each teammate sees only their own scores, each an average of the ratings they received, with no rating labeled by who gave it. <b>On a team of two, that average is your rating alone</b>, so your teammate's scores show the ratings you gave them.<br><br>You are on team: <b>${e://Field/Team}</b>",
   ratee: "Ratee (filled in automatically; leave as is)",
   rating:
     "You are rating: <b>{ratee}</b><br><br>Rate this member on each criterion, for the whole term, not the last week.",
