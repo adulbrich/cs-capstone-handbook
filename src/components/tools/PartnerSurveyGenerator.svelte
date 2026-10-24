@@ -32,6 +32,7 @@ const { pageUrl, rubrics, rules, weights } = $props();
 
 const importPath = pathSteps(clickPaths.qualtricsImport);
 const listPath = pathSteps(clickPaths.qualtricsList);
+const emailPath = pathSteps(clickPaths.qualtricsEmail);
 
 /** Which survey, "pulse" or "final", and its term, the current one first. */
 let kind = $state("pulse");
@@ -307,9 +308,11 @@ function downloadContacts() {
     </span>
   </li>
   <li>
-    Set the availability dates on the distribution, not in the survey, and
-    distribute by email with personal links only. The survey is by
-    invitation, so the anonymous link does not open it.
+    In the survey, {emailPath}, to the list from step 5. Keep Individual
+    links: the survey is by invitation, so the anonymous link does not open
+    it. Paste the subject and the body from Distribution email above, set the
+    close date under Advanced options › Link expiration, then send it now or
+    schedule it.
   </li>
 </ol>
 
@@ -352,6 +355,7 @@ function downloadContacts() {
   }
   .copy-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 1rem;
     margin-top: 0.5rem;

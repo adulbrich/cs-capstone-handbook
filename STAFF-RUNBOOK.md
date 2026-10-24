@@ -155,9 +155,9 @@ Per run:
 
 1. On the tools page, generate the survey (`.qsf`) and its contact list from the Canvas roster with groups (the partner list also reads the partner sheet). For the peer survey, pick the variant: Midterm, End-of-term (fall, winter), or CATME (spring end-of-term).
 2. In Qualtrics, import the `.qsf` (Catalog › Survey › Get started › Import a QSF file), and create a mailing list from the contact list (Directories › Segments & lists › Lists › Create a list › Upload a File); every column maps by its header.
-3. Partner surveys: copy the distribution email (subject and body) from the tools page into the distribution.
-4. Set the availability dates on the distribution, not in the survey.
-5. Distribute by email with personal links only. The survey is by invitation, so the anonymous link does not open it.
+3. In the survey, Distributions › Emails › Send a message, to the mailing list: paste the subject and body from the tools page.
+4. In the same message, keep Individual links (the survey is by invitation, so the anonymous link does not open it), and set the close date under Advanced options › Link expiration, not in the survey.
+5. Send it now or schedule it.
 6. At the deadline, close the responses still in progress, so a student who stopped partway is recorded.
 7. Export the responses as CSV with "Use choice text" on. The scorers read the labels export only and refuse a values export.
 8. On the tools page, score the export against the roster and the assignment's rubric-assessment export from Canvas, and read the report: missing responses, flagged teams of two, the self-versus-peer gap, and the partner concerns table.
