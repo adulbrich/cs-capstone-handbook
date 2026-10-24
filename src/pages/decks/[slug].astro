@@ -51,6 +51,7 @@ const { Deck, title } = Astro.props;
     </div>
     <script>
       import Reveal, { type RevealConfig } from "reveal.js";
+      import RevealNotes from "reveal.js/plugin/notes";
 
       // Typed, so a misspelled or mistyped option fails astro check.
       const config: RevealConfig = {
@@ -64,6 +65,9 @@ const { Deck, title } = Astro.props;
         // A PDF (?print-pdf) gets one page per slide with every fragment
         // shown, not one page per fragment step.
         pdfSeparateFragments: false,
+        // The speaker view, on S: the current slide, the next, and a clock.
+        // Decks carry no notes, so its notes pane stays empty.
+        plugins: [RevealNotes],
         progress: true,
         slideNumber: false,
         transition: "fade",
