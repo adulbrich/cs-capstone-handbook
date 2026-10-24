@@ -722,17 +722,17 @@ test("every variant's output is byte-identical to the reviewed build", () => {
   // blanked before hashing; the hash then holds in every time zone.
   const expected = {
     "catme loop":
-      "746cadb31db6b6ecfd8efdca9f578b8a13df373064f7034bb2dde7ec4fbbabbd",
+      "32d7c9b163ee6ceef1cf06b90b170aa45f5d9a4b048f6c3e695f9bc0fa8266f1",
     "catme slots":
-      "3355321d0f4a7efe3e06f3701589ed44b6595761bc01ed8dcf180f317612d30f",
+      "77840a0a394b35c75ba3665efbf24e657b0cf323c4f98f53decba5ec262b5d29",
     "final loop":
-      "3d8963fe5aefb82d4cb4960cdf23e8ccc67ae743516ce8cb64e26e1ebf895c0d",
+      "a4f4943b2f36c46dd6cf24f032525c0d2d08dc04abfc00fe7565bdbd622f4135",
     "final slots":
-      "26c821901cfec0f3c571077de97006e45a03db90d0ab941fd70c19bff1cae16f",
+      "373f923257773d4273483f4f6e1b07be0311a07dbf89a1a0aa2e6798e8dabb1a",
     "midterm loop":
-      "a05e2f608f7f1acc822bb9d987dd5485b5eec20138590cb38e285ecccf9f9f5d",
+      "5d4dfcb1088b53b951911d765f09724836e0f8379a1de23f77e6860df77cada5",
     "midterm slots":
-      "47365de3e2c89d6e4bed1499408ee6ab337878a77fdaa1cd733fb5d0aea0a2c7",
+      "38cf086734b9e8507d9ff5e5136eae77fd77a35c8cabd52c4a9d76e2dfece434",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");

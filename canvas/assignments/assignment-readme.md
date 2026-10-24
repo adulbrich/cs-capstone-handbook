@@ -22,7 +22,7 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-paste Required: Peer Survey Privacy on a Team of Two
 
-No rubric changes, so nothing to re-import. The peer survey's intro and its distribution email no longer say answers are never shown to teammates: each student sees their own scores, averaged over everyone who rated them, and on a team of two those scores are the one teammate's ratings and split. The Peer Evaluations page says the same in its summary card, its opening, and Teams of Two.
+No rubric changes, so nothing to re-import. The peer survey's intro and its distribution email no longer say answers are never shown to teammates: each student sees their own scores, averaged over everyone who rated them, and where only one teammate's answers count (a team of two, or the others did not submit) those scores are that teammate's ratings and split. The Peer Evaluations page says the same in its summary card, its opening, and Teams of Two.
 
 - Re-paste every Peer Evaluations entry body from the paste kit before each entry opens.
 - Regenerate the peer survey on the tools page and import the new `.qsf` before its next run, and paste the new email body into the distribution.

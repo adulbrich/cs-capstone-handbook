@@ -20,8 +20,10 @@ let { checked = false, children, disabled = false, onchange } = $props();
     line-height: var(--sl-line-height);
     cursor: pointer;
   }
+  /* font: inherit makes 1em the label's size, whatever the browser's form font. */
   .checkbox input {
     flex: none;
+    font: inherit;
     width: 1.1rem;
     height: 1.1rem;
     margin: calc((var(--sl-line-height) * 1em - 1.1rem) / 2) 0 0;
