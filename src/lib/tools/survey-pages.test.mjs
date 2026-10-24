@@ -103,10 +103,18 @@ test("CATME rates five dimensions per member and has no split", () => {
   assert.ok(!pages.at(-1).questions.some((q) => q.kind === "split"));
 });
 
-test("a contact with no team sees only the guard page", () => {
-  const pages = surveyPages(survey("midterm"), { ...quad, Team: "" });
-  assert.equal(pages.length, 1);
-  assert.match(pages[0].questions[0].html, /personal link/);
+test("a contact with no team still sees the survey, rating only themself", () => {
+  const values = Object.fromEntries(
+    Object.entries(quad).map(([key, value]) =>
+      key === "Team" || key.startsWith("Team Member") ? [key, ""] : [key, value]
+    )
+  );
+  const pages = surveyPages(survey("midterm"), values);
+  assert.equal(pages.length, 1 + 1 + 1);
+  assert.deepEqual(
+    pages[0].questions[1].choices.map((c) => c.html),
+    ["Yourself"]
+  );
 });
 
 test("piped values are escaped", () => {

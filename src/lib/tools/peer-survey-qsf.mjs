@@ -7,18 +7,16 @@
 // Survey Flow, in order:
 //   1. Embedded data: Team, TeamSize, SelfFloor, CloseDate, Team Member 1 to 9, declared
 //      with no value so the contact list's values stand.
-//   2. Guard: when Team is empty (not a personal link), one page telling the
-//      respondent to use the personal link, then the end of the survey.
-//   3. Intro and the roster question: choice 1 is "Yourself", choices 2 to 10
+//   2. Intro and the roster question: choice 1 is "Yourself", choices 2 to 10
 //      pipe Team Member 1 to 9, each shown only when its field is not empty.
-//   4. Ratings, one page per displayed roster choice: the rated criteria as a
+//   3. Ratings, one page per displayed roster choice: the rated criteria as a
 //      forced radio matrix (CATME: one forced single-choice question per
 //      dimension), an optional comment, and a hidden text entry whose
 //      default value names the ratee, so the export says whom each page rated.
 //      Two modes: "loop" loops one block over the roster's displayed choices
 //      (Loop & Merge); "slots" writes one block per slot, each behind a branch
 //      on its Team Member field, for when the loop fails the staff test.
-//   5. The 100-point split, carried forward from the roster's displayed
+//   4. The 100-point split, carried forward from the roster's displayed
 //      choices, forced and totalling 100; then the optional comments, the
 //      variant question, and the Meta Info question on the same page. CATME
 //      has no split: its last page is the overall comment, the variant
@@ -46,7 +44,6 @@ import {
   essay,
   field,
   fieldCompared,
-  isEmpty,
   isNotEmpty,
   lastPageOptions,
   likertMatrix,
@@ -334,11 +331,9 @@ export function buildPeerSurvey({
 
   const intro = add((qid) => descriptive(qid, "Intro", surveyText.intro));
   const roster = add((qid) => rosterQuestion(qid));
-  const guard = add((qid) => descriptive(qid, "Guard", surveyText.guard));
 
   const introBlock = block("Intro", [intro, roster], { type: "Default" });
   trash();
-  const guardBlock = block("Guard", [guard]);
 
   // The rating questions of one page, their tags behind `prefix`.
   const ratingQids = (prefix, ratee) =>
@@ -422,21 +417,13 @@ export function buildPeerSurvey({
     FlowID: flowId(),
     Type: "EmbeddedData",
   };
-  const guardId = flowId();
-  const guardFlow = {
-    BranchLogic: isEmpty("Team"),
-    Description: "New Branch",
-    Flow: [standard(guardBlock), { FlowID: flowId(), Type: "EndSurvey" }],
-    FlowID: guardId,
-    Type: "Branch",
-  };
   const introFlow = defaultBlock(introBlock);
   const ratings = ratingFlow.flatMap((make) => make());
   const closingFlow = standard(closingBlock);
 
   const { title } = wording;
   return finish({
-    flow: [embedded, guardFlow, introFlow, ...ratings, closingFlow],
+    flow: [embedded, introFlow, ...ratings, closingFlow],
     metaDescription: instrument.summary,
     name: surveyName(label, title),
     now,
