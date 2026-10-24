@@ -105,7 +105,7 @@ export const surveyText = {
   catmeRating:
     "<b>{dimension}</b><br><br>Which description best fits <b>{ratee}</b>, for the whole term, not the last week?",
   intro:
-    "Your comments and your individual ratings go to the instruction team only. Each teammate sees only their own scores, each an average of the ratings they received, with no rating labeled by who gave it. <b>On a team of two, that average is your rating alone</b>, so your teammate's scores show the ratings you gave them.<br><br>You are on team: <b>${e://Field/Team}</b>",
+    "Your comments go to the instructors only. Each teammate sees only their own scores, averaged over everyone who rated them, with no rating labeled by who gave it. <b>On a team of two, there is no one to average with</b>: your teammate's scores show what you gave them.<br><br>You are on team: <b>${e://Field/Team}</b>",
   ratee: "Ratee (filled in automatically; leave as is)",
   rating:
     "You are rating: <b>{ratee}</b><br><br>Rate this member on each criterion, for the whole term, not the last week.",
@@ -141,7 +141,7 @@ export const distributionEmail = {
   body: [
     "Hello,",
     "",
-    "This is the peer evaluation for your capstone team, ${e://Field/Team}. You rate yourself and each teammate. Your answers go to the instruction team only and are never shown to your teammates.",
+    "This is the peer evaluation for your capstone team, ${e://Field/Team}. You rate yourself and each teammate. Your comments go to the instructors only, and your teammates see only their own averaged scores; on a team of two, your teammate's scores show what you gave them.",
     "",
     "Please submit it by ${e://Field/CloseDate}. It takes about ten minutes, and you can leave and come back to it from the same link.",
     "",

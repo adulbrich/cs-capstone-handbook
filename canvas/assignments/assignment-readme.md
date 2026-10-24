@@ -20,6 +20,13 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-paste Required: Peer Survey Privacy on a Team of Two
+
+No rubric changes, so nothing to re-import. The peer survey's intro and its distribution email no longer say answers are never shown to teammates: each student sees their own scores, averaged over everyone who rated them, and on a team of two those scores are the one teammate's ratings and split. The Peer Evaluations page says the same in its summary card, its opening, and Teams of Two.
+
+- Re-paste every Peer Evaluations entry body from the paste kit before each entry opens.
+- Regenerate the peer survey on the tools page and import the new `.qsf` before its next run, and paste the new email body into the distribution.
+
 ## Re-paste Required: RFC Draft Wording Kept from the Canvas Edit
 
 No rubric changes. The fall RFC Draft + Peer Review body was edited directly in Canvas; re-pasting it from the paste kit replaces those edits with the handbook text, which now keeps four of them: the intro's "The RFC is not a hypothetical" in place of the sentence fragment, "what you propose based on the analysis", "the draft's grade" in place of "its grade", and "your reviews of other students' drafts" in place of "your own reviews". The rest are not kept: the "What You Present" heading (the section skeleton fixes "What You Produce"), the fall length band (one band in both terms since #512), "a new reviewer" (the instruction team supplies the review itself), the bolded sentence and the bold italics, "for example" before the winter list (the rubric reads it as the complete list), "how the team will know it was the right choice" (the plan detects failure), "Submit both peer reviews" (the same sentence uses "peer review" for the assignment), and the Analysis and other peer-review wording changes.
