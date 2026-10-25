@@ -6,11 +6,11 @@
 // are the parsed rubrics by instrument (`{ regular, catme }`), read at
 // build time.
 import {
-  NO_FILE,
   rosterText,
   savedText,
   scoreText as text,
 } from "../../../data/peer-tools.mjs";
+import { NO_FILE } from "../../../data/tools-text.mjs";
 import { attempt } from "../../../lib/tools/attempt.mjs";
 import { download } from "../../../lib/tools/download.mjs";
 import { parsePeerExport } from "../../../lib/tools/peer-export.mjs";

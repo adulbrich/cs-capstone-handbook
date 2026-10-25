@@ -2,6 +2,13 @@
 // the same on every tool's pages. Each tool's own wording is in its module:
 // peer-tools.mjs, partner-tools.mjs.
 
+/** "1 row", "2 rows": a count and its noun. */
+export const plural = (n, one, many = `${one}s`) =>
+  `${n} ${n === 1 ? one : many}`;
+
+/** What a missing file is called in a step's summary. */
+export const NO_FILE = "No file";
+
 /** The saved-data box: the tool passes what it saves and its confirm line. */
 export const savedText = {
   after: "Leaving the page and coming back picks up where you stopped.",

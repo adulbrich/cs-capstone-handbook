@@ -7,6 +7,7 @@ import {
   partnersTable,
   rosterTeams,
   sharedTable,
+  sheetCounts,
 } from "./partner-tables.mjs";
 
 const student = (name, team) => ({
@@ -40,6 +41,17 @@ test("a team's partners share one line", () => {
     ["Beta", "p@example.com; q@example.com"],
     ["Alpha", "p@example.com"],
   ]);
+});
+
+test("a partner with two teams counts once", () => {
+  assert.deepEqual(
+    sheetCounts([
+      { Email: "p@example.com", Team: "Beta" },
+      { Email: "q@example.com", Team: "Beta" },
+      { Email: "p@example.com", Team: "Alpha" },
+    ]),
+    { partners: 2, teams: 2 }
+  );
 });
 
 test("the sheet's cautions are tables of their entries", () => {

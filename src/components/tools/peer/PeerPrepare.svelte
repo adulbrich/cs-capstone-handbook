@@ -9,11 +9,11 @@ import {
   variants,
 } from "../../../data/peer-evaluation.mjs";
 import {
-  NO_FILE,
   rosterText,
   savedText,
   prepareText as text,
 } from "../../../data/peer-tools.mjs";
+import { NO_FILE } from "../../../data/tools-text.mjs";
 import { attempt } from "../../../lib/tools/attempt.mjs";
 import { download } from "../../../lib/tools/download.mjs";
 import { slug } from "../../../lib/tools/files.mjs";

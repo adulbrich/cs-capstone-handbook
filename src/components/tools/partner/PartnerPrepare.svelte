@@ -7,17 +7,18 @@
 // evaluation page, by the Astro route.
 import { distributionEmails } from "../../../data/partner-evaluation.mjs";
 import {
-  NO_FILE,
   rosterText,
   savedText,
   prepareText as text,
 } from "../../../data/partner-tools.mjs";
+import { NO_FILE } from "../../../data/tools-text.mjs";
 import { parsePartnerSheet } from "../../../lib/partner-sheet.mjs";
 import { attempt } from "../../../lib/tools/attempt.mjs";
 import { download } from "../../../lib/tools/download.mjs";
 import { slug } from "../../../lib/tools/files.mjs";
 import {
   buildPartnerContacts,
+  closeDateText,
   partnerContactsCsv,
 } from "../../../lib/tools/partner-contacts.mjs";
 import {
@@ -29,6 +30,7 @@ import {
   partnersTable,
   rosterTeams,
   sharedTable,
+  sheetCounts,
 } from "../../../lib/tools/partner-tables.mjs";
 import { surveyName } from "../../../lib/tools/qsf.mjs";
 import { parseRoster } from "../../../lib/tools/roster.mjs";
@@ -62,7 +64,8 @@ import Step from "../ui/Step.svelte";
 import Stepper from "../ui/Stepper.svelte";
 import SurveyPreview from "../ui/SurveyPreview.svelte";
 import { PageSteps, ToolStorage } from "../ui/saved.svelte.js";
-import PartnerRoster from "./PartnerRoster.svelte";
+import PartnerRosterInput from "./PartnerRosterInput.svelte";
+import PartnerRosterPreview from "./PartnerRosterPreview.svelte";
 
 let { pageUrl, rubrics, rules, weights } = $props();
 
@@ -100,15 +103,7 @@ const rubric = $derived(kind === "pulse" ? rubrics.pulse : rubrics[term]);
 const { closeField, fields } = $derived(VARIANTS[variant]);
 const email = $derived(distributionEmails[variant]);
 
-/** The close date as partners read it: weekday, month, and day. */
-const closeText = $derived(
-  settings.value.closeDate
-    ? new Date(`${settings.value.closeDate}T12:00:00`).toLocaleDateString(
-        "en-US",
-        { day: "numeric", month: "long", weekday: "long" }
-      )
-    : ""
-);
+const closeText = $derived(closeDateText(settings.value.closeDate));
 
 const contacts = $derived(
   parsedRoster?.value && parsedSheet?.value
@@ -175,8 +170,7 @@ const summaries = $derived({
   send: text.send.summary,
   sheet: text.sheet.summary({
     file: sheet.value?.name ?? NO_FILE,
-    partners: new Set(rows.map((row) => row.Email)).size,
-    teams: new Set(rows.map((row) => row.Team)).size,
+    ...sheetCounts(rows),
   }),
   survey: text.survey.summary({
     kind: text.survey.kinds[kind].label,
@@ -213,10 +207,10 @@ const termCards = TERMS.map((value) => ({
     usedIn={text.roster.usedIn}
   >
     {#snippet source()}
-      <PartnerRoster parsed={parsedRoster} {roster} />
+      <PartnerRosterInput parsed={parsedRoster} {roster} />
     {/snippet}
     {#snippet preview()}
-      <PartnerRoster parsed={parsedRoster} {roster} view="preview" />
+      <PartnerRosterPreview parsed={parsedRoster} />
     {/snippet}
   </Step>
 

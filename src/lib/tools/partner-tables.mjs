@@ -47,6 +47,12 @@ export function partnersTable(rows) {
   };
 }
 
+/** How many distinct partners and teams the contact rows reach. */
+export const sheetCounts = (rows) => ({
+  partners: new Set(rows.map((row) => row.Email)).size,
+  teams: new Set(rows.map((row) => row.Team)).size,
+});
+
 /** The roster teams with no survey (buildPartnerContacts' `noPartner`). */
 export const noPartnerTable = (noPartner) => ({
   header: ["Team", "Why"],

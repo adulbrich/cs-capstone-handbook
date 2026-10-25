@@ -8,8 +8,8 @@
 
 import { SHEET_EMAIL, SHEET_TEAM } from "../lib/partner-sheet.mjs";
 import { clickPaths, pathSteps } from "./click-paths.mjs";
+import { plural } from "./tools-text.mjs";
 
-const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 const list = (items) => items.join(", ");
 
 /** The three Astro pages: chooser, Prepare, Score. */
@@ -223,6 +223,7 @@ export const scoreText = {
     detected: "Detected:",
     drop: "Qualtrics responses, labels export (.csv)",
     error: "This export cannot be scored",
+    notPicked: "survey not picked",
     notRecognized: (reason) => `Not recognized (${reason}). Pick the survey.`,
     path: clickPaths.qualtricsLabelsExport,
     pathAfter:
@@ -297,6 +298,7 @@ export const scoreText = {
     summary: ({ file, students }) => `${file}: ${plural(students, "student")}.`,
     usedIn:
       "Step 4 joins each response's Team to the roster's group_name, and each canvas_user_id to the rubric export's Student Id.",
+    waiting: "Drop a roster with at least one team.",
   },
   rubric: {
     count: (n) =>
@@ -317,6 +319,3 @@ export const scoreText = {
   },
   whatItIs: "What it is",
 };
-
-/** What a missing file is called in a step's summary. */
-export const NO_FILE = "No file";

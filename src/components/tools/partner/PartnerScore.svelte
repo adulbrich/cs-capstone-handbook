@@ -2,14 +2,15 @@
 // Score: the Qualtrics export, the roster, the Canvas rubric export, then
 // the results, the grades to import, and the concerns table. The page
 // composes the pure modules under src/lib/tools/ and the wording in
-// src/data/; everything it reads or makes stays in the browser. `rubrics`,
-// `aBound`, and `between` are read at build time (partner-rubrics.mjs).
+// src/data/; everything it reads or makes stays in the browser. `rubrics`
+// and `aBound` are read at build time (partner-rubrics.mjs), and `between`
+// is its `rules.between`.
 import {
-  NO_FILE,
   rosterText,
   savedText,
   scoreText as text,
 } from "../../../data/partner-tools.mjs";
+import { NO_FILE } from "../../../data/tools-text.mjs";
 import { attempt } from "../../../lib/tools/attempt.mjs";
 import { toCsv } from "../../../lib/tools/csv.mjs";
 import { download } from "../../../lib/tools/download.mjs";
@@ -42,7 +43,8 @@ import SavedData from "../ui/SavedData.svelte";
 import Step from "../ui/Step.svelte";
 import Stepper from "../ui/Stepper.svelte";
 import { PageSteps, ToolStorage } from "../ui/saved.svelte.js";
-import PartnerRoster from "./PartnerRoster.svelte";
+import PartnerRosterInput from "./PartnerRosterInput.svelte";
+import PartnerRosterPreview from "./PartnerRosterPreview.svelte";
 
 let { aBound, between, rubrics } = $props();
 
@@ -134,7 +136,7 @@ const summaries = $derived({
   export: text.export.summary({
     file: exported.value?.name ?? NO_FILE,
     finished: parsed?.value?.responses.length ?? 0,
-    survey: definition?.title ?? "",
+    survey: definition?.title ?? text.export.notPicked,
   }),
   grades: text.grades.summary(files.scored),
   results: text.results.summary({
@@ -232,13 +234,14 @@ const pickResponse = (team, responseId) =>
     {...steps.props("roster", ready)}
     title={rosterText.title}
     summary={summaries.roster}
+    waiting={text.roster.waiting}
     usedIn={text.roster.usedIn}
   >
     {#snippet source()}
-      <PartnerRoster parsed={parsedRoster} {roster} replace />
+      <PartnerRosterInput parsed={parsedRoster} {roster} replace />
     {/snippet}
     {#snippet preview()}
-      <PartnerRoster parsed={parsedRoster} {roster} view="preview" />
+      <PartnerRosterPreview parsed={parsedRoster} />
     {/snippet}
   </Step>
 

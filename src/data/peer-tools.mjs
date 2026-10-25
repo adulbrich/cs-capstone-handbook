@@ -10,8 +10,7 @@ import {
   SLOTS,
 } from "../lib/tools/peer-contacts.mjs";
 import { clickPaths, pathSteps } from "./click-paths.mjs";
-
-const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+import { plural } from "./tools-text.mjs";
 
 /** The three Astro pages: chooser, Prepare, Score. */
 export const pages = {
@@ -296,6 +295,3 @@ export const scoreText = {
   },
   whatItIs: "What it is",
 };
-
-/** What a missing file is called in a step's summary. */
-export const NO_FILE = "No file";
