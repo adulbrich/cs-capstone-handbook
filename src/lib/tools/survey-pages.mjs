@@ -4,11 +4,14 @@
 //
 // It follows the Survey Flow for one contact: embedded data is the
 // contact's, a branch runs when its logic holds, an EndSurvey stops, and
-// each block is a page. A looped block is one page per displayed choice of
-// its roster question, with the Loop & Merge fields filled in. Questions
-// hidden by display logic, by JavaScript (the ratee), or by type (Meta Info)
-// are not shown. Logic on embedded fields is all the generated surveys use;
-// anything else stops the preview rather than guess.
+// each block is a page, or several where it holds page breaks. A looped
+// block is one page per displayed choice of its roster question, with the
+// Loop & Merge fields filled in. Questions hidden by display logic, by
+// JavaScript (the ratee), or by type (Meta Info) are not shown. Display
+// logic on embedded fields is all the generated surveys use; anything else
+// stops the preview rather than guess. A question shown in page by an
+// earlier answer (the partner surveys' comment boxes) cannot be decided
+// without answers, so it is shown with the answers that show it.
 
 import { pipeHtml } from "./piped-text.mjs";
 
@@ -57,15 +60,49 @@ export function logicHolds(logic, values) {
     );
 }
 
-/** The choices a question shows, in order, as `{ id, html }`. */
+/**
+ * The choices a question shows, in order, as `{ id, html, entry }`;
+ * `entry` is true for a choice with a text box.
+ */
 function shownChoices(question, values) {
   return (question.ChoiceOrder ?? [])
     .map((id) => ({ choice: question.Choices[id], id }))
     .filter(({ choice }) => logicHolds(choice.DisplayLogic, values))
     .map(({ choice, id }) => ({
+      entry: choice.TextEntry === "true",
       html: pipeHtml(choice.Display, { values }),
       id,
     }));
+}
+
+/**
+ * The answers that show a question in page, as their choice HTML, or
+ * undefined when it has no in-page logic. Reads "If" groups of selected
+ * answers, the only shape shownInPageWhen (qsf.mjs) writes.
+ */
+function shownWhen(question, { questions, values }) {
+  const logic = question.InPageDisplayLogic;
+  if (!logic) {
+    return;
+  }
+  return Object.entries(logic)
+    .filter(([key]) => INDEX.test(key))
+    .flatMap(([, group]) =>
+      Object.entries(group).filter(([key]) => INDEX.test(key))
+    )
+    .map(([, expression]) => {
+      if (
+        expression.LogicType !== "Question" ||
+        expression.Operator !== "Selected"
+      ) {
+        throw new Error(
+          `The preview reads in-page logic on a Selected answer only, not ${expression.LogicType} ${expression.Operator}.`
+        );
+      }
+      const source = questions.get(expression.QuestionID);
+      const choiceId = expression.ChoiceLocator.split("/").at(-1);
+      return pipeHtml(source.Choices[choiceId].Display, { values });
+    });
 }
 
 const hiddenByScript = (question) =>
@@ -73,7 +110,7 @@ const hiddenByScript = (question) =>
 
 /** A question as the preview renders it, or null when the respondent does not see it. */
 function questionView(question, context) {
-  const { questions, values } = context;
+  const { values } = context;
   if (
     question.QuestionType === "Meta" ||
     hiddenByScript(question) ||
@@ -81,6 +118,14 @@ function questionView(question, context) {
   ) {
     return null;
   }
+  const view = viewOf(question, context);
+  const when = shownWhen(question, context);
+  return when ? { ...view, when } : view;
+}
+
+/** A shown question's view, before its in-page logic. */
+function viewOf(question, context) {
+  const { questions, values } = context;
   const html = pipeHtml(question.QuestionText, context);
   const forced = question.Validation?.Settings?.ForceResponse === "ON";
   switch (question.QuestionType) {
@@ -124,24 +169,41 @@ function questionView(question, context) {
   }
 }
 
-/** One page: the block's title and the questions the respondent sees. */
-function pageOf(block, context, title = block.Description) {
-  const shown = block.BlockElements.filter((e) => e.Type === "Question")
-    .map((e) => questionView(context.questions.get(e.QuestionID), context))
-    .filter(Boolean);
-  return { questions: shown, title };
+/**
+ * A block's pages, split at its page breaks: each the block's title and
+ * the questions the respondent sees.
+ */
+function pagesOf(block, context, title = block.Description) {
+  const pages = [[]];
+  for (const element of block.BlockElements) {
+    if (element.Type === "Page Break") {
+      pages.push([]);
+    } else if (element.Type === "Question") {
+      pages.at(-1).push(element.QuestionID);
+    }
+  }
+  return pages.map((qids) => ({
+    questions: qids
+      .map((qid) => questionView(context.questions.get(qid), context))
+      .filter(Boolean),
+    title,
+  }));
 }
 
 /** A looped block: one page per displayed choice of its roster question. */
 function loopPages(block, context) {
   const options = block.Options.LoopingOptions;
   const roster = context.questions.get(options.QID);
-  return shownChoices(roster, context.values).map(({ html, id }) => {
+  return shownChoices(roster, context.values).flatMap(({ html, id }) => {
     const loop = { 1: html };
     for (const [n, text] of Object.entries(options.Static?.[id] ?? {})) {
       loop[n] = pipeHtml(text, { values: context.values });
     }
-    return pageOf(block, { ...context, loop }, `${block.Description}: ${html}`);
+    return pagesOf(
+      block,
+      { ...context, loop },
+      `${block.Description}: ${html}`
+    );
   });
 }
 
@@ -150,9 +212,10 @@ function loopPages(block, context) {
  * question `{ kind, html, ... }` with its piped text filled in and escaped.
  * Kinds: "text"; "single" and "multiple" with `choices`; "matrix" with
  * `rows` and `columns`; "essay" and "line"; "split" with `choices` and
- * `total`. `qsf` is the survey object (buildPeerSurvey); `values` the
- * respondent's embedded data by field name (a contact list row, with
- * `RecipientEmail`).
+ * `total`. A question shown in page by an answer carries `when`, the HTML
+ * of the answers that show it. `qsf` is the survey object (buildPeerSurvey
+ * or buildPartnerSurvey); `values` the respondent's embedded data by field
+ * name (a contact list row, with `RecipientEmail`).
  */
 export function surveyPages(qsf, values) {
   const element = (name) =>
@@ -191,7 +254,7 @@ function walkFlow(flow, context, pages) {
       pages.push(
         ...(block.Options?.Looping
           ? loopPages(block, context)
-          : [pageOf(block, context)])
+          : pagesOf(block, context))
       );
     }
   }
