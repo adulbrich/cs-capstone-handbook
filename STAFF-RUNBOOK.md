@@ -159,7 +159,7 @@ Per run:
 4. In the same message, keep Individual links (the survey is by invitation, so the anonymous link does not open it), and set the close date under Advanced options › Link expiration, not in the survey.
 5. Send it now or schedule it.
 6. At the deadline, close the responses still in progress, so a student who stopped partway is recorded.
-7. Export the responses as CSV with "Use choice text" on. The scorers read the labels export only and refuse a values export.
+7. Export the responses: Data & Analysis › Export & Import › Export Data › CSV › Export labels. The scorers read the labels export only and refuse a values export.
 8. On the tools page, score the export against the roster and the assignment's rubric-assessment export from Canvas, and read the report: missing responses, flagged teams of two, the self-versus-peer gap, and the partner concerns table.
 9. Import the filled rubric-assessment CSV on the same Canvas assignment.
 10. Peer surveys: the imported rubric scores are all students see, and where only one teammate's answers count (a team of two, or the others did not submit) they are that teammate's ratings and split. The details and comments files are instructor only. Keep each run's details file until the spring CATME grades are imported: the spring CATME review reads every earlier total from them.

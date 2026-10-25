@@ -16,7 +16,22 @@ export const PEER_NAMESPACE = "cs46x-tools:peer:";
  */
 export const PEER_VERSION = 1;
 
-/** The keys both peer pages read: the roster file and the added students. */
+/** The peer tools' store, as openStore takes it. */
+export const PEER_STORE = Object.freeze({
+  namespace: PEER_NAMESPACE,
+  version: PEER_VERSION,
+});
+
+/**
+ * The partner tools' store: its own namespace, so clearing one tool's
+ * saved data leaves the other's. Bump `version` as PEER_VERSION.
+ */
+export const PARTNER_STORE = Object.freeze({
+  namespace: "cs46x-tools:partner:",
+  version: 1,
+});
+
+/** The keys both pages of a tool read: the roster file and the added students. */
 export const SHARED_KEYS = Object.freeze({ added: "added", roster: "roster" });
 
 /** Why the store fell back to memory, as a page tells the instructor. */

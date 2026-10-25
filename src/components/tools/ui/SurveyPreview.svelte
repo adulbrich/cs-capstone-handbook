@@ -2,9 +2,10 @@
 // The survey's pages as one student sees them, from surveyPages
 // (src/lib/tools/survey-pages.mjs), which reads the same object the .qsf is
 // written from. The answers are drawn disabled: it is a picture, not a
-// form. Question HTML comes from the survey's own wording with every piped
-// value escaped.
-import { previewText as text } from "../../../data/peer-tools.mjs";
+// form, so a question shown in page by an answer is drawn with the answers
+// that show it. Question HTML comes from the survey's own wording with
+// every piped value escaped.
+import { previewText as text } from "../../../data/tools-text.mjs";
 
 let { pages } = $props();
 </script>
@@ -20,6 +21,7 @@ let { pages } = $props();
           <div class="text">
             {@html question.html}{#if question.forced}<span class="forced" title={text.required}> *</span>{/if}
           </div>
+          {#if question.when}<p class="when">{@html text.when(question.when)}</p>{/if}
           {#if question.kind === "single" || question.kind === "multiple"}
             <ul class="choices">
               {#each question.choices as choice (choice.id)}
@@ -30,6 +32,9 @@ let { pages } = $props();
                     aria-hidden="true"
                   />
                   <span>{@html choice.html}</span>
+                  {#if choice.entry}
+                    <input type="text" class="entry" disabled size="6" aria-hidden="true" />
+                  {/if}
                 </li>
               {/each}
             </ul>
@@ -131,6 +136,12 @@ let { pages } = $props();
   .forced {
     color: var(--sl-color-red-high);
   }
+  .when {
+    margin: 0 0 0.5rem;
+    font-size: var(--sl-text-sm);
+    font-style: italic;
+    color: var(--sl-color-gray-2);
+  }
   .choices,
   .split {
     display: grid;
@@ -207,7 +218,8 @@ let { pages } = $props();
     border-radius: 0.25rem;
     background: transparent;
   }
-  .split input[type="text"] {
+  .split input[type="text"],
+  .choices .entry {
     width: 4rem;
   }
   .visually-hidden {

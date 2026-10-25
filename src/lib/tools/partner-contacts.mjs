@@ -78,6 +78,22 @@ export function buildPartnerContacts(students, sheet, values = {}) {
   return { noPartner, notOnRoster, repeated, rows, shared };
 }
 
+/**
+ * A close date picked as `YYYY-MM-DD` as partners read it in the survey and
+ * the email: weekday, month, and day. Read at noon, so no time zone moves
+ * it to another day. An empty value is "".
+ */
+export function closeDateText(value) {
+  if (value === "") {
+    return "";
+  }
+  return new Date(`${value}T12:00:00`).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+    weekday: "long",
+  });
+}
+
 /** The contact list as CSV text: `Email`, then the survey's `fields`. */
 export function partnerContactsCsv(rows, fields) {
   const columns = ["Email", ...fields];

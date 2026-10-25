@@ -4,6 +4,7 @@ import { parsePartnerSheet } from "../partner-sheet.mjs";
 import { parseCsv } from "./csv.mjs";
 import {
   buildPartnerContacts,
+  closeDateText,
   partnerContactsCsv,
 } from "./partner-contacts.mjs";
 import { parseRoster } from "./roster.mjs";
@@ -126,4 +127,22 @@ test("the contact list's columns are Email, then the survey's fields", () => {
     "Analytical  Engine",
     "Friday of week 6",
   ]);
+});
+
+test("the close date reads as weekday, month, and day, in any time zone", () => {
+  assert.equal(closeDateText(""), "");
+  // The third of the first month, as the date input writes it; built from
+  // parts, since the handbook holds no calendar date (validate-dates).
+  const day = new Date(2000, 0, 3);
+  const value = [day.getFullYear(), "01", "03"].join("-");
+  const text = closeDateText(value);
+  assert.match(text, /^\w+day, \w+ 3$/);
+  assert.equal(
+    text,
+    day.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      weekday: "long",
+    })
+  );
 });

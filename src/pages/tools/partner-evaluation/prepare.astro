@@ -1,0 +1,68 @@
+---
+import { getEntry } from "astro:content";
+// Prepare the project partner evaluation (#558). The rubrics and the
+// partner page's rules are read at build time (partner-rubrics.mjs), and
+// the two surveys' weights here, from the partner evaluation page's Canvas
+// entries; the roster and the partner sheet are read in the browser only.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import PartnerPrepare from "../../../components/tools/partner/PartnerPrepare.svelte";
+import {
+  rubrics,
+  rules,
+} from "../../../components/tools/partner/partner-rubrics.mjs";
+import { pages } from "../../../data/partner-tools.mjs";
+import { canvasRows } from "../../../lib/canvas-entries.mjs";
+import { buildPartnerSurvey } from "../../../lib/tools/partner-survey-qsf.mjs";
+import { finalSurvey, TERMS } from "../../../lib/tools/term-label.mjs";
+
+// The pulse and end-of-term weights, term by term, for the survey's opening
+// page. The survey states one number for every term, so the terms must
+// agree.
+const PAGE = "assignments/project-partner-evaluation";
+const page = await getEntry("docs", PAGE);
+const rows = canvasRows(page?.data.assignment?.canvas);
+const weightOf = (rubric: string) => {
+  const found = new Set(
+    rows
+      .filter((row) => row.family.rubric.startsWith(rubric))
+      .map((row) => row.weight)
+  );
+  const [weight] = found;
+  if (found.size !== 1 || typeof weight !== "number") {
+    throw new Error(`${PAGE}.mdx lists no single weight for ${rubric}.`);
+  }
+  return weight;
+};
+const weights = {
+  final: weightOf("project-partner-evaluation/partner-final-"),
+  pulse: weightOf("project-partner-evaluation/partner-pulse-rubric.csv"),
+};
+const pageUrl = new URL(`/${PAGE}/`, Astro.site).href;
+
+// Every survey is built once here, so a rubric CSV or a page rule the
+// generator cannot use fails the build rather than the page.
+buildPartnerSurvey({ pageUrl, rubric: rubrics.pulse, rules, weights });
+for (const term of TERMS) {
+  buildPartnerSurvey({
+    pageUrl,
+    rubric: rubrics[term as keyof typeof rubrics],
+    rules,
+    variant: finalSurvey(term),
+    weights,
+  });
+}
+---
+
+<StarlightPage
+  frontmatter={{
+    description: pages.prepare.description,
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    tableOfContents: false,
+    title: pages.prepare.title,
+  }}
+>
+  <p>{pages.prepare.intro}</p>
+  <PartnerPrepare client:only="svelte" {pageUrl} {rubrics} {rules} {weights} />
+</StarlightPage>

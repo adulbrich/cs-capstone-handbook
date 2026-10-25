@@ -1,0 +1,27 @@
+---
+// Score the project partner evaluation (#558). The rubrics, the A lower
+// bound, and the between-anchor shares are read at build time; the export,
+// the roster, and the rubric export are read in the browser only.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import PartnerScore from "../../../components/tools/partner/PartnerScore.svelte";
+import {
+  aBound,
+  rubrics,
+  rules,
+} from "../../../components/tools/partner/partner-rubrics.mjs";
+import { pages } from "../../../data/partner-tools.mjs";
+---
+
+<StarlightPage
+  frontmatter={{
+    description: pages.score.description,
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    tableOfContents: false,
+    title: pages.score.title,
+  }}
+>
+  <p>{pages.score.intro}</p>
+  <PartnerScore client:only="svelte" {aBound} between={rules.between} {rubrics} />
+</StarlightPage>

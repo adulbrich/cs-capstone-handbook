@@ -9,11 +9,11 @@ import {
   variants,
 } from "../../../data/peer-evaluation.mjs";
 import {
-  NO_FILE,
   rosterText,
   savedText,
   prepareText as text,
 } from "../../../data/peer-tools.mjs";
+import { NO_FILE } from "../../../data/tools-text.mjs";
 import { attempt } from "../../../lib/tools/attempt.mjs";
 import { download } from "../../../lib/tools/download.mjs";
 import { slug } from "../../../lib/tools/files.mjs";
@@ -31,7 +31,7 @@ import {
 } from "../../../lib/tools/survey-pages.mjs";
 import { tableFromCsv } from "../../../lib/tools/table-view.mjs";
 import { defaultLabel } from "../../../lib/tools/term-label.mjs";
-import { SHARED_KEYS } from "../../../lib/tools/tool-storage.mjs";
+import { PEER_STORE, SHARED_KEYS } from "../../../lib/tools/tool-storage.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
@@ -41,20 +41,20 @@ import DataPreview from "../ui/DataPreview.svelte";
 import EmailPreview from "../ui/EmailPreview.svelte";
 import Field from "../ui/Field.svelte";
 import RadioCards from "../ui/RadioCards.svelte";
+import SavedData from "../ui/SavedData.svelte";
 import Step from "../ui/Step.svelte";
 import Stepper from "../ui/Stepper.svelte";
+import SurveyPreview from "../ui/SurveyPreview.svelte";
+import { PageSteps, ToolStorage } from "../ui/saved.svelte.js";
 import RosterInput from "./RosterInput.svelte";
 import RosterPreview from "./RosterPreview.svelte";
-import SavedData from "./SavedData.svelte";
-import SurveyPreview from "./SurveyPreview.svelte";
-import { PageSteps, PeerStorage } from "./saved.svelte.js";
 
 let { rubrics } = $props();
 
 const STEPS = ["roster", "survey", "contacts", "email", "send"];
 const SEND = text.send.order;
 
-const storage = new PeerStorage();
+const storage = new ToolStorage(PEER_STORE);
 const roster = storage.saved(SHARED_KEYS.roster, null);
 const added = storage.saved(SHARED_KEYS.added, []);
 const settings = storage.saved("prepare:settings", {
@@ -160,7 +160,7 @@ const modeCards = Object.entries(text.survey.modes).map(
 );
 </script>
 
-<SavedData {storage} what={savedText.prepare} />
+<SavedData {storage} confirm={savedText.confirm} what={savedText.prepare} />
 
 <Stepper label={text.label}>
   <Step

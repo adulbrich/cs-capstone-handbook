@@ -1,4 +1,4 @@
-// The peer pages' saved state: reactive values backed by the store in
+// The tools pages' saved state: reactive values backed by the store in
 // src/lib/tools/tool-storage.mjs, which holds the logic and its tests. A
 // value is written when a handler sets it, never by an effect, so "Clear
 // saved data" leaves nothing behind.
@@ -31,10 +31,18 @@ class Saved {
   }
 }
 
-/** The browser's storage for the peer tools, with its problem, if any, as state. */
-export class PeerStorage {
-  #store = openStore(() => window.localStorage);
-  problem = $state(this.#store.problem());
+/**
+ * The browser's storage for one tool, `store` its namespace and version
+ * (PEER_STORE, PARTNER_STORE), with its problem, if any, as state.
+ */
+export class ToolStorage {
+  #store;
+  problem = $state(null);
+
+  constructor(store) {
+    this.#store = openStore(() => window.localStorage, store);
+    this.problem = this.#store.problem();
+  }
 
   read(key, fallback) {
     return this.#store.read(key, fallback);
