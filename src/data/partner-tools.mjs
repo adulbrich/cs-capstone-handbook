@@ -284,7 +284,7 @@ export const scoreText = {
           ]
         : []),
     ],
-    pick: (team) => `Use this response for ${team}`,
+    pick: (team, responseId) => `Use response ${responseId} for ${team}`,
     pickShort: "Use this one",
     report: "Report",
     summary: ({ responded, students }) =>

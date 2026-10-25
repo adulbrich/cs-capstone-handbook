@@ -80,8 +80,20 @@ const settings = storage.saved("prepare:settings", {
   closeDate: "",
   kind: "pulse",
   label: labelFor(startTerm),
+  savedIn: startTerm,
   term: startTerm,
 });
+// Settings saved in an earlier term start this one on its own term and
+// label: for the End-of-Term Survey the term picks the rubric, so a stale
+// term would build last term's survey. A term picked within this one stays.
+if (settings.value.savedIn !== startTerm) {
+  settings.set({
+    ...settings.value,
+    label: labelFor(startTerm),
+    savedIn: startTerm,
+    term: startTerm,
+  });
+}
 const steps = new PageSteps(storage, "prepare:steps", STEPS);
 const sent = storage.saved("prepare:send", {});
 

@@ -311,7 +311,7 @@ const pickResponse = (team, responseId) =>
                             name={`choice-${duplicate.team}`}
                             value={response.ResponseId}
                             checked={duplicate.chosen === response.ResponseId}
-                            aria-label={text.results.pick(duplicate.team)}
+                            aria-label={text.results.pick(duplicate.team, response.ResponseId)}
                             onchange={() =>
                               pickResponse(duplicate.team, response.ResponseId)}
                           />
