@@ -39,25 +39,25 @@ import {
   parseRubricExport,
 } from "../../../lib/tools/rubric-export.mjs";
 import { tableFromCsv } from "../../../lib/tools/table-view.mjs";
-import { SHARED_KEYS } from "../../../lib/tools/tool-storage.mjs";
+import { PEER_STORE, SHARED_KEYS } from "../../../lib/tools/tool-storage.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
 import ClickPath from "../ui/ClickPath.svelte";
 import DataPreview from "../ui/DataPreview.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
+import SavedData from "../ui/SavedData.svelte";
 import Step from "../ui/Step.svelte";
 import Stepper from "../ui/Stepper.svelte";
+import { PageSteps, ToolStorage } from "../ui/saved.svelte.js";
 import RosterInput from "./RosterInput.svelte";
 import RosterPreview from "./RosterPreview.svelte";
-import SavedData from "./SavedData.svelte";
-import { PageSteps, PeerStorage } from "./saved.svelte.js";
 
 let { rubrics } = $props();
 
 const STEPS = ["export", "roster", "rubric", "results", "grades", "comments"];
 
-const storage = new PeerStorage();
+const storage = new ToolStorage(PEER_STORE);
 const exported = storage.saved("score:export", null);
 const roster = storage.saved(SHARED_KEYS.roster, null);
 const added = storage.saved(SHARED_KEYS.added, []);
@@ -194,7 +194,7 @@ const summaries = $derived({
 });
 </script>
 
-<SavedData {storage} what={savedText.score} />
+<SavedData {storage} confirm={savedText.confirm} what={savedText.score} />
 
 <Stepper label={text.label}>
   <Step

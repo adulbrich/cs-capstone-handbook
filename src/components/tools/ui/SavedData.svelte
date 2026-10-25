@@ -1,17 +1,18 @@
 <script>
 // What the page keeps in this browser, a notice when it cannot, and the
 // button that removes it all after a confirm. `what` says what this page
-// saves (savedText in src/data/peer-tools.mjs).
-import { savedText as text } from "../../../data/peer-tools.mjs";
-import Button from "../ui/Button.svelte";
-import Callout from "../ui/Callout.svelte";
+// saves and `confirm` asks before clearing, both from the tool's wording
+// (savedText in src/data/peer-tools.mjs or partner-tools.mjs).
+import { savedText as text } from "../../../data/tools-text.mjs";
+import Button from "./Button.svelte";
+import Callout from "./Callout.svelte";
 
-let { storage, what } = $props();
+let { confirm, storage, what } = $props();
 
 function clear() {
   // A native confirm: modal, keyboard-ready, and read by screen readers.
   // biome-ignore lint/suspicious/noAlert: the clear needs a confirm, and the native one is accessible
-  const sure = window.confirm(text.confirm);
+  const sure = window.confirm(confirm);
   if (sure) {
     storage.clearAll();
   }

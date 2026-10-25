@@ -48,13 +48,10 @@ export const pages = {
   },
 };
 
-/** The saved-data box both pages show. */
+/** What the saved-data box says on each page, and its confirm line. */
 export const savedText = {
-  after: "Leaving the page and coming back picks up where you stopped.",
-  clear: "Clear saved data",
   confirm:
     "Remove every file, added student, setting, and done box both peer evaluation pages saved in this browser?",
-  notSaved: "Not saved",
   prepare:
     "Saved in this browser only, never uploaded: the roster file and the students you added (shared with the Score page), the survey settings, the checklist, and each step's done box.",
   score:
@@ -106,15 +103,6 @@ export const rosterText = {
   teams: "Teams",
   title: "Canvas roster",
   unreadable: "This roster cannot be read",
-};
-
-/** The survey preview's own labels around the survey's wording. */
-export const previewText = {
-  criterion: "Criterion",
-  page: (n, of) => `Page ${n} of ${of}`,
-  region: "Survey preview",
-  required: "Required",
-  total: "Total",
 };
 
 /** The Prepare page's steps after the roster. */
