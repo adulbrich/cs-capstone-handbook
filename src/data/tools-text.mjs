@@ -16,5 +16,6 @@ export const previewText = {
   region: "Survey preview",
   required: "Required",
   total: "Total",
-  when: (answers) => `Shown when the answer is ${answers.join(" or ")}.`,
+  when: (answers) =>
+    `Shown when the answer is ${answers.length > 1 ? `${answers.slice(0, -1).join(", ")}, or ${answers.at(-1)}` : answers[0]}.`,
 };

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { prepareText, scoreText } from "../../data/partner-tools.mjs";
+import { previewText } from "../../data/tools-text.mjs";
 import {
   noPartnerTable,
   partnersTable,
@@ -83,4 +84,12 @@ test("the report says nothing about a problem that did not happen", () => {
   });
   assert.equal(more.length, 3);
   assert.match(more[2], /\(empty\) \(R_1\)/);
+});
+
+test("the preview names the answers that show a box as one list", () => {
+  assert.equal(previewText.when(["Yes"]), "Shown when the answer is Yes.");
+  assert.equal(
+    previewText.when(["A", "B", "C"]),
+    "Shown when the answer is A, B, or C."
+  );
 });

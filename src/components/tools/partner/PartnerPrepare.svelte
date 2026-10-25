@@ -175,7 +175,7 @@ const summaries = $derived({
   send: text.send.summary,
   sheet: text.sheet.summary({
     file: sheet.value?.name ?? NO_FILE,
-    partners: rows.length,
+    partners: new Set(rows.map((row) => row.Email)).size,
     teams: new Set(rows.map((row) => row.Team)).size,
   }),
   survey: text.survey.summary({
