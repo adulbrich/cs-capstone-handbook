@@ -160,6 +160,8 @@ export const prepareText = {
       "Drop a partner sheet that gives at least one roster team a partner.",
   },
   survey: {
+    // Shown in the preview where the close date goes, until step 4 sets it.
+    closePlaceholder: "[the close date, set in step 4]",
     download: (name) => `Download ${name}`,
     error: "No survey",
     kindLegend: "Which survey",

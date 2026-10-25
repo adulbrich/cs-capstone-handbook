@@ -143,7 +143,15 @@ const survey = $derived(
 );
 const pages = $derived(
   survey.value && sample
-    ? attempt(() => surveyPages(survey.value, respondentValues(sample)))
+    ? attempt(() =>
+        surveyPages(
+          survey.value,
+          respondentValues({
+            ...sample,
+            [closeField]: sample[closeField] || text.survey.closePlaceholder,
+          })
+        )
+      )
     : null
 );
 const contactsCsv = $derived(
