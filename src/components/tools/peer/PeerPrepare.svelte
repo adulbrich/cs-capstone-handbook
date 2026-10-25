@@ -406,9 +406,6 @@ const modeCards = Object.entries(text.survey.modes).map(
     padding: 0;
     list-style: none;
   }
-  .checklist :global(label) {
-    align-items: flex-start;
-  }
   .copies {
     display: flex;
     flex-wrap: wrap;
