@@ -313,8 +313,11 @@ and survey, the four repo checkpoints' milestones), each gets one `###` under
 differ in what is handed in, each gets the same `###` under `## What You
 Submit`, with any procedure of its own (the RFC's peer review) as `####`
 inside it. Where they differ in what the student produces instead (the repo
-checkpoints' milestones), each gets the same `###` under `## What You Produce`,
-after the AI-use paragraph, and What You Submit stays the one PDF. Where every entry shares one rubric (the workshops, Peer
+checkpoints' milestones), each gets a `###` under `## What You Produce`, after
+the AI-use paragraph, that starts with the entry's name and adds its own
+("Repo Checkpoint 1: Set Up"), and What You Submit stays the one PDF. The
+export keeps that heading in the entry's body and drops it from the others;
+inbound links take its anchor, not the rubric's. Where every entry shares one rubric (the workshops, Peer
 Evaluations), there are no entry headings.
 
 The Canvas export gives each entry the `###` sections named for it and drops
