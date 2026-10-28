@@ -1,56 +1,87 @@
 # CS Capstone Handbook
 
-Requires Node 24+, matching Vercel's default runtime (`.nvmrc` pins the
-version; run `nvm use`).
+The handbook for Oregon State University's three-term computer science
+capstone, CS 461, 462, and 463, published at
+[capstone.alexulbrich.com](https://capstone.alexulbrich.com). Students,
+project partners, and mentors read it, and the graded assignments and their
+rubrics are written here and exported to Canvas.
+
+Built with [Astro](https://astro.build) and
+[Starlight](https://starlight.astro.build). Pages are MDX under
+`src/content/docs/`.
+
+## Getting Started
+
+Requires Node 24, matching Vercel's default runtime. `.nvmrc` pins it.
 
 ```sh
+nvm use
 npm install
 npm run dev
-npm run build
 ```
 
-Use `npm ci` instead of `npm install` when you want the exact tree from
-`package-lock.json` and no lockfile changes, which is what CI runs.
+`npm install` also installs the lefthook git hooks. Use `npm ci` instead when
+you want the exact tree from `package-lock.json` and no lockfile changes,
+which is what CI runs. Use `npm`, not `bun` or `pnpm`.
 
-## Term Setup
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Dev server with hot reload |
+| `npm run build` | `astro check`, then the static site in `dist/`; fails on any broken internal link or anchor |
+| `npm run preview` | Serves `dist/` |
+| `npm run canvas:export` | Writes the Canvas paste kit to `canvas-export/`, after a build |
+| `npm test` | Unit tests for the instructor tools |
+| `npm run format` | Biome format and lint fixes for the code |
 
-Open a **Term setup** issue at the start of every term
-(`.github/ISSUE_TEMPLATE/term-setup.md`) and work the checklist there: rosters
-and staffing, Canvas and survey setup, and the repository chores. Keeping it as
-an issue rather than a README list means each term's setup has its own
-completion record.
+The validators, and the full list to run before a content change is done, are
+in [AGENTS.md](AGENTS.md#validation).
 
-## Working in This Repository
+## Repository Layout
 
-`AGENTS.md` carries the project invariants: what must never be committed, why
-CI uses `npm ci`, how the outcome validator decides coverage, and the places
-grade weights have to agree in. Read it before making content changes,
-and point any per-tool instruction file (`CLAUDE.md` and friends) at it rather
-than duplicating it.
+| Path | Holds |
+| --- | --- |
+| `src/content/docs/` | The handbook pages: assignments, activities, guides, learning objectives, and the audience pages |
+| `canvas/` | One rubric CSV per rubric, imported into Canvas, and the three syllabi |
+| `public/` | Templates and scoresheets students download |
+| `src/pages/tools/` | Instructor tools for the surveys; they run in the browser and upload nothing |
+| `src/decks/` | Slide decks, served at `/decks/<file name>/` |
+| `scripts/` | The validators, the Canvas export, and maintenance scripts |
+| `data/` | Rosters, grades, and survey exports. Gitignored; never commit anything here |
 
-## Course Revision
+[AGENTS.md](AGENTS.md) has the full map.
 
-The fall 2026 course revision was built on the `revision-fall-2026` branch and merged as a stack of pull requests (#62). What it changed, in short: assignments and rubrics moved into the handbook as the source of truth; CI with link and outcome validation; activities tiered into workshop, recommended, and library, with each graded assignment routed to the activities that prepare it; a missing-work zero policy; per-student demos in the sprint cadence; and assessment of critical thinking, AI literacy, leadership, and collaboration. Design records live in `docs/decisions/`. The open work is the issue tracker: the post-merge review cycle is #61, and the rules for how decisions get recorded are in `AGENTS.md`.
+## Contributing
 
-## To Do
+- [CONTRIBUTING.md](CONTRIBUTING.md): the process from issue to merge, and the
+  gate that stops each rule.
+- [AGENTS.md](AGENTS.md): the rules every change keeps. Read it before a
+  content change. A per-tool instruction file (`CLAUDE.md` and friends) points
+  at it rather than duplicating it.
+- [docs/agents/voice.md](docs/agents/voice.md): how handbook pages are
+  written.
+- [docs/decisions/](docs/decisions/): design records for the rules the
+  handbook lives by.
+- Open work is in the
+  [issue tracker](https://github.com/adulbrich/cs-capstone-handbook/issues).
 
-- make an "instructor tools" client side only page where I can upload the peer review and project partner surveys and gradebook and run scripts to process them and output the results in a format that can be easily imported into Canvas (port R scripts); include a repo-checkpoint mode (team repo list -> docs/CI/PR-per-student view) and NDA-team tracking
-- fix the two remaining R script bugs until the port lands (#52): team-size cap at 6 including self breaks larger teams; Q7 individual-concern extraction is stubbed. The peer-eval correction now posts to the gradebook and the s2026 partner survey maps the Requirements answer to 3.5; both fixed on the branch.
-- create good examples for all assignments based on previous years' projects
-- stretch: create bad examples for all assignments based on previous years' projects
-- more material offered during lecture time: case studies from successful companies, advice for starting a company, career advice, workshops on spec-writing for AI agents, reviewing AI diffs, and testing as the safety net
-- improve project partner guidelines
-- add projects to showcase and improve layout
-- run CATME-style peer evaluation every term once tooling supports it (parked)
+## Running a Term
+
+[STAFF-RUNBOOK.md](STAFF-RUNBOOK.md) is the instruction team's operating
+manual. At the start of every term, open a Term setup issue from
+`.github/ISSUE_TEMPLATE/term-setup.md` and work its checklist, so each term's
+setup has its own completion record.
 
 ## Link Checking
 
-Internal link checking is **on**: `starlightLinksValidator()` runs as part of
-`npm run build`, so the build fails on any broken internal link, anchors
-included.
+`npm run build` checks every internal link and anchor. External links are
+checked weekly by `.github/workflows/links.yml`, which runs lychee over the
+built site and opens or updates one "Broken external links" issue when a link
+fails. To run it now:
 
-To check the production build for external links as well, run:
-
-```bash
-npx linkinator https://capstone.alexulbrich.com --recurse
+```sh
+gh workflow run links.yml
 ```
+
+## License
+
+[CC BY-SA 4.0](LICENSE).
