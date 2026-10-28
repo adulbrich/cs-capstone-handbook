@@ -24,16 +24,14 @@ const introTail = (pageUrl, item) => [
 ];
 
 /**
- * The pulse's opening page. `statements` is how many it rates, `lowest`,
- * `middle`, and `highest` the scale's ends and middle, `pulseWeight` and
- * `finalWeight` the two surveys' percent of the term grade, `pageUrl` the
- * partner evaluation page.
+ * The pulse's opening page. `statements` is how many it rates, `lowest`
+ * and `highest` the scale's ends, `pulseWeight` and `finalWeight` the two
+ * surveys' percent of the term grade, `pageUrl` the partner evaluation page.
  */
 export function pulseIntro({
   finalWeight,
   highest,
   lowest,
-  middle,
   pageUrl,
   pulseWeight,
   statements,
@@ -42,7 +40,7 @@ export function pulseIntro({
     ...introHead,
     `It has ${statements} statements about how the team works with you, each rated from ${highest} down to ${lowest}, with a comment under each. It takes about five minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
     `Your answers set ${pulseWeight}% of each student's grade this term. The end-of-term survey sets ${finalWeight}% and goes into more depth. This midterm check exists so the team hears from you while there is still time to change course.`,
-    `Any answer below ${highest} asks for one sentence on what would make it ${highest}. If you have not seen enough to judge a statement, answer ${middle} and say so in its comment.`,
+    `Any answer below ${highest} asks for one sentence on what would make it ${highest}.`,
     ...introTail(pageUrl, "statement"),
   ].join("<br><br>");
 }
