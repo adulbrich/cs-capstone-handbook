@@ -72,22 +72,18 @@ You produce the repository. The first four subsections below are the criteria th
 
 Five of the seven living docs, each describing the code at the named commit:
 
-| Doc | What it holds | Guide |
-|---|---|---|
-| `docs/requirements.md` | The problem statement; functional and non-functional requirements, with acceptance criteria for current priorities; the limits you did not choose, under Constraints; success metrics; non-goals; open questions | [Requirements](/guides/requirements/) |
-| `docs/design.md` | The system as it exists: context, key diagrams, interfaces and contracts, the data model, the deployment shape, decisions deferred on purpose, and open technical questions | [Technical design](/guides/technical-design/) |
-| `README.md` | A quickstart from a clean clone to a running system | [makeareadme.com](https://www.makeareadme.com/) |
-| `CONTRIBUTING.md` | The sections [the charter requires](/assignments/team-charter/#required-in-contributingmd) | [GitHub's guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) |
-| AI context file | `AGENTS.md`, `CLAUDE.md`, or your tool's equivalent, pointing at these documents rather than copying them. If you keep several, the others point at `AGENTS.md`, since two instruction files that disagree are worse than one | [agents.md](https://agents.md/) |
+- **`docs/requirements.md`**: the problem statement; functional and non-functional requirements, with acceptance criteria for current priorities; the limits you did not choose, under Constraints; success metrics; non-goals; open questions. *Guide: [Requirements](/guides/requirements/).*
+- **`docs/design.md`**: the system as it exists: context, key diagrams, interfaces and contracts, the data model, the deployment shape, decisions deferred on purpose, and open technical questions. *Guide: [Technical design](/guides/technical-design/).*
+- **`README.md`**: a quickstart from a clean clone to a running system. *Guide: [makeareadme.com](https://www.makeareadme.com/).*
+- **`CONTRIBUTING.md`**: the sections [the charter requires](/assignments/team-charter/#required-in-contributingmd). *Guide: [GitHub's guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors).*
+- **AI context file**: `AGENTS.md`, `CLAUDE.md`, or your tool's equivalent, pointing at these documents rather than copying them. If you keep several, the others point at `AGENTS.md`, since two instruction files that disagree are worse than one. *Guide: [agents.md](https://agents.md/).*
 
 ### Decision and Risk Hygiene
 
 The other two living docs:
 
-| Doc | What it holds | Guide |
-|---|---|---|
-| `docs/rfcs/` or `docs/adr/` | One record per decision, with its outcome and what was rejected and why, linked from `docs/design.md` where it applies | [ADR](/guides/adr/) |
-| `docs/risks.md` | The one risk register: business, technical, and team risks, ranked, each with an owner, plus every external prerequisite with who asked for it and when, updated between checkpoints. Write each risk as a fact about the project, without blame; a problem between teammates goes to your Teaching Assistant (TA) | [Project Risks](/guides/risks/) |
+- **`docs/rfcs/` or `docs/adr/`**: one record per decision, with its outcome and what was rejected and why, linked from `docs/design.md` where it applies. *Guide: [ADR](/guides/adr/).*
+- **`docs/risks.md`**: the one risk register: business, technical, and team risks, ranked, each with an owner, plus every external prerequisite with who asked for it and when, updated between checkpoints. Write each risk as a fact about the project, without blame; a problem between teammates goes to your Teaching Assistant (TA). *Guide: [Project Risks](/guides/risks/).*
 
 ### Build Health and Safety Net
 
@@ -109,25 +105,11 @@ Nothing reaches the default branch except through a reviewed pull request, and t
 
 Due fall week 5. Milestone met scores each item at the named commit. Agree the production target now: an account, a hosting decision, or a review can take weeks.
 
-- **CI**: passed on the named commit, in [your project's form of CI](#build-health-and-safety-net). With no product code yet, it runs on a scaffold: your stack's starter project, with at least one test that fails when the scaffold breaks.
-
-  **Evidence**: a link on the cover to the run.
-
-- **Board**: every item in the current sprint has an owner and a status.
-
-  **Evidence**: a link on the cover to the board.
-
-- **Production target**: one paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton), the thinnest end-to-end slice of your system that runs, will run in week 10, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project; who owns the account or infrastructure; and who agreed it, your partner or, without one, your mentor. FOSS projects add who upstream reviews the first pull request; research projects, which sample data the pipeline may use. With no deployment planned, the paragraph says why, so the instruction team can agree an equivalent milestone with you.
-
-  **Evidence**: the deployment section of `docs/design.md`.
-
-- **Approval**: any approval the target needs, who is asking for it, and when they asked.
-
-  **Evidence**: an entry in `docs/risks.md`.
-
-- **Inherited-codebase audit**, if you start in an existing codebase: covers everything [the audit](#the-inherited-codebase-audit) lists.
-
-  **Evidence**: a document in the PDF, after the living docs.
+- **CI**: passed on the named commit, in [your project's form of CI](#build-health-and-safety-net). With no product code yet, it runs on a scaffold: your stack's starter project, with at least one test that fails when the scaffold breaks. *Evidence: a link on the cover to the run.*
+- **Board**: every item in the current sprint has an owner and a status. *Evidence: a link on the cover to the board.*
+- **Production target**: one paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton), the thinnest end-to-end slice of your system that runs, will run in week 10, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project; who owns the account or infrastructure; and who agreed it, your partner or, without one, your mentor. FOSS projects add who upstream reviews the first pull request; research projects, which sample data the pipeline may use. With no deployment planned, the paragraph says why, so the instruction team can agree an equivalent milestone with you. *Evidence: the deployment section of `docs/design.md`.*
+- **Approval**: any approval the target needs, who is asking for it, and when they asked. *Evidence: an entry in `docs/risks.md`.*
+- **Inherited-codebase audit**, if you start in an existing codebase: covers everything [the audit](#the-inherited-codebase-audit) lists. *Evidence: a document in the PDF, after the living docs.*
 
 Two criteria ask for less at this checkpoint. Under Decision and Risk Hygiene, an [RFC](/assignments/rfc/) draft committed with status Proposed counts as a recorded decision. Under Build Health and Safety Net, staging and rollback can be a plan in `docs/risks.md` or `README.md`: where changes will be exercised before they reach users, and how a bad change will be undone, each with the week it lands.
 
@@ -149,57 +131,34 @@ Put what the code depends on where the next person looks: constraints in `docs/r
 
 Due fall week 10. Milestone met scores each item at the named commit.
 
-- **Walking skeleton deployed**: the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton), the thinnest end-to-end slice of your system that runs, is deployed from the named commit as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project, in the target `docs/design.md` recorded at Repo Checkpoint 1.
-
-  **Evidence**: a link on the cover to what that table names.
-
-- **Definition of Shipped v0**: a draft of every item the [Definition of Shipped](/assignments/definition-of-shipped/) asks for, whether or not your partner has agreed it yet.
-
-  **Evidence**: a document in the PDF, after the living docs.
+- **Walking skeleton deployed**: the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton), the thinnest end-to-end slice of your system that runs, is deployed from the named commit as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project, in the target `docs/design.md` recorded at Repo Checkpoint 1. *Evidence: a link on the cover to what that table names.*
+- **Definition of Shipped v0**: a draft of every item the [Definition of Shipped](/assignments/definition-of-shipped/) asks for, whether or not your partner has agreed it yet. *Evidence: a document in the PDF, after the living docs.*
 
 ### Repo Checkpoint 3: Integration Health
 
 Due winter week 5. Milestone met scores each item at the named commit.
 
-- **Integration**: the stories `docs/requirements.md` marks for this term run end to end against real components, not stubs.
-
-  **Evidence**: each marked story in `docs/requirements.md` says how to run it: the steps or the test.
-
-- **CI**: at least one test in the run covers a story marked for this term.
-
-  **Evidence**: a link on the cover to the run.
-
-- **Real-user session scheduled**: an entry gives the session's week, the participant's role (not their name), and who confirmed it.
-
-  **Evidence**: an external prerequisite in `docs/risks.md`.
-
-- **Charter refresh**: the Definition of Done and the pull request and review rules reflect the winter charter refresh: changed since Repo Checkpoint 2, or marked as kept unchanged.
-
-  **Evidence**: `CONTRIBUTING.md` in the PDF.
+- **Integration**: the stories `docs/requirements.md` marks for this term run end to end against real components, not stubs. *Evidence: each marked story in `docs/requirements.md` says how to run it: the steps or the test.*
+- **CI**: at least one test in the run covers a story marked for this term. *Evidence: a link on the cover to the run.*
+- **Real-user session scheduled**: an entry gives the session's week, the participant's role (not their name), and who confirmed it. *Evidence: an external prerequisite in `docs/risks.md`.*
+- **Charter refresh**: the Definition of Done and the pull request and review rules reflect the winter charter refresh: changed since Repo Checkpoint 2, or marked as kept unchanged. *Evidence: `CONTRIBUTING.md` in the PDF.*
 
 ### Repo Checkpoint 4: Release Candidate
 
 Due winter week 10. Milestone met scores each item at the named commit.
 
-- **Release candidate**: a release built from the named commit (a tagged version, a store build, or a release page) installs or deploys for someone outside the team, a grader included, using only `README.md`.
-
-  **Evidence**: a link on the cover to the release.
-
-- **Real-user session**: notes from at least one session: the participant's role (not their name), what they tried, what went wrong or confused them, and the issue or change each finding produced.
-
-  **Evidence**: a document in the PDF, after the living docs.
+- **Release candidate**: a release built from the named commit (a tagged version, a store build, or a release page) installs or deploys for someone outside the team, a grader included, using only `README.md`. *Evidence: a link on the cover to the release.*
+- **Real-user session**: notes from at least one session: the participant's role (not their name), what they tried, what went wrong or confused them, and the issue or change each finding produced. *Evidence: a document in the PDF, after the living docs.*
 
 ## What Deployed Means in Fall
 
-Repo Checkpoint 1 records where your walking skeleton will run in week 10, and Repo Checkpoint 2 checks that it does. Find your row by your path in the [Shipping guide](/guides/shipping/).
+Repo Checkpoint 1 records where your walking skeleton will run in week 10, and Repo Checkpoint 2 checks that it does. On the [Shipping guide](/guides/shipping/)'s New Product or Game and Consultancy paths, find your entry by what you build; FOSS and research projects have their own.
 
-| If your project is | Deployed means | The cover links |
-|---|---|---|
-| New Product or Game, or Consultancy: a web app or hosted service | The skeleton serves requests in the production target | Its URL |
-| New Product or Game, or Consultancy: a mobile app, game, desktop application, or firmware | A build installs from the channel `docs/design.md` names (a store test track, a release page, a device image) on a device outside the team | The build's page on that channel |
-| FOSS | Your first upstream pull request is submitted | The pull request |
-| Research | The pipeline runs end to end on sample data in CI | That CI run |
-| Without a deployment, by agreement | The equivalent milestone `docs/design.md` records | The evidence recorded with it |
+- **A web app or hosted service**: the skeleton serves requests in the production target. *Evidence: a link on the cover to its URL.*
+- **A mobile app, game, desktop application, or firmware**: a build installs from the channel `docs/design.md` names (a store test track, a release page, a device image) on a device outside the team. *Evidence: a link on the cover to the build's page on that channel.*
+- **FOSS**: your first upstream pull request is submitted. *Evidence: a link on the cover to the pull request.*
+- **Research**: the pipeline runs end to end on sample data in CI. *Evidence: a link on the cover to that run.*
+- **No deployment, by agreement**: the equivalent milestone `docs/design.md` records. *Evidence: what `docs/design.md` records with it.*
 
 ## What You Submit
 
