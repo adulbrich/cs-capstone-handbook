@@ -50,11 +50,11 @@ const STATEMENTS = [
   ],
   [
     "Delivery",
-    "Delivery quality: What the team has shown me so far matches what we agreed and works as demonstrated.",
+    "Delivery quality: What the team has shown me so far, from written requirements to running software, matches what we agreed.",
   ],
   [
     "Reflection",
-    "Reflection: The team acted on the feedback I gave since our last meetings, or told me why not.",
+    "Reflection: The team asks for my feedback and acts on it, or tells me why not.",
   ],
 ];
 const TAGS = STATEMENTS.map(([tag]) => tag);

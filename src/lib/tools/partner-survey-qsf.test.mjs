@@ -292,15 +292,13 @@ test("the intro pipes the team and close date and names the rubric's own words",
   assert.match(intro, /sets 20%/);
   assert.match(intro, /from Strongly agree down to Strongly disagree/);
   assert.ok(intro.includes(OPTIONS.pageUrl));
-  // The scale's top and middle come from the CSV.
+  // The scale's top comes from the CSV.
   assert.match(
     intro,
     /below Strongly agree asks for one sentence on what would make it Strongly agree\./
   );
-  assert.match(
-    intro,
-    /answer Neither agree nor disagree and say so in its comment\./
-  );
+  // No answer stands in for "cannot judge" (#568).
+  assert.doesNotMatch(intro, /Neither agree nor disagree/);
   assert.match(
     intro,
     /comment on each statement is shared with the team as written.*about specific students and about the course, are seen only by the instruction team/

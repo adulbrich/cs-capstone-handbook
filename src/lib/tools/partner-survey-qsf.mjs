@@ -71,7 +71,7 @@ export const commentTags = (tag, { ladder = false } = {}) => ({
 
 /**
  * The pulse's one scale, from a rubric whose criteria share it: `ratings`,
- * its rating names highest first, and `lowest`, `middle`, and `highest`.
+ * its rating names highest first, and `lowest` and `highest`.
  * Throws when a criterion has no statement or the criteria's ratings differ.
  */
 export function pulseScale(rubric) {
@@ -89,7 +89,6 @@ export function pulseScale(rubric) {
   return {
     highest: ratings[0],
     lowest: ratings.at(-1),
-    middle: ratings[Math.floor(ratings.length / 2)],
     ratings,
   };
 }
@@ -261,12 +260,11 @@ export const VARIANTS = {
     metaDescription:
       "Statements about how one capstone team works with its project partner.",
     ratings(survey, { pageUrl, rubric, weights }) {
-      const { highest, lowest, middle, ratings } = pulseScale(rubric);
+      const { highest, lowest, ratings } = pulseScale(rubric);
       const intro = pulseIntro({
         finalWeight: weights.final,
         highest,
         lowest,
-        middle,
         pageUrl,
         pulseWeight: weights.pulse,
         statements: rubric.criteria.length,

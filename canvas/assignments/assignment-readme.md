@@ -20,6 +20,16 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Midterm Pulse Statements Judgeable by Week 5 (#568)
+
+`project-partner-evaluation/partner-pulse-rubric.csv` rewords two statements; points and bands are unchanged. Delivery quality reads "What the team has shown me so far, from written requirements to running software, matches what we agreed.", and Reflection reads "The team asks for my feedback and acts on it, or tells me why not." Neither the partner evaluation page nor the pulse intro tells a partner who cannot judge a statement to answer Neither agree nor disagree any more.
+
+The statements are the questions partners answer, so import the CSV and re-paste the body before the Midterm Pulse entry opens; where the pulse has already been sent this fall, hold both for next year, so a team is graded on the statements its partner rated.
+
+- Re-import the CSV on the Midterm Pulse entry.
+- Re-paste the Midterm Pulse body from the paste kit.
+- Regenerate the pulse on the partner evaluation tools page and import the new `.qsf` before its next run.
+
 ## Re-paste Required: Peer Survey Privacy on a Team of Two
 
 No rubric changes, so nothing to re-import. The peer survey's intro and its distribution email no longer say answers are never shown to teammates: each student sees their own scores, averaged over everyone who rated them, and where only one teammate's answers count (a team of two, or the others did not submit) those scores are that teammate's ratings and split. The Peer Evaluations page says the same in its summary card, its opening, and Teams of Two.
