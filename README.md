@@ -2,9 +2,10 @@
 
 The handbook for Oregon State University's three-term computer science
 capstone, CS 461, 462, and 463, published at
-[capstone.alexulbrich.com](https://capstone.alexulbrich.com). Students,
-project partners, and mentors read it, and the graded assignments and their
-rubrics are written here and exported to Canvas.
+[capstone.alexulbrich.com](https://capstone.alexulbrich.com) for students,
+project partners, and mentors. Graded work is written here, except two
+assignments that run in Canvas alone: the paste kit carries each assignment
+body to Canvas, and each rubric CSV is imported there.
 
 Built with [Astro](https://astro.build) and
 [Starlight](https://starlight.astro.build). Pages are MDX under
@@ -12,7 +13,8 @@ Built with [Astro](https://astro.build) and
 
 ## Getting Started
 
-Requires Node 24, matching Vercel's default runtime. `.nvmrc` pins it.
+Requires Node 24 or later. `.nvmrc` pins 24, matching Vercel's default
+runtime.
 
 ```sh
 nvm use
@@ -27,7 +29,7 @@ which is what CI runs. Use `npm`, not `bun` or `pnpm`.
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Dev server with hot reload |
-| `npm run build` | `astro check`, then the static site in `dist/`; fails on any broken internal link or anchor |
+| `npm run build` | `astro check`, then the static site in `dist/` |
 | `npm run preview` | Serves `dist/` |
 | `npm run canvas:export` | Writes the Canvas paste kit to `canvas-export/`, after a build |
 | `npm test` | Unit tests for the instructor tools |
@@ -45,7 +47,7 @@ in [AGENTS.md](AGENTS.md#validation).
 | `public/` | Templates and scoresheets students download |
 | `src/pages/tools/` | Instructor tools for the surveys; they run in the browser and upload nothing |
 | `src/decks/` | Slide decks, served at `/decks/<file name>/` |
-| `scripts/` | The validators, the Canvas export, and maintenance scripts |
+| `scripts/` | The validators and checks, the Canvas export, the email letter scripts, and other maintenance scripts |
 | `data/` | Rosters, grades, and survey exports. Gitignored; never commit anything here |
 
 [AGENTS.md](AGENTS.md) has the full map.
@@ -73,7 +75,8 @@ setup has its own completion record.
 
 ## Link Checking
 
-`npm run build` checks every internal link and anchor. External links are
+`npm run build` fails on a broken internal link or anchor, through
+`starlight-links-validator`. External links are
 checked weekly by `.github/workflows/links.yml`, which runs lychee over the
 built site and opens or updates one "Broken external links" issue when a link
 fails. To run it now:
