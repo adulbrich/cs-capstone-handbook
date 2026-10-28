@@ -262,7 +262,7 @@ required; `validate-outcomes.mjs` checks the order.
    A page whose student makes nothing to hand in (Defense, Term Startup, the
    two evaluation pages) has no What You Produce and no AI-use paragraph.
 
-4. *Explanation sections*, optional: how a session runs, what every checkpoint checks, the
+4. *Explanation sections*, optional: how a session runs, what deployed means, the
    partner's facets, the demo cadence. Named for their content.
 
 5. **`## What You Submit`**, in one or two lines: the format and what goes in
@@ -312,7 +312,9 @@ and survey, the four repo checkpoints' gates), each gets one `###` under
 `canvas` family with `{n}` written as `N` ("Sprint Notes N"). Where they also
 differ in what is handed in, each gets the same `###` under `## What You
 Submit`, with any procedure of its own (the RFC's peer review) as `####`
-inside it. Where every entry shares one rubric (the workshops, Peer
+inside it. Where they differ in what the student produces instead (the repo
+checkpoints' gates), each gets the same `###` under `## What You Produce`,
+after the AI-use paragraph, and What You Submit stays the one PDF. Where every entry shares one rubric (the workshops, Peer
 Evaluations), there are no entry headings.
 
 The Canvas export gives each entry the `###` sections named for it and drops
@@ -351,10 +353,9 @@ The rules below are about its content.
   do. "High-quality documentation" does not.
 - **The Outcome column is the accreditation record.** Only tag a criterion when
   the criterion actually evidences that outcome for that individual student.
-- **Say what graders check first** when graders need consistency: one line
-  per criterion, saying the first thing the grader checks, never restating a
-  band. `repo-checkpoints.mdx` is the model: its What Every Checkpoint Checks
-  section gives the first check for the criteria its entries share.
+- **Follow the rubric table with per-criterion grading notes** when graders need
+  consistency. One line per criterion, in rubric order, saying the first thing
+  the grader checks, never restating a band.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
