@@ -56,7 +56,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
+    "@biomejs/biome": "2.6.2",
     "hast-util-from-html": "^2.0.3",
     "hast-util-minify-whitespace": "^1.0.1",
     "hast-util-select": "^6.0.4",
@@ -65,7 +65,7 @@
     "hastscript": "^9.0.1",
     "lean-qr": "^2.7.4",
     "lefthook": "^2.2.2",
-    "ultracite": "8.0.1",
+    "ultracite": "8.0.2",
     "unist-util-visit": "^5.1.0",
     "yaml": "^2.9.1"
   },
