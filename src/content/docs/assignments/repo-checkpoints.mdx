@@ -72,7 +72,7 @@ You produce the repository. The four subsections below are the criteria the rubr
 
 Five of the seven living docs, each describing the code at the named commit:
 
-- **`docs/requirements.md`**: the problem statement; functional and non-functional requirements, with acceptance criteria for current priorities; the stories marked for the current term, each saying how to run it; the limits you did not choose, under Constraints; success metrics; non-goals; open questions. *Guide: [Requirements](/guides/requirements/).*
+- **`docs/requirements.md`**: the problem statement; functional and non-functional requirements, with acceptance criteria for current priorities; the limits you did not choose, under Constraints; success metrics; non-goals; open questions. *Guide: [Requirements](/guides/requirements/).*
 - **`docs/design.md`**: the system as it exists, with its context, key diagrams, interfaces and contracts, the data model, the deployment shape, decisions deferred on purpose, and open technical questions. *Guide: [Technical design](/guides/technical-design/).*
 - **`README.md`**: a quickstart from a clean clone to a running system. *Reference: [makeareadme.com](https://www.makeareadme.com/).*
 - **`CONTRIBUTING.md`**: the sections [the charter requires](/assignments/team-charter/#required-in-contributingmd). *Reference: [GitHub's guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors).*
@@ -99,9 +99,9 @@ CI runs your tests on every pull request and passed on the named commit, and at 
 | Free and open-source (FOSS) | Upstream's CI on your pull request, plus the build-and-test command upstream expects, documented in your fork. Before your first upstream pull request, that command passing on the named commit |
 | Research | The pipeline run end to end on a small sample dataset, with at least one test asserting a known result rather than merely exiting zero |
 
-The `README.md` quickstart works: follow it from a clean clone before you submit, as a grader will.
+The safety net is review gates on changes that are expensive to undo (schema, authentication, deployment, migrations), somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data), and a documented rollback path, sized to how your team works: the more you delegate to AI tools, the more the automated checks must catch before a change merges.
 
-The safety net is review gates on changes that are expensive to undo (schema, authentication, deployment, migrations), somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data), and a documented rollback path. Graders judge it by whether it catches what your way of working lets through: the more your team delegates to AI tools, the more the automated checks must catch before a change merges.
+The `README.md` quickstart works from a clean clone: graders follow it first, so follow it yourself before you submit.
 
 ### Contribution Traceability and Version Control Hygiene
 
@@ -117,7 +117,7 @@ Due fall week 5. Milestone met scores each item below, and Submission complete s
 - **Approval**: if the target needs one, an entry names it, who is asking for it, and when they asked. *Evidence: an entry in `docs/risks.md`.*
 - **Inherited-codebase audit**: if you start in an existing codebase, your audit covers everything listed under [The Inherited-Codebase Audit](#the-inherited-codebase-audit). *Evidence: a document in the PDF, after the living docs.*
 
-Two criteria ask for less at this checkpoint. Under Decision and Risk Hygiene, an [RFC](/assignments/rfc/) draft committed with status Proposed, naming the options it weighs, counts as a recorded decision. Under Build Health and Safety Net, the `README.md` quickstart may start only the scaffold, and staging and rollback can be a plan in `docs/risks.md` or `README.md`: where changes will be exercised before they reach users, and how a bad change will be undone, each with the week it lands.
+Two criteria ask for less at this checkpoint. Under Decision and Risk Hygiene, an [RFC](/assignments/rfc/) draft committed with status Proposed, naming the options it weighs, counts as a recorded decision. Under Build Health and Safety Net, with no product code yet, the `README.md` quickstart may start only the scaffold, and staging and rollback can be a plan in `docs/risks.md` or `README.md`: where changes will be exercised before they reach users, and how a bad change will be undone, each with the week it lands.
 
 #### The Inherited-Codebase Audit
 
@@ -137,7 +137,7 @@ Put what the audit finds that the code depends on where the next person looks: c
 
 Due fall week 10. Milestone met scores each item below.
 
-- **Walking skeleton deployed**: the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) is deployed from the named commit to the target `docs/design.md` recorded at Repo Checkpoint 1, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines deployed for your project. *Evidence: a link on the cover to what that section names for your project.*
+- **Walking skeleton deployed**: the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) is deployed from the named commit to the target `docs/design.md` recorded at Repo Checkpoint 1, or one agreed since and recorded there, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines deployed for your project. *Evidence: a link on the cover to what that section names for your project.*
 - **Definition of Shipped v0**: a draft of every item the [Definition of Shipped](/assignments/definition-of-shipped/) asks for, whether or not your partner has agreed it yet. *Evidence: a document in the PDF, after the living docs.*
 
 ### Repo Checkpoint 3: Integration Health
@@ -147,7 +147,7 @@ Due winter week 5. Milestone met scores each item below.
 - **Integration**: the stories `docs/requirements.md` marks for this term run end to end against real components, not stubs. *Evidence: each marked story in `docs/requirements.md` says how to run it, by its steps or its test.*
 - **CI**: at least one test in the CI run on the named commit covers a story marked for this term. *Evidence: a link on the cover to the run.*
 - **Real-user session scheduled**: an entry gives the session's week, the participant's role (not their name), and who confirmed it. *Evidence: an external prerequisite in `docs/risks.md`.*
-- **Charter refresh**: the Definition of Done and the pull request and review rules reflect the winter charter refresh, either changed since Repo Checkpoint 2 or marked as kept unchanged. *Evidence: `CONTRIBUTING.md` in the PDF.*
+- **Charter refresh**: the Definition of Done and the pull request and review rules reflect the winter [charter](/assignments/team-charter/) refresh, either changed since Repo Checkpoint 2 or marked as kept unchanged. *Evidence: `CONTRIBUTING.md` in the PDF.*
 
 ### Repo Checkpoint 4: Release Candidate
 
@@ -164,7 +164,7 @@ Repo Checkpoint 1 records where your walking skeleton will run in week 10, and R
 - **A mobile app, game, desktop application, or firmware**: a build installs from the channel `docs/design.md` names (a store test track, a release page, a device image) on a device outside the team. *Evidence: a link on the cover to the build's page on that channel.*
 - **FOSS**: your first upstream pull request is submitted. *Evidence: a link on the cover to the pull request.*
 - **Research**: the pipeline runs end to end on sample data in CI. *Evidence: a link on the cover to that run.*
-- **No deployment, by agreement**: the equivalent milestone `docs/design.md` records. *Evidence: what `docs/design.md` records with it.*
+- **No deployment, by agreement**: the equivalent milestone `docs/design.md` records. *Evidence: a link on the cover to the evidence `docs/design.md` records with it.*
 
 ## What You Submit
 

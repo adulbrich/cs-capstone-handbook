@@ -315,9 +315,8 @@ Submit`, with any procedure of its own (the RFC's peer review) as `####`
 inside it. Where they differ in what the student produces instead (the repo
 checkpoints' milestones), each gets a `###` under `## What You Produce`, after
 the AI-use paragraph, that starts with the entry's name and adds the
-milestone's ("Repo Checkpoint 1: Set Up"), and What You Submit stays the one
-PDF. The export keeps that heading in the entry's body and drops it from the
-others. A link about what the entry asks for takes that heading's anchor; a
+milestone's name ("Repo Checkpoint 1: Set Up"), and What You Submit stays the one
+PDF. A link about what the entry asks for takes that heading's anchor; a
 link about its rubric takes the rubric heading's. Where every entry shares one rubric (the workshops, Peer
 Evaluations), there are no entry headings.
 
