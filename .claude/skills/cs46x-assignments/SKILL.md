@@ -314,10 +314,11 @@ differ in what is handed in, each gets the same `###` under `## What You
 Submit`, with any procedure of its own (the RFC's peer review) as `####`
 inside it. Where they differ in what the student produces instead (the repo
 checkpoints' milestones), each gets a `###` under `## What You Produce`, after
-the AI-use paragraph, that starts with the entry's name and adds its own
-("Repo Checkpoint 1: Set Up"), and What You Submit stays the one PDF. The
-export keeps that heading in the entry's body and drops it from the others;
-inbound links take its anchor, not the rubric's. Where every entry shares one rubric (the workshops, Peer
+the AI-use paragraph, that starts with the entry's name and adds the
+milestone's ("Repo Checkpoint 1: Set Up"), and What You Submit stays the one
+PDF. The export keeps that heading in the entry's body and drops it from the
+others. A link about what the entry asks for takes that heading's anchor; a
+link about its rubric takes the rubric heading's. Where every entry shares one rubric (the workshops, Peer
 Evaluations), there are no entry headings.
 
 The Canvas export gives each entry the `###` sections named for it and drops
@@ -359,7 +360,8 @@ The rules below are about its content.
   the criterion actually evidences that outcome for that individual student.
 - **Follow the rubric table with per-criterion grading notes** when graders need
   consistency. One line per criterion, in rubric order, saying the first thing
-  the grader checks, never restating a band.
+  the grader checks, never restating a band. Where What You Produce gives each
+  shared criterion a subsection, the line closes that subsection instead.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
