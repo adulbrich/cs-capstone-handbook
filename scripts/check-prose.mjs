@@ -147,6 +147,10 @@ const VOCABULARY = [
       /\bteaching staff\b|\bcourse staff\b|\bteaching team\b|\binstruction staff\b/i,
     use: "the instruction team, or the instructors or a TA when only they are meant",
   },
+  {
+    avoid: /\bterm gates?\b/i,
+    use: "milestone, for what a repo checkpoint adds",
+  },
 ];
 const VOCABULARY_PATHS = [
   "src/content/docs/",

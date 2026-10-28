@@ -322,7 +322,8 @@ Evaluations), there are no entry headings.
 
 The Canvas export gives each entry the `###` sections named for it and drops
 the others, so a misspelled entry heading puts the wrong text in Canvas. The
-validator checks the names.
+validator checks the names under Rubric and What You Submit, not under What
+You Produce, so start a What You Produce heading with the entry's exact name.
 
 *Admonitions* are optional anywhere. The pattern worth reusing is
 `:::note[If your project is under NDA]` for the local NDA variation. Do not
