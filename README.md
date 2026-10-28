@@ -1,11 +1,8 @@
 # CS Capstone Handbook
 
-The handbook for Oregon State University's three-term computer science
-capstone, CS 461, 462, and 463, published at
-[capstone.alexulbrich.com](https://capstone.alexulbrich.com) for students,
-project partners, and mentors. Graded work is written here, except two
-assignments that run in Canvas alone: the paste kit carries each assignment
-body to Canvas, and each rubric CSV is imported there.
+The handbook for Oregon State University's on-campus three-term computer
+science capstone, CS 461, 462, and 463, for students, project partners, and
+mentors.
 
 Built with [Astro](https://astro.build) and
 [Starlight](https://starlight.astro.build). Pages are MDX under
@@ -24,7 +21,7 @@ npm run dev
 
 `npm install` also installs the lefthook git hooks. Use `npm ci` instead when
 you want the exact tree from `package-lock.json` and no lockfile changes,
-which is what CI runs. Use `npm`, not `bun` or `pnpm`.
+which is what CI runs.
 
 | Command | What it does |
 | --- | --- |
@@ -57,8 +54,7 @@ in [AGENTS.md](AGENTS.md#validation).
 - [CONTRIBUTING.md](CONTRIBUTING.md): the process from issue to merge, and the
   gate that stops each rule.
 - [AGENTS.md](AGENTS.md): the rules every change keeps. Read it before a
-  content change. A per-tool instruction file (`CLAUDE.md` and friends) points
-  at it rather than duplicating it.
+  content change.
 - [docs/agents/voice.md](docs/agents/voice.md): how handbook pages are
   written.
 - [docs/decisions/](docs/decisions/): design records for the rules the
@@ -68,8 +64,7 @@ in [AGENTS.md](AGENTS.md#validation).
 
 ## Running a Term
 
-[STAFF-RUNBOOK.md](STAFF-RUNBOOK.md) is the instruction team's operating
-manual. At the start of every term, open a Term setup issue from
+At the start of every term, open a Term setup issue from
 `.github/ISSUE_TEMPLATE/term-setup.md` and work its checklist, so each term's
 setup has its own completion record.
 
