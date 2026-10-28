@@ -366,8 +366,8 @@ Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
 Startup, the Bidding Survey); the individual contribution's Full, Partial, and Zero; `defense`,
 which adds a fourth; the surveys, whose bands are the instrument's own scale; and the four
-Repo Checkpoint 1 criteria at zero points in every band, which show a team where it stands
-before they count. Not submitted, off-topic, or inaccessible to graders scores zero,
+Repo Checkpoint 1 criteria, which keep the three bands at zero points to show a team where
+it stands before they count. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
 ## The Rubric Lives in the CSV
