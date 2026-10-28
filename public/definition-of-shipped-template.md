@@ -33,7 +33,7 @@ Everything the target rung requires that your team does not control: accounts, r
 
 ## 4. User Access Plan
 
-Who the real users or evaluators are, and how you will reach them by the winter real-user milestones. Name the channel, not just the hope: which community, which mailing list, which pilot group, recruited by whom.
+Who the real users or evaluators are, and how you will reach them by the winter real-user sessions. Name the channel, not just the hope: which community, which mailing list, which pilot group, recruited by whom.
 
 ## 5. Partner Agreement
 

@@ -105,19 +105,19 @@ The safety net is review gates on changes that are expensive to undo (schema, au
 
 ### Contribution Traceability and Version Control Hygiene
 
-Nothing reaches the default branch except through a reviewed pull request, and the history meets the five items of [a history a maintainer could inherit](/guides/git-and-github/#a-history-a-maintainer-could-inherit). Each student's code arrives through pull requests under their own account, other work sits where `CONTRIBUTING.md` says it lives, and the Contribution lines in your [sprint notes](/assignments/sprint-notes/) match that record. Graders check whether each student's work can be attributed, not how much each did, which your [individual contribution](/assignments/sprint-notes/#sprint-notes-n-individual-contribution) grades.
+Nothing reaches the default branch except through a reviewed pull request, and the history meets the five items of [a history a maintainer could inherit](/guides/git-and-github/#a-history-a-maintainer-could-inherit). Each student's code arrives through pull requests under their own account, other work sits where `CONTRIBUTING.md` says it lives, and the Contribution lines in your [sprint notes](/assignments/sprint-notes/) match that record. Graders check whether each student's work can be attributed; how much each did is graded in your [individual contribution](/assignments/sprint-notes/#sprint-notes-n-individual-contribution).
 
 ### Repo Checkpoint 1: Set Up
 
 Due fall week 5. Milestone met scores each item below, and Submission complete scores the PDF itself. Agree the production target now: an account, a hosting decision, or a review can take weeks.
 
-- **CI**: passed on the named commit, in [your project's form of CI](#build-health-and-safety-net). With no product code yet, CI and the `README.md` quickstart run on a scaffold: your stack's starter project, with at least one test that fails when the scaffold breaks. *Evidence: a link on the cover to the run.*
+- **CI**: passed on the named commit, in [your project's form of CI](#build-health-and-safety-net). With no product code yet, it runs on a scaffold: your stack's starter project, with at least one test that fails when the scaffold breaks. *Evidence: a link on the cover to the run.*
 - **Board**: every item in the current sprint has an owner and a status. *Evidence: a link on the cover to the board.*
 - **Production target**: one paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) will run in week 10, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project; who owns the account or infrastructure; and who agreed it, your partner or, without one, your mentor. FOSS projects add who upstream reviews the first pull request; research projects, which sample data the pipeline may use. With no deployment planned, the paragraph says why, so the instruction team can agree an equivalent milestone with you. *Evidence: the deployment section of `docs/design.md`.*
 - **Approval**: if the target needs one, an entry names it, who is asking for it, and when they asked. *Evidence: an entry in `docs/risks.md`.*
 - **Inherited-codebase audit**: if you start in an existing codebase, your audit covers everything listed under [The Inherited-Codebase Audit](#the-inherited-codebase-audit). *Evidence: a document in the PDF, after the living docs.*
 
-Two criteria ask for less at this checkpoint. Under Decision and Risk Hygiene, an [RFC](/assignments/rfc/) draft committed with status Proposed, naming the options it weighs, counts as a recorded decision. Under Build Health and Safety Net, staging and rollback can be a plan in `docs/risks.md` or `README.md`: where changes will be exercised before they reach users, and how a bad change will be undone, each with the week it lands.
+Two criteria ask for less at this checkpoint. Under Decision and Risk Hygiene, an [RFC](/assignments/rfc/) draft committed with status Proposed, naming the options it weighs, counts as a recorded decision. Under Build Health and Safety Net, the `README.md` quickstart may start only the scaffold, and staging and rollback can be a plan in `docs/risks.md` or `README.md`: where changes will be exercised before they reach users, and how a bad change will be undone, each with the week it lands.
 
 #### The Inherited-Codebase Audit
 
@@ -145,7 +145,7 @@ Due fall week 10. Milestone met scores each item below.
 Due winter week 5. Milestone met scores each item below.
 
 - **Integration**: the stories `docs/requirements.md` marks for this term run end to end against real components, not stubs. *Evidence: each marked story in `docs/requirements.md` says how to run it, by its steps or its test.*
-- **CI**: at least one test in the run covers a story marked for this term. *Evidence: a link on the cover to the run.*
+- **CI**: at least one test in the CI run on the named commit covers a story marked for this term. *Evidence: a link on the cover to the run.*
 - **Real-user session scheduled**: an entry gives the session's week, the participant's role (not their name), and who confirmed it. *Evidence: an external prerequisite in `docs/risks.md`.*
 - **Charter refresh**: the Definition of Done and the pull request and review rules reflect the winter charter refresh, either changed since Repo Checkpoint 2 or marked as kept unchanged. *Evidence: `CONTRIBUTING.md` in the PDF.*
 
@@ -178,7 +178,7 @@ If your partner rules out read access for the instruction team, the checkpoint i
 
 ### Repo Checkpoint 1
 
-At Repo Checkpoint 1, only Submission complete and Milestone met carry points; the other four are marked at zero, so you see where your repository would land at Repo Checkpoint 2.
+At Repo Checkpoint 1, only Submission complete and Milestone met carry points; the other four are marked at zero, so you see where your repository stands on them before they count.
 
 <RubricTable csv={rubric1Csv} sourceLabel="canvas/assignments/repo-checkpoint/repo-checkpoint-1-rubric.csv" />
 
@@ -211,6 +211,6 @@ At Repo Checkpoint 1, only Submission complete and Milestone met carry points; t
 | FOSS | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the audit and the upstream review culture; [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for upstream conventions |
 | Research | [Define Your Research Questions](/activities/research-methods/#define-your-research-questions) and [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) first, then [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline); [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Keep an Experiment Log](/activities/research-methods/#keep-an-experiment-log) for the release candidate |
 | Consultancy | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) in the partner's codebase; [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) for the partner's IT and security review; [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping); [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan) for staging in the partner's environment |
-| New Product or Game | [Lean Canvas](/activities/requirements/#lean-canvas) and [Hypothesis Testing](/activities/requirements/#hypothesis-testing) early; [Plan Prototype](/activities/planning-and-risk/#plan-prototype) for the walking skeleton; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the real-user milestones |
+| New Product or Game | [Lean Canvas](/activities/requirements/#lean-canvas) and [Hypothesis Testing](/activities/requirements/#hypothesis-testing) early; [Plan Prototype](/activities/planning-and-risk/#plan-prototype) for the walking skeleton; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the real-user sessions |
 
 Browse [Testing, Release, and Handoff](/activities/testing-release-and-handoff/) and [Planning and Risk](/activities/planning-and-risk/) when these run out.
