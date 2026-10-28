@@ -96,7 +96,7 @@ CI runs your tests on every pull request and passed on the named commit, and at 
 | If your project is | CI is |
 |---|---|
 | New Product or Game, Consultancy | A workflow that builds the project and runs the tests on every pull request |
-| Free and open-source (FOSS) | Upstream's CI on your pull request, plus the build-and-test command upstream expects, documented in your fork. Before your first upstream pull request, that command passing on the named commit |
+| Free and open-source (FOSS) | Upstream's CI on your pull requests. Until your first upstream pull request, the build-and-test command upstream expects, documented in your fork and passing on the named commit |
 | Research | The pipeline run end to end on a small sample dataset, with at least one test asserting a known result rather than merely exiting zero |
 
 The safety net is review gates on changes that are expensive to undo (schema, authentication, deployment, migrations), somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data), and a documented rollback path, sized to how your team works: the more you delegate to AI tools, the more the automated checks must catch before a change merges.
