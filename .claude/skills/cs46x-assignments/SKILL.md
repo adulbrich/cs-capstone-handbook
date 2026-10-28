@@ -307,13 +307,13 @@ required; `validate-outcomes.mjs` checks the order.
 
 Where a page's Canvas entries are graded differently (the RFC's draft and
 final, a sprint's team note and individual contribution, the partner's pulse
-and survey, the four repo checkpoints' gates), each gets one `###` under
+and survey, the four repo checkpoints' milestones), each gets one `###` under
 `## Rubric`, named exactly as the
 `canvas` family with `{n}` written as `N` ("Sprint Notes N"). Where they also
 differ in what is handed in, each gets the same `###` under `## What You
 Submit`, with any procedure of its own (the RFC's peer review) as `####`
 inside it. Where they differ in what the student produces instead (the repo
-checkpoints' gates), each gets the same `###` under `## What You Produce`,
+checkpoints' milestones), each gets the same `###` under `## What You Produce`,
 after the AI-use paragraph, and What You Submit stays the one PDF. Where every entry shares one rubric (the workshops, Peer
 Evaluations), there are no entry headings.
 
@@ -492,7 +492,7 @@ Evidence but has no page weight to reconcile them against.
 
 Raising one weight means cutting another. Verify the sums with a script, not by
 eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
-carry the individual contribution modifier and the living-docs gate.
+carry the individual contribution modifier and the living-docs review.
 
 ## NDA Projects
 
