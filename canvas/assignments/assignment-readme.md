@@ -20,6 +20,15 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Repo Checkpoint 1 as a Scored Dry Run (#576)
+
+Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw. Re-paste each body on the same rule.
+
+- `repo-checkpoint/repo-checkpoint-1-rubric.csv`, on Repo Checkpoint 1 (fall week 5): six criteria in place of five, still totaling 100. Submission complete is new, with no outcome tag, at 50, 40, and 10: the cover names the repository URL and the full commit hash, and the PDF carries the seven living docs, rendered and matching the commit. Term gate met keeps `[SO2]` at 50, 40, and 10, and its Exceeds band adds the scaffold, who reviews a FOSS team's first upstream pull request or which sample data a research pipeline may use, and the no-deployment answer. Living docs, Build health, Decision and risk hygiene, and Contribution traceability keep their tags and carry 0 points in every band; Build health's bands ask for the plan for staging and rollback in place of the real ones. Before this import, check that Canvas takes a zero-point criterion: import a throwaway rubric with one, attach it to an unpublished assignment, and grade the test student to see the band shown.
+- All four CSVs: the Living docs Exceeds band no longer checks the quickstart, which Build health checks. Contribution traceability's history half lists the five items of "A History a Maintainer Could Inherit" in the git and GitHub guide, adding dependency directories, the why in commit messages, and noisy branches squashed on merge, and its attribution half names the Contribution lines in the sprint notes. Repo Checkpoint 2 before fall week 10, 3 and 4 before winter.
+
+Re-paste from the paste kit all four Repo Checkpoint bodies (What Every Checkpoint Checks replaces What CI Must Do and the grading notes, the deployment table moves to its own What Deployed Means in Fall section, and What You Produce is a table), Term Startup and Demo Day (each links that section), and the Assignments Overview (Rubric Conventions names the zero-point criteria).
+
 ## Re-import Required: Midterm Pulse Statements Judgeable by Week 5 (#568)
 
 `project-partner-evaluation/partner-pulse-rubric.csv` rewords two statements; points and bands are unchanged. Delivery quality reads "What the team has shown me so far, from written requirements to running software, matches what we agreed.", and Reflection reads "The team asks for my feedback and acts on it, or tells me why not." Neither the partner evaluation page nor the pulse intro tells a partner who cannot judge a statement to answer Neither agree nor disagree any more.

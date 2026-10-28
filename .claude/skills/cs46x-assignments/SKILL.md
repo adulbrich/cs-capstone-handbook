@@ -262,7 +262,7 @@ required; `validate-outcomes.mjs` checks the order.
    A page whose student makes nothing to hand in (Defense, Term Startup, the
    two evaluation pages) has no What You Produce and no AI-use paragraph.
 
-4. *Explanation sections*, optional: how a session runs, what CI must do, the
+4. *Explanation sections*, optional: how a session runs, what every checkpoint checks, the
    partner's facets, the demo cadence. Named for their content.
 
 5. **`## What You Submit`**, in one or two lines: the format and what goes in
@@ -351,14 +351,17 @@ The rules below are about its content.
   do. "High-quality documentation" does not.
 - **The Outcome column is the accreditation record.** Only tag a criterion when
   the criterion actually evidences that outcome for that individual student.
-- **Follow the rubric table with per-criterion grading notes** when graders need
-  consistency. One line per criterion, in rubric order, saying the first thing
-  the grader checks. `repo-checkpoints.mdx` is the model.
+- **Say what graders check first** when graders need consistency: one line
+  per criterion, saying the first thing the grader checks, never restating a
+  band. `repo-checkpoints.mdx` is the model: its What Every Checkpoint Checks
+  section gives the first check for the criteria its entries share.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
 Startup, the Bidding Survey); the individual contribution's Full, Partial, and Zero; `defense`,
-which adds a fourth; and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
+which adds a fourth; the surveys, whose bands are the instrument's own scale; and the four
+Repo Checkpoint 1 criteria at zero points in every band, which show a team where it stands
+before they count. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
 ## The Rubric Lives in the CSV
