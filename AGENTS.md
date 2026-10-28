@@ -338,9 +338,10 @@ The five canonical labels, unrenamed. See `docs/agents/triage-labels.md`.
 
 ### Code review
 
-`mattpocock-skills:code-review` on every pull request. The brief the
-Standards axis reads, and the rule for when the loop ends, are in
-`docs/agents/code-review.md`.
+`mattpocock-skills:code-review` on every pull request, plus a consistency
+axis when the pull request changes an assignment page or a rubric. The brief
+the Standards axis reads, the consistency axis, and the rule that rounds run
+until one changes nothing are in `docs/agents/code-review.md`.
 
 ### Domain docs
 

@@ -81,13 +81,54 @@ skills under `.claude/skills/`.
   or a sidebar changed without a line in the body, a fact whose meaning moved
   while the wording was being tidied.
 
+## The consistency axis
+
+A pull request that changes an assignment page, a rubric CSV, or a fact other
+pages restate gets a third reviewer beside Standards and Spec. It reads what
+neither of them does:
+
+- Each rubric band against the page, entry by entry: a band that asks for
+  something the page does not at that entry, a page requirement no band
+  scores where it applies, or one requirement scored by two criteria.
+- Each body `npm run canvas:export` writes, read alone beside its rubric, as a
+  student who has only those two: a sentence that points at a section the
+  body no longer contains, or that reads differently once the export has cut
+  the other entries' sections.
+- Every page, deck, syllabus, template, and runbook line that restates what
+  changed, found by grep.
+- Every inbound link to a renamed or moved heading. The build checks that an
+  anchor exists, not that it lands on the section its sentence means.
+- The re-import and re-paste notes in `canvas/assignments/assignment-readme.md`
+  against the diff under `canvas/` and the bodies whose text changed.
+
 ## Severity and the loop
 
 - **Hard**: a documented rule broken, cited by file and rule. **Judgement**:
   labelled as such, with the hunk quoted.
-- The loop ends when a pass raises nothing unanswered. Each finding is fixed,
-  or declined in one line in the PR body. A declined finding that is real work
-  becomes an issue under the current review parent; a declined judgement call
-  needs no issue.
-- One full pass is the norm. A second pass runs only when the first pass
-  changed more than it declined.
+- **The bar.** A finding changes what a student does or how a grader scores,
+  shows two statements that disagree, points at a broken or misdirected link,
+  or cites a documented rule broken. A wording the reviewer would prefer,
+  where the current one is clear and correct, is not a finding.
+- **Each finding is fixed or declined**, in one line in the PR body. Check a
+  finding before fixing it; reviewers are wrong too. A declined finding that
+  is real work becomes an issue under the current review parent; a declined
+  judgement call needs no issue. A finding that is a design choice rather
+  than a defect goes to the instructor as options, and the answer joins the
+  ledger.
+- **The ledger.** From the second round on, the reviewers read one file
+  first: the decisions the instructor has made, each declined finding with
+  its reason, and the bar. Every round adds its declines, so each round
+  raises only what the ledger does not already answer. It
+  lives in the session's scratchpad, not the repository; the PR body carries
+  what it decided.
+- **Rounds run until one changes nothing.** A round is the axes run in
+  parallel by fresh sub-agents, plus the main session's own correctness
+  read, with every report in before anything is fixed and one commit per
+  round. If the round fixed anything, the next round runs. The loop ends on a
+  round whose findings are all declined, or none. A fix as small as one table
+  row still gets a round, which may be one reviewer covering every axis for
+  that change plus a check of the whole diff for regressions.
+- **Keep each fix to what its finding needs.** Most findings after the second
+  round are in text an earlier round wrote, so a fix that also rewrites its
+  neighborhood buys another round.
+- Record the number of rounds in the PR body, beside the declines.
