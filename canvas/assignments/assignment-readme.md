@@ -22,9 +22,11 @@ The sections below record each change as it was made. The ones from before the m
 
 ## Re-import Required: Midterm Pulse Statements Judgeable by Week 5 (#568)
 
-`project-partner-evaluation/partner-pulse-rubric.csv` rewords two statements; points and bands are unchanged. Delivery quality reads "What the team has shown me so far, from written requirements to running software, matches what we agreed.", and Reflection reads "The team asks for my feedback and acts on it, or tells me why not." The pulse intro no longer tells a partner who cannot judge a statement to answer Neither agree nor disagree.
+`project-partner-evaluation/partner-pulse-rubric.csv` rewords two statements; points and bands are unchanged. Delivery quality reads "What the team has shown me so far, from written requirements to running software, matches what we agreed.", and Reflection reads "The team asks for my feedback and acts on it, or tells me why not." Neither the partner evaluation page nor the pulse intro tells a partner who cannot judge a statement to answer Neither agree nor disagree any more.
 
-- Re-import the CSV on the Midterm Pulse entry of every term not yet scored.
+The statements are the questions partners answer, so import the CSV and re-paste the body before the Midterm Pulse entry opens; where the pulse has already been sent this fall, hold both for next year, so a team is graded on the statements its partner rated.
+
+- Re-import the CSV on the Midterm Pulse entry.
 - Re-paste the Midterm Pulse body from the paste kit.
 - Regenerate the pulse on the partner evaluation tools page and import the new `.qsf` before its next run.
 
