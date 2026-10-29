@@ -98,7 +98,7 @@ Then trimmed to the entry, by rules that read the page rather than name it:
 
 1. A section headed by another entry's name goes: the RFC Final body drops "RFC Draft + Peer Review", a sprint note drops "Sprint Notes N: Individual Contribution", the Midterm Pulse section leaves the end-of-term survey.
 2. A heading, aside title, table row's first cell, bold paragraph lead, or list item opening "In spring" that names only other terms goes.
-3. A section, row or paragraph naming another member of a numbered family goes ("### Workshop 4: ..." leaves Workshop 2), and so does a paragraph whose bold lead names another entry on the page ("**Repo Checkpoint 2, fall week 10:**" leaves Repo Checkpoint 1).
+3. A section, row or paragraph naming another member of a numbered family goes ("### Workshop 4: ..." leaves Workshop 2), and so does a paragraph whose bold lead names another entry on the page ("**Repo Checkpoint 2: Hello, Production, fall week 10:**" leaves Repo Checkpoint 1).
 4. A column headed by another term's course number goes ("CS 462" leaves the fall partner survey).
 
 \`OVERRIDES\` in \`scripts/canvas-export.mjs\` holds the page-specific cuts and rewrites no rule sees.
@@ -492,8 +492,8 @@ function trim(e, root) {
   const offTerm = (s) => otherTerm(s, term);
   // 3. Rows and paragraphs naming another member of a numbered family
   // ("Workshop 4" in Workshop 2), and bold paragraph leads naming another
-  // family on the page ("Repo Checkpoint 2, fall week 10:" in Repo
-  // Checkpoint 1).
+  // family on the page ("Repo Checkpoint 2: Hello, Production, fall week
+  // 10:" in Repo Checkpoint 1).
   const base = familyBase(family);
   const memberRe = base ? new RegExp(`^${base}(\\d+)\\b`) : null;
   const own = memberRe ? e.name.match(memberRe)?.[1] : null;

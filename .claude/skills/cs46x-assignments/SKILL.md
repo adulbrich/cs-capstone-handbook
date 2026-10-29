@@ -262,7 +262,7 @@ required; `validate-outcomes.mjs` checks the order.
    A page whose student makes nothing to hand in (Defense, Term Startup, the
    two evaluation pages) has no What You Produce and no AI-use paragraph.
 
-4. *Explanation sections*, optional: how a session runs, what CI must do, the
+4. *Explanation sections*, optional: how a session runs, what deployed means, the
    partner's facets, the demo cadence. Named for their content.
 
 5. **`## What You Submit`**, in one or two lines: the format and what goes in
@@ -307,17 +307,23 @@ required; `validate-outcomes.mjs` checks the order.
 
 Where a page's Canvas entries are graded differently (the RFC's draft and
 final, a sprint's team note and individual contribution, the partner's pulse
-and survey, the four repo checkpoints' gates), each gets one `###` under
+and survey, the four repo checkpoints' milestones), each gets one `###` under
 `## Rubric`, named exactly as the
 `canvas` family with `{n}` written as `N` ("Sprint Notes N"). Where they also
 differ in what is handed in, each gets the same `###` under `## What You
 Submit`, with any procedure of its own (the RFC's peer review) as `####`
-inside it. Where every entry shares one rubric (the workshops, Peer
+inside it. Where they differ in what the student produces instead (the repo
+checkpoints' milestones), each gets a `###` under `## What You Produce`, after
+the AI-use paragraph, that starts with the entry's name and adds the
+milestone's name ("Repo Checkpoint 1: Set Up"), and What You Submit stays the one
+PDF. A link about what the entry asks for takes that heading's anchor; a
+link about its rubric takes the rubric heading's. Where every entry shares one rubric (the workshops, Peer
 Evaluations), there are no entry headings.
 
 The Canvas export gives each entry the `###` sections named for it and drops
 the others, so a misspelled entry heading puts the wrong text in Canvas. The
-validator checks the names.
+validator checks the names under Rubric and What You Submit, not under What
+You Produce, so start a What You Produce heading with the entry's exact name.
 
 *Admonitions* are optional anywhere. The pattern worth reusing is
 `:::note[If your project is under NDA]` for the local NDA variation. Do not
@@ -353,12 +359,15 @@ The rules below are about its content.
   the criterion actually evidences that outcome for that individual student.
 - **Follow the rubric table with per-criterion grading notes** when graders need
   consistency. One line per criterion, in rubric order, saying the first thing
-  the grader checks. `repo-checkpoints.mdx` is the model.
+  the grader checks, never restating a band. Where What You Produce gives each
+  shared criterion a subsection, the line closes that subsection instead.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
 Startup, the Bidding Survey); the individual contribution's Full, Partial, and Zero; `defense`,
-which adds a fourth; and the surveys, whose bands are the instrument's own scale. Not submitted, off-topic, or inaccessible to graders scores zero,
+which adds a fourth; the surveys, whose bands are the instrument's own scale; and the four
+Repo Checkpoint 1 criteria, which keep the three bands at zero points to show a team where
+it stands before they count. Not submitted, off-topic, or inaccessible to graders scores zero,
 stated explicitly rather than folded into Does Not Meet.
 
 ## The Rubric Lives in the CSV
@@ -488,7 +497,7 @@ Evidence but has no page weight to reconcile them against.
 
 Raising one weight means cutting another. Verify the sums with a script, not by
 eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
-carry the individual contribution modifier and the living-docs gate.
+carry the individual contribution modifier and the living-docs review.
 
 ## NDA Projects
 

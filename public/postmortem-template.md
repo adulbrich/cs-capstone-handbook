@@ -31,7 +31,7 @@ What limited the damage. Specific credit: the backup that existed, the teammate 
 
 ## 5. Corrective Actions
 
-3 to 5 specific changes. Distinguish "prevent recurrence" from "detect faster". At least one must be verifiable at the next repo checkpoint.
+3 to 5 specific changes. Distinguish "prevent recurrence" from "detect faster".
 
 | Action | Owner | Due date | Type (prevent / detect) | Verifiable how |
 | --- | --- | --- | --- | --- |

@@ -122,9 +122,9 @@ CS 461 (fall) and CS 462 (winter) are both certified Writing Intensive Curriculu
 
 ## Repo Checkpoints
 
-- Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist: the documents from the PDF, and the build, gate and history from the repository at the named commit. Spot-check one document against the commit; a PDF that does not match counts against the living-docs criterion. Leave feedback as issues where useful. The week 5 checkpoint (Repo Checkpoint 1 or 3) is graded in week 5; the week 10 checkpoint (2 or 4) in finals week, after the week-10 check-ins, so that week stays at check-in load.
+- Default (staff repo access): asynchronous review, ~10-15 minutes per team against the checklist: the documents from the PDF, and the build, milestone and history from the repository at the named commit. Spot-check one document against the commit; a PDF that does not match counts against Docs current, or Decision and risk hygiene for the decision records and `docs/risks.md`, and at Repo Checkpoint 1 against Submission complete, since its four shared criteria are marked at zero points. Leave feedback as issues where useful. The week 5 checkpoint (Repo Checkpoint 1 or 3) is graded in week 5; the week 10 checkpoint (2 or 4) in finals week, after the week-10 check-ins, so that week stays at check-in load.
 - NDA teams whose partner rules out read access: 15-minute walkthrough of the repository at the named commit, in its own slot in the checkpoint week, scheduled with the team, fixed order (quickstart, CI, docs spot-check, risk register, PR list); retain nothing beyond the sanitized PDF the team submits where its partner permits. It never displaces a demo.
-- Consistency anchors live on the assignment page ("How Graders Review"). Calibrate by having all TAs review one volunteer staff-accessible repo together in week 4.
+- Consistency anchors are the rubric bands and each checkpoint's milestone list on the assignment page. Calibrate by having all TAs review one volunteer staff-accessible repo together in week 4.
 
 ## Individual Contribution Modifier
 

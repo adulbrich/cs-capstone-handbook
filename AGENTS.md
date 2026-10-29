@@ -83,7 +83,8 @@ it. Content lives in `src/content/docs/**` as MDX.
    handbook page holds them all. The page lists its entries in
    `assignment.canvas` frontmatter, gives entries graded differently one
    `###` each under `## Rubric` (and under `## What You Submit` when what
-   they hand in differs), and renders one `<RubricTable>` per distinct
+   they hand in differs, or `## What You Produce` when what they produce
+   does), and renders one `<RubricTable>` per distinct
    rubric; `validate-outcomes.mjs` reconciles the list with the
    page weight, the rendered rubrics, and Canvas's per-group points. See
    `docs/decisions/2026-09-23-canvas-entry-model.md`.

@@ -2,8 +2,8 @@
 
 # RFC: [Short, Specific Title]
 
-<!-- Decision record header. Leave Status as "Proposed" until your team decides,
-     before or after the reviews. Then fill in the outcome and the decision date.
+<!-- Decision record header. Leave Status as "Proposed" until your team decides.
+     Then fill in the outcome and the decision date.
      The document stays where it is; this header is what makes it a record. -->
 
 | Field | Value |
@@ -52,8 +52,6 @@ Licensing, data use, IP, and the partner confidentiality boundary as they bear o
 - **What you handed to AI tools** on this decision, whether that was the analysis, the prototype, the tests, or the writing.
 - **What checks made that reasonable**: tests, CI, review gates, a staging environment, a rollback path. Name the ones that actually exist in your repo, not the ones you intend to build.
 - **Where you stopped and validated the result yourself, and why those points.** If this decision is hard to reverse, say what you personally checked before committing to it.
-
-What is assessed is in the [AI policy](https://capstone.alexulbrich.com/assignments/introduction/#ai-policy-applies-to-every-assignment).
 
 ## Decision
 
