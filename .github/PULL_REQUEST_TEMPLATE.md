@@ -24,10 +24,12 @@ Closes #
 
 ## Review loop
 
-<!-- mattpocock-skills:code-review until a pass raises nothing unanswered.
-     State the pass count. A declined finding gets one line. -->
+<!-- Review rounds until one changes nothing, as docs/agents/code-review.md
+     says. State the round count. Each answer the instructor gave and each
+     declined finding gets one line. -->
 
-- Passes:
+- Rounds:
+- Decisions:
 - Declined:
 
 ## Docs

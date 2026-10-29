@@ -1,11 +1,12 @@
 # Code review
 
-`mattpocock-skills:code-review` runs on every pull request, as `AGENTS.md` and
-`CONTRIBUTING.md` say. This repository is a student-facing handbook, not an
+`mattpocock-skills:code-review` runs on every pull request, as `AGENTS.md`
+says. This repository is a student-facing handbook, not an
 application: most of a diff is prose, tables, and MDX, and the review reads it
-that way. This file is the local delta from the skill's default brief. The
-Standards sub-agent gets it pasted alongside `AGENTS.md` and the three content
-skills under `.claude/skills/`.
+that way. This file is the local delta from the skill's default brief. Every
+reviewer gets it pasted, for the bar under Severity and the loop; the
+Standards sub-agent also gets `AGENTS.md` and the three content skills under
+`.claude/skills/`.
 
 ## What the Standards axis checks
 
@@ -81,13 +82,67 @@ skills under `.claude/skills/`.
   or a sidebar changed without a line in the body, a fact whose meaning moved
   while the wording was being tidied.
 
+## The consistency axis
+
+A pull request that changes an assignment page, a rubric CSV, or a fact with
+a canonical home in `AGENTS.md` gets a third reviewer beside Standards and
+Spec. It reads what
+neither of them does:
+
+- Each rubric band against the page, entry by entry: a band that asks for
+  something the page does not at that entry, a page requirement no band
+  scores where it applies, or one requirement scored by two criteria.
+- Each body `npm run canvas:export` writes, read alone beside its rubric, as a
+  student who has only those two: a sentence that points at a section the
+  body no longer contains, or that reads differently once the export has cut
+  the other entries' sections.
+- Every page, deck, syllabus, template, and runbook line that restates what
+  changed, found by grep.
+- Every inbound link to a renamed or moved heading. The build checks that an
+  anchor exists, not that it lands on the section its sentence means.
+- The re-import and re-paste notes in `canvas/assignments/assignment-readme.md`
+  against the diff under `canvas/` and the bodies whose text changed.
+
+When this axis runs, the main session runs `npm run build` and
+`npm run canvas:export` once per round, before any reviewer starts, so every
+reviewer reads the same output.
+
 ## Severity and the loop
 
 - **Hard**: a documented rule broken, cited by file and rule. **Judgement**:
   labelled as such, with the hunk quoted.
-- The loop ends when a pass raises nothing unanswered. Each finding is fixed,
-  or declined in one line in the PR body. A declined finding that is real work
-  becomes an issue under the current review parent; a declined judgement call
-  needs no issue.
-- One full pass is the norm. A second pass runs only when the first pass
-  changed more than it declined.
+- **The bar.** A finding changes what a student does or how a grader scores,
+  changes what a script, hook, or agent does, shows two statements that
+  disagree, points at a broken or misdirected link, or cites a documented
+  rule broken. A wording the reviewer would prefer, where the current one is
+  clear and correct, is not a finding.
+- **Each finding is fixed, declined, or sent to the instructor.** Check a
+  finding before acting on it; reviewers are wrong too. A defect in the diff
+  that clears the bar is fixed. A decline gives one of three grounds, in one
+  line under Declined in the PR body: wrong once checked, below the bar, or
+  outside the diff, where real work becomes an issue (under the current
+  review parent, when one is open). A design choice rather than a defect,
+  and a finding that would reverse an earlier round's fix, go to the
+  instructor as options; the round waits for the answer, which the PR body
+  records under Decisions.
+- **The ledger.** From the second round on, every reviewer reads one file
+  first: the instructor's decisions, each decline with its ground, and the
+  bar. Every round adds its decisions and declines, so each round raises only
+  what the ledger does not already answer. It lives in the session's
+  scratchpad, not the repository; a resumed session rebuilds it from the PR
+  body's Decisions and Declined lines.
+- **Rounds run until one changes nothing.** A round is the axes run in
+  parallel by fresh sub-agents, plus the main session's own correctness
+  read (the built-in `code-review` skill, or a line-by-line read of the
+  diff), with every report in before anything is fixed, and one commit per
+  round. If the round fixed anything, the next round runs. The loop ends on a
+  round that changed nothing: every finding declined, answered by the
+  instructor with no change, or none. When a round's fixes
+  touched only a few lines, the next round may be one reviewer covering every
+  axis for those lines and checking the whole diff for regressions, beside
+  the main session's read.
+- **Keep each fix to what its finding needs.** Most findings after the second
+  round are in text an earlier round wrote, so a fix that also rewrites its
+  neighborhood buys another round.
+- Record the number of rounds in the PR body, beside the decisions and the
+  declines.
