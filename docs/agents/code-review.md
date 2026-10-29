@@ -3,9 +3,10 @@
 `mattpocock-skills:code-review` runs on every pull request, as `AGENTS.md` and
 `CONTRIBUTING.md` say. This repository is a student-facing handbook, not an
 application: most of a diff is prose, tables, and MDX, and the review reads it
-that way. This file is the local delta from the skill's default brief. The
-Standards sub-agent gets it pasted alongside `AGENTS.md` and the three content
-skills under `.claude/skills/`.
+that way. This file is the local delta from the skill's default brief. Every
+reviewer gets it pasted, for the bar under Severity and the loop; the
+Standards sub-agent also gets `AGENTS.md` and the three content skills under
+`.claude/skills/`.
 
 ## What the Standards axis checks
 
@@ -83,8 +84,9 @@ skills under `.claude/skills/`.
 
 ## The consistency axis
 
-A pull request that changes an assignment page, a rubric CSV, or a fact other
-pages restate gets a third reviewer beside Standards and Spec. It reads what
+A pull request that changes an assignment page, a rubric CSV, or a fact with
+a canonical home in `AGENTS.md` gets a third reviewer beside Standards and
+Spec. It reads what
 neither of them does:
 
 - Each rubric band against the page, entry by entry: a band that asks for
@@ -106,28 +108,33 @@ neither of them does:
 - **Hard**: a documented rule broken, cited by file and rule. **Judgement**:
   labelled as such, with the hunk quoted.
 - **The bar.** A finding changes what a student does or how a grader scores,
-  shows two statements that disagree, points at a broken or misdirected link,
-  or cites a documented rule broken. A wording the reviewer would prefer,
-  where the current one is clear and correct, is not a finding.
-- **Each finding is fixed or declined**, in one line in the PR body. Check a
-  finding before fixing it; reviewers are wrong too. A declined finding that
-  is real work becomes an issue under the current review parent; a declined
-  judgement call needs no issue. A finding that is a design choice rather
-  than a defect goes to the instructor as options, and the answer joins the
-  ledger.
-- **The ledger.** From the second round on, the reviewers read one file
-  first: the decisions the instructor has made, each declined finding with
-  its reason, and the bar. Every round adds its declines, so each round
-  raises only what the ledger does not already answer. It
-  lives in the session's scratchpad, not the repository; the PR body carries
-  what it decided.
+  changes what a script, hook, or agent does, shows two statements that
+  disagree, points at a broken or misdirected link, or cites a documented
+  rule broken. A wording the reviewer would prefer, where the current one is
+  clear and correct, is not a finding.
+- **Each finding is fixed, declined, or sent to the instructor.** Check a
+  finding before acting on it; reviewers are wrong too. A finding in the
+  pull request's own text that clears the bar is fixed. A decline gives one
+  of three grounds, in one line in the PR body: wrong once checked, below the
+  bar, or outside the diff, where real work becomes an issue (under the
+  current review parent, when one is open). A design choice rather than a
+  defect, and a finding that would reverse an earlier round's fix, go to the
+  instructor as options; the round waits for the answer, which lands as a
+  fix or a decline.
+- **The ledger.** From the second round on, every reviewer reads one file
+  first: the instructor's decisions, each decline with its ground, and the
+  bar. Every round adds its decisions and declines, so each round raises only
+  what the ledger does not already answer. It lives in the session's
+  scratchpad, not the repository; a resumed session rebuilds it from the PR
+  body.
 - **Rounds run until one changes nothing.** A round is the axes run in
   parallel by fresh sub-agents, plus the main session's own correctness
-  read, with every report in before anything is fixed and one commit per
+  read, with every report in before anything is fixed, and one commit per
   round. If the round fixed anything, the next round runs. The loop ends on a
-  round whose findings are all declined, or none. A fix as small as one table
-  row still gets a round, which may be one reviewer covering every axis for
-  that change plus a check of the whole diff for regressions.
+  round whose findings are all declined, or none. When a round's fixes
+  touched only a few lines, the next round may be one reviewer covering every
+  axis for those lines and checking the whole diff for regressions, beside
+  the main session's read.
 - **Keep each fix to what its finding needs.** Most findings after the second
   round are in text an earlier round wrote, so a fix that also rewrites its
   neighborhood buys another round.

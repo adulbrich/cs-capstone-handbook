@@ -40,9 +40,9 @@ claim it         type/slug          commit message                           rec
 4. **Push and open a pull request.** The template asks for the closing issue,
    what changed from the reader's side, what ran locally, whether Canvas needs
    a re-import, the review loop, and the docs touched.
-5. **Run the review loop.** `mattpocock-skills:code-review`, with the brief and
-   the end condition in `docs/agents/code-review.md`: rounds run until one
-   changes nothing. Record the rounds and the declines in the PR body.
+5. **Run the review loop** that `docs/agents/code-review.md` sets out: rounds
+   until one changes nothing. Record the rounds and the declines in the PR
+   body.
 6. **Merge.** Squash. The `main` ruleset requires a pull request with green
    `build` and `audit` checks and blocks force pushes and deletion. No approving
    review is required by GitHub, so the review loop is the review. During the
