@@ -32,8 +32,8 @@ which is what CI runs.
 | `npm test` | Unit tests for the instructor tools |
 | `npm run format` | Biome format and lint fixes for the code |
 
-The validators, and the full list to run before a content change is done, are
-in [AGENTS.md](AGENTS.md#validation).
+The validators, and the command to run before a change is done, are in
+[AGENTS.md](AGENTS.md#validation).
 
 ## Repository Layout
 

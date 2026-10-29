@@ -3,7 +3,7 @@
 Date: 2026-10-05
 Branch: `feat/415-generated-activity-badges`
 Status: implemented in #415, the first sub-issue of #121. The effort backfill, the regroup into twelve pages, and the activity merges follow as separate sub-issues.
-Companion documents: `AGENTS.md` ("How activity tiers stay true"), `.claude/skills/cs46x-activities/SKILL.md` (Tiers, the badge line), `.claude/skills/cs46x-assignments/SKILL.md` (the "Activities That Prepare This" section), `src/lib/activity-links.mjs`, `src/components/ActivityMeta.astro`, `scripts/validate-activities.mjs`.
+Companion documents: `AGENTS.md` ("Outcomes, tiers, and weights"), `.claude/skills/cs46x-activities/SKILL.md` (Tiers, the badge line), `.claude/skills/cs46x-assignments/SKILL.md` (the "Activities That Prepare This" section), `src/lib/activity-links.mjs`, `src/components/ActivityMeta.astro`, `scripts/validate-activities.mjs`.
 
 ## 1. Why
 

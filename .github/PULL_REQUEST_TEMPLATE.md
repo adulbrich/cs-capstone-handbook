@@ -7,7 +7,7 @@ Closes #
 
 ## Ran locally
 
-<!-- The command AGENTS.md, Validation, names. It runs everything CI's build job runs. -->
+<!-- The command AGENTS.md, Validation, names. -->
 
 - `npx lefthook run pre-push --force`: exit 0
 

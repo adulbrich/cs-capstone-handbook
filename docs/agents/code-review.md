@@ -1,7 +1,8 @@
 # Code review
 
 Every pull request gets review rounds until one changes nothing (Severity and
-the loop, below). This repository is a student-facing handbook, not an
+the loop, below), and `mattpocock-skills:code-review` runs their Standards and
+Spec axes. This repository is a student-facing handbook, not an
 application: most of a diff is prose, tables, and MDX, and the review reads it
 that way. This file is the local delta from the skill's default brief. Every
 reviewer gets it pasted, for the bar under Severity and the loop; the
@@ -28,13 +29,14 @@ Standards sub-agent also gets `AGENTS.md` and the three content skills under
    observable ("professional", "clear", "genuinely useful") is a finding. The
    `cs46x-assignments` skill has the pattern.
 4. **The hard rules where scripts cannot see.** Validators catch em dashes,
-   emoji, month names and dated years, weights, tags, links, and a number
-   beside a grading word on an activity or guide page. The reviewer catches
-   what the patterns miss: "academic year" or "this year" with no year
-   number, a season standing in for a term week, and grading words with no
-   number beside them.
+   emoji, month names but a bare "May" or "Mar", dated years, weights, tags,
+   links, and a number beside a grading word on an activity or guide page.
+   The reviewer catches what the patterns miss: a bare "May" or "Mar" used
+   as a month, "academic year" or "this year" with no year number, a season
+   standing in for a term week, and grading words with no number beside them.
 5. **The Canvas mirror.** A rubric, weight, or syllabus change carries the
-   matching change under `canvas/` and the PR body says a re-import is needed.
+   matching change under `canvas/`, and the PR's Canvas line says what to
+   re-import or re-paste.
 6. **Section contracts.** Each content skill defines the section skeleton for
    its directory. A missing required section is a hard finding; section order
    is a judgement call.

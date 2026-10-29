@@ -38,8 +38,9 @@ claim it         type/slug          commit message                           rec
    `docs(assignments): state the sprint-note due day once`. No em dash, no
    emoji, no session link. `scripts/check-commit-message.mjs` is the rule.
 4. **Push and open a pull request.** The template asks for the closing issue,
-   what changed from the reader's side, what ran locally, whether Canvas needs
-   a re-import, the review loop, and the docs touched.
+   what changed from the reader's side, what ran locally, what Canvas needs
+   re-imported or re-pasted, the review loop, a guide's checks, and the docs
+   touched.
 5. **Run the review loop** that `docs/agents/code-review.md` sets out, and
    record it in the template's Review loop lines.
 6. **Merge.** Squash. The `main` ruleset requires a pull request with green
@@ -55,7 +56,7 @@ first column is what stops you locally; the last is what stops the merge.
 | Rule | Local (lefthook) | Claude Code hook | CI |
 | --- | --- | --- | --- |
 | Conventional subject, lowercase imperative; no em dash, emoji, or session link in the message | `commit-msg`; `pre-push` over the branch | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
-| No em dash, emoji, or glossary-rejected synonym in tracked text; no voice tell on handbook pages, and no banned word or percentage in a heading in rubric CSVs, syllabi, `public/` Markdown, or `src/decks/` | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
+| No em dash, emoji, or glossary-rejected synonym in tracked text, and no voice tell where `check-prose.mjs` looks for one | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
 | No em dash, literal or entity, under `src/`, `canvas/`, and `public/` | `pre-commit` on those paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dashes` |
 | Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dates` |
 | Outcome coverage, per-term weights sum, each page renders its own rubric CSVs, assignment page shape | `pre-commit` on assignment and CSV paths; `pre-push` | | `build`: `validate-outcomes` |
@@ -92,7 +93,8 @@ gh api repos/adulbrich/cs-capstone-handbook/rulesets --jq '.[] | {id, name, enfo
 A rubric **is** the CSV under `canvas/assignments/` (`AGENTS.md`, hard rule 4):
 edit it there and the handbook page re-renders from it. A change to a weight, a
 due week, or a syllabus statement still changes the syllabi under
-`canvas/syllabus/` and the Canvas readme in the same PR. Either way the PR says a re-import is needed. The re-import lists live in
+`canvas/syllabus/` and the Canvas readme in the same PR. Either way the PR's
+Canvas line says what to re-import or re-paste. The re-import lists live in
 `canvas/assignments/assignment-readme.md`; the term-setup issue template is
 where the re-import gets scheduled.
 

@@ -3,7 +3,7 @@
 Date: 2026-10-07
 Branch: `feat/465-reveal-decks`
 Status: implemented in #465, part of #51. The Workshop 1 deck (#466) and the week 0 and week 1 decks (#467) build on it. #510 changed rule 5: decks no longer carry speaker notes. #521 added rule 7. #549 settled rule 6: no page links a deck. #528 restored the speaker view in rule 5.
-Companion documents: `AGENTS.md` (the `src/decks/` row), `src/pages/decks/[slug].astro`, `src/styles/deck.css`, `src/components/deck/`, `src/decks/sample.astro`.
+Companion documents: `docs/agents/decks.md`, `src/pages/decks/[slug].astro`, `src/styles/deck.css`, `src/components/deck/`, `src/decks/sample.astro`.
 
 ## 1. Why
 

@@ -132,8 +132,7 @@ Nine rules the validators enforce, all of which have been gotten wrong before:
    tag.** `scripts/validate-outcomes.mjs` parses the Criteria Name column of
    the rubric CSV as
    the source of truth and fails on any disagreement. Tag a criterion, bump the
-   count, and update `learning-objectives/mapping.mdx`, the hand-maintained
-   view of the same map, in the same commit.
+   count, in the same edit.
 2. **Only `level: individual` pages contribute accreditation data points.** A
    `level: team` page contributes **zero**, however many tags its rubric
    carries. This is the rule most easily gotten wrong: a team page tagged `L07`
@@ -189,7 +188,9 @@ the Section Skeleton below does not apply to them. Do not rebuild them.
 
 Not enforced, still required: the
 three bands, criteria written as observable checks, and the Canvas CSV band
-descriptions (only the tag sets are reconciled).
+descriptions (only the tag sets are reconciled). So is
+`learning-objectives/mapping.mdx`, the hand-maintained view of the outcome
+map: a change to a criterion's tags updates it in the same commit.
 
 ## Section Skeleton
 
@@ -541,8 +542,8 @@ the student to guess the standard they will be graded against.
    Canvas entries, the section skeleton, the AI-use paragraph, and rubric
    totals; `canvas:export -- --strict` checks the page still converts to a
    Canvas body.
-2. If you touched a weight, change it in the three syllabi and
-   `canvas/assignments/assignment-readme.md` in the same commit; no validator
-   reads them.
+2. If you touched a weight, change it in the three syllabi,
+   `canvas/assignments/assignment-readme.md`, and, for a Canvas-owned stub,
+   its `<AssignmentMeta>` text, in the same commit; no validator reads them.
 3. If you touched a rubric, you touched the CSV, so add it to the re-import
    list in `canvas/assignments/assignment-readme.md` in the same commit.

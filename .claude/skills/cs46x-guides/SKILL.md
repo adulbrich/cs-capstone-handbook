@@ -402,8 +402,9 @@ violations, which is what the greps under Before Finishing are for. Write
 
 ## Cross-Linking
 
-Assignments link in to guides, never the reverse, so renaming a heading in a
-guide breaks those inbound links: grep `src/content/docs/**` for the old anchor
+Assignments link in to guides ([Guides Are
+Standalone](#guides-are-standalone)), so renaming a heading in a guide breaks
+those inbound links: grep `src/content/docs/**` for the old anchor
 before you rename, and let `npm run build` confirm.
 
 Guides link **out** freely to other guides, to activities, and to external

@@ -21,7 +21,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `public/` | Templates and scoresheets students download. |
 | `src/pages/tools/` | The instructor tools at `/tools/`. Before editing them, `src/lib/tools/`, or their wording in `src/data/`, read `docs/agents/tools.md`. |
 | `src/decks/`, `src/pages/decks/` | The slide decks. Before editing one, read `docs/agents/decks.md`. |
-| `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
+| `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. Before adding or editing an entry, load the `cs46x-guides` skill (Citing Evidence). |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, that its `assignment.canvas` entries reconcile (hard rule 6), and that each entry's `late` rule fits its submission. |
 | `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. |
@@ -109,8 +109,9 @@ A change is done when this exits 0:
 npx lefthook run pre-push --force
 ```
 
-It runs the `pre-push` block of `lefthook.yml`, which is everything CI's
-`build` job runs, and `git push` runs the same block. Keep `--force`: run by
+It runs the `pre-push` block of `lefthook.yml`: every check CI's `build` job
+runs except the student-data guard, which `pre-commit` runs. `git push` runs
+the same block. Keep `--force`: run by
 hand with nothing to push, lefthook skips every command and exits 0 having
 checked nothing.
 
@@ -135,9 +136,10 @@ the mechanics:
   never written on the activity, so promoting or demoting one is an edit to an
   assignment page. `cs46x-activities`.
 - **Each of the four grade components sums to 25% in every term.** The
-  syllabi and `canvas/assignments/assignment-readme.md` hold copies of each
-  weight that no validator reads, so a weight change edits them in the same
-  commit. `cs46x-assignments`.
+  syllabi, `canvas/assignments/assignment-readme.md`, and the two Canvas-owned
+  stubs' `<AssignmentMeta>` text hold copies of weights that no validator
+  reads, so a weight change edits them in the same commit.
+  `cs46x-assignments`.
 
 ## Downloads in `public/`
 
@@ -248,8 +250,9 @@ bodies from a file.
 
 ### Triage labels
 
-Before labeling an issue, read `docs/agents/triage-labels.md`: the five triage
-labels, unrenamed, and the priority labels every actionable issue carries.
+Before labeling or closing an issue, read `docs/agents/triage-labels.md`: the
+label each triage role maps to, and the priority labels every actionable
+issue carries.
 
 ### Code review
 
@@ -258,8 +261,8 @@ it sets the axes, the bar, and when the rounds stop.
 
 ### Domain docs
 
-Glossary terms go on `about/glossary.mdx` and its `check-prose` list, never in
-`CONTEXT.md`. Every decision record, architecture included, goes in
+Glossary terms go on `about/glossary.mdx`, each "Not:" list mirrored in
+`check-prose`'s `VOCABULARY`, never in `CONTEXT.md`. Every decision record, architecture included, goes in
 `docs/decisions/`, and there is no `docs/adr/`. Before a skill reads or writes
 `CONTEXT.md` or an ADR, read `docs/agents/domain.md`.
 
