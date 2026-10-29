@@ -24,10 +24,10 @@ The sections below record each change as it was made. The ones from before the m
 
 Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw. Re-paste each body on the same rule.
 
-- All four CSVs: Decision and risk hygiene checks `docs/risks.md` in the PDF and the decision records through a link on the cover to `docs/rfcs/` or `docs/adr/` at the named commit, in place of both in the PDF. Meets names a cover without that link, and Does Not Meet is `docs/risks.md` missing from the PDF, not rendered, or not matching the commit, with no link either. Points and tags are unchanged.
+- All four CSVs: Decision and risk hygiene checks only `docs/risks.md` in the PDF, in place of both documents, since graders read the decision records in the repository at the named commit. Meets names `docs/risks.md` missing from the PDF, not rendered, or not matching the commit, and Does Not Meet no longer has a PDF clause. Points and tags are unchanged.
 - `repo-checkpoint/repo-checkpoint-1-rubric.csv` also: Submission complete counts the six living docs other than the decision records, in place of seven.
 
-Re-paste from the paste kit all four Repo Checkpoint bodies: the intro and What You Submit say the PDF carries the six living docs other than the decision records, the cover links the records, and graders read them in the repository.
+Re-paste from the paste kit all four Repo Checkpoint bodies (the intro and What You Submit say the PDF carries the six living docs other than the decision records, and graders read the records in the repository) and the Assignments Overview (Submitting Your Work names the checkpoint PDF as a third exception to the PDF rule).
 
 ## Re-import Required: Repo Checkpoint 1 as a Scored Dry Run (#576)
 
