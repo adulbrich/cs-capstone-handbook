@@ -56,7 +56,7 @@ first column is what stops you locally; the last is what stops the merge.
 | Rule | Local (lefthook) | Claude Code hook | CI |
 | --- | --- | --- | --- |
 | Conventional subject, lowercase imperative; no em dash, emoji, or session link in the message | `commit-msg`; `pre-push` over the branch | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
-| No em dash, emoji, or glossary-rejected synonym in tracked text, and no voice tell where `check-prose.mjs` looks for one | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
+| No em dash or emoji in tracked text, and no glossary-rejected synonym or voice tell where `check-prose.mjs` looks for one | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
 | No em dash, literal or entity, under `src/`, `canvas/`, and `public/` | `pre-commit` on those paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dashes` |
 | Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dates` |
 | Outcome coverage, per-term weights sum, each page renders its own rubric CSVs, assignment page shape | `pre-commit` on assignment and CSV paths; `pre-push` | | `build`: `validate-outcomes` |

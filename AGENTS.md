@@ -109,9 +109,8 @@ A change is done when this exits 0:
 npx lefthook run pre-push --force
 ```
 
-It runs the `pre-push` block of `lefthook.yml`: every check CI's `build` job
-runs except the student-data guard, which `pre-commit` runs. `git push` runs
-the same block. Keep `--force`: run by
+It runs the `pre-push` block of `lefthook.yml`, the same block `git push`
+runs. Keep `--force`: run by
 hand with nothing to push, lefthook skips every command and exits 0 having
 checked nothing.
 

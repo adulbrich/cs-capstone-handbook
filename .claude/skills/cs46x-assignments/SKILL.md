@@ -545,5 +545,7 @@ the student to guess the standard they will be graded against.
 2. If you touched a weight, change it in the three syllabi,
    `canvas/assignments/assignment-readme.md`, and, for a Canvas-owned stub,
    its `<AssignmentMeta>` text, in the same commit; no validator reads them.
+   The Demo Day extra credit has its own list of copies, in its paragraph
+   under Frontmatter Contract.
 3. If you touched a rubric, you touched the CSV, so add it to the re-import
    list in `canvas/assignments/assignment-readme.md` in the same commit.
