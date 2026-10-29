@@ -20,14 +20,14 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
-## Re-import Required: Decision Records Out of the Repo Checkpoint PDF (#582)
+## Re-import Required: Decision Records Out of the Repo Checkpoints (#582)
 
 Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw. Re-paste each body on the same rule.
 
-- All four CSVs: Decision and risk hygiene checks only `docs/risks.md` in the PDF, in place of both documents, since graders read the decision records in the repository at the named commit. Meets names `docs/risks.md` missing from the PDF, not rendered, or not matching the commit, and Does Not Meet no longer has a PDF clause. Points and tags are unchanged.
-- `repo-checkpoint/repo-checkpoint-1-rubric.csv` also: Submission complete counts the six living docs other than the decision records, in place of seven.
+- All four CSVs: Decision and risk hygiene becomes Risk register, which scores `docs/risks.md` alone; the decision records in `docs/rfcs/` or `docs/adr/` are no longer a living doc or scored at any checkpoint. The criterion drops its `[SO1]` tag, since a risk register does not evidence that outcome, and its points are unchanged. Meets names `docs/risks.md` missing from the PDF, not rendered, or not matching the commit, and Does Not Meet no longer has a PDF clause. Delete the old rubric from the course's rubric list after each import, since the renamed criterion may import as a second rubric.
+- `repo-checkpoint/repo-checkpoint-1-rubric.csv` also: Submission complete counts six living docs in place of seven.
 
-Re-paste from the paste kit all four Repo Checkpoint bodies (the intro and What You Submit say the PDF carries the six living docs other than the decision records, and graders read the records in the repository) and the Assignments Overview (Submitting Your Work names the checkpoint PDF as a third exception to the PDF rule).
+Re-paste from the paste kit all four Repo Checkpoint bodies: the living docs are six, Risk Register replaces Decision and Risk Hygiene, and the inherited-codebase audit puts a decision to keep or replace something in `docs/design.md` in place of an ADR.
 
 ## Re-import Required: Repo Checkpoint 1 as a Scored Dry Run (#576)
 
