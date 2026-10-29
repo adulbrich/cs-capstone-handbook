@@ -84,7 +84,7 @@ Graders compare one recent feature with `docs/design.md` and one document in the
 
 The other two living docs:
 
-- **`docs/rfcs/` or `docs/adr/`**: one record per decision, as a request for comments (RFC) or an architecture decision record (ADR), with its outcome and what was rejected and why, linked from `docs/design.md` where it applies. *Guide: [ADR](/guides/adr/).*
+- **`docs/rfcs/` or `docs/adr/`**: one record per decision, as a request for comments (RFC) or an architecture decision record (ADR), with its outcome and what was rejected and why, linked from `docs/design.md` where it applies. A record still at status Proposed, such as a committed [RFC](/assignments/rfc/) draft, names the options it weighs instead. *Guide: [ADR](/guides/adr/).*
 - **`docs/risks.md`**: the one risk register, covering business, technical, and team risks, ranked, each with an owner, plus every external prerequisite (an approval, an account, a review, recruitment) with who asked for it and when, updated between checkpoints. Write each risk as a fact about the project, without blame; a problem between teammates goes to your Teaching Assistant (TA). *Guide: [Project Risks](/guides/risks/).*
 
 Graders check first that `docs/risks.md` is the only register and that every risk in it has a rank and an owner.
@@ -117,7 +117,7 @@ Due fall week 5. Milestone met scores each item below, and Submission complete s
 - **Approval**: if the target needs one, an entry names it, who is asking for it, and when they asked. *Evidence: an entry in `docs/risks.md`.*
 - **Inherited-codebase audit**: if you start in an existing codebase, your audit covers everything listed under [The Inherited-Codebase Audit](#the-inherited-codebase-audit). *Evidence: a document in the PDF, after the living docs.*
 
-Two criteria ask for less at this checkpoint. Under Decision and Risk Hygiene, an [RFC](/assignments/rfc/) draft committed with status Proposed, naming the options it weighs, counts as a recorded decision. Under Build Health and Safety Net, staging and rollback can be a plan in `docs/risks.md` or `README.md`, saying where changes will be exercised before they reach users and how a bad change will be undone, each with the date it lands; and with no product code yet, the `README.md` quickstart may start only the scaffold.
+Build Health and Safety Net asks for less at this checkpoint: staging and rollback can be a plan in `docs/risks.md` or `README.md`, saying where changes will be exercised before they reach users and how a bad change will be undone, each with the date it lands; and with no product code yet, the `README.md` quickstart may start only the scaffold.
 
 #### The Inherited-Codebase Audit
 
