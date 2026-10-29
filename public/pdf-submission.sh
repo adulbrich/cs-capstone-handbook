@@ -22,26 +22,35 @@ die() {
   exit 1
 }
 
+# -o may come before or after the files, as in the PowerShell script.
 out=""
-while getopts ":o:h" opt; do
-  case "$opt" in
-    o) out="$OPTARG" ;;
-    *) usage ;;
+files=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -o)
+      [ $# -ge 2 ] || usage
+      out="$2"
+      shift 2
+      ;;
+    -h | --help) usage ;;
+    *)
+      files+=("$1")
+      shift
+      ;;
   esac
 done
-shift $((OPTIND - 1))
-[ $# -ge 1 ] || usage
+[ ${#files[@]} -ge 1 ] || usage
 
-for f in "$@"; do
+for f in "${files[@]}"; do
   [ -f "$f" ] || die "no such file: $f"
-  case "$f" in
+  case "$(printf '%s' "$f" | tr '[:upper:]' '[:lower:]')" in
     *.md | *.markdown) ;;
     *) die "not a Markdown file: $f" ;;
   esac
 done
 
 if [ -z "$out" ]; then
-  first="$(basename "$1")"
+  first="$(basename "${files[0]}")"
   out="${first%.*}.pdf"
 fi
 case "$out" in
@@ -53,6 +62,7 @@ command -v pandoc >/dev/null 2>&1 || die "pandoc not found. Install it: brew ins
 
 find_chrome() {
   if [ -n "${CHROME:-}" ]; then
+    command -v "$CHROME" >/dev/null 2>&1 || die "CHROME is set to $CHROME, which is not a program"
     echo "$CHROME"
     return
   fi
@@ -113,21 +123,24 @@ EOF
 echo '<div class="page-break"></div>' >"$tmp/break.md"
 
 # Interleave a page break between the files. rebase_relative_paths resolves
-# each image against its own file's folder, so files can live anywhere.
+# each Markdown image against its own file's folder; the resource path does
+# the same for an HTML <img>, so files can live anywhere.
 inputs=()
-for f in "$@"; do
+resource_path="."
+for f in "${files[@]}"; do
   [ ${#inputs[@]} -eq 0 ] || inputs+=("$tmp/break.md")
   inputs+=("$f")
+  resource_path="$resource_path:$(dirname "$f")"
 done
 
 headers=(--include-in-header "$tmp/style.html")
-if grep -qE '^[[:space:]]*(```|~~~)[[:space:]]*\{?\.?mermaid' "$@"; then
+if grep -qE '^[[:space:]]*(```|~~~)[[:space:]]*\{?\.?mermaid' "${files[@]}"; then
   headers+=(--include-in-header "$tmp/mermaid.html")
 fi
 
 title="$(basename "${out%.*}")"
 pandoc -f gfm+rebase_relative_paths -t html5 --standalone --embed-resources \
-  --metadata pagetitle="$title" "${headers[@]}" \
+  --resource-path="$resource_path" --metadata pagetitle="$title" "${headers[@]}" \
   -o "$tmp/submission.html" "${inputs[@]}" ||
   die "pandoc could not convert the Markdown"
 

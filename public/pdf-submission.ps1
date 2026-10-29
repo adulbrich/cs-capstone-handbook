@@ -23,7 +23,7 @@ function Fail([string] $message) {
 }
 
 if (-not $Files -or $Files.Count -eq 0) {
-  [Console]::Error.WriteLine('usage: pdf-submission.ps1 [-o out.pdf] file1.md [file2.md ...]')
+  [Console]::Error.WriteLine('usage: powershell -ExecutionPolicy Bypass -File pdf-submission.ps1 [-o out.pdf] file1.md [file2.md ...]')
   exit 2
 }
 
@@ -45,7 +45,12 @@ if (-not (Get-Command pandoc -ErrorAction SilentlyContinue)) {
 }
 
 function Find-Chrome {
-  if ($env:CHROME) { return $env:CHROME }
+  if ($env:CHROME) {
+    if (-not (Get-Command $env:CHROME -CommandType Application -ErrorAction SilentlyContinue)) {
+      Fail "CHROME is set to $env:CHROME, which is not a program"
+    }
+    return $env:CHROME
+  }
   foreach ($exe in 'chrome.exe', 'msedge.exe') {
     foreach ($hive in 'HKCU:', 'HKLM:') {
       $key = "$hive\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\$exe"
@@ -113,12 +118,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   [IO.File]::WriteAllText($break, "<div class=`"page-break`"></div>`n")
 
   # Interleave a page break between the files. rebase_relative_paths resolves
-  # each image against its own file's folder, so files can live anywhere.
+  # each Markdown image against its own file's folder; the resource path does
+  # the same for an HTML <img>, so files can live anywhere.
   $inputs = @()
+  $resourceDirs = @('.')
   foreach ($f in $inputFiles) {
     if ($inputs.Count -gt 0) { $inputs += $break }
     $inputs += $f
+    $resourceDirs += Split-Path -Parent $f
   }
+  $resourcePath = $resourceDirs -join [IO.Path]::PathSeparator
 
   $headers = @('--include-in-header', (Join-Path $tmp 'style.html'))
   if (Select-String -LiteralPath $inputFiles -Pattern '^\s*(```|~~~)\s*\{?\.?mermaid' -Quiet) {
@@ -128,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   $html = Join-Path $tmp 'submission.html'
   $title = [IO.Path]::GetFileNameWithoutExtension($Output)
   & pandoc -f gfm+rebase_relative_paths -t html5 --standalone --embed-resources `
-    --metadata "pagetitle=$title" @headers -o $html @inputs
+    "--resource-path=$resourcePath" --metadata "pagetitle=$title" @headers -o $html @inputs
   if ($LASTEXITCODE -ne 0) { Fail 'pandoc could not convert the Markdown' }
 
   if (Test-Path -LiteralPath $Output) { Remove-Item -LiteralPath $Output }
