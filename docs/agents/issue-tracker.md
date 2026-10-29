@@ -22,22 +22,16 @@ Infer the repo from `git remote -v`; `gh` does this automatically when run insid
   which fails on `"$(cat <<'EOF' ... EOF)"` once bodies get long. Write the
   body with a plain heredoc first.
 - Planning work lands as **sub-issues of a parent**: create decision issues
-  first, then dependents with `--parent <n> --blocked-by <n,m>`. The fall 2026
-  review was parent #21, closed by the merge; the post-merge cycle is parent #61, and new review-cycle issues attach there until a new parent
-  opens.
-- Priority labels are `p0-now`, `p1-next`, `p2-later`. Every actionable
-  issue carries one. `founders` marks course-design issues against #8.
+  first, then dependents with `--parent <n> --blocked-by <n,m>`. Attach
+  review-cycle issues to the open review parent; when none is open, file them
+  standalone.
+- Labels, the priority and `founders` labels included, are in
+  `docs/agents/triage-labels.md`.
 - Root docs and issue bodies follow hard rule 3: no em dashes.
 
 ## Pull requests as a triage surface
 
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_
-
-When set to `yes`, PRs run through the same labels and states as issues, using the `gh pr` equivalents:
-
-- **Read a PR**: `gh pr view <number> --comments` and `gh pr diff <number>` for the diff.
-- **List external PRs for triage**: `gh pr list --state open --json number,title,body,labels,author,authorAssociation,comments` then keep only `authorAssociation` of `CONTRIBUTOR`, `FIRST_TIME_CONTRIBUTOR`, or `NONE` (drop `OWNER`/`MEMBER`/`COLLABORATOR`).
-- **Comment / label / close**: `gh pr comment`, `gh pr edit --add-label`/`--remove-label`, `gh pr close`.
 
 GitHub shares one number space across issues and PRs, so a bare `#42` may be either: resolve with `gh pr view 42` and fall back to `gh issue view 42`.
 

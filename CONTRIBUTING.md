@@ -40,14 +40,12 @@ claim it         type/slug          commit message                           rec
 4. **Push and open a pull request.** The template asks for the closing issue,
    what changed from the reader's side, what ran locally, whether Canvas needs
    a re-import, the review loop, and the docs touched.
-5. **Run the review loop** that `docs/agents/code-review.md` sets out: rounds
-   until one changes nothing. Record the rounds, the decisions, and the
-   declines in the PR body.
+5. **Run the review loop** that `docs/agents/code-review.md` sets out, and
+   record it in the template's Review loop lines.
 6. **Merge.** Squash. The `main` ruleset requires a pull request with green
    `build` and `audit` checks and blocks force pushes and deletion. No approving
-   review is required by GitHub, so the review loop is the review. During the
-   fall 2026 split (#62) the instructor merges; after that, the agent merges
-   once the loop passes (#63).
+   review is required by GitHub, so the review loop is the review. The
+   instructor merges.
 
 ## The gates
 
@@ -56,13 +54,15 @@ first column is what stops you locally; the last is what stops the merge.
 
 | Rule | Local (lefthook) | Claude Code hook | CI |
 | --- | --- | --- | --- |
-| Conventional subject, lowercase imperative; no em dash, emoji, or session link in the message | `commit-msg` | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
-| No em dash, emoji, or glossary-rejected synonym in tracked text; no voice tell on handbook pages, and no banned word or percentage in a heading in rubric CSVs, syllabi, or `public/` Markdown | `pre-commit`, staged files | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
-| Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths | `after-edit.mjs` | `build`: `validate-dates` |
+| Conventional subject, lowercase imperative; no em dash, emoji, or session link in the message | `commit-msg`; `pre-push` over the branch | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
+| No em dash, emoji, or glossary-rejected synonym in tracked text; no voice tell on handbook pages, and no banned word or percentage in a heading in rubric CSVs, syllabi, `public/` Markdown, or `src/decks/` | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
+| No em dash, literal or entity, under `src/`, `canvas/`, and `public/` | `pre-commit` on those paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dashes` |
+| Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dates` |
 | Outcome coverage, per-term weights sum, each page renders its own rubric CSVs, assignment page shape | `pre-commit` on assignment and CSV paths; `pre-push` | | `build`: `validate-outcomes` |
 | Activity tiers, badges, the standalone rule, schedule links by week, no grading language in activities or guides | `pre-commit` on activity, assignment, guide, schedule paths; `pre-push` | | `build`: `validate-activities` |
 | Every download in `public/` has an owning page | `pre-commit`; `pre-push` | | `build`: `validate-downloads` |
 | Every `<Cite>` resolves to a registry entry with claims and locators, every entry is cited, References sits above Additional Readings | `pre-commit` on page and registry paths; `pre-push` | | `build`: `validate-sources` |
+| Each directory's `sidebar.order` values are unique, all or none numbered, and every activity page is in the Activities list | `pre-commit` on page paths and `activities-sidebar.mjs`; `pre-push` | | `build`: `validate-sidebar` |
 | External links on the built site resolve | | | `links`: weekly and on dispatch, opens or updates one issue |
 | Every internal link and anchor resolves | `pre-push`: `npm run build` | | `build`: the Astro build with the links validator |
 | The Canvas paste kit builds with no warning: no stale override, no page element it cannot convert | `pre-push`: `npm run canvas:export -- --strict` | | `build`: the same, after the build |
@@ -71,7 +71,9 @@ first column is what stops you locally; the last is what stops the merge.
 | Stage by name; never commit on `main` | `pre-commit` branch check | `guard-git.mjs` | ruleset: pull request required |
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
-| Biome clean on scripts, hooks, components, config | `pre-commit`, staged files | `after-edit.mjs` | `build`: `npm run check` |
+| Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
+| The git guard hook's cases pass | `pre-push` | | `build`: `test-guard-git` |
+| The instructor tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
 | PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`) | `pr-text`: the PR title and body, re-run on every edit |
 | Dependencies signed, and no critical advisory | | | `audit` |
 

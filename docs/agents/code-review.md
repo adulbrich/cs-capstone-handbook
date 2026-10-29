@@ -1,7 +1,7 @@
 # Code review
 
-`mattpocock-skills:code-review` runs on every pull request, as `AGENTS.md`
-says. This repository is a student-facing handbook, not an
+Every pull request gets review rounds until one changes nothing (Severity and
+the loop, below). This repository is a student-facing handbook, not an
 application: most of a diff is prose, tables, and MDX, and the review reads it
 that way. This file is the local delta from the skill's default brief. Every
 reviewer gets it pasted, for the bar under Severity and the loop; the
@@ -17,8 +17,8 @@ Standards sub-agent also gets `AGENTS.md` and the three content skills under
    any sentence about course design is a hard finding: why the assignment
    exists, what it replaced, what past cohorts did, "by design", "on
    purpose", "in this course there is no". The page talks to the student
-   about the student's work; rationale lives in `STAFF-RUNBOOK.md` or the
-   issue tracker.
+   about the student's work; rationale goes where `AGENTS.md`, "Where
+   decisions are recorded", puts decisions.
 2. **One purpose per page, one home per fact.** `AGENTS.md` lists the canonical
    home of each shared fact. A second statement of a weight, a week, a scale,
    or a policy is a finding; the fix is a link. A page may state the single
@@ -28,16 +28,20 @@ Standards sub-agent also gets `AGENTS.md` and the three content skills under
    observable ("professional", "clear", "genuinely useful") is a finding. The
    `cs46x-assignments` skill has the pattern.
 4. **The hard rules where scripts cannot see.** Validators catch em dashes,
-   emoji, calendar dates, weights, tags, and links. The reviewer catches the
-   rest: month names standing in for a term week, "academic year" phrasing, a
-   date in a code comment, grading language on an activity or guide page.
+   emoji, month names and dated years, weights, tags, links, and a number
+   beside a grading word on an activity or guide page. The reviewer catches
+   what the patterns miss: "academic year" or "this year" with no year
+   number, a season standing in for a term week, and grading words with no
+   number beside them.
 5. **The Canvas mirror.** A rubric, weight, or syllabus change carries the
    matching change under `canvas/` and the PR body says a re-import is needed.
 6. **Section contracts.** Each content skill defines the section skeleton for
    its directory. A missing required section is a hard finding; section order
    is a judgement call.
-7. **Length and scope.** Guides and activities have ceilings in their skills;
-   over one is a finding with the number, never a blocker on its own. Audience
+7. **Length and scope.** A guide past its skill's 6,000-word split-check, or
+   an activity past its 400-word test, is a judgement finding with the
+   number: the fix splits the page, or the finding is declined as below the
+   bar with the reason the skill asks for. Audience
    pages (students, partners, mentors) have no word ceiling but must stay
    short enough to read in one sitting; their other check is scope: run the
    link count in `AGENTS.md` (Audience pages are orientation) and flag each
@@ -129,20 +133,20 @@ reviewer reads the same output.
   first: the instructor's decisions, each decline with its ground, and the
   bar. Every round adds its decisions and declines, so each round raises only
   what the ledger does not already answer. It lives in the session's
-  scratchpad, not the repository; a resumed session rebuilds it from the PR
-  body's Decisions and Declined lines.
+  scratchpad, not the repository. Each round ends with its decisions and
+  declines added to the PR body and its round count updated there, so a
+  resumed session rebuilds the ledger from the body's Decisions and Declined
+  lines.
 - **Rounds run until one changes nothing.** A round is the axes run in
   parallel by fresh sub-agents, plus the main session's own correctness
   read (the built-in `code-review` skill, or a line-by-line read of the
   diff), with every report in before anything is fixed, and one commit per
   round. If the round fixed anything, the next round runs. The loop ends on a
   round that changed nothing: every finding declined, answered by the
-  instructor with no change, or none. When a round's fixes
-  touched only a few lines, the next round may be one reviewer covering every
-  axis for those lines and checking the whole diff for regressions, beside
-  the main session's read.
+  instructor with no change, or none. When a round's fixes stay within one
+  file and rename no heading, the next round may be one reviewer covering
+  every axis for those lines and checking the whole diff for regressions,
+  beside the main session's read.
 - **Keep each fix to what its finding needs.** Most findings after the second
   round are in text an earlier round wrote, so a fix that also rewrites its
   neighborhood buys another round.
-- Record the number of rounds in the PR body, beside the decisions and the
-  declines.

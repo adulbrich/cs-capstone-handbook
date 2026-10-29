@@ -1,6 +1,6 @@
 ---
 name: cs46x-guides
-description: Use when creating or editing guide pages (MDX files in src/content/docs/guides/) for the CS 461/462/463 capstone handbook. Defines the explanation register, the rule that guides are standalone and never reference assignments or workshops at all, the section skeleton including the required Some Truths, Industry and Academia, and Additional Readings sections, the sourcing rule, and the word band. Always load this skill before writing or editing any guide file.
+description: Guide pages and the sources registry for the CS 461/462/463 capstone handbook. Use before editing a guide under src/content/docs/guides/ or a sources registry entry under src/data/sources/.
 ---
 
 # Guide Style Guide
@@ -19,11 +19,6 @@ voice: whose voice the handbook uses, person, the three kinds of claim,
 structure, openers, and the word-level rules. This skill does not restate it;
 it adds only what the explanation register needs.
 
-Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
-compression in the terminal, where the reader can ask a follow-up. That rule
-applied to a handbook page deletes the why, and what survives is an aphorism
-the student cannot check or argue with.
-
 ## What a Guide Is
 
 A guide is **explanatory reference material**: it teaches a practice, gives the
@@ -38,11 +33,9 @@ The three-way split in this handbook is load-bearing, so keep it clean:
 | **Activities** | "What exercise do I run to produce this?" | Workshop tier only |
 | **Assignments** | "What is due, when, and how is it scored?" | Yes, and they are where graded work is authored |
 
-A guide **never** states due dates, point values, rubric criteria, or weights,
-and beyond that it does not reference assignments, workshops, or checkpoints
-anywhere. See [Guides Are Standalone](#guides-are-standalone): the link runs
-from the assignment to the guide, never back. Guides may aspire beyond what assessment requires; that is
-their job. Assignments accommodate.
+What a guide never names is under [Guides Are
+Standalone](#guides-are-standalone). Guides may aspire beyond what assessment
+requires; that is their job. Assignments accommodate.
 
 Guides are also where explanatory bulk belongs when an activity starts growing
 one. An activity over roughly 400 words is usually a guide with an exercise
@@ -101,10 +94,8 @@ is where the sort does most of its work. A Recommendation in a guide is an
 imperative with its reason, never "the instruction team recommends", because
 of [Guides Are Standalone](#guides-are-standalone).
 
-There is no link-count target. The old one (six per 1,000 words) was met by
-linking vendor docs and blog posts while the guides cited three peer-reviewed
-papers between them, two of them wrongly. The test is whether each doubtable
-claim has the right kind of support, not how many links the page carries.
+The test is whether each doubtable claim has the right kind of support, not
+how many links the page carries.
 
 **Read every source the page paraphrases.** When the page says what a
 framework, a standard, an essay, or a paper contains (a framework's list of
@@ -202,7 +193,9 @@ Sections in **bold** are required for every guide. Sections marked *artifact*
 are required for artifact guides and optional for practice guides, which keep
 them only when they say something (`conflict.mdx` keeps Validation and
 Measuring Success because its signals are real). The middle flexes with the
-topic.
+topic. `check-prose` fails the two banned openers and `validate-sources` a
+References pair out of place; the rest of the skeleton, the length, and the
+situation-first opener are read for, not validated.
 
 1. **Opening (no heading).** [The Opener](#the-opener), then one or two
    paragraphs that say what the thing is and link its authoritative reference.
@@ -314,10 +307,6 @@ skimming reader finds it at once:
 :::
 ```
 
-The old form, a one-line "Read this when ...; it gives you ..." purpose line
-followed by a "Without X:" list of failure modes, was the same template on
-every page, and it read as generated. Don't reintroduce it.
-
 ## Frontmatter
 
 ```yaml
@@ -400,12 +389,22 @@ belongs on the assignment page instead. Do not restate an assignment's
 requirements in a guide. Two descriptions of the same requirement drift, and the
 assignment page wins.
 
+`validate-activities.mjs` applies the activity patterns to every guide: a week
+followed by a digit, "in the fall" or "fall week" (and the same for winter and
+spring), either half, the word "workshop", a `](/assignments/` link, an outcome
+tag, and a point value or percentage within a few words of "grade", "rubric"
+or "criterion". The target of a Markdown link to another site is not read, so
+a third-party slug passes. The patterns are a floor. A spelled-out week ("week
+two", "the fourth week"), a bare "term", "Fall has", and a course artifact
+named in plain prose ("Team Charter", "the Expo") all pass them and are still
+violations, which is what the greps under Before Finishing are for. Write
+"before the midpoint", not "the first half of the project".
+
 ## Cross-Linking
 
-Every link between a guide and an assignment points **in**, from the assignment.
-Renaming a heading in a guide breaks those inbound links, so grep
-`src/content/docs/**` for the old anchor before you rename, and let
-`npm run build` confirm.
+Assignments link in to guides, never the reverse, so renaming a heading in a
+guide breaks those inbound links: grep `src/content/docs/**` for the old anchor
+before you rename, and let `npm run build` confirm.
 
 Guides link **out** freely to other guides, to activities, and to external
 sources. Those are the three destinations a guide may name.
@@ -433,13 +432,6 @@ others link:
 **Typical band: 2,500 to 5,000 words. Split-check at 6,000.** Section
 overview and index pages are exempt and run short.
 
-The old band of 950 to 1,750 never described this corpus: the guides already
-had a median of 2,605 words and a maximum of 4,265 when it was written, so its
-only real effect was compression pressure on every page that tried to explain
-something. The new band is anchored on two numbers: what the guides already
-are, and the same instructor's unaided lecture notes, which run a 4,795-word
-median for a comparable explanatory page.
-
 Explanation costs words. A guide that hits 2,500 by cutting the reason for
 every claim is worse than one that reaches 4,500 by keeping them. If a guide
 passes 6,000, look for a section that wants to be its own guide.
@@ -454,35 +446,10 @@ Word count is a diagnostic, not a target. A page that covers several
 distinct layers can sit over the line; when one does, write the reason on the
 issue that measured it rather than trimming a working section to hit a number.
 
-## What Guides Must Not Contain
+## Tool Requirements
 
-- Due dates, weights, point values, rubric criteria, or bands.
-  `validate-activities.mjs` fails on a point value or percentage within a few
-  words of "grade", "rubric" or "criterion" on any guide page; the rest of
-  this rule is on you.
-- Accreditation outcome tags (`SO1`-`SO6`, `L07`-`L10`). Those live only in
-  the assignment rubric CSVs under `canvas/assignments/`, where
-  `validate-outcomes.mjs` reads them, and
-  `validate-activities.mjs` fails on one appearing in a guide.
-- Tool requirements presented as mandatory. Guides may show the current
-  industry baseline; say what the substitute is for students without the tool.
-- Em dashes. `validate-dashes.mjs` fails on one.
-- Calendar dates or an academic year. Weekdays and named holidays are fine.
-  `validate-dates.mjs` fails on a date.
-- A term, a week number, "first half" or "second half", the word "workshop",
-  or a link to an assignment page. `validate-activities.mjs` applies the
-  activity patterns to every guide: a week followed by a digit, "in the fall"
-  or "fall week" (and the same for winter and spring), either half, the word
-  "workshop", and a `](/assignments/` link. The target of a Markdown link to
-  another site is not read, so a third-party slug passes. The patterns are a
-  floor. A spelled-out week ("week two", "the fourth week"), a bare "term",
-  "Fall has", and a course artifact named in plain prose ("Team Charter", "the
-  Expo") all pass them and are still violations, which is what the greps under
-  Before Finishing are for. Write "before the midpoint", not "the first half of
-  the project".
-
-Nothing checks the section skeleton, the length, or the opener rules; those
-are read for, not validated.
+Show the current industry baseline, and say what the substitute is for a
+student without the tool. A guide never presents a tool as mandatory.
 
 ## Worked Examples
 
@@ -541,12 +508,13 @@ the failure this skill exists to prevent.
 
 ## Before Finishing
 
-1. Run `npm run build`. It compiles the MDX and validates every internal link
-   and anchor, which is the only reliable check on the anchors you wrote.
-2. Run `npm run validate:activities` and `npm run validate:dashes`; the first
-   covers the standalone patterns, outcome tags, and grading language on
-   guides, the second em dashes.
-3. Confirm the guide is standalone. Three greps, because the validator's
+1. Run `npx lefthook run pre-push --force` and get exit 0 (`AGENTS.md`,
+   Validation). Four of its commands carry a guide: the build, the only
+   reliable check on the anchors you wrote; `validate:activities`, the
+   standalone patterns, outcome tags, and grading language; `validate:sources`,
+   the registry and the References pair; and `check:prose`, the banned words
+   and openers.
+2. Confirm the guide is standalone. Three greps, because the validator's
    patterns are a floor and a link check misses an assignment named in plain
    prose:
 
@@ -574,30 +542,30 @@ the failure this skill exists to prevent.
    for a reader who is not enrolled in the course? If yes, it is ordinary
    English. If it only makes sense to someone holding a syllabus, it is a
    violation.
-4. Confirm the final four sections are present and in order: Best Practices,
+3. Confirm the final four sections are present and in order: Best Practices,
    Some Truths, Industry and Academia, Additional Readings. Their absence is
    the most common way a new guide fails to match the others. For an artifact
    guide, also confirm the fenced artifact is there, still matches what the
    assignment page requires, and stands alone (see Section Skeleton, item 4).
-5. Read the Some Truths section back and check that no entry is a single
+4. Read the Some Truths section back and check that no entry is a single
    sentence and that each one says why. This is where compression re-enters.
-6. Sort the claims. Read the page for every sentence a reader could doubt and
+5. Sort the claims. Read the page for every sentence a reader could doubt and
    confirm it is Evidence (cited and verified), a Reference (linked), or a
    Recommendation (an imperative with its reason: "Do X, because Y"). Grep for
    the unsourced tells: `research shows`, `studies`, `most teams`, a bare
    percentage. Name in the pull request body each source you opened to check
    a paraphrase (see Sourcing).
-7. Run the reverse outline from `docs/agents/code-review.md` yourself before
+6. Run the reverse outline from `docs/agents/code-review.md` yourself before
    the review does: one line per paragraph naming its idea and what it
    contributes. A paragraph with no contribution is cut; a paragraph with two
    ideas is split; a paragraph whose last sentence restates it loses that
    sentence.
-8. Check the Additional Readings activity list against
+7. Check the Additional Readings activity list against
    `src/content/docs/activities/`. An activity that exercises this practice and
    is not listed is a dead end for the reader.
-9. Run the concision pass, on the whole page for a new or rewritten guide and
+8. Run the concision pass, on the whole page for a new or rewritten guide and
    on the touched paragraphs for a smaller edit, after the reverse outline in
-   step 7. Read for three kinds of cut:
+   step 6. Read for three kinds of cut:
    - repetition: a point the page already made, a Best Practices bullet that
      repeats its reason from the body, a source cited again where it does no
      new work, a sentence that describes the page to itself;

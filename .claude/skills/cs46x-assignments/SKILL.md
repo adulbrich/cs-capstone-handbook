@@ -1,6 +1,6 @@
 ---
 name: cs46x-assignments
-description: Use when creating or editing assignment pages (MDX files in src/content/docs/assignments/) for the CS 461/462/463 capstone handbook. Covers the frontmatter contract read by the validators, the section skeleton, rubric rules, the Canvas rubric CSV the page renders, and grade-weight arithmetic. Always load this skill before writing or editing any assignment file.
+description: Assignment pages, rubric CSVs, and grade weights for the CS 461/462/463 capstone handbook. Use before editing an assignment page (src/content/docs/assignments/), a rubric CSV under canvas/assignments/, or a grade weight wherever it is stated.
 ---
 
 # Assignment Style Guide
@@ -22,11 +22,6 @@ only what the task register needs. On an assignment page the rule that bites
 most often is the closer: a paragraph ends on its last requirement, never on
 a line that restates it.
 
-Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
-compression in the terminal, where the reader can ask a follow-up. That rule
-applied to a handbook page deletes the why, and what survives is an aphorism
-the student cannot check or argue with.
-
 Students read these pages under deadline pressure. Length is a cost they pay.
 
 ## The Task Register
@@ -42,9 +37,9 @@ Guides explain, activities are how-to, assignments are reference.
 
 **Do not import the guides' explanation register.** Guides explain why a
 practice exists; assignments say what is due. A page that opens by teaching the
-reader about the value of retrospectives has taken space from the deliverable
-and broken the rule below about course design. The guide is one link away and
-that is where the why lives.
+reader about the value of retrospectives has taken space from the deliverable.
+The guide is one link away and that is where the why lives; link it rather
+than restating it, since two descriptions of one practice drift.
 
 Length is not the reason to compress, though. A rubric criterion a student
 misreads costs them a grade, so an extra clause that removes the ambiguity is
@@ -59,25 +54,15 @@ stack has, such as pinning dependency versions, is not a named technique and
 has no single owner: state it plainly and link nothing. A named tool,
 standard, or technique still gets its link. Projects range from web apps to
 game engines to firmware, and one ecosystem's documentation tells the rest
-that the page was not written for them.
+that the page was not written for them. A student who cannot find the
+standard you are grading against will guess at it, and then contest the grade.
 
-There is no numeric target here yet. The current assignment pages sit at 0.2
-external links per 1,000 words, which is effectively zero, and that is the
-defect. The right rate is not borrowed from another course: capstone
-assignments are a different kind of artifact from a lower-division programming
-assignment, where a single function under test can carry four references. Fix
-the zero, then let the corpus tell us the rate.
+Research findings belong in the guide the assignment links, not here (the
+last paragraph of Claims in `docs/agents/voice.md`).
 
-What does not depend on a number: a student who cannot find the standard you
-are grading against will guess at it, and then contest the grade.
-
-Research findings belong in the guide the assignment links, not here (see
-"Who owes what" under Claims in `docs/agents/voice.md`).
-
-A link is not course-design rationale and does not violate the rule below. "Use
-[conventional commits](https://www.conventionalcommits.org/)" is a
-specification of the deliverable. "We adopted conventional commits in 2024
-because the previous convention drifted" is course design and stays out.
+A link to the standard specifies the deliverable: "Use
+[conventional commits](https://www.conventionalcommits.org/)" says what is
+due, and that is all it says.
 
 ## Frontmatter Contract
 
@@ -147,7 +132,8 @@ Nine rules the validators enforce, all of which have been gotten wrong before:
    tag.** `scripts/validate-outcomes.mjs` parses the Criteria Name column of
    the rubric CSV as
    the source of truth and fails on any disagreement. Tag a criterion, bump the
-   count, in the same edit.
+   count, and update `learning-objectives/mapping.mdx`, the hand-maintained
+   view of the same map, in the same commit.
 2. **Only `level: individual` pages contribute accreditation data points.** A
    `level: team` page contributes **zero**, however many tags its rubric
    carries. This is the rule most easily gotten wrong: a team page tagged `L07`
@@ -184,12 +170,16 @@ Nine rules the validators enforce, all of which have been gotten wrong before:
 A page with no `assignment:` block is skipped by the validator entirely: no
 rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages
 are in that state deliberately: `introduction.mdx`, `demo-day.mdx`, and
-`expo.mdx`. A fourth needs a reason. Demo Day also has a 100-point
-Presentation entry in an Extra Credit Canvas group, outside the four
-components (#305); the readme documents it, since no frontmatter can. **This is the supported shape for an ungraded item**, paired
-with a Canvas item at 0 points with `omit_from_final_grade`; see
-`canvas/assignments/assignment-readme.md`. Do not reach for `weight: 0`, which
-passes Zod but keeps the block and so re-arms the rubric and AI-use checks.
+`expo.mdx`. A fourth needs a reason. **This is the supported shape for an
+ungraded item**, paired with a Canvas item at 0 points with
+`omit_from_final_grade`; see `canvas/assignments/assignment-readme.md`. Do not
+reach for `weight: 0`, which passes Zod but keeps the block and so re-arms the
+rubric and AI-use checks.
+
+Demo Day also has a 100-point Presentation entry in an Extra Credit Canvas
+group, outside the four components (#305). No frontmatter can carry it, so its
+page, the assignments overview, the syllabi, the Canvas readme, and the extra
+entries in `scripts/canvas-export.mjs` each state it.
 
 Two **graded** pages share the shape for a different reason:
 `resume-and-intent.mdx` and `career-retrospective.mdx` run entirely in Canvas
@@ -235,14 +225,13 @@ required; `validate-outcomes.mjs` checks the order.
      goes in the family's `due_label`.
 
 2. **Intro prose.** One to three paragraphs, in second person, on what the
-   student produces, by when, and what makes it good. Say why it matters **to
-   the student** (an interviewer can ask about it, the partner will expect it)
-   and stop there. **Never explain the course's design on an assignment
-   page**: no "this assignment exists because", "this replaces X", "most
-   teams used to", "by design", "on purpose", "in this course there is no",
-   or any sentence whose subject is the course, the staff, or a past cohort.
-   Students read the page to find out what to do; design rationale belongs in
-   `STAFF-RUNBOOK.md`, `docs/agents/`, or the issue that made the decision.
+   student produces, by when, and what makes it good. **The page addresses
+   the student about their work.** Say why it matters **to the student** (an
+   interviewer can ask about it, the partner will expect it) and stop there.
+   A sentence whose subject is the course, the staff, or a past cohort (why
+   the assignment exists, what it replaced, what earlier teams did) is course
+   design, and it goes where `AGENTS.md`, "Where decisions are recorded",
+   puts decisions, never on the page.
 
 3. **`## What You Produce`**, on every page where the student makes an
    artifact. The heading is always this; the length goes in its first lines
@@ -326,9 +315,8 @@ validator checks the names under Rubric and What You Submit, not under What
 You Produce, so start a What You Produce heading with the entry's exact name.
 
 *Admonitions* are optional anywhere. The pattern worth reusing is
-`:::note[If your project is under NDA]` for the local NDA variation. Do not
-write a `Why this replaces X` or `Why we do it this way` admonition; that is
-course design talking to itself on a student page. Keep each to one idea.
+`:::note[If your project is under NDA]` for the local NDA variation. Keep each
+to one idea about the student's work.
 
 ## Rubric Rules
 
@@ -447,7 +435,9 @@ retype the bands in MDX to get the same effect.
 
 Every Canvas rubric directory is rendered by a page. `individual-contribution/`
 is rendered on Sprint Notes, `workshop-activities/` on Workshop Activities; both
-are tagless.
+are tagless. The directory-to-page map and the deprecated-directory list live at
+the top of `validate-outcomes.mjs`, and a rubric directory that claims outcomes
+without being in either list fails the check rather than being skipped.
 
 **Changing a CSV means re-importing it into Canvas.** Say so in
 `canvas/assignments/assignment-readme.md` in the same commit.
@@ -471,13 +461,6 @@ being completed by someone other than the student: together they are 50% of
 every term's grade, and this section is where all graded work is authored,
 apart from the two Canvas-owned stubs.
 
-## Say Each Fact Once
-
-One canonical statement, everywhere else links. A page may state the single
-number its own reader needs; no page other than the canonical one re-tabulates
-the whole thing. `AGENTS.md` lists the current canonical homes. Before writing
-a paragraph that explains something, grep for it.
-
 ## Grade Weights
 
 Each term's grade is four components of 25% each, each split across several
@@ -495,8 +478,8 @@ is the `<AssignmentMeta>` text plus their grade grid rows on
 `assignments/introduction.mdx`. The validator sums those rows into Individual
 Evidence but has no page weight to reconcile them against.
 
-Raising one weight means cutting another. Verify the sums with a script, not by
-eye. When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
+Raising one weight means cutting another; `validate-outcomes` checks the sums.
+When choosing what to cut, protect Sprint Notes and Repo Checkpoints: they
 carry the individual contribution modifier and the living-docs review.
 
 ## NDA Projects
@@ -505,24 +488,6 @@ There is no "Track A / Track B" vocabulary. The default is that staff have
 repository read access; where an NDA team does something different, say so
 **locally on the affected page** in a short `:::note`, not as a global concept
 the student has to learn first.
-
-## What Assignment Pages Must Not Contain
-
-- Course design rationale, history, or description: why the assignment
-  exists, what it replaced, what past cohorts did, what "this course" does or
-  does not have. The page addresses the student about their work.
-- Em dashes.
-- Calendar dates or an academic year. `due` is a term and a week, and may
-  add a weekday or a named holiday ("Fall, week 9, Wednesday before
-  Thanksgiving"), never a date. `validate-dates.mjs` fails on one.
-- A rubric that does not total its entry's points.
-- Outcome tags whose counts disagree with the frontmatter.
-- Activity links in `## Activities That Prepare This` that you do not mean as recommendations: each one puts a Prepares badge on the activity.
-- Explanations that belong in a guide. Link to the guide instead; two
-  descriptions of one practice drift, and students read the assignment.
-- Grading language on any page other than an assignment page. This section is
-  the only place rubric point values live; the points-to-letter table lives
-  in `learning-objectives/grading.mdx`.
 
 ## Worked Examples
 
@@ -570,11 +535,14 @@ the student to guess the standard they will be graded against.
 
 ## Before Finishing
 
-1. Run the whole Validation list in `AGENTS.md`. For an assignment page two of
-   them carry most of the weight: `validate:outcomes` checks the frontmatter,
-   rubric tags, weights, Canvas entries, the section skeleton, the AI-use
-   paragraph, and rubric totals; `canvas:export -- --strict` checks the page
-   still converts to a Canvas body.
-2. If you touched a weight, verify all three terms still sum to 25%.
+1. Run `npx lefthook run pre-push --force` and get exit 0 (`AGENTS.md`,
+   Validation). For an assignment page two of its commands carry most of the
+   weight: `validate:outcomes` checks the frontmatter, rubric tags, weights,
+   Canvas entries, the section skeleton, the AI-use paragraph, and rubric
+   totals; `canvas:export -- --strict` checks the page still converts to a
+   Canvas body.
+2. If you touched a weight, change it in the three syllabi and
+   `canvas/assignments/assignment-readme.md` in the same commit; no validator
+   reads them.
 3. If you touched a rubric, you touched the CSV, so add it to the re-import
    list in `canvas/assignments/assignment-readme.md` in the same commit.

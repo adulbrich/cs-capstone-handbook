@@ -1,19 +1,16 @@
 ---
 name: cs46x-activities
-description: Use when creating or editing activity pages (MDX files in src/content/docs/activities/) for the CS 461/462/463 capstone handbook. Defines the required section shape, the generated badge line, tiering, and heading rules. Always load this skill before writing or editing any activity file.
+description: Activity pages for the CS 461/462/463 capstone handbook. Use before editing an activity page under src/content/docs/activities/, or an activity link on src/content/docs/introduction/schedule.mdx.
 ---
 
 # Activity Style Guide
 
 This skill governs how activities are written for the CS capstone handbook
-(Astro/Starlight, MDX). It exists because the activity library grew to 100-plus
-entries across twelve pages without a written format, and pages added later
-drifted from the ones added first. **The format below is the format. Bring
-non-conforming activities into line rather than adding a second convention**,
-with two exceptions marked below as targets for new activities only: heading
-case and step-bullet style. Both are followed by a minority of the library,
-and "fixing" the majority would rename about 110 headings and break every
-inbound anchor for no reader benefit.
+(Astro/Starlight, MDX). **A new or edited activity follows the format below;
+leave the others to the issue that names them.** Two parts of the format are
+targets for new activities only, marked below: heading case and step-bullet
+style, because re-casing the existing headings would break every inbound
+anchor for no reader benefit.
 
 ## Writing Voice (applies to everything below)
 
@@ -22,11 +19,6 @@ voice: whose voice the handbook uses, person, claims, structure, and the
 word-level rules. This skill does not restate it; it adds only what the
 how-to register needs. The bold step name in the step format below is one of
 the labels voice.md allows.
-
-Document voice is not chat voice. A maintainer's `CLAUDE.md` asks for
-compression in the terminal, where the reader can ask a follow-up. That rule
-applied to a handbook page deletes the why, and what survives is an aphorism
-the student cannot check or argue with.
 
 ## The How-To Register
 
@@ -68,9 +60,6 @@ not a lecture, and not an assignment. Three properties define it:
 **An activity page never refers to this course.** No link to an assignment
 page, no assignment name, no mention of a workshop, no week number, no term, no half of a class
 session. A reader who is not enrolled should be able to run any activity here.
-The `guides/` directory has held this line since it was written and has zero
-assignment links across nineteen files; activities had drifted to sixty-one
-`Feeds:` backlinks and ten activities describing their slot by the clock.
 
 The direction of travel is one way. **Assignments link to activities**, in
 their "Activities That Prepare This" section, and that link is what puts a
@@ -141,7 +130,8 @@ then Prepares, and it counts as Workshop.
 So **promoting or demoting an activity is an edit to an assignment page**,
 never to the activity. Add it to, or remove it from, that page's "Activities
 That Prepare This" section (the `cs46x-assignments` skill owns its shape), and
-the badge line follows at the next build.
+the badge line follows at the next build. The design is
+`docs/decisions/2026-10-05-activity-badges.md`.
 
 `npm run validate:activities` computes the tiers through the same lib and
 prints the counts. It fails if an assignment links an anchor matching no
@@ -233,7 +223,7 @@ ends up with and why it matters for their project. Do not open with "In this
 activity you will" or "This activity helps you". Start with the substance.
 
 Close the opening with a plain **effort clause** where you can state one
-with confidence: "Thirty minutes as a team, once a term." "One to two hours, once."
+with confidence: "Thirty minutes as a team, each sprint." "One to two hours, once."
 "Two to three hours to set up, minutes per run after." Write it as a sentence,
 not as an italic metadata line above the prose, and set the matching `effort`
 on the badge line when it sits on the scale. Effort is the single most
@@ -248,6 +238,11 @@ acceptable when the activity is a discussion or a judgment exercise
 rather than a procedure, but prose is the exception and should not run past
 three short paragraphs. Sub-headings (`###`) are allowed only for activities
 with distinct phases, and they create anchors, so name them carefully.
+
+When a step needs a capable AI agent, the steps close on one that starts "If
+your tooling can't ..." and says how to get the same artifact without the
+agent: by hand, with a smaller model, or by pairing with a teammate who has
+access. Tool access is unequal, and the artifact is what the activity is for.
 
 **"A good output is..." line.** Mandatory, always the closing line of the body
 with nothing after it,
@@ -281,9 +276,7 @@ projects look like none of them.
 
 **Never name a category.** The words "outcome type", "project type" and
 "project category" are retired, and `check-prose` rejects all three under the
-content paths. The handbook presented a four-way taxonomy for a year and
-students spent it asking which one they were, rather than agreeing expectations
-with their partner. Refer to the four by name, as examples, or say what the
+content paths. Refer to the four by name, as examples, or say what the
 project is.
 
 Assignment pages offer activity options in an **Examples** table whose first
@@ -331,8 +324,6 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 
 ## Writing Style
 
-- **No em dashes.** Use colons, semicolons, commas, or periods. This is a
-  project-wide rule.
 - Second person. "List the next ten decisions your team expects to make."
 - Imperative for steps. "Compare options", not "You should compare options".
 - Short sentences, one idea each. Students read these under deadline pressure.
@@ -354,7 +345,7 @@ These are constructed to the rule rather than quoted. The register model is
 > Before: Map your one-way doors. Know what you cannot undo.
 >
 > After: List the decisions your team cannot cheaply reverse, then mark which
-> ones are already made. One hour as a team, once a term.
+> ones are already made. One hour as a team, early in the project.
 
 The first sounds like a slogan and leaves the team guessing at scope, output,
 and cost. The second names the artifact and the time.
@@ -388,24 +379,15 @@ and cost. The second names the artifact and the time.
 - Tool requirements presented as mandatory when a cheaper substitute exists. If
   an activity assumes a paid service or specific hardware, state the
   substitute for students who do not have it.
-- **An activity that needs a capable AI agent without ending on a
-  substitute.** Its steps close with one step that starts "If your tooling
-  can't ..." and says how to get the same artifact without the agent: by
-  hand, with a smaller model, or by pairing with a teammate who has access.
-  Tool access is unequal, and the artifact is what the activity is for.
 - Calendar dates or an academic year. Terms and weeks only.
   `validate-dates.mjs` fails on a date.
 
 ## Before Finishing
 
-1. Run `npm run validate:activities`. It checks every badge line and the
-   section shape, resolves the assignment links, and prints the tier counts. Run
-   `npm run validate:dashes` too; it catches the em dashes the grep below would.
-2. Run `npm run build`. It runs `astro check`, compiles the MDX, and validates
-   every internal link and anchor, which is the only reliable check of the
-   anchors you just wrote.
-3. If you promoted or demoted any activity (on an assignment page), check
-   the tier counts the
-   validator prints against the library-size claim on
-   `activities/introduction.mdx` and `assignments/workshop-activities.mdx`.
-4. Grep for em dashes in what you wrote.
+Run `npx lefthook run pre-push --force` and get exit 0 (`AGENTS.md`,
+Validation). `validate:activities` carries most of the weight: it checks every
+badge line and the section shape, resolves the assignment links, reconciles
+the schedule, and prints the tier counts. The build is the only reliable check
+of the anchors you just wrote, `check:prose` rejects the retired category
+words, and `validate:sidebar` fails a new page until
+`src/lib/activities-sidebar.mjs` lists it.
