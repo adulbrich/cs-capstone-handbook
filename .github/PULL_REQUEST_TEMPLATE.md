@@ -25,9 +25,11 @@ Closes #
 ## Review loop
 
 <!-- Review rounds until one changes nothing, as docs/agents/code-review.md
-     says. State the round count. A declined finding gets one line. -->
+     says. State the round count. Each answer the instructor gave and each
+     declined finding gets one line. -->
 
 - Rounds:
+- Decisions:
 - Declined:
 
 ## Docs

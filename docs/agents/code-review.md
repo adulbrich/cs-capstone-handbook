@@ -1,7 +1,7 @@
 # Code review
 
-`mattpocock-skills:code-review` runs on every pull request, as `AGENTS.md` and
-`CONTRIBUTING.md` say. This repository is a student-facing handbook, not an
+`mattpocock-skills:code-review` runs on every pull request, as `AGENTS.md`
+says. This repository is a student-facing handbook, not an
 application: most of a diff is prose, tables, and MDX, and the review reads it
 that way. This file is the local delta from the skill's default brief. Every
 reviewer gets it pasted, for the bar under Severity and the loop; the
@@ -103,6 +103,9 @@ neither of them does:
 - The re-import and re-paste notes in `canvas/assignments/assignment-readme.md`
   against the diff under `canvas/` and the bodies whose text changed.
 
+The main session runs `npm run build` and `npm run canvas:export` once per
+round, before the reviewers start, so every reviewer reads the same output.
+
 ## Severity and the loop
 
 - **Hard**: a documented rule broken, cited by file and rule. **Judgement**:
@@ -113,23 +116,24 @@ neither of them does:
   rule broken. A wording the reviewer would prefer, where the current one is
   clear and correct, is not a finding.
 - **Each finding is fixed, declined, or sent to the instructor.** Check a
-  finding before acting on it; reviewers are wrong too. A finding in the
-  pull request's own text that clears the bar is fixed. A decline gives one
-  of three grounds, in one line in the PR body: wrong once checked, below the
-  bar, or outside the diff, where real work becomes an issue (under the
-  current review parent, when one is open). A design choice rather than a
-  defect, and a finding that would reverse an earlier round's fix, go to the
-  instructor as options; the round waits for the answer, which lands as a
-  fix or a decline.
+  finding before acting on it; reviewers are wrong too. A defect in the diff
+  that clears the bar is fixed. A decline gives one of three grounds, in one
+  line under Declined in the PR body: wrong once checked, below the bar, or
+  outside the diff, where real work becomes an issue (under the current
+  review parent, when one is open). A design choice rather than a defect,
+  and a finding that would reverse an earlier round's fix, go to the
+  instructor as options; the round waits for the answer, which the PR body
+  records under Decisions.
 - **The ledger.** From the second round on, every reviewer reads one file
   first: the instructor's decisions, each decline with its ground, and the
   bar. Every round adds its decisions and declines, so each round raises only
   what the ledger does not already answer. It lives in the session's
   scratchpad, not the repository; a resumed session rebuilds it from the PR
-  body.
+  body's Decisions and Declined lines.
 - **Rounds run until one changes nothing.** A round is the axes run in
   parallel by fresh sub-agents, plus the main session's own correctness
-  read, with every report in before anything is fixed, and one commit per
+  read (the built-in `code-review` skill, or a line-by-line read of the
+  diff), with every report in before anything is fixed, and one commit per
   round. If the round fixed anything, the next round runs. The loop ends on a
   round whose findings are all declined, or none. When a round's fixes
   touched only a few lines, the next round may be one reviewer covering every
@@ -138,4 +142,5 @@ neither of them does:
 - **Keep each fix to what its finding needs.** Most findings after the second
   round are in text an earlier round wrote, so a fix that also rewrites its
   neighborhood buys another round.
-- Record the number of rounds in the PR body, beside the declines.
+- Record the number of rounds in the PR body, beside the decisions and the
+  declines.
