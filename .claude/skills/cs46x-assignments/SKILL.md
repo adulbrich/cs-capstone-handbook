@@ -171,13 +171,12 @@ rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages
 are in that state deliberately: `introduction.mdx`, `demo-day.mdx`, and
 `expo.mdx`. A fourth needs a reason. **This is the supported shape for an
 ungraded item**, paired with a Canvas item at 0 points with
-`omit_from_final_grade`; see `canvas/assignments/assignment-readme.md`. Do not
-reach for `weight: 0`, which passes Zod but keeps the block and so re-arms the
+`omit_from_final_grade`. Do not reach for `weight: 0`, which passes Zod but keeps the block and so re-arms the
 rubric and AI-use checks.
 
 Demo Day also has a 100-point Presentation entry in an Extra Credit Canvas
 group, outside the four components (#305). No frontmatter can carry it, so its
-page, the assignments overview, the syllabi, the Canvas readme, and the extra
+page, the assignments overview, the syllabi, and the extra
 entries in `scripts/canvas-export.mjs` each state it.
 
 Two **graded** pages share the shape for a different reason:
@@ -441,8 +440,8 @@ are tagless. The directory-to-page map and the deprecated-directory list live at
 the top of `validate-outcomes.mjs`, and a rubric directory that claims outcomes
 without being in either list fails the check rather than being skipped.
 
-**Changing a CSV means re-importing it into Canvas.** Say so in
-`canvas/assignments/assignment-readme.md` in the same commit.
+**Changing a CSV means re-importing it into Canvas.** Say so on the PR
+body's Canvas mirror line, naming each CSV.
 
 ## What Does Not Belong Here
 
@@ -467,14 +466,13 @@ apart from the two Canvas-owned stubs.
 
 Each term's grade is four components of 25% each, each split across several
 assignment pages, and **every component must sum to exactly 25% in every
-term**. A weight appears in four places that must agree:
+term**. A weight appears in three places that must agree:
 
 1. the page's `assignment.weight` frontmatter,
 2. the grade grid in `assignments/introduction.mdx`,
-3. the three syllabi,
-4. `canvas/assignments/assignment-readme.md`.
+3. the three syllabi.
 
-The validator reconciles the first two against each other. The last two it
+The validator reconciles the first two against each other. The syllabi it
 cannot see. The two Canvas-owned stubs have no frontmatter weight: their copy
 is the `<AssignmentMeta>` text plus their grade grid rows on
 `assignments/introduction.mdx`. The validator sums those rows into Individual
@@ -543,10 +541,9 @@ the student to guess the standard they will be graded against.
    Canvas entries, the section skeleton, the AI-use paragraph, and rubric
    totals; `canvas:export -- --strict` checks the page still converts to a
    Canvas body.
-2. If you touched a weight, change it in the three syllabi,
-   `canvas/assignments/assignment-readme.md`, and, for a Canvas-owned stub,
+2. If you touched a weight, change it in the three syllabi and, for a Canvas-owned stub,
    its `<AssignmentMeta>` text, in the same commit; no validator reads them.
    The Demo Day extra credit has its own list of copies, in its paragraph
    under Frontmatter Contract.
-3. If you touched a rubric, you touched the CSV, so add it to the re-import
-   list in `canvas/assignments/assignment-readme.md` in the same commit.
+3. If you touched a rubric, you touched the CSV, so name it on the PR
+   body's Canvas mirror line.

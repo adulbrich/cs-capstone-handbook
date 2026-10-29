@@ -106,8 +106,8 @@ neither of them does:
   changed, found by grep.
 - Every inbound link to a renamed or moved heading. The build checks that an
   anchor exists, not that it lands on the section its sentence means.
-- The re-import and re-paste notes in `canvas/assignments/assignment-readme.md`
-  against the diff under `canvas/` and the bodies whose text changed.
+- The PR body's Canvas line against the diff under `canvas/` and the bodies
+  whose text changed.
 
 When this axis runs, the main session runs `npm run build` and
 `npm run canvas:export` once per round, before any reviewer starts, so every

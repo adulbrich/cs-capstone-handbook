@@ -24,8 +24,7 @@
 // project years on the showcase page, which are history rather than the
 // course calendar. Fenced blocks are checked: the example artifacts in the
 // guides are handbook content and follow the rule like the prose. The
-// Canvas readme and the skills are out of scope: their decision timestamps
-// are provenance.
+// skills are out of scope: their decision timestamps are provenance.
 //
 // Run: node scripts/validate-dates.mjs
 
@@ -33,10 +32,7 @@ import { readFileSync } from "node:fs";
 import { walk } from "./lib/content.mjs";
 
 const ROOTS = ["src", "canvas", "public", "STAFF-RUNBOOK.md"];
-const SKIP_FILES = new Set([
-  "canvas/assignments/assignment-readme.md",
-  "src/content/docs/introduction/showcase.mdx",
-]);
+const SKIP_FILES = new Set(["src/content/docs/introduction/showcase.mdx"]);
 const MONTHS = [
   "January",
   "February",

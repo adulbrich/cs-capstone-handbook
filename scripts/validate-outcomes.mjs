@@ -271,9 +271,8 @@ if (parsed === 0) {
 // The grade grid on the assignments overview gives every term's grade by
 // component and assignment. Each of the four components is 25 in every term,
 // its assignments sum to it, and the components sum to the Total row's 100.
-// The weights also appear in each page's frontmatter, in three syllabi, and in
-// the Canvas readme, so a re-cut that misses one leaves students' grades not
-// adding up.
+// The weights also appear in each page's frontmatter and in the three
+// syllabi, so a re-cut that misses one leaves students' grades not adding up.
 const COMPONENT_WEIGHT = 25;
 // term -> (slug -> percent), summed over every row linking the page: the
 // partner and peer pages each own a midterm row and an end-of-term row.

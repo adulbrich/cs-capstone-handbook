@@ -132,7 +132,7 @@ const otherTerm = (s, term) => {
 // ---- entries -----------------------------------------------------------------
 
 // Pages with no `assignment.canvas` block that still get a 0-point Canvas
-// item (canvas/assignments/assignment-readme.md). resume-and-intent and
+// item. resume-and-intent and
 // career-retrospective are Canvas-owned (#197) and absent on purpose.
 const ZERO_POINT = [
   {
