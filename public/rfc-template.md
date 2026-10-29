@@ -2,8 +2,8 @@
 
 # RFC: [Short, Specific Title]
 
-<!-- Decision record header. Leave Status as "Proposed" until your team decides,
-     before or after the reviews. Then fill in the outcome and the decision date.
+<!-- Decision record header. Leave Status as "Proposed" until your team decides.
+     Then fill in the outcome and the decision date.
      The document stays where it is; this header is what makes it a record. -->
 
 | Field | Value |
