@@ -65,27 +65,26 @@ Bill Wake's [INVEST](https://xp123.com/invest-in-good-stories-and-smart-tasks/) 
 
 For acceptance criteria, [Given-When-Then](https://martinfowler.com/bliki/GivenWhenThen.html) states a precondition, an action, and the expected result. [Gherkin](https://cucumber.io/docs/gherkin/reference/) formalizes that pattern into executable specifications that Cucumber runs as tests, so a criterion written this way is most of the way to a test. Neither format is required. Use one when a requirement has conditions, because the structure makes you name each condition, and use a plain sentence when it doesn't.
 
-Here is the shape of a `docs/requirements.md` for a small web project, with an ID on each requirement and a reason on each priority label:
+Here is the shape of a `docs/requirements.md` for a small web project, with an ID on each requirement and a reason on each priority label, here a [MoSCoW](/guides/planning/#moscow) bucket:
 
 ```md
 # Requirements
-
-Priority: MoSCoW, by how much the product needs each, not by build order.
 
 ## Problem statement
 Coordinators at <partner> schedule ~40 volunteer shifts a week by email
 and spreadsheet; three were double-booked last month (per the coordinator).
 
 ## Functional requirements
+Priority labels below use MoSCoW: need to the product, not build order.
 - FR-1 (Must: nothing else works without it): A coordinator creates a
   shift with date, time, place, headcount. Acceptance: end before start fails.
 - FR-2 (Must: it prevents the double-booking): A volunteer claims an
   open shift. Acceptance: a claim on a full shift fails.
-- FR-3 (Should, assumed: not yet confirmed by the coordinator): Email the
-  coordinator when a claimed shift is released within 24 h of its start.
+- FR-3 (Should, assumed: a short shift can still be filled by phone): Email
+  the coordinator when a claimed shift is released within 24 h of its start.
 
 ## Non-functional requirements
-- NFR-1 (Should: coordinators work from the office): The board loads in
+- NFR-1 (Should: slow is tolerable, broken isn't): The board loads in
   under 2 s on the partner's office Wi-Fi.
 - NFR-2 (Must: some volunteers can't use a mouse): Every action works by
   keyboard alone.
@@ -112,7 +111,7 @@ and spreadsheet; three were double-booked last month (per the coordinator).
 
 Give each requirement an ID so a pull request, a test, or a commit message can cite it.
 
-Label each requirement with its priority and the reason, as the Must and Should labels above do. Any [prioritization method](/guides/planning/#prioritization-methods) that sorts requirements works: MoSCoW buckets, as here, or an impact-effort or cost-value quadrant. Name the method once at the top of the file so a reader knows what the labels mean, and leave the constraints unlabeled, because the team didn't choose them and can't drop them. The label records how much the product needs the requirement, which a successor or an AI tool reading the repository needs in order to judge a trade-off without asking you. It isn't the order you build in, which the board holds.
+Label each requirement with its priority and the reason, as the Must and Should labels above do. Any [prioritization method](/guides/planning/#prioritization-methods) that sorts requirements into buckets or quadrants works: MoSCoW, as here, or impact-effort or cost-value; a ranked list, such as a Scrum backlog, is a build order and goes on the board. Name the method once, above the first label, so a reader knows what the labels mean, and leave the constraints unlabeled, because the team didn't choose them and can't drop them. The label and its reason record why the requirement matters, which a successor or an AI tool reading the repository needs in order to judge a trade-off without asking you.
 
 Label a requirement nobody has confirmed as assumed, as FR-3 is, so a reader can tell a guess from a fact and knows which requirements to take back to the partner.
 
@@ -162,7 +161,7 @@ A requirements document can be busywork, and the version that turns into busywor
 
 Expect much of the first version to be wrong. Requirements are guesses about what people need until a user or a partner confirms them, and the first guesses are made by a team that hasn't yet watched anyone use anything. Practitioners report the same pattern: in the NaPiRE survey, incomplete or hidden requirements was the most often named critical problem (48% of respondents), and moving targets, meaning changing goals, business processes, or requirements, tied for third (33%) <Cite id="mendezfernandez-2017" form="parenthetical" />. That's why the assumed label matters: an unconfirmed requirement that looks identical to a confirmed one gets built with the same confidence.
 
-The functional list is the part that duplicates other tools. Once your board items carry the FR IDs and their acceptance criteria, and your tests encode those criteria, the list in the file says the same thing a third time, and a copy nobody updates soon disagrees with the code. Don't replace it with a link to the board, though: the board isn't versioned with the code, so someone reading the repository at a past commit can't see what the criteria were then. That argument keeps the requirements and their priority labels in the file; it doesn't extend to the build order, which the board holds alone.
+The functional list is the part that duplicates other tools. Once your board items carry the FR IDs and their acceptance criteria, and your tests encode those criteria, the list in the file says the same thing a third time, and a copy nobody updates soon disagrees with the code. Don't replace the requirements with a link to the board, though: the board isn't versioned with the code, so someone reading the repository at a past commit can't see what the criteria were then.
 
 Shrink the list instead: keep the ID and criteria of every requirement still to be built, and cut a finished one to its ID and test name ("FR-2: `test_second_claim_on_full_shift_fails`") once that test runs in CI, because the test then carries the criteria with the code. A requirement checked only by hand keeps its criteria. The board also never holds the problem statement, the non-goals, the non-functional bars, the constraints, the success metrics, and the open questions, so keep those current in the file.
 
