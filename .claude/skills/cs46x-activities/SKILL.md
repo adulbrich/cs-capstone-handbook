@@ -379,8 +379,7 @@ and cost. The second names the artifact and the time.
 - Tool requirements presented as mandatory when a cheaper substitute exists. If
   an activity assumes a paid service or specific hardware, state the
   substitute for students who do not have it.
-- Calendar dates or an academic year. Terms and weeks only.
-  `validate-dates.mjs` fails on a date.
+- Calendar dates or an academic year. `validate-dates.mjs` fails on a date.
 
 ## Before Finishing
 

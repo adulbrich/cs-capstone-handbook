@@ -66,7 +66,8 @@ commit-msg:
 
 pre-push:
   commands:
-    # Everything CI runs, once per push rather than once per commit.
+    # The checks in CI's build job, once per push rather than once per commit,
+    # except npm ci and the student-data guard.
     branch:
       # type/slug, issue number first when there is one. The app names a session branch claude/...; rename it.
       run: node scripts/check-branch-name.mjs

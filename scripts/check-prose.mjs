@@ -9,11 +9,12 @@
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
  * heading. The banned words and a percentage in a heading (Markdown or an
- * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the
- * syllabi, and the Markdown downloads in `public/` (BANNED_WORD_PATHS),
- * because students read those words and headings in Canvas, in the templates and
- * scoresheet that quote the criteria, and, through `<RubricTable>`, on the
- * pages. None of these run on `--text`
+ * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the syllabi, the
+ * Markdown downloads in `public/`, and the slide decks in `src/decks/`
+ * (BANNED_WORD_PATHS), because students read those words and headings in
+ * Canvas, in the templates and scoresheet that quote the criteria, on the
+ * slides, and, through `<RubricTable>`, on the pages. None of these run on
+ * `--text`
  * or `--stdin` (a PR body may discuss a banned word), and none run on
  * `docs/`, `AGENTS.md`, `.claude/skills/`, or
  * `canvas/assignments/assignment-readme.md`, which quote the patterns to
