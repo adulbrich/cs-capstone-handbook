@@ -103,8 +103,9 @@ neither of them does:
 - The re-import and re-paste notes in `canvas/assignments/assignment-readme.md`
   against the diff under `canvas/` and the bodies whose text changed.
 
-The main session runs `npm run build` and `npm run canvas:export` once per
-round, before the reviewers start, so every reviewer reads the same output.
+When this axis runs, the main session runs `npm run build` and
+`npm run canvas:export` once per round, before any reviewer starts, so every
+reviewer reads the same output.
 
 ## Severity and the loop
 
@@ -135,7 +136,8 @@ round, before the reviewers start, so every reviewer reads the same output.
   read (the built-in `code-review` skill, or a line-by-line read of the
   diff), with every report in before anything is fixed, and one commit per
   round. If the round fixed anything, the next round runs. The loop ends on a
-  round whose findings are all declined, or none. When a round's fixes
+  round that changed nothing: every finding declined, answered by the
+  instructor with no change, or none. When a round's fixes
   touched only a few lines, the next round may be one reviewer covering every
   axis for those lines and checking the whole diff for regressions, beside
   the main session's read.

@@ -41,8 +41,8 @@ claim it         type/slug          commit message                           rec
    what changed from the reader's side, what ran locally, whether Canvas needs
    a re-import, the review loop, and the docs touched.
 5. **Run the review loop** that `docs/agents/code-review.md` sets out: rounds
-   until one changes nothing. Record the rounds and the declines in the PR
-   body.
+   until one changes nothing. Record the rounds, the decisions, and the
+   declines in the PR body.
 6. **Merge.** Squash. The `main` ruleset requires a pull request with green
    `build` and `audit` checks and blocks force pushes and deletion. No approving
    review is required by GitHub, so the review loop is the review. During the
