@@ -9,13 +9,13 @@
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
  * heading. The banned words and a percentage in a heading (Markdown or an
- * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the
- * syllabi, and the Markdown downloads in `public/` (BANNED_WORD_PATHS),
- * because students read those words and headings in Canvas, in the templates and
- * scoresheet that quote the criteria, and, through `<RubricTable>`, on the
- * pages. None of these run on `--text`
- * or `--stdin` (a PR body may discuss a banned word), and none run on
- * `docs/`, `AGENTS.md`, `.claude/skills/`, or
+ * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the syllabi, the
+ * Markdown downloads in `public/`, and the slide decks in `src/decks/`
+ * (BANNED_WORD_PATHS), because students read those words and headings in
+ * Canvas, in the templates and scoresheet that quote the criteria, on the
+ * slides, and, through `<RubricTable>`, on the pages. None of these run on
+ * `--text` or `--stdin` (a PR body may discuss a banned word), and none run
+ * on `docs/`, `AGENTS.md`, `.claude/skills/`, or
  * `canvas/assignments/assignment-readme.md`, which quote the patterns to
  * teach them or name the criteria a change renamed.
  *
@@ -169,7 +169,8 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * into Canvas, a syllabus is pasted into Canvas, and the scoresheet and
  * templates quote the criteria, so a banned word in any of them reaches
  * students as surely as one on a page. The slide decks under `src/decks/`
- * are projected to the same students, so they get both checks. The rest of
+ * are projected to the same students, so they get the banned words and the
+ * percentage-in-a-heading check too. The rest of
  * `canvas/` and the runbook keep the vocabulary check alone.
  */
 const BOLD_AND_OPENER_PATH = "src/content/docs/";
