@@ -32,7 +32,7 @@ Notes: __________________________________________________________________
 
 - High (17-20): Explains why this approach was chosen, names at least two alternatives that were considered (doing nothing counts as one), each with the reason it was rejected, consistent with the RFC, the decision record, or the sprint notes where they cover it, and identifies which parts of the decision were hard to reverse.
 - Middle (5-16): Explains the chosen approach, but names only one alternative, names alternatives without the reason each was rejected, gives alternatives or reasons that do not match the RFC, the decision record, or the sprint notes, or cannot say which parts were hard to reverse.
-- Low (1-4): Cannot explain why the work was done this way or name any alternative that was considered.
+- Low (1-4): Cannot explain why the work was done this way, or names no alternative that was considered.
 
 Notes: __________________________________________________________________
 
