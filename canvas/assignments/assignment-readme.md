@@ -26,6 +26,15 @@ Import each CSV before the entry it goes on opens; where that entry has already 
 
 - All four `repo-checkpoint/repo-checkpoint-{1,2,3,4}-rubric.csv`: Milestone met's Exceeds band names each milestone item with its evidence, in place of restating what each item asks for, which the checkpoint's milestone section on the page states once. Repo Checkpoint 1's band goes from 288 words to 97. The Meets and Does Not Meet bands, the NDA sentence on Repo Checkpoints 1, 2 and 4, points, and the `[SO2]` tag are unchanged. Delete the old rubric from the course's rubric list after each import if both are there.
 
+## Re-import Required: Outcome Tags on the Partner Surveys (#514)
+
+Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year. Points, bands, and statements are unchanged, so nothing is re-pasted and no survey is regenerated: the generator reads criterion titles without their tags, and the `.qsf` it writes from these files is byte-identical to the one from the untagged files.
+
+- `project-partner-evaluation/partner-final-fall-rubric.csv`, `partner-final-winter-rubric.csv`, `partner-final-spring-rubric.csv`, on each term's End-of-Term Survey: Requirements and Specifications `[SO1]`, Design, Implementation, and Deployment `[SO2, SO6]`, Verification and Validation `[SO2]`, Teamwork `[SO5]`, Communication `[SO3]`. Reflection stays untagged.
+- `project-partner-evaluation/partner-pulse-rubric.csv`, on every term's Midterm Pulse: Responsiveness `[SO3]`, Professionalism `[SO3]`, Delivery quality `[SO2]`. Reflection stays untagged.
+
+The criterion names now end in their tags, so each may import as a second rubric: delete the old one from the course's rubric list after each import. The partner scorer matches the rubric-assessment export's columns with or without the tags.
+
 ## Re-import Required: Decision Records Out of the Repo Checkpoints (#582)
 
 Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw. Re-paste each body on the same rule.
