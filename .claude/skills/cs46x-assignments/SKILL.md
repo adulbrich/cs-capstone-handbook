@@ -171,7 +171,9 @@ rubric CSV, no weight, no AI-use paragraph, no outcome tags. Three pages
 are in that state deliberately: `introduction.mdx`, `demo-day.mdx`, and
 `expo.mdx`. A fourth needs a reason. **This is the supported shape for an
 ungraded item**, paired with a Canvas item at 0 points with
-`omit_from_final_grade`. Do not reach for `weight: 0`, which passes Zod but keeps the block and so re-arms the
+`omit_from_final_grade`: add it to `ZERO_POINT` in `scripts/canvas-export.mjs`
+and to the Week 0 Checklist in `STAFF-RUNBOOK.md`. Do not reach for
+`weight: 0`, which passes Zod but keeps the block and so re-arms the
 rubric and AI-use checks.
 
 Demo Day also has a 100-point Presentation entry in an Extra Credit Canvas
@@ -541,8 +543,8 @@ the student to guess the standard they will be graded against.
    Canvas entries, the section skeleton, the AI-use paragraph, and rubric
    totals; `canvas:export -- --strict` checks the page still converts to a
    Canvas body.
-2. If you touched a weight, change it in the three syllabi and, for a Canvas-owned stub,
-   its `<AssignmentMeta>` text, in the same commit; no validator reads them.
+2. If you touched a weight, change it in the three syllabi and, for a
+   Canvas-owned stub, its `<AssignmentMeta>` text, in the same commit; no validator reads them.
    The Demo Day extra credit has its own list of copies, in its paragraph
    under Frontmatter Contract.
 3. If you touched a rubric, you touched the CSV, so name it on the PR

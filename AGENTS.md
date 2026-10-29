@@ -135,8 +135,9 @@ the mechanics:
   never written on the activity, so promoting or demoting one is an edit to an
   assignment page. `cs46x-activities`.
 - **Each of the four grade components sums to 25% in every term.** The
-  syllabi and the two Canvas-owned stubs' `<AssignmentMeta>` text hold copies of weights that no validator
-  reads, so a weight change edits them in the same commit.
+  syllabi and the two Canvas-owned stubs' `<AssignmentMeta>` text hold copies
+  of weights that no validator reads, so a weight change edits them in the
+  same commit.
   `cs46x-assignments`.
 
 ## Downloads in `public/`
