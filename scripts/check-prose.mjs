@@ -14,9 +14,8 @@
  * (BANNED_WORD_PATHS), because students read those words and headings in
  * Canvas, in the templates and scoresheet that quote the criteria, on the
  * slides, and, through `<RubricTable>`, on the pages. None of these run on
- * `--text`
- * or `--stdin` (a PR body may discuss a banned word), and none run on
- * `docs/`, `AGENTS.md`, `.claude/skills/`, or
+ * `--text` or `--stdin` (a PR body may discuss a banned word), and none run
+ * on `docs/`, `AGENTS.md`, `.claude/skills/`, or
  * `canvas/assignments/assignment-readme.md`, which quote the patterns to
  * teach them or name the criteria a change renamed.
  *
@@ -170,7 +169,8 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * into Canvas, a syllabus is pasted into Canvas, and the scoresheet and
  * templates quote the criteria, so a banned word in any of them reaches
  * students as surely as one on a page. The slide decks under `src/decks/`
- * are projected to the same students, so they get both checks. The rest of
+ * are projected to the same students, so they get the banned words and the
+ * percentage-in-a-heading check too. The rest of
  * `canvas/` and the runbook keep the vocabulary check alone.
  */
 const BOLD_AND_OPENER_PATH = "src/content/docs/";
