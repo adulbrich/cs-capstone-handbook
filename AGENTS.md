@@ -1,9 +1,7 @@
 # AGENTS.md
 
-Context for AI coding agents working in this repository. Named `AGENTS.md`
-rather than `AGENT.md` because that is the filename the cross-tool convention
-settled on; `CLAUDE.md`-style per-tool files should point here rather than
-duplicate it.
+Context for AI coding agents working in this repository. Per-tool files such
+as `CLAUDE.md` point here rather than duplicate it.
 
 ## What this repository is
 
@@ -21,24 +19,24 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
 | `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies come from the built pages through the paste kit (`npm run canvas:export`) and are not stored here. |
 | `public/` | Templates and scoresheets students download. |
-| `src/pages/tools/` | The instructor tools at `/tools/`: Svelte pages that read Canvas and Qualtrics files in the browser and never upload them. Outside the docs collection, so not in the sidebar, the sitemap, or search (`noindex`), and free to name Canvas; no handbook page links them, and the Surveys section of `STAFF-RUNBOOK.md` does. Their logic lives in pure modules under `src/lib/tools/`, their wording in `src/data/`; the Peer Evaluations page's `PeerCriteria` component reads the survey's rating matrix from there too (`ratingMatrix` in `src/lib/tools/peer-survey-qsf.mjs`). |
-| `src/decks/`, `src/pages/decks/` | The slide decks: one `.astro` file per deck, one `<section>` per slide, served as reveal.js at `/decks/<file name>/` by the `[slug].astro` route. Slides are built from the components in `src/components/deck/` (each documents its props at the top; `sample.astro` uses every one) and themed by `src/styles/deck.css` on the handbook palette. The auditorium rules, why reveal.js, and the `noindex` while unlinked are in `docs/decisions/2026-10-07-slide-decks.md`. The dash, date, and prose checks scan them; slide text follows `docs/agents/voice.md`. The fall week 1 seating map is `<SeatingMap>`, drawn at build time from the room in `src/lib/seating.mjs`. Deck slides that restate a handbook fact read it from its page: `<GradeGrid>` and `<TermSessions>` parse the grade grid and the schedule through `src/lib/grade-grid.mjs` and `src/lib/schedule-lines.mjs`, the readers `validate-outcomes.mjs` and `validate-activities.mjs` use; a deck that places an item in its week finds the schedule line with `weekWhere` there, by where the line links (`linkHrefs`), as `fall-week-3.astro` does. |
-| `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. See the `cs46x-guides` skill, Citing Evidence. |
-| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, that its `assignment.canvas` entries reconcile (hard rule 6), and that each entry's `late` rule fits its submission. Runs in CI and pre-commit. |
-| `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. Runs in CI and pre-commit. |
-| `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. Runs in CI and pre-commit. |
+| `src/pages/tools/` | The instructor tools at `/tools/`. Before editing them, `src/lib/tools/`, or their wording in `src/data/`, read `docs/agents/tools.md`. |
+| `src/decks/`, `src/pages/decks/` | The slide decks. Before editing one, read `docs/agents/decks.md`. |
+| `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. Before adding or editing an entry, load the `cs46x-guides` skill (Citing Evidence). |
+| `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, that its `assignment.canvas` entries reconcile (hard rule 6), and that each entry's `late` rule fits its submission. |
+| `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. |
+| `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. |
 | `scripts/lib/` | Shared by the scripts: the content-tree walker and its text extensions, and the frontmatter reader, which returns the body as well as the block. The outcome-tag pattern is `OUTCOME_TAG` in `src/lib/rubric-csv.mjs`, since the site's rubric parser reads it too. |
-| `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the instructor tools' pure modules (roster parsing, contact lists, `.qsf` generation) on invented fixtures, never `data/`. Runs in CI and pre-push. |
-| `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`. Runs in CI and pre-commit. |
-| `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. The Activities group is listed page by page in `src/lib/activities-sidebar.mjs`, so it also checks that every page under `activities/` appears there exactly once and declares no `sidebar.order`. Runs in CI and pre-commit. |
-| `scripts/validate-sources.mjs` | Every `<Cite id>` names a file in `src/data/sources/`, every registry entry has its claims with locators and a `verified` value and is cited by some page, no two entries cite the same, and a citing page has `## References` then `<References />` directly above Additional Readings. Runs in CI and pre-commit. |
+| `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the instructor tools' pure modules (roster parsing, contact lists, `.qsf` generation) on invented fixtures, never `data/`. |
+| `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`. |
+| `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. The Activities group is listed page by page in `src/lib/activities-sidebar.mjs`, so it also checks that every page under `activities/` appears there exactly once and declares no `sidebar.order`. |
+| `scripts/validate-sources.mjs` | Every `<Cite id>` names a file in `src/data/sources/`, every registry entry has its claims with locators and a `verified` value and is cited by some page, no two entries cite the same, and a citing page has `## References` then `<References />` directly above Additional Readings. |
 | `.github/workflows/links.yml` | Weekly lychee check of the external links on the built site, the doi.org links included; opens or updates one issue on failure. Not per PR, because an outside outage would fail unrelated PRs. |
-| `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/` or in `STAFF-RUNBOOK.md`: terms and weeks only. Runs in CI and pre-commit. |
-| `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. On handbook pages, also no banned word, bolded whole sentence, or banned guide opener from `docs/agents/voice.md`, and no banned word or percentage in a heading there or in the rubric CSVs, the syllabi, the Markdown downloads in `public/`, or the decks under `src/decks/`; a guide carrying the legacy-opener marker skips the opener check until its sweep, and a marker with nothing to waive fails. Runs in CI, pre-commit, and the `after-edit` hook. |
-| `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. Runs in CI and pre-push. |
-| `scripts/check-branch-name.mjs` | Branch rule, `<type>/<slug>`, with the issue number leading the slug when there is one. Runs at `pre-push` and in CI on the PR's head branch. |
-| `scripts/check-commit-message.mjs` | Conventional Commits subject rule, plus no em dash, emoji, or session link. Runs at `commit-msg`, in the `guard-git` hook, in CI over the PR range, and in the `pr-text` workflow over the PR title and body. |
-| `scripts/canvas-export.mjs` | The Canvas paste kit: one HTML body per Canvas entry from the built pages in `dist/`, plus each term's rubric CSVs, syllabus, and entry list, written to the gitignored `canvas-export/`. `npm run canvas:export` after `npm run build`; CI runs it with `--strict`, which fails on any warning: an `OVERRIDES` entry that no longer matches its page, or a page element the transform does not handle. A stopgap for #50 until #5. |
+| `scripts/validate-dates.mjs` | No calendar dates and no academic year under `src/`, `canvas/`, `public/` or in `STAFF-RUNBOOK.md`: terms and weeks only. |
+| `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. On handbook pages, also no banned word, bolded whole sentence, or banned guide opener from `docs/agents/voice.md`, and no banned word or percentage in a heading there or in the rubric CSVs, the syllabi, the Markdown downloads in `public/`, or the decks under `src/decks/`. The `after-edit` hook runs it on every edited file. |
+| `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. |
+| `scripts/check-branch-name.mjs` | Branch rule, `<type>/<slug>`, with the issue number leading the slug when there is one. |
+| `scripts/check-commit-message.mjs` | Conventional Commits subject rule, plus no em dash, emoji, or session link, in commit messages and in the PR title and body. |
+| `scripts/canvas-export.mjs` | The Canvas paste kit: one HTML body per Canvas entry from the built pages in `dist/`, plus each term's rubric CSVs, syllabus, and entry list, written to the gitignored `canvas-export/`. `npm run canvas:export` after `npm run build`; CI runs it with `--strict`, which fails on any warning: an `OVERRIDES` entry that no longer matches its page, or a page element the transform does not handle. A stopgap until #5. |
 | `data/` | Student PII. Gitignored and guarded. Never commit anything here. |
 
 ## Hard rules
@@ -105,25 +103,16 @@ it. Content lives in `src/content/docs/**` as MDX.
 
 ## Validation
 
-Run all of these before considering any content change done:
+A change is done when this exits 0:
 
 ```sh
-npm run build            # astro check + astro build; fails on broken internal links
-npm run canvas:export -- --strict  # the paste kit, after the build; fails on any warning
-npm run validate:outcomes
-npm run validate:activities
-npm run validate:downloads
-npm run validate:dashes
-npm run validate:dates
-npm run validate:sidebar
-npm run validate:sources
-npm run check            # Biome, for anything under scripts/ or src/ that is code
-npm run check:prose      # no em dash, emoji, glossary-rejected synonym, or voice tell
-npm run check:commits    # Conventional Commits over origin/main..HEAD
-npm run check:branch     # the current branch is <type>/<slug>
-npm run test:hooks       # cases for the git guard hook
-npm test                 # the instructor tools' pure modules
+npx lefthook run pre-push --force
 ```
+
+It runs the `pre-push` block of `lefthook.yml`, the same block `git push`
+runs. Keep `--force`: run by
+hand with nothing to push, lefthook skips every command and exits 0 having
+checked nothing.
 
 `starlight-links-validator` is enabled in `astro.config.mjs`, so the build
 fails on any broken internal link **including anchors**. This matters: heading
@@ -134,60 +123,30 @@ them, so the build never sees them. `validate-activities.mjs` checks what they
 depend on instead: the exact "Activities That Prepare This" heading and unique
 workshop heading slugs.
 
-## How outcome coverage stays true
+## Outcomes, tiers, and weights
 
-Every assignment page's rubric is a CSV under `canvas/assignments/`, rendered
-on the page, with each criterion's outcome tags in its Criteria Name column;
-the page declares matching counts in its frontmatter.
-`scripts/validate-outcomes.mjs` reads the CSVs as the source of truth and
-fails if:
+Three rules bind edits outside the page you are on. The skill for each holds
+the mechanics:
 
-- frontmatter counts and CSV tags disagree,
-- any ABET outcome (SO1-SO6) drops below **two individual data points**,
-- any WIC or Beyond OSU outcome (L07-L10) loses individual coverage entirely,
-  except L10, exempt while its only criteria live in Canvas (#196).
-
-Only pages with `level: individual` in their frontmatter contribute data
-points. A `level: team` page contributes **zero**, however many tags its rubric
-carries. This is the rule most easily gotten wrong: a team-level page tagged
-`L07` looks like coverage on the page and counts as nothing to the validator.
-
-`src/content/docs/learning-objectives/mapping.mdx` is the human-readable view
-of the same map and is hand-maintained against this check. When you change a
-rubric criterion's tags, update the CSV, the frontmatter, and the mapping page
-in the same commit.
-
-The same validator checks that each page renders its own CSVs. Vite resolves
-any real path, so nothing else would catch a page rendering another
-assignment's rubric. The directory-to-page map and the deprecated-directory
-list live at the top of the script; a rubric directory that claims outcomes
-without being in either list fails the check rather than being skipped.
-
-## How activity tiers stay true
-
-An activity's tier is never written on its page. It is Workshop when a
-`### Workshop N:` section on `assignments/workshop-activities.mdx` names it,
-Recommended when an assignment's "Activities That Prepare This" section links
-it, and library otherwise. `src/lib/activity-links.mjs` reads both from the
-assignment pages, and two consumers share it: `<ActivityMeta>`, the badge line
-under every activity heading, which renders the Workshop badge and one
-Prepares badge per linking assignment, and `scripts/validate-activities.mjs`,
-which computes the tier counts and checks the schedule against them.
-
-So promoting or demoting an activity is an edit to an assignment page, never
-to the activity. The validator checks the badge line itself: placed under
-its heading, `anchor` equal to the heading's slug, `effort` on the fixed
-scale, no hand-written audience or tier badge left over, and every linked
-anchor resolving. See `docs/decisions/2026-10-05-activity-badges.md`.
+- **Outcome coverage** comes from the rubric CSVs' tags, counted only on
+  `level: individual` pages: a team page contributes zero data points,
+  however many tags its rubric carries. `cs46x-assignments`.
+- **An activity's tier** is computed from the assignment pages that link it,
+  never written on the activity, so promoting or demoting one is an edit to an
+  assignment page. `cs46x-activities`.
+- **Each of the four grade components sums to 25% in every term.** The
+  syllabi, `canvas/assignments/assignment-readme.md`, and the two Canvas-owned
+  stubs' `<AssignmentMeta>` text hold copies of weights that no validator
+  reads, so a weight change edits them in the same commit.
+  `cs46x-assignments`.
 
 ## Downloads in `public/`
 
 Templates, cheat sheets, and scoresheets students download live in `public/`
 and are linked as root-relative URLs (`/rfc-template.md`).
 `starlight-links-validator` catches a link to a missing file;
-`validate-downloads.mjs` catches the reverse, which is what actually happened:
-six downloads were being served while no page linked them, so they went stale
-unnoticed. **Every download has exactly one owning page, and that page is the
+`validate-downloads.mjs` catches the reverse, a download no page links, which
+goes stale unnoticed. **Every download has exactly one owning page, and that page is the
 one that requires the artifact.** A template with nothing to own it should be
 deleted, not kept.
 
@@ -245,10 +204,7 @@ question being asked, and state the fact the reader needs rather than sending
 them somewhere to look it up. The closing `## The Pages You Need` card grid is
 the page's index; the body is not a second one.
 
-This is the same rule `cs46x-guides` states for guides, arrived at the same
-way. `practicalities/` had no such rule and grew 24 outbound links into
-assignments, guides, and activities before it was dissolved into these pages
-(#162). The check is a count: run
+The check is a count: run
 `grep -oE '\(/(assignments|guides|activities)/[^)]*\)' <page>` and ask whether
 each one is load-bearing for that reader's question.
 
@@ -256,65 +212,21 @@ Policy is the other half of the same rule. A rule with two audiences and a
 legal edge, such as IP and NDA terms, gets its own page under `introduction/`
 and every audience page links it rather than restating it.
 
-## Grade weight arithmetic
-
-Each term's grade is four components of 25% each, laid out in the grade grid
-on `assignments/introduction.mdx`: a row per component and per assignment (two
-for each evaluation page, midterm and end-of-term), a column per term. Each
-component is split across several assignment pages, and **every component must
-sum to exactly 25% in every term**. `validate-outcomes.mjs` enforces that
-against the grid, and also reconciles each page's `assignment.weight` and
-`assignment.terms` frontmatter against the rows that link it. `weight` is a
-scalar when the page is worth the same in every term it runs, and a per-term
-map when it varies:
-
-```yaml
-assignment:
-  terms: [fall, winter, spring]
-  weight:
-    fall: 8
-    winter: 10
-    spring: 6
-```
-
-A scalar on a page whose weight varies is now a hard failure. It used to be
-silent, and Sprint Notes and Workshop Activities were both wrong.
-
-Three places still hold weights the validator cannot see:
-
-1. the three syllabi,
-2. `canvas/assignments/assignment-readme.md`,
-3. the `<AssignmentMeta>` text on the two Canvas-owned stubs, which carry no
-   `assignment:` block for the validator to read.
-
-The Demo Day extra credit (1% in the term a team presents, on top of the
-four components, #305) is in no frontmatter at all: its page, the
-assignments overview, the syllabi, the Canvas readme, and the extra
-entries in `scripts/canvas-export.mjs` state it.
-
-Changing one weight means re-cutting another, in every place it appears.
-
 ## Code style
 
-Biome (via Ultracite's `core` preset) formats and lints the code: the
-scripts, the Astro config and components, the content schema, and the JSON
-configs. `canvas/` and `public/` are excluded on purpose; they are pasted or
-served verbatim, not code. Run `npm run format` to fix and `npm run check` to
-check. The same check runs in CI and as a pre-commit hook on staged code
-files, so there is no need to memorize the rules; write ordinary modern
-JavaScript and let the formatter settle the rest.
+Biome formats and lints the code; `npm run format` fixes what `npm run check`
+reports.
 
 ## Skills
 
-Required reading before touching the matching content directory. Each one
-references `docs/agents/voice.md` rather than restating it, so read that file
-too when the work is prose.
+Required reading before editing what each row names. Each one has you read
+`docs/agents/voice.md` first.
 
 | Skill | Load before editing |
 |---|---|
-| `cs46x-activities` | `src/content/docs/activities/` |
-| `cs46x-guides` | `src/content/docs/guides/` |
-| `cs46x-assignments` | `src/content/docs/assignments/` |
+| `cs46x-activities` | `src/content/docs/activities/`, or an activity link on `introduction/schedule.mdx` |
+| `cs46x-guides` | `src/content/docs/guides/`, or a registry entry under `src/data/sources/` |
+| `cs46x-assignments` | `src/content/docs/assignments/`, a rubric CSV under `canvas/assignments/`, or a grade weight wherever it is stated |
 
 ## Git and pull requests
 
@@ -331,23 +243,27 @@ after the review loop.
 
 ### Issue tracker
 
-GitHub Issues on `adulbrich/cs-capstone-handbook`, via `gh`. See `docs/agents/issue-tracker.md`.
+GitHub Issues on `adulbrich/cs-capstone-handbook`. Before any `gh` command,
+read `docs/agents/issue-tracker.md`: `gh` runs outside the sandbox and takes
+bodies from a file.
 
 ### Triage labels
 
-The five canonical labels, unrenamed. See `docs/agents/triage-labels.md`.
+Before labeling or closing an issue, read `docs/agents/triage-labels.md`: the
+label each triage role maps to, and the priority labels every actionable
+issue carries.
 
 ### Code review
 
-Every pull request gets review rounds until one changes nothing:
-`mattpocock-skills:code-review` for Standards and Spec, a consistency axis
-when it changes an assignment page, a rubric, or a fact the canonical-homes
-table lists, and your own correctness read. `docs/agents/code-review.md` has
-the briefs, the bar, and the loop; the PR body records the rounds.
+Before opening or reviewing a pull request, read `docs/agents/code-review.md`:
+it sets the axes, the bar, and when the rounds stop.
 
 ### Domain docs
 
-Single-context: `CONTEXT.md` and `docs/adr/` at the repo root, created lazily by the domain-modeling skill for glossary terms and architecture decisions. See `docs/agents/domain.md`. Design records for course-design changes live in `docs/decisions/` (next section); the two do not overlap.
+Glossary terms go on `about/glossary.mdx`, each "Not:" list mirrored in
+`check-prose`'s `VOCABULARY`, never in `CONTEXT.md`. Every decision record, architecture included, goes in
+`docs/decisions/`, and there is no `docs/adr/`. Before a skill reads or writes
+`CONTEXT.md` or an ADR, read `docs/agents/domain.md`.
 
 ## Where decisions are recorded
 
@@ -361,14 +277,9 @@ Do not create running logs, change logs, or idea files at the root. If a fact is
 
 ## Writing voice
 
-The single home is `docs/agents/voice.md`. It names whose voice the handbook
-uses (the instructor's own writing, linked there) and covers person, the
-three kinds of claim and what verified evidence means, structure, the
-word-level rules, and the floor that holds in every register.
-
-Document voice is not chat voice. A maintainer's `CLAUDE.md` governs the
-terminal and is left alone; applying its compression rule to a handbook page
-is what produced the aphorism problem `docs/agents/voice.md` exists to correct.
+Before writing any text a student, partner, or mentor reads (a handbook page,
+a slide, a syllabus, a download, a rubric description), read
+`docs/agents/voice.md`.
 
 Students read these pages under deadline pressure, so length is a cost they
 pay. Pay it on the reason and the source, not on restating the point.

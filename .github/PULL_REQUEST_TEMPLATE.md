@@ -7,30 +7,36 @@ Closes #
 
 ## Ran locally
 
-<!-- Keep the lines that ran, delete the rest. Pre-push runs all of these. -->
+<!-- The command AGENTS.md, Validation, names. -->
 
-- `npm run build`, `npm run canvas:export -- --strict`
-- `npm run validate:outcomes`, `validate:activities`, `validate:downloads`, `validate:dashes`, `validate:dates`, `validate:sidebar`, `validate:sources`
-- `npm run check`, `check:prose`, `test:hooks`
+- `npx lefthook run pre-push --force`: exit 0
 
 ## Canvas mirror
 
-<!-- Graded work is authored here and exported to Canvas. If a rubric,
-     a weight or a syllabus changed, the CSV or HTML under canvas/
-     changed with it and someone has to re-import or re-paste. Keep one line. -->
+<!-- Graded work is authored here and exported to Canvas. A changed rubric
+     CSV is re-imported; a changed assignment body or syllabus is re-pasted
+     from npm run canvas:export. Keep one line. -->
 
-- CSV re-import needed: yes, for `canvas/assignments/<name>/...`
-- CSV re-import needed: no
+- Canvas: re-import `canvas/assignments/<name>/...`; re-paste `<entries>`
+- Canvas: none
 
 ## Review loop
 
-<!-- Review rounds until one changes nothing, as docs/agents/code-review.md
-     says. State the round count. Each answer the instructor gave and each
-     declined finding gets one line. -->
+<!-- As docs/agents/code-review.md sets out. Each answer the instructor gave
+     and each declined finding gets one line. -->
 
 - Rounds:
 - Decisions:
 - Declined:
+
+## Guide checks
+
+<!-- For a guide only (cs46x-guides, Before Finishing); delete otherwise.
+     The sources opened to check a paraphrase, and each concision cut with
+     its word saving, or "no cuts". -->
+
+- Sources opened:
+- Cuts:
 
 ## Docs
 

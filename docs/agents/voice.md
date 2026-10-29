@@ -184,7 +184,7 @@ have no citation duty, though they may link.
   Pulse", not "Midterm Pulse (5%)"). The number already lives where the page
   states it (frontmatter, the meta box, a table), and a copy in a heading
   drifts and breaks every inbound anchor when it changes. `check-prose` fails
-  a heading with `%` on a handbook page, a syllabus, or a download.
+  it.
 
 ## Sentences and words
 
@@ -215,8 +215,8 @@ have no citation duty, though they may link.
 ## The floor, in every register
 
 - No em dashes (hard rule 3). Use a colon, semicolon, comma, period, or
-  parentheses. `validate-dashes.mjs` fails the build on one, including the
-  `--` convention.
+  parentheses. `validate-dashes.mjs` fails the build on one. A `--` written
+  in its place is still a dash, and no check sees it.
 - Name the source on first mention. When a page introduces a tool, a
   standard, a model, or a named technique, link the authoritative reference.
 - Use the active voice: "the validator rejects the file", not "the file is
