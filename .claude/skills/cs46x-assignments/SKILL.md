@@ -245,7 +245,8 @@ required; `validate-outcomes.mjs` checks the order.
    assignment; a smaller true number always beats a bigger invented one."
 
    Only what an AI tool or a successor needs to work on the product goes in
-   the project repository: the living docs Repo Checkpoints lists (#302).
+   the project repository: the living docs Repo Checkpoints lists (#302),
+   and the decision records in `docs/rfcs/` or `docs/adr/`.
    Team documents (the charter, retrospectives, the handoff document) do
    not, and the page says where they live instead.
 

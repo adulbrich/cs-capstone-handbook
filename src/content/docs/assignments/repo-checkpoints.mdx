@@ -8,7 +8,6 @@ assignment:
   terms: [fall, winter]
   weight: 8
   outcomes:
-    SO1: 4
     SO2: 8
     SO5: 4
     SO6: 4
@@ -60,7 +59,7 @@ import rubric4Csv from '/canvas/assignments/repo-checkpoint/repo-checkpoint-4-ru
 
 <AssignmentSummary />
 
-Four times a year, in weeks 5 and 10 of fall and winter, the instruction team reviews your repository at a commit you name, and may leave feedback in it as issues or pull request comments. You submit one PDF of the repository's living docs, the seven documents listed below, at that commit, with a cover that names the commit and links your milestone's evidence. Graders check [continuous integration](https://martinfowler.com/articles/continuousIntegration.html) (CI), the history, and the milestone in the repository itself, so the documents must match the code.
+Four times a year, in weeks 5 and 10 of fall and winter, the instruction team reviews your repository at a commit you name, and may leave feedback in it as issues or pull request comments. You submit one PDF of the repository's living docs, the six documents listed below, at that commit, with a cover that names the commit and links your milestone's evidence. Graders check [continuous integration](https://martinfowler.com/articles/continuousIntegration.html) (CI), the history, and the milestone in the repository itself, so the documents must match the code.
 
 ## What You Produce
 
@@ -70,7 +69,7 @@ You produce the repository. The four subsections below are the criteria the rubr
 
 ### Docs Current and Consistent With the Code
 
-Five of the seven living docs, each describing the code at the named commit:
+Five of the six living docs, each describing the code at the named commit:
 
 - **`docs/requirements.md`**: the problem statement; functional and non-functional requirements, with an acceptance criterion wherever the behavior isn't obvious (a finished functional requirement can name its test in CI instead); the limits you did not choose, under Constraints; success metrics; non-goals; open questions. *Guide: [Requirements](/guides/requirements/).*
 - **`docs/design.md`**: the system as it exists, with its context, key diagrams, interfaces and contracts, the data model, the deployment shape, decisions deferred on purpose, and open technical questions. *Guide: [Technical design](/guides/technical-design/).*
@@ -80,12 +79,9 @@ Five of the seven living docs, each describing the code at the named commit:
 
 Graders compare one recent feature with `docs/design.md` and one document in the PDF with the same file at the commit, and read the Constraints section of `docs/requirements.md`.
 
-### Decision and Risk Hygiene
+### Risk Register
 
-The other two living docs:
-
-- **`docs/rfcs/` or `docs/adr/`**: one record per decision, as a request for comments (RFC) or an architecture decision record (ADR), with its outcome and what was rejected and why, linked from `docs/design.md` where it applies. A record still at status Proposed, such as a committed [RFC](/assignments/rfc/) draft, names the options it weighs instead. *Guide: [ADR](/guides/adr/).*
-- **`docs/risks.md`**: the one risk register, covering business, technical, and team risks, ranked, each with an owner, plus every external prerequisite (an approval, an account, a review, recruitment) with who asked for it and when, updated between checkpoints. Write each risk as a fact about the project, without blame; a problem between teammates goes to your Teaching Assistant (TA). *Guide: [Project Risks](/guides/risks/).*
+The sixth living doc, `docs/risks.md`, is the one risk register, covering business, technical, and team risks, ranked, each with an owner, plus every external prerequisite (an approval, an account, a review, recruitment) with who asked for it and when, updated between checkpoints. Write each risk as a fact about the project, without blame; a problem between teammates goes to your Teaching Assistant (TA). *Guide: [Project Risks](/guides/risks/).*
 
 Graders check first that `docs/risks.md` is the only register and that every risk in it has a rank and an owner.
 
@@ -131,7 +127,7 @@ If you start in an existing codebase (a predecessor team's, your partner's, or a
 - the upstream project's contribution rules, if there are any;
 - what you will change first.
 
-Put what the audit finds that the code depends on where the next person looks: constraints in `docs/requirements.md`; conventions and pitfalls in whichever living doc covers them, such as `CONTRIBUTING.md`, `docs/design.md`, or the AI context file; and a decision to keep or replace something in an ADR.
+Put what the audit finds that the code depends on where the next person looks: constraints in `docs/requirements.md`; conventions and pitfalls in whichever living doc covers them, such as `CONTRIBUTING.md`, `docs/design.md`, or the AI context file; and a decision to keep or replace something in `docs/design.md`.
 
 ### Repo Checkpoint 2: Hello, Production
 
@@ -167,7 +163,7 @@ Repo Checkpoint 1 records where your walking skeleton will run in week 10, and R
 
 ## What You Submit
 
-One PDF. Its cover is the one [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, plus the repository URL, the full hash of the commit you want graded, the links your milestone names, and, for any milestone item not yet met, who owns it and the date it will be met. Then come the seven living docs at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, each record in `docs/rfcs/` or `docs/adr/`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file; then any document your milestone names. Push that commit before you submit, so graders can reach it.
+One PDF. Its cover is the one [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, plus the repository URL, the full hash of the commit you want graded, the links your milestone names, and, for any milestone item not yet met, who owns it and the date it will be met. Then come the six living docs at that commit, rendered, in this order: `docs/requirements.md`, `docs/design.md`, `docs/risks.md`, `README.md`, `CONTRIBUTING.md`, and the AI context file; then any document your milestone names. Push that commit before you submit, so graders can reach it.
 
 :::note[If your project is under NDA]
 If your partner rules out read access for the instruction team, the checkpoint is a 15-minute screen-shared walkthrough of the repository at the named commit, in a slot your team and your TA schedule in the checkpoint week, separate from your sprint demo, graded on the same criteria. Submit the PDF [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda) where your partner permits, or the cover alone where it permits no copy. In the walkthrough the TA opens each link on your cover live, so a link a grader cannot open does not fail the milestone.
