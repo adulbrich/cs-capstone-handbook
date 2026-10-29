@@ -20,12 +20,6 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
-## Re-import Required: Milestone Met Names Its Items (#588)
-
-Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw. No body changes, so nothing to re-paste.
-
-- All four `repo-checkpoint/repo-checkpoint-{1,2,3,4}-rubric.csv`: Milestone met's Exceeds band names each milestone item with its evidence, in place of restating what each item asks for, which the checkpoint's milestone section on the page states once. Repo Checkpoint 1's band goes from 288 words to 97. The Meets and Does Not Meet bands, the NDA sentence on Repo Checkpoints 1, 2 and 4, points, and the `[SO2]` tag are unchanged. Delete the old rubric from the course's rubric list after each import if both are there.
-
 ## Re-import Required: Outcome Tags on the Partner Surveys (#514)
 
 Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year. Points, bands, and statements are unchanged, so nothing is re-pasted and no survey is regenerated: the generator reads criterion titles without their tags, and the `.qsf` it writes from these files is byte-identical to the one from the untagged files.
