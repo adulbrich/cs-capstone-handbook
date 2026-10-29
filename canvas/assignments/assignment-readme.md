@@ -20,6 +20,15 @@ Canvas now imports rubrics itself, from the Rubrics page of a course, using the 
 
 The sections below record each change as it was made. The ones from before the move name the old `.tsv` files, and any section can give a band or a count that a later one replaced (the Half contribution band), so read the current value from the CSV and the handbook page.
 
+## Re-import Required: Outcome Tags on the Partner Surveys (#514)
+
+Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year. Points, bands, and statements are unchanged, so nothing is re-pasted and no survey is regenerated: the generator reads criterion titles without their tags, and the `.qsf` it writes from these files is byte-identical to the one from the untagged files.
+
+- `project-partner-evaluation/partner-final-fall-rubric.csv`, `partner-final-winter-rubric.csv`, `partner-final-spring-rubric.csv`, on each term's End-of-Term Survey: Requirements and Specifications `[SO1]`, Design, Implementation, and Deployment `[SO2, SO6]`, Verification and Validation `[SO2]`, Teamwork `[SO5]`, Communication `[SO3]`. Reflection stays untagged.
+- `project-partner-evaluation/partner-pulse-rubric.csv`, on every term's Midterm Pulse: Responsiveness `[SO3]`, Professionalism `[SO3]`, Delivery quality `[SO2]`. Reflection stays untagged.
+
+The criterion names now end in their tags, so each may import as a second rubric: delete the old one from the course's rubric list after each import. The partner scorer matches the rubric-assessment export's columns with or without the tags.
+
 ## Re-import Required: Decision Records Out of the Repo Checkpoints (#582)
 
 Import each CSV before the entry it goes on opens; where that entry has already opened this fall, hold the import for next year, so students are graded on the rubric they saw. Re-paste each body on the same rule.
