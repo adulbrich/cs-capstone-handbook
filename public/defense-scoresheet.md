@@ -23,7 +23,7 @@ If a score comes out borderline, or a student's part of the session ran short, t
 ## 1. Ownership and delegation (SO2, SO4): ____ / 20
 
 - High (17-20): Presents work they demonstrably own end to end (authored or drove it, responded to review, merged it); claims match the repo record when spot-checked. Explains what was and was not handed to AI tools, the checks that made that reasonable (tests, CI, review gates, staging, rollback), and the specific points where they stopped to validate, each with a reason tied to what was hard to reverse (schema, authentication, deployment, data migration).
-- Middle (5-16): Claims match the repo record, but the student gives no account of what was or was not handed to AI tools, the checks are named only in general terms ("we had tests"), no specific point where they stopped to validate is named, or the reasons given for the delegation do not match the RFC, the decision record, or the sprint notes.
+- Middle (5-16): Claims match the repo record, but the student gives no account of what was or was not handed to AI tools, the checks are named only in general terms ("we had tests"), no specific point where they stopped to validate is named with a reason tied to what was hard to reverse, or the reasons given for the delegation do not match the RFC, the decision record, or the sprint notes.
 - Low (1-4): Cannot say what they authored, reviewed, or merged in the work presented, describes delegating a hard-to-reverse change with no checks and no validation, or makes claims about what they authored, reviewed, or merged that contradict the repo record.
 
 Notes: __________________________________________________________________
