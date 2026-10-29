@@ -15,9 +15,8 @@
  * Canvas, in the templates and scoresheet that quote the criteria, on the
  * slides, and, through `<RubricTable>`, on the pages. None of these run on
  * `--text` or `--stdin` (a PR body may discuss a banned word), and none run
- * on `docs/`, `AGENTS.md`, `.claude/skills/`, or
- * `canvas/assignments/assignment-readme.md`, which quote the patterns to
- * teach them or name the criteria a change renamed.
+ * on `docs/`, `AGENTS.md`, or `.claude/skills/`, which quote the patterns
+ * to teach them.
  *
  * The opener check is waived on a page containing the MDX comment in
  * `LEGACY_OPENER_MARKER` (below). The marker may sit anywhere in the file;
