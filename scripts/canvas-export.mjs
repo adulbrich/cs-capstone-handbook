@@ -229,6 +229,7 @@ const OVERRIDES = {
     o.dropSection("the-per-term-instrument", "team-sizes", "grade-calculation");
     o.dropBlock("The rubric is the calculation above");
   },
+  // The pulse keeps Instructor Review: it covers both partner surveys.
   "Midterm Pulse": (o) => {
     o.dropBlock("Fall and winter are progress-focused");
     o.dropBlock("The pulse has its own scale");
@@ -239,8 +240,7 @@ const OVERRIDES = {
       "design-implementation-and-deployment",
       "verification-and-validation",
       "teamwork",
-      "communication",
-      "individual-accountability"
+      "communication"
     );
   },
   // The CATME section, as under End-of-Term Survey above.

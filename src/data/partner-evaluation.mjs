@@ -39,7 +39,7 @@ export function pulseIntro({
   return [
     ...introHead,
     `It has ${statements} statements about how the team works with you, each rated from ${highest} down to ${lowest}, with a comment under each. It takes about five minutes. <b>Please submit it by \${e://Field/MidtermCloseDate}.</b>`,
-    `Your answers set ${pulseWeight}% of each student's grade this term. The end-of-term survey sets ${finalWeight}% and goes into more depth. This midterm check exists so the team hears from you while there is still time to change course.`,
+    `Your ratings are the starting point for ${pulseWeight}% of each student's grade this term. The end-of-term survey, the starting point for ${finalWeight}%, goes into more depth. The instructors read every response, and an instructor may ask you about a rating before the score stands. This midterm check exists so the team hears from you while there is still time to change course.`,
     `Any answer below ${highest} asks for one sentence on what would make it ${highest}.`,
     ...introTail(pageUrl, "statement"),
   ].join("<br><br>");
@@ -54,7 +54,7 @@ export function finalIntro({ between, facets, finalWeight, pageUrl }) {
   return [
     ...introHead,
     `It scores the team on ${facets} facets of its work with you this term, one page each. Each facet shows what it looks like and its written anchors; choose the anchor that fits the team. When the team sits between two anchors, choose the between answer, worth ${between.join("% or ")}% of the facet's points. <b>Please submit it by \${e://Field/FinalCloseDate}.</b>`,
-    `Your answers set ${finalWeight}% of each student's grade this term. Any answer below the top anchor asks for one sentence on what would make it the top anchor.`,
+    `Your ratings are the starting point for ${finalWeight}% of each student's grade this term. The instructors read every response, and an instructor may ask you about a rating before the score stands. Any answer below the top anchor asks for one sentence on what would make it the top anchor.`,
     ...introTail(pageUrl, "facet"),
   ].join("<br><br>");
 }
