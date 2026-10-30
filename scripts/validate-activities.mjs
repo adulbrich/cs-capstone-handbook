@@ -81,6 +81,7 @@ import {
   activityKey,
   buildActivityIndex,
   EFFORT_SCALE,
+  LEGEND_HEADING,
   slugify,
   tierOf,
   workshopEntries,
@@ -634,6 +635,48 @@ if (nonWorkshop < LIBRARY_CLAIM_MIN) {
   problems.push(
     `library count: the pages claim more than a hundred non-workshop activities but there are ${nonWorkshop}`
   );
+}
+
+// Every badge line's Prepares label links the legend by anchor, which the
+// build's link validator never sees, so the heading must stay exactly this.
+// The legend's example is an <ActivityMeta> naming another page's activity;
+// its effort and wholeTeam are a copy of that activity's own badge line and
+// must still match it.
+const legendSource = readFileSync(
+  join(ACTIVITIES_DIR, "introduction.mdx"),
+  "utf8"
+);
+if (!legendSource.split("\n").includes(`## ${LEGEND_HEADING}`)) {
+  problems.push(
+    `badge legend: activities/introduction.mdx has no "## ${LEGEND_HEADING}" heading, which every Prepares label links`
+  );
+}
+const metaProp = (tag, name) =>
+  tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? null;
+const metaFlag = (tag) => /\bwholeTeam\b/.test(tag);
+for (const [tag] of legendSource.matchAll(new RegExp(META_TAG_RE, "g"))) {
+  const key = activityKey(metaProp(tag, "page"), metaProp(tag, "anchor"));
+  const own = activities.get(key);
+  if (!own) {
+    problems.push(
+      `badge legend: the example ${tag} names ${key}, which is not an activity`
+    );
+    continue;
+  }
+  if (
+    metaProp(tag, "effort") !== own.effort ||
+    metaFlag(tag) !== metaFlag(own.tag)
+  ) {
+    problems.push(
+      `badge legend: the example ${tag} no longer matches ${activityLabel(own)}'s own badge line, ${own.tag}`
+    );
+  }
+  const caption = legendSource.match(/<BadgeLegend\b[^>]*\bactivity="([^"]*)"/);
+  if (caption?.[1] !== own.heading) {
+    problems.push(
+      `badge legend: <BadgeLegend activity="${caption?.[1]}"> should name the example's activity, "${own.heading}"`
+    );
+  }
 }
 
 console.log("Activity tiers:");
