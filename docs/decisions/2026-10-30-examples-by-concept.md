@@ -3,7 +3,7 @@
 Date: 2026-10-30
 Branch: `docs/608-examples-by-concept`
 Status: implemented in #608. Supersedes `2026-09-22-retiring-the-category.md` in full. The words that record retired stay retired, and `scripts/check-prose.mjs` still rejects them.
-Companion documents: `2026-09-21-outcome-type-ownership.md` (whose rule survives: the team and the partner agree what shipped means), `guides/shipping.mdx`, `assignments/definition-of-shipped.mdx`, `assignments/project-partner-evaluation.mdx`, the `cs46x-assignments` and `cs46x-activities` skills.
+Companion documents: `2026-09-21-outcome-type-ownership.md` (whose rule survives: the team and the partner agree what shipped means), `guides/shipping.mdx`, `assignments/definition-of-shipped.mdx`, `assignments/project-partner-evaluation.mdx`, the `cs46x-assignments`, `cs46x-activities`, and `cs46x-guides` skills.
 
 ## 1. Why
 

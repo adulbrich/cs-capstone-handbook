@@ -456,7 +456,10 @@ student without the tool. A guide never presents a tool as mandatory.
 
 Where a guide illustrates with someone's project, draw the examples from
 varied work and name the situation, never a kind of project
-(`docs/decisions/2026-10-30-examples-by-concept.md`):
+(`docs/decisions/2026-10-30-examples-by-concept.md`). A set of examples of
+where a project should be (a rung, an early phase) includes a slow start
+stated well and the way out: agree with the partner or mentor what fits.
+Two wording rules apply to every example:
 
 - "An open-source project you contribute to" is the case where maintainers
   decide what merges; a partner's own codebase is not that case.
