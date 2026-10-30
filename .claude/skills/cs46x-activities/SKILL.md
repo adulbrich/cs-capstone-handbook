@@ -88,7 +88,9 @@ badge line.** That is the definition the validator uses, and it is why the
 line is load-bearing rather than decorative. Page framing and closing prose
 also use `##`, so a heading count alone silently counts non-activities as
 activities. A section with no badge line is prose; a section with one is an
-activity and must satisfy everything below.
+activity and must satisfy everything below. `activities/introduction.mdx` is
+the exception: its legend holds an example `<ActivityMeta>`, and the validator
+does not read that page for activities.
 
 ### Explanation versus instrument
 
@@ -116,16 +118,19 @@ into an activity page.
 
 Every activity sits in one of three tiers. **The tier is computed, never
 written**: `src/lib/activity-links.mjs` reads it from the assignment pages,
-and the badge line shows it.
+and the badge line shows it. The tier names are internal: student pages
+explain the badges under "Reading the Badge Line" on
+`activities/introduction.mdx` and never call an activity Recommended or
+library.
 
 | Tier | Comes from | Badge line shows | Meaning |
 |---|---|---|---|
 | Workshop | a `### Workshop N:` section on `assignments/workshop-activities.mdx` naming the activity | `Workshop N, <term>`, linking that section | Everyone does it. Runs in class, graded complete/incomplete. |
-| Recommended | an assignment's "Activities That Prepare This" section linking the activity | `Prepares:`, then one badge per linking assignment, each linking that section | The cheapest route to a specific rubric criterion. |
+| Recommended | an assignment's "Activities That Prepare This" section linking the activity | on a second row, a `Prepares` label linking "Reading the Badge Line" on `activities/introduction.mdx`, then one badge per linking assignment, each linking that section | The cheapest route to a specific rubric criterion. |
 | Library | neither | no tier badge | Kept because it is good and some project will need it. Nobody is expected to do most of these. |
 
-A workshop that assignments also link shows both: the Workshop badge first,
-then Prepares, and it counts as Workshop.
+A workshop that assignments also link shows both: the Workshop badge on the
+first row, then Prepares on the row below, and it counts as Workshop.
 
 So **promoting or demoting an activity is an edit to an assignment page**,
 never to the activity. Add it to, or remove it from, that page's "Activities
@@ -152,6 +157,11 @@ after it; the standalone rule above; no outcome tags and no point values or
 percentages next to grading words, on activity and guide pages alike; and the
 "more than a hundred" figure on the index and the workshop page, which
 counts every activity other than the workshops (Recommended plus Library).
+It also checks the legend: `activities/introduction.mdx` keeps the exact
+heading `## Reading the Badge Line`, which every Prepares label links, and
+its one example `<ActivityMeta>` matches User Story Mapping's own badge line,
+with the `<BadgeLegend activity>` caption naming it. Changing that activity's
+`effort` or `wholeTeam` means editing the example in the same commit.
 What it does not check: heading case, whether `wholeTeam` is warranted, the
 effort clause in prose, the 400-word test, the opener rules, and the AI
 substitute rule. Those are still on you.
@@ -183,7 +193,7 @@ because renaming a heading breaks every inbound anchor. Never re-case an
 existing heading.
 
 **Badge line.** Always present, always immediately after the heading, always
-one blank line below it, one per activity. It takes three props, and only
+one blank line below it, one per activity. It takes four props, and only
 two of them are yours to judge:
 
 - `anchor` (required): the heading's slug, as Starlight derives it:
@@ -201,6 +211,9 @@ two of them are yours to judge:
   assessment that needs every member's view. It is not "a team activity":
   most team activities work with whoever shows up, and an individual activity
   carries no badge at all.
+- `page` (optional): the activity's page, for a badge line shown somewhere
+  else. Only the legend's example on `activities/introduction.mdx` sets it;
+  an activity page never does.
 
 The Workshop and Prepares badges are not props. The component computes them
 (see **Tiers**), so never write a `<Badge>` for audience or tier: the
