@@ -63,7 +63,7 @@ session. A reader who is not enrolled should be able to run any activity here.
 
 The direction of travel is one way. **Assignments link to activities**, in
 their "Activities That Prepare This" section, and that link is what puts a
-Prepares badge on the activity. An activity does not link back. What stays:
+Helps with badge on the activity. An activity does not link back. What stays:
 guide links, LinkCards, and external sources, which should grow rather than
 shrink.
 
@@ -126,11 +126,11 @@ library.
 | Tier | Comes from | Badge line shows | Meaning |
 |---|---|---|---|
 | Workshop | a `### Workshop N:` section on `assignments/workshop-activities.mdx` naming the activity | `Workshop N, <term>`, linking that section | Everyone does it. Runs in class, graded complete/incomplete. |
-| Recommended | an assignment's "Activities That Prepare This" section linking the activity | on a second row, a `Prepares` label linking "Reading the Badge Line" on `activities/introduction.mdx`, then one badge per linking assignment, each linking that section | The cheapest route to a specific rubric criterion. |
+| Recommended | an assignment's "Activities That Prepare This" section linking the activity | on a second row, a plain `Helps with` label, then one badge per linking assignment, each linking that section | The cheapest route to a specific rubric criterion. |
 | Library | neither | no tier badge | Kept because it is good and some project will need it. Nobody is expected to do most of these. |
 
 A workshop that assignments also link shows both: the Workshop badge on the
-first row, then Prepares on the row below, and it counts as Workshop.
+first row, then Helps with on the row below, and it counts as Workshop.
 
 So **promoting or demoting an activity is an edit to an assignment page**,
 never to the activity. Add it to, or remove it from, that page's "Activities
@@ -157,10 +157,9 @@ after it; the standalone rule above; no outcome tags and no point values or
 percentages next to grading words, on activity and guide pages alike; and the
 "more than a hundred" figure on the index and the workshop page, which
 counts every activity other than the workshops (Recommended plus Library).
-It also checks the legend: `activities/introduction.mdx` keeps the exact
-heading `## Reading the Badge Line`, which every Prepares label links, and
-its one example `<ActivityMeta>` matches User Story Mapping's own badge line,
-with the `<BadgeLegend activity>` caption naming it. Changing that activity's
+It also checks the legend on `activities/introduction.mdx`: its one example
+`<ActivityMeta>` matches User Story Mapping's own badge line, and the
+`<BadgeLegend activity>` caption names it. Changing that activity's
 `effort` or `wholeTeam` means editing the example in the same commit.
 What it does not check: heading case, whether `wholeTeam` is warranted, the
 effort clause in prose, the 400-word test, the opener rules, and the AI
@@ -215,7 +214,7 @@ two of them are yours to judge:
   else. Only the legend's example on `activities/introduction.mdx` sets it;
   an activity page never does.
 
-The Workshop and Prepares badges are not props. The component computes them
+The Workshop and Helps with badges are not props. The component computes them
 (see **Tiers**), so never write a `<Badge>` for audience or tier: the
 Individual, Team, Workshop, and Recommended badges are retired, and the
 validator fails on one.

@@ -120,9 +120,8 @@ text determines anchor slugs, so renaming a heading breaks every inbound
 `#anchor` link. Let the build tell you rather than guessing slugs. The links
 in an activity's generated badge line are the exception: a component renders
 them, so the build never sees them. `validate-activities.mjs` checks what they
-depend on instead: the exact "Activities That Prepare This" heading, unique
-workshop heading slugs, and the "Reading the Badge Line" heading on
-`activities/introduction.mdx`, which every Prepares label links.
+depend on instead: the exact "Activities That Prepare This" heading and unique
+workshop heading slugs.
 
 ## Outcomes, tiers, and weights
 

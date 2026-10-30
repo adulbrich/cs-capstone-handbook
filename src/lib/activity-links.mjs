@@ -47,17 +47,11 @@ export function slugify(heading) {
     .replace(/ /g, "-");
 }
 
-/** The anchor every Prepares badge links on its assignment page. */
+/** The anchor every Helps with badge links on its assignment page. */
 export const PREP_ANCHOR = slugify(PREP_HEADING);
 
 /** The page whose "Reading the Badge Line" section explains the badges. */
 export const LEGEND_PAGE_ID = "activities/introduction";
-
-/** The section on that page that every badge line's Prepares label links. */
-export const LEGEND_HEADING = "Reading the Badge Line";
-
-/** That section's anchor. */
-export const LEGEND_ANCHOR = slugify(LEGEND_HEADING);
 
 /** An activity's key: `page#anchor`, as `requirements#lean-canvas`. */
 export const activityKey = (page, anchor) => `${page}#${anchor}`;

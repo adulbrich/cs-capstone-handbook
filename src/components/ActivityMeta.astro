@@ -8,9 +8,9 @@ import { getCollection } from "astro:content";
  * fails without everyone present; `Effort: <value>`, on the fixed scale in
  * `src/lib/activity-links.mjs`; and a `Workshop N, <term>` badge linking the
  * activity's `### Workshop N:` section on the workshop page. The second says
- * what it serves: a `Prepares` label linking the badge legend on the
- * activities introduction, then one badge per assignment whose "Activities
- * That Prepare This" section links the activity, each linking that section.
+ * what it serves: a `Helps with` label, then one badge per assignment whose
+ * "Activities That Prepare This" section links the activity, each linking
+ * that section.
  * A row with nothing in it is left out, and an activity with nothing renders
  * nothing.
  *
@@ -25,13 +25,10 @@ import { getCollection } from "astro:content";
  * page when the line is shown somewhere else, as the legend's example is;
  * the validator checks that copy against the activity's own line.
  */
-import { Icon } from "@astrojs/starlight/components";
 import {
   activityKey,
   cachedActivityIndex,
   EFFORT_SCALE,
-  LEGEND_ANCHOR,
-  LEGEND_PAGE_ID,
   PREP_ANCHOR,
   WORKSHOP_PAGE_ID,
 } from "../lib/activity-links.mjs";
@@ -105,19 +102,12 @@ const hasCost = wholeTeam || effort || workshop;
       )}
       {prepares.length > 0 && (
         <div class="activity-meta__row">
-          <a
-            class="activity-meta__label"
-            href={`/${LEGEND_PAGE_ID}/#${LEGEND_ANCHOR}`}
-          >
-            Prepares
-            <span class="sr-only">: what the badges mean</span>
-            <Icon name="information" size="1em" />
-          </a>
+          <span class="activity-meta__label">Helps with</span>
           {prepares.map((a) => (
             <ActivityBadge
               href={`/${a.id}/#${PREP_ANCHOR}`}
               kind="prepares"
-              srPrefix="Prepares "
+              srPrefix="Helps with "
               text={a.title}
             />
           ))}
@@ -142,22 +132,8 @@ const hasCost = wholeTeam || effort || workshop;
   }
 
   .activity-meta__label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25em;
     margin-inline-end: 0.125rem;
     color: var(--sl-color-gray-2);
     font-size: var(--sl-text-sm);
-    text-decoration: underline dotted;
-    text-underline-offset: 0.2em;
-  }
-
-  .activity-meta__label:hover {
-    color: var(--sl-color-text-accent);
-  }
-
-  .activity-meta__label:focus-visible {
-    outline: 2px solid var(--sl-color-text-accent);
-    outline-offset: 2px;
   }
 </style>

@@ -81,7 +81,6 @@ import {
   activityKey,
   buildActivityIndex,
   EFFORT_SCALE,
-  LEGEND_HEADING,
   LEGEND_PAGE_ID,
   slugify,
   tierOf,
@@ -641,20 +640,14 @@ if (nonWorkshop < LIBRARY_CLAIM_MIN) {
   );
 }
 
-// Every badge line's Prepares label links the legend by anchor, which the
-// build's link validator never sees, so the heading must stay exactly this.
-// The legend's example is one <ActivityMeta> naming another page's activity;
-// its effort and wholeTeam are a copy of that activity's own badge line, and
-// the <BadgeLegend> caption names its heading, so both must still match it.
+// The badge legend's example is one <ActivityMeta> naming another page's
+// activity; its effort and wholeTeam are a copy of that activity's own badge
+// line, and the <BadgeLegend> caption names its heading, so both must still
+// match it.
 const legendSource = readFileSync(
   join("src/content/docs", `${LEGEND_PAGE_ID}.mdx`),
   "utf8"
 );
-if (!legendSource.split("\n").includes(`## ${LEGEND_HEADING}`)) {
-  problems.push(
-    `badge legend: ${LEGEND_PAGE_ID}.mdx has no "## ${LEGEND_HEADING}" heading, which every Prepares label links`
-  );
-}
 const examples = [...legendSource.matchAll(new RegExp(META_TAG_RE, "g"))];
 const caption = legendSource.match(/<BadgeLegend\b[^>]*>/)?.[0] ?? null;
 const hasWholeTeam = (tag) => /\bwholeTeam\b/.test(tag);
