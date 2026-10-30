@@ -18,6 +18,8 @@ Where students need an example, the examples illustrate the concept on that page
 - **A slow start, stated well.** Some projects can't move fast early: the partner asks for research and planning or design work first, or the data agreement, the IRB, or the partner's IT review sets the pace. One example shows a team saying plainly where it is and why.
 - **The way out.** If none of the examples fits, the team agrees with its partner or mentor what does, and records it where that page records things.
 
+An Examples table of activities is the exception: it carries only the way out, in its lead-in, because a slow start is a state of the work, not a choice of activity.
+
 Three wording rules apply to every example:
 
 - **Open source means open source.** An example that turns on maintainers deciding what merges says "an open-source project you contribute to". Contributing to the partner's own codebase is not that case, even in a public repository.
@@ -36,4 +38,4 @@ Retired: any table, heading, badge, or rubric text that enumerates projects by k
 
 ## 4. How it is enforced
 
-No lint rule. What the rule prevents is a structure that enumerates by kind of project, which no word list catches; review does, against the `cs46x-activities` and `cs46x-assignments` skills. Design records stay outside the checked paths, so this file can say what the old structure was.
+No lint rule. What the rule prevents is a structure that enumerates by kind of project, which no word list catches; review does, against the `cs46x-activities`, `cs46x-assignments`, and `cs46x-guides` skills. Design records stay outside the checked paths, so this file can say what the old structure was.

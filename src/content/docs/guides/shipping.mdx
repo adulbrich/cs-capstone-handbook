@@ -26,7 +26,7 @@ Early in a project, you and your project partner or mentor agree what "shipped" 
 
 The top rungs wait on processes you don't control: maintainer review, app store review, IRB approval and data access, a partner's IT security review, and recruiting users who owe you nothing. AI coding tools can speed up the work you control, but not someone else's queue. Choose the rung you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them.
 
-The four sections after the walking skeleton follow those processes, one each. Read every section your top rung depends on; a partner's app that runs a user study needs the IRB clock and the partner's IT review. If your rung waits on none of them, agree what it means with your partner or mentor and record it in the document where you and your partner record the rung.
+The four sections after the walking skeleton group those processes by whose action the rung waits on: maintainers, people using it, whoever reproduces the result, and the partner. Read every section your top rung depends on; a partner's app that runs a user study needs the IRB clock from [Getting Your Result Reproduced](#getting-your-result-reproduced) and the partner's IT review. If your rung waits on none of them, agree what it means with your partner or mentor and record it in the document where you and your partner record the rung.
 
 Each section's timeline runs in three phases: Early, Middle, and Late, each roughly a third of the project.
 
@@ -34,7 +34,7 @@ Each section's timeline runs in three phases: Early, Middle, and Late, each roug
 
 Deploy a **walking skeleton** in the early phase: the thinnest version of the system that runs end to end, where the real one will live. For a web app that's a production URL; for an installable build, a release on the channel your users will install from; for a pipeline, a run on sample data in the compute environment the real run will use; for a contribution to an open-source project, a first pull request through that project's CI. It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing, signing, compute quotas) while there's nothing to lose.
 
-A slow first month can still be going well. When the partner asked for research and planning before any build, it looks like that work delivered and reviewed, the approval filings in, a run on sample data, or a first contribution merged: little a user would notice, and every clock started.
+A slow first month can still be going well. When the partner asked for research and planning before any build, the skeleton comes with the first build, and a good early phase looks like that work delivered and reviewed, the approval filings in, a run on sample data, or a first contribution merged: little a user would notice, and every clock started.
 
 ## Getting a Contribution Merged Into an Open-Source Project
 
@@ -71,13 +71,15 @@ Collect as you go: links to merged and in-review pull requests, the review threa
 
 ## Getting People to Use It Without You
 
-Some top rungs wait on people outside the team choosing to use what you built, without you there and not as a favor: a study app students in other majors adopt, a game players find on a storefront, a tool hobbyists install from a release page, a web service a local club signs up for. Nobody owes you their time, so the rungs read, from the bottom: friends tried a deployed build; a dozen people outside the team, not friends or classmates asked as a favor, or a completed user study; two dozen; sustained use by tens of heavy or hundreds of light users. The jump from friends to a dozen people who owe you nothing is the hard one, because nobody can try software that isn't deployed.
+Some top rungs wait on people outside the team choosing to use what you built, without you there and not as a favor: a study app students in other majors adopt, a game players find on a storefront, a tool hobbyists install from a release page, a web service a local club signs up for. Nobody owes you their time, so the rungs read, from the bottom: friends tried a deployed build; a dozen people outside the team, not friends or classmates asked as a favor, or a completed user study; two dozen; sustained use by tens of heavy or hundreds of light users. The jump from friends to a dozen people who owe you nothing is the hard one, because those people find it only if it's public and stay only if it works without you on a call.
 
 Each rung has its own prerequisites:
 
 - **Friends tried it**: a deployed URL or an installable build. "Clone the repo and run it" doesn't count as trying what you built.
 - **A dozen people outside the team**: a production URL with a real domain and TLS, an onboarding flow someone gets through without you on a call, a recruitment channel (a subreddit, a Discord server, a campus group, an itch.io page), and telemetry so you can show they came.
 - **Two dozen, and beyond**: retention, which means fixing what the first dozen users hit, which means having had those users early enough to iterate.
+
+A user study involves human subjects, so it waits on IRB approval or an exempt determination before you recruit anyone; [Getting Your Result Reproduced](#getting-your-result-reproduced) covers that clock.
 
 If you distribute through an app store, its review is another clock. Apple states that on average [90% of submissions are reviewed in less than 24 hours](https://developer.apple.com/distribute/app-review/), but that's the clock on one round. A rejection sends you back to fix and resubmit, and Apple reports on the same page that over 40% of unresolved issues fall under guideline 2.1, App Completeness, which covers crashes, placeholder content, and incomplete information. Enrolling as an organization rather than an individual also needs a [D-U-N-S Number](https://developer.apple.com/help/account/membership/D-U-N-S/), which Apple says can take up to five business days to arrive from Dun & Bradstreet and up to two more business days to reach Apple.
 
@@ -109,11 +111,11 @@ Collect as you go: the production URL and its uptime history, dated analytics sc
 
 Some top rungs wait on someone who didn't build it getting your result again: a model a professor's lab wants to build on, an analysis a partner's group will rerun on next season's data, a benchmark a paper will report, a simulation another group extends. The aim is a result someone else can reproduce and, when it holds up, a paper. If you're considering graduate school, it's the work closest to what you'd do there, and a professor's research group, when there is one, gives you collaborators beyond your own team.
 
-Here the rungs read, from the bottom: a real-data run shown to your partner; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; someone who didn't build it, such as a graduate student in the lab, a peer, or another group, reproduced the result from the published artifact without your help, which is what a paper is for.
+Here the rungs read, from the bottom: your partner ran it once on real data; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; someone who didn't build it, such as a graduate student in the lab, a peer, or another group, reproduced the result from the published artifact without your help, which is what a paper is for.
 
 Each rung has its own prerequisites:
 
-- **A real-data run shown to your partner**: a pipeline that runs end to end on sample data before the real data arrives, so that when it does you're debugging the science instead of the plumbing; then the real dataset, which means data access agreements and possibly IRB approval, both of them clocks you don't control.
+- **Your partner ran it on real data**: a pipeline that runs end to end on sample data before the real data arrives, so that when it does you're debugging the science instead of the plumbing; then the real dataset, which means data access agreements and possibly IRB approval, both of them clocks you don't control.
 - **Your partner's group ran it**: instructions good enough for someone else to run the pipeline on their own machine, and time to fix what they find.
 - **Someone outside the team reran it**: the reproducible artifact described below, and a reproduced baseline to compare against.
 - **Reproduced from the published artifact**: the artifact published where that person can find it (with the paper, as a preprint, or in an archived repository), compute for larger runs, and enough calendar time to iterate after the first results disappoint you.

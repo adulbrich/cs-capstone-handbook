@@ -452,6 +452,19 @@ issue that measured it rather than trimming a working section to hit a number.
 Show the current industry baseline, and say what the substitute is for a
 student without the tool. A guide never presents a tool as mandatory.
 
+## Examples of Project Work
+
+Where a guide illustrates with someone's project, draw the examples from
+varied work and name the situation, never a kind of project
+(`docs/decisions/2026-10-30-examples-by-concept.md`):
+
+- "An open-source project you contribute to" is the case where maintainers
+  decide what merges; a partner's own codebase is not that case.
+- Say who ran or used it: "someone who didn't build it", "the partner's
+  staff", "a graduate student in the lab", "people outside the team".
+  "Stranger" stays only where it means untrusted, as in a pull request from
+  a stranger.
+
 ## Worked Examples
 
 The anchor pair is real: the same topic written both ways, in this repository
