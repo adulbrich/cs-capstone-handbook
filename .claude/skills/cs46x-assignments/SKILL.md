@@ -282,7 +282,7 @@ required; `validate-outcomes.mjs` checks the order.
    `## References` on a page that cites sources.
 
    This section drives the activity badges. Linking an activity here makes
-   it Recommended and adds a Prepares badge naming this page, linking back to
+   it Recommended and adds a Helps with badge naming this page, linking back to
    this section, to the activity's badge line (`<ActivityMeta>`, computed by
    `src/lib/activity-links.mjs` from the page's MDX); removing the link
    demotes it. So the section's heading stays exactly

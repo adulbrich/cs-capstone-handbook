@@ -1,0 +1,103 @@
+---
+/**
+ * BadgeLegend: the "Reading the Badge Line" legend on the activities
+ * introduction. A boxed example line, then one row per badge in the order
+ * `ActivityMeta.astro` renders them, each a sample badge beside the page's
+ * own words for it.
+ *
+ * Usage in MDX, with the example a real `<ActivityMeta>` for another page's
+ * activity and one named slot per row:
+ *
+ *   <BadgeLegend activity="User Story Mapping">
+ *     <ActivityMeta slot="example" page="requirements" anchor="user-story-mapping" effort="1 to 2 h" />
+ *     <Fragment slot="team">Only works with everyone there.</Fragment>
+ *     <Fragment slot="effort">...</Fragment>
+ *     <Fragment slot="workshop">...</Fragment>
+ *     <Fragment slot="prepares">...</Fragment>
+ *   </BadgeLegend>
+ *
+ * The sample badges are not links: they stand for every badge of their kind.
+ */
+import ActivityBadge from "./ActivityBadge.astro";
+
+interface Props {
+  /** The heading of the activity the example line belongs to. */
+  activity: string;
+}
+
+const { activity } = Astro.props;
+---
+
+<div class="badge-legend not-content">
+  <figure class="badge-legend__example">
+    <figcaption>For example, on {activity}</figcaption>
+    <slot name="example" />
+  </figure>
+  <dl class="badge-legend__rows">
+    <dt><ActivityBadge kind="team" text="Whole team" /></dt>
+    <dd><slot name="team" /></dd>
+    <dt><ActivityBadge kind="effort" text="Effort: 1 to 2 h" /></dt>
+    <dd><slot name="effort" /></dd>
+    <dt><ActivityBadge kind="workshop" text="Workshop 1, Fall" /></dt>
+    <dd><slot name="workshop" /></dd>
+    <dt>
+      <span class="badge-legend__label">Helps with</span>
+      <ActivityBadge kind="prepares" text="Team Charter" />
+    </dt>
+    <dd><slot name="prepares" /></dd>
+  </dl>
+</div>
+
+<style>
+  .badge-legend {
+    margin-block: 1rem;
+  }
+
+  .badge-legend__example {
+    margin: 0 0 1.25rem;
+    padding: 0.75rem 1rem;
+    border: 1px dashed var(--sl-color-gray-4);
+    border-radius: 0.5rem;
+  }
+
+  .badge-legend__example figcaption {
+    margin-bottom: 0.5rem;
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-sm);
+  }
+
+  .badge-legend__rows {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.875rem 1.5rem;
+    align-items: baseline;
+    margin: 0;
+  }
+
+  .badge-legend__rows dt {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .badge-legend__rows dd {
+    margin: 0;
+  }
+
+  .badge-legend__label {
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+  }
+
+  /* One column on a phone: each badge above its meaning. */
+  @media (max-width: 40rem) {
+    .badge-legend__rows {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .badge-legend__rows dd {
+      margin-bottom: 0.75rem;
+    }
+  }
+</style>

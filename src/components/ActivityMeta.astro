@@ -4,12 +4,15 @@ import { getCollection } from "astro:content";
  * ActivityMeta: the badge line under every activity heading, generated from
  * the assignment pages so it cannot drift from them.
  *
- * In order: `Whole team` when the activity fails without everyone present;
- * the effort, on the fixed scale in `src/lib/activity-links.mjs`; a
- * `Workshop N, <term>` badge linking the activity's `### Workshop N:` section
- * on the workshop page; then `Prepares:` and one badge per assignment whose
+ * Two rows. The first says what the activity costs: `Whole team` when it
+ * fails without everyone present; `Effort: <value>`, on the fixed scale in
+ * `src/lib/activity-links.mjs`; and a `Workshop N, <term>` badge linking the
+ * activity's `### Workshop N:` section on the workshop page. The second says
+ * what it serves: a `Helps with` label, then one badge per assignment whose
  * "Activities That Prepare This" section links the activity, each linking
- * that section. An activity with none of these renders nothing.
+ * that section.
+ * A row with nothing in it is left out, and an activity with nothing renders
+ * nothing.
  *
  * Usage in MDX, on the line after the blank line under the heading:
  *
@@ -18,12 +21,10 @@ import { getCollection } from "astro:content";
  *   <ActivityMeta anchor="lean-canvas" effort="30 min" wholeTeam />
  *
  * `anchor` is the heading's slug; `scripts/validate-activities.mjs` checks
- * it matches, and that `effort` is on the scale.
- *
- * Linked badges are Starlight's `Badge` inside an anchor, because `Badge`
- * takes no `href` and its styles are scoped to its own instances.
+ * it matches, and that `effort` is on the scale. `page` names the activity's
+ * page when the line is shown somewhere else, as the legend's example is;
+ * the validator checks that copy against the activity's own line.
  */
-import { Badge } from "@astrojs/starlight/components";
 import {
   activityKey,
   cachedActivityIndex,
@@ -31,21 +32,25 @@ import {
   PREP_ANCHOR,
   WORKSHOP_PAGE_ID,
 } from "../lib/activity-links.mjs";
+import ActivityBadge from "./ActivityBadge.astro";
 
 interface Props {
   /** The activity heading's anchor, as `lean-canvas`. */
   anchor: string;
   /** One value from the effort scale, as `30 min`. */
   effort?: string;
+  /** The activity's page, as `requirements`; defaults to the current one. */
+  page?: string;
   /** Set when the activity fails without the whole team present. */
   wholeTeam?: boolean;
 }
 
 const { anchor, effort, wholeTeam = false } = Astro.props;
 const { entry } = Astro.locals.starlightRoute;
+const page = Astro.props.page ?? entry.id.replace(/^activities\//, "");
 if (effort && !EFFORT_SCALE.includes(effort)) {
   throw new Error(
-    `ActivityMeta: ${entry.id}#${anchor} has effort "${effort}", which is not one of ${EFFORT_SCALE.join(", ")}`
+    `ActivityMeta: ${page}#${anchor} on ${entry.id} has effort "${effort}", which is not one of ${EFFORT_SCALE.join(", ")}`
   );
 }
 
@@ -70,34 +75,44 @@ interface Entry {
   prepares: { id: string; title: string }[];
   workshop: { n: number; slug: string; term: string } | null;
 }
-const page = entry.id.replace(/^activities\//, "");
 const found: Entry | undefined = index.get(activityKey(page, anchor));
 const prepares = found?.prepares ?? [];
 const workshop = found?.workshop ?? null;
 const term = workshop
   ? workshop.term[0].toUpperCase() + workshop.term.slice(1)
   : null;
-const hasAny = wholeTeam || effort || workshop || prepares.length > 0;
+const hasCost = wholeTeam || effort || workshop;
 ---
 
 {
-  hasAny && (
+  (hasCost || prepares.length > 0) && (
     <div class="activity-meta not-content">
-      {wholeTeam && <Badge text="Whole team" variant="note" />}
-      {effort && <Badge text={effort} variant="default" />}
-      {workshop && (
-        <a href={`/${WORKSHOP_PAGE_ID}/#${workshop.slug}`}>
-          <Badge text={`Workshop ${workshop.n}, ${term}`} variant="caution" />
-        </a>
+      {hasCost && (
+        <div class="activity-meta__row">
+          {wholeTeam && <ActivityBadge kind="team" text="Whole team" />}
+          {effort && <ActivityBadge kind="effort" text={`Effort: ${effort}`} />}
+          {workshop && (
+            <ActivityBadge
+              href={`/${WORKSHOP_PAGE_ID}/#${workshop.slug}`}
+              kind="workshop"
+              text={`Workshop ${workshop.n}, ${term}`}
+            />
+          )}
+        </div>
       )}
       {prepares.length > 0 && (
-        <span class="activity-meta__label">Prepares:</span>
+        <div class="activity-meta__row">
+          <span class="activity-meta__label">Helps with</span>
+          {prepares.map((a) => (
+            <ActivityBadge
+              href={`/${a.id}/#${PREP_ANCHOR}`}
+              kind="prepares"
+              srPrefix="Helps with "
+              text={a.title}
+            />
+          ))}
+        </div>
       )}
-      {prepares.map((a) => (
-        <a href={`/${a.id}/#${PREP_ANCHOR}`}>
-          <Badge text={a.title} variant="tip" />
-        </a>
-      ))}
     </div>
   )
 }
@@ -105,48 +120,20 @@ const hasAny = wholeTeam || effort || workshop || prepares.length > 0;
 <style>
   .activity-meta {
     display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .activity-meta__row {
+    display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.375rem;
   }
 
-  /* inline-flex shrinks the anchor to its badge. As a plain flex item it
-     takes the body line height, so a linked badge sat lower than an
-     unlinked one and made its row taller. */
-  .activity-meta a {
-    display: inline-flex;
-    border-radius: 0.25rem;
-    text-decoration: none;
-  }
-
-  .activity-meta a :global(.sl-badge) {
-    transition: background-color 0.15s;
-  }
-
-  /* Each variant sets its own bg and border colors on the badge, so mixing
-     the two tints every variant toward its border without naming a color.
-     At 35% the light-theme caution badge fell to 4.1:1 contrast; 20% keeps
-     every variant above 5:1 in both themes. */
-  .activity-meta a:hover :global(.sl-badge) {
-    background-color: color-mix(
-      in srgb,
-      var(--sl-color-bg-badge),
-      var(--sl-color-border-badge) 20%
-    );
-  }
-
-  .activity-meta a:focus-visible {
-    outline: 2px solid var(--sl-color-text-accent);
-    outline-offset: 2px;
-  }
-
   .activity-meta__label {
+    margin-inline-end: 0.125rem;
     color: var(--sl-color-gray-2);
     font-size: var(--sl-text-sm);
-    margin-inline-start: 0.25rem;
-  }
-
-  .activity-meta__label:first-child {
-    margin-inline-start: 0;
   }
 </style>

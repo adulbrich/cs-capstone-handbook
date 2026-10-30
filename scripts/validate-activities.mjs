@@ -81,6 +81,7 @@ import {
   activityKey,
   buildActivityIndex,
   EFFORT_SCALE,
+  LEGEND_PAGE_ID,
   slugify,
   tierOf,
   workshopEntries,
@@ -103,6 +104,9 @@ const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
 // second blank line or an MDX comment is still found and reported.
 const BADGE_WINDOW_LINES = 4;
 const META_TAG_RE = /<ActivityMeta\b[^>]*>/;
+// One attribute of a badge-line tag, or null when it is absent.
+const metaAttr = (tag, name) =>
+  tag?.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? null;
 // The badges the badge line replaced. One left on an activity page is a
 // hand-written second copy of what the component computes.
 const RETIRED_BADGE_RE =
@@ -136,8 +140,8 @@ function readSection(page, lines, i) {
   const body = bodyLines.join("\n");
   const tag = badgeWindow.match(META_TAG_RE)?.[0] ?? null;
   return {
-    anchor: tag?.match(/\banchor="([^"]*)"/)?.[1] ?? null,
-    effort: tag?.match(/\beffort="([^"]*)"/)?.[1] ?? null,
+    anchor: metaAttr(tag, "anchor"),
+    effort: metaAttr(tag, "effort"),
     hasOutput: /^A good output/m.test(body),
     heading,
     // One badge line, on the line after the blank line after the heading.
@@ -633,6 +637,46 @@ for (const page of LIBRARY_CLAIM_PAGES) {
 if (nonWorkshop < LIBRARY_CLAIM_MIN) {
   problems.push(
     `library count: the pages claim more than a hundred non-workshop activities but there are ${nonWorkshop}`
+  );
+}
+
+// The badge legend's example is one <ActivityMeta> naming another page's
+// activity; its effort and wholeTeam are a copy of that activity's own badge
+// line, and the <BadgeLegend> caption names its heading, so both must still
+// match it.
+const legendSource = readFileSync(
+  join("src/content/docs", `${LEGEND_PAGE_ID}.mdx`),
+  "utf8"
+);
+const examples = [...legendSource.matchAll(new RegExp(META_TAG_RE, "g"))];
+const caption = legendSource.match(/<BadgeLegend\b[^>]*>/)?.[0] ?? null;
+const hasWholeTeam = (tag) => /\bwholeTeam\b/.test(tag);
+if (examples.length === 1) {
+  const [tag] = examples[0];
+  const key = activityKey(metaAttr(tag, "page"), metaAttr(tag, "anchor"));
+  const own = activities.get(key);
+  if (own) {
+    if (
+      metaAttr(tag, "effort") !== own.effort ||
+      hasWholeTeam(tag) !== hasWholeTeam(own.tag)
+    ) {
+      problems.push(
+        `badge legend: the example ${tag} no longer matches ${activityLabel(own)}'s own badge line, ${own.tag}`
+      );
+    }
+    if (metaAttr(caption, "activity") !== own.heading) {
+      problems.push(
+        `badge legend: ${caption ?? "a missing <BadgeLegend> tag"} should name the example's activity, "${own.heading}"`
+      );
+    }
+  } else {
+    problems.push(
+      `badge legend: the example ${tag} names ${key}, which is not an activity`
+    );
+  }
+} else {
+  problems.push(
+    `badge legend: ${LEGEND_PAGE_ID}.mdx has ${examples.length} example <ActivityMeta> lines; the legend shows exactly one`
   );
 }
 
