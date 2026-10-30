@@ -163,9 +163,9 @@ Treat every sprint demo as a test of whether you built the right thing. When the
 Testing with human participants as part of a research study usually needs ethics review, called an IRB (institutional review board) in the United States, before the first session. Ask whoever supervises the research early, because review takes weeks you don't control; [Complete an IRB Application](/activities/planning-and-risk/#complete-an-irb-application) walks through the filing.
 :::
 
-## Testing Research Projects
+## Testing Results, Not Just Code
 
-In a research project, the question a test answers is whether the results are reproducible and trustworthy. The [Shipping guide](/guides/shipping/#research) covers what reproducible means and why you reproduce the baseline before attempting anything new. Two checks are testing work:
+When the work produces a result, the question a test answers is whether the result is reproducible and trustworthy. The [Shipping guide](/guides/shipping/#research) covers what reproducible means and why you reproduce the baseline before attempting anything new. Two checks are testing work:
 
 - Validate the input data. Check that it meets the expected formats, ranges, and distributions before processing, because a pipeline that silently drops malformed records or produces NaN without warning produces results nobody can trust.
 - Sanity-check the outputs. After a model trains or an analysis runs, verify that the outputs fall in the expected range. Treat a model that suddenly reports 99.9% accuracy as a data-leakage bug until you've ruled it out, because test data leaking into training makes a model look far better than it is.
