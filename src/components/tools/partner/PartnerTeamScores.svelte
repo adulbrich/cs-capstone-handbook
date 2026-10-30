@@ -25,6 +25,8 @@ const uid = $props.id();
  */
 let open = $state(null);
 let draft = $state(null);
+/** The comment box, which Reset puts focus on. */
+let commentBox;
 
 const cellId = (t, c) => `${uid}-cell-${t}-${c}`;
 const editorId = `${uid}-editor`;
@@ -236,7 +238,9 @@ function closeOnEscape(event) {
       <dt>{text.answer}</dt>
       {@render answer(cell.answered, entry.responded)}
     </dl>
-    <form onsubmit={save}>
+    <!-- The draft is checked here (invalid), so a value left in the points
+         field never blocks keeping the answer. -->
+    <form novalidate onsubmit={save}>
       <fieldset class="choices">
         <legend>{text.score.legend}</legend>
         <label class="option">
@@ -306,6 +310,7 @@ function closeOnEscape(event) {
             {id}
             aria-describedby={describedby}
             rows="3"
+            bind:this={commentBox}
             value={draft.comment}
             oninput={(event) => (draft.comment = event.currentTarget.value)}
           ></textarea>
@@ -315,7 +320,11 @@ function closeOnEscape(event) {
         <Button
           variant="link"
           disabled={draft.comment.trim() === cell.answered.comment}
-          onclick={() => (draft.comment = cell.answered.comment)}
+          onclick={() => {
+            // The button disables itself, so focus moves to the comment.
+            draft.comment = cell.answered.comment;
+            commentBox.focus();
+          }}
         >
           {text.comment.reset(entry.responded)}
         </Button>
