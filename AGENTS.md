@@ -23,7 +23,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `src/decks/`, `src/pages/decks/` | The slide decks. Before editing one, read `docs/agents/decks.md`. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. Before adding or editing an entry, load the `cs46x-guides` skill (Citing Evidence). |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, that its `assignment.canvas` entries reconcile (hard rule 6), and that each entry's `late` rule fits its submission. |
-| `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. |
+| `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line and its legend, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. |
 | `scripts/lib/` | Shared by the scripts: the content-tree walker and its text extensions, and the frontmatter reader, which returns the body as well as the block. The outcome-tag pattern is `OUTCOME_TAG` in `src/lib/rubric-csv.mjs`, since the site's rubric parser reads it too. |
 | `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the instructor tools' pure modules (roster parsing, contact lists, `.qsf` generation) on invented fixtures, never `data/`. |
@@ -120,8 +120,9 @@ text determines anchor slugs, so renaming a heading breaks every inbound
 `#anchor` link. Let the build tell you rather than guessing slugs. The links
 in an activity's generated badge line are the exception: a component renders
 them, so the build never sees them. `validate-activities.mjs` checks what they
-depend on instead: the exact "Activities That Prepare This" heading and unique
-workshop heading slugs.
+depend on instead: the exact "Activities That Prepare This" heading, unique
+workshop heading slugs, and the "Reading the Badge Line" heading on
+`activities/introduction.mdx`, which every Prepares label links.
 
 ## Outcomes, tiers, and weights
 

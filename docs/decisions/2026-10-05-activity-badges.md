@@ -3,7 +3,7 @@
 Date: 2026-10-05
 Branch: `feat/415-generated-activity-badges`
 Status: implemented in #415, the first sub-issue of #121. The effort backfill, the regroup into twelve pages, and the activity merges follow as separate sub-issues.
-Status: presentation revised in #597. The line is two rows, Whole team, effort, and Workshop, then Prepares; the effort reads `Effort: <value>`; each badge kind has one color (Workshop green, Prepares blue, the other two neutral); Whole team, the effort, and Workshop carry an icon; badges use the body font; and the `Prepares` label links "Reading the Badge Line" on `activities/introduction.mdx`, which replaced its "Three Tiers" section. Which badges appear, and how they are computed, are unchanged.
+Status: presentation revised in #597. The line is two rows, Whole team, effort, and Workshop, then Prepares; the effort reads `Effort: <value>`; each badge kind has one color (Workshop green, Prepares blue, the other two neutral); Whole team, the effort, and Workshop carry an icon; badges use the body font, drawn by `ActivityBadge.astro` rather than Starlight's `Badge`, which takes no icon; and the `Prepares` label links "Reading the Badge Line" on `activities/introduction.mdx`, which replaced its "Three Tiers" section. Which badges appear, and how they are computed, are unchanged.
 Companion documents: `AGENTS.md` ("Outcomes, tiers, and weights"), `.claude/skills/cs46x-activities/SKILL.md` (Tiers, the badge line), `.claude/skills/cs46x-assignments/SKILL.md` (the "Activities That Prepare This" section), `src/lib/activity-links.mjs`, `src/components/ActivityMeta.astro`, `src/components/ActivityBadge.astro`, `src/components/BadgeLegend.astro`, `scripts/validate-activities.mjs`.
 
 ## 1. Why

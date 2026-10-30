@@ -13,8 +13,12 @@
  * text in the light theme as the site's `.who-tag` has.
  *
  * With `href` the pill is the link. `srPrefix` is text only a screen reader
- * gets, placed before the visible text, so a Prepares link announces itself
- * as one rather than as a link to the assignment.
+ * gets, placed before the visible text, so a screen reader hears "Prepares
+ * Team Charter", not a bare assignment name.
+ *
+ * The clock and arrow are Starlight's `Icon`. It has no people or
+ * mortarboard icon, so those two are Lucide's `users` and `graduation-cap`
+ * (ISC license), drawn in its stroke style.
  */
 import { Icon } from "@astrojs/starlight/components";
 
@@ -31,22 +35,23 @@ interface Props {
 
 const { href, kind, srPrefix, text } = Astro.props;
 const Tag = href ? "a" : "span";
+const lucide = {
+  "aria-hidden": "true",
+  fill: "none",
+  height: "1em",
+  stroke: "currentColor",
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  viewBox: "0 0 24 24",
+  width: "1em",
+} as const;
 ---
 
 <Tag class:list={["activity-badge", `activity-badge--${kind}`]} href={href}>
   {
     kind === "team" && (
-      <svg
-        aria-hidden="true"
-        fill="none"
-        height="1em"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-        width="1em"
-      >
+      <svg {...lucide}>
         <circle cx="9" cy="7" r="4" />
         <path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2" />
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
@@ -57,17 +62,7 @@ const Tag = href ? "a" : "span";
   {kind === "effort" && <Icon name="clock" size="1em" />}
   {
     kind === "workshop" && (
-      <svg
-        aria-hidden="true"
-        fill="none"
-        height="1em"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-        width="1em"
-      >
+      <svg {...lucide}>
         <path d="M22 10 12 5 2 10l10 5 10-5Z" />
         <path d="M6 12v5c3 3 9 3 12 0v-5" />
         <path d="M22 10v6" />

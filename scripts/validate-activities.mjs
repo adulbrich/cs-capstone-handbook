@@ -82,6 +82,7 @@ import {
   buildActivityIndex,
   EFFORT_SCALE,
   LEGEND_HEADING,
+  LEGEND_PAGE_ID,
   slugify,
   tierOf,
   workshopEntries,
@@ -104,6 +105,9 @@ const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
 // second blank line or an MDX comment is still found and reported.
 const BADGE_WINDOW_LINES = 4;
 const META_TAG_RE = /<ActivityMeta\b[^>]*>/;
+// One attribute of a badge-line tag, or null when it is absent.
+const metaAttr = (tag, name) =>
+  tag?.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? null;
 // The badges the badge line replaced. One left on an activity page is a
 // hand-written second copy of what the component computes.
 const RETIRED_BADGE_RE =
@@ -137,8 +141,8 @@ function readSection(page, lines, i) {
   const body = bodyLines.join("\n");
   const tag = badgeWindow.match(META_TAG_RE)?.[0] ?? null;
   return {
-    anchor: tag?.match(/\banchor="([^"]*)"/)?.[1] ?? null,
-    effort: tag?.match(/\beffort="([^"]*)"/)?.[1] ?? null,
+    anchor: metaAttr(tag, "anchor"),
+    effort: metaAttr(tag, "effort"),
     hasOutput: /^A good output/m.test(body),
     heading,
     // One badge line, on the line after the blank line after the heading.
@@ -639,44 +643,48 @@ if (nonWorkshop < LIBRARY_CLAIM_MIN) {
 
 // Every badge line's Prepares label links the legend by anchor, which the
 // build's link validator never sees, so the heading must stay exactly this.
-// The legend's example is an <ActivityMeta> naming another page's activity;
-// its effort and wholeTeam are a copy of that activity's own badge line and
-// must still match it.
+// The legend's example is one <ActivityMeta> naming another page's activity;
+// its effort and wholeTeam are a copy of that activity's own badge line, and
+// the <BadgeLegend> caption names its heading, so both must still match it.
 const legendSource = readFileSync(
-  join(ACTIVITIES_DIR, "introduction.mdx"),
+  join("src/content/docs", `${LEGEND_PAGE_ID}.mdx`),
   "utf8"
 );
 if (!legendSource.split("\n").includes(`## ${LEGEND_HEADING}`)) {
   problems.push(
-    `badge legend: activities/introduction.mdx has no "## ${LEGEND_HEADING}" heading, which every Prepares label links`
+    `badge legend: ${LEGEND_PAGE_ID}.mdx has no "## ${LEGEND_HEADING}" heading, which every Prepares label links`
   );
 }
-const metaProp = (tag, name) =>
-  tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? null;
+const examples = [...legendSource.matchAll(new RegExp(META_TAG_RE, "g"))];
+const caption = legendSource.match(/<BadgeLegend\b[^>]*>/)?.[0] ?? null;
 const metaFlag = (tag) => /\bwholeTeam\b/.test(tag);
-for (const [tag] of legendSource.matchAll(new RegExp(META_TAG_RE, "g"))) {
-  const key = activityKey(metaProp(tag, "page"), metaProp(tag, "anchor"));
+if (examples.length === 1) {
+  const [tag] = examples[0];
+  const key = activityKey(metaAttr(tag, "page"), metaAttr(tag, "anchor"));
   const own = activities.get(key);
-  if (!own) {
+  if (own) {
+    if (
+      metaAttr(tag, "effort") !== own.effort ||
+      metaFlag(tag) !== metaFlag(own.tag)
+    ) {
+      problems.push(
+        `badge legend: the example ${tag} no longer matches ${activityLabel(own)}'s own badge line, ${own.tag}`
+      );
+    }
+    if (metaAttr(caption, "activity") !== own.heading) {
+      problems.push(
+        `badge legend: ${caption} should name the example's activity, "${own.heading}"`
+      );
+    }
+  } else {
     problems.push(
       `badge legend: the example ${tag} names ${key}, which is not an activity`
     );
-    continue;
   }
-  if (
-    metaProp(tag, "effort") !== own.effort ||
-    metaFlag(tag) !== metaFlag(own.tag)
-  ) {
-    problems.push(
-      `badge legend: the example ${tag} no longer matches ${activityLabel(own)}'s own badge line, ${own.tag}`
-    );
-  }
-  const caption = legendSource.match(/<BadgeLegend\b[^>]*\bactivity="([^"]*)"/);
-  if (caption?.[1] !== own.heading) {
-    problems.push(
-      `badge legend: <BadgeLegend activity="${caption?.[1]}"> should name the example's activity, "${own.heading}"`
-    );
-  }
+} else {
+  problems.push(
+    `badge legend: ${LEGEND_PAGE_ID}.mdx has ${examples.length} example <ActivityMeta> lines; the legend shows exactly one`
+  );
 }
 
 console.log("Activity tiers:");
