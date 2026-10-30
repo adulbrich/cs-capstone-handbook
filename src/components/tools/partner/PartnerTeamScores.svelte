@@ -5,20 +5,24 @@
 // comment the team reads, and the team note. `teams` is scorePartnerSurvey's
 // `teams`, `criteria` the survey rubric's criteria in the same order.
 // `onsave(team, criterion, edit, note)` writes one cell's edit (null removes
-// it) and the team note; `onrevert(team, criterion)` removes the cell's edit.
-// Every string comes from scoreText.teams.
+// it) and the team note. What an edit holds is editOf's rule, in
+// partner-scoring.mjs. Every string comes from scoreText.teams.
 import { tick } from "svelte";
 import { scoreText } from "../../../data/partner-tools.mjs";
+import { editOf, pointsFit } from "../../../lib/tools/partner-scoring.mjs";
 import { descending, ratingFor } from "../../../lib/tools/rubric-bands.mjs";
 import Button from "../ui/Button.svelte";
 import Field from "../ui/Field.svelte";
 
 const text = scoreText.teams;
 
-let { criteria, onrevert, onsave, teams } = $props();
+let { criteria, onsave, teams } = $props();
 const uid = $props.id();
 
-/** The open cell, `{ team, index }`, and the editor's draft of it. */
+/**
+ * The open cell, `{ team, teamIndex, criterionIndex }`, and the editor's
+ * draft of it.
+ */
 let open = $state(null);
 let draft = $state(null);
 
@@ -28,8 +32,8 @@ const editorId = `${uid}-editor`;
 const openEntry = $derived(
   open ? teams.find((entry) => entry.team === open.team) : null
 );
-const openCell = $derived(openEntry?.cells[open.index] ?? null);
-const openCriterion = $derived(open ? criteria[open.index] : null);
+const openCell = $derived(openEntry?.cells[open.criterionIndex] ?? null);
+const openCriterion = $derived(open ? criteria[open.criterionIndex] : null);
 const others = $derived(
   openCriterion && openCell
     ? descending(openCriterion).filter(
@@ -46,11 +50,7 @@ const draftPoints = $derived.by(() => {
   if (draft.choice === "custom") {
     const value =
       draft.custom.trim() === "" ? Number.NaN : Number(draft.custom);
-    return Number.isFinite(value) &&
-      value >= 0 &&
-      value <= openCriterion.maxPoints
-      ? value
-      : Number.NaN;
+    return pointsFit(openCriterion, value) ? value : Number.NaN;
   }
   return others.find((r) => r.name === draft.choice)?.points ?? Number.NaN;
 });
@@ -80,17 +80,17 @@ async function focus(id) {
 
 function toggle(t, c) {
   const entry = teams[t];
-  if (open?.team === entry.team && open.index === c) {
+  if (open?.team === entry.team && open.criterionIndex === c) {
     close();
     return;
   }
-  open = { index: c, team: entry.team, teamIndex: t };
+  open = { criterionIndex: c, team: entry.team, teamIndex: t };
   draft = draftOf(entry, entry.cells[c], criteria[c]);
   focus(`${editorId}-title`);
 }
 
 function close() {
-  const back = open && cellId(open.teamIndex, open.index);
+  const back = open && cellId(open.teamIndex, open.criterionIndex);
   open = null;
   draft = null;
   if (back) {
@@ -98,33 +98,23 @@ function close() {
   }
 }
 
-/**
- * Saves the draft: points and a comment equal to the answer's are kept as
- * null. A cell that changes nothing has no edit, unless it is a neutral
- * answer, whose kept edit is the reviewed mark.
- */
+/** Saves the draft as editOf says, with the team note. */
 function save(event) {
   event.preventDefault();
   if (invalid) {
     return;
   }
-  const { answered, criterion, neutral } = openCell;
-  const points =
-    draftPoints === null || draftPoints === answered.points
-      ? null
-      : draftPoints;
-  const said = draft.comment.trim();
-  const comment = said === answered.comment ? null : said;
-  const edit =
-    points === null && comment === null && !neutral
-      ? null
-      : { against: answered, comment, points };
-  onsave(open.team, criterion, edit, draft.note.trim());
+  const edit = editOf(openCell, {
+    comment: draft.comment.trim(),
+    points: draftPoints,
+  });
+  onsave(open.team, openCell.criterion, edit, draft.note.trim());
   close();
 }
 
+/** Returns the cell to the answer as given; the team note stays. */
 function revert() {
-  onrevert(open.team, openCell.criterion);
+  onsave(open.team, openCell.criterion, null, openEntry.note);
   close();
 }
 
@@ -155,7 +145,8 @@ function closeOnEscape(event) {
           <tr>
             <th scope="row">{entry.team}</th>
             {#each entry.cells as cell, c (cell.criterion)}
-              {@const expanded = open?.team === entry.team && open.index === c}
+              {@const expanded =
+                open?.team === entry.team && open.criterionIndex === c}
               <td class={{ review: cell.review }}>
                 <button
                   type="button"
@@ -215,13 +206,13 @@ function closeOnEscape(event) {
   </div>
 </div>
 
-{#snippet answer(score, comment, responded)}
+{#snippet answer(score, responded)}
   <dd>
     {#if !responded}{text.noResponse}{/if}
     {text.scoreLine(score)}
   </dd>
   <dt>{text.partnerComment}</dt>
-  <dd class="said">{comment || text.noComment}</dd>
+  <dd class="said">{score.comment || text.noComment}</dd>
 {/snippet}
 
 {#snippet editor(entry, cell, criterion)}
@@ -238,12 +229,12 @@ function closeOnEscape(event) {
       <p class="changed">{text.changed}</p>
       <dl>
         <dt>{text.against}</dt>
-        {@render answer(cell.against, cell.against.comment, true)}
+        {@render answer(cell.against, true)}
       </dl>
     {/if}
     <dl>
       <dt>{text.answer}</dt>
-      {@render answer(cell.answered, cell.answered.comment, entry.responded)}
+      {@render answer(cell.answered, entry.responded)}
     </dl>
     <form onsubmit={save}>
       <fieldset class="choices">
@@ -290,8 +281,10 @@ function closeOnEscape(event) {
               : `${editorId}-points-help`}
             aria-invalid={pointsError}
             value={draft.custom}
-            onfocus={() => (draft.choice = "custom")}
-            oninput={(event) => (draft.custom = event.currentTarget.value)}
+            oninput={(event) => {
+              draft.custom = event.currentTarget.value;
+              draft.choice = "custom";
+            }}
           />
         </div>
         <p class="help" id="{editorId}-points-help">

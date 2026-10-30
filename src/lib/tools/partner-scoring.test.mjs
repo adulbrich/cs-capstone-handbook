@@ -7,10 +7,13 @@ import { parseCsv, toCsv } from "./csv.mjs";
 import {
   aLowerBound,
   detectSurvey,
+  editOf,
   neutralRating,
   noResponseScore,
+  pointsFit,
   scorePartnerSurvey,
   teamComment,
+  withEdit,
 } from "./partner-scoring.mjs";
 import { percentOf } from "./points.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
@@ -641,6 +644,7 @@ test("a neutral pulse answer is flagged for review until it is kept", () => {
   );
   // A team with no response scores no answer, so nothing there is neutral.
   assert.deepEqual(flagged, ["Engines: Delivery quality"]);
+  assert.deepEqual(before.teamCounts, { edited: 0, notes: 0, review: 1 });
 
   const kept = run(NEUTRAL_EXPORT, {
     overrides: { Engines: { cells: { "Delivery quality": edit(delivery) } } },
@@ -660,7 +664,7 @@ test("with no edits the rubric assessment is byte-for-byte what it was", () => {
     csvOf(run(NEUTRAL_EXPORT, { overrides: { Engines: { note: "  " } } })),
     plain
   );
-  assert.deepEqual(run(NEUTRAL_EXPORT).edited, [[], [], [], [], []]);
+  assert.deepEqual(run(NEUTRAL_EXPORT).editedColumns, [[], [], [], [], []]);
 });
 
 test("an edit's points are named by the rating at or below them, down to 0", () => {
@@ -700,7 +704,7 @@ test("an edit's points are named by the rating at or below them, down to 0", () 
   const [header] = parseCsv(EXPORT);
   const pointsAt = header.indexOf("Delivery quality - Points");
   const ratingAt = header.indexOf("Delivery quality - Rating");
-  assert.deepEqual(result.edited, [
+  assert.deepEqual(result.editedColumns, [
     [ratingAt, pointsAt],
     [ratingAt, pointsAt],
     [],
@@ -728,6 +732,10 @@ test("an edit no input scores is listed, not applied", () => {
     { criterion: "Teamwork", reason: "criterion", team: "Engines" },
     { criterion: null, reason: "team", team: "Looms" },
   ]);
+  // Every reason has its wording.
+  for (const entry of result.unapplied) {
+    assert.doesNotMatch(scoreText.teams.unapplied.line(entry), /undefined/);
+  }
   assert.equal(csvOf(result), csvOf(before));
   assert.equal(cellOf(result, "Engines", "Delivery quality").review, true);
 });
@@ -774,7 +782,7 @@ test("the team note goes first, labeled, in every criterion's Comments cell", ()
   const comments = EXPORT_CRITERIA.map((name) =>
     header.indexOf(`${name} - Comments`)
   );
-  assert.deepEqual(result.edited[0].toSorted(), comments.toSorted());
+  assert.deepEqual(result.editedColumns[0].toSorted(), comments.toSorted());
 
   // An emptied comment with no note clears the cell, as an empty answer does.
   const cleared = run(NEUTRAL_EXPORT, {
@@ -829,4 +837,57 @@ test("an edit made against another answer applies, flagged again, and shows both
   assert.equal(late.final.points, 25);
   // Its answer and its edit agree on the points, so nothing is edited.
   assert.equal(late.edited, false);
+});
+
+test("the editor saves only what changes; a kept neutral answer is the reviewed mark", () => {
+  const before = run(NEUTRAL_EXPORT);
+  const neutral = cellOf(before, "Engines", "Delivery quality");
+  const plain = cellOf(before, "Engines", "Responsiveness");
+  const said = (cell) => cell.answered.comment;
+
+  assert.deepEqual(editOf(neutral, { comment: said(neutral), points: null }), {
+    against: neutral.answered,
+    comment: null,
+    points: null,
+  });
+  assert.equal(editOf(plain, { comment: said(plain), points: null }), null);
+  // Points or a comment equal to the answer's are kept as null.
+  assert.equal(editOf(plain, { comment: said(plain), points: 25 }), null);
+  assert.deepEqual(editOf(plain, { comment: "", points: 22.5 }), {
+    against: plain.answered,
+    comment: "",
+    points: 22.5,
+  });
+
+  const delivery = criterion("pulse", "Delivery quality");
+  assert.equal(pointsFit(delivery, 0), true);
+  assert.equal(pointsFit(delivery, 25), true);
+  assert.equal(pointsFit(delivery, 25.5), false);
+  assert.equal(pointsFit(delivery, -1), false);
+  assert.equal(pointsFit(delivery, Number.NaN), false);
+});
+
+test("an edit is saved under its team and criterion; an empty team is dropped", () => {
+  const kept = { against: {}, comment: null, points: null };
+  const one = withEdit(
+    {},
+    { criterion: "Reflection", edit: kept, note: "", team: "Engines" }
+  );
+  assert.deepEqual(one, { Engines: { cells: { Reflection: kept }, note: "" } });
+  const noted = withEdit(one, {
+    criterion: "Reflection",
+    edit: null,
+    note: "A note.",
+    team: "Engines",
+  });
+  assert.deepEqual(noted, { Engines: { cells: {}, note: "A note." } });
+  assert.deepEqual(
+    withEdit(noted, {
+      criterion: "Reflection",
+      edit: null,
+      note: "",
+      team: "Engines",
+    }),
+    {}
+  );
 });

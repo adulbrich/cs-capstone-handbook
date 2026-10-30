@@ -357,6 +357,46 @@ function concernRows(responses, concerns, tags) {
 /** Whether two scores are the same answer: the points and the comment. */
 const sameAnswer = (a, b) => a.points === b.points && a.comment === b.comment;
 
+/** Whether `points` is a score `criterion` can take: 0 to its maximum. */
+export const pointsFit = (criterion, points) =>
+  Number.isFinite(points) && points >= 0 && points <= criterion.maxPoints;
+
+/**
+ * The edit the Team scores step saves for one `cell` (teamCell): the
+ * `points` and `comment` the instructor left, each null where it is the
+ * answer's (`points` null keeps the answer's). Null when it changes
+ * nothing, unless the cell is a neutral answer, whose kept edit is the
+ * reviewed mark.
+ */
+export function editOf(cell, { comment, points }) {
+  const { answered, neutral } = cell;
+  const edit = {
+    against: answered,
+    comment: comment === answered.comment ? null : comment,
+    points: points === null || points === answered.points ? null : points,
+  };
+  return edit.comment === null && edit.points === null && !neutral
+    ? null
+    : edit;
+}
+
+/**
+ * One survey's overrides with one cell's `edit` set (null removes it) and
+ * its team's `note`. A team left with no edit and no note is dropped.
+ */
+export function withEdit(overrides, { criterion, edit, note, team }) {
+  const cells = { ...overrides[team]?.cells };
+  if (edit) {
+    cells[criterion] = edit;
+  } else {
+    delete cells[criterion];
+  }
+  const { [team]: _, ...rest } = overrides;
+  return Object.keys(cells).length > 0 || note !== ""
+    ? { ...rest, [team]: { cells, note } }
+    : rest;
+}
+
 /**
  * The overrides the current inputs can apply, as a Map from team to `{
  * cells, note }`, and `unapplied`, each one they cannot: `{ team, criterion,
@@ -381,14 +421,7 @@ function sortOverrides(overrides, teams, questions) {
       const { points } = edit;
       if (!criterion) {
         unapplied.push({ criterion: title, reason: "criterion", team });
-      } else if (
-        points !== null &&
-        !(
-          Number.isFinite(points) &&
-          points >= 0 &&
-          points <= criterion.maxPoints
-        )
-      ) {
+      } else if (points !== null && !pointsFit(criterion, points)) {
         unapplied.push({ criterion: title, reason: "points", team });
       } else {
         kept[title] = edit;
@@ -460,10 +493,12 @@ function byTeam(responses) {
  *
  * Returns `{ duplicates, pending, compare, ... }`. While any duplicate team
  * has no valid choice, `pending` is true and nothing is scored. Otherwise it
- * also returns `rows` (the rubric export's rows, filled), `edited` (for each
- * row, the columns an override changed), `teams` (each scored team by name:
- * `{ team, responded, note, total, cells }`, `cells` from teamCell, in rubric
- * order), `unapplied` (sortOverrides), `concerns`, and `report`. Throws on
+ * also returns `rows` (the rubric export's rows, filled), `editedColumns`
+ * (for each row, the columns an override changed), `teams` (each scored
+ * team by name: `{ team, responded, note, total, cells }`, `cells` from
+ * teamCell, in rubric order), `teamCounts` (the cells to `review`, the cells
+ * `edited`, and the team `notes`), `unapplied` (sortOverrides), `concerns`,
+ * and `report`. Throws on
  * anything that must stop the run: a mismatched rubric
  * export, a missing question, an answer the survey does not offer, a
  * custom-scale share out of range, a Term that names another term.
@@ -616,14 +651,20 @@ export function scorePartnerSurvey({
     };
   });
   const teamsByName = new Map(teams.map((entry) => [entry.team, entry]));
+  const allCells = teams.flatMap((entry) => entry.cells);
+  const teamCounts = {
+    edited: allCells.filter((cell) => cell.edited).length,
+    notes: teams.filter((entry) => entry.note !== "").length,
+    review: allCells.filter((cell) => cell.review).length,
+  };
 
   const studentsById = new Map(roster.map((s) => [s.canvasUserId, s]));
   const noTeam = [];
-  const edited = [];
+  const editedColumns = [];
   const rows = rubricExport.students.map((student) => {
     const cells = [...student.cells];
     const changed = [];
-    edited.push(changed);
+    editedColumns.push(changed);
     const team = studentsById.get(student.id)?.team ?? "";
     if (!rosterTeams.has(team)) {
       noTeam.push({
@@ -661,7 +702,7 @@ export function scorePartnerSurvey({
     compare,
     concerns: concernRows(responses, concerns, concernTags),
     duplicates,
-    edited,
+    editedColumns,
     pending,
     report: {
       blankTerm: blankTerm.map((r) => ({
@@ -681,6 +722,7 @@ export function scorePartnerSurvey({
         .map((r) => ({ responseId: r.ResponseId, team: r.Team })),
     },
     rows,
+    teamCounts,
     teams,
     unapplied,
   };

@@ -20,6 +20,7 @@ import {
   SURVEY_ORDER,
   SURVEYS,
   scorePartnerSurvey,
+  withEdit,
 } from "../../../lib/tools/partner-scoring.mjs";
 import { criteriaTable } from "../../../lib/tools/peer-score-tables.mjs";
 import { parseQualtricsExport } from "../../../lib/tools/qualtrics-export.mjs";
@@ -122,15 +123,9 @@ const outcome = $derived(
 const result = $derived(outcome?.value ?? null);
 const scored = $derived(result && !result.pending ? result : null);
 
-/** The Team scores step's counts, over every scored cell. */
-const counts = $derived.by(() => {
-  const cells = scored?.teams.flatMap((entry) => entry.cells) ?? [];
-  return {
-    edited: cells.filter((cell) => cell.edited).length,
-    notes: scored?.teams.filter((entry) => entry.note !== "").length ?? 0,
-    review: cells.filter((cell) => cell.review).length,
-  };
-});
+const counts = $derived(
+  scored?.teamCounts ?? { edited: 0, notes: 0, review: 0 }
+);
 
 const gradesCsv = $derived(
   scored ? rubricExportCsv(rubricExport.value.value.header, scored.rows) : ""
@@ -188,28 +183,17 @@ function takeExport(file) {
 
 const pickSurvey = (value) => picks.set({ choices: {}, survey: value || null });
 
-/**
- * Writes one cell's edit (null removes it) and the team note for the
- * survey scored. A team with no edit and no note is dropped.
- */
-function saveEdit(team, criterion, edit, note) {
-  const byTeam = edits.value[survey] ?? {};
-  const cells = { ...byTeam[team]?.cells };
-  if (edit) {
-    cells[criterion] = edit;
-  } else {
-    delete cells[criterion];
-  }
-  const { [team]: _, ...rest } = byTeam;
-  const kept =
-    Object.keys(cells).length > 0 || note !== ""
-      ? { ...rest, [team]: { cells, note } }
-      : rest;
-  edits.set({ ...edits.value, [survey]: kept });
-}
-
-const revertEdit = (team, criterion) =>
-  saveEdit(team, criterion, null, edits.value[survey]?.[team]?.note ?? "");
+/** Writes one cell's edit (null removes it) and the team note (withEdit). */
+const saveEdit = (team, criterion, edit, note) =>
+  edits.set({
+    ...edits.value,
+    [survey]: withEdit(edits.value[survey] ?? {}, {
+      criterion,
+      edit,
+      note,
+      team,
+    }),
+  });
 
 const pickResponse = (team, responseId) =>
   picks.set({
@@ -403,7 +387,7 @@ const pickResponse = (team, responseId) =>
     summary={summaries.teams}
   >
     {#snippet source()}
-      <p>{text.teams.what}</p>
+      <p>{text.teams.what(SURVEYS.pulse.neutral)}</p>
     {/snippet}
     {#snippet preview()}
       {#if scored}
@@ -421,7 +405,6 @@ const pickResponse = (team, responseId) =>
           criteria={rubric.criteria}
           teams={scored.teams}
           onsave={saveEdit}
-          onrevert={revertEdit}
         />
       {/if}
     {/snippet}
@@ -444,7 +427,7 @@ const pickResponse = (team, responseId) =>
         <DataPreview
           title={text.grades.preview}
           table={tableFromCsv(gradesCsv)}
-          marked={(row, column) => scored.edited[row].includes(column)}
+          marked={(row, column) => scored.editedColumns[row].includes(column)}
           markLabel={text.grades.edited}
         />
       {/if}
