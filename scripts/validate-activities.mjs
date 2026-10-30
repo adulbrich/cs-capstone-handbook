@@ -657,7 +657,7 @@ if (!legendSource.split("\n").includes(`## ${LEGEND_HEADING}`)) {
 }
 const examples = [...legendSource.matchAll(new RegExp(META_TAG_RE, "g"))];
 const caption = legendSource.match(/<BadgeLegend\b[^>]*>/)?.[0] ?? null;
-const metaFlag = (tag) => /\bwholeTeam\b/.test(tag);
+const hasWholeTeam = (tag) => /\bwholeTeam\b/.test(tag);
 if (examples.length === 1) {
   const [tag] = examples[0];
   const key = activityKey(metaAttr(tag, "page"), metaAttr(tag, "anchor"));
@@ -665,7 +665,7 @@ if (examples.length === 1) {
   if (own) {
     if (
       metaAttr(tag, "effort") !== own.effort ||
-      metaFlag(tag) !== metaFlag(own.tag)
+      hasWholeTeam(tag) !== hasWholeTeam(own.tag)
     ) {
       problems.push(
         `badge legend: the example ${tag} no longer matches ${activityLabel(own)}'s own badge line, ${own.tag}`
@@ -673,7 +673,7 @@ if (examples.length === 1) {
     }
     if (metaAttr(caption, "activity") !== own.heading) {
       problems.push(
-        `badge legend: ${caption} should name the example's activity, "${own.heading}"`
+        `badge legend: ${caption ?? "a missing <BadgeLegend> tag"} should name the example's activity, "${own.heading}"`
       );
     }
   } else {

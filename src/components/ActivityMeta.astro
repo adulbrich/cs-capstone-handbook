@@ -50,9 +50,10 @@ interface Props {
 
 const { anchor, effort, wholeTeam = false } = Astro.props;
 const { entry } = Astro.locals.starlightRoute;
+const page = Astro.props.page ?? entry.id.replace(/^activities\//, "");
 if (effort && !EFFORT_SCALE.includes(effort)) {
   throw new Error(
-    `ActivityMeta: ${entry.id}#${anchor} has effort "${effort}", which is not one of ${EFFORT_SCALE.join(", ")}`
+    `ActivityMeta: ${page}#${anchor} on ${entry.id} has effort "${effort}", which is not one of ${EFFORT_SCALE.join(", ")}`
   );
 }
 
@@ -77,7 +78,6 @@ interface Entry {
   prepares: { id: string; title: string }[];
   workshop: { n: number; slug: string; term: string } | null;
 }
-const page = Astro.props.page ?? entry.id.replace(/^activities\//, "");
 const found: Entry | undefined = index.get(activityKey(page, anchor));
 const prepares = found?.prepares ?? [];
 const workshop = found?.workshop ?? null;
