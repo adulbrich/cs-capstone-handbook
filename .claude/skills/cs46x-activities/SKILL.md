@@ -270,25 +270,36 @@ and assignment pages link to activities by anchor. So:
 
 ## Different Projects Need Different Preparation
 
-**FOSS**, **Research**, **Consultancy** and **New Product or Game** are the
-paths projects have most often taken (see `/guides/shipping/`), and plenty of
-projects look like none of them.
+Projects differ in what they wait on: an existing codebase, maintainers who
+decide what merges, human participants, another institution's data, a
+partner's environment, users nobody has found yet. Name the **trigger**, the
+situation that makes an activity matter ("if you need human participants",
+"if you contribute to an open-source project"), never a kind of project. The
+design is `docs/decisions/2026-10-30-examples-by-concept.md`.
 
-**Never name a category.** The words "outcome type", "project type" and
-"project category" are retired, and `check-prose` rejects all three under the
-content paths. Refer to the four by name, as examples, or say what the
-project is.
+- **Examples illustrate the concept** on the page (what a metric counts, what
+  a committed result reads like), drawn from varied work, and a project may
+  match several or none. Every set includes a slow start stated well (the
+  partner asked for research and planning first, or an approval sets the
+  pace) and the way out: agree with your partner or mentor what fits.
+- **Open source means open source.** "An open-source project you contribute
+  to" is the case where maintainers decide what merges. The partner's own
+  codebase is not that case, even in a public repository.
+- **Say who.** Where an activity needs someone outside the team, name them:
+  a graduate student in the lab, a peer, the partner's staff, someone who
+  didn't build it.
+- **No tool names, weeks, or dates** in an example whose concept doesn't need
+  them.
 
-Assignment pages offer activity options in an **Examples** table whose first
-column reads "If your project is", because an activity that is central for a
-new product is often meaningless for a team contributing upstream to someone
-else's repository.
+The words "outcome type", "project type" and "project category" are retired,
+and `check-prose` rejects all three under the content paths.
 
-When an activity is materially specific to one kind of project, say so in the
-opening sentences rather than adding a badge for it. When an activity is
-general, do not raise the question at all. Do not write an activity that
-silently assumes one: "deploy your app" is unwritable for a FOSS team and "get
-a PR merged upstream" is unwritable for a greenfield product.
+When an activity is materially specific to one situation, say so in the
+opening sentences as a trigger rather than adding a badge for it. When an
+activity is general, do not raise the question at all. Write every activity
+so it holds whatever the team produces: "deploy your app" is unwritable when
+the output is a result, and "get a PR merged upstream" is unwritable for a
+system built from scratch.
 
 ## Page-Level Structure
 

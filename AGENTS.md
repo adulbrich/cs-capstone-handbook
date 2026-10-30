@@ -176,7 +176,7 @@ Current canonical homes:
 | How work is submitted: one PDF, every author named on the cover | `assignments/introduction.mdx` |
 | Each entry's late rule | `late` in frontmatter, wording in `src/lib/canvas-entries.mjs` |
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
-| The four example paths up the ladder, and that a project may match none | `guides/shipping.mdx` |
+| The external clocks behind the top rungs, and that a project may depend on several or none | `guides/shipping.mdx` |
 | What shipped means for a project, agreed with the partner and recorded | `assignments/definition-of-shipped.mdx` |
 | The inherited-codebase audit and what it covers | `assignments/repo-checkpoints.mdx` |
 | What each project-repository document holds, except `CONTRIBUTING.md` | `assignments/repo-checkpoints.mdx` |
