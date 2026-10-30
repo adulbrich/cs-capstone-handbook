@@ -7,9 +7,12 @@
 // scored by the same choice list the generator wrote into the survey
 // (partner-facets.mjs), so a label and its points have one source. A
 // criterion's comment boxes (#535) go into its Comments cell, verbatim, for
-// every student on the team. The caller loads those files; this module is
-// pure, so node --test and the browser run the same code.
+// every student on the team. The instructor's edits by team and criterion
+// (#611) are applied to the team's scores before any row is filled. The
+// caller loads those files; this module is pure, so node --test and the
+// browser run the same code.
 
+import { scoreText } from "../../data/partner-tools.mjs";
 import { facetOffer, facetTag, isLadder } from "./partner-facets.mjs";
 import {
   CONCERN_TAGS,
@@ -17,7 +20,7 @@ import {
   TERM_FIELD,
 } from "./partner-survey-qsf.mjs";
 import { percentOf } from "./points.mjs";
-import { bandFor, descending } from "./rubric-bands.mjs";
+import { bandFor, descending, ratingFor } from "./rubric-bands.mjs";
 import { fillCriterion, matchRubricExport, nameKey } from "./rubric-export.mjs";
 import { finalSurvey, TERMS } from "./term-label.mjs";
 
@@ -31,7 +34,8 @@ const CONCERNS = {
  * The four surveys. `rubric` names the rubric CSV each one scores against;
  * `question` finds one criterion's question in the export (pulseQuestion or
  * facetQuestion). An end-of-term survey also names its `term`, which a
- * response's Term must not contradict.
+ * response's Term must not contradict; the pulse names its `neutral` answer
+ * (neutralRating).
  */
 export const SURVEYS = {
   ...Object.fromEntries(
@@ -48,6 +52,7 @@ export const SURVEYS = {
   ),
   pulse: {
     concerns: CONCERNS,
+    neutral: "Neither agree nor disagree",
     question: pulseQuestion,
     rubric: "pulse",
     title: "Midterm Pulse",
@@ -78,6 +83,49 @@ export function aLowerBound(gradingText) {
 export function noResponseScore(criterion, aBound) {
   const points = percentOf(criterion.maxPoints, aBound);
   return { points, rating: bandFor(criterion, points).name };
+}
+
+/**
+ * The rating a partner picks to say neither yes nor no, which the Team
+ * scores step flags for review: the pulse's `neutral`, or null for an
+ * end-of-term survey, whose anchors, between choices, and ladder rungs have
+ * none. Throws when a criterion of `rubric` lacks it, so a renamed rating
+ * stops the run instead of flagging nothing.
+ */
+export function neutralRating(survey, rubric) {
+  const { neutral = null } = SURVEYS[survey];
+  if (neutral === null) {
+    return null;
+  }
+  const missing = rubric.criteria
+    .filter((criterion) => !criterion.ratings.some((r) => r.name === neutral))
+    .map((criterion) => criterion.title);
+  if (missing.length > 0) {
+    throw new Error(
+      `${missing.join(", ")} has no "${neutral}" rating, the answer the Team scores step flags for review. If the ${rubric.name} rubric renamed it, rename SURVEYS.pulse.neutral to match.`
+    );
+  }
+  return neutral;
+}
+
+/**
+ * A criterion's Comments cell: the instruction team's note for the whole
+ * team first, then the criterion's comment, each part labeled and a blank
+ * one left out. With no note it is the comment as it was, so a cell reads as
+ * it did before the note existed.
+ */
+export function teamComment(note, comment) {
+  const said = (note ?? "").trim();
+  if (said === "") {
+    return comment;
+  }
+  const { labels } = scoreText.teams;
+  return [
+    `${labels.note}: ${said}`,
+    comment ? `${labels.comment}: ${comment}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 /** Whether the export has a column with this export tag. */
@@ -306,6 +354,88 @@ function concernRows(responses, concerns, tags) {
   return { header, rows };
 }
 
+/** Whether two scores are the same answer: the points and the comment. */
+const sameAnswer = (a, b) => a.points === b.points && a.comment === b.comment;
+
+/**
+ * The overrides the current inputs can apply, as a Map from team to `{
+ * cells, note }`, and `unapplied`, each one they cannot: `{ team, criterion,
+ * reason }`, `reason` "team" for a team not scored (`criterion` null),
+ * "criterion" for one not in the rubric, "points" for points outside 0 to
+ * the criterion's maximum.
+ */
+function sortOverrides(overrides, teams, questions) {
+  const criteria = new Map(
+    questions.map(({ criterion }) => [criterion.title, criterion])
+  );
+  const applied = new Map();
+  const unapplied = [];
+  for (const [team, { cells = {}, note = "" }] of Object.entries(overrides)) {
+    if (!teams.has(team)) {
+      unapplied.push({ criterion: null, reason: "team", team });
+      continue;
+    }
+    const kept = {};
+    for (const [title, edit] of Object.entries(cells)) {
+      const criterion = criteria.get(title);
+      const { points } = edit;
+      if (!criterion) {
+        unapplied.push({ criterion: title, reason: "criterion", team });
+      } else if (
+        points !== null &&
+        !(
+          Number.isFinite(points) &&
+          points >= 0 &&
+          points <= criterion.maxPoints
+        )
+      ) {
+        unapplied.push({ criterion: title, reason: "points", team });
+      } else {
+        kept[title] = edit;
+      }
+    }
+    applied.set(team, { cells: kept, note });
+  }
+  return { applied, unapplied };
+}
+
+/**
+ * One criterion of one team: the `answered` score (`{ points, rating,
+ * comment }`), the `final` score once `edit` is applied, and its review
+ * state. `edit` is null or `{ against, points, comment }`: `against` the
+ * answer it was made against, `points` and `comment` null where it keeps
+ * the answer's. An edit's points are named by ratingFor, so points below
+ * the lowest rating take its name. A cell needs `review` when it is a
+ * `neutral` answer with no edit, or `stale`: its edit was made against
+ * another answer. The edit still applies.
+ */
+function teamCell(criterion, answered, edit, neutral) {
+  const points = edit?.points ?? answered.points;
+  const final = {
+    comment: edit?.comment ?? answered.comment,
+    points,
+    rating:
+      points === answered.points
+        ? answered.rating
+        : ratingFor(criterion, points),
+  };
+  const stale = edit !== null && !sameAnswer(edit.against, answered);
+  const isNeutral = neutral !== null && answered.rating === neutral;
+  return {
+    against: edit?.against ?? null,
+    answered,
+    criterion: criterion.title,
+    edited: !sameAnswer(final, answered),
+    final,
+    neutral: isNeutral,
+    review: stale || (isNeutral && edit === null),
+    reviewed: edit !== null && !stale,
+    stale,
+  };
+}
+
+const byName = new Intl.Collator("en", { numeric: true });
+
 /** Groups responses by team, in file order. */
 function byTeam(responses) {
   const teams = new Map();
@@ -324,12 +454,17 @@ function byTeam(responses) {
  * parseRubricExport, `qualtrics` from parseQualtricsExport, `rubric` from
  * parseRubricCsv, `aBound` from aLowerBound, and, for an end-of-term survey,
  * `between`, the between-anchor shares (pageRules in partner-facets.mjs). `choices` maps a team to
- * the ResponseId that counts when the team sent more than one.
+ * the ResponseId that counts when the team sent more than one. `overrides`
+ * holds the instructor's edits: `{ [team]: { note, cells: { [criterion
+ * title]: edit } } }`, `note` the team note and `edit` as teamCell takes it.
  *
  * Returns `{ duplicates, pending, compare, ... }`. While any duplicate team
  * has no valid choice, `pending` is true and nothing is scored. Otherwise it
- * also returns `rows` (the rubric export's rows, filled), `concerns`, and
- * `report`. Throws on anything that must stop the run: a mismatched rubric
+ * also returns `rows` (the rubric export's rows, filled), `edited` (for each
+ * row, the columns an override changed), `teams` (each scored team by name:
+ * `{ team, responded, note, total, cells }`, `cells` from teamCell, in rubric
+ * order), `unapplied` (sortOverrides), `concerns`, and `report`. Throws on
+ * anything that must stop the run: a mismatched rubric
  * export, a missing question, an answer the survey does not offer, a
  * custom-scale share out of range, a Term that names another term.
  */
@@ -337,6 +472,7 @@ export function scorePartnerSurvey({
   aBound,
   between,
   choices = {},
+  overrides = {},
   qualtrics,
   roster,
   rubric,
@@ -453,10 +589,41 @@ export function scorePartnerSurvey({
     );
   }
 
+  const neutral = neutralRating(survey, rubric);
+  const { applied, unapplied } = sortOverrides(
+    overrides,
+    teamScores,
+    questions
+  );
+  const teams = [...teamScores.keys()].sort(byName.compare).map((team) => {
+    const { cells = {}, note = "" } = applied.get(team) ?? {};
+    const responded = responsesByTeam.has(team);
+    const scored = questions.map(({ criterion }, i) =>
+      teamCell(
+        criterion,
+        teamScores.get(team)[i],
+        cells[criterion.title] ?? null,
+        responded ? neutral : null
+      )
+    );
+    const total = scored.reduce((sum, cell) => sum + cell.final.points, 0);
+    return {
+      cells: scored,
+      note: note.trim(),
+      responded,
+      team,
+      total: Math.round(total * 10_000) / 10_000,
+    };
+  });
+  const teamsByName = new Map(teams.map((entry) => [entry.team, entry]));
+
   const studentsById = new Map(roster.map((s) => [s.canvasUserId, s]));
   const noTeam = [];
+  const edited = [];
   const rows = rubricExport.students.map((student) => {
     const cells = [...student.cells];
+    const changed = [];
+    edited.push(changed);
     const team = studentsById.get(student.id)?.team ?? "";
     if (!rosterTeams.has(team)) {
       noTeam.push({
@@ -468,9 +635,23 @@ export function scorePartnerSurvey({
       });
       return cells;
     }
+    const { note } = teamsByName.get(team);
     for (const [i, { criterion }] of questions.entries()) {
       const columnsAt = rubricExport.criteria.get(nameKey(criterion.title));
-      fillCriterion(cells, columnsAt, teamScores.get(team)[i]);
+      const { answered, final } = teamsByName.get(team).cells[i];
+      fillCriterion(cells, columnsAt, {
+        ...final,
+        comment: teamComment(note, final.comment),
+      });
+      if (final.rating !== answered.rating) {
+        changed.push(columnsAt.Rating);
+      }
+      if (final.points !== answered.points) {
+        changed.push(columnsAt.Points);
+      }
+      if (note !== "" || final.comment !== answered.comment) {
+        changed.push(columnsAt.Comments);
+      }
     }
     return cells;
   });
@@ -480,6 +661,7 @@ export function scorePartnerSurvey({
     compare,
     concerns: concernRows(responses, concerns, concernTags),
     duplicates,
+    edited,
     pending,
     report: {
       blankTerm: blankTerm.map((r) => ({
@@ -499,5 +681,7 @@ export function scorePartnerSurvey({
         .map((r) => ({ responseId: r.ResponseId, team: r.Team })),
     },
     rows,
+    teams,
+    unapplied,
   };
 }

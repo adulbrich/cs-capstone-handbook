@@ -42,7 +42,7 @@ export const pages = {
     description:
       "Score the project partner survey export and fill the Canvas rubric assessment.",
     intro:
-      "Six steps from the Qualtrics export to the grades. It scores the Midterm Pulse and each term's End-of-Term Survey; every student on a team gets the team's scores.",
+      "Seven steps from the Qualtrics export to the grades. It scores the Midterm Pulse and each term's End-of-Term Survey; every student on a team gets the team's scores.",
     title: "Score the Project Partner Evaluation",
   },
 };
@@ -54,7 +54,7 @@ export const savedText = {
   prepare:
     "Saved in this browser only, never uploaded: the roster (shared with the Score page), the partner sheet, the survey settings, the checklist, and each step's done box.",
   score:
-    "Saved in this browser only, never uploaded: the three files (the roster is shared with the Prepare page), the survey picked, the responses picked for a team, and each step's done box.",
+    "Saved in this browser only, never uploaded: the three files (the roster is shared with the Prepare page), the survey picked, the responses picked for a team, the team score edits and notes, and each step's done box.",
 };
 
 /** The roster step, on both pages. */
@@ -208,6 +208,13 @@ export const prepareText = {
   whatItIs: "What it is",
 };
 
+/** Why a saved team score edit is not applied, by sortOverrides' reason. */
+const UNAPPLIED = {
+  criterion: "not a criterion of this rubric",
+  points: "points outside the criterion's range",
+  team: "not a team these files score",
+};
+
 /** The Score page's steps. */
 export const scoreText = {
   concerns: {
@@ -238,18 +245,24 @@ export const scoreText = {
       `${file}: ${survey}, ${plural(finished, "finished response")}.`,
     title: "Qualtrics export",
     usedIn:
-      "Step 4 scores its finished responses, and step 6 lists its concerns.",
+      "Step 4 scores its finished responses, and step 7 lists its concerns.",
     waiting: "Drop a labels export of a partner survey, recognized or picked.",
   },
   grades: {
     download: (name) => `Download ${name}`,
+    edited: "edited in step 5",
     path: clickPaths.canvasRubricImport,
     pathAfter:
       ", on the same assignment. Spot-check one student per team before posting.",
     preview: "Rubric assessment to import",
-    summary: (file) => `${file}.`,
+    review: (n) =>
+      `${plural(n, "cell")} in step 5 still to review. The download carries ${n === 1 ? "it as it stands" : "them as they stand"}.`,
+    summary: ({ file, review }) =>
+      review > 0
+        ? `${file}; ${plural(review, "cell")} in step 5 not reviewed.`
+        : `${file}.`,
     title: "Grades",
-    what: "The rubric export from step 3, filled in: each criterion's rating, points, and the partner's comment as written, the same for every student on the team. The team reads the comment with the score. A criterion with no comment clears its cell, so nothing from an earlier import stays.",
+    what: "The rubric export from step 3, filled in with step 5's scores: each criterion's rating, points, and comment, the same for every student on the team. The team reads the comment with the score. A criterion with no comment clears its cell, so nothing from an earlier import stays. Cells step 5 changed are marked.",
   },
   label: "Score the project partner evaluation",
   results: {
@@ -315,9 +328,72 @@ export const scoreText = {
       `${file}: ${plural(students, "student")}, ${plural(criteria, "criterion", "criteria")} matched.`,
     title: "Canvas rubric export",
     usedIn:
-      "Step 5 fills it in, and you import it back on the same assignment.",
+      "Step 6 fills it in, and you import it back on the same assignment.",
     waitingExport:
       "Read; it is matched to the rubric once step 1's survey is known.",
+  },
+  teams: {
+    against: "Edited against",
+    answer: "Answer",
+    caption: "Each scored team by criterion: points and rating",
+    changed:
+      "The answer changed since this edit. The edit still applies: save it again to keep it, change it, or revert.",
+    close: "Close",
+    comment: {
+      help: "Starts as the partner's words. Emptied, it clears the criterion's comment.",
+      label: "Comment the team reads",
+      reset: (responded) =>
+        responded
+          ? "Reset to the partner's words"
+          : "Reset to the no-response note",
+    },
+    edited: "edited",
+    editor: (team, criterion) => `${team}: ${criterion}`,
+    hasComment: "the partner commented",
+    // The two parts of a Comments cell when a team has a note.
+    labels: {
+      comment: "Comment on this criterion",
+      note: "Note from the instruction team",
+    },
+    noComment: "No comment.",
+    noResponse: "No response: the no-response score.",
+    note: {
+      help: "For the whole team, from the instruction team. It goes first, labeled, in every criterion's comment for every student on the team.",
+      label: "Team note",
+    },
+    noteColumn: "Note",
+    noted: "Has a team note",
+    now: "now",
+    open: (team, criterion) => `Edit ${criterion} for ${team}`,
+    partnerComment: "Comment",
+    revert: "Revert to the answer",
+    review: "to review",
+    reviewed: "reviewed",
+    save: "Save",
+    score: {
+      custom: "Points",
+      customError: (max) => `Enter points from 0 to ${max}.`,
+      customHelp: (max) =>
+        `From 0 to ${max}. The rating is the highest at or below them; below the lowest, the lowest.`,
+      keep: ({ points, rating }) => `Keep the answer: ${rating}, ${points}`,
+      legend: "Score",
+      named: (rating) => `Rated ${rating}.`,
+      rating: ({ points, rating }) => `${rating}, ${points}`,
+    },
+    scoreLine: ({ points, rating }) => `${rating}, ${points} points`,
+    summary: ({ edited, notes, review }) =>
+      `${plural(review, "cell")} to review, ${plural(edited, "cell")} edited, ${plural(notes, "team note")}.`,
+    teamColumn: "Team",
+    title: "Team scores",
+    totalColumn: "Total",
+    unapplied: {
+      line: ({ criterion, reason, team }) =>
+        `${criterion ? `${team}, ${criterion}` : team}: ${UNAPPLIED[reason]}.`,
+      title: "Saved edits not applied",
+    },
+    // Read out beside an edited cell's struck-through points.
+    was: "answered",
+    what: "Every scored team by criterion, as the partner answered. Open a cell to keep its answer, pick another rating, or enter points; to edit the comment the team reads; or to write a team note. Neither agree nor disagree answers are marked to review until kept or changed. Edits stay for this survey when a new export is dropped, and are marked again when the answer under them changes. Nothing here blocks the download.",
   },
   whatItIs: "What it is",
 };
