@@ -276,7 +276,13 @@ required; `validate-outcomes.mjs` checks the order.
 
 7. **`## Activities That Prepare This`.** The shared recommendations first,
    naming the criterion each one serves. Then, where projects actually
-   differ, an **Examples** table whose first column reads "If your project is". Then a `Browse ... when these run
+   differ, an **Examples** table with the header `| If | Activities |`, each
+   row keyed on a situation this assignment cares about ("your top rung
+   needs people outside the team to use it on their own"), never on a kind
+   of project; rows may overlap. Its lead-in carries the way out: "A project
+   may match several rows or none. If none fits, ask your partner or mentor
+   which activities do." (`docs/decisions/2026-10-30-examples-by-concept.md`
+   has the rule.) Then a `Browse ... when these run
    out.` line naming the activity pages to browse,
    usually one or two. Nothing follows it but
    `## References` on a page that cites sources.

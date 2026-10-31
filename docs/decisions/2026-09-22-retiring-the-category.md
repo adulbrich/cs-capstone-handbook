@@ -2,7 +2,7 @@
 
 Date: 2026-09-22
 Branch: `feat/outcome-types-and-links`
-Status: implemented. The words "outcome type", "project type" and "project category" are retired from the handbook, the Canvas mirrors and the downloads. `scripts/check-prose.mjs` rejects all three under the content paths, and `about/glossary.mdx` records the retirement on the **Definition of Shipped** entry.
+Status: superseded in full by `2026-10-30-examples-by-concept.md` (#608), which retires the four-way structure this record kept. Originally: implemented. The words "outcome type", "project type" and "project category" are retired from the handbook, the Canvas mirrors and the downloads. `scripts/check-prose.mjs` rejects all three under the content paths, and `about/glossary.mdx` records the retirement on the **Definition of Shipped** entry.
 Companion documents: `2026-09-21-outcome-type-ownership.md` (whose rule survives, whose vocabulary does not), `about/glossary.mdx`, `assignments/definition-of-shipped.mdx`, `guides/shipping.mdx`.
 
 ## 1. Why

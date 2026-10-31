@@ -27,7 +27,7 @@ Your requirements live in the repository as continuously updated docs, and the u
 Attend the OSU Advantage Accelerator's [Iterate](https://advantage.oregonstate.edu/advantage-accelerator/programs/iterate) workshop to pressure-test your project idea as a venture. It's a one-hour interactive virtual workshop covering what separates a startup from an idea, how to identify a problem worth solving, the Value Proposition Canvas, and how to pitch clearly. Sessions run periodically over Zoom; check the page for the next date and register.
 
 :::note
-This activity is especially relevant for students with a New Product or Game project. Attend as early in the year as a session allows. The workshop is aimed at researchers, graduate students, staff, and community members, so confirm undergraduate registration is open before planning the team around it.
+This activity is especially relevant if the project could become a company. Attend as early in the year as a session allows. The workshop is aimed at researchers, graduate students, staff, and community members, so confirm undergraduate registration is open before planning the team around it.
 :::
 
 Check some of the Accelerator's [other resources](https://advantage.oregonstate.edu/innovation-impact-program/student-resources).
@@ -195,28 +195,30 @@ A good output is your prioritized list of requirements or tasks, the method you 
 
 Decide what "it worked" will mean, in numbers, while you're still far enough from the deadline that the result can't sway you. About an hour and a half as a team, once when you first commit to what shipping will mean, and again when the deadline is close enough to check the number.
 
-Every project commits to 2 or 3 metrics, and what makes a good one differs by project, so start with the subsection closest to yours. Product and game teams can borrow from the PMF question, AARRR, and HEART in the [guide](/guides/planning/#success-metric-frameworks).
+Every project commits to 2 or 3 metrics. The lists below are grouped by what the number counts, and most projects draw from two of them; if none fits, agree with your partner or mentor what does. Metrics that count people using it can borrow from the PMF question, AARRR, and HEART in the [guide](/guides/planning/#success-metric-frameworks).
 
 Four rules hold whatever you build:
 
 - **Write the metric and the decision rule together**: which value is success, which is failure, and what you do in each case.
 - **Commit it, dated, before you measure.** A metric chosen after seeing results can be picked, even unintentionally, to fit whatever the data already shows.
-- **Name the instrument**: analytics (Plausible, Google Analytics, Hotjar), database counts, benchmark output, interviews, surveys.
+- **Say how you'll collect it**: analytics, database counts, benchmark output, interviews, surveys.
 - **Beware vanity metrics.** Downloads count people who tried it once; retention counts the people who came back. Ask what number would make your partner call it a success.
 
-### New Product or Game
+A metric you can't measure yet still counts when you say what has to happen first and how you'll collect it once it does: the share of users who come back, once the app is public; accuracy against the reproduced baseline, on a public sample until the real data is cleared.
 
-Usage and retention are the point, so measure people, not code:
+### People Using It
 
-- Downloads or sign-ups, monthly active users, churn rate
-- Average session duration, task success rate
-- Net Promoter Score, positive mentions or up-votes
+When the point is that people use it, measure people, not code:
+
+- Sign-ups, active users, retention or churn
+- Task success rate, average session duration
+- Satisfaction: Net Promoter Score, positive mentions or up-votes
 
 AARRR's activation and retention and HEART's task success are good first picks; ProductPlan's [metrics list](https://assets.productplan.com/content/Product-Success-Metrics-by-ProductPlan.pdf) has more.
 
-### Research
+### A Result Against a Baseline
 
-Your metric decides what counts as a result, so it's a hard-to-reverse decision: change it late and every earlier run stops being comparable.
+When the work produces a result, your metric decides what counts as one, so it's a hard-to-reverse decision: change it late and every earlier run stops being comparable.
 
 - **The primary metric**, and why it's right for the question rather than easiest to compute.
 - **The comparison**: against which baseline, on which data split, over how many runs, with which seeds.
@@ -225,24 +227,32 @@ Your metric decides what counts as a result, so it's a hard-to-reverse decision:
 
 Pair this with [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline); a metric only means something next to a number you've reproduced.
 
-### FOSS
+### Contributions to an Open-Source Project
 
-Your success is measured in someone else's repository, so read what the project itself tracks:
+If you contribute to an open-source project, your success is measured in its repository, so read what the project itself tracks:
 
-- Patches submitted, reviewed, merged, and still merged a month later
+- Pull requests submitted, reviewed, merged, and still merged later
 - Review turnaround, and whether maintainers start assigning you work
-- Issues closed, and whether your changes appear in a tagged release
+- Issues closed, and whether your changes appear in a release
 
 A trivial patch merged early is a stronger signal than a large one still unmerged at the end; it proves the pipeline works.
 
-### Consultancy
+### The Partner's Adoption
 
-Your top rungs describe actions the partner takes, so measure their adoption rather than your output:
+When your top rungs describe actions the partner takes, measure their adoption rather than your output:
 
 - Is it running in their environment, and whose environment is it
 - How many of their people use it, and for what task
 - Has it cleared their security or IT review, and when
 - What would have to be true for them to call it production
+
+### Performance and Reliability
+
+When the point is that it's fast, stable, or better than what it replaces, measure that under conditions you state:
+
+- Response time under a stated load
+- Uptime and crash rate
+- A benchmark against the system it replaces
 
 Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
 

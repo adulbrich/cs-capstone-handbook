@@ -140,7 +140,7 @@ Whether working software exists, advances, and can be run by someone other than 
 - Design decisions that affect you (data, integrations, hosting, cost) are explained before they are made.
 - Documentation exists for whoever runs this after the team is gone.
 
-"Deployment" is read loosely: for a research project it means the code and artifacts are documented and reproducible; for a FOSS project it means the patches include every necessary change, documentation included, and work in the existing codebase without regression.
+"Deployment" means whatever puts the work where it's used: a hosted service, an installable build, contributions to an open-source project that include every necessary change, documentation included, and work in its codebase without regression, or code and artifacts documented well enough to be reproduced.
 
 ## Verification and Validation
 
@@ -157,7 +157,7 @@ Whether the team tests against a written approach the partner has seen, and coll
 
 ### Spring
 
-In spring the scale is one ladder for every project, the outcome ladder: **who ran the software**. Read it literally. Every rung above the bottom one describes someone outside the team running your work, and the top rung describes people who depend on it.
+In spring the scale is one ladder for every project, the outcome ladder: **who ran the software**. Read it literally. Every rung above the partner watching it run describes someone outside the team running your work, and the top rung describes people who depend on it.
 
 <RubricCriterion
   csv={springCsv}
@@ -165,12 +165,11 @@ In spring the scale is one ladder for every project, the outcome ladder: **who r
   criterion="Verification and Validation"
   caption="The outcome ladder, top rung first"
   ratingLabel="Rung"
-  split={["Consultancy", "FOSS", "Research", "New Product or Game"]}
 />
 
-Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out, path by path. Those paths are guidance and a playbook; they do not change the scale.
+Getting to a real user, a real deployment, or a real merge is the part that takes a year of lead time, and it's what the [Shipping guide](/guides/shipping/) maps out. Its sections are guidance and a playbook; they do not change the scale.
 
-Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete. The rungs are written generally because they have to cover every project in the class. Your Definition of Shipped says what your target rung means for your project: which environment, which users, which upstream, measured how. That is what your partner scores against in spring, and it's why you write it in winter, while there is still time to act on it.
+Your [Definition of Shipped](/assignments/definition-of-shipped/) does not replace the ladder. It makes your rung concrete. Your Definition of Shipped says what your target rung means for your project: which environment, which users, which open-source project, measured how. That is what your partner scores against in spring, and it's why you write it in winter, while there is still time to act on it.
 
 Custom scoring is for genuine deviation, not for restating the ladder. If your partner's expectations differ from the ladder in kind rather than in detail, they can score on a custom scale from 50% to 100% of the facet's points. The standing example is a project whose right outcome is zero users yet, such as a tool that must not reach patients or operators until a certification that won't arrive before spring week 10; it is scored on the user activities it did run, such as supervised trials and reproduced results. Agree that in the Definition of Shipped in winter, not in spring week 10.
 

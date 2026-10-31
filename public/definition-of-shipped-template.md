@@ -23,7 +23,7 @@ What you and your project partner agreed shipped means for this project, and whi
 
 ## 3. Prerequisites and Lead Times
 
-Everything the target rung requires that your team does not control: accounts, reviews, approvals, recruitment. Each row needs an owner and a start-by date before the term it is needed. The Shipping guide path closest to your project shows the kinds of clocks to look for; list the ones your target rung needs, whether or not the guide names them.
+Everything the target rung requires that your team does not control: accounts, reviews, approvals, recruitment. Each row needs an owner and a start-by date before the term it is needed. The Shipping guide sections your target rung depends on show the kinds of clocks to look for; list the ones your target rung needs, whether or not the guide names them.
 
 | Prerequisite | Estimated lead time | Owner | Start by | Status |
 | --- | --- | --- | --- | --- |

@@ -32,7 +32,7 @@ import rubricCsv from '/canvas/assignments/project-handoff/project-handoff-rubri
   The last thing your team ships.
 </AssignmentSummary>
 
-Within a few weeks, your team stops existing and the project keeps going: with your partner, a maintainer community, next year's capstone team, or you. The handoff is professional knowledge transfer, and the bar is concrete: **a stranger with relevant technical background can run and maintain the project using only this document and the repository.** If your living docs stayed current all year, this assignment is mostly assembly.
+Within a few weeks, your team stops existing and the project keeps going: with your partner, a maintainer community, next year's capstone team, or you. The handoff is professional knowledge transfer, and the bar is concrete: **someone with relevant technical background who didn't build it can run and maintain the project using only this document and the repository.** If your living docs stayed current all year, this assignment is mostly assembly.
 
 :::note[If you are keeping the project]
 You hold the IP by default ([IP, NDA, and Licensing](/introduction/ip-nda-and-licensing/) has the details), so the successor can be your own team. Three things change: repository ownership stays with you instead of transferring, the archive declaration in section 6 still applies, and the conversation with your partner about what you're taking forward happens before week 10, not after. One thing does not change: **the spring rung is scored on what shipped by week 10.** "We are going to keep working on it" is the same move as "the partner will deploy it after the project ends" (see [Some Truths About Shipping](/guides/shipping/#some-truths-about-shipping)) and it earns the same rung.
@@ -48,7 +48,7 @@ A **partner-facing handoff document** (2 to 4 pages, delivered where your partne
 
 What the project is and what problem it solves; the current deployment or delivery state (is it running, where, how stable); what is and is not included in this handoff, with reasons; and a contact for each team member for follow-up questions.
 
-### 2. Setup a Stranger Can Follow
+### 2. Setup Someone New Can Follow
 
 From nothing to running: prerequisites with versions, copy-pasteable install and build commands, how to run the tests, how to run a local development environment, how to deploy (or a pointer to the runbook), and the pitfalls you know about with their fixes. This should largely already exist in [`README.md`](https://www.makeareadme.com/) and [`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors); the handoff points at it and fills gaps rather than duplicating it. **Verify it**: have the team member who least knows the setup path (or your partner) execute it clean and fix what breaks.
 
@@ -89,13 +89,13 @@ The handoff document as one PDF, with the cover [Submitting Your Work](/assignme
 
 [Planning for Maintenance and Long-Term Support](/activities/testing-release-and-handoff/#planning-for-maintenance-and-long-term-support) for known issues and future work, and [Describe your API Reference](/activities/testing-release-and-handoff/#describe-your-api-reference) for the living-docs criterion if other code or people build on your product.
 
-**Examples:**
+**Examples.** A project may match several rows or none. If none fits, ask your partner or mentor which activities do.
 
-| If your project is | Activities |
+| If | Activities |
 |---|---|
-| FOSS | [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning). Your handoff is mostly upstream already; what you owe is the state of any unmerged work |
-| Research | [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible). For a research project this *is* the handoff: the next student has to get your numbers back |
-| Consultancy | [Planning for Maintenance and Long-Term Support](/activities/testing-release-and-handoff/#planning-for-maintenance-and-long-term-support). You graduate and the system stays, so for the partner the runbook largely is the product |
-| New Product or Game | [Describe your API Reference](/activities/testing-release-and-handoff/#describe-your-api-reference) if other code or people build on your product, and [User Manual](/activities/testing-release-and-handoff/#user-manual) if real users remain |
+| some of your contributions to an open-source project are still unmerged | [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning): what you owe is the state of that unmerged work |
+| the next owner has to get your results back | [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible). For a result, this *is* the handoff |
+| the partner's people will operate it after you leave | [Planning for Maintenance and Long-Term Support](/activities/testing-release-and-handoff/#planning-for-maintenance-and-long-term-support). You graduate and the system stays, so for the partner the runbook largely is the product |
+| people keep using it after you leave | [User Manual](/activities/testing-release-and-handoff/#user-manual) |
 
 Browse [Testing, Release, and Handoff](/activities/testing-release-and-handoff/) and [Research Methods](/activities/research-methods/) when these run out.

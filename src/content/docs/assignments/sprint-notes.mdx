@@ -58,13 +58,21 @@ The sprint note is one page with five items:
 4. **Contribution lines**: one per student, in the shape below.
 5. **Judgment layer** (about five lines, human-written): what the team learned this sprint and what it changes about the plan.
 
+An early sprint can be light on code, or have none, and that's fine when the note says where you are and why. For example:
+
+- No code yet, by agreement: the partner asked for a research and planning phase first. Done: the comparison of existing tools the partner reviewed, the requirements draft they approved, notes from interviews with their staff.
+- No code yet, by agreement: the partner wanted the design settled before any build. Done: the architecture the partner reviewed, [ADRs](/guides/adr/) (architecture decision records) for the storage and hosting decisions, a data model, the interface contract with the partner's existing system.
+- No working software yet: the open-source project you contribute to builds and passes its tests on every member's machine, and the first pull request, a documentation fix, is in review.
+- The pipeline runs end to end on synthetic data; the real data waits on the data agreement, whose owner is named under Top risk.
+- A clickable prototype only, because the partner's system access hasn't been granted; the request is linked.
+
 Each sprint, update the [living docs](/assignments/repo-checkpoints/#what-you-produce) for what the sprint changed, starting with `docs/requirements.md`, `docs/design.md`, and `docs/risks.md`. In fall and winter the next repo checkpoint checks them; in spring they go to whoever continues the project, through the [Project Handoff](/assignments/project-handoff/#4-the-living-docs).
 
 **AI use:** you may generate the evidence with AI from your own repo history and board. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and the one sentence in each contribution line saying what you shipped and how you know it works. Start from the [sprint note template](/sprint-note-template.md).
 
 ### What counts as "done"
 
-Concrete means someone could go and look at it. Consequential means the project is meaningfully further along because of it. It does not have to be code. A partner agreement reached, a dataset cleared for use, a deployment pipeline that now works, a real-user session run and written up, a flaky test suite made reliable: all of these are done things worth naming. Work that is not code counts when someone can check it, wherever it lives: findings, interview notes, a requirements section, an RFC section.
+Concrete means someone could go and look at it. Consequential means the project is meaningfully further along because of it. It does not have to be code. A partner agreement reached, a dataset cleared for use, a deployment pipeline that now works, a real-user session run and written up, a flaky test suite made reliable: all of these are done things worth naming. So are a literature or prior-work review the partner discussed with you, a requirements document the partner approved, an architecture or design document the partner reviewed, a design decision recorded as an ADR, a prototype the partner tried, an IRB application submitted, and a development environment that builds from `README.md` for every member. Work that is not code counts when someone can check it, wherever it lives: findings, interview notes, a requirements section, an RFC section.
 
 What does not count is activity without a result. "Worked on the API", "researched options", "had meetings", and "made progress on the frontend" describe how time was spent, not what exists now that did not exist two weeks ago.
 

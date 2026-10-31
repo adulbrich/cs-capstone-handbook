@@ -89,11 +89,18 @@ Graders check first that `docs/risks.md` is the only register and that every ris
 
 CI runs your tests on every pull request and passed on the named commit, and at least one test fails when the behavior it covers breaks. Break something on a branch once and watch CI go red, so you know it can.
 
-| If your project is | CI is |
-|---|---|
-| New Product or Game, Consultancy | A workflow that builds the project and runs the tests on every pull request |
-| Free and open-source (FOSS) | Upstream's CI on your pull requests. Until your first upstream pull request, the build-and-test command upstream expects, documented in your fork and passing on the named commit |
-| Research | The pipeline run end to end on a small sample dataset, with at least one test asserting a known result rather than merely exiting zero |
+CI is whatever proves, on every pull request, that the work still builds and still does what it should. For example:
+
+- A workflow that builds the app and runs its tests.
+- For a game, a headless engine build plus the tests.
+- For firmware, a build for the target board and unit tests on the host or an emulator.
+- For a pipeline, a run on a small sample dataset that checks a known result, not merely that it exits zero.
+- For a notebook, a run top to bottom that fails when a cell errors or a key result changes.
+- If you contribute to an open-source project, that project's CI on your pull requests; before your first one, its build-and-test command, documented in your fork and passing on the named commit.
+
+If none of these fits your work, agree with your partner or mentor what proves, on every pull request, that it still works, and say so in `README.md`.
+
+At Repo Checkpoint 1, a project may have little worth testing yet: the partner asked for research and planning first, or the first build is a prototype the team expects to throw away. That's fine when `README.md` says why and what will trigger the first tests; until then, CI builds the project and checks that the quickstart works. From Repo Checkpoint 2 on, CI runs tests.
 
 The safety net is review gates on changes that are expensive to undo (schema, authentication, deployment, migrations), somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data), and a documented rollback path, sized to how your team works: the more you delegate to AI tools, the more the automated checks must catch before a change merges.
 
@@ -107,9 +114,9 @@ Nothing reaches the default branch except through a reviewed pull request, and t
 
 Due fall week 5. Milestone met scores each item below, and Submission complete scores the PDF itself. Agree the production target now: an account, a hosting decision, or a review can take weeks.
 
-- **CI**: passed on the named commit, in [your project's form of CI](#build-health-and-safety-net). With no product code yet, it runs on a scaffold: your stack's starter project, with at least one test that fails when the scaffold breaks. *Evidence: a link on the cover to the run.*
+- **CI**: passed on the named commit, in [a form of CI that fits your work](#build-health-and-safety-net). With no product code yet, it runs on a scaffold: your stack's starter project, with at least one test that fails when the scaffold breaks. Where `README.md` says why there are no tests yet and what will trigger the first ones, a build and a check that the quickstart works stand in for the test. *Evidence: a link on the cover to the run.*
 - **Board**: every item in the current sprint has an owner and a status. *Evidence: a link on the cover to the board.*
-- **Production target**: one paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) will run, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project; who owns the account or infrastructure; and who agreed it, your partner or, without one, your mentor. FOSS projects add who upstream reviews the first pull request; research projects, which sample data the pipeline may use and, if the real-data run will happen on a single workstation, who outside the team will run it there. With no deployment planned, the paragraph says why and what ships instead, so the instruction team can agree an equivalent milestone with you. *Evidence: the deployment section of `docs/design.md`.*
+- **Production target**: one paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) will run, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project; who owns the account or infrastructure; and who agreed it, your partner or, without one, your mentor. Add what applies: if you contribute to an open-source project, which maintainer reviews your first pull request; if you run a pipeline on data, which sample data it may use and, if the real run happens on a single workstation, who outside the team will run it there. With no deployment planned, the paragraph says why and what ships instead, so the instruction team can agree an equivalent milestone with you. *Evidence: the deployment section of `docs/design.md`.*
 - **Approval**: if the target needs one, an entry names it, who is asking for it, and when they asked. *Evidence: an entry in `docs/risks.md`.*
 - **Inherited-codebase audit**: if you start in an existing codebase, your audit covers everything listed under [The Inherited-Codebase Audit](#the-inherited-codebase-audit). *Evidence: a document in the PDF, after the living docs.*
 
@@ -117,14 +124,14 @@ Build Health and Safety Net asks for less at this checkpoint: staging and rollba
 
 #### The Inherited-Codebase Audit
 
-If you start in an existing codebase (a predecessor team's, your partner's, or an upstream project's), its decisions, tests, debt, and review process are yours before you write a line. Audit it in fall weeks 1 to 5, covering:
+If you start in an existing codebase (a predecessor team's, your partner's, or an open-source project you contribute to), its decisions, tests, debt, and review process are yours before you write a line. Audit it in fall weeks 1 to 5, covering:
 
 - what runs and how, and what does not;
 - the state of the tests and the CI;
 - the dependencies and their age;
 - the open risks and the known debt;
 - the predecessor team's handoff document and the forward-looking section of their project retrospective, if there is one;
-- the upstream project's contribution rules, if there are any;
+- the open-source project's contribution rules, if it is one;
 - what you will change first.
 
 Put what the audit finds that the code depends on where the next person looks: constraints in `docs/requirements.md`; conventions and pitfalls in whichever living doc covers them, such as `CONTRIBUTING.md`, `docs/design.md`, or the AI context file; and a decision to keep or replace something in `docs/design.md`.
@@ -153,13 +160,23 @@ Due winter week 10. Milestone met scores each item below.
 
 ## What Deployed Means in Fall
 
-Repo Checkpoint 1 records where your walking skeleton will run in week 10, and Repo Checkpoint 2 checks that it does. Deployed means one of the five options below; your path in the [Shipping guide](/guides/shipping/) and what you build decide which:
+Repo Checkpoint 1 records where your walking skeleton will run in week 10, and Repo Checkpoint 2 checks that it does. Deployed means the thinnest working slice of your system is where the real one will live, and someone outside the team can reach it. What that looks like depends on what you build. For example:
 
-- **A web app or hosted service** (New Product or Game, Consultancy): the skeleton serves requests in the production target. *Evidence: a link on the cover to its URL.*
-- **A mobile app, game, desktop application, or firmware** (New Product or Game, Consultancy): a build installs from the channel `docs/design.md` names (a store test track, a release page, a device image) on a device outside the team. *Evidence: a link on the cover to the build's page on that channel.*
-- **FOSS**: your first upstream pull request is submitted. *Evidence: a link on the cover to the pull request.*
-- **Research**: the pipeline runs end to end on sample data in the compute environment your real-data run will use, such as your partner's cluster, a university high-performance computing cluster, or a cloud allocation. If the real-data run will happen on a single workstation, someone outside the team, such as your partner or a member of their group, runs it there and reports the run. *Evidence: a link on the cover to the job's log or output, or to the issue in your repository where that person reports the run.*
-- **No deployment, by agreement** (any project): the equivalent milestone the instruction team agreed with you at Repo Checkpoint 1. *Evidence: the cover names that milestone and links its evidence.*
+- A web app or API serves requests at its production URL. *Evidence: a link on the cover to the URL.*
+- A mobile app, game, desktop app, or firmware build installs on a device outside the team from the channel `docs/design.md` names (a store test track, a release page, a device image). *Evidence: a link on the cover to the build's page on that channel.*
+- A data pipeline runs end to end on sample data in the compute environment the real run will use, such as your partner's cluster, a university high-performance computing cluster, or a cloud allocation. If that is a single workstation, someone outside the team, such as your partner or a member of their group, runs it there. *Evidence: a link on the cover to the job's log or output, or to the issue in your repository where that person reports the run.*
+- A notebook or analysis reruns top to bottom from a clean environment on the machine of someone outside the team, from `README.md` alone. *Evidence: a link on the cover to the issue in your repository where that person reports the run.*
+- If you contribute to an open-source project, your first pull request is open in its repository. *Evidence: a link on the cover to the pull request.*
+
+If none of these describes what you build, the production target paragraph in `docs/design.md` says what deployed means for it, and your partner or mentor agrees it there.
+
+If something outside your control means none of this can happen by week 10, agree the milestone you'll show instead with the instruction team at Repo Checkpoint 1, and say on the cover what it waits on. For example:
+
+- The data agreement isn't signed, so the pipeline runs on synthetic data shaped like the real data; the cover links that run and names the agreement's status and owner.
+- The partner's IT review hasn't started, so the skeleton runs on your own hosting; the cover links it and says when the review was requested.
+- The partner asked for a research and planning phase before any build, so the milestone is what that phase produces, agreed with the partner and the instruction team.
+
+**No deployment, by agreement**: Repo Checkpoint 2 checks that agreed milestone instead. *Evidence: the cover names that milestone and links its evidence.*
 
 ## What You Submit
 
@@ -199,13 +216,13 @@ At Repo Checkpoint 1, only Submission complete and Milestone met carry points; t
 
 **Repo Checkpoint 4: Release Candidate, winter week 10:** [Run an Acceptance Pass](/activities/testing-release-and-handoff/#run-an-acceptance-pass) for the real-user evidence, and [Test with an Assistive Technology User](/activities/interaction-design/#test-with-an-assistive-technology-user) too if your product has a user interface; [Describe your API Reference](/activities/testing-release-and-handoff/#describe-your-api-reference) for the docs if other code or people build on your product; [Fishbone Diagram](/activities/planning-and-risk/#fishbone-diagram) for the risk register.
 
-**Examples:** the recommendations above apply to everyone; these are what a project like yours usually adds.
+**Examples.** A project may match several rows or none. If none fits, ask your partner or mentor which activities do.
 
-| If your project is | Activities |
+| If | Activities |
 |---|---|
-| FOSS | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the audit and the upstream review culture; [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for upstream conventions |
-| Research | [Define Your Research Questions](/activities/research-methods/#define-your-research-questions) and [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) first, then [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline); [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Keep an Experiment Log](/activities/research-methods/#keep-an-experiment-log) for the release candidate |
-| Consultancy | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) in the partner's codebase; [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) for the partner's IT and security review; [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping); [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan) for staging in the partner's environment |
-| New Product or Game | [Lean Canvas](/activities/requirements/#lean-canvas) and [Hypothesis Testing](/activities/requirements/#hypothesis-testing) early; [Plan Prototype](/activities/planning-and-risk/#plan-prototype) for the walking skeleton; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the real-user sessions |
+| you start in an existing codebase (a predecessor's, the partner's, or an open-source project's) | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) for the audit and the review culture; [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning) for the release conventions, if it is an open-source project you contribute to |
+| what you produce is a result rather than a running system | [Define Your Research Questions](/activities/research-methods/#define-your-research-questions) first, then [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline); [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Keep an Experiment Log](/activities/research-methods/#keep-an-experiment-log) for the release candidate |
+| it will run in the partner's environment, or anything needs someone's approval | [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) for the partner's IT and security review and any other approval; [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping); [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan) for staging in the partner's environment |
+| nobody has asked for it yet | [Lean Canvas](/activities/requirements/#lean-canvas) and [Hypothesis Testing](/activities/requirements/#hypothesis-testing) early; [Plan Prototype](/activities/planning-and-risk/#plan-prototype) for the walking skeleton; [Find Users](/activities/working-with-users/#find-users) then [Engage Users](/activities/working-with-users/#engage-users) for the real-user sessions |
 
 Browse [Testing, Release, and Handoff](/activities/testing-release-and-handoff/) and [Planning and Risk](/activities/planning-and-risk/) when these run out.
