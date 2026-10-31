@@ -271,11 +271,14 @@ and assignment pages link to activities by anchor. So:
 ## Different Projects Need Different Preparation
 
 Projects differ in what they wait on: an existing codebase, maintainers who
-decide what merges, human participants, another institution's data, a
-partner's environment, users nobody has found yet. Name the **trigger**, the
-situation that makes an activity matter ("if you need human participants",
-"if you contribute to an open-source project"), never a kind of project. The
-design is `docs/decisions/2026-10-30-examples-by-concept.md`.
+decide what merges, a research study with human subjects, another
+institution's data, a partner's environment, users nobody has found yet. Name
+the **trigger**, the situation that makes an activity matter ("if the project
+is part of a research study with human subjects", "if you contribute to an
+open-source project"), never a kind of project. User testing that only
+improves a product needs no IRB, so a trigger about users never points at the
+IRB activity. The design is
+`docs/decisions/2026-10-30-examples-by-concept.md`.
 
 - **Examples illustrate the concept** on the page (what a metric counts, what
   a committed result reads like), drawn from varied work, and a project may

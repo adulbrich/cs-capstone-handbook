@@ -26,7 +26,7 @@ Three wording rules apply to every example:
 - **No tool names, weeks, or dates** in an example whose concept doesn't need them.
 - **Say who.** The top rungs ask for independence: someone who didn't build it, using or rerunning it without the team's help and not as a favor. Examples name that person (a graduate student in the lab, a peer, the partner's staff, people outside the team) rather than "a stranger".
 
-Retired: any table, heading, badge, or rubric text that enumerates projects by kind, under the old four names or new ones. A clause that names a trigger ("if you need human participants", "if you contribute to an open-source project") is fine, and so is a single example that happens to be one kind of project.
+Retired: any table, heading, badge, or rubric text that enumerates projects by kind, under the old four names or new ones. A clause that names a trigger ("if the project is part of a research study with human subjects", "if you contribute to an open-source project") is fine, and so is a single example that happens to be one kind of project.
 
 ## 3. What changed
 
