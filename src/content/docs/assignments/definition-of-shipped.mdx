@@ -32,28 +32,28 @@ import rubricCsv from '/canvas/assignments/definition-of-shipped/definition-of-s
 
 Your spring grade's largest partner-evaluation facet (Verification and Validation, 40 of the End-of-Term Survey's 100 points) is scored against outcomes: is the thing in production, merged upstream, reproducible, in real use? This document keeps those bars from being a surprise: a short, explicit agreement with your project partner about what "shipped" means for this project, written while there's still time to act on it.
 
-Your target rung depends on clocks your team doesn't control: maintainer review latency, app store review, [IRB](https://research.oregonstate.edu/ori/irb) (Institutional Review Board) approval for a research study with human subjects, data access, partner IT security review, and real-user recruitment. Each one runs in weeks, and this document gives each one an owner and a start-by date.
+Your target level depends on lead times your team doesn't control: maintainer review latency, app store review, data access, partner IT security review, and real-user recruitment. Each one runs in weeks, and this document gives each one an owner and a start-by date.
 
 ## What You Produce
 
 The document, one to two pages, is your agreement with your partner, kept with [your team's documents](/assignments/repo-checkpoints/#what-you-produce), not as a file in the repository. What the code needs from it goes where your AI tools and a successor will find it: the success metrics and how each is measured in `docs/requirements.md` or the AI context file, a decision it forces in an ADR, and the instrumentation in the code.
 
-1. **The expectations you agreed**: what shipped means for this project, in your own words, and which rung of the [outcome ladder](/assignments/project-partner-evaluation/#spring) you are committing to.
+1. **The expectations you agreed**: what shipped means for this project, in your own words, and which level of the [outcome ladder](/assignments/project-partner-evaluation/#spring) you are committing to.
 
-   You and your project partner or mentor agree this together, and this document is where you record it. Nobody assigns it to you. A committed rung reads like one of these:
+   You and your project partner or mentor agree this together, and this document is where you record it. Nobody assigns it to you. A committed level reads like one of these:
 
    - "The partner's staff use it in their regular work, running in the partner's environment."
    - "Our contributions are merged into the open-source project. Whether a release includes them is the maintainers' call, so we don't commit to it."
    - "A graduate student in the partner's lab who didn't build it reproduces our result from the published artifact, without our help."
    - "People outside the team use it on their own, not as a favor to us, and we can show how many and how often."
-   - A lower rung for a stated reason: "Our target rung is the partner watching it run on their real inputs. It can't reach anyone else until an approval outside the project lands, so the partner scores it on the custom scale recorded here."
+   - A lower level for a stated reason: "Our target level is the partner watching it run on their real inputs. It can't reach anyone else until an approval outside the project lands, so the partner scores it on the custom scale recorded here."
 
    If none of them describes yours, write your own expectations here instead. That costs you nothing, because the rubrics read what you committed to, not which example you resemble.
 2. **Success metrics**: 2 or 3 measurable signals of "it worked" (users completing a task, benchmark result, uptime, merged PRs), and, for at least one, the tool or mechanism that will collect it and when it starts collecting, before the final release.
-3. **Prerequisites and lead times**: everything the target rung requires that your team does not control (accounts, reviews, approvals, recruitment), each with an owner and a start-by date before the term it is needed; track each one in `docs/risks.md` until it lands. The [Shipping guide](/guides/shipping/) sections your target rung depends on show the kinds of clocks to look for; list the ones your target rung needs, whether or not the guide names them.
+3. **Prerequisites and lead times**: everything the target level requires that your team does not control (accounts, reviews, approvals, recruitment), each with an owner and a start-by date before the term it is needed; track each one in `docs/risks.md` until it lands. The [Shipping guide](/guides/shipping/) sections your target level depends on show the kinds of prerequisites to look for; list the ones your target level needs, whether or not the guide names them.
 4. **User access plan**: who the real users or evaluators are and how you will reach them by the winter real-user sessions.
 5. **Partner agreement**: evidence the partner has seen and agreed to this definition (meeting note, email, or survey confirmation).
-6. **If other teams work on this project**: what your team owns, agreed with your project partner rather than assumed. Which interface, repository, or milestone is yours, and how the teams talk to each other. Skip this item if your team is the only one on the project. It is scored under the target rung, because a rung you cannot reach without another team delivering its half is not a rung you have committed to.
+6. **If other teams work on this project**: what your team owns, agreed with your project partner rather than assumed. Which interface, repository, or milestone is yours, and how the teams talk to each other. Skip this item if your team is the only one on the project. It is scored under the target level, because a level you cannot reach without another team delivering its half is not a level you have committed to.
 
 Start from the [Definition of Shipped template](/definition-of-shipped-template.md).
 
@@ -72,20 +72,20 @@ The Definition of Shipped as one PDF, with the cover [Submitting Your Work](/ass
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/definition-of-shipped/definition-of-shipped-rubric.csv" />
 
 :::caution[Renegotiation is allowed; surprise is not]
-Projects change. If the target rung becomes unreachable for reasons you can document, renegotiate with your partner, record the new version and the partner's agreement to it, and update the metrics in the repository to match. Spring partner evaluations go badly when the partner and the team discover in spring week 10 that they had different definitions all along.
+Projects change. If the target level becomes unreachable for reasons you can document, renegotiate with your partner, record the new version and the partner's agreement to it, and update the metrics in the repository to match. Spring partner evaluations go badly when the partner and the team discover in spring week 10 that they had different definitions all along.
 :::
 
 ## Activities That Prepare This
 
-[Identify Success Metrics](/activities/requirements/#identify-success-metrics) for the metrics and instrumentation criterion, and [Dependency Mapping or Critical Path Analysis](/activities/planning-and-risk/#dependency-mapping-or-critical-path-analysis) for prerequisites and lead times. [User Story Mapping](/activities/requirements/#user-story-mapping) from fall feeds the target rung.
+[Identify Success Metrics](/activities/requirements/#identify-success-metrics) for the metrics and instrumentation criterion, and [Dependency Mapping or Critical Path Analysis](/activities/planning-and-risk/#dependency-mapping-or-critical-path-analysis) for prerequisites and lead times. [User Story Mapping](/activities/requirements/#user-story-mapping) from fall feeds the target level.
 
 **Examples.** A project may match several rows or none. If none fits, ask your partner or mentor which activities do.
 
 | If | Activities |
 |---|---|
 | you contribute to an open-source project, so its maintainers decide what merges | [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase) to find out what those maintainers actually require before a merge |
-| your top rung needs people outside the team to use it on their own | [Hypothesis Testing](/activities/requirements/#hypothesis-testing) and [Find Users](/activities/working-with-users/#find-users), since those people take weeks to recruit and the channel must exist by winter |
-| your top rung is something the partner does (integrate it, run it) | [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) and [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping): those rungs describe actions the partner takes, so the prerequisites are mostly theirs |
-| your project is part of a research study with human subjects, or uses another institution's data | [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) and [Complete an IRB Application](/activities/planning-and-risk/#complete-an-irb-application) for prerequisites and lead times |
+| your top level needs people outside the team to use it on their own | [Hypothesis Testing](/activities/requirements/#hypothesis-testing) and [Find Users](/activities/working-with-users/#find-users), since those people take weeks to recruit and the channel must exist by winter |
+| your top level is something the partner does (integrate it, run it) | [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) and [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping): those levels describe actions the partner takes, so the prerequisites are mostly theirs |
+| your project uses another institution's data | [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals) for prerequisites and lead times |
 
 Browse [Planning and Risk](/activities/planning-and-risk/) and [Requirements](/activities/requirements/) when these run out.

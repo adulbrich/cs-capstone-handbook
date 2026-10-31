@@ -277,7 +277,7 @@ required; `validate-outcomes.mjs` checks the order.
 7. **`## Activities That Prepare This`.** The shared recommendations first,
    naming the criterion each one serves. Then, where projects actually
    differ, an **Examples** table with the header `| If | Activities |`, each
-   row keyed on a situation this assignment cares about ("your top rung
+   row keyed on a situation this assignment cares about ("your top level
    needs people outside the team to use it on their own"), never on a kind
    of project; rows may overlap. Its lead-in carries the way out: "A project
    may match several rows or none. If none fits, ask your partner or mentor

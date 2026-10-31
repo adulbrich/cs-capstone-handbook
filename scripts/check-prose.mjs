@@ -121,6 +121,16 @@ const VOCABULARY = [
     use: "what shipped means for the project, or the closest path in the Shipping guide",
   },
   { avoid: /\bV&V ladders?\b|\bcategory ladders?\b/i, use: "outcome ladder" },
+  { avoid: /\brungs?\b/i, use: "level (target level, the top levels)" },
+  {
+    // "Clock" stood in for a lead time. The allowed phrases are literal
+    // clocks: the flaky-test causes in the Testing Strategy guide and the
+    // deck's speaker view in the runbook. `g`, so every match is cleared.
+    allow:
+      /\bthe network, the clock\b|\bnetwork, clock, or random\b|\band a clock\b/gi,
+    avoid: /\bclocks?\b/i,
+    use: "external prerequisite, lead time, or a plain wait, request, or process",
+  },
   { avoid: /\blegacy projects?\b/i, use: "existing codebase" },
   { avoid: /\bstudent-driven\b/i, use: "student-proposed" },
   { avoid: /\bTrack [AB]\b/, use: "NDA project, with a local note" },

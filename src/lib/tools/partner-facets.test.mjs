@@ -45,7 +45,7 @@ test("the between-anchor shares are read from the page's sentence, and a page wi
 
 test("every anchored facet offers the page's five shares, and the ladder adds its own rung", () => {
   const sentence = PAGE.match(
-    /each scored at ([^;]*) of its points; spring Verification and Validation adds a (\d+)% rung/
+    /each scored at ([^;]*) of its points; spring Verification and Validation adds a (\d+)% level/
   );
   assert.ok(sentence, "the page lists the shares a facet is scored at");
   const shares = numbers(sentence[1]);
