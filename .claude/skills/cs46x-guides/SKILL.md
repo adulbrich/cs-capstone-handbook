@@ -360,7 +360,7 @@ middle of the project", "a month before the end"), and that includes a generic
 illustration: "a plan made at the start is wrong a month later", not "a plan
 made in week 2 is wrong by week 6". The validator cannot tell a course week from
 an illustrative one, so no week number appears at all. `shipping.mdx` is the
-worked example: its argument is that external clocks take months, and it makes
+worked example: its argument is that external lead times run to months, and it makes
 that argument with Early, Middle and Late phases rather than terms (#194).
 
 There is no exception, including an aside at the top. **The link between a
@@ -457,7 +457,7 @@ student without the tool. A guide never presents a tool as mandatory.
 Where a guide illustrates with someone's project, draw the examples from
 varied work and name the situation, never a kind of project
 (`docs/decisions/2026-10-30-examples-by-concept.md`). A set of examples of
-where a project should be (a rung, an early phase) includes a slow start
+where a project should be (a level, an early phase) includes a slow start
 stated well and the way out: agree with the partner or mentor what fits.
 Three wording rules apply to every example:
 

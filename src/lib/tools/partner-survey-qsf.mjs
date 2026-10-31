@@ -147,7 +147,7 @@ function facetGuide(criterion, bullets) {
   return [
     `<b>${criterion.title}</b>`,
     `<b>What it looks like</b><ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`,
-    `<b>${isLadder(criterion) ? "The rungs" : "The anchors"}</b><ul>${ratings.map(anchorItem).join("")}</ul>`,
+    `<b>${isLadder(criterion) ? "The levels" : "The anchors"}</b><ul>${ratings.map(anchorItem).join("")}</ul>`,
   ].join("<br>");
 }
 

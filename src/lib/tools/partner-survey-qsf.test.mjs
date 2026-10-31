@@ -777,7 +777,7 @@ test("the text above each facet holds the page's What it looks like list and the
         assert.ok(guide.includes(`<b>${rating.name}</b>`), rating.name);
         assert.ok(guide.includes(rating.description), rating.name);
       }
-      assert.match(guide, isLadder(criterion) ? /The rungs/ : /The anchors/);
+      assert.match(guide, isLadder(criterion) ? /The levels/ : /The anchors/);
     }
   }
 });
