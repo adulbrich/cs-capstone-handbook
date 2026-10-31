@@ -129,7 +129,7 @@ CS 461 (fall) and CS 462 (winter) are both certified Writing Intensive Curriculu
 ## Individual Contribution Modifier
 
 - Default full credit; investigate only on triggers (blank or unexplained contribution line, a check-in flag, peer or partner flag, something off at the defense, a low Ownership-and-Delegation or Role score at the defense).
-- **These signals are inputs to one decision, not separate deductions.** Each component scores its own evidence, so a student who does not contribute can lose points here and on the partner evaluation, where an individual adjustment starts from a partner flag or the instructors' review of the record. The checkpoint criterion still grades whether attribution infrastructure exists, never individuals.
+- **Within this modifier, these signals are inputs to one decision, not separate deductions.** Each component scores its own evidence, so a student who does not contribute can lose points here and on the partner evaluation, where an individual adjustment starts from a partner flag or the instructors' review of the record. The checkpoint criterion still grades whether attribution infrastructure exists, never individuals.
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
 - NDA teams: bind to live evidence only (walkthrough, defense, peer eval, partner flags).
 
