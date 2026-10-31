@@ -21,3 +21,16 @@ export function bandFor(criterion, points) {
   }
   return rating;
 }
+
+/**
+ * The rating a points value is named after (bandFor: the highest at or
+ * below it). Points outside the bands are named after the nearest band: a
+ * peer distribution above 20 points is the top band, a non-completer's 10 on
+ * the distribution or a partner score the instructor sets below the lowest
+ * rating is the lowest. The points written stay exact.
+ */
+export function ratingFor(criterion, points) {
+  const lowest = Math.min(...criterion.ratings.map((r) => r.points));
+  const named = Math.min(Math.max(points, lowest), criterion.maxPoints);
+  return bandFor(criterion, named).name;
+}

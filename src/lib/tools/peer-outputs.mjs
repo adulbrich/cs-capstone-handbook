@@ -10,7 +10,7 @@ import {
   round,
   STATUS,
 } from "./peer-score.mjs";
-import { bandFor } from "./rubric-bands.mjs";
+import { ratingFor } from "./rubric-bands.mjs";
 import {
   fillCriterion,
   matchRubricExport,
@@ -49,18 +49,6 @@ export function peerRubricScores(result, peer) {
         : result.criterionScores
     ),
   };
-}
-
-/**
- * The rating a points value is named after (bandFor: the highest at or
- * below it). Points outside the bands are named after the nearest band: a
- * distribution above 20 points is the top band, and a non-completer's 10 on
- * the distribution is the lowest. The points written stay exact.
- */
-export function ratingFor(criterion, points) {
-  const lowest = Math.min(...criterion.ratings.map((r) => r.points));
-  const named = Math.min(Math.max(points, lowest), criterion.maxPoints);
-  return bandFor(criterion, named).name;
 }
 
 /**

@@ -1,19 +1,25 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { scoreText } from "../../data/partner-tools.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
 import { parseCsv, toCsv } from "./csv.mjs";
 import {
   aLowerBound,
   detectSurvey,
+  editOf,
+  neutralRating,
   noResponseScore,
+  pointsFit,
   scorePartnerSurvey,
+  teamComment,
+  withEdit,
 } from "./partner-scoring.mjs";
 import { percentOf } from "./points.mjs";
 import { parseQualtricsExport } from "./qualtrics-export.mjs";
 import { parseRoster } from "./roster.mjs";
 import { bandFor } from "./rubric-bands.mjs";
-import { parseRubricExport } from "./rubric-export.mjs";
+import { parseRubricExport, rubricExportCsv } from "./rubric-export.mjs";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), "utf8");
@@ -175,10 +181,11 @@ const EXPORT = exportText([
   ["999", "Nobody, Known"],
 ]);
 
-function run(qualtricsText, { choices, exportCsv = EXPORT } = {}) {
+function run(qualtricsText, { choices, exportCsv = EXPORT, overrides } = {}) {
   return scorePartnerSurvey({
     aBound: A,
     choices,
+    overrides,
     qualtrics: parseQualtricsExport(qualtricsText),
     roster: parseRoster(ROSTER),
     rubric: rubrics.pulse,
@@ -574,4 +581,313 @@ test("regression: 70% of spring Requirements' 5 points is 3.5, not 3", () => {
   const requirements = criterion("spring", "Requirements and Specifications");
   assert.equal(percentOf(requirements.maxPoints, 70), 3.5);
   assert.equal(bandFor(requirements, 3.5).name, "Low anchor (half the points)");
+});
+
+// Team scores (#611): the instructor's edits, by team and criterion.
+
+const NEUTRAL = "Neither agree nor disagree";
+const { labels } = scoreText.teams;
+
+/** Engines answers Neither on Delivery quality; Compilers and Rings do not answer. */
+const NEUTRAL_EXPORT = pulseExport([
+  response(
+    "Engines",
+    ["Strongly agree", "Somewhat agree", NEUTRAL, "Strongly agree"],
+    {
+      "Delivery Comment": "We have not seen anything yet.",
+      "Responsiveness Keep": "Same-day answers.",
+    }
+  ),
+]);
+
+const teamOf = (result, team) => result.teams.find((t) => t.team === team);
+const cellOf = (result, team, title) =>
+  teamOf(result, team).cells.find((c) => c.criterion === title);
+
+/** One cell's edit, made against the answer `cell` shows. */
+const edit = (cell, change = {}) => ({
+  against: cell.answered,
+  comment: null,
+  points: null,
+  ...change,
+});
+
+const csvOf = (result) => rubricExportCsv(parseCsv(EXPORT)[0], result.rows);
+
+test("the pulse's neutral rating is on every pulse criterion; no end-of-term survey has one", () => {
+  assert.equal(neutralRating("pulse", rubrics.pulse), NEUTRAL);
+  for (const term of ["fall", "winter", "spring"]) {
+    assert.equal(neutralRating(`final-${term}`, rubrics[term]), null);
+  }
+  const [first, ...rest] = rubrics.pulse.criteria;
+  const without = {
+    ...rubrics.pulse,
+    criteria: [
+      { ...first, ratings: first.ratings.filter((r) => r.name !== NEUTRAL) },
+      ...rest,
+    ],
+  };
+  assert.throws(
+    () => neutralRating("pulse", without),
+    /Responsiveness has no "Neither agree nor disagree" rating/
+  );
+});
+
+test("a neutral pulse answer is flagged for review until it is kept", () => {
+  const before = run(NEUTRAL_EXPORT);
+  const delivery = cellOf(before, "Engines", "Delivery quality");
+  assert.equal(delivery.neutral, true);
+  assert.equal(delivery.review, true);
+  assert.equal(delivery.reviewed, false);
+  const flagged = before.teams.flatMap((t) =>
+    t.cells.filter((c) => c.review).map((c) => `${t.team}: ${c.criterion}`)
+  );
+  // A team with no response scores no answer, so nothing there is neutral.
+  assert.deepEqual(flagged, ["Engines: Delivery quality"]);
+  assert.deepEqual(before.teamCounts, { edited: 0, notes: 0, review: 1 });
+
+  const kept = run(NEUTRAL_EXPORT, {
+    overrides: { Engines: { cells: { "Delivery quality": edit(delivery) } } },
+  });
+  const keptCell = cellOf(kept, "Engines", "Delivery quality");
+  assert.equal(keptCell.review, false);
+  assert.equal(keptCell.reviewed, true);
+  assert.equal(keptCell.edited, false);
+  assert.equal(csvOf(kept), csvOf(before));
+});
+
+test("with no edits the rubric assessment is byte-for-byte what it was", () => {
+  const plain = csvOf(run(NEUTRAL_EXPORT));
+  assert.equal(csvOf(run(NEUTRAL_EXPORT, { overrides: {} })), plain);
+  // A blank note is no note.
+  assert.equal(
+    csvOf(run(NEUTRAL_EXPORT, { overrides: { Engines: { note: "  " } } })),
+    plain
+  );
+  assert.deepEqual(run(NEUTRAL_EXPORT).editedColumns, [[], [], [], [], []]);
+});
+
+test("an edit's points are named by the rating at or below them, down to 0", () => {
+  const delivery = cellOf(run(NEUTRAL_EXPORT), "Engines", "Delivery quality");
+  const scoreWith = (points) =>
+    run(NEUTRAL_EXPORT, {
+      overrides: {
+        Engines: { cells: { "Delivery quality": edit(delivery, { points }) } },
+      },
+    });
+  for (const [points, rating] of [
+    [22.5, "Somewhat agree"],
+    [21, NEUTRAL],
+    [15, "Strongly disagree"],
+    [0, "Strongly disagree"],
+  ]) {
+    const result = scoreWith(points);
+    const cell = cellOf(result, "Engines", "Delivery quality");
+    assert.deepEqual(cell.final, {
+      comment: "We have not seen anything yet.",
+      points,
+      rating,
+    });
+    assert.equal(cell.answered.points, 20);
+    assert.equal(cell.edited, true);
+    assert.equal(cell.review, false);
+    for (const id of ["101", "102"]) {
+      const row = rowFor(result, id);
+      assert.equal(row["Delivery quality - Points"], String(points));
+      assert.equal(row["Delivery quality - Rating"], rating);
+    }
+    // Another team keeps its scores.
+    assert.equal(rowFor(result, "201")["Delivery quality - Points"], "23.25");
+  }
+  const result = scoreWith(15);
+  assert.equal(teamOf(result, "Engines").total, 25 + 22.5 + 15 + 25);
+  const [header] = parseCsv(EXPORT);
+  const pointsAt = header.indexOf("Delivery quality - Points");
+  const ratingAt = header.indexOf("Delivery quality - Rating");
+  assert.deepEqual(result.editedColumns, [
+    [ratingAt, pointsAt],
+    [ratingAt, pointsAt],
+    [],
+    [],
+    [],
+  ]);
+});
+
+test("an edit no input scores is listed, not applied", () => {
+  const before = run(NEUTRAL_EXPORT);
+  const delivery = cellOf(before, "Engines", "Delivery quality");
+  const result = run(NEUTRAL_EXPORT, {
+    overrides: {
+      Engines: {
+        cells: {
+          "Delivery quality": edit(delivery, { points: 26 }),
+          Teamwork: edit(delivery, { points: 10 }),
+        },
+      },
+      Looms: { cells: {}, note: "A team the roster does not have." },
+    },
+  });
+  assert.deepEqual(result.unapplied, [
+    { criterion: "Delivery quality", reason: "points", team: "Engines" },
+    { criterion: "Teamwork", reason: "criterion", team: "Engines" },
+    { criterion: null, reason: "team", team: "Looms" },
+  ]);
+  // Every reason has its wording.
+  for (const entry of result.unapplied) {
+    assert.doesNotMatch(scoreText.teams.unapplied.line(entry), /undefined/);
+  }
+  assert.equal(csvOf(result), csvOf(before));
+  assert.equal(cellOf(result, "Engines", "Delivery quality").review, true);
+});
+
+test("the team note goes first, labeled, in every criterion's Comments cell", () => {
+  assert.equal(teamComment("", "As written."), "As written.");
+  assert.equal(teamComment("", ""), "");
+  assert.equal(
+    teamComment(" Scored from the comment. ", "As written."),
+    `${labels.note}: Scored from the comment.\n\n${labels.comment}: As written.`
+  );
+  assert.equal(
+    teamComment("Scored from the comment.", ""),
+    `${labels.note}: Scored from the comment.`
+  );
+
+  const before = run(NEUTRAL_EXPORT);
+  const delivery = cellOf(before, "Engines", "Delivery quality");
+  const note = "Nothing to see by week 6; scored from the comment.";
+  const result = run(NEUTRAL_EXPORT, {
+    overrides: {
+      Engines: {
+        cells: { "Delivery quality": edit(delivery, { comment: "" }) },
+        note,
+      },
+    },
+  });
+  for (const id of ["101", "102"]) {
+    const row = rowFor(result, id);
+    assert.equal(
+      row["Responsiveness - Comments"],
+      teamComment(note, "Same-day answers.")
+    );
+    // An emptied comment leaves the note alone in the cell.
+    assert.equal(row["Delivery quality - Comments"], teamComment(note, ""));
+    assert.equal(row["Professionalism - Comments"], teamComment(note, ""));
+  }
+  assert.equal(
+    rowFor(result, "201")["Responsiveness - Comments"],
+    rowFor(before, "201")["Responsiveness - Comments"]
+  );
+  assert.equal(teamOf(result, "Engines").note, note);
+  const [header] = parseCsv(EXPORT);
+  const comments = EXPORT_CRITERIA.map((name) =>
+    header.indexOf(`${name} - Comments`)
+  );
+  assert.deepEqual(result.editedColumns[0].toSorted(), comments.toSorted());
+
+  // An emptied comment with no note clears the cell, as an empty answer does.
+  const cleared = run(NEUTRAL_EXPORT, {
+    overrides: {
+      Engines: {
+        cells: {
+          Responsiveness: edit(cellOf(before, "Engines", "Responsiveness"), {
+            comment: "",
+          }),
+        },
+      },
+    },
+  });
+  assert.equal(rowFor(cleared, "101")["Responsiveness - Comments"], "");
+  assert.equal(cellOf(cleared, "Engines", "Responsiveness").edited, true);
+});
+
+test("an edit made against another answer applies, flagged again, and shows both", () => {
+  const delivery = cellOf(run(NEUTRAL_EXPORT), "Engines", "Delivery quality");
+  const compilers = cellOf(run(NEUTRAL_EXPORT), "Compilers", "Reflection");
+  const overrides = {
+    Compilers: { cells: { Reflection: edit(compilers, { points: 25 }) } },
+    Engines: { cells: { "Delivery quality": edit(delivery, { points: 15 }) } },
+  };
+  // The export again, with Delivery answered Strongly agree and a late
+  // response from Compilers.
+  const result = run(
+    pulseExport([
+      response("Engines", [
+        "Strongly agree",
+        "Somewhat agree",
+        "Strongly agree",
+        "Strongly agree",
+      ]),
+      response("Compilers", STRONG),
+    ]),
+    { overrides }
+  );
+  const stale = cellOf(result, "Engines", "Delivery quality");
+  assert.equal(stale.stale, true);
+  assert.equal(stale.review, true);
+  assert.equal(stale.reviewed, false);
+  assert.deepEqual(stale.against, delivery.answered);
+  assert.equal(stale.answered.points, 25);
+  assert.equal(stale.final.points, 15);
+  assert.equal(rowFor(result, "101")["Delivery quality - Points"], "15");
+
+  const late = cellOf(result, "Compilers", "Reflection");
+  assert.equal(late.stale, true);
+  assert.equal(late.review, true);
+  assert.equal(late.against.points, 23.25);
+  assert.equal(late.final.points, 25);
+  // Its answer and its edit agree on the points, so nothing is edited.
+  assert.equal(late.edited, false);
+});
+
+test("the editor saves only what changes; a kept neutral answer is the reviewed mark", () => {
+  const before = run(NEUTRAL_EXPORT);
+  const neutral = cellOf(before, "Engines", "Delivery quality");
+  const plain = cellOf(before, "Engines", "Responsiveness");
+  const said = (cell) => cell.answered.comment;
+
+  assert.deepEqual(editOf(neutral, { comment: said(neutral), points: null }), {
+    against: neutral.answered,
+    comment: null,
+    points: null,
+  });
+  assert.equal(editOf(plain, { comment: said(plain), points: null }), null);
+  // Points or a comment equal to the answer's are kept as null.
+  assert.equal(editOf(plain, { comment: said(plain), points: 25 }), null);
+  assert.deepEqual(editOf(plain, { comment: "", points: 22.5 }), {
+    against: plain.answered,
+    comment: "",
+    points: 22.5,
+  });
+
+  const delivery = criterion("pulse", "Delivery quality");
+  assert.equal(pointsFit(delivery, 0), true);
+  assert.equal(pointsFit(delivery, 25), true);
+  assert.equal(pointsFit(delivery, 25.5), false);
+  assert.equal(pointsFit(delivery, -1), false);
+  assert.equal(pointsFit(delivery, Number.NaN), false);
+});
+
+test("an edit is saved under its team and criterion; an empty team is dropped", () => {
+  const kept = { against: {}, comment: null, points: null };
+  const one = withEdit(
+    {},
+    { criterion: "Reflection", edit: kept, note: "", team: "Engines" }
+  );
+  assert.deepEqual(one, { Engines: { cells: { Reflection: kept }, note: "" } });
+  const noted = withEdit(one, {
+    criterion: "Reflection",
+    edit: null,
+    note: "A note.",
+    team: "Engines",
+  });
+  assert.deepEqual(noted, { Engines: { cells: {}, note: "A note." } });
+  assert.deepEqual(
+    withEdit(noted, {
+      criterion: "Reflection",
+      edit: null,
+      note: "",
+      team: "Engines",
+    }),
+    {}
+  );
 });
