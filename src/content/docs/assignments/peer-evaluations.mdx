@@ -52,7 +52,7 @@ import catmeCsv from '/canvas/assignments/peer-evaluation/catme-rubric.csv?raw';
 
 Peer evaluations are how you evaluate the contributions of your teammates, and they evaluate yours. The midterm survey is a pulse check and an early-warning channel; the end-of-term survey carries real weight.
 
-Both surveys are scored per student from what your teammates answer. The midterm survey every term and the end-of-term survey in fall and winter use [four criteria and a 100-point distribution](#the-per-term-instrument); the end-of-term survey in spring is the [CATME survey](#the-catme-survey), with a rubric of its own.
+Both surveys compute your score from your teammates' ratings, and the instructors [review the results](#instructor-review) before any score stands. The midterm survey every term and the end-of-term survey in fall and winter use [four criteria and a 100-point distribution](#the-per-term-instrument); the end-of-term survey in spring is the [CATME survey](#the-catme-survey), with a rubric of its own.
 
 :::caution
 If you don't complete a survey, you score a flat 50 out of 100 on that survey's entry, whatever ratings your teammates gave you. Completing means submitting the survey, every required question answered, before it closes.
@@ -85,7 +85,7 @@ The numbers only compare across teams if everyone means the same thing by them. 
 
 Check before you rate. Open the sprint notes and look for the contribution line each sprint; open the repository and the team's tracker and count the work each person owned, reviews given, and issues closed; think back over who was at the meetings. A rating you cannot connect to something you saw is a guess, and the instructor reads the comments against the same record (NDA teams: at the walkthrough or the defense).
 
-For the **second task**, you distribute 100 points among team members, including yourself. Each member can receive between 0 and 100, and the survey does not submit until the total is 100. Give yourself at least 100/N points, rounded down, where N is the number of team members; the survey shows your minimum. A self share below the minimum is raised to it, and your teammates' shares are scaled down so the total stays 100. A team of two has no minimum and its own review rule (see [Teams of Two](#teams-of-two)).
+For the **second task**, you distribute 100 points among team members, including yourself. Each member can receive between 0 and 100, and the survey does not submit until the total is 100. Give yourself at least 100/N points, rounded down, where N is the number of team members; the survey shows your minimum. A self share below the minimum is raised to it, and your teammates' shares are scaled down so the total stays 100. A team of two has no minimum (see [Teams of Two](#teams-of-two)).
 
 ### Qualitative Feedback
 
@@ -122,9 +122,15 @@ The final peer score is the average of five numbers: the four criteria scores an
 
 Worked example, team of 4: teammates' ratings average to 4, 4, 5, 4 on the four criteria, converting to 87.5, 87.5, 100, 87.5. On the distribution, your teammates gave you an average of 28 points; normalized for team size (× 4 ÷ 5) that is 22.4, within the [10, 40] clamp; the formula gives 0.65 + 0.0225(22.4) − 0.00025(22.4²) = 1.03, so the distribution score is 103. Final peer score: (87.5 + 87.5 + 100 + 87.5 + 103) / 5 = **93.1**.
 
+## Instructor Review
+
+The instructors review each survey's results before any score stands, checking with your Teaching Assistant (TA) when they need more context. They look closer at a score that stands out: for example, a score well below your teammates', a team well below the others, a score resting on one teammate's ratings, or a score well below your earlier ones.
+
+A review can raise or lower a score as far as the record supports, down to zero. The reason you get cites the record, never a rater or a comment.
+
 ## Teams of Two
 
-On a team of two, every score you receive comes from your one teammate, so your scores show the ratings and points they gave you, and theirs show what you gave them. On the four-criteria survey, there is no self-allocation floor: an even split is 50 points each, and an instructor reviews a split outside 45 to 55. On either survey, an instructor reviews a two-person team against the repo record and partner feedback before the score stands when the ratings you received average below 3 on the 1 to 5 scale, or when your average rating of your teammate and theirs of you are 1.5 points or more apart. A single teammate's ratings never finalize a low score on a team of two without corroboration.
+On a team of two, every score you receive comes from your one teammate, so your scores show the ratings and points they gave you, and theirs show what you gave them. On the four-criteria survey, there is no self-allocation floor: an even split is 50 points each.
 
 ## The CATME Survey
 
@@ -138,7 +144,7 @@ The score comes from the ratings alone:
 2. Convert each average to the 50-100 scale, which differs from the four criteria's: 1 = 50, 2 = 67.5, 3 = 85, 4 = 92.5, 5 = 100, with an average between two ratings scoring between them.
 3. Your score is the mean of the five converted averages. With no distribution, the maximum is 100.
 
-The completion penalty and the review on a team of two apply as they do to every other survey. If your CATME score is 15 or more points below the average of your earlier peer scores this year (the midterm and end-of-term surveys in fall and winter, and the spring midterm), an instructor reviews it against the repository record, the comments, and partner feedback before it stands.
+The completion penalty and the [instructor review](#instructor-review) apply as they do to every other survey.
 
 ## What You Submit
 

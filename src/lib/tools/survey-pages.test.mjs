@@ -73,9 +73,9 @@ test("a team of four sees intro, a rating page per member, then the split", () =
   assert.equal(closing.questions.at(-1).html, variants.midterm.question);
 });
 
-test("a team of two sees the even-split range instead of the floor", () => {
+test("a team of two sees the even split instead of the floor", () => {
   const closing = surveyPages(survey("final"), pair).at(-1);
-  assert.match(closing.questions[0].html, /45 to 55/);
+  assert.match(closing.questions[0].html, /An even split is 50 points each/);
   assert.equal(closing.questions[1].choices.length, 2);
   assert.equal(closing.questions.at(-1).html, variants.final.question);
 });

@@ -23,7 +23,7 @@
 //      question, and Meta Info. The last page's button reads Submit.
 //
 // The floor on the self share (SelfFloor) is stated directly above the split,
-// on teams of three or more; teams of two see the review range instead. It is
+// on teams of three or more; teams of two see the even split instead. It is
 // not validated: a question takes one validation type, and the split's is the
 // total. The scorer raises a self share below the floor (#6).
 

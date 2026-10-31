@@ -212,7 +212,7 @@ export const prepareText = {
 export const scoreText = {
   concerns: {
     after:
-      "Instructor only: it starts the corroboration review, and nothing in it goes to a student. Keep it with the course records.",
+      "Instructor only: a flag in it starts an individual review, and nothing in it goes to a student. Keep it with the course records.",
     download: (name) => `Download ${name}`,
     none: "No response raised a concern or wrote in a text question.",
     summary: (n) => `${plural(n, "response")}, instructor only.`,

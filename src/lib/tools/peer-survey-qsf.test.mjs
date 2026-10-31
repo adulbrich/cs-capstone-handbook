@@ -273,14 +273,15 @@ test("the split carries the roster forward, totals 100, and is forced", () => {
   assert.doesNotMatch(split.QuestionText, /SelfFloor/);
 });
 
-test("the floor shows on teams of three or more, the review range on teams of two", () => {
+test("the floor shows on teams of three or more, the even split on teams of two", () => {
   for (const mode of ["loop", "slots"]) {
     const survey = make({ mode });
     const floor = questionByTag(survey, "SplitFloor");
     const pair = questionByTag(survey, "SplitPair");
     assert.equal(floor.QuestionType, "DB");
     assert.match(floor.QuestionText, /\$\{e:\/\/Field\/SelfFloor\}/);
-    assert.match(pair.QuestionText, /45 to 55/);
+    assert.match(pair.QuestionText, /An even split is 50 points each/);
+    assert.doesNotMatch(pair.QuestionText, /review/);
     for (const [question, operator] of [
       [floor, "GreaterThan"],
       [pair, "EqualTo"],
@@ -716,8 +717,11 @@ test("every variant's output is byte-identical to the reviewed build", () => {
   // six moved when the last block's Next button became Submit (#535): with
   // that block's options reset, the file hashes to the previous values. All
   // six moved again when the empty-Team guard was dropped: every other
-  // question is unchanged but for its renumbered ID. A wording or rubric
-  // change changes them on purpose: regenerate and update the hashes then.
+  // question is unchanged but for its renumbered ID. The four regular hashes
+  // moved when the team-of-two split note dropped its review range (#615):
+  // with that sentence restored, the file hashes to the previous values. A
+  // wording or rubric change changes them on purpose: regenerate and update
+  // the hashes then.
   // The two SurveyEntry timestamps are written in local time, so they are
   // blanked before hashing; the hash then holds in every time zone.
   const expected = {
@@ -726,13 +730,13 @@ test("every variant's output is byte-identical to the reviewed build", () => {
     "catme slots":
       "77840a0a394b35c75ba3665efbf24e657b0cf323c4f98f53decba5ec262b5d29",
     "final loop":
-      "a4f4943b2f36c46dd6cf24f032525c0d2d08dc04abfc00fe7565bdbd622f4135",
+      "7f85c728a155cdaf6eaf7483c092dd1d009969eddf2d0d00f46cc65ab60fcb62",
     "final slots":
-      "373f923257773d4273483f4f6e1b07be0311a07dbf89a1a0aa2e6798e8dabb1a",
+      "5a2cded9fb2d20c0498afd1e40172b02e35f57e7bc36df2b3266ae7745886a7a",
     "midterm loop":
-      "5d4dfcb1088b53b951911d765f09724836e0f8379a1de23f77e6860df77cada5",
+      "d5ef9abb22397c3e0f098e9aa98689abe371eeba6ff3e0a5408876a099b2c351",
     "midterm slots":
-      "38cf086734b9e8507d9ff5e5136eae77fd77a35c8cabd52c4a9d76e2dfece434",
+      "70a5371c6d862ca40280b3e332c64590a98d56ff84697486b67aee7f8f469b39",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");

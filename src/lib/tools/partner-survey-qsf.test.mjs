@@ -288,8 +288,9 @@ test("the intro pipes the team and close date and names the rubric's own words",
   const intro = byTag("Start").QuestionText;
   assert.match(intro, /\$\{e:\/\/Field\/Team\}/);
   assert.match(intro, /\$\{e:\/\/Field\/MidtermCloseDate\}/);
-  assert.match(intro, /set 5% of each student's grade/);
-  assert.match(intro, /sets 20%/);
+  assert.match(intro, /starting point for 5% of each student's grade/);
+  assert.match(intro, /starting point for 20%, goes into more depth/);
+  assert.match(intro, /instructors read every response/);
   assert.match(intro, /from Strongly agree down to Strongly disagree/);
   assert.ok(intro.includes(OPTIONS.pageUrl));
   // The scale's top comes from the CSV.
@@ -835,7 +836,8 @@ test("the end-of-term intro pipes the team and close date, and states the page's
         `worth ${rules.between.join("% or ")}% of the facet's points`
       )
     );
-    assert.match(intro, /set 20% of each student's grade/);
+    assert.match(intro, /starting point for 20% of each student's grade/);
+    assert.match(intro, /instructors read every response/);
     assert.match(intro, /on 6 facets/);
     assert.ok(intro.includes(OPTIONS.pageUrl));
     assert.match(intro, /below the top anchor asks for one sentence/);

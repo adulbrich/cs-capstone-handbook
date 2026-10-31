@@ -118,8 +118,7 @@ export const surveyText = {
   splitFloor:
     "Give yourself at least <b>${e://Field/SelfFloor}</b> points, whether or not you feel you deserve them.",
   // Shown above the split on teams of two instead.
-  splitPair:
-    "An even split is 50 points each. The instruction team reviews any split outside 45 to 55.",
+  splitPair: "An even split is 50 points each.",
   // Survey Options' meta description, per instrument.
   summary: {
     catme: "Rate yourself and each teammate on the five teamwork dimensions.",
