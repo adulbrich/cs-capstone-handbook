@@ -176,14 +176,15 @@ Current canonical homes:
 | How work is submitted: one PDF, every author named on the cover | `assignments/introduction.mdx` |
 | Each entry's late rule | `late` in frontmatter, wording in `src/lib/canvas-entries.mjs` |
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
-| The external clocks behind the top rungs, and that a project may depend on several or none | `guides/shipping.mdx` |
+| The external prerequisites behind the top levels, and that a project may depend on several or none | `guides/shipping.mdx` |
+| What access to ask a partner for in the first weeks | `assignments/term-startup.mdx` (fall item 6) |
 | What shipped means for a project, agreed with the partner and recorded | `assignments/definition-of-shipped.mdx` |
 | The inherited-codebase audit and what it covers | `assignments/repo-checkpoints.mdx` |
 | What each project-repository document holds, except `CONTRIBUTING.md` | `assignments/repo-checkpoints.mdx` |
 | What `CONTRIBUTING.md` holds | `assignments/team-charter.mdx` |
 | IP, NDA, and licensing policy | `introduction/ip-nda-and-licensing.mdx` |
 | How projects are proposed, how teams form, how either changes | `introduction/for-students.mdx` |
-| V&V outcome ladder (one ladder, every project) | its rungs in `canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv`, shown by `<RubricCriterion>` under `assignments/project-partner-evaluation.mdx#spring` |
+| V&V outcome ladder (one ladder, every project) | its levels in `canvas/assignments/project-partner-evaluation/partner-final-spring-rubric.csv`, shown by `<RubricCriterion>` under `assignments/project-partner-evaluation.mdx#spring` |
 | Where each outcome is evidenced | `learning-objectives/mapping.mdx` |
 | Week-by-week schedule | `introduction/schedule.mdx` |
 | The handbook's vocabulary and the synonyms it rejects | `about/glossary.mdx` (`CONTEXT.md` points agents there) |

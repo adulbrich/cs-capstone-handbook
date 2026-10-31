@@ -1,6 +1,6 @@
 ---
 title: Shipping
-description: The playbook for reaching the top rungs of the outcome ladder, planned backward from the end of the project and started in its first week.
+description: How to reach the top levels of the outcome ladder, planned backward from the end of the project and started in its first week.
 sidebar:
   order: 17
 ---
@@ -8,41 +8,41 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Early in a project, you and your project partner or mentor agree what "shipped" will mean when the project ends. That agreement decides which clocks you have to start in the first weeks, and most of those clocks belong to someone else. This page gives you a way to measure shipped, then works through the four processes outside the team that the top rungs wait on (maintainers merging a contribution, people using it without you, someone reproducing a result, and the partner's environment) with the prerequisites, lead times, blockers, and evidence for each. It doesn't cover how to deploy, which is in the [DevOps guide](/guides/devops/).
+Early in a project, you and your project partner or mentor agree what "shipped" will mean when the project ends. That agreement decides which requests you have to start in the first weeks, and most of them wait on someone else. This page gives you a way to measure shipped, then works through the four processes outside the team that the top levels wait on (maintainers merging a contribution, people using it without you, someone reproducing a result, and the partner's environment) with the prerequisites, lead times, blockers, and evidence for each. It doesn't cover how to deploy, which is in the [DevOps guide](/guides/devops/).
 
 :::note[tl;dr]
-- Measure shipped by one question, who ran the software, and agree the rung you're aiming at with your partner in the first weeks.
-- Start every external clock in those weeks: store accounts, contributor agreements, data access, IRB review if the project is part of a research study with human subjects, the partner's IT review, a channel for recruiting users who owe you nothing.
+- Measure shipped by one question, who ran the software, and agree the level you're aiming at with your partner in the first weeks.
+- Start everything with a long lead time in those weeks: store accounts, contributor agreements, data access, the partner's IT review, a channel for recruiting users who owe you nothing.
 - Deploy a walking skeleton in the early phase: the thinnest slice of the system, running end to end where the real one will live.
 - If you contribute to an open-source project, get a trivial pull request merged early, and discuss any substantial change with the maintainers before you build it.
 - Wire in the measurement early, so the numbers exist by the time you need them.
 - Capture evidence the day it happens: the merged pull request, the dashboard, the partner's email.
-- Read every section your top rung depends on; if it depends on none of them, write your own expectations with your partner, and the rung you both agree to is your target.
+- Read every section your top level depends on; if it depends on none of them, write your own expectations with your partner, and the level you both agree to is your target.
 :::
 
 ## The Ladder
 
-"Shipped" isn't a single state. The most useful way to think about it is as a ladder measured by one question: who ran the software? At the bottom, nobody outside the team ran it. One rung up, your partner watched it run. Every rung above that describes someone outside the team running your work, and the top rung means people who aren't you depend on it: the partner's staff run it in their operations, a release of an open-source project includes your contributions, someone who didn't build it reproduces your result, or people use it on their own.
+"Shipped" isn't a single state. The most useful way to think about it is as a ladder measured by one question: who ran the software? At the bottom, nobody outside the team ran it. One level up, your partner watched it run. Every level above that describes someone outside the team running your work, and the top level means people who aren't you depend on it: the partner's staff run it in their operations, a release of an open-source project includes your contributions, someone who didn't build it reproduces your result, or people use it on their own.
 
-The top rungs wait on clocks you don't control: maintainer review, app store review, data access, IRB approval for a research study with human subjects, a partner's IT security review, and recruiting users who owe you nothing. AI coding tools can speed up the work you control, but not someone else's queue. Choose the rung you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them.
+The top levels wait on processes you don't control: maintainer review, app store review, data access, a partner's IT security review, and recruiting users who owe you nothing. AI coding tools can speed up the work you control, but not someone else's queue. Choose the level you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them.
 
-The four sections after the walking skeleton group those clocks by whose action the rung waits on: maintainers, people using it, whoever reproduces the result, and the partner. Read every section your top rung depends on; a partner's app that the public uses needs [Getting People to Use It Without You](#getting-people-to-use-it-without-you) and the partner's IT review from [Getting Into the Partner's Environment](#getting-into-the-partners-environment). If your rung waits on none of them, agree what it means with your partner or mentor and record it in the document where you and your partner record the rung.
+The four sections after the walking skeleton group those processes by whose action the level waits on: maintainers, people using it, whoever reproduces the result, and the partner. Read every section your top level depends on; a partner's app that the public uses needs [Getting People to Use It Without You](#getting-people-to-use-it-without-you) and the partner's IT review from [Getting Into the Partner's Environment](#getting-into-the-partners-environment). If your level waits on none of them, agree what it means with your partner or mentor and record it in the document where you and your partner record the level.
 
 Each section's timeline runs in three phases: Early, Middle, and Late, each roughly a third of the project.
 
 ## The Walking Skeleton
 
-Deploy a **walking skeleton** in the early phase: the thinnest version of the system that runs end to end, where the real one will live. For a web app that's a production URL; for an installable build, a release on the channel your users will install from; for a pipeline, a run on sample data in the compute environment the real run will use; for a contribution to an open-source project, a first pull request through that project's CI. It flushes out the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing, signing, compute quotas) while there's nothing to lose.
+Deploy a **walking skeleton** in the early phase: the thinnest version of the system that runs end to end, where the real one will live. For a web app that's a production URL; for an installable build, a release on the channel your users will install from; for a pipeline, a run on sample data in the compute environment the real run will use; for a contribution to an open-source project, a first pull request through that project's CI. It exposes the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing, signing, compute quotas) while there's nothing to lose.
 
-A slow first month can still be going well. When the partner asked for research and planning first, the skeleton comes with the first build, and a good early phase looks like that work delivered and reviewed, the approval filings in, a run on sample data, or a first contribution merged: little a user would notice, and every clock started.
+A slow first month can still be going well. When the partner asked for research and planning first, the skeleton comes with the first build, and a good early phase looks like that work delivered and reviewed, the approval filings in, a run on sample data, or a first contribution merged: little a user would notice, and every long wait already started.
 
 ## Getting a Contribution Merged Into an Open-Source Project
 
-Some projects contribute patches to an existing open-source project instead of starting their own: the [Rust compiler](https://github.com/rust-lang/rust), the [Xen hypervisor](https://xenproject.org/), the [Habitica](https://habitica.com/) todo-list game, a library a research group depends on, or a repository from the [OSU Open Source Lab](https://osuosl.org/). Its maintainers decide what merges, so the rungs read, from the bottom: a pull request open; reviewed and revised; merged; included in a release. Contributing to your partner's own codebase isn't this case, even when the repository is public, because there the partner decides what merges and [Getting Into the Partner's Environment](#getting-into-the-partners-environment) applies.
+Some projects contribute patches to an existing open-source project instead of starting their own: the [Rust compiler](https://github.com/rust-lang/rust), the [Xen hypervisor](https://xenproject.org/), the [Habitica](https://habitica.com/) todo-list game, a library a research group depends on, or a repository from the [OSU Open Source Lab](https://osuosl.org/). Its maintainers decide what merges, so the levels read, from the bottom: a pull request open; reviewed and revised; merged; included in a release. Contributing to your partner's own codebase isn't this case, even when the repository is public, because there the partner decides what merges and [Getting Into the Partner's Environment](#getting-into-the-partners-environment) applies.
 
 What separates open from merged isn't your code alone. It's a maintainer's attention and approval. In a study of pull requests on GitHub, <Cite id="tsay-2014" /> found that project managers deciding whether to accept a pull request used signals of good technical practice as well as of the strength of their social connection with the submitter, and that well-established projects were more conservative in accepting pull requests. That connection is something you build over the project, starting in its first weeks.
 
-Each rung has its own prerequisites:
+Each level has its own prerequisites:
 
 - **Open**: a working development setup for the upstream project, and its contribution workflow understood: a Contributor License Agreement (CLA) signed or each commit signed off under the [Developer Certificate of Origin](https://developercertificate.org/) (DCO), style and commit conventions followed, and tests passing in the project's CI.
 - **Reviewed and revised**: a maintainer chose to spend time on your pull request, and you answered every comment. Plan for more than one round on a substantive change, each one waiting in a queue you can't see, and answer each round within days, because a pull request that sits quiet looks abandoned.
@@ -71,21 +71,19 @@ Collect as you go: links to merged and in-review pull requests, the review threa
 
 ## Getting People to Use It Without You
 
-Some top rungs wait on people outside the team choosing to use what you built, without you there and not as a favor: a study app students in other majors adopt, a game players find on a storefront, a tool hobbyists install from a release page, a web service a local club signs up for. Nobody owes you their time, so the rungs read, from the bottom: friends tried a deployed build; a dozen people outside the team, not friends or classmates asked as a favor, or a completed user study; two dozen; sustained use by tens of heavy or hundreds of light users. The jump from friends to a dozen people who owe you nothing is the hard one, because those people find it only if it's public and stay only if it works without you on a call.
+Some top levels wait on people outside the team choosing to use what you built, without you there and not as a favor: a study app students in other majors adopt, a game players find on a storefront, a tool hobbyists install from a release page, a web service a local club signs up for. Nobody owes you their time, so the levels read, from the bottom: friends tried a deployed build; a dozen people outside the team, not friends or classmates asked as a favor, or a completed user study; two dozen; sustained use by tens of heavy or hundreds of light users. The jump from friends to a dozen people who owe you nothing is the hard one, because those people find it only if it's public and stay only if it works without you on a call.
 
-Each rung has its own prerequisites:
+Each level has its own prerequisites:
 
 - **Friends tried it**: a deployed URL or an installable build. "Clone the repo and run it" doesn't count as trying what you built.
 - **A dozen people outside the team**: a production URL with a real domain and TLS, an onboarding flow someone gets through without you on a call, a recruitment channel (a subreddit, a Discord server, a campus group, an itch.io page), and telemetry so you can show they came.
 - **Two dozen, and beyond**: retention, which means fixing what the first dozen users hit, which means having had those users early enough to iterate.
 
-Testing your product with users needs no IRB review, interviews and usability sessions included. Review applies only when the project is part of a research study with people as its subjects; [Getting Your Result Reproduced](#getting-your-result-reproduced) covers that clock.
+If you distribute through an app store, its review is another wait. Apple states that on average [90% of submissions are reviewed in less than 24 hours](https://developer.apple.com/distribute/app-review/), but that's the time for one round. A rejection sends you back to fix and resubmit, and Apple reports on the same page that over 40% of unresolved issues fall under guideline 2.1, App Completeness, which covers crashes, placeholder content, and incomplete information. Enrolling as an organization rather than an individual also needs a [D-U-N-S Number](https://developer.apple.com/help/account/membership/D-U-N-S/), which Apple says can take up to five business days to arrive from Dun & Bradstreet and up to two more business days to reach Apple.
 
-If you distribute through an app store, its review is another clock. Apple states that on average [90% of submissions are reviewed in less than 24 hours](https://developer.apple.com/distribute/app-review/), but that's the clock on one round. A rejection sends you back to fix and resubmit, and Apple reports on the same page that over 40% of unresolved issues fall under guideline 2.1, App Completeness, which covers crashes, placeholder content, and incomplete information. Enrolling as an organization rather than an individual also needs a [D-U-N-S Number](https://developer.apple.com/help/account/membership/D-U-N-S/), which Apple says can take up to five business days to arrive from Dun & Bradstreet and up to two more business days to reach Apple.
+Google Play adds a fixed wait of its own. A newer personal developer account must [run a closed test with at least 12 testers](https://support.google.com/googleplay/android-developer/answer/14151465), each opted in continuously for at least 14 days, before it can apply for production access; a tester who leaves early doesn't count. Recruit those testers before you need them, because the test can't finish until 12 testers have stayed opted in for 14 days.
 
-Google Play has a fixed clock of its own. A newer personal developer account must [run a closed test with at least 12 testers](https://support.google.com/googleplay/android-developer/answer/14151465), each opted in continuously for at least 14 days, before it can apply for production access; a tester who leaves early doesn't count. Recruit those testers before you need them, because the 14-day clock can't finish until you have 12 who stay.
-
-For games, [itch.io](https://itch.io/developers) is the fast path: you upload the build and create the page yourself, and itch.io describes that as instant distribution. Ship there early even if a store launch is the end goal, because players can try the build while the store clocks run, and their feedback reaches you before the store listing exists.
+For games, [itch.io](https://itch.io/developers) is the fast path: you upload the build and create the page yourself, and itch.io describes that as instant distribution. Ship there early even if a store launch is the end goal, because players can try the build while the store reviews run, and their feedback reaches you before the store listing exists.
 
 Add analytics or telemetry in the early phase: a privacy-focused page-view and event counter, a product analytics tool, or a simple event log. Any claim about use needs numbers, and the numbers exist only if the instrumentation was quietly collecting before you needed them.
 
@@ -105,36 +103,39 @@ Expect these blockers:
 - A domain or hosting account that belongs to one team member's personal login.
 - Above all, recruitment, if the channel wasn't built by the middle phase.
 
-Collect as you go: the production URL and its uptime history, dated analytics screenshots, user counts and testimonials, store listing links and review correspondence, the user study protocol and results, and retention numbers (repeat-use counts or week-over-week active users), which separate the top rungs from a launch spike.
+Collect as you go: the production URL and its uptime history, dated analytics screenshots, user counts and testimonials, store listing links and review correspondence, the user study protocol and results, and retention numbers (repeat-use counts or week-over-week active users), which separate the top levels from a launch spike.
 
 ## Getting Your Result Reproduced
 
-Some top rungs wait on someone who didn't build it getting your result again: a model a professor's lab wants to build on, an analysis a partner's group will rerun on next season's data, a benchmark a paper will report, a simulation another group extends. The aim is a result someone else can reproduce and, when it holds up, a paper. If you're considering graduate school, it's the work closest to what you'd do there, and a professor's research group, when there is one, gives you collaborators beyond your own team.
+Some top levels wait on someone who didn't build it getting your result again: a model a professor's lab wants to build on, an analysis a partner's group will rerun on next season's data, a benchmark a paper will report, a simulation another group extends. The aim is a result someone else can reproduce and, when it holds up, a paper. If you're considering graduate school, it's the work closest to what you'd do there, and a professor's research group, when there is one, gives you collaborators beyond your own team.
 
-Here the rungs read, from the bottom: your partner ran it once on real data, on your setup; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; someone who didn't build it, such as a graduate student in the lab, a peer, or another group, reproduced the result from the published artifact without your help, which is what a paper is for.
+Here the levels read, from the bottom: your partner ran it once on real data, on your setup; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; someone who didn't build it, such as a graduate student in the lab, a peer, or another group, reproduced the result from the published artifact without your help, which is what a paper is for.
 
-Each rung has its own prerequisites:
+Each level has its own prerequisites:
 
-- **Your partner ran it on real data**: a pipeline that runs end to end on sample data before the real data arrives, so that when it does you're debugging the science instead of the plumbing; then the real dataset, which means data access agreements and possibly IRB approval, both of them clocks you don't control; and a setup your partner can run without you at the keyboard.
+- **Your partner ran it on real data**: a pipeline that runs end to end on sample data before the real data arrives, so that when it does you're debugging the science instead of the setup; then the real dataset, which means a data access agreement, with a lead time you don't control; and a setup your partner can run without you at the keyboard.
 - **Your partner's group ran it**: instructions good enough for someone else to run the pipeline on their own machine, and time to fix what they find.
 - **Someone outside the team reran it**: the reproducible artifact described below, and a reproduced baseline to compare against.
 - **Reproduced from the published artifact**: the artifact published where that person can find it (with the paper, as a preprint, or in an archived repository), compute for larger runs, and enough calendar time to iterate after the first results disappoint you.
 
-Start the data-access clock, and the IRB clock if the project needs one, in your first week. An Institutional Review Board (IRB) reviews research that involves human subjects, and at Oregon State the [Human Research Protection Program](https://research.oregonstate.edu/ori/irb) requires IRB approval or an exempt determination before any study activity starts, including recruitment or the analysis of existing data. A project needs it when it is part of a research study, such as a faculty partner's, that has people as its subjects; testing a product with its users is not that research. An exempt determination is still a review with a queue, a request for revisions adds a round, and a data use agreement between institutions goes through the legal office on each side. Ask your partner in the first meeting which approvals the project needs and who files them.
+Ask for data access in your first week, because a data use agreement between institutions goes through the legal office on each side. Ask your partner in the first meeting which approvals the project needs and who files them.
 
-Reproducibility is the bar for every rung above the first, because a result that exists only on one laptop can't be checked by anyone, including you a month later. When <Cite id="collberg-2016" /> tried to build the code behind published computer systems papers, the lead developer often couldn't be reached to help, in some cases because the student responsible for the code had graduated.
+:::note[Human Subjects]
+IRB (Institutional Review Board) review applies only when the project is part of a research study with people as its subjects, such as a faculty partner's study that interviews, surveys, or observes them. The institution running the study (at Oregon State, the [Human Research Protection Program](https://research.oregonstate.edu/ori/irb)) approves it, or determines it exempt, before any study activity starts, including recruitment or the analysis of existing data, and whoever runs the study files it. Even an exempt determination waits in a queue, so ask in the first meeting whether it applies. Testing your product with users only to improve it needs no review, interviews and usability sessions included.
+:::
+
+Reproducibility is the bar for every level above the first, because a result that exists only on one laptop can't be checked by anyone, including you a month later. When <Cite id="collberg-2016" /> tried to build the code behind published computer systems papers, the lead developer often couldn't be reached to help, in some cases because the student responsible for the code had graduated.
 
 A reproducible artifact has pinned dependencies (a lock file or a container), versioned or precisely referenced data, seeded runs, one documented command from a clean checkout to the result table, and a README someone who didn't build it can follow. The test is literal: another team member, or your professor's graduate student, runs it fresh and gets your numbers. **Reproduce the baseline before you attempt anything novel**, because if you can't reproduce the published number you're comparing against, you can't claim to beat it.
 
 | Phase | What must be true |
 |---|---|
-| Early | Data-access filings, and the IRB filing where the project needs one, submitted; pipeline runs end to end on sample data; baseline identified and reproduction started |
+| Early | Data-access requests filed; pipeline runs end to end on sample data; baseline identified and reproduction started |
 | Middle | Real data in hand; baseline reproduced; first real experiments run; results tracked and versioned |
 | Late | Novel experiments complete; artifact reproduced by someone who didn't build it; paper or report drafted with your partner |
 
 Expect these blockers:
 
-- IRB revision rounds, where the project has an IRB filing.
 - Data agreements stalled in legal review.
 - The baseline paper's code not actually running.
 - Compute quotas.
@@ -144,21 +145,21 @@ Collect as you go: approval letters and agreement dates, the reproducible artifa
 
 ## Getting Into the Partner's Environment
 
-Some top rungs describe things the partner does: an internal tool for a company, a study tool for a professor in another department, and a citizen-science app for a nonprofit all end up running in the partner's environment, operated by the partner's people. Here the rungs read, from the bottom: the partner tried a prototype; their feedback addressed in a newer version; the partner integrating it into production; the partner running it in operations. The top two rungs are the partner's actions, not yours, so the hardest prerequisites on your list are theirs to satisfy, and your job is to make those actions easy, safe, and early.
+Some top levels describe things the partner does: an internal tool for a company, a study tool for a professor in another department, and a citizen-science app for a nonprofit all end up running in the partner's environment, operated by the partner's people. Here the levels read, from the bottom: the partner tried a prototype; their feedback addressed in a newer version; the partner integrating it into production; the partner running it in operations. The top two levels are the partner's actions, not yours, so the hardest prerequisites on your list are theirs to satisfy, and your job is to make those actions easy, safe, and early.
 
-Each rung has its own prerequisites:
+Each level has its own prerequisites:
 
 - **Feedback on a prototype, then addressed**: something deployed where the partner can click through it, early enough that their feedback can shape the next version.
 - **Partner integrating**: the system running in the partner's environment, which means their IT department has said yes: accounts provisioned, security review passed, data handling approved.
 - **In operations**: all of the above, plus a handoff the partner's people can operate without you.
 
-**Ask about IT and security review in your first meeting with the partner**: "Who has to approve software running in your environment, and how long does that take?" At a small nonprofit the answer may be "the director, tomorrow." At a hospital, a school district, a government agency, or a large company, expect a formal review that can include penetration tests, data protection assessments, or vendor onboarding forms, and plan for it to take months until someone there tells you otherwise, because an early start costs you nothing and a late one costs you the rung. Whatever the answer, write it into your plan with an owner and a start-by date.
+**Ask about IT and security review in your first meeting with the partner**: "Who has to approve software running in your environment, and how long does that take?" At a small nonprofit the answer may be "the director, tomorrow." At a hospital, a school district, a government agency, or a large company, expect a formal review that can include penetration tests, data protection assessments, or vendor onboarding forms, and plan for it to take months until someone there tells you otherwise, because an early start costs you nothing and a late one costs you the level. Whatever the answer, write it into your plan with an owner and a start-by date.
 
-Agree on acceptance criteria early and in writing. The feedback-addressed rung is only checkable against criteria the partner endorsed before you built; without them, the partner judges the late-phase system against what they remember asking for, which can differ from what you remember building.
+Agree on acceptance criteria early and in writing. The feedback-addressed level is only checkable against criteria the partner endorsed before you built; without them, the partner judges the late-phase system against what they remember asking for, which can differ from what you remember building.
 
 Stage the deployment: your own hosting first, for fast iteration and demos, then a staging instance in the partner's environment in the middle phase, then production in the late one. Don't skip the staging step, because it's where the partner's authentication scheme, network policies, and data access rules first meet your system, and meeting them in staging leaves time to adapt.
 
-Treat the handoff as part of the product. You'll leave and the system stays, so runbooks, admin documentation, credential transfer, a maintenance guide, and a trained contact on the partner's side are what let the partner's people run it without you, which is what the top rung asks for.
+Treat the handoff as part of the product. You'll leave and the system stays, so runbooks, admin documentation, credential transfer, a maintenance guide, and a trained contact on the partner's side are what let the partner's people run it without you, which is what the top level asks for.
 
 | Phase | What must be true |
 |---|---|
@@ -168,7 +169,7 @@ Treat the handoff as part of the product. You'll leave and the system stays, so 
 
 Expect these blockers:
 
-- Security review dead time: weeks with no visible progress.
+- A security review that shows no progress for weeks.
 - A single overloaded IT contact on the partner's side.
 - Credential and access provisioning.
 - Data that can't leave the partner's network (design for this early).
@@ -178,36 +179,36 @@ Collect as you go: the signed acceptance criteria, meeting notes and emails show
 
 ## Best Practices for Shipping
 
-- Give every external clock an owner and a start-by date in your plan, and check them at each planning meeting, because a request stalled in someone else's queue makes no noise until you go looking for it.
+- Give every external prerequisite an owner and a start-by date in your plan, and check them at each planning meeting, because a request stalled in someone else's queue makes no noise until you go looking for it.
 - Treat recruiting users as a workstream, with an owner, a channel that exists, and backlog items, starting no later than the middle phase, because recruiting that is nobody's task waits until the week the users are needed.
-- Plan for the rung you can show someone running, not the one you hope to reach, because a rung nobody outside the team has run is a rung you haven't reached.
-- Link each piece of evidence from the document where you and your partner recorded the rung as soon as you capture it, because that document is where anyone checking your progress, your partner included, looks first.
+- Plan for the level you can show someone running, not the one you hope to reach, because a level nobody outside the team has run is a level you haven't reached.
+- Link each piece of evidence from the document where you and your partner recorded the level as soon as you capture it, because that document is where anyone checking your progress, your partner included, looks first.
 
 ## Some Truths About Shipping
 
-The last tenth of a project isn't a tenth of the work. A plan that says "build until a month before the end, then ship" is a plan for the bottom of the ladder, because the top rungs are gated on reviews, approvals, and users whose clocks that plan never started.
+The last tenth of a project isn't a tenth of the work. A plan that says "build until a month before the end, then ship" is a plan for the bottom of the ladder, because the top levels wait on reviews, approvals, and users the plan never asked for in time.
 
-Every external clock starts later than you think and runs longer than you were told. The estimate you get from an IT department, an IRB coordinator, or a maintainer is how long their step takes when nothing goes wrong. It leaves out the time your request sits in a queue before anyone reads it, and the revision round that follows. A week you waited before joining the queue can't be made up later, so the first lever you have, and the one that's entirely yours, is when you join it.
+Every external wait starts later than you think and runs longer than you were told. The estimate you get from an IT department, a data owner, or a maintainer is how long their step takes when nothing goes wrong. It leaves out the time your request sits in a queue before anyone reads it, and the revision round that follows. A week you waited before joining the queue can't be made up later, so the one thing entirely in your control is when you join it.
 
 A trivial thing shipped early is worth more than an impressive thing that never ships. The walking skeleton, the typo pull request, and the sample-data pipeline have no value as features. Their value is that each one runs the whole external chain once (domain, TLS, contributor agreement, CI, review, data access), so the problems surface when you have months to fix them instead of days.
 
 People who owe you nothing aren't friends who haven't heard of you yet. Friends try your software because they like you, and they forgive an onboarding flow that needs you on a call. Everyone else arrives slowly through channels that take time to build, and leaves at the first confusing screen, so a post in a forum the week you need them brings you very few.
 
-"The partner will deploy it after the project ends" describes the feedback rung while claiming the operations rung. Once the team is gone, nobody is left to fix whatever differs in the partner's environment (an authentication scheme, a network policy, a data access rule), so a plan that stops short of deploying there ends one rung lower than it claims.
+"The partner will deploy it after the project ends" describes the feedback level while claiming the operations level. Once the team is gone, nobody is left to fix whatever differs in the partner's environment (an authentication scheme, a network policy, a data access rule), so a plan that stops short of deploying there ends one level lower than it claims.
 
-Maintainers, reviewers, IRB coordinators, and IT departments are people with queues, not services with a guaranteed response time. Each of them decides which of many requests to handle next. A request from someone who asked early, followed the process, and answered the last question quickly is easier to handle than one that arrives late and incomplete, so how you work with them changes how long the process takes.
+Maintainers, reviewers, data owners, and IT departments are people with queues, not services with a guaranteed response time. Each of them decides which of many requests to handle next. A request from someone who asked early, followed the process, and answered the last question quickly is easier to handle than one that arrives late and incomplete, so how you work with them changes how long the process takes.
 
-If your shipping plan has no date before the project's midpoint, it's a wish rather than a plan. A late date can't slip without taking the rung with it, while an early date that slips is information you can still act on, by renegotiating the rung with your partner in the open or by moving the work.
+If your shipping plan has no date before the project's midpoint, it's a wish rather than a plan. A late date can't slip without taking the level with it, while an early date that slips is information you can still act on, by renegotiating the level with your partner in the open or by moving the work.
 
 Evidence collected in the moment costs minutes. Evidence reconstructed at the end is thin, undated, and unconvincing, because the dashboard has been reset, the email thread is buried, and nobody remembers when the first user outside the team signed up.
 
 ## Shipping in Industry and Academia
 
-Industry has spent years removing the ceremony between a commit and production. [Continuous delivery](https://continuousdelivery.com/), [trunk-based development](https://trunkbaseddevelopment.com/), and [feature flags](https://martinfowler.com/articles/feature-toggles.html) exist so that shipping is a routine event rather than a quarterly one, and [DORA](https://dora.dev/) (DevOps Research and Assessment) is a research program on the capabilities that drive software delivery and operations performance. Its 2019 State of DevOps report, an industry report drawing on six years of research and data from over 31,000 professionals, measures delivery with four metrics: lead time for changes, deployment frequency, time to restore service, and change failure rate <Cite id="forsgren-2019" form="parenthetical" />.
+Industry has spent years removing the manual steps between a commit and production. [Continuous delivery](https://continuousdelivery.com/), [trunk-based development](https://trunkbaseddevelopment.com/), and [feature flags](https://martinfowler.com/articles/feature-toggles.html) exist so that shipping is a routine event rather than a quarterly one, and [DORA](https://dora.dev/) (DevOps Research and Assessment) is a research program on the capabilities that drive software delivery and operations performance. Its 2019 State of DevOps report, an industry report drawing on six years of research and data from over 31,000 professionals, measures delivery with four metrics: lead time for changes, deployment frequency, time to restore service, and change failure rate <Cite id="forsgren-2019" form="parenthetical" />.
 
 On deployment frequency, the report's elite group said they deploy on demand, multiple times per day, while low performers said they deploy between once a month and once every six months, and the report notes that companies such as Amazon, Google, and Netflix deploy thousands of times per day across the hundreds of services in their production environments <Cite id="forsgren-2019" form="parenthetical" />. Its respondents were recruited through email lists, online promotions, and social media, and asked to pass the survey on, so the report says its sample is likely limited to organizations and teams familiar with DevOps <Cite id="forsgren-2019" form="parenthetical" />.
 
-Deploying often doesn't make a launch trivial. Google's site reliability engineers published the [launch coordination checklist](https://sre.google/sre-book/launch-checklist/) Google used before a new service went live, covering architecture, capacity, failover, security, and more, which is the top rung of getting into a partner's environment with a checklist attached.
+Deploying often doesn't make a launch trivial. Google's site reliability engineers published the [launch coordination checklist](https://sre.google/sre-book/launch-checklist/) Google used before a new service went live, covering architecture, capacity, failover, security, and more, which is the top level of getting into a partner's environment with a checklist attached.
 
 In computing research, artifact evaluation committees review the code and data behind accepted papers. The [Artifact Evaluation](https://artifact-eval.org/) site lists committees going back to ESEC/FSE 2011, and the [cTuning foundation](https://ctuning.org/ae/) still supports the process at systems conferences. ACM's [artifact review and badging policy](https://www.acm.org/publications/policies/artifact-review-and-badging-current) defines three independent badges: Artifacts Evaluated (Functional or Reusable) for artifacts that passed an independent audit, Artifacts Available for artifacts placed in a permanent public archive, and Results Validated (Reproduced or Replicated) for main results that someone other than the authors obtained again.
 
@@ -230,12 +231,11 @@ At one psychology journal, badges changed how much data authors shared. <Cite id
 
 **Activities that exercise this**
 
-- [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals): every clock on this page, with an owner and a start date.
+- [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals): every external prerequisite on this page, with an owner and a start date.
 - [Identify Success Metrics](/activities/requirements/#identify-success-metrics): the numbers your instrumentation has to produce.
 - [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning): decide what a release means for your project before you need to cut one.
 - [Definition of Done](/activities/team-and-workflow/#definition-of-done): the standard a demo has to meet before it counts.
 - [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan): the environment chain from your hosting to the partner's.
-- [Find Users](/activities/working-with-users/#find-users) and [Engage Users](/activities/working-with-users/#engage-users): the recruiting workstream the rungs about people outside the team depend on.
-- [Complete an IRB Application](/activities/planning-and-risk/#complete-an-irb-application): for a project that is part of a research study with human subjects. User testing of a product needs none.
-- [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline): the two reproduction rungs, made concrete.
+- [Find Users](/activities/working-with-users/#find-users) and [Engage Users](/activities/working-with-users/#engage-users): the recruiting workstream the levels about people outside the team depend on.
+- [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline): the two reproduction levels, made concrete.
 - [OSU Advantage Accelerator's Iterate Program](/activities/requirements/#osu-advantage-accelerators-iterate-program): pressure-tests a new product idea as a venture before you commit the project to it.

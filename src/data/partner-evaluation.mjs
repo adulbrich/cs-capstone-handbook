@@ -75,7 +75,7 @@ export const commentText = {
   keep: (criterion) =>
     `<b>${criterion}</b>: anything the team should keep doing? Optional.<br>${sharedNote}`,
   ladder: (criterion) =>
-    `<b>${criterion}</b>: what kept the team from the next rung? Optional.<br>${sharedNote}`,
+    `<b>${criterion}</b>: what kept the team from the next level? Optional.<br>${sharedNote}`,
 };
 
 /** What an end-of-term facet's required comment asks to reach. */
@@ -87,7 +87,7 @@ export const facetTop = "the top anchor";
  * which speaks about the partner to the student.
  */
 export const ladderPrompts = {
-  VnV: "Who has run the team's software? Pick the highest rung that is true today; your team's Definition of Shipped says what each rung means for this project. If it records a custom scale, score on that scale with the last choice.",
+  VnV: "Who has run the team's software? Pick the highest level that is true today; your team's Definition of Shipped says what each level means for this project. If it records a custom scale, score on that scale with the last choice.",
 };
 
 /**
