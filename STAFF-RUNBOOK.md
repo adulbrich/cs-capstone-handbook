@@ -229,7 +229,7 @@ Instructors carry no teams: comments on every RFC draft in fall and winter (10 t
 - [ ] Term Startup: 100 points in its own Term Startup group (1%), text entry, group submission, due Sunday of week 2 in fall and Sunday of week 1 in winter and spring, with `term-startup/term-startup-rubric.csv` attached. TAs grade it complete or incomplete in the week it is due.
 - [ ] Fall only: Demo Day Registration created by hand: 0 points, omit from final grade, file upload (registration screenshot), group submission, due Sunday of fall week 3. Announce the registration link with the five sessions, and once registration closes, post the lineup naming any session no team took: it does not run
 - [ ] Every term: an Extra Credit group (1%) holding one Demo Day Presentation entry, 100 points, no submission, group assignment. Enter 100 for each student on a team that presented that term; leave everyone else blank, never zero.
-- [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1), and the funds and cloud request form
+- [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1)
 - [ ] Spring only: Engineering Expo created by hand (0 points, omit from final grade, text entry, group submission), due Sunday of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] No survey carried over from last term: each run's survey and contact list are generated on the instructor tools pages (see Surveys)
 - [ ] Defense calibration hour scheduled; scoresheets printed
