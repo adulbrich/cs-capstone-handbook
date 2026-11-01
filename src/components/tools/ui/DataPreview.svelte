@@ -6,10 +6,12 @@
 // behind is locked from scrolling, and a click outside the dialog closes it,
 // as Starlight's search modal (Search.astro) does. The inline table keeps
 // Starlight's table styling; `table` is `{ header, rows }` (table-view.mjs).
+// `marked(row, column)`, by the row's index in `table.rows`, marks a cell,
+// and `markLabel` is read out after it.
 import { nextSort, viewRows } from "../../../lib/tools/table-view.mjs";
 import Button from "./Button.svelte";
 
-let { inline = 5, table, title } = $props();
+let { inline = 5, markLabel = "", marked = null, table, title } = $props();
 const id = $props.id();
 
 // biome-ignore lint/suspicious/noUnassignedVariables: bind:this assigns it
@@ -44,6 +46,14 @@ const ariaSort = (column) => {
 };
 </script>
 
+{#snippet td(cell, r, c)}
+  {#if marked?.(r, c)}
+    <td class="marked">{cell}<span class="visually-hidden">, {markLabel}</span></td>
+  {:else}
+    <td>{cell}</td>
+  {/if}
+{/snippet}
+
 <div class="preview">
   {#if table.rows.length === 0}
     <p class="meta">No rows.</p>
@@ -58,7 +68,7 @@ const ariaSort = (column) => {
       </thead>
       <tbody>
         {#each first as row, r (r)}
-          <tr>{#each row as cell, c (c)}<td>{cell}</td>{/each}</tr>
+          <tr>{#each row as cell, c (c)}{@render td(cell, r, c)}{/each}</tr>
         {/each}
       </tbody>
     </table>
@@ -124,7 +134,7 @@ const ariaSort = (column) => {
         </thead>
         <tbody>
           {#each shown as row (row.index)}
-            <tr>{#each row.cells as cell, c (c)}<td>{cell}</td>{/each}</tr>
+            <tr>{#each row.cells as cell, c (c)}{@render td(cell, row.index, c)}{/each}</tr>
           {/each}
         </tbody>
       </table>
@@ -158,6 +168,11 @@ const ariaSort = (column) => {
   .inline th,
   .sort {
     white-space: nowrap;
+  }
+  /* A marked cell keeps the table's text color; the bar and tint carry it. */
+  td.marked {
+    background: var(--sl-color-accent-low);
+    box-shadow: inset 3px 0 0 var(--sl-color-text-accent);
   }
   .meta {
     display: flex;

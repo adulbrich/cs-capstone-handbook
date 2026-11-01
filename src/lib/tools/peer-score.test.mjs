@@ -18,12 +18,7 @@ import {
   readRating,
   rosterChoiceOf,
 } from "./peer-export-columns.mjs";
-import {
-  commentsCsv,
-  fillPeerAssessment,
-  gapRows,
-  ratingFor,
-} from "./peer-outputs.mjs";
+import { commentsCsv, fillPeerAssessment, gapRows } from "./peer-outputs.mjs";
 import { withAdded } from "./peer-roster.mjs";
 import {
   distributionScore,
@@ -33,6 +28,7 @@ import {
   toScale,
 } from "./peer-score.mjs";
 import { parseRoster } from "./roster.mjs";
+import { ratingFor } from "./rubric-bands.mjs";
 import { parseRubricExport } from "./rubric-export.mjs";
 
 /** Parses, selects, and scores an export against a roster. */

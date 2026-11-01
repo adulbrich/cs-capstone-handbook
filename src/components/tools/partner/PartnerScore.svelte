@@ -1,6 +1,7 @@
 <script>
 // Score: the Qualtrics export, the roster, the Canvas rubric export, then
-// the results, the grades to import, and the concerns table. The page
+// the results, the team scores to review and edit, the grades to import,
+// and the concerns table. The page
 // composes the pure modules under src/lib/tools/ and the wording in
 // src/data/; everything it reads or makes stays in the browser. `rubrics`
 // and `aBound` are read at build time (partner-rubrics.mjs), and `between`
@@ -19,6 +20,7 @@ import {
   SURVEY_ORDER,
   SURVEYS,
   scorePartnerSurvey,
+  withEdit,
 } from "../../../lib/tools/partner-scoring.mjs";
 import { criteriaTable } from "../../../lib/tools/peer-score-tables.mjs";
 import { parseQualtricsExport } from "../../../lib/tools/qualtrics-export.mjs";
@@ -45,10 +47,19 @@ import Stepper from "../ui/Stepper.svelte";
 import { PageSteps, ToolStorage } from "../ui/saved.svelte.js";
 import PartnerRosterInput from "./PartnerRosterInput.svelte";
 import PartnerRosterPreview from "./PartnerRosterPreview.svelte";
+import PartnerTeamScores from "./PartnerTeamScores.svelte";
 
 let { aBound, between, rubrics } = $props();
 
-const STEPS = ["export", "roster", "rubric", "results", "grades", "concerns"];
+const STEPS = [
+  "export",
+  "roster",
+  "rubric",
+  "results",
+  "teams",
+  "grades",
+  "concerns",
+];
 
 const storage = new ToolStorage(PARTNER_STORE);
 const exported = storage.saved("score:export", null);
@@ -57,6 +68,9 @@ const rubricFile = storage.saved("score:rubric", null);
 // The survey picked when the export is not recognized, and the response
 // picked for each team that sent two: both belong to one export.
 const picks = storage.saved("score:picks", { choices: {}, survey: null });
+// The team score edits, by survey, then team: `{ cells, note }`, `cells` by
+// criterion title (scorePartnerSurvey's overrides). A new export keeps them.
+const edits = storage.saved("score:edits", {});
 const steps = new PageSteps(storage, "score:steps", STEPS);
 
 const parsed = $derived(
@@ -96,6 +110,7 @@ const outcome = $derived(
           aBound,
           between,
           choices: picks.value.choices,
+          overrides: edits.value[survey] ?? {},
           qualtrics: parsed.value,
           roster: parsedRoster.value,
           rubric,
@@ -107,6 +122,10 @@ const outcome = $derived(
 );
 const result = $derived(outcome?.value ?? null);
 const scored = $derived(result && !result.pending ? result : null);
+
+const counts = $derived(
+  scored?.teamCounts ?? { edited: 0, notes: 0, review: 0 }
+);
 
 const gradesCsv = $derived(
   scored ? rubricExportCsv(rubricExport.value.value.header, scored.rows) : ""
@@ -130,6 +149,7 @@ const ready = $derived({
   results: Boolean(scored),
   roster: Boolean(parsedRoster?.value?.some((s) => s.team !== "")),
   rubric: Boolean(pairs),
+  teams: Boolean(scored),
 });
 const summaries = $derived({
   concerns: text.concerns.summary(scored?.concerns.rows.length ?? 0),
@@ -138,7 +158,7 @@ const summaries = $derived({
     finished: parsed?.value?.responses.length ?? 0,
     survey: definition?.title ?? text.export.notPicked,
   }),
-  grades: text.grades.summary(files.scored),
+  grades: text.grades.summary({ file: files.scored, review: counts.review }),
   results: text.results.summary({
     responded: scored?.report.responded ?? 0,
     students: scored?.report.scored ?? 0,
@@ -152,6 +172,7 @@ const summaries = $derived({
     file: rubricFile.value?.name ?? NO_FILE,
     students: rubricExport?.value?.value.students.length ?? 0,
   }),
+  teams: text.teams.summary(counts),
 });
 
 /** A new export starts its picks over. */
@@ -161,6 +182,18 @@ function takeExport(file) {
 }
 
 const pickSurvey = (value) => picks.set({ choices: {}, survey: value || null });
+
+/** Writes one cell's edit (null removes it) and the team note (withEdit). */
+const saveEdit = (team, criterion, edit, note) =>
+  edits.set({
+    ...edits.value,
+    [survey]: withEdit(edits.value[survey] ?? {}, {
+      criterion,
+      edit,
+      note,
+      team,
+    }),
+  });
 
 const pickResponse = (team, responseId) =>
   picks.set({
@@ -348,6 +381,36 @@ const pickResponse = (team, responseId) =>
   </Step>
 
   <Step
+    {...steps.props("teams", ready)}
+    title={text.teams.title}
+    sourceTitle={text.whatItIs}
+    summary={summaries.teams}
+  >
+    {#snippet source()}
+      <p>{text.teams.what(SURVEYS.pulse.neutral)}</p>
+    {/snippet}
+    {#snippet preview()}
+      {#if scored}
+        {#if scored.unapplied.length > 0}
+          <Callout title={text.teams.unapplied.title} variant="caution">
+            <ul>
+              {#each scored.unapplied as entry (`${entry.team}:${entry.criterion}`)}
+                <li>{text.teams.unapplied.line(entry)}</li>
+              {/each}
+            </ul>
+          </Callout>
+        {/if}
+        <p>{summaries.teams}</p>
+        <PartnerTeamScores
+          criteria={rubric.criteria}
+          teams={scored.teams}
+          onsave={saveEdit}
+        />
+      {/if}
+    {/snippet}
+  </Step>
+
+  <Step
     {...steps.props("grades", ready)}
     title={text.grades.title}
     sourceTitle={text.whatItIs}
@@ -357,8 +420,16 @@ const pickResponse = (team, responseId) =>
       <p>{text.grades.what}</p>
     {/snippet}
     {#snippet preview()}
+      {#if counts.review > 0}
+        <p>{text.grades.review(counts.review)}</p>
+      {/if}
       {#if gradesCsv}
-        <DataPreview title={text.grades.preview} table={tableFromCsv(gradesCsv)} />
+        <DataPreview
+          title={text.grades.preview}
+          table={tableFromCsv(gradesCsv)}
+          marked={(row, column) => scored.editedColumns[row].includes(column)}
+          markLabel={text.grades.edited}
+        />
       {/if}
     {/snippet}
     {#snippet destination()}
