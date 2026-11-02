@@ -9,6 +9,8 @@
  *
  * Exit 2 blocks; stderr is the reason the model reads.
  */
+import { readFileSync } from "node:fs";
+import { isAbsolute, join } from "node:path";
 import { deny, loadRuleScripts, readInput, repoRoot } from "./lib.mjs";
 
 const PUBLISHES =
@@ -17,6 +19,50 @@ const API_WITH_BODY = /\bgh\s+api\b[\s\S]*\bbody\b/;
 const TITLED = /\bgh\s+pr\s+(?:create|edit|merge)\b/;
 const TITLE_FLAG =
   /(?:^|\s)(?:-t|--title|--subject)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
+const BODY_FILE_FLAG =
+  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|(\S+))/u;
+const OLD_FOOTER = "Generated with [Claude Code]";
+
+/**
+ * The text of the `--body-file` (or `-F`) a command names, or null when it
+ * names none or the file cannot be read yet. A throw here would exit 1, which
+ * lets the command through, so an unreadable path is null instead.
+ */
+function bodyFileText(text, dir) {
+  const file = BODY_FILE_FLAG.exec(text);
+  if (!file) {
+    return null;
+  }
+  const given = file[1] ?? file[2] ?? file[3];
+  const path = isAbsolute(given) ? given : join(dir, given);
+  try {
+    return readFileSync(path, "utf8");
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * What `text` breaks of the rules all published text shares: the session
+ * link, the old Claude Code footer, an em dash or an emoji.
+ */
+function textProblems(text, where) {
+  const found = [];
+  if (text.includes("claude.ai/code/session")) {
+    found.push(
+      `${where}contains a claude.ai/code/session link; never publish one`
+    );
+  }
+  if (text.includes(OLD_FOOTER)) {
+    found.push(
+      `${where}contains the "${OLD_FOOTER}" footer; replace it with an "Assisted-by: Claude Code" trailer`
+    );
+  }
+  for (const { line, kind, snippet } of findProseViolations(text)) {
+    found.push(`${where}line ${line} has an ${kind}: ${snippet}`);
+  }
+  return found;
+}
 
 const input = readInput();
 const command = input.tool_input?.command ?? "";
@@ -29,14 +75,14 @@ if (!(PUBLISHES.test(command) || API_WITH_BODY.test(command))) {
 const { checkCommitMessage, findProseViolations } = await loadRuleScripts(
   repoRoot(cwd)
 );
-const problems = [];
+const problems = textProblems(command, "");
 
-if (command.includes("claude.ai/code/session")) {
-  problems.push("contains a claude.ai/code/session link; never publish one");
-}
-
-for (const { line, kind, snippet } of findProseViolations(command)) {
-  problems.push(`line ${line} has an ${kind}: ${snippet}`);
+// A body file is published text too, and `gh pr merge --body-file` is how the
+// CLI merge passes the part above the template's `---` line. A file not
+// written yet is pr-text's to refuse.
+const bodyFile = PUBLISHES.test(command) ? bodyFileText(command, cwd) : null;
+if (bodyFile) {
+  problems.push(...textProblems(bodyFile, "the body file: "));
 }
 
 const title = TITLED.test(command) ? TITLE_FLAG.exec(command) : null;

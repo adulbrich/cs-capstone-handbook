@@ -37,19 +37,22 @@ claim it         type/slug          commit message                           rec
    Conventional Commits with a lowercase imperative:
    `docs(assignments): state the sprint-note due day once`. No em dash, no
    emoji, no session link. `scripts/check-commit-message.mjs` is the rule.
-4. **Push and open a pull request.** The template asks for the closing issue,
-   what changed from the reader's side, what ran locally, what Canvas needs
-   re-imported or re-pasted, the review loop, a guide's checks, and the docs
-   touched.
+4. **Push and open a pull request.** Above the template's `---` line goes the
+   `main` commit body: the closing issue, what changed from the reader's side,
+   and `Assisted-by: Claude Code` when an agent helped. Below it go what ran
+   locally, what Canvas needs re-imported or re-pasted, the review loop, a
+   guide's checks, and the docs touched.
 5. **Run the review loop** that `docs/agents/code-review.md` sets out, and
    record it in the template's Review loop lines.
 6. **Merge.** Squash. The squash commit takes the PR title as its subject and
-   the PR body as its message, so the body is the record on `main`, and the
-   branch commits' messages never reach it. A PR an agent helped write ends
-   with `Assisted-by: Claude Code`. The `main` ruleset requires a pull
-   request with green `build` and `audit` checks and blocks force pushes and
-   deletion. No approving review is required by GitHub, so the review loop is
-   the review. The instructor merges.
+   the PR body as its message, LLVM-style, and the branch commits' messages
+   never reach `main`. In the merge dialog, delete the body from `---` down;
+   from the CLI, pass the part above it with `gh pr merge --squash
+   --body-file`. Cut a Dependabot body to its first line. Never auto-merge: it
+   skips the cut and lands the whole body on `main`. The `main` ruleset
+   requires a pull request with green `build` and `audit` checks and blocks
+   force pushes and deletion. No approving review is required by GitHub, so
+   the review loop is the review. The instructor merges.
 
 ## The gates
 
@@ -58,7 +61,8 @@ first column is what stops you locally; the last is what stops the merge.
 
 | Rule | Local (lefthook) | Claude Code hook | CI |
 | --- | --- | --- | --- |
-| Conventional subject, lowercase imperative; no em dash, emoji, or session link in the message | `commit-msg`; `pre-push` over the branch | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
+| Conventional subject, lowercase imperative; no em dash, emoji, session link, or old Claude Code footer in the message | `commit-msg`; `pre-push` over the branch | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
+| No em dash, emoji, session link, or old Claude Code footer in PR or issue text | (never sees it) | `guard-gh.mjs` refuses the command, `--body-file` included | `pr-text`, for the PR title and body |
 | No em dash or emoji in tracked text, and no glossary-rejected synonym or voice tell where `check-prose.mjs` looks for one | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
 | No em dash, literal or entity, under `src/`, `canvas/`, and `public/` | `pre-commit` on those paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dashes` |
 | Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dates` |

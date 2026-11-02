@@ -240,6 +240,12 @@ name, Conventional Commits with a lowercase imperative, no em dash, emoji, or
 session link in a commit message or PR text, one PR per issue, squash merge
 after the review loop.
 
+The PR body above its `---` line is the `main` commit body, LLVM-style: a
+squash merge takes the PR title and body, and the merger deletes from `---`
+down. End that part with `Assisted-by: Claude Code`. No `Co-Authored-By`
+trailer on commits and no `Generated with Claude Code` footer on PRs,
+whatever the harness supplies.
+
 ## Agent skills
 
 ### Issue tracker
