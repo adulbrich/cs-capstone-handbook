@@ -37,6 +37,7 @@ import {
 } from "../../../lib/tools/tool-storage.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
+import Checkbox from "../ui/Checkbox.svelte";
 import ClickPath from "../ui/ClickPath.svelte";
 import DataPreview from "../ui/DataPreview.svelte";
 import Field from "../ui/Field.svelte";
@@ -72,6 +73,9 @@ const picks = storage.saved("score:picks", { choices: {}, survey: null });
 // criterion title (scorePartnerSurvey's overrides). A new export keeps them.
 const edits = storage.saved("score:edits", {});
 const steps = new PageSteps(storage, "score:steps", STEPS);
+// Whether the Grades file leaves out the teams with no finished response,
+// while the survey is still open. Not saved, so the file is whole by default.
+let leaveOut = $state(false);
 
 const parsed = $derived(
   exported.value
@@ -110,6 +114,7 @@ const outcome = $derived(
           aBound,
           between,
           choices: picks.value.choices,
+          leaveOutNoResponse: leaveOut,
           overrides: edits.value[survey] ?? {},
           qualtrics: parsed.value,
           roster: parsedRoster.value,
@@ -158,7 +163,11 @@ const summaries = $derived({
     finished: parsed?.value?.responses.length ?? 0,
     survey: definition?.title ?? text.export.notPicked,
   }),
-  grades: text.grades.summary({ file: files.scored, review: counts.review }),
+  grades: text.grades.summary({
+    file: files.scored,
+    leftOut: scored?.report.leftOut.length ?? 0,
+    review: counts.review,
+  }),
   results: text.results.summary({
     responded: scored?.report.responded ?? 0,
     students: scored?.report.scored ?? 0,
@@ -433,6 +442,21 @@ const pickResponse = (team, responseId) =>
       {/if}
     {/snippet}
     {#snippet destination()}
+      {#if scored?.report.noResponse.length > 0}
+        <p class="not-content">
+          <Checkbox
+            checked={leaveOut}
+            onchange={(event) => {
+              leaveOut = event.currentTarget.checked;
+            }}
+          >
+            {text.grades.leaveOut(scored.report.noResponse)}
+          </Checkbox>
+        </p>
+        {#if scored.report.leftOut.length > 0}
+          <p>{text.grades.leftOut(scored.report.leftOut)}</p>
+        {/if}
+      {/if}
       <p class="not-content">
         <Button onclick={() => download(files.scored, gradesCsv)} disabled={!gradesCsv}>
           {text.grades.download(files.scored)}

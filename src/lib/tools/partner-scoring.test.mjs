@@ -181,10 +181,14 @@ const EXPORT = exportText([
   ["999", "Nobody, Known"],
 ]);
 
-function run(qualtricsText, { choices, exportCsv = EXPORT, overrides } = {}) {
+function run(
+  qualtricsText,
+  { choices, exportCsv = EXPORT, leaveOutNoResponse, overrides } = {}
+) {
   return scorePartnerSurvey({
     aBound: A,
     choices,
+    leaveOutNoResponse,
     overrides,
     qualtrics: parseQualtricsExport(qualtricsText),
     roster: parseRoster(ROSTER),
@@ -378,6 +382,33 @@ test("a team with no finished response scores the A lower bound", () => {
   }
   assert.equal(total, A);
   assert.deepEqual(result.report.noResponse, ["Compilers", "Rings"]);
+});
+
+test("left out, a team with no finished response has no row and is still scored", () => {
+  const text = pulseExport([
+    response("Engines", STRONG),
+    response("Compilers", STRONG, { Finished: "False" }),
+  ]);
+  const full = run(text);
+  const result = run(text, { leaveOutNoResponse: true });
+  assert.deepEqual(
+    result.rows.map((cells) => cells[0]),
+    ["101", "102", "301", "999"]
+  );
+  assert.deepEqual(
+    result.rows,
+    full.rows.filter((cells) => cells[0] !== "201")
+  );
+  assert.deepEqual(result.report.leftOut, [
+    { id: "201", name: "Hopper, Grace", team: "Compilers" },
+  ]);
+  assert.deepEqual(full.report.leftOut, []);
+  // The Results step reads the same either way.
+  assert.deepEqual(result.report.noResponse, full.report.noResponse);
+  assert.equal(result.report.scored, full.report.scored);
+  assert.deepEqual(result.teams, full.teams);
+  // Off is the default, byte for byte.
+  assert.equal(csvOf(run(text, { leaveOutNoResponse: false })), csvOf(full));
 });
 
 test("the no-response split totals the A lower bound on every rubric", () => {
@@ -711,6 +742,35 @@ test("an edit's points are named by the rating at or below them, down to 0", () 
     [],
     [],
   ]);
+});
+
+test("a left-out row takes its edit marks with it", () => {
+  const exportCsv = exportText([
+    ["201", "Hopper, Grace"],
+    ["101", "Lovelace, Ada"],
+    ["102", "Babbage, Charles"],
+  ]);
+  const before = run(NEUTRAL_EXPORT, { exportCsv });
+  const delivery = cellOf(before, "Engines", "Delivery quality");
+  const result = run(NEUTRAL_EXPORT, {
+    exportCsv,
+    leaveOutNoResponse: true,
+    overrides: {
+      Engines: {
+        cells: { "Delivery quality": edit(delivery, { points: 15 }) },
+      },
+    },
+  });
+  const [header] = parseCsv(exportCsv);
+  const marks = [
+    header.indexOf("Delivery quality - Rating"),
+    header.indexOf("Delivery quality - Points"),
+  ];
+  assert.deepEqual(
+    result.rows.map((cells) => cells[0]),
+    ["101", "102"]
+  );
+  assert.deepEqual(result.editedColumns, [marks, marks]);
 });
 
 test("an edit no input scores is listed, not applied", () => {
