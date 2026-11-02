@@ -256,7 +256,7 @@ export const scoreText = {
     leaveOut: (teams) =>
       `Leave out the ${plural(teams.length, "team")} with no finished response yet: ${list(teams)}`,
     leftOut: (students) =>
-      `Not in the file: ${students.map((s) => `${s.name} (${s.team})`).join("; ")}. Their grades stay as they are until a later import: once their partner answers, or after the survey closes with this box cleared, at the no-response score.`,
+      `Not in the file: ${students.map((s) => `${s.name} (${s.team})`).join("; ")}. Import them later: once their partner answers, or after the survey closes with this box cleared, at the no-response score.`,
     path: clickPaths.canvasRubricImport,
     pathAfter:
       ", on the same assignment. Spot-check one student per team before posting.",
