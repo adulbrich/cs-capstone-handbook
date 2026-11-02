@@ -1,4 +1,9 @@
 {
+  "attribution": {
+    "commit": "Assisted-by: Claude Code",
+    "pr": "Generated with [Claude Code](https://claude.com/claude-code)",
+    "sessionUrl": false
+  },
   "hooks": {
     "SessionStart": [
       {

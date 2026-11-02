@@ -1,5 +1,6 @@
 # The pull request's title and body get the commit-message check: a squash
-# merge turns them into the `main` subject and body. A separate workflow from
+# merge makes the title the `main` subject and leaves the body blank, and the
+# body stays public on the pull request. A separate workflow from
 # CI so that editing the description re-runs only this, not the build.
 #
 # guard-gh.mjs checks text an agent passes inline to `gh`; this catches a

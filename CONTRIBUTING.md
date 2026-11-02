@@ -43,10 +43,12 @@ claim it         type/slug          commit message                           rec
    touched.
 5. **Run the review loop** that `docs/agents/code-review.md` sets out, and
    record it in the template's Review loop lines.
-6. **Merge.** Squash. The `main` ruleset requires a pull request with green
-   `build` and `audit` checks and blocks force pushes and deletion. No approving
-   review is required by GitHub, so the review loop is the review. The
-   instructor merges.
+6. **Merge.** Squash. The squash commit takes the PR title as its subject and
+   a blank body, so what changed and why stays in the PR body, and the branch
+   commits' messages never reach `main`. The `main` ruleset requires a pull
+   request with green `build` and `audit` checks and blocks force pushes and
+   deletion. No approving review is required by GitHub, so the review loop is
+   the review. The instructor merges.
 
 ## The gates
 
