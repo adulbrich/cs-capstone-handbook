@@ -37,16 +37,22 @@ claim it         type/slug          commit message                           rec
    Conventional Commits with a lowercase imperative:
    `docs(assignments): state the sprint-note due day once`. No em dash, no
    emoji, no session link. `scripts/check-commit-message.mjs` is the rule.
-4. **Push and open a pull request.** The template asks for the closing issue,
-   what changed from the reader's side, what ran locally, what Canvas needs
-   re-imported or re-pasted, the review loop, a guide's checks, and the docs
-   touched.
+4. **Push and open a pull request.** Above the template's `---` line goes the
+   `main` commit body: the closing issue, what changed from the reader's side,
+   and `Assisted-by: Claude Code` when an agent helped. Below it go what ran
+   locally, what Canvas needs re-imported or re-pasted, the review loop, a
+   guide's checks, and the docs touched.
 5. **Run the review loop** that `docs/agents/code-review.md` sets out, and
    record it in the template's Review loop lines.
-6. **Merge.** Squash. The `main` ruleset requires a pull request with green
-   `build` and `audit` checks and blocks force pushes and deletion. No approving
-   review is required by GitHub, so the review loop is the review. The
-   instructor merges.
+6. **Merge.** Squash. The squash commit takes the PR title as its subject and
+   the PR body as its message, LLVM-style, and the branch commits' messages
+   never reach `main`. In the merge dialog, delete the body from `---` down;
+   from the CLI, pass the part above it with `gh pr merge --squash
+   --body-file`. Cut a Dependabot body to its first line. Never auto-merge: it
+   skips the cut and lands the whole body on `main`. The `main` ruleset
+   requires a pull request with green `build` and `audit` checks and blocks
+   force pushes and deletion. No approving review is required by GitHub, so
+   the review loop is the review. The instructor merges.
 
 ## The gates
 
@@ -73,9 +79,9 @@ first column is what stops you locally; the last is what stops the merge.
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
-| The git guard hook's cases pass | `pre-push` | | `build`: `test-guard-git` |
+| The git and gh guard hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh` |
 | The instructor tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
-| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`) | `pr-text`: the PR title and body, re-run on every edit |
+| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`, and the `--body-file` text) | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
 | Dependencies signed, and no critical advisory | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code
