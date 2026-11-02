@@ -1,7 +1,7 @@
 /**
  * The commit-message rule, as a check: a Conventional Commits subject with a
- * lowercase imperative, no em dash or emoji anywhere, never a
- * `claude.ai/code/session` link, and never the old Claude Code footer.
+ * lowercase imperative, no em dash or emoji anywhere, and never a
+ * `claude.ai/code/session` link.
  *
  * One implementation, three callers. lefthook runs it at `commit-msg`, CI
  * runs it over every commit a pull request adds (`--range`) and over the PR
@@ -109,7 +109,7 @@ export function checkCommitMessage(message) {
 }
 
 const RULE =
-  "Commit rule: type(scope): lowercase imperative subject, no em dash, no emoji, no session link, no old Claude Code footer.\n";
+  "Commit rule: type(scope): lowercase imperative subject, no em dash, no emoji, no session link.\n";
 
 function report(label, problems) {
   for (const problem of problems) {

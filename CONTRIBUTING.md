@@ -61,7 +61,7 @@ first column is what stops you locally; the last is what stops the merge.
 
 | Rule | Local (lefthook) | Claude Code hook | CI |
 | --- | --- | --- | --- |
-| Conventional subject, lowercase imperative; no em dash, emoji, session link, or old Claude Code footer in the message | `commit-msg`; `pre-push` over the branch | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
+| Conventional subject, lowercase imperative; no em dash, emoji, or session link in the message | `commit-msg`; `pre-push` over the branch | `guard-git.mjs` reads the `-m` text first | `build`: every commit the PR adds |
 | No em dash or emoji in tracked text, and no glossary-rejected synonym or voice tell where `check-prose.mjs` looks for one | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` on the edited file | `build`: `npm run check:prose` |
 | No em dash, literal or entity, under `src/`, `canvas/`, and `public/` | `pre-commit` on those paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dashes` |
 | Terms and weeks only in handbook content, syllabi, and the runbook | `pre-commit`, on matching paths; `pre-push` | `after-edit.mjs` | `build`: `validate-dates` |
@@ -81,7 +81,7 @@ first column is what stops you locally; the last is what stops the merge.
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
 | The git and gh guard hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh` |
 | The instructor tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
-| PR title is a Conventional subject; no em dash, emoji, session link, or old Claude Code footer in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`, and the `--body-file` text) | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
+| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`, and the `--body-file` text) | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
 | Dependencies signed, and no critical advisory | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code
