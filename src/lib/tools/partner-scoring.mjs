@@ -467,6 +467,78 @@ function teamCell(criterion, answered, edit, neutral) {
   };
 }
 
+/**
+ * Fills one student's row, `cells`, in place with their team's scores
+ * (`entry`, one of scorePartnerSurvey's `teams`), the team note first in
+ * every Comments cell. Returns the columns an override changed.
+ */
+function fillTeamRow(cells, entry, questions, rubricExport) {
+  const changed = [];
+  for (const [i, { criterion }] of questions.entries()) {
+    const columnsAt = rubricExport.criteria.get(nameKey(criterion.title));
+    const { answered, final } = entry.cells[i];
+    fillCriterion(cells, columnsAt, {
+      ...final,
+      comment: teamComment(entry.note, final.comment),
+    });
+    if (final.rating !== answered.rating) {
+      changed.push(columnsAt.Rating);
+    }
+    if (final.points !== answered.points) {
+      changed.push(columnsAt.Points);
+    }
+    if (entry.note !== "" || final.comment !== answered.comment) {
+      changed.push(columnsAt.Comments);
+    }
+  }
+  return changed;
+}
+
+/**
+ * The rubric export's rows, filled: a student on a scored team takes the
+ * team's scores (fillTeamRow), anyone else is left as exported and listed in
+ * `noTeam`, and a student on a team in `leaveOut` has no row and is listed
+ * in `leftOut`. `editedColumns` runs beside `rows`, one entry per row.
+ */
+function fillRows({
+  leaveOut,
+  questions,
+  roster,
+  rosterTeams,
+  rubricExport,
+  teamsByName,
+}) {
+  const studentsById = new Map(roster.map((s) => [s.canvasUserId, s]));
+  const noTeam = [];
+  const leftOut = [];
+  const editedColumns = [];
+  const rows = [];
+  for (const student of rubricExport.students) {
+    const cells = [...student.cells];
+    const team = studentsById.get(student.id)?.team ?? "";
+    if (leaveOut.has(team)) {
+      leftOut.push({ id: student.id, name: student.name, team });
+      continue;
+    }
+    rows.push(cells);
+    if (!rosterTeams.has(team)) {
+      editedColumns.push([]);
+      noTeam.push({
+        id: student.id,
+        name: student.name,
+        reason: studentsById.has(student.id)
+          ? "in no group on the roster"
+          : "not on the roster",
+      });
+      continue;
+    }
+    editedColumns.push(
+      fillTeamRow(cells, teamsByName.get(team), questions, rubricExport)
+    );
+  }
+  return { editedColumns, leftOut, noTeam, rows };
+}
+
 const byName = new Intl.Collator("en", { numeric: true });
 
 /** Groups responses by team, in file order. */
@@ -490,11 +562,15 @@ function byTeam(responses) {
  * the ResponseId that counts when the team sent more than one. `overrides`
  * holds the instructor's edits: `{ [team]: { note, cells: { [criterion
  * title]: edit } } }`, `note` the team note and `edit` as teamCell takes it.
+ * `leaveOutNoResponse` drops the rows of every team with no finished
+ * response, so a file imported while the survey is open posts nothing for a
+ * partner who may still answer; the teams are still scored and listed.
  *
  * Returns `{ duplicates, pending, compare, ... }`. While any duplicate team
  * has no valid choice, `pending` is true and nothing is scored. Otherwise it
- * also returns `rows` (the rubric export's rows, filled), `editedColumns`
- * (for each row, the columns an override changed), `teams` (each scored
+ * also returns `rows` (the rubric export's rows, filled, less any left
+ * out), `editedColumns` (for each row, the columns an override changed),
+ * `teams` (each scored
  * team by name: `{ team, responded, note, total, cells }`, `cells` from
  * teamCell, in rubric order), `teamCounts` (the cells to `review`, the cells
  * `edited`, and the team `notes`), `unapplied` (sortOverrides), `concerns`,
@@ -507,6 +583,7 @@ export function scorePartnerSurvey({
   aBound,
   between,
   choices = {},
+  leaveOutNoResponse = false,
   overrides = {},
   qualtrics,
   roster,
@@ -658,43 +735,13 @@ export function scorePartnerSurvey({
     review: allCells.filter((cell) => cell.review).length,
   };
 
-  const studentsById = new Map(roster.map((s) => [s.canvasUserId, s]));
-  const noTeam = [];
-  const editedColumns = [];
-  const rows = rubricExport.students.map((student) => {
-    const cells = [...student.cells];
-    const changed = [];
-    editedColumns.push(changed);
-    const team = studentsById.get(student.id)?.team ?? "";
-    if (!rosterTeams.has(team)) {
-      noTeam.push({
-        id: student.id,
-        name: student.name,
-        reason: studentsById.has(student.id)
-          ? "in no group on the roster"
-          : "not on the roster",
-      });
-      return cells;
-    }
-    const { note } = teamsByName.get(team);
-    for (const [i, { criterion }] of questions.entries()) {
-      const columnsAt = rubricExport.criteria.get(nameKey(criterion.title));
-      const { answered, final } = teamsByName.get(team).cells[i];
-      fillCriterion(cells, columnsAt, {
-        ...final,
-        comment: teamComment(note, final.comment),
-      });
-      if (final.rating !== answered.rating) {
-        changed.push(columnsAt.Rating);
-      }
-      if (final.points !== answered.points) {
-        changed.push(columnsAt.Points);
-      }
-      if (note !== "" || final.comment !== answered.comment) {
-        changed.push(columnsAt.Comments);
-      }
-    }
-    return cells;
+  const { editedColumns, leftOut, noTeam, rows } = fillRows({
+    leaveOut: new Set(leaveOutNoResponse ? noResponse : []),
+    questions,
+    roster,
+    rosterTeams,
+    rubricExport,
+    teamsByName,
   });
 
   const exportIds = new Set(rubricExport.students.map((s) => s.id));
@@ -710,13 +757,14 @@ export function scorePartnerSurvey({
         team: r.Team,
       })),
       dropped: qualtrics.dropped,
+      leftOut,
       noResponse,
       noTeam,
       notInExport: roster
         .filter((s) => s.team !== "" && !exportIds.has(s.canvasUserId))
         .map((s) => ({ name: s.name, team: s.team })),
       responded: responsesByTeam.size,
-      scored: rows.length - noTeam.length,
+      scored: rows.length - noTeam.length + leftOut.length,
       unmatchedTeams: responses
         .filter((r) => !rosterTeams.has(r.Team))
         .map((r) => ({ responseId: r.ResponseId, team: r.Team })),
