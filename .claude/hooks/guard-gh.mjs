@@ -10,6 +10,7 @@
  * Exit 2 blocks; stderr is the reason the model reads.
  */
 import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { isAbsolute, join } from "node:path";
 import { deny, loadRuleScripts, readInput, repoRoot } from "./lib.mjs";
 
@@ -22,6 +23,20 @@ const TITLE_FLAG =
 const BODY_FILE_FLAG =
   /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|(\S+))/u;
 const OLD_FOOTER = "Generated with [Claude Code]";
+const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/g;
+const LEADING_TILDE = /^~(?=\/|$)/;
+
+/**
+ * `$VAR` and `${VAR}` from this process's environment, as the shell expands
+ * them inside double quotes or bare. A variable this process lacks stays as
+ * written, so the read fails and pr-text is the check that sees the file.
+ */
+function expandVars(path) {
+  return path.replace(
+    SHELL_VAR,
+    (match, braced, bare) => process.env[braced ?? bare] ?? match
+  );
+}
 
 /**
  * The text of the `--body-file` (or `-F`) a command names, or null when it
@@ -33,7 +48,12 @@ function bodyFileText(text, dir) {
   if (!file) {
     return null;
   }
-  const given = file[1] ?? file[2] ?? file[3];
+  // Single quotes expand nothing; a bare path also expands a leading `~`.
+  const given =
+    file[2] ??
+    (file[1] === undefined
+      ? expandVars(file[3]).replace(LEADING_TILDE, homedir())
+      : expandVars(file[1]));
   const path = isAbsolute(given) ? given : join(dir, given);
   try {
     return readFileSync(path, "utf8");

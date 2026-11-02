@@ -1,7 +1,7 @@
 /**
  * The commit-message rule, as a check: a Conventional Commits subject with a
- * lowercase imperative, no em dash or emoji anywhere, and never a
- * `claude.ai/code/session` link.
+ * lowercase imperative, no em dash or emoji anywhere, never a
+ * `claude.ai/code/session` link, and never the old Claude Code footer.
  *
  * One implementation, three callers. lefthook runs it at `commit-msg`, CI
  * runs it over every commit a pull request adds (`--range`) and over the PR

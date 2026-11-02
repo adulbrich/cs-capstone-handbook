@@ -92,7 +92,7 @@ pre-push:
     validate-sources:
       run: node scripts/validate-sources.mjs
     test-hooks:
-      run: node scripts/test-guard-git.mjs
+      run: node scripts/test-guard-git.mjs && node scripts/test-guard-gh.mjs
     test:
       run: npm test
     build:
