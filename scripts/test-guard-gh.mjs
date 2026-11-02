@@ -41,10 +41,9 @@ const OLD =
   "Closes #1\n\n- x\n\nGenerated with [Claude Code](https://claude.com/claude-code)\n";
 const CLEAN =
   "Closes #1\n\n- x\n\nAssisted-by: Claude Code\n\n---\n\n## Ran locally\n";
-// Built from code points, so the file itself carries no em dash or emoji
+// Built from a code point, so the file itself carries no em dash
 // (check-prose) and Biome cannot fold an escape back into the character.
 const EM_DASH = String.fromCodePoint(0x20_14);
-const ROBOT = String.fromCodePoint(0x1_f9_16);
 const DASHED = `Closes #1\n\none ${EM_DASH} two\n`;
 
 const old = join(root, "old.md");
@@ -59,15 +58,11 @@ const T = '--title "fix(x): y"';
 
 /** `[name, command, "allow" | "deny", extra env]`. */
 const CASES = [
-  // The old footer, inline and in a body file, with or without its emoji.
+  // The old footer, inline and in a body file. Without its emoji, so the
+  // footer rule is what refuses it, not the emoji rule.
   [
     "old footer inline",
     `gh pr create ${T} --body "Closes #1. Generated with [Claude Code](x)"`,
-    "deny",
-  ],
-  [
-    "old footer with its emoji inline",
-    `gh pr create ${T} --body "Closes #1. ${ROBOT} Generated with [Claude Code](x)"`,
     "deny",
   ],
   ["old footer in a body file", `gh pr create ${T} --body-file ${old}`, "deny"],
