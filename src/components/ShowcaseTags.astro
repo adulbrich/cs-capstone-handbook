@@ -1,0 +1,203 @@
+---
+/**
+ * ShowcaseTags: the tags under each project heading on the showcase page.
+ *
+ * Every badge color on the site already means something: the activity
+ * badges own green and blue, the who-tags add purple, and the tools'
+ * warnings use red and orange. So these tags differ by form, not color.
+ * The project type is a line of uppercase gray text with an icon, not a
+ * badge, and an award joins that line. Each technology is a round pill in
+ * the grays of `ActivityBadge.astro`'s neutral kinds, with the
+ * technology's logo in the text color.
+ *
+ * The type and award icons are Lucide's (ISC license), in the stroke style
+ * `ActivityBadge.astro` uses. The logos come from the `simple-icons`
+ * package (CC0); a technology missing from `logos` shows its name alone.
+ */
+import type { SimpleIcon } from "simple-icons";
+import {
+  siDocker,
+  siFirebase,
+  siFlutter,
+  siGo,
+  siJupyter,
+  siPostgresql,
+  siPytorch,
+  siRabbitmq,
+  siReact,
+  siSvelte,
+  siTypescript,
+  siUnity,
+  siUnrealengine,
+  siVite,
+} from "simple-icons";
+
+const typeIcons = {
+  "3D Graphics":
+    '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+  "AR/VR":
+    '<circle cx="6" cy="15" r="4"/><circle cx="18" cy="15" r="4"/><path d="M14 15a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/><path d="M2.5 13 5 7c.7-1.3 1.4-2 3-2"/><path d="M21.5 13 19 7c-.7-1.3-1.5-2-3-2"/>',
+  Mobile:
+    '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>',
+  Simulation:
+    '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>',
+  Visualization:
+    '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+  Web: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+} as const;
+
+const awardIcon =
+  '<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>';
+
+const logos: Record<string, SimpleIcon> = {
+  Docker: siDocker,
+  Flutter: siFlutter,
+  Go: siGo,
+  "Google Firebase": siFirebase,
+  Jupyter: siJupyter,
+  Postgres: siPostgresql,
+  PyTorch: siPytorch,
+  RabbitMQ: siRabbitmq,
+  React: siReact,
+  "React Native": siReact,
+  Svelte: siSvelte,
+  TypeScript: siTypescript,
+  Unity: siUnity,
+  "Unreal Engine": siUnrealengine,
+  Vite: siVite,
+};
+
+interface Props {
+  /** An award the project won, shown at the end of the type line. */
+  award?: string;
+  /** The technologies, one pill each. */
+  stack: string[];
+  /** What kind of project it is, one or more. */
+  types: (keyof typeof typeIcons)[];
+}
+
+const { award, stack, types } = Astro.props;
+const lucide = {
+  "aria-hidden": "true",
+  fill: "none",
+  height: "1.2em",
+  stroke: "currentColor",
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  viewBox: "0 0 24 24",
+  width: "1.2em",
+} as const;
+---
+
+<div class="showcase-tags not-content">
+  <div class="showcase-tags__meta">
+    <ul aria-label="Project type">
+      {
+        types.map((type) => (
+          <li>
+            <svg {...lucide} set:html={typeIcons[type]} />
+            {type}
+          </li>
+        ))
+      }
+    </ul>
+    {
+      award && (
+        <p class="showcase-tags__award">
+          <svg {...lucide} set:html={awardIcon} />
+          {award}
+        </p>
+      )
+    }
+  </div>
+  <ul class="showcase-tags__stack" aria-label="Built with">
+    {
+      stack.map((name) => (
+        <li>
+          {logos[name] && (
+            <svg
+              aria-hidden="true"
+              fill="currentColor"
+              height="0.9em"
+              viewBox="0 0 24 24"
+              width="0.9em"
+            >
+              <path d={logos[name].path} />
+            </svg>
+          )}
+          {name}
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .showcase-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    font-family: var(--sl-font);
+  }
+
+  .showcase-tags ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .showcase-tags li,
+  .showcase-tags__award {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .showcase-tags svg {
+    flex-shrink: 0;
+  }
+
+  .showcase-tags__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1rem;
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+  }
+
+  .showcase-tags__meta ul {
+    gap: 0.25rem 1rem;
+  }
+
+  .showcase-tags__meta li {
+    gap: 0.375rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .showcase-tags__award {
+    gap: 0.375rem;
+    margin: 0;
+    color: var(--sl-color-white);
+    font-size: var(--sl-text-sm);
+  }
+
+  .showcase-tags__stack {
+    gap: 0.375rem;
+  }
+
+  .showcase-tags__stack li {
+    gap: 0.375rem;
+    padding: 0.0625rem 0.625rem;
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 999px;
+    background-color: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+    line-height: 1.6;
+  }
+</style>
