@@ -2,17 +2,17 @@
 /**
  * ShowcaseTags: the tags under each project heading on the showcase page.
  *
- * Every badge color on the site already means something: the activity
- * badges own green and blue, the who-tags add purple, and the tools'
- * warnings use red and orange. So these tags differ by form, not color.
- * The project type is a line of uppercase gray text with an icon, not a
- * badge, and an award joins that line. Each technology is a round pill in
- * the grays of `ActivityBadge.astro`'s neutral kinds, with the
- * technology's logo in the text color.
+ * Badge colors already carry meanings elsewhere on the site, so these tags
+ * differ by form, not color. The platform is a line of uppercase gray text
+ * with an icon, not a badge, and an award joins that line. Each technology
+ * is a round pill in the grays of `ActivityBadge.astro`'s neutral kinds,
+ * with the technology's logo in the text color.
  *
- * The type and award icons are Lucide's (ISC license), in the stroke style
- * `ActivityBadge.astro` uses. The logos come from the `simple-icons`
+ * The platform and award icons are Lucide's (ISC license), in the stroke
+ * style `ActivityBadge.astro` uses. The logos come from the `simple-icons`
  * package (CC0); a technology missing from `logos` shows its name alone.
+ * A platform missing from `platformIcons` fails the build, since MDX props
+ * are not type-checked.
  */
 import type { SimpleIcon } from "simple-icons";
 import {
@@ -32,7 +32,7 @@ import {
   siVite,
 } from "simple-icons";
 
-const typeIcons = {
+const platformIcons = {
   "3D Graphics":
     '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
   "AR/VR":
@@ -68,15 +68,20 @@ const logos: Record<string, SimpleIcon> = {
 };
 
 interface Props {
-  /** An award the project won, shown at the end of the type line. */
+  /** An award the project won, shown at the end of the platform line. */
   award?: string;
+  /** Where the project runs or what it renders, one or more. */
+  platforms: (keyof typeof platformIcons)[];
   /** The technologies, one pill each. */
   stack: string[];
-  /** What kind of project it is, one or more. */
-  types: (keyof typeof typeIcons)[];
 }
 
-const { award, stack, types } = Astro.props;
+const { award, platforms, stack } = Astro.props;
+for (const platform of platforms) {
+  if (!(platform in platformIcons)) {
+    throw new Error(`ShowcaseTags: no icon for platform "${platform}"`);
+  }
+}
 const lucide = {
   "aria-hidden": "true",
   fill: "none",
@@ -92,12 +97,12 @@ const lucide = {
 
 <div class="showcase-tags not-content">
   <div class="showcase-tags__meta">
-    <ul aria-label="Project type">
+    <ul aria-label="Platform" role="list">
       {
-        types.map((type) => (
+        platforms.map((platform) => (
           <li>
-            <svg {...lucide} set:html={typeIcons[type]} />
-            {type}
+            <svg {...lucide} set:html={platformIcons[platform]} />
+            {platform}
           </li>
         ))
       }
@@ -111,7 +116,7 @@ const lucide = {
       )
     }
   </div>
-  <ul class="showcase-tags__stack" aria-label="Built with">
+  <ul class="showcase-tags__stack" aria-label="Built with" role="list">
     {
       stack.map((name) => (
         <li>
