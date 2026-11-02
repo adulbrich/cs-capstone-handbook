@@ -5,8 +5,8 @@
  *
  * One implementation, three callers. lefthook runs it at `commit-msg`, CI
  * runs it over every commit a pull request adds (`--range`) and over the PR
- * title and body (`pr-text`, `--stdin`), since a squash merge makes the title
- * the `main` subject, and the Claude Code `git` hook runs it on the text
+ * title and body (`pr-text`, `--stdin`), which a squash merge turns into the
+ * `main` subject and body, and the Claude Code `git` hook runs it on the text
  * of a `git commit` before the commit exists. The `gh` hook applies the
  * subject rule to PR titles an agent passes inline.
  *
@@ -81,9 +81,7 @@ export function checkCommitMessage(message) {
   const problems = [];
 
   if (message.includes(SESSION_LINK)) {
-    problems.push(
-      `contains a ${SESSION_LINK} link; drop it, keep the Assisted-by trailer`
-    );
+    problems.push(`contains a ${SESSION_LINK} link; drop it`);
   }
 
   const subject =

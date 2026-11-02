@@ -1,7 +1,7 @@
 {
   "attribution": {
-    "commit": "Assisted-by: Claude Code",
-    "pr": "Generated with [Claude Code](https://claude.com/claude-code)",
+    "commit": "",
+    "pr": "Assisted-by: Claude Code",
     "sessionUrl": false
   },
   "hooks": {
