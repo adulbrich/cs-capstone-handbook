@@ -20,7 +20,7 @@ If a video replaced your part of the check-in (you missed it, or your TA could n
 
 Two lists; one student can own several entries. Done: work completed this sprint, linked to its proof of completion
 (the pull request approved and merged, the issue or ticket closed with its outcome, or the document reviewed and approved;
-your partner's review or approval counts). Code also meets your team's Definition of Done in CONTRIBUTING.md.
+project partner approvals count). Code also meets your team's Definition of Done in CONTRIBUTING.md.
 In progress, optional: anything else the team has started and taken far along, with its current status.
 Work finished in an earlier sprint and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board)
 go on neither list. Non-code work counts. Link where the work is written up (the pull request, issue, or document);
