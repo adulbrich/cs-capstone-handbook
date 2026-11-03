@@ -62,16 +62,20 @@ week.
      work;
    - **score**: a requirement whose rubric band you can't predict, or a band
      grading something the page never asked for;
-   - **skip**: a passage you skimmed because nothing in it changed what you'd
-     do.
+   - **skip**: a passage you skimmed because nothing in it would change what
+     any of the four teams does. A passage only another team needs is not a
+     skip.
+3. For each of the other three situations, name the places where that team
+   would stop or guess, as stops of the same kinds.
 
-Done when every section has been walked and every stop recorded. A section
-with no stop gets "read, no stop".
+Done when every section has been walked for your team and checked for the
+other three, and every stop recorded. A section with no stop gets "read, no
+stop".
 
 ## Report
 
-Each stop on one line: the shortest quote that locates it, its kind, and what
-you'd guess it means. Then "Could submit without asking: yes" or "no", and the
+Each stop on one line: the team it stops (1 to 4), the shortest quote that
+locates it, its kind, and what you'd guess it means. Then "Could submit without asking: yes" or "no", and the
 questions you'd send the instruction team, five at most. Write no rewording:
 the main session chooses the fix, and a fix written from the reader's side
 adds prose. Under 500 words.
