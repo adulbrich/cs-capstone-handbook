@@ -54,7 +54,7 @@ and where an AI reviewer ran, what the reviewer checked that the tool could not.
 
 - Owner:
 - Status: in review, or underway
-- Reviewer note, only where a review took judgment:
+- Reviewer and note, only where a review took judgment:
 
 **Owning nothing on either list this sprint:** [names, or "none"]
 

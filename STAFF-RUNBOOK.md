@@ -31,7 +31,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 4. Your challenge.
 5. Actions with an owner and a week. Write the per-student lines before the next team arrives.
 
-**NDA teams.** Where you can't open the repository or the partner's system yourself, the note describes each entry in place of its link, with partner specifics replaced by neutral placeholders. The team shares its screen and you open the work behind one owned entry per student, the reviewer notes each student wrote, and the demo artifact. Mark each in the record. A described entry you did not open there does not check out. When the check-in falls after the note is due, grade those items after the meeting.
+**NDA teams.** Where you can't open the repository or the partner's system yourself, the note describes each entry in place of its link, with partner specifics replaced by neutral placeholders. The team shares its screen and you open the work behind one owned entry per student, a Done one where the student has one, the reviewer notes each student wrote, and the demo artifact. Mark each in the record. A described entry you did not open there does not check out. When the check-in falls after the note is due, grade those items after the meeting.
 
 **Probes**, one per student, varied across the team: show me the diff, and which lines are yours; what did your reviewer ask you to change, and what changed; what breaks if X (pick X from their diff); where did you stop to check the AI's output, and what did you find; run the tests for this; for a findings document, what did you learn that changed the plan.
 
@@ -131,7 +131,7 @@ CS 461 (fall) and CS 462 (winter) are both certified Writing Intensive Curriculu
 
 ## Individual Contribution Modifier
 
-- Default full credit; investigate only on triggers (a student listed as owning no entry, an entry that does not check out, a check-in flag, peer or partner flag, something off at the defense, a low Ownership-and-Delegation or Role score at the defense).
+- Default full credit; investigate only on triggers (a student who owns no Done entry, an entry that does not check out, a check-in flag, peer or partner flag, something off at the defense, a low Ownership-and-Delegation or Role score at the defense).
 - **Within this modifier, these signals are inputs to one decision, not separate deductions.** Each component scores its own evidence, so a student who does not contribute can lose points here and on the partner evaluation, where an individual adjustment starts from a partner flag or the instructors' review of the record. The checkpoint criterion still grades whether attribution infrastructure exists, never individuals.
 - TAs flag with an evidence note; instructors adjudicate. Student gets the note and five business days to respond.
 - NDA teams: bind to live evidence only (the entries opened at the check-in, walkthrough, defense, peer eval, partner flags).
