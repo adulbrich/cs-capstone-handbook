@@ -24,7 +24,7 @@ A finding clears the bar when it:
   would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 
 A wording the reviewer would prefer, where the current one is clear and
-correct, does not clear it. A confirmed stop is never taste. A skip stop is
+correct, does not clear it. A skip stop is
 deleted, or goes to the instructor when deleting it would
 lose a requirement or reverse an instructor decision.
 
@@ -99,9 +99,8 @@ Past the third rung (a new sentence, a new rule, a section taken over its
 budget or grown past it), the fix goes to the instructor with the proposed
 text and its word cost.
 
-After the first round most findings sit in text an earlier round wrote, so
-the first rung is usually the fix. A fix that also rewrites its neighborhood
-buys another round. One commit per round.
+A fix that also rewrites its neighborhood buys another round. One commit per
+round.
 
 ## 5. Record the Round
 

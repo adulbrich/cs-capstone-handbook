@@ -167,8 +167,8 @@ have no citation duty, though they may link.
 - One paragraph carries one idea, with a transition into the next. A
   paragraph ends on its last piece of information, never on a line that
   restates it.
-- The reverse outline checks both: one line per paragraph naming its idea
-  and what it contributes to the page. A paragraph with no contribution is
+- The reverse outline: one line per paragraph naming its idea and what it
+  contributes to the page. A paragraph with no contribution is
   cut, one with two ideas is split, and one whose last sentence restates it
   loses that sentence.
 - Lists hold things you can count; prose holds arguments. Steps, options, and

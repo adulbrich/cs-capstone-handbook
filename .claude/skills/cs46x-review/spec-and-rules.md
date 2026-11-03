@@ -45,8 +45,8 @@ the diff touches (the Skills table in `AGENTS.md`).
    an activity or guide, and a page body that names Canvas (`AGENTS.md`, hard
    rules 5 and 7).
 9. **Length**: each section `section-words.mjs` flags `OVER` or `GREW`, with
-   its numbers (`cs46x-assignments`, Length); a guide past its 6,000-word
-   split-check or an activity past its 400-word test, with the number; on an
+   its numbers (`cs46x-assignments`, Length); a guide or an activity past
+   its skill's length check, with the number; on an
    audience page, each outbound link that answers no question its reader asks
    (`AGENTS.md`, Audience pages are orientation).
 10. **Voice**, on every guide and audience page in the diff: the reverse

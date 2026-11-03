@@ -341,8 +341,7 @@ words:
 | An aside | 60 | one idea |
 | Any other `##`, `###`, or `####` | 200 | |
 
-A budget is a tripwire, as the guides' 6,000-word split-check is, not a
-target. A page split into entries is budgeted section by section, so each of
+A budget is a tripwire, as the guides' split-check is, not a target. A page split into entries is budgeted section by section, so each of
 the Repo Checkpoints' milestone sections has its own 200, and a page has no
 total. Over budget, cut restatement first; if what remains is precision, the
 instructor decides whether the section stays long, since a clause that
