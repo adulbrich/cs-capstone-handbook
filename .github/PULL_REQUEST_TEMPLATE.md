@@ -29,8 +29,9 @@ Assisted-by: Claude Code
 
 ## Review loop
 
-<!-- As docs/agents/code-review.md sets out. Each answer the instructor gave
-     and each declined finding gets one line. -->
+<!-- As the cs46x-review skill sets out. Rounds is a count. Each answer the
+     instructor gave and each declined finding, with its ground, gets one
+     line. -->
 
 - Rounds:
 - Decisions:
