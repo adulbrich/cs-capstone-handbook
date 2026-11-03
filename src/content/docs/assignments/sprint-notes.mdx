@@ -50,13 +50,12 @@ Every two-week [sprint](https://scrumguides.org/scrum-guide.html) ends with a on
 
 ## What You Produce
 
-The sprint note is one page with five items:
+The sprint note is one page with four items:
 
 1. **Working software evidence**: a URL, tagged release, or demo video, plus the CI run. If nothing works yet, say so plainly and say why.
-2. **What got done**: the things the team actually finished this sprint, each one concrete and consequential. Link where the work is tracked: the board, the issue list, or the pull requests.
-3. **Top risk and one decision needed**: the single biggest threat to shipping (in fall, before your [Definition of Shipped](/assignments/definition-of-shipped/) exists, the biggest threat to the next checkpoint milestone), and one decision the team needs, naming who makes it: the partner, the instruction team, or the team itself. Take the risk from the top of your `docs/risks.md`.
-4. **Contribution lines**: one per student, in the shape below.
-5. **Judgment layer** (about five lines, human-written): what the team learned this sprint and what it changes about the plan.
+2. **What got done, and who**: one entry per piece of work the team finished this sprint, each with its owner and reviewer, in the shape below.
+3. **Top risk and decisions**: the risk ranked first in your `docs/risks.md`, linked at the sprint's last commit, however small it is. The register ranks risks by threat to shipping, or in fall, before your [Definition of Shipped](/assignments/definition-of-shipped/) exists, by threat to the next checkpoint milestone. Then one decision the team needs, linked to where it is being made and naming who makes it (the partner, the instruction team, or the team itself), or a plain statement that no decision is needed this sprint. Last, the previous note's decision, as [Decisions and who chaired them](#decisions-and-who-chaired-them) describes.
+4. **Judgment layer** (about five lines, human-written): what the team learned this sprint, naming at least one change to the plan it caused, with its link (a re-scoped story, a re-ranked risk, a revised estimate), or saying plainly that the plan holds and why.
 
 An early sprint can be light on code, or have none, and that's fine when the note says where you are and why. For example:
 
@@ -68,7 +67,7 @@ An early sprint can be light on code, or have none, and that's fine when the not
 
 Each sprint, update the [living docs](/assignments/repo-checkpoints/#what-you-produce) for what the sprint changed, starting with `docs/requirements.md`, `docs/design.md`, and `docs/risks.md`. In fall and winter the next repo checkpoint checks them; in spring they go to whoever continues the project, through the [Project Handoff](/assignments/project-handoff/#4-the-living-docs).
 
-**AI use:** you may generate the evidence with AI from your own repo history and board. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and the one sentence in each contribution line saying what you shipped and how you know it works. Start from the [sprint note template](/sprint-note-template.md).
+**AI use:** you may generate the evidence with AI from your own repo history and board, the entries included. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and each student's How we checked it sentence on their marked entry. Start from the [sprint note template](/sprint-note-template.md).
 
 ### What counts as "done"
 
@@ -78,39 +77,46 @@ What does not count is activity without a result. "Worked on the API", "research
 
 Everything in this list should be something you can show. The demo and this list are the same content in two formats.
 
-### Contribution lines
+### What got done, and who
 
 Every sprint, every student owns at least one piece of work that someone else accepted. That is the contribution minimum, and [Individual Contribution](#sprint-notes-n-individual-contribution) says how the evidence for it is read.
 
-A piece of work is something you owned that a grader can check. A code change is its pull request. Other work is the issue, ticket, or document where it lives, in the tracker your [`CONTRIBUTING.md`](/assignments/team-charter/#required-in-contributingmd) names. Accepted means someone else reviewed and took it: the pull request approved and merged, the issue or ticket closed with its outcome, the document approved, including by your partner in their own system.
+Write one entry per piece of work the team finished this sprint, as a table row or under its own subheading (the template uses subheadings). Finished means someone else took it this sprint: the pull request approved and merged, the issue or ticket closed with its outcome, the document approved, including by your partner in their own system. Each entry has:
 
-One line per student, three parts:
+- **What now exists**, linked to where it is written up. A code change is its pull request; other work is the issue, ticket, or document where it lives, in the tracker your [`CONTRIBUTING.md`](/assignments/team-charter/#required-in-contributingmd) names. A board card or a commit list is not a write-up.
+- **Its owner**: the student who authored or drove it, answered review, and saw it accepted.
+- **Who reviewed and accepted it**, with a reviewer note where the review took judgment (below).
+- **How we checked it**, on each student's most consequential entry, which they mark. The owner writes this sentence themselves: for code, the test or the run; for research, a decision, or a document, what it was checked against and who confirmed it.
 
-1. **The work you owned this sprint**, one or more pieces, each with a link or ID. NDA teams list IDs only. Owning it means you authored or drove it, answered review, and saw it accepted. A rename, a formatter run, a lockfile bump, or a status update does not count. If a grader cannot open it (your partner's system, an NDA), give its ID and show it at your check-in demo.
-2. **A review you gave this sprint, and what it said.** Any artifact counts: a pull request, a spec, a design, a test plan, a document, a dataset. Link it or give its ID where the review is recorded (a pull request review, a document comment, an issue thread), and name either the change you asked for ("asked Priya to handle the empty-cart case in checkout") or, for an approval, what you checked before approving ("ran the migration against a copy of the seed data and compared row counts"). A bare "LGTM" is not a review, and neither is a comment that names nothing checked and requests no change. If you reviewed nothing this sprint, say so here.
-3. **The most consequential thing you shipped this sprint, in one sentence, and how the team knows it works.** This is the part with judgment in it, and it's the part that's read.
+Work still open, work finished in an earlier sprint, and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board) are not entries. Two lines close the list: the students who own no entry this sprint, and the reviews that took judgment on work still open. A student listed as owning none doesn't fail the team's item; whether it costs them anything is their individual contribution's question.
 
-If a teammate has nothing this sprint, their line says so plainly, and so does a review part with no review behind it. The team's Contribution lines item still passes either way; whether it costs that student anything is their individual contribution's question.
+Your part of the note is then three things: the entries you own, the reviewer notes you wrote, and the How we checked it sentence on your marked entry.
+
+A routine approval, a bare "LGTM" included, is the reviewer's name and nothing else. A review that took judgment (code that was hard to get right, a design decision, an ADR, an RFC, a test plan, a data change) gets a reviewer note naming the change you asked for ("asked Priya to handle the empty-cart case in checkout") or what you checked ("ran the migration against a copy of the seed data and compared row counts"). Where an AI reviewer ran on the change, the note also says what you checked that the tool could not. There is no minimum per sprint, but in spring your [defense](/assignments/defense/#rubric) reads these notes for its reviewer-side question, and a student with none all spring has nothing to show there.
 
 [Google's code review standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is worth reading on where that bar sits: approve once the change improves the overall code health of the system, even when it is not perfect, and say what would need to change if it does not.
 
-Also name **who chaired a decision** this sprint and which decision they drove to a conclusion. Over a term every student should appear here at least once. This is the record your [defense](/assignments/defense/) role criterion is checked against, so it saves you reconstructing your own leadership from memory at your defense.
-
 :::note[How the numbers are read]
-Counts of accepted work and reviews are evidence where "everyone contributed" is not. Volume is easy to inflate and easy to misread, so three rules bound it.
+Entries and reviews are evidence where "everyone contributed" is not. Volume is easy to inflate and easy to misread, so three rules bound it.
 
-Mechanical changes are not evidence. A formatter run, a lockfile bump, a bulk rename, a generated file, a dependency update: all normal work, none of it a signal about contribution. Do not pad your line with them, and graders will not count them. Lines of code are not counted either: a lint pass can move ten thousand lines and mean nothing.
+Mechanical changes are not entries. A formatter run, a lockfile bump, a bulk rename, a generated file, a dependency update: all normal work, none of it a signal about contribution. Don't pad the list with them, and graders won't count them. Lines of code are not counted either: a lint pass can move ten thousand lines and mean nothing.
 
-More is not scored. One accepted piece of work meets the minimum, and how each sprint's individual entry is scored is under [Individual Contribution](#sprint-notes-n-individual-contribution).
+More is not scored. One accepted entry meets the minimum, and how each sprint's individual contribution is scored is under [Individual Contribution](#sprint-notes-n-individual-contribution).
 
-The sentence outranks the counts. A student with one piece of work who can say what it made possible and how they know it works is contributing more than a student with six and nothing to say about any of them.
+The sentence outranks the count. A student with one entry who can say how the team checked it is contributing more than a student with six entries and nothing to say about any of them.
 :::
+
+### Decisions and who chaired them
+
+Each note reports the previous note's decision: what was decided and who chaired it, meaning who drove it to a conclusion, or that it is still open and why. If the previous note said no decision was needed, there is nothing to report. Don't invent a decision to fill item 3; a plain "no decision is needed this sprint" passes.
+
+Over a term every student should chair at least one decision, as your [charter](/assignments/team-charter/#1-roles) commits to. This record is what your [defense](/assignments/defense/) role criterion is checked against, so it saves you reconstructing your own leadership from memory at your defense.
 
 ## Demo Cadence
 
-Every sprint, your team demos live to your Teaching Assistant (TA) in a check-in during the sprint-note week, in person or over Zoom, at a time your team and your TA agree. One team, one TA, nobody else's team in the room. Every student demos their own work: pick one artifact from your contribution line for this sprint (a piece of work you listed as owned), open it, show the change, and run it. It cannot be the artifact you showed at the last check-in: nothing new to show means nothing was done that sprint. Your TA follows up with a question about what you showed, such as which lines are yours or what your reviewer asked you to change.
+Every sprint, your team demos live to your Teaching Assistant (TA) in a check-in during the sprint-note week, in person or over Zoom, at a time your team and your TA agree. One team, one TA, nobody else's team in the room. Every student demos their own work: pick one entry you own in this sprint's list, open it, show the change, and run it. It cannot be the artifact you showed at the last check-in: nothing new to show means nothing was done that sprint. Your TA follows up with a question about what you showed, such as which lines are yours or what your reviewer asked you to change.
 
-Two to three minutes each, so 6 to 12 minutes of a 25-to-30-minute check-in for a team of three or four. The rest of the check-in is your top risk and the decision you need; anything that would have been open-ended TA coaching happens async between check-ins. Your demo makes the same claim as your contribution line, out loud, in front of the people who would know if it weren't true.
+Two to three minutes each, so 6 to 12 minutes of a 25-to-30-minute check-in for a team of three or four. The rest of the check-in is your top risk and the decision you need; anything that would have been open-ended TA coaching happens async between check-ins. Your demo makes the same claim as your entries in the note, out loud, in front of the people who would know if it weren't true.
 
 **Sprint Notes 1:** the fall week 4 check-in is the week before [Repo Checkpoint 1](/assignments/repo-checkpoints/#repo-checkpoint-1-set-up). After the demos, the time for your top risk and decision goes to a review that is not graded: your TA goes through what Repo Checkpoint 1 asks for against your repository, so you find what is missing with a week left to fix it.
 
@@ -120,19 +126,23 @@ The all-hands [demo days](/assignments/demo-day/) are a different thing from thi
 
 ## What You Submit
 
+:::note[If your project is under NDA]
+Where a grader can't open your repository or your partner's system, give each entry's ID instead of a link. At the check-in, with your screen shared, your TA opens what a remote grader would have: one owned entry per student, the reviewer notes each student wrote, and the demo artifact, and marks each in the check-in record. An ID your TA didn't open there doesn't check out. When the check-in falls after the note is due, your TA grades those items after the meeting.
+:::
+
 ### Sprint Notes N
 
 The sprint note as one PDF, with the cover [Submitting Your Work](/assignments/introduction/#submitting-your-work) describes, and your demo as [Demo Cadence](#demo-cadence) describes.
 
 ### Sprint Notes N: Individual Contribution
 
-Nothing to hand in: your contribution line in the sprint note is the evidence.
+Nothing to hand in: your entries, reviewer notes, and How we checked it sentence in the sprint note are the evidence.
 
 ## Rubric
 
 ### Sprint Notes N
 
-Each note is checked pass/fail per item, 20 points each; the [rubric conventions](/assignments/introduction/#rubric-conventions) list it among the rubrics that use other bands.
+Each note is checked pass/fail per criterion, 20 points each, and two criteria, What got done and Ownership and review, grade the same list; the [rubric conventions](/assignments/introduction/#rubric-conventions) list it among the rubrics that use other bands.
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/sprint-note/sprint-note-rubric.csv" />
 
@@ -140,7 +150,7 @@ Each note is checked pass/fail per item, 20 points each; the [rubric conventions
 
 <RubricTable csv={contributionCsv} sourceLabel="canvas/assignments/individual-contribution/individual-contribution-rubric.csv" />
 
-Your individual half defaults to full credit. A student's individual half is reduced when the sprint's evidence (contribution lines, the record where the work lives, review activity) falls short of the contribution minimum. Deductions are flagged by the team's TA with an evidence note, then confirmed by an instructor; no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Each sprint is scored on its own, from the first one: no contribution that sprint, or a contribution line the record contradicts, scores zero, and anything else short of the minimum is partial credit at the grader's discretion. Being blocked is not a reason to contribute nothing, since there is other work to pick up, unless the whole team is blocked.
+Your individual half defaults to full credit. A student's individual half is reduced when the sprint's evidence (their entries, the pull request, issue, or document each one links, review activity) falls short of the contribution minimum. Deductions are flagged by the team's TA with an evidence note, then confirmed by an instructor; no deduction lands without a written evidence note you can see and respond to. You have five business days from notification to respond with evidence; an instructor makes the final call. Each sprint is scored on its own, from the first one, in one of the rubric's four bands: the grader picks a band, never a number between two. Being blocked is not a reason to contribute nothing, since there is other work to pick up, unless the whole team is blocked.
 
 Two other sources can raise a concern about your contribution: the [Defense](/assignments/defense/), which spot-checks ownership claims live, and your partner's surveys, which can flag an individual concern and start an [individual review](/assignments/project-partner-evaluation/#instructor-review) of your partner evaluation score.
 
@@ -150,6 +160,6 @@ If you join your first team mid-term, the sprints before you joined score full c
 
 Sprint notes repeat twelve times a year, so these recommendations aren't per note. Three activities are worth doing once, in fall: [Kanban Board Setup](/activities/team-and-workflow/#kanban-board-setup), [Definition of Done](/activities/team-and-workflow/#definition-of-done), and [Regular Stand-Up Meetings](/activities/team-and-workflow/#regular-stand-up-meetings).
 
-Two are worth repeating: [Prioritization](/activities/requirements/#prioritization) for the top-risk-and-decision item, and [Learning Journal](/activities/learning-and-reflection/#learning-journal) for the judgment layer, which is the part the instruction team reads.
+Two are worth repeating: [Prioritization](/activities/requirements/#prioritization) for the top risk and decisions item, and [Learning Journal](/activities/learning-and-reflection/#learning-journal) for the judgment layer, which is the part the instruction team reads.
 
 Browse [Team and Workflow](/activities/team-and-workflow/) for anything touching the board or estimates, [Requirements](/activities/requirements/) for prioritizing, and [Planning and Risk](/activities/planning-and-risk/) for risk.
