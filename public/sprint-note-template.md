@@ -18,26 +18,29 @@ If a video replaced the live demo (a missed check-in, or a TA who could not meet
 
 ## 2. What Got Done, and Who
 
-One entry per piece of work the team finished this sprint: the pull request merged, the issue or ticket closed with its outcome,
-or the document approved, by someone other than its owner, this sprint. Work still open, work finished in an earlier sprint,
-and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board) are not entries. Non-code work counts.
-Link where the work is written up (the pull request, issue, or document); a board card or a commit list is not a write-up.
-NDA teams: give IDs; the Sprint Notes page's NDA note says what your TA opens at the check-in.
+Two lists. Done: work someone else took this sprint (the pull request merged, the issue or ticket closed with its outcome,
+or the document approved). In progress, optional: work still open at sprint close, in review or underway.
+Work finished in an earlier sprint and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board)
+go on neither list. Non-code work counts. Link where the work is written up (the pull request, issue, or document);
+a board card or a commit list is not a write-up. Where a grader can't open the work, describe it in place of the link,
+with partner specifics replaced by neutral placeholders; your TA opens the work itself at the check-in.
 
-Each student marks their most consequential entry and writes its "How we checked it" sentence themselves:
+Each student marks their most consequential Done entry and writes its "How we checked it" sentence themselves:
 for code, the test or the run; for research, a decision, or a document, what it was checked against and who confirmed it.
 
 A routine approval, "LGTM" included, is just the reviewer's name. A review that took judgment (code that was hard to get right,
 a design decision, an ADR, an RFC, a test plan, a data change) adds a reviewer note: the change asked for or what was checked,
 and where an AI reviewer ran, what the reviewer checked that the tool could not.
 
-### [What now exists] ([link or ID])
+### Done
+
+#### [What now exists] ([link, or a description where it can't be opened])
 
 - Owner:
 - Reviewed and accepted by:
 - Reviewer note, only where the review took judgment:
 
-### [What now exists] ([link or ID])
+#### [What now exists] ([link, or a description where it can't be opened])
 
 - Owner:
 - Reviewed and accepted by:
@@ -45,14 +48,19 @@ and where an AI reviewer ran, what the reviewer checked that the tool could not.
 - Marked: the owner's most consequential entry this sprint
 - How we checked it (written by the owner):
 
-**Owning no entry this sprint:** [names, each with a link to their work still in review, if any; or "none"]
+### In Progress
 
-**Reviews that took judgment on work still open:** [link or ID, reviewer, and the note, or "none"]
+#### [What is being built] ([link, or a description where it can't be opened])
+
+- Owner:
+- Status: in review, or underway
+- Reviewer note, only where a review took judgment:
+
+**Owning nothing on either list this sprint:** [names, or "none"]
 
 ## 3. Top Risk and Decisions
 
-- Top risk: the risk ranked first in `docs/risks.md`, however small, linked at the sprint's last commit
-  (in fall, before the Definition of Shipped exists, the register ranks risks by threat to the next checkpoint milestone):
+- Top risk: the risk ranked first in `docs/risks.md`, however small, linked at the sprint's last commit:
 - Decision needed: what, who makes it (the partner, the instruction team, or the team itself), and a link to where it is
   being made; or "No decision is needed this sprint.":
 - Previous note's decision: what was decided and who chaired it, or that it is still open and why
