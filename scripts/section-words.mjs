@@ -18,6 +18,7 @@
 
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
+import { relative, resolve } from "node:path";
 import { parseFrontmatter } from "./lib/content.mjs";
 
 const PAGES_DIR = "src/content/docs/assignments/";
@@ -31,7 +32,7 @@ const IMPORT_RE = /^import .*$/gm;
 const COMMENT_RE = /\{\/\*[\s\S]*?\*\/\}/g;
 // The summary card's own text is not intro prose.
 const CARD_RE =
-  /<(AssignmentSummary|AssignmentMeta)\b[^>]*[^/]>[\s\S]*?<\/\1>/g;
+  /<(AssignmentSummary|AssignmentMeta)\b(?:[^>]*[^/])?>[\s\S]*?<\/\1>/g;
 const SELF_CLOSING_RE = /<[A-Za-z][^>]*\/>/g;
 const TAG_RE = /<\/?[A-Za-z][^>]*>/g;
 const LINK_RE = /!?\[([^\]]*)\]\([^)]*\)/g;
@@ -77,7 +78,7 @@ function descend(path, heading) {
 
 /**
  * Own-text word counts keyed by heading path. An aside is keyed under its
- * section by its title, or by its place in the section when it has none, so
+ * section by its title, or by its place among the section's untitled asides, so
  * a new aside elsewhere on the page leaves its key alone.
  */
 function sections(source) {
@@ -98,7 +99,7 @@ function sections(source) {
       state.asides = 0;
       texts.set(state.path.join(" > "), current);
     } else if (aside) {
-      state.asides += 1;
+      state.asides += aside[2] ? 0 : 1;
       state.inAside = true;
       current = [];
       const name = aside[2] ? `aside [${aside[2]}]` : `aside ${state.asides}`;
@@ -177,7 +178,9 @@ const changed = [
   .join("\n")
   .split("\n")
   .filter((p) => p.endsWith(".mdx"));
-const pages = named.length ? named : changed;
+const pages = named.length
+  ? named.map((page) => relative(process.cwd(), resolve(page)))
+  : changed;
 
 let flagged = 0;
 for (const page of pages) {

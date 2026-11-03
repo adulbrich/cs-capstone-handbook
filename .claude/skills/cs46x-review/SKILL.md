@@ -26,7 +26,7 @@ A finding clears the bar when it:
 A wording the reviewer would prefer, where the current one is clear and
 correct, does not clear it. A confirmed stop is never taste. A passage the
 reader skimmed is deleted, or goes to the instructor when deleting it would
-lose a requirement.
+lose a requirement or reverse an instructor decision.
 
 **Hard** is a documented rule broken, cited by file and rule. **Judgement**
 is labelled as such, with the hunk quoted.
@@ -64,7 +64,7 @@ brief, the inputs the brief lists, and nothing else.
 | Code | `mattpocock-skills:code-review` (Standards and Spec), with The Bar above pasted into both prompts, on those paths only: MDX is not code | `src/lib/`, `scripts/`, `.claude/hooks/`, `src/components/`, `src/pages/`, or `astro.config.mjs` |
 
 The student reader is the one reviewer that must not know what the change
-meant. From the second round on it runs again only on pages whose text changed
+meant. From the second round on it runs again only on pages whose text or rubric changed
 since its last read, always as a new agent, and never with the ledger.
 
 Beside them, the main session does its own correctness read: the built-in
@@ -115,9 +115,9 @@ student read of every page changed since its last read reports no stop that
 clears the bar. A fix to the PR body alone starts no round.
 
 When a round's fixes stay within one file and rename no heading, the next
-round may be one reviewer on every brief for those lines, with a regression
+round may be one reviewer on every brief but the student read's for those lines, with a regression
 check of the whole diff, beside the main session's read and a student read of
-any page whose text changed.
+any page whose text or rubric changed.
 
 ## What No Reviewer Raises
 

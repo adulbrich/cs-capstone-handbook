@@ -15,7 +15,7 @@ The main session names:
   mentors' audience page.
 - **The page, as the reader gets it.** For an assignment entry: its exported
   body, `canvas-export/<term>/bodies/<nn>-<entry>.html`, one per entry whose
-  text changed, from the next term that uses it; that entry's rubric,
+  text or rubric changed, from the next term that uses it; that entry's rubric,
   `canvas-export/<term>/rubrics/<name>-rubric.csv`; and any template under
   `public/` the body links. For a syllabus:
   `canvas-export/<term>/syllabus/`. For a download changed on its own: the
