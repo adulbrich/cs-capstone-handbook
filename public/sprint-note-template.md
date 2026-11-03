@@ -30,7 +30,7 @@ with partner specifics replaced by neutral placeholders; show your TA the work i
 Each student marks their most consequential Done entry and writes its "How we checked it" sentence themselves:
 for code, the test or the run; for research, a decision, or a document, what it was checked against and who confirmed it.
 
-A routine approval, "LGTM" included, is just the reviewer's name. A review that took judgment (code that was hard to get right,
+For a routine approval, such as a plain "LGTM", name the reviewer and nothing more. A review that took judgment (code that was hard to get right,
 a design decision, an ADR, an RFC, a test plan, a data change) adds a reviewer note: the change asked for or what was checked,
 and where an AI reviewer ran, what the reviewer checked that the tool could not.
 
