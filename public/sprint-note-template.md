@@ -22,7 +22,7 @@ One entry per piece of work the team finished this sprint: the pull request merg
 or the document approved, by someone other than its owner, this sprint. Work still open, work finished in an earlier sprint,
 and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board) are not entries. Non-code work counts.
 Link where the work is written up (the pull request, issue, or document); a board card or a commit list is not a write-up.
-NDA teams: give IDs; your TA opens them at the check-in.
+NDA teams: give IDs; the Sprint Notes page's NDA note says what your TA opens at the check-in.
 
 Each student marks their most consequential entry and writes its "How we checked it" sentence themselves:
 for code, the test or the run; for research, a decision, or a document, what it was checked against and who confirmed it.
