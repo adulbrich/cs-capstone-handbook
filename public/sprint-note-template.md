@@ -53,7 +53,6 @@ that it couldn't.
 
 - Owner:
 - Status: in review, or how far along it is
-- Reviewer and note, only where a review took judgment:
 
 **Owning nothing on either list this sprint:** [names, or "none"]
 
