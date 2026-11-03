@@ -17,7 +17,9 @@ The main session names:
   body, `canvas-export/<term>/bodies/<nn>-<entry>.html`, one per entry whose
   text changed, from the next term that uses it; that entry's rubric,
   `canvas-export/<term>/rubrics/<name>-rubric.csv`; and any template under
-  `public/` the body links. For any other page: the built page,
+  `public/` the body links. For a syllabus:
+  `canvas-export/<term>/syllabus/`. For a download changed on its own: the
+  download, with the page that links it. For any other page: the built page,
   `dist/<path>/index.html`, its main content.
 - **A project situation**, one of those below.
 

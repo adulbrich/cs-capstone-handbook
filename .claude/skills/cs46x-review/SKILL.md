@@ -44,9 +44,10 @@ is labelled as such, with the hunk quoted.
 - Run `node scripts/section-words.mjs` for the assignment pages' word counts,
   base against head (`cs46x-assignments`, Length).
 - From the second round on, keep the **ledger**, one file in the session's
-  scratchpad: the instructor's decisions, each decline with its ground, and
-  the bar. Each reviewer but the student reader reads it first and raises only
-  what it does not already answer.
+  scratchpad: the instructor's decisions, each decline with its ground, each
+  fix (its round, its finding, what changed), and the bar. Each reviewer but
+  the student reader reads it first and raises only what it does not already
+  answer.
 
 Done when the build, the export, the word counts, and the ledger all reflect
 `HEAD`.

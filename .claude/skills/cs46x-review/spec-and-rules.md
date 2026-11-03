@@ -20,10 +20,10 @@ the diff touches (the Skills table in `AGENTS.md`).
    un-drafted or a sidebar changed with no line in the PR body; a fact whose
    meaning moved while its wording was tidied.
 3. **Source trace**: every requirement, number, procedure, or rule the diff
-   adds traces to the issue, a ledger decision, or a canonical home the page
-   links. One that traces to none is a finding for the instructor, however
-   reasonable it reads. One that restates a fact whose home is elsewhere
-   becomes a link.
+   adds traces to the issue, an instructor decision or a fix in the ledger,
+   or a canonical home the page links. One that traces to none is a finding
+   for the instructor, however reasonable it reads. One that restates a fact
+   whose home is elsewhere becomes a link.
 4. **PR body**: the Canvas line and the Ran locally line, against the diff.
 
 ## Rules

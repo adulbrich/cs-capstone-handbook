@@ -114,7 +114,10 @@ function verdict(budget, before, after) {
 const args = process.argv.slice(2);
 const baseFlag = args.indexOf("--base");
 const baseRef = baseFlag === -1 ? "origin/main" : args[baseFlag + 1];
-const named = args.filter((a, i) => a !== "--base" && i !== baseFlag + 1);
+const named =
+  baseFlag === -1
+    ? args
+    : args.filter((_, i) => i !== baseFlag && i !== baseFlag + 1);
 const mergeBase = git(["merge-base", baseRef, "HEAD"]);
 const pages = named.length
   ? named
