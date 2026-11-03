@@ -20,14 +20,13 @@ A finding clears the bar when it:
 - shows two statements that disagree;
 - points at a broken or misdirected link;
 - cites a documented rule broken; or
-- is a **stop**: a sentence its reader can't parse, a referent with no
-  antecedent, a term used in two senses, a requirement the reader can't act
-  on, or a passage the reader skips because nothing in it changes what they
-  do.
+- is a **stop** that holds up against the text: a place the student reader
+  would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 
 A wording the reviewer would prefer, where the current one is clear and
-correct, does not clear it. A stop is never taste: a reader who stops pays
-for it in time or in points.
+correct, does not clear it. A confirmed stop is never taste. A passage the
+reader skimmed is deleted, or goes to the instructor when deleting it would
+lose a requirement.
 
 **Hard** is a documented rule broken, cited by file and rule. **Judgement**
 is labelled as such, with the hunk quoted.
@@ -49,8 +48,8 @@ is labelled as such, with the hunk quoted.
   the student reader reads it first and raises only what it does not already
   answer.
 
-Done when the build, the export, the word counts, and the ledger all reflect
-`HEAD`.
+Done when the build, the export, the word counts, the drafted PR body, and
+the ledger all reflect `HEAD`.
 
 ## 2. Run the Reviewers
 
@@ -62,7 +61,7 @@ brief, the inputs the brief lists, and nothing else.
 | Student read | [`student-read.md`](student-read.md) | text a student, partner, or mentor reads: a page under `src/content/docs/`, a rubric CSV, a syllabus, a download in `public/` |
 | Consistency | [`consistency.md`](consistency.md) | an assignment page, anything under `canvas/`, a fact with a canonical home in `AGENTS.md`, or a heading other pages link |
 | Spec and rules | [`spec-and-rules.md`](spec-and-rules.md) | anything |
-| Code | `mattpocock-skills:code-review` (Standards and Spec), with The Bar above pasted into both prompts | `src/lib/`, `scripts/`, `.claude/hooks/`, `src/components/`, `src/pages/`, or `astro.config.mjs` |
+| Code | `mattpocock-skills:code-review` (Standards and Spec), with The Bar above pasted into both prompts, on those paths only: MDX is not code | `src/lib/`, `scripts/`, `.claude/hooks/`, `src/components/`, `src/pages/`, or `astro.config.mjs` |
 
 The student reader is the one reviewer that must not know what the change
 meant. From the second round on it runs again only on pages whose text changed
@@ -98,9 +97,7 @@ Take the first rung that resolves the finding:
 
 Past the third rung (a new sentence, a new rule, a section taken over its
 budget or grown past it), the fix goes to the instructor with the proposed
-text and its word cost. A section `section-words.mjs` flags `OVER` or `GREW`
-is read for restatement first, and only what is left goes to the instructor;
-nothing is trimmed to hit the number.
+text and its word cost.
 
 After the first round most findings sit in text an earlier round wrote, so
 the first rung is usually the fix. A fix that also rewrites its neighborhood
@@ -108,16 +105,17 @@ buys another round. One commit per round.
 
 ## 5. Record the Round
 
-Add the round's decisions and declines to the ledger and to the PR body's
-Review loop lines: Rounds as a count, then one line per decision and per
-decline. A resumed session rebuilds the ledger from those lines.
+Add the round's fixes, decisions, and declines to the ledger, and its
+decisions and declines to the PR body's Review loop lines: Rounds as a count,
+then one line per decision and per decline. A resumed session rebuilds the
+ledger from those lines and the round commits.
 
 The loop ends on a round that changed no repository file, in which the latest
 student read of every page changed since its last read reports no stop that
 clears the bar. A fix to the PR body alone starts no round.
 
 When a round's fixes stay within one file and rename no heading, the next
-round may be one reviewer on every axis for those lines, with a regression
+round may be one reviewer on every brief for those lines, with a regression
 check of the whole diff, beside the main session's read and a student read of
 any page whose text changed.
 

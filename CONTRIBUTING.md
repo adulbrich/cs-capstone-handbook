@@ -6,8 +6,7 @@ those rules sit in. `README.md` covers install and running the site.
 
 The handbook is student-facing documentation and where all graded work is
 authored, except the two Canvas-owned assignments named in `AGENTS.md`. Most changes are prose and tables, not code, and the review reads
-them that way, with one reviewer reading each changed page blind, as its
-reader gets it: see the `cs46x-review` skill.
+them that way: see the `cs46x-review` skill.
 
 ## The process
 

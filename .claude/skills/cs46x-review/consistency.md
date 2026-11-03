@@ -16,8 +16,7 @@ Bar). Read the "Say each fact once" section of `AGENTS.md` and
    page doesn't ask at that entry; a page requirement no band scores; one
    requirement scored by two criteria; a Pass and Fail that together leave a
    case unscored.
-2. **Restatements**, found by grep across `src/`, `public/`, `canvas/`,
-   `src/decks/`, `STAFF-RUNBOOK.md`, `docs/`, and `.claude/skills/`: every
+2. **Restatements**, found by grep across the repository: every
    line that restates what changed and now disagrees with it. A second
    statement of a fact with a canonical home is a finding even when it
    agrees, and the fix is a link; a page may state the single number its own

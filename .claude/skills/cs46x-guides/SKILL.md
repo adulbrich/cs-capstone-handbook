@@ -576,7 +576,7 @@ the failure this skill exists to prevent.
    percentage. Name in the pull request body each source you opened to check
    a paraphrase (see Sourcing).
 6. Run the reverse outline (`docs/agents/voice.md`, Structure) yourself
-   before the review does.
+   before the review (`cs46x-review`) does.
 7. Check the Additional Readings activity list against
    `src/content/docs/activities/`. An activity that exercises this practice and
    is not listed is a dead end for the reader.
