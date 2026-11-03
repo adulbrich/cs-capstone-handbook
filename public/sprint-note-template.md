@@ -25,7 +25,7 @@ In progress, optional: anything else the team has started and taken far along, w
 Work finished in an earlier sprint and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board)
 go on neither list. Non-code work counts. Link where the work is written up (the pull request, issue, or document);
 a board card or a commit list is not a write-up. Where a grader can't open the work, describe it in place of the link,
-with partner specifics replaced by neutral placeholders; your TA opens the work itself at the check-in.
+with partner specifics replaced by neutral placeholders; show your TA the work itself on a shared screen at the check-in.
 
 Each student marks their most consequential Done entry and writes its "How we checked it" sentence themselves:
 for code, the test or the run; for research, a decision, or a document, what it was checked against and who confirmed it.

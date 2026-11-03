@@ -31,7 +31,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 4. Your challenge.
 5. Actions with an owner and a week. Write the per-student lines before the next team arrives.
 
-**NDA teams.** Where you can't open the repository or the partner's system yourself, the note describes each entry in place of its link, with partner specifics replaced by neutral placeholders. The team shares its screen and you open the work behind one owned entry per student, a Done one where the student has one, the reviewer notes each student wrote, and the demo artifact. Mark each in the record. A described entry you did not open there does not check out. When the check-in falls after the note is due, grade those items after the meeting.
+**NDA teams.** Where you can't open the repository or the partner's system yourself, the note describes each entry in place of its link, with partner specifics replaced by neutral placeholders. The team shares its screen and shows you the work behind one owned entry per student, a Done one where the student has one, the reviewer notes each student wrote, and the demo artifact. Mark each in the record. A described entry you did not see there does not check out. When the check-in falls after the note is due, grade those items after the meeting.
 
 **Probes**, one per student, varied across the team: show me the diff, and which lines are yours; what did your reviewer ask you to change, and what changed; what breaks if X (pick X from their diff); where did you stop to check the AI's output, and what did you find; run the tests for this; for a findings document, what did you learn that changed the plan.
 
