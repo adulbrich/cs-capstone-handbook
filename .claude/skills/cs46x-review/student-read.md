@@ -43,10 +43,11 @@ round's reader.
 5. A team of three on a game they proposed themselves, with a mentor in the
    partner's place.
 
-A partner reader runs engineering at a small company sponsoring the team in
-its situation and has never seen the course. A mentor reader is an alumnus
-giving that team an hour a week. Either one walks the page for what it asks
-of them, and checks the other situations as that team's partner or mentor.
+A partner reader gets one of 1 to 4 and runs engineering at the small
+company sponsoring that team, having never seen the course. A mentor reader
+is an alumnus giving the team an hour a week. For either, "what you'd hand
+in" below is what the page asks of you, and the other situations are read as
+that team's partner or mentor.
 
 ## What You Do
 
@@ -78,7 +79,7 @@ stop".
 ## Report
 
 Each stop on one line: the team it stops (1 to 5), the shortest quote that
-locates it, its kind, and what you'd guess it means. Then "Could submit without asking: yes" or "no", and the
+locates it, its kind, and what you'd guess it means. Then "Could do it without asking: yes" or "no", and the
 questions you'd send the instruction team, five at most. Write no rewording:
 the main session chooses the fix, and a fix written from the reader's side
 adds prose. Under 500 words.
