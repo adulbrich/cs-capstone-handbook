@@ -111,7 +111,7 @@ then one line per decision and per decline. A resumed session rebuilds the
 ledger from those lines and the round commits.
 
 The loop ends on a round that changed no repository file, in which the latest
-student read of every page changed since its last read reports no stop that
+student read of every page reports no stop that
 clears the bar. A fix to the PR body alone starts no round.
 
 When a round's fixes stay within one file and rename no heading, the next

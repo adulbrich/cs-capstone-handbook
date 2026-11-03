@@ -17,7 +17,7 @@
 // changed it.
 
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { parseFrontmatter } from "./lib/content.mjs";
 
@@ -99,7 +99,7 @@ function sections(source) {
       state.asides = 0;
       texts.set(state.path.join(" > "), current);
     } else if (aside) {
-      state.asides += aside[2] ? 0 : 1;
+      state.asides += Number(!aside[2]);
       state.inAside = true;
       current = [];
       const name = aside[2] ? `aside [${aside[2]}]` : `aside ${state.asides}`;
@@ -178,9 +178,12 @@ const changed = [
   .join("\n")
   .split("\n")
   .filter((p) => p.endsWith(".mdx"));
-const pages = named.length
-  ? named.map((page) => relative(process.cwd(), resolve(page)))
-  : changed;
+/** A named page as git sees it: relative to the repository root, links resolved. */
+function repoPath(page) {
+  const abs = resolve(page);
+  return relative(process.cwd(), existsSync(abs) ? realpathSync(abs) : abs);
+}
+const pages = named.length ? named.map(repoPath) : changed;
 
 let flagged = 0;
 for (const page of pages) {
