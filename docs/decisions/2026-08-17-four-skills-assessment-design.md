@@ -2,7 +2,7 @@
 
 Date: 2026-08-17
 Branch: `revision-fall-2026`
-Status: design record. Implemented on the `revision-fall-2026` branch and merged through #62. §5 has a one-paragraph home on `learning-objectives/mapping.mdx`; §4.6 workshop decks remain unbuilt (#51). The per-student contribution line in §3.3, §3.5, and §5 is superseded by `2026-11-02-sprint-note-list-of-work.md` (#627).
+Status: design record. Implemented on the `revision-fall-2026` branch and merged through #62. §5 has a one-paragraph home on `learning-objectives/mapping.mdx`; §4.6 workshop decks remain unbuilt (#51). The per-student contribution line in §3.3, §3.5, and §5 is superseded by #627: the ownership record is now the owners and reviewers in the sprint note's list of work, and the chaired-decision record is the previous note's decision reported under Top risk and decisions.
 Record type: a design record under `docs/decisions/`; the handbook pages are the source of truth where the two differ. References below to `IDEAS.md` and `IMPLEMENTED.md`, with or without line numbers, are historical: both journals were retired in #75 and the pull requests and issues carry that record now.
 
 ## 1. Context and Drivers
