@@ -71,5 +71,4 @@ and where an AI reviewer ran, what the reviewer checked that the tool could not.
 
 ## 4. Judgment Layer (human-written, about five lines)
 
-What the team learned this sprint, naming at least one change to the plan it caused, with its link (a re-scoped story,
-a re-ranked risk, a revised estimate), or saying plainly that the plan holds and why. Not a recap of the work.
+What the team learned this sprint and what it changes about the plan, or why the plan holds.
