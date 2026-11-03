@@ -53,7 +53,7 @@ Every two-week [sprint](https://scrumguides.org/scrum-guide.html) ends with a on
 The sprint note is one page with four items:
 
 1. **Working software evidence**: a URL, tagged release, or demo video, plus the CI run. If nothing works yet, say so plainly and say why.
-2. **What got done, and who**: the work the team finished this sprint and, if you choose, the work still in progress, each entry concrete and consequential, with its owner, in the shape below.
+2. **What got done, and who**: the work completed this sprint and, if you choose, the work the team has taken far along, each entry concrete and consequential, with its owner, in the shape below.
 3. **Top risk and decisions**: the risk ranked first in your `docs/risks.md`, linked at the sprint's last commit, however small it is. The register ranks risks by threat to shipping. Then one decision the team needs, linked to where it is being made and naming who makes it (the partner, the instruction team, or the team itself), or a plain statement that no decision is needed this sprint. Last, the previous note's decision, as [Decisions and who chaired them](#decisions-and-who-chaired-them) describes.
 4. **Judgment layer** (about five lines, human-written): what the team learned this sprint, naming at least one change to the plan it caused, with its link (a re-scoped story, a re-ranked risk, a revised estimate), or saying plainly that the plan holds and why.
 
@@ -81,17 +81,23 @@ Everything in this list should be something you can show. The demo and this list
 
 Every sprint, every student owns at least one piece of work that someone else accepted. That is the contribution minimum, and [Individual Contribution](#sprint-notes-n-individual-contribution-1) says how the evidence for it is read.
 
-Write two lists, each entry as a table row or under its own subheading (the template uses subheadings):
+Write two lists, each entry as a table row or under its own subheading (the template uses subheadings). One student can own several entries.
 
-- **Done**: work someone else took this sprint, meaning the pull request approved and merged, the issue or ticket closed with its outcome, the document approved, including by your partner in their own system.
-- **In progress**, if you want your started work seen: work still open at sprint close, in review or underway. An entry moves to Done in the sprint someone accepts it.
+**Done** is the work completed this sprint. Each entry has:
 
-Each entry has:
-
-- **What now exists**, or for work in progress what is being built, linked to where it is written up. A code change is its pull request; other work is the issue, ticket, or document where it lives, in the tracker your [`CONTRIBUTING.md`](/assignments/team-charter/#required-in-contributingmd) names. A board card or a commit list is not a write-up. Where a grader can't open it, describe it instead, as the note under [What You Submit](#what-you-submit) says.
-- **Its owner**: the student who authored or drove it and answered review, and on Done, saw it accepted.
-- **Who reviewed and accepted it** on Done, or **its status**, in review or underway, on In progress. Either takes a reviewer note, with the reviewer's name, where a review took judgment (below).
+- **What now exists**, linked to its proof of completion: the pull request approved and merged, the issue or ticket closed with its outcome, or the document reviewed and approved. Your partner's review or approval counts, including in their own system. Code also meets your team's [Definition of Done](/assignments/team-charter/#definition-of-done) in `CONTRIBUTING.md`.
+- **Its owner**: the student who implemented or drove it.
+- **Who reviewed and accepted it**, with a reviewer note where the review took judgment (below).
 - **How we checked it**, on each student's most consequential Done entry, which they mark. The owner writes this sentence themselves: for code, the test or the run; for research, a decision, or a document, what it was checked against and who confirmed it.
+
+**In progress** is optional: anything else the team has started and taken far along. Each entry has:
+
+- **What is being built**, linked to where it is written up.
+- **Its owner**.
+- **Its current status**: in review, or how far along it is ("about 80% done", "endpoint and tests written, UI next").
+- **A reviewer note**, with the reviewer's name, where a review has already taken judgment.
+
+On both lists, a code change links its pull request; other work links the issue, ticket, or document where it lives, in the tracker your [`CONTRIBUTING.md`](/assignments/team-charter/#required-in-contributingmd) names. A board card or a commit list is not a write-up. Where a grader can't open the work, describe it instead, as the note under [What You Submit](#what-you-submit) says.
 
 Work finished in an earlier sprint and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board) go on neither list. One line closes them: the students who own nothing on either list this sprint. A student named there doesn't fail the team's item; whether it costs them anything is their individual contribution's question.
 

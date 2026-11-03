@@ -18,8 +18,10 @@ If a video replaced the live demo (a missed check-in, or a TA who could not meet
 
 ## 2. What Got Done, and Who
 
-Two lists. Done: work someone else took this sprint (the pull request merged, the issue or ticket closed with its outcome,
-or the document approved). In progress, optional: work still open at sprint close, in review or underway.
+Two lists; one student can own several entries. Done: work completed this sprint, linked to its proof of completion
+(the pull request approved and merged, the issue or ticket closed with its outcome, or the document reviewed and approved;
+your partner's review or approval counts). Code also meets your team's Definition of Done in CONTRIBUTING.md.
+In progress, optional: anything else the team has started and taken far along, with its current status.
 Work finished in an earlier sprint and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board)
 go on neither list. Non-code work counts. Link where the work is written up (the pull request, issue, or document);
 a board card or a commit list is not a write-up. Where a grader can't open the work, describe it in place of the link,
@@ -34,13 +36,13 @@ and where an AI reviewer ran, what the reviewer checked that the tool could not.
 
 ### Done
 
-#### [What now exists] ([link, or a description where it can't be opened])
+#### [What now exists] ([proof of completion: link, or a description where it can't be opened])
 
 - Owner:
 - Reviewed and accepted by:
 - Reviewer note, only where the review took judgment:
 
-#### [What now exists] ([link, or a description where it can't be opened])
+#### [What now exists] ([proof of completion: link, or a description where it can't be opened])
 
 - Owner:
 - Reviewed and accepted by:
@@ -53,7 +55,7 @@ and where an AI reviewer ran, what the reviewer checked that the tool could not.
 #### [What is being built] ([link, or a description where it can't be opened])
 
 - Owner:
-- Status: in review, or underway
+- Status: in review, or how far along it is
 - Reviewer and note, only where a review took judgment:
 
 **Owning nothing on either list this sprint:** [names, or "none"]
