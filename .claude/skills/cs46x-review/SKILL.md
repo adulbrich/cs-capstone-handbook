@@ -24,8 +24,8 @@ A finding clears the bar when it:
   would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 
 A wording the reviewer would prefer, where the current one is clear and
-correct, does not clear it. A confirmed stop is never taste. A passage the
-reader skimmed is deleted, or goes to the instructor when deleting it would
+correct, does not clear it. A confirmed stop is never taste. A skip stop is
+deleted, or goes to the instructor when deleting it would
 lose a requirement or reverse an instructor decision.
 
 **Hard** is a documented rule broken, cited by file and rule. **Judgement**

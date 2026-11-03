@@ -40,10 +40,13 @@ round's reader.
    code, tickets, and documents live where a grader can't open them.
 4. A team of four whose partner went silent for three weeks, so half of this
    term's plan stalled.
+5. A team of three on a game they proposed themselves, with a mentor in the
+   partner's place.
 
-A partner reader runs engineering at a small company sponsoring a team and
-has never seen the course. A mentor reader is an alumnus giving an hour a
-week.
+A partner reader runs engineering at a small company sponsoring the team in
+its situation and has never seen the course. A mentor reader is an alumnus
+giving that team an hour a week. Either one walks the page for what it asks
+of them, and checks the other situations as that team's partner or mentor.
 
 ## What You Do
 
@@ -63,18 +66,18 @@ week.
    - **score**: a requirement whose rubric band you can't predict, or a band
      grading something the page never asked for;
    - **skip**: a passage you skimmed because nothing in it would change what
-     any of the four teams does. A passage only another team needs is not a
+     any of the five teams does. A passage only another team needs is not a
      skip.
-3. For each of the other three situations, name the places where that team
+3. For each of the other four situations, name the places where that team
    would stop or guess, as stops of the same kinds.
 
 Done when every section has been walked for your team and checked for the
-other three, and every stop recorded. A section with no stop gets "read, no
+other four, and every stop recorded. A section with no stop gets "read, no
 stop".
 
 ## Report
 
-Each stop on one line: the team it stops (1 to 4), the shortest quote that
+Each stop on one line: the team it stops (1 to 5), the shortest quote that
 locates it, its kind, and what you'd guess it means. Then "Could submit without asking: yes" or "no", and the
 questions you'd send the instruction team, five at most. Write no rewording:
 the main session chooses the fix, and a fix written from the reader's side

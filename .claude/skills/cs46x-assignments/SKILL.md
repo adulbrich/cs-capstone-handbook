@@ -346,10 +346,10 @@ target. A page split into entries is budgeted section by section, so each of
 the Repo Checkpoints' milestone sections has its own 200, and a page has no
 total. Over budget, cut restatement first; if what remains is precision, the
 instructor decides whether the section stays long, since a clause that
-removes an ambiguity is cheap (The Task Register). Text that serves a kind of
-project the rest of the section doesn't fit (little code, an NDA, work in the
-partner's own systems) is precision, never restatement: cutting it leaves
-those teams guessing. A section already over its
+removes an ambiguity is cheap (The Task Register). Text for a situation the
+rest of the section doesn't fit (little code, an NDA, work in the partner's
+own systems, a mentor in the partner's place) is precision, never
+restatement: cutting it leaves those teams guessing. A section already over its
 budget does not grow in a pull request. `node scripts/section-words.mjs`
 counts every changed page against `origin/main`.
 
