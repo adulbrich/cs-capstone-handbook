@@ -255,7 +255,7 @@ required; `validate-outcomes.mjs` checks the order.
    two evaluation pages) has no What You Produce and no AI-use paragraph.
 
 4. *Explanation sections*, optional: how a session runs, what deployed means, the
-   partner's facets, the demo cadence. Named for their content.
+   partner's facets, the sprint check-in. Named for their content.
 
 5. **`## What You Submit`**, in one or two lines: the format and what goes in
    it. Every document is submitted as one PDF; link the rule in

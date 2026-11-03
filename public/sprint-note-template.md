@@ -10,10 +10,10 @@
 ## 1. Working Software Evidence
 
 A URL, tagged release, or demo video link, plus a link to the CI run. If nothing works yet, say so plainly and say why.
-If a video replaced the live demo (a missed check-in, or a TA who could not meet), link it here: media.oregonstate.edu, unlisted, captions on, one timestamp per student.
+If a video replaced your part of the check-in (you missed it, or your TA could not meet), link it here: media.oregonstate.edu, unlisted, captions on, one timestamp per student.
 
 - Deployed URL / release tag / demo video:
-- Demo video timestamps (one per student), only if a video replaced the live demo:
+- Check-in video timestamps (one per student), only if a video replaced the check-in:
 - CI run:
 
 ## 2. What Got Done, and Who

@@ -491,7 +491,7 @@ const ASSIGNMENT_NAMES = new Map([
     "RFC (Request for Comments)",
     /\bRFCs?\b|\brequests?[\s-]for[\s-]comments?\b/i,
   ],
-  ["Sprint Notes and Demos", /\bsprint[\s-]notes?\b/i],
+  ["Sprint Notes and Check-Ins", /\bsprint[\s-]notes?\b/i],
   ["Team Charter", null],
   ["Term Retrospective", /\bterm[\s-]retrospectives?\b/i],
   ["Term Startup", /\bterm[\s-]startups?\b/i],
