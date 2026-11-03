@@ -1,72 +1,70 @@
 # Sprint Note: Sprint [N], [Team Name]
 
-<!-- One page maximum. Each numbered section is graded pass/fail (20 points each).
-     The evidence may be AI-generated from your repo history and board.
-     Two things must be human-written: section 5, and the "shipped" sentence
-     in each contribution line. Those are the parts anyone reads. -->
+<!-- One page maximum. Graded pass/fail per rubric criterion (20 points each); two criteria grade section 2.
+     The evidence may be AI-generated from your repo history and board, the entries included.
+     Two things must be human-written: section 4, and each student's "How we checked it"
+     sentence. Those are the parts anyone reads. -->
 
 **Team:** | **Sprint dates:** | **Date submitted:**
 
 ## 1. Working Software Evidence
 
-A URL, tagged release, or demo video link, plus a link to the CI run. If nothing works yet, say so plainly and say why.
-If a video replaced the live demo (a missed check-in, or a TA who could not meet), link it here: media.oregonstate.edu, unlisted, captions on, one timestamp per student.
+A URL, tagged release, or video of the software running, plus a link to the CI run when one exists. If nothing works yet, say so plainly and say why.
+If a video replaced your part of the check-in (you missed it, or your TA could not meet), link it here: media.oregonstate.edu, unlisted, captions on, one timestamp per student.
 
-- Deployed URL / release tag / demo video:
-- Demo video timestamps (one per student), only if a video replaced the live demo:
+- Deployed URL / release tag / video:
+- Check-in video timestamps (one per student), only if a video replaced the check-in:
 - CI run:
 
-## 2. What Got Done
+## 2. What Got Done, and Who
 
-Everything the team finished this sprint. Each item concrete (someone could go look at it) and consequential
-(the project is meaningfully further along). It does not have to be code; non-code work counts when someone can open it (the repository, an issue or ticket, your partner's system). Activity without a result does not
-belong here: "worked on the API" and "researched options" are not done things.
+Done: work completed this sprint, linked to its proof of completion (merged pull request, closed issue or ticket,
+approved document; project partner approvals count). Code meets your team's Definition of Done.
+In progress (optional): work taken far along, with its status. One student can own several entries.
 
-- Where the work is tracked (board, issue list, or pull requests):
-- Done this sprint:
--
--
+Leave off: activity with no result ("worked on the API"), work finished in an earlier sprint, and routine upkeep.
+Where a grader can't open the work, describe it in place of the link, with partner specifics replaced by neutral
+placeholders, and show it on a shared screen at the check-in.
 
-## 3. Top Risk and One Decision Needed
+Each student marks their most consequential Done entry and writes its "How we checked it" sentence.
+For a routine approval, such as a plain "LGTM", name the reviewer and nothing more. When a review took judgment,
+the reviewer adds a note: the change asked for or what was checked, and if an AI reviewer ran, how it was prompted
+and what was left for human review.
 
-The single biggest threat to shipping (in fall, before the Definition of Shipped exists, to the next checkpoint milestone), and one decision the team needs, naming who makes it: the partner, the instruction team, or the team itself. Take the risk from the top of your `docs/risks.md`.
+### Done
 
-- Top risk:
-- Decision needed (from whom, by when):
+#### [What now exists] ([proof of completion: link, or a description where it can't be opened])
 
-## 4. Contribution Lines
+- Owner:
+- Reviewed and accepted by:
+- Reviewer note, only where the review took judgment:
 
-One line per student, three parts:
-  (a) the work you owned this sprint, one or more pieces, each with a link or ID (NDA teams: IDs only);
-  (b) a review you gave (a pull request, spec, design, test plan, document, or dataset), with its link or ID where the review is recorded, and either the change you asked for or, for an approval, what you checked before approving ("LGTM" alone is not a review; if you reviewed nothing this sprint, say so);
-  (c) one human-written sentence: the most consequential thing you shipped, and how the team knows it works.
-If a student has nothing this sprint, their line says so plainly. Mechanical changes (formatter runs, lockfile bumps,
-generated files, bulk renames) are normal work but are not evidence; leave them out.
+#### [What now exists] ([proof of completion: link, or a description where it can't be opened])
 
-**[Student 1]**
-- owned:
-- reviewed:
-- shipped:
+- Owner:
+- Reviewed and accepted by:
+- Reviewer note, only where the review took judgment:
+- Marked: the owner's most consequential entry this sprint
+- How we checked it (written by the owner):
 
-**[Student 2]**
-- owned:
-- reviewed:
-- shipped:
+### In Progress
 
-**[Student 3]**
-- owned:
-- reviewed:
-- shipped:
+#### [What is being built] ([link, or a description where it can't be opened])
 
-**[Student 4]**
-- owned:
-- reviewed:
-- shipped:
+- Owner:
+- Status: in review, or how far along it is
 
-**Decision chaired this sprint:** who drove which decision to a conclusion. Over a term everyone should appear here at least once.
+**Owning nothing on either list this sprint:** [names, or "none"]
 
--
+## 3. Top Risk and Decisions
 
-## 5. Judgment Layer (human-written, about five lines)
+- Top risk: the risk ranked first in `docs/risks.md`, however small, linked at the sprint's last commit:
+- Decision needed: what, who makes it (the partner, the instruction team, or the team itself), and a link to where it is
+  being made; or "No decision is needed this sprint.":
+- Previous note's decision: what was decided and who chaired it, or that it is still open and why
+  (over a term, every student chairs at least one):
+- Other decisions concluded this sprint, and who chaired each (optional):
 
-What the team learned this sprint and what it changes about the plan. Not a status recap: the insight, the surprise, the course correction.
+## 4. Judgment Layer (human-written, about five lines)
+
+What the team learned this sprint and what it changes about the plan, or why the plan holds.

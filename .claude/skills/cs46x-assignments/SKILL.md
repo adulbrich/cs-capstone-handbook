@@ -255,7 +255,7 @@ required; `validate-outcomes.mjs` checks the order.
    two evaluation pages) has no What You Produce and no AI-use paragraph.
 
 4. *Explanation sections*, optional: how a session runs, what deployed means, the
-   partner's facets, the demo cadence. Named for their content.
+   partner's facets, the sprint check-in. Named for their content.
 
 5. **`## What You Submit`**, in one or two lines: the format and what goes in
    it. Every document is submitted as one PDF; link the rule in
@@ -361,7 +361,7 @@ The rules below are about its content.
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
-Startup, the Bidding Survey); the individual contribution's Full, Partial, and Zero; `defense`,
+Startup, the Bidding Survey); the individual contribution's Full, In review, Thin, and Zero; `defense`,
 which adds a fourth; the surveys, whose bands are the instrument's own scale; and the four
 Repo Checkpoint 1 criteria, which keep the three bands at zero points to show a team where
 it stands before they count. Not submitted, off-topic, or inaccessible to graders scores zero,
@@ -426,10 +426,10 @@ assuming a number:
 - **Two bands, 10 fields.** The sprint note's `Pass` at full and `Fail` at 0;
   the workshops', Term Startup's, and the Bidding Survey's `Complete` at
   full and `Incomplete` at 0.
-- **Individual contribution.** `Full` at 100, `Partial` at 99 with a range
-  down to 1 at the grader's discretion, and `Zero` at 0.
 - **Four bands, 16 fields.** `defense` adds a `Missing` band at 0 for an
-  unexcused no-show, which the other rubrics state in prose instead.
+  unexcused no-show, which the other rubrics state in prose instead. The
+  individual contribution's four are fixed points, never a range: `Full` at
+  100, `In review` at 70, `Thin` at 40, and `Zero` at 0.
 - **The surveys' own scales.** The partner's facets keep three bands, 13
   fields, named for the anchors: `Top anchor` / `Middle anchor` /
   `Low anchor` at full / 80% / 50%. The peer ratings and the Midterm Pulse
