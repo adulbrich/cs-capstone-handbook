@@ -22,7 +22,7 @@ The sprint note listed every finished piece of work twice: under What got done, 
 
 **The other items link what they claim.** The top risk is the first-ranked entry in `docs/risks.md`, however small, linked at the sprint's last commit; there is no "no risk" answer, since the repo checkpoints already require a ranked register. A note may say no decision is needed, and it reports the previous note's decision with who chaired it, which makes the chaired-decision record graded. The judgment layer names a plan change with its link, or says the plan holds and why.
 
-**Individual contribution.** Four fixed bands replace Partial's range: Full 100, In review 70 (once per piece), Thin 40, Zero 0.
+**Individual contribution.** Four fixed bands replace Partial's range, each scoring the sprint as a whole: Full 100 for any sprint with at least one accepted piece, whatever else is still open or in review; In review 70 (once per piece) and Thin 40 only for a sprint with none, Thin covering owned work still open at sprint close with no review activity; Zero 0.
 
 **NDA work.** At the check-in, screen shared, the TA opens one owned entry per student, each student's reviewer notes, and the demo artifact, and marks each in the record. An ID the TA did not open there does not check out.
 
