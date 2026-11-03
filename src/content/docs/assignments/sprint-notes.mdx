@@ -50,77 +50,49 @@ Every two-week [sprint](https://scrumguides.org/scrum-guide.html) ends with a on
 
 ## What You Produce
 
-The sprint note is one page with four items:
+The sprint note is one page with four items. Start from the [sprint note template](/sprint-note-template.md), which has every field.
 
-1. **Working software evidence**: a URL, tagged release, or demo video, plus the CI run. If nothing works yet, say so plainly and say why.
-2. **What got done, and who**: the work completed this sprint and, if you choose, the work the team has taken far along, each entry concrete and consequential, with its owner, in the shape below.
-3. **Top risk and decisions**: the risk ranked first in your `docs/risks.md`, linked at the sprint's last commit, however small it is. The register ranks risks by threat to shipping. Then one decision the team needs, linked to where it is being made and naming who makes it (the partner, the instruction team, or the team itself), or a plain statement that no decision is needed this sprint. Last, the previous note's decision, as [Decisions and who chaired them](#decisions-and-who-chaired-them) describes.
-4. **Judgment layer** (about five lines, human-written): what the team learned this sprint, naming at least one change to the plan it caused, with its link (a re-scoped story, a re-ranked risk, a revised estimate), or saying plainly that the plan holds and why.
+1. [Working software evidence](#working-software-evidence)
+2. [What got done, and who](#what-got-done-and-who)
+3. [Top risk and decisions](#top-risk-and-decisions)
+4. [Judgment layer](#judgment-layer)
 
-An early sprint can be light on code, or have none, and that's fine when the note says where you are and why. For example:
+Each sprint, also update the [living docs](/assignments/repo-checkpoints/#what-you-produce) for what the sprint changed, starting with `docs/requirements.md`, `docs/design.md`, and `docs/risks.md`. In fall and winter the next repo checkpoint checks them; in spring they go into the [Project Handoff](/assignments/project-handoff/#4-the-living-docs).
+
+**AI use:** you may generate the note with AI from your repo history and board. Two parts must be human-written: the judgment layer, and each student's How we checked it sentence.
+
+### Working software evidence
+
+A URL, tagged release, or video of the software running, plus the CI run. If nothing works yet, say so and why. For example:
 
 - No code yet, because the partner wants research or design settled first. Done: a requirements draft or architecture the partner approved, [ADRs](/guides/adr/) (architecture decision records), notes from interviews with their staff.
-- No working software yet: the open-source project you contribute to builds and passes its tests on every member's machine, and the first pull request, a documentation fix, is in review.
-- The pipeline runs end to end on synthetic data; the real data waits on the data agreement, whose owner is named under Top risk.
-- A clickable prototype only, because the partner's system access hasn't been granted; the request is linked.
-
-Each sprint, update the [living docs](/assignments/repo-checkpoints/#what-you-produce) for what the sprint changed, starting with `docs/requirements.md`, `docs/design.md`, and `docs/risks.md`. In fall and winter the next repo checkpoint checks them; in spring they go to whoever continues the project, through the [Project Handoff](/assignments/project-handoff/#4-the-living-docs).
-
-**AI use:** you may generate the evidence with AI from your own repo history and board, the entries included. Two things must be human-written, because they are the parts anyone reads: the judgment layer, and each student's [How we checked it](#what-got-done-and-who) sentence on the entry they mark as their most consequential. Start from the [sprint note template](/sprint-note-template.md).
-
-### What counts as "done"
-
-Concrete means someone could go and look at it. Consequential means the project is meaningfully further along because of it. It does not have to be code. A partner agreement reached, a dataset cleared for use, a deployment pipeline that now works, a real-user session run and written up, a flaky test suite made reliable: all of these are done things worth naming. So are a literature or prior-work review the partner discussed with you, a requirements document the partner approved, an architecture or design document the partner reviewed, a design decision recorded as an ADR, a prototype the partner tried, and a development environment that builds from `README.md` for every member. Work that is not code counts when someone can check it, wherever it lives: findings, interview notes, a requirements section, an RFC section.
-
-What does not count is activity without a result. "Worked on the API", "researched options", "had meetings", and "made progress on the frontend" describe how time was spent, not what exists now that did not exist two weeks ago.
-
-Everything on these lists should be something you can show at the check-in.
+- A clickable prototype only, because access to the partner's system hasn't been granted; the request is linked.
 
 ### What got done, and who
 
-Every sprint, every student owns at least one piece of work that someone else accepted. That is the contribution minimum, and [Individual Contribution](#sprint-notes-n-individual-contribution) says how the evidence for it is read.
+Every student owns at least one Done entry each sprint. That is the minimum your [individual contribution](#sprint-notes-n-individual-contribution-1) is scored against, and more is not scored. Write two lists, as table rows or subheadings; one student can own several entries.
 
-Write two lists, each entry as a table row or under its own subheading (the template uses subheadings). One student can own several entries.
+**Done** is work completed this sprint, code or not:
 
-**Done** is the work completed this sprint. Each entry has:
+- **What now exists**, linked to its proof of completion: the pull request approved and merged, the issue or ticket closed with its outcome, or the document reviewed and approved, your partner's approval included. Code also meets your team's [Definition of Done](/assignments/team-charter/#definition-of-done).
+- **Its owner**, the student who implemented or drove it, and **who reviewed and accepted it**.
+- **How we checked it**, on the Done entry each student marks as their most consequential: one sentence the owner writes, naming the test or run, or for other work what it was checked against and who confirmed it.
 
-- **What now exists**, linked to its proof of completion: the pull request approved and merged, the issue or ticket closed with its outcome, or the document reviewed and approved. Your partner's review or approval counts, including in their own system. Code also meets your team's [Definition of Done](/assignments/team-charter/#definition-of-done) in `CONTRIBUTING.md`.
-- **Its owner**: the student who implemented or drove it.
-- **Who reviewed and accepted it**, with a reviewer note where the review took judgment (below).
-- **How we checked it**, on each student's most consequential Done entry, which they mark. The owner writes this sentence themselves: for code, the test or the run; for research, a decision, or a document, what it was checked against and who confirmed it.
+**In progress**, optional, is anything else the team has taken far along: what is being built, linked, its owner, and its status ("in review", "about 80% done").
 
-**In progress** is optional: anything else the team has started and taken far along. Each entry has:
+Not entries: activity without a result ("worked on the API", "researched options"), work finished in an earlier sprint, and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board). Link the pull request, issue, ticket, or document; a board card or a commit list is not a write-up. Close with one line naming any student who owns nothing on either list.
 
-- **What is being built**, linked to where it is written up.
-- **Its owner**.
-- **Its current status**: in review, or how far along it is ("about 80% done", "endpoint and tests written, UI next").
-- **A reviewer note**, with the reviewer's name, where a review has already taken judgment.
+A routine approval, "LGTM" included, is the reviewer's name. A review that took judgment, on either list, gets a reviewer note with the reviewer's name: the change asked for or what was checked, and where an AI reviewer ran, what the human checked that it couldn't. In spring your [defense](/assignments/defense/#rubric) reads these notes.
 
-On both lists, a code change links its pull request; other work links the issue, ticket, or document where it lives, in the tracker your [`CONTRIBUTING.md`](/assignments/team-charter/#required-in-contributingmd) names. A board card or a commit list is not a write-up. Where a grader can't open the work, describe it instead, as the note under [What You Submit](#what-you-submit) says.
+### Top risk and decisions
 
-Work finished in an earlier sprint and routine upkeep (a formatter run, a lockfile bump, a rename, a ticket moved on the board) go on neither list. One line closes them: the students who own nothing on either list this sprint. A student named there doesn't fail the team's item; whether it costs them anything is their individual contribution's question.
+- **Top risk**: the risk ranked first in your `docs/risks.md`, however small, linked at the sprint's last commit.
+- **Decision needed**: one decision, who makes it (the partner, the instruction team, or the team), and a link to where it is being made; or "no decision is needed this sprint". Don't invent one.
+- **Previous decision**: what the last note's decision became and who chaired it, meaning who drove it to a conclusion, or why it is still open. You may add other decisions concluded this sprint and who chaired them. Over a term every student chairs at least one, as your [charter](/assignments/team-charter/#1-roles) commits to, and your [defense](/assignments/defense/) role criterion checks this record.
 
-Your part of the note is then three things: the entries you own, the reviewer notes you wrote, and the How we checked it sentence on your marked entry.
+### Judgment layer
 
-A routine approval, a bare "LGTM" included, is the reviewer's name and nothing else. A review that took judgment (code that was hard to get right, a design decision, an ADR, an RFC, a test plan, a data change) gets a reviewer note naming the change you asked for ("asked Priya to handle the empty-cart case in checkout") or what you checked ("ran the migration against a copy of the seed data and compared row counts"). Where an AI reviewer ran on the change, the note also says what you checked that the tool could not. There is no minimum per sprint, but in spring your [defense](/assignments/defense/#rubric) reads these notes for its reviewer-side question, and a student with none all spring has nothing to show there.
-
-[Google's code review standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is worth reading on where that bar sits: approve once the change improves the overall code health of the system, even when it is not perfect, and say what would need to change if it does not.
-
-:::note[How the numbers are read]
-Entries and reviews are evidence where "everyone contributed" is not. Volume is easy to inflate and easy to misread, so three rules bound it.
-
-Routine upkeep is not an entry. A formatter run, a lockfile bump, a rename, a ticket moved on the board, a generated file, a dependency update: all normal work, none of it a signal about contribution. Don't pad the list with it, and graders won't count it. Lines of code are not counted either: a lint pass can move ten thousand lines and mean nothing.
-
-More is not scored. One Done entry meets the minimum, and how each sprint's individual contribution is scored is under [Individual Contribution](#sprint-notes-n-individual-contribution-1).
-
-The sentence outranks the count. A student with one entry who can say how the team checked it is contributing more than a student with six entries and nothing to say about any of them.
-:::
-
-### Decisions and who chaired them
-
-Each note reports the previous note's decision: what was decided and who chaired it, meaning who drove it to a conclusion, or that it is still open and why. If the previous note said no decision was needed, there is nothing to report. Don't invent a decision to fill item 3; a plain "no decision is needed this sprint" passes. The note may also name any other decision the team concluded this sprint and who chaired it.
-
-Over a term every student should chair at least one decision, as your [charter](/assignments/team-charter/#1-roles) commits to. This record is what your [defense](/assignments/defense/) role criterion is checked against, so it saves you reconstructing your own leadership from memory at your defense.
+About five human-written lines on what the team learned this sprint: at least one change to the plan it caused, with its link (a re-scoped story, a re-ranked risk, a revised estimate), or why the plan holds. Not a recap of the work.
 
 ## The Sprint Check-In
 
@@ -133,7 +105,7 @@ If you miss the check-in, or your TA can't meet that week, record your part with
 ## What You Submit
 
 :::note[If your project is under NDA]
-Where a grader can't open your repository or your partner's system, describe each entry in place of its link: what now exists or is being built, with partner specifics replaced by neutral placeholders ("the partner's internal system", "the dataset"), following the [sanitized-version rule](/introduction/ip-nda-and-licensing/#teams-under-an-nda). At the check-in, with your screen shared, your TA opens the work behind one owned entry per student, a Done one where you have one, the reviewer notes each student wrote, and the work each student showed, and marks each in the check-in record. A described entry your TA didn't open there doesn't check out. When the check-in falls after the note is due, your TA grades those items after the meeting.
+Where a grader can't open the work, describe each entry in place of its link, with partner specifics replaced by neutral placeholders, as the [sanitized-version rule](/introduction/ip-nda-and-licensing/#teams-under-an-nda) says. Your TA opens the work itself at the check-in; a described entry left unopened doesn't check out.
 :::
 
 ### Sprint Notes N
