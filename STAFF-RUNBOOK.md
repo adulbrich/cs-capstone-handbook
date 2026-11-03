@@ -27,7 +27,7 @@ The check-in verifies the sprint note; it is not a status meeting. One script fo
 
 1. Last time's decision needed. Decided or not, and by whom.
 2. Demos, two to three minutes per student, in an order you choose. The student names the artifact and opens it: the diff, then a run. For a written artifact, the findings and what changed the plan. Check it is an entry they own in the list and not last time's. One probe each.
-3. Top risk and the one decision the team needs now. Everything else goes async. In winter and spring week 2, take the risk from the team's Term Startup report: any item still not done, and whether the partner is answering. In fall week 4, the week before Repo Checkpoint 1, this slot goes to that checkpoint instead: go through what it asks for against the team's repository, ungraded, so the team knows what is missing. The demos are never cut for it.
+3. Top risk and the one decision the team needs now, or confirm none is needed. Everything else goes async. In winter and spring week 2, take the risk from the team's Term Startup report: any item still not done, and whether the partner is answering. In fall week 4, the week before Repo Checkpoint 1, this slot goes to that checkpoint instead: go through what it asks for against the team's repository, ungraded, so the team knows what is missing. The demos are never cut for it.
 4. Your challenge.
 5. Actions with an owner and a week. Write the per-student lines before the next team arrives.
 
@@ -147,7 +147,7 @@ Pick a band; there are no points between them.
 - **Thin** (40): the student's only work this sprint is reviews, mechanical changes, or work whose write-up does not show the student's part. Dock from the first sprint it happens; waiting for a pattern teaches the team that a free sprint exists.
 - **Zero** (0): no contribution this sprint, or a contribution its links contradict. Being blocked is not an explanation on its own, since there is other work to pick up; only a whole-team block is.
 
-**Evidence sources**, in the order to check them: the student's entries and reviewer notes in the team's sprint notes (links, or for NDA teams IDs opened at the check-in); the record where the work lives (authored or driven PRs, closed issues or tickets, approved documents, review responses); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which start the individual review under Instructor Review on the partner evaluation page. Any owned, accepted work counts where `CONTRIBUTING.md` says it lives and the sprint note links it; a code change is its merged PR.
+**Evidence sources**, in the order to check them: the student's entries, reviewer notes, and any work in review on the closing line, in the team's sprint notes (links, or for NDA teams IDs opened at the check-in); the record where the work lives (authored or driven PRs, closed issues or tickets, approved documents, review responses); review activity over the sprint window; live spot-verification at the demo and the defense; peer flags; partner flags, which start the individual review under Instructor Review on the partner evaluation page. Any owned, accepted work counts where `CONTRIBUTING.md` says it lives and the sprint note links it; a code change is its merged PR.
 
 **Appeals.** The student is shown the evidence note, has five business days to respond with evidence, and an instructor decides. TAs flag; instructors adjudicate.
 

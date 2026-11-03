@@ -45,7 +45,7 @@ and where an AI reviewer ran, what the reviewer checked that the tool could not.
 - Marked: the owner's most consequential entry this sprint
 - How we checked it (written by the owner):
 
-**Owning no entry this sprint:** [names, or "none"]
+**Owning no entry this sprint:** [names, each with a link to their work still in review, if any; or "none"]
 
 **Reviews that took judgment on work still open:** [link or ID, reviewer, and the note, or "none"]
 
@@ -57,6 +57,7 @@ and where an AI reviewer ran, what the reviewer checked that the tool could not.
   being made; or "No decision is needed this sprint.":
 - Previous note's decision: what was decided and who chaired it, or that it is still open and why
   (over a term, every student chairs at least one):
+- Other decisions concluded this sprint, and who chaired each (optional):
 
 ## 4. Judgment Layer (human-written, about five lines)
 
