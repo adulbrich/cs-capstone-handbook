@@ -28,8 +28,8 @@ placeholders, and show it on a shared screen at the check-in.
 
 Each student marks their most consequential Done entry and writes its "How we checked it" sentence.
 For a routine approval, such as a plain "LGTM", name the reviewer and nothing more. When a review took judgment,
-the reviewer adds a note: the change asked for or what was checked, and if an AI reviewer ran, what the human checked
-that it couldn't.
+the reviewer adds a note: the change asked for or what was checked, and if an AI reviewer ran, how it was prompted
+and what was left for human review.
 
 ### Done
 
