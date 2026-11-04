@@ -8,11 +8,11 @@
 
 **Artifact picked:** ______________________ **Sprint asked about:** ____ **Repo record checked:** yes / no / NDA live
 
-**Speaking position:** ____ of ____ (drawn at random at the start of the session) **Individual follow-up needed:** yes / no
+**Individual follow-up needed:** yes / no **Total: ____ / 100**
 
 Tick an item when the student says it and neither a follow-up question nor the record undoes it. Every item ticked: Exceeds, 20. Any red flag: Does Not Meet, 4. Otherwise Meets: 16 points with one item missing, 12 with two, 8 with more. Missing, 0: Unexcused no-show, or no meaningful attempt to present or answer; an absence reported to the student's TA before the session is rescheduled and not scored here. The questions, items, and red flags below are the rubric's, word for word.
 
-Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session; a video call is fine, with every student's camera on. **Draw the speaking order at random at the start of the session and do not publish it in advance**, pick each student's artifact from the two or three they bring, a different one per student, give each a different "what breaks if X" question, and pick a sprint from this term at random for each student's Role question. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
+Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session; a video call is fine, with every student's camera on. **Draw the speaking order at random at the start of the session and do not publish it in advance**, pick each student's item from the two or three they bring, a different item or part per student and the most recent where you can, give each a different "what breaks if X" question, and pick a sprint from this term at random for each student's Role question. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
 
 If a score comes out borderline, or a student's part of the session ran short, tick the follow-up box and arrange a 5-minute one-to-one in the same defense week, or in week 9 after a week 7 session. Tell the student it is routine.
 
@@ -47,7 +47,7 @@ Asks: why this way, what else was on the table, and what is hard to reverse? Fol
 Exceeds, all four, none undone by a follow-up question or the record:
 
 - [ ] **Why this way:** explains why this approach was chosen, whoever made the decision
-- [ ] **Two alternatives:** names at least two (doing nothing counts), each with the reason it was rejected, consistent with the RFC, the decisions the team recorded, or the sprint notes where they cover it
+- [ ] **Two alternatives:** names at least two (doing nothing counts), each with the reason it was rejected, consistent with the team's recorded decisions (an ADR or RFC) or the sprint notes where they cover it
 - [ ] **Hard to reverse:** says which parts of the decision are, or why none are
 - [ ] **What they would change:** says what they would change now, or why they would not, including for a decision someone else made
 
@@ -106,7 +106,7 @@ Exceeds, all three, none undone by a follow-up question or the record:
 
 - [ ] **Answers what is asked:** including, at the edge of their knowledge, what they don't know and how they would find out
 - [ ] **Right level of detail:** answers at a level the assessor does not have to correct or ask to shorten
-- [ ] **Something told, and what changed:** names a specific thing they told a reviewee, the partner, or the mentor and what changed because of it (an RFC author's reply or committed revision counts), or, in spring, what they checked in a review and why it needed no change
+- [ ] **Something told, and what changed:** names a specific thing they told a reviewee, the partner, or the mentor and what changed because of it (an author's reply or committed revision counts), or what they checked in a review and why it needed no change
 
 Red flags, any one is Does Not Meet:
 
@@ -119,8 +119,6 @@ Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 Notes: __________________________________________________________________
 
 ---
-
-**Total: ____ / 100**
 
 Overall notes: ___________________________________________________________
 
