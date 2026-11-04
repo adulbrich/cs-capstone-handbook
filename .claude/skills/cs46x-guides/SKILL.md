@@ -79,8 +79,7 @@ option is the marketing the Some Truths section is supposed to prevent.
 ### Sourcing
 
 Guides owe evidence. Sort every claim a reader could doubt into the three kinds
-under Claims in `docs/agents/voice.md` and give each what its kind needs. Of
-the three registers, the guide is the one where Evidence claims live, so this
+under Claims in `docs/agents/voice.md` and give each what its kind needs. The guide is the page type where Evidence claims live, so this
 is where the sort does most of its work. A Recommendation in a guide is an
 imperative with its reason, never "the instruction team recommends", because
 of [Guides Are Standalone](#guides-are-standalone): "Pin dependency versions
@@ -92,8 +91,9 @@ how many links the page carries.
 
 **Read every source the page paraphrases** (`docs/agents/voice.md`,
 Claims), whether the claim stays a plain link or meets the registry test
-under Citing Evidence. In a guide that includes a framework's list of
-categories, a standard's process, and a handbook's statement format.
+under Citing Evidence. In a guide, the paraphrases to check include a
+framework's list of categories, a standard's process, and a handbook's
+statement format.
 
 ### Citing Evidence
 

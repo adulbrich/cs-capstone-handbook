@@ -75,7 +75,7 @@ it. Content lives in `src/content/docs/**` as MDX.
    before Thanksgiving"). The handbook is reused every year and a date is a
    fact that rots on a schedule. `validate-dates.mjs` checks the content
    directories, the syllabi, and the runbook; the changelogs keep their
-   decision timestamps. Its patterns miss a bare month name ("May", "Mar"),
+   decision timestamps. Its patterns miss a bare "May" or "Mar" used as a month,
    "this year" or "academic year" with no year number, and a season standing
    in for a term week; review catches those (`cs46x-review`). Code may read today's month to pick the current
    term, as `src/lib/term-tabs.js` does for term tabs; pages name weeks in

@@ -42,7 +42,8 @@ the diff touches (the Skills table in `AGENTS.md`).
    sentences) that names nothing a reader could observe is a finding.
 8. **The hard rules where patterns miss**: the date forms `AGENTS.md`, hard
    rule 5, says `validate-dates` misses; grading words with no number beside
-   them on an activity or guide (`cs46x-activities`, What an Activity Is);
+   them on an activity or guide (`cs46x-activities`, What an Activity Is;
+   `cs46x-guides`, Guides Are Standalone);
    and a page body that names Canvas (hard rule 7).
 9. **Length**: each section `section-words.mjs` flags `OVER` or `GREW`, with
    its numbers (`cs46x-assignments`, Length); a guide past its split-check
