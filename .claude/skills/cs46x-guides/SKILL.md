@@ -15,8 +15,8 @@ your guide's kind and follow it.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice: whose voice the handbook uses, person, the three kinds of claim,
-structure, openers, and the word-level rules. This skill does not restate it;
+voice: why pages are not chat, person, the three kinds of claim, structure,
+openers, and the word-level rules. This skill does not restate it;
 it adds only what the explanation register needs.
 
 ## What a Guide Is
@@ -473,18 +473,17 @@ Three wording rules apply to every example:
 
 ## Worked Examples
 
-The anchor pair is real: the same topic written both ways, in this repository
-and in the same instructor's CS 362 lecture notes. The constructed pairs after
-it are illustrations of the rule, not quotations. When in doubt about the
-register, read the before and after pairs in `docs/agents/voice.md`, which
-are drawn from real handbook lines, not these.
+Every pair below is constructed to illustrate the rule, not quoted from a
+page. The anchor is the pair `docs/agents/voice.md` opens with, written out
+in full there; when in doubt about the register, read that file's before and
+after pairs too.
 
 **The anchor: the testing pyramid, same topic, two treatments.**
 
-> Before, from `guides/testing-strategy.mdx`: "The pyramid is a guideline, not
-> a rule." Eight words, no source, nothing to follow.
+> Before: "The pyramid is a guideline, not a rule." Eight words, no source,
+> nothing to follow.
 >
-> After, the shape the CS 362 lecture uses: name the model and link
+> After: name the model and link
 > [Fowler](https://martinfowler.com/bliki/TestPyramid.html), then name the
 > competing model and link
 > [Kent C. Dodds](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests),

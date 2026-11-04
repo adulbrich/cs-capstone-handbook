@@ -15,8 +15,8 @@ anchor for no reader benefit.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice: whose voice the handbook uses, person, claims, structure, and the
-word-level rules. This skill does not restate it; it adds only what the
+voice: why pages are not chat, person, claims, structure, and the word-level
+rules. This skill does not restate it; it adds only what the
 how-to register needs. The bold step name in the step format below is one of
 the labels voice.md allows.
 

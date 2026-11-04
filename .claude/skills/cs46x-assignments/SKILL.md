@@ -16,8 +16,8 @@ why more of this skill is mechanical than the guide or activity skills.
 ## Writing Voice (applies to everything below)
 
 **Read `docs/agents/voice.md` first.** It is the single home for document
-voice: whose voice the handbook uses, person, the three kinds of claim,
-structure, and the word-level rules. This skill does not restate it; it adds
+voice: why pages are not chat, person, the three kinds of claim, structure,
+and the word-level rules. This skill does not restate it; it adds
 only what the task register needs. On an assignment page the rule that bites
 most often is the closer: a paragraph ends on its last requirement, never on
 a line that restates it.
