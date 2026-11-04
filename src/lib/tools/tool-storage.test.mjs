@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { openStore, PEER_NAMESPACE, STORAGE_PROBLEM } from "./tool-storage.mjs";
+import {
+  openStore,
+  PEER_NAMESPACE,
+  STORAGE_PROBLEM,
+  SUBMISSION_STORE,
+} from "./tool-storage.mjs";
 
 /** A stand-in for window.localStorage; `quota` caps the stored characters. */
 function fakeStorage(entries = {}, { quota = Number.POSITIVE_INFINITY } = {}) {
@@ -99,4 +104,25 @@ test("a value that is not JSON reads as the fallback", () => {
   const storage = fakeStorage({ [`${PEER_NAMESPACE}v1:roster`]: "{not json" });
   const store = openStore(() => storage);
   assert.equal(store.read("roster", "fallback"), "fallback");
+});
+
+test("remove drops one key, stored and in memory, and leaves the rest", () => {
+  const storage = fakeStorage();
+  const store = openStore(() => storage, SUBMISSION_STORE);
+  store.write("cover", { projectId: "42" });
+  store.write("other", 1);
+  store.remove("cover");
+  assert.equal(store.read("cover", null), null);
+  assert.equal(store.read("other", null), 1);
+  assert.deepEqual(
+    [...storage.data.keys()],
+    [`${SUBMISSION_STORE.namespace}v1:other`]
+  );
+
+  const blocked = openStore(() => {
+    throw new Error("SecurityError");
+  }, SUBMISSION_STORE);
+  blocked.write("cover", { projectId: "42" });
+  blocked.remove("cover");
+  assert.equal(blocked.read("cover", null), null);
 });

@@ -31,10 +31,19 @@ export const PARTNER_STORE = Object.freeze({
   version: 1,
 });
 
+/**
+ * The submission PDF builder's store: the project and authors a student
+ * typed, kept for their next PDF. Bump `version` as PEER_VERSION.
+ */
+export const SUBMISSION_STORE = Object.freeze({
+  namespace: "cs46x-tools:submission:",
+  version: 1,
+});
+
 /** The keys both pages of a tool read: the roster file and the added students. */
 export const SHARED_KEYS = Object.freeze({ added: "added", roster: "roster" });
 
-/** Why the store fell back to memory, as a page tells the instructor. */
+/** Why the store fell back to memory, as a page tells its reader. */
 export const STORAGE_PROBLEM = Object.freeze({
   blocked:
     "This browser blocks saved data for this page, so nothing is kept after you leave it.",
@@ -48,9 +57,10 @@ const PROBE = "probe";
  * throw, as `window.localStorage` does when blocked); `namespace` and
  * `version` name the keys, `<namespace>v<version>:<key>`.
  *
- * Returns `{ read, write, clearAll, problem }`. `read(key, fallback)` gives
- * the stored value or `fallback`; `write(key, value)` saves a JSON value and
- * returns false when it could only keep it in memory;
+ * Returns `{ read, write, remove, clearAll, problem }`. `read(key, fallback)`
+ * gives the stored value or `fallback`; `write(key, value)` saves a JSON value
+ * and returns false when it could only keep it in memory; `remove(key)` drops
+ * one key, stored and in memory;
  * `clearAll()` removes every key under the namespace, every version, and
  * the memory copy; `problem()` is null or one of STORAGE_PROBLEM.
  */
@@ -114,6 +124,14 @@ export function openStore(
         return text === null ? fallback : JSON.parse(text);
       } catch {
         return fallback;
+      }
+    },
+    remove(key) {
+      memory.delete(key);
+      try {
+        storage?.removeItem(prefix + key);
+      } catch {
+        // A storage that fails here holds nothing this page can still reach.
       }
     },
     write(key, value) {
