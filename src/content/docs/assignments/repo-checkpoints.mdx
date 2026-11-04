@@ -73,7 +73,7 @@ Five of the six living docs, each describing the code at the named commit:
 
 - **`docs/requirements.md`**: the problem statement; functional and non-functional requirements, with an acceptance criterion wherever the behavior isn't obvious (a finished functional requirement can name its test in CI instead); the limits you did not choose, under Constraints; success metrics; non-goals; open questions. *Guide: [Requirements](/guides/requirements/).*
 - **`docs/design.md`**: the system as it exists, with its context, key diagrams, interfaces and contracts, the data model, the deployment shape, decisions deferred on purpose, and open technical questions. *Guide: [Technical design](/guides/technical-design/).*
-- **`README.md`**: a quickstart from a clean clone to a running system. *Reference: [makeareadme.com](https://www.makeareadme.com/).*
+- **`README.md`**: a quickstart from a clean clone to a running system (for a game, built from source in the engine version it names; for a notebook, run top to bottom). *Reference: [makeareadme.com](https://www.makeareadme.com/).*
 - **`CONTRIBUTING.md`**: the sections [the charter requires](/assignments/team-charter/#required-in-contributingmd). *Reference: [GitHub's guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors).*
 - **AI context file**: `AGENTS.md` or your tool's equivalent, pointing at these documents rather than copying them. If you keep several, the others point at `AGENTS.md`, since two instruction files that disagree are worse than one. *Reference: [agents.md](https://agents.md/).*
 
@@ -102,9 +102,9 @@ If none of these fits your work, agree with your partner or mentor what proves, 
 
 At Repo Checkpoint 1, a project may have little worth testing yet: the partner asked for research and planning first, or the first build is a prototype the team expects to throw away. That's fine when `README.md` says why and what will trigger the first tests; until then, CI builds the project and checks that the quickstart works. From Repo Checkpoint 2 on, CI runs tests.
 
-The safety net is review gates on changes that are expensive to undo (schema, authentication, deployment, migrations), somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data), and a documented rollback path, sized to how your team works: the more you delegate to AI tools, the more the automated checks must catch before a change merges.
+The safety net has three parts: gates on changes that are expensive to undo (schema, authentication, deployment, migrations), meaning a review plus CI checks that cover the change and must pass before it merges; somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data); and a rollback path documented in `README.md` or `docs/risks.md`. The more you delegate to AI tools, the more of that gating the instruction team recommends making deterministic (tests, linters, type checks), because such a check fails the same way every time, whoever or whatever wrote the change.
 
-The `README.md` quickstart works from a clean clone: graders follow it first, so follow it yourself before you submit.
+The `README.md` quickstart works from a clean clone: graders follow it first, so follow it yourself before you submit. Where it needs secrets or partner data, it runs on test credentials and sample data instead, and says how to switch to the real ones.
 
 ### Contribution Traceability and Version Control Hygiene
 
@@ -163,7 +163,7 @@ Due winter week 10. Milestone met scores each item below.
 Repo Checkpoint 1 records where your walking skeleton will run in week 10, and Repo Checkpoint 2 checks that it does. Deployed means the thinnest working slice of your system is where the real one will live, and someone outside the team can reach it. What that looks like depends on what you build. For example:
 
 - A web app or API serves requests at its production URL. *Evidence: a link on the cover to the URL.*
-- A mobile app, game, desktop app, or firmware build installs on a device outside the team from the channel `docs/design.md` names (a store test track, a release page, a device image). *Evidence: a link on the cover to the build's page on that channel.*
+- A mobile app, game, desktop app, or firmware build installs on a device outside the team from the channel `docs/design.md` names (a store test track, a release page, a device image). *Evidence: a link on the cover to the build's page on that channel or, where a grader can't open it (an invite-only test track), a screenshot of the build running on that device or the issue where its user reports the install.*
 - A data pipeline runs end to end on sample data in the compute environment the real run will use, such as your partner's cluster, a university high-performance computing cluster, or a cloud allocation. If that is a single workstation, someone outside the team, such as your partner or a member of their group, runs it there. *Evidence: a link on the cover to the job's log or output, or to the issue in your repository where that person reports the run.*
 - A notebook or analysis reruns top to bottom from a clean environment on the machine of someone outside the team, from `README.md` alone. *Evidence: a link on the cover to the issue in your repository where that person reports the run.*
 - If you contribute to an open-source project, your first pull request is open in its repository. *Evidence: a link on the cover to the pull request.*
