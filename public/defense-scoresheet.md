@@ -20,21 +20,21 @@ If a score comes out borderline, or a student's part of the session ran short, t
 
 ## 1. Ownership and delegation (SO2, SO4): ____ / 20
 
-Asks: walk me through it; what did you hand to AI tools, what did you keep, and how did you know the result was right? Follow-up: where did you stop to check it yourself, and did anything go wrong?
+Asks: walk me through it and where it stands; what did you hand to AI tools, what did you keep, and how did you know the result was right? Follow-up: where did you stop to check it yourself, did anything go wrong, and what changed?
 
 Exceeds, all four, none undone by a follow-up question or the record, and no red flag:
 
 - [ ] **Owns it:** authored or drove the work and can say where it stands, matching the repo record
 - [ ] **AI account:** says what was and was not handed to AI tools
 - [ ] **Specific checks:** names the checks on the work and on anything delegated (tests, CI, review gates, staging, rollback, a held-out evaluation), not just "we had tests"
-- [ ] **A stop, or a lesson:** names a point where they stopped to validate something hard to reverse (a schema, authentication, a deployment, a data migration, a data split, a save-file format) and why there, or a delegation that went wrong, the check it lacked, and the check now in their sprint notes or repo record
+- [ ] **A stop, or a lesson:** names a point where they stopped to validate something hard to reverse (a schema, authentication, a deployment, a data migration, a data split, a save-file format) and why there, or why nothing in it needed one, or a delegation that went wrong, the check it lacked, and the check now in their sprint notes or repo record
 
 Red flags, any one is Does Not Meet:
 
 - [ ] **No authorship:** cannot say what they authored or drove in the work presented
 - [ ] **No AI account:** gives no account at all of what was handed to AI tools
 - [ ] **Unexamined:** describes an unchecked hard-to-reverse change and cannot say what check it needed
-- [ ] **Contradicted:** makes claims the repo record contradicts
+- [ ] **Contradicted:** makes claims about what they authored, reviewed, or merged that the repo record contradicts
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 
