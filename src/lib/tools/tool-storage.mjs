@@ -43,7 +43,7 @@ export const SUBMISSION_STORE = Object.freeze({
 /** The keys both pages of a tool read: the roster file and the added students. */
 export const SHARED_KEYS = Object.freeze({ added: "added", roster: "roster" });
 
-/** Why the store fell back to memory, as a page tells the instructor. */
+/** Why the store fell back to memory, as a page tells its reader. */
 export const STORAGE_PROBLEM = Object.freeze({
   blocked:
     "This browser blocks saved data for this page, so nothing is kept after you leave it.",

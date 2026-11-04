@@ -1,6 +1,6 @@
-// The wording of the instructor tools' shared kit (src/components/tools/ui/),
-// the same on every tool's pages. Each tool's own wording is in its module:
-// peer-tools.mjs, partner-tools.mjs.
+// The wording of the tools' shared kit (src/components/tools/ui/), the same
+// on every tool's pages. Each tool's own wording is in its module:
+// peer-tools.mjs, partner-tools.mjs, submission-pdf.mjs.
 
 /** "1 row", "2 rows": a count and its noun. */
 export const plural = (n, one, many = `${one}s`) =>
