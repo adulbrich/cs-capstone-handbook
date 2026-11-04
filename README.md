@@ -57,8 +57,6 @@ The command to run before a change is done is in
   content change.
 - [docs/agents/voice.md](docs/agents/voice.md): how handbook pages are
   written.
-- [docs/decisions/](docs/decisions/): design records for the rules the
-  handbook lives by.
 - Open work is in the
   [issue tracker](https://github.com/adulbrich/cs-capstone-handbook/issues).
 

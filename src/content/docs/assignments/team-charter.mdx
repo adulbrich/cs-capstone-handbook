@@ -43,7 +43,7 @@ Three artifacts:
 
 1. **The charter** itself, 2 to 4 pages of focused, scannable policy ([sections below](#required-charter-sections)).
 2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**, in the repository, with the [sections below](#required-in-contributingmd).
-3. **The AI context file**, in the repository (`AGENTS.md`, `CLAUDE.md`, or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
+3. **The AI context file**, in the repository (`AGENTS.md` or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
 
 If the repository you inherit already has a `CONTRIBUTING.md` or an AI context file, extend that file rather than starting a new one, and keep what its previous maintainers wrote that still holds.
 
@@ -96,16 +96,16 @@ For NDA teams, this section is the difference between normal tool use and a brea
 1. **Development setup**: what a contributor needs beyond the README's quickstart, such as development dependencies, environment variables and how to get their values without committing them, and local services. Link the README for the rest rather than repeating it.
 2. **Local checks**: the commands that run the tests, the linter, and the formatter, the same ones CI runs.
 3. **Branches and commits**: the default branch, the branch naming rule, and the commit message convention, with one example of each.
-4. **Pull requests and review**: what a pull request includes, who reviews it and how many approvals it needs, how soon a review is expected, and how it merges.
+4. **PRs and review**: what a PR includes, who reviews it and how many approvals it needs, how soon a review is expected, and how it merges.
 5. **Definition of Done**, below.
-6. **Where other work lives**: for each kind of work that does not land as a pull request (an issue, a design document, a ticket in your partner's system), where it lives and who accepts it there. If all of your work lands as pull requests, say so in one line.
+6. **Where other work lives**: for each kind of work that does not land as a PR (an issue, a design document, a ticket in your partner's system), where it lives and who accepts it there. If all of your work lands as PRs, say so in one line.
 7. **Getting help**: where to ask, and how soon to expect an answer.
 
 In week 2 some commands may not exist yet; list each with the hook, CI job, or test suite that will add it.
 
 #### Definition of Done
 
-The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI (continuous integration) gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the CI configuration, hook, or test that enforces each check. In week 2 some of them may not exist yet, because there is no code to check: name the gate you will add (a pre-commit hook, a CI job, a test suite), the sprint it lands in, and who owns it.
+The checks a change must pass before it merges: tests, review, docs updated, lint and security checks, and the CI gates that enforce them. The term comes from the [Scrum Guide](https://scrumguides.org/scrum-guide.html), which treats it as a shared commitment rather than a checklist one person holds. Point at the CI configuration, hook, or test that enforces each check. In week 2 some of them may not exist yet, because there is no code to check: name the gate you will add (a pre-commit hook, a CI job, a test suite), the sprint it lands in, and who owns it.
 
 ## What You Submit
 

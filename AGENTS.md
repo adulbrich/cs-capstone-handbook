@@ -26,7 +26,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line and its legend, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. |
 | `scripts/lib/` | Shared by the scripts: the content-tree walker and its text extensions, and the frontmatter reader, which returns the body as well as the block. The outcome-tag pattern is `OUTCOME_TAG` in `src/lib/rubric-csv.mjs`, since the site's rubric parser reads it too. |
-| `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the tools' pure modules on invented fixtures, never `data/`. |
+| `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the tools' pure modules on invented fixtures, never `data/`, plus the pin on the two published instruments' wording (hard rule 8). |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`. |
 | `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. The Activities group is listed page by page in `src/lib/activities-sidebar.mjs`, so it also checks that every page under `activities/` appears there exactly once and declares no `sidebar.order`. |
 | `scripts/validate-sources.mjs` | Every `<Cite id>` names a file in `src/data/sources/`, every registry entry has its claims with locators and a `verified` value and is cited by some page, no two entries cite the same, and a citing page has `## References` then `<References />` directly above Additional Readings. |
@@ -86,8 +86,7 @@ it. Content lives in `src/content/docs/**` as MDX.
    they hand in differs, or `## What You Produce` when what they produce
    does), and renders one `<RubricTable>` per distinct
    rubric; `validate-outcomes.mjs` reconciles the list with the
-   page weight, the rendered rubrics, and Canvas's per-group points. See
-   `docs/decisions/2026-09-23-canvas-entry-model.md`.
+   page weight, the rendered rubrics, and Canvas's per-group points (#259).
 7. **Page bodies do not mention Canvas.** Assignment bodies are pasted into
    Canvas, so a page that says "confirm in Canvas", "the handbook wins", or
    "check Canvas" reads as a second authority once it is there. Only the
@@ -102,6 +101,15 @@ it. Content lives in `src/content/docs/**` as MDX.
    schedule, is "check announcements for the link". The two Canvas-owned
    stubs and the Acknowledgments tools list are the only pages whose body
    names Canvas.
+8. **Published instruments keep their wording.** The two peer evaluation
+   rubrics carry instruments from published papers:
+   `peer-evaluation-rubric.csv`, the per-term scale after Gardner et al., and
+   `catme-rubric.csv`, Appendix B of Ohland et al. 2012 (#497), both under
+   `canvas/assignments/peer-evaluation/`. Never change a word in either: not
+   a name, a description, or an anchor, and not to fit
+   `docs/agents/voice.md`, the glossary, or a rubric rule. Points may change.
+   `src/lib/tools/published-instruments.test.mjs` pins the wording, so an
+   edit fails `npm test`; revert the edit rather than updating the hash.
 
 ## Validation
 
@@ -180,7 +188,7 @@ Current canonical homes:
 | Points to letter grade, outcome tags | `learning-objectives/grading.mdx` |
 | The external prerequisites behind the top levels, and that a project may depend on several or none | `guides/shipping.mdx` |
 | What access to ask a partner for in the first weeks | `assignments/term-startup.mdx` (fall item 6) |
-| What shipped means for a project, agreed with the partner and recorded | `assignments/definition-of-shipped.mdx` |
+| What shipped means for a project, agreed with the partner and recorded, never assigned (#156) | `assignments/definition-of-shipped.mdx` |
 | The inherited-codebase audit and what it covers | `assignments/repo-checkpoints.mdx` |
 | What each project-repository document holds, except `CONTRIBUTING.md` | `assignments/repo-checkpoints.mdx` |
 | What `CONTRIBUTING.md` holds | `assignments/team-charter.mdx` |
@@ -205,7 +213,7 @@ sitting before the term starts.
 assignment, a guide, or an activity only where that page is the answer to the
 question being asked, and state the fact the reader needs rather than sending
 them somewhere to look it up. The closing `## The Pages You Need` card grid is
-the page's index; the body is not a second one.
+the page's index; the body is not a second one (#162).
 
 The check is a count: run
 `grep -oE '\(/(assignments|guides|activities)/[^)]*\)' <page>` and ask whether
@@ -270,19 +278,21 @@ it sets the reviewers, the bar, the fixes, and when the rounds stop.
 ### Domain docs
 
 Glossary terms go on `about/glossary.mdx`, each "Not:" list mirrored in
-`check-prose`'s `VOCABULARY`, never in `CONTEXT.md`. Every decision record, architecture included, goes in
-`docs/decisions/`, and there is no `docs/adr/`. Before a skill reads or writes
+`check-prose`'s `VOCABULARY`, never in `CONTEXT.md`. Every decision, architecture included, goes where
+"Where decisions are recorded" says; there is no `docs/adr/` and no
+design-record directory. Before a skill reads or writes
 `CONTEXT.md` or an ADR, read `docs/agents/domain.md`.
 
 ## Where decisions are recorded
 
-There is no journal file in this repository. A decision lives in exactly one of three places:
+There is no journal file and no design-record directory in this repository. A decision lives in exactly one of two places:
 
 1. **The issue**, for what to do and why, including the acceptance list the review checks against.
 2. **The pull request body**, for what changed, what ran, and the review loop.
-3. **`docs/decisions/`**, for a design record when the change sets a rule the handbook will live by. One file per design, with a status line; the handbook pages win where the two differ.
 
-Do not create running logs, change logs, or idea files at the root. If a fact is worth keeping, it belongs in an issue, a PR, a design record, or the page that owns it.
+A change that sets a rule the handbook will live by writes the rule where it binds: a hard rule here, a `cs46x-*` skill, a `docs/agents/` file, a validator, or the page that owns the fact. Everywhere but a handbook page, it cites the issue that set it; the reason stays in that issue (#633).
+
+Do not create running logs, change logs, or idea files at the root. If a fact is worth keeping, it belongs in an issue, a PR, or the file that owns it.
 
 ## Writing voice
 

@@ -108,8 +108,8 @@ a per-term map when it varies:
 family expands to one Canvas assignment per week listed. **Never bundle
 entries** (AGENTS.md hard rule 6): a draft and a final, or four sprint notes,
 are separate Canvas assignments with their own due dates and grades, however
-the page groups them for the reader. `docs/decisions/2026-09-23-canvas-entry-model.md`
-has the model; `peer_review_week` marks an entry using Canvas's own peer review.
+the page groups them for the reader (#259). `peer_review_week` marks an entry
+using Canvas's own peer review.
 `due_label` replaces the weeks on the summary card where they mislead or run
 long ("Sunday of each sprint's second week", "Week 7 or 9"); the weeks still
 set the Canvas due dates.
@@ -281,8 +281,7 @@ required; `validate-outcomes.mjs` checks the order.
    needs people outside the team to use it on their own"), never on a kind
    of project; rows may overlap. Its lead-in carries the way out: "A project
    may match several rows or none. If none fits, ask your partner or mentor
-   which activities do." (`docs/decisions/2026-10-30-examples-by-concept.md`
-   has the rule.) Then a `Browse ... when these run
+   which activities do." (#608) Then a `Browse ... when these run
    out.` line naming the activity pages to browse,
    usually one or two. Nothing follows it but
    `## References` on a page that cites sources.
@@ -374,6 +373,11 @@ The rules below are about its content.
   say in the commit why the extra ones earn it. `rfc.mdx` (eight on the final) and
   `team-charter.mdx` (seven) are the standing examples (#27, decided
   2026-09-14).
+- **A criterion never names a tool.** What the course already standardizes
+  on is not a tool, for example Git and GitHub, the CATME instrument, the
+  university's media host, the vendor-neutral `AGENTS.md`, or using AI,
+  which is ordinary engineering practice. Tools belong in guides and
+  activities (#62, #633).
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
   copy-pasteable, and actually verified by a fresh run" tells a grader what to
   do. "High-quality documentation" does not.
@@ -383,6 +387,9 @@ The rules below are about its content.
   consistency. One line per criterion, in rubric order, saying the first thing
   the grader checks, never restating a band. Where What You Produce gives each
   shared criterion a subsection, the line closes that subsection instead.
+- **The two peer evaluation rubrics are published instruments.** None of
+  the rules above reword them; only their points change (`AGENTS.md`, hard
+  rule 8).
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term

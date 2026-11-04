@@ -105,6 +105,5 @@ re-import gets scheduled.
 
 ## Where things are recorded
 
-In the issue, the pull request body, or a design record under
-`docs/decisions/`, never a journal file: `AGENTS.md`, "Where decisions are
-recorded".
+In the issue or the pull request body, never a journal file or a design
+record: `AGENTS.md`, "Where decisions are recorded".
