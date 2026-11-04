@@ -24,17 +24,17 @@ Asks: walk me through it; what did you hand to AI tools, and how did you know th
 
 Exceeds, all four, each holding up under a follow-up question:
 
-- [ ] owns the work, having authored or driven it, and can say where it stands, matching the repo record
-- [ ] says what was and was not handed to AI tools
-- [ ] names the specific checks that made that reasonable (tests, CI, review gates, staging, rollback, a held-out evaluation), not just "we had tests"
-- [ ] names a point where they stopped to validate something hard to reverse (a schema, authentication, a deployment, a data migration, a data split, a save-file format) and why there, or a delegation that went wrong, the check it lacked, and the check now in their sprint notes or repo record
+- [ ] **Owns it:** authored or drove the work and can say where it stands, matching the repo record
+- [ ] **AI account:** says what was and was not handed to AI tools
+- [ ] **Specific checks:** names the checks that made that reasonable (tests, CI, review gates, staging, rollback, a held-out evaluation), not just "we had tests"
+- [ ] **A stop, or a lesson:** names a point where they stopped to validate something hard to reverse (a schema, authentication, a deployment, a data migration, a data split, a save-file format) and why there, or a delegation that went wrong, the check it lacked, and the check now in their sprint notes or repo record
 
 Red flags, any one is Does Not Meet:
 
-- [ ] cannot say what they authored or drove in the work presented
-- [ ] gives no account at all of what was handed to AI tools
-- [ ] describes an unchecked hard-to-reverse change and cannot say what check it needed
-- [ ] makes claims the repo record contradicts
+- [ ] **No authorship:** cannot say what they authored or drove in the work presented
+- [ ] **No AI account:** gives no account at all of what was handed to AI tools
+- [ ] **Unexamined:** describes an unchecked hard-to-reverse change and cannot say what check it needed
+- [ ] **Contradicted:** makes claims the repo record contradicts
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 
@@ -42,19 +42,18 @@ Notes: __________________________________________________________________
 
 ## 2. Judgment: why this approach, what was rejected, what was hard to reverse (SO1): ____ / 20
 
-Asks: why this way, and what else was on the table? Follow-up: knowing what you know now, what would you change? Where the partner or a teammate made the call: would you have decided the same way?
+Asks: why this way, what else was on the table, and what is hard to reverse? Follow-up: knowing what you know now, what would you change? Where the partner or a teammate made the call: would you have decided the same way?
 
 Exceeds, all four, each holding up under a follow-up question:
 
-- [ ] explains why this approach was chosen, whoever made the decision
-- [ ] names at least two alternatives (doing nothing counts), each with the reason it was rejected, consistent with the RFC, the decisions the team recorded, or the sprint notes where they cover it
-- [ ] says which parts of the decision are hard to reverse
-- [ ] says what they would change now, or why they would not, including for a decision someone else made
+- [ ] **Why this way:** explains why this approach was chosen, whoever made the decision
+- [ ] **Two alternatives:** names at least two (doing nothing counts), each with the reason it was rejected, consistent with the RFC, the decisions the team recorded, or the sprint notes where they cover it
+- [ ] **Hard to reverse:** says which parts of the decision are
+- [ ] **What they would change:** says what they would change now, or why they would not, including for a decision someone else made
 
 Red flags, any one is Does Not Meet:
 
-- [ ] cannot say why the work was done this way
-- [ ] names no alternative at all
+- [ ] **No alternative:** names no alternative at all
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 
@@ -62,18 +61,18 @@ Notes: __________________________________________________________________
 
 ## 3. Technical depth: "what breaks if X" (SO6): ____ / 20
 
-Asks: what breaks if X changes, with X picked by the assessor and different for each student? Follow-ups: what if Y changes too, and how do you know?
+Asks: what breaks in the work you presented if X changes, with X picked by the assessor and different for each student? Follow-ups: what if Y changes too, and how do you know?
 
 Exceeds, all three, each holding up under a follow-up question:
 
-- [ ] a correct answer that names the specific behavior or limit that breaks
-- [ ] reasoning that holds on a second "what if"
-- [ ] names where they verified the system's behavior themselves rather than relying on AI-generated output
+- [ ] **Correct and specific:** a correct answer that names the behavior or limit that breaks
+- [ ] **Holds on a second what-if:** the reasoning holds when Y changes too
+- [ ] **Verified it themselves:** says where they verified the system's behavior themselves
 
 Red flags, any one is Does Not Meet:
 
-- [ ] an incorrect or evasive answer to X
-- [ ] cannot say what the system does when X changes
+- [ ] **Wrong or evasive:** an incorrect or evasive answer to X
+- [ ] **No model of the system:** cannot say what the system does when X changes
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 
@@ -81,19 +80,19 @@ Notes: __________________________________________________________________
 
 ## 4. Role, team accountability, and work distribution (SO5): ____ / 20
 
-Asks: what did your role ask of you this term, and which decision did you drive to a conclusion? Follow-up, for a sprint from this term that the assessor picks at random: what did you own in that sprint?
+Asks: what did your role ask of you this term, which decision did you drive to a conclusion, and how did your team decide and split the work? Follow-up, for a sprint from this term that the assessor picks at random: what did you own in that sprint?
 
 Exceeds, all four, each holding up under a follow-up question:
 
-- [ ] says what their role (PM, AI Coordinator, Quality Owner) or ownership area required this term, with a concrete example
-- [ ] names a decision they chaired to a conclusion this term that matches the sprint notes, or, if their turn is still ahead, the decision the charter's rotation schedules them to chair
-- [ ] explains how the team made decisions and split the work
-- [ ] says what they owned in the sprint the assessor picks, matching that sprint's Done or In progress list
+- [ ] **What the role required:** says what their role (PM, AI Coordinator, Quality Owner) or ownership area required this term, with a concrete example
+- [ ] **A decision chaired:** names a decision they chaired to a conclusion this term that matches the sprint notes (deciding to wait or re-plan counts), or, if their turn is still ahead, the decision the charter's rotation schedules them to chair
+- [ ] **How the team works:** explains how the team made decisions and split the work
+- [ ] **The random sprint:** says what they owned in the sprint the assessor picks, matching that sprint's Done or In progress list
 
 Red flags, any one is Does Not Meet:
 
-- [ ] cannot say what their role or ownership area required
-- [ ] cannot say who did what
+- [ ] **Role unknown:** cannot say what their role or ownership area required
+- [ ] **Who did what:** cannot say at all who did what
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 
@@ -105,15 +104,15 @@ Asks: what is the most useful thing you told someone whose work or decision depe
 
 Exceeds, all three, each holding up under a follow-up question:
 
-- [ ] answers the question asked, and if they reach the edge of their knowledge, says what they don't know and how they would find out
-- [ ] at a level of detail the assessor does not have to correct or ask to shorten
-- [ ] names a specific thing they told a reviewee, the partner, or the mentor and what changed because of it (an RFC author's reply or committed revision counts), or, in spring, what they checked in a review and why it needed no change
+- [ ] **Answers what is asked:** including, at the edge of their knowledge, what they don't know and how they would find out
+- [ ] **Right level of detail:** answers at a level the assessor does not have to correct or ask to shorten
+- [ ] **Something told, and what changed:** names a specific thing they told a reviewee, the partner, or the mentor and what changed because of it (an RFC author's reply or committed revision counts), or, in spring, what they checked in a review and why it needed no change
 
 Red flags, any one is Does Not Meet:
 
-- [ ] bluffs instead of saying what they do not know
-- [ ] repeatedly does not answer the question asked
-- [ ] names nothing specific at all from a review or from talking with the partner or mentor
+- [ ] **Bluffs:** claims to know what they do not, instead of saying so
+- [ ] **Non-answers:** repeatedly does not answer the question asked
+- [ ] **Nothing specific:** names nothing specific at all from a review or from talking with the partner or mentor
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 
