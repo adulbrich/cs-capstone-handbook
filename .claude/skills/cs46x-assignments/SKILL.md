@@ -327,6 +327,31 @@ You Produce, so start a What You Produce heading with the entry's exact name.
 `:::note[If your project is under NDA]` for the local NDA variation. Keep each
 to one idea about the student's work.
 
+## Length
+
+Each section has a word budget for its own text: the lines under its
+heading, up to the next heading of any level, without its asides, which have
+their own. Three of the budgets put numbers on limits the skeleton states in
+words:
+
+| Section | Budget | The skeleton's limit |
+|---|---|---|
+| Intro prose | 150 | one to three paragraphs |
+| What You Submit, and each entry `###` under it | 40 | one or two lines |
+| An aside | 60 | one idea |
+| Any other `##`, `###`, or `####` | 200 | |
+
+A budget is a tripwire, as the guides' split-check is, not a target. A page split into entries is budgeted section by section, so each of
+the Repo Checkpoints' milestone sections has its own 200, and a page has no
+total. Over budget, cut restatement first; if what remains is precision, the
+instructor decides whether the section stays long, since a clause that
+removes an ambiguity is cheap (The Task Register). Text for a situation the
+rest of the section doesn't fit (little code, an NDA, a silent partner, a
+mentor in the partner's place) is precision, never
+restatement: cutting it leaves those teams guessing. A section already over its
+budget does not grow in a pull request. `node scripts/section-words.mjs`
+counts every changed page against `origin/main`.
+
 ## Rubric Rules
 
 The rubric is a CSV, not a Markdown table (see **The Rubric Lives in the CSV**).
@@ -555,3 +580,5 @@ the student to guess the standard they will be graded against.
    under Frontmatter Contract.
 3. If you touched a rubric, you touched the CSV, so name it on the PR
    body's Canvas mirror line.
+4. Run `node scripts/section-words.mjs` and act on each `OVER` or `GREW`
+   as Length says.

@@ -6,7 +6,7 @@ those rules sit in. `README.md` covers install and running the site.
 
 The handbook is student-facing documentation and where all graded work is
 authored, except the two Canvas-owned assignments named in `AGENTS.md`. Most changes are prose and tables, not code, and the review reads
-them that way: see `docs/agents/code-review.md`.
+them that way: see the `cs46x-review` skill.
 
 ## The process
 
@@ -42,7 +42,7 @@ claim it         type/slug          commit message                           rec
    and `Assisted-by: Claude Code` when an agent helped. Below it go what ran
    locally, what Canvas needs re-imported or re-pasted, the review loop, a
    guide's checks, and the docs touched.
-5. **Run the review loop** that `docs/agents/code-review.md` sets out, and
+5. **Run the review loop** that the `cs46x-review` skill sets out, and
    record it in the template's Review loop lines.
 6. **Merge.** Squash. The squash commit takes the PR title as its subject and
    the PR body as its message, LLVM-style, and the branch commits' messages

@@ -575,11 +575,8 @@ the failure this skill exists to prevent.
    the unsourced tells: `research shows`, `studies`, `most teams`, a bare
    percentage. Name in the pull request body each source you opened to check
    a paraphrase (see Sourcing).
-6. Run the reverse outline from `docs/agents/code-review.md` yourself before
-   the review does: one line per paragraph naming its idea and what it
-   contributes. A paragraph with no contribution is cut; a paragraph with two
-   ideas is split; a paragraph whose last sentence restates it loses that
-   sentence.
+6. Run the reverse outline (`docs/agents/voice.md`, Structure) yourself
+   before the review (`cs46x-review`) does.
 7. Check the Additional Readings activity list against
    `src/content/docs/activities/`. An activity that exercises this practice and
    is not listed is a dead end for the reader.
