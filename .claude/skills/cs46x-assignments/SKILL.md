@@ -83,7 +83,7 @@ assignment:
     - name: "<Exact Canvas name; {n} numbers a family, {title} names each entry>"
       group: <Canvas assignment group>
       weeks: { fall: [4, 8] }
-      due_label: <optional: the due date in words for the card, "Week 7 or 9">
+      due_label: <optional: the due date in words for the card, "Week 8 to finals week">
       titles: { fall: [<one per week listed>] }  # only with {title} in the name
       numbering: year  # optional: {n} continues across terms (Sprint Notes 1 to 12)
       weight: <the family's percent of the term grade>
@@ -111,7 +111,7 @@ are separate Canvas assignments with their own due dates and grades, however
 the page groups them for the reader (#259). `peer_review_week` marks an entry
 using Canvas's own peer review.
 `due_label` replaces the weeks on the summary card where they mislead or run
-long ("Sunday of each sprint's second week", "Week 7 or 9"); the weeks still
+long ("Sunday of each sprint's second week", "Week 8 to finals week"); the weeks still
 set the Canvas due dates.
 
 `late` is required on every family: what a late or missed entry costs. Each

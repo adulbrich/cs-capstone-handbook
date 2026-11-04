@@ -12,9 +12,9 @@
 
 Tick an item when the student says it and neither a follow-up question nor the record undoes it. Any red flag: Does Not Meet, 4. Otherwise, every item ticked: Exceeds, 20; otherwise Meets: 16 points with one item missing, 12 with two, 8 with more. Missing, 0: Unexcused no-show, or no meaningful attempt to present or answer; an absence reported to the assessor before the session is rescheduled and not scored here. The questions, items, and red flags below are the rubric's, word for word.
 
-Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session; a video call is fine, with every student's camera on. **Draw the speaking order at random at the start of the session and do not publish it in advance**, pick each student's artifact from the two or three they bring, a different artifact or part per student and the most recent where you can, give each a different "what breaks if X" question, and pick a sprint from this term at random for each student's Role question. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
+Logistics: 10 minutes per student, plus about 10 minutes of setup and wrap for the session; a video call is fine, with every student's camera on. **Draw the speaking order at random at the start of the session and do not publish it in advance**, pick each student's artifact from the two or three they bring, a different artifact or part per student and the most recent where you can, give each a different "what breaks if X" question, and pick a sprint from this term at random for each student's Role question. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
 
-If a score comes out borderline, or a student's part of the session ran short, tick the follow-up box and arrange a 5-minute one-to-one in the same defense week, or in week 9 after a week 7 session. Tell the student it is routine.
+If a score comes out borderline, or a student's part of the session ran short, tick the follow-up box and arrange a 5-minute one-to-one within a week of the session, and no later than finals week. Tell the student it is routine.
 
 **Score the decision, not the luck.** An unchecked hard-to-reverse change is a red flag even if nothing broke, unless the student can say what check it needed. Naming a delegation that went wrong and the check it lacked never lowers a score. Sophisticated tooling is not itself worth points: a student with a weaker model who gated tightly and validated more has done the harder work.
 
@@ -27,7 +27,7 @@ Exceeds, all four, none undone by a follow-up question or the record, and no red
 - [ ] **Owns it:** authored or drove the work and can say where it stands, matching the repo record
 - [ ] **AI account:** says what was and was not handed to AI tools
 - [ ] **Specific checks:** names the checks on the work and on anything delegated (tests, CI, review gates, staging, rollback, a held-out evaluation), not just "we had tests"
-- [ ] **A stop, or a lesson:** names a point where they stopped to validate something hard to reverse (a schema, authentication, a deployment, a data migration, a data split, a save-file format) and why there, or why nothing in it needed one, or a delegation that went wrong, the check it lacked, and the check now in their sprint notes or repo record
+- [ ] **A stop, or a lesson:** names a point where they stopped to validate something hard to reverse (a schema, authentication, a deployment, a data migration, a data split, a save-file format) and why there, or why nothing in it needed one, or a delegation to AI tools that went wrong, the check it lacked, and the check now in their sprint notes or repo record
 
 Red flags, any one is Does Not Meet:
 
@@ -42,7 +42,7 @@ Notes: __________________________________________________________________
 
 ## 2. Judgment: why this approach, what was rejected, what was hard to reverse (SO1): ____ / 20
 
-Asks: why this way, what else was on the table, and what is hard to reverse? Follow-up: knowing what you know now, what would you change? Where the partner or a teammate made the call: would you have decided the same way?
+Asks: explain why this way, name two alternatives that were on the table and why each was rejected, and say which part is hard to reverse. Follow-up: knowing what you know now, what would you change? Where the partner or a teammate made the call: would you have decided the same way?
 
 Exceeds, all four, none undone by a follow-up question or the record, and no red flag:
 
@@ -80,18 +80,18 @@ Notes: __________________________________________________________________
 
 ## 4. Role, team accountability, and work distribution (SO5): ____ / 20
 
-Asks: what did your role ask of you this term, which decision did you drive to a conclusion, and how did your team decide and split the work? Follow-up, for a sprint from this term that the assessor picks at random: what did you own in that sprint?
+Asks: state your role, and list a few things you did in it this term. Which decision did you drive to a conclusion, and how did your team decide and split the work? Follow-up, for a sprint from this term that the assessor picks at random: what did you own in that sprint?
 
 Exceeds, all four, none undone by a follow-up question or the record, and no red flag:
 
-- [ ] **What the role required:** says what their role (PM, AI Coordinator, Quality Owner) or ownership area required this term, with a concrete example
+- [ ] **Role and what they did:** states their role (PM, AI Coordinator, Quality Owner) or ownership area and names specific things they did in it this term
 - [ ] **A decision chaired:** names a decision they chaired to a conclusion this term that matches the sprint notes (deciding to wait or re-plan counts), or, if their turn is still ahead, when the charter's rotation has them chair
 - [ ] **How the team works:** explains how the team made decisions and split the work
 - [ ] **The random sprint:** says what they owned in the sprint the assessor picks, or why nothing, matching that sprint's Done or In progress list (blocked work recorded there counts)
 
 Red flags, any one is Does Not Meet:
 
-- [ ] **Role unknown:** cannot say what their role or ownership area required
+- [ ] **Role unknown:** cannot state their role or ownership area, or anything they did in it
 - [ ] **Who did what:** cannot say at all who did what
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0

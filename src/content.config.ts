@@ -114,7 +114,7 @@ export const collections = {
                   .object({
                     // When it is due, in words, for the summary card where
                     // the weeks alone mislead or run long: "With each
-                    // sprint note", "Week 7 or 9". The weeks still set the
+                    // sprint note", "Week 8 to finals week". The weeks still set the
                     // Canvas due dates.
                     due_label: text().optional(),
                     // Canvas assignment group; weights live on groups.
