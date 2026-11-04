@@ -48,7 +48,7 @@ register.
 |---|---|---|---|
 | Guide (`guides/`) | Explanation | Why a practice works, how it compares with the alternatives, and what good looks like. Read once for understanding, then returned to for reminders. | Evidence for every evidence-type claim (Claims), and the reference for every tool, standard, or technique it names. |
 | Activity (`activities/`) | How-to | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue. | No citation duty. It links the guide that explains the practice and the documentation of any tool a step uses. |
-| Assignment (`assignments/`) | Brief | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, and nothing else: research on an assignment page is course-design rationale and belongs in the guide it links. |
+| Assignment (`assignments/`) | Brief | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, plus the links The floor requires. No research: on an assignment page it is course-design rationale and belongs in the guide the page links. |
 | Audience page (`introduction/for-*.mdx`) and syllabus | Orientation | What this is and what it asks of one reader, short enough to read before the term starts (`AGENTS.md`, Audience pages are orientation, not a course index). | No citation duty, though it may link. |
 
 "Brief" names the assignment register only. `cs46x-review` also calls its
