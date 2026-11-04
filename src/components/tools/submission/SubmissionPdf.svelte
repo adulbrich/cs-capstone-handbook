@@ -460,17 +460,20 @@ const pageCss = $derived(
         </ul>
         <div class="save">
           <label class="paper">
-            {saveText.paper}
-            <select class="input" bind:value={paperId}>
-              {#each Object.values(PAPER) as option (option.id)}
-                <option value={option.id}>{saveText.papers[option.id]}</option>
-              {/each}
-            </select>
+            <span>{saveText.paper}</span>
+            <span class="select">
+              <select bind:value={paperId}>
+                {#each Object.values(PAPER) as option (option.id)}
+                  <option value={option.id}>{saveText.papers[option.id]}</option>
+                {/each}
+              </select>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
           </label>
-          <Button disabled={!ready} onclick={save} aria-describedby="save-help">
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5M12 11v6M9 14l3 3 3-3"></path></svg>
-            {saveText.button}
-          </Button>
+          <button type="button" class="save-button" disabled={!ready} onclick={save} aria-describedby="save-help">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5M12 11v6M9 14l3 3 3-3"></path></svg>
+            <span>{saveText.button}</span>
+          </button>
         </div>
         <p class="note" id="save-help">{help}</p>
       {/if}
@@ -817,18 +820,74 @@ const pageCss = $derived(
   }
   .paper {
     display: grid;
-    gap: 0.25rem;
+    gap: 0.375rem;
+    font-size: var(--sl-text-sm);
     font-weight: 600;
+    color: var(--sl-color-white);
   }
-  .paper .input {
-    min-width: 9rem;
+  .select {
+    position: relative;
+    display: block;
+  }
+  .select select {
+    box-sizing: border-box;
+    min-width: 10rem;
+    height: 2.75rem;
+    padding: 0 2.5rem 0 0.75rem;
+    margin: 0;
+    font: inherit;
+    font-size: var(--sl-text-base);
     font-weight: 400;
+    color: var(--sl-color-white);
+    cursor: pointer;
+    background: var(--sl-color-black);
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 0.375rem;
+    appearance: none;
   }
-  .save :global(.button) {
-    min-height: 2.75rem;
-    padding-inline: 1.25rem;
+  .select select:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 1px;
+  }
+  .select svg {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: 0.75rem;
+    color: var(--sl-color-gray-2);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+  .save-button {
+    display: inline-flex;
+    gap: 0.625rem;
+    align-items: center;
+    height: 2.75rem;
+    padding: 0 1.375rem;
+    margin: 0;
+    font: inherit;
     font-size: var(--sl-text-base);
     font-weight: 600;
+    line-height: 1;
+    color: var(--sl-color-black);
+    cursor: pointer;
+    background: var(--sl-color-text-accent);
+    border: 0;
+    border-radius: 0.5rem;
+  }
+  .save-button svg {
+    flex: none;
+  }
+  .save-button:hover:not(:disabled) {
+    background: var(--sl-color-accent-high);
+  }
+  .save-button:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
+  }
+  .save-button:disabled {
+    color: var(--sl-color-gray-2);
+    cursor: not-allowed;
+    background: var(--sl-color-gray-5);
   }
   .print-holder {
     display: contents;
