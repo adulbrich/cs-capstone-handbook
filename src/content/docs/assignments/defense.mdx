@@ -36,17 +36,17 @@ import rubricCsv from '/canvas/assignments/defense/defense-rubric.csv?raw';
 
 <AssignmentSummary who="Individual, held as a team session" />
 
-Once per term, in week 7 or 9 (check announcements for the schedule), your team meets a TA or instructor who is not your team's regular TA for a defense session separate from your [TA check-ins](/assignments/introduction/#ta-check-ins), during which each student walks through something they own and answers live questions. Your own TA does not attend, so the account you give of your work has to stand on its own. The session is six minutes per student plus about ten minutes for setup and wrap, so a team of three runs a little under half an hour and a team of five runs about forty minutes. Per-student time doesn't shrink on a larger team; the session simply runs longer. Sick or absent that week? Tell your TA before the session and you will be rescheduled.
+Once per term, in week 7 or 9 (check announcements for the schedule), your team meets a TA or instructor who is not your team's regular TA for a defense session separate from your [TA check-ins](/assignments/introduction/#ta-check-ins), during which each student walks through something they own and answers live questions. Your own TA does not attend, so the account you give of your work has to stand on its own.
 
-You may present a PR you drove, a subsystem you maintain, your RFC decision, or a test or deployment strategy you built. Expect questions like these: why this way and what you rejected, what breaks if X changes, where did you decide to stop and check the work yourself and why there, and what was the most useful thing you told someone whose work you reviewed.
+Bring two or three things you own, such as a PR you drove, a subsystem you maintain, an experiment or analysis you ran, your RFC decision, or a test or deployment strategy you built; the assessor picks one. Prepare each the way a behavioral interview question asks for it: the situation, what you did and what you handed to AI tools, the result, and what you would do differently now. Expect questions like these: why this way and what you rejected, what breaks if X changes, where you stopped to check the work yourself and why there, what your role required this term and which decision you chaired, and what was the most useful thing you told someone whose work you reviewed.
 
-**Ground rules:** your docs, your repo, and your AI tools are open for explaining (looking things up, walking through code) and closed for generating (no asking a model to produce the answer live). Here the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) narrows: what is measured is what you can account for without help. Notes are fine. Slides are unnecessary.
-
-If you built and understood your work, the defense is a friendly conversation about it. If you can't explain your own contribution, no artifact will cover for that, and your project partner will expect the same of you in every meeting.
-
-Delegating work to AI tools is expected and is not penalized; the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed instead. In a defense that's concrete: a student who let an agent drive a database migration unchecked and got lucky scores badly, and a student who stopped to validate an authentication change scores well even if some feature code has bugs.
+Delegating to AI tools is expected; the [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed instead. Tell it as it happened, including what went wrong. A student who let an agent drive a database migration unchecked and got lucky scores badly; one who says a delegation went wrong, why their checks missed it, and what they check now scores well, as does one who stopped to validate an authentication change even if some feature code has bugs.
 
 ## How the Session Runs
+
+The session is six minutes per student plus about ten minutes for setup and wrap, so a team of three runs a little under half an hour and a team of five about forty minutes.
+
+**Ground rules:** your docs, your repo, and your AI tools are open for explaining (looking things up, walking through code) and closed for generating (no asking a model to produce the answer live). Notes are fine. Slides are unnecessary.
 
 The speaking order is drawn at random in the room, never published in advance, and each student gets a different artifact and a different "what breaks if X" question. Hearing a teammate answer first therefore tells you very little about what you will be asked.
 
@@ -54,9 +54,13 @@ Your teammates are the people who know whether your account of your own work is 
 
 If a score comes out borderline, or if your part of the session ran short for any reason, your assessor may ask you back for a brief individual follow-up. It is routine and it is not a penalty.
 
+:::note[If your project is under NDA]
+Show your work on a shared screen, within what your partner allows, with partner-confidential specifics described in neutral terms. The assessor checks your claims against what you show rather than the repository.
+:::
+
 ## Scoring
 
-TAs and instructors score each student live on a printed sheet (the [scoresheet](/defense-scoresheet.md) is public: you can see exactly what is scored). Scores and notes are entered per student in the gradebook after the session; the printed sheet is the live instrument, the gradebook is the record. Not every teammate holds one of the three named roles (Project Manager, AI Coordinator, Quality Owner) at a given time; "comparable ownership area" (a subsystem, the test suite, the deployment) satisfies the role criterion. The [working agreement guide](/guides/working-agreement/#roles-and-ownership) says what each of the three concerns covers. On a small team a student may own two of the three concerns, and speaks to both.
+TAs and instructors score each student live on a printed sheet (the [scoresheet](/defense-scoresheet.md) is public: you can see exactly what is scored). The role criterion asks about the role or ownership area your [team charter](/assignments/team-charter/#1-roles) gives you, and the decision you chaired, or are scheduled to chair, under its rotation; if you hold two of the three roles, speak to both.
 
 ## What You Submit
 
@@ -66,17 +70,9 @@ Nothing. The defense is live, so prepare by doing your work and being able to ta
 
 <RubricTable csv={rubricCsv} sourceLabel="canvas/assignments/defense/defense-rubric.csv" />
 
-At the edge of your knowledge, "I don't know, but here is how I would find out" scores; bluffing does not.
-
-Communication runs both directions, and the reviewer-side half checks the other direction: being articulate about your own work doesn't make you useful in review. In fall and winter it's your [RFC](/assignments/rfc/) peer review, and since the RFC you reviewed may not be revised yet, the author's reply to your comment, or the revision they committed to, counts as what changed. In spring it's code review, and the reviewer notes you wrote in your [sprint notes](/assignments/sprint-notes/#what-got-done-and-who), on the reviews that took judgment, already name the change you asked for or what you checked. Both are graded records, so this is checkable: "I left some comments" is not an answer, and neither is anything that named no line and requested no change. [Google's code review standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is the bar the criterion is written against.
-
-:::note[NDA teams]
-The defense runs identically whether or not your project is under NDA: everything happens live and no artifact changes hands, so NDA constraints do not apply.
-:::
+The second half of the communication criterion is about review: what you told someone whose work you reviewed, and what changed because of it. In fall and winter it's your [RFC](/assignments/rfc/) peer review, and since the RFC you reviewed may not be revised yet, the author's reply to your comment, or the revision they committed to, counts as what changed. In spring it's the reviews you did on your team's work, and the reviewer notes you wrote in your [sprint notes](/assignments/sprint-notes/#what-got-done-and-who), on the reviews that took judgment, name the change you asked for or what you checked. [Google's code review standard](https://google.github.io/eng-practices/review/reviewer/standard.html) is the bar the criterion is written against.
 
 ## Activities That Prepare This
-
-The defense runs once a term, so these rotate.
 
 | Term | Activity | Criterion it serves |
 |---|---|---|
