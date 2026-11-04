@@ -42,7 +42,7 @@ export const coverText = {
   projectId: "Project ID",
   projectIdPlaceholder: "42",
   projectName: "Project name",
-  projectNamePlaceholder: "Beaver Habitat Tracker",
+  projectNamePlaceholder: "Questioning The Universe",
   removeAuthor: (n) => `Remove author ${n}`,
   saved:
     "Project and authors are saved in this browser, so your next PDF starts with them.",
