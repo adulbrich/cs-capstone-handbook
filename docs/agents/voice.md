@@ -137,9 +137,9 @@ What each page type must cite is in the Registers table.
   believes, and the explanation follows. It never closes a paragraph, and it
   is never the page's thesis.
 - Each page type opens its own way, as its skill sets out. Every other
-  handbook page opens on the reader's situation, except a reference page,
-  such as the glossary, the license, or the home page, which opens on what
-  it holds. On every page, two
+  handbook page opens on the reader's situation, except a reference page
+  (the home page and the pages under `about/`), which opens on what it
+  holds. On every page, two
   openers are banned: a claim about the topic's importance ("X is the
   backbone, the foundation, the fundamental unit of...") and a "Without X:"
   list of what goes wrong. `check-prose` enforces both only in a guide's
@@ -181,9 +181,9 @@ subject names who acts and its verb names what they do.
    the requirement, link the vendor's current documentation, and tell the
    reader to check it before planning on it.
 5. Use the reader's words. Don't coin compounds or turn verbs into nouns
-   ("adds waits", "real-user recruitment"). A term the handbook needs is
-   defined once in `src/content/docs/about/glossary.mdx` and used the same
-   way everywhere, as "start-by date" is.
+   ("adds waits", "real-user recruitment"). A term the handbook needs has
+   one meaning, given in `src/content/docs/about/glossary.mdx`, and is used
+   that way everywhere, as "start-by date" is.
 6. No filler for rhythm: an appositive that repeats the sentence's own nouns
    ("access and approvals alike"), a tacked-on "both X and Y", a pair or
    triple added for cadence, or a phrase that announces a point instead of
