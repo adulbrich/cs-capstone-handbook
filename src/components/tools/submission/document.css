@@ -129,6 +129,9 @@
 .submission-doc .cover h1 {
   margin: 0;
 }
+.submission-doc .cover .more > :last-child {
+  margin-bottom: 0;
+}
 .submission-doc .cover p {
   margin: 0;
   color: #44403c;

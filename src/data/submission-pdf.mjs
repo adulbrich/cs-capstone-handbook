@@ -33,6 +33,9 @@ export const coverText = {
   fromLink:
     "Filled in from the link you followed; add your document's number or name if it has one, such as Sprint Note 3.",
   lead: "The document title, your project, and each author: every team member on team work, only you on individual work.",
+  more: "More cover lines (optional)",
+  moreHelp:
+    "Anything else your assignment's cover asks for, such as a repository URL and commit hash, in Markdown. It prints after the authors and is not kept in this browser.",
   namePlaceholder: "Name",
   notSaved:
     "Once filled in, project and authors are saved in this browser for your next PDF.",

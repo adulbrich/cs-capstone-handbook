@@ -71,6 +71,9 @@ let images = $state.raw([]);
 /** Each file's printable HTML and failed diagrams, by path. */
 let rendered = $state.raw({});
 let drawing = $state(false);
+/** The optional Markdown after the authors, and its printable HTML. */
+let more = $state("");
+let moreHtml = $state.raw("");
 let notice = $state.raw({ skipped: [], unreadable: [] });
 let dragging = $state(false);
 
@@ -108,7 +111,7 @@ const help = $derived.by(() => {
 /** One sheet per file, each starting a page; the first opens with the cover. */
 const sheetList = $derived(
   files.map((file, i) => ({
-    cover: i === 0 ? lines : null,
+    cover: i === 0 ? { ...lines, more: moreHtml } : null,
     html: rendered[file.path]?.html ?? "",
     id: `file:${file.path}`,
     label: file.path,
@@ -142,12 +145,29 @@ function removeAuthor(id) {
 }
 
 let version = 0;
+let moreVersion = 0;
+
+/** Draws the extra cover lines; a later keystroke wins over an earlier one. */
+async function renderMore() {
+  moreVersion += 1;
+  const mine = moreVersion;
+  const { html } = await renderFile(
+    readMarkdown(more),
+    "",
+    images,
+    previewText
+  );
+  if (mine === moreVersion) {
+    moreHtml = more.trim() === "" ? "" : html;
+  }
+}
 
 /** Draws every file again: an image added can fill a gap in any of them. */
 async function renderAll() {
   version += 1;
   const mine = version;
   drawing = true;
+  renderMore();
   const list = files;
   const results = await Promise.all(
     list.map((file) => renderFile(file.read, file.path, images, previewText))
@@ -365,6 +385,21 @@ const pageCss = $derived(
       {:else}
         <p class="note">{coverText.notSaved}</p>
       {/if}
+
+      <div class="more">
+        <Field label={coverText.more} help={coverText.moreHelp}>
+          {#snippet children({ describedby, id })}
+            <textarea
+              {id}
+              class="input"
+              rows="3"
+              aria-describedby={describedby}
+              bind:value={more}
+              oninput={renderMore}
+            ></textarea>
+          {/snippet}
+        </Field>
+      </div>
     </li>
 
     <li class="step" data-number="2">
@@ -621,6 +656,15 @@ const pageCss = $derived(
   .input:focus-visible {
     outline: 2px solid var(--sl-color-text-accent);
     outline-offset: 1px;
+  }
+  .more {
+    margin-top: 1.25rem;
+  }
+  textarea.input {
+    min-height: 5.5rem;
+    padding: 0.6rem 0.75rem;
+    line-height: 1.5;
+    resize: vertical;
   }
   .authors {
     display: grid;
