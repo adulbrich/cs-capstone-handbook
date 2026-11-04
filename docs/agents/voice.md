@@ -26,12 +26,12 @@ check. The same point, written both ways:
 > Aphorism: "Small deploys are safe deploys."
 >
 > Explanation: "The
-> [DORA report](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf),
-> an industry survey of over 31,000 professionals, found its elite group
+> [DORA report](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
+> found its elite group
 > deploying on demand, several times a day, while low performers deployed
 > between once a month and once every six months. A small deploy changes
 > little, so when one breaks, the change to roll back is easy to find. The
-> report's sample came from teams already familiar with DevOps, though, and
+> report's sample likely came from teams already familiar with DevOps, though, and
 > frequent deploys only get cheap once CI and a one-command deploy exist, so
 > build those before you raise the pace."
 
@@ -46,7 +46,7 @@ register.
 
 | Page type | Register | Its job | What it cites |
 |---|---|---|---|
-| Guide (`guides/`) | Explanation | Why a practice works, how it compares with the alternatives, and what good looks like. Read once for understanding, then returned to for reminders. | Evidence for every evidence-type claim (Claims), and the reference for every tool, standard, or technique it names. |
+| Guide (`guides/`) | Explanation | Why a practice works, how it compares with the alternatives, and what good looks like. Read once for understanding, then returned to for reminders. | Evidence for every evidence-type claim (Claims), plus the links The floor requires. |
 | Activity (`activities/`) | How-to | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue. | No citation duty beyond the links The floor requires. It links the guide that explains the practice. |
 | Assignment (`assignments/`) | Brief | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, plus the links The floor requires. No research: on an assignment page it is course-design rationale and belongs in the guide the page links. |
 | Audience page (`introduction/for-*.mdx`) and syllabus | Orientation | What this is and what it asks of one reader, short enough to read before the term starts (`AGENTS.md`, Audience pages are orientation, not a course index). | No citation duty beyond the links The floor requires. |
@@ -137,7 +137,8 @@ What each page type must cite is in the Registers table.
 - "Not A; it's B" is allowed only when A is something the reader plausibly
   believes, and the explanation follows. It never closes a paragraph, and it
   is never the page's thesis.
-- Each page type opens its own way, as its skill sets out. On every page, two
+- Each page type opens its own way, as its skill sets out; an audience page
+  opens on the reader's situation. On every page, two
   openers are banned: a claim about the topic's importance ("X is the
   backbone, the foundation, the fundamental unit of...") and a "Without X:"
   list of what goes wrong. `check-prose` enforces both only in a guide's
@@ -390,7 +391,7 @@ A truism for a reason, and filler for rhythm:
 > you test with have their own calendars, and a test in the week before the
 > demo leaves no time to fix what they find.
 
-A coined term, a vague duration, a vendor's number, and a trailing pointer:
+A coined term, a vendor's number, and a trailing pointer:
 
 > Before: Store review adds release latency of about a day, which the
 > Shipping guide covers.

@@ -273,7 +273,8 @@ and assignment pages link to activities by anchor. So:
 How to name the situation an activity serves, and how to write its
 examples, is under Examples of project work in `docs/agents/voice.md`. On an
 activity page, examples illustrate the concept (what a metric counts, what a
-committed result reads like).
+committed result reads like), and every set includes a slow start stated well
+and the way out.
 
 When an activity is materially specific to one situation, say so in the
 opening sentences as a trigger rather than adding a badge for it. When an
