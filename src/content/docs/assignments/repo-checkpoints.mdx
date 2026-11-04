@@ -73,7 +73,7 @@ Five of the six living docs, each describing the code at the named commit:
 
 - **`docs/requirements.md`**: the problem statement; functional and non-functional requirements, with an acceptance criterion wherever the behavior isn't obvious (a finished functional requirement can name its test in CI instead); the limits you did not choose, under Constraints; success metrics; non-goals; open questions. *Guide: [Requirements](/guides/requirements/).*
 - **`docs/design.md`**: the system as it exists, with its context, key diagrams, interfaces and contracts, the data model, the deployment shape, decisions deferred on purpose, and open technical questions. *Guide: [Technical design](/guides/technical-design/).*
-- **`README.md`**: a quickstart from a clean clone to a running system (for a game, built from source in the engine version it names; for a notebook, run top to bottom). *Reference: [makeareadme.com](https://www.makeareadme.com/).*
+- **`README.md`**: a quickstart from a clean clone to a running system (for a game, installing the engine version it names and building from source; for a notebook, running it top to bottom). *Reference: [makeareadme.com](https://www.makeareadme.com/).*
 - **`CONTRIBUTING.md`**: the sections [the charter requires](/assignments/team-charter/#required-in-contributingmd). *Reference: [GitHub's guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors).*
 - **AI context file**: `AGENTS.md` or your tool's equivalent, pointing at these documents rather than copying them. If you keep several, the others point at `AGENTS.md`, since two instruction files that disagree are worse than one. *Reference: [agents.md](https://agents.md/).*
 
@@ -81,14 +81,13 @@ Graders compare one recent feature with `docs/design.md` and one document in the
 
 ### Risk Register
 
-The sixth living doc, `docs/risks.md`, is the one risk register, covering business, technical, and team risks, ranked, each with an owner, plus every external prerequisite (an approval, an account, a review, recruitment) with who sent the request and when, updated between checkpoints. Write each risk as a fact about the project, without blame; a problem between teammates goes to your Teaching Assistant (TA). *Guide: [Project Risks](/guides/risks/).*
+The sixth living doc, `docs/risks.md`, is the one risk register, covering business, technical, and team risks, ranked, each with an owner, plus every external prerequisite (an approval, an account, a review, recruitment) with who you asked and when, or its start-by date until you ask, updated between checkpoints. Write each risk as a fact about the project, without blame; a problem between teammates goes to your Teaching Assistant (TA). *Guide: [Project Risks](/guides/risks/).*
 
 Graders check first that `docs/risks.md` is the only register and that every risk in it has a rank and an owner.
 
 ### Build Health and Safety Net
 
-CI runs your tests on every pull request and passed on the named commit, and at least one test fails when the behavior it covers breaks. Break something on a branch once and watch CI go red, so you know it can.
-
+CI runs your tests on every pull request and passed on the named commit, and at least one test fails when the behavior it covers breaks.
 CI is whatever proves, on every pull request, that the work still builds and still does what it should. For example:
 
 - A workflow that builds the app and runs its tests.
@@ -102,9 +101,9 @@ If none of these fits your work, agree with your partner or mentor what proves, 
 
 At Repo Checkpoint 1, a project may have little worth testing yet: the partner asked for research and planning first, or the first build is a prototype the team expects to throw away. That's fine when `README.md` says why and what will trigger the first tests; until then, CI builds the project and checks that the quickstart works. From Repo Checkpoint 2 on, CI runs tests.
 
-The safety net has three parts: gates on changes that are expensive to undo (schema, authentication, deployment, migrations), meaning a review plus CI checks that cover the change and must pass before it merges; somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data); and a rollback path documented in `README.md` or `docs/risks.md`. For whatever you delegate to AI tools, the instruction team recommends deterministic gates (tests, linters, type checks), because they fail the same way whoever wrote the change.
+The safety net has three parts: gates on changes that are expensive to undo (such as schema, authentication, deployment, migrations), meaning a review plus a CI check that exercises that kind of change, both required before it merges; somewhere to exercise changes before they reach users (a staging or preview environment, a store beta track, a test device, a run on sample data); and a rollback path documented in `README.md` or `docs/risks.md`. For whatever you delegate to AI tools, the instruction team recommends deterministic checks (tests, linters, type checks), because they fail the same way whoever wrote the change.
 
-The `README.md` quickstart works from a clean clone: graders follow it first, so follow it yourself before you submit. Where it needs secrets or partner data, it runs on test credentials and sample data instead, and says how to switch to the real ones.
+The `README.md` quickstart works from a clean clone: graders follow it first, so follow it yourself before you submit. Where it needs secrets or partner data, it runs on test values and sample data in the repository instead, and `CONTRIBUTING.md` says how to get the real ones.
 
 ### Contribution Traceability and Version Control Hygiene
 
@@ -117,7 +116,7 @@ Due fall week 5. Milestone met scores each item below, and Submission complete s
 - **CI**: passed on the named commit, in [a form of CI that fits your work](#build-health-and-safety-net). With no product code yet, it runs on a scaffold: your stack's starter project, with at least one test that fails when the scaffold breaks. Where `README.md` says why there are no tests yet and what will trigger the first ones, a build and a check that the quickstart works stand in for the test. *Evidence: a link on the cover to the run.*
 - **Board**: every item in the current sprint has an owner and a status. *Evidence: a link on the cover to the board.*
 - **Production target**: one paragraph says where the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) will run, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines it for your project; who owns the account or infrastructure; and who agreed it, your partner or, without one, your mentor. Add what applies: if you contribute to an open-source project, which maintainer reviews your first pull request; if you run a pipeline on data, which sample data it may use and, if the real run happens on a single workstation, who outside the team will run it there. With no deployment planned, the paragraph says why and what ships instead, so the instruction team can agree an equivalent milestone with you. *Evidence: the deployment section of `docs/design.md`.*
-- **Approval**: if the target needs one, an entry names it, who sent the request, and when. *Evidence: an entry in `docs/risks.md`.*
+- **Approval**: if the target needs one, an entry names it, who you asked, and when. *Evidence: an entry in `docs/risks.md`.*
 - **Inherited-codebase audit**: if you start in an existing codebase, your audit covers everything listed under [The Inherited-Codebase Audit](#the-inherited-codebase-audit). *Evidence: a document in the PDF, after the living docs.*
 
 Build Health and Safety Net asks for less at this checkpoint: staging and rollback can be a plan in `docs/risks.md` or `README.md`, saying where changes will be exercised before they reach users and how a bad change will be undone, each with the date it lands; and with no product code yet, the `README.md` quickstart may start only the scaffold.
@@ -140,7 +139,7 @@ Put what the audit finds that the code depends on where the next person looks: c
 
 Due fall week 10. Milestone met scores each item below.
 
-- **Walking skeleton deployed**: the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) is deployed from the named commit to the target `docs/design.md` recorded at Repo Checkpoint 1, or a later one recorded there with the agreement of your partner or, without one, your mentor, as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines deployed for your project. *Evidence: a link on the cover to what that section names for your project.*
+- **Walking skeleton deployed**: the [walking skeleton](https://wiki.c2.com/?WalkingSkeleton) (the thinnest end-to-end slice of your system that works) is deployed from the named commit to the target `docs/design.md` recorded at Repo Checkpoint 1, or a later one recorded there with the agreement of your partner (your mentor, if you have no partner), as [What Deployed Means in Fall](#what-deployed-means-in-fall) defines deployed for your project. *Evidence: on the cover, what that section names for your project.*
 - **Definition of Shipped v0**: a draft of every item the [Definition of Shipped](/assignments/definition-of-shipped/) asks for, whether or not your partner has agreed it yet. *Evidence: a document in the PDF, after the living docs.*
 
 ### Repo Checkpoint 3: Integration Health
@@ -149,7 +148,7 @@ Due winter week 5. Milestone met scores each item below.
 
 - **Integration**: every story your board shows as done runs end to end through your real system, with no part of your own code replaced by a stub (a placeholder that returns canned answers). *Evidence: the board, linked on the cover, where each done story says how to run it: its steps or its test.*
 - **CI**: at least one test in the CI run on the named commit covers one of those stories. *Evidence: a link on the cover to the run.*
-- **Real-user session scheduled**: a session in which one of the users or evaluators your [Definition of Shipped](/assignments/definition-of-shipped/) names tries the product; an entry gives its date, the participant's role (not their name), and who confirmed it. *Evidence: an external prerequisite in `docs/risks.md`.*
+- **Real-user session scheduled**: a session in which one of the users or evaluators your [Definition of Shipped](/assignments/definition-of-shipped/) names tries the product; an entry gives its date, the participant's role (not their name), when you asked them, and when they confirmed. *Evidence: an external prerequisite in `docs/risks.md`.*
 
 ### Repo Checkpoint 4: Release Candidate
 
@@ -163,7 +162,7 @@ Due winter week 10. Milestone met scores each item below.
 Repo Checkpoint 1 records where your walking skeleton will run in week 10, and Repo Checkpoint 2 checks that it does. Deployed means the thinnest working slice of your system is where the real one will live, and someone outside the team can reach it. What that looks like depends on what you build. For example:
 
 - A web app or API serves requests at its production URL. *Evidence: a link on the cover to the URL.*
-- A mobile app, game, desktop app, or firmware build installs on a device outside the team from the channel `docs/design.md` names (a store test track, a release page, a device image). *Evidence: a link on the cover to the build's page on that channel or, for an invite-only channel, a screenshot of the build running on that device or the issue where its user reports the install.*
+- A mobile app, game, desktop app, or firmware build installs on a device outside the team from the channel `docs/design.md` names (a store test track, a release page, a device image). *Evidence: a link on the cover to the build's page on that channel or, for an invite-only channel, a screenshot on the cover of the build running on that device, or a link to the issue where its user reports the install.*
 - A data pipeline runs end to end on sample data in the compute environment the real run will use, such as your partner's cluster, a university high-performance computing cluster, or a cloud allocation. If that is a single workstation, someone outside the team, such as your partner or a member of their group, runs it there. *Evidence: a link on the cover to the job's log or output, or to the issue in your repository where that person reports the run.*
 - A notebook or analysis reruns top to bottom from a clean environment on the machine of someone outside the team, from `README.md` alone. *Evidence: a link on the cover to the issue in your repository where that person reports the run.*
 - If you contribute to an open-source project, your first pull request is open in its repository. *Evidence: a link on the cover to the pull request.*
