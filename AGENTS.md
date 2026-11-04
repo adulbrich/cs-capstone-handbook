@@ -19,14 +19,14 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
 | `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies come from the built pages through the paste kit (`npm run canvas:export`) and are not stored here. |
 | `public/` | Templates and scoresheets students download. |
-| `src/pages/tools/` | The instructor tools at `/tools/`. Before editing them, `src/lib/tools/`, or their wording in `src/data/`, read `docs/agents/tools.md`. |
+| `src/pages/tools/` | The tools at `/tools/`, for students and instructors, linked from the About sidebar group and kept out of search. Before editing them, `src/lib/tools/`, or their wording in `src/data/`, read `docs/agents/tools.md`. |
 | `src/decks/`, `src/pages/decks/` | The slide decks. Before editing one, read `docs/agents/decks.md`. |
 | `src/data/sources/` | The sources registry: one `<id>.yaml` per cited source, with the claims the handbook makes from it and where the source supports each. Pages cite it with `<Cite id>`. Before adding or editing an entry, load the `cs46x-guides` skill (Citing Evidence). |
 | `scripts/validate-outcomes.mjs` | The outcome validator, reading each assignment's rubric CSVs, plus the assignment-page shape: the `<AssignmentSummary />` card and the section skeleton (#355), the AI-use paragraph, rubric totals, that each page renders its own CSVs, that its `assignment.canvas` entries reconcile (hard rule 6), and that each entry's `late` rule fits its submission. |
 | `scripts/validate-activities.mjs` | The activity tier counts, computed from the assignment pages through `src/lib/activity-links.mjs`, plus the `<ActivityMeta>` badge line and its legend, closing line, library count, the standalone, no-outcome-tags, and no-grading-language rules for activities and guides, and the week-by-week schedule's activity links. |
 | `scripts/validate-downloads.mjs` | Checks every `public/` download has an owning page, except the files in `NOT_A_DOWNLOAD`, a literal at the top of the script. |
 | `scripts/lib/` | Shared by the scripts: the content-tree walker and its text extensions, and the frontmatter reader, which returns the body as well as the block. The outcome-tag pattern is `OUTCOME_TAG` in `src/lib/rubric-csv.mjs`, since the site's rubric parser reads it too. |
-| `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the instructor tools' pure modules (roster parsing, contact lists, `.qsf` generation) on invented fixtures, never `data/`. |
+| `npm test` | `node --test` over `src/lib/tools/*.test.mjs`: the tools' pure modules on invented fixtures, never `data/`, plus the pin on the two published instruments' wording (hard rule 8). |
 | `scripts/validate-dashes.mjs` | No em dashes (literal or entity) under `src/`, `canvas/`, `public/`. |
 | `scripts/validate-sidebar.mjs` | Every `sidebar.order` within one content directory is unique, and a directory numbers all of its pages or none. A duplicate is otherwise silent. The Activities group is listed page by page in `src/lib/activities-sidebar.mjs`, so it also checks that every page under `activities/` appears there exactly once and declares no `sidebar.order`. |
 | `scripts/validate-sources.mjs` | Every `<Cite id>` names a file in `src/data/sources/`, every registry entry has its claims with locators and a `verified` value and is cited by some page, no two entries cite the same, and a citing page has `## References` then `<References />` directly above Additional Readings. |
@@ -101,6 +101,15 @@ it. Content lives in `src/content/docs/**` as MDX.
    schedule, is "check announcements for the link". The two Canvas-owned
    stubs and the Acknowledgments tools list are the only pages whose body
    names Canvas.
+8. **Published instruments keep their wording.** The two peer evaluation
+   rubrics carry instruments from published papers:
+   `peer-evaluation-rubric.csv`, the per-term scale after Gardner et al., and
+   `catme-rubric.csv`, Appendix B of Ohland et al. 2012 (#497), both under
+   `canvas/assignments/peer-evaluation/`. Never change a word in either: not
+   a name, a description, or an anchor, and not to fit
+   `docs/agents/voice.md`, the glossary, or a rubric rule. Points may change.
+   `src/lib/tools/published-instruments.test.mjs` pins the wording, so an
+   edit fails `npm test`; revert the edit rather than updating the hash.
 
 ## Validation
 

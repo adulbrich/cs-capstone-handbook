@@ -45,7 +45,7 @@ import finalRubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
 
 <AssignmentSummary />
 
-You write a different RFC each term, in fall and winter, about a **real decision your team faces that is hard to reverse**. An RFC (Request for Comments) frames the problem, lays out the options, recommends one, and invites critique before the team commits; the name comes from the [IETF's RFC series](https://www.ietf.org/process/rfcs/), and the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD](https://rfd.shared.oxide.computer/rfd/0001). In fall the decision is still open when you submit the draft. Where you can, pick one your team can leave open until the peer reviews come back in week 5; either way, the team decides when the work requires it, by the final in week 8 at the latest. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. The RFC is not a hypothetical, and not a justification written after the fact for a decision it no longer changes.
+You write a different RFC each term, in fall and winter, about a **real decision your team faces that is hard to reverse**. An RFC frames the problem, lays out the options, recommends one, and invites critique before the team commits; the name comes from the [Internet Engineering Task Force's RFC series](https://www.ietf.org/process/rfcs/), and the same shape is used internally at Google as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/) and at Oxide as an [RFD (Request for Discussion)](https://rfd.shared.oxide.computer/rfd/0001). In fall the decision is still open when you submit the draft. Where you can, pick one your team can leave open until the peer reviews come back in week 5; either way, the team decides when the work requires it, by the final draft in week 8 at the latest. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. The RFC is not a hypothetical, and not a justification written after the fact for a decision it no longer changes.
 
 :::note[Picking a decision that is actually yours]
 Hard-to-reverse decisions are typically architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments: undoing them costs far more than getting them right now. Most feature code is easy to reverse. The distinction comes from Jeff Bezos's [2015 letter to Amazon shareholders](https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF), which calls them Type 1 and Type 2 decisions and warns that applying the heavyweight Type 1 process to reversible decisions makes an organization slow. Telling one from the other is itself part of the exercise, and it's the judgment that matters most when much of the building is delegated.
@@ -70,7 +70,7 @@ What you can direct an agent or a teammate to build is bounded by how precisely 
 5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
 6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-Write it in the sections of the [RFC template](/rfc-template.md): the six above, then Decision. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision set to Proposed. When your team decides, before or after the reviews, record the outcome in both; the [ADR guide](/guides/adr/) covers keeping it as a record from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)): the draft in week 4 and the revised final in week 8. The draft is 1,500 to 2,500 words and the final 2,000 to 2,500, in fall and in winter, not counting the revision log (see [RFC Final Draft](#rfc-final-draft)).
+Write it in the sections of the [RFC template](/rfc-template.md): the six above, then Decision. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision set to Proposed. When your team decides, before or after the reviews, record the outcome in both; the [ADR guide](/guides/adr/) covers keeping it as a record from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)): the draft in week 4 and the revised final draft in week 8. The draft is 1,500 to 2,500 words and the final draft 2,000 to 2,500, in fall and in winter, not counting the revision log (see [RFC Final Draft](#rfc-final-draft)).
 
 **AI use:** AI may research options, draft sections, and sharpen the argument; the Delegation and validation criterion is where you say what you handed off and how you checked it. Presenting a generated analysis you did not verify as your own judgment, or inventing evidence (benchmarks, quotes, references that do not exist), fails the assignment. The defense will ask you to explain the decision without the tool.
 
@@ -78,7 +78,7 @@ Write it in the sections of the [RFC template](/rfc-template.md): the six above,
 
 ### RFC Draft + Peer Review
 
-Submit a complete draft by Sunday of week 4: every section above, 1,500 to 2,500 words. You don't need the draft's grade before revising: start as soon as your peer reviews arrive.
+Submit a complete draft by Sunday of week 4: every section above, 1,500 to 2,500 words. [You can build your submission PDF from your Markdown files.](/tools/submission-pdf/) You don't need the draft's grade before revising: start as soon as your peer reviews arrive.
 
 #### The Peer Review
 
@@ -93,7 +93,7 @@ In week 5 you review two drafts by other students, and two students review yours
 3. **Point at the draft.** Each answer names the passage it is about, so the author can find it.
 4. **Submit both reviews** by Sunday of week 5, as a comment on each draft in its peer review.
 
-If an assigned reviewer does not submit, flag it to your Teaching Assistant (TA): you won't be penalized for feedback you never received, and the instruction team will supply a review. Not submitting your reviews of other students' drafts forfeits the review criteria below and is visible to the authors you were paired with.
+If an assigned reviewer does not submit, flag it to your TA: you won't be penalized for feedback you never received, and the instruction team will supply a review. Not submitting your reviews of other students' drafts forfeits the review criteria below and is visible to the authors you were paired with.
 
 :::note[If your project is under NDA]
 Submit a sanitized draft: your reviewers read it, so replace partner-confidential specifics with neutral placeholders. If that isn't possible, contact the instruction team.
@@ -105,7 +105,7 @@ By Sunday of week 6, an instructor returns comments on your draft submission. Ea
 
 ### RFC Final Draft
 
-Submit the RFC by Sunday of week 8, revised after both peer reviews and the instructor comments, followed by its revision log, in one PDF. Record your team's decision in its Status and Decision first (accepted, rejected, or superseded), and commit the revised RFC in place of the draft. The instruction team grades the final against the rubric below and returns rubric feedback.
+Submit the RFC by Sunday of week 8, revised after both peer reviews and the instructor comments, followed by its revision log, in one PDF. [You can build your submission PDF from your Markdown files.](/tools/submission-pdf/) Record your team's decision in its Status and Decision first (accepted, rejected, or superseded), and commit the revised RFC in place of the draft. The instruction team grades the final draft against the rubric below and returns rubric feedback.
 
 #### Revision Log
 
@@ -116,7 +116,7 @@ After the RFC, add a table with one row for every point raised in the feedback y
 | Reviewer 1 | No check in the verification plan would catch a migration that drops rows | Changed | Recommendation and Verification Plan: a row-count and checksum comparison now runs before cutover |
 | Reviewer 2 | A managed queue is a missing option | Declined | The partner's hosting agreement rules out a third-party processor for this data, so a managed queue is not a credible option |
 
-Feedback is the point in your words, not a quote. For a change, Where or why names the section that moved and what moved in it, so the grader can find it in the final. For a decline, it gives the reason the point does not hold for this decision; a reasoned decline counts as much as a change.
+Feedback is the point in your words, not a quote. For a change, Where or why names the section that moved and what moved in it, so the grader can find it in the final draft. For a decline, it gives the reason the point does not hold for this decision; a reasoned decline counts as much as a change.
 
 The log goes in the submission only: the RFC in your repository is the team's record of the decision, and who asked for which change is not part of it, so don't commit the log there. It does not count toward the length band.
 

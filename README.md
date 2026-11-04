@@ -29,7 +29,7 @@ which is what CI runs.
 | `npm run build` | `astro check`, then the static site in `dist/` |
 | `npm run preview` | Serves `dist/` |
 | `npm run canvas:export` | Writes the Canvas paste kit to `canvas-export/`, after a build |
-| `npm test` | Unit tests for the instructor tools |
+| `npm test` | Unit tests for the tools |
 | `npm run format` | Biome format and lint fixes for the code |
 
 The command to run before a change is done is in
@@ -42,7 +42,7 @@ The command to run before a change is done is in
 | `src/content/docs/` | The handbook pages: assignments, activities, guides, learning objectives, and the audience pages |
 | `canvas/` | One rubric CSV per rubric, imported into Canvas, and the three syllabi |
 | `public/` | Templates and scoresheets students download |
-| `src/pages/tools/` | Instructor tools for the surveys; they run in the browser and upload nothing |
+| `src/pages/tools/` | Tools for students and instructors; they run in the browser and upload nothing |
 | `src/decks/` | Slide decks, served at `/decks/<file name>/` |
 | `scripts/` | The validators and checks, the Canvas export, the email letter scripts, and other maintenance scripts |
 | `data/` | Rosters, grades, and survey exports. Gitignored; never commit anything here |

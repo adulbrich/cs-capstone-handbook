@@ -80,7 +80,7 @@ first column is what stops you locally; the last is what stops the merge.
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
 | The git and gh guard hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh` |
-| The instructor tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
+| The tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
 | PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`, and the `--body-file` text) | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
 | Dependencies signed, and no critical advisory | | | `audit` |
 
