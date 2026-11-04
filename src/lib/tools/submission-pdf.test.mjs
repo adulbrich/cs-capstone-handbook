@@ -61,6 +61,7 @@ const COMPLETE = {
 const BLANK = {
   email: "[email]",
   name: "[name]",
+  project: (id, name) => `Project ${id}: ${name}`,
   projectId: "[ID]",
   projectName: "[project name]",
   title: "[Document title]",

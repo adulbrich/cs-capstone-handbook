@@ -50,7 +50,8 @@ function drawDiagram(source) {
         } catch (error) {
           // A failed render can leave its scratch element behind.
           document.getElementById(`d${id}`)?.remove();
-          const [message] = String(error?.message ?? error).split("\n");
+          const [line] = String(error?.message ?? error).split("\n");
+          const message = line.replace(/[\s:.]+$/, "");
           return { error: message };
         }
       })()
@@ -79,7 +80,10 @@ function placeholder(text) {
  */
 export async function renderFile(read, path, images, text) {
   const template = document.createElement("template");
-  template.innerHTML = DOMPurify.sanitize(read.html);
+  // No <style>: GitHub drops it too, and here it would restyle the page.
+  template.innerHTML = DOMPurify.sanitize(read.html, {
+    FORBID_TAGS: ["style"],
+  });
   const paths = images.map((image) => image.path);
 
   for (const img of template.content.querySelectorAll("img")) {

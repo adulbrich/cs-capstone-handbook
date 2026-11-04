@@ -134,10 +134,11 @@ export function coverProblems({ authors, projectId, projectName, title }) {
 }
 
 /**
- * The three cover lines as Submitting Your Work shows them: the title,
- * "Project 42: Beaver Habitat Tracker", and "Name <email>, ..." for each
- * author. A blank part shows `blank`'s stand-in (`title`, `projectId`,
- * `projectName`, `name`, `email`), so the preview shows the gap.
+ * The three cover lines as Submitting Your Work shows them: the title, the
+ * project line (`blank.project(id, name)`, "Project 42: Beaver Habitat
+ * Tracker"), and "Name <email>, ..." for each author. A blank part shows
+ * `blank`'s stand-in (`title`, `projectId`, `projectName`, `name`,
+ * `email`), so the preview shows the gap.
  */
 export function coverLines({ authors, projectId, projectName, title }, blank) {
   const or = (value, key) => value.trim() || blank[key];
@@ -145,7 +146,10 @@ export function coverLines({ authors, projectId, projectName, title }, blank) {
     authors: authors
       .map((a) => `${or(a.name, "name")} <${or(a.email, "email")}>`)
       .join(", "),
-    project: `Project ${or(projectId, "projectId")}: ${or(projectName, "projectName")}`,
+    project: blank.project(
+      or(projectId, "projectId"),
+      or(projectName, "projectName")
+    ),
     title: or(title, "title"),
   };
 }

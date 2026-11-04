@@ -56,10 +56,14 @@ export const coverText = {
   title: "Cover lines",
 };
 
-/** What a blank part of the cover lines shows in the preview. */
+/**
+ * The project cover line, and what a blank part of the cover lines shows
+ * in the preview.
+ */
 export const blankText = {
   email: "[email]",
   name: "[Name]",
+  project: (id, name) => `Project ${id}: ${name}`,
   projectId: "[ID]",
   projectName: "[project name]",
   title: "[Document title]",
@@ -96,10 +100,11 @@ export function fileSummary({ code, diagrams, images, sections, tables }) {
 /** A file's warnings, one line each. */
 export const fileWarning = {
   diagram: (line, message) =>
-    `The Mermaid diagram on line ${line} could not be drawn: ${message}`,
+    `The Mermaid diagram on line ${line} could not be drawn: ${message}. Fix it, then add the file again.`,
   missing: (line, src) =>
     `Line ${line} links ${src}, which is not added yet. Add it to the drop zone above.`,
-  noAlt: (line) => `The image on line ${line} has no alt text.`,
+  noAlt: (line) =>
+    `The image on line ${line} has no alt text: describe it between the brackets of ![ ](...), then add the file again.`,
 };
 
 const coverGap = {
@@ -155,7 +160,7 @@ export const checkText = {
     }
     return check.count > 0
       ? {
-          detail: "The diagram source does not appear in the PDF.",
+          detail: "Only the drawn diagram prints, not its source.",
           text: `${plural(check.count, "Mermaid diagram")} drawn as ${check.count === 1 ? "an image" : "images"}`,
         }
       : {
@@ -195,7 +200,7 @@ export const saveText = {
   papers: { a4: "A4", letter: "US Letter" },
   title: "Check and save",
   warnings: (n) =>
-    `Fix the ${plural(n, "warning")} above first, or the PDF keeps ${n === 1 ? "it" : "them"}.`,
+    `Fix the ${plural(n, "warning")} above first: the PDF prints what the preview shows.`,
 };
 
 /** The preview beside the steps. */

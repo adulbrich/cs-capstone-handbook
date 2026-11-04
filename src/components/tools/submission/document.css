@@ -86,6 +86,10 @@
   vertical-align: top;
   border: 1px solid #d6d3d1;
 }
+/* One header row, where the preview draws it: no repeat on each page. */
+.submission-doc thead {
+  display: table-row-group;
+}
 .submission-doc th {
   text-align: start;
   background: #f5f5f4;

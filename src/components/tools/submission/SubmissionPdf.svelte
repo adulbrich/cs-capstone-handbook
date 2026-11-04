@@ -72,7 +72,6 @@ let rendered = $state.raw({});
 let drawing = $state(false);
 let notice = $state.raw({ skipped: [], unreadable: [] });
 let dragging = $state(false);
-let picker;
 
 const paper = $derived(PAPER[paperId]);
 const lines = $derived(coverLines(cover, blankText));
@@ -172,6 +171,11 @@ async function add(found) {
     .filter((entry) => kindOf(entry.path) === null && !entry.folder)
     .map((entry) => entry.path);
   const unreadable = [];
+  const markdown = found.filter((e) => kindOf(e.path) === "markdown");
+  const texts = await Promise.all(
+    markdown.map(({ file }) => file.text().catch(() => null))
+  );
+  // Built after the await, so an add that finished meanwhile is kept.
   let nextImages = images;
   for (const { file, path } of found.filter(
     (e) => kindOf(e.path) === "image"
@@ -185,10 +189,6 @@ async function add(found) {
       { path, url: URL.createObjectURL(file) },
     ];
   }
-  const markdown = found.filter((e) => kindOf(e.path) === "markdown");
-  const texts = await Promise.all(
-    markdown.map(({ file }) => file.text().catch(() => null))
-  );
   const nextFiles = [...files];
   markdown.forEach(({ path }, i) => {
     if (texts[i] === null) {
@@ -390,7 +390,7 @@ const pageCss = $derived(
         <span class="drop-title">{filesText.drop}</span>
         <span class="muted">{filesText.kinds}</span>
         <span class="choose" aria-hidden="true">{filesText.choose}</span>
-        <input type="file" multiple accept={ACCEPT} aria-label={filesText.choose} onchange={picked} bind:this={picker} />
+        <input type="file" multiple accept={ACCEPT} aria-label={filesText.choose} onchange={picked} />
       </label>
 
       {#if notice.skipped.length > 0}
@@ -409,13 +409,13 @@ const pageCss = $derived(
               <div class="file-body">
                 <div class="mono name">{file.path}</div>
                 <div class="muted">{fileSummary(file.read.counts)}</div>
-                {#each p.missing as m (`m${m.line}${m.src}`)}
+                {#each p.missing as m}
                   <p class="warn">{fileWarning.missing(m.line, m.src)}</p>
                 {/each}
-                {#each p.noAlt as m (`a${m.line}${m.src}`)}
+                {#each p.noAlt as m}
                   <p class="warn">{fileWarning.noAlt(m.line)}</p>
                 {/each}
-                {#each p.failed as m (`d${m.line}`)}
+                {#each p.failed as m}
                   <p class="warn">{fileWarning.diagram(m.line, m.message)}</p>
                 {/each}
               </div>

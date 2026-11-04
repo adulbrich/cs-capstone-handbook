@@ -16,15 +16,7 @@ let width = $state(0);
 let layout = $state.raw({});
 
 /** Parts whose children break separately: a list's items, a table's rows. */
-const OPEN = new Set([
-  "BLOCKQUOTE",
-  "OL",
-  "TABLE",
-  "TBODY",
-  "TFOOT",
-  "THEAD",
-  "UL",
-]);
+const OPEN = new Set(["OL", "TABLE", "TBODY", "TFOOT", "THEAD", "UL"]);
 const HEADING = /^H[1-6]$/;
 
 function parts(element, out = []) {
