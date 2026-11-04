@@ -148,7 +148,7 @@ export function coverProblems({ authors, projectId, projectName, title }) {
  * The cover lines Submitting Your Work asks for, with the date the PDF is
  * made under the title (`date`, from generatedOn): the title, the date, the
  * project line
- * (`blank.project(id, name)`, "Project 42: Questioning The Universe"), and
+ * (`blank.project(id, name)`, "CS.042 Questioning The Universe"), and
  * "Name <email>, ..." for each author. A blank part shows `blank`'s
  * stand-in (`title`, `projectId`, `projectName`, `name`, `email`), so the
  * preview shows the gap.

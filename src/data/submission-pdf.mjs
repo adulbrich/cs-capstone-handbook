@@ -40,7 +40,7 @@ export const coverText = {
   notSaved:
     "Once filled in, project and authors are saved in this browser for your next PDF.",
   projectId: "Project ID",
-  projectIdPlaceholder: "42",
+  projectIdPlaceholder: "CS.042",
   projectName: "Project name",
   projectNamePlaceholder: "Questioning The Universe",
   removeAuthor: (n) => `Remove author ${n}`,
@@ -56,7 +56,7 @@ export const coverText = {
 export const blankText = {
   email: "[email]",
   name: "[Name]",
-  project: (id, name) => `Project ${id}: ${name}`,
+  project: (id, name) => `${id} ${name}`,
   projectId: "[ID]",
   projectName: "[project name]",
   title: "[Document title]",
