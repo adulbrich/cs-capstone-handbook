@@ -1,0 +1,30 @@
+---
+// Build Your Submission PDF (#634): the student's Markdown files, their
+// images, and the cover lines, made into one PDF by the browser's print
+// dialog. Everything is read and drawn in the browser; nothing is uploaded.
+// An assignment page links it with its own title, `?title=Team%20Charter`.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import SubmissionPdf from "../../../components/tools/submission/SubmissionPdf.svelte";
+import { page } from "../../../data/submission-pdf.mjs";
+---
+
+<StarlightPage
+  frontmatter={{
+    description: page.description,
+    editUrl: false,
+    head: [{ attrs: { content: "noindex", name: "robots" }, tag: "meta" }],
+    pagefind: false,
+    tableOfContents: false,
+    title: page.title,
+  }}
+>
+  <p>{page.intro}</p>
+  <SubmissionPdf client:only="svelte" />
+</StarlightPage>
+
+<style is:global>
+  /* The steps and the preview sit side by side, as wide as the page allows. */
+  :root {
+    --sl-content-width: 80rem;
+  }
+</style>

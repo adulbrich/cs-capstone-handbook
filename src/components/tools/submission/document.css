@@ -1,0 +1,162 @@
+/*
+ * The printed document of the submission PDF builder, the same in the
+ * preview and on paper, so the preview's page breaks are the printer's.
+ * Global on purpose: the print copy lives under <body>, outside any
+ * component's scope. Dark text on white whatever the handbook's theme,
+ * since it is paper. The break rules here are the ones pageStarts in
+ * src/lib/tools/submission-pdf.mjs follows.
+ */
+
+.submission-doc {
+  position: relative;
+  font-family:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  font-size: 11pt;
+  line-height: 1.45;
+  color: #1c1917;
+  text-align: start;
+  overflow-wrap: break-word;
+  background: #fff;
+}
+.submission-doc > :first-child {
+  margin-top: 0;
+}
+.submission-doc :is(h1, h2, h3, h4, h5, h6) {
+  margin: 1.2em 0 0.4em;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1c1917;
+  break-after: avoid;
+}
+.submission-doc h1 {
+  font-size: 20pt;
+}
+.submission-doc h2 {
+  font-size: 15pt;
+}
+.submission-doc h3 {
+  font-size: 12.5pt;
+}
+.submission-doc :is(h4, h5, h6) {
+  font-size: 11pt;
+}
+.submission-doc :is(p, ul, ol, pre, table, blockquote, .diagram) {
+  margin: 0 0 0.75em;
+}
+.submission-doc :is(ul, ol) {
+  padding-inline-start: 1.5em;
+}
+.submission-doc li + li {
+  margin-top: 0.2em;
+}
+.submission-doc a {
+  color: #1d4ed8;
+}
+.submission-doc code {
+  padding: 0.05em 0.25em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: #f5f5f4;
+  border-radius: 3px;
+}
+.submission-doc pre {
+  padding: 0.6em 0.8em;
+  white-space: pre-wrap;
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 4px;
+}
+.submission-doc pre code {
+  padding: 0;
+  font-size: 9pt;
+  background: none;
+}
+.submission-doc blockquote {
+  padding-inline-start: 0.9em;
+  color: #44403c;
+  border-inline-start: 3px solid #d6d3d1;
+}
+.submission-doc table {
+  font-size: 10pt;
+  border-collapse: collapse;
+}
+.submission-doc :is(th, td) {
+  padding: 0.3em 0.6em;
+  vertical-align: top;
+  border: 1px solid #d6d3d1;
+}
+.submission-doc th {
+  text-align: start;
+  background: #f5f5f4;
+}
+.submission-doc hr {
+  border: 0;
+  border-top: 1px solid #d6d3d1;
+}
+.submission-doc img,
+.submission-doc .diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+.submission-doc .diagram {
+  text-align: center;
+}
+.submission-doc :is(p, li, tr, pre, img, blockquote, .diagram, .cover) {
+  break-inside: avoid;
+}
+.submission-doc .placeholder {
+  display: inline-block;
+  padding: 0.6em 0.8em;
+  font-size: 9pt;
+  color: #92400e;
+  border: 1px dashed #b45309;
+  border-radius: 3px;
+}
+
+/* The cover lines: at the top of page 1, or alone on a page. */
+.submission-doc .cover {
+  display: grid;
+  gap: 0.3em;
+  padding-bottom: 0.9em;
+  margin-bottom: 1.4em;
+  border-bottom: 1px solid #e7e5e4;
+}
+.submission-doc .cover h1 {
+  margin: 0;
+}
+.submission-doc .cover p {
+  margin: 0;
+  color: #44403c;
+}
+.submission-doc.cover-only {
+  padding-top: 30%;
+}
+.submission-doc.cover-only .cover {
+  border-bottom: 0;
+}
+.submission-doc.cover-only .cover h1 {
+  font-size: 26pt;
+}
+
+/* On screen the print copy is never shown; on paper it is all there is. */
+.submission-print {
+  display: none;
+}
+@media print {
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+  body > :not(.submission-print) {
+    display: none !important;
+  }
+  .submission-print {
+    display: block;
+  }
+  .submission-print .submission-doc + .submission-doc {
+    break-before: page;
+  }
+}

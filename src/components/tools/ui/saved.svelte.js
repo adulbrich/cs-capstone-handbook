@@ -53,6 +53,11 @@ export class ToolStorage {
     this.problem = this.#store.problem();
   }
 
+  /** Removes one key, leaving the page as it is. */
+  remove(key) {
+    this.#store.remove(key);
+  }
+
   /** A saved value under `key`, `initial` when nothing is saved. */
   saved(key, initial) {
     return new Saved(this, key, initial);

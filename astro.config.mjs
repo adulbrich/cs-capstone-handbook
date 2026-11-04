@@ -51,7 +51,12 @@ export default defineConfig({
       ],
       lastUpdated: true,
       plugins: [
-        starlightLinksValidator(),
+        starlightLinksValidator({
+          // A page outside the docs collection cannot be validated, so the
+          // one tool the assignment pages link is listed by hand. The query
+          // string (`?title=`) is stripped before matching.
+          exclude: ["/tools/submission-pdf/"],
+        }),
         starlightScrollToTop(),
         // starlightPageActions({
         //   baseUrl: "https://engr103.alexulbrich.com",

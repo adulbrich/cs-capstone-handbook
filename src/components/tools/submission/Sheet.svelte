@@ -1,0 +1,21 @@
+<script>
+// One printed sheet: the cover lines when it carries them, then a file's
+// HTML, already sanitized by render.js. The preview and the print copy both
+// draw it, so what the preview shows is what prints. `copy` names this copy,
+// which gives its diagrams ids of their own (copyIds in render.js).
+import { copyIds } from "./render.js";
+
+let { copy, cover = null, coverOnly = false, html = "" } = $props();
+</script>
+
+<div class={["submission-doc", { "cover-only": coverOnly }]}>
+  {#if cover}
+    <header class="cover">
+      <h1>{cover.title}</h1>
+      <p>{cover.project}</p>
+      <p>{cover.authors}</p>
+    </header>
+  {/if}
+  <!-- Sanitized with DOMPurify in render.js; the diagrams are Mermaid's own strict output. -->
+  {@html copyIds(html, copy)}
+</div>
