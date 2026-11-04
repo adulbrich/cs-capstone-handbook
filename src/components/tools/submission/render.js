@@ -16,6 +16,9 @@ import {
  */
 const DIAGRAM_ID = "sdgm-x7";
 
+/** The colon or period a Mermaid error line ends on, before ours is added. */
+const TRAILING = /[\s:.]+$/;
+
 let mermaid = null;
 let drawn = 0;
 const diagrams = new Map();
@@ -51,7 +54,7 @@ function drawDiagram(source) {
           // A failed render can leave its scratch element behind.
           document.getElementById(`d${id}`)?.remove();
           const [line] = String(error?.message ?? error).split("\n");
-          const message = line.replace(/[\s:.]+$/, "");
+          const message = line.replace(TRAILING, "");
           return { error: message };
         }
       })()

@@ -4,17 +4,16 @@ import { kindOf, resolveImage, segments } from "./submission-images.mjs";
 import { readMarkdown, stripFrontMatter } from "./submission-markdown.mjs";
 import {
   blankCover,
-  COVER_PLACE,
   canSave,
   coverLines,
   coverProblems,
   fileProblems,
   fromSaved,
+  generatedOn,
   hasSaved,
   numberPages,
   PAPER,
   pageStarts,
-  sheets,
   submissionChecks,
   titleFromSearch,
   toSaved,
@@ -228,17 +227,34 @@ test("the saved project and authors survive anything storage hands back", () => 
 });
 
 test("the cover lines read as Submitting Your Work shows them", () => {
-  assert.deepEqual(coverLines(COMPLETE, BLANK), {
+  assert.deepEqual(coverLines(COMPLETE, BLANK, "the day"), {
     authors:
       "Ada Lovelace <lovelaca@example.edu>, Grace Hopper <hopperg@example.edu>",
+    date: "the day",
     project: "Project 7: Tide Pool Census",
     title: "Team Charter",
   });
-  assert.deepEqual(coverLines(blankCover(), BLANK), {
+  assert.deepEqual(coverLines(blankCover(), BLANK, "the day"), {
     authors: "[name] <[email]>",
+    date: "the day",
     project: "Project [ID]: [project name]",
     title: "[Document title]",
   });
+});
+
+test("the generated date spells out its month in the reader's locale", () => {
+  // Built from numbers, so no calendar date is written in the source.
+  const day = new Date(2030, 0, 2);
+  const month = day.toLocaleDateString("en-US", { month: "long" });
+  const us = generatedOn(day, "en-US");
+  const uk = generatedOn(day, "en-GB");
+  assert.match(us, /^[A-Z][a-z]+ \d{1,2}, \d{4}$/);
+  assert.match(uk, /^\d{1,2} [A-Z][a-z]+ \d{4}$/);
+  for (const text of [us, uk]) {
+    assert.ok(text.includes(month));
+    assert.ok(text.includes(String(day.getFullYear())));
+    assert.doesNotMatch(text, /\d+\/\d+/);
+  }
 });
 
 test("incomplete cover lines name each gap, author by author", () => {
@@ -328,20 +344,6 @@ test("the papers are US Letter and A4 with a 0.75-inch margin", () => {
   assert.equal(PAPER.letter.contentWidth, 672);
   assert.ok(Math.abs(PAPER.a4.height - 1122.52) < 0.01);
   assert.ok(Math.abs(PAPER.a4.contentWidth - 649.7) < 0.01);
-});
-
-test("each file starts a sheet; the cover lines go on top or on their own", () => {
-  assert.deepEqual(sheets(COVER_PLACE.top, 2), [
-    { coverOnly: false, coverTop: true, file: 0, id: "file-0" },
-    { coverOnly: false, coverTop: false, file: 1, id: "file-1" },
-  ]);
-  assert.deepEqual(sheets(COVER_PLACE.page, 1), [
-    { coverOnly: true, coverTop: false, file: null, id: "cover" },
-    { coverOnly: false, coverTop: false, file: 0, id: "file-0" },
-  ]);
-  assert.deepEqual(sheets(COVER_PLACE.page, 0), [
-    { coverOnly: true, coverTop: false, file: null, id: "cover" },
-  ]);
 });
 
 test("pages number on across sheets, a sheet at least one page", () => {

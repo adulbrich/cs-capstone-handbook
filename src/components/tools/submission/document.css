@@ -118,7 +118,7 @@
   border-radius: 3px;
 }
 
-/* The cover lines: at the top of page 1, or alone on a page. */
+/* The cover lines, at the top of page 1. */
 .submission-doc .cover {
   display: grid;
   gap: 0.3em;
@@ -132,15 +132,6 @@
 .submission-doc .cover p {
   margin: 0;
   color: #44403c;
-}
-.submission-doc.cover-only {
-  padding-top: 30%;
-}
-.submission-doc.cover-only .cover {
-  border-bottom: 0;
-}
-.submission-doc.cover-only .cover h1 {
-  font-size: 26pt;
 }
 
 /* On screen the print copy is never shown; on paper it is all there is. */

@@ -30,22 +30,12 @@ export const coverText = {
   documentTitle: "Document title",
   emailPlaceholder: "ONID email",
   forget: "Forget them",
-  fromLink: (title) => `Filled in from the link on the ${title} page.`,
+  fromLink:
+    "Filled in from the link you followed; add your document's number or name if it has one, such as Sprint Note 3.",
   lead: "The document title, your project, and each author: every team member on team work, only you on individual work.",
   namePlaceholder: "Name",
   notSaved:
     "Once filled in, project and authors are saved in this browser for your next PDF.",
-  place: {
-    legend: "Where the cover lines go",
-    page: {
-      label: "A page of their own",
-      line: "A title page, then the first file on page 2",
-    },
-    top: {
-      label: "Top of page 1",
-      line: "Above the first file, as Submitting Your Work shows",
-    },
-  },
   projectId: "Project ID",
   projectIdPlaceholder: "42",
   projectName: "Project name",
@@ -205,7 +195,6 @@ export const saveText = {
 
 /** The preview beside the steps. */
 export const previewText = {
-  cover: "Cover lines",
   diagramFailed: (line) => `Diagram on line ${line} could not be drawn`,
   emptyLine:
     "One page per file, in the order you set, as the PDF will print them.",

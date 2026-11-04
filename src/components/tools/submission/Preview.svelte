@@ -126,7 +126,6 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
                     <Sheet
                       copy={`p${page.number}`}
                       cover={page.sheet.cover}
-                      coverOnly={page.sheet.coverOnly}
                       html={page.sheet.html}
                     />
                   </div>
@@ -156,7 +155,6 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
         <Sheet
           copy={`m${i}`}
           cover={sheet.cover}
-          coverOnly={sheet.coverOnly}
           html={sheet.html}
         />
       </div>

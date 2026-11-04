@@ -1,5 +1,5 @@
 // The submission PDF builder's rules (/tools/submission-pdf/): the cover
-// lines and what makes them complete, what the browser keeps between visits,
+// lines, which always open page 1, and what makes them complete, what the browser keeps between visits,
 // the checks before saving, the paper, and where the pages break. Pure, so
 // node --test covers it; the wording is in src/data/submission-pdf.mjs.
 
@@ -8,8 +8,19 @@ import { isExternal, resolveImage } from "./submission-images.mjs";
 /** The storage key that holds the project and the authors. */
 export const COVER_KEY = "cover";
 
-/** Where the cover lines go: above the first file, or a page of their own. */
-export const COVER_PLACE = Object.freeze({ page: "page", top: "top" });
+/**
+ * The generated date's form: the month spelled out, in the reader's locale,
+ * since a numeric date reads differently in the US and in Europe.
+ */
+const DATE_FORM = Object.freeze({
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+/** The day `date` falls on, in `locale` (the browser's when undefined). */
+export const generatedOn = (date, locale) =>
+  date.toLocaleDateString(locale, DATE_FORM);
 
 /** A loose email check: something, an @, something with no spaces. */
 const EMAIL = /^[^\s@]+@[^\s@]+$/;
@@ -134,18 +145,24 @@ export function coverProblems({ authors, projectId, projectName, title }) {
 }
 
 /**
- * The three cover lines as Submitting Your Work shows them: the title, the
- * project line (`blank.project(id, name)`, "Project 42: Beaver Habitat
- * Tracker"), and "Name <email>, ..." for each author. A blank part shows
- * `blank`'s stand-in (`title`, `projectId`, `projectName`, `name`,
- * `email`), so the preview shows the gap.
+ * The cover lines as Submitting Your Work shows them: the title, the date
+ * the PDF is made (`date`, from generatedOn), the project line
+ * (`blank.project(id, name)`, "Project 42: Beaver Habitat Tracker"), and
+ * "Name <email>, ..." for each author. A blank part shows `blank`'s
+ * stand-in (`title`, `projectId`, `projectName`, `name`, `email`), so the
+ * preview shows the gap.
  */
-export function coverLines({ authors, projectId, projectName, title }, blank) {
+export function coverLines(
+  { authors, projectId, projectName, title },
+  blank,
+  date
+) {
   const or = (value, key) => value.trim() || blank[key];
   return {
     authors: authors
       .map((a) => `${or(a.name, "name")} <${or(a.email, "email")}>`)
       .join(", "),
+    date,
     project: blank.project(
       or(projectId, "projectId"),
       or(projectName, "projectName")
@@ -248,28 +265,6 @@ export function pageStarts(blocks, pageHeight) {
     }
   });
   return starts;
-}
-
-/**
- * The printed sheets in order, each starting on a new page: a cover sheet
- * when the cover lines have a page of their own, then one per file, the
- * first carrying the cover lines on top otherwise. Each is
- * `{ id, file, coverOnly, coverTop }`, `file` its index or null.
- */
-export function sheets(place, fileCount) {
-  const list =
-    place === COVER_PLACE.page
-      ? [{ coverOnly: true, coverTop: false, file: null, id: "cover" }]
-      : [];
-  for (let i = 0; i < fileCount; i += 1) {
-    list.push({
-      coverOnly: false,
-      coverTop: place === COVER_PLACE.top && i === 0,
-      file: i,
-      id: `file-${i}`,
-    });
-  }
-  return list;
 }
 
 /**

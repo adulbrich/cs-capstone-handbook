@@ -5,7 +5,9 @@
 // and the PDF made by the browser's own print dialog from a print copy
 // under <body> (document.css hides the rest of the page on paper). The
 // project and authors are kept in localStorage for the next visit; the
-// title comes from the link and is never kept.
+// title comes from the link and is never kept. The cover lines open page
+// 1, with the date the PDF is made under the title.
+import { tick } from "svelte";
 import {
   blankText,
   checkText,
@@ -22,15 +24,14 @@ import { readMarkdown } from "../../../lib/tools/submission-markdown.mjs";
 import {
   blankAuthor,
   COVER_KEY,
-  COVER_PLACE,
   canSave,
   coverLines,
   fileProblems,
   fromSaved,
+  generatedOn,
   hasSaved,
   MARGIN_INCHES,
   PAPER,
-  sheets,
   submissionChecks,
   titleFromSearch,
   toSaved,
@@ -39,7 +40,6 @@ import { SUBMISSION_STORE } from "../../../lib/tools/tool-storage.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Field from "../ui/Field.svelte";
-import RadioCards from "../ui/RadioCards.svelte";
 import { ToolStorage } from "../ui/saved.svelte.js";
 import "./document.css";
 import Preview from "./Preview.svelte";
@@ -61,7 +61,8 @@ let cover = $state({
   authors: saved.authors.map(withId),
   title: linkTitle,
 });
-let place = $state(COVER_PLACE.top);
+/** When the PDF is made: set again on Save, so the date is that day's. */
+let madeAt = $state(new Date());
 let paperId = $state(PAPER.letter.id);
 /** The Markdown files in order, `{ path, read }`. */
 let files = $state.raw([]);
@@ -74,7 +75,7 @@ let notice = $state.raw({ skipped: [], unreadable: [] });
 let dragging = $state(false);
 
 const paper = $derived(PAPER[paperId]);
-const lines = $derived(coverLines(cover, blankText));
+const lines = $derived(coverLines(cover, blankText, generatedOn(madeAt)));
 const isSaved = $derived(hasSaved(cover));
 const imagePaths = $derived(images.map((image) => image.path));
 const problems = $derived(
@@ -104,23 +105,15 @@ const help = $derived.by(() => {
     ? `${saveText.help} ${saveText.warnings(warnings)}`
     : saveText.help;
 });
+/** One sheet per file, each starting a page; the first opens with the cover. */
 const sheetList = $derived(
-  sheets(place, files.length).map((sheet) => {
-    const file = sheet.file === null ? null : files[sheet.file];
-    return {
-      ...sheet,
-      cover: sheet.coverOnly || sheet.coverTop ? lines : null,
-      html: file ? (rendered[file.path]?.html ?? "") : "",
-      id: file ? `file:${file.path}` : sheet.id,
-      label: file ? file.path : previewText.cover,
-    };
-  })
+  files.map((file, i) => ({
+    cover: i === 0 ? lines : null,
+    html: rendered[file.path]?.html ?? "",
+    id: `file:${file.path}`,
+    label: file.path,
+  }))
 );
-const placeOptions = [COVER_PLACE.top, COVER_PLACE.page].map((value) => ({
-  label: coverText.place[value].label,
-  lines: [coverText.place[value].line],
-  value,
-}));
 
 /** Keeps the project and authors, or forgets them once all are blank. */
 function keep() {
@@ -238,8 +231,13 @@ function removeFile(i) {
   files = files.filter((_, j) => j !== i);
 }
 
-/** The PDF's file name is the document title, as Save as PDF suggests it. */
-function save() {
+/**
+ * Dates the cover, then prints. The PDF's file name is the document title,
+ * as Save as PDF suggests it.
+ */
+async function save() {
+  madeAt = new Date();
+  await tick();
   const before = document.title;
   document.title = cover.title.trim();
   window.addEventListener(
@@ -277,7 +275,7 @@ const pageCss = $derived(
         <div class="wide">
           <Field
             label={coverText.documentTitle}
-            help={linkTitle && cover.title === linkTitle ? coverText.fromLink(linkTitle) : ""}
+            help={linkTitle && cover.title === linkTitle ? coverText.fromLink : ""}
           >
             {#snippet children({ describedby, id })}
               <input {id} type="text" class="input" aria-describedby={describedby} bind:value={cover.title} />
@@ -364,10 +362,6 @@ const pageCss = $derived(
       {:else}
         <p class="note">{coverText.notSaved}</p>
       {/if}
-
-      <div class="place">
-        <RadioCards legend={coverText.place.legend} name="cover-place" options={placeOptions} bind:value={place} />
-      </div>
     </li>
 
     <li class="step" data-number="2">
@@ -491,7 +485,7 @@ const pageCss = $derived(
 <div class="print-holder">
   <div class="submission-print" {@attach toBody}>
     {#each sheetList as sheet, i (sheet.id)}
-      <Sheet copy={`print${i}`} cover={sheet.cover} coverOnly={sheet.coverOnly} html={sheet.html} />
+      <Sheet copy={`print${i}`} cover={sheet.cover} html={sheet.html} />
     {/each}
   </div>
 </div>
@@ -682,12 +676,6 @@ const pageCss = $derived(
   }
   .saved span {
     flex: 1 1 16rem;
-  }
-  .place {
-    margin-top: 1.25rem;
-  }
-  .place :global(.cards) {
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   }
 
   .drop {
