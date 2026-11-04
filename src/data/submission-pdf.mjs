@@ -90,11 +90,11 @@ export function fileSummary({ code, diagrams, images, sections, tables }) {
 /** A file's warnings, one line each. */
 export const fileWarning = {
   diagram: (line, message) =>
-    `The Mermaid diagram on line ${line} could not be drawn: ${message}. Fix it, then add the file again.`,
+    `The Mermaid diagram on line ${line} could not be drawn: ${message}. Fix it, then add the file again; it replaces this one.`,
   missing: (line, src) =>
     `Line ${line} links ${src}, which is not added yet. Add it to the drop zone above.`,
   noAlt: (line) =>
-    `The image on line ${line} has no alt text: describe it between the brackets of ![ ](...), then add the file again.`,
+    `The image on line ${line} has no alt text: describe it between the brackets of ![ ](...), then add the file again; it replaces this one.`,
 };
 
 const coverGap = {
@@ -197,7 +197,7 @@ export const saveText = {
 export const previewText = {
   diagramFailed: (line) => `Diagram on line ${line} could not be drawn`,
   emptyLine:
-    "One page per file, in the order you set, as the PDF will print them.",
+    "Each file starts a new page, in the order you set, as the PDF will print them.",
   emptyTitle: "Your pages appear here",
   missing: (src) => `${src} not found`,
   page: (n) => `Page ${n}`,

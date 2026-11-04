@@ -7,7 +7,7 @@
 // project and authors are kept in localStorage for the next visit; the
 // title comes from the link and is never kept. The cover lines open page
 // 1, with the date the PDF is made under the title.
-import { tick } from "svelte";
+import { flushSync } from "svelte";
 import {
   blankText,
   checkText,
@@ -61,7 +61,7 @@ let cover = $state({
   authors: saved.authors.map(withId),
   title: linkTitle,
 });
-/** When the PDF is made: set again on Save, so the date is that day's. */
+/** When the PDF is made: set again before any print, so the date is that day's. */
 let madeAt = $state(new Date());
 let paperId = $state(PAPER.letter.id);
 /** The Markdown files in order, `{ path, read }`. */
@@ -231,13 +231,14 @@ function removeFile(i) {
   files = files.filter((_, j) => j !== i);
 }
 
-/**
- * Dates the cover, then prints. The PDF's file name is the document title,
- * as Save as PDF suggests it.
- */
-async function save() {
+/** Dates the cover before any print, Save or the browser's own shortcut. */
+function dated() {
   madeAt = new Date();
-  await tick();
+  flushSync();
+}
+
+/** Prints. The PDF's file name is the document title, as Save as PDF suggests it. */
+function save() {
   const before = document.title;
   document.title = cover.title.trim();
   window.addEventListener(
@@ -260,6 +261,8 @@ const pageCss = $derived(
   `<style>@page { size: ${paper.id}; margin: ${MARGIN_INCHES}in; }</style>`
 );
 </script>
+
+<svelte:window onbeforeprint={dated} />
 
 <svelte:head>
   {@html pageCss}
@@ -471,7 +474,7 @@ const pageCss = $derived(
             </span>
           </label>
           <button type="button" class="save-button" disabled={!ready} onclick={save} aria-describedby="save-help">
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5M12 11v6M9 14l3 3 3-3"></path></svg>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M12 12v6"></path><path d="M9 15l3 3 3-3"></path></svg>
             <span>{saveText.button}</span>
           </button>
         </div>
@@ -869,6 +872,7 @@ const pageCss = $derived(
     font-weight: 600;
     line-height: 1;
     color: var(--sl-color-black);
+    white-space: nowrap;
     cursor: pointer;
     background: var(--sl-color-text-accent);
     border: 0;

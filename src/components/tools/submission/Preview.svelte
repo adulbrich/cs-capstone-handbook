@@ -97,7 +97,7 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
 
   {#if empty}
     <div class="empty" style:aspect-ratio="{paper.width} / {paper.height}">
-      <svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5"></path></svg>
+      <svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg>
       <span class="empty-title">{text.emptyTitle}</span>
       <span class="muted">{text.emptyLine}</span>
     </div>

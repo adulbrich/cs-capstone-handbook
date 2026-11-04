@@ -19,6 +19,9 @@ const DIAGRAM_ID = "sdgm-x7";
 /** The colon or period a Mermaid error line ends on, before ours is added. */
 const TRAILING = /[\s:.]+$/;
 
+/** "on line N" in a Mermaid error, N counted from the diagram's first line. */
+const DIAGRAM_LINE = /on line (\d+)/;
+
 let mermaid = null;
 let drawn = 0;
 const diagrams = new Map();
@@ -83,8 +86,10 @@ function placeholder(text) {
  */
 export async function renderFile(read, path, images, text) {
   const template = document.createElement("template");
-  // No <style>: GitHub drops it too, and here it would restyle the page.
+  // No <style> and no style attributes: GitHub drops both, and here they
+  // would restyle the page or break pages where the preview cannot see.
   template.innerHTML = DOMPurify.sanitize(read.html, {
+    FORBID_ATTR: ["style"],
     FORBID_TAGS: ["style"],
   });
   const paths = images.map((image) => image.path);
@@ -119,7 +124,13 @@ export async function renderFile(read, path, images, text) {
       // DOMPurify would strip the foreignObject its labels need.
       slot.innerHTML = result.svg;
     } else if (diagram) {
-      failed.push({ line: diagram.line, message: result.error });
+      // Mermaid counts lines from the diagram; the student's file counts
+      // from its top, the fence on diagram.line.
+      const message = result.error.replace(
+        DIAGRAM_LINE,
+        (_, n) => `on line ${diagram.line + Number(n)}`
+      );
+      failed.push({ line: diagram.line, message });
       slot.replaceWith(placeholder(text.diagramFailed(diagram.line)));
     }
   });

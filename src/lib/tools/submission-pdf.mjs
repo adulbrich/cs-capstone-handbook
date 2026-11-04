@@ -145,8 +145,9 @@ export function coverProblems({ authors, projectId, projectName, title }) {
 }
 
 /**
- * The cover lines as Submitting Your Work shows them: the title, the date
- * the PDF is made (`date`, from generatedOn), the project line
+ * The cover lines Submitting Your Work asks for, with the date the PDF is
+ * made under the title (`date`, from generatedOn): the title, the date, the
+ * project line
  * (`blank.project(id, name)`, "Project 42: Beaver Habitat Tracker"), and
  * "Name <email>, ..." for each author. A blank part shows `blank`'s
  * stand-in (`title`, `projectId`, `projectName`, `name`, `email`), so the

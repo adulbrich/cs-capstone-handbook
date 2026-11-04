@@ -226,7 +226,7 @@ test("the saved project and authors survive anything storage hands back", () => 
   assert.equal(hasSaved({ ...blankCover(), projectId: " 7 " }), true);
 });
 
-test("the cover lines read as Submitting Your Work shows them", () => {
+test("the cover lines read as Submitting Your Work asks, dated under the title", () => {
   assert.deepEqual(coverLines(COMPLETE, BLANK, "the day"), {
     authors:
       "Ada Lovelace <lovelaca@example.edu>, Grace Hopper <hopperg@example.edu>",
