@@ -42,7 +42,7 @@ export const coverText = {
   projectId: "Project ID",
   projectIdPlaceholder: "CS.042",
   projectName: "Project name",
-  projectNamePlaceholder: "Questioning The Universe",
+  projectNamePlaceholder: "Don't Panic Incident Tracker",
   removeAuthor: (n) => `Remove author ${n}`,
   saved:
     "Project and authors are saved in this browser, so your next PDF starts with them.",
