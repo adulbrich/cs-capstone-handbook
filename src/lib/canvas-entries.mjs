@@ -235,7 +235,7 @@ export const LATE = {
   session: {
     label: "Defense",
     needs: "none",
-    text: "Tell your TA before the session and you're rescheduled that term, with no penalty. An unexcused no-show scores Missing.",
+    text: "Tell your regular TA before the session and you're rescheduled that term, with no penalty. An unexcused no-show scores Missing.",
   },
   standard: {
     label: "Most submissions",
