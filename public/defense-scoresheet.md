@@ -34,7 +34,7 @@ Red flags, any one is Does Not Meet:
 - [ ] **No authorship:** cannot say what they authored or drove in the work presented
 - [ ] **No AI account:** gives no account at all of what was handed to AI tools
 - [ ] **Unexamined:** describes an unchecked hard-to-reverse change and cannot say what check it needed
-- [ ] **Contradicted:** makes claims about what they authored, reviewed, or merged that the repo record contradicts
+- [ ] **Contradicted:** makes claims about what they authored, drove, reviewed, or merged that the repo record contradicts
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
 
