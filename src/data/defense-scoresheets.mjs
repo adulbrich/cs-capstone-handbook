@@ -108,7 +108,7 @@ export const coverText = {
   entered: "Scores and notes entered in the gradebook: yes / no",
   eyebrow: "Defense session cover",
   followUp:
-    "Follow-up: a 5-minute one-to-one in the same defense week, or in week 9 after a week 7 session. Tell the student it is routine.",
+    "Follow-up: a 5-minute one-to-one within a week of the session, and no later than finals week. Tell the student it is routine.",
   footer: (team) => `${team || NO_TEAM}, session cover`,
   length: (students, minutes) =>
     `${plural(students, "student")}, about ${minutes} minutes`,
@@ -117,6 +117,9 @@ export const coverText = {
   room: "Room or call link",
   start: "Start time",
   tableTitle: "The session",
+  /** The term and the weeks sessions run in, "Fall, week 8 to finals week". */
+  when: (term, weeks) =>
+    `${term}, ${weeks.charAt(0).toLowerCase()}${weeks.slice(1)}`,
   yesNo: "yes / no",
 };
 

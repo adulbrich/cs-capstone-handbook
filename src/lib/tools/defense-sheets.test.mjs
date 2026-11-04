@@ -262,18 +262,30 @@ test("the defense rubric prints word for word, under one rule its bands state", 
   });
 });
 
-test("the session length comes from the defense page's sentence", () => {
+test("the session length and weeks come from the defense page", () => {
   const rule = sessionRule(read("src/content/docs/assignments/defense.mdx"));
   assert.equal(sessionMinutes(3, rule), 3 * rule.perStudent + rule.setup);
+  assert.ok(rule.weeks.length > 0);
+  const page = (sentence) =>
+    `---\nassignment:\n  canvas:\n    - name: "Individual Defense"\n      due_label: Week 4 to week 6\n---\n${sentence}`;
   assert.deepEqual(
     sessionRule(
-      "The session is 7 minutes per student plus about twelve minutes for setup and wrap."
+      page(
+        "The session is 7 minutes per student plus about twelve minutes for setup and wrap."
+      )
     ),
-    { perStudent: 7, setup: 12 }
+    { perStudent: 7, setup: 12, weeks: "Week 4 to week 6" }
   );
   assert.throws(
-    () => sessionRule("The session is short."),
+    () => sessionRule(page("The session is short.")),
     /defense\.mdx: no "<n> minutes per student/
+  );
+  assert.throws(
+    () =>
+      sessionRule(
+        "Ten minutes per student plus about ten minutes for setup and wrap."
+      ),
+    /defense\.mdx: no due_label/
   );
 });
 

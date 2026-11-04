@@ -26,7 +26,7 @@ const minutes = $derived(sessionMinutes(team.members.length, session));
       </h1>
     </div>
     <div class="ds-side">
-      {term}<br />
+      {text.when(term, session.weeks)}<br />
       {text.length(team.members.length, minutes)}
     </div>
   </header>
