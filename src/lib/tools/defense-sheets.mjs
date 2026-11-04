@@ -267,14 +267,18 @@ export const bandRow = (rule) => [
 
 const SESSION =
   /\b(\w+) minutes per student plus about (\w+) minutes for setup and wrap/;
+/** The Canvas entry's due date in words, which spans the session weeks. */
+const DUE_LABEL = /^\s*due_label:\s*"?([^"\n]+?)"?\s*$/m;
 
 const toNumber = (word) =>
   DIGITS.test(word) ? Number(word) : NUMBER_WORDS[word.toLowerCase()];
 
 /**
- * The session length rule from the defense page's source: minutes per
- * student and minutes of setup and wrap. Throws when the sentence is gone,
- * so the cover never prints a length the page no longer states.
+ * The session rule from the defense page's source: minutes per student,
+ * minutes of setup and wrap, and the weeks sessions run in (its Canvas
+ * entry's `due_label`, "Week 8 to finals week"). Throws when either is
+ * gone, so the cover never prints a length or weeks the page no longer
+ * states.
  */
 export function sessionRule(mdx) {
   const found = mdx.match(SESSION);
@@ -285,7 +289,13 @@ export function sessionRule(mdx) {
       'defense.mdx: no "<n> minutes per student plus about <n> minutes for setup and wrap". The session cover reads the session length from it.'
     );
   }
-  return { perStudent, setup };
+  const weeks = mdx.match(DUE_LABEL)?.[1];
+  if (!weeks) {
+    throw new Error(
+      "defense.mdx: no due_label in the canvas entry. The session cover prints the weeks sessions run in from it."
+    );
+  }
+  return { perStudent, setup, weeks };
 }
 
 /** The minutes a session of `students` runs. */

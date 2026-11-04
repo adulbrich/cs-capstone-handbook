@@ -19,5 +19,5 @@ const LABEL = "canvas/assignments/defense/defense-rubric.csv";
 /** The live sheet: `{ criteria, rule, total }`. */
 export const sheet = liveSheet(parseRubricCsv(defenseCsv, LABEL), LABEL);
 
-/** Minutes per student and of setup and wrap, from the defense page. */
+/** Minutes per student, of setup and wrap, and the session weeks, from the defense page. */
 export const session = sessionRule(defenseMdx);
