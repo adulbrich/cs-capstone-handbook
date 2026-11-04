@@ -322,7 +322,6 @@ const pageCss = $derived(
             <input
               {id}
               type="text"
-              inputmode="numeric"
               class="input"
               placeholder={coverText.projectIdPlaceholder}
               aria-describedby={describedby}

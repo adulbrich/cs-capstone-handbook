@@ -109,7 +109,7 @@ test("a value that is not JSON reads as the fallback", () => {
 test("remove drops one key, stored and in memory, and leaves the rest", () => {
   const storage = fakeStorage();
   const store = openStore(() => storage, SUBMISSION_STORE);
-  store.write("cover", { projectId: "42" });
+  store.write("cover", { projectId: "CS.042" });
   store.write("other", 1);
   store.remove("cover");
   assert.equal(store.read("cover", null), null);
@@ -122,7 +122,7 @@ test("remove drops one key, stored and in memory, and leaves the rest", () => {
   const blocked = openStore(() => {
     throw new Error("SecurityError");
   }, SUBMISSION_STORE);
-  blocked.write("cover", { projectId: "42" });
+  blocked.write("cover", { projectId: "CS.042" });
   blocked.remove("cover");
   assert.equal(blocked.read("cover", null), null);
 });
