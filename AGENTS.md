@@ -15,7 +15,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 |---|---|
 | `src/content/docs/assignments/` | Graded work, authored here and exported to Canvas, except the two Canvas-owned stubs (hard rule 4). Every page's rubric CSV is machine-parsed. |
 | `src/content/docs/activities/` | The practice library. See the `cs46x-activities` skill before editing. |
-| `src/content/docs/guides/` | How-to material. Not graded, may aspire beyond what assessment requires. |
+| `src/content/docs/guides/` | Explanation: why a practice works and what good looks like. Not graded. |
 | `src/content/docs/learning-objectives/` | ABET / WIC / Beyond OSU outcomes, the outcome map, and grading policy (letter conversion, outcome tags). |
 | `canvas/` | **The rubrics.** One `*-rubric.csv` per distinct rubric, except for the two Canvas-owned assignments (hard rule 4), rendered on the handbook page and imported through Canvas's own rubric import, plus the three syllabus HTML bodies. Assignment bodies come from the built pages through the paste kit (`npm run canvas:export`) and are not stored here. |
 | `public/` | Templates and scoresheets students download. |
@@ -50,11 +50,13 @@ it. Content lives in `src/content/docs/**` as MDX.
 2. **Use `npm`, never `bun` or `pnpm`.** CI runs `npm ci`, which installs
    strictly from `package-lock.json`. `npm install` in CI would let the
    lockfile drift, so CI would stop testing what ships.
-3. **No em dashes in prose.** Use colons, semicolons, commas, or periods.
-   This applies to handbook content, Canvas HTML, and repo docs alike.
-   `validate-dashes.mjs` checks the content directories and
-   `scripts/check-prose.mjs` checks every tracked text file, root docs and
-   skills included, in CI and at pre-commit.
+3. **No em dashes and no emoji in prose.** Use a colon, semicolon, comma,
+   period, or parentheses, and words for a status mark. A `--` typed in place
+   of a dash is still a dash, and no check sees it. This applies to handbook
+   content, Canvas HTML, and repo docs alike. `validate-dashes.mjs` checks the
+   content directories for em dashes and `scripts/check-prose.mjs` checks
+   every tracked text file for both, root docs and skills included, in CI and
+   at pre-commit.
 4. **Each rubric lives once, in its CSV.** A rubric is
    `canvas/assignments/<dir>/<name>-rubric.csv`, in the format of Canvas's
    rubric import template (`canvas/assignments/_template/`), rendered on the
@@ -73,7 +75,9 @@ it. Content lives in `src/content/docs/**` as MDX.
    before Thanksgiving"). The handbook is reused every year and a date is a
    fact that rots on a schedule. `validate-dates.mjs` checks the content
    directories, the syllabi, and the runbook; the changelogs keep their
-   decision timestamps. Code may read today's month to pick the current
+   decision timestamps. Its patterns miss a bare month name ("May", "Mar"),
+   "this year" or "academic year" with no year number, and a season standing
+   in for a term week; review catches those (`cs46x-review`). Code may read today's month to pick the current
    term, as `src/lib/term-tabs.js` does for term tabs; pages name weeks in
    text, and no code computes the current week, since that needs each
    year's start date.
@@ -132,6 +136,10 @@ in an activity's generated badge line are the exception: a component renders
 them, so the build never sees them. `validate-activities.mjs` checks what they
 depend on instead: the exact "Activities That Prepare This" heading and unique
 workshop heading slugs.
+
+A frontmatter `description` that contains a colon must be quoted. Unquoted,
+YAML fails the build with `bad indentation of a mapping entry`, which does not
+point at the description.
 
 ## Outcomes, tiers, and weights
 
@@ -299,6 +307,3 @@ Do not create running logs, change logs, or idea files at the root. If a fact is
 Before writing any text a student, partner, or mentor reads (a handbook page,
 a slide, a syllabus, a download, a rubric description), read
 `docs/agents/voice.md`.
-
-Students read these pages under deadline pressure, so length is a cost they
-pay. Pay it on the reason and the source, not on restating the point.
