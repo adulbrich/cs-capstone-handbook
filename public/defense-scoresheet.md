@@ -1,4 +1,4 @@
-<!-- Staff use. Print one sheet per student. Score live during the defense. -->
+<!-- Staff use. Print one per student. Score live during the defense. -->
 
 # Defense Scoresheet
 
@@ -6,57 +6,115 @@
 
 **Term:** ______________ **Assessor:** ______________________ **Date:** ______________
 
-**Artifact/PR under discussion:** ______________________ **Repo record checked:** yes / no / NDA live **RFC, recorded decisions, and sprint notes at hand:** yes / no
+**Artifact picked:** ______________________ **Sprint asked about:** ____ **Repo record checked:** yes / no / NDA live
 
-**Speaking position:** ____ of ____ (order drawn at random) **Individual follow-up needed:** yes / no
+**Speaking position:** ____ of ____ (drawn at random at the start of the session) **Individual follow-up needed:** yes / no
 
-Score each criterion 0 to 20. The anchors below are the rubric's bands, word for word: high (17-20) = Exceeds, middle (5-16) = Meets, low (1-4) = Does Not Meet, 0 = unexcused no-show or no meaningful attempt; an absence reported to the student's TA before the session is rescheduled and not scored here. "I don't know, but here is how I would find out" scores; bluffing does not.
+Tick an item only when it holds up under a follow-up question. Every item ticked: Exceeds, 17 to 20. Any red flag: Does Not Meet, 1 to 4. Otherwise Meets: 14 points with one item missing, 10 with two, 6 with more. Missing, 0: Unexcused no-show, or no meaningful attempt to present or answer; an absence reported to the student's TA before the session is rescheduled and not scored here. The questions, items, and red flags below are the rubric's, word for word.
 
-Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session. **Draw the speaking order at random in the room and do not publish it in advance**, pick each student's artifact from the two or three they bring, a different one per student, and give each a different "what breaks if X" question: whoever goes last has otherwise heard several rounds of the same questions. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
+Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session; a video call is fine, with every student's camera on. **Draw the speaking order at random at the start of the session and do not publish it in advance**, pick each student's artifact from the two or three they bring, a different one per student, and give each a different "what breaks if X" question and a different sprint for the Role question. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
 
 If a score comes out borderline, or a student's part of the session ran short, tick the follow-up box and arrange a 5-minute one-to-one in the same defense week or the term's next one. Tell the student it is routine.
 
-**The reviewer-side half of criterion 5 is checkable.** In fall and winter it is the RFC peer review, where the author's reply to the comment, or the revision the author committed to, counts as what changed; in spring it is the reviews they did on the team's work, and the reviewer notes in the team's sprint notes, on the reviews that took judgment, name the change each student asked for or what they checked. Both are graded records. "I left some comments" is not an answer, and neither is anything that named nothing specific and requested no change.
-
-**Score the decision, not the luck.** A student who delegated a hard-to-reverse change (schema, auth, deployment, data migration) with no checks scores low on criterion 1 even if nothing broke, unless they can say what check it needed. Naming a delegation that went wrong, with the check that would have caught it, never lowers a score, and counts toward high when the check they now use shows in the record. A student who stopped and validated at the right point scores high even if some reversible feature code has bugs. Sophisticated tooling is not itself worth points: a student with a weaker model who gated tightly and validated more has done the harder work, and the anchors are written so that reads as strength.
+**Score the decision, not the luck.** An unchecked hard-to-reverse change is a red flag even if nothing broke, unless the student can say what check it needed. Naming a delegation that went wrong never lowers a score. Sophisticated tooling is not itself worth points: a student with a weaker model who gated tightly and validated more has done the harder work.
 
 ## 1. Ownership and delegation (SO2, SO4): ____ / 20
 
-- High (17-20): Presents work they demonstrably own end to end (authored or drove it, responded to review, merged or delivered it); claims match the repo record when spot-checked. Explains what was and was not handed to AI tools, the checks that made that reasonable (tests, CI, review gates, staging, rollback), and the specific points where they stopped to validate, each with a reason tied to what was hard to reverse (schema, authentication, deployment, data migration, a data split or label definition, a save-file format). A delegation that went wrong counts as one of those points when they name the check it lacked and the check now in their sprint notes or repo record.
-- Middle (5-16): Claims match the repo record, but the checks are named only in general terms ("we had tests"), no specific point where they stopped to validate is named with a reason tied to what was hard to reverse, or the reasons given for the delegation do not match the RFC, the decisions the team recorded, or the sprint notes.
-- Low (1-4): Cannot say what they authored, reviewed, or merged in the work presented, gives no account of what was or was not handed to AI tools, describes delegating a hard-to-reverse change with no checks and no validation and cannot say what check it needed, or makes claims about what they authored, reviewed, or merged that contradict the repo record.
+Asks: walk me through it; what did you hand to AI tools, and how did you know the result was right? Follow-up: where did you stop to check it yourself, and did anything go wrong?
+
+Exceeds, all four, each holding up under a follow-up question:
+
+- [ ] owns the work, having authored or driven it, and can say where it stands, matching the repo record
+- [ ] says what was and was not handed to AI tools
+- [ ] names the specific checks that made that reasonable (tests, CI, review gates, staging, rollback), not just "we had tests"
+- [ ] names a point where they stopped to validate something hard to reverse (a schema, authentication, a deployment, a data migration, a data split, a save-file format) and why there, or a delegation that went wrong, the check it lacked, and the check now in their sprint notes or repo record
+
+Red flags, any one is Does Not Meet:
+
+- [ ] cannot say what they authored or drove in the work presented
+- [ ] gives no account of what was handed to AI tools
+- [ ] describes an unchecked hard-to-reverse change and cannot say what check it needed
+- [ ] makes claims the repo record contradicts
+
+Band: Exceeds 17-20 / Meets 14, 10, or 6 / Does Not Meet 1-4 / Missing 0
 
 Notes: __________________________________________________________________
 
 ## 2. Judgment: why this approach, what was rejected, what was hard to reverse (SO1): ____ / 20
 
-- High (17-20): Explains why this approach was chosen, names at least two alternatives that were considered (doing nothing counts as one), each with the reason it was rejected, consistent with the RFC, the decisions the team recorded, or the sprint notes where they cover it, and identifies which parts of the decision were hard to reverse.
-- Middle (5-16): Explains the chosen approach, but names only one alternative, names alternatives without the reason each was rejected, gives alternatives or reasons that do not match the RFC, the decisions the team recorded, or the sprint notes, or cannot say which parts were hard to reverse.
-- Low (1-4): Cannot explain why the work was done this way, or names no alternative that was considered.
+Asks: why this way, and what else was on the table? Follow-up: knowing what you know now, what would you change? Where the partner or a teammate made the call: would you have decided the same way?
+
+Exceeds, all four, each holding up under a follow-up question:
+
+- [ ] explains why this approach was chosen, whoever made the decision
+- [ ] names at least two alternatives (doing nothing counts), each with the reason it was rejected, consistent with the RFC, the decisions the team recorded, or the sprint notes where they cover it
+- [ ] says which parts of the decision are hard to reverse
+- [ ] says what they would do differently now, or what they would have weighed differently in a decision someone else made
+
+Red flags, any one is Does Not Meet:
+
+- [ ] cannot say why the work was done this way
+- [ ] names no alternative at all
+
+Band: Exceeds 17-20 / Meets 14, 10, or 6 / Does Not Meet 1-4 / Missing 0
 
 Notes: __________________________________________________________________
 
 ## 3. Technical depth: "what breaks if X" (SO6): ____ / 20
 
-- High (17-20): Answers "what breaks if X changes" questions with correct, specific reasoning about the system's behavior and limits, including where they chose to verify the system's behavior themselves rather than rely on generated output.
-- Middle (5-16): Answers are mostly correct but do not name the specific behavior or limit that breaks, reasoning falters on follow-up questions, or the student names no point where they verified the system's behavior themselves.
-- Low (1-4): Answers are incorrect or evasive, or cannot say what the system does when X changes.
+Asks: what breaks if X changes, with X picked by the assessor and different for each student? Follow-up: how do you know?
+
+Exceeds, all three, each holding up under a follow-up question:
+
+- [ ] a correct answer that names the specific behavior or limit that breaks
+- [ ] reasoning that holds on a second "what if"
+- [ ] names where they verified the system's behavior themselves rather than relying on generated output
+
+Red flags, any one is Does Not Meet:
+
+- [ ] an incorrect or evasive answer
+- [ ] cannot say what the system does when X changes
+
+Band: Exceeds 17-20 / Meets 14, 10, or 6 / Does Not Meet 1-4 / Missing 0
 
 Notes: __________________________________________________________________
 
 ## 4. Role, team accountability, and work distribution (SO5): ____ / 20
 
-- High (17-20): Articulates what their named role (PM, AI Coordinator, Quality Owner) or comparable ownership area required this term, with concrete examples; names a decision they chaired to a conclusion this term that matches the sprint-note record, or, where their turn to chair is still ahead, the decision the charter's rotation schedules them to chair and when; and explains how the team's decisions actually got made and how work was distributed.
-- Middle (5-16): Describes the role and team process in general terms, with few concrete examples of what the role required in practice or of how work was distributed, or names no decision they chaired or are scheduled to chair.
-- Low (1-4): Cannot articulate what their role or ownership area required, how the team makes decisions, or who did what.
+Asks: what did your role ask of you this term, and which decision did you drive to a conclusion? Follow-up, for a sprint the assessor picks at random: what did you own in that sprint?
+
+Exceeds, all four, each holding up under a follow-up question:
+
+- [ ] says what their role (PM, AI Coordinator, Quality Owner) or ownership area required this term, with a concrete example
+- [ ] names a decision they chaired to a conclusion this term that matches the sprint notes, or, if their turn is still ahead, the decision the charter's rotation schedules them to chair
+- [ ] explains how the team made decisions and split the work
+- [ ] says what they owned in the sprint the assessor picks, matching that sprint's Done or In progress list
+
+Red flags, any one is Does Not Meet:
+
+- [ ] cannot say what their role or ownership area required
+- [ ] cannot say who did what
+
+Band: Exceeds 17-20 / Meets 14, 10, or 6 / Does Not Meet 1-4 / Missing 0
 
 Notes: __________________________________________________________________
 
 ## 5. Communication, both directions (SO3): ____ / 20
 
-- High (17-20): Answers the question asked, at a level of detail the assessor does not have to correct; at the edge of their knowledge, says "I don't know, but here is how I would find out" (that scores; bluffing does not). Names a specific thing they told someone whose work they reviewed, and what changed in that work because of it, or, in spring, what they checked and why it needed no change; in fall and winter, where the reviewed RFC is not revised yet, the author's response to the comment (the reply, or the revision the author committed to) counts as what changed.
-- Middle (5-16): Answers, but the assessor has to ask for a more concrete or a shorter answer, or hesitates at the edge of their knowledge without saying how they would find out. Names a real review comment but cannot say what changed.
-- Low (1-4): Does not answer the question asked, or bluffs instead of saying what they do not know. Cannot name anything they told a reviewee, or offers feedback that named nothing specific and requested no change.
+Asks: what is the most useful thing you told someone whose work or decision depended on you, a teammate whose work you reviewed or your partner, and what changed? Every other answer in the session counts here too.
+
+Exceeds, all three, each holding up under a follow-up question:
+
+- [ ] answers the question asked, and at the edge of their knowledge says what they don't know and how they would find out
+- [ ] at a level of detail the assessor does not have to correct or ask to shorten
+- [ ] names a specific thing they told a reviewee or the partner and what changed because of it (an RFC author's reply or committed revision counts), or, in spring, what they checked in a review and why it needed no change
+
+Red flags, any one is Does Not Meet:
+
+- [ ] bluffs instead of saying what they do not know
+- [ ] names nothing specific they told a reviewee or the partner
+
+Band: Exceeds 17-20 / Meets 14, 10, or 6 / Does Not Meet 1-4 / Missing 0
 
 Notes: __________________________________________________________________
 
