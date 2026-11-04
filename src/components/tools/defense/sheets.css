@@ -208,6 +208,9 @@
   color: #57534e;
   text-align: center;
 }
+.ds-table th.ds-yesno {
+  color: inherit;
+}
 .ds-rules {
   display: flex;
   flex-direction: column;
@@ -394,9 +397,13 @@
   flex: 1;
 }
 
-/* On screen the print copy is never shown; on paper it is all there is. */
+/* On screen the print copy is never shown; on paper it is all there is.
+   The example page's one sheet is its print copy, shown on screen too. */
 .ds-print {
   display: none;
+}
+.ds-print.ds-example {
+  display: block;
 }
 @media print {
   @page {

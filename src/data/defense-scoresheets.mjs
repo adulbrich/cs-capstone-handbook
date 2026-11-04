@@ -93,6 +93,7 @@ export const coverText = {
     'For each student, a different artifact or part from the two or three they brought, the most recent where you can, a different "what breaks if X" question, and a sprint from this term, picked at random, for the role question.',
     "The team's regular TA is not in the session. On a video call, every student's camera is on.",
     "The team's recorded decisions (ADRs, RFCs), its sprint notes, and the repository are open.",
+    "If one student dominates, redirect: questions go to the named student, and only their answer scores.",
   ],
 
   checklistTitle: "Before the first student speaks",
@@ -152,4 +153,15 @@ export const sheetText = {
   tick: "Tick an item when the student says it.",
   total: "Total",
   yesNo: "yes / no",
+};
+
+/**
+ * The example live sheet the defense page links, printed for an invented
+ * student (scripts/defense-example-pdf.mjs); its title is exampleTitle in
+ * src/lib/tools/defense-example.mjs.
+ */
+export const example = {
+  student: { email: "", first: "Jordan", last: "Lee" },
+  team: { members: [], noTeam: false, team: "CS.042 Questioning The Universe" },
+  term: sessionText.terms.fall,
 };
