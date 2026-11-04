@@ -1,8 +1,8 @@
 # Definition of Shipped: [Project Name]
 
 <!-- 1 to 2 pages. This is a contract with your project partner about what "shipped"
-     means for THIS project. v0 draft is due at the fall week-10 repo checkpoint;
-     v1 (partner-agreed) is due winter week 3. If the target becomes unreachable,
+     means for THIS project. The first draft is due at the fall week-10 repo checkpoint;
+     the partner-agreed version is due winter week 3. If the target becomes unreachable,
      renegotiate, record the new version and the partner's agreement to it,
      and update the metrics in the repository to match. -->
 
