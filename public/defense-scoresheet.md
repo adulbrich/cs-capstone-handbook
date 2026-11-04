@@ -10,7 +10,7 @@
 
 **Individual follow-up needed:** yes / no **Total: ____ / 100**
 
-Tick an item when the student says it and neither a follow-up question nor the record undoes it. Any red flag: Does Not Meet, 4. Otherwise, every item ticked: Exceeds, 20; otherwise Meets: 16 points with one item missing, 12 with two, 8 with more. Missing, 0: Unexcused no-show, or no meaningful attempt to present or answer; an absence reported to the student's TA before the session is rescheduled and not scored here. The questions, items, and red flags below are the rubric's, word for word.
+Tick an item when the student says it and neither a follow-up question nor the record undoes it. Any red flag: Does Not Meet, 4. Otherwise, every item ticked: Exceeds, 20; otherwise Meets: 16 points with one item missing, 12 with two, 8 with more. Missing, 0: Unexcused no-show, or no meaningful attempt to present or answer; an absence reported to the assessor before the session is rescheduled and not scored here. The questions, items, and red flags below are the rubric's, word for word.
 
 Logistics: 6 minutes per student, plus about 10 minutes of setup and wrap for the session; a video call is fine, with every student's camera on. **Draw the speaking order at random at the start of the session and do not publish it in advance**, pick each student's artifact from the two or three they bring, a different artifact or part per student and the most recent where you can, give each a different "what breaks if X" question, and pick a sprint from this term at random for each student's Role question. This session is run by a TA or instructor who is not the team's regular TA, and the regular TA does not attend. When two assessors are present, split the students between you. If one student dominates, redirect: questions go to the named student, and only their answer scores. Enter scores and notes in the gradebook after the session (the sheet is the live instrument; the gradebook is the record).
 
@@ -20,7 +20,7 @@ If a score comes out borderline, or a student's part of the session ran short, t
 
 ## 1. Ownership and delegation (SO2, SO4): ____ / 20
 
-Asks: walk me through it and where it stands; what did you hand to AI tools, what did you keep, and how did you know the result was right? Follow-up: where did you stop to check it yourself, did anything go wrong, and what changed?
+Asks: walk me through it and where it stands; what, if anything, did you hand to AI tools, what did you keep, and how did you know the result was right? Follow-up: where did you stop to check it yourself, did anything go wrong, and what changed?
 
 Exceeds, all four, none undone by a follow-up question or the record, and no red flag:
 

@@ -91,7 +91,7 @@ An item fails for the team because the note is wrong or missing. An individual's
 - **Individual follow-up.** If a score comes out borderline, or a student's part of the session ran short, ask them back for a 5-minute one-to-one in the same defense week, or in week 9 after a week 7 session. Tell the student it is routine; it is there so no grade depends on how the group session went on the day. Budget one or two per group per term.
 - **A team is assessed by a TA or instructor who is not its regular TA, and the regular TA does not attend.** Presence defeats the independence the session buys. Pair TAs and swap rosters for the cycle: the total hours per TA are unchanged, because each still assesses about the same number of teams, but booking becomes a cross-product rather than each TA working down their own list, so do the pairing before the slots go out. Where two assessors attend, split the students between them.
 - Fall week 9 is short (see Term Calendar): book no defenses on its Thursday or Friday.
-- Absences: rescheduled that term if flagged before the session, and the regular TA tells the assessor; unexcused no-show scores zero (the rubric has a zero band).
+- Absences: rescheduled that term if the student tells the assessor before the session; unexcused no-show scores zero (the rubric has a zero band).
 - Scores and notes entered into Canvas after each session; sheets are the live instrument, Canvas is the retention record for program assessment.
 
 ## RFC Machinery
