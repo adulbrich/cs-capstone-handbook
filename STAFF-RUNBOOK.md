@@ -240,6 +240,6 @@ Instructors carry no teams: comments on every RFC draft in fall and winter (10 t
 - [ ] Announcements the pages point students at: each team's TA and the meeting times and room (week 1)
 - [ ] Spring only: Engineering Expo created by hand (0 points, omit from final grade, text entry, group submission), due Sunday of week 10. No rubric. Check the Expo website for that year's registration opening and poster printing deadlines and announce them
 - [ ] No survey carried over from last term: each run's survey and contact list are generated on the instructor tools pages (see Surveys)
-- [ ] Defense calibration hour scheduled; scoresheets printed from the defense scoresheets page
+- [ ] Defense calibration hour scheduled
 - [ ] Check-in sheet has a per-student check-in column (demoed own work, artifact verified, note or flag)
 - [ ] NDA teams identified and flagged in the check-in sheet, with whether the partner allows the instruction team read access

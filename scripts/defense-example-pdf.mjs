@@ -3,8 +3,8 @@
 // defense page links: /tools/defense-scoresheets/example/ from the built
 // site, served from dist/ on a local port and printed by headless Chrome.
 // `npm run defense:example` builds first. npm test fails when the PDF was
-// printed from an older rubric (defense-example.mjs), so run this after
-// every edit to canvas/assignments/defense/defense-rubric.csv.
+// printed before an edit to the defense rubric CSV or to any of
+// EXAMPLE_SOURCES (defense-example.mjs), so run this after one.
 //
 // Chrome is found at CHROME_PATH, else at the usual macOS and Linux paths.
 

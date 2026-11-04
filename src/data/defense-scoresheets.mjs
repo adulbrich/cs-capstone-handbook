@@ -157,11 +157,12 @@ export const sheetText = {
 
 /**
  * The example live sheet the defense page links, printed for an invented
- * student (scripts/defense-example-pdf.mjs); its title is exampleTitle in
- * src/lib/tools/defense-example.mjs.
+ * student (scripts/defense-example-pdf.mjs). Its title, and so the PDF's,
+ * carries exampleFingerprint (src/lib/tools/defense-example.mjs).
  */
 export const example = {
   student: { email: "", first: "Jordan", last: "Lee" },
   team: { members: [], noTeam: false, team: "CS.042 Questioning The Universe" },
   term: sessionText.terms.fall,
+  title: (fingerprint) => `Defense live sheet example, ${fingerprint}`,
 };

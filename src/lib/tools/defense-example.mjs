@@ -1,23 +1,38 @@
 // The example live sheet the defense page links
 // (public/defense-live-sheet-example.pdf). Its PDF title carries a
-// fingerprint of the live sheet the rubric prints, so a test can tell a PDF
-// printed from an older rubric: the PDF is printed by
+// fingerprint of everything that decides what the sheet prints, so a test
+// can tell a PDF printed before a change: the PDF is printed by
 // scripts/defense-example-pdf.mjs from /tools/defense-scoresheets/example/,
-// whose <title> is exampleTitle. Node only (node:crypto): the example page
-// runs it at build time, and npm test reads the PDF.
+// whose <title> carries exampleFingerprint (example.title in
+// src/data/defense-scoresheets.mjs). Node only (node:crypto): the example
+// page runs it at build time, and npm test reads the PDF.
 
 import { createHash } from "node:crypto";
 
 /** The PDF under public/, as the defense page links it. */
 export const EXAMPLE_PDF = "defense-live-sheet-example.pdf";
 
-/** Twelve hex digits of the SHA-256 of the live sheet (liveSheet). */
-export const sheetFingerprint = (sheet) =>
-  createHash("sha256").update(JSON.stringify(sheet)).digest("hex").slice(0, 12);
+/**
+ * What the example prints besides the rubric, by repository path: the
+ * wording and the invented student, the sheet's markup, and its print CSS.
+ */
+export const EXAMPLE_SOURCES = Object.freeze([
+  "src/data/defense-scoresheets.mjs",
+  "src/components/tools/defense/LiveSheet.svelte",
+  "src/components/tools/defense/sheets.css",
+]);
 
-/** The example page's title, and so the PDF's. */
-export const exampleTitle = (sheet) =>
-  `Defense live sheet example, rubric ${sheetFingerprint(sheet)}`;
+/**
+ * Twelve hex digits of the SHA-256 of the live sheet (liveSheet) and of
+ * each of EXAMPLE_SOURCES as `read(path)` returns its text.
+ */
+export function exampleFingerprint(sheet, read) {
+  const hash = createHash("sha256").update(JSON.stringify(sheet));
+  for (const path of EXAMPLE_SOURCES) {
+    hash.update(`\n${path}\n`).update(read(path));
+  }
+  return hash.digest("hex").slice(0, 12);
+}
 
 const LITERAL_TITLE = /\/Title\s*\(((?:\\.|[^\\)])*)\)/;
 const HEX_TITLE = /\/Title\s*<([0-9A-Fa-f\s]*)>/;
