@@ -12,7 +12,7 @@
  * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the syllabi, the
  * Markdown downloads in `public/`, and the slide decks in `src/decks/`
  * (BANNED_WORD_PATHS), because students read those words and headings in
- * Canvas, in the templates and scoresheet that quote the criteria, on the
+ * Canvas, in the templates that quote the criteria, on the
  * slides, and, through `<RubricTable>`, on the pages. None of these run on
  * `--text` or `--stdin` (a PR body may discuss a banned word), and none run
  * on `docs/`, `AGENTS.md`, or `.claude/skills/`, which quote the patterns
@@ -175,8 +175,8 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * are about how a handbook page is written. The banned words reach further:
  * the rubric CSVs and the syllabus bodies under `canvas/`, and the Markdown
  * downloads in `public/`. A CSV renders on its assignment page and imports
- * into Canvas, a syllabus is pasted into Canvas, and the scoresheet and
- * templates quote the criteria, so a banned word in any of them reaches
+ * into Canvas, a syllabus is pasted into Canvas, and the templates quote
+ * the criteria, so a banned word in any of them reaches
  * students as surely as one on a page. The slide decks under `src/decks/`
  * are projected to the same students, so they get the banned words and the
  * percentage-in-a-heading check too. The rest of

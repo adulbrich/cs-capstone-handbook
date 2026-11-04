@@ -17,7 +17,6 @@ import {
 import { attempt } from "../../../lib/tools/attempt.mjs";
 import {
   FIT_SCALES,
-  firstFit,
   fullName,
   pageCounts,
   printPages,
@@ -32,6 +31,7 @@ import ClickPath from "../ui/ClickPath.svelte";
 import Field from "../ui/Field.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
 import Cover from "./Cover.svelte";
+import { fitPage } from "./fit.js";
 import LiveSheet from "./LiveSheet.svelte";
 import "./sheets.css";
 
@@ -115,10 +115,7 @@ function measure() {
   if (!node) {
     return;
   }
-  fit = firstFit((s) => {
-    node.style.setProperty("--ds-scale", String(s));
-    return node.scrollHeight <= node.clientHeight;
-  });
+  fit = fitPage(node);
   node.style.removeProperty("--ds-scale");
 }
 
