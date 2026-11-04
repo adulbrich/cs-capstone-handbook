@@ -24,24 +24,18 @@ export const BAND_NAMES = Object.freeze({
   missing: "Missing",
 });
 
-/** The count an Exceeds description opens with: "All four, ...". */
-const COUNT_WORDS = Object.freeze({
-  eight: 8,
-  five: 5,
-  four: 4,
-  seven: 7,
-  six: 6,
-  three: 3,
-  two: 2,
-});
-
-/** The numbers the defense page spells out, for the session length. */
+/**
+ * The numbers the rubric and the defense page spell out: an Exceeds
+ * description's count ("All four, ...") and the session length.
+ */
 const NUMBER_WORDS = Object.freeze({
   eight: 8,
+  eleven: 11,
   fifteen: 15,
   five: 5,
   four: 4,
   nine: 9,
+  one: 1,
   seven: 7,
   six: 6,
   ten: 10,
@@ -59,15 +53,17 @@ const ITEM_BREAK = /;\s*\((\d+)\)\s+/;
 const CLOSING_PERIOD = /\.$/;
 /** The count a preamble opens with, "All four". */
 const ALL_COUNT = /^All (\w+)\b/i;
+/** An Exceeds preamble: its count, then the condition every item meets. */
+const ALL_CONDITION = /^All \w+, (.+)$/;
 /** A number written as digits. */
 const DIGITS = /^\d+$/;
 
 /**
  * A rubric description's numbered list: the preamble before it and each
  * item's `{ label, text }`. Throws when there is no list, when the numbers
- * skip, when an item has no "Label: ", or when an "All four" preamble counts
- * a different number of items than the list holds. `where` names the
- * description in the error.
+ * skip, when an item has no "Label: ", when two items share a label, or
+ * when an "All four" preamble counts a different number of items than the
+ * list holds. `where` names the description in the error.
  */
 export function readList(description, where) {
   const start = description.match(LIST_START);
@@ -101,14 +97,19 @@ export function readList(description, where) {
     }
     return { label: item.slice(0, colon), text: item.slice(colon + 2) };
   });
+  const labels = items.map((item) => item.label);
+  const repeated = labels.find((label, i) => labels.indexOf(label) !== i);
+  if (repeated !== undefined) {
+    throw new Error(
+      `${where}: two items are labeled "${repeated}". Each item's label is its own.`
+    );
+  }
   const count = preamble.match(ALL_COUNT);
-  if (count) {
-    const said = COUNT_WORDS[count[1].toLowerCase()];
-    if (said !== items.length) {
-      throw new Error(
-        `${where}: the preamble says "All ${count[1]}" but the list has ${items.length} items.`
-      );
-    }
+  const said = count && NUMBER_WORDS[count[1].toLowerCase()];
+  if (said && said !== items.length) {
+    throw new Error(
+      `${where}: the preamble says "All ${count[1]}" but the list has ${items.length} items.`
+    );
   }
   return { items, preamble };
 }
@@ -126,9 +127,11 @@ function bandOf(criterion, key, where) {
 
 /**
  * One criterion as the live sheet prints it, and the scoring rule its bands
- * state: Exceeds' points, the Meets ladder (each number in the Meets
- * description, "16 points with one item missing, 12 with two, 8 with
- * more"), and the text after the Meets description's first colon.
+ * state: Exceeds' points and the condition every item meets (its preamble
+ * after "All four, "), Does Not Meet's points and its preamble ("Any red
+ * flag"), the Meets ladder (each number in the Meets description, "16
+ * points with one item missing, 12 with two, 8 with more"), and the text
+ * after the Meets description's first colon. The banner prints all of it.
  */
 export function readCriterion(criterion, where) {
   const names = Object.values(BAND_NAMES);
@@ -161,11 +164,22 @@ export function readCriterion(criterion, where) {
     );
   }
 
+  const items = readList(exceeds.description, `${where}, ${exceeds.name}`);
+  const condition = items.preamble.match(ALL_CONDITION);
+  if (!condition) {
+    throw new Error(
+      `${where}, ${exceeds.name}: the preamble does not read "All <count>, <condition>". The banner prints the condition every item meets.`
+    );
+  }
+  const flags = readList(
+    doesNotMeet.description,
+    `${where}, ${doesNotMeet.name}`
+  );
+
   return {
     criterion: {
-      flags: readList(doesNotMeet.description, `${where}, ${doesNotMeet.name}`)
-        .items,
-      items: readList(exceeds.description, `${where}, ${exceeds.name}`).items,
+      flags: flags.items,
+      items: items.items,
       question: criterion.description,
       tags: criterion.tags,
       title: criterion.title,
@@ -173,6 +187,8 @@ export function readCriterion(criterion, where) {
     rule: {
       doesNotMeet: doesNotMeet.points,
       exceeds: exceeds.points,
+      exceedsCondition: condition[1],
+      flagRule: flags.preamble,
       ladder,
       meetsRule: meets.description.slice(colon + 2),
       missing: { description: missing.description, points: missing.points },
@@ -183,12 +199,20 @@ export function readCriterion(criterion, where) {
 /**
  * The live sheet from the parsed defense rubric (parseRubricCsv):
  * `{ criteria, rule, total }`. The sheet's banner states the scoring rule
- * once, so it throws when any criterion's bands differ from the first's.
+ * once, so it throws when any criterion's bands differ from the first's,
+ * and the sheet keys its criteria by title, so it throws on a repeat.
  */
 export function liveSheet(rubric, sourceLabel) {
   const read = rubric.criteria.map((c, i) =>
     readCriterion(c, `${sourceLabel}, criterion ${i + 1} (${c.title})`)
   );
+  const titles = read.map((r) => r.criterion.title);
+  const repeated = titles.find((title, i) => titles.indexOf(title) !== i);
+  if (repeated !== undefined) {
+    throw new Error(
+      `${sourceLabel}: two criteria are titled "${repeated}". Each criterion's title is its own.`
+    );
+  }
   const rule = JSON.stringify(read[0].rule);
   read.forEach((r, i) => {
     if (JSON.stringify(r.rule) !== rule) {
@@ -280,7 +304,7 @@ const compare = (a, b) =>
  * students in no group gathered in one entry (team "") at the end, so
  * nobody is dropped. Members are `{ email, first, last }`, by last name.
  */
-export function rosterTeams(students) {
+export function sessionTeams(students) {
   const byTeam = new Map();
   for (const { email, first, last, team } of students) {
     if (!byTeam.has(team)) {

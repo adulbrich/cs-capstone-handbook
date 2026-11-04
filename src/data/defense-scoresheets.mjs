@@ -3,8 +3,9 @@
 // sheet print around the rubric's own text. The questions, items, red
 // flags, points, and the Missing rule are the rubric CSV's, read by
 // src/lib/tools/defense-sheets.mjs; nothing here retypes them. The
-// protocol lines follow Defense Logistics in STAFF-RUNBOOK.md. An
-// instructor tool, so it may name Canvas (docs/agents/tools.md).
+// cover's protocol lines are the approved design's and follow Defense
+// Logistics in STAFF-RUNBOOK.md. An instructor tool, so it may name Canvas
+// (docs/agents/tools.md).
 
 import { BAND_NAMES } from "../lib/tools/defense-sheets.mjs";
 import { clickPaths } from "./click-paths.mjs";
@@ -84,14 +85,16 @@ export const previewText = {
 
 /** The session cover, one per team. */
 export const coverText = {
+  /** The unexcused no-show, by the rubric's band name. */
+  absent: `Absent, and told you before the session: reschedule them this term. Unexcused: ${BAND_NAMES.missing} on every criterion.`,
   assessor: "Assessor",
   checklist: [
-    "Draw the speaking order at random, here, at the start of the session. It was never published in advance.",
-    'For each student, pick a different artifact or part from the two or three they brought, the most recent where you can, and give each a different "what breaks if X" question.',
-    "For each student, pick a sprint from this term at random for the role question.",
+    "Draw the speaking order here, at the start of the session. It was never published in advance.",
+    'For each student, a different artifact or part from the two or three they brought, the most recent where you can, a different "what breaks if X" question, and a sprint from this term, picked at random, for the role question.',
     "The team's regular TA is not in the session. On a video call, every student's camera is on.",
-    "The team's recorded decisions, its sprint notes, and its repository are open.",
+    "The team's recorded decisions (ADRs, RFCs), its sprint notes, and the repository are open.",
   ],
+
   checklistTitle: "Before the first student speaks",
   columns: {
     artifact: "Artifact picked",
@@ -101,16 +104,13 @@ export const coverText = {
     sprint: "Sprint",
     student: "Student",
   },
-  entered: "Scores and notes entered in Canvas: yes / no",
+  entered: "Scores and notes entered in the gradebook: yes / no",
   eyebrow: "Defense session cover",
   followUp:
-    "Follow-up: when a score comes out borderline, or a student's part of the session ran short, a 5-minute one-to-one in the same defense week, or in week 9 after a week 7 session. Tell the student it is routine.",
+    "Follow-up: a 5-minute one-to-one in the same defense week, or in week 9 after a week 7 session. Tell the student it is routine.",
   footer: (team) => `${team || NO_TEAM}, session cover`,
   length: (students, minutes) =>
     `${plural(students, "student")}, about ${minutes} minutes`,
-  /** The rubric's Missing band, which a no-show scores on every criterion. */
-  missing: ({ description, points }) =>
-    `${BAND_NAMES.missing}, ${points}, on every criterion: ${description}`,
   notes: "Session notes",
   notOnRoster: "(not on the roster)",
   room: "Room or call link",
@@ -136,19 +136,20 @@ export const sheetText = {
     [BAND_LETTERS[key], points.join(" · ")].filter(Boolean).join(" "),
   eyebrow: "Defense live sheet",
   flags: "Red flags",
-  followUp: "Follow-up",
+  /** The one-to-one after the session, apart from a criterion's follow-up question. */
+  followUp: "Individual follow-up",
   /** The banner's last line: the rubric's Missing band, word for word. */
   missing: ({ missing }) =>
     `${BAND_NAMES.missing}, ${missing.points}: ${missing.description}`,
   notes: "Notes",
-  /** The banner's points line, from the rubric's bands. */
-  points: ({ doesNotMeet, exceeds, meetsRule }) =>
-    `Any red flag: ${doesNotMeet}. Every item ticked: ${exceeds}. Otherwise ${meetsRule}`,
+  /** The banner's points line: the rubric's bands, in their own words. */
+  points: ({ doesNotMeet, exceeds, exceedsCondition, flagRule, meetsRule }) =>
+    `Every item ticked, ${exceedsCondition}: ${exceeds}. ${flagRule}: ${doesNotMeet}. Otherwise ${meetsRule}`,
   record: "Record checked",
   recordChoices: "yes / no / NDA live",
   sprint: "Sprint",
   team: (team, term) => `${team || NO_TEAM}, ${term}`,
-  tick: "Tick an item when the student says it and neither a follow-up question nor the record undoes it.",
+  tick: "Tick an item when the student says it.",
   total: "Total",
   yesNo: "yes / no",
 };
