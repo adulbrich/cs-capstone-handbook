@@ -383,6 +383,9 @@ The rules below are about its content.
   consistency. One line per criterion, in rubric order, saying the first thing
   the grader checks, never restating a band. Where What You Produce gives each
   shared criterion a subsection, the line closes that subsection instead.
+- **The two peer evaluation rubrics are published instruments.** None of
+  the rules above reword them; only their points change (`AGENTS.md`, hard
+  rule 8).
 
 Every rubric uses three bands: **Exceeds** (full points), **Meets** (partial),
 **Does Not Meet** (low or none), except these: the two-band ones (the sprint note, the workshops, Term
