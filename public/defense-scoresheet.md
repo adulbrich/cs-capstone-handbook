@@ -6,7 +6,7 @@
 
 **Term:** ______________ **Assessor:** ______________________ **Date:** ______________
 
-**Artifact or part picked:** ______________________ **Sprint asked about:** ____ **Repo record checked:** yes / no / NDA live
+**Artifact or part picked:** ______________________ **Sprint asked about:** ____ **Repo record checked:** yes / no / shown on screen (NDA)
 
 **Individual follow-up needed:** yes / no **Total: ____ / 100**
 
@@ -42,7 +42,7 @@ Notes: __________________________________________________________________
 
 ## 2. Judgment: why this approach, what was rejected, what was hard to reverse (SO1): ____ / 20
 
-Asks: explain why this way, name two alternatives that were on the table and why each was rejected, and say which part is hard to reverse. Follow-up: knowing what you know now, what would you change? Where the partner or a teammate made the call: would you have decided the same way?
+Asks: explain why this way, name two alternatives that were on the table and why each was rejected, and say which part is hard to reverse, or why none is. Follow-up: knowing what you know now, what would you change? Where the partner or a teammate made the call: would you have decided the same way?
 
 Exceeds, all four, none undone by a follow-up question or the record, and no red flag:
 
@@ -84,14 +84,14 @@ Asks: state your role, and list a few things you did in it this term. Which deci
 
 Exceeds, all four, none undone by a follow-up question or the record, and no red flag:
 
-- [ ] **Role and what they did:** states their role (PM, AI Coordinator, Quality Owner) or ownership area and names specific things they did in it this term
+- [ ] **Role and what they did:** states their role (PM, AI Coordinator, Quality Owner) or ownership area and names a few specific things they did in it this term
 - [ ] **A decision chaired:** names a decision they chaired to a conclusion this term that matches the sprint notes (deciding to wait or re-plan counts), or, if their turn is still ahead, when the charter's rotation has them chair
 - [ ] **How the team works:** explains how the team made decisions and split the work
 - [ ] **The random sprint:** says what they owned in the sprint the assessor picks, or why nothing, matching that sprint's Done or In progress list (blocked work recorded there counts)
 
 Red flags, any one is Does Not Meet:
 
-- [ ] **Role unknown:** cannot state their role or ownership area, or anything they did in it
+- [ ] **Role unknown:** cannot state their role or ownership area
 - [ ] **Who did what:** cannot say at all who did what
 
 Band: Exceeds 20 / Meets 16, 12, or 8 / Does Not Meet 4 / Missing 0
