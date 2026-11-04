@@ -25,11 +25,10 @@ check. The same point, written both ways:
 
 > Aphorism: "Small deploys are safe deploys."
 >
-> Explanation: "The
-> [DORA report](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
-> found its elite group
+> Explanation: "The DORA report found its elite group
 > deploying on demand, several times a day, while low performers deployed
-> between once a month and once every six months. A small deploy changes
+> between once a month and once every six months
+> <Cite id="forsgren-2019" form="parenthetical" />. A small deploy changes
 > little, so when one breaks, the change to roll back is easy to find. The
 > report's sample likely came from teams already familiar with DevOps, though, and
 > frequent deploys only get cheap once CI and a one-command deploy exist, so
@@ -137,8 +136,10 @@ What each page type must cite is in the Registers table.
 - "Not A; it's B" is allowed only when A is something the reader plausibly
   believes, and the explanation follows. It never closes a paragraph, and it
   is never the page's thesis.
-- Each page type opens its own way, as its skill sets out; an audience page
-  opens on the reader's situation. On every page, two
+- Each page type opens its own way, as its skill sets out. Every other
+  handbook page opens on the reader's situation, except a reference page,
+  such as the glossary, the license, or the home page, which opens on what
+  it holds. On every page, two
   openers are banned: a claim about the topic's importance ("X is the
   backbone, the foundation, the fundamental unit of...") and a "Without X:"
   list of what goes wrong. `check-prose` enforces both only in a guide's
@@ -251,8 +252,8 @@ forms of Starlight aside and no others:
 No `:::tip`, no `:::danger`, and no `<Aside>` component in their place. Every
 aside has a title, holds one idea in at most 60 words, and never opens a
 section. An aside never holds what every reader needs (that is body text), a
-concept explanation, a tool list, a vendor's current terms, a summary, or
-anything addressed to the instruction team.
+concept explanation, a tool list, a vendor's current terms, a summary other than
+the tl;dr, or anything addressed to the instruction team.
 
 ## Examples of project work
 
