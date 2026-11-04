@@ -199,12 +199,15 @@ export function fileProblems(images, path, imagePaths) {
  * (with `missing`), `alt` (with `noAlt`), `diagrams` (with `count` and
  * `failed`). Each problem names its `file`. `files` are
  * `{ name, missing, noAlt, diagrams, failed }`, `failed` the diagrams that
- * could not be drawn as `{ line, message }`. Only `cover` and `files` stop
- * the save (`canSave`); the others warn.
+ * could not be drawn as `{ line, message }`. `extras` have the same shape
+ * and join the image, alt-text, and diagram checks without counting as
+ * files (the more cover lines). Only `cover` and `files` stop the save
+ * (`canSave`); the others warn.
  */
-export function submissionChecks(cover, files) {
+export function submissionChecks(cover, files, extras = []) {
+  const all = [...files, ...extras];
   const each = (key) =>
-    files.flatMap((file) =>
+    all.flatMap((file) =>
       file[key].map((item) => ({ ...item, file: file.name }))
     );
   const problems = coverProblems(cover);
@@ -221,7 +224,7 @@ export function submissionChecks(cover, files) {
     { id: "images", missing, ok: missing.length === 0 },
     { id: "alt", noAlt, ok: noAlt.length === 0 },
     {
-      count: files.reduce((sum, file) => sum + file.diagrams, 0),
+      count: all.reduce((sum, file) => sum + file.diagrams, 0),
       failed,
       id: "diagrams",
       ok: failed.length === 0,

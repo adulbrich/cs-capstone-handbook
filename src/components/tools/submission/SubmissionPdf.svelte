@@ -74,6 +74,8 @@ let drawing = $state(false);
 /** The optional Markdown after the authors, and its printable HTML. */
 let more = $state("");
 let moreHtml = $state.raw("");
+/** The more cover lines' diagrams that could not be drawn. */
+let moreFailed = $state.raw([]);
 let notice = $state.raw({ skipped: [], unreadable: [] });
 let dragging = $state(false);
 
@@ -89,9 +91,23 @@ const problems = $derived(
     name: file.path,
   }))
 );
-const checks = $derived(submissionChecks(cover, problems));
+const moreRead = $derived(readMarkdown(more, { breaks: true }));
+/** The more cover lines' problems, checked as a file's are, when there are any lines. */
+const moreProblems = $derived(
+  more.trim() === ""
+    ? []
+    : [
+        {
+          ...fileProblems(moreRead.images, "", imagePaths),
+          diagrams: moreRead.counts.diagrams,
+          failed: moreFailed,
+          name: coverText.more,
+        },
+      ]
+);
+const checks = $derived(submissionChecks(cover, problems, moreProblems));
 const warnings = $derived(
-  problems.reduce(
+  [...problems, ...moreProblems].reduce(
     (sum, p) => sum + p.missing.length + p.noAlt.length + p.failed.length,
     0
   )
@@ -151,14 +167,10 @@ let moreVersion = 0;
 async function renderMore() {
   moreVersion += 1;
   const mine = moreVersion;
-  const { html } = await renderFile(
-    readMarkdown(more),
-    "",
-    images,
-    previewText
-  );
+  const { failed, html } = await renderFile(moreRead, "", images, previewText);
   if (mine === moreVersion) {
     moreHtml = more.trim() === "" ? "" : html;
+    moreFailed = failed;
   }
 }
 
@@ -399,6 +411,17 @@ const pageCss = $derived(
             ></textarea>
           {/snippet}
         </Field>
+        {#each moreProblems as p}
+          {#each p.missing as m}
+            <p class="warn">{fileWarning.missingHere(m.line, m.src)}</p>
+          {/each}
+          {#each p.noAlt as m}
+            <p class="warn">{fileWarning.noAltHere(m.line)}</p>
+          {/each}
+          {#each p.failed as m}
+            <p class="warn">{fileWarning.diagramHere(m.line, m.message)}</p>
+          {/each}
+        {/each}
       </div>
     </li>
 

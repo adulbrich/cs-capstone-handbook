@@ -115,6 +115,12 @@ test("front matter is dropped and the line numbers still match the file", () => 
   );
 });
 
+test("with breaks, each line of the text stays its own line", () => {
+  const text = "Repository: https://example.edu/repo\nCommit: abc123\n";
+  assert.match(readMarkdown(text, { breaks: true }).html, /<br>/);
+  assert.doesNotMatch(readMarkdown(text).html, /<br>/);
+});
+
 test("a Windows line ending reads the same as a Unix one", () => {
   assert.deepEqual(
     readMarkdown("# A\r\n\r\n![](a.png)\r\n").images,
@@ -322,6 +328,30 @@ test("the checks pass a clean submission and flag each problem", () => {
     { file: "charter.md", line: 13, message: "Parse error" },
   ]);
   assert.equal(canSave(bad), false);
+});
+
+test("the more cover lines join the image and diagram checks, not the files", () => {
+  const extra = {
+    diagrams: 0,
+    failed: [],
+    missing: [{ line: 2, src: "arch.png" }],
+    name: "More cover lines",
+    noAlt: [{ line: 2, src: "arch.png" }],
+  };
+  const clean = {
+    diagrams: 0,
+    failed: [],
+    missing: [],
+    name: "a.md",
+    noAlt: [],
+  };
+  const checks = submissionChecks(COMPLETE, [clean], [extra]);
+  assert.deepEqual(checks[1].names, ["a.md"]);
+  assert.deepEqual(checks[2].missing, [
+    { file: "More cover lines", line: 2, src: "arch.png" },
+  ]);
+  assert.equal(checks[3].ok, false);
+  assert.equal(canSave(checks), true);
 });
 
 test("warnings never stop the save; no file or bad cover lines do", () => {

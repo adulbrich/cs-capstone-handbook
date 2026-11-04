@@ -95,10 +95,13 @@ function visit(token, found, lineOf) {
  * `images` every image, Markdown or <img>, as `{ src, alt, line }` (`alt`
  * trimmed, "" when missing); `counts` the sections (level-2 headings),
  * tables, code blocks other than diagrams, diagrams, and images.
+ *
+ * With `breaks`, a single line break in the text is a line break on the
+ * page, as GitHub shows comments; files keep Markdown's own joining.
  */
-export function readMarkdown(text) {
+export function readMarkdown(text, { breaks = false } = {}) {
   const source = stripFrontMatter(String(text ?? "").replace(/\r\n?/g, "\n"));
-  const tokens = Lexer.lex(source, { gfm: true });
+  const tokens = Lexer.lex(source, { breaks, gfm: true });
   const found = {
     counts: { code: 0, diagrams: 0, images: 0, sections: 0, tables: 0 },
     diagrams: [],

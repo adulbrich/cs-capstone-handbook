@@ -33,9 +33,9 @@ export const coverText = {
   fromLink:
     "Filled in from the link you followed; add your document's number or name if it has one, such as Sprint Note 3.",
   lead: "The document title, your project, and each author: every team member on team work, only you on individual work.",
-  more: "More cover lines (optional)",
+  more: "More cover lines",
   moreHelp:
-    "Anything else your assignment's cover asks for, such as a repository URL and commit hash, in Markdown. It prints after the authors and is not kept in this browser.",
+    "What your assignment's cover asks for beyond the lines above, such as a Repo Checkpoint's repository URL and commit hash, in Markdown; each line prints on its own line, after the authors. It is not kept in this browser.",
   namePlaceholder: "Name",
   notSaved:
     "Once filled in, project and authors are saved in this browser for your next PDF.",
@@ -94,10 +94,16 @@ export function fileSummary({ code, diagrams, images, sections, tables }) {
 export const fileWarning = {
   diagram: (line, message) =>
     `The Mermaid diagram on line ${line} could not be drawn: ${message}. Fix it, then add the file again; it replaces this one.`,
+  diagramHere: (line, message) =>
+    `The Mermaid diagram on line ${line} could not be drawn: ${message}. Fix it here.`,
   missing: (line, src) =>
     `Line ${line} links ${src}, which is not added yet. Add it to the drop zone above.`,
+  missingHere: (line, src) =>
+    `Line ${line} links ${src}, which is not added yet. Add it in step 2.`,
   noAlt: (line) =>
     `The image on line ${line} has no alt text: describe it between the brackets of ![ ](...), then add the file again; it replaces this one.`,
+  noAltHere: (line) =>
+    `The image on line ${line} has no alt text: describe it between the brackets of ![ ](...).`,
 };
 
 const coverGap = {
