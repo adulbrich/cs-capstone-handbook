@@ -135,8 +135,8 @@ first row, then Helps with on the row below, and it counts as Workshop.
 So **promoting or demoting an activity is an edit to an assignment page**,
 never to the activity. Add it to, or remove it from, that page's "Activities
 That Prepare This" section (the `cs46x-assignments` skill owns its shape), and
-the badge line follows at the next build. The design is
-`docs/decisions/2026-10-05-activity-badges.md`.
+the badge line follows at the next build (#415; the two-row presentation is
+#597).
 
 `npm run validate:activities` computes the tiers through the same lib and
 prints the counts. It fails if an assignment links an anchor matching no
@@ -286,8 +286,7 @@ Projects differ in what they wait on: an existing codebase, maintainers who
 decide what merges, another institution's data, a partner's environment,
 users nobody has found yet. Name the **trigger**, the situation that makes an
 activity matter ("if you need another institution's data", "if you contribute
-to an open-source project"), never a kind of project. The design is
-`docs/decisions/2026-10-30-examples-by-concept.md`.
+to an open-source project"), never a kind of project (#608).
 
 - **Examples illustrate the concept** on the page (what a metric counts, what
   a committed result reads like), drawn from varied work, and a project may

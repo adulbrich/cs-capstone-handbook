@@ -15,7 +15,7 @@
 // that each page imports the CSVs that belong to it rather than another
 // assignment's, which Vite cannot catch because both paths resolve, and that
 // each page's `assignment.canvas` entries reconcile with its weight and the
-// rubrics it renders (the Canvas entry model record in docs/decisions/), and
+// rubrics it renders (AGENTS.md hard rule 6, #259), and
 // that each entry's `late` rule is known and fits its submission.
 //
 // Run: node scripts/validate-outcomes.mjs

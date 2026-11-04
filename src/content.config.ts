@@ -102,8 +102,8 @@ export const collections = {
         // matrix and the coverage check in scripts/validate-outcomes.mjs
         assignment: z
           .object({
-            // The Canvas entries this page owns (the Canvas entry model
-            // record in docs/decisions/). Each Canvas assignment
+            // The Canvas entries this page owns (AGENTS.md hard rule 6,
+            // #259). Each Canvas assignment
             // has its own due date, late window, grade and submission,
             // so entries are never bundled: a family expands to one
             // entry per week listed. src/lib/canvas-entries.mjs expands

@@ -455,8 +455,8 @@ student without the tool. A guide never presents a tool as mandatory.
 ## Examples of Project Work
 
 Where a guide illustrates with someone's project, draw the examples from
-varied work and name the situation, never a kind of project
-(`docs/decisions/2026-10-30-examples-by-concept.md`). A set of examples of
+varied work and name the situation, never a kind of project (#608). A set of
+examples of
 where a project should be (a level, an early phase) includes a slow start
 stated well and the way out: agree with the partner or mentor what fits.
 Three wording rules apply to every example:

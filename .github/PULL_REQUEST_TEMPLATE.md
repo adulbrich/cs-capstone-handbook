@@ -48,6 +48,6 @@ Assisted-by: Claude Code
 
 ## Docs
 
-<!-- A design record under docs/decisions/, AGENTS.md, or "none, because". -->
+<!-- The rule this sets, where it binds (AGENTS.md, a skill, docs/agents/, a validator, or its page), or "none, because". -->
 
 -
