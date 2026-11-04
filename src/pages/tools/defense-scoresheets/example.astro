@@ -3,12 +3,19 @@
 // the live sheet as the tool prints it, from the rubric at build time, and
 // nothing else on the page. scripts/defense-example-pdf.mjs prints it to
 // public/defense-live-sheet-example.pdf, and the title's fingerprint tells
-// npm test whether that PDF is still the rubric's (defense-example.mjs).
+// npm test whether that PDF still matches what the tool prints
+// (defense-example.mjs). The build runs from the repository root, so the
+// fingerprint's sources are read from there.
+import { readFileSync } from "node:fs";
 import { sheet } from "../../../components/tools/defense/defense-rubric.mjs";
 import LiveSheet from "../../../components/tools/defense/LiveSheet.svelte";
 import { example } from "../../../data/defense-scoresheets.mjs";
-import { exampleTitle } from "../../../lib/tools/defense-example.mjs";
+import { exampleFingerprint } from "../../../lib/tools/defense-example.mjs";
 import "../../../components/tools/defense/sheets.css";
+
+const title = example.title(
+  exampleFingerprint(sheet, (path: string) => readFileSync(path, "utf8"))
+);
 ---
 
 <!doctype html>
@@ -17,7 +24,7 @@ import "../../../components/tools/defense/sheets.css";
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{exampleTitle(sheet)}</title>
+    <title>{title}</title>
   </head>
   <body>
     <div class="ds-print ds-example">

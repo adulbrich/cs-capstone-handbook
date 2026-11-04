@@ -8,9 +8,16 @@
  * prints no header or footer.
  */
 
+/* Every box sized the same on the tool page, which Starlight's reset sets
+   to border-box, and on the bare example page, which has no reset. */
+.ds-page,
+.ds-page *,
+.ds-page ::before,
+.ds-page ::after {
+  box-sizing: border-box;
+}
 .ds-page {
   position: relative;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 8.5in;
@@ -99,7 +106,6 @@
   border-bottom: 1px solid #78716c;
 }
 .ds-box {
-  box-sizing: border-box;
   flex: none;
   width: 0.85em;
   height: 0.85em;
