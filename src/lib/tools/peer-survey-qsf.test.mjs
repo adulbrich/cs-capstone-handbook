@@ -246,7 +246,7 @@ test("the rating matrix is a forced radio grid with recodes 1 to 5", () => {
     const [{ anchors }] = ratedCriteria(RUBRICS.regular);
     assert.equal(rating.Answers[1].Display, `1: ${anchors[0]}`);
     assert.equal(rating.Answers[5].Display, `5: ${anchors[4]}`);
-    assert.match(rating.Answers[1].Display, /Better off without the member/);
+    assert.match(rating.Answers[1].Display, /better off without the member/);
   }
 });
 
@@ -719,7 +719,9 @@ test("every variant's output is byte-identical to the reviewed build", () => {
   // six moved again when the empty-Team guard was dropped: every other
   // question is unchanged but for its renumbered ID. The four regular hashes
   // moved when the team-of-two split note dropped its review range (#615):
-  // with that sentence restored, the file hashes to the previous values. A
+  // with that sentence restored, the file hashes to the previous values. The
+  // four moved again when the five rating anchors gained a verb: with the old
+  // anchors restored in the rubric, the file hashes to the previous values. A
   // wording or rubric change changes them on purpose: regenerate and update
   // the hashes then.
   // The two SurveyEntry timestamps are written in local time, so they are
@@ -730,13 +732,13 @@ test("every variant's output is byte-identical to the reviewed build", () => {
     "catme slots":
       "77840a0a394b35c75ba3665efbf24e657b0cf323c4f98f53decba5ec262b5d29",
     "final loop":
-      "7f85c728a155cdaf6eaf7483c092dd1d009969eddf2d0d00f46cc65ab60fcb62",
+      "41bc125937fffc3e702a3990d5cceaa9452c932184add598b44c4f9ede8b8a91",
     "final slots":
-      "5a2cded9fb2d20c0498afd1e40172b02e35f57e7bc36df2b3266ae7745886a7a",
+      "4abbe82f4b8e840090bb668c62d25b4e88bb9c0fe4274d0989ecbca1e2071e6b",
     "midterm loop":
-      "d5ef9abb22397c3e0f098e9aa98689abe371eeba6ff3e0a5408876a099b2c351",
+      "99d2353ae7e670b6720cc8ed5afc3843741aa8b0c4d465297a6d746b0e0924a7",
     "midterm slots":
-      "70a5371c6d862ca40280b3e332c64590a98d56ff84697486b67aee7f8f469b39",
+      "15c210e5936e0f9462dda9a1753dc1a5a3143fd426e02e328f9418af2c04e9c4",
   };
   for (const [key, hash] of Object.entries(expected)) {
     const [variant, mode] = key.split(" ");

@@ -487,10 +487,7 @@ const ASSIGNMENT_NAMES = new Map([
   ["Release and Metrics", /\brelease[\s-]and[\s-]metrics\b/i],
   ["Repo Checkpoints", /\brepo(?:sitory)?[\s-]checkpoints?\b/i],
   ["Resume and Intent", /\bresume[\s-]and[\s-]intent\b/i],
-  [
-    "RFC (Request for Comments)",
-    /\bRFCs?\b|\brequests?[\s-]for[\s-]comments?\b/i,
-  ],
+  ["RFC", /\bRFCs?\b|\brequests?[\s-]for[\s-]comments?\b/i],
   ["Sprint Notes and Check-Ins", /\bsprint[\s-]notes?\b/i],
   ["Team Charter", null],
   ["Term Retrospective", /\bterm[\s-]retrospectives?\b/i],
