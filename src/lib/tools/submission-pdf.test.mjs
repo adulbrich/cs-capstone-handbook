@@ -52,7 +52,7 @@ const COMPLETE = {
     { email: "lovelaca@example.edu", name: "Ada Lovelace" },
     { email: "hopperg@example.edu", name: "Grace Hopper" },
   ],
-  projectId: "7",
+  projectId: "CS.007",
   projectName: "Tide Pool Census",
   title: "Team Charter",
 };
@@ -60,7 +60,7 @@ const COMPLETE = {
 const BLANK = {
   email: "[email]",
   name: "[name]",
-  project: (id, name) => `Project ${id}: ${name}`,
+  project: (id, name) => `${id} ${name}`,
   projectId: "[ID]",
   projectName: "[project name]",
   title: "[Document title]",
@@ -212,24 +212,28 @@ test("the saved project and authors survive anything storage hands back", () => 
     projectName: "",
   });
   assert.deepEqual(
-    fromSaved({ authors: [{ name: 5 }, null], projectId: "7", title: "x" }),
+    fromSaved({
+      authors: [{ name: 5 }, null],
+      projectId: "CS.007",
+      title: "x",
+    }),
     {
       authors: [
         { email: "", name: "" },
         { email: "", name: "" },
       ],
-      projectId: "7",
+      projectId: "CS.007",
       projectName: "",
     }
   );
   assert.deepEqual(fromSaved(toSaved(COMPLETE)), {
     authors: COMPLETE.authors,
-    projectId: "7",
+    projectId: "CS.007",
     projectName: "Tide Pool Census",
   });
   assert.equal("title" in toSaved(COMPLETE), false);
   assert.equal(hasSaved(blankCover("Team Charter")), false);
-  assert.equal(hasSaved({ ...blankCover(), projectId: " 7 " }), true);
+  assert.equal(hasSaved({ ...blankCover(), projectId: " CS.007 " }), true);
 });
 
 test("the cover lines read as Submitting Your Work asks, dated under the title", () => {
@@ -237,13 +241,13 @@ test("the cover lines read as Submitting Your Work asks, dated under the title",
     authors:
       "Ada Lovelace <lovelaca@example.edu>, Grace Hopper <hopperg@example.edu>",
     date: "the day",
-    project: "Project 7: Tide Pool Census",
+    project: "CS.007 Tide Pool Census",
     title: "Team Charter",
   });
   assert.deepEqual(coverLines(blankCover(), BLANK, "the day"), {
     authors: "[name] <[email]>",
     date: "the day",
-    project: "Project [ID]: [project name]",
+    project: "[ID] [project name]",
     title: "[Document title]",
   });
 });
