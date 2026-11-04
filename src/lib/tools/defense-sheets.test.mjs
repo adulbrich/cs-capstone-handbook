@@ -267,14 +267,14 @@ test("the session length and weeks come from the defense page", () => {
   assert.equal(sessionMinutes(3, rule), 3 * rule.perStudent + rule.setup);
   assert.ok(rule.weeks.length > 0);
   const page = (sentence) =>
-    `---\nassignment:\n  canvas:\n    - name: "Individual Defense"\n      due_label: Week 4 to week 6\n---\n${sentence}`;
+    `Once per term, between week 4 and week 6, your team meets an assessor.\n\n${sentence}`;
   assert.deepEqual(
     sessionRule(
       page(
         "The session is 7 minutes per student plus about twelve minutes for setup and wrap."
       )
     ),
-    { perStudent: 7, setup: 12, weeks: "Week 4 to week 6" }
+    { perStudent: 7, setup: 12, weeks: "week 4 to week 6" }
   );
   assert.throws(
     () => sessionRule(page("The session is short.")),
@@ -285,7 +285,7 @@ test("the session length and weeks come from the defense page", () => {
       sessionRule(
         "Ten minutes per student plus about ten minutes for setup and wrap."
       ),
-    /defense\.mdx: no due_label/
+    /defense\.mdx: no "between week <n>/
   );
 });
 

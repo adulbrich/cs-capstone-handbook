@@ -267,18 +267,18 @@ export const bandRow = (rule) => [
 
 const SESSION =
   /\b(\w+) minutes per student plus about (\w+) minutes for setup and wrap/;
-/** The Canvas entry's due date in words, which spans the session weeks. */
-const DUE_LABEL = /^\s*due_label:\s*"?([^"\n]+?)"?\s*$/m;
+/** When sessions run, as the page's intro states it: "between week 8 and finals week". */
+const SESSION_WEEKS = /\bbetween (week \d+) and (finals week|week \d+)\b/;
 
 const toNumber = (word) =>
   DIGITS.test(word) ? Number(word) : NUMBER_WORDS[word.toLowerCase()];
 
 /**
  * The session rule from the defense page's source: minutes per student,
- * minutes of setup and wrap, and the weeks sessions run in (its Canvas
- * entry's `due_label`, "Week 8 to finals week"). Throws when either is
- * gone, so the cover never prints a length or weeks the page no longer
- * states.
+ * minutes of setup and wrap, and the weeks sessions run in ("week 8 to
+ * finals week", from "between week 8 and finals week"). Throws when either
+ * sentence is gone, so the cover never prints a length or weeks the page
+ * no longer states.
  */
 export function sessionRule(mdx) {
   const found = mdx.match(SESSION);
@@ -289,13 +289,13 @@ export function sessionRule(mdx) {
       'defense.mdx: no "<n> minutes per student plus about <n> minutes for setup and wrap". The session cover reads the session length from it.'
     );
   }
-  const weeks = mdx.match(DUE_LABEL)?.[1];
-  if (!weeks) {
+  const between = mdx.match(SESSION_WEEKS);
+  if (!between) {
     throw new Error(
-      "defense.mdx: no due_label in the canvas entry. The session cover prints the weeks sessions run in from it."
+      'defense.mdx: no "between week <n> and <week n, or finals week>". The session cover prints the weeks sessions run in from it.'
     );
   }
-  return { perStudent, setup, weeks };
+  return { perStudent, setup, weeks: `${between[1]} to ${between[2]}` };
 }
 
 /** The minutes a session of `students` runs. */
