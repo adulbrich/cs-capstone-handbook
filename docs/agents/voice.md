@@ -7,9 +7,8 @@ restate it; each skill adds only what its own register needs.
 
 ## Pages are not chat
 
-Chat replies are often written compressed: lead with the point, cut every
-sentence that doesn't change what the reader will do. That works in a
-conversation, where the reader can ask a follow-up. It fails on a page, where
+Chat replies are often terse and point-first, with every supporting sentence
+cut. That works in a conversation, where the reader can ask a follow-up. It fails on a page, where
 the reader can't. Applied to a teaching page, it deletes the reason, the
 tradeoff, and the source, which is the material the page exists to carry.
 
@@ -93,7 +92,9 @@ have no citation duty, though they may link.
 
 - Settle why the page exists, what its reader needs from it, and who that
   reader is before working on organization, wording, or polish. Revising the
-  wording of a page aimed at the wrong reader is wasted work.
+  wording of a page aimed at the wrong reader is wasted work. The reader also
+  sets the register: a partner reading an audience page gets a different
+  level of detail and jargon than a student reading a guide.
 - Instruction comes first and reasoning after. At the page level, say what to
   do before explaining why, so a student under deadline can stop reading
   early. Inside a section, state the claim, then its reason.
