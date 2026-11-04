@@ -375,8 +375,9 @@ The rules below are about its content.
   2026-09-14).
 - **A criterion never names a tool.** What the course already standardizes
   on is not a tool, for example Git and GitHub, the CATME instrument, the
-  university's media host, `AGENTS.md`, or using AI, which is ordinary
-  engineering practice. Tools belong in guides and activities (#62, #633).
+  university's media host, the vendor-neutral `AGENTS.md`, or using AI,
+  which is ordinary engineering practice. Tools belong in guides and
+  activities (#62, #633).
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
   copy-pasteable, and actually verified by a fresh run" tells a grader what to
   do. "High-quality documentation" does not.
