@@ -28,32 +28,34 @@ the diff touches (the Skills table in `AGENTS.md`).
 
 ## Rules
 
-5. **Register**: staff procedure on a page a student reads (who flags, who
-   confirms, a response window, what a grader opens or clicks) is a hard
-   finding; it belongs in `STAFF-RUNBOOK.md`. On an assignment page, a
+5. **Register**: staff procedure on a page a student reads is a hard
+   finding (`docs/agents/voice.md`, Person). On an assignment page, a
    sentence about course design is a hard finding: why the assignment exists,
    what it replaced, what past cohorts did, "by design", "on purpose"
    (`cs46x-assignments`, Section Skeleton, item 2).
-6. **Section contracts**: each content skill's skeleton. A missing required
-   section is hard; section order is judgement.
-7. **Checkable expectations**: a rubric criterion or stated expectation reads
-   as an observable behavior or artifact. An adjective with no observable
-   ("professional", "clear") is a finding.
-8. **The hard rules where patterns miss**: a bare "May" or "Mar" used as a
-   month, "academic year" or "this year" with no year number, a season
-   standing in for a term week, grading words with no number beside them on
-   an activity or guide, and a page body that names Canvas (`AGENTS.md`, hard
-   rules 5 and 7).
+6. **Section contracts**: each content skill's section shape
+   (`cs46x-activities`, Required Section Shape; `cs46x-assignments` and
+   `cs46x-guides`, Section Skeleton). A missing required section is hard;
+   section order is judgement.
+7. **Checkable expectations**: a rubric criterion (`cs46x-assignments`,
+   Rubric Rules) or a stated expectation (`docs/agents/voice.md`, Concrete
+   sentences) that names nothing a reader could observe is a finding.
+8. **The hard rules where patterns miss**: the date forms `AGENTS.md`, hard
+   rule 5, says `validate-dates` misses; grading words with no number beside
+   them on an activity or guide (`cs46x-activities`, What an Activity Is;
+   `cs46x-guides`, Guides Are Standalone);
+   and a page body that names Canvas (hard rule 7).
 9. **Length**: each section `section-words.mjs` flags `OVER` or `GREW`, with
    its numbers (`cs46x-assignments`, Length); a guide past its split-check
    (`cs46x-guides`, Length) or an activity past its 400-word test
-   (`cs46x-activities`), with the number; on an
+   (`cs46x-activities`, Explanation versus instrument), with the number; on an
    audience page, each outbound link that answers no question its reader asks
-   (`AGENTS.md`, Audience pages are orientation).
-10. **Voice**, on every guide and audience page in the diff: the reverse
-    outline (`docs/agents/voice.md`, Structure) of each changed paragraph,
-    in the report; then the Claims, Person, Structure, and Sentences and
-    words sections, cited per finding.
+   (`AGENTS.md`, Audience pages are orientation, not a course index).
+10. **Voice**, on every handbook page in the diff: the reverse outline
+    (`docs/agents/voice.md`, Structure) of each changed paragraph, in the
+    report; then its Person, Claims, Structure, Concrete sentences, Sentences
+    and words, Asides, Examples of project work, and The floor sections,
+    cited per finding.
 
 Done when each of the ten has a line in the report: its findings, or
 "checked, clean".

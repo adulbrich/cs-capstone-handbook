@@ -14,32 +14,22 @@ anchor for no reader benefit.
 
 ## Writing Voice (applies to everything below)
 
-**Read `docs/agents/voice.md` first.** It is the single home for document
-voice: whose voice the handbook uses, person, claims, structure, and the
-word-level rules. This skill does not restate it; it adds only what the
-how-to register needs. The bold step name in the step format below is one of
-the labels voice.md allows.
+**Read `docs/agents/voice.md` first.** It holds the rules every page
+follows, by section: Pages are not chat, Registers, Person, Claims,
+Structure, Concrete sentences, Sentences and words, Asides, Examples of
+project work, The floor, and Before and after. This skill does not restate
+them; it adds only what an activity page needs.
 
 ## The How-To Register
 
-An activity is **how-to** in the Diataxis sense: task-oriented procedure for a
-reader who has already decided to do the thing. It is the third of the
-handbook's three registers, and keeping them apart is what keeps each page
-short.
-
-| Page type | Register | Answers |
-|---|---|---|
-| Guide | Explanation | Why does this practice exist, and what does good look like? |
-| Activity | How-to | What do I run, right now, to produce it? |
-| Assignment | Reference | What is due, when, and how is it scored? |
+An activity is **how-to** (`docs/agents/voice.md`, Registers). Keeping the
+page types apart is what keeps each page short.
 
 The consequence for voice: **an activity does not argue.** It does not need the
 causal clause a guide owes its reader, because a guide carries it where one
-exists. Terseness here is correct, where in a guide it is the failure
-mode. What an activity still owes is precision: a step a team can misread is a
-step that wastes their hour.
-
-`docs/agents/voice.md` holds the floor that applies to all three.
+exists. Terse steps are correct here, where in a guide terseness is the
+failure mode. What an activity still owes is precision: a step a team can
+misread is a step that wastes their hour.
 
 ## What an Activity Is
 
@@ -118,10 +108,9 @@ into an activity page.
 
 Every activity sits in one of three tiers. **The tier is computed, never
 written**: `src/lib/activity-links.mjs` reads it from the assignment pages,
-and the badge line shows it. The tier names are internal: student pages
-explain the badges under "Reading the Badge Line" on
-`activities/introduction.mdx` and never call an activity Recommended or
-library.
+and the badge line shows it. The tier names are internal
+(`docs/agents/voice.md`, Sentences and words): student pages explain the
+badges under "Reading the Badge Line" on `activities/introduction.mdx`.
 
 | Tier | Comes from | Badge line shows | Meaning |
 |---|---|---|---|
@@ -269,41 +258,23 @@ analysis" is not.
 Headings become anchor slugs, `starlight-links-validator` runs on every build,
 and assignment pages link to activities by anchor. So:
 
-1. **No emoji in headings.** An emoji produces a slug like
-   `#user-story-mapping-️` with an invisible variation selector in it. Nobody
-   will ever type that correctly, and the link is unreadable in source.
+1. **No emoji** (`AGENTS.md`, hard rule 3). In a heading one also produces
+   a slug like `#user-story-mapping-️` with an invisible variation selector
+   in it, which nobody will ever type correctly.
 2. **No leading or trailing whitespace.** `## Regular Stand-Up Meetings ` and
    `##  Software Development Process` both produce malformed anchors. This has
    already happened twice.
-3. **Renaming a heading breaks every inbound link.** Grep for the old anchor
-   across `src/content/docs/**` before renaming, and fix all of them in the same
-   commit. The build will catch what you miss, which is the point of not
-   guessing.
+3. **Renaming a heading breaks every inbound link** (`AGENTS.md`,
+   Validation). Grep for the old anchor across `src/content/docs/**` before
+   renaming, and fix all of them in the same commit.
 
 ## Different Projects Need Different Preparation
 
-Projects differ in what they wait on: an existing codebase, maintainers who
-decide what merges, another institution's data, a partner's environment,
-users nobody has found yet. Name the **trigger**, the situation that makes an
-activity matter ("if you need another institution's data", "if you contribute
-to an open-source project"), never a kind of project (#608).
-
-- **Examples illustrate the concept** on the page (what a metric counts, what
-  a committed result reads like), drawn from varied work, and a project may
-  match several or none. Every set includes a slow start stated well (the
-  partner asked for research and planning first, or an approval sets the
-  pace) and the way out: agree with your partner or mentor what fits.
-- **Open source means open source.** "An open-source project you contribute
-  to" is the case where maintainers decide what merges. The partner's own
-  codebase is not that case, even in a public repository.
-- **Say who.** Where an activity needs someone outside the team, name them:
-  a graduate student in the lab, a peer, the partner's staff, someone who
-  didn't build it.
-- **No tool names, weeks, or dates** in an example whose concept doesn't need
-  them.
-
-The words "outcome type", "project type" and "project category" are retired,
-and `check-prose` rejects all three under the content paths.
+How to name the situation an activity serves, and how to write its
+examples, is under Examples of project work in `docs/agents/voice.md`. On an
+activity page, examples illustrate the concept (what a metric counts, what a
+committed result reads like), and every set includes a slow start stated well
+and the way out.
 
 When an activity is materially specific to one situation, say so in the
 opening sentences as a trigger rather than adding a badge for it. When an
@@ -336,9 +307,7 @@ new page must be added there; `validate:sidebar` fails until it is, and fails
 on an activity page that declares an `order`. Retiring a page needs a
 redirect in `astro.config.mjs` and every inbound link rewritten.
 
-The `description` field is YAML: **an unquoted colon inside it breaks the
-build** with `bad indentation of a mapping entry`, which does not obviously
-point at the description. Quote any description containing a colon.
+Quote a `description` that contains a colon (`AGENTS.md`, Validation).
 
 After the import, each page opens with two or three sentences framing the work,
 optionally followed by a pull quote. Then the activities, each a `##` section.
@@ -346,12 +315,7 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 
 ## Writing Style
 
-- Second person. "List the next ten decisions your team expects to make."
-- Imperative for steps. "Compare options", not "You should compare options".
-- Short sentences, one idea each. Students read these under deadline pressure.
-- No hedging ("you might want to consider possibly"), no rule-of-three padding,
-  no "it's worth noting". Hedge a time estimate ("about an hour"), never the
-  instruction.
+- Imperative for steps: "Compare options", not "You should compare options".
 - No line that restates the activity. The body ends on the "A good output
   is..." line, which describes the artifact, and nothing follows it.
 - Do not explain concepts at length. Link to the relevant page in
@@ -359,8 +323,8 @@ Ordering within a page is by rough sequence of use, not alphabetical.
 
 ### Worked examples
 
-These are constructed to the rule rather than quoted. The register model is
-`docs/agents/voice.md`.
+These are constructed to this skill's rules. The pairs for the rules every
+page follows are under Before and after in `docs/agents/voice.md`.
 
 **Opening sentences.**
 
@@ -398,10 +362,8 @@ and cost. The second names the artifact and the time.
   belong exclusively in the assignment rubric CSVs, where the validator reads
   them. An activity tagged with an outcome creates the appearance of coverage
   that the validator will not count, which is worse than no tag.
-- Tool requirements presented as mandatory when a cheaper substitute exists. If
-  an activity assumes a paid service or specific hardware, state the
-  substitute for students who do not have it.
-- Calendar dates or an academic year. `validate-dates.mjs` fails on a date.
+- A tool presented as mandatory (`docs/agents/voice.md`, The floor).
+- Calendar dates or an academic year (`AGENTS.md`, hard rule 5).
 
 ## Before Finishing
 

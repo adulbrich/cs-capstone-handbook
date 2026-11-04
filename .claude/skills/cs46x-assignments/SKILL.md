@@ -15,31 +15,26 @@ why more of this skill is mechanical than the guide or activity skills.
 
 ## Writing Voice (applies to everything below)
 
-**Read `docs/agents/voice.md` first.** It is the single home for document
-voice: whose voice the handbook uses, person, the three kinds of claim,
-structure, and the word-level rules. This skill does not restate it; it adds
-only what the task register needs. On an assignment page the rule that bites
-most often is the closer: a paragraph ends on its last requirement, never on
-a line that restates it.
+**Read `docs/agents/voice.md` first.** It holds the rules every page
+follows, by section: Pages are not chat, Registers, Person, Claims,
+Structure, Concrete sentences, Sentences and words, Asides, Examples of
+project work, The floor, and Before and after. This skill does not restate
+them; it adds only what an assignment page needs. On an assignment page the
+Structure rule that bites most often is the paragraph closer: a paragraph
+ends on its last requirement.
 
-Students read these pages under deadline pressure. Length is a cost they pay.
+## The Brief Register
 
-## The Task Register
-
-An assignment page is **reference**, not explanation and not how-to. It is the
-contract: what is due, when, and how it is scored. It speaks to a student who
-has already decided to do the work, in second person and task first: "In this
-assignment you will build ...". The procedure for producing the artifact lives
-in the paired activity; the reason the practice exists lives in the guide.
-
-This matches the three-way split in `cs46x-guides` and `cs46x-activities`.
-Guides explain, activities are how-to, assignments are reference.
+An assignment page is a **brief** (`docs/agents/voice.md`, Registers). It
+opens task first: "In this assignment you will build ...".
+The procedure for producing the artifact lives in the paired activity; the
+reason the practice exists lives in the guide.
 
 **Do not import the guides' explanation register.** Guides explain why a
 practice exists; assignments say what is due. A page that opens by teaching the
 reader about the value of retrospectives has taken space from the deliverable.
 The guide is one link away and that is where the why lives; link it rather
-than restating it, since two descriptions of one practice drift.
+than restating it (`AGENTS.md`, Say each fact once).
 
 Length is not the reason to compress, though. A rubric criterion a student
 misreads costs them a grade, so an extra clause that removes the ambiguity is
@@ -47,18 +42,15 @@ cheap. Cut restatement, not precision.
 
 ### Sourcing
 
-**Name the source the first time the page names a tool, standard, format, or
-technique.** If the assignment says "follow conventional commits", link the
-specification. If it says "WCAG AA", link the standard. A practice every
-stack has, such as pinning dependency versions, is not a named technique and
-has no single owner: state it plainly and link nothing. A named tool,
-standard, or technique still gets its link. Projects range from web apps to
-game engines to firmware, and one ecosystem's documentation tells the rest
-that the page was not written for them. A student who cannot find the
-standard you are grading against will guess at it, and then contest the grade.
+**Link the standard you grade against** the first time the page names it:
+if the assignment says "follow conventional commits", link the
+specification; if it says "WCAG AA", link the standard. A student who cannot
+find the standard you are grading against will guess at it, and then contest
+the grade. Every other tool or technique follows The floor in
+`docs/agents/voice.md`.
 
-Research findings belong in the guide the assignment links, not here (the
-last paragraph of Claims in `docs/agents/voice.md`).
+Research findings belong in the guide the assignment links, not here
+(`docs/agents/voice.md`, Registers).
 
 A link to the standard specifies the deliverable: "Use
 [conventional commits](https://www.conventionalcommits.org/)" says what is
@@ -226,7 +218,7 @@ required; `validate-outcomes.mjs` checks the order.
    - Nothing on the card is typed by hand. A due date the weeks state badly
      goes in the family's `due_label`.
 
-2. **Intro prose.** One to three paragraphs, in second person, on what the
+2. **Intro prose.** One to three paragraphs on what the
    student produces, by when, and what makes it good. **The page addresses
    the student about their work.** Say why it matters **to the student** (an
    interviewer can ask about it, the partner will expect it) and stop there.
@@ -237,7 +229,8 @@ required; `validate-outcomes.mjs` checks the order.
 
 3. **`## What You Produce`**, on every page where the student makes an
    artifact. The heading is always this; the length goes in its first lines
-   ("The postmortem is two to three pages."), never in the heading. Named
+   ("The postmortem is two to three pages."), never in the heading
+   (`docs/agents/voice.md`, Structure). Named
    parts are `###` subsections, or a numbered list when a grader looks for
    them one by one. Its own text, before the first `###`, ends on the
    **`**AI use:**` paragraph**: what AI may legitimately do here, and the
@@ -261,10 +254,8 @@ required; `validate-outcomes.mjs` checks the order.
    it. Every document is submitted as one PDF; link the rule in
    `assignments/introduction.mdx` ("Submitting Your Work") rather than
    restating what its cover carries. Something with nothing to hand in says
-   so and why ("Nothing to upload: ..."). A format never goes in a heading,
-   and neither does a percentage (`docs/agents/voice.md`, Structure). The
-   NDA variation of what to submit goes here, as a
-   `:::note[If your project is under NDA]`.
+   so and why ("Nothing to upload: ..."). The NDA variation of what to
+   submit goes here, in an NDA note (NDA Projects).
 
 6. **`## Rubric`**, exactly that, whose table is a `<RubricTable>` rather than
    Markdown. Prose belongs under it: per-criterion grading notes and the
@@ -322,9 +313,8 @@ the others, so a misspelled entry heading puts the wrong text in Canvas. The
 validator checks the names under Rubric and What You Submit, not under What
 You Produce, so start a What You Produce heading with the entry's exact name.
 
-*Admonitions* are optional anywhere. The pattern worth reusing is
-`:::note[If your project is under NDA]` for the local NDA variation. Keep each
-to one idea about the student's work.
+*Asides* are optional anywhere and follow Asides in `docs/agents/voice.md`.
+The NDA note is the one most pages need (NDA Projects).
 
 ## Length
 
@@ -337,14 +327,14 @@ words:
 |---|---|---|
 | Intro prose | 150 | one to three paragraphs |
 | What You Submit, and each entry `###` under it | 40 | one or two lines |
-| An aside | 60 | one idea |
+| An aside | 60 | one idea (`docs/agents/voice.md`, Asides) |
 | Any other `##`, `###`, or `####` | 200 | |
 
 A budget is a tripwire, as the guides' split-check is, not a target. A page split into entries is budgeted section by section, so each of
 the Repo Checkpoints' milestone sections has its own 200, and a page has no
 total. Over budget, cut restatement first; if what remains is precision, the
 instructor decides whether the section stays long, since a clause that
-removes an ambiguity is cheap (The Task Register). Text for a situation the
+removes an ambiguity is cheap (The Brief Register). Text for a situation the
 rest of the section doesn't fit (little code, an NDA, a silent partner, a
 mentor in the partner's place) is precision, never
 restatement: cutting it leaves those teams guessing. A section already over its
@@ -524,23 +514,20 @@ carry the individual contribution modifier and the living-docs review.
 
 ## NDA Projects
 
-There is no "Track A / Track B" vocabulary. The default is that staff have
+The glossary rejects "Track A" and "Track B". The default is that staff have
 repository read access; where an NDA team does something different, say so
-**locally on the affected page** in a short `:::note`, not as a global concept
-the student has to learn first.
+**locally on the affected page** in a `:::note[If your project is under NDA]`
+(`docs/agents/voice.md`, Asides), not as a global concept the student has to
+learn first.
 
 ## Worked Examples
 
 Same requirement, same budget. The difference is whether the student can act
 without guessing.
 
-The pairs below are constructed to the rule. They are not drawn from capstone
-pages, and they are not drawn from other courses either, because assignments in
-this program's lower-division courses are a different kind of artifact: a
-scoped exercise against a known function, not a term-long team deliverable for
-an external partner. Replace these with real capstone examples when good ones
-exist. Until then, treat them as illustrations of the rule and let
-`docs/agents/voice.md` be the register model.
+The pairs below are constructed to this skill's rules. The pairs for the
+rules every page follows are under Before and after in
+`docs/agents/voice.md`.
 
 **A deliverable line.**
 

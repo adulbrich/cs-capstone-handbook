@@ -6,7 +6,7 @@ description: Approvals, stakeholders, risks, and the dependencies that set the s
 import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 
-Planning and risk activities name what has to happen before the work can start, who has a stake in it, and what could stop it. Approvals and access run on someone else's schedule, so map them first; then say what you don't know yet, how you'll find out, and which pieces of work have to wait for which.
+Planning and risk activities name what has to happen before the work can start, who has a stake in it, and what could stop it. Start with what people outside the team have to grant, such as repository access from the partner's IT staff or a security review before your code runs in their environment. Then say what you don't know yet, how you'll find out, and which pieces of work have to wait for which.
 
 > "Plans are worthless, but planning is everything." (Dwight D. Eisenhower, National Defense Executive Reserve Conference, 1957)
 
@@ -21,9 +21,7 @@ Planning and risk activities name what has to happen before the work can start, 
 
 <ActivityMeta anchor="map-your-external-approvals" effort="1 to 2 h" />
 
-Find everything your project needs from someone outside your team, access and approvals alike, and start the slowest request this week. Ninety minutes in the first two weeks, then a standing agenda item.
-
-Most projects wait on something only someone outside the team can give: access to the partner's repositories, data, or services; an IP agreement or NDA to sign; documentation of how the existing system is hosted and maintained; hardware; or a security review before anything runs in the partner's environment. Each one might take weeks you don't control.
+List everything your project needs from someone outside your team, from a repository login to a signed NDA, and send the slowest request this week. Ninety minutes in the first two weeks, then a standing agenda item.
 
 - **Ask directly** in your first partner or faculty meeting: what access and approvals does this project need, who files them, and how long do they usually take?
 - **List every prerequisite**: repository access, data, service accounts, hardware, documentation of how the existing system is hosted and maintained, IP agreement or NDA signatures, security or IT review, vendor onboarding, contributor agreements for an open-source project you contribute to, license review, export control.

@@ -19,8 +19,8 @@ Bar). Read the "Say each fact once" section of `AGENTS.md` and
 2. **Restatements**, found by `git grep` across the repository: every
    line that restates what changed and now disagrees with it. A second
    statement of a fact with a canonical home is a finding even when it
-   agrees, and the fix is a link; a page may state the single number its own
-   reader needs.
+   agrees, under the rule in `AGENTS.md`, Say each fact once, and the fix is
+   a link.
 3. **Terms**: a word the diff uses in a sense the glossary doesn't give, or in
    two senses across the diff and the pages it touches ("demo" for a TA
    check-in, Demo Day, and a sprint demo to a partner).

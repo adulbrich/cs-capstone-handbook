@@ -14,32 +14,23 @@ your guide's kind and follow it.
 
 ## Writing Voice (applies to everything below)
 
-**Read `docs/agents/voice.md` first.** It is the single home for document
-voice: whose voice the handbook uses, person, the three kinds of claim,
-structure, openers, and the word-level rules. This skill does not restate it;
-it adds only what the explanation register needs.
+**Read `docs/agents/voice.md` first.** It holds the rules every page
+follows, by section: Pages are not chat, Registers, Person, Claims,
+Structure, Concrete sentences, Sentences and words, Asides, Examples of
+project work, The floor, and Before and after. This skill does not restate
+them; it adds only what a guide needs.
 
 ## What a Guide Is
 
-A guide is **explanatory reference material**: it teaches a practice, gives the
-reader a mental model, and shows what good looks like. It is read once for
-understanding and returned to for reminders.
-
-The three-way split in this handbook is load-bearing, so keep it clean:
-
-| Section | Answers | Graded? |
-|---|---|---|
-| **Guides** | "How does this practice work, and what does good look like?" | No |
-| **Activities** | "What exercise do I run to produce this?" | Workshop tier only |
-| **Assignments** | "What is due, when, and how is it scored?" | Yes, and they are where graded work is authored |
+A guide **explains** (`docs/agents/voice.md`, Registers). It is never
+graded; assignments are where graded work is authored.
 
 What a guide never names is under [Guides Are
 Standalone](#guides-are-standalone). Guides may aspire beyond what assessment
 requires; that is their job. Assignments accommodate.
 
 Guides are also where explanatory bulk belongs when an activity starts growing
-one. An activity over roughly 400 words is usually a guide with an exercise
-attached: move the explanation here and leave the activity pointing at it.
+one (`cs46x-activities`, Explanation versus instrument).
 
 ### Artifact guides and practice guides
 
@@ -56,12 +47,8 @@ assignment grades a file it describes.
 
 ## The Explanation Register
 
-A guide is **explanation** in the Diataxis sense: understanding-oriented
-material that permits reflection. It is not a tutorial (step by step), not a
-how-to (task oriented, which is what activities are), and not reference (a dry
-enumeration, which is what assignment rubrics are). Its job is to leave the
-reader with a web of connections: why things are the way they are, how they
-relate, what the tradeoffs are.
+A guide's job is to leave the reader with a web of connections: why things
+are the way they are, how they relate, what the tradeoffs are.
 
 That job sets the register, and the register has four rules.
 
@@ -71,11 +58,10 @@ it works at the level this course needs, give one concrete example, and say
 what breaks if you get it wrong. A definition without the "what breaks" is
 trivia.
 
-**Prose for arguments, lists for things you can count.** Steps, options, and
-checklists are lists; an option list may label its pick "(Preferred)". Reasons
-are paragraphs. A list of five bolded fragments is the most common way a guide
-looks finished while explaining nothing: the bolding carries the claim and the
-prose that would have justified it was never written.
+**Lists and prose follow Structure in `docs/agents/voice.md`.** In a guide
+the common failure is a list of five bolded fragments, which looks finished
+while explaining nothing: the bolding carries the claim and the prose that
+would have justified it was never written.
 
 **Never open a section with a list, table, code block, or component.** Lead
 with prose that says what the section covers and why it matters here.
@@ -88,22 +74,21 @@ option is the marketing the Some Truths section is supposed to prevent.
 ### Sourcing
 
 Guides owe evidence. Sort every claim a reader could doubt into the three kinds
-under Claims in `docs/agents/voice.md` and give each what its kind needs. Of
-the three registers, the guide is the one where Evidence claims live, so this
+under Claims in `docs/agents/voice.md` and give each what its kind needs. The guide is the page type where Evidence claims live, so this
 is where the sort does most of its work. A Recommendation in a guide is an
 imperative with its reason, never "the instruction team recommends", because
-of [Guides Are Standalone](#guides-are-standalone).
+of [Guides Are Standalone](#guides-are-standalone): "Pin dependency versions
+in the lockfile, because a teammate who installs next week should get the
+packages you tested."
 
 The test is whether each doubtable claim has the right kind of support, not
 how many links the page carries.
 
-**Read every source the page paraphrases.** When the page says what a
-framework, a standard, an essay, or a paper contains (a framework's list of
-categories, a standard's process, a handbook's statement format), open the
-source and check the sentence against it, whether the claim stays a plain
-link or meets the registry test under Citing Evidence. Work from the source
-itself, since a citation can carry a finding the source does not report:
-Klein's premortem essay credits Mitchell et al. (1989) with one.
+**Read every source the page paraphrases** (`docs/agents/voice.md`,
+Claims), whether the claim stays a plain link or meets the registry test
+under Citing Evidence. In a guide, the paraphrases to check include a
+framework's list of categories, a standard's process, and a handbook's
+statement format.
 
 ### Citing Evidence
 
@@ -136,7 +121,7 @@ claims:
 - `kind` is one of `peer-reviewed`, `research-book`, `industry-report`, and
   `preprint`, which are Evidence; `standard` and `documentation`, which are
   Reference; and `essay`, which is an argument ("Fowler argues") and never
-  Evidence. An industry report is named as one in the sentence. A Reference
+  Evidence. A Reference
   usually stays a plain link; register it only when the page states a
   specific claim from a specific section of it.
 - `claims` lists every claim the handbook makes from the source, each with its
@@ -146,8 +131,7 @@ claims:
   `docs/agents/voice.md`. `full-text` means someone read the passage at each
   locator. `abstract` means only the abstract was read, and then every claim
   must be stated in the abstract and its locator is `Abstract`. A paywalled
-  source nobody on the team can read is `abstract`, and the page says no more
-  than the abstract does.
+  source nobody on the team can read is `abstract`.
 - `suffix`, one lowercase letter, tells apart two sources that would cite the
   same: give `edmondson-1999a` and `edmondson-1999b` suffixes `a` and `b` and
   they render "Edmondson (1999a)" and "Edmondson (1999b)". The validator fails
@@ -238,8 +222,7 @@ situation-first opener are read for, not validated.
    working in real life, not the artifact's own quality.
 
 8. **`## Best Practices for Writing X`.** A bulleted list of concrete,
-   actionable rules. No hedging on the rule; hedge only a number you are
-   estimating.
+   actionable rules, hedged as Claims in `docs/agents/voice.md` allows.
 
 9. **`## Some Truths about X`.** Required, and the section that gives these
    guides their credibility. Say the uncomfortable thing first: where the
@@ -283,19 +266,21 @@ situation-first opener are read for, not validated.
     `## References` section listing the cited sources sits directly above
     this one.
 
-    There is no closing summary before it. The tl;dr at the top does that
-    job, for the reader who needs it, at the point where they need it.
+    No closing summary comes before it (`docs/agents/voice.md`,
+    Structure); the tl;dr at the top does that job.
 
 ### The Opener
 
-Every guide opens, after the imports and before any heading, with the opener
-`docs/agents/voice.md` defines under Structure: the reader's situation, what
-the page covers and does not, then the tl;dr. The guides index is exempt.
+Every guide opens, after the imports and before any heading, on the
+reader's situation: the moment in a project when the page is useful. Then it
+says what the page covers and what it does not, then gives the tl;dr. The
+guides index is exempt. The two openers banned on every page are under
+Structure in `docs/agents/voice.md`, and its Before and after section shows a
+situation opener next to a claim about importance.
 
-For a guide, the situation is a moment in a project. "Sooner or later someone
-other than you needs to run your system" is one; "Documentation is the
-infrastructure of knowledge transfer" is a claim about importance. The tl;dr
-is not a table of contents and does not restate the situation.
+The tl;dr holds three to seven bullets, each a concrete action or fact the
+reader could act on without reading further. It is not a table of contents
+and does not restate the situation.
 
 The tl;dr is a Starlight aside, so every guide's looks the same and a
 skimming reader finds it at once:
@@ -318,13 +303,12 @@ sidebar:
 ---
 ```
 
-An unquoted colon inside `description` breaks the build with `bad indentation
-of a mapping entry`, which does not point at the description.
+Quote a `description` that contains a colon (`AGENTS.md`, Validation).
 
 ## Components
 
 ```mdx
-import { LinkCard, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+import { LinkCard, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 ```
 
 - **LinkCard**: routes a reader onward mid-page, when one specific section
@@ -332,9 +316,9 @@ import { LinkCard, Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/compon
   page's full set of onward links belongs in `## Additional Readings`, so a
   LinkCard is now the exception rather than the default: use one when leaving
   the link to the bottom would strand a reader who needs it right there.
-- **Aside** / `:::note`, `:::tip`, `:::caution`: short, immediate, one idea.
-  Always give a title. Do not use an aside to smuggle in a section you did not
-  want to write.
+- **Asides** (`:::note`, `:::caution`): only the forms Asides in
+  `docs/agents/voice.md` allows, and never a section you did not want to
+  write.
 - **Steps**: only for procedures whose order matters.
 - **Tabs**: only when instructions truly differ by platform or language.
 
@@ -386,8 +370,8 @@ calendar: write "runs Lencioni's five-dysfunction ladder over your team", never
 
 If you find yourself needing a course fact to make a sentence work, the sentence
 belongs on the assignment page instead. Do not restate an assignment's
-requirements in a guide. Two descriptions of the same requirement drift, and the
-assignment page wins.
+requirements in a guide (`AGENTS.md`, Say each fact once); the assignment page
+wins.
 
 `validate-activities.mjs` applies the activity patterns to every guide: a week
 followed by a digit, "in the fall" or "fall week" (and the same for winter and
@@ -449,54 +433,22 @@ issue that measured it rather than trimming a working section to hit a number.
 
 ## Tool Requirements
 
-Show the current industry baseline, and say what the substitute is for a
-student without the tool. A guide never presents a tool as mandatory.
+Show the current industry baseline, and name the substitute for a student
+without the tool, as The floor in `docs/agents/voice.md` requires.
 
 ## Examples of Project Work
 
-Where a guide illustrates with someone's project, draw the examples from
-varied work and name the situation, never a kind of project (#608). A set of
-examples of
-where a project should be (a level, an early phase) includes a slow start
-stated well and the way out: agree with the partner or mentor what fits.
-Three wording rules apply to every example:
-
-- "An open-source project you contribute to" is the case where maintainers
-  decide what merges; a partner's own codebase is not that case.
-- Say who ran or used it: "someone who didn't build it", "the partner's
-  staff", "a graduate student in the lab", "people outside the team".
-  "Stranger" stays only where it means untrusted, as in a pull request from
-  a stranger.
-- No tool names, weeks, or dates in an example whose concept doesn't need
-  them: "add analytics early", not a list of analytics products. A tool the
-  guide recommends follows Tool Requirements above.
+Examples of someone's project follow Examples of project work in
+`docs/agents/voice.md`. In a guide, a set of examples of where a project
+should be is a level or an early phase. A tool the guide recommends follows
+Tool Requirements above.
 
 ## Worked Examples
 
-The anchor pair is real: the same topic written both ways, in this repository
-and in the same instructor's CS 362 lecture notes. The constructed pairs after
-it are illustrations of the rule, not quotations. When in doubt about the
-register, read the before and after pairs in `docs/agents/voice.md`, which
-are drawn from real handbook lines, not these.
-
-**The anchor: the testing pyramid, same topic, two treatments.**
-
-> Before, from `guides/testing-strategy.mdx`: "The pyramid is a guideline, not
-> a rule." Eight words, no source, nothing to follow.
->
-> After, the shape the CS 362 lecture uses: name the model and link
-> [Fowler](https://martinfowler.com/bliki/TestPyramid.html), then name the
-> competing model and link
-> [Kent C. Dodds](https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests),
-> explain the assumption the pyramid rests on (Fowler's own hedge: broad tests
-> are usually slow and brittle, but not always) and what the trophy argues from
-> it, and close by saying the right balance depends on how expensive your
-> integration tests actually are.
-
-The second is four times longer and it is the only one of the two a student can
-act on or disagree with. That is the trade this skill is making.
-
-The remaining pairs are constructed to the rule.
+The pairs below are constructed to this skill's rules. The aphorism set
+against its explanation is under Pages are not chat in
+`docs/agents/voice.md`, and the pairs for the rules every page follows are
+under its Before and after.
 
 **A Some Truths entry.**
 

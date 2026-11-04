@@ -27,7 +27,7 @@ Infer the repo from `git remote -v`; `gh` does this automatically when run insid
   standalone.
 - Labels, the priority and `founders` labels included, are in
   `docs/agents/triage-labels.md`.
-- Root docs and issue bodies follow hard rule 3: no em dashes.
+- Root docs and issue bodies follow hard rule 3.
 
 ## Pull requests as a triage surface
 
