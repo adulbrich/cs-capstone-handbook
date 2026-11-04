@@ -51,7 +51,7 @@ it. Content lives in `src/content/docs/**` as MDX.
    strictly from `package-lock.json`. `npm install` in CI would let the
    lockfile drift, so CI would stop testing what ships.
 3. **No em dashes and no emoji in prose.** Use a colon, semicolon, comma,
-   period, or parentheses, and words for a status mark. A `--` typed in place
+   or period, and words for a status mark. A `--` typed in place
    of a dash is still a dash, and no check sees it. This applies to handbook
    content, Canvas HTML, and repo docs alike. `validate-dashes.mjs` checks the
    content directories for em dashes and `scripts/check-prose.mjs` checks

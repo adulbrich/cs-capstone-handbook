@@ -51,8 +51,7 @@ the diff touches (the Skills table in `AGENTS.md`).
    (`cs46x-activities`, Explanation versus instrument), with the number; on an
    audience page, each outbound link that answers no question its reader asks
    (`AGENTS.md`, Audience pages are orientation, not a course index).
-10. **Voice**, on every handbook page in the diff (guides, activities,
-    assignments, and audience pages): the reverse outline
+10. **Voice**, on every handbook page in the diff: the reverse outline
     (`docs/agents/voice.md`, Structure) of each changed paragraph, in the
     report; then its Person, Claims, Structure, Concrete sentences, Sentences
     and words, Asides, Examples of project work, and The floor sections,

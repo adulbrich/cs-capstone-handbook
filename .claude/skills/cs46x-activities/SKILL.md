@@ -22,10 +22,8 @@ them; it adds only what an activity page needs.
 
 ## The How-To Register
 
-An activity is **how-to**: the steps that produce one artifact, for a
-reader who has already decided to do the thing. The Registers table in
-`docs/agents/voice.md` maps it against the other page types, and keeping
-them apart is what keeps each page short.
+An activity is **how-to** (`docs/agents/voice.md`, Registers). Keeping the
+page types apart is what keeps each page short.
 
 The consequence for voice: **an activity does not argue.** It does not need the
 causal clause a guide owes its reader, because a guide carries it where one

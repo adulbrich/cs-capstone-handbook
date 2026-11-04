@@ -22,11 +22,8 @@ them; it adds only what a guide needs.
 
 ## What a Guide Is
 
-A guide **explains**: it teaches a practice, gives the reader a mental model,
-and shows what good looks like. It is read once for understanding and
-returned to for reminders. The Registers table in `docs/agents/voice.md`
-maps it against the other page types. A guide is never graded; assignments
-are where graded work is authored.
+A guide **explains** (`docs/agents/voice.md`, Registers). It is never
+graded; assignments are where graded work is authored.
 
 What a guide never names is under [Guides Are
 Standalone](#guides-are-standalone). Guides may aspire beyond what assessment
@@ -51,9 +48,7 @@ assignment grades a file it describes.
 ## The Explanation Register
 
 A guide's job is to leave the reader with a web of connections: why things
-are the way they are, how they relate, what the tradeoffs are. It is not a
-procedure, which is an activity's job, and not a brief, which is an
-assignment's.
+are the way they are, how they relate, what the tradeoffs are.
 
 That job sets the register, and the register has four rules.
 

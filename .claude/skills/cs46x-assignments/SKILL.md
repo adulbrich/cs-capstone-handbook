@@ -25,10 +25,8 @@ ends on its last requirement.
 
 ## The Brief Register
 
-An assignment page is a **brief**: what is due, by when, how it is judged,
-and why it matters to the student (`docs/agents/voice.md`, Registers). The
-student reads it through once when starting the work, then checks against it
-while working. It opens task first: "In this assignment you will build ...".
+An assignment page is a **brief** (`docs/agents/voice.md`, Registers). It
+opens task first: "In this assignment you will build ...".
 The procedure for producing the artifact lives in the paired activity; the
 reason the practice exists lives in the guide.
 
