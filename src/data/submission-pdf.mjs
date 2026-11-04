@@ -31,7 +31,7 @@ export const coverText = {
   emailPlaceholder: "ONID email",
   forget: "Forget them",
   fromLink:
-    "Filled in from the link you followed; add your document's number or name if it has one, such as Sprint Note 3.",
+    "Filled in from the link you followed; add your document's number or name if it has one, such as Repo Checkpoint 2.",
   lead: "The document title, your project, and each author: every team member on team work, only you on individual work.",
   more: "More cover lines",
   moreHelp:
