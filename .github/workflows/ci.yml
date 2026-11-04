@@ -62,7 +62,7 @@ jobs:
         run: node scripts/test-guard-git.mjs
       - name: Test the gh guard hook
         run: node scripts/test-guard-gh.mjs
-      - name: Test the instructor tools' pure modules
+      - name: Test the tools' pure modules
         run: npm test
       - name: Build (includes astro check)
         run: npm run build
