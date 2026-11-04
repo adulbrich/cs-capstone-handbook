@@ -17,7 +17,7 @@
 // month-with-a-year rule would only report the same line twice.
 //
 // Allowed: bare years in history prose ("around 2014"); URLs; inline code
-// spans, because a file name such as `2026-08-17-four-skills.md` is a path,
+// spans, because a file name such as `2026-08-17-auth-provider.md` is a path,
 // not a date; reference-list entries, both the numbered line ("[1] M. W.
 // Ohland et al., ... Dec. 2012") and the access date ("Accessed: Mar. 31"),
 // because a source's own publication date is not the course calendar; and the
