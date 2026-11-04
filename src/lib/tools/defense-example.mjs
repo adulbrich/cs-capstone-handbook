@@ -13,13 +13,17 @@ import { createHash } from "node:crypto";
 export const EXAMPLE_PDF = "defense-live-sheet-example.pdf";
 
 /**
- * What the example prints besides the rubric, by repository path: the
- * wording and the invented student, the sheet's markup, and its print CSS.
+ * What decides the example's print besides the rubric, by repository path:
+ * the wording and the invented student, the sheet's markup and the rules
+ * it renders with, its print CSS, the fit, and the example page itself.
  */
 export const EXAMPLE_SOURCES = Object.freeze([
   "src/data/defense-scoresheets.mjs",
+  "src/lib/tools/defense-sheets.mjs",
   "src/components/tools/defense/LiveSheet.svelte",
   "src/components/tools/defense/sheets.css",
+  "src/components/tools/defense/fit.js",
+  "src/pages/tools/defense-scoresheets/example.astro",
 ]);
 
 /**

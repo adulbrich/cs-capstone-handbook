@@ -118,8 +118,7 @@ export const coverText = {
   start: "Start time",
   tableTitle: "The session",
   /** The term and the weeks sessions run in, "Fall, week 8 to finals week". */
-  when: (term, weeks) =>
-    `${term}, ${weeks.charAt(0).toLowerCase()}${weeks.slice(1)}`,
+  when: (term, weeks) => `${term}, ${weeks}`,
   yesNo: "yes / no",
 };
 
