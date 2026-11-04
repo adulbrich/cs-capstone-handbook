@@ -115,7 +115,7 @@ const VOCABULARY = [
   {
     // The handbook named a four-way taxonomy for a year and students kept
     // asking which one they were. It shows examples now and names no category,
-    // so all three words for the category are retired together.
+    // so all three words for the category are retired together (#189, #608).
     avoid:
       /\boutcome types?\b|\bproject types?\b|\bproject categor(?:y|ies)\b/i,
     use: "what shipped means for the project, or the closest path in the Shipping guide",
