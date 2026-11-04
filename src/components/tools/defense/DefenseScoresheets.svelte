@@ -21,7 +21,7 @@ import {
   fullName,
   pageCounts,
   printPages,
-  rosterTeams,
+  sessionTeams,
 } from "../../../lib/tools/defense-sheets.mjs";
 import { parseRoster } from "../../../lib/tools/roster.mjs";
 import { TERMS, termOf } from "../../../lib/tools/term-label.mjs";
@@ -51,7 +51,7 @@ let thumbWidth = $state(0);
 
 const read = $derived(
   roster
-    ? attempt(() => rosterTeams(parseRoster(roster.text)))
+    ? attempt(() => sessionTeams(parseRoster(roster.text)))
     : { error: "", value: null }
 );
 const teams = $derived(read.value ?? []);
@@ -264,7 +264,7 @@ function toBody(node) {
           <div class="thumb" bind:clientWidth={thumbWidth}>
             {#if thumbScale > 0}
               <div class="paper" aria-hidden="true" inert style:transform="scale({thumbScale})">
-                <Cover {assessor} rule={sheet.rule} {session} team={previewTeam} term={termLabel} />
+                <Cover {assessor} {session} team={previewTeam} term={termLabel} />
               </div>
             {/if}
           </div>
@@ -303,7 +303,7 @@ function toBody(node) {
   <div class="ds-print" {@attach toBody}>
     {#each pages as page (page.id)}
       {#if page.kind === "cover"}
-        <Cover {assessor} rule={sheet.rule} {session} team={page.team} term={termLabel} />
+        <Cover {assessor} {session} team={page.team} term={termLabel} />
       {:else}
         <LiveSheet {assessor} overflow={fit === null} {scale} {sheet} student={page.student} team={page.team} term={termLabel} />
       {/if}

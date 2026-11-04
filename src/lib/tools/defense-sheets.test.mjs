@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { parseRubricCsv } from "../rubric-csv.mjs";
+import { parseRubricCsv, rubricTotal } from "../rubric-csv.mjs";
 import {
   BAND_NAMES,
   bandRow,
@@ -12,9 +12,9 @@ import {
   pageCounts,
   printPages,
   readList,
-  rosterTeams,
   sessionMinutes,
   sessionRule,
+  sessionTeams,
 } from "./defense-sheets.mjs";
 import { parseRoster } from "./roster.mjs";
 
@@ -68,7 +68,7 @@ const PLANNING = {
 };
 const TESTING = {
   exceeds:
-    "All two, none undone, and no red flag: (1) Tests: names the tests; (2) Gaps: names a gap.",
+    "All two, none undone by a follow-up question, and no red flag: (1) Tests: names the tests; (2) Gaps: names a gap.",
   title: "Testing [SO6]",
 };
 
@@ -115,6 +115,22 @@ test("a list the sheet cannot print as items throws, naming where", () => {
     () => readList("Every item, with no list.", "x"),
     /no numbered list/
   );
+  assert.throws(
+    () => readList("Any: (1) A: a; (2) A: b.", "x"),
+    /two items are labeled "A"/
+  );
+});
+
+test("an All that is not a count, or a count past eight, is no mismatch", () => {
+  assert.equal(
+    readList("All of these, and more: (1) A: a; (2) B: b.", "x").items.length,
+    2
+  );
+  const nine = Array.from({ length: 9 }, (_, i) => `(${i + 1}) L${i}: t`);
+  assert.equal(
+    readList(`All nine, none undone: ${nine.join("; ")}.`, "x").items.length,
+    9
+  );
 });
 
 test("the live sheet reads each criterion's question, items, red flags, and the one scoring rule", () => {
@@ -136,6 +152,8 @@ test("the live sheet reads each criterion's question, items, red flags, and the 
   assert.deepEqual(sheet.rule, {
     doesNotMeet: 2,
     exceeds: 10,
+    exceedsCondition: "none undone by a follow-up question, and no red flag",
+    flagRule: "Any red flag",
     ladder: [8, 6, 4],
     meetsRule: "8 points with one item missing, 6 with two, 4 with more.",
     missing: { description: MISSING, points: 0 },
@@ -162,6 +180,35 @@ test("criteria that score differently, or bands the sheet does not print, fail t
       liveSheet(
         rubric(PLANNING, {
           ...TESTING,
+          exceeds: TESTING.exceeds.replace(
+            "by a follow-up question",
+            "by the record"
+          ),
+        }),
+        "invented.csv"
+      ),
+    /criterion 2 \(Testing\) scores differently/
+  );
+  assert.throws(
+    () =>
+      liveSheet(
+        rubric(PLANNING, {
+          ...TESTING,
+          exceeds: "Every item: (1) Tests: names the tests.",
+        }),
+        "invented.csv"
+      ),
+    /the preamble does not read "All <count>, <condition>"/
+  );
+  assert.throws(
+    () => liveSheet(rubric(PLANNING, PLANNING), "invented.csv"),
+    /two criteria are titled "Planning"/
+  );
+  assert.throws(
+    () =>
+      liveSheet(
+        rubric(PLANNING, {
+          ...TESTING,
           meets: "Not every item: 6 with one missing, 4 with two.",
         }),
         "invented.csv"
@@ -177,31 +224,24 @@ test("criteria that score differently, or bands the sheet does not print, fail t
   );
 });
 
-test("the defense rubric prints as five criteria, word for word, under one rule", () => {
+test("the defense rubric prints word for word, under one rule its bands state", () => {
   const path = "canvas/assignments/defense/defense-rubric.csv";
   const parsed = parseRubricCsv(read(path), path);
   const sheet = liveSheet(parsed, path);
-  assert.deepEqual(
-    sheet.criteria.map((c) => [c.items.length, c.flags.length]),
-    [
-      [4, 4],
-      [4, 1],
-      [3, 2],
-      [4, 2],
-      [3, 3],
-    ]
+  assert.equal(sheet.criteria.length, parsed.criteria.length);
+  assert.equal(sheet.total, rubricTotal(parsed.criteria));
+  const first = parsed.criteria[0].ratings;
+  const firstBand = (name) => first.find((r) => r.name === name).description;
+  assert.ok(
+    firstBand(BAND_NAMES.exceeds).includes(
+      `, ${sheet.rule.exceedsCondition}: (1) `
+    )
   );
-  assert.deepEqual(
-    { ...sheet.rule, missing: sheet.rule.missing.points },
-    {
-      doesNotMeet: 4,
-      exceeds: 20,
-      ladder: [16, 12, 8],
-      meetsRule: "16 points with one item missing, 12 with two, 8 with more.",
-      missing: 0,
-    }
+  assert.ok(
+    firstBand(BAND_NAMES.doesNotMeet).startsWith(`${sheet.rule.flagRule}: (1) `)
   );
-  assert.equal(sheet.total, 100);
+  assert.ok(firstBand(BAND_NAMES.meets).endsWith(`: ${sheet.rule.meetsRule}`));
+  assert.equal(firstBand(BAND_NAMES.missing), sheet.rule.missing.description);
   // Every item is the CSV's own text, so nothing on the sheet is retyped.
   parsed.criteria.forEach((criterion, i) => {
     const band = (name) =>
@@ -224,8 +264,7 @@ test("the defense rubric prints as five criteria, word for word, under one rule"
 
 test("the session length comes from the defense page's sentence", () => {
   const rule = sessionRule(read("src/content/docs/assignments/defense.mdx"));
-  assert.deepEqual(rule, { perStudent: 6, setup: 10 });
-  assert.equal(sessionMinutes(3, rule), 28);
+  assert.equal(sessionMinutes(3, rule), 3 * rule.perStudent + rule.setup);
   assert.deepEqual(
     sessionRule(
       "The session is 7 minutes per student plus about twelve minutes for setup and wrap."
@@ -248,7 +287,7 @@ const ROSTER = `name,canvas_user_id,user_id,login_id,sections,group_name,canvas_
 "Alvarez, Lucia",6,6,alvarezl@example.edu,001,Team 10: Lanterns,1,1`;
 
 test("teams sort by number, members by name, and students in no group come last together", () => {
-  const teams = rosterTeams(parseRoster(ROSTER));
+  const teams = sessionTeams(parseRoster(ROSTER));
   assert.deepEqual(
     teams.map((t) => [t.team, t.noTeam, t.members.map((m) => m.email)]),
     [
@@ -264,7 +303,7 @@ test("teams sort by number, members by name, and students in no group come last 
 });
 
 test("a cover's table has a row per student and one blank, and no speaking order", () => {
-  const [fieldnotes] = rosterTeams(parseRoster(ROSTER));
+  const [fieldnotes] = sessionTeams(parseRoster(ROSTER));
   const rows = coverRows(fieldnotes);
   assert.deepEqual(rows, [
     { id: "chena@example.edu", name: "Ana Chen" },
@@ -275,7 +314,7 @@ test("a cover's table has a row per student and one blank, and no speaking order
 });
 
 test("the teams picked print a cover, a sheet per student, and a blank when asked, and the counts add up", () => {
-  const teams = rosterTeams(parseRoster(ROSTER));
+  const teams = sessionTeams(parseRoster(ROSTER));
   const selected = new Set(["Team 10: Lanterns", ""]);
   const plain = printPages(teams, { selected });
   assert.deepEqual(

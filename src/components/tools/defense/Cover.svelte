@@ -1,7 +1,7 @@
 <script>
 // One team's session cover, the same in the preview and on paper: the team,
 // the term and session length, the assessor, room, and start time, the
-// protocol checklist, the session table, the Missing and follow-up rules,
+// protocol checklist, the session table, the absence and follow-up rules,
 // and lined space for notes. The table has a row per student, then a blank
 // one, and its Order column is empty: the speaking order is drawn at the
 // start of the session and never printed (coverRows in defense-sheets.mjs).
@@ -11,7 +11,7 @@ import {
   sessionMinutes,
 } from "../../../lib/tools/defense-sheets.mjs";
 
-let { assessor = "", rule, session, team, term } = $props();
+let { assessor = "", session, team, term } = $props();
 
 const rows = $derived(coverRows(team));
 const minutes = $derived(sessionMinutes(team.members.length, session));
@@ -82,7 +82,7 @@ const minutes = $derived(sessionMinutes(team.members.length, session));
   </table>
 
   <div class="ds-rules">
-    <span>{text.missing(rule.missing)}</span>
+    <span>{text.absent}</span>
     <span>{text.followUp}</span>
   </div>
 
