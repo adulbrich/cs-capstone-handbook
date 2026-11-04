@@ -47,7 +47,7 @@ register.
 | Page type | Register | Its job | What it cites |
 |---|---|---|---|
 | Guide (`guides/`) | Explanation | Why a practice works, how it compares with the alternatives, and what good looks like. Read once for understanding, then returned to for reminders. | Evidence for every evidence-type claim (Claims), and the reference for every tool, standard, or technique it names. |
-| Activity (`activities/`) | How-to | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue. | No citation duty. It links the guide that explains the practice and the documentation of any tool a step uses. |
+| Activity (`activities/`) | How-to | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue. | No citation duty beyond the links The floor requires. It links the guide that explains the practice. |
 | Assignment (`assignments/`) | Brief | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, plus the links The floor requires. No research: on an assignment page it is course-design rationale and belongs in the guide the page links. |
 | Audience page (`introduction/for-*.mdx`) and syllabus | Orientation | What this is and what it asks of one reader, short enough to read before the term starts (`AGENTS.md`, Audience pages are orientation, not a course index). | No citation duty beyond the links The floor requires. |
 
@@ -293,8 +293,8 @@ or says which projects need something:
   it, because tool access is unequal.
 - Use the active voice: "the validator rejects the file", not "the file is
   rejected by the validator".
-- Define a term before using it. An acronym is spelled out on first use, then
-  shortened: "CI (continuous integration)" and thereafter "CI".
+- Define a term before using it. Which pages spell out an acronym is under
+  Acronyms in `src/content/docs/about/glossary.mdx`.
 - Use precise nouns: not "the server" when you mean "the staging server", not
   "the file" when you mean `lefthook.yml`.
 - Copy code exactly. Commands, paths, filenames, and flags are copied, not
