@@ -373,11 +373,9 @@ The rules below are about its content.
   say in the commit why the extra ones earn it. `rfc.mdx` (eight on the final) and
   `team-charter.mdx` (seven) are the standing examples (#27, decided
   2026-09-14).
-- **A criterion never requires a specific tool or agentic tooling.** It
-  assesses what stays true as tools change: the specification, the checks,
-  the judgment, the ownership. A tool may appear as one example among others
-  ("AGENTS.md or CLAUDE.md"); the tools themselves belong in guides and
-  activities, which name the substitute (#62).
+- **A criterion never names a tool.** A vendor-neutral convention such as
+  `AGENTS.md` is not a tool, and neither is using AI, which is ordinary
+  engineering practice. Tools belong in guides and activities (#62, #633).
 - **Write criteria as observable checks, not qualities.** "Setup: complete,
   copy-pasteable, and actually verified by a fresh run" tells a grader what to
   do. "High-quality documentation" does not.

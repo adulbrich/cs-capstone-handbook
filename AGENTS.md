@@ -283,7 +283,7 @@ There is no journal file and no design-record directory in this repository. A de
 
 A change that sets a rule the handbook will live by writes the rule where it binds: a hard rule here, a `cs46x-*` skill, a `docs/agents/` file, a validator, or the page that owns the fact. Everywhere but a handbook page, it cites the issue that set it; the reason stays in that issue (#633).
 
-Do not create running logs, change logs, or idea files at the root. If a fact is worth keeping, it belongs in an issue, a PR, or the page that owns it.
+Do not create running logs, change logs, or idea files at the root. If a fact is worth keeping, it belongs in an issue, a PR, or the file that owns it.
 
 ## Writing voice
 

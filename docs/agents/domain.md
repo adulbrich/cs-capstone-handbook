@@ -5,7 +5,7 @@ How the engineering skills should consume this repo's domain documentation when 
 ## Before exploring, read these
 
 - **`CONTEXT.md`** at the repo root. It points at `src/content/docs/about/glossary.mdx`, which holds every term.
-- **The rules for the area you're about to work in**: the `AGENTS.md` hard rules, the `cs46x-*` skill its table names, and any `docs/agents/` file it points to. Each rule cites the issue that set it; read the issue for the reason.
+- **The rules for the area you're about to work in**: the `AGENTS.md` hard rules, the `cs46x-*` skill its table names, and any `docs/agents/` file it points to. Where a rule cites the issue that set it, read the issue for the reason.
 
 ## Where a skill's writes go
 
