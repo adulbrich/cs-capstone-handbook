@@ -1,6 +1,6 @@
 <script>
 // One team's session cover, the same in the preview and on paper: the team,
-// the term and session length, the assessor, room, and start time, the
+// the term, session weeks, and length, the assessor, room, and start time, the
 // protocol checklist, the session table, the absence and follow-up rules,
 // and lined space for notes. The table has a row per student, then a blank
 // one, and its Order column is empty: the speaking order is drawn at the

@@ -274,7 +274,7 @@ test("the session length and weeks come from the defense page", () => {
         "The session is 7 minutes per student plus about twelve minutes for setup and wrap."
       )
     ),
-    { perStudent: 7, setup: 12, weeks: "week 4 to week 6" }
+    { perStudent: 7, setup: 12, weeks: ["week 4", "week 6"] }
   );
   assert.throws(
     () => sessionRule(page("The session is short.")),
