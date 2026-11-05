@@ -1,6 +1,7 @@
 <script>
-// Print Defense Scoresheets: the roster, then the term, the assessor, and
-// the teams, then the print, beside a preview of the first team picked.
+// Print Defense Scoresheets: the roster, then the term and the teams, then
+// the print, beside a preview of the first team picked. Each student's
+// assessor is their grader from the roster, or blank to write in.
 // The roster is read in the browser and never uploaded or kept. Each page
 // is drawn by the same component twice: scaled in the preview, and in the
 // print copy under <body> that sheets.css prints alone. Each live sheet is
@@ -27,7 +28,6 @@ import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
 import ClickPath from "../ui/ClickPath.svelte";
-import Field from "../ui/Field.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
 import Cover from "./Cover.svelte";
 import { fitSheet } from "./fit.js";
@@ -39,7 +39,6 @@ let { session, sheet } = $props();
 /** The roster file, `{ name, text }`, or null before one is added. */
 let roster = $state.raw(null);
 let term = $state(termOf(new Date()));
-let assessor = $state("");
 /** The team names picked; "" is the students in no group. */
 let selected = $state.raw(new Set());
 let blankSheets = $state(false);
@@ -103,8 +102,8 @@ const previewDrawn = $derived(
   previewTeam
     ? [
         fullName(previewTeam.members[0]),
+        previewTeam.members[0].grader,
         previewTeam.team,
-        assessor,
         termLabel,
       ].join("\n")
     : ""
@@ -185,14 +184,6 @@ function toBody(node) {
         </div>
       </fieldset>
 
-      <div class="assessor">
-        <Field label={sessionText.assessor} help={sessionText.assessorHelp}>
-          {#snippet children({ describedby, id })}
-            <input {id} type="text" autocomplete="name" aria-describedby={describedby} bind:value={assessor} />
-          {/snippet}
-        </Field>
-      </div>
-
       <fieldset class="teams">
         <legend>
           {sessionText.teams}
@@ -255,7 +246,7 @@ function toBody(node) {
           <div class="thumb" bind:clientWidth={thumbWidth}>
             {#if thumbScale > 0}
               <div class="paper" aria-hidden="true" inert style:transform="scale({thumbScale})">
-                <Cover {assessor} {session} team={previewTeam} term={termLabel} />
+                <Cover {session} team={previewTeam} term={termLabel} />
               </div>
             {/if}
           </div>
@@ -265,7 +256,7 @@ function toBody(node) {
           <div class="thumb">
             {#if thumbScale > 0}
               <div class="paper" aria-hidden="true" inert style:transform="scale({thumbScale})" bind:this={previewPaper}>
-                <LiveSheet {assessor} {sheet} student={previewTeam.members[0]} team={previewTeam} term={termLabel} />
+                <LiveSheet {sheet} student={previewTeam.members[0]} team={previewTeam} term={termLabel} />
               </div>
             {/if}
           </div>
@@ -283,9 +274,9 @@ function toBody(node) {
   <div class="ds-print" {@attach toBody} bind:this={printCopy}>
     {#each pages as page (page.id)}
       {#if page.kind === "cover"}
-        <Cover {assessor} {session} team={page.team} term={termLabel} />
+        <Cover {session} team={page.team} term={termLabel} />
       {:else}
-        <LiveSheet {assessor} {sheet} student={page.student} team={page.team} term={termLabel} />
+        <LiveSheet {sheet} student={page.student} team={page.team} term={termLabel} />
       {/if}
     {/each}
   </div>
@@ -429,14 +420,6 @@ function toBody(node) {
   .pill:focus-within {
     outline: 2px solid var(--sl-color-text-accent);
     outline-offset: 2px;
-  }
-  .assessor {
-    margin-top: 1.25rem;
-  }
-  .assessor :global(input) {
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 2.75rem;
   }
   .teams {
     margin-top: 1.25rem;

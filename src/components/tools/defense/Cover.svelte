@@ -1,6 +1,7 @@
 <script>
 // One team's session cover, the same in the preview and on paper: the team,
-// the term, session weeks, and length, the assessor, room, and start time, the
+// the term, session weeks, and length, the assessor (the team's graders
+// from the roster, or blank to write in), room, and start time, the
 // protocol checklist, the session table, the absence and follow-up rules,
 // and lined space for notes. The table has a row per student, then a blank
 // one, and its Order column is empty: the speaking order is drawn at the
@@ -11,8 +12,9 @@ import {
   sessionMinutes,
 } from "../../../lib/tools/defense-sheets.mjs";
 
-let { assessor = "", session, team, term } = $props();
+let { session, team, term } = $props();
 
+const assessor = $derived(text.graders(team.graders));
 const rows = $derived(coverRows(team));
 const minutes = $derived(sessionMinutes(team.members.length, session));
 </script>

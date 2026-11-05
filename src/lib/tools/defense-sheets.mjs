@@ -330,26 +330,32 @@ const compare = (a, b) =>
   a.localeCompare(b, "en", { numeric: true, sensitivity: "base" });
 
 /**
- * The roster's teams, `{ members, noTeam, team }`, by team name, with the
- * students in no group gathered in one entry (team "") at the end, so
- * nobody is dropped. Members are `{ email, first, last }`, by last name.
+ * The roster's teams, `{ graders, members, noTeam, team }`, by team name,
+ * with the students in no group gathered in one entry (team "") at the
+ * end, so nobody is dropped. Members are `{ email, first, grader, last }`,
+ * by last name; `graders` are the members' graders, each once, in that
+ * order, for the cover.
  */
 export function sessionTeams(students) {
   const byTeam = new Map();
-  for (const { email, first, last, team } of students) {
+  for (const { email, first, grader, last, team } of students) {
     if (!byTeam.has(team)) {
       byTeam.set(team, []);
     }
-    byTeam.get(team).push({ email, first, last });
+    byTeam.get(team).push({ email, first, grader, last });
   }
   return [...byTeam]
-    .map(([team, members]) => ({
-      members: members.sort(
+    .map(([team, members]) => {
+      members.sort(
         (a, b) => compare(a.last, b.last) || compare(a.first, b.first)
-      ),
-      noTeam: team === "",
-      team,
-    }))
+      );
+      return {
+        graders: [...new Set(members.map((m) => m.grader).filter(Boolean))],
+        members,
+        noTeam: team === "",
+        team,
+      };
+    })
     .sort(
       (a, b) => Number(a.noTeam) - Number(b.noTeam) || compare(a.team, b.team)
     );

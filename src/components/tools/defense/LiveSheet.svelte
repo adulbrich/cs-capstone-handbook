@@ -1,6 +1,7 @@
 <script>
 // One student's live sheet, the same in the preview and on paper: the
-// name, team, assessor, and total; the banner with the tick rule, the
+// name, team, assessor (the student's grader from the roster, or blank to
+// write in), and total; the banner with the tick rule, the
 // points, and the Missing rule; then each criterion's question, its items
 // to tick, its red flags, its band row, and a notes line. The rubric's text
 // comes from `sheet` (liveSheet in defense-sheets.mjs), word for word.
@@ -14,7 +15,10 @@ import {
   fullName,
 } from "../../../lib/tools/defense-sheets.mjs";
 
-let { assessor = "", sheet, student = null, team, term } = $props();
+let { sheet, student = null, team, term } = $props();
+
+/** The student's grader from the roster, or blank to write in. */
+const assessor = $derived(student?.grader ?? "");
 
 const bands = $derived(bandRow(sheet.rule));
 /** Each criterion's items and red flags columns, sized by their text. */

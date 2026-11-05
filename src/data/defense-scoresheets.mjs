@@ -25,7 +25,8 @@ const NO_TEAM = "No team";
 
 /** Step 1: the roster. */
 export const rosterText = {
-  columns: ". The file has name, login_id, and group_name among its columns.",
+  columns:
+    ". The file has name, login_id, and group_name among its columns. To print each student's assessor, add a grader column naming them; without one, the assessor line prints blank to write in.",
   drop: "Canvas roster with groups (.csv)",
   path: clickPaths.canvasRoster,
   read: ({ noTeam, students, teams }) =>
@@ -38,12 +39,9 @@ export const rosterText = {
   unreadable: "The roster could not be read",
 };
 
-/** Step 2: the term, the assessor, and the teams. */
+/** Step 2: the term and the teams. */
 export const sessionText = {
   all: "Select all",
-  assessor: "Assessor",
-  assessorHelp:
-    "Optional. Printed on every page; leave it blank to write it in.",
   empty: "Add the roster to pick its teams.",
   members: (n) => plural(n, "student"),
   noTeam: NO_TEAM,
@@ -110,6 +108,8 @@ export const coverText = {
   followUp:
     "Follow-up: a 5-minute one-to-one within a week of the session, and no later than finals week. Tell the student it is routine.",
   footer: (team) => `${team || NO_TEAM}, session cover`,
+  /** The team's graders from the roster, or nothing when it has none. */
+  graders: (graders) => graders.join(", "),
   length: (students, minutes) =>
     `${plural(students, "student")}, about ${minutes} minutes`,
   notes: "Session notes",

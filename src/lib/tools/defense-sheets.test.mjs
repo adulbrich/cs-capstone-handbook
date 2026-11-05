@@ -338,6 +338,28 @@ test("teams sort by number, members by name, and students in no group come last 
   );
 });
 
+test("each student keeps their grader, and a team lists its graders once each", () => {
+  const graded = `name,login_id,group_name,grader
+"Okafor, Sam",okafors@example.edu,Team 10: Lanterns,Kim
+"Alvarez, Mateo",alvarezm@example.edu,Team 10: Lanterns,Ng
+"Alvarez, Lucia",alvarezl@example.edu,Team 10: Lanterns,Kim
+"Lee, Jordan",leej@example.edu,Team 2: Fieldnotes,Ito
+"Chen, Ana",chena@example.edu,Team 2: Fieldnotes,
+"Raman, Priya",ramanp@example.edu,,`;
+  const [fieldnotes, lanterns, noTeam] = sessionTeams(parseRoster(graded));
+  assert.deepEqual(
+    lanterns.members.map((m) => [m.email, m.grader]),
+    [
+      ["alvarezl@example.edu", "Kim"],
+      ["alvarezm@example.edu", "Ng"],
+      ["okafors@example.edu", "Kim"],
+    ]
+  );
+  assert.deepEqual(lanterns.graders, ["Kim", "Ng"]);
+  assert.deepEqual(fieldnotes.graders, ["Ito"]);
+  assert.deepEqual(noTeam.graders, []);
+});
+
 test("a cover's table has a row per student and one blank, and no speaking order", () => {
   const [fieldnotes] = sessionTeams(parseRoster(ROSTER));
   const rows = coverRows(fieldnotes);
