@@ -15,7 +15,7 @@ You're about to write `docs/design.md` for a system that barely exists yet, or y
 - Put the system view in `docs/design.md`: what the system does, one or two diagrams, the interfaces, the data, how it deploys, and the open questions. Two pages is enough for a small team.
 - Draw a context diagram and one level below it with the [C4 model](https://c4model.com/), in whatever tool the team already uses.
 - Agree on every interface (API, schema, file format, message) in writing before two people build toward it from opposite sides.
-- Spike the riskiest assumption, time-boxed to a few days, and record what you learned in an ADR.
+- Spike the riskiest assumption, time-boxed to two or three days, and record what you learned in an ADR.
 - Decide up front only what's hard to reverse: the data model, authorization boundaries, deployment topology, and integration contracts.
 - Give the design document to every teammate's AI tool and review generated code against it, not only against the tests.
 :::
@@ -94,7 +94,7 @@ Sometimes the right move is to build a small, throwaway prototype that answers o
 
 [Extreme Programming](http://www.extremeprogramming.org/rules/spike.html) calls this a **spike**: a very simple program that explores possible solutions to one technical problem, ignores every other concern, and is expected to be thrown away. Its goal is to reduce the risk of that problem, and its output is a finding, not production code. Record the finding in an ADR and delete the code.
 
-Time-box every spike. Extreme Programming suggests a pair of developers for a week or two; on a small team with other work in flight, a few days is usually what you can afford. The time box matters because a spike without an end date quietly becomes the first draft of production code, without the review and tests production code gets.
+Time-box every spike. Extreme Programming suggests a pair of developers for a week or two; on a small team with other work in flight, two or three days is usually what you can afford. The time box matters because a spike without an end date quietly becomes the first draft of production code, without the review and tests production code gets.
 
 Spike the riskiest assumption first. If the design depends on a component or an integration you've never built, a spike finds out whether it works while the design can still change around the answer.
 
@@ -197,7 +197,7 @@ Three or four people, each with their own tool, is a different problem. Every as
 
 Against that drift, give every teammate and every tool the same design document: one account of how the system is structured and which boundaries to respect. Two practices put it to work:
 
-- Give the design to your AI tools the way you'd brief a new teammate: point your project-level instructions at `docs/design.md`, and copy in only the rules a tool must never break (boundaries, naming, interface contracts), so every suggestion starts from your architecture. A copy of the whole design drifts from the original. AI Project Setup has [the files and what belongs in them](/guides/ai-project-setup/#what-goes-in-agentsmd).
+- Give the design to your AI tools the way you'd brief a new teammate: point your `AGENTS.md` at `docs/design.md`, and copy in only the rules a tool must never break (boundaries, naming, interface contracts), so every suggestion starts from your architecture. A copy of the whole design drifts from the original. AI Project Setup has [the files and what belongs in them](/guides/ai-project-setup/#what-goes-in-agentsmd).
 - Use ADRs to record what was rejected, not only what was chosen. An AI tool has no memory of your team's discussions, so without an ADR recording that microservices were considered and rejected for their deployment complexity, it may suggest exactly that approach again.
 
 Review is where drift gets caught, and the design document is the reference that review checks generated code against. [How the team reviews AI-generated code](/guides/working-agreement/#ai-tool-usage), and how loosely it treats spikes and prototypes, is team process, which the working agreement covers.
@@ -255,7 +255,7 @@ Architecture writing skews toward systems far larger than yours, so these are pi
 
 **Activities that exercise this**
 
-- [Describe your Architecture](/activities/technical-design/#describe-your-architecture): produces the diagram this guide is about, in one session.
+- [Describe your Architecture](/activities/technical-design/#describe-your-architecture): produces the context and container diagrams, in one session.
 - [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan): the runtime half of the design.
 - [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase): reverse-engineering a design when you inherit one.
 - [Dependency Mapping or Critical Path Analysis](/activities/planning-and-risk/#dependency-mapping-or-critical-path-analysis): the build order your architecture implies.

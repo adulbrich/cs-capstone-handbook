@@ -211,7 +211,7 @@ Projects that handle datasets, machine learning models, or research data have co
 
 ## Some Truths About Security
 
-For some systems a threat model is busywork, and it's reasonable to skip it. A static site with no login, no user data, and no server-side code has little to model: its assets are the content and the credentials that deploy it, and the hosting platform runs everything else. Spend that session on the deploy key and the dependency alerts instead. The model earns its time once the system holds accounts, personal data, or payments, or calls another service on a user's behalf, because each of those adds a trust boundary that someone can try to cross.
+For some systems a threat model is busywork, and it's reasonable to skip it. A static site with no login, no user data, and no server-side code has little to model: its assets are the content and the credentials that deploy it, and the hosting platform runs everything else. Spend that session on those credentials and the dependency alerts instead. The model earns its time once the system holds accounts, personal data, or payments, or calls another service on a user's behalf, because each of those adds a trust boundary that someone can try to cross.
 
 The [CWE Top 25](https://cwe.mitre.org/top25/) for 2025, which MITRE ranks from the weaknesses behind 39,080 published vulnerability records, opens with cross-site scripting, SQL injection, cross-site request forgery, and missing authorization, and the OWASP Top 10 opens with broken access control and misconfiguration. None of these needs a clever attacker, and OWASP publishes a cheat sheet on preventing each of the first four. Read one of the two lists carefully before you spend an afternoon on anything exotic, such as implementing cryptography yourself.
 
@@ -243,7 +243,7 @@ In academia, security research handles the same material it studies, and its pra
 - [Application Security Verification Standard](https://owasp.org/projects/asvs), OWASP: a list of security requirements to build and test against, for when the Top 10 isn't detailed enough.
 - [Digital Identity Guidelines: Authentication and Authenticator Management](https://pages.nist.gov/800-63-4/sp800-63b.html), NIST SP 800-63B-4: the standard on passwords, including its rule against forcing periodic password changes.
 - [Known Exploited Vulnerabilities Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), CISA: vulnerabilities with evidence of exploitation in the wild, for deciding which alert to fix first.
-- [Security Engineering](https://www.cl.cam.ac.uk/archive/rja14/book.html), Ross Anderson: a textbook on building systems that stay dependable under attack, with chapters free to download.
+- [Security Engineering](https://www.cl.cam.ac.uk/archive/rja14/book.html), Ross Anderson: a textbook on building systems that stay dependable under attack.
 - [DevSecOps Guideline](https://owasp.org/projects/devsecops-guideline), OWASP: adding security checks to a development pipeline.
 - [Have I Been Pwned](https://haveibeenpwned.com/), Troy Hunt: useful for showing a skeptical teammate what a breach corpus looks like.
 

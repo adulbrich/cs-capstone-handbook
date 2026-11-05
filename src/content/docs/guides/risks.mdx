@@ -30,7 +30,7 @@ A risk is something that hasn't happened, might, and would hurt the project if i
 
 - An issue has already happened: the build is broken, the partner's server is down. It goes on the board as work.
 - An open question can be answered by asking someone: "Does the first release need to work offline?" It goes in your requirements or design document with an owner, and stops being uncertain once someone answers it.
-- An assumption is something you're treating as true without checking. An assumption whose failure would hurt is a risk; the [requirements guide](/guides/requirements/#validation) labels the product ones "assumed" so they can be checked.
+- An assumption is something you're treating as true without checking. An assumption whose failure would hurt is a risk; the requirements guide [labels the product ones "assumed"](/guides/requirements/#validation) so they can be checked.
 
 Each entry in the register carries the same parts:
 
@@ -41,7 +41,7 @@ Each entry in the register carries the same parts:
 - **Owner**: the person who watches the risk and runs the response.
 - **Response**: what you're doing about it.
 - **Trigger**: the observable sign that the risk is turning into an issue.
-- **Asked**: for a risk that waits on someone outside the team, who you asked and when, or its start-by date until you ask.
+- **Start by** or **Asked**: for a risk that waits on someone outside the team, its start-by date, then who you asked and when.
 
 ## Addressing a Problem
 
@@ -57,11 +57,11 @@ Sort what you find into three categories, each surfaced by a document you alread
 
 Business risks are about whether the work is worth doing for the people it's for. Three of Marty Cagan's [four big risks](https://www.svpg.com/four-big-risks/) belong here: value (will users choose it), usability (can they figure it out), and business viability (does it work for the partner's business, contracts and legal obligations included). Cagan makes the product manager responsible for value and viability, and the designer for usability. On an open-source contribution, the business is the upstream project and its maintainers; on a research project, it's the research question and whoever needs the answer.
 
-Look for these in your requirements document. The [requirements guide](/guides/requirements/#validation) asks Cagan's questions of each requirement, and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "The people this is for haven't tried it; if they keep their spreadsheet, the problem the project exists to fix stays unfixed." The partner's own constraints belong here too: an approval their IT department has to give, a data use agreement, a policy the product has to follow.
+Look for these in your requirements document. The requirements guide [asks Cagan's questions of each requirement](/guides/requirements/#validation), and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "The people this is for haven't tried it; if they keep their spreadsheet, the problem the project exists to fix stays unfixed." The partner's own constraints belong here too: an approval their IT department has to give, a data use agreement, a policy the product has to follow.
 
 ### Technical
 
-Technical risks are Cagan's fourth, feasibility, which he assigns to the lead engineer: whether the team can build what's needed with the time, skills, and technology it has. They live in the assumptions your design document rests on and nobody has tested: an integration you've never built, a library pushed past what its documentation promises, data at a scale you've never loaded. The [technical design guide](/guides/technical-design/#prototypes-and-spikes) answers each with a spike, a short experiment that turns the assumption into a fact; until the spike is done, the assumption is a register entry. Security threats you've ranked in a threat model can sit here too, so the most serious one competes with everything else for the team's attention.
+Technical risks are Cagan's fourth, feasibility, which he assigns to the lead engineer: whether the team can build what's needed with the time, skills, and technology it has. They live in the assumptions your design document rests on and nobody has tested: an integration you've never built, a library pushed past what its documentation promises, data at a scale you've never loaded. The technical design guide answers each with [a spike](/guides/technical-design/#prototypes-and-spikes), a short experiment that turns the assumption into a fact; until the spike is done, the assumption is a register entry. Security threats you've ranked in a threat model can sit here too, so the most serious one competes with everything else for the team's attention.
 
 ### Team
 
@@ -73,7 +73,7 @@ A disagreement between teammates, or a teammate who isn't delivering, isn't a re
 
 ### Risks That Wait on Someone Else
 
-Some risks in every category wait on someone outside the team, such as the partner's IT review or a maintainer's queue. They aren't a fourth category, because what's at stake is still business, technical, or team; what sets them apart is that the wait isn't yours. Before you've asked, give it a start-by date: the last day you can ask and still absorb the usual wait. Once you've asked, replace the date with an Asked line (who you asked, and when), because from then on its likelihood only falls when the other side answers. A risk you can only wait out is managed by starting early, which is why the start-by date matters more than the rank. The [Shipping guide](/guides/shipping/) lists these prerequisites by whose action they wait on, with their usual lead times.
+Some risks in every category wait on someone outside the team, such as the partner's IT review or a maintainer's queue. They aren't a fourth category, because what's at stake is still business, technical, or team; what sets them apart is that the wait isn't yours. Before you've asked, give it a start-by date: the last day you can ask and still absorb the usual wait. Once you've asked, replace the date with an Asked line (who you asked, and when), because from then on its likelihood only falls when the other side answers. A risk you can only wait out is managed by starting early, which is why the start-by date matters more than the rank. The Shipping guide lists [these prerequisites by whose action they wait on](/guides/shipping/).
 
 ## Writing a Risk
 
@@ -139,7 +139,7 @@ Combining the two comes from <Cite id="boehm-1991" />, who defined risk exposure
 
 ## Responding to a Risk
 
-Each risk gets one of four responses, the same four the [Security guide](/guides/security/#threat-modeling-thinking-like-an-attacker) applies to threats:
+Each risk gets one of four responses, the same four the Security guide applies to [threats](/guides/security/#threat-modeling-thinking-like-an-attacker):
 
 - **Mitigate**: lower the likelihood or the impact now. Spike the integration, pair on the deploy, show users the main flow before building more.
 - **Eliminate**: change the plan so the risk can't happen. Use the partner's existing sign-in instead of building your own; drop the feature that needs the data you can't get.
@@ -177,7 +177,7 @@ The register is working if the problems that hurt the project were on it before 
 The evidence on language models and risk work is thin and comes from outside software. <Cite id="collier-2025" /> had product safety professionals rate ChatGPT's risk assessments for six consumer products: it did better at divergent tasks such as brainstorming failure modes and mitigations, but made errors, gave inconsistent results, and offered guidance the professionals found overly generic. The authors suggest the tools assist with ideation while experts review the output, and that division fits a register too:
 
 - In a premortem, add the tool's list after everyone has written and read out their own, so it extends the team's list instead of anchoring it. Give it the requirements, the design document, and the current register, because without that context it lists the risks of any project.
-- Point your coding agents at the register in [the repository's instruction file](/guides/ai-project-setup/), so an agent says when a task touches an open risk. Let it flag, not edit: ranking needs judgment and context it doesn't have, and the partner reads the file.
+- Point your coding agents at the register in [`AGENTS.md`](/guides/ai-project-setup/), so an agent says when a task touches an open risk. Let it flag, not edit: ranking needs judgment and context it doesn't have, and the partner reads the register.
 - Before each sprint planning, have an agent draft what moved since the last review: merged pull requests, closed issues, and any trigger it can check in the repository, such as whether the spike's issue is still open. The team decides. A trigger outside the repository, such as a reply from the partner's IT department, stays with its owner.
 
 Keep the register out of commit hooks. A hook can't tell whether a risk moved, because the facts behind most risks live outside the repository, so it either flags nothing or flags every commit, and a check that always fires teaches the team to bypass it.

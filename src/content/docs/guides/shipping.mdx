@@ -13,7 +13,7 @@ Early in a project, you and your project partner or mentor agree what "shipped" 
 :::note[tl;dr]
 - Measure shipped by one question, who ran the software, and agree the level you're aiming at with your partner in the first weeks.
 - Start everything with a long lead time in those weeks: store accounts, contributor agreements, data access, the partner's IT review, a channel for recruiting users who owe you nothing.
-- Deploy a walking skeleton in the early phase: the thinnest slice of the system, running end to end where the real one will live.
+- Deploy a walking skeleton in the early phase: the thinnest slice of the system, running end to end.
 - If you contribute to an open-source project, get a trivial pull request merged early, and discuss any substantial change with the maintainers before you build it.
 - Wire in the measurement early, so the numbers exist by the time you need them.
 - Capture evidence the day it happens: the merged pull request, the dashboard, the partner's email.
@@ -45,7 +45,7 @@ What separates open from merged isn't your code alone. It's a maintainer's atten
 Each level has its own prerequisites:
 
 - **Open**: a working development setup for the upstream project, and its contribution workflow understood: a Contributor License Agreement (CLA) signed or each commit signed off under the [Developer Certificate of Origin](https://developercertificate.org/) (DCO), style and commit conventions followed, and tests passing in the project's CI.
-- **Reviewed and revised**: a maintainer chose to spend time on your pull request, and you answered every comment. Plan for more than one round on a substantive change, each one waiting in a queue you can't see, and answer each round within days, because a pull request that sits quiet looks abandoned.
+- **Reviewed and revised**: a maintainer chose to spend time on your pull request, and you answered every comment. Plan for more than one round on a substantive change, each one waiting in a queue you can't see, and answer each round within two days, because a pull request that sits quiet looks abandoned.
 - **Merged**: every round addressed, the branch rebased onto a moving main branch, and the change judged worth maintaining by the people who will own it after you leave.
 - **Included in a release**: the project cuts a release that includes your change, on its own release schedule.
 
@@ -139,7 +139,7 @@ Expect these blockers:
 - Data use agreements stalled in legal review.
 - The baseline paper's code not actually running.
 - Compute quotas.
-- Results that arrive a few weeks before the end, with no time left to interpret them.
+- Results that arrive in the late phase, with no time left to interpret them.
 
 Collect as you go: approval letters and agreement dates, the reproducible artifact itself (a repository tag plus instructions), your baseline numbers next to the published ones, experiment logs, your partner's written confirmation that the results are novel or worth submitting, and the paper draft or preprint link.
 
@@ -169,13 +169,13 @@ Treat the handoff as part of the product. You'll leave and the system stays, so 
 
 Expect these blockers:
 
-- A security review that shows no progress for weeks.
+- A security review that shows no progress.
 - A single overloaded IT contact on the partner's side.
 - Accounts and VPN access the partner's IT staff haven't provisioned.
 - Data that can't leave the partner's network (design for this early).
 - Staff turnover at the partner partway through the project.
 
-Collect as you go: the acceptance criteria and the partner's written endorsement, meeting notes and emails showing feedback rounds and sign-offs, security review correspondence, screenshots of the system running in the partner's environment (a screen-shared walkthrough instead, where a non-disclosure agreement rules out screenshots), the handoff package, and the partner's written statement that they use it in production.
+Collect as you go: the acceptance criteria and the partner's written endorsement, meeting notes and emails showing feedback rounds and sign-offs, security review correspondence, screenshots of the system running in the partner's environment (sanitized, where a non-disclosure agreement applies), the handoff package, and the partner's written statement that they use it in production.
 
 ## Best Practices for Shipping
 
@@ -192,7 +192,7 @@ The estimate you get from an IT department, a data owner, or a maintainer is how
 
 The walking skeleton, the typo pull request, and the sample-data pipeline have no value as features. Their value is that each one runs the whole external chain once (domain, TLS, contributor agreement, CI, review, data access), so the problems surface when you have months to fix them instead of days.
 
-Friends try your software because they like you, and they forgive an onboarding flow that needs you on a call. Everyone else arrives only through a channel you built before you needed them, and leaves at the first confusing screen, so a post in a forum the week you need them brings you very few.
+Friends try your software because they like you, and they forgive an onboarding flow that needs you on a call. Everyone else arrives through a channel you built before you needed them, and leaves at the first confusing screen, so a post in a forum the week you need them brings you very few.
 
 "The partner will deploy it after the project ends" describes the feedback level while claiming the operations level. Once the team is gone, nobody is left to fix whatever differs in the partner's environment (an authentication scheme, a network policy, a data access rule), so a plan that stops short of deploying there ends one level lower than it claims.
 

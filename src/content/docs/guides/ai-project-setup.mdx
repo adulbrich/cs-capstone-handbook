@@ -90,7 +90,7 @@ An agent stops when the work looks done to it. With no check to run, as Anthropi
 
 The criteria live in your issue tracker, which sits outside the repository, so the repository carries the map to it. A short document such as `docs/agents/issue-tracker.md` says how to read an issue, which label marks work ready for an agent, how a pull request links back, and when to file a new issue instead of fixing something in passing. Then "work on the next ready issue" is a complete instruction. GitHub Issues is one example; any board the agent can read works, and if it can't reach yours, paste the criteria into the task.
 
-Criteria become evidence only when the agent can run the checks behind them: one command that brings up a working environment, tests, a type checker, and a linter it runs without you, with error messages that say how to fix the problem. Ask for the test output, not the claim. [What to test](/guides/testing-strategy/) is a separate subject.
+Criteria become evidence only when the agent can run the checks behind them: tests, a type checker, a linter, and one command that brings up a working environment, all runnable without you, with error messages that say how to fix the problem. Ask for the test output, not the claim. [What to test](/guides/testing-strategy/) is a separate subject.
 
 Don't let the session that did the work be its only reviewer. A reviewer in a fresh context sees only the diff and the criteria, so it doesn't share the author's blind spots. Tell it to report only gaps against correctness and the criteria, because a reviewer asked for problems will find some whether or not they matter.
 
