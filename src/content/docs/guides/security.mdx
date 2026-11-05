@@ -173,7 +173,7 @@ pip-audit              # Python (install with: pip install pip-audit)
 cargo audit            # Rust (install with: cargo install cargo-audit)
 ```
 
-On GitHub, turn on [Dependabot alerts](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-dependabot-alerts) in the repository's settings. Dependabot then alerts you when a dependency on your default branch has a known vulnerability, and with [Dependabot security updates](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-security-updates) enabled it also tries to fix each one with a pull request that updates the dependency.
+On GitHub, turn on [Dependabot alerts](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-dependabot-alerts) in the repository's Settings, under Advanced Security. Dependabot then alerts you when a dependency on your default branch has a known vulnerability, and with [Dependabot security updates](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-security-updates) enabled it also tries to fix each one with a pull request that updates the dependency.
 
 Read each alert before you act on it. Check whether your code reaches the vulnerable function, and use the severity score, usually a [CVSS](https://www.first.org/cvss/) score, to order the work. Don't leave alerts open indefinitely, though, because a published advisory tells an attacker what to look for as clearly as it tells you.
 
