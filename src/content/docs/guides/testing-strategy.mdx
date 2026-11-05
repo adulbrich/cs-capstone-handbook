@@ -108,7 +108,7 @@ The pyramid has a competitor, and Fowler himself hedges it. He notes that it res
 Spend tests where a failure would hurt, not where tests are easiest to write:
 
 - Test behavior, not implementation. A test that asserts "the output is sorted" survives a refactor; one that asserts "the function calls `sort()` internally" breaks every time the code changes, even when the behavior hasn't.
-- Cover the critical paths thoroughly: authentication, payment processing, the core data pipeline, the primary user interaction. Edge cases in a settings page can wait.
+- Cover the critical paths: authentication, payment processing, the core data pipeline, the primary user interaction. Edge cases in a settings page can wait.
 - Test the boundaries first (empty inputs, maximum values, invalid data, concurrent access), because a boundary is where a single wrong comparison flips the result, and it's the case a happy-path test never reaches. If a function accepts a list, test it with an empty list, one item, and a very large list.
 - Don't test framework code. If the framework guarantees a 404 for an unregistered route, test your code instead of theirs.
 - Don't chase a coverage number. Use coverage to find code no test executes; Some Truths below explains why a target backfires.
