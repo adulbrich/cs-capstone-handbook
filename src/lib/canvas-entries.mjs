@@ -113,11 +113,18 @@ const INVITATION_CLOSE_PAGES = new Set([
 // its invitation date instead of by Sunday of its week.
 export const closesByInvitation = (page) => INVITATION_CLOSE_PAGES.has(page);
 
+// Week 11 is finals week, which no page calls week 11.
+const FINALS_WEEK = 11;
+
 // When entries are due, in lowercase after "Sunday": "Sunday of week 4",
-// "Sunday of fall weeks 2, 3, 7, and 8", or, for a survey that closes on its
-// invitation date, "closes week 6".
+// "Sunday of fall weeks 2, 3, 7, and 8", "Sunday of finals week", or, for a
+// survey that closes on its invitation date, "closes week 6".
 export function dueWeeks(weeks, { term, invitation = false } = {}) {
-  const which = `${term ? `${term} ` : ""}${weeks.length === 1 ? "week" : "weeks"} ${termList(weeks.map(String))}`;
+  const when =
+    weeks.length === 1 && weeks[0] === FINALS_WEEK
+      ? "finals week"
+      : `${weeks.length === 1 ? "week" : "weeks"} ${termList(weeks.map(String))}`;
+  const which = `${term ? `${term} ` : ""}${when}`;
   return invitation ? `closes ${which}` : `Sunday of ${which}`;
 }
 
@@ -235,7 +242,7 @@ export const LATE = {
   session: {
     label: "Defense",
     needs: "none",
-    text: "Tell your TA before the session and you're rescheduled that term, with no penalty. An unexcused no-show scores Missing.",
+    text: "Tell your assessor before the session and you're rescheduled that term, with no penalty. An unexcused no-show scores Missing.",
   },
   standard: {
     label: "Most submissions",
