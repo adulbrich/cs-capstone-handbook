@@ -175,7 +175,7 @@ test("criteria that score differently, or bands the sheet does not print, fail t
   assert.throws(
     () =>
       liveSheet(
-        rubric(PLANNING, { ...TESTING, missing: "Absent." }),
+        rubric(PLANNING, { ...TESTING, missing: "Absent; rescheduled." }),
         "invented.csv"
       ),
     /criterion 2 \(Testing\) scores differently from criterion 1/
@@ -204,6 +204,25 @@ test("criteria that score differently, or bands the sheet does not print, fail t
         "invented.csv"
       ),
     /the preamble does not read "All <count>, <condition>"/
+  );
+  assert.throws(
+    () =>
+      liveSheet(
+        rubric(PLANNING, {
+          ...TESTING,
+          exceeds: TESTING.exceeds.replace(", and no red flag", ""),
+        }),
+        "invented.csv"
+      ),
+    /the condition does not end ", and no red flag"/
+  );
+  assert.throws(
+    () =>
+      liveSheet(
+        rubric({ ...PLANNING, missing: "No-show, or no attempt." }),
+        "invented.csv"
+      ),
+    /Missing: no semicolon/
   );
   assert.throws(
     () => liveSheet(rubric(PLANNING, PLANNING), "invented.csv"),
@@ -247,9 +266,6 @@ test("the defense rubric prints word for word, under one rule its bands state", 
   );
   assert.ok(firstBand(BAND_NAMES.meets).endsWith(`: ${sheet.rule.meetsRule}`));
   assert.equal(firstBand(BAND_NAMES.missing), sheet.rule.missing.description);
-  // The banner's three lines quote the bands from their start.
-  assert.ok(sheet.rule.exceedsCondition.startsWith(sheet.rule.itemCondition));
-  assert.ok(sheet.rule.missing.description.startsWith(sheet.rule.missing.lead));
   // Every item is the CSV's own text, so nothing on the sheet is retyped.
   parsed.criteria.forEach((criterion, i) => {
     const band = (name) =>

@@ -176,6 +176,16 @@ export function readCriterion(criterion, where) {
       `${where}, ${exceeds.name}: the preamble does not read "All <count>, <condition>". The banner prints the condition every item meets.`
     );
   }
+  if (!RED_FLAG_CLAUSE.test(condition[1])) {
+    throw new Error(
+      `${where}, ${exceeds.name}: the condition does not end ", and no red flag". The banner prints the condition without that clause, which its points line states.`
+    );
+  }
+  if (!missing.description.includes(";")) {
+    throw new Error(
+      `${where}, ${missing.name}: no semicolon. The banner prints the description up to its first semicolon.`
+    );
+  }
   const flags = readList(
     doesNotMeet.description,
     `${where}, ${doesNotMeet.name}`
