@@ -4,7 +4,7 @@
 // scale is firstFit in defense-sheets.mjs. Each sheet is fitted on its own,
 // since a long name or team name can take a second line of the header: the
 // example page fits its one sheet, the tool its preview as it changes and
-// every printed sheet when Print is pressed.
+// every printed sheet before it prints.
 import { FIT_SCALES, firstFit } from "../../../lib/tools/defense-sheets.mjs";
 
 /**

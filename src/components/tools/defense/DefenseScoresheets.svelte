@@ -6,8 +6,8 @@
 // is drawn by the same component twice: scaled in the preview, and in the
 // print copy under <body> that sheets.css prints alone. Each live sheet is
 // fitted to its own page, as the example page fits its one (fitSheet in
-// fit.js): the preview's as it changes, and every printed sheet when Print
-// is pressed. `sheet` and `session` are read from the rubric and the
+// fit.js): the preview's as it changes, and every printed sheet before it
+// prints. `sheet` and `session` are read from the rubric and the
 // defense page at build time (defense-rubric.mjs).
 import {
   previewText,
