@@ -9,7 +9,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-You're about to write `docs/design.md` for a system that barely exists yet, or you're a few sprints in and every integration turns up a mismatch nobody planned for. This page covers what a design document has to decide (the architecture, the interfaces, the data), how to test the risky parts with a spike before you commit, how to check a design with someone other than its authors, and how to keep the document true while the code moves. It doesn't cover recording individual decisions, which the [Architecture Decision Records](/guides/adr/) guide does, or configuring your AI tools, which [AI Project Setup](/guides/ai-project-setup/) does.
+You're about to write `docs/design.md` for a system that barely exists yet, or you're a few sprints in and every integration turns up a mismatch nobody planned for. This page covers what a design document has to decide (the architecture, the interfaces, the data), how to test the risky parts with a spike before you commit, how to check a design with someone other than its authors, and how to keep the document true while the code moves. It doesn't cover recording individual decisions in [Architecture Decision Records](/guides/adr/) or [configuring your AI tools](/guides/ai-project-setup/).
 
 :::note[tl;dr]
 - Put the system view in `docs/design.md`: what the system does, one or two diagrams, the interfaces, the data, how it deploys, and the open questions. Two pages is enough for a small team.
@@ -94,7 +94,7 @@ Sometimes the right move is to build a small, throwaway prototype that answers o
 
 [Extreme Programming](http://www.extremeprogramming.org/rules/spike.html) calls this a **spike**: a very simple program that explores possible solutions to one technical problem, ignores every other concern, and is expected to be thrown away. Its goal is to reduce the risk of that problem, and its output is a finding, not production code. Record the finding in an ADR and delete the code.
 
-Time-box every spike. Extreme Programming suggests a pair of developers for a week or two; on a small team with other work in flight, a few days is usually what you can afford. The time box matters because a spike without an end date quietly becomes the first draft of production code, with none of the care production code gets.
+Time-box every spike. Extreme Programming suggests a pair of developers for a week or two; on a small team with other work in flight, a few days is usually what you can afford. The time box matters because a spike without an end date quietly becomes the first draft of production code, without the review and tests production code gets.
 
 Spike the riskiest assumption first. If the design depends on a component or an integration you've never built, a spike finds out whether it works while the design can still change around the answer.
 
@@ -195,12 +195,12 @@ AI coding tools have changed how individuals write software without removing the
 
 Three or four people, each with their own tool, is a different problem. Every assistant works in its own local context: the files it was shown, the conversation it had, the instructions it was given. It doesn't know what a teammate's tool suggested yesterday, what the team agreed in a meeting, or which approach was considered and rejected. Each person-and-tool pair can drift toward its own reading of how the system should work, and the codebase grows fast and incoherent: one member's tool adds an abstraction layer where another's used a utility function, names diverge, error handling multiplies. It compiles and the tests pass, so the inconsistency is often embedded by the time anyone notices it, and a tool repeats an inconsistent pattern as quickly as a good one.
 
-The design document counters that drift by giving every teammate and every tool the same account of how the system is structured and which boundaries to respect. Two practices put it to work:
+Against that drift, give every teammate and every tool the same design document: one account of how the system is structured and which boundaries to respect. Two practices put it to work:
 
-- Give the design to your AI tools the way you'd brief a new teammate: point your project-level instructions at `docs/design.md`, and copy in only the rules a tool must never break (boundaries, naming, interface contracts), so every suggestion starts from your architecture. A copy of the whole design drifts from the original. [AI Project Setup](/guides/ai-project-setup/#what-goes-in-agentsmd) has the files and what belongs in them.
+- Give the design to your AI tools the way you'd brief a new teammate: point your project-level instructions at `docs/design.md`, and copy in only the rules a tool must never break (boundaries, naming, interface contracts), so every suggestion starts from your architecture. A copy of the whole design drifts from the original. AI Project Setup has [the files and what belongs in them](/guides/ai-project-setup/#what-goes-in-agentsmd).
 - Use ADRs to record what was rejected, not only what was chosen. An AI tool has no memory of your team's discussions, so without an ADR recording that microservices were considered and rejected for their deployment complexity, it may suggest exactly that approach again.
 
-Review is where drift gets caught, and the design document is the reference that review checks generated code against. How the team reviews AI-generated code, and how loosely it treats spikes and prototypes, is team process, which the [working agreement](/guides/working-agreement/#ai-tool-usage) covers.
+Review is where drift gets caught, and the design document is the reference that review checks generated code against. [How the team reviews AI-generated code](/guides/working-agreement/#ai-tool-usage), and how loosely it treats spikes and prototypes, is team process, which the working agreement covers.
 
 <LinkCard
   title="Generative AI"

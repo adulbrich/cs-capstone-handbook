@@ -9,7 +9,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has a project partner, a repository, and a list of things to build, and someone has to decide what gets built in the next two weeks. Or a sprint just ended and there was nothing to show at the demo. This page covers how a sprint runs from planning to retrospective, what "done" has to mean for the cycle to work, how to estimate and protect the plan, and when continuous flow with Kanban fits better. It doesn't cover how to rank the backlog, which is the [planning guide](/guides/planning/)'s subject, or how to facilitate a retrospective, which the [retrospectives guide](/guides/retrospectives/) covers.
+Your team has a project partner, a repository, and a list of things to build, and someone has to decide what gets built in the next two weeks. Or a sprint just ended and there was nothing to show at the demo. This page covers how a sprint runs from planning to retrospective, what "done" has to mean for the cycle to work, how to estimate and protect the plan, and when continuous flow with Kanban fits better. It doesn't cover [how to rank the backlog](/guides/planning/) or [how to facilitate a retrospective](/guides/retrospectives/).
 
 :::note[tl;dr]
 - Run two-week sprints: plan, build, demo to your project partner, then hold a retrospective before the next sprint starts.
@@ -51,7 +51,7 @@ The time before the first real sprint is sometimes called Sprint 0. The term isn
 
 Each sprint runs the same four phases: plan, build, review, reflect. The [Scrum Guide](https://scrumguides.org/scrum-guide.html) names them Sprint Planning, the Sprint itself with its Daily Scrum, the Sprint Review, and the Sprint Retrospective. Read it once, because it's the authoritative definition of the terms your future colleagues will use, and it's short. It also says Scrum is "immutable", and that while "implementing only parts of Scrum is possible, the result is not Scrum."
 
-This page departs from the Guide in a few places, so by the Guide's own definition what it describes isn't Scrum; [Some Truths](#some-truths-about-sprints) opens with the reason.
+This page departs from the Guide in places, stand-up frequency among them, so by the Guide's own definition what it describes isn't Scrum; [Some Truths](#some-truths-about-sprints) opens with the reason.
 
 ### Sprint Planning
 
@@ -95,7 +95,7 @@ Show the work itself: running software on real data, a notebook with actual outp
 
 ### Sprint Retrospective
 
-After the review and before the next sprint starts, the team holds a short retrospective (30 to 45 minutes) on how it worked rather than on what it built. The Scrum Guide gives its purpose as planning "ways to increase quality and effectiveness", and the [retrospectives guide](/guides/retrospectives/) covers formats and facilitation.
+After the review and before the next sprint starts, the team holds a short retrospective (30 to 45 minutes) on how it worked rather than on what it built. The Scrum Guide gives its purpose as planning "ways to increase quality and effectiveness", and the retrospectives guide covers [formats and facilitation](/guides/retrospectives/).
 
 :::note[Process Overhead]
 At the lengths this page recommends, a two-week sprint costs each person about this much:
@@ -149,7 +149,7 @@ Estimate together, because a teammate may know why a task is harder than it look
 
 **Capacity** is the time the team actually has this sprint, after every other commitment each member has. Count all of it during planning and plan to it, because people predict their own completion times optimistically. <Cite id="buehler-1994" /> found people's predictions too optimistic across a variety of academic and nonacademic tasks, and found that people predicting focused on future scenarios rather than on relevant past experience.
 
-The same study points at the fix: in its fourth experiment, the optimistic bias disappeared when participants were told to connect relevant past experiences to their predictions <Cite id="buehler-1994" form="parenthetical" />. A team's past experience is its **velocity**, roughly how many tasks it finishes per sprint, which you'll know after a few sprints. Start each plan from it.
+The same study points at the fix: in its fourth experiment, the optimistic bias disappeared when participants were told to connect relevant past experiences to their predictions <Cite id="buehler-1994" form="parenthetical" />. A team's past experience is its **velocity**, roughly how many tasks it finishes per sprint, which you'll know after two or three sprints. Start each plan from it.
 
 ## Managing Scope Mid-Sprint
 
@@ -200,10 +200,10 @@ You don't need to choose a process on day one and keep it forever. Start with pl
 
 At the end of a good sprint:
 
-- The sprint goal was met, or the team can explain clearly why it wasn't.
+- The sprint goal was met, or the team can explain why it wasn't.
 - Real results were demonstrated to the project partner: running software, notebook outputs, validated findings.
 - The team identified at least one process improvement and committed to it.
-- Every team member made a visible, documented contribution.
+- Every team member made a documented contribution.
 
 At the end of a struggling sprint:
 

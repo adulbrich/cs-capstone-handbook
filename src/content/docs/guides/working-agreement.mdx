@@ -9,7 +9,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has just formed, or it has worked together long enough that a habit nobody chose is starting to grate: pull requests that sit unreviewed for a week, a decision made in a private message, a teammate who goes quiet from Friday to Monday. This page covers the working agreement (sometimes called a team charter): what it settles, how to write one together, and how to keep it current. It doesn't cover how to confront a teammate who isn't contributing, which is the [conflict guide](/guides/conflict/)'s subject, or the branch and review rules for the code, which belong in `CONTRIBUTING.md`.
+Your team has just formed, or it has worked together long enough that a habit nobody chose is starting to grate: pull requests that sit unreviewed for a week, a decision made in a private message, a teammate who goes quiet from Friday to Monday. This page covers the working agreement (sometimes called a team charter): what it settles, how to write one together, and how to keep it current. It doesn't cover [how to confront a teammate who isn't contributing](/guides/conflict/), or the branch and review rules for the code, which belong in `CONTRIBUTING.md`.
 
 :::note[tl;dr]
 - Write the agreement together, in one 45-to-60-minute session with everyone present.
@@ -20,7 +20,7 @@ Your team has just formed, or it has worked together long enough that a habit no
 - Revise it after your first retrospective, after a significant conflict, when the scope changes, and at each new phase of the project.
 :::
 
-A working agreement is a document the team writes together to make its operating model explicit: how decisions get made, how people communicate, what "done" means, and what happens when something isn't working. Every team develops those habits anyway. The agreement decides whether they form on purpose or by accident, and it gives the team something to point at when one person's expectation and another's habit disagree.
+A working agreement is a document the team writes together to make its operating model explicit: how decisions get made, how people communicate, what "done" means, and what happens when something isn't working. Every team develops those habits anyway. With an agreement, the team forms them on purpose instead of by accident and has something to point at when one person's expectation and another's habit disagree.
 
 ## Why Working Agreements Matter
 
@@ -38,7 +38,7 @@ No single template fits every team, but effective agreements settle the same few
 
 ### Roles and Ownership
 
-Make sure everyone knows who to go to for what, because a question with no obvious owner goes to whoever answers first, or to nobody. This doesn't mean rigid hierarchy. It means clarity, and the useful unit is the concern rather than the job title. Three concerns need an owner on almost any team: the schedule and the partner relationship, the shared AI configuration and the confidentiality rule, and the Definition of Done and the state of the build. Call the owners a Project Manager, an AI Coordinator, and a Quality Owner if you want labels, and name them once rather than letting a second informal set grow alongside.
+Make sure everyone knows who to go to for what, because a question with no obvious owner goes to whoever answers first, or to nobody. This doesn't mean rigid hierarchy: the useful unit is the concern rather than the job title. Three concerns need an owner on almost any team: the schedule and the partner relationship, the shared AI configuration and the confidentiality rule, and the Definition of Done and the state of the build. Call the owners a Project Manager, an AI Coordinator, and a Quality Owner if you want labels, and name them once rather than letting a second informal set grow alongside.
 
 Count owners per concern, not per person. A concern with two owners has none, because each will assume the other is handling it. A team of two has one person holding two concerns and should say which; a larger team has people holding none of the three, who should own something else nameable instead: a subsystem, the test suite, the deployment. Coordination work the three don't cover, such as keeping documentation current and facilitating stand-ups and retrospectives, is what those additional areas are for, and assigning it explicitly stops it falling on whoever notices first.
 
@@ -85,7 +85,7 @@ Every team disagrees. Define how the team handles it before tensions arise, whil
 2. A team discussion, in a retrospective or a dedicated meeting.
 3. Escalation to someone outside the team with authority over it, such as a manager or an advisor.
 
-Write escalation into the agreement as an ordinary step, because a team that treats it as a failure tends to wait until the problem can no longer be fixed. The [conflict guide](/guides/conflict/) owns the performance conversation and the escalation path in detail; what the agreement contributes is the part decided in advance.
+Write escalation into the agreement as an ordinary step, because a team that treats it as a failure tends to wait until the problem can no longer be fixed. The conflict guide owns [the performance conversation and the escalation path](/guides/conflict/) in detail; the agreement holds only the part decided in advance.
 
 ### Inclusion
 
@@ -103,7 +103,7 @@ Your team will probably use AI coding assistants: in the <Cite id="stackoverflow
 
 Settle four questions early, because teammates who each prompt their own assistant their own way can leave the codebase with inconsistent patterns, conflicting abstractions, and code nobody on the team fully understands:
 
-- Which configuration does the team share? Agree on one `AGENTS.md` checked into the repository, as [AI project setup](/guides/ai-project-setup/) describes, so every teammate's agent gets the same architectural context whichever model it runs.
+- Which configuration does the team share? Agree on [one `AGENTS.md` checked into the repository](/guides/ai-project-setup/), so every teammate's agent gets the same architectural context whichever model it runs.
 - Which tools may see your material? Teammates may bring different models to the same repository, so the confidentiality rule names the tools, and the model providers behind them, that each kind of material may go into.
 - What review does AI-generated code get? A reasonable default is the same review as human-written code. The author is responsible for understanding and defending what they commit, whoever (or whatever) wrote the first draft.
 - How does the team handle an architectural change an AI tool suggests? Treat it like any design change: discuss it, check it against the design document, and write an ADR if the team adopts it. Nobody merges a structural change just because an assistant proposed it.
@@ -205,9 +205,9 @@ Keep the agreement's earlier versions, which the version history of a shared doc
 
 ## When Things Go Wrong
 
-Use the agreement against slow erosion more than against a blowup: a teammate who misses deadlines, posts vague updates, and leaves tasks in progress for a sprint with nothing to show. A blowup forces a conversation on its own; erosion never produces that moment, so the team needs something to point at. The agreement's contribution is to make that conversation concrete. When it states availability in hours, says that a blocker is raised at the next stand-up rather than sat on for a week, and the team has a minimum deliverable per person per sprint that the board can show, then "I feel like you're not contributing" becomes "the board shows no completed tasks from you in the last two sprints", which is observable and hard to deflect.
+Use the agreement against slow erosion more than against a blowup: a teammate who misses deadlines, posts vague updates, and leaves tasks in progress for a sprint with nothing to show. A blowup forces a conversation on its own; erosion never produces that moment, so the team needs something to point at. When the agreement states availability in hours, says that a blocker is raised at the next stand-up rather than sat on for a week, and the team has a minimum deliverable per person per sprint that the board can show, then "I feel like you're not contributing" becomes "the board shows no completed tasks from you in the last two sprints", which is observable and hard to deflect.
 
-How to have that conversation, when a bad week becomes a pattern, and when to escalate are the [conflict guide](/guides/conflict/#performance-conversations)'s subject.
+[How to have that conversation](/guides/conflict/#performance-conversations), when a bad week becomes a pattern, and when to escalate are the conflict guide's subject.
 
 ### When a Role Goes Unfilled
 

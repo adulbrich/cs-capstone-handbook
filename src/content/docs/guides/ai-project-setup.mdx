@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your repository exists, and your teammates have started pointing coding agents at it. Each agent knows only what the repository tells it, so one adds a dependency nobody agreed to and another reports a task finished that nobody can check. This page covers what you commit so every agent works from the same rules and can tell when its work is done. How to prompt and review is the [Generative AI guide](/guides/generative-ai/)'s subject, and the CI (continuous integration) workflow and branch settings belong to [DevOps](/guides/devops/) and [Git and GitHub](/guides/git-and-github/).
+Your repository exists, and your teammates have started pointing coding agents at it. Each agent knows only what the repository tells it, so one adds a dependency nobody agreed to and another reports a task finished that nobody can check. This page covers what you commit so every agent works from the same rules and can tell when its work is done. It doesn't cover [how to prompt and review](/guides/generative-ai/), the [CI (continuous integration) workflow](/guides/devops/), or the [branch settings](/guides/git-and-github/).
 
 :::note[tl;dr]
 - What isn't written in the repository doesn't exist for the agent.
@@ -84,13 +84,13 @@ Some tools also keep a memory, but memory never shows up in a diff, so nobody re
 
 An agent stops when the work looks done to it. With no check to run, as Anthropic's best practices put it, "you become the verification loop: every mistake waits for you to notice it." So say what done is before it starts, at three levels:
 
-- The task names its finish line, as the [Generative AI guide](/guides/generative-ai/#start-with-clear-intent) describes. Addy Osmani's [example](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/): every payment endpoint is migrated to the new library, the old one is deleted, and the test suite passes.
-- The issue carries acceptance criteria someone could mark passed or failed, written as the [Requirements guide](/guides/requirements/#what-makes-a-good-requirement) shows.
+- The task names its [finish line](/guides/generative-ai/#start-with-clear-intent). Addy Osmani's [example](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/): every payment endpoint is migrated to the new library, the old one is deleted, and the test suite passes.
+- The issue carries [acceptance criteria](/guides/requirements/#what-makes-a-good-requirement) someone could mark passed or failed.
 - The project has a [Definition of Done](/guides/sprint/#definition-of-done) that applies to every task, which `AGENTS.md` points to rather than each request repeating.
 
 The criteria live in your issue tracker, which sits outside the repository, so the repository carries the map to it. A short document such as `docs/agents/issue-tracker.md` says how to read an issue, which label marks work ready for an agent, how a pull request links back, and when to file a new issue instead of fixing something in passing. Then "work on the next ready issue" is a complete instruction. GitHub Issues is one example; any board the agent can read works, and if it can't reach yours, paste the criteria into the task.
 
-Criteria become evidence only when the agent can run the checks behind them: one command that brings up a working environment, tests, a type checker, and a linter it runs without you, with error messages that say how to fix the problem. Ask for the test output, not the claim. What to test is the [testing strategy](/guides/testing-strategy/)'s subject.
+Criteria become evidence only when the agent can run the checks behind them: one command that brings up a working environment, tests, a type checker, and a linter it runs without you, with error messages that say how to fix the problem. Ask for the test output, not the claim. [What to test](/guides/testing-strategy/) is a separate subject.
 
 Don't let the session that did the work be its only reviewer. A reviewer in a fresh context sees only the diff and the criteria, so it doesn't share the author's blind spots. Tell it to report only gaps against correctness and the criteria, because a reviewer asked for problems will find some whether or not they matter.
 

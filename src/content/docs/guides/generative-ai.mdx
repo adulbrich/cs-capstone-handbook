@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-You've started using an AI tool on a real project, or one has just handed you a confident answer that turned out to be wrong. This page covers the habits you bring to the tool as an individual: where to spend your attention, how to question and learn from what it gives you, how to choose a model, what not to paste into a tool, and what the research says about how much these tools help. It doesn't cover setting up a repository for coding agents (instruction files, hooks, [MCP](https://modelcontextprotocol.io/) servers), which is [AI project setup](/guides/ai-project-setup/), or the norms a team agrees on, which belong in the [working agreement](/guides/working-agreement/#ai-tool-usage).
+You've started using an AI tool on a real project, or one has just handed you a confident answer that turned out to be wrong. This page covers the habits you bring to the tool as an individual: where to spend your attention, how to question and learn from what it gives you, how to choose a model, what not to paste into a tool, and what the research says about how much these tools help. It doesn't cover [setting up a repository for coding agents](/guides/ai-project-setup/) (instruction files, hooks, [MCP](https://modelcontextprotocol.io/) servers) or [the norms a team agrees on](/guides/working-agreement/#ai-tool-usage).
 
 :::note[tl;dr]
 - Validate hard-to-reverse decisions yourself (database schema, authentication, deployment, data migrations, licensing, public interfaces) and delegate easy-to-reverse work freely.
@@ -50,13 +50,13 @@ The habit that follows is to keep your opinion out of the question. "What's wron
 
 Before asking a tool to generate code, know what you want. "Build the authentication system" is a poor prompt. "Add a login endpoint that accepts email and password, validates against the users table, and returns a JWT" gives the tool enough context to produce something useful. Be this specific because the model fills every gap in your request with its most likely guess, and its most likely guess isn't your design.
 
-Say what done looks like as well (which behavior changes, which tests must pass, what must stay as it is), because a finish line you leave out gets filled with the same kind of guess. [AI project setup](/guides/ai-project-setup/#define-done-then-let-the-agent-check-it) covers writing that finish line into the repository, so a task inherits it without your having to repeat it.
+Say what done looks like as well (which behavior changes, which tests must pass, what must stay as it is), because a finish line you leave out gets filled with the same kind of guess. [Write that finish line into the repository](/guides/ai-project-setup/#define-done-then-let-the-agent-check-it), so a task inherits it without your having to repeat it.
 
 ### Verify what matters, and build the checks that let you trust the rest
 
 Generated code can look correct while being subtly wrong: off-by-one errors, missing edge cases, insecure defaults, hallucinated library methods. Reading every line stops working once an agent writes more code than you can read, the same way a tech lead can't read every line their team writes. Spend your attention where mistakes are expensive to undo. Database schema, authentication and authorization, deployment topology, data migrations, licensing, and public interfaces are hard-to-reverse decisions: getting one wrong costs far more than the review would have, so validate those yourself.
 
-Work behind your checks is easy to reverse: once a test tells you a feature is broken, the fix is one more commit. Delegate that work as far as your checks catch, and no further: tests that would fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, and a rollback path you've actually tried. To hand off more, improve the checks rather than reading harder. The industry report on AI-assisted development from DORA (DevOps Research and Assessment), Google Cloud's research program, found that AI's positive influence on team performance was amplified where developers rolled back changes more often <Cite id="dora-2025" form="parenthetical" />. [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) measures that fit on your own repository.
+Work behind your checks is easy to reverse: once a test tells you a feature is broken, the fix is one more commit. Delegate that work as far as your checks catch, and no further: tests that would fail if behavior broke, CI running on every pull request, review gates on the paths that are hard to undo, a staging environment, and a rollback path you've actually tried. To hand off more, improve the checks rather than reading harder. The industry report on AI-assisted development from DORA (DevOps Research and Assessment), Google Cloud's research program, found that AI's positive influence on team performance was amplified where developers rolled back changes more often <Cite id="dora-2025" form="parenthetical" />. Measure that fit on your repository with [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net).
 
 Checks catch what they were written to catch; they don't show that a change does what you meant. Simon Willison [argues](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) that your job is to deliver code you have proven to work, in two steps: exercise the change yourself and watch it do the right thing, then leave a test that fails if the change is reverted. Put the evidence in the pull request (the commands you ran and their output, or a screenshot), because a change submitted without it hands the verification to whoever reviews it.
 
@@ -82,7 +82,7 @@ If you've gone back and forth with a tool several times on the same problem and 
 
 Decide what you're about to paste before you paste it, because the provider's terms decide what happens to it next. Those terms differ by plan (some train on your conversations unless you opt out, some are cheaper because they do), so read the ones for the plan you're on, not just the tool's name.
 
-Your team decides which material may go into which tools and writes that rule down: the version for people in the [working agreement](/guides/working-agreement/#writing-your-agreement), and the version for the tools in [AI project setup](/guides/ai-project-setup/#what-goes-in-agentsmd). Your part is to check the rule before you paste, because the check takes seconds and a leak can't be undone.
+Your team decides which material (partner data, credentials, meeting content) may go into which tools and writes that rule down: the version for people in the [working agreement](/guides/working-agreement/#writing-your-agreement), and the version for the tools in [AI project setup](/guides/ai-project-setup/#what-goes-in-agentsmd). Your part is to check the rule before you paste, because the check takes seconds and a leak can't be undone.
 
 ## What You Can Automate
 
@@ -112,7 +112,7 @@ AI coding tools come in three shapes. An autocomplete tool suggests the next few
 
 ### Agent and model
 
-A coding agent is two choices: the program you run and the model it calls. Some programs work only with their vendor's models; open ones, such as [OpenCode](https://opencode.ai/docs/), connect to any provider you have an API key for, so you can change the model without changing how you work. What the agent knows about your project comes from the repository and the task, not the model, so a repository set up the way [AI project setup](/guides/ai-project-setup/) describes serves every teammate, whichever model each one brings.
+A coding agent is two choices: the program you run and the model it calls. Some programs work only with their vendor's models; open ones, such as [OpenCode](https://opencode.ai/docs/), connect to any provider you have an API key for, so you can change the model without changing how you work. What the agent knows about your project comes from the repository and the task, not the model, so a repository [set up for agents](/guides/ai-project-setup/) serves every teammate, whichever model each one brings.
 
 ### Comparing models
 
@@ -132,9 +132,9 @@ Who hosts a model decides where your prompts go, not who trained it. An open-wei
 
 ## Best Practices for Using AI Tools
 
-- Set your repository up for agents, as [AI project setup](/guides/ai-project-setup/) describes, before you rely on them.
+- [Set your repository up for agents](/guides/ai-project-setup/) before you rely on them.
 - Decide the hard-to-reverse decisions yourself. If you can't tell which they are, [Map Your Hard-to-Reverse Decisions](/activities/technical-design/#map-your-hard-to-reverse-decisions) first.
-- Build the checks before you scale delegation.
+- Build the checks before you delegate more.
 - Prove each change works before you ask for review.
 - Ask neutral questions, and ask for the case against your plan.
 - Check your team's confidentiality rule and your plan's data-use terms before you paste anything that isn't your own code.
@@ -151,7 +151,7 @@ A tool can make you more confident and less careful at the same time. In a user 
 
 The same pattern shows up outside security. <Cite id="lee-2025" /> surveyed 319 knowledge workers about 936 of their own uses of generative AI at work and found that the more confidence people had in the AI for a task, the less critical thinking they reported doing on it, while the more confidence they had in their own ability, the more they reported. It's a self-report survey, so it shows an association rather than a measured effect, but it points the same way as Perry's result.
 
-The bottleneck moves from writing code to verifying it. When a model drafts the code, your throughput is limited by how fast you can check it, and checking doesn't get faster because generation did: a team that doubles its output with the same review capacity builds a queue of unreviewed changes. The DORA industry report found that AI adoption now improves software delivery throughput but still increases delivery instability, which the report reads as teams adapting for speed before their underlying systems can safely manage AI-accelerated development <Cite id="dora-2025" form="parenthetical" />. Put your effort into the checks in [AI project setup](/guides/ai-project-setup/#hooks-and-gates) before prompt technique.
+The bottleneck moves from writing code to verifying it. When a model drafts the code, your throughput is limited by how fast you can check it, and checking doesn't get faster because generation did: a team that doubles its output with the same review capacity builds a queue of unreviewed changes. The DORA industry report found that AI adoption now improves software delivery throughput but still increases delivery instability, which the report reads as teams adapting for speed before their underlying systems can safely manage AI-accelerated development <Cite id="dora-2025" form="parenthetical" />. Put your effort into [the checks](/guides/ai-project-setup/#hooks-and-gates) before prompt technique.
 
 The findings on this page come from tools that have since been replaced, because research takes longer to publish than a model takes to be superseded. Check a finding's date before you lean on its numbers, and ask whether its mechanism (overconfidence, unreviewed batches, skipped learning) still applies to the tool you use.
 

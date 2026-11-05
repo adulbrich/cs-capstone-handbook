@@ -9,7 +9,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has a partner, a project idea, and notes from a first meeting where everyone seemed to agree on what to build. A week later two teammates are building different versions of the same feature, and the partner brings up something new at every meeting. This page covers how to write requirements a teammate can test, what goes in `docs/requirements.md`, and how to keep that file accurate as the project changes. It doesn't cover technology and architecture choices, which belong in an [ADR](/guides/adr/) and your [technical design](/guides/technical-design/), or how to order the work within a sprint, which the [planning guide](/guides/planning/) covers.
+Your team has a partner, a project idea, and notes from a first meeting where everyone seemed to agree on what to build. A week later two teammates are building different versions of the same feature, and the partner brings up something new at every meeting. This page covers how to write requirements a teammate can test, what goes in `docs/requirements.md`, and how to keep that file accurate as the project changes. It doesn't cover technology and architecture choices, which belong in an [ADR](/guides/adr/) and your [technical design](/guides/technical-design/), or [how to order the work within a sprint](/guides/planning/).
 
 :::note[tl;dr]
 - Open `docs/requirements.md` with a one-paragraph problem statement: what the problem is, who has it, and what evidence you have that it's real.
@@ -23,7 +23,7 @@ Your team has a partner, a project idea, and notes from a first meeting where ev
 
 A requirement is a specific, testable statement about what the product must do or how well it must do it. It isn't a wish ("the app should be fast"), a task ("build the login page"), or a design decision ("use PostgreSQL"). Tasks go on the board and design decisions go in an ADR. Keeping requirements apart from solutions is harder than it sounds: <Cite id="mendezfernandez-2017" /> surveyed 228 companies in 10 countries for the Naming the Pain in Requirements Engineering (NaPiRE) study, and a quarter of the respondents ranked stakeholders' difficulty separating requirements from known solution designs among their five most critical requirements problems.
 
-Keep the requirements in the repository as `docs/requirements.md`, next to the code rather than in a shared drive. There, a pull request can change a requirement in the same commit as the behavior it describes, and your AI coding tools can read the file before they build anything; [AI project setup](/guides/ai-project-setup/) shows how to point them at it.
+Keep the requirements in the repository as `docs/requirements.md`, next to the code rather than in a shared drive. There, a pull request can change a requirement in the same commit as the behavior it describes, and your AI coding tools can read the file before they build anything, once you [point them at it](/guides/ai-project-setup/).
 
 ## What Is a Requirement?
 
@@ -115,9 +115,9 @@ Label each requirement with its priority and the reason, as the Must and Should 
 
 Label a requirement nobody has confirmed as assumed, as FR-3 is, so a reader can tell a guess from a fact and knows which requirements to take back to the partner.
 
-The non-goals section is cheap scope control, because each item costs one line and is settled before the request arrives. It turns "we didn't think of that" into "we decided against that", which moves a partner's new request from an oversight you owe them to a trade-off you can discuss.
+Write the non-goals down, because each costs one line and is settled before the request arrives. When it does, you can answer "we decided against that" instead of "we didn't think of that", which moves the partner's request from an oversight you owe them to a trade-off you can discuss.
 
-The open questions do the same for what you don't know yet. Give each one an owner and a point in the project by which it's answered: an open question tells the reader what's still unsettled, while a confident requirement nobody checked looks settled until someone builds it.
+List what you don't know yet as open questions. Give each one an owner and a point in the project by which it's answered: an open question tells the reader what's still unsettled, while a confident requirement nobody checked looks settled until someone builds it.
 
 Track the work that implements each requirement, and the order you build it in, on your board rather than in a second document. The order depends on more than the priority label: what blocks what, who's free, and what the partner needs to see next. It changes every sprint, so a copy in the file would disagree with the board within one. [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects) is enough, and so is any tracker whose items can cite "FR-2".
 
@@ -140,7 +140,7 @@ Marty Cagan argues that a product idea carries [four big risks](https://www.svpg
 
 ## Measuring Success
 
-The problem statement says what you're fixing; success metrics say how you'll know it's fixed. Pick two or three, each with a number, a decision rule, and a collection method, and write them before you look at any data, because a metric chosen after seeing the data tends to be the one that looks good. What they count depends on the level you're aiming at, which the [Shipping guide](/guides/shipping/) works through. The [Planning guide](/guides/planning/#success-metric-frameworks) has the frameworks. Keep the result in `docs/requirements.md`, next to the requirements it judges.
+The problem statement says what you're fixing; success metrics say how you'll know it's fixed. Pick two or three, each with a number, a decision rule, and a collection method, and write them before you look at any data, because a metric chosen after seeing the data tends to be the one that looks good. What they count depends on the [level you're aiming at](/guides/shipping/); choose them from the [success metric frameworks](/guides/planning/#success-metric-frameworks). Keep the result in `docs/requirements.md`, next to the requirements it judges.
 
 ## Best Practices for Writing Requirements
 

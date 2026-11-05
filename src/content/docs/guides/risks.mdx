@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Halfway through the project, your partner mentions that their IT department reviews any software before it runs on their network, and that the review usually takes six weeks. The same week, the one teammate who has ever deployed the app starts a round of job interviews. Both facts were there to be found at the start; nobody wrote them down, so nobody planned around them. This page covers what a risk is, where to look for one, how to write, rank, and respond to it, and how to keep `docs/risks.md` current as the project moves. It doesn't cover the external prerequisites a project has to start early, which the [Shipping guide](/guides/shipping/) lists, threat modeling for security risks, which the [Security guide](/guides/security/#threat-modeling-thinking-like-an-attacker) covers, or a disagreement between teammates, which belongs to the [Conflict guide](/guides/conflict/).
+Halfway through the project, your partner mentions that their IT department reviews any software before it runs on their network, and that the review usually takes six weeks. The same week, the one teammate who has ever deployed the app starts a round of job interviews. Both facts were there to be found at the start; nobody wrote them down, so nobody planned around them. This page covers what a risk is, where to look for one, how to write, rank, and respond to it, and how to keep `docs/risks.md` current as the project moves. It doesn't cover [the external prerequisites a project has to start early](/guides/shipping/), [threat modeling for security risks](/guides/security/#threat-modeling-thinking-like-an-attacker), or [a disagreement between teammates](/guides/conflict/).
 
 :::note[tl;dr]
 - Keep one ranked register in `docs/risks.md`, written so your partner can read it.
@@ -20,7 +20,7 @@ Halfway through the project, your partner mentions that their IT department revi
 - Review the top of the register at every sprint planning; a risk whose trigger fires becomes an issue on the board.
 :::
 
-[ISO 31000](https://www.iso.org/iso-31000-risk-management.html), the international standard for risk management, defines risk as the effect of uncertainty on objectives. For a software project the objective is whatever you and your partner agreed to deliver, and the uncertainty is everything that could stop it: a requirement nobody confirmed, an integration nobody has built, a teammate's exam week, an approval in someone else's queue. A risk register is the list of those uncertainties, each with someone watching it.
+[ISO 31000](https://www.iso.org/iso-31000-risk-management.html), the international standard for risk management, defines risk as the effect of uncertainty on objectives. For a software project the objective is whatever you and your partner agreed to deliver, and the uncertainty is everything that could stop it: a requirement nobody confirmed, an integration nobody has built, a teammate's exam week, an IT review in the partner's queue. A risk register is the list of those uncertainties, each with someone watching it.
 
 Keep the register in the repository as `docs/risks.md`, one file for the whole project. The categories below help you find risks, but one ranked list is what tells you which to act on first; three registers would each have a top risk and no way to compare them. In the repository, a pull request that retires a risk can close it in the same commit, a design document can cite it by ID, and whoever inherits the project finds it next to the code.
 
@@ -41,7 +41,7 @@ Each entry in the register carries the same parts:
 - **Owner**: the person who watches the risk and runs the response.
 - **Response**: what you're doing about it.
 - **Trigger**: the observable sign that the risk is turning into an issue.
-- **Asked**: for a risk that waits on someone outside the team, who you asked and when; until you've asked, a start-by date instead.
+- **Asked**: for a risk that waits on someone outside the team, who you asked and when, or its start-by date until you ask.
 
 ## Addressing a Problem
 
@@ -57,7 +57,7 @@ Sort what you find into three categories, each surfaced by a document you alread
 
 Business risks are about whether the work is worth doing for the people it's for. Three of Marty Cagan's [four big risks](https://www.svpg.com/four-big-risks/) belong here: value (will users choose it), usability (can they figure it out), and business viability (does it work for the partner's business, contracts and legal obligations included). Cagan makes the product manager responsible for value and viability, and the designer for usability. On an open-source contribution, the business is the upstream project and its maintainers; on a research project, it's the research question and whoever needs the answer.
 
-Your requirements document surfaces these. The [requirements guide](/guides/requirements/#validation) asks Cagan's questions of each requirement, and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "The people this is for haven't tried it; if they keep their spreadsheet, the problem the project exists to fix stays unfixed." The partner's own constraints belong here too: an approval their IT department has to give, a data agreement, a policy the product has to follow.
+Look for these in your requirements document. The [requirements guide](/guides/requirements/#validation) asks Cagan's questions of each requirement, and every requirement still labeled assumed is a business risk until a user or the partner confirms it: "The people this is for haven't tried it; if they keep their spreadsheet, the problem the project exists to fix stays unfixed." The partner's own constraints belong here too: an approval their IT department has to give, a data use agreement, a policy the product has to follow.
 
 ### Technical
 
@@ -65,7 +65,7 @@ Technical risks are Cagan's fourth, feasibility, which he assigns to the lead en
 
 ### Team
 
-Team risks are about capacity and concentration: midterms and interviews that eat a week, a part-time job, the one person who knows how to deploy, the skill nobody on the team has yet. Your [working agreement](/guides/working-agreement/) surfaces them, because it's where the team wrote down who owns what and how much time each person has.
+Team risks are about capacity and concentration: midterms and interviews that eat a week, a part-time job, the one person who knows how to deploy, the skill nobody on the team has yet. Look for them in your [working agreement](/guides/working-agreement/), because it's where the team wrote down who owns what and how much time each person has.
 
 Write them as facts about the project, because the partner and future maintainers read the register. "Only one person has deployed to production; if they're away, a broken release stays broken" leads to a fix: pair on the next deploy. "Our deployer never writes anything down" names the same risk as a complaint, and leads to a defensive teammate and no fix.
 
@@ -105,10 +105,11 @@ R-1 technical, H/H (untried; every feature needs sign-in). SSO on the
   partner's Workspace tenant is unproven; if it fails, nobody can sign in.
   Owner: Priya. Mitigate: spike it first. Trigger: no working spike by
   sprint review.
-R-2 business, M/H (their reviews take weeks; it gates production). The
-  partner's IT security review has no date; until it passes, production
-  waits. Asked: their IT lead, at kickoff. Owner: Sam. Mitigate: send the
-  data-flow diagram now. Trigger: no reviewer two weeks after asking.
+R-2 business, M/H (their IT lead quoted six weeks; it gates production).
+  The partner's IT security review has no date; until it passes,
+  production waits. Asked: their IT lead, at kickoff. Owner: Sam.
+  Mitigate: send the data-flow diagram now. Trigger: no reviewer two
+  weeks after asking.
 R-3 team, M/M (one deployer; a rollback exists). Only Jordan has deployed
   to Render; if Jordan is away, a broken release stays broken. Owner:
   Jordan. Mitigate: pair on the next two deploys. Trigger: a release is
@@ -176,7 +177,7 @@ The register is working if the problems that hurt the project were on it before 
 The evidence on language models and risk work is thin and comes from outside software. <Cite id="collier-2025" /> had product safety professionals rate ChatGPT's risk assessments for six consumer products: it did better at divergent tasks such as brainstorming failure modes and mitigations, but made errors, gave inconsistent results, and offered guidance the professionals found overly generic. The authors suggest the tools assist with ideation while experts review the output, and that division fits a register too:
 
 - In a premortem, add the tool's list after everyone has written and read out their own, so it extends the team's list instead of anchoring it. Give it the requirements, the design document, and the current register, because without that context it lists the risks of any project.
-- Point your coding agents at the register in the repository's instruction file (see [AI Project Setup](/guides/ai-project-setup/)), so an agent says when a task touches an open risk. Let it flag, not edit: ranking needs judgment and context it doesn't have, and the partner reads the file.
+- Point your coding agents at the register in [the repository's instruction file](/guides/ai-project-setup/), so an agent says when a task touches an open risk. Let it flag, not edit: ranking needs judgment and context it doesn't have, and the partner reads the file.
 - Before each sprint planning, have an agent draft what moved since the last review: merged pull requests, closed issues, and any trigger it can check in the repository, such as whether the spike's issue is still open. The team decides. A trigger outside the repository, such as a reply from the partner's IT department, stays with its owner.
 
 Keep the register out of commit hooks. A hook can't tell whether a risk moved, because the facts behind most risks live outside the repository, so it either flags nothing or flags every commit, and a check that always fires teaches the team to bypass it.
@@ -205,7 +206,7 @@ Writing a risk down can feel like delivering bad news, so teams soften the state
 
 [ISO 31000](https://www.iso.org/iso-31000-risk-management.html) sets out general risk management principles for any organization, and [ISO/IEC/IEEE 16085](https://www.iso.org/standard/74371.html) defines a risk management process for the life cycle of systems and software. The software standard defines the process and leaves the techniques open, so the practices on this page fit inside it. Adopt the standard's full process when a contract or a regulator asks for it; short of that, the time it costs is better spent on the review.
 
-Large engineering organizations run the register as a standing process. NASA's [Risk Management Handbook](https://ntrs.nasa.gov/citations/20120000033) describes continuous risk management as five repeating functions: identify, analyze, plan, track, and control. The same cycle runs, smaller, at each sprint planning. [Extreme Programming](http://www.extremeprogramming.org/rules/spike.html) handles technical risk in the backlog instead, with a spike scheduled ahead of the work that depends on its answer; the [technical design guide](/guides/technical-design/#prototypes-and-spikes) covers spikes.
+Large engineering organizations run the register as a standing process. NASA's [Risk Management Handbook](https://ntrs.nasa.gov/citations/20120000033) describes continuous risk management as five repeating functions: identify, analyze, plan, track, and control. The same cycle runs, smaller, at each sprint planning. [Extreme Programming](http://www.extremeprogramming.org/rules/spike.html) handles technical risk in the backlog instead, with [a spike](/guides/technical-design/#prototypes-and-spikes) scheduled ahead of the work that depends on its answer.
 
 Research and practice have drifted apart on this topic. <Cite id="bannerman-2008" /> concluded that risk management research lags the needs of practice and that practice lags what research prescribes. None of the agencies in his study used quantitative risk assessment; those that assessed risk at all used qualitative scales, which is what the three levels on this page are.
 
@@ -226,7 +227,7 @@ Research and practice have drifted apart on this topic. <Cite id="bannerman-2008
 **Activities that exercise this**
 
 - [Risk Management Plan](/activities/planning-and-risk/#risk-management-plan): a premortem that produces the first entries in `docs/risks.md`.
-- [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals): every approval the project needs, each with an owner and a start date.
+- [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals): every approval the project needs, each with an owner and a start-by date.
 - [Dependency Mapping or Critical Path Analysis](/activities/planning-and-risk/#dependency-mapping-or-critical-path-analysis): the tasks whose delay delays everything after them.
 - [Stakeholder Mapping](/activities/planning-and-risk/#stakeholder-mapping): whose risks you haven't heard yet.
 - [Map Your Hard-to-Reverse Decisions](/activities/technical-design/#map-your-hard-to-reverse-decisions): the technical choices whose risk is that they're expensive to undo.

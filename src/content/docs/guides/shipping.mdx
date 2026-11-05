@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Early in a project, you and your project partner or mentor agree what "shipped" will mean when the project ends. That agreement decides which requests you have to start in the first weeks, and most of them wait on someone else. This page gives you a way to measure shipped, then works through the four processes outside the team that the top levels wait on (maintainers merging a contribution, people using it without you, someone reproducing a result, and the partner's environment) with the prerequisites, lead times, blockers, and evidence for each. It doesn't cover how to deploy, which is in the [DevOps guide](/guides/devops/).
+Early in a project, you and your project partner or mentor agree what "shipped" will mean when the project ends. That agreement decides which requests, such as a store account or the partner's IT review, you have to start in the first weeks, and most of them wait on someone else. This page gives you a way to measure shipped, then works through the four processes outside the team that the top levels wait on (maintainers merging a contribution, people using it without you, someone reproducing a result, and the partner's environment) with the prerequisites, lead times, blockers, and evidence for each. It doesn't cover [how to deploy](/guides/devops/).
 
 :::note[tl;dr]
 - Measure shipped by one question, who ran the software, and agree the level you're aiming at with your partner in the first weeks.
@@ -22,7 +22,7 @@ Early in a project, you and your project partner or mentor agree what "shipped" 
 
 ## The Ladder
 
-"Shipped" isn't a single state. The most useful way to think about it is as a ladder measured by one question: who ran the software? At the bottom, nobody outside the team ran it. One level up, your partner watched it run. Every level above that describes someone outside the team running your work, and the top level means people who aren't you depend on it: the partner's staff run it in their operations, a release of an open-source project includes your contributions, someone who didn't build it reproduces your result, or people use it on their own.
+"Shipped" isn't a single state. The most useful way to think about it is as a ladder measured by one question: who ran the software? At the bottom, nobody outside the team ran it. One level up, your partner watched it run on their real inputs. Every level above that describes someone outside the team running your work, and the top level means people who aren't you depend on it: the partner's staff run it in their operations, a release of an open-source project includes your contributions, someone who didn't build it reproduces your result, or people use it on their own.
 
 The top levels wait on processes you don't control: maintainer review, app store review, data access, a partner's IT security review, and recruiting users who owe you nothing. AI coding tools can speed up the work you control, but not someone else's queue. Choose the level you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them.
 
@@ -32,9 +32,9 @@ Each section's timeline runs in three phases: Early, Middle, and Late, each roug
 
 ## The Walking Skeleton
 
-Deploy a **walking skeleton** in the early phase: the thinnest version of the system that runs end to end, where the real one will live. For a web app that's a production URL; for an installable build, a release on the channel your users will install from; for a pipeline, a run on sample data in the compute environment the real run will use; for a contribution to an open-source project, a first pull request through that project's CI. It exposes the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing, signing, compute quotas) while there's nothing to lose.
+Deploy a **walking skeleton** in the early phase: the thinnest version of the system that runs end to end, where the real one will live (or, while the partner's IT review is pending, on your own hosting). For a web app that's a production URL; for an installable build, a release on the channel your users will install from; for a pipeline, a run on sample data in the compute environment the real run will use; for a contribution to an open-source project, a first pull request through that project's CI. It exposes the whole external dependency chain (domain registration, DNS, TLS, hosting account limits, billing, signing, compute quotas) while there's nothing to lose.
 
-A slow first month can still be going well. When the partner asked for research and planning first, the skeleton comes with the first build, and a good early phase looks like that work delivered and reviewed, the approval filings in, a run on sample data, or a first contribution merged: little a user would notice, and every long wait already started.
+A slow first month can still be going well. When the partner asked for research and planning first, the skeleton comes with the first build, and a good early phase looks like that work delivered and reviewed, the IT review or data use agreement requested, a run on sample data, or a first contribution merged: little a user would notice, and every long wait already started.
 
 ## Getting a Contribution Merged Into an Open-Source Project
 
@@ -79,15 +79,15 @@ Each level has its own prerequisites:
 - **A dozen people outside the team**: a production URL with a real domain and TLS, an onboarding flow someone gets through without you on a call, a recruitment channel (a subreddit, a Discord server, a campus group, an itch.io page), and telemetry so you can show they came.
 - **Two dozen, and beyond**: retention, which means fixing what the first dozen users hit, which means having had those users early enough to iterate.
 
-If you distribute through an app store, its review is another wait. Apple states that on average [90% of submissions are reviewed in less than 24 hours](https://developer.apple.com/distribute/app-review/), but that's the time for one round. A rejection sends you back to fix and resubmit, and Apple reports on the same page that over 40% of unresolved issues fall under guideline 2.1, App Completeness, which covers crashes, placeholder content, and incomplete information. Enrolling as an organization rather than an individual also needs a [D-U-N-S Number](https://developer.apple.com/help/account/membership/D-U-N-S/), which Apple says can take up to five business days to arrive from Dun & Bradstreet and up to two more business days to reach Apple.
+If you distribute through an app store, its review is another wait. Apple reviews every App Store submission, and a rejection, such as for a build that crashes or still shows placeholder content, sends you back to fix and resubmit. Enrolling as an organization rather than an individual also needs a D-U-N-S Number from Dun & Bradstreet. Apple changes both processes, so read [Apple's App Review page](https://developer.apple.com/distribute/app-review/) and its [D-U-N-S Number page](https://developer.apple.com/help/account/membership/D-U-N-S/) for the current times before you set a release date.
 
-Google Play adds a fixed wait of its own. A newer personal developer account must [run a closed test with at least 12 testers](https://support.google.com/googleplay/android-developer/answer/14151465), each opted in continuously for at least 14 days, before it can apply for production access; a tester who leaves early doesn't count. Recruit those testers before you need them, because the test can't finish until 12 testers have stayed opted in for 14 days.
+Google Play adds a fixed wait of its own. A newer personal developer account must run a closed test, with a minimum number of testers each opted in continuously for a minimum number of days, before it can apply for production access; a tester who leaves early doesn't count. Google changes both minimums, so read [Google Play's testing requirements for new personal accounts](https://support.google.com/googleplay/android-developer/answer/14151465) before you set a release date, and recruit the testers before you need them, because the test can't finish until enough of them have stayed opted in for the whole period.
 
-For games, [itch.io](https://itch.io/developers) is the fast path: you upload the build and create the page yourself, and itch.io describes that as instant distribution. Ship there early even if a store launch is the end goal, because players can try the build while the store reviews run, and their feedback reaches you before the store listing exists.
+For games, [itch.io](https://itch.io/developers) is the fast path: you upload the build and create the page yourself. Ship there early even if a store launch is the end goal, because players can try the build while the store reviews run, and their feedback reaches you before the store listing exists.
 
 Add analytics or telemetry in the early phase: a privacy-focused page-view and event counter, a product analytics tool, or a simple event log. Any claim about use needs numbers, and the numbers exist only if the instrumentation was quietly collecting before you needed them.
 
-If the venture question interests you beyond the software, two programs help you decide what to build next, though neither puts a user in front of what you've built: [Y Combinator's Startup School](https://www.startupschool.org/) is a free, self-paced online course on starting a startup, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator)'s Iterate program teaches a process for validating a business concept.
+If the venture question interests you beyond the software, two programs help you decide what to build next, though neither puts a user in front of what you've built: [Y Combinator's Startup School](https://www.startupschool.org/) is a self-paced online course on starting a startup, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator)'s Iterate program teaches a process for validating a business concept.
 
 | Phase | What must be true |
 |---|---|
@@ -113,7 +113,7 @@ Here the levels read, from the bottom: your partner ran it once on real data, on
 
 Each level has its own prerequisites:
 
-- **Your partner ran it on real data**: a pipeline that runs end to end on sample data before the real data arrives, so that when it does you're debugging the science instead of the setup; then the real dataset, which means a data access agreement, with a lead time you don't control; and a setup your partner can run without you at the keyboard.
+- **Your partner ran it on real data**: a pipeline that runs end to end on sample data before the real data arrives, so that when it does you're debugging the science instead of the setup; then the real dataset, which means a data use agreement, with a lead time you don't control; and a setup your partner can run without you at the keyboard.
 - **Your partner's group ran it**: instructions good enough for someone else to run the pipeline on their own machine, and time to fix what they find.
 - **Someone outside the team reran it**: the reproducible artifact described below, and a reproduced baseline to compare against.
 - **Reproduced from the published artifact**: the artifact published where that person can find it (with the paper, as a preprint, or in an archived repository), compute for larger runs, and enough calendar time to iterate after the first results disappoint you.
@@ -130,13 +130,13 @@ A reproducible artifact has pinned dependencies (a lock file or a container), ve
 
 | Phase | What must be true |
 |---|---|
-| Early | Data-access requests filed; pipeline runs end to end on sample data; baseline identified and reproduction started |
+| Early | Data use agreement requested; pipeline runs end to end on sample data; baseline identified and reproduction started |
 | Middle | Real data in hand; baseline reproduced; first real experiments run; results tracked and versioned |
 | Late | Novel experiments complete; artifact reproduced by someone who didn't build it; paper or report drafted with your partner |
 
 Expect these blockers:
 
-- Data agreements stalled in legal review.
+- Data use agreements stalled in legal review.
 - The baseline paper's code not actually running.
 - Compute quotas.
 - Results that arrive a few weeks before the end, with no time left to interpret them.
@@ -153,11 +153,11 @@ Each level has its own prerequisites:
 - **Partner integrating**: the system running in the partner's environment, which means their IT department has said yes: accounts provisioned, security review passed, data handling approved.
 - **In operations**: all of the above, plus a handoff the partner's people can operate without you.
 
-**Ask about IT and security review in your first meeting with the partner**: "Who has to approve software running in your environment, and how long does that take?" At a small nonprofit the answer may be "the director, tomorrow." At a hospital, a school district, a government agency, or a large company, expect a formal review that can include penetration tests, data protection assessments, or vendor onboarding forms, and plan for it to take months until someone there tells you otherwise, because an early start costs you nothing and a late one costs you the level. Whatever the answer, write it into your plan with an owner and a start-by date.
+**Ask about IT and security review in your first meeting with the partner**: "Who has to approve software running in your environment, and how long does that take?" At a small nonprofit the answer may be "the director, tomorrow." At a hospital, a school district, a government agency, or a large company, expect a formal review that can include penetration tests, data protection assessments, or vendor onboarding forms, and plan for it to take months until someone there tells you otherwise. Whatever the answer, write it into your plan with an owner and a start-by date.
 
 Agree on acceptance criteria early and in writing. The feedback-addressed level is only checkable against criteria the partner endorsed before you built; without them, the partner judges the late-phase system against what they remember asking for, which can differ from what you remember building.
 
-Stage the deployment: your own hosting first, for fast iteration and demos, then a staging instance in the partner's environment in the middle phase, then production in the late one. Don't skip the staging step, because it's where the partner's authentication scheme, network policies, and data access rules first meet your system, and meeting them in staging leaves time to adapt.
+Stage the deployment: your own hosting first, for fast iteration and demos while the partner's IT review runs, then a staging instance in the partner's environment in the middle phase, then production in the late one. Don't skip the staging step, because it's where the partner's authentication scheme, network policies, and data access rules first meet your system, and meeting them in staging leaves time to adapt.
 
 Treat the handoff as part of the product. You'll leave and the system stays, so runbooks, admin documentation, credential transfer, a maintenance guide, and a trained contact on the partner's side are what let the partner's people run it without you, which is what the top level asks for.
 
@@ -171,11 +171,11 @@ Expect these blockers:
 
 - A security review that shows no progress for weeks.
 - A single overloaded IT contact on the partner's side.
-- Credential and access provisioning.
+- Accounts and VPN access the partner's IT staff haven't provisioned.
 - Data that can't leave the partner's network (design for this early).
 - Staff turnover at the partner partway through the project.
 
-Collect as you go: the signed acceptance criteria, meeting notes and emails showing feedback rounds and sign-offs, security review correspondence, screenshots of the system running in the partner's environment, the handoff package, and the partner's written statement that they use it in production.
+Collect as you go: the acceptance criteria and the partner's written endorsement, meeting notes and emails showing feedback rounds and sign-offs, security review correspondence, screenshots of the system running in the partner's environment (a screen-shared walkthrough instead, where a non-disclosure agreement rules out screenshots), the handoff package, and the partner's written statement that they use it in production.
 
 ## Best Practices for Shipping
 
@@ -186,13 +186,13 @@ Collect as you go: the signed acceptance criteria, meeting notes and emails show
 
 ## Some Truths About Shipping
 
-The last tenth of a project isn't a tenth of the work. A plan that says "build until a month before the end, then ship" is a plan for the bottom of the ladder, because the top levels wait on reviews, approvals, and users the plan never asked for in time.
+The last tenth of a project isn't a tenth of the work. A plan that says "build until a month before the end, then ship" is a plan for the bottom of the ladder, because the top levels wait on a maintainer's review, the partner's IT review, and users the plan never asked for in time.
 
-Every external wait starts later than you think and runs longer than you were told. The estimate you get from an IT department, a data owner, or a maintainer is how long their step takes when nothing goes wrong. It leaves out the time your request sits in a queue before anyone reads it, and the revision round that follows. A week you waited before joining the queue can't be made up later, so the one thing entirely in your control is when you join it.
+The estimate you get from an IT department, a data owner, or a maintainer is how long their step takes when nothing goes wrong. It leaves out the time your request sits in a queue before anyone reads it, and the revision round that follows. The one thing in your control is when your request joins the queue.
 
-A trivial thing shipped early is worth more than an impressive thing that never ships. The walking skeleton, the typo pull request, and the sample-data pipeline have no value as features. Their value is that each one runs the whole external chain once (domain, TLS, contributor agreement, CI, review, data access), so the problems surface when you have months to fix them instead of days.
+The walking skeleton, the typo pull request, and the sample-data pipeline have no value as features. Their value is that each one runs the whole external chain once (domain, TLS, contributor agreement, CI, review, data access), so the problems surface when you have months to fix them instead of days.
 
-People who owe you nothing aren't friends who haven't heard of you yet. Friends try your software because they like you, and they forgive an onboarding flow that needs you on a call. Everyone else arrives slowly through channels that take time to build, and leaves at the first confusing screen, so a post in a forum the week you need them brings you very few.
+Friends try your software because they like you, and they forgive an onboarding flow that needs you on a call. Everyone else arrives only through a channel you built before you needed them, and leaves at the first confusing screen, so a post in a forum the week you need them brings you very few.
 
 "The partner will deploy it after the project ends" describes the feedback level while claiming the operations level. Once the team is gone, nobody is left to fix whatever differs in the partner's environment (an authentication scheme, a network policy, a data access rule), so a plan that stops short of deploying there ends one level lower than it claims.
 
@@ -212,7 +212,7 @@ Deploying often doesn't make a launch trivial. Google's site reliability enginee
 
 In computing research, artifact evaluation committees review the code and data behind accepted papers. The [Artifact Evaluation](https://artifact-eval.org/) site lists committees going back to ESEC/FSE 2011, and the [cTuning foundation](https://ctuning.org/ae/) still supports the process at systems conferences. ACM's [artifact review and badging policy](https://www.acm.org/publications/policies/artifact-review-and-badging-current) defines three independent badges: Artifacts Evaluated (Functional or Reusable) for artifacts that passed an independent audit, Artifacts Available for artifacts placed in a permanent public archive, and Results Validated (Reproduced or Replicated) for main results that someone other than the authors obtained again.
 
-At one psychology journal, badges changed how much data authors shared. <Cite id="kidwell-2016" /> found that after Psychological Science began awarding open data badges, the share of its articles reporting open data rose from less than 3% to 23%, and to 39% in a later period, while data sharing stayed low and unchanged in comparison journals. Data reported as available was also more likely to be actually available, correct, usable, and complete when the article had earned a badge. The [Center for Open Science](https://www.cos.io/initiatives/badges) reports that over 100 journals now offer Open Science Badges, the open data badge among them.
+At one psychology journal, badges changed how much data authors shared. <Cite id="kidwell-2016" /> found that after Psychological Science began awarding open data badges, the share of its articles reporting open data rose from less than 3% to 23%, and to 39% in a later period, while data sharing stayed low and unchanged in comparison journals. Data reported as available was also more likely to be actually available, correct, usable, and complete when the article had earned a badge. The [Center for Open Science](https://www.cos.io/initiatives/badges) lists the journals that offer Open Science Badges, the open data badge among them.
 
 ## References
 
@@ -231,11 +231,11 @@ At one psychology journal, badges changed how much data authors shared. <Cite id
 
 **Activities that exercise this**
 
-- [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals): every external prerequisite on this page, with an owner and a start date.
+- [Map Your External Approvals](/activities/planning-and-risk/#map-your-external-approvals): every external prerequisite on this page, with an owner and a start-by date.
 - [Identify Success Metrics](/activities/requirements/#identify-success-metrics): the numbers your instrumentation has to produce.
 - [Software Release and Versioning](/activities/testing-release-and-handoff/#software-release-and-versioning): decide what a release means for your project before you need to cut one.
 - [Definition of Done](/activities/team-and-workflow/#definition-of-done): the standard a demo has to meet before it counts.
 - [Deployment Plan](/activities/testing-release-and-handoff/#deployment-plan): the environment chain from your hosting to the partner's.
 - [Find Users](/activities/working-with-users/#find-users) and [Engage Users](/activities/working-with-users/#engage-users): the recruiting workstream the levels about people outside the team depend on.
-- [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline): the two reproduction levels, made concrete.
+- [Make Your Artifact Reproducible](/activities/research-methods/#make-your-artifact-reproducible) and [Reproduce Your Baseline](/activities/research-methods/#reproduce-your-baseline): the reproducible artifact and the reproduced baseline, made concrete.
 - [OSU Advantage Accelerator's Iterate Program](/activities/requirements/#osu-advantage-accelerators-iterate-program): pressure-tests a new product idea as a venture before you commit the project to it.
