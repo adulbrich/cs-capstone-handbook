@@ -118,7 +118,7 @@ export const coverText = {
   start: "Start time",
   tableTitle: "The session",
   /** The term and the weeks sessions run in, "Fall, week 8 to finals week". */
-  when: (term, weeks) => `${term}, ${weeks}`,
+  when: (term, [from, until]) => `${term}, ${from} to ${until}`,
   yesNo: "yes / no",
 };
 
@@ -148,8 +148,8 @@ export const sheetText = {
   /** The banner's points line: the rubric's bands, in their own words. */
   points: ({ doesNotMeet, exceeds, exceedsCondition, flagRule, meetsRule }) =>
     `Every item ticked, ${exceedsCondition}: ${exceeds}. ${flagRule}: ${doesNotMeet}. Otherwise ${meetsRule}`,
-  record: "Record checked",
-  recordChoices: "yes / no / NDA live",
+  record: "Repo record checked",
+  recordChoices: "yes / no / shown on screen (NDA)",
   sprint: "Sprint",
   team: (team, term) => `${team || NO_TEAM}, ${term}`,
   tick: "Tick an item when the student says it.",
@@ -164,7 +164,11 @@ export const sheetText = {
  */
 export const example = {
   student: { email: "", first: "Jordan", last: "Lee" },
-  team: { members: [], noTeam: false, team: "CS.042 Questioning The Universe" },
+  team: {
+    members: [],
+    noTeam: false,
+    team: "CS.042 Don't Panic Incident Tracker",
+  },
   term: sessionText.terms.fall,
   title: (fingerprint) => `Defense live sheet example, ${fingerprint}`,
 };

@@ -1,6 +1,6 @@
-// The defense rubric and the session length, read at build time from the
-// files the handbook renders, so the scoresheets never carry a second copy
-// of a question, an item, a red flag, or a point value. A rubric the live
+// The defense rubric and the session rule (length and weeks), read at build
+// time from the files the handbook renders, so the scoresheets never carry
+// a second copy of a question, an item, a red flag, or a point value. A rubric the live
 // sheet cannot print fails the build rather than the page.
 //
 // It lives beside the components, not under src/lib/tools/, because it

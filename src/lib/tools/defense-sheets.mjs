@@ -275,10 +275,10 @@ const toNumber = (word) =>
 
 /**
  * The session rule from the defense page's source: minutes per student,
- * minutes of setup and wrap, and the weeks sessions run in ("week 8 to
- * finals week", from "between week 8 and finals week"). Throws when either
- * sentence is gone, so the cover never prints a length or weeks the page
- * no longer states.
+ * minutes of setup and wrap, and the first and last week sessions run in
+ * (["week 8", "finals week"], from "between week 8 and finals week").
+ * Throws when either sentence is gone, so the cover never prints a length
+ * or weeks the page no longer states.
  */
 export function sessionRule(mdx) {
   const found = mdx.match(SESSION);
@@ -295,7 +295,7 @@ export function sessionRule(mdx) {
       'defense.mdx: no "between week <n> and <week n, or finals week>". The session cover prints the weeks sessions run in from it.'
     );
   }
-  return { perStudent, setup, weeks: `${between[1]} to ${between[2]}` };
+  return { perStudent, setup, weeks: [between[1], between[2]] };
 }
 
 /** The minutes a session of `students` runs. */
