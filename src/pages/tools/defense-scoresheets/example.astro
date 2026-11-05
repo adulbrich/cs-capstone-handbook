@@ -36,12 +36,12 @@ const title = example.title(
       />
     </div>
     <script>
-      // Fits the sheet to one page, as the tool does before it prints.
-      import { fitPage } from "../../../components/tools/defense/fit.js";
+      // Fits the sheet to one page, as the tool fits each sheet it prints.
+      import { fitSheet } from "../../../components/tools/defense/fit.js";
 
       const page = document.querySelector(".ds-sheet");
-      if (page && fitPage(page) === null) {
-        page.classList.add("ds-overflow");
+      if (page) {
+        fitSheet(page);
       }
     </script>
   </body>

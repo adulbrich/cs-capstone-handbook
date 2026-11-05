@@ -2,12 +2,12 @@
 // Print Defense Scoresheets: the roster, then the term, the assessor, and
 // the teams, then the print, beside a preview of the first team picked.
 // The roster is read in the browser and never uploaded or kept. Each page
-// is drawn by the same component three times: scaled in the preview, full
-// size in a hidden copy that measures whether the live sheet fits one
-// page, and in the print copy under <body> that sheets.css prints alone.
-// `sheet` and `session` are read from the rubric and the defense page at
-// build time (defense-rubric.mjs).
-import { tick } from "svelte";
+// is drawn by the same component twice: scaled in the preview, and in the
+// print copy under <body> that sheets.css prints alone. Each live sheet is
+// fitted to its own page, as the example page fits its one (fitSheet in
+// fit.js): the preview's as it changes, and every printed sheet when Print
+// is pressed. `sheet` and `session` are read from the rubric and the
+// defense page at build time (defense-rubric.mjs).
 import {
   previewText,
   printText,
@@ -16,7 +16,6 @@ import {
 } from "../../../data/defense-scoresheets.mjs";
 import { attempt } from "../../../lib/tools/attempt.mjs";
 import {
-  FIT_SCALES,
   fullName,
   pageCounts,
   printPages,
@@ -31,7 +30,7 @@ import ClickPath from "../ui/ClickPath.svelte";
 import Field from "../ui/Field.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
 import Cover from "./Cover.svelte";
-import { fitPage } from "./fit.js";
+import { fitSheet } from "./fit.js";
 import LiveSheet from "./LiveSheet.svelte";
 import "./sheets.css";
 
@@ -44,9 +43,10 @@ let assessor = $state("");
 /** The team names picked; "" is the students in no group. */
 let selected = $state.raw(new Set());
 let blankSheets = $state(false);
-/** The live sheet's scale that fits one page, or null when none does. */
-let fit = $state(1);
-let measurer = $state();
+/** Whether the preview's live sheet runs past one page at every scale. */
+let overflowing = $state(false);
+let previewPaper = $state();
+let printCopy = $state();
 let thumbWidth = $state(0);
 
 const read = $derived(
@@ -71,17 +71,6 @@ const previewTeam = $derived(teams.find((t) => selected.has(t.team)) ?? null);
 const previewCount = $derived(
   pages.filter((p) => p.team === previewTeam).length
 );
-/** What makes a sheet longest: the longest name and team picked. */
-const longest = $derived.by(() => {
-  const named = pages.filter((p) => p.student);
-  const widest = (values) =>
-    values.reduce((a, b) => (b.length > a.length ? b : a), "");
-  return {
-    name: widest(named.map((p) => fullName(p.student))),
-    team: widest(pages.map((p) => p.team.team)),
-  };
-});
-const scale = $derived(fit ?? FIT_SCALES.at(-1));
 const thumbScale = $derived(thumbWidth > 0 ? thumbWidth / (8.5 * 96) : 0);
 const teamName = (team) => (team.noTeam ? sessionText.noTeam : team.team);
 
@@ -109,37 +98,42 @@ function partly(node) {
   node.indeterminate = somePicked && !allPicked;
 }
 
-/** Steps the measuring copy's type down until it fits one page. */
-function measure() {
-  const node = measurer?.querySelector(".ds-page");
-  if (!node) {
-    return;
-  }
-  fit = fitPage(node);
-  node.style.removeProperty("--ds-scale");
-}
-
-/** What the measuring copy prints that can change its height. */
-const measured = $derived(
-  [longest.name, longest.team, assessor, termLabel].join("\n")
+/** What the preview's live sheet prints that can change its height. */
+const previewDrawn = $derived(
+  previewTeam
+    ? [
+        fullName(previewTeam.members[0]),
+        previewTeam.team,
+        assessor,
+        termLabel,
+      ].join("\n")
+    : ""
 );
 
-// Measured again whenever `measured` changes, once the copy has redrawn
-// (a later change wins), and once the fonts are in.
+// Fits the preview's live sheet whenever what it prints changes, after the
+// sheet has redrawn. The rubric is the same on every sheet, so one that
+// fits at no scale means the rubric's text runs past one page.
 $effect(() => {
-  const what = measured;
-  tick().then(() => {
-    if (what === measured) {
-      measure();
-    }
-  });
+  const page = previewDrawn && previewPaper?.querySelector(".ds-sheet");
+  overflowing = page ? fitSheet(page) === null : false;
 });
-$effect(() => {
-  document.fonts?.ready.then(measure);
-});
+
+/**
+ * Fits every live sheet in the print copy to its own page. The copy is
+ * laid out unseen for the measuring (`ds-measuring` in sheets.css), since
+ * it is not drawn on screen, and put back before it prints.
+ */
+function fitPrintCopy() {
+  printCopy.classList.add("ds-measuring");
+  for (const page of printCopy.querySelectorAll(".ds-sheet")) {
+    fitSheet(page);
+  }
+  printCopy.classList.remove("ds-measuring");
+}
 
 /** Prints. The PDF's file name is the document title, as Save as PDF suggests it. */
 function print() {
+  fitPrintCopy();
   const before = document.title;
   document.title = printText.documentTitle(termLabel);
   window.addEventListener(
@@ -235,7 +229,7 @@ function toBody(node) {
       {:else}
         <p class="lead">{printText.summary(counts)} {printText.oneSided}</p>
       {/if}
-      {#if fit === null}
+      {#if overflowing}
         <Callout title={printText.overflow.title} variant="caution">
           <p>{printText.overflow.body}</p>
         </Callout>
@@ -270,8 +264,8 @@ function toBody(node) {
         <figure>
           <div class="thumb">
             {#if thumbScale > 0}
-              <div class="paper" aria-hidden="true" inert style:transform="scale({thumbScale})">
-                <LiveSheet {assessor} overflow={fit === null} {scale} {sheet} student={previewTeam.members[0]} team={previewTeam} term={termLabel} />
+              <div class="paper" aria-hidden="true" inert style:transform="scale({thumbScale})" bind:this={previewPaper}>
+                <LiveSheet {assessor} {sheet} student={previewTeam.members[0]} team={previewTeam} term={termLabel} />
               </div>
             {/if}
           </div>
@@ -285,24 +279,13 @@ function toBody(node) {
   </aside>
 </div>
 
-<!-- The longest live sheet picked, laid out unseen at full size, for measure(). -->
-<div class="measurer not-content" aria-hidden="true" inert bind:this={measurer}>
-  <LiveSheet
-    {assessor}
-    {sheet}
-    student={longest.name ? { first: longest.name, last: "" } : null}
-    team={{ members: [], noTeam: longest.team === "", team: longest.team }}
-    term={termLabel}
-  />
-</div>
-
 <div class="print-holder">
-  <div class="ds-print" {@attach toBody}>
+  <div class="ds-print" {@attach toBody} bind:this={printCopy}>
     {#each pages as page (page.id)}
       {#if page.kind === "cover"}
         <Cover {assessor} {session} team={page.team} term={termLabel} />
       {:else}
-        <LiveSheet {assessor} overflow={fit === null} {scale} {sheet} student={page.student} team={page.team} term={termLabel} />
+        <LiveSheet {assessor} {sheet} student={page.student} team={page.team} term={termLabel} />
       {/if}
     {/each}
   </div>
@@ -534,13 +517,6 @@ function toBody(node) {
   }
   .preview > .muted {
     margin: 0.75rem 0 0;
-  }
-  .measurer {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: -200vw;
-    visibility: hidden;
-    pointer-events: none;
   }
   .print-holder {
     display: contents;

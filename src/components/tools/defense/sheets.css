@@ -1,11 +1,10 @@
 /*
- * The printed pages of the defense scoresheets, the same in the preview, in
- * the hidden copy that measures the live sheet, and on paper, so what the
- * preview shows is what prints. Global on purpose: the print copy lives
- * under <body>, outside any component's scope. Dark text on white whatever
- * the handbook's theme, since it is paper. Every page is one US Letter
- * sheet, its margin drawn as padding, so @page has none and the browser
- * prints no header or footer.
+ * The printed pages of the defense scoresheets, the same in the preview and
+ * on paper, so what the preview shows is what prints. Global on purpose:
+ * the print copy lives under <body>, outside any component's scope. Dark
+ * text on white whatever the handbook's theme, since it is paper. Every
+ * page is one US Letter sheet, its margin drawn as padding, so @page has
+ * none and the browser prints no header or footer.
  */
 
 /* Every box sized the same on the tool page, which Starlight's reset sets
@@ -410,6 +409,20 @@
 }
 .ds-print.ds-example {
   display: block;
+}
+/* Laid out but unseen, and adding nothing to the page's scroll, while its
+   live sheets are fitted to their pages before it prints. */
+@media screen {
+  .ds-print.ds-measuring {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    display: block;
+    visibility: hidden;
+    width: 8.5in;
+    height: 0;
+    overflow: hidden;
+  }
 }
 @media print {
   @page {

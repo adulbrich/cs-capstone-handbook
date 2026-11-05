@@ -1,13 +1,12 @@
 <script>
-// One student's live sheet, the same in the preview, the measuring copy,
-// and on paper: the name, team, assessor, and total; the banner with the
-// tick rule, the points, and the Missing rule; then each criterion's
-// question, its items to tick, its red flags, its band row, and a notes
-// line. The rubric's text comes from `sheet` (liveSheet in
-// defense-sheets.mjs), word for word. `student` null is a blank sheet with
-// the name written in. Each criterion's two columns share the width by
-// their text (columnShares). `scale` steps the type down to fit one page, and
-// `overflow` lets a sheet that fits at no scale run onto a second page.
+// One student's live sheet, the same in the preview and on paper: the
+// name, team, assessor, and total; the banner with the tick rule, the
+// points, and the Missing rule; then each criterion's question, its items
+// to tick, its red flags, its band row, and a notes line. The rubric's text
+// comes from `sheet` (liveSheet in defense-sheets.mjs), word for word.
+// `student` null is a blank sheet with the name written in. Each
+// criterion's two columns share the width by their text (columnShares).
+// Once laid out, fitSheet (fit.js) steps the type down to fit one page.
 import { sheetText as text } from "../../../data/defense-scoresheets.mjs";
 import {
   bandRow,
@@ -15,15 +14,7 @@ import {
   fullName,
 } from "../../../lib/tools/defense-sheets.mjs";
 
-let {
-  assessor = "",
-  overflow = false,
-  scale,
-  sheet,
-  student = null,
-  team,
-  term,
-} = $props();
+let { assessor = "", sheet, student = null, team, term } = $props();
 
 const bands = $derived(bandRow(sheet.rule));
 /** Each criterion's items and red flags columns, sized by their text. */
@@ -35,7 +26,7 @@ const columns = $derived(
 );
 </script>
 
-<article class={["ds-page", "ds-sheet", { "ds-overflow": overflow }]} style:--ds-scale={scale}>
+<article class="ds-page ds-sheet">
   <header class="ds-head">
     <div class="ds-title">
       <span class="ds-eyebrow">{text.eyebrow}</span>

@@ -7,6 +7,7 @@ import {
   bandRow,
   columnShares,
   coverRows,
+  FIT_SCALES,
   firstFit,
   liveSheet,
   pageCounts,
@@ -401,9 +402,14 @@ test("a criterion's columns split the width by their text, the red flags between
 
 test("a sheet takes the largest scale that fits, or none", () => {
   assert.equal(
+    firstFit((s) => s <= 0.975),
+    0.97
+  );
+  assert.equal(
     firstFit((s) => s <= 0.92),
     0.92
   );
+  assert.equal(FIT_SCALES.at(-1), 0.85);
   assert.equal(
     firstFit(() => true),
     1

@@ -404,8 +404,14 @@ export function pageCounts(pages) {
   };
 }
 
-/** The font scales a live sheet may step down through to fit one page. */
-export const FIT_SCALES = Object.freeze([1, 0.96, 0.92, 0.88, 0.85]);
+/**
+ * The font scales a live sheet may step down through to fit one page, from
+ * 1 to 0.85 by hundredths, so the sheet that fits ends near the foot of
+ * its page.
+ */
+export const FIT_SCALES = Object.freeze(
+  Array.from({ length: 16 }, (_, step) => (100 - step) / 100)
+);
 
 /**
  * The first scale at which `fits(scale)` is true, or null when the sheet
