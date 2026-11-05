@@ -394,7 +394,9 @@ stated explicitly rather than folded into Does Not Meet.
 **Do not write a rubric table in MDX.** Since #144 each assignment's rubric is
 `canvas/assignments/<dir>/<name>-rubric.csv`, rendered on the page by
 `src/components/RubricTable.astro` and imported through the Canvas Rubrics
-page. One file, two destinations, nothing to keep in sync.
+page. One file, two destinations, nothing to keep in sync, except that the
+defense rubric also prints on the defense scoresheets and their example PDF,
+which `npm run defense:example` reprints (`docs/agents/tools.md`).
 
 ```mdx
 import RubricTable from '/src/components/RubricTable.astro';

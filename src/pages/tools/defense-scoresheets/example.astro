@@ -1,0 +1,55 @@
+---
+// The example live sheet the defense page links, for an invented student:
+// the live sheet as the tool prints it, from the rubric at build time, and
+// nothing else on the page. scripts/defense-example-pdf.mjs prints it to
+// public/defense-live-sheet-example.pdf, and the title's fingerprint tells
+// npm test whether that PDF still matches what the tool prints
+// (defense-example.mjs). The build runs from the repository root, so the
+// fingerprint's sources are read from there.
+import { readFileSync } from "node:fs";
+import { sheet } from "../../../components/tools/defense/defense-rubric.mjs";
+import LiveSheet from "../../../components/tools/defense/LiveSheet.svelte";
+import { example } from "../../../data/defense-scoresheets.mjs";
+import { exampleFingerprint } from "../../../lib/tools/defense-example.mjs";
+import "../../../components/tools/defense/sheets.css";
+
+const title = example.title(
+  exampleFingerprint(sheet, (path: string) => readFileSync(path, "utf8"))
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="ds-print ds-example">
+      <LiveSheet
+        {sheet}
+        student={example.student}
+        team={example.team}
+        term={example.term}
+      />
+    </div>
+    <script>
+      // Fits the sheet to one page, as the tool fits each sheet it prints.
+      import { fitSheet } from "../../../components/tools/defense/fit.js";
+
+      const page = document.querySelector(".ds-sheet");
+      if (page) {
+        fitSheet(page);
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: #fff;
+  }
+</style>

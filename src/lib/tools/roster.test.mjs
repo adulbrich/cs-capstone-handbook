@@ -61,6 +61,22 @@ test("parseRoster reads the Canvas group export", () => {
   assert.equal(students[0].team, "Engines");
 });
 
+test("parseRoster reads an optional grader column, in any case", () => {
+  const [none] = parseRoster(
+    roster([line("Lovelace, Ada", "ada@example.edu", "Engines")])
+  );
+  assert.equal(none.grader, "");
+  const [graded, ungraded] = parseRoster(
+    [
+      "name,login_id,group_name, Grader ",
+      '"Lovelace, Ada",ada@example.edu,Engines, Hopper ',
+      '"Babbage, Charles",charles@example.edu,Engines,',
+    ].join("\n")
+  );
+  assert.equal(graded.grader, "Hopper");
+  assert.equal(ungraded.grader, "");
+});
+
 test("parseRoster names a missing column", () => {
   assert.throws(
     () => parseRoster("name,login_id\nA,a@example.edu"),

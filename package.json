@@ -10,6 +10,7 @@
     "check:branch": "node scripts/check-branch-name.mjs",
     "check:commits": "node scripts/check-commit-message.mjs --range origin/main..HEAD",
     "check:prose": "node scripts/check-prose.mjs --all",
+    "defense:example": "npm run build && node scripts/defense-example-pdf.mjs",
     "dev": "astro dev",
     "format": "biome check --write",
     "prepare": "lefthook install || true",

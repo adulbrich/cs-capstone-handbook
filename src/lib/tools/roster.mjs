@@ -3,12 +3,17 @@
 //   name,canvas_user_id,user_id,login_id,sections,group_name,canvas_group_id,group_id
 //
 // `name` is "Last, First"; `login_id` is the student's email; `group_name` is
-// the team, empty for a student in no group.
+// the team, empty for a student in no group. A `grader` column, added to
+// the export by hand, names the student's grader (the defense scoresheets
+// print it as the assessor).
 
 import { parseCsv } from "./csv.mjs";
 
 /** The columns the tools read; the export's other columns are ignored. */
 export const REQUIRED_COLUMNS = ["name", "login_id", "group_name"];
+
+/** The optional grader column, matched in any case since it is typed by hand. */
+export const GRADER_COLUMN = "grader";
 
 /** Splits "Last, First" into its parts; a name with no comma is all first. */
 export function splitName(name) {
@@ -24,7 +29,8 @@ export function splitName(name) {
 
 /**
  * Parses the roster CSV text into students, in file order:
- * `{ canvasUserId, email, first, last, name, team }`. Throws an Error naming
+ * `{ canvasUserId, email, first, grader, last, name, team }`, `grader` ""
+ * when the roster has no grader column or the cell is empty. Throws an Error naming
  * every problem when a required column is missing, a row has no email, or an
  * email appears twice.
  */
@@ -41,6 +47,9 @@ export function parseRoster(text) {
     );
   }
   const at = Object.fromEntries(columns.map((column, i) => [column, i]));
+  const graderAt = columns.findIndex(
+    (column) => column.toLowerCase() === GRADER_COLUMN
+  );
   const problems = [];
   const seen = new Map();
   const students = [];
@@ -67,6 +76,7 @@ export function parseRoster(text) {
       canvasUserId: cell("canvas_user_id"),
       email,
       ...splitName(fullName),
+      grader: graderAt === -1 ? "" : (cells[graderAt] ?? "").trim(),
       name: fullName,
       team: cell("group_name"),
     });
