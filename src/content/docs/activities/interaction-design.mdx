@@ -6,7 +6,7 @@ description: Interfaces, play, and accessibility.
 import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 
-These activities shape what a person sees and does with your software: prototypes at rising fidelity, the guidelines and loops that make an interface or a game work, and the checks that let everyone use it. Prototype at the lowest fidelity that answers your question, and check accessibility while the design is still cheap to change.
+These activities cover what a person sees and does with your software: prototypes at rising fidelity, the guidelines and loops that make an interface or a game work, and the checks that let everyone use it. Prototype at the lowest fidelity that answers your question, and check accessibility while the design is still cheap to change.
 
 <LinkCard
   title="Accessibility Testing guide"
@@ -87,7 +87,7 @@ A good output is a journey map from first-time experience through mid-game, with
 Review one screen or output of your system against accessibility basics before it's built, while a fix is a design change rather than a rebuild.
 
 - Contrast and color: text meets [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA contrast ratios, and no information is carried by color alone (a red border meaning "error" is invisible to some users; a red border plus the word "error" isn't).
-- Target size and spacing: interactive elements are large enough and far enough apart to hit reliably, including on a phone and for users with motor impairments.
+- Target size and spacing: interactive elements meet the WCAG 2.2 AA minimum target size, which matters on a phone and for users with motor impairments.
 - Focus states: every interactive element shows clearly when it has keyboard focus, and the tab order follows the visual order.
 - Semantics before ARIA: a real `<button>` is accessible by default; a `<div>` with a click handler and four ARIA attributes usually isn't. Reach for the correct element first.
 - Labels: every input has a programmatically associated label, not just placeholder text.
@@ -142,7 +142,7 @@ Get automated accessibility checks running on every change, then practice the ju
 - **Have an agent triage the first report**, then go through it yourself: which findings are real, which are noise, which need a human looking at the actual screen.
 - **Follow up manually**: the [manual pass](/guides/accessibility/#manual-accessibility-testing) covers keyboard only, screen reader, and 200% zoom.
 
-Automated tools miss much of what WCAG (Web Content Accessibility Guidelines) covers, so the manual pass has to follow (the [accessibility guide](/guides/accessibility/#manual-accessibility-testing) has the numbers). Telling "this input has no label, so screen reader users can't fill this form" from "this decorative divider lacks a role" is judgment you build by doing it once with attention.
+Automated tools test [at most half of the WCAG (Web Content Accessibility Guidelines) criteria](/guides/accessibility/#manual-accessibility-testing), so the manual pass has to follow. Telling "this input has no label, so screen reader users can't fill this form" from "this decorative divider lacks a role" is judgment you build by doing it once with attention.
 
 **If your project has no user interface:** the equivalent is your output formats and documentation. Can someone consume your API errors, your CSV exports, or your README with a screen reader?
 

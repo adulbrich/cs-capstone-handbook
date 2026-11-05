@@ -6,7 +6,7 @@ description: Architecture, technology choices, and the decisions that are hard t
 import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 
-Technical design activities settle how the system will work: which technologies, what architecture, what data shape, and which decisions would be expensive to undo. They're direct preparation for writing a design document, because architecture descriptions, technology evaluations, and design reviews are exactly the reasoning such a document asks you to write down and defend.
+Technical design activities cover how the system will work: which technologies, what architecture, what data shape, and which decisions would be expensive to undo. They're direct preparation for writing a design document, because architecture descriptions, technology evaluations, and design reviews are exactly the reasoning such a document asks you to write down and defend.
 
 > "Design is not just what it looks like and feels like. Design is how it works." (Steve Jobs)
 
@@ -65,7 +65,7 @@ A good output is the list of upcoming decisions with the few hard-to-reverse one
 
 Draw the system your team is about to build, at the level of zoom your project partner can follow, and write one paragraph per box. One to two hours as a team, once at the start, then updated when the architecture changes.
 
-- **Pick a notation**: a C4 context plus container diagram fits most projects; use 4+1 views only if your readers have distinct concerns. The [Technical Design guide](/guides/technical-design/#system-level-design-architecture) explains the options.
+- **Pick a notation**: a [C4 context plus container diagram](/guides/technical-design/#system-level-design-architecture) fits most projects; use 4+1 views only if your readers have distinct concerns.
 - **Identify core components**: list the major pieces (frontend, backend, database, external APIs, pipeline stages, data sources, firmware modules).
 - **Define interactions**: show how components communicate (API calls, queues, file formats, data flows) and name the protocol on each edge.
 - **Mark the risky parts**: which component is new to the team, which integration is unproven, and what you'll spike first.
@@ -81,7 +81,7 @@ A good output is a diagram of the architecture and a brief explanation of each c
 
 <ActivityMeta anchor="define-your-database-schema" />
 
-Design a structured database schema to organize and store your project's data effectively.
+Design a structured database schema to organize and store your project's data.
 
 - Identify Entities: List all the key entities (e.g., users, orders, products) relevant to your project.
 - Define Relationships: Determine how entities relate to each other (e.g., one-to-many, many-to-many).
@@ -108,7 +108,7 @@ A good output is the proof-of-concept itself and a brief write-up on its feasibi
 
 <ActivityMeta anchor="designing-for-system-security" />
 
-Ensure the system is designed with robust security measures to protect data and user privacy.
+Plan how the system protects its data and its users' privacy.
 
 - Identify Vulnerabilities: List potential security risks (e.g., data breaches, unauthorized access).
 - Implement Best Practices: Plan for security measures such as encryption, authentication, and role-based access control.
@@ -141,7 +141,7 @@ A good output is your project assessed against the seven principles, naming whic
 
 <ActivityMeta anchor="optimizing-system-performance" />
 
-Identify and address factors that influence system performance to ensure optimal operation under different loads.
+Identify and address what slows your system under different loads.
 
 - Define Performance Metrics: Identify key metrics like response time, throughput, and latency.
 - Plan for Load Handling: Evaluate how the system will handle different levels of traffic (e.g., stress testing, load balancing).
@@ -154,7 +154,7 @@ A good output is a performance plan with identified bottlenecks and optimization
 
 <ActivityMeta anchor="peer-technical-design-review" effort="1 to 2 h" />
 
-Put your technical design in front of another team and review theirs in return, in one sitting; the [presentations guide](/guides/presentations/#design-reviews) covers what a design review is for. About 75 minutes for two or three teams in one room or on one call.
+Trade [design reviews](/guides/presentations/#design-reviews) with another team in one sitting: put your technical design in front of them and review theirs. About 75 minutes for two or three teams in one room or on one call.
 
 - **Draw your design on one page**: 20 minutes, starting from your design document if you have one. The components, how they connect, what they are built with, and the one design decision your team is least sure of. Cover the three issues below at the depth one page allows.
 - **Present**: 5 minutes per team. Walk the others through your page. Answer their questions; don't defend the design yet.

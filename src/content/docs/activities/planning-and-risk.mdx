@@ -6,7 +6,7 @@ description: Approvals, stakeholders, risks, and the dependencies that set the s
 import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 
-Planning and risk activities name what has to happen before the work can start, who has a stake in it, and what could stop it. Start with what people outside the team have to grant, such as repository access from the partner's IT staff or a security review before your code runs in their environment. Then say what you don't know yet, how you'll find out, and which pieces of work have to wait for which.
+Planning and risk activities cover what has to happen before the work can start, who has a stake in it, and what could stop it. Start with what people outside the team have to grant, such as repository access from the partner's IT staff or a security review before your code runs in their environment. Then say what you don't know yet, how you'll find out, and which pieces of work have to wait for which.
 
 > "Plans are worthless, but planning is everything." (Dwight D. Eisenhower, National Defense Executive Reserve Conference, 1957)
 
@@ -25,17 +25,17 @@ List everything your project needs from someone outside your team, from a reposi
 
 - **Ask directly** in your first partner or faculty meeting: what access and approvals does this project need, who files them, and how long do they usually take?
 - **List every prerequisite**: repository access, data, service accounts, hardware, documentation of how the existing system is hosted and maintained, IP agreement or NDA signatures, security or IT review, vendor onboarding, contributor agreements for an open-source project you contribute to, license review, export control.
-- **For each, record** who owns it, when it starts, how long it historically takes, and what is blocked until it lands.
+- **For each, record** who owns it, its lead time, what is blocked until it lands, and who you asked and when, or its start-by date until you ask.
 - **Start the longest one now**, even from an incomplete application, if the process allows amendment later.
 - **Put them in `docs/risks.md`** with owners and dates, and review them every sprint.
 
-A good output is a dated table of every external prerequisite with an owner and an expected duration, living in your risk register, with the slowest request already sent.
+A good output is a dated table of every external prerequisite with an owner and a lead time, living in your risk register, with the slowest request already sent.
 
 ## Stakeholder Mapping
 
 <ActivityMeta anchor="stakeholder-mapping" />
 
-Identify and categorize project stakeholders to ensure effective communication and alignment of expectations.
+Identify and categorize project stakeholders.
 
 - List Stakeholders: Identify all individuals or groups with a vested interest in the project (e.g., project partners, team members, end users).
 - Categorize Stakeholders: Use a power-interest matrix to categorize stakeholders based on their influence and interest in the project.
@@ -55,7 +55,7 @@ Conduct a SWOT (Strengths, Weaknesses, Opportunities, Threats) analysis to ident
 - Opportunities: Explore external opportunities that could benefit your project (e.g., new technologies, partnerships).
 - Threats: Identify external risks or challenges (e.g., competitors, regulatory issues).
 
-Write up the SWOT analysis and how these factors will influence project planning and decisions. Consider creating a matrix with four quadrants.
+Write up the SWOT analysis and what you'll plan or decide differently because of it. Consider creating a matrix with four quadrants.
 
 A good output is a completed SWOT grid with at least one concrete action drawn from it.
 
@@ -74,7 +74,7 @@ Run a premortem and turn what it surfaces into the first ranked entries in `docs
 - **Respond**: mitigate, eliminate, transfer, or accept, with a contingency for every accepted risk.
 - **Set the review**: put the top of the register on the agenda of every sprint planning.
 
-Give each risk that waits on someone outside the team (an approval, a review, users to recruit) an Asked line, who you asked and when, and a start-by date, because you don't control its lead time.
+Give each risk that waits on someone outside the team (an approval, a review, users to recruit) an Asked line: who you asked and when, or its start-by date until you ask.
 
 A good output is a `docs/risks.md` with every open risk written as a condition and a consequence, ranked with a reason, and carrying an owner, a response, and a trigger.
 
@@ -82,7 +82,7 @@ A good output is a `docs/risks.md` with every open risk written as a condition a
 
 <ActivityMeta anchor="dependency-mapping-or-critical-path-analysis" />
 
-Map task dependencies and identify the critical path to ensure efficient project scheduling and resource management. It's easier once you've worked on the requirements and know what you need to build; plan contingencies either way.
+Map task dependencies and identify the critical path. It's easier once you've worked on the requirements and know what you need to build; plan contingencies either way.
 
 1. List Tasks: Break down the project into individual tasks or activities.
 2. Identify Dependencies: Determine which tasks rely on the completion of others before they can start.
@@ -98,9 +98,9 @@ A good output is a dependency map and critical path analysis, including identifi
 
 <ActivityMeta anchor="fishbone-diagram" />
 
-A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known as an Ishikawa or Cause-and-Effect Diagram) is a visual tool for identifying, exploring, and displaying the possible causes of a specific problem or effect. It helps teams systematically analyze root causes rather than just symptoms.
+A [Fishbone Diagram](https://en.wikipedia.org/wiki/Ishikawa_diagram) (also known as an Ishikawa or Cause-and-Effect Diagram) is a visual tool for mapping the possible causes of a specific problem or effect. It helps teams systematically analyze root causes rather than just symptoms.
 
-1. Clearly define the problem or effect you want to analyze.
+1. State the problem or effect to analyze in one sentence.
 2. Draw the main "spine" (horizontal line) with the problem at the "head."
 3. Identify major categories of causes (e.g., People, Process, Tools, Environment) and draw "bones" branching off the spine.
 4. Brainstorm and list possible causes under each category.

@@ -6,7 +6,7 @@ description: Checking the work, shipping it, and leaving it maintainable for the
 import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 
-These activities check the work, ship it, and leave it maintainable for whoever inherits it. Start with the test plan and the checks that stop a bad change, whoever wrote it, then plan how the software reaches its users, how versions are released, and what the next maintainer needs to keep it running.
+These activities cover checking the work, shipping it, and leaving it maintainable for whoever inherits it. Start with the test plan and the checks that stop a bad change, whoever wrote it, then plan how the software reaches its users, how versions are released, and what the next maintainer needs to keep it running.
 
 <LinkCard
   title="Testing Strategy guide"
@@ -109,7 +109,7 @@ That means:
 2. Create a Deployment Checklist: Include steps like configuration, testing, build, integration, uploads, release, and backups. 
 3. Define Rollback Plan: Plan actions if deployment fails.
 
-The [DevOps guide](/guides/devops/#deployment-checklist) covers the deployment checklist and [rollbacks](/guides/devops/#rollbacks); the [Shipping guide](/guides/shipping/) has the lead times your deployment path involves.
+The DevOps guide covers the [deployment checklist](/guides/devops/#deployment-checklist) and [rollbacks](/guides/devops/#rollbacks); the Shipping guide has the [lead times](/guides/shipping/) your deployment path involves.
 
 A good output is a deployment plan detailing environment, steps, and rollback procedures.
 
@@ -124,7 +124,7 @@ Plan the release process for your software, including version control and deploy
 3. Plan Deployment: Identify how and where the software will be deployed or accessed (e.g., cloud platform, local servers, GitHub repository assets).
 4. Team Agreement: Discuss the process with your team and ensure everyone agrees.
 
-The [documentation guide](/guides/documentation/#versioning) covers the versioning scheme; the [Shipping guide](/guides/shipping/) lists the lead times your release path involves.
+The documentation guide covers the [versioning scheme](/guides/documentation/#versioning); the Shipping guide lists the [lead times](/guides/shipping/) your release path involves.
 
 A good output is a release plan document that includes versioning details and deployment steps.
 
@@ -132,7 +132,7 @@ A good output is a release plan document that includes versioning details and de
 
 <ActivityMeta anchor="planning-for-maintenance-and-long-term-support" />
 
-Identify key factors for maintaining and supporting the system post-deployment to ensure long-term sustainability.
+Plan who will maintain and support the system after deployment, and how.
 
 Instructions:
 
@@ -141,7 +141,7 @@ Instructions:
 - Support Structure: Identify the team or resources responsible for providing user support and resolving issues.
 - Create Documentation: Develop a plan for user manuals, FAQs, and support guides.
 
-A good output is a detailed plan addressing maintenance, scalability, and user support; it becomes raw material for the handoff package you leave the next maintainer.
+A good output is a plan addressing maintenance, scalability, and user support; it becomes raw material for the handoff package you leave the next maintainer.
 
 ## User Manual
 
@@ -156,7 +156,7 @@ Develop a preliminary user manual that outlines how end-users will interact with
 
 If working on this activity as a team, have each person focus on a different subset of the manual.
 
-A good output is a draft of the user manual with clear instructions on using the main features of your system.
+A good output is a draft user manual that someone who didn't build the system can follow to use each main feature.
 
 ## Describe your API Reference
 
