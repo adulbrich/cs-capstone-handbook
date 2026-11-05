@@ -118,9 +118,9 @@ $effect(() => {
 });
 
 /**
- * Fits every live sheet in the print copy to its own page. The copy is
- * laid out unseen for the measuring (`ds-measuring` in sheets.css), since
- * it is not drawn on screen, and put back before it prints.
+ * Fits every live sheet in the print copy to its own page before any
+ * print, the Print button's or the browser's own. The copy is laid out
+ * unseen for the measuring (`ds-measuring` in sheets.css), and put back.
  */
 function fitPrintCopy() {
   printCopy.classList.add("ds-measuring");
@@ -132,7 +132,6 @@ function fitPrintCopy() {
 
 /** Prints. The PDF's file name is the document title, as Save as PDF suggests it. */
 function print() {
-  fitPrintCopy();
   const before = document.title;
   document.title = printText.documentTitle(termLabel);
   window.addEventListener(
@@ -151,6 +150,8 @@ function toBody(node) {
   return () => node.remove();
 }
 </script>
+
+<svelte:window onbeforeprint={fitPrintCopy} />
 
 <div class="tool not-content">
   <ol class="steps">

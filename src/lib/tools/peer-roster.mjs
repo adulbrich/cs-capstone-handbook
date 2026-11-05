@@ -18,7 +18,7 @@ export const LEFT_OUT = Object.freeze({
 
 /**
  * An added student as a roster student: the shape parseRoster returns, with
- * no Canvas user ID (they are not in this course's export) and
+ * no Canvas user ID or grader (they are not in this course's export) and
  * `otherSection` set, so the scorer writes them to their own CSV.
  */
 export function addedStudent({ email, name, team }) {
