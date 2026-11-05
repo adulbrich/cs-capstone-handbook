@@ -45,7 +45,7 @@ const columns = $derived(
     </div>
     <div class="ds-side">
       <div class="ds-who">
-        {#if team.noTeam}<span class="ds-blank"></span>, {term}{:else}{text.team(team.team, term)}{/if}<br />
+        {#if team.noTeam}<span class="ds-blank"></span>{text.teamBlank(term)}{:else}{text.team(team.team, term)}{/if}<br />
         {text.assessor}: {#if assessor}{assessor}{:else}<span class="ds-blank"></span>{/if}
       </div>
       <div class="ds-total">
@@ -65,7 +65,7 @@ const columns = $derived(
   </div>
 
   <div class="ds-banner">
-    <strong>{text.tick}</strong>
+    <strong>{text.tick(sheet.rule)}</strong>
     <span>{text.points(sheet.rule)}</span>
     <span>{text.missing(sheet.rule)}</span>
   </div>

@@ -1,6 +1,6 @@
 // The defense scoresheets' rules (/tools/defense-scoresheets/): the live
-// sheet read from the defense rubric, the session length read from the
-// defense page, the teams read from the roster, and the pages that print
+// sheet read from the defense rubric, the session length and weeks read
+// from the defense page, the teams read from the roster, and the pages that print
 // for the teams picked. Pure, so node --test covers it; the wording is in
 // src/data/defense-scoresheets.mjs, and the files are read at build time by
 // src/components/tools/defense/defense-rubric.mjs.
@@ -55,6 +55,8 @@ const CLOSING_PERIOD = /\.$/;
 const ALL_COUNT = /^All (\w+)\b/i;
 /** An Exceeds preamble: its count, then the condition every item meets. */
 const ALL_CONDITION = /^All \w+, (.+)$/;
+/** The condition's last clause, which the Does Not Meet band already states. */
+const RED_FLAG_CLAUSE = /,\s*and no red flag$/i;
 /** A number written as digits. */
 const DIGITS = /^\d+$/;
 
@@ -130,8 +132,11 @@ function bandOf(criterion, key, where) {
  * state: Exceeds' points and the condition every item meets (its preamble
  * after "All four, "), Does Not Meet's points and its preamble ("Any red
  * flag"), the Meets ladder (each number in the Meets description, "16
- * points with one item missing, 12 with two, 8 with more"), and the text
- * after the Meets description's first colon. The banner prints all of it.
+ * points with one item missing, 12 with two, 8 with more"), the text after
+ * the Meets description's first colon, and the Missing band. The banner
+ * prints them in three lines: the item condition without its red-flag
+ * clause (`itemCondition`), the points, and the Missing description up to
+ * its first semicolon (`missing.lead`).
  */
 export function readCriterion(criterion, where) {
   const names = Object.values(BAND_NAMES);
@@ -189,9 +194,14 @@ export function readCriterion(criterion, where) {
       exceeds: exceeds.points,
       exceedsCondition: condition[1],
       flagRule: flags.preamble,
+      itemCondition: condition[1].replace(RED_FLAG_CLAUSE, ""),
       ladder,
       meetsRule: meets.description.slice(colon + 2),
-      missing: { description: missing.description, points: missing.points },
+      missing: {
+        description: missing.description,
+        lead: missing.description.split(";")[0].trim(),
+        points: missing.points,
+      },
     },
   };
 }

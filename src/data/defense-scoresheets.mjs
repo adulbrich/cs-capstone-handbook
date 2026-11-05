@@ -141,18 +141,22 @@ export const sheetText = {
   flags: "Red flags",
   /** The one-to-one after the session, apart from a criterion's follow-up question. */
   followUp: "Individual follow-up",
-  /** The banner's last line: the rubric's Missing band, word for word. */
+  /** The banner's last line: the rubric's Missing band, up to its semicolon. */
   missing: ({ missing }) =>
-    `${BAND_NAMES.missing}, ${missing.points}: ${missing.description}`,
+    `${BAND_NAMES.missing}, ${missing.points}: ${missing.lead}.`,
   notes: "Notes",
   /** The banner's points line: the rubric's bands, in their own words. */
-  points: ({ doesNotMeet, exceeds, exceedsCondition, flagRule, meetsRule }) =>
-    `Every item ticked, ${exceedsCondition}: ${exceeds}. ${flagRule}: ${doesNotMeet}. Otherwise ${meetsRule}`,
+  points: ({ doesNotMeet, exceeds, flagRule, meetsRule }) =>
+    `${flagRule}: ${doesNotMeet}. Otherwise every item ticked: ${exceeds}, or ${meetsRule}`,
   record: "Repo record checked",
   recordChoices: "yes / no / shown on screen (NDA)",
   sprint: "Sprint",
-  team: (team, term) => `${team || NO_TEAM}, ${term}`,
-  tick: "Tick an item when the student says it.",
+  team: (team, term) => [team, term].filter(Boolean).join(", "),
+  /** What follows the write-in line on a No team sheet. */
+  teamBlank: (term) => (term ? `, ${term}` : ""),
+  /** The banner's first line: the rubric's condition on each item. */
+  tick: ({ itemCondition }) =>
+    `Tick an item when the student says it, ${itemCondition}.`,
   total: "Total",
   yesNo: "yes / no",
 };
@@ -169,6 +173,7 @@ export const example = {
     noTeam: false,
     team: "CS.042 Don't Panic Incident Tracker",
   },
-  term: sessionText.terms.fall,
+  /** No term: the one example serves every term's page. */
+  term: "",
   title: (fingerprint) => `Defense live sheet example, ${fingerprint}`,
 };

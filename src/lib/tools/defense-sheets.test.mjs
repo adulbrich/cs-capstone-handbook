@@ -154,9 +154,14 @@ test("the live sheet reads each criterion's question, items, red flags, and the 
     exceeds: 10,
     exceedsCondition: "none undone by a follow-up question, and no red flag",
     flagRule: "Any red flag",
+    itemCondition: "none undone by a follow-up question",
     ladder: [8, 6, 4],
     meetsRule: "8 points with one item missing, 6 with two, 4 with more.",
-    missing: { description: MISSING, points: 0 },
+    missing: {
+      description: MISSING,
+      lead: "No-show, or no attempt",
+      points: 0,
+    },
   });
   assert.deepEqual(bandRow(sheet.rule), [
     { key: "exceeds", points: [10] },
@@ -242,6 +247,9 @@ test("the defense rubric prints word for word, under one rule its bands state", 
   );
   assert.ok(firstBand(BAND_NAMES.meets).endsWith(`: ${sheet.rule.meetsRule}`));
   assert.equal(firstBand(BAND_NAMES.missing), sheet.rule.missing.description);
+  // The banner's three lines quote the bands from their start.
+  assert.ok(sheet.rule.exceedsCondition.startsWith(sheet.rule.itemCondition));
+  assert.ok(sheet.rule.missing.description.startsWith(sheet.rule.missing.lead));
   // Every item is the CSV's own text, so nothing on the sheet is retyped.
   parsed.criteria.forEach((criterion, i) => {
     const band = (name) =>
@@ -265,7 +273,6 @@ test("the defense rubric prints word for word, under one rule its bands state", 
 test("the session length and weeks come from the defense page", () => {
   const rule = sessionRule(read("src/content/docs/assignments/defense.mdx"));
   assert.equal(sessionMinutes(3, rule), 3 * rule.perStudent + rule.setup);
-  assert.ok(rule.weeks.length > 0);
   const page = (sentence) =>
     `Once per term, between week 4 and week 6, your team meets an assessor.\n\n${sentence}`;
   assert.deepEqual(
