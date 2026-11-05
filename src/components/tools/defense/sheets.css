@@ -270,7 +270,10 @@
   align-items: flex-end;
   font-size: 1.1em;
 }
+/* A long team name wraps, rather than leaving the student's name too
+   little width and breaking it mid-word. */
 .ds-who {
+  max-width: 26em;
   color: #44403c;
   text-align: end;
 }
@@ -319,6 +322,16 @@
   border: 1px solid #fed7aa;
   border-radius: 4px;
 }
+/* The criteria run down two columns, each criterion whole in one, so an
+   item's line is half the page wide. Never shrunk by the page's flex, so
+   text past the page shows in its height, which is what fitSheet reads,
+   rather than in a third column beside the page. */
+.ds-criteria {
+  flex: none;
+  column-gap: 1.6em;
+  column-rule: 1px solid #d6d3d1;
+  columns: 2;
+}
 .ds-criterion {
   display: flex;
   flex-direction: column;
@@ -327,13 +340,19 @@
   border-top: 1.5px solid #1c1917;
   break-inside: avoid;
 }
+.ds-criterion:not(:last-child) {
+  margin-block-end: 0.6em;
+}
 .ds-criterion-head {
   display: flex;
-  gap: 1em;
+  flex-wrap: wrap;
+  gap: 0.2em 1em;
   align-items: baseline;
 }
+/* A title too long to share its line with the band row takes the line,
+   and the band row moves under it, kept at the right. */
 .ds-criterion h2 {
-  flex: 1;
+  flex: 1 1 auto;
   font-size: 1.2em;
   line-height: 1.2;
 }
@@ -349,6 +368,7 @@
   display: flex;
   flex: none;
   gap: 0.45em;
+  margin-inline-start: auto;
   font-weight: 700;
 }
 .ds-band {
@@ -360,11 +380,6 @@
 .ds-question {
   font-style: italic;
   color: #292524;
-}
-.ds-lists {
-  display: grid;
-  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
-  column-gap: 1.3em;
 }
 .ds-items,
 .ds-flags ul {

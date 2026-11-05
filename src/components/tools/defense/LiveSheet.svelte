@@ -5,15 +5,12 @@
 // points, and the Missing rule; then each criterion's question, its items
 // to tick, its red flags, its band row, and a notes line. The rubric's text
 // comes from `sheet` (liveSheet in defense-sheets.mjs), word for word.
-// `student` null is a blank sheet with the name written in. Each
-// criterion's two columns share the width by their text (columnShares).
-// Once laid out, fitSheet (fit.js) steps the type down to fit one page.
+// `student` null is a blank sheet with the name written in. The criteria
+// run down two columns, each whole in one, so no line runs the page's
+// width. Once laid out, fitSheet (fit.js) steps the type down to fit one
+// page.
 import { sheetText as text } from "../../../data/defense-scoresheets.mjs";
-import {
-  bandRow,
-  columnShares,
-  fullName,
-} from "../../../lib/tools/defense-sheets.mjs";
+import { bandRow, fullName } from "../../../lib/tools/defense-sheets.mjs";
 
 let { sheet, student = null, team, term } = $props();
 
@@ -21,13 +18,6 @@ let { sheet, student = null, team, term } = $props();
 const assessor = $derived(student?.grader ?? "");
 
 const bands = $derived(bandRow(sheet.rule));
-/** Each criterion's items and red flags columns, sized by their text. */
-const columns = $derived(
-  sheet.criteria.map((criterion) => {
-    const [items, flags] = columnShares(criterion);
-    return `minmax(0, ${items}fr) minmax(0, ${flags}fr)`;
-  })
-);
 </script>
 
 <article class="ds-page ds-sheet">
@@ -65,20 +55,20 @@ const columns = $derived(
     <span>{text.missing(sheet.rule)}</span>
   </div>
 
-  {#each sheet.criteria as criterion, i (criterion.title)}
-    <section class="ds-criterion">
-      <div class="ds-criterion-head">
-        <h2>
-          <span class="ds-number">{i + 1}</span>
-          {criterion.title}
-          {#if criterion.tags.length > 0}<span class="ds-tags">{criterion.tags.join(", ")}</span>{/if}
-        </h2>
-        <span class="ds-bands">
-          {#each bands as band (band.key)}<span class="ds-band">{text.band(band.key, band.points)}</span>{/each}
-        </span>
-      </div>
-      <p class="ds-question">{criterion.question}</p>
-      <div class="ds-lists" style:grid-template-columns={columns[i]}>
+  <div class="ds-criteria">
+    {#each sheet.criteria as criterion, i (criterion.title)}
+      <section class="ds-criterion">
+        <div class="ds-criterion-head">
+          <h2>
+            <span class="ds-number">{i + 1}</span>
+            {criterion.title}
+            {#if criterion.tags.length > 0}<span class="ds-tags">{criterion.tags.join(", ")}</span>{/if}
+          </h2>
+          <span class="ds-bands">
+            {#each bands as band (band.key)}<span class="ds-band">{text.band(band.key, band.points)}</span>{/each}
+          </span>
+        </div>
+        <p class="ds-question">{criterion.question}</p>
         <ul class="ds-items">
           {#each criterion.items as item (item.label)}
             <li>
@@ -98,11 +88,11 @@ const columns = $derived(
             {/each}
           </ul>
         </div>
-      </div>
-      <div class="ds-notes">
-        <span class="ds-label">{text.notes}</span>
-        <span class="ds-fill"></span>
-      </div>
-    </section>
-  {/each}
+        <div class="ds-notes">
+          <span class="ds-label">{text.notes}</span>
+          <span class="ds-fill"></span>
+        </div>
+      </section>
+    {/each}
+  </div>
 </article>

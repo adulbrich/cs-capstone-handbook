@@ -5,7 +5,6 @@ import { parseRubricCsv, rubricTotal } from "../rubric-csv.mjs";
 import {
   BAND_NAMES,
   bandRow,
-  columnShares,
   coverRows,
   FIT_SCALES,
   firstFit,
@@ -403,23 +402,6 @@ test("the teams picked print a cover, a sheet per student, and a blank when aske
   });
   assert.equal(new Set(withBlanks.map((p) => p.id)).size, withBlanks.length);
   assert.deepEqual(printPages(teams, { selected: new Set() }), []);
-});
-
-test("a criterion's columns split the width by their text, the red flags between a fifth and a half", () => {
-  // Each item weighs its text plus 20; the red flags' title weighs 20.
-  const item = (n) => ({ label: "L", text: "x".repeat(n - 21) });
-  assert.deepEqual(
-    columnShares({ flags: [item(40)], items: [item(90)] }),
-    [0.6, 0.4]
-  );
-  assert.deepEqual(
-    columnShares({ flags: [item(21)], items: [item(400)] }),
-    [0.8, 0.2]
-  );
-  assert.deepEqual(
-    columnShares({ flags: [item(300)], items: [item(30)] }),
-    [0.5, 0.5]
-  );
 });
 
 test("a sheet takes the largest scale that fits, or none", () => {

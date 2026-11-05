@@ -248,35 +248,6 @@ export function liveSheet(rubric, sourceLabel) {
   };
 }
 
-/** The narrowest and widest share of the width the red flags column takes. */
-export const FLAG_SHARE = Object.freeze({ max: 0.5, min: 0.2 });
-
-/**
- * What a column's text weighs, in characters: its labels and texts, plus
- * the part line each item and the red flags' title leave unfilled.
- */
-const ITEM_WEIGHT = 20;
-const TITLE_WEIGHT = 20;
-
-const weight = (list) =>
-  list.reduce(
-    (sum, item) => sum + item.label.length + item.text.length + ITEM_WEIGHT,
-    0
-  );
-
-/**
- * The share of the width each of a criterion's two columns takes, items
- * then red flags, in proportion to their text so both end near the same
- * line, the red flags held between FLAG_SHARE's bounds.
- */
-export function columnShares({ flags, items }) {
-  const flagWeight = weight(flags) + TITLE_WEIGHT;
-  const share = flagWeight / (weight(items) + flagWeight);
-  const clamped = Math.min(FLAG_SHARE.max, Math.max(FLAG_SHARE.min, share));
-  const flagShare = Math.round(clamped * 100) / 100;
-  return [Math.round((1 - flagShare) * 100) / 100, flagShare];
-}
-
 /** The band row each criterion prints, highest band first. */
 export const bandRow = (rule) => [
   { key: "exceeds", points: [rule.exceeds] },
