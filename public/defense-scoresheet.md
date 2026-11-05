@@ -20,7 +20,7 @@ If a score comes out borderline, or a student's part of the session ran short, t
 
 ## 1. Ownership and delegation (SO2, SO4): ____ / 20
 
-Asks: walk me through it and where it stands; what, if anything, did you hand to AI tools, what did you keep, and how did you know the result was right? Follow-up: where did you stop to check it yourself, did anything go wrong, and what changed?
+Asks: walk me through it and where it stands; what, if anything, did you hand to AI tools, what did you keep, and how did you know the result was right? Follow-up: where did you stop to check it yourself, and why there? Did anything go wrong, and what changed?
 
 Exceeds, all four, none undone by a follow-up question or the record, and no red flag:
 
@@ -67,7 +67,7 @@ Exceeds, all three, none undone by a follow-up question or the record, and no re
 
 - [ ] **Correct and specific:** a correct answer that names the behavior or limit that breaks
 - [ ] **Holds on a second what-if:** the reasoning holds when Y changes too
-- [ ] **Verified it themselves:** says where they verified the system's behavior themselves
+- [ ] **Verified it themselves:** says how they verified the system's behavior themselves
 
 Red flags, any one is Does Not Meet:
 
