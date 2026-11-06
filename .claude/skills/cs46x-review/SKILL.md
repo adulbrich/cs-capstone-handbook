@@ -86,19 +86,19 @@ Check a finding before acting on it; reviewers are wrong too. Each one is:
   drift, by the fix ladder;
 - **declined**, on one of three grounds, in one line under Declined in the PR
   body: wrong once checked; below the bar; or outside the diff, where real
-  work becomes an issue. Drift is wrong once checked only when the check
-  names the issue line, PR body line, decision, or rule the change traces to;
+  work becomes an issue. A drift finding is declined only as wrong once
+  checked, naming the issue line, a PR body line the round began with, an
+  instructor decision, or a rule Concrete sentences' second paragraph lists;
 - **sent to the instructor** as options, when it is drift, a design choice, a
   fix the ladder sends up, a fix that would reverse an earlier round's, or a
   student-read stop on text an instructor decision set. The round waits for
   the answer, which the PR body records under Decisions.
 
-Whether a change in what the text says was meant is the instructor's call,
-so the main session neither restores nor keeps drift on its own (#661). A
-round's drift goes to the instructor as one list: each item with the old text
-and the new, and a recommendation among keeping the change, which the PR body
-then names; restoring the base wording; or a rewording that keeps the old
-idea.
+Whether drift was meant is the instructor's call, so the main session
+doesn't restore, reword, or keep it on its own (#661). A round's drift goes
+to the instructor as one list: each item with the old text and the new, and a
+recommendation among keeping the change, which the PR body then names;
+restoring the base wording; or a rewording, quoted, that keeps the old idea.
 
 ## 4. Fix by the Ladder
 
@@ -125,8 +125,8 @@ then one line per decision and per decline. A resumed session rebuilds the
 ledger from those lines and the round commits.
 
 The loop ends on a round that changed no repository file, in which the latest
-student read of every page reports no stop that clears the bar and the latest
-spec and rules review reports no drift that still stands. A fix to the PR
+student read of every page reports no stop that clears the bar and that
+round's spec and rules review reports no drift that still stands. A fix to the PR
 body alone starts no round.
 
 When a round's fixes stay within one file and rename no heading, the next
