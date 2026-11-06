@@ -45,13 +45,20 @@ const CLEAN =
 // (check-prose) and Biome cannot fold an escape back into the character.
 const EM_DASH = String.fromCodePoint(0x20_14);
 const DASHED = `Closes #1\n\none ${EM_DASH} two\n`;
+const BARE = "Closes #1\n\n- x\n\n---\n\n## Ran locally\n";
+const BELOW =
+  "Closes #1\n\n- x\n\n---\n\n## Ran locally\n\nAssisted-by: Claude Code\n";
 
 const old = join(root, "old.md");
 const clean = join(root, "clean.md");
 const dashed = join(root, "dashed.md");
+const bare = join(root, "bare.md");
+const below = join(root, "below.md");
 writeFileSync(old, OLD);
 writeFileSync(clean, CLEAN);
 writeFileSync(dashed, DASHED);
+writeFileSync(bare, BARE);
+writeFileSync(below, BELOW);
 writeFileSync(join(home, "old.md"), OLD);
 
 const T = '--title "fix(x): y"';
@@ -134,6 +141,35 @@ const CASES = [
     "deny",
   ],
 
+  // The Assisted-by trailer above `---` on a PR body an agent sets (#665).
+  [
+    "clean body file on a create",
+    `gh pr create ${T} --body-file ${clean}`,
+    "allow",
+  ],
+  ["no trailer on a create", `gh pr create ${T} --body-file ${bare}`, "deny"],
+  ["trailer only below ---", `gh pr create ${T} --body-file ${below}`, "deny"],
+  ["no trailer on an edit", `gh pr edit 5 --body-file ${bare}`, "deny"],
+  [
+    "no trailer on a merge body",
+    `gh pr merge 5 --squash --subject "fix(x): y" --body-file ${bare}`,
+    "deny",
+  ],
+  ["no trailer inline", `gh pr create ${T} --body "Closes #1"`, "deny"],
+  ["no trailer inline, -b", `gh pr edit 5 -b 'Closes #1'`, "deny"],
+  ["edit without a body", "gh pr edit 5 --add-label x", "allow"],
+  ["merge without a body", "gh pr merge 5 --squash", "allow"],
+  [
+    "issue body without a trailer",
+    `gh issue create --title "x" --body-file ${bare}`,
+    "allow",
+  ],
+  [
+    "PR comment without a trailer",
+    `gh pr comment 5 --body-file ${bare}`,
+    "allow",
+  ],
+
   // The rules that were already here.
   [
     "session link inline",
@@ -147,7 +183,7 @@ const CASES = [
   ],
   [
     "clean create with an inline body",
-    `gh pr create ${T} --body "Closes #1"`,
+    `gh pr create ${T} --body "Closes #1\n\nAssisted-by: Claude Code"`,
     "allow",
   ],
   ["not a publishing command", "gh pr view 5 --json body", "allow"],
