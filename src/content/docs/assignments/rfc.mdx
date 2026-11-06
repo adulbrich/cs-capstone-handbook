@@ -45,18 +45,14 @@ import finalRubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
 
 <AssignmentSummary />
 
-You write a different RFC each term, in fall and winter, about a **real decision your team faces that is hard to reverse**. An RFC frames the problem, lays out the options, recommends one, and invites critique before the team commits; the name comes from the [Internet Engineering Task Force's RFC series](https://www.ietf.org/process/rfcs/), and Google uses the same shape internally as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/), Oxide as an [RFD (Request for Discussion)](https://rfd.shared.oxide.computer/rfd/0001). In fall the decision is still open when you submit the draft. Where you can, pick one your team can leave open until the peer reviews come back in week 5; either way, the team decides when the work requires it, by the final draft in week 8 at the latest. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. The RFC is not a hypothetical, and not a justification written after the fact for a decision it no longer changes.
+You write a different RFC each term, in fall and winter, about a **real decision your team faces that is [hard to reverse](/guides/adr/#which-decisions-deserve-an-adr)**. An RFC frames the problem, lays out the options, recommends one, and invites critique before the team commits; the name comes from the [Internet Engineering Task Force's RFC series](https://www.ietf.org/process/rfcs/), and Google uses the same shape internally as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/), Oxide as an [RFD (Request for Discussion)](https://rfd.shared.oxide.computer/rfd/0001). In fall the decision is still open when you submit the draft. Where you can, pick one your team can leave open until the peer reviews come back in week 5; either way, the team decides when the work requires it, by the final draft in week 8 at the latest. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. The RFC is not a hypothetical, and not a justification written after the fact for a decision it no longer changes.
 
-:::note[Picking a decision that is actually yours]
-Hard-to-reverse decisions are typically architecture, database schema, authentication and authorization, deployment topology, data migrations, licensing, and third-party commitments: undoing them costs far more than getting them right now. Most feature code is easy to reverse. The distinction comes from Jeff Bezos's [2015 letter to Amazon shareholders](https://s2.q4cdn.com/299287126/files/doc_financials/annual/2015-Letter-to-Shareholders.PDF), which calls them Type 1 and Type 2 decisions and warns that applying the heavyweight Type 1 process to reversible decisions makes an organization slow. Telling one from the other is itself part of the exercise, and it's the judgment that matters most when AI writes much of the code.
+:::note[If your partner already decided]
+You may find in week 3 that the partner chose the stack, hosting, database, and review process. Write on a decision inside those constraints, or on working within a constraint you were handed: how to verify against a system you cannot change, migrate data on a schedule someone else owns, or what to prove before asking your partner to reconsider.
+:::
 
-Two situations make the choice harder, and both are ordinary:
-
-Your partner already decided. Your team may inherit the stack, the hosting, the database, and the review process, and find out in week 3 how little is yours to choose. Write on a decision inside that constrained space, or on how to work within a constraint you were handed: how to verify against a system you cannot change, how to migrate data on a schedule someone else owns, what you would have to prove before asking your partner to reconsider. Naming a constraint accurately and reasoning inside it is a legitimate RFC topic.
-
-Nothing hard to reverse is live in your four-week window. Write on the most consequential reversible decision you face, and say in the problem framing why it is reversible and what would make it not.
-
-Do not invent a hard-to-reverse decision you are not actually facing.
+:::note[If nothing hard to reverse is live in your four-week window]
+Write on the most consequential reversible decision you face, and say in the problem framing why it is reversible and what would make it not. Don't invent a hard-to-reverse decision you aren't actually facing.
 :::
 
 What you can direct an agent or a teammate to build is bounded by how precisely you can specify it. Write the RFC to that standard.
@@ -119,10 +115,6 @@ After the RFC, add a table with one row for every point raised in the feedback y
 Feedback is the point in your words, not a quote. For a change, Where or why names the section that moved and what moved in it, so the grader can find it in the final draft. For a decline, it gives the reason the point does not hold for this decision; a reasoned decline counts as much as a change.
 
 The log goes in the submission only: the RFC in your repository is the team's record of the decision, and who asked for which change is not part of it, so don't commit the log there. It does not count toward the length band.
-
-:::note[Minimum Length]
-The revised RFC, not counting the revision log, must total **at least 2,000 words**.
-:::
 
 ## Rubric
 

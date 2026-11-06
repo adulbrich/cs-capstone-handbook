@@ -33,19 +33,15 @@ A real sprint needs a few things in place first. Get them done in your first wee
 - Write initial requirements and turn them into a backlog.
 - Build something, however rough, before the preparation is over.
 
+Don't spend the preparation weeks only on plans and documents. Rough prototypes, exploratory notebooks, a first literature review, a proof-of-concept spike, and a pass over the data all count as building, and each one gives the team something concrete to learn from and to show your partner. A plan written before anyone has touched the problem rests on guesses, and a spike turns some of those guesses into facts before the first sprint commits to them.
+
+The time before the first real sprint is sometimes called Sprint 0. The term isn't in the Scrum Guide. Treat Sprint 0 as a sprint whose backlog is the preparation list above, because putting those items on the board gives the preparation an owner per item and makes a stalled item visible at the next stand-up. It ends when the team can pull real work items into a sprint.
+
 <LinkCard
   title="Project Requirements"
   href="/guides/requirements/"
   description="How to gather, write, and manage requirements for your project."
 />
-
-:::caution[Start Building Early]
-Don't spend the preparation weeks only on plans and documents. Rough prototypes, exploratory notebooks, a first literature review, a proof-of-concept spike, and a pass over the data all count as building, and each one gives the team something concrete to learn from and to show your partner. A plan written before anyone has touched the problem rests on guesses, and a spike turns some of those guesses into facts before the first sprint commits to them.
-:::
-
-:::note[Sprint 0]
-The time before the first real sprint is sometimes called Sprint 0. The term isn't in the Scrum Guide. Treat Sprint 0 as a sprint whose backlog is the preparation list above, because putting those items on the board gives the preparation an owner per item and makes a stalled item visible at the next stand-up. It ends when the team can pull real work items into a sprint.
-:::
 
 ## The Sprint Cycle
 
@@ -61,11 +57,9 @@ At the start of each sprint, the team meets to decide what it'll deliver by the 
 2. What work will you pull in? Specific items from the backlog (user stories, research questions, experiments, data pipeline steps), sized to fit the hours people have.
 3. Who owns what? Every item has one person responsible for finishing it.
 
-Keep planning to 30 to 60 minutes, which is enough when the backlog arrives ready and the meeting only has to choose, check sizes, and assign. If your planning runs long, look at the backlog first: a team writing and sizing items during planning is doing what the Scrum Guide calls Product Backlog refinement, "breaking down and further defining Product Backlog items into smaller more precise items", which belongs before planning.
-
-:::tip[The Backlog]
 A **backlog** is the ordered list of all the work the team intends to do. Keep it current between plannings rather than rebuilding it at each one: update it after every meeting with your project partner, so the top items are ready to pull into the next sprint without much discussion.
-:::
+
+Keep planning to 30 to 60 minutes, which is enough when the backlog arrives ready and the meeting only has to choose, check sizes, and assign. If your planning runs long, look at the backlog first: a team writing and sizing items during planning is doing what the Scrum Guide calls Product Backlog refinement, "breaking down and further defining Product Backlog items into smaller more precise items", which belongs before planning.
 
 ### The Sprint Itself
 
@@ -97,7 +91,8 @@ Show the work itself: running software on real data, a notebook with actual outp
 
 After the review and before the next sprint starts, the team holds a short retrospective (30 to 45 minutes) on how it worked rather than on what it built. The Scrum Guide gives its purpose as planning "ways to increase quality and effectiveness", and the retrospectives guide covers [formats and facilitation](/guides/retrospectives/).
 
-:::note[Process Overhead]
+### Process Overhead
+
 At the lengths this page recommends, a two-week sprint costs each person about this much:
 
 | Activity | Per sprint | Weekly average |
@@ -109,7 +104,6 @@ At the lengths this page recommends, a two-week sprint costs each person about t
 | Board and backlog upkeep | ongoing | ~20-30 min |
 
 That's roughly 1.5 to 2.5 hours a week on process. For comparison, the Scrum Guide's maximums for a one-month sprint are eight hours of planning, four of review, and three of retrospective, events it says are "usually shorter" for shorter sprints, plus a 15-minute Daily Scrum every working day whatever the sprint's length. Some weeks run heavier (planning, demo preparation) and others lighter. If process starts crowding out build time, shorten the events rather than skipping them, because a skipped review or retrospective removes the feedback the sprint exists to produce.
-:::
 
 ## Definition of Done
 
@@ -178,8 +172,8 @@ Consider Kanban when these hold for your team:
 - The workload is unpredictable, for example partner feedback that reshuffles priorities every few days.
 - The team prefers a steady flow of small deliverables to a batch every two weeks.
 
-:::caution[Kanban Requires More Initiative, Not Less]
-A Kanban team can quietly lose a member who says "there was nothing to do" or "I was waiting to be assigned something." In a pull system nobody assigns work: if the Backlog column has items and you're idle, pull the next one. If people on the team aren't yet comfortable taking that initiative, stay with sprint planning, where work is discussed and distributed explicitly.
+:::caution[Waiting to be assigned work on a Kanban team]
+A Kanban team can quietly lose a member who says "there was nothing to do" or "I was waiting to be assigned something." In a pull system nobody assigns work: if the Backlog column has items and you're idle, pull the next one. If teammates aren't yet comfortable pulling work, stay with sprint planning, where work is discussed and distributed explicitly.
 :::
 
 ### Scrumban: The Hybrid
@@ -192,9 +186,7 @@ A Kanban team can quietly lose a member who says "there was nothing to do" or "I
 
 Try the hybrid when the team wants the flexibility of flow but still needs a fixed rhythm for demos and check-ins with its project partner. The sprint boundary supplies the rhythm, and the flow absorbs weeks when members' schedules are uneven.
 
-:::tip[Pick What Works, Then Adapt]
-You don't need to choose a process on day one and keep it forever. Start with plain sprints. If the team struggles with fixed commitments, try WIP limits and continuous flow. Decide what to change at a retrospective and check it at the next one, because a process change needs a sprint or two of evidence before you can tell whether it helped.
-:::
+You don't need to choose a process on day one and keep it forever. Start with plain sprints, and if the team struggles with fixed commitments, try WIP limits and continuous flow. Decide what to change at a retrospective and check it at the next one, because a process change needs a sprint or two of evidence before you can tell whether it helped.
 
 ## What Good Sprints Look Like
 
@@ -226,10 +218,6 @@ Pick the smallest set of tools that covers planning, a visible board, and a reco
 | Time tracking (optional) | [Toggl Track](https://toggl.com/), [Clockify](https://clockify.me/) |
 
 Prefer GitHub Projects when your code lives on GitHub, because a project integrates with the repository's issues and pull requests, so the board holds the same items the team already works in and there's no second list to keep in sync.
-
-:::note[Reviewed annually]
-The tool names above date faster than anything else on this page. Checked at the annual review.
-:::
 
 ## Best Practices
 
