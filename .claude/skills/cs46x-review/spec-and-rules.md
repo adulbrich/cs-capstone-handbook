@@ -26,7 +26,8 @@ the diff touches (the Skills table in `AGENTS.md`).
      reader is asked to do, facts, what a link says its target holds, and
      agreement with another page, which you check by opening that page. An
      idea the new text, or the same file elsewhere, states about the same
-     subject is not dropped.
+     subject is not dropped; one activity's or one assignment entry's sentence
+     never covers another's.
    - A change is intended when the issue, the PR body, or an instructor
      decision in the ledger says the PR makes it; when a fix in the ledger
      needs it to resolve that fix's own finding; or when a rule bars the old
