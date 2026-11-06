@@ -52,6 +52,11 @@ is labelled as such, with the hunk quoted.
   fix (its round, its finding, what changed), and the bar. Each reviewer but
   the student reader reads it first and raises only what it does not already
   answer.
+- In round 1, save the issue and the drafted PR body in the scratchpad as the
+  **round-1 copies**, and give them to every later spec and rules reviewer. A
+  line added to either afterwards makes a change intended only with an
+  instructor decision in the ledger; if the copies are lost, no line of either
+  does (#661).
 
 Done when the build, the export, the word counts, the drafted PR body, and
 the ledger all reflect `HEAD`.
@@ -87,8 +92,7 @@ Check a finding before acting on it; reviewers are wrong too. Each one is:
 - **declined**, on one of three grounds, in one line under Declined in the PR
   body: wrong once checked; below the bar; or outside the diff, where real
   work becomes an issue. A drift finding is declined only as wrong once
-  checked, naming an issue line from before this round's reviews, a line of
-  the PR body as round 1's reviews read it, an instructor decision, or a rule
+  checked, naming a line of a round-1 copy, an instructor decision, or a rule
   `docs/agents/voice.md` lists in Concrete sentences' second paragraph;
 - **sent to the instructor** as options, when it is drift, a design choice, a
   fix the ladder sends up, a fix that would reverse an earlier round's, or a
