@@ -10,7 +10,8 @@ no validator can see. Read-only; edit and commit nothing.
   the PR body;
 - the output of `node scripts/section-words.mjs`;
 - from the second round on, the ledger and the round-1 copies of the issue and
-  PR body (`SKILL.md`, Prepare the Round);
+  PR body (`SKILL.md`, Prepare the Round); in round 1, the issue and PR body
+  above are those copies;
 - the bar (`SKILL.md`, The Bar).
 
 Read `AGENTS.md`, `docs/agents/voice.md`, and the content skill for each
@@ -38,12 +39,12 @@ directory the diff touches (the Skills table in `AGENTS.md`).
        makes it. A line added to either later counts only with an instructor
        decision in the ledger behind it, and if the copies are lost, no line
        of either counts (#661);
-     - an instructor decision in the ledger;
+     - an instructor decision in the ledger that names it;
      - a fix in the ledger, as far as that fix's own finding needs it;
      - a rule that bars the old idea from the page (`docs/agents/voice.md`,
        Concrete sentences, second paragraph).
    - Any other change is **drift**, and so is a change whose trace you can't
-     settle: report it with what it might trace to. Concrete sentences 1, 2,
+     settle. Concrete sentences 1, 2,
      and 5 to 8 govern wording, so a change they would explain is drift unless
      a round-1 copy or an instructor decision names it.
    - Every requirement, number, procedure, or rule the diff adds traces to the
@@ -92,6 +93,7 @@ its drift, or a count of the hunks whose changes are all intended.
 
 Findings above the bar only, each with Hard or Judgement, `file:line`, the
 quoted hunk, the rule or spec line, and the smallest fix by the ladder
-(`SKILL.md`, Fix by the Ladder). Drift gives the old text and the new, and
-no fix: the instructor decides it (`SKILL.md`, Triage Each Finding). Under
+(`SKILL.md`, Fix by the Ladder). Drift gives the old text and the new, what
+it might trace to when you couldn't settle its trace, and no fix: the
+instructor decides it (`SKILL.md`, Triage Each Finding). Under
 600 words, the reverse outline and the drift list aside.

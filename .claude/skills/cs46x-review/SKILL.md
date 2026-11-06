@@ -54,9 +54,8 @@ is labelled as such, with the hunk quoted.
   the student reader reads it first and raises only what it does not already
   answer.
 - In round 1, save the issue and the drafted PR body in the scratchpad as the
-  **round-1 copies**, and give them to every later spec and rules reviewer.
-  `spec-and-rules.md`, Intent, says what the copies and any line added later
-  count for (#661).
+  **round-1 copies**, and give them to every later spec and rules reviewer
+  (#661).
 
 Done when the build, the export, the word counts, the drafted PR body, and
 the ledger all reflect `HEAD`, and in round 1 the round-1 copies are saved.
@@ -92,18 +91,20 @@ Check a finding before acting on it; reviewers are wrong too. Each one is:
 - **declined**, on one of three grounds, in one line under Declined in the PR
   body: wrong once checked; below the bar; or outside the diff, where real
   work becomes an issue. A drift finding is declined only as wrong once
-  checked, naming the trace it has under `spec-and-rules.md`, Intent, other
-  than a ledger fix;
+  checked, naming a trace from Intent's list of what makes a change intended
+  (`spec-and-rules.md`), other than a ledger fix;
 - **sent to the instructor** as options, when it is drift, a design choice, a
   fix the ladder sends up, a fix that would reverse an earlier round's, or a
   student-read stop on text an instructor decision set. The round waits for
   the answer, which the PR body records under Decisions.
 
-Whether drift was meant is the instructor's call (#661), so the main session
-sends every drift finding to the instructor, one list per round: each item
-with the old text and the new, and a recommendation among keeping the change,
-which the PR body then names; restoring the base wording; or a rewording,
-quoted, that keeps the old idea.
+Whether drift was meant is the instructor's call (#661): send the round's
+drift to the instructor as one list, each item with the old text and the new,
+and a recommendation among keeping the change, which the PR body then names;
+restoring the base wording; or a rewording, quoted, that keeps the old idea.
+
+Done when each finding is marked to fix, declined, or sent, and the
+instructor has answered every one sent.
 
 ## 4. Fix by the Ladder
 
@@ -111,7 +112,8 @@ Take the first rung that resolves the finding without adding drift
 (`spec-and-rules.md`, Intent):
 
 1. Delete the text that causes it.
-2. Rewrite it in place, no longer than it was or than the base had it.
+2. Rewrite it in place, no longer than it was, or than the base had it where
+   that was longer.
 3. Add one clause, where the section stays within its budget and was not
    already over it.
 
