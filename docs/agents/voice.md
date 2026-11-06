@@ -160,6 +160,17 @@ nothing to act on. These rules follow Joseph Williams and Joseph Bizup,
 *Style: Lessons in Clarity and Grace*: a sentence reads clearly when its
 subject names who acts and its verb names what they do.
 
+Each rule below changes how a sentence says something. A fix made for one of
+them keeps what the sentence says: what it is for, the qualifiers that set its
+scope, what it asks the reader to do, and the facts it states. When no version
+that follows the rules keeps all of that, the sentence stays as it was. Only a
+rule that bars the idea itself from the page removes it:
+rule 3's truism, rule 4's vendor number, staff procedure under Person, or
+what a content skill or a hard rule keeps off that page, such as course design
+on an assignment page, a course fact on a guide or an activity, a calendar
+date, or Canvas in a page body. Saying something else is a content change:
+make it on purpose, and name it in the pull request (#661).
+
 1. The subject is a person or a named system, and the verb is what it does:
    "the partner's IT staff review new software", not "approvals run on
    someone else's schedule". The page never acts for the reader: "give each request
@@ -171,7 +182,8 @@ subject names who acts and its verb names what they do.
 3. A reason gives the reader a fact they didn't have. A "because" clause that
    is true of every project ("because no lead time gets shorter for starting
    late") is a truism: replace it with the fact that holds for this one, or
-   cut it.
+   cut it. A sentence that says what a section, activity, or step does for
+   its reader states its purpose, not a reason, so rule 3 keeps it (#661).
 4. Durations and quantities are numbers, sourced or hedged as Claims
    requires: "three of the five endpoints have no tests", not "test coverage
    is weak"; "two to six weeks", not "runs in weeks". Where nobody on the team
@@ -401,6 +413,14 @@ A coined term, a vendor's number, and a trailing pointer:
 > to fix and resubmit. Apple changes its review process, so check
 > [Apple's App Review page](https://developer.apple.com/distribute/app-review/)
 > for current review times before you set a release date.
+
+A vague phrase replaced while every idea stays:
+
+> Before: Demo to the partner every sprint to keep them informed and make sure
+> their feedback is effective.
+>
+> After: Demo to the partner every sprint to keep them informed and hear what
+> they'd change in time to plan it into the next.
 
 ## What this file does not cover
 

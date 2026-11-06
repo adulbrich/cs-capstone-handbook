@@ -5,9 +5,11 @@ no validator can see. Read-only; edit and commit nothing.
 
 ## What You Get
 
-The diff command and commit list, the issue's Acceptance list or "no spec
-available", the PR body, the output of `node scripts/section-words.mjs`, the
-ledger from the second round on, and the bar (`SKILL.md`, The Bar). Read
+The diff command and commit list, the issue, whose Acceptance list or "no
+spec available" is the spec, the PR body, the output of `node
+scripts/section-words.mjs`, the ledger and the round-1 copies of the issue and
+PR body from the second round on (`SKILL.md`, Prepare the Round), and the bar
+(`SKILL.md`, The Bar). Read
 `AGENTS.md`, `docs/agents/voice.md`, and the content skill for each directory
 the diff touches (the Skills table in `AGENTS.md`).
 
@@ -17,13 +19,32 @@ the diff touches (the Skills table in `AGENTS.md`).
    met. With no spec, report "no spec available" and ask for an Acceptance
    list; invent no criteria.
 2. **Scope**: content changed on a page the issue doesn't name; a page
-   un-drafted or a sidebar changed with no line in the PR body; a fact whose
-   meaning moved while its wording was tidied.
-3. **Source trace**: every requirement, number, procedure, or rule the diff
-   adds traces to the issue, an instructor decision or a fix in the ledger,
-   or a canonical home the page links. One that traces to none is a finding
-   for the instructor, however reasonable it reads. One that restates a fact
-   whose home is elsewhere becomes a link.
+   un-drafted or a sidebar changed with no line in the PR body.
+3. **Intent**: every change in what the text says traces to what the PR is
+   for (#661).
+   - Read each hunk that rewrites or deletes prose the base had, old beside
+     new, and list each change in what it says: an idea dropped, added,
+     narrowed, widened, or altered. Look at purposes, qualifiers, what the
+     reader is asked to do, facts, what a link says its target holds, and
+     agreement with another page, which you check by opening that page. An
+     idea the new text, or the same file elsewhere, states about the same
+     subject is not dropped; one activity's or one assignment entry's sentence
+     never covers another's.
+   - A change is intended when the issue or the PR body, as their round-1
+     copies read, or an instructor decision in the ledger says the PR makes
+     it; a line added to either later counts only with an instructor decision
+     behind it (#661). It is also intended when a fix in the ledger
+     needs it to resolve that fix's own finding, or when a rule bars the old
+     idea from the page (`docs/agents/voice.md`, Concrete sentences, second
+     paragraph). Any other change is **drift**, and so is a change whose trace
+     you can't settle: report it with what it might trace to. Concrete
+     sentences 1, 2, and 5 to 8 govern wording, so a change they would explain
+     is drift unless a round-1 copy or an instructor decision names it.
+   - Every requirement, number, procedure, or rule the diff adds traces to the
+     issue's round-1 copy, an instructor decision or a fix in the ledger, or a
+     canonical home the page links. One that traces to none is a finding for
+     the instructor, however reasonable it reads. One that restates a fact
+     whose home is elsewhere becomes a link.
 4. **PR body**: the Canvas line and the Ran locally line, against the diff.
 
 ## Rules
@@ -57,11 +78,14 @@ the diff touches (the Skills table in `AGENTS.md`).
     and words, Asides, Examples of project work, and The floor sections,
     cited per finding.
 
-Done when each of the ten has a line in the report: its findings, or
-"checked, clean".
+Done when each of the ten has a line in the report, its findings or
+"checked, clean", and Intent accounts for every rewritten or deleted hunk:
+its drift, or a count of the hunks whose changes are all intended.
 
 ## Report
 
 Findings above the bar only, each with Hard or Judgement, `file:line`, the
-quoted hunk, the rule or spec line, and the smallest fix, deletion first
-(`SKILL.md`, Fix by the Ladder). Under 600 words, the reverse outline aside.
+quoted hunk, the rule or spec line, and the smallest fix by the ladder
+(`SKILL.md`, Fix by the Ladder). Drift gives the old text and the new, and
+no fix: the instructor decides it (`SKILL.md`, Triage Each Finding). Under
+600 words, the reverse outline and the drift list aside.

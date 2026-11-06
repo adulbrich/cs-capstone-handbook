@@ -39,5 +39,5 @@ checked and found clean.
 ## Report
 
 Findings above the bar only, each with Hard or Judgement, `file:line`, the
-quoted text, the statement it disagrees with, and the smallest fix, deletion
-first (`SKILL.md`, Fix by the Ladder). Under 600 words.
+quoted text, the statement it disagrees with, and the smallest fix by the
+ladder (`SKILL.md`, Fix by the Ladder). Under 600 words.
