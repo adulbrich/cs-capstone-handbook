@@ -63,5 +63,5 @@ Done when each of the ten has a line in the report: its findings, or
 ## Report
 
 Findings above the bar only, each with Hard or Judgement, `file:line`, the
-quoted hunk, the rule or spec line, and the smallest fix, deletion first
+quoted hunk, the rule or spec line, and the smallest fix by the ladder
 (`SKILL.md`, Fix by the Ladder). Under 600 words, the reverse outline aside.

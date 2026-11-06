@@ -8,8 +8,9 @@ description: Review loop for a CS 461/462/463 handbook pull request. Use before 
 Every pull request gets review rounds until one changes nothing and a reader
 who sees only what students see can do the work. Most of a diff here is prose,
 rubric CSVs, and MDX that a student reads under deadline, so one reviewer
-reads it the way they will, blind, and the others check it against the rest
-of the handbook and its rules.
+reads it the way they will, blind, one checks each rewrite against what the
+text said before, and the others check it against the rest of the handbook
+and its rules.
 
 ## The Bar
 
@@ -19,14 +20,19 @@ A finding clears the bar when it:
 - changes what a script, hook, or agent does;
 - shows two statements that disagree;
 - points at a broken or misdirected link;
-- cites a documented rule broken; or
+- cites a documented rule broken;
+- is a **loss**: an idea the old text carried that the new text doesn't, of a
+  kind [`meaning.md`](meaning.md) lists, unless the issue or a ledger decision
+  asks for it to go; or
 - is a **stop** that holds up against the text: a place the student reader
   would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 
 A wording the reviewer would prefer, where the current one is clear and
-correct, does not clear it. A skip stop is
-deleted, or goes to the instructor when deleting it would
-lose a requirement or reverse an instructor decision.
+correct, does not clear it. A skip stop on a sentence that says what a
+section, activity, or step is for stays: a purpose changes no team's work and
+still belongs on the page (#661). Any other skip stop is deleted, or goes to
+the instructor when deleting it would lose a requirement or reverse an
+instructor decision.
 
 **Hard** is a documented rule broken, cited by file and rule. **Judgement**
 is labelled as such, with the hunk quoted.
@@ -61,6 +67,7 @@ brief, the inputs the brief lists, and nothing else.
 | Student read | [`student-read.md`](student-read.md) | text a student, partner, or mentor reads: a page under `src/content/docs/`, a rubric CSV, a syllabus, a download in `public/` |
 | Consistency | [`consistency.md`](consistency.md) | an assignment page, anything under `canvas/`, a fact with a canonical home in `AGENTS.md`, or a heading other pages link |
 | Spec and rules | [`spec-and-rules.md`](spec-and-rules.md) | anything |
+| Meaning | [`meaning.md`](meaning.md) | text the base already had, rewritten or deleted, anywhere; a sweep across pages gets one reviewer per directory |
 | Code | `mattpocock-skills:code-review` (Standards and Spec), with The Bar above pasted into both prompts, on those paths only: MDX is not code | `src/lib/`, `scripts/`, `.claude/hooks/`, `src/components/`, `src/pages/`, or `astro.config.mjs` |
 
 The student reader is the one reviewer that must not know what the change
@@ -68,7 +75,8 @@ meant. From the second round on it runs again only on pages whose text or rubric
 since its last read, always as a new agent, and never with the ledger.
 
 Beside them, the main session does its own correctness read: the built-in
-`code-review` skill, or a line-by-line read of the diff.
+`code-review` skill, or a line-by-line read of the diff with each rewritten
+line beside the line it replaced.
 
 Done when every report is in. Fix nothing before then.
 
@@ -88,7 +96,8 @@ Check a finding before acting on it; reviewers are wrong too. Each one is:
 
 ## 4. Fix by the Ladder
 
-Take the first rung that resolves the finding:
+Take the first rung that resolves the finding and leaves no loss
+(`meaning.md`):
 
 1. Delete the text that causes it.
 2. Rewrite it in place, no longer than it was.
@@ -96,8 +105,8 @@ Take the first rung that resolves the finding:
    already over it.
 
 Past the third rung (a new sentence, a new rule, a section taken over its
-budget or grown past it), the fix goes to the instructor with the proposed
-text and its word cost.
+budget or grown past it), or where every rung would leave a loss, the fix
+goes to the instructor with the proposed text and its word cost.
 
 A fix that also rewrites its neighborhood buys another round. One commit per
 round.
@@ -110,8 +119,9 @@ then one line per decision and per decline. A resumed session rebuilds the
 ledger from those lines and the round commits.
 
 The loop ends on a round that changed no repository file, in which the latest
-student read of every page reports no stop that
-clears the bar. A fix to the PR body alone starts no round.
+student read of every page reports no stop that clears the bar and the latest
+meaning review reports no loss that does. A fix to the PR body alone starts no
+round.
 
 When a round's fixes stay within one file and rename no heading, the next
 round may be one reviewer on every brief but the student read's for those lines, with a regression
