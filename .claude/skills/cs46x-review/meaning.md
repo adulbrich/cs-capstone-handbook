@@ -39,8 +39,8 @@ text carried that the new text doesn't. A loss is one of:
 An idea is still there when the new text says it in other words, or when the
 page states the same idea about the same subject elsewhere; quote where. A
 loss is justified when the issue or a ledger decision names that idea for
-removal, when a rule that voice.md's second paragraph names bars it from the
-page, or when the ledger records its deletion as a skip stop. Concrete
+removal, when a rule that Concrete sentences' second paragraph names bars it
+from the page, or when the ledger records its deletion as a skip stop. Concrete
 sentences 1, 2, and 5 to 8 change how a sentence says something, so a loss
 under them is a finding, like any loss this paragraph doesn't justify.
 
