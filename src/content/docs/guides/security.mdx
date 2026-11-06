@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your system is about to take its first real users or its first real data: a login page, a table of volunteer records, an API key for a paid service. This page covers how to find the threats that matter for that system, the vulnerabilities that turn up most often in web applications, and the baseline practices that close them: access control, authentication, secrets, dependencies, transport, and input handling, plus what changes for research and data projects. It doesn't cover penetration testing, writing cryptography, or preparing for a compliance audit.
+Your system is about to take its first real users or its first real data: a login page, a table of volunteer records, an API key for a paid service. This page covers how to find the threats that matter for that system, the vulnerabilities that turn up most often in web applications, and the baseline practices that close them: access control, authentication, secrets, dependencies, transport, and input handling, plus what changes when your system holds a dataset or a machine learning model. It doesn't cover penetration testing, writing cryptography, or preparing for a compliance audit.
 
 :::note[tl;dr]
 - Run a one-session threat model when the architecture takes shape: draw the system, list its assets and entry points, walk through STRIDE, and record a response to each threat that matters.
@@ -189,7 +189,7 @@ If a third-party API only supports plain HTTP, treat anything that passes throug
 
 Injection and XSS share a cause: untrusted input treated as trusted code or data. The defense at the interpreter is passing input as [parameters](#injection) and [encoding output](#cross-site-scripting-xss). The other defense sits where input arrives: check that incoming data matches the expected format, type, length, and range before you process it, and reject anything that doesn't. Do it on the server even if you also validate in the browser, because anyone can skip browser checks by sending requests straight to your API. The [OWASP Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html) covers allowlists and the cases where validation isn't enough.
 
-## Security for Research and Data Projects
+## Security for Datasets and Models
 
 Projects that handle datasets, machine learning models, or research data have concerns that a typical web application doesn't:
 
