@@ -21,8 +21,8 @@ A finding clears the bar when it:
 - shows two statements that disagree;
 - points at a broken or misdirected link;
 - cites a documented rule broken;
-- is a **loss** that [`meaning.md`](meaning.md) leaves unjustified: an idea
-  the old text carried that the new text doesn't; or
+- is a **loss** of a kind [`meaning.md`](meaning.md) lists and leaves
+  unjustified: an idea the old text carried that the new text doesn't; or
 - is a **stop** that holds up against the text: a place the student reader
   would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 

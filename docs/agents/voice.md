@@ -164,8 +164,11 @@ Each rule below changes how a sentence says something and keeps what it says.
 A fix carries every idea the old sentence had: what it is for, the qualifiers
 that set its scope, what it asks the reader to do, and the facts it states.
 When no version that follows the rules carries them all, the sentence stays
-as it was, unless rule 3 or rule 4 removes that idea, or a content skill or
-a hard rule bars it from that page (#661).
+as it was. Only a rule that bars the idea itself from the page removes it:
+rule 3's truism, rule 4's vendor number, staff procedure under Person, or
+what a content skill or a hard rule keeps off that page, such as course design
+on an assignment page, a course fact on a guide or an activity, a calendar
+date, or Canvas in a page body (#661).
 
 1. The subject is a person or a named system, and the verb is what it does:
    "the partner's IT staff review new software", not "approvals run on
