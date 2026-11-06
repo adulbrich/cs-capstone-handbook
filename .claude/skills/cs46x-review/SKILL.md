@@ -21,7 +21,8 @@ A finding clears the bar when it:
 - points at a broken or misdirected link;
 - cites a documented rule broken;
 - is **drift**: a change in what the text says that has no settled trace to
-  what the pull request is for ([`spec-and-rules.md`](spec-and-rules.md), Intent); or
+  what the pull request is for ([`spec-and-rules.md`](spec-and-rules.md),
+  Intent); or
 - is a **stop** that holds up against the text: a place the student reader
   would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 
@@ -53,13 +54,12 @@ is labelled as such, with the hunk quoted.
   the student reader reads it first and raises only what it does not already
   answer.
 - In round 1, save the issue and the drafted PR body in the scratchpad as the
-  **round-1 copies**, and give them to every later spec and rules reviewer. A
-  line added to either afterwards makes a change intended only with an
-  instructor decision in the ledger; if the copies are lost, no line of either
-  does (#661).
+  **round-1 copies**, and give them to every later spec and rules reviewer.
+  `spec-and-rules.md`, Intent, says what the copies and any line added later
+  count for (#661).
 
 Done when the build, the export, the word counts, the drafted PR body, and
-the ledger all reflect `HEAD`.
+the ledger all reflect `HEAD`, and in round 1 the round-1 copies are saved.
 
 ## 2. Run the Reviewers
 
@@ -92,18 +92,18 @@ Check a finding before acting on it; reviewers are wrong too. Each one is:
 - **declined**, on one of three grounds, in one line under Declined in the PR
   body: wrong once checked; below the bar; or outside the diff, where real
   work becomes an issue. A drift finding is declined only as wrong once
-  checked, naming a line of a round-1 copy, an instructor decision, or a rule
-  `docs/agents/voice.md` lists in Concrete sentences' second paragraph;
+  checked, naming the trace it has under `spec-and-rules.md`, Intent, other
+  than a ledger fix;
 - **sent to the instructor** as options, when it is drift, a design choice, a
   fix the ladder sends up, a fix that would reverse an earlier round's, or a
   student-read stop on text an instructor decision set. The round waits for
   the answer, which the PR body records under Decisions.
 
-Whether drift was meant is the instructor's call, so the main session
-doesn't restore, reword, or keep it on its own (#661). A round's drift goes
-to the instructor as one list: each item with the old text and the new, and a
-recommendation among keeping the change, which the PR body then names;
-restoring the base wording; or a rewording, quoted, that keeps the old idea.
+Whether drift was meant is the instructor's call (#661), so the main session
+sends every drift finding to the instructor, one list per round: each item
+with the old text and the new, and a recommendation among keeping the change,
+which the PR body then names; restoring the base wording; or a rewording,
+quoted, that keeps the old idea.
 
 ## 4. Fix by the Ladder
 
@@ -131,8 +131,8 @@ ledger from those lines and the round commits.
 
 The loop ends on a round that changed no repository file, in which the latest
 student read of every page reports no stop that clears the bar and that
-round's spec and rules review reports no drift that still stands. A fix to the PR
-body alone starts no round.
+round's spec and rules review reports no drift that still stands. A fix to
+the PR body alone starts no round.
 
 When a round's fixes stay within one file and rename no heading, the next
 round may be one reviewer on every brief but the student read's for those lines, with a regression
