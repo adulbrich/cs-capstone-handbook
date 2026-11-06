@@ -6,7 +6,7 @@ description: Interfaces, play, and accessibility.
 import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 
-These activities cover what a person sees and does with your software: prototypes at rising fidelity, the guidelines and loops that make an interface or a game work, and the checks that let everyone use it. Prototype at the lowest fidelity that answers your question, and check accessibility while the design is still cheap to change.
+These activities shape what a person sees and does with your software: prototypes at rising fidelity, the guidelines and loops that make an interface or a game work, and the checks that let everyone use it. Prototype at the lowest fidelity that answers your question, and check accessibility while the design is still cheap to change.
 
 <LinkCard
   title="Accessibility Testing guide"
@@ -35,7 +35,7 @@ A good output is the prototype link with a brief reflection naming the fidelity 
 
 <ActivityMeta anchor="ui-design-guidelines" />
 
-Select a set of user interface guidelines and apply them.
+Select an appropriate set of user interface guidelines and apply them.
 There are user interface guidelines published by free/open-source
 organizations, corporations, and even government. Here are some
 examples:
@@ -50,7 +50,7 @@ examples:
 - [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/)
 - [Digital.gov's Usability](https://digital.gov/topics/usability/)
 
-Feel free to come up with another design system or your own.
+Feel free to come up with another design system or your own exhaustive one.
 
 A good output is your updated UI wireframes or a demo of your updated software with a summary of what changed and why.
 
@@ -87,7 +87,7 @@ A good output is a journey map from first-time experience through mid-game, with
 Review one screen or output of your system against accessibility basics before it's built, while a fix is a design change rather than a rebuild.
 
 - Contrast and color: text meets [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA contrast ratios, and no information is carried by color alone (a red border meaning "error" is invisible to some users; a red border plus the word "error" isn't).
-- Target size and spacing: interactive elements meet the WCAG 2.2 AA minimum target size, which matters on a phone and for users with motor impairments.
+- Target size and spacing: interactive elements are large enough and far enough apart to hit reliably, including on a phone and for users with motor impairments.
 - Focus states: every interactive element shows clearly when it has keyboard focus, and the tab order follows the visual order.
 - Semantics before ARIA: a real `<button>` is accessible by default; a `<div>` with a click handler and four ARIA attributes usually isn't. Reach for the correct element first.
 - Labels: every input has a programmatically associated label, not just placeholder text.

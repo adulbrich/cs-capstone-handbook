@@ -7,9 +7,9 @@ import { LinkCard } from '@astrojs/starlight/components';
 import ActivityMeta from '/src/components/ActivityMeta.astro';
 import LeanCanvas from '../../../components/LeanCanvas.astro';
 
-Write your requirements down so your team and partner agree on the problem, what to build, and how you'll know it worked. These activities run from testing whether the problem is real, through who has it and what they're trying to get done, to what to build first and what to measure.
+Your requirements create a shared understanding of the problem being solved, what needs to be built, and how you'll know it worked. These activities run from testing whether the problem is real, through who has it and what they're trying to get done, to what to build first and what to measure.
 
-Your requirements live in the repository as continuously updated docs. Before running any interview-based activity on this page, read the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md), because it steers an interview toward what people have done rather than compliments on your idea. Then read [where your requirements work is heading](/guides/shipping/).
+Your requirements live in the repository as continuously updated docs, and the user-facing ones determine whether real people can use what you build. Before running any interview-based activity on this page, read the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md), because it steers an interview toward what people have done rather than compliments on your idea. Then read [where your requirements work is heading](/guides/shipping/).
 
 > "The hardest single part of building a software system is deciding precisely what to build." (Fred Brooks)
 
@@ -48,7 +48,7 @@ Something unclear? Look up explanations and some examples online.
 
 To go further, detail each section of the canvas in a separate document.
 
-A good output is your completed Lean Canvas.
+A good output is your completed Lean Canvas with any additional information that might be useful to understand it.
 
 ## Hypothesis Testing
 
@@ -60,7 +60,7 @@ For each hypothesis:
 
 1. Construct a fail/pass test.
 2. Interview at least five members of the relevant customer segment (enough to suggest the hypothesis holds or not) and produce anonymized data about the customer interviewed. Run the interviews with the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md) in hand: ask about past behavior, not hypothetical enthusiasm.
-3. Write up whether the test passed and what interviewees said that decided it.
+3. Write a summary of the results of the test (insights, etc.).
 4. If your initial hypothesis is false, propose a pivot hypothesis.
 
 If working on this activity as a team, have each person focus on a different set of hypotheses. The interviewees you recruit here are the first candidates for your user access plan: the named people who will try the thing once it exists.
@@ -78,7 +78,7 @@ The [Jobs to Be Done (JTBD) Theory](https://www.coursera.org/articles/jobs-to-be
 3. Write at least two JTBD statements in the format:  
    *"When [situation], I want to [motivation], so I can [expected outcome] without [pain point]."*
 
-Capture your JTBD statements and the requirements or design decisions you'll change because of them. Interview with the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md) in hand.
+Capture your JTBD statements and a brief explanation of how these insights will influence your requirements or design decisions. Interview with the [Mom Test cheat sheet](/the-mom-test-cheat-sheet.md) in hand.
 
 A good output is the job statement for your primary user segment, backed by what you heard in interviews or observation, and the features it reprioritizes.
 
@@ -86,7 +86,7 @@ A good output is the job statement for your primary user segment, backed by what
 
 <ActivityMeta anchor="current-vs-ideal-workflow" />
 
-Map how your target users work today and how they'd work with your project, to find the steps that slow or frustrate them.
+Analyzing the current workflow versus the ideal workflow helps you identify pain points, inefficiencies, and opportunities for improvement in your project's domain.
 
 1. Document the current workflow for your target users as a step-by-step process.
 2. Identify bottlenecks, frustrations, or areas for improvement.
@@ -165,7 +165,7 @@ A good output is a diagram along with a brief explanation of the entities and th
 
 <ActivityMeta anchor="is--is-not" />
 
-State your project's scope by listing what it is and what it is not.
+The Is / Is-Not analysis helps clarify the scope and boundaries of your project by explicitly stating what the project is and is not.
 
 1. Create a table or list with two columns: "Is" and "Is-Not".
 2. In the "Is" column, list characteristics, features, or goals that are in scope for your project.
@@ -173,7 +173,7 @@ State your project's scope by listing what it is and what it is not.
 
 An explicit "Is-Not" column makes it easier to state accurately, later, what you committed to ship.
 
-A good output is your Is / Is-Not table or list.
+A good output is your Is / Is-Not table or list, with a short explanation of how this analysis will help keep your project focused and aligned.
 
 ## Prioritization
 
@@ -239,7 +239,7 @@ A trivial patch merged early is a stronger signal than a large one still unmerge
 
 ### The Partner's Adoption
 
-When shipping depends on actions the partner takes, measure their adoption rather than your output:
+When your top levels describe actions the partner takes, measure their adoption rather than your output:
 
 - Is it running in their environment, and whose environment is it
 - How many of their people use it, and for what task
