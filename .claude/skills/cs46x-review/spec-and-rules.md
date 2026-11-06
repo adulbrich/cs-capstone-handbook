@@ -5,8 +5,8 @@ no validator can see. Read-only; edit and commit nothing.
 
 ## What You Get
 
-The diff command and commit list, the issue, whose Acceptance list is the
-spec, or "no spec available", the PR body, the output of `node
+The diff command and commit list, the issue, whose Acceptance list or "no
+spec available" is the spec, the PR body, the output of `node
 scripts/section-words.mjs`, the ledger and the round-1 copies of the issue and
 PR body from the second round on (`SKILL.md`, Prepare the Round), and the bar
 (`SKILL.md`, The Bar). Read
