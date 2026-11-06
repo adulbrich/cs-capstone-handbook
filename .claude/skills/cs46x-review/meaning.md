@@ -10,17 +10,17 @@ both (#661). Read-only; edit and commit nothing.
 The diff command and its base, the issue's Acceptance list or "no spec
 available", the ledger from the second round on, the PR body, and the bar
 (`SKILL.md`, The Bar). Read `docs/agents/voice.md`, Concrete sentences, first:
-its opening paragraph is the rule you check.
+its second paragraph, on keeping what a sentence says, is the rule you check.
 
 ## What You Check
 
-Take every hunk that rewrites or deletes text the base already had; a pure
+Take every hunk that rewrites or deletes prose the base already had; a pure
 addition is the other reviewers' work. Read the old text and the new side by
 side, with the sentences around them, and list each **loss**: an idea the old
 text carried that the new text doesn't. A loss is one of:
 
-- **Purpose**: what a section, activity, step, or rule is for ("to ensure
-  effective communication and alignment of expectations").
+- **Purpose**: what a section, activity, step, or rule does for its reader
+  ("to ensure effective communication and alignment of expectations").
 - **Qualifier**: a word that sets a claim's scope or bar ("appropriate",
   "exhaustive", "generally speaking", "in all relevant ways", "most with
   margin").
@@ -38,13 +38,16 @@ text carried that the new text doesn't. A loss is one of:
 
 An idea is still there when the new text says it in other words, or when the
 same section says it elsewhere; quote where. A loss is justified when the
-issue's Acceptance list or a ledger decision names that idea for removal, such
-as a vendor's changing number or an unsourced duration. Every other loss is a
-finding, whichever rule the rewrite was applying, because voice.md keeps the
-meaning before any of its rules applies.
+issue or a ledger decision names that idea for removal; when a rule bars it
+from the page, such as a vendor's changing number (voice.md rule 4), an
+unsourced claim (voice.md, Claims), course design on an assignment page, or
+Canvas in a page body; or when the ledger records its deletion as a skip stop.
+Every other loss is a finding, whichever rule the rewrite was applying:
+voice.md keeps a sentence's meaning through every rule that changes only how
+it is said.
 
-Done when every rewritten or deleted hunk has a line in the report: its
-losses, or "no loss".
+Done when every rewritten or deleted hunk is accounted for in the report: as
+a loss, as a justified loss, or in the count of hunks with no loss.
 
 ## Report
 

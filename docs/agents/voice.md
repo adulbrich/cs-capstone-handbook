@@ -164,7 +164,8 @@ Each rule below changes how a sentence says something and keeps what it says.
 A fix carries every idea the old sentence had: what it is for, the qualifiers
 that set its scope, what it asks the reader to do, and the facts it states.
 When no version that follows the rules carries them all, the sentence stays
-as it was (#661).
+as it was, unless a rule here removes that idea, as rule 4 does a vendor's
+number (#661).
 
 1. The subject is a person or a named system, and the verb is what it does:
    "the partner's IT staff review new software", not "approvals run on
@@ -177,8 +178,8 @@ as it was (#661).
 3. A reason gives the reader a fact they didn't have. A "because" clause that
    is true of every project ("because no lead time gets shorter for starting
    late") is a truism: replace it with the fact that holds for this one, or
-   cut it. A sentence that says what a section, activity, or step is for
-   states its purpose, not a reason, and stays.
+   cut it. A sentence that says what a section, activity, or step does for
+   its reader states its purpose, not a reason, so rule 3 keeps it (#661).
 4. Durations and quantities are numbers, sourced or hedged as Claims
    requires: "three of the five endpoints have no tests", not "test coverage
    is weak"; "two to six weeks", not "runs in weeks". Where nobody on the team
@@ -409,13 +410,13 @@ A coined term, a vendor's number, and a trailing pointer:
 > [Apple's App Review page](https://developer.apple.com/distribute/app-review/)
 > for current review times before you set a release date.
 
-An adjective with no observable, replaced while every idea stays:
+A vague phrase replaced, and the purpose kept:
 
-> Before: A good output is a draft of the user manual with clear instructions
-> on using the main features of your system.
+> Before: Demo to the partner every sprint to keep them informed and make sure
+> their feedback is effective.
 >
-> After: A good output is a draft user manual that someone who didn't build
-> the system can follow to use each main feature.
+> After: Demo to the partner every sprint to keep them informed, and leave ten
+> minutes for their questions before you plan the next one.
 
 ## What this file does not cover
 

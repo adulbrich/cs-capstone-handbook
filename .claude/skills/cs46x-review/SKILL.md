@@ -22,15 +22,17 @@ A finding clears the bar when it:
 - points at a broken or misdirected link;
 - cites a documented rule broken;
 - is a **loss**: an idea the old text carried that the new text doesn't, of a
-  kind [`meaning.md`](meaning.md) lists, unless the issue or a ledger decision
-  asks for it to go; or
+  kind [`meaning.md`](meaning.md) lists, unless the issue, a ledger decision,
+  a rule that bars the idea from the page, or the skip-stop rule below asks
+  for it to go; or
 - is a **stop** that holds up against the text: a place the student reader
   would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 
 A wording the reviewer would prefer, where the current one is clear and
 correct, does not clear it. A skip stop on a sentence that says what a
-section, activity, or step is for stays: a purpose changes no team's work and
-still belongs on the page (#661). Any other skip stop is deleted, or goes to
+section, activity, or step does for its reader doesn't clear it either, and
+the sentence stays: a purpose changes no team's work and still belongs on the
+page (#661). Any other skip stop is deleted, or goes to
 the instructor when deleting it would lose a requirement or reverse an
 instructor decision.
 
@@ -67,7 +69,7 @@ brief, the inputs the brief lists, and nothing else.
 | Student read | [`student-read.md`](student-read.md) | text a student, partner, or mentor reads: a page under `src/content/docs/`, a rubric CSV, a syllabus, a download in `public/` |
 | Consistency | [`consistency.md`](consistency.md) | an assignment page, anything under `canvas/`, a fact with a canonical home in `AGENTS.md`, or a heading other pages link |
 | Spec and rules | [`spec-and-rules.md`](spec-and-rules.md) | anything |
-| Meaning | [`meaning.md`](meaning.md) | text the base already had, rewritten or deleted, anywhere; a sweep across pages gets one reviewer per directory |
+| Meaning | [`meaning.md`](meaning.md) | prose the base already had, rewritten or deleted, anywhere |
 | Code | `mattpocock-skills:code-review` (Standards and Spec), with The Bar above pasted into both prompts, on those paths only: MDX is not code | `src/lib/`, `scripts/`, `.claude/hooks/`, `src/components/`, `src/pages/`, or `astro.config.mjs` |
 
 The student reader is the one reviewer that must not know what the change
@@ -96,8 +98,8 @@ Check a finding before acting on it; reviewers are wrong too. Each one is:
 
 ## 4. Fix by the Ladder
 
-Take the first rung that resolves the finding and leaves no loss
-(`meaning.md`):
+Take the first rung that resolves the finding and leaves no loss that clears
+the bar (`meaning.md`):
 
 1. Delete the text that causes it.
 2. Rewrite it in place, no longer than it was.
@@ -105,7 +107,7 @@ Take the first rung that resolves the finding and leaves no loss
    already over it.
 
 Past the third rung (a new sentence, a new rule, a section taken over its
-budget or grown past it), or where every rung would leave a loss, the fix
+budget or grown past it), or where every rung would leave a loss that clears the bar, the fix
 goes to the instructor with the proposed text and its word cost.
 
 A fix that also rewrites its neighborhood buys another round. One commit per
