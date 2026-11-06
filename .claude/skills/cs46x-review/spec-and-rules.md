@@ -28,14 +28,17 @@ the diff touches (the Skills table in `AGENTS.md`).
      idea the new text, or the same file elsewhere, states about the same
      subject is not dropped; one activity's or one assignment entry's sentence
      never covers another's.
-   - A change is intended when the issue, the PR body, or an instructor
-     decision in the ledger says the PR makes it; when a fix in the ledger
-     needs it to resolve that fix's own finding; or when a rule bars the old
+   - A change is intended when the issue, the PR body as round 1's reviews
+     read it, or an instructor decision in the ledger says the PR makes it; a
+     body line added later counts only with an instructor decision in the
+     ledger behind it (#661). It is also intended when a fix in the ledger
+     needs it to resolve that fix's own finding, or when a rule bars the old
      idea from the page (`docs/agents/voice.md`, Concrete sentences, second
      paragraph). Any other change is **drift**, and so is a change whose trace
      you can't settle: report it with what it might trace to. Concrete
      sentences 1, 2, and 5 to 8 govern wording, so a change they would explain
-     is drift unless the issue, the PR body, or an instructor decision names it.
+     is drift unless the issue, that PR body, or an instructor decision names
+     it.
    - Every requirement, number, procedure, or rule the diff adds traces to the
      issue, an instructor decision or a fix in the ledger, or a canonical home
      the page links. One that traces to none is a finding for the instructor,

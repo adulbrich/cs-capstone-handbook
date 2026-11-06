@@ -20,8 +20,8 @@ A finding clears the bar when it:
 - shows two statements that disagree;
 - points at a broken or misdirected link;
 - cites a documented rule broken;
-- is **drift**: a change in what the text says that traces to nothing the
-  pull request is for ([`spec-and-rules.md`](spec-and-rules.md), Intent); or
+- is **drift**: a change in what the text says that has no settled trace to
+  what the pull request is for ([`spec-and-rules.md`](spec-and-rules.md), Intent); or
 - is a **stop** that holds up against the text: a place the student reader
   would stop or guess, of a kind [`student-read.md`](student-read.md) lists.
 
@@ -87,8 +87,9 @@ Check a finding before acting on it; reviewers are wrong too. Each one is:
 - **declined**, on one of three grounds, in one line under Declined in the PR
   body: wrong once checked; below the bar; or outside the diff, where real
   work becomes an issue. A drift finding is declined only as wrong once
-  checked, naming the issue line, a PR body line the round began with, an
-  instructor decision, or a rule Concrete sentences' second paragraph lists;
+  checked, naming an issue line from before this round's reviews, a line of
+  the PR body as round 1's reviews read it, an instructor decision, or a rule
+  `docs/agents/voice.md` lists in Concrete sentences' second paragraph;
 - **sent to the instructor** as options, when it is drift, a design choice, a
   fix the ladder sends up, a fix that would reverse an earlier round's, or a
   student-read stop on text an instructor decision set. The round waits for
