@@ -164,8 +164,8 @@ Each rule below changes how a sentence says something and keeps what it says.
 A fix carries every idea the old sentence had: what it is for, the qualifiers
 that set its scope, what it asks the reader to do, and the facts it states.
 When no version that follows the rules carries them all, the sentence stays
-as it was, unless a rule here removes that idea, as rule 4 does a vendor's
-number (#661).
+as it was, unless rule 3 or rule 4 removes that idea, or a content skill or
+a hard rule bars it from that page (#661).
 
 1. The subject is a person or a named system, and the verb is what it does:
    "the partner's IT staff review new software", not "approvals run on
@@ -410,13 +410,13 @@ A coined term, a vendor's number, and a trailing pointer:
 > [Apple's App Review page](https://developer.apple.com/distribute/app-review/)
 > for current review times before you set a release date.
 
-A vague phrase replaced, and the purpose kept:
+A vague phrase replaced while every idea stays:
 
 > Before: Demo to the partner every sprint to keep them informed and make sure
 > their feedback is effective.
 >
-> After: Demo to the partner every sprint to keep them informed, and leave ten
-> minutes for their questions before you plan the next one.
+> After: Demo to the partner every sprint to keep them informed and hear what
+> they'd change in time to plan it into the next.
 
 ## What this file does not cover
 

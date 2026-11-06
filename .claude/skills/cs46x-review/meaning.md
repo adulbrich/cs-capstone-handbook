@@ -37,14 +37,19 @@ text carried that the new text doesn't. A loss is one of:
   the two match is a claim to check.
 
 An idea is still there when the new text says it in other words, or when the
-same section says it elsewhere; quote where. A loss is justified when the
-issue or a ledger decision names that idea for removal; when a rule bars it
-from the page, such as a vendor's changing number (voice.md rule 4), an
-unsourced claim (voice.md, Claims), course design on an assignment page, or
-Canvas in a page body; or when the ledger records its deletion as a skip stop.
-Every other loss is a finding, whichever rule the rewrite was applying:
-voice.md keeps a sentence's meaning through every rule that changes only how
-it is said.
+same section says it elsewhere; quote where. A loss is justified when:
+
+- the issue or a ledger decision names that idea for removal;
+- one of these rules bars the idea itself from the page: voice.md rule 3 (a
+  truism given as a reason), rule 4 (a vendor's changing number or rule), and
+  its register rule on staff procedure; course design on an assignment page
+  (`cs46x-assignments`, Section Skeleton, item 2); Canvas in a page body
+  (`AGENTS.md`, hard rule 7); a course fact on a guide or an activity (each
+  skill's Standalone section); or
+- the ledger records its deletion as a skip stop.
+
+Concrete sentences 1, 2, and 5 to 8 change how a sentence says something, so
+a loss under them is a finding, like any loss this list doesn't justify.
 
 Done when every rewritten or deleted hunk is accounted for in the report: as
 a loss, as a justified loss, or in the count of hunks with no loss.
