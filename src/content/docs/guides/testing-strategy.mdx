@@ -9,7 +9,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has code merging every week, some of it written by AI tools, and a project partner who will judge the result by whether it does what they need. This page covers what to test automatically and in what proportion, how to keep the suite trustworthy, and how to check with real users that you're building the right thing. It doesn't cover the CI workflow file (see [DevOps](/guides/devops/)), branch protection (see [Git and GitHub](/guides/git-and-github/)), or accessibility testing (see [Accessibility](/guides/accessibility/)).
+Your team has code merging every week, some of it written by AI tools, and a project partner who will judge the result by whether it does what they need. This page covers what to test automatically and in what proportion, how to keep the suite trustworthy, and how to check with real users that you're building the right thing. It doesn't cover [the CI workflow file](/guides/devops/), [branch protection](/guides/git-and-github/), or [accessibility testing](/guides/accessibility/).
 
 :::note[tl;dr]
 - Test first the paths where a failure would cost the most (authentication, payments, the core data flow), not the code that's easiest to test.
@@ -17,7 +17,7 @@ Your team has code merging every week, some of it written by AI tools, and a pro
 - Test behavior rather than implementation, and start at the boundaries: empty input, maximum values, invalid data.
 - Use coverage to find code no test runs, never as a target: it correlates only weakly to moderately with whether a suite catches faults.
 - Quarantine a flaky test the day it appears, then find the cause before you delete it; some flaky tests are reporting a real bug.
-- Put the product in front of real users in planned sessions of a few people each, and run several small rounds rather than one large one.
+- Put the product in front of real users in planned rounds of about five people each, and run several rather than one large one.
 - In research code, validate the input data and sanity-check the outputs; treat a sudden near-perfect score as leakage until you've ruled it out.
 :::
 
@@ -28,7 +28,7 @@ Testing answers two questions. **Verification** asks whether the code does what 
 Decide what confidence your project needs before choosing a framework, because a data pipeline and a public web app need different tests. Four questions settle most of it:
 
 - Who uses it, and when do they first touch it? Software handed to non-technical users after the team leaves needs usability testing. A pipeline whose only user is a data scientist needs reproducibility checks.
-- Where would a failure be most expensive? A payment flow or an authentication path earns rigorous automated tests; an about page doesn't. A model pipeline earns validation against a known baseline.
+- Where would a failure be most expensive? A payment flow or an authentication path earns automated tests; an about page doesn't. A model pipeline earns validation against a known baseline.
 - When will real users see it? Put user sessions on the board in the sprint you intend to run them, because work that isn't on the board has no owner and no time set aside for it.
 - What does your [Definition of Done](/activities/team-and-workflow/#definition-of-done) already promise? If it requires green tests in CI (continuous integration), you need the pipeline before you need more kinds of test. If it requires sign-off from the project partner, you need a demo and a feedback loop.
 
@@ -44,7 +44,7 @@ Your **checks** are everything that catches a bad change before it reaches a use
 - a staging or preview environment, so the first run of a change isn't in production;
 - a rollback path you've actually tried.
 
-Delegate to AI tools only as far as those checks would catch a mistake, and strengthen the checks before you delegate more, because a tool's output can look right and still be wrong in ways nobody reads closely enough to see. The [Generative AI guide](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest) makes that argument in full, and [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) measures the gap on your own repository.
+Delegate to AI tools only as far as those checks would catch a mistake, and strengthen the checks before you delegate more, because a tool's output can look right and still be wrong in ways nobody reads closely enough to see. The Generative AI guide makes [that argument in full](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest), and [Audit Your Safety Net](/activities/testing-release-and-handoff/#audit-your-safety-net) measures the gap on your own repository.
 
 ## Verification: Does the Code Work?
 
@@ -108,7 +108,7 @@ The pyramid has a competitor, and Fowler himself hedges it. He notes that it res
 Spend tests where a failure would hurt, not where tests are easiest to write:
 
 - Test behavior, not implementation. A test that asserts "the output is sorted" survives a refactor; one that asserts "the function calls `sort()` internally" breaks every time the code changes, even when the behavior hasn't.
-- Cover the critical paths thoroughly: authentication, payment processing, the core data pipeline, the primary user interaction. Edge cases in a settings page can wait.
+- Cover the critical paths: authentication, payment processing, the core data pipeline, the primary user interaction. Edge cases in a settings page can wait.
 - Test the boundaries first (empty inputs, maximum values, invalid data, concurrent access), because a boundary is where a single wrong comparison flips the result, and it's the case a happy-path test never reaches. If a function accepts a list, test it with an empty list, one item, and a very large list.
 - Don't test framework code. If the framework guarantees a 404 for an unregistered route, test your code instead of theirs.
 - Don't chase a coverage number. Use coverage to find code no test executes; Some Truths below explains why a target backfires.
@@ -133,7 +133,7 @@ Automated tests check what the team told them to check. A person using the syste
 
 ## Validation: Does the Product Solve the Right Problem?
 
-The methods below differ mostly in how many users they need: a usability session needs a handful, a beta a small group, and an A/B test enough traffic for statistics. Pick the one your number of real users can support, and use sprint demos with the project partner whatever that number is.
+The methods below differ mostly in how many users they need: a usability round needs about five, a beta a small group, and an A/B test enough traffic for statistics. Pick the one your number of real users can support, and use sprint demos with the project partner whatever that number is.
 
 ### Usability Testing
 
@@ -145,7 +145,7 @@ Plan each session: pick the tasks to test, recruit the participants, and write a
 
 ### Testing with Assistive Technology Users
 
-Only someone who relies on assistive technology daily can tell you whether the software is good rather than merely compliant. [Accessibility Testing](/guides/accessibility/#testing-with-assistive-technology-users) covers how to recruit for that session and what the closest substitute is when you can't.
+Only someone who relies on assistive technology daily can tell you whether the software is good rather than merely compliant. Accessibility Testing covers [how to recruit for that session](/guides/accessibility/#testing-with-assistive-technology-users) and what the closest substitute is when you can't.
 
 ### Beta Testing and Feedback
 
@@ -157,11 +157,11 @@ When success is measurable (conversion rates, task completion times, error rates
 
 ### Project Partner Demos as Validation
 
-Treat every sprint demo as a test of whether you built the right thing. When the project partner watches a feature and says "that's not what I meant", you've found a requirements bug, and a demo finds it within a sprint of the code being written instead of at the end of the project. The [Presentations guide](/guides/presentations/) covers how to run a demo that gets that feedback.
+Treat every sprint demo as a test of whether you built the right thing. When the project partner watches a feature and says "that's not what I meant", you've found a requirements bug, and a demo finds it within a sprint of the code being written instead of at the end of the project. The Presentations guide covers [how to run a demo that gets that feedback](/guides/presentations/).
 
 ## Testing Results, Not Just Code
 
-When the work produces a result, the question a test answers is whether the result is reproducible and trustworthy. The [Shipping guide](/guides/shipping/#getting-your-result-reproduced) covers what reproducible means and why you reproduce the baseline before attempting anything new. Two checks are testing work:
+When the work produces a result, the question a test answers is whether the result is reproducible and trustworthy. The Shipping guide covers [what reproducible means](/guides/shipping/#getting-your-result-reproduced) and why you reproduce the baseline before attempting anything new. Two checks are testing work:
 
 - Validate the input data. Check that it meets the expected formats, ranges, and distributions before processing, because a pipeline that silently drops malformed records or produces NaN without warning produces results nobody can trust.
 - Sanity-check the outputs. After a model trains or an analysis runs, verify that the outputs fall in the expected range. Treat a model that suddenly reports 99.9% accuracy as a data-leakage bug until you've ruled it out, because test data leaking into training makes a model look far better than it is.
@@ -173,7 +173,7 @@ Research output that others will use (a tool, a dataset, a method) needs validat
 Testing runs through the whole workflow:
 
 - As you build. Tests exist before the code merges, whether the team writes them first or alongside, because a change merged without them can break later without anyone noticing.
-- On every pull request. Tests run in CI and a red build blocks the merge, which makes the suite a gate instead of a suggestion. The workflow file is in the [DevOps guide](/guides/devops/#continuous-integration-ci); the branch protection that makes red mean blocked is in [Git and GitHub](/guides/git-and-github/#protecting-the-main-branch).
+- On every pull request. Tests run in CI and a red build blocks the merge, which makes the suite a gate instead of a suggestion. [The workflow file](/guides/devops/#continuous-integration-ci) is in the DevOps guide; [the branch protection that makes red mean blocked](/guides/git-and-github/#protecting-the-main-branch) is in Git and GitHub.
 - Before every demo and release. Run the full suite plus a manual smoke test. If a workflow matters enough to demo, give it an end-to-end test.
 - After every bug that reaches a user. Write a test that reproduces the failure before you fix it, so the test proves the fix and keeps the bug from coming back ([Fowler](https://martinfowler.com/bliki/TestPyramid.html) advises a unit test even when an end-to-end test found the bug). Over the project, that builds a suite shaped by real failures rather than imagined ones.
 
@@ -185,7 +185,7 @@ Organize tests so any teammate can find, run, and change them:
 - Name tests descriptively. `test_login_with_invalid_password_returns_401` tells a reviewer what's verified without reading the body.
 - Build test data with fixtures, factories, or builders rather than hardcoding it in each file, so a schema change means one edit instead of forty.
 
-Write the conventions (framework, file layout, how to run the suite) into `CONTRIBUTING.md`, so every teammate and every AI coding tool follows the same pattern. The [Documentation guide](/guides/documentation/) covers what else belongs there.
+Write the conventions (framework, file layout, how to run the suite) into `CONTRIBUTING.md`, so every teammate and every AI coding tool follows the same pattern. The Documentation guide covers [what else belongs there](/guides/documentation/).
 
 ### Dealing with Flaky Tests
 

@@ -9,7 +9,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has a project partner, a repository, and a list of things to build, and someone has to decide what gets built in the next two weeks. Or a sprint just ended and there was nothing to show at the demo. This page covers how a sprint runs from planning to retrospective, what "done" has to mean for the cycle to work, how to estimate and protect the plan, and when continuous flow with Kanban fits better. It doesn't cover how to rank the backlog, which is the [planning guide](/guides/planning/)'s subject, or how to facilitate a retrospective, which the [retrospectives guide](/guides/retrospectives/) covers.
+Your team has a project partner, a repository, and a list of things to build, and someone has to decide what gets built in the next two weeks. Or a sprint just ended and there was nothing to show at the demo. This page covers how a sprint runs from planning to retrospective, what "done" has to mean for the cycle to work, how to estimate and protect the plan, and when continuous flow with Kanban fits better. It doesn't cover [how to rank the backlog](/guides/planning/) or [how to facilitate a retrospective](/guides/retrospectives/).
 
 :::note[tl;dr]
 - Run two-week sprints: plan, build, demo to your project partner, then hold a retrospective before the next sprint starts.
@@ -51,7 +51,7 @@ The time before the first real sprint is sometimes called Sprint 0. The term isn
 
 Each sprint runs the same four phases: plan, build, review, reflect. The [Scrum Guide](https://scrumguides.org/scrum-guide.html) names them Sprint Planning, the Sprint itself with its Daily Scrum, the Sprint Review, and the Sprint Retrospective. Read it once, because it's the authoritative definition of the terms your future colleagues will use, and it's short. It also says Scrum is "immutable", and that while "implementing only parts of Scrum is possible, the result is not Scrum."
 
-This page departs from the Guide in a few places, so by the Guide's own definition what it describes isn't Scrum; [Some Truths](#some-truths-about-sprints) opens with the reason.
+This page departs from the Guide in places, stand-up frequency among them, so by the Guide's own definition what it describes isn't Scrum; [Some Truths](#some-truths-about-sprints) opens with the reason.
 
 ### Sprint Planning
 
@@ -95,7 +95,7 @@ Show the work itself: running software on real data, a notebook with actual outp
 
 ### Sprint Retrospective
 
-After the review and before the next sprint starts, the team holds a short retrospective (30 to 45 minutes) on how it worked rather than on what it built. The Scrum Guide gives its purpose as planning "ways to increase quality and effectiveness", and the [retrospectives guide](/guides/retrospectives/) covers formats and facilitation.
+After the review and before the next sprint starts, the team holds a short retrospective (30 to 45 minutes) on how it worked rather than on what it built. The Scrum Guide gives its purpose as planning "ways to increase quality and effectiveness", and the retrospectives guide covers [formats and facilitation](/guides/retrospectives/).
 
 :::note[Process Overhead]
 At the lengths this page recommends, a two-week sprint costs each person about this much:
@@ -143,13 +143,13 @@ Your project may sit in between, since research projects produce software and so
 
 Software estimates tend to be wrong, and in one direction. <Cite id="molokken-2003" /> reviewed surveys on software effort estimation and found that most projects (60 to 80%) overrun their effort or schedule. Estimate a sprint to keep the team from committing to more than it can finish, and when the estimate misses, expect it to have missed by planning too much.
 
-Estimate each task as **small** (a few hours), **medium** (one or two days), or **large** (more than two days), and split every large task before it enters a sprint. The scheme only has to catch a task that won't fit in a sprint, and three sizes are enough for that.
+Estimate each task as **small** (under a day), **medium** (one or two days), or **large** (more than two days), and split every large task before it enters a sprint. The scheme only has to catch a task that won't fit in a sprint, and three sizes are enough for that.
 
 Estimate together, because a teammate may know why a task is harder than it looks. In [planning poker](https://www.mountaingoatsoftware.com/agile/story-points/planning-poker), the team discusses differing estimates and estimates again until they converge. <Cite id="molokken-ostvold-2007" /> trialled it in one software project, using it for half the tasks. The group estimates were less optimistic and more accurate than a mechanical combination of the individual estimates for the same tasks, though control tasks estimated by individual experts came out about as accurate as the planning poker tasks.
 
 **Capacity** is the time the team actually has this sprint, after every other commitment each member has. Count all of it during planning and plan to it, because people predict their own completion times optimistically. <Cite id="buehler-1994" /> found people's predictions too optimistic across a variety of academic and nonacademic tasks, and found that people predicting focused on future scenarios rather than on relevant past experience.
 
-The same study points at the fix: in its fourth experiment, the optimistic bias disappeared when participants were told to connect relevant past experiences to their predictions <Cite id="buehler-1994" form="parenthetical" />. A team's past experience is its **velocity**, roughly how many tasks it finishes per sprint, which you'll know after a few sprints. Start each plan from it.
+The same study points at the fix: in its fourth experiment, the optimistic bias disappeared when participants were told to connect relevant past experiences to their predictions <Cite id="buehler-1994" form="parenthetical" />. A team's past experience is its **velocity**, roughly how many tasks it finishes per sprint, which you'll know after two or three sprints. Start each plan from it.
 
 ## Managing Scope Mid-Sprint
 
@@ -200,10 +200,10 @@ You don't need to choose a process on day one and keep it forever. Start with pl
 
 At the end of a good sprint:
 
-- The sprint goal was met, or the team can explain clearly why it wasn't.
+- The sprint goal was met, or the team can explain why it wasn't.
 - Real results were demonstrated to the project partner: running software, notebook outputs, validated findings.
 - The team identified at least one process improvement and committed to it.
-- Every team member made a visible, documented contribution.
+- Every team member made a documented contribution.
 
 At the end of a struggling sprint:
 
@@ -240,7 +240,7 @@ The tool names above date faster than anything else on this page. Checked at the
 
 ## Some Truths About Sprints
 
-Start with the uncomfortable one: a two-week sprint on a student team simulates a practice built for people who work on one product full time. Your sprint shares its two weeks with other courses, exams, and a stretch when nobody's available, so your capacity swings from sprint to sprint in a way a full-time team's doesn't. That makes planning the event most likely to feel like a formality, because a plan only predicts well once capacity is stable enough to learn from. Expect the first two or three sprints to be calibration rather than prediction, and don't conclude the practice is worthless when the first one overruns.
+A two-week sprint on a student team simulates a practice built for people who work on one product full time. Your sprint shares its two weeks with other courses, exams, and a stretch when nobody's available, so your capacity swings from sprint to sprint in a way a full-time team's doesn't. That makes planning the event most likely to feel like a formality, because a plan only predicts well once capacity is stable enough to learn from. Expect the first two or three sprints to be calibration rather than prediction, and don't conclude the practice is worthless when the first one overruns.
 
 Estimates go wrong when they leave the team. Ron Jeffries, whose Extreme Programming team renamed its "ideal days" to points, writes that he ["may have invented story points, and if I did, I'm sorry now"](https://ronjeffries.com/articles/019-01ff/story-points/Index.html). He argues that tracking actuals against estimates is at best wasteful, that comparing teams on their estimates or velocity is harmful and, for many managers, an irresistible temptation, and that estimates are implicated in management pressure to do more. He would rather slice work small enough not to need estimating. If you track velocity at all, keep it inside the team and use it to answer "did we take on too much?", because once it's used to compare teams or assess individuals, the people producing the estimates have every reason to protect themselves instead of estimating accurately. Velocity counts one team's output in that team's own units, so it doesn't compare across teams, and Martin Fowler argues that there's [no reasonable way to measure software productivity](https://martinfowler.com/bliki/CannotMeasureProductivity.html) at all, because nobody can measure software's output.
 

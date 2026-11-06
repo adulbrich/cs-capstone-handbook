@@ -8,7 +8,7 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has just closed a sprint, finished a milestone, or cleaned up after a bad deploy, and someone has put an hour on the calendar called a retrospective. This page covers the kinds of retrospective, four formats for running one, how to facilitate it so it produces actions rather than complaints, and the postmortem you write after an incident. It doesn't cover planning or reviewing the sprint itself (see [Sprints](/guides/sprint/)), or what to do when a problem between two people outgrows the meeting (see [Conflict](/guides/conflict/)).
+Your team has just closed a sprint, finished a milestone, or cleaned up after a bad deploy, and someone has put an hour on the calendar called a retrospective. This page covers the kinds of retrospective, four formats for running one, how to facilitate it so it produces actions rather than complaints, and the postmortem you write after an incident. It doesn't cover [planning or reviewing the sprint itself](/guides/sprint/), or [what to do when a problem between two people outgrows the meeting](/guides/conflict/).
 
 :::note[tl;dr]
 - Hold a sprint retrospective at the end of every sprint, time-boxed to 30 to 45 minutes, including the sprints that went well.
@@ -35,7 +35,7 @@ Run it at the end of each sprint. The team looks at the sprint it just finished:
 
 Run it at the end of a major phase: a release, a quarter, or a stage of the project with its own goal. It covers the arc of the phase rather than one sprint: the major successes and failures, how the team worked together, and what to carry into the next phase. Time-box the meeting to 60 to 90 minutes, and budget extra time afterward for the written document.
 
-Write the milestone retrospective down, as themes and commitments rather than meeting notes, because the people who read it later weren't in the room. Pick a few themes that explain the phase (a success or a recurring pain point), back each with concrete evidence (a sprint metric, a code review thread, a comment from the project partner), and end each with an action that has a named owner and a timeframe. Tell the story of why things happened; a chronological list of events leaves the reader to find the causes on their own.
+Write the milestone retrospective down, as themes and commitments rather than meeting notes, because the people who read it later weren't in the room. Pick two or three themes that explain the phase (a success or a recurring pain point), back each with concrete evidence (a sprint metric, a code review thread, a comment from the project partner), and end each with an action that has a named owner and a timeframe. Tell the story of why things happened; a chronological list of events leaves the reader to find the causes on their own.
 
 ### Project Retrospective
 
@@ -50,7 +50,7 @@ Pair the team discussion with individual reflection, where each member writes do
 
 ### Incident Retrospective (Postmortem)
 
-When something breaks, or nearly breaks, in production, run a retrospective focused on that one event. The output is a written postmortem (the format is [below](#postmortem-format)), and the goal is to change the system so the failure is less likely or caught sooner.
+When something breaks, or nearly breaks, in production, run a retrospective focused on that one event. The output is a written [postmortem](#postmortem-format), and the goal is to change the system so the failure is less likely or caught sooner.
 
 :::tip[Blameless Culture]
 Write the postmortem without blame: assume everyone involved acted with good intent and did the right thing with the information they had at the time, and ask what in the system or process let the failure through. [Google's SRE book](https://sre.google/sre-book/postmortem-culture/) argues that where people are pointed at and shamed for mistakes, they stop bringing issues to light for fear of punishment.
@@ -167,9 +167,9 @@ For the root cause, the [5 Whys](https://en.wikipedia.org/wiki/Five_whys) techni
 
 Don't skip the retrospective when a deadline is close, even though it's the meeting that feels most skippable. Planning and review produce something you can point at, so skipping them feels like skipping work; a retrospective produces a conversation, so skipping it feels like reclaiming an hour. What the team loses is the one scheduled moment when a process problem can be raised by the person experiencing it, rather than by whoever gets annoyed enough to bring it up unprompted. Skipping one after a holiday week when nobody touched the code costs little. Skip two in a row and a problem that started in the first sprint has had a month to grow before anyone names it.
 
-Retrospectives can produce their own waste. In the organization <Cite id="lehtinen-2017" /> studied, certain topics recurred over a long period, and the authors treat recurring discussions as a potential sign of waste. A team that holds the meeting faithfully can still be going through the motions. When a problem has survived two rounds of team-level fixes, stop re-discussing it in the retrospective and treat it as outside the team's control (see [Focus on Actions](#focus-on-actions)), because a third round of the same discussion takes time from problems the team can still fix.
+Retrospectives can produce their own waste. In the organization <Cite id="lehtinen-2017" /> studied, certain topics recurred over a long period, and the authors treat recurring discussions as a potential sign of waste. A team that holds the meeting faithfully can still be going through the motions. When a problem has survived two rounds of team-level fixes, stop re-discussing it in the retrospective and treat it as [outside the team's control](#focus-on-actions), because a third round of the same discussion takes time from problems the team can still fix.
 
-A blameless retrospective can also become a place to avoid an uncomfortable conversation. Framing a problem as a system problem is right whenever a process change could fix it, but when one person has missed commitments sprint after sprint, the system framing lets the team talk around it indefinitely, and the person never hears it directly. That conversation doesn't belong in a group meeting, where it turns into public blame; have it one-to-one, and see [Conflict](/guides/conflict/) for how to hold it and when to escalate.
+A blameless retrospective can also become a place to avoid an uncomfortable conversation. Framing a problem as a system problem is right whenever a process change could fix it, but when one person has missed commitments sprint after sprint, the system framing lets the team talk around it indefinitely, and the person never hears it directly. That conversation doesn't belong in a group meeting, where it turns into public blame; have it one-to-one, and read [how to hold it and when to escalate](/guides/conflict/).
 
 A written retrospective takes longer than it looks, and the time goes into reconstructing what happened, not into writing. Memory is a weak source for that, which is why the evidence-based timeline above is drafted from records. Keep a short note each sprint, such as a [learning journal](/activities/learning-and-reflection/#learning-journal), and the document at the end becomes a matter of selecting and explaining rather than remembering.
 

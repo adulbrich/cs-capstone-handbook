@@ -9,7 +9,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Sooner or later someone other than you needs to run your system: a new teammate, your project partner, whoever maintains it after you graduate. This page covers which documents to write for each of them, from the README to the API reference, how much detail each one needs, and how to keep them accurate once the code starts moving. It doesn't cover the design document or the requirements, which have guides of their own: [Technical Design](/guides/technical-design/) and [Requirements](/guides/requirements/).
+Sooner or later someone other than you needs to run your system: a new teammate, your project partner, whoever maintains it after you graduate. This page covers which documents to write for each of them, from the README to the API reference, how much detail each one needs, and how to keep them accurate once the code starts moving. It doesn't cover [the design document](/guides/technical-design/) or [the requirements](/guides/requirements/), which have guides of their own.
 
 :::note[tl;dr]
 - Put a README, a `CONTRIBUTING.md`, and a `LICENSE` at the root of every repository, and test the README by having someone set up the project from it alone.
@@ -26,7 +26,7 @@ Write for the reader with the least access to you: whoever inherits the project 
 
 ## Repository Documentation
 
-Put a standard set of files at the root of every repository, because that's where GitHub, GitLab, and most other hosts render them, so they're the first thing a visitor sees.
+Put the files below at the root of every repository, because that's where GitHub, GitLab, and most other hosts render them, so they're the first thing a visitor sees.
 
 ### README
 
@@ -203,7 +203,7 @@ That gives a sharper rule than "keep it updated". Prefer documentation that's ex
 
 Use that split to decide what to fix first. Wrong information concentrates in the documentation a reader executes: of the correctness issues <Cite id="aghajani-2019" /> could attribute to a documentation type, 50% were in code examples and 20% in installation guidelines. Fix or delete a stale setup step or code example as soon as you find it, because a reader follows it exactly and has no way to tell it's wrong until it fails. A stale architecture overview still orients a newcomer if its major components are right, so mark when it was last checked instead of deleting it. Google does this: <Cite id="manshreck-2020" /> describes documents that carry an owner and a "last reviewed" date, with a reminder sent when one hasn't been touched in, for example, three months.
 
-Documentation pays its author back late, and Manshreck names that as one reason engineers consider documentation poor: the benefits of documentation arrive downstream, mostly for its readers, while the effort lands up front, on its author. Resolve doesn't fix that; making the moment specific does. Attach documentation to each change you already make, so the question is never "should I write documentation today" but "does this change alter anything a reader was told".
+Documentation pays its author back late, and Manshreck names that as one reason engineers consider documentation poor: the benefits of documentation arrive downstream, mostly for its readers, while the effort lands up front, on its author. Attach documentation to each change you already make, so the question is never "should I write documentation today" but "does this change alter anything a reader was told".
 
 ## Documentation in Industry and Academia
 
@@ -241,4 +241,4 @@ The two style guides are worth skimming once and then keeping open while you wri
 - [Planning for Maintenance and Long-Term Support](/activities/testing-release-and-handoff/#planning-for-maintenance-and-long-term-support): the plan for user manuals, FAQs, and support guides that outlives the team.
 - [Analyze an Existing Codebase](/activities/technical-design/#analyze-an-existing-codebase): the receiving end of someone else's documentation, which shows you what yours needs to do.
 - [Public Code Repository](/activities/career/#public-code-repository): a README and setup instructions verified from a clean clone.
-- [Write for Accessibility and ESL](/activities/interaction-design/#write-for-accessibility-and-esl): clarity discipline, applied to the documents here.
+- [Write for Accessibility and ESL](/activities/interaction-design/#write-for-accessibility-and-esl): plain-language rules, applied to the documents here.

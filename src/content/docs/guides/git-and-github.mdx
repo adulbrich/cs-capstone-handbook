@@ -9,7 +9,7 @@ import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Your team has one repository, four people who can push to it, and a demo coming up. Sooner or later two of you edit the same file on the same afternoon, or someone pushes a broken build straight to `main` the night before that demo. This page covers the way of working that prevents both: a branching workflow, the pull request cycle from branch to merge, merge conflicts, and the repository settings that enforce the workflow. It doesn't teach Git from scratch (the two lectures linked below do), and it doesn't cover writing a CI pipeline, which is in the [DevOps guide](/guides/devops/).
+Your team has one repository, four people who can push to it, and a demo coming up. Sooner or later two of you edit the same file on the same afternoon, or someone pushes a broken build straight to `main` the night before that demo. This page covers the way of working that prevents both: a branching workflow, the pull request cycle from branch to merge, merge conflicts, and the repository settings that enforce the workflow. It doesn't teach Git from scratch (the two lectures linked below do), and it doesn't cover [writing a CI pipeline](/guides/devops/).
 
 :::note[tl;dr]
 - Use GitHub Flow: `main` stays deployable, and every change reaches it through a pull request from a short-lived branch.
@@ -158,7 +158,7 @@ A good pull request has:
 - A description that says what changed, why, and how to test it. If the PR resolves an issue, write `Closes #42` in the description, and GitHub [closes the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue) when the PR merges into the default branch.
 - A size a reviewer can read in one sitting. If it's growing past that, split it into smaller PRs that merge in sequence.
 
-The description and the size both serve the reviewer's understanding, which is where review struggles most. In interviews with Microsoft developers, <Cite id="bacchelli-2013" /> found that understanding the change, and in particular the reason for it, was reviewers' main challenge, and developers said that when the author gave them context and direction, they could respond better and faster. Keep your pull requests small, because a reviewer who can hold the whole change in their head can check it, and one who can't has to skim. Google's process has converged on small changes: <Cite id="sadowski-2018" /> report a median of 24 lines changed per change, about 90% of changes touching fewer than 10 files, and a median of under four hours for the whole review.
+The description and the size help reviewers with their hardest task: understanding the change. In interviews with Microsoft developers, <Cite id="bacchelli-2013" /> found that understanding the change, and in particular the reason for it, was reviewers' main challenge, and developers said that when the author gave them context and direction, they could respond better and faster. Keep your pull requests small, because a reviewer who can hold the whole change in their head can check it, and one who can't has to skim. Google's process has converged on small changes: <Cite id="sadowski-2018" /> report a median of 24 lines changed per change, about 90% of changes touching fewer than 10 files, and a median of under four hours for the whole review.
 
 :::tip[Draft Pull Requests]
 If your work isn't ready for review but you want early feedback, or want teammates to see where you are, open a [draft pull request](https://docs.github.com/en/pull-requests/reference/pull-requests). A draft can't be merged and doesn't automatically request review from code owners. Mark it ready for review when it is.
@@ -253,18 +253,18 @@ If you find yourself resolving the same conflict on every rebase, turn on [`git 
 
 Everything above depends on people remembering to follow it, and GitHub can enforce it instead. A [ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) is a named list of rules that GitHub applies to matching branches on every push and merge. Rulesets are the newer mechanism and work alongside classic branch protection rules. Prefer them on a new repository, because several rulesets can apply to one branch at once, you can switch one off without deleting it, and anyone with read access can see which rules are active.
 
-Both rulesets and classic protection are available on public repositories under GitHub Free, but on private repositories only with a paid plan such as GitHub Pro or GitHub Team. If your repository is private and owned by a free organization, check the plan before you rely on these settings.
+GitHub offers rulesets and classic protection on private repositories only with some of its plans, and it changes what each plan includes, so if your repository is private, check [where rulesets are available](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) before you rely on these settings.
 
 For a small team, these rules are worth turning on (the full list is in [Available rules for rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)):
 
 - "Require a pull request before merging", with at least one required approval, so nothing reaches `main` without review.
 - "Require status checks to pass before merging", so CI has to be green before the merge button works.
-- "Block force pushes", which is on by default and stops anyone rewriting `main`'s history under their teammates.
+- "Block force pushes", which stops anyone rewriting `main`'s history under their teammates.
 - An empty bypass list. A ruleset applies to everyone who isn't on that list, and on a small team's repository everyone usually has admin access, so any role you add there exempts the whole team.
 
-To create one, open the repository's Settings, choose Rulesets in the left sidebar under "Code, planning, and automation", and click New ruleset, then New branch ruleset. Target the default branch, and change the enforcement status from Disabled, the default for a new ruleset, to Active.
+To create one, open the repository's Settings, choose Rulesets in the left sidebar under "Code, planning, and automation", and click New ruleset, then New branch ruleset. Target the default branch, and set the enforcement status to Active.
 
-If the repository already has a classic branch protection rule, it behaves differently on one point: [by default](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) its restrictions don't apply to administrators. Turn on "Do not allow bypassing the above settings", or convert the rule to a ruleset.
+If the repository already has a classic branch protection rule, check [whether its restrictions apply to administrators](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches); if they don't, turn on "Do not allow bypassing the above settings", or convert the rule to a ruleset.
 
 ## Best Practices
 
