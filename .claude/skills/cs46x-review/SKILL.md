@@ -74,7 +74,7 @@ since its last read, always as a new agent, and never with the ledger.
 
 Beside them, the main session does its own correctness read: the built-in
 `code-review` skill, or a line-by-line read of the diff with each rewritten
-line beside the line it replaced.
+line beside the line it replaced (#661).
 
 Done when every report is in. Fix nothing before then.
 
@@ -98,7 +98,7 @@ Take the first rung that resolves the finding without adding drift
 (`spec-and-rules.md`, Intent):
 
 1. Delete the text that causes it.
-2. Rewrite it in place, no longer than it was.
+2. Rewrite it in place, no longer than it was or than the base had it.
 3. Add one clause, where the section stays within its budget and was not
    already over it.
 
@@ -118,8 +118,8 @@ ledger from those lines and the round commits.
 
 The loop ends on a round that changed no repository file, in which the latest
 student read of every page reports no stop that clears the bar and the latest
-spec and rules review reports no drift. A fix to the PR body alone starts no
-round.
+spec and rules review reports no drift that still stands. A fix to the PR
+body alone starts no round.
 
 When a round's fixes stay within one file and rename no heading, the next
 round may be one reviewer on every brief but the student read's for those lines, with a regression

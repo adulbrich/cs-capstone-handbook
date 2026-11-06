@@ -24,13 +24,16 @@ the diff touches (the Skills table in `AGENTS.md`).
      new, and list each change in what it says: an idea dropped, added,
      narrowed, widened, or altered. Look at purposes, qualifiers, what the
      reader is asked to do, facts, what a link says its target holds, and
-     agreement with another page, which you check by opening that page.
-   - A change is intended when the issue, the PR body, or the ledger says the
-     PR makes it, or when a rule bars the old idea from the page
-     (`docs/agents/voice.md`, Concrete sentences, second paragraph). Any other
-     change is **drift**. Concrete sentences 1, 2, and 5 to 8 govern wording,
-     so a change they would explain is drift unless the issue, the PR body, or
-     the ledger names it.
+     agreement with another page, which you check by opening that page. An
+     idea the new text, or the same file elsewhere, states about the same
+     subject is not dropped.
+   - A change is intended when the issue, the PR body, or an instructor
+     decision in the ledger says the PR makes it; when a fix in the ledger
+     needs it to resolve that fix's own finding; or when a rule bars the old
+     idea from the page (`docs/agents/voice.md`, Concrete sentences, second
+     paragraph). Any other change is **drift**. Concrete sentences 1, 2, and 5
+     to 8 govern wording, so a change they would explain is drift unless the
+     issue, the PR body, or an instructor decision names it.
    - Every requirement, number, procedure, or rule the diff adds traces to the
      issue, an instructor decision or a fix in the ledger, or a canonical home
      the page links. One that traces to none is a finding for the instructor,
@@ -79,4 +82,4 @@ Findings above the bar only, each with Hard or Judgement, `file:line`, the
 quoted hunk, the rule or spec line, and the smallest fix by the ladder
 (`SKILL.md`, Fix by the Ladder). Drift gives the old text and the new;
 restoring the old wording is always one fix. Under 600 words, the reverse
-outline aside.
+outline and the drift list aside.
