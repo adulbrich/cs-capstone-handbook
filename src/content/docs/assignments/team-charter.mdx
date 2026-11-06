@@ -33,7 +33,7 @@ import rubricCsv from '/canvas/assignments/team-charter/team-charter-rubric.csv?
   The charter's spring refresh closes the [Team Health Assessment workshop](/assignments/workshop-activities/#workshop-1-team-health-assessment) in week 2; it is not a separate assignment.
 </AssignmentSummary>
 
-In this assignment you will write your team's operating agreement: who owns what, how decisions get made, what has to be true before code merges, and what happens when the team isn't working. It is due in week 2, before you have had the arguments it settles. The [Working Agreement guide](/guides/working-agreement/) explains why teams write one and has patterns you can adopt; this page says what you submit.
+In this assignment you will write your team's operating agreement: who owns what, how decisions get made, what has to be true before code merges, and what happens when the team isn't working. It is due in week 2, before you have had the arguments it settles. The Working Agreement guide explains [why teams write one](/guides/working-agreement/#why-working-agreements-matter) and has patterns you can adopt; this page says what you submit.
 
 The charter is an agreement between the people on your team, so it lives with [your team's documents](/assignments/repo-checkpoints/#what-you-produce), not in the repository. When it changes (and it should, as your retrospectives teach you things), update it where it lives.
 
@@ -41,9 +41,9 @@ The charter is an agreement between the people on your team, so it lives with [y
 
 Three artifacts:
 
-1. **The charter** itself, 2 to 4 pages of focused, scannable policy ([sections below](#required-charter-sections)).
+1. **The charter** itself, 2 to 4 pages of policy ([sections below](#required-charter-sections)).
 2. **[`CONTRIBUTING.md`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)**, in the repository, with the [sections below](#required-in-contributingmd).
-3. **The AI context file**, in the repository (`AGENTS.md` or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. If your docs are good, this file mostly points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
+3. **The AI context file**, in the repository (`AGENTS.md` or your tooling's equivalent): project context, conventions, and constraints your AI tools should know. Where your docs cover these, the file points at them. In week 2 there may be little code for it to describe: state what the team already knows (the stack, the conventions, the confidentiality boundary) and list what gets added once code exists, with who owns adding it. [`AGENTS.md`](https://agents.md/) is the cross-tool convention and the safest default on a team where people use different tools; per-tool files should point at it rather than duplicate it.
 
 If the repository you inherit already has a `CONTRIBUTING.md` or an AI context file, extend that file rather than starting a new one, and keep what its previous maintainers wrote that still holds.
 
@@ -53,7 +53,7 @@ If the repository you inherit already has a `CONTRIBUTING.md` or an AI context f
 
 #### 1. Roles
 
-Three concerns must each have exactly one named owner. The charter names the owner of each, and says when rotation happens (at minimum, once per term). These three names are the ones the [defense](/assignments/defense/) asks about; do not rename them in your charter, whatever the [working agreement guide](/guides/working-agreement/#roles-and-ownership) says about labels being optional. The guide is worth reading for what each of the three concerns covers:
+Three concerns must each have exactly one named owner. The charter names the owner of each, and says when rotation happens (at minimum, once per term). These three names are the ones the [defense](/assignments/defense/) asks about; do not rename them in your charter, whatever the working agreement guide says about [labels being optional](/guides/working-agreement/#roles-and-ownership). The guide is worth reading for what each of the three concerns covers:
 
 - **Project Manager (PM)**: owns the board and the partner communication cadence; owes the team an accurate view of where the sprint actually stands.
 - **AI Coordinator**: owns the AI context file and the confidentiality boundary; owes the team current tooling guidance and a working answer to "can I paste this into that?"
@@ -67,7 +67,7 @@ Commit to a rotation such that **every student chairs at least one decision per 
 
 #### 2. Decision Process
 
-How choices are proposed, decided, and escalated: your decision rule (consent, majority, PM tie-break), where decisions get recorded (see the [ADR guide](/guides/adr/), and [adr.github.io](https://adr.github.io/) for templates), and at least one explicit escalation or override rule for when you are stuck.
+How choices are proposed, decided, and escalated: your decision rule (consent, majority, PM tie-break), where decisions get recorded, such as in [ADRs](/guides/adr/) ([adr.github.io](https://adr.github.io/) has templates), and at least one explicit escalation or override rule for when you are stuck.
 
 #### 3. Cadence and Tools
 
@@ -75,18 +75,18 @@ Meeting times, communication channels, and core tools, including where decisions
 
 #### 4. Conflict and Accountability
 
-A restorative, stepwise conflict path: name it early, talk directly, involve the team, escalate to the instruction team, with time bounds and measurable triggers (missed meetings, unreviewed PR backlog). Accountability ties to observable evidence (PRs, reviews, attendance), not testimony. The [Working Agreement guide](/guides/working-agreement/) has conflict-path patterns you can adopt.
+A restorative, stepwise conflict path: name it early, talk directly, involve the team, escalate to the instruction team, with time bounds and measurable triggers (missed meetings, unreviewed PR backlog). Accountability ties to observable evidence (PRs, reviews, attendance), not testimony. The Working Agreement guide has [conflict-path patterns](/guides/working-agreement/#conflict-resolution) you can adopt.
 
 #### 5. Inclusion Norms
 
-Meeting norms that let everyone contribute (time zones, note-taking, turn-taking), how a teammate requests an accommodation, and how the team surfaces barriers without drama.
+Meeting norms that let everyone contribute (time zones, note-taking, turn-taking), how a teammate requests an accommodation, and how the team surfaces barriers.
 
 #### 6. AI and Confidentiality
 
-State which data, code, and documents may enter which AI tools, following what your partner has stated about confidentiality: any NDA, the rules for their data, and which tools may see the code. Say what is fully open, what may go only into approved or local tools, and what never leaves the repository, covering code, partner data, credentials, and meeting content. If your partner hasn't stated these by week 2, give the boundary you are assuming and the week your team will confirm it with them. See the [Generative AI guide](/guides/generative-ai/). This section is the team's agreement; the parts your AI tools must follow can also go into the repository as rules, in the AI context file or your tool's rules files.
+State which data, code, and documents may enter which [AI tools](/guides/generative-ai/), following what your partner has stated about confidentiality: any NDA, the rules for their data, and which tools may see the code. Say what is fully open, what may go only into approved or local tools, and what never leaves the repository, covering code, partner data, credentials, and meeting content. If your partner hasn't stated these by week 2, give the boundary you are assuming and the week your team will confirm it with them. This section is the team's agreement; the parts your AI tools must follow can also go into the repository as rules, in the AI context file or your tool's rules files.
 
 :::caution[NDA teams: this section is load-bearing]
-For NDA teams, this section is the difference between normal tool use and a breach. Write it with your partner, name the approved tools explicitly, and treat "we were not sure, so we pasted it anyway" as the incident it is.
+For NDA teams, pasting into a tool this section doesn't approve can breach the NDA. Write it with your partner, name the approved tools explicitly, and treat "we were not sure, so we pasted it anyway" as the incident it is.
 :::
 
 ### Required in CONTRIBUTING.md

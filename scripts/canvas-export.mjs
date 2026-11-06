@@ -231,7 +231,7 @@ const OVERRIDES = {
   },
   // The pulse keeps Instructor Review: it covers both partner surveys.
   "Midterm Pulse": (o) => {
-    o.dropBlock("Fall and winter are progress-focused");
+    o.dropBlock("The facet weights move with the year");
     o.dropBlock("The pulse has its own scale");
     o.dropSection(
       "how-the-scoring-works",
