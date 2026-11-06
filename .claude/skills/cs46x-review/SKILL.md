@@ -82,15 +82,23 @@ Done when every report is in. Fix nothing before then.
 
 Check a finding before acting on it; reviewers are wrong too. Each one is:
 
-- **fixed**, when it is a defect in the diff that clears the bar, by the fix
-  ladder;
+- **fixed**, when it is a defect in the diff that clears the bar and is not
+  drift, by the fix ladder;
 - **declined**, on one of three grounds, in one line under Declined in the PR
   body: wrong once checked; below the bar; or outside the diff, where real
-  work becomes an issue;
-- **sent to the instructor** as options, when it is a design choice, a fix
-  the ladder sends up, a fix that would reverse an earlier round's, or a
+  work becomes an issue. Drift is wrong once checked only when the check
+  names the issue line, PR body line, decision, or rule the change traces to;
+- **sent to the instructor** as options, when it is drift, a design choice, a
+  fix the ladder sends up, a fix that would reverse an earlier round's, or a
   student-read stop on text an instructor decision set. The round waits for
   the answer, which the PR body records under Decisions.
+
+Whether a change in what the text says was meant is the instructor's call,
+so the main session neither restores nor keeps drift on its own (#661). A
+round's drift goes to the instructor as one list: each item with the old text
+and the new, and a recommendation among keeping the change, which the PR body
+then names; restoring the base wording; or a rewording that keeps the old
+idea.
 
 ## 4. Fix by the Ladder
 

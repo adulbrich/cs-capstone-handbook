@@ -32,9 +32,10 @@ the diff touches (the Skills table in `AGENTS.md`).
      decision in the ledger says the PR makes it; when a fix in the ledger
      needs it to resolve that fix's own finding; or when a rule bars the old
      idea from the page (`docs/agents/voice.md`, Concrete sentences, second
-     paragraph). Any other change is **drift**. Concrete sentences 1, 2, and 5
-     to 8 govern wording, so a change they would explain is drift unless the
-     issue, the PR body, or an instructor decision names it.
+     paragraph). Any other change is **drift**, and so is a change whose trace
+     you can't settle: report it with what it might trace to. Concrete
+     sentences 1, 2, and 5 to 8 govern wording, so a change they would explain
+     is drift unless the issue, the PR body, or an instructor decision names it.
    - Every requirement, number, procedure, or rule the diff adds traces to the
      issue, an instructor decision or a fix in the ledger, or a canonical home
      the page links. One that traces to none is a finding for the instructor,
@@ -81,6 +82,6 @@ its drift, or a count of the hunks whose changes are all intended.
 
 Findings above the bar only, each with Hard or Judgement, `file:line`, the
 quoted hunk, the rule or spec line, and the smallest fix by the ladder
-(`SKILL.md`, Fix by the Ladder). Drift gives the old text and the new;
-restoring the old wording is always one fix. Under 600 words, the reverse
-outline and the drift list aside.
+(`SKILL.md`, Fix by the Ladder). Drift gives the old text and the new, and
+no fix: the instructor decides it (`SKILL.md`, Triage Each Finding). Under
+600 words, the reverse outline and the drift list aside.
