@@ -160,15 +160,16 @@ nothing to act on. These rules follow Joseph Williams and Joseph Bizup,
 *Style: Lessons in Clarity and Grace*: a sentence reads clearly when its
 subject names who acts and its verb names what they do.
 
-Each rule below changes how a sentence says something and keeps what it says.
-A fix carries every idea the old sentence had: what it is for, the qualifiers
-that set its scope, what it asks the reader to do, and the facts it states.
-When no version that follows the rules carries them all, the sentence stays
-as it was. Only a rule that bars the idea itself from the page removes it:
+Each rule below changes how a sentence says something. A fix made for one of
+them keeps what the sentence says: what it is for, the qualifiers that set its
+scope, what it asks the reader to do, and the facts it states. When no version
+that follows the rules keeps all of that, the sentence stays as it was. Only a
+rule that bars the idea itself from the page removes it:
 rule 3's truism, rule 4's vendor number, staff procedure under Person, or
 what a content skill or a hard rule keeps off that page, such as course design
 on an assignment page, a course fact on a guide or an activity, a calendar
-date, or Canvas in a page body (#661).
+date, or Canvas in a page body. Saying something else is a content change:
+make it on purpose, and name it in the pull request (#661).
 
 1. The subject is a person or a named system, and the verb is what it does:
    "the partner's IT staff review new software", not "approvals run on
