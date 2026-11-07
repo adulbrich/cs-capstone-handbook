@@ -60,9 +60,7 @@ In [trunk-based development](https://trunkbaseddevelopment.com/), everyone commi
 
 Industry data on branch lifetime points the same way. The 2017 State of DevOps Report, an industry report by Puppet and DORA based on a survey of practitioners, restates the previous year's findings that merging into trunk daily, keeping branches alive for less than a day, and having fewer than three active branches all contributed to higher software delivery performance, and confirms them with new data: high performers' branches typically lived for hours where low performers' lived for days <Cite id="forsgren-2017" form="parenthetical" />. The report notes that some developers used to the GitHub-recommended workflow, which merges branches into trunk only periodically, remain skeptical, and replies that short-lived branches merged into trunk at least daily are consistent with commonly accepted continuous integration practice. The report's own advice is to avoid keeping a branch alive more than a day <Cite id="forsgren-2017" form="parenthetical" />. GitHub Flow with branches that merge within a day follows that advice and fits the site's definition of trunk-based development; GitHub Flow with branches that stay open for days has the branch lifetimes the report found among low performers.
 
-:::tip[Which Workflow to Pick]
 Start with GitHub Flow and keep branches to a day. Reach for Git Flow only if you ship versioned releases that you support side by side.
-:::
 
 ## GitHub Flow in Practice
 
@@ -160,8 +158,8 @@ A good pull request has:
 
 The description and the size help reviewers with their hardest task: understanding the change. In interviews with Microsoft developers, <Cite id="bacchelli-2013" /> found that understanding the change, and in particular the reason for it, was reviewers' main challenge, and developers said that when the author gave them context and direction, they could respond better and faster. Keep your pull requests small, because a reviewer who can hold the whole change in their head can check it, and one who can't has to skim. Google's process has converged on small changes: <Cite id="sadowski-2018" /> report a median of 24 lines changed per change, about 90% of changes touching fewer than 10 files, and a median of under four hours for the whole review.
 
-:::tip[Draft Pull Requests]
-If your work isn't ready for review but you want early feedback, or want teammates to see where you are, open a [draft pull request](https://docs.github.com/en/pull-requests/reference/pull-requests). A draft can't be merged and doesn't automatically request review from code owners. Mark it ready for review when it is.
+:::note[If your work isn't ready for review]
+If you want early feedback, or want teammates to see where you are, open a [draft pull request](https://docs.github.com/en/pull-requests/reference/pull-requests). A draft can't be merged and doesn't automatically request review from code owners. Mark it ready for review when it is.
 :::
 
 ### 6. Review and discuss
