@@ -233,6 +233,16 @@ const CASES = [
     "allow",
   ],
   [
+    "em dash in a captured PR body file, then a command",
+    `url=$(gh pr create ${T} --body-file ${dashed}); echo "$url"`,
+    "deny",
+  ],
+  [
+    "em dash in an issue body file, then a command",
+    `gh issue comment 5 --body-file ${dashed}; echo done`,
+    "deny",
+  ],
+  [
     "second PR call in a chain",
     `gh pr edit 5 --add-label x && gh pr create ${T} --body-file ${bare}`,
     "deny",

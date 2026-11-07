@@ -26,7 +26,7 @@ const TITLED = /\bgh\s+pr\s+(?:create|edit|merge)\b/;
 const TITLE_FLAG =
   /(?:^|\s)(?:-t|--title|--subject)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const BODY_FILE_FLAG =
-  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|(\S+))/u;
+  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s;&|)]+))/u;
 const BODY_FLAG =
   /(?:^|\s)(?:-b|--body)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const OLD_FOOTER = "Generated with [Claude Code]";
@@ -43,8 +43,6 @@ const TRAILER_LINE = /^Assisted-by: Claude Code[ \t]*$/m;
 const CUT_LINE = /^---[ \t]*$/m;
 const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/g;
 const LEADING_TILDE = /^~(?=\/|$)/;
-// A bare path that closes a `$(...)` keeps no `)`.
-const CLOSING_PARENS = /\)+$/;
 
 /**
  * `$VAR` and `${VAR}` from this process's environment, as the shell expands
@@ -72,10 +70,7 @@ function bodyFileText(text, dir) {
   const given =
     file[2] ??
     (file[1] === undefined
-      ? expandVars(file[3].replace(CLOSING_PARENS, "")).replace(
-          LEADING_TILDE,
-          homedir()
-        )
+      ? expandVars(file[3]).replace(LEADING_TILDE, homedir())
       : expandVars(file[1]));
   const path = isAbsolute(given) ? given : join(dir, given);
   try {
