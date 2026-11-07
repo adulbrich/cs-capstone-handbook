@@ -150,15 +150,46 @@ const CASES = [
   ["no trailer on a create", `gh pr create ${T} --body-file ${bare}`, "deny"],
   ["trailer only below ---", `gh pr create ${T} --body-file ${below}`, "deny"],
   ["no trailer on an edit", `gh pr edit 5 --body-file ${bare}`, "deny"],
+  // A merge body is a Dependabot first line or the body create already set.
   [
-    "no trailer on a merge body",
+    "merge body without a trailer",
     `gh pr merge 5 --squash --subject "fix(x): y" --body-file ${bare}`,
-    "deny",
+    "allow",
   ],
   ["no trailer inline", `gh pr create ${T} --body "Closes #1"`, "deny"],
   ["no trailer inline, -b", `gh pr edit 5 -b 'Closes #1'`, "deny"],
   ["edit without a body", "gh pr edit 5 --add-label x", "allow"],
   ["merge without a body", "gh pr merge 5 --squash", "allow"],
+
+  // Inline text the shell rewrites first is a body the hook cannot read.
+  ["inline body from a variable", `gh pr create ${T} --body "$BODY"`, "allow"],
+  [
+    "inline heredoc body with a quote in it",
+    `gh pr create ${T} --body "$(cat <<'EOF'\nfixes the "submit" button\n\nAssisted-by: Claude Code\nEOF\n)"`,
+    "allow",
+  ],
+  [
+    "inline body with a spliced quote",
+    `gh pr create ${T} --body 'It'\\''s done\n\nAssisted-by: Claude Code'`,
+    "allow",
+  ],
+
+  // Only the PR call's own body counts, not a chained gh call's.
+  [
+    "issue comment chained after a merge",
+    `gh pr merge 5 --squash && gh issue comment 3 --body "Merged in #5"`,
+    "allow",
+  ],
+  [
+    "issue comment chained before a label edit",
+    `gh issue comment 3 --body "Done in #5" && gh pr edit 5 --add-label ready`,
+    "allow",
+  ],
+  [
+    "clean issue body chained before a bare create",
+    `gh issue comment 3 --body-file ${clean} && gh pr create ${T} --body-file ${bare}`,
+    "deny",
+  ],
   [
     "issue body without a trailer",
     `gh issue create --title "x" --body-file ${bare}`,

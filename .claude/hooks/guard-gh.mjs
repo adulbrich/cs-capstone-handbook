@@ -7,9 +7,10 @@
  * `gh` text. A PR title is also the squash-merge subject, so `pr create`,
  * `pr edit` and `pr merge --subject` get the Conventional Commits check.
  *
- * A PR an agent opens or edits carries the `Assisted-by: Claude Code` trailer
- * above its `---` line, the part a squash merge keeps (#665). Only agents run
- * this hook, so a PR a person opens alone is never asked for it.
+ * A PR body an agent sets with `pr create` or `pr edit`, when the hook can read
+ * it, carries the `Assisted-by: Claude Code` trailer above its `---` line, the
+ * part a squash merge keeps (#665). Only agents run this hook, so a PR a person
+ * opens alone is never asked for it.
  *
  * Exit 2 blocks; stderr is the reason the model reads.
  */
@@ -29,6 +30,10 @@ const BODY_FILE_FLAG =
 const BODY_FLAG =
   /(?:^|\s)(?:-b|--body)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const OLD_FOOTER = "Generated with [Claude Code]";
+const PR_BODIED = /\bgh\s+pr\s+(?:create|edit)\b/;
+const NEXT_GH = /\bgh\s/;
+const SHELL_EXPANDS = /[$`]/;
+const QUOTE_SPLICE = "'\\''";
 const TRAILER = "Assisted-by: Claude Code";
 const TRAILER_LINE = /^Assisted-by: Claude Code[ \t]*$/m;
 const CUT_LINE = /^---[ \t]*$/m;
@@ -95,11 +100,38 @@ function textProblems(text, where) {
 
 /**
  * Whether a PR body has the trailer on a line of its own above the first
- * `---` line. A body with no `---` is all commit body, as on a CLI merge.
+ * `---` line. A body with no `---` is all commit body.
  */
 function hasTrailer(body) {
   const cut = CUT_LINE.exec(body);
   return TRAILER_LINE.test(cut ? body.slice(0, cut.index) : body);
+}
+
+/**
+ * The body the `gh pr create` or `gh pr edit` in `text` sets, read from
+ * that call's own flags, not a `gh` call chained before or after it. Null when
+ * the hook cannot read it: no body given, a file not written yet, or inline
+ * text the shell expands or splices before `gh` sees it.
+ */
+function prBody(text, dir) {
+  const start = PR_BODIED.exec(text);
+  if (!start) {
+    return null;
+  }
+  const rest = text.slice(start.index + start[0].length);
+  const next = NEXT_GH.exec(rest);
+  const call = next ? rest.slice(0, next.index) : rest;
+  if (BODY_FILE_FLAG.test(call)) {
+    return bodyFileText(call, dir);
+  }
+  const inline = BODY_FLAG.exec(call);
+  if (!inline) {
+    return null;
+  }
+  if (inline[1] !== undefined) {
+    return SHELL_EXPANDS.test(inline[1]) ? null : inline[1];
+  }
+  return call.includes(QUOTE_SPLICE) ? null : inline[2];
 }
 
 const input = readInput();
@@ -123,16 +155,13 @@ if (bodyFile) {
   problems.push(...textProblems(bodyFile, "the body file: "));
 }
 
-// The body this PR command sets, when the hook can read it. A command that
-// sets none, or names a file not written yet, keeps the body it has.
-if (TITLED.test(command)) {
-  const inline = BODY_FLAG.exec(command);
-  const body = bodyFile ?? (inline ? (inline[1] ?? inline[2]) : null);
-  if (body !== null && !hasTrailer(body)) {
-    problems.push(
-      `the PR body has no "${TRAILER}" line above its --- line; end the commit-body part with it`
-    );
-  }
+// A merge is left out: its body is the PR body create or edit already set, or
+// a Dependabot body cut to its first line, which carries no trailer.
+const prText = prBody(command, cwd);
+if (prText !== null && !hasTrailer(prText)) {
+  problems.push(
+    `the PR body has no "${TRAILER}" line above its --- line; end the commit-body part with it`
+  );
 }
 
 const title = TITLED.test(command) ? TITLE_FLAG.exec(command) : null;

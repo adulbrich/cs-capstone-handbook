@@ -82,7 +82,7 @@ first column is what stops you locally; the last is what stops the merge.
 | The git and gh guard hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh` |
 | The tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
 | PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`, and the `--body-file` text) | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
-| An agent's PR body ends its commit-body part with `Assisted-by: Claude Code` | | `guard-gh.mjs` refuses `pr create`, `pr edit` and `pr merge` when the body it can read lacks the line above `---` | none: a PR a person opens alone has no trailer |
+| An agent's PR body ends its commit-body part with `Assisted-by: Claude Code` | | `guard-gh.mjs` refuses `pr create` and `pr edit` when the body it can read lacks the line above `---` | none: a PR a person opens alone has no trailer |
 | Dependencies signed, and no critical advisory | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code
