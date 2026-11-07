@@ -190,6 +190,28 @@ const CASES = [
     `gh issue comment 3 --body-file ${clean} && gh pr create ${T} --body-file ${bare}`,
     "deny",
   ],
+
+  // A "gh" inside quoted text neither starts nor ends a PR call.
+  [
+    "gh in the PR title",
+    `gh pr create --title "fix(hooks): make guard-gh check bodies" --body-file ${bare}`,
+    "deny",
+  ],
+  [
+    "gh in an inline PR body",
+    `gh pr edit 5 --body "Run gh pr view to check."`,
+    "deny",
+  ],
+  [
+    "issue comment naming gh pr create",
+    `gh issue comment 3 --body "Repro: gh pr create --body-file ${bare}"`,
+    "allow",
+  ],
+  [
+    "comment body naming gh pr edit",
+    `gh pr comment 5 --body 'Try: gh pr edit 5 -b "x"'`,
+    "allow",
+  ],
   [
     "issue body without a trailer",
     `gh issue create --title "x" --body-file ${bare}`,

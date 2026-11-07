@@ -30,8 +30,8 @@ const BODY_FILE_FLAG =
 const BODY_FLAG =
   /(?:^|\s)(?:-b|--body)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const OLD_FOOTER = "Generated with [Claude Code]";
-const PR_BODIED = /\bgh\s+pr\s+(?:create|edit)\b/;
-const NEXT_GH = /\bgh\s/;
+const PR_CALL = /^\s*\(?\s*gh\s+pr\s+(?:create|edit)\b/;
+const CALL_BREAK = new Set([";", "\n", "&", "|"]);
 const SHELL_EXPANDS = /[$`]/;
 const QUOTE_SPLICE = "'\\''";
 const TRAILER = "Assisted-by: Claude Code";
@@ -108,19 +108,46 @@ function hasTrailer(body) {
 }
 
 /**
+ * `text` split into the commands it chains, at `;`, `&`, `|` and newlines
+ * outside quotes, so a `gh pr create` quoted in an issue body or a title that
+ * says "gh" never starts or ends a call.
+ */
+function shellCalls(text) {
+  const calls = [];
+  let quote = null;
+  let start = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (quote) {
+      if (ch === "\\" && quote === '"') {
+        i += 1;
+      } else if (ch === quote) {
+        quote = null;
+      }
+    } else if (ch === "\\") {
+      i += 1;
+    } else if (ch === "'" || ch === '"') {
+      quote = ch;
+    } else if (CALL_BREAK.has(ch)) {
+      calls.push(text.slice(start, i));
+      start = i + 1;
+    }
+  }
+  calls.push(text.slice(start));
+  return calls;
+}
+
+/**
  * The body the `gh pr create` or `gh pr edit` in `text` sets, read from
  * that call's own flags, not a `gh` call chained before or after it. Null when
  * the hook cannot read it: no body given, a file not written yet, or inline
  * text the shell expands or splices before `gh` sees it.
  */
 function prBody(text, dir) {
-  const start = PR_BODIED.exec(text);
-  if (!start) {
+  const call = shellCalls(text).find((c) => PR_CALL.test(c));
+  if (!call) {
     return null;
   }
-  const rest = text.slice(start.index + start[0].length);
-  const next = NEXT_GH.exec(rest);
-  const call = next ? rest.slice(0, next.index) : rest;
   if (BODY_FILE_FLAG.test(call)) {
     return bodyFileText(call, dir);
   }
