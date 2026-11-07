@@ -30,8 +30,10 @@ const BODY_FILE_FLAG =
 const BODY_FLAG =
   /(?:^|\s)(?:-b|--body)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const OLD_FOOTER = "Generated with [Claude Code]";
-const PR_CALL = /^\s*\(?\s*gh\s+pr\s+(?:create|edit)\b/;
+const PR_CALL = /^\s*\(?\s*(?:\w+=\S*\s+)*gh\s+pr\s+(?:create|edit)\b/;
 const CALL_BREAK = new Set([";", "\n", "&", "|"]);
+// A heredoc: the `<<` line keeps its tail; the lines up to the delimiter go.
+const HEREDOC = /<<-?[ \t]*(['"]?)([\w.-]+)\1([^\n]*)\n[\s\S]*?^\t*\2[ \t]*$/gm;
 const SHELL_EXPANDS = /[$`]/;
 const QUOTE_SPLICE = "'\\''";
 const TRAILER = "Assisted-by: Claude Code";
@@ -108,11 +110,13 @@ function hasTrailer(body) {
 }
 
 /**
- * `text` split into the commands it chains, at `;`, `&`, `|` and newlines
- * outside quotes, so a `gh pr create` quoted in an issue body or a title that
- * says "gh" never starts or ends a call.
+ * `command` split into the commands it chains, at `;`, `&`, `|` and newlines
+ * outside quotes, with heredoc bodies dropped first, so a `gh pr create`
+ * quoted in an issue body or written in a heredoc, or a title that says "gh",
+ * never starts or ends a call.
  */
-function shellCalls(text) {
+function shellCalls(raw) {
+  const text = raw.replace(HEREDOC, "<<$2$3");
   const calls = [];
   let quote = null;
   let start = 0;
@@ -138,16 +142,11 @@ function shellCalls(text) {
 }
 
 /**
- * The body the `gh pr create` or `gh pr edit` in `text` sets, read from
- * that call's own flags, not a `gh` call chained before or after it. Null when
- * the hook cannot read it: no body given, a file not written yet, or inline
- * text the shell expands or splices before `gh` sees it.
+ * The body a `gh pr create` or `gh pr edit` call sets, read from its own
+ * flags. Null when the hook cannot read it: no body given, a file not written
+ * yet, or inline text the shell expands or splices before `gh` sees it.
  */
-function prBody(text, dir) {
-  const call = shellCalls(text).find((c) => PR_CALL.test(c));
-  if (!call) {
-    return null;
-  }
+function prBody(call, dir) {
   if (BODY_FILE_FLAG.test(call)) {
     return bodyFileText(call, dir);
   }
@@ -184,11 +183,13 @@ if (bodyFile) {
 
 // A merge is left out: its body is the PR body create or edit already set, or
 // a Dependabot body cut to its first line, which carries no trailer.
-const prText = prBody(command, cwd);
-if (prText !== null && !hasTrailer(prText)) {
-  problems.push(
-    `the PR body has no "${TRAILER}" line above its --- line; end the commit-body part with it`
-  );
+for (const prCall of shellCalls(command).filter((c) => PR_CALL.test(c))) {
+  const prText = prBody(prCall, cwd);
+  if (prText !== null && !hasTrailer(prText)) {
+    problems.push(
+      `the PR body has no "${TRAILER}" line above its --- line; end the commit-body part with it`
+    );
+  }
 }
 
 const title = TITLED.test(command) ? TITLE_FLAG.exec(command) : null;

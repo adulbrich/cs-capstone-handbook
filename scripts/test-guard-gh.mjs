@@ -213,6 +213,21 @@ const CASES = [
     "allow",
   ],
   [
+    "heredoc issue body with a PR edit line in it",
+    `cat > ${join(root, "z.md")} <<'EOF'\nit's this:\ngh pr edit 5 --body "Closes #1"\nEOF\ngh issue comment 3 --body-file ${bare}`,
+    "allow",
+  ],
+  [
+    "env assignment before the PR call",
+    `GH_PROMPT_DISABLED=1 gh pr create ${T} --body-file ${bare}`,
+    "deny",
+  ],
+  [
+    "second PR call in a chain",
+    `gh pr edit 5 --add-label x && gh pr create ${T} --body-file ${bare}`,
+    "deny",
+  ],
+  [
     "issue body without a trailer",
     `gh issue create --title "x" --body-file ${bare}`,
     "allow",
