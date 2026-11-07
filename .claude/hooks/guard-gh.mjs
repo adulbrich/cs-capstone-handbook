@@ -7,6 +7,11 @@
  * `gh` text. A PR title is also the squash-merge subject, so `pr create`,
  * `pr edit` and `pr merge --subject` get the Conventional Commits check.
  *
+ * A PR body an agent sets with `pr create` or `pr edit`, when the hook can read
+ * it, carries the `Assisted-by: Claude Code` trailer above its `---` line, the
+ * part a squash merge keeps (#665). Only agents run this hook, so a PR a person
+ * opens alone is never asked for it.
+ *
  * Exit 2 blocks; stderr is the reason the model reads.
  */
 import { readFileSync } from "node:fs";
@@ -21,8 +26,21 @@ const TITLED = /\bgh\s+pr\s+(?:create|edit|merge)\b/;
 const TITLE_FLAG =
   /(?:^|\s)(?:-t|--title|--subject)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const BODY_FILE_FLAG =
-  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|(\S+))/u;
+  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s;&|)]+))/u;
+const BODY_FLAG =
+  /(?:^|\s)(?:-b|--body)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const OLD_FOOTER = "Generated with [Claude Code]";
+// Optionally after `VAR=value` prefixes, `(`, or a `$(` that captures the URL.
+const PR_CALL =
+  /^\s*(?:\w+=\S*\s+)*(?:\w+=)?\$?\(?\s*gh\s+pr\s+(?:create|edit)\b/;
+const CALL_BREAK = new Set([";", "\n", "&", "|"]);
+// A heredoc: the `<<` line keeps its tail; the lines up to the delimiter go.
+const HEREDOC = /<<-?[ \t]*(['"]?)([\w.-]+)\1([^\n]*)\n[\s\S]*?^\t*\2[ \t]*$/gm;
+const SHELL_EXPANDS = /[$`]/;
+const QUOTE_SPLICE = "'\\''";
+const TRAILER = "Assisted-by: Claude Code";
+const TRAILER_LINE = /^Assisted-by: Claude Code[ \t]*$/m;
+const CUT_LINE = /^---[ \t]*$/m;
 const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/g;
 const LEADING_TILDE = /^~(?=\/|$)/;
 
@@ -84,6 +102,66 @@ function textProblems(text, where) {
   return found;
 }
 
+/**
+ * Whether a PR body has the trailer on a line of its own above the first
+ * `---` line. A body with no `---` is all commit body.
+ */
+function hasTrailer(body) {
+  const cut = CUT_LINE.exec(body);
+  return TRAILER_LINE.test(cut ? body.slice(0, cut.index) : body);
+}
+
+/**
+ * `command` split into the commands it chains, at `;`, `&`, `|` and newlines
+ * outside quotes, with heredoc bodies dropped first, so a `gh pr create`
+ * quoted in an issue body or written in a heredoc, or a title that says "gh",
+ * never starts or ends a call.
+ */
+function shellCalls(raw) {
+  const text = raw.replace(HEREDOC, "<<$2$3");
+  const calls = [];
+  let quote = null;
+  let start = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (quote) {
+      if (ch === "\\" && quote === '"') {
+        i += 1;
+      } else if (ch === quote) {
+        quote = null;
+      }
+    } else if (ch === "\\") {
+      i += 1;
+    } else if (ch === "'" || ch === '"') {
+      quote = ch;
+    } else if (CALL_BREAK.has(ch)) {
+      calls.push(text.slice(start, i));
+      start = i + 1;
+    }
+  }
+  calls.push(text.slice(start));
+  return calls;
+}
+
+/**
+ * The body a `gh pr create` or `gh pr edit` call sets, read from its own
+ * flags. Null when the hook cannot read it: no body given, a file not written
+ * yet, or inline text the shell expands or splices before `gh` sees it.
+ */
+function prBody(call, dir) {
+  if (BODY_FILE_FLAG.test(call)) {
+    return bodyFileText(call, dir);
+  }
+  const inline = BODY_FLAG.exec(call);
+  if (!inline) {
+    return null;
+  }
+  if (inline[1] !== undefined) {
+    return SHELL_EXPANDS.test(inline[1]) ? null : inline[1];
+  }
+  return call.includes(QUOTE_SPLICE) ? null : inline[2];
+}
+
 const input = readInput();
 const command = input.tool_input?.command ?? "";
 const cwd = input.cwd ?? process.cwd();
@@ -103,6 +181,17 @@ const problems = textProblems(command, "");
 const bodyFile = PUBLISHES.test(command) ? bodyFileText(command, cwd) : null;
 if (bodyFile) {
   problems.push(...textProblems(bodyFile, "the body file: "));
+}
+
+// A merge is left out: its body is the PR body create or edit already set, or
+// a Dependabot body cut to its first line, which carries no trailer.
+for (const prCall of shellCalls(command).filter((c) => PR_CALL.test(c))) {
+  const prText = prBody(prCall, cwd);
+  if (prText !== null && !hasTrailer(prText)) {
+    problems.push(
+      `the PR body has no "${TRAILER}" line above its --- line; end the commit-body part with it`
+    );
+  }
 }
 
 const title = TITLED.test(command) ? TITLE_FLAG.exec(command) : null;
