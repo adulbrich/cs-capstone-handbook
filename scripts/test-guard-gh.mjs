@@ -223,6 +223,16 @@ const CASES = [
     "deny",
   ],
   [
+    "PR create captured in a variable",
+    `url=$(gh pr create ${T} --body-file ${bare})`,
+    "deny",
+  ],
+  [
+    "PR create captured, trailer present",
+    `url=$(gh pr create ${T} --body-file ${clean})`,
+    "allow",
+  ],
+  [
     "second PR call in a chain",
     `gh pr edit 5 --add-label x && gh pr create ${T} --body-file ${bare}`,
     "deny",

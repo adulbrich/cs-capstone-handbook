@@ -30,7 +30,9 @@ const BODY_FILE_FLAG =
 const BODY_FLAG =
   /(?:^|\s)(?:-b|--body)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
 const OLD_FOOTER = "Generated with [Claude Code]";
-const PR_CALL = /^\s*\(?\s*(?:\w+=\S*\s+)*gh\s+pr\s+(?:create|edit)\b/;
+// Optionally after `VAR=value` prefixes, `(`, or a `$(` that captures the URL.
+const PR_CALL =
+  /^\s*(?:\w+=\S*\s+)*(?:\w+=)?\$?\(?\s*gh\s+pr\s+(?:create|edit)\b/;
 const CALL_BREAK = new Set([";", "\n", "&", "|"]);
 // A heredoc: the `<<` line keeps its tail; the lines up to the delimiter go.
 const HEREDOC = /<<-?[ \t]*(['"]?)([\w.-]+)\1([^\n]*)\n[\s\S]*?^\t*\2[ \t]*$/gm;
@@ -41,6 +43,8 @@ const TRAILER_LINE = /^Assisted-by: Claude Code[ \t]*$/m;
 const CUT_LINE = /^---[ \t]*$/m;
 const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/g;
 const LEADING_TILDE = /^~(?=\/|$)/;
+// A bare path that closes a `$(...)` keeps no `)`.
+const CLOSING_PARENS = /\)+$/;
 
 /**
  * `$VAR` and `${VAR}` from this process's environment, as the shell expands
@@ -68,7 +72,10 @@ function bodyFileText(text, dir) {
   const given =
     file[2] ??
     (file[1] === undefined
-      ? expandVars(file[3]).replace(LEADING_TILDE, homedir())
+      ? expandVars(file[3].replace(CLOSING_PARENS, "")).replace(
+          LEADING_TILDE,
+          homedir()
+        )
       : expandVars(file[1]));
   const path = isAbsolute(given) ? given : join(dir, given);
   try {
