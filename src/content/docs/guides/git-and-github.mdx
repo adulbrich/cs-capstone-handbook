@@ -60,7 +60,7 @@ In [trunk-based development](https://trunkbaseddevelopment.com/), everyone commi
 
 Industry data on branch lifetime points the same way. The 2017 State of DevOps Report, an industry report by Puppet and DORA based on a survey of practitioners, restates the previous year's findings that merging into trunk daily, keeping branches alive for less than a day, and having fewer than three active branches all contributed to higher software delivery performance, and confirms them with new data: high performers' branches typically lived for hours where low performers' lived for days <Cite id="forsgren-2017" form="parenthetical" />. The report notes that some developers used to the GitHub-recommended workflow, which merges branches into trunk only periodically, remain skeptical, and replies that short-lived branches merged into trunk at least daily are consistent with commonly accepted continuous integration practice. The report's own advice is to avoid keeping a branch alive more than a day <Cite id="forsgren-2017" form="parenthetical" />. GitHub Flow with branches that merge within a day follows that advice and fits the site's definition of trunk-based development; GitHub Flow with branches that stay open for days has the branch lifetimes the report found among low performers.
 
-Start with GitHub Flow and keep branches to a day. Reach for Git Flow only if you ship versioned releases that you support side by side.
+Start with GitHub Flow, and merge each branch within a day of opening it: split work that takes longer into smaller pull requests. Use Git Flow only if you ship numbered releases and support more than one of them at a time.
 
 ## GitHub Flow in Practice
 
