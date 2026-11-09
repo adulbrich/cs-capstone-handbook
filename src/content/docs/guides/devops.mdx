@@ -260,9 +260,7 @@ Each environment has its own set of variables:
 - CI: in the workflow file, or in repository secrets for anything sensitive.
 - Production: in the hosting platform's settings.
 
-:::tip[.env.example]
 Commit a `.env.example` with a placeholder for every variable the application needs. It documents the configuration without exposing a secret, and each teammate copies it to `.env` and fills in their own values.
-:::
 
 ### Database Migrations
 
