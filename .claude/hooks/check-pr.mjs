@@ -9,8 +9,9 @@
  * `pr-text` runs in CI, plus the trailer, which CI cannot ask of a PR a person
  * opens alone. Dependabot's PRs are skipped, as `pr-text` skips them.
  *
- * Which PR: each one whose URL the output of a command that names
- * `gh pr create` or `gh pr edit` holds. Both print the PR's URL. A command
+ * Which PR: each one whose URL stands alone on a line of the output of a
+ * command that names `gh pr create` or `gh pr edit`, as both print it. A
+ * comment's URL, or the `url:` line of `gh pr view`, is not one. A command
  * that prints none, such as `url=$(gh pr create ...)` with nothing echoed, is
  * not checked: guessing the PR from the branch reported PRs the command never
  * wrote (#666).
@@ -22,7 +23,11 @@ import { execFileSync } from "node:child_process";
 import { loadRuleScripts, readInput, repoRoot } from "./lib.mjs";
 
 const PR_WRITE = /\bgh\s+pr\s+(?:create|edit)\b/;
-const PR_URL = /https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+/g;
+const PR_URL =
+  /^[ \t]*(https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+)[ \t\r]*$/gm;
+// The reads share one budget, under the 30 s the settings give the hook: a
+// hook cut off at its timeout shows the model nothing.
+const BUDGET_MS = 25_000;
 const TRAILER = "Assisted-by: Claude Code";
 const TRAILER_LINE = /^Assisted-by: Claude Code[ \t]*$/m;
 const CUT_LINE = /^---[ \t]*$/m;
@@ -53,7 +58,7 @@ function prProblems({ title, body }, check) {
 }
 
 /** The PR at `url`, as `gh pr view` gives it, or an Error. */
-function readPr(url, dir) {
+function readPr(url, dir, timeout) {
   try {
     return JSON.parse(
       execFileSync(
@@ -63,7 +68,7 @@ function readPr(url, dir) {
           cwd: dir,
           encoding: "utf8",
           stdio: ["ignore", "pipe", "pipe"],
-          timeout: 20_000,
+          timeout,
         }
       )
     );
@@ -77,9 +82,11 @@ const command = input.tool_input?.command ?? "";
 if (!PR_WRITE.test(command)) {
   process.exit(0);
 }
-// A command that fails after it wrote the PR still printed its URL.
-const output = JSON.stringify([input.tool_response, input.error]);
-const urls = [...new Set(output.match(PR_URL))];
+// A command that fails after it wrote the PR still printed its URL, into
+// the failure's `error` text.
+const { stderr = "", stdout = "" } = input.tool_response ?? {};
+const output = [stdout, stderr, input.error ?? ""].join("\n");
+const urls = [...new Set(Array.from(output.matchAll(PR_URL), (m) => m[1]))];
 if (urls.length === 0) {
   process.exit(0);
 }
@@ -87,13 +94,15 @@ if (urls.length === 0) {
 const cwd = input.cwd ?? process.cwd();
 const { checkCommitMessage } = await loadRuleScripts(repoRoot(cwd));
 const report = [];
-for (const url of urls) {
-  const pr = readPr(url, cwd);
+const deadline = Date.now() + BUDGET_MS;
+for (const [at, url] of urls.entries()) {
+  const pr = readPr(url, cwd, Math.max(deadline - Date.now(), 1));
   if (pr instanceof Error) {
+    // A read that failed may have spent the budget: the rest go unread.
     report.push(
-      `check-pr could not read ${url}; check its title and its "${TRAILER}" line with gh pr view.`
+      `check-pr could not read ${urls.slice(at).join(", ")}; check each title and "${TRAILER}" line with gh pr view.`
     );
-    continue;
+    break;
   }
   if (pr.author?.login === DEPENDABOT) {
     continue;

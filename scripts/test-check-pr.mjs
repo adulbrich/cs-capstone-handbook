@@ -92,6 +92,22 @@ const CASES = [
     "pass",
     [],
   ],
+  [
+    "PR comment whose body names gh pr create",
+    "gh pr comment 8 --body 'Repro: gh pr create --title x'",
+    stdout(`${pull(8)}#issuecomment-123`),
+    { 8: { ...clean, body: BARE } },
+    "pass",
+    [],
+  ],
+  [
+    "PR viewed after an edit that printed nothing",
+    "gh pr edit 9 --add-label x >/dev/null && gh pr view 8",
+    stdout(`title:\tAdd a thing\nurl:\t${pull(8)}\n`),
+    { 8: { ...clean, body: BARE } },
+    "pass",
+    [],
+  ],
   // The cost of reading only what was printed: a capture with nothing echoed.
   [
     "captured create that prints nothing",
@@ -201,12 +217,21 @@ const CASES = [
     "report",
     [7],
   ],
-  // A printed PR that cannot be read is said so, to the model.
+  // A printed PR that cannot be read is said so, to the model, and the
+  // reads stop there.
   [
     "printed PR that cannot be read",
     "gh pr edit 7 --add-label x",
     stdout(pull(7)),
     {},
+    "report",
+    [7],
+  ],
+  [
+    "first of two printed PRs cannot be read",
+    "gh pr edit 7 --add-label x && gh pr edit 9 --add-label x",
+    stdout(`${pull(7)}\n${pull(9)}`),
+    { 9: clean },
     "report",
     [7],
   ],

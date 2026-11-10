@@ -47,7 +47,7 @@ function expandVars(path) {
 /**
  * The text of each `--body-file` (or `-F`) a command names that can be read.
  * A throw here would exit 1, which lets the command through, so an unreadable
- * path is skipped: a file not written yet is pr-text's to check.
+ * path is skipped.
  */
 function bodyFileTexts(text, dir) {
   const texts = new Set();
