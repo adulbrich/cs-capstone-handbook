@@ -67,6 +67,10 @@ if (urls.length === 0) {
 
 const cwd = input.cwd ?? process.cwd();
 const { checkPrText } = await loadRuleScripts(repoRoot(cwd));
+// A checkout from before #666 has no `checkPrText`; CI still checks its PRs.
+if (typeof checkPrText !== "function") {
+  process.exit(0);
+}
 const report = [];
 const deadline = Date.now() + BUDGET_MS;
 for (const [at, url] of urls.entries()) {

@@ -13,8 +13,8 @@ them that way: see the `cs46x-review` skill.
 ```
 pick up          branch             commit                push               pull request          merge
 --------         ------             ------                ----               ------------          -----
-GitHub issue     fetch, then        lefthook:             lefthook:          build and audit       squash
-ready-for-*      branch from        prose, not main,      branch name,       required (ruleset)    one PR,
+GitHub issue     fetch, then        lefthook:             lefthook:          build, audit,         squash
+ready-for-*      branch from        prose, not main,      branch name,       pr-text required      one PR,
 p0/p1/p2         origin/main        validators, biome,    validators, build  review loop           one issue
 claim it         type/slug          commit message                           recorded in the PR
 ```

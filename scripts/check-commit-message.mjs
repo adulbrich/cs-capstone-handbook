@@ -132,7 +132,7 @@ export function checkPrText({ title, body }) {
   const cut = CUT_LINE.exec(body);
   if (!TRAILER_LINE.test(cut ? body.slice(0, cut.index) : body)) {
     problems.push(
-      'the body has no "Assisted-by: Claude Code" line above its --- line ("Assisted-by: none" when no agent helped)'
+      'the body has no "Assisted-by: Claude Code" line above its first --- line ("Assisted-by: none" when no agent helped)'
     );
   }
   return problems;
@@ -140,6 +140,8 @@ export function checkPrText({ title, body }) {
 
 const RULE =
   "Commit rule: type(scope): lowercase imperative subject, no em dash, no emoji, no session link.\n";
+const PR_RULE =
+  'PR rule: the title is the commit rule\'s subject; no em dash, emoji or session link; "Assisted-by: Claude Code" or "Assisted-by: none" above the body\'s first --- line.\n';
 
 function report(label, problems) {
   for (const problem of problems) {
@@ -147,8 +149,8 @@ function report(label, problems) {
   }
 }
 
-function fail() {
-  process.stderr.write(RULE);
+function fail(rule = RULE) {
+  process.stderr.write(rule);
   process.exit(1);
 }
 
@@ -182,7 +184,7 @@ function main(argv) {
     });
     if (problems.length > 0) {
       report("pull request", problems);
-      fail();
+      fail(PR_RULE);
     }
     return;
   }

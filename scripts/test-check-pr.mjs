@@ -137,6 +137,7 @@ const CASES = [
     { 7: { ...clean, title: "Add a thing" } },
     "report",
     [7],
+    "the title is the squash-merge subject",
   ],
   [
     "no trailer",
@@ -340,6 +341,24 @@ const GATE = [
     "fail",
   ],
   ["session link", TITLE, `${SIGNED}\nclaude.ai/code/session_x\n`, "fail"],
+  [
+    "trailer with words after it",
+    TITLE,
+    SIGNED.replace("Claude Code", "Claude Code and Codex"),
+    "fail",
+  ],
+  [
+    "indented trailer",
+    TITLE,
+    SIGNED.replace("Assisted-by", " Assisted-by"),
+    "fail",
+  ],
+  [
+    "trailer between two --- lines",
+    TITLE,
+    "Closes #1\n\n---\nAssisted-by: Claude Code\n---\n",
+    "fail",
+  ],
 ];
 for (const [name, title, body, expected] of GATE) {
   let got = "pass";
