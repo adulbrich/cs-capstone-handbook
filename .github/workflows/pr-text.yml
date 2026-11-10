@@ -3,7 +3,8 @@
 # the template's `---` line down). A separate workflow from
 # CI so that editing the description re-runs only this, not the build.
 #
-# guard-gh.mjs checks text an agent passes inline to `gh`; this catches a
+# guard-gh.mjs checks the text an agent passes to `gh`, and check-pr.mjs
+# reads back a PR an agent creates or edits; this catches a
 # `--body-file`, and a title or body written or edited in the GitHub UI.
 name: pr-text
 

@@ -1,6 +1,8 @@
 /**
  * Cases for `.claude/hooks/guard-gh.mjs`, which checks the text a `gh`
- * command would publish: inline, and in the `--body-file` it names.
+ * command would publish for a session link, the old footer, an em dash or an
+ * emoji: inline, and in every `--body-file` it names. The PR title and the
+ * trailer are `check-pr.mjs`'s, tested by `scripts/test-check-pr.mjs`.
  *
  * Both directions matter here too. A false block on a clean body file stops
  * every PR an agent opens, and a hole lets the old Claude Code footer or a
@@ -46,19 +48,15 @@ const CLEAN =
 const EM_DASH = String.fromCodePoint(0x20_14);
 const DASHED = `Closes #1\n\none ${EM_DASH} two\n`;
 const BARE = "Closes #1\n\n- x\n\n---\n\n## Ran locally\n";
-const BELOW =
-  "Closes #1\n\n- x\n\n---\n\n## Ran locally\n\nAssisted-by: Claude Code\n";
 
 const old = join(root, "old.md");
 const clean = join(root, "clean.md");
 const dashed = join(root, "dashed.md");
 const bare = join(root, "bare.md");
-const below = join(root, "below.md");
 writeFileSync(old, OLD);
 writeFileSync(clean, CLEAN);
 writeFileSync(dashed, DASHED);
 writeFileSync(bare, BARE);
-writeFileSync(below, BELOW);
 writeFileSync(join(home, "old.md"), OLD);
 
 const T = '--title "fix(x): y"';
@@ -140,41 +138,44 @@ const CASES = [
     `gh pr create ${T} --body "a ${EM_DASH} b" --body-file ${root}`,
     "deny",
   ],
-
-  // The Assisted-by trailer above `---` on a PR body an agent sets (#665).
   [
     "clean body file on a create",
     `gh pr create ${T} --body-file ${clean}`,
     "allow",
   ],
-  ["no trailer on a create", `gh pr create ${T} --body-file ${bare}`, "deny"],
-  ["trailer only below ---", `gh pr create ${T} --body-file ${below}`, "deny"],
-  ["no trailer on an edit", `gh pr edit 5 --body-file ${bare}`, "deny"],
-  // A merge body is a Dependabot first line or the body create already set.
-  [
-    "merge body without a trailer",
-    `gh pr merge 5 --squash --subject "fix(x): y" --body-file ${bare}`,
-    "allow",
-  ],
-  ["no trailer inline", `gh pr create ${T} --body "Closes #1"`, "deny"],
-  ["no trailer inline, -b", `gh pr edit 5 -b 'Closes #1'`, "deny"],
-  ["edit without a body", "gh pr edit 5 --add-label x", "allow"],
-  ["merge without a body", "gh pr merge 5 --squash", "allow"],
 
-  // Inline text the shell rewrites first is a body the hook cannot read.
-  ["inline body from a variable", `gh pr create ${T} --body "$BODY"`, "allow"],
+  // The PR title and trailer are not this hook's: text that names a PR call
+  // is not refused for them (#666).
   [
-    "inline heredoc body with a quote in it",
-    `gh pr create ${T} --body "$(cat <<'EOF'\nfixes the "submit" button\n\nAssisted-by: Claude Code\nEOF\n)"`,
+    "issue title naming gh pr create",
+    `gh issue create --title "hook refuses gh pr create" --body-file ${clean}`,
     "allow",
   ],
   [
-    "inline body with a spliced quote",
-    `gh pr create ${T} --body 'It'\\''s done\n\nAssisted-by: Claude Code'`,
+    "non-conventional PR title, left to check-pr",
+    'gh pr create --title "Add a thing"',
+    "allow",
+  ],
+  [
+    "PR body file without the trailer, left to check-pr",
+    `gh pr create ${T} --body-file ${bare}`,
     "allow",
   ],
 
-  // Only the PR call's own body counts, not a chained gh call's.
+  // Every body file the command names gets the text checks, not only the
+  // first (#666).
+  [
+    "em dash in a PR body file after a clean issue body file",
+    `gh issue comment 3 --body-file ${clean} && gh pr create ${T} --body-file ${dashed}`,
+    "deny",
+  ],
+  [
+    "em dash in a body file named inside quoted text",
+    `gh issue comment 3 --body "see -F ${dashed}"`,
+    "deny",
+  ],
+
+  // Calls chained to a clean one do not make it dirty.
   [
     "issue comment chained after a merge",
     `gh pr merge 5 --squash && gh issue comment 3 --body "Merged in #5"`,
@@ -185,23 +186,7 @@ const CASES = [
     `gh issue comment 3 --body "Done in #5" && gh pr edit 5 --add-label ready`,
     "allow",
   ],
-  [
-    "clean issue body chained before a bare create",
-    `gh issue comment 3 --body-file ${clean} && gh pr create ${T} --body-file ${bare}`,
-    "deny",
-  ],
 
-  // A "gh" inside quoted text neither starts nor ends a PR call.
-  [
-    "gh in the PR title",
-    `gh pr create --title "fix(hooks): make guard-gh check bodies" --body-file ${bare}`,
-    "deny",
-  ],
-  [
-    "gh in an inline PR body",
-    `gh pr edit 5 --body "Run gh pr view to check."`,
-    "deny",
-  ],
   [
     "issue comment naming gh pr create",
     `gh issue comment 3 --body "Repro: gh pr create --body-file ${bare}"`,
@@ -218,21 +203,6 @@ const CASES = [
     "allow",
   ],
   [
-    "env assignment before the PR call",
-    `GH_PROMPT_DISABLED=1 gh pr create ${T} --body-file ${bare}`,
-    "deny",
-  ],
-  [
-    "PR create captured in a variable",
-    `url=$(gh pr create ${T} --body-file ${bare})`,
-    "deny",
-  ],
-  [
-    "PR create captured, trailer present",
-    `url=$(gh pr create ${T} --body-file ${clean})`,
-    "allow",
-  ],
-  [
     "em dash in a captured PR body file, then a command",
     `url=$(gh pr create ${T} --body-file ${dashed}); echo "$url"`,
     "deny",
@@ -242,31 +212,11 @@ const CASES = [
     `gh issue comment 5 --body-file ${dashed}; echo done`,
     "deny",
   ],
-  [
-    "second PR call in a chain",
-    `gh pr edit 5 --add-label x && gh pr create ${T} --body-file ${bare}`,
-    "deny",
-  ],
-  [
-    "issue body without a trailer",
-    `gh issue create --title "x" --body-file ${bare}`,
-    "allow",
-  ],
-  [
-    "PR comment without a trailer",
-    `gh pr comment 5 --body-file ${bare}`,
-    "allow",
-  ],
 
   // The rules that were already here.
   [
     "session link inline",
     `gh pr comment 5 --body "see claude.ai/code/session_x"`,
-    "deny",
-  ],
-  [
-    "title that is not conventional",
-    'gh pr create --title "Add a thing"',
     "deny",
   ],
   [

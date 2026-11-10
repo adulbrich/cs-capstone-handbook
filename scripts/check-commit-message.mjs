@@ -7,8 +7,8 @@
  * runs it over every commit a pull request adds (`--range`) and over the PR
  * title and body (`pr-text`, `--stdin`), which a squash merge turns into the
  * `main` subject and body, and the Claude Code `git` hook runs it on the text
- * of a `git commit` before the commit exists. The `gh` hook applies the
- * subject rule to PR titles an agent passes inline.
+ * of a `git commit` before the commit exists. The `check-pr` hook runs it
+ * on a PR an agent creates or edits, read back from GitHub.
  *
  * The session-link rule is the hard one: the repo is public, so a link that
  * lands on a remote costs a history rewrite. It is checked first.

@@ -79,10 +79,10 @@ first column is what stops you locally; the last is what stops the merge.
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
-| The git and gh guard hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh` |
+| The git and gh hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh`, `test-check-pr` |
 | The tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
-| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`, and the `--body-file` text) | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
-| An agent's PR body ends its commit-body part with `Assisted-by: Claude Code` | | `guard-gh.mjs` refuses `pr create` and `pr edit` when the body it can read lacks the line above `---` | none: a PR a person opens alone has no trailer |
+| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses a command whose text or body files carry an em dash, emoji or session link; `check-pr.mjs` reports a PR's title and text after `pr create` or `pr edit` | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
+| An agent's PR body ends its commit-body part with `Assisted-by: Claude Code` | | `check-pr.mjs` reports a PR whose body lacks the line above `---`, read back after `pr create` or `pr edit` | none: a PR a person opens alone has no trailer |
 | Dependencies signed, and no critical advisory | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code
