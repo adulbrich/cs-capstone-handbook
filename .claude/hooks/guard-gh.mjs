@@ -6,13 +6,15 @@
  * This is the one place the session-link rule can be enforced: a link in a
  * PR body or an issue comment lands on a public repo, and lefthook never sees
  * `gh` text. These checks look for text no published command may carry, so
- * they run on the whole command and on every body file it names, wherever in
- * the command each appears.
+ * they run on the whole command and, when it has a `gh pr`, `gh issue` or
+ * `gh release` call that publishes, on every body file it names, wherever in
+ * the command each appears. A `gh api -F body=@file` body is not read.
  *
  * The PR title and the `Assisted-by: Claude Code` trailer are not checked
  * here: telling a PR call's own title and body from text that only names a
  * PR call means reading the command as a shell would, which a pattern cannot
- * do (#666). `check-pr.mjs` reads them from the PR itself once it exists.
+ * do (#666). `check-pr.mjs` reads them back from the PR when the command
+ * prints its URL, and CI's `pr-text` checks them on every PR.
  *
  * Exit 2 blocks; stderr is the reason the model reads.
  */
@@ -24,8 +26,9 @@ import { deny, loadRuleScripts, readInput, repoRoot } from "./lib.mjs";
 const PUBLISHES =
   /\bgh\s+(?:(?:pr|issue)\s+(?:create|edit|comment|review|close|merge)|release\s+(?:create|edit))\b/;
 const API_WITH_BODY = /\bgh\s+api\b[\s\S]*\bbody\b/;
-// Every body file a command names, quoted or not, in any call: reading one
-// more file only adds checks, and issue text has no CI gate (#666).
+// Every body file a publishing command names, quoted or not, in any call:
+// reading one more file only adds checks, and issue text has no CI gate
+// (#666).
 const BODY_FILE_FLAG =
   /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s;&|)"'`<>]+))/gu;
 const OLD_FOOTER = "Generated with [Claude Code]";
