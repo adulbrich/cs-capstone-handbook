@@ -35,7 +35,7 @@ it. Content lives in `src/content/docs/**` as MDX.
 | `scripts/check-prose.mjs` | No em dash and no emoji in any tracked text file, and none of the glossary's rejected synonyms under the content paths. On handbook pages, also no banned word, bolded whole sentence, or banned guide opener from `docs/agents/voice.md`, and no banned word or percentage in a heading there or in the rubric CSVs, the syllabi, the Markdown downloads in `public/`, or the decks under `src/decks/`. The `after-edit` hook runs it on every edited file. |
 | `scripts/test-guard-git.mjs` | Cases for `.claude/hooks/guard-git.mjs`, in both directions: a false block trains an agent to look for an escape, a hole lets a commit onto `main`. Builds its own throwaway repo and worktree. |
 | `scripts/test-guard-gh.mjs` | Cases for `.claude/hooks/guard-gh.mjs`, in both directions: text that breaks the published-text rules, inline or in a `--body-file` (shell-expanded paths included), in any call of the command, is refused; a clean or unreadable body file, and text that only names a PR call, is let through, never thrown on. |
-| `scripts/test-check-pr.mjs` | Cases for `.claude/hooks/check-pr.mjs`, which reads back each PR whose URL a `gh pr create` or `gh pr edit` command printed: a title that is no Conventional subject, a body without `Assisted-by: Claude Code` above its `---` line, or text that breaks the published-text rules is reported; a command that prints no PR URL alone on a line is not looked at, and a Dependabot PR is read but not reported. `gh` is a stub that logs which PRs were read. |
+| `scripts/test-check-pr.mjs` | Cases for the PR check, `checkPrText` in `scripts/check-commit-message.mjs`, through both callers: `pr-text` (`--pr`) and `.claude/hooks/check-pr.mjs`, which reads back each PR whose URL a `gh pr create` or `gh pr edit` printed alone on a line. A title that is no Conventional subject, a body without `Assisted-by: Claude Code` or `Assisted-by: none` above its `---` line, or text that breaks the published-text rules is reported; a command that prints no PR URL is not looked at, and a Dependabot PR is read but not reported. `gh` is a stub that logs which PRs were read. |
 | `scripts/section-words.mjs` | Words per section on the changed assignment pages, base against head, flagging a section taken over its budget or grown past it (`cs46x-assignments`, Length). A review aid, not a gate. |
 | `scripts/check-branch-name.mjs` | Branch rule, `<type>/<slug>`, with the issue number leading the slug when there is one. |
 | `scripts/check-commit-message.mjs` | Conventional Commits subject rule, plus no em dash, emoji, or session link, in commit messages and in the PR title and body. |
@@ -261,8 +261,9 @@ after the review loop.
 
 The PR body above its `---` line is the `main` commit body, LLVM-style: a
 squash merge takes the PR title and body, and the merger deletes from `---`
-down. End that part with `Assisted-by: Claude Code`. No `Co-Authored-By`
-trailer on commits and no `Generated with Claude Code` footer on PRs,
+down. End that part with `Assisted-by: Claude Code`, or `Assisted-by: none`
+when no agent helped; `pr-text` requires one of the two (#666). No
+`Co-Authored-By` trailer on commits and no `Generated with Claude Code` footer on PRs,
 whatever the harness supplies.
 
 ## Agent skills

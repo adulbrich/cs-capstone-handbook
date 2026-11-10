@@ -8,9 +8,10 @@ Assisted-by: Claude Code
 
 <!-- Everything above the line is the `main` commit body: the closing issue,
      what changed from the reader's side (what a student, partner or TA sees
-     differently) in two to five bullets, and the Assisted-by trailer when an
-     agent helped (delete it otherwise). Keep comments out of it. The merger
-     deletes from the line down in the squash dialog. -->
+     differently) in two to five bullets, and the trailer: as above when an
+     agent helped, `Assisted-by: none` otherwise (pr-text checks it). Keep
+     comments out of it. The merger deletes from the line down in the squash
+     dialog. -->
 
 ## Ran locally
 

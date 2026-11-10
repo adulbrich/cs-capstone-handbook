@@ -1,12 +1,14 @@
 /**
- * Cases for `.claude/hooks/check-pr.mjs`, which reads a pull request back
- * after an agent creates or edits it and reports a title that is no
- * Conventional subject, a body without `Assisted-by: Claude Code` above its
- * `---` line, or the text rules `pr-text` checks.
+ * Cases for the PR check, `checkPrText` in `scripts/check-commit-message.mjs`,
+ * through both its callers: `pr-text` in CI (`--pr`), the merge gate, and
+ * `.claude/hooks/check-pr.mjs`, which reads a PR back after an agent creates
+ * or edits it. The check reports a title that is no Conventional subject, a
+ * body without `Assisted-by: Claude Code` or `Assisted-by: none` above its
+ * `---` line, and the text rules.
  *
- * Both directions matter. A false report sends an agent to "fix" a correct
- * PR, or one it never wrote; a miss lets a PR reach the merge without its
- * trailer, which no CI check asks for.
+ * Both directions matter. A false report blocks a correct PR or sends an
+ * agent to "fix" one it never wrote; a miss lets a PR merge without its
+ * trailer.
  *
  * `gh` is a stub on `PATH` that serves each PR from a fixture by its number
  * and logs its arguments, so each case also says which PRs the hook read, and
@@ -161,6 +163,22 @@ const CASES = [
     [7],
   ],
   [
+    "a PR no agent helped with",
+    "gh pr edit 7 --body-file b.md",
+    stdout(pull(7)),
+    { 7: { ...clean, body: SIGNED.replace("Claude Code", "none") } },
+    "pass",
+    [7],
+  ],
+  [
+    "trailer naming another tool",
+    "gh pr edit 7 --body-file b.md",
+    stdout(pull(7)),
+    { 7: { ...clean, body: SIGNED.replace("Claude Code", "Codex") } },
+    "report",
+    [7],
+  ],
+  [
     "trailer with no --- line",
     "gh pr edit 7 --body-file b.md",
     stdout(pull(7)),
@@ -298,11 +316,55 @@ for (const [
   }
 }
 
+// `pr-text`'s path: the same check, given the PR as the workflow gives it.
+const GATE = [
+  ["clean PR", TITLE, SIGNED, "pass"],
+  [
+    "a PR no agent helped with",
+    TITLE,
+    SIGNED.replace("Claude Code", "none"),
+    "pass",
+  ],
+  ["title that is not Conventional", "Add a thing", SIGNED, "fail"],
+  ["no trailer", TITLE, BARE, "fail"],
+  [
+    "trailer only below ---",
+    TITLE,
+    `${BARE}\nAssisted-by: Claude Code\n`,
+    "fail",
+  ],
+  [
+    "trailer in other case",
+    TITLE,
+    SIGNED.replace("Claude Code", "claude code"),
+    "fail",
+  ],
+  ["session link", TITLE, `${SIGNED}\nclaude.ai/code/session_x\n`, "fail"],
+];
+for (const [name, title, body, expected] of GATE) {
+  let got = "pass";
+  try {
+    execFileSync("node", ["scripts/check-commit-message.mjs", "--pr"], {
+      env: { ...CLEAN_ENV, PR_BODY: body, PR_TITLE: title },
+      stdio: "ignore",
+    });
+  } catch {
+    got = "fail";
+  }
+  if (got !== expected) {
+    failed += 1;
+    console.error(`FAIL  pr-text: expected ${expected}, got ${got}: ${name}`);
+  }
+}
+
 rmSync(root, { force: true, recursive: true });
 
+const total = CASES.length + GATE.length;
 if (failed > 0) {
-  console.error(`\n${failed} of ${CASES.length} check-pr cases failed.`);
+  console.error(`\n${failed} of ${total} PR check cases failed.`);
   process.exit(1);
 }
 
-console.log(`check-pr OK: ${CASES.length} cases.`);
+console.log(
+  `check-pr OK: ${CASES.length} hook cases, ${GATE.length} pr-text cases.`
+);
