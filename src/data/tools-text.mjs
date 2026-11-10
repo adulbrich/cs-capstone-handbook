@@ -6,6 +6,12 @@
 export const plural = (n, one, many = `${one}s`) =>
   `${n} ${n === 1 ? one : many}`;
 
+/** "a", "a or b", "a, b, or c". */
+export const orList = (items) =>
+  items.length < 3
+    ? items.join(" or ")
+    : `${items.slice(0, -1).join(", ")}, or ${items.at(-1)}`;
+
 /** What a missing file is called in a step's summary. */
 export const NO_FILE = "No file";
 
@@ -23,6 +29,5 @@ export const previewText = {
   region: "Survey preview",
   required: "Required",
   total: "Total",
-  when: (answers) =>
-    `Shown when the answer is ${answers.length > 1 ? `${answers.slice(0, -1).join(", ")}, or ${answers.at(-1)}` : answers[0]}.`,
+  when: (answers) => `Shown when the answer is ${orList(answers)}.`,
 };

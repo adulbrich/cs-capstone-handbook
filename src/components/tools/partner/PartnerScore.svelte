@@ -396,7 +396,7 @@ const pickResponse = (team, responseId) =>
     summary={summaries.teams}
   >
     {#snippet source()}
-      <p>{text.teams.what(SURVEYS.pulse.neutral)}</p>
+      <p>{text.teams.what(SURVEYS.pulse.flagged)}</p>
     {/snippet}
     {#snippet preview()}
       {#if scored}
