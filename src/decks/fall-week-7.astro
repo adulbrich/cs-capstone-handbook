@@ -1,0 +1,1115 @@
+---
+// Fall week 7: Workshop 4, Peer Technical Design Review, in the week 2
+// deck's shape. An opening (the outcome, what it feeds, scoring and reading,
+// the four steps); the talk (what a design review is for, who a team pairs
+// with, then the campus lunch app of weeks 2 and 3 taken through the steps:
+// its design on one page, the other team's findings, each one accepted or
+// declined, what a finding a team can act on reads like, and what the page
+// holds for a pipeline, a research question, or an existing codebase); then one slide per step for the
+// teams to work from, a self-check, the optional second run with an AI
+// tool, and the wrap. The step names, their minutes, and the reviewer
+// questions come from the activity page; the weeks on the timeline, the
+// reading, and the week's other Due items from the schedule; the submission
+// from the workshop page.
+// Every slide explains itself to someone who missed the talk. Each link
+// sits on the slide that uses it. Served at /decks/fall-week-7/.
+import LinkedText from "../components/deck/LinkedText.astro";
+import Slide from "../components/deck/Slide.astro";
+import StatementSlide from "../components/deck/StatementSlide.astro";
+import TitleSlide from "../components/deck/TitleSlide.astro";
+import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+import activities from "../content/docs/activities/technical-design.mdx?raw";
+import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
+import schedule from "../content/docs/introduction/schedule.mdx?raw";
+import { LATE } from "../lib/canvas-entries.mjs";
+import { linkHrefs, plainText } from "../lib/deck-text.mjs";
+import { termWeeks, weekWhere } from "../lib/schedule-lines.mjs";
+
+export const title = "Fall Week 7: Peer Technical Design Review";
+
+// What a team leaves with: the opening slide promises it, and the wrap
+// checks it.
+const outcome = [
+  "Your design on one page, with the decision you're least sure of marked",
+  "The findings the other team wrote about it, one sentence each",
+  "Each finding marked accepted or declined, with a one-line reason",
+  "The change you'll make first, named",
+];
+
+// Handbook links, each shown by its page's name, since the slides are shared
+// with the class.
+const handbook = (path: string) => new URL(path, Astro.site).href;
+const ACTIVITY_PATH =
+  "/activities/technical-design/#peer-technical-design-review";
+const DESIGN_REVIEWS = "/guides/presentations/#design-reviews";
+const RFC_PAGE = "/assignments/rfc/";
+const DEFENSE_PAGE = "/assignments/defense/";
+const WORKSHOPS_PAGE = "/assignments/workshop-activities/";
+const activityLink = handbook(ACTIVITY_PATH);
+
+// The activity as its page writes it: the four steps with their minutes,
+// and the questions a reviewer asks. The build fails when the page drops
+// either, rather than the deck going stale.
+const ACTIVITY_HEADING = "\n## Peer Technical Design Review";
+const activityStart = activities.indexOf(ACTIVITY_HEADING);
+const activityEnd = activities.indexOf("\n## ", activityStart + 1);
+const activity =
+  activityStart < 0
+    ? ""
+    : activities.slice(
+        activityStart,
+        activityEnd < 0 ? undefined : activityEnd
+      );
+const STEP_RE = /^- \*\*(.+?)\*\*: (\d+ minutes(?: per team)?)/gm;
+const steps = [...activity.matchAll(STEP_RE)].map(([, name, time]) => ({
+  name,
+  time,
+}));
+// What each step is done from or on, in slide wording.
+const stepNotes = [
+  "From your docs/design.md, as a team",
+  "Your page, to the other team",
+  "Their page, one question at a time",
+  "Accept or decline each finding",
+];
+if (steps.length !== stepNotes.length) {
+  throw new Error(
+    `fall-week-7: the activity page gives Peer Technical Design Review ${steps.length} timed steps, and this deck presents ${stepNotes.length}.`
+  );
+}
+const [draw, present, review, decide] = steps;
+const stepKicker = (step: (typeof steps)[number]) =>
+  `Step ${steps.indexOf(step) + 1} of ${steps.length}: ${step.time}`;
+
+const REVIEWER_LEAD = "As a reviewer, question the other team's design:";
+const afterLead =
+  activity.split(REVIEWER_LEAD)[1]?.trimStart().split("\n") ?? [];
+const firstOther = afterLead.findIndex((line) => !line.startsWith("- "));
+const questions = afterLead
+  .slice(0, firstOther < 0 ? undefined : firstOther)
+  .map((line) => plainText(line.slice(2).trim()));
+if (questions.length === 0) {
+  throw new Error(
+    "fall-week-7: the activity page gives Peer Technical Design Review no reviewer questions."
+  );
+}
+
+// The fall schedule, read as <TermSessions> reads it. A line is found by
+// where its links point, so rewording it doesn't lose it.
+const WEEK = 7;
+const fall = termWeeks(schedule, "fall");
+const rowsOf = (week: number) =>
+  fall.find((found) => found.week === week)?.rows;
+const links = (href: string, word?: string) => (line: string) =>
+  linkHrefs(line).includes(href) && (!word || plainText(line).includes(word));
+function weekOf(label: string, test: (line: string) => boolean, what: string) {
+  const week = weekWhere(fall, label, test);
+  if (week === undefined) {
+    throw new Error(
+      `fall-week-7: no ${label} line on the fall schedule for ${what}.`
+    );
+  }
+  return week;
+}
+// Due this week besides the workshop submission the due slide spells out.
+const alsoDue = (rowsOf(WEEK)?.get("Due")?.items ?? []).filter(
+  (item) => !linkHrefs(item).some((href) => href.startsWith(WORKSHOPS_PAGE))
+);
+// The reading behind this session sits on an earlier week's Read line.
+const readWeek = weekOf(
+  "Read",
+  links(DESIGN_REVIEWS),
+  "the design reviews reading"
+);
+const readLine = rowsOf(readWeek)?.get("Read")?.text ?? "";
+
+interface Feed {
+  detail: string;
+  href?: string;
+  today?: boolean;
+  week: number;
+  what: string;
+  when: string;
+}
+// What today's output feeds, in schedule order.
+const feedList: Feed[] = [
+  {
+    detail: "Your page, the findings, and what you decided about each",
+    today: true,
+    week: WEEK,
+    what: "Workshop 4",
+    when: "Sunday",
+  },
+  {
+    detail:
+      "Its revision log repeats today's last step on your RFC's reviews: each point changed or declined, with where or why",
+    href: handbook(`${RFC_PAGE}#revision-log`),
+    week: weekOf("Due", links(RFC_PAGE, "final"), "the RFC final"),
+    what: "RFC final",
+    when: "Sunday",
+  },
+  {
+    detail:
+      "Its technical depth question: what breaks in your work if X changes?",
+    href: handbook(DEFENSE_PAGE),
+    week: weekOf("Due", links(DEFENSE_PAGE), "the defense"),
+    what: "Defense",
+    when: "or later",
+  },
+  {
+    detail: "Its PDF holds docs/design.md, where the findings you accept go",
+    href: handbook(
+      "/assignments/repo-checkpoints/#repo-checkpoint-2-hello-production"
+    ),
+    week: weekOf(
+      "Due",
+      links(
+        "/assignments/repo-checkpoints/#repo-checkpoint-2-hello-production"
+      ),
+      "Repo Checkpoint 2"
+    ),
+    what: "Repo Checkpoint 2",
+    when: "Sunday",
+  },
+];
+const feeds = [...feedList].sort((a, b) => a.week - b.week);
+const lastWeek = feeds.at(-1)?.week;
+
+// The complete-submission line, as the workshop page states it under its
+// fall workshops.
+const WORKSHOP = 4;
+const fallWorkshops = workshops.slice(
+  workshops.indexOf("\n## Fall"),
+  workshops.indexOf("\n## Winter")
+);
+const SUBMISSION = "- **A complete submission:** ";
+const submissionLine = fallWorkshops
+  .split(`\n### Workshop ${WORKSHOP}:`)[1]
+  ?.split("\n")
+  .find((text) => text.startsWith(SUBMISSION));
+if (!submissionLine) {
+  throw new Error(
+    `fall-week-7: the workshop page gives fall Workshop ${WORKSHOP} no complete submission.`
+  );
+}
+const submission = plainText(submissionLine.slice(SUBMISSION.length));
+
+// The campus lunch app of weeks 2 and 3, with week 3's choices made. The
+// other team's findings on its page, each under the reviewer question that
+// raised it, and what the team decided about each.
+const lunchFindings = [
+  {
+    accepted: true,
+    asks: "An alternative",
+    finding:
+      "Deleting a dish breaks every past order that points at it, so copy the name and price into the order when it's placed",
+    reason:
+      "The partner's sales reports need the price paid, not today's price",
+    short: "Copy the name and price into the order",
+  },
+  {
+    accepted: false,
+    asks: "Fit for the future",
+    finding:
+      "Every kitchen screen asks for new orders every 5 seconds, and Supabase can push each new order to the screen instead",
+    reason:
+      "A cook doesn't notice 5 seconds, and the code that asks is written and tested",
+    short: "Push new orders to the screen",
+  },
+  {
+    accepted: true,
+    asks: "Fit for purpose",
+    finding:
+      "Pickup depends on one text message, and the page doesn't say what the student sees when it never arrives",
+    reason:
+      "The app will show the order's status too, so the text is a reminder",
+    short: "Say what happens when the text never arrives",
+  },
+];
+---
+
+<TitleSlide
+  kicker="CS 461, fall week 7: Workshop 4"
+  title="Peer Technical Design Review"
+  subtitle="Put your design in front of another team, and review theirs"
+  byline="CS 461: the instruction team"
+/>
+
+<Slide kicker="Today's outcome" title="By the end of the session, your team has a reviewed design">
+  <ul>{outcome.map((line) => <li>{line}</li>)}</ul>
+</Slide>
+
+<Slide kicker="What today feeds" title={`Your reviewed design, through week ${lastWeek}`} wide>
+  <div class="timeline" role="list">
+    {
+      feeds.map((entry) => (
+        <div class:list={["entry", { today: entry.today }]} role="listitem">
+          <span class="when">
+            Week {entry.week}
+            , {entry.when}
+          </span>
+          <span class="dot" aria-hidden="true" />
+          <span class="what">
+            {entry.href ? <a href={entry.href}>{entry.what}</a> : entry.what}
+            <span class="detail">{entry.detail}</span>
+          </span>
+        </div>
+      ))
+    }
+  </div>
+  <p class="caption">
+    Afterward, turn each finding you accept into an edit to
+    <code>docs/design.md</code> or into an ADR.
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 4" title="One submission, graded complete or incomplete">
+  <ul>
+    <li>Complete when it holds everything listed as due: there is no quality bar</li>
+    <li>{LATE["class-week"].text}</li>
+    <li>
+      A submission that is not about your own project or team, such as a
+      generic output produced without your team's material, scores Incomplete
+    </li>
+  </ul>
+  <p class="caption">
+    The reading behind this session, from week {readWeek}:<br />
+    <LinkedText md={readLine} />
+  </p>
+</Slide>
+
+<Slide kicker="Agenda" title="A short talk, then four steps with the team at the next table" wide>
+  <p class="lead">
+    First, the talk: what a design review is for, and the campus lunch app's
+    design taken through the steps. Then your own:
+  </p>
+  <ol class="steps" style={`--steps: ${steps.length};`}>
+    {
+      steps.map((step, index) => (
+        <li>
+          <p>
+            <strong>{step.name}</strong>
+          </p>
+          <p class="note">{stepNotes[index]}</p>
+          <span class="art art-count">{step.time}</span>
+        </li>
+      ))
+    }
+  </ol>
+</Slide>
+
+<Slide kicker="Workshop 4: what a design review is for" title="Find the problem while it's cheap to fix" wide>
+  <ul>
+    <li>
+      You show the design before your team commits to it, and the other team
+      says what breaks
+    </li>
+    <li class="fragment">
+      Treat a hard question as help: a review that changes nothing may mean
+      nobody felt able to object
+    </li>
+  </ul>
+  <div class="pair fragment">
+    <div class="box">
+      <h3>Found in today's review</h3>
+      <p>Costs a conversation</p>
+    </div>
+    <div class="box box-accent">
+      <h3>Found while you build</h3>
+      <p>Costs the code already built on top of it</p>
+    </div>
+  </div>
+  <p class="caption">
+    From the Presentations guide: <a href={handbook(DESIGN_REVIEWS)}>Design Reviews</a>
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 4: who you work with" title="Pair with the team at the next table, for the whole session">
+  <ul>
+    <li>You present your design to them and review theirs; they do the same</li>
+    <li>With an odd number of teams, one group of three reviews in a ring</li>
+    <li>
+      Nothing was due before class: draw your page from your
+      <code>docs/design.md</code>
+    </li>
+  </ul>
+  <p class="caption">
+    Under NDA? Describe each component by its role (a message queue, a model
+    server) and leave out the partner's specifics. If that isn't possible,
+    tell the instruction team now.
+  </p>
+</Slide>
+
+<Slide kicker="Example: the campus lunch app, step 1" title="The lunch app's design, drawn on one page" wide>
+  <div class="design" role="img" aria-label="The lunch app's design: a student web app and a kitchen dashboard, both built with React, read and write Supabase, which holds sign-in and a Postgres database of cafes, dishes, and orders. Stripe takes the card payment and tells Supabase when it clears. A text message tells the student the order is ready. The database is marked as the decision the team is least sure of: an order points at its dish rows.">
+    <div class="part" style="grid-area: 1 / 1;">
+      <h3>Student web app</h3>
+      <p>React, hosted on Vercel</p>
+    </div>
+    <div class="flow" style="grid-area: 1 / 2;">
+      <span>menu, cart, orders</span>
+      <i class="arrow"></i>
+    </div>
+    <div class="part store" style="grid-area: 1 / 3 / span 2;">
+      <h3>Supabase</h3>
+      <p class="inner">Sign-in: student accounts</p>
+      <p class="inner unsure">
+        Postgres: cafes, dishes, orders
+        <strong>Least sure: an order points at its dish rows</strong>
+      </p>
+    </div>
+    <div class="flow" style="grid-area: 1 / 4;">
+      <span>payment cleared</span>
+      <i class="arrow arrow-back"></i>
+    </div>
+    <div class="part" style="grid-area: 1 / 5;">
+      <h3>Stripe</h3>
+      <p>Takes the card payment</p>
+    </div>
+    <div class="part" style="grid-area: 2 / 1;">
+      <h3>Kitchen dashboard</h3>
+      <p>React, one screen in each cafe</p>
+    </div>
+    <div class="flow" style="grid-area: 2 / 2;">
+      <span>asks for new orders every 5 seconds</span>
+      <i class="arrow"></i>
+    </div>
+    <div class="flow" style="grid-area: 2 / 4;">
+      <span>order ready</span>
+      <i class="arrow"></i>
+    </div>
+    <div class="part" style="grid-area: 2 / 5;">
+      <h3>Text message</h3>
+      <p>Tells the student to pick up</p>
+    </div>
+  </div>
+  <p class="caption caption-tight">
+    The lunch app from weeks 2 and 3. On the page: the components, how they
+    connect, what each is built with, and the decision the team is least sure
+    of, marked.
+  </p>
+</Slide>
+
+<Slide kicker="Example: the campus lunch app, step 1" title="Under the drawing, three short answers" wide>
+  <div class="cards">
+    <div class="card">
+      <h3>Why it fits the purpose</h3>
+      <p>
+        Students order ahead and skip the line. Supabase gives sign-in and a
+        database with no server to run, so four people spend the year on the
+        ordering flow.
+      </p>
+    </div>
+    <div class="card fragment">
+      <h3>Why it fits the future</h3>
+      <p>
+        Expected to change: more cafes, and new dishes every term. Can't
+        change: one order belongs to one cafe.
+      </p>
+    </div>
+    <div class="card card-accent fragment">
+      <h3>What the team is least sure of</h3>
+      <p>
+        An order points at its dish rows. Copying each dish's name and price
+        into the order would survive a menu change, and would store every
+        price twice.
+      </p>
+    </div>
+  </div>
+  <p class="caption">
+    The page covers the internal design, not the screens: what the parts are,
+    why this arrangement and not another, and what it can't change later.
+  </p>
+</Slide>
+
+<Slide kicker="Example: the campus lunch app, step 3" title="The other team's findings, one sentence each" wide>
+  <table class="rows">
+    <thead>
+      <tr>
+        <th scope="col" class="narrow-col">The reviewer asked about</th>
+        <th scope="col">The finding they wrote</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        lunchFindings.map(({ asks, finding }) => (
+          <tr>
+            <th scope="row">{asks}</th>
+            <td>{finding}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p class="caption">
+    Each finding names a part of the page and what breaks, what's missing, or
+    what to try instead.
+  </p>
+</Slide>
+
+<Slide kicker="Example: the campus lunch app, step 4" title="Each finding accepted or declined, with a reason" wide>
+  <table class="rows">
+    <thead>
+      <tr>
+        <th scope="col">Finding</th>
+        <th scope="col" class="mark-col">Mark</th>
+        <th scope="col">One-line reason</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        lunchFindings.map(({ accepted, reason, short }) => (
+          <tr>
+            <th scope="row">{short}</th>
+            <td>
+              <span class:list={["chip", accepted ? "chip-yes" : "chip-no"]}>
+                {accepted ? "Accepted" : "Declined"}
+              </span>
+            </td>
+            <td>{reason}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p class="caption fragment">
+    The change to make first: copy the name and price into the order, before
+    more orders point at dish rows.
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 4: writing a finding" title="Write a finding the other team can act on" wide>
+  <div class="checks">
+    <div>
+      <p class="verdict verdict-yes">Like this</p>
+      <ul class="says">
+        <li>Deleting a dish breaks every past order that points at it</li>
+        <li>
+          The page shows no way to refund an order: Stripe returns the money,
+          and the order still reads paid
+        </li>
+        <li>
+          Sign-in and orders both live in Supabase, so say what moves if the
+          partner leaves it
+        </li>
+      </ul>
+    </div>
+    <div>
+      <p class="verdict verdict-no">Not like this</p>
+      <ul class="says">
+        <li>Looks good to us</li>
+        <li>Think about scalability</li>
+        <li>We'd have used a different database</li>
+      </ul>
+    </div>
+  </div>
+  <p class="caption">
+    The team that reads it has {decide.time} for every finding it received:
+    write what they need to act on yours.
+  </p>
+</Slide>
+
+<Slide kicker="Workshop 4: your page" title="Whatever you build, your page has parts and connections" wide>
+  <div class="cards">
+    <div class="card">
+      <h3>If your work is a pipeline</h3>
+      <p>
+        The parts are its stages. The connections are the file or format each
+        stage hands the next. Mark the format you're least sure another
+        program can read.
+      </p>
+    </div>
+    <div class="card">
+      <h3>If you're answering a research question</h3>
+      <p>
+        The parts are the data, the held-out set, the model, and the metric.
+        Mark the comparison you're least sure will hold.
+      </p>
+    </div>
+    <div class="card">
+      <h3>If you work in an existing codebase</h3>
+      <p>
+        Draw the parts as the code has them today, and what calls what. Mark
+        the part you plan to change first.
+      </p>
+    </div>
+  </div>
+  <p class="caption">
+    Your project may match several of these or none: draw the parts your
+    design has.
+  </p>
+</Slide>
+
+<StatementSlide kicker="Work time" source="One slide per step stays on the screen while you work; the instruction team walks the room">
+  Your turn: four steps with the team at the next table
+</StatementSlide>
+
+<TwoColumnSlide kicker={stepKicker(draw)} title={draw.name} divider wide>
+  <div slot="left">
+    <h3>On the page</h3>
+    <ul class="reveal-list">
+      <li>The components</li>
+      <li>How they connect</li>
+      <li>What they're built with</li>
+      <li>The one design decision your team is least sure of, marked</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>At the depth one page allows</h3>
+    <ul class="reveal-list">
+      <li>Why this design meets the requirements better than the alternatives</li>
+      <li>What you expect to change or grow</li>
+      <li>What it assumes that can't change later</li>
+    </ul>
+  </div>
+  <p class="caption">
+    Start from your <code>docs/design.md</code>. Paper or one slide both
+    work, as long as the other team can read it at the table. The
+    activity: <a href={activityLink}>Peer Technical Design Review</a>
+  </p>
+</TwoColumnSlide>
+
+<Slide kicker={stepKicker(present)} title="Present your page to the other team">
+  <ul>
+    <li>
+      Walk them through the page: the parts, the connections, then the
+      decision you're least sure of
+    </li>
+    <li>Answer their questions</li>
+    <li>Don't defend the design yet: you decide what to accept in the last step</li>
+  </ul>
+  <p class="caption">Then swap: the other team presents its page to you.</p>
+</Slide>
+
+<Slide kicker={stepKicker(review)} title="Review the other team's page, every team at once" wide>
+  <ol>{questions.map((question) => <li>{question}</li>)}</ol>
+  <p class="caption">
+    Write each finding in one sentence, then hand the findings over. With
+    three teams, review the next team's page.
+  </p>
+</Slide>
+
+<Slide kicker={stepKicker(decide)} title="Decide what to do with each finding you received" wide>
+  <div class="pair">
+    <div class="box box-yes">
+      <h3>Accepted</h3>
+      <p>One line: what you'll change, and why the finding holds</p>
+    </div>
+    <div class="box">
+      <h3>Declined</h3>
+      <p>One line: why the finding doesn't hold for your design</p>
+    </div>
+  </div>
+  <ul class="after-pair">
+    <li>You don't have to accept a finding; you do have to give the reason</li>
+    <li>Then name the change you'll make first</li>
+  </ul>
+</Slide>
+
+<Slide kicker="Work time: check your output" title="Check your page and your findings for four mistakes" wide>
+  <table class="rows">
+    <thead>
+      <tr>
+        <th scope="col" class="narrow-col">Mistake</th>
+        <th scope="col">Instead of</th>
+        <th scope="col">Write</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Screens, not a design</th>
+        <td class="instead">A drawing of the menu, the cart, and the checkout page</td>
+        <td>The app, the database, the payment service, and what passes between them</td>
+      </tr>
+      <tr>
+        <th scope="row">No doubt marked</th>
+        <td class="instead">We're confident in all of it</td>
+        <td>The choice your team argued about longest, marked on the page</td>
+      </tr>
+      <tr>
+        <th scope="row">A finding nobody can act on</th>
+        <td class="instead">Think about scalability</td>
+        <td>Every kitchen screen asks for orders every 5 seconds: what happens at 40 screens?</td>
+      </tr>
+      <tr>
+        <th scope="row">A mark with no reason</th>
+        <td class="instead"><span class="chip chip-no">Declined</span></td>
+        <td>
+          <span class="chip chip-no">Declined</span> A cook doesn't notice 5
+          seconds
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</Slide>
+
+<TwoColumnSlide kicker="Optional: with an AI tool" title="Run the review a second time, then compare" divider wide>
+  <div slot="left">
+    <h3>First, with the other team</h3>
+    <ul>
+      <li>Finish all four steps before anyone opens a tool</li>
+      <li>The other team's findings are what you compare the tool's against</li>
+    </ul>
+  </div>
+  <div slot="right">
+    <h3>Then, with the tool</h3>
+    <ul>
+      <li class="fragment">
+        Give it your page and the {questions.length} reviewer questions; ask
+        for findings, one sentence each
+      </li>
+      <li class="fragment">
+        Set the two lists side by side, and note where they differ
+      </li>
+      <li class="fragment">Either version can be the one you keep</li>
+    </ul>
+  </div>
+  <p class="caption">
+    Give it only what your Team Charter's AI and Confidentiality section
+    allows.
+  </p>
+</TwoColumnSlide>
+
+<Slide kicker="Wrap" title="Check your work against today's outcome">
+  <ul>{outcome.map((line) => <li>{line}</li>)}</ul>
+  <p class="caption">
+    Stuck? <a href={activityLink}>Peer Technical Design Review</a>
+  </p>
+</Slide>
+
+<Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
+  <ul class="due">
+    <li>Workshop {WORKSHOP}, one PDF: {submission}</li>
+    {
+      alsoDue.map((item) => (
+        <li>
+          <LinkedText md={item} />
+        </li>
+      ))
+    }
+  </ul>
+</Slide>
+
+<style>
+  .caption {
+    margin-block-start: auto;
+    padding-block-start: 24px;
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  /* Under a drawing that fills the slide at the 32px floor. */
+  .caption-tight {
+    padding-block-start: 12px;
+  }
+
+  .reveal-list {
+    font-size: 36px;
+  }
+
+  /* A one-line fact the slide's tiles depend on. */
+  .lead {
+    margin: 0 0 32px;
+    font-size: 36px;
+    color: var(--deck-ink-soft);
+  }
+
+  /* Numbered steps drawn as tiles, left to right, each with a chevron into
+     the next. */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
+    gap: 56px;
+  }
+
+  .steps > li {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 104px 26px 28px;
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.22;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 14px;
+  }
+
+  .steps > li::before {
+    inset-block-start: 24px;
+    inset-inline-start: 24px;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+    color: var(--deck-paper);
+    background: var(--deck-accent-ink);
+    border-radius: 999px;
+  }
+
+  .steps > li + li::after {
+    position: absolute;
+    inset-block-start: 36px;
+    inset-inline-start: -44px;
+    content: "";
+    border-block: 18px solid transparent;
+    border-inline-start: 26px solid var(--deck-accent);
+  }
+
+  .steps p {
+    margin: 0;
+  }
+
+  .note {
+    font-size: var(--deck-text-min);
+    color: var(--deck-ink-soft);
+  }
+
+  .art {
+    margin-block-start: auto;
+  }
+
+  .art-count {
+    align-self: start;
+    padding: 2px 14px;
+    font-size: var(--deck-text-min);
+    font-weight: 700;
+    color: var(--deck-accent-ink);
+    white-space: nowrap;
+    background: var(--deck-paper);
+    border: 3px solid var(--deck-accent);
+    border-radius: 999px;
+  }
+
+  /* Two boxes side by side: a contrast, or the two marks a finding can
+     carry. */
+  .pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px;
+    margin-block-start: 40px;
+  }
+
+  .pair:first-child {
+    margin-block-start: 0;
+  }
+
+  .box {
+    padding: 28px 36px;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-block-start-width: 12px;
+    border-radius: 12px;
+  }
+
+  .box-accent {
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .box-yes {
+    background: var(--deck-backbone);
+    border-color: var(--deck-backbone-edge);
+  }
+
+  .box h3 {
+    margin-block-end: 12px;
+  }
+
+  .box p {
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.25;
+  }
+
+  .after-pair {
+    margin-block-start: 48px;
+  }
+
+  /* Three cards in a row, each a short answer under its heading. */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+
+  .card {
+    padding: 28px 32px;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-block-start-width: 12px;
+    border-radius: 12px;
+  }
+
+  .card-accent {
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .card h3 {
+    margin-block-end: 16px;
+    font-size: 44px;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.25;
+  }
+
+  /* A design on one page: components in the outer and middle columns, and
+     what passes between them in the two columns of arrows. */
+  .design {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr) 290px minmax(0, 1.15fr) 290px
+      minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 28px 0;
+    font-size: var(--deck-text-min);
+    line-height: 1.2;
+  }
+
+  .part {
+    padding: 24px 28px;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 14px;
+  }
+
+  .part h3 {
+    margin-block-end: 8px;
+    font-size: 40px;
+  }
+
+  .part p {
+    margin: 0;
+    color: var(--deck-ink-soft);
+  }
+
+  .store {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .store .inner {
+    padding: 14px 18px;
+    color: var(--deck-ink);
+    background: var(--deck-paper);
+    border: 3px solid var(--deck-rule);
+    border-radius: 10px;
+  }
+
+  .store .unsure {
+    background: var(--deck-accent-wash);
+    border-color: var(--deck-accent);
+  }
+
+  .unsure strong {
+    display: block;
+    margin-block-start: 10px;
+    color: var(--deck-accent-ink);
+  }
+
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: center;
+    padding-inline: 14px;
+    color: var(--deck-ink-soft);
+    text-align: center;
+  }
+
+  /* An arrow to the right; arrow-back points left. */
+  .arrow {
+    position: relative;
+    display: block;
+    height: 4px;
+    margin-inline: 0 18px;
+    background: var(--deck-ink-soft);
+  }
+
+  .arrow::after {
+    position: absolute;
+    inset-block-start: -12px;
+    inset-inline-end: -18px;
+    content: "";
+    border-block: 14px solid transparent;
+    border-inline-start: 20px solid var(--deck-ink-soft);
+  }
+
+  .arrow-back {
+    margin-inline: 18px 0;
+  }
+
+  .arrow-back::after {
+    inset-inline: -18px auto;
+    border-inline: 0 solid transparent;
+    border-inline-end: 20px solid var(--deck-ink-soft);
+  }
+
+  /* Rows under a header: findings, their marks, and the four mistakes. */
+  .rows {
+    width: 100%;
+    font-size: 36px;
+    line-height: 1.25;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .narrow-col {
+    width: 26%;
+  }
+
+  .mark-col {
+    width: 15%;
+  }
+
+  .rows thead th {
+    padding: 0 32px 10px 0;
+    font-size: var(--deck-text-min);
+    font-weight: 750;
+    color: var(--deck-ink-soft);
+    text-align: start;
+  }
+
+  .rows tbody th,
+  .rows td {
+    padding: 20px 32px 20px 0;
+    vertical-align: top;
+    text-align: start;
+    border-block-start: 2px solid var(--deck-rule);
+  }
+
+  .rows tbody th {
+    font-weight: 700;
+  }
+
+  .instead {
+    color: var(--deck-ink-soft);
+  }
+
+  .chip {
+    display: inline-block;
+    padding: 0 14px;
+    font-size: var(--deck-text-min);
+    font-weight: 700;
+    border: 2px solid;
+    border-radius: 999px;
+  }
+
+  .chip-yes {
+    color: var(--deck-backbone-ink);
+    background: var(--deck-backbone);
+    border-color: var(--deck-backbone-edge);
+  }
+
+  .chip-no {
+    color: var(--deck-ink-soft);
+    background: var(--deck-card);
+    border-color: var(--deck-rule);
+  }
+
+  /* The two lists of findings, each under its verdict. */
+  .checks {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 96px;
+  }
+
+  .verdict {
+    margin: 0 0 16px;
+    font-size: var(--deck-text-min);
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .verdict-yes {
+    color: var(--deck-backbone-edge);
+  }
+
+  .verdict-no {
+    color: var(--deck-accent-ink);
+  }
+
+  .says {
+    margin: 0;
+    font-size: 36px;
+  }
+
+  .says li + li {
+    margin-block-start: 16px;
+  }
+
+  .due {
+    margin-block-start: 32px;
+    font-size: 36px;
+  }
+
+  /* What today feeds: a week column, a line of dots, and the entry. */
+  .timeline {
+    display: grid;
+    font-size: var(--deck-text-min);
+    line-height: 1.2;
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 250px 56px minmax(0, 1fr);
+    gap: 0 24px;
+    align-items: center;
+    padding-block: 22px;
+  }
+
+  .entry::before {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 300px;
+    width: 4px;
+    content: "";
+    background: var(--deck-rule);
+  }
+
+  .entry:first-child::before {
+    inset-block-start: 50%;
+  }
+
+  .entry:last-child::before {
+    inset-block-end: 50%;
+  }
+
+  .when {
+    font-weight: 650;
+    color: var(--deck-ink-soft);
+  }
+
+  .dot {
+    z-index: 1;
+    justify-self: center;
+    width: 24px;
+    height: 24px;
+    background: var(--deck-paper);
+    border: 4px solid var(--deck-ink-soft);
+    border-radius: 999px;
+  }
+
+  .today .dot {
+    background: var(--deck-accent);
+    border-color: var(--deck-accent-ink);
+  }
+
+  .what {
+    font-weight: 650;
+  }
+
+  .detail {
+    display: block;
+    font-weight: 400;
+    color: var(--deck-ink-soft);
+  }
+</style>
