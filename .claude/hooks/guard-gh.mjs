@@ -1,16 +1,20 @@
 /**
- * PreToolUse on Bash: the text a `gh` command would publish gets the checks a
- * commit message gets, before it reaches the remote.
+ * PreToolUse on Bash: the text a `gh` command would publish carries no
+ * session link, old Claude Code footer, em dash or emoji, checked before it
+ * reaches the remote.
  *
  * This is the one place the session-link rule can be enforced: a link in a
  * PR body or an issue comment lands on a public repo, and lefthook never sees
- * `gh` text. A PR title is also the squash-merge subject, so `pr create`,
- * `pr edit` and `pr merge --subject` get the Conventional Commits check.
+ * `gh` text. These checks look for text no published command may carry, so
+ * they run on the whole command and, when `PUBLISHES` matches it, on every
+ * file a `--body-file` or `-F` flag in it names, wherever in the command each
+ * appears. No other file is read.
  *
- * A PR body an agent sets with `pr create` or `pr edit`, when the hook can read
- * it, carries the `Assisted-by: Claude Code` trailer above its `---` line, the
- * part a squash merge keeps (#665). Only agents run this hook, so a PR a person
- * opens alone is never asked for it.
+ * The PR title and the `Assisted-by: Claude Code` trailer are not checked
+ * here: telling a PR call's own title and body from text that only names a
+ * PR call means reading the command as a shell would, which a pattern cannot
+ * do (#666). `check-pr.mjs` reads them back from the PR when the command
+ * prints its URL, and CI's `pr-text` is the merge gate for them.
  *
  * Exit 2 blocks; stderr is the reason the model reads.
  */
@@ -22,32 +26,19 @@ import { deny, loadRuleScripts, readInput, repoRoot } from "./lib.mjs";
 const PUBLISHES =
   /\bgh\s+(?:(?:pr|issue)\s+(?:create|edit|comment|review|close|merge)|release\s+(?:create|edit))\b/;
 const API_WITH_BODY = /\bgh\s+api\b[\s\S]*\bbody\b/;
-const TITLED = /\bgh\s+pr\s+(?:create|edit|merge)\b/;
-const TITLE_FLAG =
-  /(?:^|\s)(?:-t|--title|--subject)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
+// The file a `--body-file` or `-F` flag names, quoted or not, anywhere in the
+// command: reading one more file only adds checks, and issue text has no CI
+// gate (#666).
 const BODY_FILE_FLAG =
-  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s;&|)]+))/u;
-const BODY_FLAG =
-  /(?:^|\s)(?:-b|--body)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
+  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s;&|)"'`<>]+))/gu;
 const OLD_FOOTER = "Generated with [Claude Code]";
-// Optionally after `VAR=value` prefixes, `(`, or a `$(` that captures the URL.
-const PR_CALL =
-  /^\s*(?:\w+=\S*\s+)*(?:\w+=)?\$?\(?\s*gh\s+pr\s+(?:create|edit)\b/;
-const CALL_BREAK = new Set([";", "\n", "&", "|"]);
-// A heredoc: the `<<` line keeps its tail; the lines up to the delimiter go.
-const HEREDOC = /<<-?[ \t]*(['"]?)([\w.-]+)\1([^\n]*)\n[\s\S]*?^\t*\2[ \t]*$/gm;
-const SHELL_EXPANDS = /[$`]/;
-const QUOTE_SPLICE = "'\\''";
-const TRAILER = "Assisted-by: Claude Code";
-const TRAILER_LINE = /^Assisted-by: Claude Code[ \t]*$/m;
-const CUT_LINE = /^---[ \t]*$/m;
 const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/g;
 const LEADING_TILDE = /^~(?=\/|$)/;
 
 /**
  * `$VAR` and `${VAR}` from this process's environment, as the shell expands
  * them inside double quotes or bare. A variable this process lacks stays as
- * written, so the read fails and pr-text is the check that sees the file.
+ * written, so the read fails and the file is not checked here.
  */
 function expandVars(path) {
   return path.replace(
@@ -57,27 +48,27 @@ function expandVars(path) {
 }
 
 /**
- * The text of the `--body-file` (or `-F`) a command names, or null when it
- * names none or the file cannot be read yet. A throw here would exit 1, which
- * lets the command through, so an unreadable path is null instead.
+ * The text of each `--body-file` (or `-F`) a command names that can be read.
+ * A throw here would exit 1, which lets the command through, so an unreadable
+ * path is skipped.
  */
-function bodyFileText(text, dir) {
-  const file = BODY_FILE_FLAG.exec(text);
-  if (!file) {
-    return null;
+function bodyFileTexts(text, dir) {
+  const texts = new Set();
+  for (const file of text.matchAll(BODY_FILE_FLAG)) {
+    // Single quotes expand nothing; a bare path also expands a leading `~`.
+    const given =
+      file[2] ??
+      (file[1] === undefined
+        ? expandVars(file[3]).replace(LEADING_TILDE, homedir())
+        : expandVars(file[1]));
+    const path = isAbsolute(given) ? given : join(dir, given);
+    try {
+      texts.add(readFileSync(path, "utf8"));
+    } catch {
+      // Not readable yet.
+    }
   }
-  // Single quotes expand nothing; a bare path also expands a leading `~`.
-  const given =
-    file[2] ??
-    (file[1] === undefined
-      ? expandVars(file[3]).replace(LEADING_TILDE, homedir())
-      : expandVars(file[1]));
-  const path = isAbsolute(given) ? given : join(dir, given);
-  try {
-    return readFileSync(path, "utf8");
-  } catch {
-    return null;
-  }
+  return texts;
 }
 
 /**
@@ -102,66 +93,6 @@ function textProblems(text, where) {
   return found;
 }
 
-/**
- * Whether a PR body has the trailer on a line of its own above the first
- * `---` line. A body with no `---` is all commit body.
- */
-function hasTrailer(body) {
-  const cut = CUT_LINE.exec(body);
-  return TRAILER_LINE.test(cut ? body.slice(0, cut.index) : body);
-}
-
-/**
- * `command` split into the commands it chains, at `;`, `&`, `|` and newlines
- * outside quotes, with heredoc bodies dropped first, so a `gh pr create`
- * quoted in an issue body or written in a heredoc, or a title that says "gh",
- * never starts or ends a call.
- */
-function shellCalls(raw) {
-  const text = raw.replace(HEREDOC, "<<$2$3");
-  const calls = [];
-  let quote = null;
-  let start = 0;
-  for (let i = 0; i < text.length; i += 1) {
-    const ch = text[i];
-    if (quote) {
-      if (ch === "\\" && quote === '"') {
-        i += 1;
-      } else if (ch === quote) {
-        quote = null;
-      }
-    } else if (ch === "\\") {
-      i += 1;
-    } else if (ch === "'" || ch === '"') {
-      quote = ch;
-    } else if (CALL_BREAK.has(ch)) {
-      calls.push(text.slice(start, i));
-      start = i + 1;
-    }
-  }
-  calls.push(text.slice(start));
-  return calls;
-}
-
-/**
- * The body a `gh pr create` or `gh pr edit` call sets, read from its own
- * flags. Null when the hook cannot read it: no body given, a file not written
- * yet, or inline text the shell expands or splices before `gh` sees it.
- */
-function prBody(call, dir) {
-  if (BODY_FILE_FLAG.test(call)) {
-    return bodyFileText(call, dir);
-  }
-  const inline = BODY_FLAG.exec(call);
-  if (!inline) {
-    return null;
-  }
-  if (inline[1] !== undefined) {
-    return SHELL_EXPANDS.test(inline[1]) ? null : inline[1];
-  }
-  return call.includes(QUOTE_SPLICE) ? null : inline[2];
-}
-
 const input = readInput();
 const command = input.tool_input?.command ?? "";
 const cwd = input.cwd ?? process.cwd();
@@ -170,36 +101,14 @@ if (!(PUBLISHES.test(command) || API_WITH_BODY.test(command))) {
   process.exit(0);
 }
 
-const { checkCommitMessage, findProseViolations } = await loadRuleScripts(
-  repoRoot(cwd)
-);
+const { findProseViolations } = await loadRuleScripts(repoRoot(cwd));
 const problems = textProblems(command, "");
 
 // A body file is published text too, and `gh pr merge --body-file` is how the
-// CLI merge passes the part above the template's `---` line. A file not
-// written yet is pr-text's to refuse.
-const bodyFile = PUBLISHES.test(command) ? bodyFileText(command, cwd) : null;
-if (bodyFile) {
-  problems.push(...textProblems(bodyFile, "the body file: "));
-}
-
-// A merge is left out: its body is the PR body create or edit already set, or
-// a Dependabot body cut to its first line, which carries no trailer.
-for (const prCall of shellCalls(command).filter((c) => PR_CALL.test(c))) {
-  const prText = prBody(prCall, cwd);
-  if (prText !== null && !hasTrailer(prText)) {
-    problems.push(
-      `the PR body has no "${TRAILER}" line above its --- line; end the commit-body part with it`
-    );
-  }
-}
-
-const title = TITLED.test(command) ? TITLE_FLAG.exec(command) : null;
-if (title) {
-  for (const problem of checkCommitMessage(title[1] ?? title[2])) {
-    if (problem.startsWith("subject")) {
-      problems.push(`PR title is the squash-merge subject: ${problem}`);
-    }
+// CLI merge passes the part above the template's `---` line.
+if (PUBLISHES.test(command)) {
+  for (const text of bodyFileTexts(command, cwd)) {
+    problems.push(...textProblems(text, "the body file: "));
   }
 }
 

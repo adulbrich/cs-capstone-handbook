@@ -13,8 +13,8 @@ them that way: see the `cs46x-review` skill.
 ```
 pick up          branch             commit                push               pull request          merge
 --------         ------             ------                ----               ------------          -----
-GitHub issue     fetch, then        lefthook:             lefthook:          build and audit       squash
-ready-for-*      branch from        prose, not main,      branch name,       required (ruleset)    one PR,
+GitHub issue     fetch, then        lefthook:             lefthook:          build, audit,         squash
+ready-for-*      branch from        prose, not main,      branch name,       pr-text required      one PR,
 p0/p1/p2         origin/main        validators, biome,    validators, build  review loop           one issue
 claim it         type/slug          commit message                           recorded in the PR
 ```
@@ -39,7 +39,8 @@ claim it         type/slug          commit message                           rec
    emoji, no session link. `scripts/check-commit-message.mjs` is the rule.
 4. **Push and open a pull request.** Above the template's `---` line goes the
    `main` commit body: the closing issue, what changed from the reader's side,
-   and `Assisted-by: Claude Code` when an agent helped. Below it go what ran
+   and `Assisted-by: Claude Code` when an agent helped, `Assisted-by: none`
+   otherwise. Below it go what ran
    locally, what Canvas needs re-imported or re-pasted, the review loop, a
    guide's checks, and the docs touched.
 5. **Run the review loop** that the `cs46x-review` skill sets out, and
@@ -50,9 +51,9 @@ claim it         type/slug          commit message                           rec
    from the CLI, pass the part above it with `gh pr merge --squash
    --body-file`. Cut a Dependabot body to its first line. Never auto-merge: it
    skips the cut and lands the whole body on `main`. The `main` ruleset
-   requires a pull request with green `build` and `audit` checks and blocks
-   force pushes and deletion. No approving review is required by GitHub, so
-   the review loop is the review. The instructor merges.
+   requires a pull request with green `build`, `audit` and `pr-text` checks
+   and blocks force pushes and deletion. No approving review is required by
+   GitHub, so the review loop is the review. The instructor merges.
 
 ## The gates
 
@@ -79,10 +80,10 @@ first column is what stops you locally; the last is what stops the merge.
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
-| The git and gh guard hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh` |
+| The git and gh hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh`, `test-check-pr` |
 | The tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
-| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses the command (inline `--title` and `--body`, and the `--body-file` text) | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
-| An agent's PR body ends its commit-body part with `Assisted-by: Claude Code` | | `guard-gh.mjs` refuses `pr create` and `pr edit` when the body it can read lacks the line above `---` | none: a PR a person opens alone has no trailer |
+| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses a command whose text or body files carry an em dash, emoji or session link; `check-pr.mjs` reports a PR's title and text after a `pr create` or `pr edit` that prints its URL | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
+| A PR body ends its commit-body part with `Assisted-by: Claude Code`, or `Assisted-by: none` when no agent helped | | `check-pr.mjs` reports a PR whose body lacks it above `---`, read back after a `pr create` or `pr edit` that prints its URL | `pr-text`: the same check, re-run on every edit; Dependabot PRs are skipped |
 | Dependencies signed, and no critical advisory | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code

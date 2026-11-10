@@ -50,12 +50,36 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/check-pr.mjs"],
+            "timeout": 30
+          }
+        ]
+      },
+      {
         "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
             "command": "node",
             "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/after-edit.mjs"],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/check-pr.mjs"],
             "timeout": 30
           }
         ]

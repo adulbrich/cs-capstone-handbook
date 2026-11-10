@@ -1,10 +1,13 @@
-# The pull request's title and body get the commit-message check: a squash
-# merge turns them into the `main` subject and body (the merger deletes from
-# the template's `---` line down). A separate workflow from
-# CI so that editing the description re-runs only this, not the build.
+# The pull request's title and body get `checkPrText` (`--pr`): the
+# commit-message check, since a squash merge turns them into the `main`
+# subject and body (the merger deletes from the template's `---` line down),
+# plus `Assisted-by: Claude Code` or `Assisted-by: none` above that line
+# (#666). A separate workflow from CI so that editing the description re-runs
+# only this, not the build.
 #
-# guard-gh.mjs checks text an agent passes inline to `gh`; this catches a
-# `--body-file`, and a title or body written or edited in the GitHub UI.
+# This is the merge gate, a required check on `main`. guard-gh.mjs and
+# check-pr.mjs only warn an agent sooner; this sees every PR, however its
+# title or body was written.
 name: pr-text
 
 on:
@@ -30,4 +33,4 @@ jobs:
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
-        run: printf '%s\n\n%s\n' "$PR_TITLE" "$PR_BODY" | node scripts/check-commit-message.mjs --stdin
+        run: node scripts/check-commit-message.mjs --pr

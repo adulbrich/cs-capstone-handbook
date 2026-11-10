@@ -4,11 +4,16 @@
  * `claude.ai/code/session` link.
  *
  * One implementation, three callers. lefthook runs it at `commit-msg`, CI
- * runs it over every commit a pull request adds (`--range`) and over the PR
- * title and body (`pr-text`, `--stdin`), which a squash merge turns into the
- * `main` subject and body, and the Claude Code `git` hook runs it on the text
- * of a `git commit` before the commit exists. The `gh` hook applies the
- * subject rule to PR titles an agent passes inline.
+ * runs it over every commit a pull request adds (`--range`), and the Claude
+ * Code `git` hook runs it on the text of a `git commit` before the commit
+ * exists.
+ *
+ * A PR's title and body, which a squash merge turns into the `main` subject
+ * and body, get `checkPrText`: the same rule, plus the trailer. The part above
+ * the body's `---` line carries `Assisted-by: Claude Code`, or
+ * `Assisted-by: none` when no agent helped (#666). Two callers: `pr-text` in
+ * CI (`--pr`), the merge gate, and the `check-pr` hook, on a PR an agent
+ * creates or edits, read back from GitHub when the command prints its URL.
  *
  * The session-link rule is the hard one: the repo is public, so a link that
  * lands on a remote costs a history rewrite. It is checked first.
@@ -17,6 +22,7 @@
  *   node scripts/check-commit-message.mjs <file>          the COMMIT_EDITMSG path
  *   node scripts/check-commit-message.mjs --text <str>    a message as a string
  *   node scripts/check-commit-message.mjs --stdin         a message on stdin
+ *   node scripts/check-commit-message.mjs --pr            the PR in PR_TITLE, PR_BODY
  *   node scripts/check-commit-message.mjs --range <a..b>  every commit in a range
  *
  * Only the file form strips git's `#` comment lines and the scissors block,
@@ -61,6 +67,9 @@ const SESSION_LINK = "claude.ai/code/session";
 /** The PR footer the harness appends by default; Assisted-by replaced it. */
 const OLD_FOOTER = "Generated with [Claude Code]";
 const SCISSORS = /^# -{8,} >8 -{8,}$/m;
+/** The trailer a PR body carries above its `---` line, written exactly. */
+const TRAILER_LINE = /^Assisted-by: (?:Claude Code|none)[ \t]*$/m;
+const CUT_LINE = /^---[ \t]*$/m;
 
 /**
  * A COMMIT_EDITMSG without git's comment lines and without anything after the
@@ -108,8 +117,31 @@ export function checkCommitMessage(message) {
   return problems;
 }
 
+/**
+ * Every problem with a PR's title and body: the commit-message rule on the
+ * squash message they make, with the subject called the title, and the
+ * trailer above the body's first `---` line. A body with no `---` is all
+ * commit body.
+ */
+export function checkPrText({ title, body }) {
+  const problems = checkCommitMessage(`${title}\n\n${body}`).map((problem) =>
+    problem.startsWith("subject")
+      ? `the title is the squash-merge subject: ${problem}`
+      : problem
+  );
+  const cut = CUT_LINE.exec(body);
+  if (!TRAILER_LINE.test(cut ? body.slice(0, cut.index) : body)) {
+    problems.push(
+      'the body has no "Assisted-by: Claude Code" line above its first --- line ("Assisted-by: none" when no agent helped)'
+    );
+  }
+  return problems;
+}
+
 const RULE =
   "Commit rule: type(scope): lowercase imperative subject, no em dash, no emoji, no session link.\n";
+const PR_RULE =
+  'PR rule: the title is the commit rule\'s subject; no em dash, emoji or session link; "Assisted-by: Claude Code" or "Assisted-by: none" above the body\'s first --- line.\n';
 
 function report(label, problems) {
   for (const problem of problems) {
@@ -117,8 +149,8 @@ function report(label, problems) {
   }
 }
 
-function fail() {
-  process.stderr.write(RULE);
+function fail(rule = RULE) {
+  process.stderr.write(rule);
   process.exit(1);
 }
 
@@ -141,6 +173,18 @@ function main(argv) {
     }
     if (failed) {
       fail();
+    }
+    return;
+  }
+
+  if (mode === "--pr") {
+    const problems = checkPrText({
+      body: process.env.PR_BODY ?? "",
+      title: process.env.PR_TITLE ?? "",
+    });
+    if (problems.length > 0) {
+      report("pull request", problems);
+      fail(PR_RULE);
     }
     return;
   }
