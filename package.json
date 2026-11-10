@@ -37,11 +37,11 @@
   "dependencies": {
     "@astrojs/check": "0.9.12",
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/starlight": "0.42.8",
+    "@astrojs/starlight": "0.42.10",
     "@astrojs/starlight-tailwind": "5.0.0",
     "@astrojs/svelte": "^9.1.2",
     "@tailwindcss/vite": "^4.3.2",
-    "astro": "7.4.4",
+    "astro": "7.4.7",
     "astro-feelback": "^0.3.4",
     "astro-mermaid": "^2.2.0",
     "dompurify": "^3.4.17",
