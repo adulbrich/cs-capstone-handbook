@@ -2,10 +2,12 @@
 // src/content/docs/assignments/project-partner-evaluation.mdx. Every rating
 // name and point value comes from the rubric CSVs under
 // canvas/assignments/project-partner-evaluation/, parsed by
-// src/lib/rubric-csv.mjs; the lower bound of an A comes from
-// src/content/docs/learning-objectives/grading.mdx. An end-of-term answer is
-// scored by the same choice list the generator wrote into the survey
-// (partner-facets.mjs), so a label and its points have one source. A
+// src/lib/rubric-csv.mjs, except the pulse ratings flagged for review, which
+// SURVEYS names and flaggedRatings checks against those CSVs. The lower bound
+// of an A comes from src/content/docs/learning-objectives/grading.mdx. An
+// end-of-term answer is scored by the same choice list the generator wrote
+// into the survey (partner-facets.mjs), so a label and its points have one
+// source. A
 // criterion's comment boxes (#535) go into its Comments cell, verbatim, for
 // every student on the team. The instructor's edits by team and criterion
 // (#611) are applied to the team's scores before any row is filled. The

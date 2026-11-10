@@ -101,6 +101,10 @@ test("the report says nothing about a problem that did not happen", () => {
 test("the preview names the answers that show a box as one list", () => {
   assert.equal(previewText.when(["Yes"]), "Shown when the answer is Yes.");
   assert.equal(
+    previewText.when(["A", "B"]),
+    "Shown when the answer is A or B."
+  );
+  assert.equal(
     previewText.when(["A", "B", "C"]),
     "Shown when the answer is A, B, or C."
   );
