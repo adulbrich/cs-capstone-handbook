@@ -5,7 +5,7 @@
 // with, then the campus lunch app of weeks 2 and 3 taken through the steps:
 // its design on one page, the other team's findings, each one accepted or
 // declined, what a finding a team can act on reads like, and what the page
-// holds for a pipeline, a research question, or an existing codebase); then one slide per step for the
+// holds for a pipeline, a trained model, or an existing codebase); then one slide per step for the
 // teams to work from, a self-check, the optional second run with an AI
 // tool, and the wrap. The step names, their minutes, and the reviewer
 // questions come from the activity page; the weeks on the timeline, the
@@ -142,7 +142,7 @@ const feedList: Feed[] = [
   },
   {
     detail:
-      "Its revision log repeats today's last step on your RFC's reviews: each point changed or declined, with where or why",
+      "Its revision log works like today's last step: each review point changed or declined, with where or why",
     href: handbook(`${RFC_PAGE}#revision-log`),
     week: weekOf("Due", links(RFC_PAGE, "final"), "the RFC final"),
     what: "RFC final",
@@ -263,7 +263,7 @@ const lunchFindings = [
   </p>
 </Slide>
 
-<Slide kicker="Workshop 4" title="One submission, graded complete or incomplete">
+<Slide kicker="Workshop 4" title="Graded complete or incomplete">
   <ul>
     <li>Complete when it holds everything listed as due: there is no quality bar</li>
     <li>{LATE["class-week"].text}</li>
@@ -327,7 +327,7 @@ const lunchFindings = [
 <Slide kicker="Workshop 4: who you work with" title="Pair with the team at the next table, for the whole session">
   <ul>
     <li>You present your design to them and review theirs; they do the same</li>
-    <li>With an odd number of teams, one group of three reviews in a ring</li>
+    <li>With an odd number of teams, three teams review in a ring</li>
     <li>
       Nothing was due before class: draw your page from your
       <code>docs/design.md</code>
@@ -520,17 +520,17 @@ const lunchFindings = [
       </p>
     </div>
     <div class="card">
-      <h3>If you're answering a research question</h3>
+      <h3>If you're training and testing a model</h3>
       <p>
         The parts are the data, the held-out set, the model, and the metric.
-        Mark the comparison you're least sure will hold.
+        Mark the one you're least sure of.
       </p>
     </div>
     <div class="card">
       <h3>If you work in an existing codebase</h3>
       <p>
         Draw the parts as the code has them today, and what calls what. Mark
-        the part you plan to change first.
+        the change you're least sure of.
       </p>
     </div>
   </div>
@@ -563,9 +563,8 @@ const lunchFindings = [
     </ul>
   </div>
   <p class="caption">
-    Start from your <code>docs/design.md</code>. Paper or one slide both
-    work, as long as the other team can read it at the table. The
-    activity: <a href={activityLink}>Peer Technical Design Review</a>
+    Start from your <code>docs/design.md</code>. The activity:
+    <a href={activityLink}>Peer Technical Design Review</a>
   </p>
 </TwoColumnSlide>
 
@@ -578,7 +577,7 @@ const lunchFindings = [
     <li>Answer their questions</li>
     <li>Don't defend the design yet: you decide what to accept in the last step</li>
   </ul>
-  <p class="caption">Then swap: the other team presents its page to you.</p>
+  <p class="caption">Then swap, until every team has presented.</p>
 </Slide>
 
 <Slide kicker={stepKicker(review)} title="Review the other team's page, every team at once" wide>
@@ -593,7 +592,7 @@ const lunchFindings = [
   <div class="pair">
     <div class="box box-yes">
       <h3>Accepted</h3>
-      <p>One line: what you'll change, and why the finding holds</p>
+      <p>One line: why the finding holds</p>
     </div>
     <div class="box">
       <h3>Declined</h3>
@@ -661,7 +660,6 @@ const lunchFindings = [
       <li class="fragment">
         Set the two lists side by side, and note where they differ
       </li>
-      <li class="fragment">Either version can be the one you keep</li>
     </ul>
   </div>
   <p class="caption">
