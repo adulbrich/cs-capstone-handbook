@@ -8,7 +8,7 @@
 
 import { SHEET_EMAIL, SHEET_TEAM } from "../lib/partner-sheet.mjs";
 import { clickPaths, pathSteps } from "./click-paths.mjs";
-import { plural } from "./tools-text.mjs";
+import { orList, plural } from "./tools-text.mjs";
 
 const list = (items) => items.join(", ");
 
@@ -403,8 +403,8 @@ export const scoreText = {
     },
     // Read out beside an edited cell's struck-through points.
     was: "answered",
-    what: (neutral) =>
-      `Every scored team by criterion, as the partner answered. Open a cell to keep its answer, pick another rating, or enter points; to edit the comment the team reads; or to write a team note. Midterm Pulse answers of ${neutral} are marked to review until kept or changed. Edits stay for this survey when a new export is dropped, and are marked again when the answer under them changes. Nothing here blocks the download.`,
+    what: (flagged) =>
+      `Every scored team by criterion, as the partner answered. Open a cell to keep its answer, pick another rating, or enter points; to edit the comment the team reads; or to write a team note. Midterm Pulse answers of ${orList(flagged)} are marked to review until kept or changed. Edits stay for this survey when a new export is dropped, and are marked again when the answer under them changes. Nothing here blocks the download.`,
   },
   whatItIs: "What it is",
 };

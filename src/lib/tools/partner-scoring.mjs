@@ -34,8 +34,8 @@ const CONCERNS = {
  * The four surveys. `rubric` names the rubric CSV each one scores against;
  * `question` finds one criterion's question in the export (pulseQuestion or
  * facetQuestion). An end-of-term survey also names its `term`, which a
- * response's Term must not contradict; the pulse names its `neutral` answer
- * (neutralRating).
+ * response's Term must not contradict; the pulse names its `flagged`
+ * answers (flaggedRatings).
  */
 export const SURVEYS = {
   ...Object.fromEntries(
@@ -52,7 +52,11 @@ export const SURVEYS = {
   ),
   pulse: {
     concerns: CONCERNS,
-    neutral: "Neither agree nor disagree",
+    flagged: [
+      "Neither agree nor disagree",
+      "Somewhat disagree",
+      "Strongly disagree",
+    ],
     question: pulseQuestion,
     rubric: "pulse",
     title: "Midterm Pulse",
@@ -86,26 +90,25 @@ export function noResponseScore(criterion, aBound) {
 }
 
 /**
- * The rating a partner picks to say neither yes nor no, which the Team
- * scores step flags for review: the pulse's `neutral`, or null for an
+ * The ratings the Team scores step flags for review: the pulse's
+ * `flagged`, the neutral answer and both disagree answers, or none for an
  * end-of-term survey, whose anchors, between choices, and ladder rungs have
- * none. Throws when a criterion of `rubric` lacks it, so a renamed rating
- * stops the run instead of flagging nothing.
+ * no such answer. Throws when a criterion of `rubric` lacks one, so a
+ * renamed rating stops the run instead of flagging nothing.
  */
-export function neutralRating(survey, rubric) {
-  const { neutral = null } = SURVEYS[survey];
-  if (neutral === null) {
-    return null;
-  }
-  const missing = rubric.criteria
-    .filter((criterion) => !criterion.ratings.some((r) => r.name === neutral))
-    .map((criterion) => criterion.title);
+export function flaggedRatings(survey, rubric) {
+  const { flagged = [] } = SURVEYS[survey];
+  const missing = rubric.criteria.flatMap((criterion) =>
+    flagged
+      .filter((name) => !criterion.ratings.some((r) => r.name === name))
+      .map((name) => `${criterion.title} has no "${name}" rating`)
+  );
   if (missing.length > 0) {
     throw new Error(
-      `${missing.join(", ")} has no "${neutral}" rating, the answer the Team scores step flags for review. If the ${rubric.name} rubric renamed it, rename SURVEYS.pulse.neutral to match.`
+      `${missing.join("; ")}, an answer the Team scores step flags for review. If the ${rubric.name} rubric renamed it, rename it in SURVEYS.pulse.flagged to match.`
     );
   }
-  return neutral;
+  return flagged;
 }
 
 /**
@@ -365,17 +368,17 @@ export const pointsFit = (criterion, points) =>
  * The edit the Team scores step saves for one `cell` (teamCell): the
  * `points` and `comment` the instructor left, each null where it is the
  * answer's (`points` null keeps the answer's). Null when it changes
- * nothing, unless the cell is a neutral answer, whose kept edit is the
+ * nothing, unless the cell's answer is `flagged`, whose kept edit is the
  * reviewed mark.
  */
 export function editOf(cell, { comment, points }) {
-  const { answered, neutral } = cell;
+  const { answered, flagged } = cell;
   const edit = {
     against: answered,
     comment: comment === answered.comment ? null : comment,
     points: points === null || points === answered.points ? null : points,
   };
-  return edit.comment === null && edit.points === null && !neutral
+  return edit.comment === null && edit.points === null && !flagged
     ? null
     : edit;
 }
@@ -438,11 +441,12 @@ function sortOverrides(overrides, teams, questions) {
  * state. `edit` is null or `{ against, points, comment }`: `against` the
  * answer it was made against, `points` and `comment` null where it keeps
  * the answer's. An edit's points are named by ratingFor, so points below
- * the lowest rating take its name. A cell needs `review` when it is a
- * `neutral` answer with no edit, or `stale`: its edit was made against
- * another answer. The edit still applies.
+ * the lowest rating take its name. A cell is `flagged` when its answer is
+ * one of the `flagged` ratings (flaggedRatings), never by its edit. It
+ * needs `review` when it is flagged with no edit, or `stale`: its edit was
+ * made against another answer. The edit still applies.
  */
-function teamCell(criterion, answered, edit, neutral) {
+function teamCell(criterion, answered, edit, flagged) {
   const points = edit?.points ?? answered.points;
   const final = {
     comment: edit?.comment ?? answered.comment,
@@ -453,15 +457,15 @@ function teamCell(criterion, answered, edit, neutral) {
         : ratingFor(criterion, points),
   };
   const stale = edit !== null && !sameAnswer(edit.against, answered);
-  const isNeutral = neutral !== null && answered.rating === neutral;
+  const isFlagged = flagged.includes(answered.rating);
   return {
     against: edit?.against ?? null,
     answered,
     criterion: criterion.title,
     edited: !sameAnswer(final, answered),
     final,
-    neutral: isNeutral,
-    review: stale || (isNeutral && edit === null),
+    flagged: isFlagged,
+    review: stale || (isFlagged && edit === null),
     reviewed: edit !== null && !stale,
     stale,
   };
@@ -701,7 +705,7 @@ export function scorePartnerSurvey({
     );
   }
 
-  const neutral = neutralRating(survey, rubric);
+  const flagged = flaggedRatings(survey, rubric);
   const { applied, unapplied } = sortOverrides(
     overrides,
     teamScores,
@@ -715,7 +719,7 @@ export function scorePartnerSurvey({
         criterion,
         teamScores.get(team)[i],
         cells[criterion.title] ?? null,
-        responded ? neutral : null
+        responded ? flagged : []
       )
     );
     const total = scored.reduce((sum, cell) => sum + cell.final.points, 0);

@@ -8,7 +8,7 @@ import {
   aLowerBound,
   detectSurvey,
   editOf,
-  neutralRating,
+  flaggedRatings,
   noResponseScore,
   pointsFit,
   scorePartnerSurvey,
@@ -617,6 +617,7 @@ test("regression: 70% of spring Requirements' 5 points is 3.5, not 3", () => {
 // Team scores (#611): the instructor's edits, by team and criterion.
 
 const NEUTRAL = "Neither agree nor disagree";
+const FLAGGED = [NEUTRAL, "Somewhat disagree", "Strongly disagree"];
 const { labels } = scoreText.teams;
 
 /** Engines answers Neither on Delivery quality; Compilers and Rings do not answer. */
@@ -645,35 +646,37 @@ const edit = (cell, change = {}) => ({
 
 const csvOf = (result) => rubricExportCsv(parseCsv(EXPORT)[0], result.rows);
 
-test("the pulse's neutral rating is on every pulse criterion; no end-of-term survey has one", () => {
-  assert.equal(neutralRating("pulse", rubrics.pulse), NEUTRAL);
+test("the pulse's flagged ratings are on every pulse criterion; no end-of-term survey has one", () => {
+  assert.deepEqual(flaggedRatings("pulse", rubrics.pulse), FLAGGED);
   for (const term of ["fall", "winter", "spring"]) {
-    assert.equal(neutralRating(`final-${term}`, rubrics[term]), null);
+    assert.deepEqual(flaggedRatings(`final-${term}`, rubrics[term]), []);
   }
   const [first, ...rest] = rubrics.pulse.criteria;
-  const without = {
+  const without = (name) => ({
     ...rubrics.pulse,
     criteria: [
-      { ...first, ratings: first.ratings.filter((r) => r.name !== NEUTRAL) },
+      { ...first, ratings: first.ratings.filter((r) => r.name !== name) },
       ...rest,
     ],
-  };
-  assert.throws(
-    () => neutralRating("pulse", without),
-    /Responsiveness has no "Neither agree nor disagree" rating/
-  );
+  });
+  for (const name of FLAGGED) {
+    assert.throws(
+      () => flaggedRatings("pulse", without(name)),
+      new RegExp(`Responsiveness has no "${name}" rating`)
+    );
+  }
 });
 
 test("a neutral pulse answer is flagged for review until it is kept", () => {
   const before = run(NEUTRAL_EXPORT);
   const delivery = cellOf(before, "Engines", "Delivery quality");
-  assert.equal(delivery.neutral, true);
+  assert.equal(delivery.flagged, true);
   assert.equal(delivery.review, true);
   assert.equal(delivery.reviewed, false);
   const flagged = before.teams.flatMap((t) =>
     t.cells.filter((c) => c.review).map((c) => `${t.team}: ${c.criterion}`)
   );
-  // A team with no response scores no answer, so nothing there is neutral.
+  // A team with no response scores no answer, so nothing there is flagged.
   assert.deepEqual(flagged, ["Engines: Delivery quality"]);
   assert.deepEqual(before.teamCounts, { edited: 0, notes: 0, review: 1 });
 
@@ -685,6 +688,57 @@ test("a neutral pulse answer is flagged for review until it is kept", () => {
   assert.equal(keptCell.reviewed, true);
   assert.equal(keptCell.edited, false);
   assert.equal(csvOf(kept), csvOf(before));
+});
+
+test("a disagree pulse answer is flagged like a neutral one; an agree answer is not", () => {
+  const disagree = pulseExport([
+    response("Engines", [
+      "Strongly agree",
+      "Somewhat agree",
+      "Somewhat disagree",
+      "Strongly disagree",
+    ]),
+  ]);
+  const before = run(disagree);
+  const flagged = (result) =>
+    teamOf(result, "Engines")
+      .cells.filter((c) => c.review)
+      .map((c) => `${c.criterion}: ${c.answered.rating}`);
+  assert.deepEqual(flagged(before), [
+    "Delivery quality: Somewhat disagree",
+    "Reflection: Strongly disagree",
+  ]);
+  assert.deepEqual(before.teamCounts, { edited: 0, notes: 0, review: 2 });
+
+  // Keeping a disagree answer is the reviewed mark, as for a neutral one.
+  const reflection = cellOf(before, "Engines", "Reflection");
+  const kept = editOf(reflection, {
+    comment: reflection.answered.comment,
+    points: null,
+  });
+  assert.notEqual(kept, null);
+  const after = run(disagree, {
+    overrides: { Engines: { cells: { Reflection: kept } } },
+  });
+  const keptCell = cellOf(after, "Engines", "Reflection");
+  assert.equal(keptCell.review, false);
+  assert.equal(keptCell.reviewed, true);
+  assert.equal(csvOf(after), csvOf(before));
+
+  // The flag reads the partner's answer, never the edit: an agree answer
+  // the instructor lowers to a disagree rating is not flagged.
+  const responsiveness = cellOf(before, "Engines", "Responsiveness");
+  const lowered = run(disagree, {
+    overrides: {
+      Engines: {
+        cells: { Responsiveness: edit(responsiveness, { points: 12.5 }) },
+      },
+    },
+  });
+  const loweredCell = cellOf(lowered, "Engines", "Responsiveness");
+  assert.equal(loweredCell.final.rating, "Strongly disagree");
+  assert.equal(loweredCell.flagged, false);
+  assert.equal(loweredCell.review, false);
 });
 
 test("with no edits the rubric assessment is byte-for-byte what it was", () => {
