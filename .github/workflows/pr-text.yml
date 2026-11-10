@@ -4,8 +4,8 @@
 # CI so that editing the description re-runs only this, not the build.
 #
 # guard-gh.mjs checks the text an agent passes to `gh`, and check-pr.mjs
-# reads back a PR an agent creates or edits; this catches a
-# `--body-file`, and a title or body written or edited in the GitHub UI.
+# reads back a PR an agent creates or edits; this catches a title or body
+# written or edited in the GitHub UI, or by a command neither hook saw.
 name: pr-text
 
 on:

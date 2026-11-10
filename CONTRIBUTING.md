@@ -81,8 +81,8 @@ first column is what stops you locally; the last is what stops the merge.
 | Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
 | The git and gh hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh`, `test-check-pr` |
 | The tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
-| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses a command whose text or body files carry an em dash, emoji or session link; `check-pr.mjs` reports a PR's title and text after `pr create` or `pr edit` | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
-| An agent's PR body ends its commit-body part with `Assisted-by: Claude Code` | | `check-pr.mjs` reports a PR whose body lacks the line above `---`, read back after `pr create` or `pr edit` | none: a PR a person opens alone has no trailer |
+| PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses a command whose text or body files carry an em dash, emoji or session link; `check-pr.mjs` reports a PR's title and text after a `pr create` or `pr edit` that prints its URL | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |
+| An agent's PR body ends its commit-body part with `Assisted-by: Claude Code` | | `check-pr.mjs` reports a PR whose body lacks the line above `---`, read back after a `pr create` or `pr edit` that prints its URL | none: a PR a person opens alone has no trailer |
 | Dependencies signed, and no critical advisory | | | `audit` |
 
 Skipping locally: `LEFTHOOK=0 git commit` or `--no-verify`. The Claude Code

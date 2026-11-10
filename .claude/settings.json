@@ -71,6 +71,19 @@
           }
         ]
       }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/check-pr.mjs"],
+            "timeout": 30
+          }
+        ]
+      }
     ]
   }
 }

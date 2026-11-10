@@ -5,12 +5,13 @@
  * `---` line, or the text rules `pr-text` checks.
  *
  * Both directions matter. A false report sends an agent to "fix" a correct
- * PR; a miss lets a PR reach the merge without its trailer, which no CI check
- * asks for.
+ * PR, or one it never wrote; a miss lets a PR reach the merge without its
+ * trailer, which no CI check asks for.
  *
- * `gh` is a stub on `PATH` that serves the PR from a fixture and logs each
- * call, so no case reaches GitHub. The hook loads the rule scripts from the
- * repository its `cwd` is in, so the cases run with this checkout as `cwd`.
+ * `gh` is a stub on `PATH` that serves each PR from a fixture by its number
+ * and logs its arguments, so each case also says which PRs the hook read, and
+ * no case reaches GitHub. The hook loads the rule scripts from the repository
+ * its `cwd` is in, so the cases run with this checkout as `cwd`.
  *
  * Run: node scripts/test-check-pr.mjs
  */
@@ -31,7 +32,7 @@ import { delimiter, join } from "node:path";
 
 const HOOK = ".claude/hooks/check-pr.mjs";
 const REPO = process.cwd();
-const URL = "https://github.com/o/r/pull/7";
+const pull = (n) => `https://github.com/o/r/pull/${n}`;
 const ISSUE_URL = "https://github.com/o/r/issues/8";
 
 /** `process.env` without the `GIT_*` keys a git hook exports. */
@@ -41,16 +42,18 @@ const CLEAN_ENV = Object.fromEntries(
 
 const root = realpathSync(mkdtempSync(join(tmpdir(), "check-pr-")));
 const bin = join(root, "bin");
+const prs = join(root, "prs");
 mkdirSync(bin);
-const fixture = join(root, "pr.json");
 const log = join(root, "gh.log");
-// Serves the fixture, or fails as `gh` does for a branch with no PR.
+// Logs its arguments, then serves the PR the URL in them names, or fails as
+// `gh` does for a PR it cannot read.
 writeFileSync(
   join(bin, "gh"),
   `#!/bin/sh
 printf '%s\\n' "$*" >> "${log}"
-[ -f "${fixture}" ] || { echo "no pull requests found" >&2; exit 1; }
-cat "${fixture}"
+file="${prs}/\${3##*/}.json"
+[ -f "$file" ] || { echo "could not resolve to a PullRequest" >&2; exit 1; }
+cat "$file"
 `
 );
 chmodSync(join(bin, "gh"), 0o755);
@@ -61,120 +64,166 @@ const TITLE = "fix(x): y";
 const SIGNED =
   "Closes #1\n\n- x\n\nAssisted-by: Claude Code\n\n---\n\n## Ran\n";
 const BARE = "Closes #1\n\n- x\n\n---\n\n## Ran\n";
-const BELOW = "Closes #1\n\n- x\n\n---\n\n## Ran\n\nAssisted-by: Claude Code\n";
+const AGENT = { login: "someone" };
+const clean = { author: AGENT, body: SIGNED, title: TITLE };
+const stdout = (text) => ({ interrupted: false, stderr: "", stdout: text });
 
 /**
- * `[name, command, stdout, pr, expected, calls]`: the PR the stub serves (or
- * null for none), the outcome, and whether the hook should call `gh` at all.
+ * `[name, command, input, prs, expected, read]`: what the command printed
+ * (`tool_response`, or `error` for a failed command), the PRs the stub
+ * serves by number, the outcome, and the numbers of the PRs the hook reads.
  */
 const CASES = [
-  // Commands that write no PR are never looked at.
-  ["not a PR write", "gh pr view 7", URL, null, "pass", false],
+  // Commands that write no PR, or print none, are never looked at.
+  ["not a PR write", "gh pr view 7", stdout(pull(7)), { 7: clean }, "pass", []],
   [
     "issue whose title names gh pr create",
     'gh issue create --title "hook refuses gh pr create" --body-file b.md',
-    ISSUE_URL,
-    null,
+    stdout(ISSUE_URL),
+    { 7: clean },
     "pass",
-    false,
+    [],
+  ],
+  [
+    "search that names gh pr create",
+    "grep -n 'gh pr create' AGENTS.md",
+    stdout("37: gh pr create"),
+    { 7: clean },
+    "pass",
+    [],
+  ],
+  // The cost of reading only what was printed: a capture with nothing echoed.
+  [
+    "captured create that prints nothing",
+    `url=$(gh pr create --title "${TITLE}" --body-file b.md)`,
+    stdout(""),
+    { 7: { ...clean, body: BARE } },
+    "pass",
+    [],
   ],
 
   // The PR the command printed, as GitHub holds it.
   [
     "clean PR",
     `gh pr create --title "${TITLE}" --body-file b.md`,
-    URL,
-    { body: SIGNED, title: TITLE },
+    stdout(pull(7)),
+    { 7: clean },
     "pass",
-    true,
+    [7],
   ],
   [
     "title that is not Conventional",
     'gh pr edit 7 --title "Add a thing"',
-    URL,
-    { body: SIGNED, title: "Add a thing" },
+    stdout(pull(7)),
+    { 7: { ...clean, title: "Add a thing" } },
     "report",
-    true,
+    [7],
   ],
   [
     "no trailer",
     "gh pr create --fill",
-    URL,
-    { body: BARE, title: TITLE },
+    stdout(pull(7)),
+    { 7: { ...clean, body: BARE } },
     "report",
-    true,
+    [7],
   ],
   [
     "trailer only below ---",
     "gh pr edit 7 --body-file b.md",
-    URL,
-    { body: BELOW, title: TITLE },
+    stdout(pull(7)),
+    { 7: { ...clean, body: `${BARE}\nAssisted-by: Claude Code\n` } },
     "report",
-    true,
+    [7],
+  ],
+  [
+    "trailer inside a line",
+    "gh pr edit 7 --body-file b.md",
+    stdout(pull(7)),
+    { 7: { ...clean, body: "See Assisted-by: Claude Code here.\n" } },
+    "report",
+    [7],
   ],
   [
     "trailer with no --- line",
     "gh pr edit 7 --body-file b.md",
-    URL,
-    { body: "Closes #1\n\nAssisted-by: Claude Code  \n", title: TITLE },
+    stdout(pull(7)),
+    { 7: { ...clean, body: "Closes #1\n\nAssisted-by: Claude Code  \n" } },
     "pass",
-    true,
+    [7],
   ],
   [
     "em dash in the body",
     "gh pr edit 7 --body-file b.md",
-    URL,
-    { body: `one ${EM_DASH} two\n\n${SIGNED}`, title: TITLE },
+    stdout(pull(7)),
+    { 7: { ...clean, body: `one ${EM_DASH} two\n\n${SIGNED}` } },
     "report",
-    true,
+    [7],
   ],
 
   // #666: the PR call chained after an issue call is checked on its own PR.
   [
     "non-conventional PR title after an issue that names a PR call",
     'gh issue comment 8 --body "see gh pr create"; gh pr create --title "Add a thing" --body-file b.md',
-    `${ISSUE_URL}\n${URL}`,
-    { body: SIGNED, title: "Add a thing" },
+    stdout(`${ISSUE_URL}\n${pull(7)}`),
+    { 7: { ...clean, title: "Add a thing" } },
     "report",
-    true,
-  ],
-
-  // Nothing printed: the PR of the branch checked out, if it has one.
-  [
-    "captured create, branch PR without the trailer",
-    `url=$(gh pr create --title "${TITLE}" --body-file b.md)`,
-    "",
-    { body: BARE, title: TITLE },
-    "report",
-    true,
+    [7],
   ],
   [
-    "captured create, branch with no PR",
-    `url=$(gh pr create --title "${TITLE}" --body-file b.md)`,
-    "",
-    null,
+    "two PRs printed, the second without the trailer",
+    "gh pr edit 7 --add-label x && gh pr edit 9 --body-file b.md",
+    stdout(`${pull(7)}\n${pull(9)}`),
+    { 7: clean, 9: { ...clean, body: BARE } },
+    "report",
+    [7, 9],
+  ],
+  [
+    "Dependabot PR an agent labels",
+    "gh pr edit 7 --add-label dependencies",
+    stdout(pull(7)),
+    {
+      7: {
+        author: { login: "app/dependabot" },
+        body: `Release notes ${EM_DASH} upstream\n`,
+        title: "Bump x from 1 to 2",
+      },
+    },
     "pass",
-    true,
+    [7],
   ],
 
-  // A printed PR that cannot be read is said so, and let pass.
+  // A command that fails after it wrote the PR is checked too.
+  [
+    "create chained to a failing command",
+    `gh pr create --title "${TITLE}" --body-file b.md && false`,
+    { error: `Exit code 1\n${pull(7)}` },
+    { 7: { ...clean, body: BARE } },
+    "report",
+    [7],
+  ],
+  // A printed PR that cannot be read is said so, to the model.
   [
     "printed PR that cannot be read",
     "gh pr edit 7 --add-label x",
-    URL,
-    null,
-    "error",
-    true,
+    stdout(pull(7)),
+    {},
+    "report",
+    [7],
   ],
 ];
 
 let failed = 0;
-for (const [name, command, stdout, pr, expected, calls] of CASES) {
-  rmSync(fixture, { force: true });
+for (const [name, command, response, served, expected, read] of CASES) {
+  rmSync(prs, { force: true, recursive: true });
+  mkdirSync(prs);
   rmSync(log, { force: true });
-  if (pr) {
-    writeFileSync(fixture, JSON.stringify({ ...pr, url: URL }));
+  for (const [n, pr] of Object.entries(served)) {
+    writeFileSync(
+      join(prs, `${n}.json`),
+      JSON.stringify({ ...pr, url: pull(n) })
+    );
   }
+  const { error, ...toolResponse } = response;
   let code = 0;
   let reason = "";
   try {
@@ -184,24 +233,28 @@ for (const [name, command, stdout, pr, expected, calls] of CASES) {
       input: JSON.stringify({
         cwd: REPO,
         tool_input: { command },
-        tool_response: { interrupted: false, stderr: "", stdout },
+        ...(error === undefined ? { tool_response: toolResponse } : { error }),
       }),
       stdio: ["pipe", "pipe", "pipe"],
     });
-  } catch (error) {
-    code = error.status;
-    reason = (error.stderr || "").trim().replaceAll("\n", " ");
+  } catch (thrown) {
+    code = thrown.status;
+    reason = (thrown.stderr || "").trim().replaceAll("\n", " ");
   }
-  const got = { 0: "pass", 1: "error", 2: "report" }[code] ?? `exit ${code}`;
-  const called = existsSync(log) && readFileSync(log, "utf8").length > 0;
-  if (got === expected && called === calls) {
+  const got = { 0: "pass", 2: "report" }[code] ?? `exit ${code}`;
+  const calls = existsSync(log)
+    ? readFileSync(log, "utf8").trim().split("\n")
+    : [];
+  const wanted = read.map(
+    (n) => `pr view ${pull(n)} --json author,body,title,url`
+  );
+  if (got === expected && calls.join("\n") === wanted.join("\n")) {
     continue;
   }
   failed += 1;
-  console.error(
-    `FAIL  expected ${expected}${calls ? "" : " without gh"}, got ${got}${called ? "" : " without gh"}: ${name}`
-  );
+  console.error(`FAIL  expected ${expected}, got ${got}: ${name}`);
   console.error(`      ${command}`);
+  console.error(`      gh read: ${calls.join(" | ") || "nothing"}`);
   if (reason) {
     console.error(`      ${reason}`);
   }
