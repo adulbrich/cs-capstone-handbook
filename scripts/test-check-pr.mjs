@@ -69,9 +69,10 @@ const clean = { author: AGENT, body: SIGNED, title: TITLE };
 const stdout = (text) => ({ interrupted: false, stderr: "", stdout: text });
 
 /**
- * `[name, command, input, prs, expected, read]`: what the command printed
- * (`tool_response`, or `error` for a failed command), the PRs the stub
- * serves by number, the outcome, and the numbers of the PRs the hook reads.
+ * `[name, command, input, prs, expected, read, says]`: what the command
+ * printed (`tool_response`, or `error` for a failed command), the PRs the
+ * stub serves by number, the outcome, the numbers of the PRs the hook reads,
+ * and text its report must hold.
  */
 const CASES = [
   // Commands that write no PR, or print none, are never looked at.
@@ -234,11 +235,20 @@ const CASES = [
     { 9: clean },
     "report",
     [7],
+    `could not read ${pull(7)}, ${pull(9)}`,
   ],
 ];
 
 let failed = 0;
-for (const [name, command, response, served, expected, read] of CASES) {
+for (const [
+  name,
+  command,
+  response,
+  served,
+  expected,
+  read,
+  says = "",
+] of CASES) {
   rmSync(prs, { force: true, recursive: true });
   mkdirSync(prs);
   rmSync(log, { force: true });
@@ -273,11 +283,14 @@ for (const [name, command, response, served, expected, read] of CASES) {
   const wanted = read.map(
     (n) => `pr view ${pull(n)} --json author,body,title,url`
   );
-  if (got === expected && calls.join("\n") === wanted.join("\n")) {
+  const said = reason.includes(says);
+  if (got === expected && said && calls.join("\n") === wanted.join("\n")) {
     continue;
   }
   failed += 1;
-  console.error(`FAIL  expected ${expected}, got ${got}: ${name}`);
+  console.error(
+    `FAIL  expected ${expected}${said ? "" : ` saying "${says}"`}, got ${got}: ${name}`
+  );
   console.error(`      ${command}`);
   console.error(`      gh read: ${calls.join(" | ") || "nothing"}`);
   if (reason) {

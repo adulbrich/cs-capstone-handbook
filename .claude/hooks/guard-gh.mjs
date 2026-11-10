@@ -35,7 +35,7 @@ const LEADING_TILDE = /^~(?=\/|$)/;
 /**
  * `$VAR` and `${VAR}` from this process's environment, as the shell expands
  * them inside double quotes or bare. A variable this process lacks stays as
- * written, so the read fails and pr-text is the check that sees the file.
+ * written, so the read fails and the file is not checked here.
  */
 function expandVars(path) {
   return path.replace(

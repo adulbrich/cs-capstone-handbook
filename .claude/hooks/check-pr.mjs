@@ -14,7 +14,9 @@
  * comment's URL, or the `url:` line of `gh pr view`, is not one. A command
  * that prints none, such as `url=$(gh pr create ...)` with nothing echoed, is
  * not checked: guessing the PR from the branch reported PRs the command never
- * wrote (#666).
+ * wrote (#666). A PR URL another call in the same command prints alone on a
+ * line, as `gh pr list --json url -q '.[].url'` does, is checked too: the
+ * output cannot tell it from the one the write printed.
  *
  * Exit 2 hands stderr to the model, which then fixes the PR with
  * `gh pr edit`; the command has already run, so nothing is blocked.
