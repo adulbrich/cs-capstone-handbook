@@ -282,8 +282,9 @@ projects need something:
 Each "before" breaks a rule above. Each "after" follows the rules and keeps
 what the before says, except where its label names a change.
 
-A noun stack as the subject, with a hidden actor. The after is the opening
-sentence #682 sets, which also names the level a partner can agree to:
+A noun stack as the subject, with a hidden actor. The after, #682's opening
+sentence, drops the facet's name and rank and adds the level a partner can
+agree to:
 
 > Before: Your spring grade's largest partner-evaluation facet (Verification
 > and Validation, 40 of the End-of-Term Survey's 100 points) is scored
@@ -312,7 +313,7 @@ A sentence that defines a thing by itself:
 > record the level.
 >
 > After: If none of these fits your project, agree with your partner or
-> mentor what shipped means, and write it down.
+> mentor what shipped means, and write it into your agreement.
 
 A reason on an instruction nobody would doubt, which the after drops:
 
