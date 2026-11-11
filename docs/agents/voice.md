@@ -6,12 +6,12 @@ skills (`cs46x-activities`, `cs46x-assignments`, `cs46x-guides`) point here by
 section and add only what their own page type needs.
 
 Every page is reviewed for three faults (Joseph Williams and Joseph Bizup,
-*Style: Lessons in Clarity and Grace*):
+*Style: Lessons in Clarity and Grace*; #680):
 
 - a **hidden actor**: the subject isn't who acts, or the action is buried in a
   noun (Concrete sentences, rule 1);
 - **vague wording**: a noun stack, a reference with no clear target, a coined
-  phrase (Concrete sentences, rules 2 and 5);
+  phrase (Concrete sentences, rules 2 and 5, and The floor's precise nouns);
 - a **buried point**: the reader understands every word and can't say what
   the paragraph is for (Structure).
 
@@ -63,8 +63,8 @@ Every claim a reader could doubt is one of three kinds, and the sentence shows
 which.
 
 1. **Evidence**: a finding from a peer-reviewed venue, a research book, or an
-   industry report with a published method (name it: "the DORA report
-   found"). Mark a preprint "(preprint)". Cite it, and name the author in the
+   industry report with a published method (name it as an industry report:
+   "the DORA report found"). Mark a preprint "(preprint)". Cite it, and name the author in the
    sentence where that helps the reader judge it: "Edmondson (1999) found...".
    Where research on the question exists, cite the research, not a blog post
    about it.
@@ -103,7 +103,7 @@ time".
 - The reverse outline: one line per paragraph, stating its point. Cut a
   paragraph with no point, split one with two, and drop a last sentence that
   restates. Write the outline before drafting a page, and run it again on the
-  draft.
+  draft (#680).
 - Lists hold what you can count: steps, options, checklists. Prose holds
   arguments. An option list may label its pick "(Preferred)".
 - "Not A; it's B" only when the reader plausibly believes A, with the
@@ -114,7 +114,8 @@ time".
   the pages under `about/`), which opens on what it holds. Two openers are
   banned on every page: a claim about the topic's importance ("X is the
   backbone of...") and a "Without X:" list of what goes wrong. `check-prose`
-  enforces both only in a guide's opening.
+  enforces both only in a guide's opening, so on any other page only review
+  catches them.
 - A page has no closing summary and no closing moral. It ends on its last
   useful section.
 - A heading names its section, never a percentage, a length, or a format
@@ -154,20 +155,20 @@ it in the pull request (#661).
 4. Durations and quantities are numbers, sourced or hedged as Claims
    requires: "three of the five endpoints have no tests", "two to six weeks".
    Where nobody on the team knows the number, say who does: "ask the partner
-   how long their security review takes". A number a vendor sets and changes
-   (a store's review time, a tester count, a price) is never restated: name
-   the requirement, link the vendor's page, and tell the reader to check it
-   before planning on it.
+   how long their security review takes". A rule or number a vendor sets and
+   changes (a store's review time, a tester count, a price) is never
+   restated: name the requirement, link the vendor's page, and tell the
+   reader to check it before planning on it.
 5. Use the reader's words. Write the verb, not a noun made from it, and name
    the thing instead of stacking nouns or coining a compound: "recruit users",
    not "real-user recruitment". A sentence that defines a thing by itself
    ("record it in the document where you record the level") names the thing
-   instead. A term the handbook needs has one meaning, given in
+   instead (#680). A term the handbook needs has one meaning, given in
    `src/content/docs/about/glossary.mdx`, and is used that way everywhere.
-6. Every phrase carries meaning. Cut an appositive that repeats the
-   sentence's nouns ("access and approvals alike"), a tacked-on "both X and
-   Y", a pair or triple added for cadence, and a phrase that announces a
-   point instead of making it ("it's worth noting that").
+6. No filler for rhythm: an appositive that repeats the sentence's own nouns
+   ("access and approvals alike"), a tacked-on "both X and Y", a pair or
+   triple added for cadence, or a phrase that announces a point instead of
+   making it ("it's worth noting that").
 7. Put a link on the words that name its topic: "read [Google Play's testing
    requirements](...)", not "..., which [Shipping](...) covers".
 8. An expectation names what someone could observe: "a README a new teammate
@@ -278,8 +279,8 @@ projects need something:
 
 ## Before and after
 
-Each "before" is from a page, now or earlier. Each "after" follows the rules
-above and keeps what the before says, except where its label names a change.
+Each "before" breaks a rule above. Each "after" follows the rules and keeps
+what the before says, except where its label names a change.
 
 A noun stack as the subject, with a hidden actor. The after is the opening
 sentence #682 sets, which also names the level a partner can agree to:

@@ -8,9 +8,9 @@ sidebar:
 import Cite from '/src/components/Cite.astro';
 import References from '/src/components/References.astro';
 
-Early in a project, you and your project partner or mentor agree what "shipped" will mean when the project ends, and that agreement decides which requests you start in your first weeks, such as a store account or the partner's IT review. Most of them wait on someone outside the team.
+Early in a project, you and your project partner or mentor agree in writing what "shipped" will mean when the project ends, and that agreement decides which requests you start in your first weeks, such as a store account or the partner's IT review. Most of them wait on someone outside the team.
 
-This page gives you a way to measure shipped and says what to deploy first. It then covers the four groups of people the top levels wait on: maintainers who decide whether your contribution to an open-source project merges, people who use your software on their own, someone who reproduces your result, and a partner who runs your software in their own environment. For each, it lists the prerequisites, lead times, blockers, and evidence. It doesn't cover [how to deploy](/guides/devops/).
+This page gives you a ladder to measure shipped and says what to deploy first. It then covers the four groups of people the top of that ladder waits on: maintainers who decide whether your contribution to an open-source project merges, people who use your software on their own, someone who reproduces your result, and a partner who runs your software in their own environment. For each, it lists the prerequisites, lead times, blockers, and evidence. It doesn't cover [how to deploy](/guides/devops/).
 
 :::note[tl;dr]
 - Measure shipped by one question, who ran the software, and agree the level you're aiming at with your partner in the first weeks.
@@ -19,12 +19,12 @@ This page gives you a way to measure shipped and says what to deploy first. It t
 - If you contribute to an open-source project, get a trivial pull request merged early, and discuss any substantial change with the maintainers before you build it.
 - Wire in the measurement early, so the numbers exist by the time you need them.
 - Capture evidence the day it happens: the merged pull request, the dashboard, the partner's email.
-- Read every section your top level depends on. If none of them fits your project, agree with your partner what shipped means, write it down, and aim for that level.
+- Read every section your top level depends on. If none of them fits your project, agree with your partner or mentor what shipped means, write it down, and aim for that level.
 :::
 
 ## The Ladder
 
-"Shipped" isn't a single state. Think of it as a ladder measured by one question: who ran the software? At the bottom, nobody outside the team ran it. One level up, your partner watched it run on their real inputs. Every level above that describes someone outside the team running your work, and the top level means people who aren't you depend on it: the partner's staff run it in their operations, a release of an open-source project includes your contributions, someone who didn't build it reproduces your result, or people use it on their own.
+"Shipped" isn't a single state but a ladder, measured by one question: who ran the software? At the bottom, nobody outside the team ran it. One level up, your partner watched it run on their real inputs. Every level above that describes someone outside the team running your work, and the top level means people who aren't you depend on it: the partner's staff run it in their operations, a release of an open-source project includes your contributions, someone who didn't build it reproduces your result, or people use it on their own.
 
 The top levels wait on processes you don't control: maintainer review, app store review, data access, a partner's IT security review, and recruiting users who owe you nothing. AI coding tools can speed up the work you control, but not someone else's queue. Choose the level you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them.
 
@@ -36,7 +36,7 @@ Each section's timeline runs in three phases: Early, Middle, and Late, each roug
 
 Deploy a **walking skeleton** in the early phase: the thinnest version of the system that runs end to end, where the real one will live (or, while the partner's IT review is pending, on your own hosting). For a web app that's a production URL; for an installable build, a release on the channel your users will install from; for a pipeline, a run on sample data in the compute environment the real run will use; for a contribution to an open-source project, a first pull request through that project's CI. It exposes the whole external dependency chain (domain registration, TLS, hosting account limits, signing) while there's nothing to lose.
 
-If your partner asked for research and planning first, build the skeleton with the first code. Until then, the early phase is on track when every long wait has started, even if a user would notice little: the research and planning delivered and reviewed, the IT review or data use agreement requested, a run on sample data, or a first contribution merged.
+If your partner asked for research and planning first, build the skeleton with the first code. In that case, the early phase is on track when every long wait has started, even if a user would notice little: the research and planning delivered and reviewed, the IT review or data use agreement requested, a run on sample data, or a first contribution merged.
 
 ## Getting a Contribution Merged Into an Open-Source Project
 
@@ -53,7 +53,7 @@ Each level has its own prerequisites:
 
 Open a first pull request in the early phase, and aim past that: **get a trivial pull request merged in the same phase**. A typo fix, a docs clarification, or an issue carrying the [`good first issue` label](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/encouraging-helpful-contributions-to-your-project-with-labels) will do, because the merge matters and the diff doesn't: it opens the channel to the maintainers, runs your toolchain end to end (fork, build, CLA, CI), and teaches you this project's review culture while the stakes are near zero.
 
-Before you build a substantial change, read the project's [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and its recent merged pull requests, then discuss the change with the maintainers in an issue or on the mailing list, as GitHub's [Open Source Guides](https://opensource.guide/how-to-contribute/) advise. The discussion tells you whether someone is already doing the work and whether the project wants it done another way, and those are the two main reasons for rejection: in a study of 21 popular GitHub projects, <Cite id="steinmacher-2018" /> found that contributors whose pull requests weren't accepted most often cited a superseded or duplicated pull request and a mismatch between their vision and the team's.
+Before you build a substantial change, read the project's [CONTRIBUTING file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) and its recent merged pull requests, then discuss the change with the maintainers in an issue or on the mailing list, as GitHub's [Open Source Guides](https://opensource.guide/how-to-contribute/) advise. A short discussion tells you whether someone is already doing the work and whether the project wants it done another way, and those match the two main reasons for rejection in a study of 21 popular GitHub projects: <Cite id="steinmacher-2018" /> found that contributors whose pull requests weren't accepted most often cited a superseded or duplicated pull request and a mismatch between their vision and the team's.
 
 | Phase | What must be true |
 |---|---|
@@ -89,7 +89,7 @@ For games, [itch.io](https://itch.io/developers) is the fast path: you upload th
 
 Add analytics or telemetry in the early phase: a privacy-focused page-view and event counter, a product analytics tool, or a simple event log. Any claim about use needs numbers, and the numbers exist only if the instrumentation was quietly collecting before you needed them.
 
-If the venture question interests you beyond the software, two programs help you decide what to build next, though neither puts a user in front of what you've built: [Y Combinator's Startup School](https://www.startupschool.org/) is a self-paced online course on starting a startup, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator)'s Iterate program teaches a process for validating a business concept.
+If turning the software into a company interests you, two programs help you decide what to build next, though neither puts a user in front of what you've built: [Y Combinator's Startup School](https://www.startupschool.org/) is a self-paced online course on starting a startup, and the [OSU Advantage Accelerator](https://advantage.oregonstate.edu/advantage-accelerator)'s Iterate program teaches a process for validating a business concept.
 
 | Phase | What must be true |
 |---|---|
@@ -109,7 +109,7 @@ Collect as you go: the production URL and its uptime history, dated analytics sc
 
 ## Getting Your Result Reproduced
 
-If your project produces a result, the top levels wait on someone who didn't build it getting that result again. The result might be a model a professor's lab wants to build on, an analysis a partner's group will rerun on next season's data, a benchmark a paper will report, or a simulation another group extends. The aim is a result someone else can reproduce and, when it holds up, a paper. If you're considering graduate school, it's the work closest to what you'd do there, and a professor's research group, when there is one, gives you collaborators beyond your own team.
+If your project produces a result, the top levels wait on someone who didn't build it getting that result again, and a result that holds up can become a paper. The result might be a model a professor's lab wants to build on, an analysis a partner's group will rerun on next season's data, a benchmark a paper will report, or a simulation another group extends. If you're considering graduate school, it's the work closest to what you'd do there, and a professor's research group, when there is one, gives you collaborators beyond your own team.
 
 Here the levels read, from the bottom: your partner ran it once on real data, on your setup; your partner's group ran it on real data and you fixed what they found; someone outside the team reran the pipeline and got your numbers; someone who didn't build it, such as a graduate student in the lab, a peer, or another group, reproduced the result from the published artifact without your help, which is what a paper is for.
 
@@ -147,7 +147,7 @@ Collect as you go: approval letters and agreement dates, the reproducible artifa
 
 ## Getting Into the Partner's Environment
 
-If your software will end up running in the partner's environment, operated by the partner's people, the top two levels are the partner's actions, not yours. The software might be an internal tool for a company, a study tool for a professor in another department, or a citizen-science app for a nonprofit. The levels read, from the bottom: the partner tried a prototype; their feedback addressed in a newer version; the partner integrating it into production; the partner running it in operations. The hardest prerequisites on your list are the partner's to satisfy, so your job is to make each of their steps easy, safe, and early.
+If your software will end up running in the partner's environment, operated by the partner's people, the top two levels are the partner's actions, not yours, so your job is to make each of their steps easy, safe, and early. The software might be an internal tool for a company, a study tool for a professor in another department, or a citizen-science app for a nonprofit. The levels read, from the bottom: the partner tried a prototype; their feedback addressed in a newer version; the partner integrating it into production; the partner running it in operations. The hardest prerequisites on your list are the partner's to satisfy.
 
 Each level has its own prerequisites:
 
@@ -181,7 +181,7 @@ Collect as you go: the acceptance criteria and the partner's written endorsement
 
 ## Best Practices for Shipping
 
-- Give every external prerequisite an owner and a start-by date in your plan, and check them at each planning meeting, because a request stalled in someone else's queue makes no noise until you go looking for it.
+- Give every external prerequisite an owner on the team and a start-by date in your plan, and check them at each planning meeting, because a request stalled in someone else's queue makes no noise until you go looking for it.
 - Treat recruiting users as a workstream, with an owner, a channel that exists, and backlog items, starting no later than the middle phase.
 - Plan for the level you can show someone running, not the one you hope to reach.
 - Link each piece of evidence from your agreement with your partner the day you capture it.
@@ -192,7 +192,7 @@ The last tenth of a project isn't a tenth of the work. A plan that says "build u
 
 The estimate you get from an IT department, a data owner, or a maintainer is how long their step takes when nothing goes wrong. It leaves out the time your request sits in a queue before anyone reads it, and the revision round that follows. Each of them decides which of many requests to handle next, so you control two things: when your request joins the queue, and how easy it is to handle, by following their process and answering their last question quickly.
 
-"The partner will deploy it after the project ends" describes the feedback level while claiming the operations level. Once the team is gone, nobody is left to fix whatever differs in the partner's environment (an authentication scheme, a network policy, a data access rule), so a plan that stops short of deploying there ends one level lower than it claims.
+"The partner will deploy it after the project ends" describes the feedback level while claiming the operations level. Once the team is gone, nobody is left to fix whatever differs in the partner's environment (an authentication scheme, a network policy, a data access rule), so a plan that stops short of deploying there ends lower than it claims.
 
 If your shipping plan has no date before the project's midpoint, it's a wish rather than a plan. A late date can't slip without taking the level with it, while an early date that slips is information you can still act on, by renegotiating the level with your partner in the open or by moving the work.
 

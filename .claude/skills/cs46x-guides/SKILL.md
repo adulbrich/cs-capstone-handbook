@@ -57,7 +57,7 @@ That job sets the register, and the register has four rules.
 works at the level this course needs, and one concrete example on first use.
 Say what breaks without it when a reader would skip the practice otherwise
 (`docs/agents/voice.md`, Pages are not chat). A term or tool mentioned in
-passing gets its link and nothing more (#680).
+passing gets what The floor in that file requires, and nothing more (#680).
 
 **Lists and prose follow Structure in `docs/agents/voice.md`.** In a guide
 the common failure is a list of five bolded fragments, which looks finished
@@ -225,7 +225,8 @@ situation-first opener are read for, not validated.
 8. **`## Best Practices for Writing X`.** A bulleted list of concrete,
    actionable rules, hedged as Claims in `docs/agents/voice.md` allows, one
    line each. A rule the body explains carries no reason here; one the body
-   doesn't cover gets its reason in one clause (#680).
+   doesn't cover gets its reason in one clause, when a reader would doubt it
+   (#680).
 
 9. **`## Some Truths about X`.** Required, and the section that gives these
    guides their credibility. Say the uncomfortable thing first: where the
@@ -468,7 +469,7 @@ rules every page follows are under Before and after in `docs/agents/voice.md`.
 **What the pairs show:** each "before" is a slogan with nothing to check, and
 each "after" states its point first, then the one fact that makes it
 checkable. Adding every reason the writer can think of is the opposite
-failure: it buries the point.
+failure: it buries the point (#680).
 
 ## Before Finishing
 
@@ -516,8 +517,8 @@ failure: it buries the point.
    entry repeats a body section.
 5. Sort the claims. Read the page for every sentence a reader could doubt and
    confirm it is Evidence (cited and verified), a Reference (linked), or a
-   Recommendation (an imperative, with its reason where a reader would doubt
-   it). Grep for
+   Recommendation (an imperative, with a reason where Pages are not chat
+   calls for one). Grep for
    the unsourced tells: `research shows`, `studies`, `most teams`, a bare
    percentage. Name in the pull request body each source you opened to check
    a paraphrase (see Sourcing).
@@ -536,8 +537,8 @@ failure: it buries the point.
      finding, its size, and its caveat);
    - stale lines: an entry about content the page no longer has.
 
-   Each claim keeps its reason, source, and caveat once on the page, and the
-   tl;dr and required sections stay. List each cut with its word saving in
+   Each claim keeps any reason it needs, its source, and its caveat once on
+   the page, and the tl;dr and required sections stay. List each cut with its word saving in
    the pull request body, or write "no cuts", so the reviewer can check
    what went; the savings describe the edit and are not a target (see
    Length).
