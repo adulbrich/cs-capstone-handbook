@@ -59,8 +59,8 @@ reviewer prompts briefs, which is a different sense.
 
 ## Claims
 
-Every claim a reader could doubt is one of three kinds, and the sentence shows
-which.
+Every claim a reader could reasonably doubt is one of three kinds, and the
+sentence shows which.
 
 1. **Evidence**: a finding from a peer-reviewed venue, a research book, or an
    industry report with a published method (name it as an industry report:
@@ -331,7 +331,8 @@ A contrast used as a thesis, split into slogans:
 > After: Merging takes a maintainer's attention and approval, not just good
 > code.
 
-An unsourced claim, where the after is longer because a reader would doubt it:
+An unsourced claim turned into a recommendation, longer because a reader would
+doubt it:
 
 > Before: Most security incidents start with a leaked credential.
 >

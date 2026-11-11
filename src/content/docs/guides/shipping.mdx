@@ -19,7 +19,7 @@ This page gives you a ladder to measure shipped and says what to deploy first. I
 - If you contribute to an open-source project, get a trivial pull request merged early, and discuss any substantial change with the maintainers before you build it.
 - Wire in the measurement early, so the numbers exist by the time you need them.
 - Capture evidence the day it happens: the merged pull request, the dashboard, the partner's email.
-- Read every section your top level depends on. If none of them fits your project, agree with your partner or mentor what shipped means, write it down, and aim for that level.
+- Read every section your target level depends on. If none of them fits your project, agree with your partner or mentor what shipped means, write it down, and aim for that level.
 :::
 
 ## The Ladder
@@ -28,7 +28,7 @@ This page gives you a ladder to measure shipped and says what to deploy first. I
 
 The top levels wait on processes you don't control: maintainer review, app store review, data access, a partner's IT security review, and recruiting users who owe you nothing. AI coding tools can speed up the work you control, but not someone else's queue. Choose the level you're aiming at when the project starts, plan backward from it, and start the slow processes in your first weeks rather than when you feel ready for them.
 
-Read each section below that your top level depends on. A project may need several of them or none: a partner's app that the public uses needs [Getting People to Use It Without You](#getting-people-to-use-it-without-you) and the partner's IT review from [Getting Into the Partner's Environment](#getting-into-the-partners-environment). If none of the four sections fits your project, agree with your partner or mentor what shipped means, and write it down.
+Read each section below that your target level depends on. A project may need several of them or none: a partner's app that the public uses needs [Getting People to Use It Without You](#getting-people-to-use-it-without-you) and the partner's IT review from [Getting Into the Partner's Environment](#getting-into-the-partners-environment). If none of the four sections fits your project, agree with your partner or mentor what shipped means, and write it down.
 
 Each section's timeline runs in three phases: Early, Middle, and Late, each roughly a third of the project.
 
@@ -36,7 +36,7 @@ Each section's timeline runs in three phases: Early, Middle, and Late, each roug
 
 Deploy a **walking skeleton** in the early phase: the thinnest version of the system that runs end to end, where the real one will live (or, while the partner's IT review is pending, on your own hosting). For a web app that's a production URL; for an installable build, a release on the channel your users will install from; for a pipeline, a run on sample data in the compute environment the real run will use; for a contribution to an open-source project, a first pull request through that project's CI. It exposes the whole external dependency chain (domain registration, TLS, hosting account limits, signing) while there's nothing to lose.
 
-If your partner asked for research and planning first, build the skeleton with the first code. In that case, the early phase is on track when every long wait has started, even if a user would notice little: the research and planning delivered and reviewed, the IT review or data use agreement requested, a run on sample data, or a first contribution merged.
+If your partner asked for research and planning first, build the skeleton with the first code. In that case, the early phase is on track when every long wait has started, even if a user would notice little: the research and planning delivered and reviewed by your partner, the IT review or data use agreement requested, a run on sample data, or a first contribution merged.
 
 ## Getting a Contribution Merged Into an Open-Source Project
 
