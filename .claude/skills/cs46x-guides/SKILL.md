@@ -276,8 +276,7 @@ Every guide opens, after the imports and before any heading, on the
 reader's situation: the moment in a project when the page is useful. Then it
 says what the page covers and what it does not, then gives the tl;dr. The
 guides index is exempt. The two openers banned on every page are under
-Structure in `docs/agents/voice.md`, and its Before and after section shows a
-situation opener next to a claim about importance.
+Structure in `docs/agents/voice.md`.
 
 The tl;dr holds three to seven bullets, each a concrete action or fact the
 reader could act on without reading further. It is not a table of contents
