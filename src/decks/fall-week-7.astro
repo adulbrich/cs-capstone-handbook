@@ -243,7 +243,7 @@ const lunchSections = [
 const lunchAnswers = [
   {
     answer:
-      "Each kitchen screen asks every 5 seconds; we expected Supabase to push new orders",
+      "We couldn't tell why each screen asks every 5 seconds instead of Supabase pushing",
     asks: "Can you follow it without the code?",
     section: "Architecture",
   },
@@ -532,8 +532,7 @@ const lunchLog = [
     </div>
   </div>
   <p class="caption caption-tight">
-    Each arrow names what passes along it. The team opens on the decision
-    marked.
+    The team opens on the decision marked.
   </p>
 </Slide>
 
@@ -643,7 +642,7 @@ const lunchLog = [
       <ul class="says">
         <li>Data model: changing a dish's price rewrites every past order</li>
         <li>
-          Interfaces and contracts: no refund is shown. Stripe returns the
+          Interfaces and contracts: no refund callback. Stripe returns the
           money, and the order still reads paid
         </li>
         <li>
@@ -750,7 +749,7 @@ const lunchLog = [
       <tr>
         <th scope="row">An answer nobody can act on</th>
         <td class="instead">Think about scalability</td>
-        <td>Kitchen dashboard: each screen asks for orders every 5 seconds. What happens at 40 screens?</td>
+        <td>Architecture: each kitchen screen asks for orders every 5 seconds. What happens at 40 screens?</td>
       </tr>
       <tr>
         <th scope="row">A decline with no reason</th>
