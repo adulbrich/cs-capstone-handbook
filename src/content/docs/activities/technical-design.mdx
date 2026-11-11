@@ -154,52 +154,23 @@ A good output is a performance plan with identified bottlenecks and optimization
 
 <ActivityMeta anchor="peer-technical-design-review" effort="1 to 2 h" />
 
-Put your technical design in front of another team and review theirs in return, in one sitting; the [presentations guide](/guides/presentations/#design-reviews) covers what a design review is for. About 75 minutes for two or three teams in one room or on one call.
+Present your technical design document to another team, collect their written answers to five review questions, and log what you'll do about each. The exchange is a rehearsal for a formal design review; the [presentations guide](/guides/presentations/#design-reviews) covers what one is for. About 75 minutes for two or three teams in one room or on one call.
 
-- **Draw your design on one page**: 20 minutes, starting from your design document if you have one. The components, how they connect, what they are built with, and the one design decision your team is least sure of. Cover the three issues below at the depth one page allows.
-- **Present**: 5 minutes per team. Walk the others through your page. Answer their questions; don't defend the design yet.
-- **Review**: 20 minutes, every team at once. Work through the questions below on the other team's page, or with three teams on the next team's page, write each finding in one sentence, and hand the findings over.
-- **Decide**: 20 minutes. Mark each finding you received accepted or declined, with a one-line reason, and name the change you will make first.
+- **Present**: 10 minutes per team. Introduce the project first: the problem it solves, who it's for, and what it runs in or connects to. Then walk the others through your design document, starting with the decision you're least sure of, and answer their questions without defending the design yet.
+- **Review**: 25 minutes, every team at once. Read the other team's document (with three teams, the next team's) and answer each question below in writing, naming the section each answer is about. Hand the answers over.
+- **Log**: 20 minutes. Turn every answer you received into a comment, and give each a priority, 1 being the change you make first, or mark it declined with a one-line reason.
 
-As a reviewer, question the other team's design:
+As a reviewer, answer these about the other team's document:
 
-- Is the design fit for purpose? Does it do what the project needs?
-- Is the design fit for the future? Can it grow modularly?
-- Is the design solving the right problem?
-- What alternatives should the team consider, and would one of them make the least-sure decision easier?
-- What would you change first?
+- Could someone who hasn't read the code follow how the system works from this document alone? Where did you get lost?
+- Are the diagrams written as text in the document, such as [Mermaid](https://mermaid.js.org/), so they change with it, rather than as image files? Which part of the design needs a diagram it doesn't have?
+- Does the design do what the problem statement asks? Is a credible alternative missing for the decision the team is least sure of?
+- What would break if the assumption the design rests on most changed?
+- What single change would you make first?
 
-Giving and receiving this kind of review is rehearsal for a formal design review.
+If you have no design document yet, spend 20 minutes first on one page: the components, how they connect, what each is built with, and the decision you're least sure of.
 
-Your one-page design covers these three issues:
-
-### Explanation of the Design
-
-This exercise covers the internal design and architecture of the software, not the user experience.
-
-- What are the components? 
-- What libraries and tools are used? 
-- How are they arranged? 
-- Any noteworthy uses of architectural styles or design patterns?
-- etc.
-
-### Fitness for Purpose
-
-A rationale for why this design meets the requirements/specification.
-
-- Why is this design better than reasonable alternatives? 
-- If the project is in a known domain with a known solution strategy, is it following normal design conventions? 
-- If the project is in a novel domain or has a novel solution strategy, why is the proposed design a good match?
-
-### Fitness for Future
-
-- What are the anticipated kinds of change, growth, or variability in the domain?
-- Does the design facilitate managing that change in a modular fashion? 
-- What are core assumptions that cannot be changed?
-
-Optionally, run this a second time with an AI agent and set the two outputs side by side, noting where they differ, because the comparison shows what the tool changed; either version can be the one you keep.
-
-A good output is your one-page design, the findings the other team gave you, and each finding marked accepted or declined with a reason.
+A good output is a log of the comments your design document received, each given a priority or declined with a reason.
 
 ## Read a Book on Approaches to Software Design
 
