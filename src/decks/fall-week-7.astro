@@ -6,7 +6,8 @@
 // its introduction and the diagram in its design document, the other team's
 // written answers, the log of comments, and what an answer a team can act on
 // reads like); the two fallbacks; then one slide per step for the teams to
-// work from, a self-check, and the wrap. The step names, their minutes, and
+// work from, a self-check, the wrap, and an optional prompt for a team whose
+// reviewer is an agent. The step names, their minutes, and
 // the reviewer questions come from the activity page; the weeks on the
 // timeline, the reading, and the week's other Due items from the schedule;
 // the submission from the workshop page.
@@ -646,6 +647,21 @@ const lunchLog = [
   </ul>
 </Slide>
 
+<Slide kicker="Optional: no reviewer" title="A prompt for an agent reviewing your document" wide>
+  <div class="prompt">
+    <p>
+      Review the attached technical design document as another capstone team
+      would. Answer each question below in writing, and name the section of
+      the document each answer is about. Don't rewrite the document.
+    </p>
+    <ol>{questions.map((question) => <li>{question}</li>)}</ol>
+  </div>
+  <p class="caption">
+    Give it only what your Team Charter allows, then log its answers as you
+    would another team's.
+  </p>
+</Slide>
+
 <style>
   .caption {
     margin-block-start: auto;
@@ -996,6 +1012,24 @@ const lunchLog = [
   .due {
     margin-block-start: 32px;
     font-size: 36px;
+  }
+
+  /* A prompt to copy, set apart from the slide's own text. */
+  .prompt {
+    padding: 24px 36px;
+    font-size: var(--deck-text-min);
+    line-height: 1.25;
+    background: var(--deck-card);
+    border: 3px solid var(--deck-rule);
+    border-radius: 12px;
+  }
+
+  .prompt p {
+    margin: 0 0 16px;
+  }
+
+  .prompt ol {
+    margin: 0;
   }
 
   /* What today feeds: a week column, a line of dots, and the entry. */
