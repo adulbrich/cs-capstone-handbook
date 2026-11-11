@@ -52,11 +52,12 @@ are the way they are, how they relate, what the tradeoffs are.
 
 That job sets the register, and the register has four rules.
 
-**Define, explain, show, then say why it matters.** Every term, tool, or
-mechanism gets all four on first use. Define it in plain language, explain how
-it works at the level this course needs, give one concrete example, and say
-what breaks if you get it wrong. A definition without the "what breaks" is
-trivia.
+**Define and show what the guide teaches.** Each concept the guide teaches
+(a walking skeleton, a flaky test, an ADR) gets a plain definition, how it
+works at the level this course needs, and one concrete example on first use.
+Say what breaks without it when a reader would skip the practice otherwise
+(`docs/agents/voice.md`, Pages are not chat). A term or tool mentioned in
+passing gets its link and nothing more (#680).
 
 **Lists and prose follow Structure in `docs/agents/voice.md`.** In a guide
 the common failure is a list of five bolded fragments, which looks finished
@@ -76,10 +77,10 @@ option is the marketing the Some Truths section is supposed to prevent.
 Guides owe evidence. Sort every claim a reader could doubt into the three kinds
 under Claims in `docs/agents/voice.md` and give each what its kind needs. The guide is the page type where Evidence claims live, so this
 is where the sort does most of its work. A Recommendation in a guide is an
-imperative with its reason, never "the instruction team recommends", because
-of [Guides Are Standalone](#guides-are-standalone): "Pin dependency versions
-in the lockfile, because a teammate who installs next week should get the
-packages you tested."
+imperative, never "the instruction team recommends", because of [Guides Are
+Standalone](#guides-are-standalone). It carries a reason when Pages are not
+chat in `docs/agents/voice.md` calls for one: "Pin dependency versions in the
+lockfile, so a teammate who installs next week gets the packages you tested."
 
 The test is whether each doubtable claim has the right kind of support, not
 how many links the page carries.
@@ -222,7 +223,9 @@ situation-first opener are read for, not validated.
    working in real life, not the artifact's own quality.
 
 8. **`## Best Practices for Writing X`.** A bulleted list of concrete,
-   actionable rules, hedged as Claims in `docs/agents/voice.md` allows.
+   actionable rules, hedged as Claims in `docs/agents/voice.md` allows, one
+   line each. A rule the body explains carries no reason here; one the body
+   doesn't cover gets its reason in one clause (#680).
 
 9. **`## Some Truths about X`.** Required, and the section that gives these
    guides their credibility. Say the uncomfortable thing first: where the
@@ -230,15 +233,13 @@ situation-first opener are read for, not validated.
    Then say when it does matter. A guide that only advocates is marketing,
    and students can tell.
 
-   **Every truth carries its reason, and a source where one exists.**
-   One-sentence truths are banned. This section is where the compression
-   failure concentrates, because an uncomfortable claim compresses into a
-   memorable line more easily than any other kind, and the line is the part
-   that teaches nothing. "Most teams skip this" is a rumor. "Most teams skip
-   this because the cost is diffuse and shows up three sprints later as two
-   people solving the same problem twice" is a claim a student can weigh.
-   Where a named source disagrees with the guide, link it and say why you
-   still recommend what you recommend.
+   A truth states what the reader would push back on, then the one fact that
+   makes it true, with a source where one exists: "Most teams skip this" is a
+   rumor, and "the cost shows up three sprints later, as two people solving
+   the same problem twice" is the fact that lets a student weigh it. A truth
+   a body section already makes is cut (#680). Where a named source disagrees
+   with the guide, link it and say why you still recommend what you
+   recommend.
 
 10. **`## X in Industry and Academia`.** Required. What this looks like in real
     organizations, with named examples where you have them (Amazon's PR/FAQ,
@@ -414,12 +415,10 @@ others link:
 
 ## Length
 
-**Typical band: 2,500 to 5,000 words. Split-check at 6,000.** Section
-overview and index pages are exempt and run short.
-
-Explanation costs words. A guide that hits 2,500 by cutting the reason for
-every claim is worse than one that reaches 4,500 by keeping them. If a guide
-passes 6,000, look for a section that wants to be its own guide.
+**Split-check at 6,000 words.** A guide is as long as its reverse outline
+needs (`docs/agents/voice.md`, Structure), with no floor (#680); section
+overview and index pages run short. If a guide passes 6,000, look for a
+section that wants to be its own guide.
 
 **The test is the reader.** If you can name someone who reads the candidate
 section *instead of* the rest of the page, it is a split; `accessibility.mdx`
@@ -445,38 +444,32 @@ Tool Requirements above.
 
 ## Worked Examples
 
-The pairs below are constructed to this skill's rules. The aphorism set
-against its explanation is under Pages are not chat in
-`docs/agents/voice.md`, and the pairs for the rules every page follows are
-under its Before and after.
+The pairs below are constructed to this skill's rules; the pairs for the
+rules every page follows are under Before and after in `docs/agents/voice.md`.
 
 **A Some Truths entry.**
 
 > Before: Most teams never write an ADR. The cost is diffuse, which is why it
 > keeps not getting written.
 >
-> After: A team can skip ADRs for months and ship anyway. The cost is real
-> but diffuse: six months later someone reverses a decision without knowing it
-> was a decision, and the rework is charged to that sprint instead of to the
-> missing record. That's why the record keeps not getting written, and why the
-> teams that do write them tend to be the ones that have already paid once.
+> After: A team can skip ADRs for months and ship anyway. The cost arrives
+> later: someone reverses a decision without knowing it was one, and the
+> rework is charged to that sprint instead of to the missing record.
 
-**Defining a term.**
+**Defining a concept the guide teaches.**
 
 > Before: **Flaky tests** are tests that pass and fail without code changes.
 > Fix them or delete them.
 >
-> After: A **flaky test** passes and fails on the same code and the same
-> inputs, usually because it depends on timing, ordering, or a network it
-> doesn't control. The failing run is cheap; the expensive part is that the
-> team learns to rerun red builds without reading them, which is the same as
-> having no test suite. Quarantine a flaky test the day you find it, then fix
-> or delete it, because a quarantined test at least doesn't train anyone to
-> ignore red.
+> After: A **flaky test** passes and fails on the same code and inputs,
+> usually because it depends on timing, ordering, or a network it doesn't
+> control. Quarantine one the day you find it, then fix or delete it: a team
+> that learns to rerun red builds without reading them has stopped testing.
 
-**What the "before" column has in common:** each one is shorter, sounds more
-confident, and has deleted the causal clause that made it checkable. That is
-the failure this skill exists to prevent.
+**What the pairs show:** each "before" is a slogan with nothing to check, and
+each "after" states its point first, then the one fact that makes it
+checkable. Adding every reason the writer can think of is the opposite
+failure: it buries the point.
 
 ## Before Finishing
 
@@ -519,11 +512,13 @@ the failure this skill exists to prevent.
    the most common way a new guide fails to match the others. For an artifact
    guide, also confirm the fenced artifact is there, still matches what the
    assignment page requires, and stands alone (see Section Skeleton, item 4).
-4. Read the Some Truths section back and check that no entry is a single
-   sentence and that each one says why. This is where compression re-enters.
+4. Read the Some Truths section back and check that each entry states what a
+   reader would push back on and the fact that makes it true, and that no
+   entry repeats a body section.
 5. Sort the claims. Read the page for every sentence a reader could doubt and
    confirm it is Evidence (cited and verified), a Reference (linked), or a
-   Recommendation (an imperative with its reason: "Do X, because Y"). Grep for
+   Recommendation (an imperative, with its reason where a reader would doubt
+   it). Grep for
    the unsourced tells: `research shows`, `studies`, `most teams`, a bare
    percentage. Name in the pull request body each source you opened to check
    a paraphrase (see Sourcing).

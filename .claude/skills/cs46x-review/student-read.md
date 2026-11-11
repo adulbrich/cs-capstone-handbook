@@ -62,6 +62,10 @@ that team's partner or mentor.
    - **referent**: an "it", "this", or "the list" with no candidate or with
      two;
    - **action**: a rule that doesn't tell you what to do;
+   - **actor**: a sentence where you can't tell who does the thing it
+     describes: you, your partner, or the instruction team (#680);
+   - **point**: a paragraph whose point you can't state in one sentence
+     after reading it once (#680);
    - **two readings**: wording you can read two ways that lead to different
      work;
    - **score**: a requirement whose rubric band you can't predict, or a band

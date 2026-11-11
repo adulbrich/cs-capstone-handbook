@@ -81,9 +81,10 @@ directory the diff touches (the Skills table in `AGENTS.md`).
    (`AGENTS.md`, Audience pages are orientation, not a course index).
 10. **Voice**, on every handbook page in the diff: the reverse outline
     (`docs/agents/voice.md`, Structure) of each changed paragraph, in the
-    report; then its Person, Claims, Structure, Concrete sentences, Sentences
-    and words, Asides, Examples of project work, and The floor sections,
-    cited per finding.
+    report, with each paragraph whose first sentence doesn't state its point;
+    then its Person, Claims, Asides, Examples of project work, and The floor
+    sections, cited per finding. Sentence-level wording is the student
+    reader's to catch, as stops (#680).
 
 Done when each of the ten has a line in the report, its findings or
 "checked, clean", and Intent accounts for every rewritten or deleted hunk:
