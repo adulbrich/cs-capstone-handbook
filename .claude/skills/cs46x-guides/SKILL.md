@@ -79,7 +79,7 @@ under Claims in `docs/agents/voice.md` and give each what its kind needs. The gu
 is where the sort does most of its work. A Recommendation in a guide is an
 imperative, never "the instruction team recommends", because of [Guides Are
 Standalone](#guides-are-standalone). It carries a reason when Pages are not
-chat in `docs/agents/voice.md` calls for one: "Pin dependency versions in the
+chat in `docs/agents/voice.md` calls for one (#680): "Pin dependency versions in the
 lockfile, so a teammate who installs next week gets the packages you tested."
 
 The test is whether each doubtable claim has the right kind of support, not
@@ -414,10 +414,10 @@ others link:
 
 ## Length
 
-**Split-check at 6,000 words.** A guide is as long as its reverse outline
-needs (`docs/agents/voice.md`, Structure), with no floor (#680); section
-overview and index pages run short. If a guide passes 6,000, look for a
-section that wants to be its own guide.
+**Typical length up to 5,000 words. Split-check at 6,000.** There is no
+floor: a guide is as long as its reverse outline needs (`docs/agents/voice.md`,
+Structure; #680). Section overview and index pages are exempt and run short.
+If a guide passes 6,000, look for a section that wants to be its own guide.
 
 **The test is the reader.** If you can name someone who reads the candidate
 section *instead of* the rest of the page, it is a split; `accessibility.mdx`

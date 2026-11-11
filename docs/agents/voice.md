@@ -32,29 +32,30 @@ register.
 | Page type | Register | Its job | What it cites |
 |---|---|---|---|
 | Guide (`guides/`) | Explanation | Why a practice works, how it compares with the alternatives, and what good looks like. Read once for understanding, then returned to for reminders. | Evidence for every evidence-type claim (Claims), plus the links The floor requires. |
-| Activity (`activities/`) | How-to | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue. | No citation duty beyond The floor. It links the guide that explains the practice. |
-| Assignment (`assignments/`) | Brief | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, plus The floor. No research: on an assignment page it is course-design rationale and belongs in the guide the page links. |
-| Audience page (`introduction/for-*.mdx`) and syllabus | Orientation | What this is and what it asks of one reader, short enough to read before the term starts (`AGENTS.md`, Audience pages are orientation, not a course index). | No citation duty beyond The floor. |
+| Activity (`activities/`) | How-to | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue. | No citation duty beyond the links The floor requires. It links the guide that explains the practice. |
+| Assignment (`assignments/`) | Brief | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, plus the links The floor requires. No research: on an assignment page it is course-design rationale and belongs in the guide the page links. |
+| Audience page (`introduction/for-*.mdx`) and syllabus | Orientation | What this is and what it asks of one reader, short enough to read before the term starts (`AGENTS.md`, Audience pages are orientation, not a course index). | No citation duty beyond the links The floor requires. |
 
-"Brief" names the assignment register only; `cs46x-review` also calls its
-reviewer prompts briefs, in a different sense.
+"Brief" names the assignment register only. `cs46x-review` also calls its
+reviewer prompts briefs, which is a different sense.
 
 ## Person
 
 - The reader is "you", and only the reader is: "you will configure", not
   "students will configure".
-- The handbook never says "I". It has more than one instructor and outlives
-  any one of them.
+- The handbook never says "I". It's a professional handbook with more than
+  one instructor, and it outlives any one of them.
 - The people who run the course, instructors and TAs together, are "the
   instruction team" (the glossary lists the words it replaces). When only the
   instructors or only a TA is meant, say so.
 - "We" appears only on the audience pages and in the syllabi, where the team
-  speaks to someone before the term starts. Everywhere else, name the
-  instruction team or say nothing.
+  speaks directly to someone before the term starts. Everywhere else, name
+  the instruction team or say nothing.
 - A page a student reads speaks to the student. Staff procedure (who flags,
   who confirms, a response window, what a grader opens or clicks) goes in
-  `STAFF-RUNBOOK.md`. An assignment's per-criterion grading notes are not
-  staff procedure: they tell the student what is checked first.
+  `STAFF-RUNBOOK.md`, never on the page. An assignment's per-criterion
+  grading notes are not staff procedure: they tell the student what is
+  checked first.
 
 ## Claims
 
@@ -93,10 +94,12 @@ time".
 ## Structure
 
 - Instruction first, reasoning after. At the page level, say what to do before
-  why, so a student under deadline can stop reading early.
+  why, so a student under deadline can stop reading early. Inside a section,
+  state the claim, then its reason.
 - A paragraph's first sentence states its point, and the rest supports that
-  point and nothing else (#680). One paragraph carries one idea and ends on
-  its last piece of information, never on a line that restates it.
+  point and nothing else (#680). One paragraph carries one idea, with a
+  transition into the next, and ends on its last piece of information, never
+  on a line that restates it.
 - The reverse outline: one line per paragraph, stating its point. Cut a
   paragraph with no point, split one with two, and drop a last sentence that
   restates. Write the outline before drafting a page, and run it again on the
@@ -203,15 +206,17 @@ it in the pull request (#661).
 
 ## Asides
 
-An aside holds something only some readers need at that point, or a warning,
-and the page reads complete without it. The handbook uses three forms of
-Starlight aside and no others:
+An aside holds something only some readers need at that point, or a
+warning, and the page reads complete without it. The handbook uses three
+forms of Starlight aside and no others:
 
 - `:::note[tl;dr]`, in a guide's opening, after the situation and scope
   paragraphs (`cs46x-guides`, The Opener). It is the only aside that holds a
-  list, and its bullets are exempt from the length limit below.
+  list, and its bullets are exempt from the length limit
+  below.
 - `:::note[If <situation>]`, for a variation one situation needs: "If your
-  project is under NDA", "If your partner stops responding".
+  project is under NDA", "If your partner stops responding". The title starts
+  with "If" and names the situation.
 - `:::caution[<what goes wrong>]`, for a mistake that costs data, a grade, or
   days. The title names the mistake ("Committing `.env` publishes your
   keys"), never a slogan.
@@ -219,8 +224,8 @@ Starlight aside and no others:
 No `:::tip`, no `:::danger`, and no `<Aside>` component in their place. Every
 aside has a title, holds one idea in at most 60 words, and never opens a
 section. An aside never holds what every reader needs (that is body text), a
-concept explanation, a tool list, a vendor's current terms, a summary other
-than the tl;dr, or anything addressed to the instruction team.
+concept explanation, a tool list, a vendor's current terms, a summary other than
+the tl;dr, or anything addressed to the instruction team.
 
 ## Examples of project work
 
@@ -232,7 +237,8 @@ projects need something:
 - Say what the project is or what makes the need arise, whichever the reader
   recognizes: "if you're building a mobile app", "a research project", "if you
   need another institution's data". Sorting projects into kinds stays retired:
-  no table, heading, badge, or rubric enumerates them, under any names (#608).
+  no table, heading, badge, or rubric enumerates them, under any names (#608,
+  #680).
   The glossary lists the retired category words, and `check-prose` rejects
   them.
 - Draw examples from varied work, and say a project may match several or
@@ -252,12 +258,12 @@ projects need something:
 ## The floor
 
 - No em dashes and no emoji (`AGENTS.md`, hard rule 3).
-- Name the source on first mention: when a page introduces a tool, a
+- Name the source on first mention. When a page introduces a tool, a
   standard, a model, or a named technique, link the authoritative reference.
   A practice every stack has, such as pinning dependency versions, has no
-  single owner: state it plainly and link nothing, since one ecosystem's
-  documentation tells readers on every other stack the page wasn't written
-  for them.
+  single owner: state it plainly and link nothing, because one ecosystem's
+  documentation tells readers on every other stack that the page wasn't
+  written for them.
 - Present no tool as mandatory. Where a page assumes a paid service, specific
   hardware, or a capable AI agent, name the substitute for a student without
   it, because tool access is unequal.
@@ -265,17 +271,18 @@ projects need something:
   rejected by the validator".
 - Define a term before using it. Which pages spell out an acronym is under
   Acronyms in `src/content/docs/about/glossary.mdx`.
-- Use precise nouns: "the staging server", not "the server"; `lefthook.yml`,
-  not "the file".
+- Use precise nouns: not "the server" when you mean "the staging server", not
+  "the file" when you mean `lefthook.yml`.
 - Copy code exactly. Commands, paths, filenames, and flags are copied, not
-  paraphrased.
+  paraphrased. A wrong flag costs a student an hour.
 
 ## Before and after
 
-Each "before" is on a page or was; each "after" keeps what it says and follows
-the rules above.
+Each "before" is from a page, now or earlier. Each "after" follows the rules
+above and keeps what the before says, except where its label names a change.
 
-A noun stack as the subject, and a hidden actor:
+A noun stack as the subject, with a hidden actor. The after is the opening
+sentence #682 sets, which also names the level a partner can agree to:
 
 > Before: Your spring grade's largest partner-evaluation facet (Verification
 > and Validation, 40 of the End-of-Term Survey's 100 points) is scored
@@ -287,7 +294,8 @@ A noun stack as the subject, and a hidden actor:
 > upstream, reproducible, or in real use, or at the level you and your
 > partner agreed on?
 
-A reference with no target, and a reason that buries the point:
+A reference with no target, and a reason that buries the point. The after is
+the text #681 sets, which also gives a project change its own reason:
 
 > Before: Both are possible, and both need your instructors' approval,
 > because both disrupt more than your own team.
@@ -305,7 +313,7 @@ A sentence that defines a thing by itself:
 > After: If none of these fits your project, agree with your partner or
 > mentor what shipped means, and write it down.
 
-A reason on an instruction nobody would doubt:
+A reason on an instruction nobody would doubt, which the after drops:
 
 > Before: Link each piece of evidence from the document where you and your
 > partner recorded the level as soon as you capture it, because that document
@@ -314,13 +322,13 @@ A reason on an instruction nobody would doubt:
 > After: Link each piece of evidence from your agreement with your partner the
 > day you capture it.
 
-An abstraction as the actor, and a page that acts:
+A contrast used as a thesis, split into slogans:
 
-> Before: Access requests run on someone else's timeline, so surface them
-> early. This page gives each one an owner.
+> Before: What separates open from merged isn't your code alone. It's a
+> maintainer's attention and approval.
 >
-> After: The partner's IT staff decide when you get a VPN account. Ask for one
-> in your first meeting, and give the request an owner.
+> After: Merging takes a maintainer's attention and approval, not just good
+> code.
 
 An unsourced claim, where the after is longer because a reader would doubt it:
 
