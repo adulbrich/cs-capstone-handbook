@@ -2,17 +2,18 @@
 // Fall week 3: Workshop 2, Map Your Hard-to-Reverse Decisions, and Workshop
 // 3, Audit Your Safety Net, in one session and one deck, each in the week 2
 // deck's shape. A shared opening (the two outcomes, scoring and reading,
-// the agenda); Workshop 2's talk (hard and easy to reverse, sorted for the
-// week 2 campus lunch app; ephira, LumiLab, and TaxonBodyMassML as the
-// inherited, pipeline, and research references) and its work time;
-// Workshop 3's talk (what can reach main with nothing to stop it, whoever
-// wrote it, audited on the same lunch app; two repositories whose tests
-// never ran; eecs-capstone, mostly right) and its work time; then one wrap
+// the agenda); what the instruction team presents for Workshop 2 (hard and
+// easy to reverse, sorted for the week 2 campus lunch app; ephira, LumiLab,
+// and TaxonBodyMassML as the inherited, pipeline, and research references)
+// and its work time; what it presents for Workshop 3 (what can reach main
+// with nothing to stop it, whoever wrote it, audited on the same lunch app;
+// two repositories whose tests never ran; eecs-capstone, mostly right) and
+// its work time; then one wrap
 // for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
 // weeks on the timeline, the Read line, and the week's other Due items come
 // from the schedule, as <TermSessions> reads it, and the two workshop
 // submissions from the workshop page.
-// Every slide explains itself to someone who missed the talk. Each link
+// Every slide explains itself to someone who missed the session. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-3/.
 import DecisionList from "../components/deck/DecisionList.astro";
 import LinkedText from "../components/deck/LinkedText.astro";
@@ -277,7 +278,8 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Build health marked at zero points: start from today's gap",
+    detail:
+      "Build health and safety net, worth zero points this time: start from today's gap",
     from: 3,
     href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-1"),
     week: weekOf(
@@ -308,7 +310,7 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Build health and safety net, now scored",
+    detail: "Build health and safety net, now worth points",
     from: 3,
     href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-2"),
     week: weekOf(
@@ -402,7 +404,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Agenda" title="Two workshops, each a short talk and then work">
+<Slide kicker="Agenda" title="Two workshops: the instruction team presents examples, then your team works">
   <ol>
     <li>
       Workshop 2, Map Your Hard-to-Reverse Decisions: a new app sorted, three
@@ -487,7 +489,7 @@ const submissionSafetyNet = completeSubmission(3);
   </div>
   <p class="caption">
     Easy isn't free: a new CSS library touches every component, but you can
-    switch one piece at a time. From the Technical Design guide:
+    switch one piece at a time. From the Technical Design guide:{" "}
     <a href={designTruths}>Some Truths About Technical Design</a>
   </p>
 </Slide>
@@ -535,7 +537,7 @@ const submissionSafetyNet = completeSubmission(3);
     <h3>First, as a team</h3>
     <ul>
       <li>Run the activity yourselves before anyone opens a tool</li>
-      <li>Your version is what the comparison measures the tool against</li>
+      <li>You measure the tool's version against yours</li>
     </ul>
   </div>
   <div slot="right">
@@ -693,8 +695,8 @@ const submissionSafetyNet = completeSubmission(3);
     </div>
   </div>
   <p class="caption">
-    Close it from the top: the check guarding the decision you can't walk back
-    comes before more tests on easy code.
+    Close the gap at your hardest decision before you add tests to easy
+    code.
   </p>
 </Slide>
 
@@ -750,10 +752,11 @@ const submissionSafetyNet = completeSubmission(3);
   </div>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 3 reference: a safety net mostly right" title="eecs-capstone: strong tests and CI, no review or staging" wide>
+<Slide kicker="Workshop 3 reference: eecs-capstone, one maintainer" title="eecs-capstone: strong tests and CI, no review or staging" wide>
   <p class="lead">
-    One maintainer, no second reviewer, and 881 of 1,033 commits co-written
-    with Claude: the checks do the reviewing.
+    The project portal where you browsed projects. One maintainer, no second
+    reviewer, and 881 of 1,033 commits co-written with Claude: the checks are
+    the only review.
   </p>
   <SafetyNet checks={eecsChecks} />
   <p class="caption caption-tight">
@@ -761,7 +764,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Workshop 3 reference: a safety net mostly right" title="Its gap sits at its hardest decision: the database" wide>
+<Slide kicker="Workshop 3 reference: eecs-capstone, one maintainer" title="Its gap sits at its hardest decision: the database" wide>
   <div class="gapfix">
     <div class="gap">
       <h3>The gap</h3>
@@ -780,7 +783,7 @@ const submissionSafetyNet = completeSubmission(3);
     </div>
   </div>
   <p class="caption">
-    The drop then ships a release after the code stops reading the column.
+    With the check, drop a column one release after the code stops reading it.
     Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>
@@ -811,7 +814,7 @@ const submissionSafetyNet = completeSubmission(3);
   <p class="caption">
     No code yet? Audit the checks you'll have when the first change lands, and
     set them up now: like ephira's first migrations, they're free before
-    anything depends on them. The activity:
+    anything depends on them. The activity:{" "}
     <a href={activitySafetyNet}>Audit Your Safety Net</a>
   </p>
 </Slide>
