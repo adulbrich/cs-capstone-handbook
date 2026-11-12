@@ -1,8 +1,8 @@
 ---
 // Fall week 7: Workshop 4, Peer Technical Design Review, in the week 2
 // deck's shape. An opening (the outcome, what it feeds, scoring and reading,
-// the three steps); the talk (what a design review is for, who a team pairs
-// with, then the campus lunch app of weeks 2 and 3 taken through the steps,
+// the three steps); what the instruction team presents (what a design review
+// is for, who a team pairs with, then the campus lunch app of weeks 2 and 3 taken through the steps,
 // in diagrams where a diagram says it: its problem and context diagram, its
 // design document's sections, the architecture diagram, the other team's
 // written answers, the log of comments, the first change drawn in the data
@@ -12,7 +12,7 @@
 // the reviewer questions come from the activity page; the weeks on the
 // timeline, the reading, and the week's other Due items from the schedule;
 // the submission from the workshop page.
-// Every slide explains itself to someone who missed the talk. Each link
+// Every slide explains itself to someone who missed the session. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-7/.
 import LinkedText from "../components/deck/LinkedText.astro";
 import Slide from "../components/deck/Slide.astro";
@@ -91,7 +91,7 @@ const noDocument = plainText(noDocumentLine.slice(NO_DOCUMENT.length)).replace(
 const stepNotes = [
   "Introduce the project, then walk through your design document",
   `Their document: ${questions.length} questions, answered in writing`,
-  "Each comment given a priority or declined",
+  "Each point their answers make, given a priority or declined",
 ];
 if (steps.length !== stepNotes.length) {
   throw new Error(
@@ -157,7 +157,7 @@ const feedList: Feed[] = [
   },
   {
     detail:
-      "Its revision log works like today's log: each review point changed or declined, with where or why",
+      "Its revision log works like today's log: each review point changed, saying where, or declined, saying why",
     href: handbook(`${RFC_PAGE}#revision-log`),
     week: weekOf("Due", links(RFC_PAGE, "final"), "the RFC final"),
     what: "RFC final",
@@ -224,7 +224,8 @@ const lunchSections = [
   },
   {
     diagram: true,
-    holds: "Cafes, dishes, and orders, with the least-sure decision marked",
+    holds:
+      "Cafes, dishes, orders, and order items, with the least-sure decision marked",
     section: "Data model",
   },
   {
@@ -243,30 +244,28 @@ const lunchSections = [
 const lunchAnswers = [
   {
     answer:
-      "We got lost on why each screen asks every 5 seconds when Supabase could push",
+      "we couldn't tell what a past order shows once a dish's price changes",
     asks: "Can you follow it without the code?",
-    section: "Architecture",
-  },
-  {
-    answer:
-      "The diagram is a whiteboard image, so it won't change when the document does",
-    asks: "Diagrams kept with it?",
-    section: "Architecture",
-  },
-  {
-    answer:
-      "Copying each dish's name and price into the order when it's placed",
-    asks: "An alternative missing?",
     section: "Data model",
   },
   {
-    answer:
-      "It assumes every text arrives; when one doesn't, the student never learns the order is ready",
-    asks: "If the main assumption changed?",
+    answer: "no diagram shows what sends the pickup text",
+    asks: "A diagram missing?",
+    section: "Architecture",
+  },
+  {
+    answer: "yes, though paying at the counter would drop Stripe and its fees",
+    asks: "Solves the problem?",
     section: "Interfaces and contracts",
   },
   {
-    answer: "Copy the name and price into the order",
+    answer:
+      "it assumes every pickup text arrives; when one doesn't, the student never learns the order is ready",
+    asks: "What if its main assumption changed?",
+    section: "Interfaces and contracts",
+  },
+  {
+    answer: "copy each dish's name and price into each order item",
     asks: "The first change?",
     section: "Data model",
   },
@@ -278,21 +277,21 @@ if (lunchAnswers.length !== questions.length) {
 }
 const lunchLog = [
   {
-    comment: "Copy each dish's name and price into the order when it's placed",
+    comment: "Copy each dish's name and price into each order item",
     priority: 1,
   },
   {
-    comment: "Say what the student sees when the text never arrives",
+    comment:
+      "Figure out how a student learns the order is ready when the text never arrives",
     priority: 2,
   },
   {
-    comment: "Keep the architecture diagram in the repository, beside the text",
+    comment: "Show what sends the pickup text in the architecture diagram",
     priority: 3,
   },
   {
-    comment: "Push new orders to the kitchen screens",
-    declined:
-      "A cook doesn't notice 5 seconds, and the code that asks is written and tested",
+    comment: "Let students pay at the counter",
+    declined: "Paying at the counter brings back the line the app removes",
   },
 ];
 ---
@@ -327,14 +326,14 @@ const lunchLog = [
     }
   </div>
   <p class="caption">
-    Afterward, turn the comments you gave a priority into edits to
+    Afterward, turn the comments you gave a priority into edits to{" "}
     <code>docs/design.md</code> or into ADRs.
   </p>
 </Slide>
 
 <Slide kicker="Workshop 4" title="Graded complete or incomplete">
   <ul>
-    <li>Complete when it holds everything listed as due: there is no quality bar</li>
+    <li>Your submission is complete when it holds everything listed as due: there is no quality bar</li>
     <li>{LATE["class-week"].text}</li>
     <li>
       A submission that is not about your own project or team, such as a
@@ -347,10 +346,11 @@ const lunchLog = [
   </p>
 </Slide>
 
-<Slide kicker="Agenda" title="A short talk, then three steps with the team at the next table" wide>
+<Slide kicker="Agenda" title="An example review first, then yours with the team at the next table" wide>
   <p class="lead">
-    First, the talk: what a design review is for, and the campus lunch app's
-    design document taken through the steps. Then your own:
+    The instruction team presents what a design review is for, and takes the
+    campus lunch app's design document through the three steps. Then you take
+    yours through them:
   </p>
   <ol class="steps" style={`--steps: ${steps.length};`}>
     {
@@ -368,24 +368,18 @@ const lunchLog = [
 </Slide>
 
 <Slide kicker="Workshop 4: what a design review is for" title="Find the problem while it's cheap to fix" wide>
-  <ul>
-    <li>
-      You show the design before your team builds more on it, and the other
-      team says what breaks
-    </li>
-    <li class="fragment">
-      Treat a hard question as help: a review that changes nothing may mean
-      nobody felt able to object
-    </li>
-  </ul>
+  <p class="lead">
+    You show the design before your team builds more on it, and the other team
+    says what breaks.
+  </p>
   <div class="pair fragment">
     <div class="box">
-      <h3>Found in today's review</h3>
-      <p>Costs a conversation</p>
+      <h3>Found in a review</h3>
+      <p>Costs a conversation and an edit to the document</p>
     </div>
     <div class="box box-accent">
-      <h3>Found while you build</h3>
-      <p>Costs the code already built on top of it</p>
+      <h3>Found later</h3>
+      <p>Costs the code your team built on the design in between</p>
     </div>
   </div>
   <p class="caption">
@@ -397,20 +391,14 @@ const lunchLog = [
   <ul>
     <li>You present your design document to them and review theirs; they do the same</li>
     <li>With an odd number of teams, three teams review in a ring</li>
-    <li>Nothing is prepared before class: present the document as it stands</li>
+    <li>Don't prepare anything before class: present the document as it stands</li>
   </ul>
-  <p class="caption">
-    Under NDA? The other team hears your introduction and reads your document:
-    describe each component by its role (a message queue, a model server) and
-    leave out the partner's specifics. If that isn't possible, tell the
-    instruction team now.
-  </p>
 </Slide>
 
 <Slide kicker="Example: the campus lunch app, step 1" title="The lunch team opens with the problem and a context diagram" wide>
   <p class="lead">
-    The problem: the lunch line at the campus cafes runs past the break, so
-    students order ahead and pick up.
+    The problem: the campus lunch line outlasts the break between classes, so
+    the app takes orders ahead.
   </p>
   <div class="design design-context" role="img" aria-label="The lunch app's context diagram: a student orders and pays, and a cook marks orders ready, in the campus lunch app. The app uses Supabase for sign-in and data, Stripe for card payment, and a text message for pickup.">
     <div class="part person" style="grid-area: 1 / 1;">
@@ -461,7 +449,7 @@ const lunchLog = [
   </p>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app, step 1" title="The design document runs to several sections, with diagrams" wide>
+<Slide kicker="Example: the campus lunch app, step 1" title="The lunch team's design document: five sections, three with diagrams" wide>
   <table class="rows">
     <thead>
       <tr>
@@ -483,13 +471,13 @@ const lunchLog = [
     </tbody>
   </table>
   <p class="caption">
-    The team presents all of it, opening on the data model, the decision it's
-    least sure of.
+    The team presents all of it, opening on the decision it's least sure of:
+    each order item points at its dish.
   </p>
 </Slide>
 
 <Slide kicker="Example: the campus lunch app, step 1" title="The architecture section's diagram" wide>
-  <div class="design" role="img" aria-label="The lunch app's design: a student web app and a kitchen dashboard, both built with React, read and write Supabase, which holds sign-in and a Postgres database of cafes, dishes, and orders. Stripe takes the card payment and tells Supabase when it clears. A text message tells the student the order is ready. The database is marked as the decision the team is least sure of: an order points at its dish rows.">
+  <div class="design" role="img" aria-label="The lunch app's design: a student web app and a kitchen dashboard, both built with React, read and write Supabase, which holds sign-in and a Postgres database of cafes, dishes, and orders. Stripe takes the card payment and tells Supabase when it clears. A text message tells the student the order is ready. The database is marked as the decision the team is least sure of: each order item points at its dish.">
     <div class="part" style="grid-area: 1 / 1;">
       <h3>Student web app</h3>
       <p>React, hosted on Vercel</p>
@@ -502,8 +490,8 @@ const lunchLog = [
       <h3>Supabase</h3>
       <p class="inner">Sign-in: student accounts</p>
       <p class="inner unsure">
-        Postgres: cafes, dishes, orders
-        <strong>Least sure: an order points at its dish rows</strong>
+        Postgres: cafes, dishes, orders, order items
+        <strong>Least sure: each order item points at its dish</strong>
       </p>
     </div>
     <div class="flow" style="grid-area: 1 / 4;">
@@ -519,7 +507,7 @@ const lunchLog = [
       <p>React, one screen in each cafe</p>
     </div>
     <div class="flow" style="grid-area: 2 / 2;">
-      <span>asks for new orders every 5 seconds</span>
+      <span>reads new orders, marks them ready</span>
       <i class="arrow"></i>
     </div>
     <div class="flow" style="grid-area: 2 / 4;">
@@ -532,7 +520,7 @@ const lunchLog = [
     </div>
   </div>
   <p class="caption caption-tight">
-    The team opens on the decision marked.
+    The least-sure decision, marked where it sits in the architecture.
   </p>
 </Slide>
 
@@ -587,8 +575,8 @@ const lunchLog = [
     </tbody>
   </table>
   <p class="caption">
-    Reviewer at the top: the team at the next table. Two answers point at the
-    first comment, so it's logged once.
+    The log names its reviewer at the top: here, the team at the next table.
+    Two answers point at the first comment, so it's logged once.
   </p>
 </Slide>
 
@@ -630,36 +618,34 @@ const lunchLog = [
     </div>
   </div>
   <p class="caption caption-tight">
-    A menu change no longer rewrites a past order. The new diagram goes in
+    A menu change no longer changes what a past order shows. The new diagram goes in
     the data model section, beside its text.
   </p>
 </Slide>
 
 <Slide kicker="Workshop 4: writing an answer" title="Write an answer the other team can act on" wide>
-  <div class="checks">
-    <div>
-      <p class="verdict verdict-yes">Like this</p>
-      <ul class="says">
-        <li>Data model: changing a dish's price rewrites every past order</li>
-        <li>
-          Interfaces and contracts: no refund callback. Stripe returns the
-          money, and the order still reads paid
-        </li>
-        <li>
-          Architecture: sign-in and orders both live in Supabase, so say what
-          moves if the partner leaves it
-        </li>
-      </ul>
-    </div>
-    <div>
-      <p class="verdict verdict-no">Not like this</p>
-      <ul class="says">
-        <li>Looks good to us</li>
-        <li>Think about scalability</li>
-        <li>We'd have used a different database</li>
-      </ul>
-    </div>
-  </div>
+  <table class="rows">
+    <thead>
+      <tr>
+        <th scope="col" class="narrow-col">Not like this</th>
+        <th scope="col">Like this, from the lunch app's answers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="instead">Looks good to us</td>
+        <td>Data model: we couldn't tell what a past order shows once a dish's price changes</td>
+      </tr>
+      <tr>
+        <td class="instead">Add more diagrams</td>
+        <td>Architecture: no diagram shows what sends the pickup text</td>
+      </tr>
+      <tr>
+        <td class="instead">Think about reliability</td>
+        <td>Interfaces and contracts: when a pickup text never arrives, the student never learns the order is ready</td>
+      </tr>
+    </tbody>
+  </table>
   <p class="caption">
     The other team has {log.time} to log every point you make: name the
     section, and say what breaks, what's missing, or what to try instead.
@@ -696,7 +682,7 @@ const lunchLog = [
     <li>Answer their questions without defending the design yet: the log comes last</li>
   </ul>
   <p class="caption">
-    Then swap, until every team has presented. The activity:
+    Then swap, until every team has presented. The activity:{" "}
     <a href={activityLink}>Peer Technical Design Review</a>
   </p>
 </Slide>
@@ -748,15 +734,15 @@ const lunchLog = [
       </tr>
       <tr>
         <th scope="row">An answer nobody can act on</th>
-        <td class="instead">Think about scalability</td>
-        <td>Architecture: each kitchen screen asks for orders every 5 seconds. What happens at 40 screens?</td>
+        <td class="instead">Think about reliability</td>
+        <td>Interfaces and contracts: when a pickup text never arrives, the student never learns the order is ready</td>
       </tr>
       <tr>
         <th scope="row">A decline with no reason</th>
         <td class="instead"><span class="chip chip-no">Declined</span></td>
         <td>
-          <span class="chip chip-no">Declined</span> A cook doesn't notice 5
-          seconds
+          <span class="chip chip-no">Declined</span> Paying at the counter
+          brings back the line
         </td>
       </tr>
     </tbody>
@@ -786,8 +772,7 @@ const lunchLog = [
 <Slide kicker="Optional prompt: a team with no reviewer" title="A prompt for an agent reviewing your document" wide>
   <div class="prompt">
     <p>
-      Review the attached technical design document as another capstone team
-      would. Our introduction: [the problem, who it's for, what it runs in or
+      Review the attached technical design document. Our introduction: [the problem, who it's for, what it runs in or
       connects to]. The decision we're least sure of: [the decision]. Answer
       each question below in writing, and name the section of the document
       each answer is about. Don't rewrite the document.
