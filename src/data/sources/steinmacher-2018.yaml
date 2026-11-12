@@ -15,6 +15,5 @@ claims:
       In 21 popular GitHub projects, the main reasons quasi-contributors gave
       for their pull requests not being accepted were a superseded or
       duplicated pull request and a mismatch between the developer's and the
-      team's vision; about 30% said the nonacceptance demotivated them or
-      prevented them from placing another pull request.
+      team's vision.
     locator: Abstract
