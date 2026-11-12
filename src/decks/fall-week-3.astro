@@ -2,17 +2,18 @@
 // Fall week 3: Workshop 2, Map Your Hard-to-Reverse Decisions, and Workshop
 // 3, Audit Your Safety Net, in one session and one deck, each in the week 2
 // deck's shape. A shared opening (the two outcomes, scoring and reading,
-// the agenda); Workshop 2's talk (hard and easy to reverse, sorted for the
-// week 2 campus lunch app; ephira, LumiLab, and TaxonBodyMassML as the
-// inherited, pipeline, and research references) and its work time;
-// Workshop 3's talk (what can reach main with nothing to stop it, whoever
-// wrote it, audited on the same lunch app; two repositories whose tests
-// never ran; eecs-capstone, mostly right) and its work time; then one wrap
+// the agenda); what the instruction team presents for Workshop 2 (hard and
+// easy to reverse, sorted for the week 2 campus lunch app; ephira, LumiLab,
+// and TaxonBodyMassML as the inherited, pipeline, and research references)
+// and its work time; what it presents for Workshop 3 (what can reach main
+// with nothing to stop it, whoever wrote it, audited on the same lunch app;
+// two repositories whose tests never ran; eecs-capstone, the project portal) and
+// its work time; then one wrap
 // for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
 // weeks on the timeline, the Read line, and the week's other Due items come
 // from the schedule, as <TermSessions> reads it, and the two workshop
 // submissions from the workshop page.
-// Every slide explains itself to someone who missed the talk. Each link
+// Every slide explains itself to someone who missed the session. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-3/.
 import DecisionList from "../components/deck/DecisionList.astro";
 import LinkedText from "../components/deck/LinkedText.astro";
@@ -277,7 +278,8 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Build health marked at zero points: start from today's gap",
+    detail:
+      "Build health and safety net, worth zero points this time: start from today's gap",
     from: 3,
     href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-1"),
     week: weekOf(
@@ -289,7 +291,7 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Each one becomes a row in your revision log",
+    detail: "You give each one a row in your revision log",
     href: handbook(`${RFC_PAGE}#instructor-comments`),
     week: weekOf(
       "Due",
@@ -308,7 +310,7 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Build health and safety net, now scored",
+    detail: "Build health and safety net, now worth points",
     from: 3,
     href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-2"),
     week: weekOf(
@@ -402,11 +404,11 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Agenda" title="Two workshops, each a short talk and then work">
+<Slide kicker="Agenda" title="Two workshops: the instruction team presents examples, then your team works">
   <ol>
     <li>
-      Workshop 2, Map Your Hard-to-Reverse Decisions: a new app sorted, three
-      reference projects, then your list
+      Workshop 2, Map Your Hard-to-Reverse Decisions: the lunch app sorted,
+      three reference projects, then your list
     </li>
     <li>
       Workshop 3, Audit Your Safety Net: the same app audited, three
@@ -444,11 +446,11 @@ const submissionSafetyNet = completeSubmission(3);
   <p class="caption">
     Jeff Bezos's <a href={bezos}>2015 letter to Amazon shareholders</a> calls
     them Type 1 and Type 2 decisions, and warns that the slow process Type 1
-    needs makes everything slow when it's applied to Type 2.
+    needs makes everything slow when an organization applies it to Type 2.
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 2: a new app, sorted" title="Ten decisions for the campus lunch app, before any code" wide>
+<Slide kicker="Workshop 2: the lunch app, sorted" title="Ten decisions for the campus lunch app, before any code" wide>
   <DecisionList decisions={lunchSorted} stepped />
   <p class="caption caption-tight">
     The lunch app from last week's story map. Write all ten down before you
@@ -456,7 +458,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Workshop 2: a new app, sorted" title="Why each hard one is hard, and who checks it first" wide>
+<Slide kicker="Workshop 2: the lunch app, sorted" title="Why each hard one is hard, and who checks it first" wide>
   <DecisionList decisions={lunchHard} count={false} marks={false} />
   <p class="caption">
     Each one is cheap to change this week and expensive by winter: the cost
@@ -468,8 +470,8 @@ const submissionSafetyNet = completeSubmission(3);
   <ul>
     <li>
       An important decision that's easy to reverse can wait until you know
-      more: hosting feels big, yet a standard web app moves to a new host in
-      days
+      more: hosting feels big, yet you can move a standard web app to a new
+      host in days
     </li>
     <li class="fragment">
       A hard-to-reverse one gets more expensive with every line built on it
@@ -487,7 +489,7 @@ const submissionSafetyNet = completeSubmission(3);
   </div>
   <p class="caption">
     Easy isn't free: a new CSS library touches every component, but you can
-    switch one piece at a time. From the Technical Design guide:
+    switch one piece at a time. From the Technical Design guide:{" "}
     <a href={designTruths}>Some Truths About Technical Design</a>
   </p>
 </Slide>
@@ -515,7 +517,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="Hard means what other programs read" wide>
+<Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="LumiLab's hard decisions: what other programs read" wide>
   <DecisionList decisions={lumiLabDecisions} />
   <p class="caption caption-tight">
     LumiLab turns ordinary photos into a luminance map that glare tools read.
@@ -523,7 +525,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Workshop 2 reference: TaxonBodyMassML, a research chain" title="Hard means what every result is measured against" wide>
+<Slide kicker="Workshop 2 reference: TaxonBodyMassML, a research chain" title="TaxonBodyMassML's hard decisions: the yardstick for every result" wide>
   <DecisionList decisions={taxonDecisions} />
   <p class="caption caption-tight">
     TaxonBodyMassML estimates a species' weight from its name. Repository: <a href={taxon}>TaxonBodyMassML on GitHub</a>
@@ -535,7 +537,7 @@ const submissionSafetyNet = completeSubmission(3);
     <h3>First, as a team</h3>
     <ul>
       <li>Run the activity yourselves before anyone opens a tool</li>
-      <li>Your version is what the comparison measures the tool against</li>
+      <li>You measure the tool's version against yours</li>
     </ul>
   </div>
   <div slot="right">
@@ -638,7 +640,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<StatementSlide kicker="Workshop 3" source="Workshop 2 found what you can't walk back; Workshop 3 checks what guards it">
+<StatementSlide kicker="Workshop 3" source="In Workshop 2 you found what you can't walk back; in Workshop 3 you check what guards it">
   Audit Your Safety Net
 </StatementSlide>
 
@@ -693,8 +695,8 @@ const submissionSafetyNet = completeSubmission(3);
     </div>
   </div>
   <p class="caption">
-    Close it from the top: the check guarding the decision you can't walk back
-    comes before more tests on easy code.
+    Close the gap at your hardest decision before you add tests to easy
+    code.
   </p>
 </Slide>
 
@@ -750,7 +752,7 @@ const submissionSafetyNet = completeSubmission(3);
   </div>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 3 reference: a safety net mostly right" title="eecs-capstone: strong tests and CI, no review or staging" wide>
+<Slide kicker="Workshop 3 reference: eecs-capstone, the project portal" title="eecs-capstone: strong tests and CI, no review or staging" wide>
   <p class="lead">
     One maintainer, no second reviewer, and 881 of 1,033 commits co-written
     with Claude: the checks do the reviewing.
@@ -761,7 +763,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Workshop 3 reference: a safety net mostly right" title="Its gap sits at its hardest decision: the database" wide>
+<Slide kicker="Workshop 3 reference: eecs-capstone, the project portal" title="Its gap sits at its hardest decision: the database" wide>
   <div class="gapfix">
     <div class="gap">
       <h3>The gap</h3>
@@ -780,7 +782,8 @@ const submissionSafetyNet = completeSubmission(3);
     </div>
   </div>
   <p class="caption">
-    The drop then ships a release after the code stops reading the column.
+    With the check, eecs-capstone would stop reading a column in one release
+    and drop it in the next.
     Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>
@@ -811,7 +814,7 @@ const submissionSafetyNet = completeSubmission(3);
   <p class="caption">
     No code yet? Audit the checks you'll have when the first change lands, and
     set them up now: like ephira's first migrations, they're free before
-    anything depends on them. The activity:
+    anything depends on them. The activity:{" "}
     <a href={activitySafetyNet}>Audit Your Safety Net</a>
   </p>
 </Slide>

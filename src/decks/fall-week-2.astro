@@ -1,11 +1,11 @@
 ---
 // Fall week 2, Workshop 1: User Story Mapping (#466, restructured in #485,
-// tightened in #510). Talk in four parts: user stories and story maps,
-// ephira mapped by hand and then drafted with an AI tool, reference maps
-// for the pipeline and research-chain backbones, then the teams' own maps while the
-// instruction team walks the room, with an optional show by two volunteer
-// teams and a wrap. Every slide explains itself to someone who missed the
-// talk. Each link sits on the slide that uses it. Served at
+// tightened in #510). The instruction team presents in four parts: user
+// stories and story maps, ephira mapped by hand and then drafted with an AI
+// tool, reference maps for the pipeline and research-chain backbones, then
+// the teams' own maps while the instruction team walks the room, with an
+// optional show by two volunteer teams and a wrap. Every slide explains itself to someone who missed the
+// session. Each link sits on the slide that uses it. Served at
 // /decks/fall-week-2/.
 import { Image } from "astro:assets";
 import lumiLabPhoto from "../assets/decks/lumilab.webp";
@@ -142,8 +142,8 @@ const guide = handbook("/guides/requirements/#story-mapping");
 <Slide kicker="Today's outcome" title="By the end of the session, your team has a first map">
   <ul set:html={outcomeItems} />
   <p class="deck-small after-list">
-    Why it matters: the map becomes <code>docs/requirements.md</code> at Repo
-    Checkpoint 1, and its <code>?</code> cards are the agenda for your first
+    Why it matters: you turn the map into <code>docs/requirements.md</code> at
+    Repo Checkpoint 1, and its <code>?</code> cards are the agenda for your first
     partner meeting.
   </p>
 </Slide>
@@ -167,9 +167,9 @@ const guide = handbook("/guides/requirements/#story-mapping");
 <Slide kicker="Agenda" title="Today, in four parts">
   <ol>
     <li>User stories and story maps</li>
-    <li>ephira, a user journey: mapped by hand, then drafted with AI</li>
+    <li>ephira, a period tracker: a user journey mapped by hand, then drafted with AI</li>
     <li>
-      Reference maps for the other two backbones: LumiLab (pipeline),
+      Reference maps for the other two backbone types: LumiLab (pipeline),
       TaxonBodyMassML (research chain)
     </li>
     <li>Your turn: map in teams</li>
@@ -224,12 +224,12 @@ const guide = handbook("/guides/requirements/#story-mapping");
     stepped
   />
   <p class="caption caption-tight">
-    Add Release 2 and later rows as you need; Out of scope this year is always
-    the last row. Jeff Patton, <a href={patton}>The New User Story Backlog is a Map</a>
+    A made-up campus lunch app. Add Release 2 and later rows as you need; Out
+    of scope this year is always the last row. Jeff Patton, <a href={patton}>The New User Story Backlog is a Map</a>
   </p>
 </Slide>
 
-<Slide kicker="Part 1 of 4: user stories and story maps" title="Choose the backbone where your hardest unknowns live" wide>
+<Slide kicker="Part 1 of 4: user stories and story maps" title="Choose the backbone type that holds your hardest unknowns" wide>
   <div class="backbones">
     <div class="type">
       <h3>User journey</h3>
@@ -398,7 +398,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   <div slot="right">
     <h3>Then</h3>
     <ul>
-      <li class="fragment">Ask for the map in the template's rows</li>
+      <li class="fragment">Ask for the map in the story map template's rows</li>
       <li class="fragment">
         Ask it to start with <code>?</code> every card it can't trace to what
         you gave it
@@ -413,7 +413,7 @@ out-of-scope row. Keep each story under eight words.</pre>
 </TwoColumnSlide>
 
 <StatementSlide kicker="Part 3 of 4" source="LumiLab, a pipeline; TaxonBodyMassML, a research chain">
-  Reference maps for the other two backbones
+  Reference maps for the other two backbone types
 </StatementSlide>
 
 <Slide kicker="Reference map: LumiLab, a pipeline" title="Measuring glare from ordinary photos">
@@ -562,10 +562,10 @@ out-of-scope row. Keep each story under eight words.</pre>
     legend={false}
   />
   <p class="caption caption-tight">
-    Release 1 is read from the team's repository. The method changed from a
-    language model to boosted trees, and only the Method column moved. The
-    repository never had a baseline, and the 95 of 100 target was never
-    computed: Baseline and Evaluation are the cards this team left thin.
+    The instruction team drew Release 1 from the team's repository. The method
+    changed from a language model to boosted trees, and only the Method column
+    moved. The repository never had a baseline, and nobody computed the 95 of
+    100 target: the team left the Baseline and Evaluation cards thin.
   </p>
 </Slide>
 
@@ -617,8 +617,8 @@ out-of-scope row. Keep each story under eight words.</pre>
     legend={false}
   />
   <p class="caption caption-tight">
-    Scope is per card, never per column: in a release row, it's in; in the
-    last row, it's out.
+    Decide scope card by card: a card in a release row is in scope, and a
+    card in the last row is out.
   </p>
 </Slide>
 

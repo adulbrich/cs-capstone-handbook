@@ -1,7 +1,8 @@
 ---
 // Fall week 0: the welcome and bidding session, the first time the class
-// meets. Talk, then questions while bidding opens, with the handbook QR
-// code left up as the last slide. Served at /decks/fall-week-0/.
+// meets. The instructors present, then take questions while bidding opens,
+// with the handbook QR code left up as the last slide. Served at
+// /decks/fall-week-0/.
 // Year-specific facts (TAs, rooms, dates) stay in Canvas; a deck is
 // projected, never pasted into Canvas, so the "This term" slide may name
 // it (#478). The grade and the sessions are rendered from the handbook
@@ -46,29 +47,31 @@ const handbook = new URL("/", Astro.site).href;
   </p>
 </PeopleSlide>
 
-<Slide kicker="What this course is" title="Not your usual class">
+<Slide kicker="What this course is" title="One project, all year">
   <ul>
     <li>A real project for a real project partner, all year</li>
-    <li class="fragment">Each week's slot is a workshop, a guest speaker, a demo day, or no lecture at all</li>
+    <li class="fragment">Each week has a workshop, a guest speaker, a demo day, or no class at all</li>
     <li class="fragment">About nine hours a week in fall, meetings and class time included</li>
-    <li class="fragment">Four equal components, and none of them can be crammed into week 10</li>
+    <li class="fragment">Your grade has four equal components, and you can't cram any of them into week 10</li>
   </ul>
 </Slide>
 
 <StatementSlide kicker="What shipped means" source="Shipping guide, The Ladder">
-  The top of the ladder always means the same thing in different words:
-  people who aren't you depend on it.
+  "Shipped" is a ladder, measured by one question: who ran the software?
+  The top level means people who aren't you depend on it.
 </StatementSlide>
 
-<Slide kicker="AI policy" title="Generative AI tools may be used on any assignment">
+<Slide kicker="AI policy" title="You may use generative AI tools on any assignment">
   <ol>
     <li><strong>You own the result.</strong> Correctness, security, licensing, and professionalism of anything you submit</li>
     <li class="fragment"><strong>Delegate deliberately, and build the checks that make it reasonable.</strong></li>
     <li class="fragment"><strong>Respect the confidentiality boundary.</strong> Your Team Charter's AI and confidentiality section defines it</li>
   </ol>
   <p class="deck-small after-list fragment">
-    A weaker model or a tighter budget is not a disadvantage: it simply means
-    tighter gates and more validation of your own.
+    What is graded is the fit between how far you delegated and how strong
+    your checks are, never how sophisticated your tooling is, so a weaker
+    model or a tighter budget is not a disadvantage: it means tighter gates
+    and more validation of your own.
   </p>
 </Slide>
 
@@ -106,17 +109,17 @@ const handbook = new URL("/", Astro.site).href;
   </ul>
 </Slide>
 
-<Slide kicker="Resume and Intent" title="Think beyond OSU">
+<Slide kicker="Resume and Intent" title="Your project and your resume">
   <ul>
     <li>Your project is something you'll put on your resume: pick one you'd want to talk about</li>
     <li class="fragment">You meet an instructor about your resume by week 5; check announcements for the sign-up</li>
   </ul>
 </Slide>
 
-<Slide kicker="Choosing a project" title="Choose on interest">
+<Slide kicker="Choosing a project" title="Rank projects by what interests you">
   <ul>
     <li>The range of projects is wide: read past the first few</li>
-    <li class="fragment">Know yourself: what you want to learn, and how you like to work</li>
+    <li class="fragment">Decide what you want to learn, and how you like to work, before you rank</li>
     <li class="fragment">Expect to meet new people; they're your future colleagues</li>
     <li class="fragment">Joining an ECE or multidisciplinary (ENGR) team outright means enrolling in that section instead of this one</li>
   </ul>
@@ -125,19 +128,19 @@ const handbook = new URL("/", Astro.site).href;
 <QrSlide kicker="Projects" title="Find the projects you like" url={portal.browseCs46x}>
   <p>
     Sign in to the project portal with your ONID and set your interests in
-    your profile, and the list is ordered by them.
+    your profile: the portal orders the list by them.
   </p>
   <p>The list can change until the first lecture.</p>
 </QrSlide>
 
 <Slide kicker="Bidding" title="How you get your project and team">
   <ul>
-    <li>Rank six projects in the Bidding Survey, sent by email, by Sunday of week 0; miss it and you're placed on a project without your input</li>
-    <li class="fragment">The instructors place every student, balancing skills and preferences across teams; a top choice can't be guaranteed</li>
+    <li>By Sunday of week 0, rank six projects in the Bidding Survey, which arrives by email; miss it and the instructors place you without your input</li>
+    <li class="fragment">The instructors place every student, balancing skills and preferences across teams; they can't guarantee you a top choice</li>
     <li class="fragment">Teams are 3 to 4 students in the usual case</li>
     <li class="fragment">Friends: rank the same projects in the same order; that helps, but it guarantees nothing</li>
     <li class="fragment">Proposed your own project? Rank it first, then five others</li>
-    <li class="fragment">Teams are announced in week 1</li>
+    <li class="fragment">The instructors announce teams in week 1</li>
   </ul>
 </Slide>
 
