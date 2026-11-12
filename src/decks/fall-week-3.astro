@@ -7,7 +7,7 @@
 // and TaxonBodyMassML as the inherited, pipeline, and research references)
 // and its work time; what it presents for Workshop 3 (what can reach main
 // with nothing to stop it, whoever wrote it, audited on the same lunch app;
-// two repositories whose tests never ran; eecs-capstone, mostly right) and
+// two repositories whose tests never ran; eecs-capstone, the project portal) and
 // its work time; then one wrap
 // for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
 // weeks on the timeline, the Read line, and the week's other Due items come
@@ -291,7 +291,7 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Each one becomes a row in your revision log",
+    detail: "You give each one a row in your revision log",
     href: handbook(`${RFC_PAGE}#instructor-comments`),
     week: weekOf(
       "Due",
@@ -407,8 +407,8 @@ const submissionSafetyNet = completeSubmission(3);
 <Slide kicker="Agenda" title="Two workshops: the instruction team presents examples, then your team works">
   <ol>
     <li>
-      Workshop 2, Map Your Hard-to-Reverse Decisions: a new app sorted, three
-      reference projects, then your list
+      Workshop 2, Map Your Hard-to-Reverse Decisions: the lunch app sorted,
+      three reference projects, then your list
     </li>
     <li>
       Workshop 3, Audit Your Safety Net: the same app audited, three
@@ -446,11 +446,11 @@ const submissionSafetyNet = completeSubmission(3);
   <p class="caption">
     Jeff Bezos's <a href={bezos}>2015 letter to Amazon shareholders</a> calls
     them Type 1 and Type 2 decisions, and warns that the slow process Type 1
-    needs makes everything slow when it's applied to Type 2.
+    needs makes everything slow when a team applies it to Type 2.
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 2: a new app, sorted" title="Ten decisions for the campus lunch app, before any code" wide>
+<Slide kicker="Workshop 2: the lunch app, sorted" title="Ten decisions for the campus lunch app, before any code" wide>
   <DecisionList decisions={lunchSorted} stepped />
   <p class="caption caption-tight">
     The lunch app from last week's story map. Write all ten down before you
@@ -458,7 +458,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Workshop 2: a new app, sorted" title="Why each hard one is hard, and who checks it first" wide>
+<Slide kicker="Workshop 2: the lunch app, sorted" title="Why each hard one is hard, and who checks it first" wide>
   <DecisionList decisions={lunchHard} count={false} marks={false} />
   <p class="caption">
     Each one is cheap to change this week and expensive by winter: the cost
@@ -470,8 +470,8 @@ const submissionSafetyNet = completeSubmission(3);
   <ul>
     <li>
       An important decision that's easy to reverse can wait until you know
-      more: hosting feels big, yet a standard web app moves to a new host in
-      days
+      more: hosting feels big, yet you can move a standard web app to a new
+      host in days
     </li>
     <li class="fragment">
       A hard-to-reverse one gets more expensive with every line built on it
@@ -517,7 +517,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="Hard means what other programs read" wide>
+<Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="LumiLab's hard decisions: what other programs read" wide>
   <DecisionList decisions={lumiLabDecisions} />
   <p class="caption caption-tight">
     LumiLab turns ordinary photos into a luminance map that glare tools read.
@@ -525,7 +525,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Workshop 2 reference: TaxonBodyMassML, a research chain" title="Hard means what every result is measured against" wide>
+<Slide kicker="Workshop 2 reference: TaxonBodyMassML, a research chain" title="TaxonBodyMassML's hard decisions: what you measure results against" wide>
   <DecisionList decisions={taxonDecisions} />
   <p class="caption caption-tight">
     TaxonBodyMassML estimates a species' weight from its name. Repository: <a href={taxon}>TaxonBodyMassML on GitHub</a>
@@ -640,7 +640,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<StatementSlide kicker="Workshop 3" source="Workshop 2 found what you can't walk back; Workshop 3 checks what guards it">
+<StatementSlide kicker="Workshop 3" source="In Workshop 2 you found what you can't walk back; in Workshop 3 you check what guards it">
   Audit Your Safety Net
 </StatementSlide>
 
@@ -752,11 +752,10 @@ const submissionSafetyNet = completeSubmission(3);
   </div>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 3 reference: eecs-capstone, one maintainer" title="eecs-capstone: strong tests and CI, no review or staging" wide>
+<Slide kicker="Workshop 3 reference: eecs-capstone, the project portal" title="eecs-capstone: strong tests and CI, no review or staging" wide>
   <p class="lead">
-    The project portal where you browsed projects. One maintainer, no second
-    reviewer, and 881 of 1,033 commits co-written with Claude: the checks are
-    the only review.
+    One maintainer, no second reviewer, and 881 of 1,033 commits co-written
+    with Claude: the checks do the reviewing.
   </p>
   <SafetyNet checks={eecsChecks} />
   <p class="caption caption-tight">
@@ -764,7 +763,7 @@ const submissionSafetyNet = completeSubmission(3);
   </p>
 </Slide>
 
-<Slide kicker="Workshop 3 reference: eecs-capstone, one maintainer" title="Its gap sits at its hardest decision: the database" wide>
+<Slide kicker="Workshop 3 reference: eecs-capstone, the project portal" title="Its gap sits at its hardest decision: the database" wide>
   <div class="gapfix">
     <div class="gap">
       <h3>The gap</h3>
@@ -783,7 +782,8 @@ const submissionSafetyNet = completeSubmission(3);
     </div>
   </div>
   <p class="caption">
-    With the check, drop a column one release after the code stops reading it.
+    With the check, eecs-capstone would drop a column one release after its
+    code stops reading it.
     Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>

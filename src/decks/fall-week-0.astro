@@ -47,10 +47,10 @@ const handbook = new URL("/", Astro.site).href;
   </p>
 </PeopleSlide>
 
-<Slide kicker="What this course is" title="A year-long project, not a lecture course">
+<Slide kicker="What this course is" title="One project all year, not weekly lectures">
   <ul>
     <li>A real project for a real project partner, all year</li>
-    <li class="fragment">Each week's class time holds a workshop, a guest speaker, a demo day, or no class at all</li>
+    <li class="fragment">Each week has a workshop, a guest speaker, a demo day, or no class at all</li>
     <li class="fragment">About nine hours a week in fall, meetings and class time included</li>
     <li class="fragment">Your grade has four equal components, and you can't cram any of them into week 10</li>
   </ul>
@@ -58,10 +58,11 @@ const handbook = new URL("/", Astro.site).href;
 
 <StatementSlide kicker="What shipped means" source="Shipping guide, The Ladder">
   "Shipped" is a ladder, measured by one question: who ran the software?
-  The top level means people who aren't you depend on it.
+  Whatever the project, the top level means people who aren't you depend on
+  it.
 </StatementSlide>
 
-<Slide kicker="AI policy" title="Generative AI tools may be used on any assignment">
+<Slide kicker="AI policy" title="You may use generative AI tools on any assignment">
   <ol>
     <li><strong>You own the result.</strong> Correctness, security, licensing, and professionalism of anything you submit</li>
     <li class="fragment"><strong>Delegate deliberately, and build the checks that make it reasonable.</strong></li>
@@ -69,8 +70,9 @@ const handbook = new URL("/", Astro.site).href;
   </ol>
   <p class="deck-small after-list fragment">
     What is graded is the fit between how far you delegated and how strong
-    your checks are, so a weaker model or a tighter budget is not a
-    disadvantage: it means tighter gates and more validation of your own.
+    your checks are, never how sophisticated your tooling is, so a weaker
+    model or a tighter budget is not a disadvantage: it means tighter gates
+    and more validation of your own.
   </p>
 </Slide>
 
@@ -129,13 +131,13 @@ const handbook = new URL("/", Astro.site).href;
     Sign in to the project portal with your ONID and set your interests in
     your profile: the portal orders the list by them.
   </p>
-  <p>The list can change until the first lecture.</p>
+  <p>The list can change until the first class session.</p>
 </QrSlide>
 
 <Slide kicker="Bidding" title="How you get your project and team">
   <ul>
     <li>Rank six projects in the Bidding Survey, sent by email, by Sunday of week 0; miss it and the instructors place you without your input</li>
-    <li class="fragment">The instructors place every student, balancing skills and preferences across teams; a top choice can't be guaranteed</li>
+    <li class="fragment">The instructors place every student, balancing skills and preferences across teams; they can't guarantee your top choice</li>
     <li class="fragment">Teams are 3 to 4 students in the usual case</li>
     <li class="fragment">Friends: rank the same projects in the same order; that helps, but it guarantees nothing</li>
     <li class="fragment">Proposed your own project? Rank it first, then five others</li>
@@ -144,5 +146,5 @@ const handbook = new URL("/", Astro.site).href;
 </Slide>
 
 <QrSlide kicker="The handbook" title="Everything else is in the handbook" url={handbook}>
-  <p>An assignment's own page says what you submit, when, and how the instruction team scores it.</p>
+  <p>An assignment's own page says what is due, when, and how it is scored.</p>
 </QrSlide>
