@@ -148,7 +148,7 @@ export const sheetText = {
   /** The banner's points line: the rubric's bands, in their own words. */
   points: ({ doesNotMeet, exceeds, flagRule, meetsRule }) =>
     `${flagRule}: ${doesNotMeet}. Otherwise every item ticked: ${exceeds}, or ${meetsRule}`,
-  record: "Repo record checked",
+  record: "Record checked",
   recordChoices: "yes / no / shown on screen (NDA)",
   sprint: "Sprint",
   team: (team, term) => [team, term].filter(Boolean).join(", "),
