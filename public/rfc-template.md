@@ -2,8 +2,8 @@
 
 # RFC: [Short, Specific Title]
 
-<!-- Decision record header. Leave Status as "Proposed" until your team decides.
-     Then fill in the outcome and the decision date.
+<!-- Decision record header. Set Status to where the decision stands, and fill in
+     the decision date once your team decides.
      The document stays where it is; this header is what makes it a record. -->
 
 | Field | Value |
@@ -41,7 +41,7 @@ The technical tradeoffs that matter for this decision: performance, complexity, 
 
 ## Recommendation and Verification Plan
 
-Which option you propose and why it wins the analysis above. Then, concretely: how will the team know it worked? List the tests, metrics, or acceptance criteria that would detect failure, and when they will be checked.
+Which option the analysis above supports and why, even if your team chose another. Then, concretely: how does the team know, or how will it know, that the decision worked? List the tests, metrics, or acceptance criteria that would detect failure, and when they are checked.
 
 ## Constraints
 
@@ -55,4 +55,4 @@ The licensing, data use, IP, or confidentiality limits this decision must respec
 
 ## Decision
 
-Proposed, until your team decides. Then accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
+Where the decision stands: proposed, or accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
