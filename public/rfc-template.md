@@ -45,7 +45,7 @@ Which option you propose and why it wins the analysis above. Then, concretely: h
 
 ## Constraints
 
-Licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision. If none apply, say so explicitly and briefly explain why.
+The licensing, data use, IP, or confidentiality limits this decision must respect. Leave out the areas that don't bear on it. For each limit that does, say what it changes: the option it rules out, the condition it puts on the recommendation, or the check it adds to the verification plan. If none applies, say what you checked (the licenses of what an option adds, the data it stores, who owns the code it touches) and why none limits this decision.
 
 ## Delegation and Validation
 
