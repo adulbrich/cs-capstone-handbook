@@ -45,7 +45,7 @@ import finalRubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
 
 <AssignmentSummary />
 
-You write a different RFC each term, in fall and winter, about a **real decision on your project that is [hard to reverse](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest)**. An RFC frames the problem, lays out the options, recommends one, and invites critique; the name comes from the [Internet Engineering Task Force's RFC series](https://www.ietf.org/process/rfcs/), and Google uses the same shape internally as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/), Oxide as an [RFD (Request for Discussion)](https://rfd.shared.oxide.computer/rfd/0001). The decision may be open or already made at either submission, and the RFC says where it stands: proposed, accepted, rejected, or superseded. Your team decides when the work needs it, not when the RFC is due. The RFC is not a hypothetical.
+You write a different RFC each term, in fall and winter, about a **real decision on your project that is [hard to reverse](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest)**. An RFC frames the problem, lays out the options, recommends one, and invites critique; the name comes from the [Internet Engineering Task Force's RFC series](https://www.ietf.org/process/rfcs/), and Google uses the same shape internally as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/), Oxide as an [RFD (Request for Discussion)](https://rfd.shared.oxide.computer/rfd/0001). The decision may be open or already made at either submission, and the RFC says where it stands: proposed, accepted, rejected, or superseded. Your team decides when the work needs it, not when the RFC is due. The RFC is not a hypothetical. Write it for a reader outside your team who has never seen your project.
 
 :::note[If your partner already decided]
 You may inherit the stack, hosting, database, and review process. Write on one of those choices, a decision inside one, or how to work within one: how to verify against a system you cannot change, migrate data on a schedule someone else owns, or what to prove before asking your partner to reconsider.
@@ -59,14 +59,14 @@ What you can direct an agent or a teammate to build is bounded by how precisely 
 
 ## What You Produce
 
-1. **Problem and context**: what decision is needed, why now, what happens if the team does nothing.
+1. **Problem and context**: what your project is, who it serves, and the part of it this decision touches; then what decision is needed, why now, what happens if the team does nothing.
 2. **Options**: at least three options including "do nothing", each with its real costs and the condition under which it would be the right choice.
 3. **Analysis**: the technical tradeoffs that matter (performance, complexity, maintainability, security, cost), argued from cited sources and your own project evidence.
 4. **Recommendation and verification plan**: the option the analysis supports, even if your team chose another, and how the team knows or will know the decision worked (tests, metrics, acceptance criteria).
 5. **Constraints**: licensing, data use, IP, or confidentiality limits this decision must respect, and what each changes.
 6. **Delegation and validation**: what you handed to AI tools on this decision, or nothing and why; what checks made that reasonable or cover the work; and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-Write it in the sections of the [RFC template](/rfc-template.md): the six above, Decision, then References. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision showing where the decision stands; update both when it changes, and keep the file as the [decision record](/guides/adr/) from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)): the draft in week 4 and the revised final draft in week 8. The draft is 1,500 to 2,500 words and the final draft 2,000 to 2,500, not counting references or the revision log (see [RFC Final Draft](#rfc-final-draft)).
+Write it in the sections of the [RFC template](/rfc-template.md): the six above, Decision, then References. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision showing where the decision stands; update both when it changes, and keep the file as the [decision record](/guides/adr/) from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)). The draft is 1,500 to 2,500 words and the final draft 2,000 to 2,500, not counting references or the revision log (see [RFC Final Draft](#rfc-final-draft)).
 
 **AI use:** AI may research options, draft sections, and sharpen the argument; the Delegation and validation criterion is where you say what you handed off and how you checked it. Presenting a generated analysis you did not verify as your own judgment, or inventing evidence (benchmarks, quotes, references that do not exist), fails the assignment.
 
@@ -88,7 +88,7 @@ In week 5 you review two drafts by other students, and two students review yours
 
 1. **Get your pairings.** At the start of week 5, you are assigned two drafts through the peer review on this entry.
 2. **Answer four questions for each draft**, in writing:
-   1. Is the problem framed so a newcomer understands the stakes?
+   1. Is the problem framed so a reader outside your team understands the stakes?
    2. Is any credible option missing?
    3. Would the verification plan actually detect failure?
    4. What is the single strongest improvement?

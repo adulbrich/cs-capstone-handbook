@@ -17,7 +17,7 @@
 
 ## Problem and Context
 
-What decision is needed, why now, and what happens if the team does nothing. Write this so a newcomer to the project understands the stakes. 2 to 4 paragraphs.
+Start with your project, for a reader outside your team who has never seen it: what it is, who it serves, and the part of it this decision touches. A paragraph is usually enough; give only what the decision needs. Then what decision is needed, why now, and what happens if the team does nothing. 2 to 4 paragraphs.
 
 ## Options
 
