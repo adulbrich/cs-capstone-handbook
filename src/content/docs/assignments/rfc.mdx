@@ -66,15 +66,21 @@ What you can direct an agent or a teammate to build is bounded by how precisely 
 5. **Constraints**: licensing, data use, IP, or confidentiality limits this decision must respect, and what each changes.
 6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-Write it in the sections of the [RFC template](/rfc-template.md): the six above, then Decision. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision showing where the decision stands; update both when it changes, and keep the file as the [decision record](/guides/adr/) from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)): the draft in week 4 and the revised final draft in week 8. The draft is 1,500 to 2,500 words and the final draft 2,000 to 2,500, in fall and in winter, not counting the revision log (see [RFC Final Draft](#rfc-final-draft)).
+Write it in the sections of the [RFC template](/rfc-template.md): the six above, then Decision. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision showing where the decision stands; update both when it changes, and keep the file as the [decision record](/guides/adr/) from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)): the draft in week 4 and the revised final draft in week 8. The draft is 1,500 to 2,500 words and the final draft 2,000 to 2,500, not counting references or the revision log (see [RFC Final Draft](#rfc-final-draft)).
 
 **AI use:** AI may research options, draft sections, and sharpen the argument; the Delegation and validation criterion is where you say what you handed off and how you checked it. Presenting a generated analysis you did not verify as your own judgment, or inventing evidence (benchmarks, quotes, references that do not exist), fails the assignment.
 
 ## What You Submit
 
+[You can build each PDF from your Markdown files.](/tools/submission-pdf/)
+
+:::note[If your project is under NDA]
+Submit both drafts [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda). Name each source by what it is, such as the partner's ticket for the export job, even where a grader can't open it.
+:::
+
 ### RFC Draft + Peer Review
 
-Submit a complete draft by Sunday of week 4: every section above, 1,500 to 2,500 words. [You can build your submission PDF from your Markdown files.](/tools/submission-pdf/) You don't need the draft's grade before revising: start as soon as your peer reviews arrive.
+Submit a complete draft by Sunday of week 4: every section above, 1,500 to 2,500 words. You don't need the draft's grade before revising: start as soon as your peer reviews arrive.
 
 #### The Peer Review
 
@@ -91,17 +97,13 @@ In week 5 you review two drafts by other students, and two students review yours
 
 If an assigned reviewer does not submit, flag it to your TA: you won't be penalized for feedback you never received, and the instruction team will supply a review. Not submitting your reviews of other students' drafts forfeits the review criteria below and is visible to the authors you were paired with.
 
-:::note[If your project is under NDA]
-Submit a sanitized draft: your reviewers read it, so replace partner-confidential specifics with neutral placeholders. If that isn't possible, contact the instruction team.
-:::
-
 #### Instructor Comments
 
 By Sunday of week 6, an instructor returns comments on your draft submission. Each comment becomes a row in your [revision log](#revision-log), the same as a point from a peer review.
 
 ### RFC Final Draft
 
-Submit the RFC by Sunday of week 8, revised after both peer reviews and the instructor comments, followed by its revision log, in one PDF. [You can build your submission PDF from your Markdown files.](/tools/submission-pdf/) Bring its Status and Decision up to date first, and commit the revised RFC in place of the draft. The instruction team grades the final draft against the rubric below and returns rubric feedback.
+Submit the RFC by Sunday of week 8, revised after both peer reviews and the instructor comments, followed by its revision log, in one PDF. Bring its Status and Decision up to date first, and commit the revised RFC in place of the draft. The instruction team grades the final draft against the rubric below and returns rubric feedback.
 
 #### Revision Log
 

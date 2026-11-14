@@ -49,10 +49,14 @@ The licensing, data use, IP, or confidentiality limits this decision must respec
 
 ## Delegation and Validation
 
-- **What you handed to AI tools** on this decision, whether that was the analysis, the prototype, the tests, or the writing.
-- **What checks made that reasonable**: tests, CI, review gates, a staging environment, a rollback path. Name the ones that actually exist in your repo, not the ones you intend to build.
+- **What you handed to AI tools** on this decision, whether that was the analysis, the prototype, the tests, or the writing, or that you handed nothing, and why.
+- **What checks made that reasonable**: tests, CI, review gates, a staging environment, a rollback path, or your project's equivalent, such as a held-out test set. Name the ones that actually exist in your repo, not the ones you intend to build.
 - **Where you stopped and validated the result yourself, and why those points.** If this decision is hard to reverse, say what you personally checked before committing to it.
 
 ## Decision
 
 Where the decision stands: proposed, or accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
+
+## References
+
+Every source the RFC cites, with a link where one exists.
