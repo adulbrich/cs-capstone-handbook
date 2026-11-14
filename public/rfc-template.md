@@ -2,8 +2,8 @@
 
 # RFC: [Short, Specific Title]
 
-<!-- Decision record header. Leave Status as "Proposed" until your team decides.
-     Then fill in the outcome and the decision date.
+<!-- Decision record header. Set Status to where the decision stands, and fill in
+     the decision date once your team decides.
      The document stays where it is; this header is what makes it a record. -->
 
 | Field | Value |
@@ -41,18 +41,22 @@ The technical tradeoffs that matter for this decision: performance, complexity, 
 
 ## Recommendation and Verification Plan
 
-Which option you propose and why it wins the analysis above. Then, concretely: how will the team know it worked? List the tests, metrics, or acceptance criteria that would detect failure, and when they will be checked.
+Which option the analysis above supports and why, even if your team chose another. Then, concretely: how does the team know, or how will it know, that the decision worked? List the tests, metrics, or acceptance criteria that would detect failure, and when they are checked.
 
 ## Constraints
 
-Licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision. If none apply, say so explicitly and briefly explain why.
+The licensing, data use, IP, or confidentiality limits this decision must respect. Leave out the areas that don't bear on it. For each limit that does, say what it changes: the option it rules out, the condition it puts on the recommendation, or the check it adds to the verification plan. If none applies, say what you checked (the licenses of what an option adds, the data it stores, who owns the code it touches) and why none limits this decision.
 
 ## Delegation and Validation
 
-- **What you handed to AI tools** on this decision, whether that was the analysis, the prototype, the tests, or the writing.
-- **What checks made that reasonable**: tests, CI, review gates, a staging environment, a rollback path. Name the ones that actually exist in your repo, not the ones you intend to build.
+- **What you handed to AI tools** on this decision, whether that was the analysis, the prototype, the tests, or the writing, or that you handed nothing, and why.
+- **What checks made that reasonable**, or, if you handed nothing, what checks cover the work: tests, CI, review gates, a staging environment, a rollback path, or your project's equivalent, such as a held-out test set. Name the ones that actually exist in your repo, not the ones you intend to build.
 - **Where you stopped and validated the result yourself, and why those points.** If this decision is hard to reverse, say what you personally checked before committing to it.
 
 ## Decision
 
-Proposed, until your team decides. Then accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
+Where the decision stands: proposed, or accepted, rejected, or superseded, with the date and who chaired the decision. If superseded, link the RFC that replaces this one.
+
+## References
+
+Every source the RFC cites, with a link where one exists.

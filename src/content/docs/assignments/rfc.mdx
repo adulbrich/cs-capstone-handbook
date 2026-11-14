@@ -1,6 +1,6 @@
 ---
 title: RFC (Request for Comments)
-description: An individual document proposing a real decision your team faces, with a draft, peer and instructor feedback, and a revision cycle.
+description: An individual document analyzing a real decision on your project, with a draft, peer and instructor feedback, and a revision cycle.
 sidebar:
   order: 4
 assignment:
@@ -45,13 +45,13 @@ import finalRubricCsv from '/canvas/assignments/rfc/rfc-final-rubric.csv?raw';
 
 <AssignmentSummary />
 
-You write a different RFC each term, in fall and winter, about a **real decision your team faces that is [hard to reverse](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest)**. An RFC frames the problem, lays out the options, recommends one, and invites critique before the team commits; the name comes from the [Internet Engineering Task Force's RFC series](https://www.ietf.org/process/rfcs/), and Google uses the same shape internally as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/), Oxide as an [RFD (Request for Discussion)](https://rfd.shared.oxide.computer/rfd/0001). In fall the decision is still open when you submit the draft. Where you can, pick one your team can leave open until the peer reviews come back in week 5; either way, the team decides when the work requires it, by the final draft in week 8 at the latest. In winter it may be one the team has already started acting on, as long as the RFC still changes something: how the team verifies it, what reversing it would take, or what comes next. The RFC is not a hypothetical, and not a justification written after the fact for a decision it no longer changes.
+You write a different RFC each term, in fall and winter, about a **real decision on your project that is [hard to reverse](/guides/generative-ai/#verify-what-matters-and-build-the-checks-that-let-you-trust-the-rest)**. An RFC frames the problem, lays out the options, recommends one, and invites critique; the name comes from the [Internet Engineering Task Force's RFC series](https://www.ietf.org/process/rfcs/), and Google uses the same shape internally as a [design doc](https://www.industrialempathy.com/posts/design-docs-at-google/), Oxide as an [RFD (Request for Discussion)](https://rfd.shared.oxide.computer/rfd/0001). The decision may be open or already made at either submission, and the RFC says where it stands: proposed, accepted, rejected, or superseded. Your team decides when the work needs it, not when the RFC is due. The RFC is not a hypothetical.
 
 :::note[If your partner already decided]
-You may inherit the stack, hosting, database, and review process, and learn in week 3 how little is yours to choose. Write on a decision inside those constraints, or on working within one: how to verify against a system you cannot change, migrate data on a schedule someone else owns, or what to prove before asking your partner to reconsider.
+You may inherit the stack, hosting, database, and review process. Write on one of those choices, a decision inside one, or how to work within one: how to verify against a system you cannot change, migrate data on a schedule someone else owns, or what to prove before asking your partner to reconsider.
 :::
 
-:::note[If nothing hard to reverse is live in your four-week window]
+:::note[If your project has no hard-to-reverse decision]
 Write on the most consequential reversible decision you face, and say in the problem framing why it is reversible and what would make it not. Don't invent a hard-to-reverse decision you aren't actually facing.
 :::
 
@@ -62,19 +62,25 @@ What you can direct an agent or a teammate to build is bounded by how precisely 
 1. **Problem and context**: what decision is needed, why now, what happens if the team does nothing.
 2. **Options**: at least three options including "do nothing", each with its real costs and the condition under which it would be the right choice.
 3. **Analysis**: the technical tradeoffs that matter (performance, complexity, maintainability, security, cost), argued from cited sources and your own project evidence.
-4. **Recommendation and verification plan**: what you propose based on the analysis and, concretely, how the team will know it worked (tests, metrics, acceptance criteria).
-5. **Constraints**: licensing, data use, IP, and the partner confidentiality boundary as they bear on this decision.
-6. **Delegation and validation**: what you handed to AI tools on this decision, what checks made that reasonable (tests, CI, review gates, staging, a rollback path), and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
+4. **Recommendation and verification plan**: the option the analysis supports, even if your team chose another, and how the team knows or will know the decision worked (tests, metrics, acceptance criteria).
+5. **Constraints**: licensing, data use, IP, or confidentiality limits this decision must respect, and what each changes.
+6. **Delegation and validation**: what you handed to AI tools on this decision, or nothing and why; what checks made that reasonable or cover the work; and the specific points where you stopped and validated the result yourself. The [AI policy](/assignments/introduction/#ai-policy-applies-to-every-assignment) says what is assessed.
 
-Write it in the sections of the [RFC template](/rfc-template.md): the six above, then Decision. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision set to Proposed. When your team decides, before or after the reviews, record the outcome in both, and keep the file as the [decision record](/guides/adr/) from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)): the draft in week 4 and the revised final draft in week 8. The draft is 1,500 to 2,500 words and the final draft 2,000 to 2,500, in fall and in winter, not counting the revision log (see [RFC Final Draft](#rfc-final-draft)).
+Write it in the sections of the [RFC template](/rfc-template.md): the six above, Decision, then References. Commit the draft to your repository under `docs/rfcs/` or `docs/adr/` when you submit it, with Status and Decision showing where the decision stands; update both when it changes, and keep the file as the [decision record](/guides/adr/) from then on. You submit the RFC twice, each time as one PDF ([Submitting Your Work](/assignments/introduction/#submitting-your-work)): the draft in week 4 and the revised final draft in week 8. The draft is 1,500 to 2,500 words and the final draft 2,000 to 2,500, not counting references or the revision log (see [RFC Final Draft](#rfc-final-draft)).
 
 **AI use:** AI may research options, draft sections, and sharpen the argument; the Delegation and validation criterion is where you say what you handed off and how you checked it. Presenting a generated analysis you did not verify as your own judgment, or inventing evidence (benchmarks, quotes, references that do not exist), fails the assignment.
 
 ## What You Submit
 
+[You can build each PDF from your Markdown files.](/tools/submission-pdf/)
+
+:::note[If your project is under NDA]
+Submit both drafts [sanitized](/introduction/ip-nda-and-licensing/#teams-under-an-nda). Name each source by what it is, such as the partner's ticket for the export job, even where a grader can't open it.
+:::
+
 ### RFC Draft + Peer Review
 
-Submit a complete draft by Sunday of week 4: every section above, 1,500 to 2,500 words. [You can build your submission PDF from your Markdown files.](/tools/submission-pdf/) You don't need the draft's grade before revising: start as soon as your peer reviews arrive.
+Submit a complete draft by Sunday of week 4: every section above, 1,500 to 2,500 words. You don't need the draft's grade before revising: start as soon as your peer reviews arrive.
 
 #### The Peer Review
 
@@ -91,17 +97,13 @@ In week 5 you review two drafts by other students, and two students review yours
 
 If an assigned reviewer does not submit, flag it to your TA: you won't be penalized for feedback you never received, and the instruction team will supply a review. Not submitting your reviews of other students' drafts forfeits the review criteria below and is visible to the authors you were paired with.
 
-:::note[If your project is under NDA]
-Submit a sanitized draft: your reviewers read it, so replace partner-confidential specifics with neutral placeholders. If that isn't possible, contact the instruction team.
-:::
-
 #### Instructor Comments
 
-By Sunday of week 6, an instructor returns comments on your draft submission. Each comment becomes a row in your [revision log](#revision-log), the same as a point from a peer review.
+By Sunday of week 6, an instructor returns comments on your draft submission. Each point they raise becomes a row in your [revision log](#revision-log), as a peer review's points do.
 
 ### RFC Final Draft
 
-Submit the RFC by Sunday of week 8, revised after both peer reviews and the instructor comments, followed by its revision log, in one PDF. [You can build your submission PDF from your Markdown files.](/tools/submission-pdf/) Record your team's decision in its Status and Decision first (accepted, rejected, or superseded), and commit the revised RFC in place of the draft. The instruction team grades the final draft against the rubric below and returns rubric feedback.
+Submit the RFC by Sunday of week 8, revised after both peer reviews and the instructor comments, followed by its revision log, in one PDF. Bring its Status and Decision up to date first, and commit the revised RFC in place of the draft. The instruction team grades the final draft against the rubric below and returns rubric feedback.
 
 #### Revision Log
 
@@ -140,7 +142,7 @@ Different activities suit the fall and winter RFCs, so you're not redoing the sa
 | Fall | [Choose a Storage or Technology](/activities/technical-design/#choose-a-storage-or-technology) | Options, and technical tradeoff analysis |
 | Fall | [Six Thinking Hats](/activities/ideation/#six-thinking-hats) | Options, including "do nothing" |
 | Fall | [Peer Technical Design Review](/activities/technical-design/#peer-technical-design-review) | Reviews specific to the draft, and revision |
-| Winter | [Write a Literature Review](/activities/research-methods/#write-a-literature-review) | Tradeoff analysis, and sourced claims |
+| Winter | [Write a Literature Review](/activities/research-methods/#write-a-literature-review) | Tradeoff analysis, and evidence sources |
 | Winter | [Proof-of-Concept](/activities/technical-design/#proof-of-concept) | Recommendation with a verification plan |
 | Both | [Apply the Privacy by Design Guidelines](/activities/technical-design/#apply-the-privacy-by-design-pbd-guidelines) | Constraints |
 | Both | [Run a Self-Audit and an Architectural Review Pass](/activities/testing-release-and-handoff/#run-a-self-audit-and-an-architectural-review-pass) | Delegation and validation |
