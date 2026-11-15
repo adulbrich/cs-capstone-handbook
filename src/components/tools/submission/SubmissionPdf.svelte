@@ -80,7 +80,12 @@ let notice = $state.raw({ skipped: [], unreadable: [] });
 let dragging = $state(false);
 
 const paper = $derived(PAPER[paperId]);
-const lines = $derived(coverLines(cover, blankText, generatedOn(madeAt)));
+const words = $derived(
+  files.reduce((sum, file) => sum + file.read.counts.words, 0)
+);
+const lines = $derived(
+  coverLines(cover, blankText, blankText.dateLine(generatedOn(madeAt), words))
+);
 const isSaved = $derived(hasSaved(cover));
 const imagePaths = $derived(images.map((image) => image.path));
 const problems = $derived(
@@ -541,7 +546,7 @@ const pageCss = $derived(
   </ol>
 
   <div class="preview-column">
-    <Preview empty={files.length === 0} {paper} paperLabel={saveText.papers[paper.id]} sheets={sheetList} />
+    <Preview empty={files.length === 0} {paper} paperLabel={saveText.papers[paper.id]} sheets={sheetList} {words} />
   </div>
 </div>
 

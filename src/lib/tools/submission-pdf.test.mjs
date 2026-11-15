@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import {
+  blankText,
+  fileSummary,
+  previewText,
+  wordCount,
+} from "../../data/submission-pdf.mjs";
 import { kindOf, resolveImage, segments } from "./submission-images.mjs";
 import {
   countWords,
@@ -455,4 +461,36 @@ test("a part that does not fit moves to the next page whole", () => {
     [0, 100, 200]
   );
   assert.deepEqual(pageStarts([], 100), [0]);
+});
+
+test("word counts read with a US thousands comma, and 1 word is singular", () => {
+  assert.equal(wordCount(1), "1 word");
+  assert.equal(wordCount(2564), "2,564 words");
+  assert.equal(
+    fileSummary({
+      code: 0,
+      diagrams: 1,
+      images: 0,
+      sections: 8,
+      tables: 1,
+      words: 2400,
+    }),
+    "2,400 words, 8 sections, 1 table, 1 Mermaid diagram"
+  );
+  assert.equal(
+    fileSummary({
+      code: 0,
+      diagrams: 0,
+      images: 0,
+      sections: 0,
+      tables: 0,
+      words: 312,
+    }),
+    "312 words"
+  );
+  assert.equal(
+    previewText.summary(5, 2564, "US Letter"),
+    "5 pages, 2,564 words, US Letter"
+  );
+  assert.equal(blankText.dateLine("the day", 2564), "the day · 2,564 words");
 });

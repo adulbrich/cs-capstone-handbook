@@ -1,8 +1,7 @@
 <script>
 // One printed sheet: the cover lines when it is the first (the title, the
-// date the PDF is made, the project, the authors, any more lines the
-// student wrote in Markdown), then a file's
-// HTML, already sanitized by render.js. The preview and the print copy both
+// date the PDF is made and its word count, the project, the authors, any
+// more lines the student wrote in Markdown), then a file's HTML, already sanitized by render.js. The preview and the print copy both
 // draw it, so what the preview shows is what prints. `copy` names this copy,
 // which gives its diagrams ids of their own (copyIds in render.js).
 import { copyIds } from "./render.js";

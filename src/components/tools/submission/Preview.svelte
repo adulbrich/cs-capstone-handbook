@@ -9,7 +9,7 @@ import { previewText as text } from "../../../data/submission-pdf.mjs";
 import { numberPages, pageStarts } from "../../../lib/tools/submission-pdf.mjs";
 import Sheet from "./Sheet.svelte";
 
-let { empty, paper, paperLabel, sheets } = $props();
+let { empty, paper, paperLabel, sheets, words } = $props();
 
 let measurer = $state();
 let width = $state(0);
@@ -92,7 +92,7 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
 <aside class="preview not-content" aria-labelledby="preview-heading">
   <div class="head">
     <h2 id="preview-heading">{text.title}</h2>
-    {#if !empty}<span class="muted">{text.summary(pages.total, paperLabel)}</span>{/if}
+    {#if !empty}<span class="muted">{text.summary(pages.total, words, paperLabel)}</span>{/if}
   </div>
 
   {#if empty}
