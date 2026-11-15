@@ -93,6 +93,13 @@ const SPACES = /\s+/;
 const WORD = /[\p{L}\p{N}]/u;
 const COMMENT = /<!--[\s\S]*?-->/g;
 const TAG = /<[^>]*>/g;
+const BR_TAG = /^<br\b/i;
+const NBSP_ENTITY = /&(?:nbsp|#160|#x0*a0);/gi;
+const ENTITY = /&(?:#\d+|#x[\da-f]+|[a-z][a-z\d]*);/gi;
+
+/** An HTML entity prints as one character: a space for nbsp, else a symbol. */
+const decodeEntities = (text) =>
+  text.replace(NBSP_ENTITY, " ").replace(ENTITY, "&");
 
 /** Words in `text`: runs between spaces holding a letter or a digit. */
 export function countWords(text) {
@@ -129,19 +136,22 @@ function printedText(token) {
     return `\n${printedAll(token.tokens)}\n`;
   }
   if (INLINES.has(type)) {
-    return token.tokens ? printedAll(token.tokens) : token.text;
+    return token.tokens ? printedAll(token.tokens) : decodeEntities(token.text);
   }
   if (type === "codespan" || type === "escape") {
     return token.text;
   }
   if (type === "code") {
-    return isDiagram(token) ? "" : token.text;
+    return isDiagram(token) ? "" : `\n${token.text}\n`;
   }
   if (type === "br") {
     return "\n";
   }
   if (type === "html" && token.block) {
-    return token.text.replace(COMMENT, "").replace(TAG, " ");
+    return `\n${decodeEntities(token.text.replace(COMMENT, "").replace(TAG, " "))}\n`;
+  }
+  if (type === "html" && BR_TAG.test(token.text)) {
+    return "\n";
   }
   return "";
 }

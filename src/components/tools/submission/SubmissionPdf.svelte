@@ -6,7 +6,7 @@
 // under <body> (document.css hides the rest of the page on paper). The
 // project and authors are kept in localStorage for the next visit; the
 // title comes from the link and is never kept. The cover lines open page
-// 1, with the date the PDF is made under the title.
+// 1, with the date the PDF is made and its word count under the title.
 import { flushSync } from "svelte";
 import {
   blankText,

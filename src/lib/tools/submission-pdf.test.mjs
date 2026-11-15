@@ -131,6 +131,15 @@ test("only the text a file prints is counted, and blocks never join", () => {
     ["```js\nconst x = 1;\n```", 3],
     ["```mermaid\nflowchart LR\n  A --> B\n```", 0],
     ["---\ntitle: Not counted\n---\nbody", 1],
+    ["```\nnpm ci\n```\n\n```\nadded 3 packages\n```", 5],
+    ["- Install deps\n  ```sh\n  npm ci\n  ```", 4],
+    ["foo<br>bar", 2],
+    ["| a<br>b | c |\n|---|---|\n| d | e |", 5],
+    ["word<sup>1</sup>", 1],
+    ["R &amp; D", 2],
+    ["foo&nbsp;bar", 2],
+    [`foo ${String.fromCharCode(38)}mdash; bar`, 2],
+    ["a \\& b", 2],
   ]) {
     assert.equal(readMarkdown(markdown).counts.words, words, markdown);
   }
