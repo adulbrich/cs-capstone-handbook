@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { kindOf, resolveImage, segments } from "./submission-images.mjs";
-import { readMarkdown, stripFrontMatter } from "./submission-markdown.mjs";
+import {
+  countWords,
+  readMarkdown,
+  stripFrontMatter,
+} from "./submission-markdown.mjs";
 import {
   blankCover,
   canSave,
@@ -82,7 +86,48 @@ test("a Markdown file renders as GitHub-flavored HTML with diagrams held aside",
     images: 3,
     sections: 2,
     tables: 1,
+    words: 11,
   });
+});
+
+const NBSP = String.fromCharCode(0xa0);
+const EN_DASH = String.fromCharCode(0x20_13);
+
+test("a word is a run between spaces with a letter or a digit in it", () => {
+  for (const [text, words] of [
+    ["", 0],
+    ["well-known end-to-end", 2],
+    ["https://example.com/a/b and CS.042", 3],
+    ["a & b | c - d", 4],
+    [`a ${EN_DASH} b`, 2],
+    ["$1,200 50% #694", 3],
+    ["été naïve", 2],
+    [`foo${NBSP}bar`, 2],
+  ]) {
+    assert.equal(countWords(text), words, JSON.stringify(text));
+  }
+});
+
+test("only the text a file prints is counted, and blocks never join", () => {
+  for (const [markdown, words] of [
+    ["| a | b |\n|---|---|\n| c | d |", 4],
+    ["- one\n- two", 2],
+    ["# Head\nbody", 2],
+    ["line one  \nline two", 4],
+    ["**bold**text", 1],
+    ["[link text](https://example.com/a/b)", 2],
+    ["![alt words](a.png)", 0],
+    ['<img src="a.png" alt="the team">', 0],
+    ["<div>block html words</div>", 3],
+    ["<!-- a -> b -->", 0],
+    ["<!--\nSet Status to where the decision stands.\n-->", 0],
+    ["`npm test`", 2],
+    ["```js\nconst x = 1;\n```", 3],
+    ["```mermaid\nflowchart LR\n  A --> B\n```", 0],
+    ["---\ntitle: Not counted\n---\nbody", 1],
+  ]) {
+    assert.equal(readMarkdown(markdown).counts.words, words, markdown);
+  }
 });
 
 test("every image is found with its line and alt text, Markdown or <img>", () => {

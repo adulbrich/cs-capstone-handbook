@@ -89,12 +89,70 @@ function visit(token, found, lineOf) {
   }
 }
 
+const SPACES = /\s+/;
+const WORD = /[\p{L}\p{N}]/u;
+const COMMENT = /<!--[\s\S]*?-->/g;
+const TAG = /<[^>]*>/g;
+
+/** Words in `text`: runs between spaces holding a letter or a digit. */
+export function countWords(text) {
+  return String(text ?? "")
+    .split(SPACES)
+    .filter((run) => WORD.test(run)).length;
+}
+
+/** Tokens whose children print as their own lines. */
+const BLOCKS = new Set([
+  "blockquote",
+  "heading",
+  "list",
+  "list_item",
+  "paragraph",
+]);
+
+/** Tokens that print their child tokens, or their own text when they have none. */
+const INLINES = new Set(["del", "em", "link", "strong", "text"]);
+
+const printedAll = (tokens) => (tokens ?? []).map(printedText).join("");
+
+/** The text a token prints, which `countWords` then counts. */
+function printedText(token) {
+  const { type } = token;
+  if (type === "table") {
+    const cells = [token.header, ...token.rows].flat();
+    return cells.map((cell) => `\n${printedAll(cell.tokens)}\n`).join("");
+  }
+  if (type === "list") {
+    return `\n${printedAll(token.items)}\n`;
+  }
+  if (BLOCKS.has(type)) {
+    return `\n${printedAll(token.tokens)}\n`;
+  }
+  if (INLINES.has(type)) {
+    return token.tokens ? printedAll(token.tokens) : token.text;
+  }
+  if (type === "codespan" || type === "escape") {
+    return token.text;
+  }
+  if (type === "code") {
+    return isDiagram(token) ? "" : token.text;
+  }
+  if (type === "br") {
+    return "\n";
+  }
+  if (type === "html" && token.block) {
+    return token.text.replace(COMMENT, "").replace(TAG, " ");
+  }
+  return "";
+}
+
 /**
  * Reads one Markdown file. Returns `{ html, diagrams, images, counts }`:
  * `diagrams` the Mermaid sources with their `line`, in placeholder order;
  * `images` every image, Markdown or <img>, as `{ src, alt, line }` (`alt`
  * trimmed, "" when missing); `counts` the sections (level-2 headings),
- * tables, code blocks other than diagrams, diagrams, and images.
+ * tables, code blocks other than diagrams, diagrams, images, and `words`, the
+ * words the file prints (no alt text, diagram source, comments, or tags).
  *
  * With `breaks`, a single line break in the text is a line break on the
  * page, as GitHub shows comments; files keep Markdown's own joining.
@@ -103,7 +161,14 @@ export function readMarkdown(text, { breaks = false } = {}) {
   const source = stripFrontMatter(String(text ?? "").replace(/\r\n?/g, "\n"));
   const tokens = Lexer.lex(source, { breaks, gfm: true });
   const found = {
-    counts: { code: 0, diagrams: 0, images: 0, sections: 0, tables: 0 },
+    counts: {
+      code: 0,
+      diagrams: 0,
+      images: 0,
+      sections: 0,
+      tables: 0,
+      words: 0,
+    },
     diagrams: [],
     images: [],
   };
@@ -131,6 +196,7 @@ export function readMarkdown(text, { breaks = false } = {}) {
     renderer.walkTokens([block], (token) => visit(token, found, lineOf));
   }
   counts.images = images.length;
+  counts.words = countWords(printedAll(tokens));
 
   return { counts, diagrams, html: renderer.parser(tokens), images };
 }
