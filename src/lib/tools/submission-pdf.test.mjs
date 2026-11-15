@@ -503,3 +503,18 @@ test("word counts read with a US thousands comma, and 1 word is singular", () =>
   );
   assert.equal(blankText.dateLine("the day", 2564), "the day · 2,564 words");
 });
+
+test("word counts keep the US comma under any default locale, zero included", (t) => {
+  // A German default prints 2.564; CI runs in English, so make the default
+  // German here, or dropping the "en-US" argument would pass unnoticed.
+  const original = Number.prototype.toLocaleString;
+  t.after(() => {
+    Number.prototype.toLocaleString = original;
+  });
+  Number.prototype.toLocaleString = function (locale, options) {
+    return original.call(this, locale ?? "de-DE", options);
+  };
+  assert.equal((2564).toLocaleString(), "2.564");
+  assert.equal(wordCount(2564), "2,564 words");
+  assert.equal(wordCount(0), "0 words");
+});
