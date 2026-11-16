@@ -50,10 +50,11 @@ export const coverText = {
 };
 
 /**
- * The project cover line, and what a blank part of the cover lines shows
- * in the preview.
+ * The cover lines' formats: the project line, the date line with the word
+ * count, and what a blank part shows in the preview.
  */
 export const blankText = {
+  dateLine: (date, words) => `${date} · ${wordCount(words)}`,
   email: "[email]",
   name: "[Name]",
   project: (id, name) => `${id} ${name}`,
@@ -78,16 +79,29 @@ export const filesText = {
   unreadable: (names) => `Could not read: ${names.join(", ")}.`,
 };
 
-/** A file's one-line summary of what it holds. */
-export function fileSummary({ code, diagrams, images, sections, tables }) {
+/** A word count with a US thousands comma: "1 word", "2,564 words". */
+export function wordCount(n) {
+  return `${n.toLocaleString("en-US")} ${n === 1 ? "word" : "words"}`;
+}
+
+/** A file's one-line summary of what it holds, led by its word count. */
+export function fileSummary({
+  code,
+  diagrams,
+  images,
+  sections,
+  tables,
+  words,
+}) {
   const parts = [
+    wordCount(words),
     sections && plural(sections, "section"),
     tables && plural(tables, "table"),
     code && plural(code, "code block"),
     diagrams && plural(diagrams, "Mermaid diagram"),
     images && plural(images, "image"),
   ].filter(Boolean);
-  return parts.length > 0 ? parts.join(", ") : "Text only";
+  return parts.join(", ");
 }
 
 /** A file's warnings, one line each. */
@@ -210,6 +224,7 @@ export const previewText = {
   emptyTitle: "Your pages appear here",
   missing: (src) => `${src} not found`,
   page: (n) => `Page ${n}`,
-  summary: (pages, paper) => `${plural(pages, "page")}, ${paper}`,
+  summary: (pages, words, paper) =>
+    `${plural(pages, "page")}, ${wordCount(words)}, ${paper}`,
   title: "Preview",
 };

@@ -1,7 +1,17 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import {
+  blankText,
+  fileSummary,
+  previewText,
+  wordCount,
+} from "../../data/submission-pdf.mjs";
 import { kindOf, resolveImage, segments } from "./submission-images.mjs";
-import { readMarkdown, stripFrontMatter } from "./submission-markdown.mjs";
+import {
+  countWords,
+  readMarkdown,
+  stripFrontMatter,
+} from "./submission-markdown.mjs";
 import {
   blankCover,
   canSave,
@@ -82,7 +92,57 @@ test("a Markdown file renders as GitHub-flavored HTML with diagrams held aside",
     images: 3,
     sections: 2,
     tables: 1,
+    words: 11,
   });
+});
+
+const NBSP = String.fromCharCode(0xa0);
+const EN_DASH = String.fromCharCode(0x20_13);
+
+test("a word is a run between spaces with a letter or a digit in it", () => {
+  for (const [text, words] of [
+    ["", 0],
+    ["well-known end-to-end", 2],
+    ["https://example.com/a/b and CS.042", 3],
+    ["a & b | c - d", 4],
+    [`a ${EN_DASH} b`, 2],
+    ["$1,200 50% #694", 3],
+    ["été naïve", 2],
+    [`foo${NBSP}bar`, 2],
+  ]) {
+    assert.equal(countWords(text), words, JSON.stringify(text));
+  }
+});
+
+test("only the text a file prints is counted, and blocks never join", () => {
+  for (const [markdown, words] of [
+    ["| a | b |\n|---|---|\n| c | d |", 4],
+    ["- one\n- two", 2],
+    ["# Head\nbody", 2],
+    ["line one  \nline two", 4],
+    ["**bold**text", 1],
+    ["[link text](https://example.com/a/b)", 2],
+    ["![alt words](a.png)", 0],
+    ['<img src="a.png" alt="the team">', 0],
+    ["<div>block html words</div>", 3],
+    ["<!-- a -> b -->", 0],
+    ["<!--\nSet Status to where the decision stands.\n-->", 0],
+    ["`npm test`", 2],
+    ["```js\nconst x = 1;\n```", 3],
+    ["```mermaid\nflowchart LR\n  A --> B\n```", 0],
+    ["---\ntitle: Not counted\n---\nbody", 1],
+    ["```\nnpm ci\n```\n\n```\nadded 3 packages\n```", 5],
+    ["- Install deps\n  ```sh\n  npm ci\n  ```", 4],
+    ["foo<br>bar", 2],
+    ["| a<br>b | c |\n|---|---|\n| d | e |", 5],
+    ["word<sup>1</sup>", 1],
+    ["R &amp; D", 2],
+    ["foo&nbsp;bar", 2],
+    [`foo ${String.fromCharCode(38)}mdash; bar`, 2],
+    ["a \\& b", 2],
+  ]) {
+    assert.equal(readMarkdown(markdown).counts.words, words, markdown);
+  }
 });
 
 test("every image is found with its line and alt text, Markdown or <img>", () => {
@@ -410,4 +470,51 @@ test("a part that does not fit moves to the next page whole", () => {
     [0, 100, 200]
   );
   assert.deepEqual(pageStarts([], 100), [0]);
+});
+
+test("word counts read with a US thousands comma, and 1 word is singular", () => {
+  assert.equal(wordCount(1), "1 word");
+  assert.equal(wordCount(2564), "2,564 words");
+  assert.equal(
+    fileSummary({
+      code: 0,
+      diagrams: 1,
+      images: 0,
+      sections: 8,
+      tables: 1,
+      words: 2400,
+    }),
+    "2,400 words, 8 sections, 1 table, 1 Mermaid diagram"
+  );
+  assert.equal(
+    fileSummary({
+      code: 0,
+      diagrams: 0,
+      images: 0,
+      sections: 0,
+      tables: 0,
+      words: 312,
+    }),
+    "312 words"
+  );
+  assert.equal(
+    previewText.summary(5, 2564, "US Letter"),
+    "5 pages, 2,564 words, US Letter"
+  );
+  assert.equal(blankText.dateLine("the day", 2564), "the day · 2,564 words");
+});
+
+test("word counts keep the US comma under any default locale, zero included", (t) => {
+  // A German default prints 2.564; CI runs in English, so make the default
+  // German here, or dropping the "en-US" argument would pass unnoticed.
+  const original = Number.prototype.toLocaleString;
+  t.after(() => {
+    Number.prototype.toLocaleString = original;
+  });
+  Number.prototype.toLocaleString = function (locale, options) {
+    return original.call(this, locale ?? "de-DE", options);
+  };
+  assert.equal((2564).toLocaleString(), "2.564");
+  assert.equal(wordCount(2564), "2,564 words");
+  assert.equal(wordCount(0), "0 words");
 });

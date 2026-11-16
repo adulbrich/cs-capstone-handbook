@@ -145,9 +145,9 @@ export function coverProblems({ authors, projectId, projectName, title }) {
 }
 
 /**
- * The cover lines Submitting Your Work asks for, with the date the PDF is
- * made under the title (`date`, from generatedOn): the title, the date, the
- * project line
+ * The cover lines Submitting Your Work asks for, with the date line under
+ * the title (`date`, from `blankText.dateLine`: the date the PDF is made and
+ * the word count): the title, the date line, the project line
  * (`blank.project(id, name)`, "CS.042 Don't Panic Incident Tracker"), and
  * "Name <email>, ..." for each author. A blank part shows `blank`'s
  * stand-in (`title`, `projectId`, `projectName`, `name`, `email`), so the

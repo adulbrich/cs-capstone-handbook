@@ -6,7 +6,7 @@
 // under <body> (document.css hides the rest of the page on paper). The
 // project and authors are kept in localStorage for the next visit; the
 // title comes from the link and is never kept. The cover lines open page
-// 1, with the date the PDF is made under the title.
+// 1, with the date the PDF is made and its word count under the title.
 import { flushSync } from "svelte";
 import {
   blankText,
@@ -80,7 +80,12 @@ let notice = $state.raw({ skipped: [], unreadable: [] });
 let dragging = $state(false);
 
 const paper = $derived(PAPER[paperId]);
-const lines = $derived(coverLines(cover, blankText, generatedOn(madeAt)));
+const words = $derived(
+  files.reduce((sum, file) => sum + file.read.counts.words, 0)
+);
+const lines = $derived(
+  coverLines(cover, blankText, blankText.dateLine(generatedOn(madeAt), words))
+);
 const isSaved = $derived(hasSaved(cover));
 const imagePaths = $derived(images.map((image) => image.path));
 const problems = $derived(
@@ -541,7 +546,7 @@ const pageCss = $derived(
   </ol>
 
   <div class="preview-column">
-    <Preview empty={files.length === 0} {paper} paperLabel={saveText.papers[paper.id]} sheets={sheetList} />
+    <Preview empty={files.length === 0} {paper} paperLabel={saveText.papers[paper.id]} sheets={sheetList} {words} />
   </div>
 </div>
 
