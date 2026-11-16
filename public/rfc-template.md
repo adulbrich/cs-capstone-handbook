@@ -25,15 +25,15 @@ At least three options. Give each option a short name, an account of its real co
 
 ### Option A: [Name]
 
-Description, benefits, costs.
+Description, benefits, costs, and when it would be the right choice.
 
 ### Option B: [Name]
 
-Description, benefits, costs.
+Description, benefits, costs, and when it would be the right choice.
 
 ### Option C: Do Nothing
 
-What staying on the current path actually costs, when that cost arrives, and the condition under which staying would be the right choice.
+What staying on the current path actually costs, when that cost arrives, and the condition under which staying would be the right choice. For a decision already made, staying means keeping things as they stood when the decision came up.
 
 ## Analysis
 
