@@ -11,6 +11,9 @@ import Sheet from "./Sheet.svelte";
 
 let { empty, paper, paperLabel, sheets, words } = $props();
 
+/** Whether this browser prints the page number (document.css), so draws it. */
+const NUMBERED = "CSSMarginRule" in window;
+
 let measurer = $state();
 let width = $state(0);
 let layout = $state.raw({});
@@ -130,6 +133,15 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
                     />
                   </div>
                 </div>
+                {#if NUMBERED}
+                  <div
+                    class="submission-folio"
+                    style:inset-block-start="{paper.height - paper.margin}px"
+                    style:height="{paper.margin}px"
+                  >
+                    {page.number}
+                  </div>
+                {/if}
               </div>
             {/if}
           </div>
