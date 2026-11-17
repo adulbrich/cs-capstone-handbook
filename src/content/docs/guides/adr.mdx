@@ -105,7 +105,7 @@ We will use the host's managed PostgreSQL through the `pg` library.
 A test runs two concurrent edits on one task and checks both are applied.
 ```
 
-Notice what the example does that a weak ADR doesn't: it names alternatives that were actually considered, including keeping what already exists, and gives a specific reason each one lost. "PostgreSQL is the best fit" records nothing, because it would be equally true of any choice.
+Notice what the example does that a weak ADR doesn't: it names alternatives that were actually considered, and gives a specific reason each one lost. "PostgreSQL is the best fit" records nothing, because it would be equally true of any choice.
 
 Write the costs into Consequences as plainly as the benefits, because they're what the next reader needs to judge whether the decision still holds. Nygard asks for every consequence, positive, negative, and neutral. <Cite id="tang-2005" /> found that 27.2% of the practitioners they surveyed never or seldom document a design's weaknesses, and suspect a tendency to present good news rather than bad news during design.
 
@@ -126,7 +126,7 @@ AWS's [ADR process](https://docs.aws.amazon.com/prescriptive-guidance/latest/arc
 Whatever form your review takes, have the reviewer answer these questions:
 
 - Can I restate the problem from the Context section alone?
-- Is each option one a reasonable person might have picked, and is keeping the current approach among them?
+- Is each option one a reasonable person might have picked, and is keeping the current approach among them where it could be right?
 - Does each rejected option have a specific reason?
 - Does Consequences name at least one cost?
 - Is this one decision, or two joined by "and"?
@@ -150,7 +150,7 @@ The rules below condense the page into a checklist to run before you mark an ADR
 
 - Write one decision per ADR. If the Decision section contains "and", split it.
 - Write the ADR the week you make the decision, even roughly.
-- Name every option you considered, including keeping the current approach, and say why each lost.
+- Name every option you considered, including keeping the current approach where it could be right, and say why each lost.
 - State the costs in Consequences.
 - Record your confidence in the decision, as Microsoft's guidance suggests, so whoever revisits a low-confidence one knows it was a bet.
 - Link related ADRs to each other, and link the ADR from the pull request that implements it.

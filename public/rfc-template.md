@@ -21,19 +21,19 @@ Start with your project, for a reader outside your team who has never seen it: w
 
 ## Options
 
-At least three options, **including "do nothing"**. Give each option a short name, an account of its real costs, and the condition under which it would be the right choice. An option with no such condition is a strawman, and a strawman weakens the whole document.
+At least three options. Give each option a short name, an account of its real costs, and the condition under which it would be the right choice. An option with no such condition is a strawman, and a strawman weakens the whole document. Include "do nothing" as Option C. If Problem and Context shows it could never be the right choice, replace it with another option.
 
 ### Option A: [Name]
 
-Description, benefits, costs.
+Description, benefits, costs, and when it would be the right choice.
 
 ### Option B: [Name]
 
-Description, benefits, costs.
+Description, benefits, costs, and when it would be the right choice.
 
 ### Option C: Do Nothing
 
-What staying on the current path actually costs, and when that cost arrives.
+What staying on the current path actually costs, when that cost arrives, and the condition under which staying would be the right choice. For a decision already made, staying means keeping things as they stood when the decision came up.
 
 ## Analysis
 
