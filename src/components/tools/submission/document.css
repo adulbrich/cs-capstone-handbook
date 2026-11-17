@@ -158,3 +158,32 @@
     break-before: page;
   }
 }
+
+/*
+ * The page number, centered in the bottom margin of every page from page 1.
+ * A browser without @page margin boxes prints none, and the preview then
+ * draws none either (Preview.svelte); .submission-folio is the preview's
+ * copy of this box, so the two keep the same type.
+ */
+@page {
+  @bottom-center {
+    content: counter(page);
+    font-family:
+      system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+      sans-serif;
+    font-size: 9pt;
+    color: #44403c;
+  }
+}
+.submission-folio {
+  position: absolute;
+  inset-inline: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  font-size: 9pt;
+  color: #44403c;
+}
