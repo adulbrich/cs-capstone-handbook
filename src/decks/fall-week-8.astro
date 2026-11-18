@@ -293,6 +293,13 @@ const submission = plainText(submissionLine.slice(SUBMISSION.length));
 // What a team leaves with: the opening slide promises it, and the wrap
 // checks it.
 const outcome = submission.charAt(0).toUpperCase() + submission.slice(1);
+// Who hands it in, as the workshop page states it for every workshop.
+const PER_TEAM = "One PDF per team per workshop";
+if (!workshops.includes(PER_TEAM)) {
+  throw new Error(
+    `fall-week-8: the workshop page no longer says "${PER_TEAM}".`
+  );
+}
 
 // The campus lunch app of weeks 2, 3, and 7, a few weeks from its first
 // order: its three metrics, from two of the groups, each with its decision
@@ -660,7 +667,7 @@ for (const name of examplesGroups) {
 
 <Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}, unless the line names another week`}>
   <ul class="due">
-    <li>Workshop {WORKSHOP}, one PDF: {submission}</li>
+    <li>Workshop {WORKSHOP}, one PDF per team: {submission}</li>
     {
       alsoDue.map((item) => (
         <li>
