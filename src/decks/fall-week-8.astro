@@ -190,11 +190,18 @@ function weekOf(
   return week;
 }
 // Due this week besides the workshop submission the due slide spells out.
-const alsoDue = (
-  terms.fall.find((found) => found.week === WEEK)?.rows.get("Due")?.items ?? []
-).filter(
-  (item) => !linkHrefs(item).some((href) => href.startsWith(WORKSHOPS_PAGE))
-);
+// The build fails when the week's Due line no longer lists the workshop, so
+// the slide never shows a list read from the wrong line or from none.
+const isWorkshop = (item: string) =>
+  linkHrefs(item).some((href) => href.startsWith(WORKSHOPS_PAGE));
+const dueItems =
+  terms.fall.find((found) => found.week === WEEK)?.rows.get("Due")?.items ?? [];
+if (!dueItems.some(isWorkshop)) {
+  throw new Error(
+    `fall-week-8: the fall schedule's week ${WEEK} Due line doesn't list the workshop.`
+  );
+}
+const alsoDue = dueItems.filter((item) => !isWorkshop(item));
 
 interface Feed {
   detail: string;
