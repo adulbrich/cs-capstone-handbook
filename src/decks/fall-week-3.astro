@@ -348,6 +348,13 @@ function completeSubmission(workshop: number) {
 }
 const submissionDecisions = completeSubmission(2);
 const submissionSafetyNet = completeSubmission(3);
+// Who hands each in, as the workshop page states it for every workshop.
+const PER_TEAM = "One PDF per team per workshop";
+if (!workshops.includes(PER_TEAM)) {
+  throw new Error(
+    `fall-week-3: the workshop page no longer says "${PER_TEAM}".`
+  );
+}
 ---
 
 <TitleSlide
@@ -838,8 +845,8 @@ const submissionSafetyNet = completeSubmission(3);
 
 <Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
   <ul class="due">
-    <li>Workshop 2, one PDF: {submissionDecisions}</li>
-    <li>Workshop 3, one PDF: {submissionSafetyNet}</li>
+    <li>Workshop 2, one PDF per team: {submissionDecisions}</li>
+    <li>Workshop 3, one PDF per team: {submissionSafetyNet}</li>
     {
       alsoDue.map((item) => (
         <li>

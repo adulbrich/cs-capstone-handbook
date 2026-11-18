@@ -14,6 +14,7 @@ import StatementSlide from "../components/deck/StatementSlide.astro";
 import StoryMap from "../components/deck/StoryMap.astro";
 import TitleSlide from "../components/deck/TitleSlide.astro";
 import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
+import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
 
 export const title = "Fall Week 2: User Story Mapping";
@@ -130,6 +131,14 @@ const handbook = (path: string) => new URL(path, Astro.site).href;
 const template = handbook("/story-map-template.xlsx");
 const activity = handbook("/activities/requirements/#user-story-mapping");
 const guide = handbook("/guides/requirements/#story-mapping");
+
+// Who hands it in, as the workshop page states it for every workshop.
+const PER_TEAM = "One PDF per team per workshop";
+if (!workshops.includes(PER_TEAM)) {
+  throw new Error(
+    `fall-week-2: the workshop page no longer says "${PER_TEAM}".`
+  );
+}
 ---
 
 <TitleSlide
@@ -685,7 +694,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   </p>
 </Slide>
 
-<Slide kicker="Wrap" title="Due by Sunday of week 2: one PDF">
+<Slide kicker="Wrap" title="Due by Sunday of week 2: one PDF per team">
   <ul class="due">
     <li>
       A map of your project's main flows: four backbone columns or more, and
