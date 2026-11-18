@@ -9,10 +9,10 @@
 // then one slide per step for the teams to work from, a self-check, the
 // wrap, and what is due. The activity has no timed steps, so the three steps
 // are built from its four rules, and each step slide quotes the rule it
-// applies. The rules, the groups, and the line on a metric that can't be
-// measured yet come from the activity page; the timeline's weeks and the
-// week's other Due items from the schedule; the submission from the
-// workshop page.
+// applies. The rules, the groups, the metric count, and the line on a metric
+// that can't be measured yet come from the activity page; the timeline's
+// weeks and the week's other Due items from the schedule; the submission,
+// which is also the outcome, from the workshop page.
 // Every slide explains itself to someone who missed the session. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-8/.
 import LinkedText from "../components/deck/LinkedText.astro";
@@ -128,8 +128,13 @@ if (unnoted.length > 0 || missing.length > 0) {
     `Identify Success Metrics groups this deck doesn't match: new ${unnoted.join(", ") || "none"}; gone ${missing.join(", ") || "none"}`
   );
 }
-const groupNamed = (name: string) =>
-  groups.find((group) => group.name === name)?.name ?? name;
+// How many metrics a project commits to, for the template's count.
+const COUNT_RE = /Every project commits to (\d+ or \d+) metrics\./;
+const countMatch = activity.match(COUNT_RE);
+if (!countMatch) {
+  fail("Identify Success Metrics no count of metrics a project commits to");
+}
+const [, metricCount] = countMatch as RegExpMatchArray;
 
 // The activity's sentence on a metric that can't be measured yet, up to its
 // examples.
@@ -140,14 +145,6 @@ if (!notYetMatch) {
   fail("Identify Success Metrics no line on a metric you can't measure yet");
 }
 const notYet = plainText((notYetMatch as RegExpMatchArray)[1]);
-
-// What a team leaves with: the opening slide promises it, and the wrap
-// checks it.
-const outcome = [
-  "2 or 3 success metrics, each with its decision rule",
-  "For at least one, how you'll collect it",
-  "All of it written down and dated, before you measure anything",
-];
 
 // The three steps, each built from the rules its slide quotes.
 const steps = [
@@ -286,6 +283,9 @@ if (!submissionLine) {
   );
 }
 const submission = plainText(submissionLine.slice(SUBMISSION.length));
+// What a team leaves with: the opening slide promises it, and the wrap
+// checks it.
+const outcome = submission.charAt(0).toUpperCase() + submission.slice(1);
 
 // The campus lunch app of weeks 2, 3, and 7, a few weeks from its first
 // order: its three metrics, from two of the groups, each with its decision
@@ -318,39 +318,41 @@ const lunchMetrics = [
       "Any shift with no orders marked ready: ask its cooks what stopped them",
     first: "The first cafe's cooks learn the dashboard",
     metric:
-      "Weekday shifts at the first cafe that run on the kitchen dashboard, with nobody from the team there",
+      "Weekday shifts at the first cafe that run on the kitchen dashboard",
     success: "Every shift for two weeks: start handing it over to the partner",
   },
 ];
-for (const { counts } of lunchMetrics) {
-  if (!groupNotes[counts]) {
-    throw new Error(
-      `fall-week-8: the lunch app counts "${counts}", which is no group.`
-    );
-  }
-}
-
 // A metric each for a team whose number doesn't count people.
 const otherMetrics = [
   {
     collect: "The evaluation script's output, saved with each run",
-    failure:
-      "Within the spread: it refutes the hypothesis, and the report says so",
-    group: groupNamed("A Result Against a Baseline"),
+    failure: "Anything less: report that it refutes the hypothesis",
+    group: "A Result Against a Baseline",
     metric: "Accuracy on the held-out test split, over five seeds",
     success:
-      "Above the reproduced baseline by more than the spread across seeds: it supports the hypothesis",
+      "Above the reproduced baseline by more than the spread across seeds: report that it supports the hypothesis",
   },
   {
     collect: "The project's pull request history and release notes",
     failure:
-      "None merged: ask a maintainer what blocks review, and send a smaller patch first",
-    group: groupNamed("Contributions to an Open-Source Project"),
+      "Fewer: ask a maintainer what blocks review, and send a smaller patch first",
+    group: "Contributions to an Open-Source Project",
     metric:
       "Your pull requests merged, and still in the project's next release",
-    success: "Two merged and released: the work reached the project's users",
+    success: "Two or more merged and released: take on a larger issue",
   },
 ];
+const examplesGroups = [
+  ...lunchMetrics.map(({ counts }) => counts),
+  ...otherMetrics.map(({ group }) => group),
+];
+for (const name of examplesGroups) {
+  if (!groupNotes[name]) {
+    throw new Error(
+      `fall-week-8: an example counts "${name}", which is no group.`
+    );
+  }
+}
 ---
 
 <TitleSlide
@@ -361,7 +363,7 @@ const otherMetrics = [
 />
 
 <Slide kicker="Today's outcome" title="By the end of the session, your team has its success metrics">
-  <ul>{outcome.map((line) => <li>{line}</li>)}</ul>
+  <ul><li>{outcome}</li></ul>
 </Slide>
 
 <Slide kicker="What today feeds" title={`Your metrics, from today through ${termWeek(last).toLowerCase()}`} wide>
@@ -479,8 +481,8 @@ const otherMetrics = [
     </div>
   </div>
   <p class="caption">
-    {PARTNER_QUESTION}: for the lunch app's partner, that's fewer students in
-    the line.
+    {PARTNER_QUESTION}: for the lunch app's partner, that's lunch ready before
+    the break ends.
   </p>
 </Slide>
 
@@ -580,23 +582,23 @@ const otherMetrics = [
 
 <Slide kicker={stepKicker(1)} title="Write each metric with its decision rule" wide>
   <div class="prompt">
-    <p><strong>Metric:</strong> [what you count, and over what period]</p>
+    <p><strong>Metric:</strong> [what you count]</p>
     <p><strong>Success:</strong> [the value], and then we [what you do]</p>
     <p><strong>Failure:</strong> [the value], and then we [what you do]</p>
   </div>
   <ul class="after-pair">
-    <li>2 or 3 metrics in all, each written this way</li>
+    <li>{metricCount} metrics in all, each written this way</li>
   </ul>
   <p class="caption">
     From the four rules: {ruleRule.name}
   </p>
 </Slide>
 
-<Slide kicker={stepKicker(2)} title="Say how you'll collect each one, then date the page" wide>
+<Slide kicker={stepKicker(2)} title={steps[2].name} wide>
   <div class="pair">
     <div class="box box-yes">
-      <h3>How you'll collect it</h3>
-      <p>Name it for at least one metric: {ruleCollect.detail}</p>
+      <h3>Your instrumentation method</h3>
+      <p>How you'll collect at least one metric: {ruleCollect.detail}</p>
     </div>
     <div class="box">
       <h3>Can't measure it yet</h3>
@@ -643,13 +645,13 @@ const otherMetrics = [
 </Slide>
 
 <Slide kicker="Wrap" title="Check your work against today's outcome">
-  <ul>{outcome.map((line) => <li>{line}</li>)}</ul>
+  <ul><li>{outcome}</li></ul>
   <p class="caption">
     Stuck? <a href={activityLink}>Identify Success Metrics</a>
   </p>
 </Slide>
 
-<Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
+<Slide kicker="Wrap" title={`Due in week ${WEEK}`}>
   <ul class="due">
     <li>Workshop {WORKSHOP}, one PDF: {submission}</li>
     {
