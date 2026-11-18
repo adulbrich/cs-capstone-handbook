@@ -694,7 +694,8 @@ out-of-scope row. Keep each story under eight words.</pre>
   </p>
 </Slide>
 
-<Slide kicker="Wrap" title="Due by Sunday of week 2: one PDF per team">
+<Slide kicker="Wrap" title="Due by Sunday of week 2">
+  <p class="due-lead">Workshop 1, one PDF per team:</p>
   <ul class="due">
     <li>
       A map of your project's main flows: four backbone columns or more, and
@@ -1001,5 +1002,16 @@ out-of-scope row. Keep each story under eight words.</pre>
   .due {
     margin-block-start: 32px;
     font-size: 36px;
+  }
+
+  /* The one submission the due list itemizes. */
+  .due-lead {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+  }
+
+  .due-lead + .due {
+    margin-block-start: 16px;
   }
 </style>
