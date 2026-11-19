@@ -17,7 +17,7 @@ Read this before editing a deck under `src/decks/` or the route under `src/pages
 - An agenda lists the session's parts as bullets, nested where a part has parts, and never says who presents or what the instruction team does (#704).
 - Students get the slides in advance. A workshop deck explains each step on its own slide, once, then shows one slide that summarizes every step, which stays on the screen while teams work. No slide describes the room or what stays on the screen (#704).
 - No list on a slide has one bullet: one item is a sentence, or it joins the list next to it (#704).
-- The wrap repeats nothing. No slide restates the outcome slide, and the due slide nests the workshop's submission under the workshop's line (#704).
+- The wrap repeats nothing. No slide checks the work against the outcome slide, and the due slide nests the workshop's submission under the workshop's line (#704).
 - A caption or lead says only what its slide shows. A slide never points at something it doesn't show (a group, a rule, an earlier slide), and every pill, chip, or color on it is labeled (#704).
 - A deck's examples don't stop at its running example. Where a method plays out differently for a research result, an open-source contribution, a tool only the partner's staff use, a game, or a store release, show those cases, named as voice.md's Examples of project work says (#704).
 - A mistakes table's "instead of" is something a team would plausibly write, and its fix depends on no schedule fact (#704).

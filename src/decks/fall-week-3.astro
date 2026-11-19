@@ -32,20 +32,6 @@ import { termWeeks, weekWhere } from "../lib/schedule-lines.mjs";
 export const title =
   "Fall Week 3: Hard-to-Reverse Decisions and Your Safety Net";
 
-// What a team leaves each workshop with, on the opening slide.
-const outcomeDecisions = [
-  "Ten upcoming decisions, written down before you mark any",
-  "Each one marked hard to reverse or easy to reverse",
-  "For each hard one, a validator: who checks it, and what they check",
-  "Few hard ones: if eight of ten are hard, sort again",
-];
-const outcomeSafetyNet = [
-  "How a change reaches main: who writes it, and who reads it first",
-  "Your checks, in place or planned: tests, CI, review, staging, rollback",
-  "One specific gap, named in a sentence",
-  "The smallest change that closes it",
-];
-
 // Each example's repository. The slides are shared with the class, so a
 // slide shows a link by its page's name, never its URL.
 const ephira = "https://github.com/adulbrich/ephira";
@@ -213,7 +199,8 @@ const designTruths = handbook(
   "/guides/technical-design/#some-truths-about-technical-design"
 );
 // The fall schedule, read as <TermSessions> reads it: this deck's week, its
-// Read line, its other Due items, and every week on the timeline. A line is
+// Read line, and every week on the timeline; the due slide also lists the
+// week's other Due items. A line is
 // found by where its links point, so rewording it doesn't lose it, and the
 // build fails when the schedule drops one rather than the deck going stale.
 const WEEK = 3;
@@ -425,11 +412,11 @@ const stepsSafetyNet = [
 <TwoColumnSlide kicker="Today's outcome" title="By the end of the session, your team has two outputs" divider wide>
   <div slot="left">
     <h3>Workshop 2: a sorted list</h3>
-    <ul class="reveal-list">{outcomeDecisions.map((line) => <li>{line}</li>)}</ul>
+    <ul class="reveal-list">{handInDecisions.map((part) => <li>{part}</li>)}</ul>
   </div>
   <div slot="right">
     <h3>Workshop 3: one named gap</h3>
-    <ul class="reveal-list">{outcomeSafetyNet.map((line) => <li>{line}</li>)}</ul>
+    <ul class="reveal-list">{handInSafetyNet.map((part) => <li>{part}</li>)}</ul>
   </div>
 </TwoColumnSlide>
 
@@ -647,7 +634,7 @@ const stepsSafetyNet = [
     <thead>
       <tr>
         <th scope="col" class="mistake-col">Mistake</th>
-        <th scope="col">Write</th>
+        <th scope="col">Fix</th>
       </tr>
     </thead>
     <tbody>

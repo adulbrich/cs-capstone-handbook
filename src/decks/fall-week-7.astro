@@ -12,8 +12,8 @@
 // and what is due.
 // Facts come from their pages and fail the build when a page drops them:
 // the step names, their minutes, the reviewer questions, and the fallback
-// from the activity page; the weeks on the timeline, the reading, and the
-// week's other Due items from the schedule; the submission from the
+// from the activity page; the weeks on the timeline and the reading from
+// the schedule, which also gives the week's other Due items; the submission from the
 // workshop page. The slide sentences are written for the slides.
 // Every slide explains itself to someone who missed the session. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-7/.
@@ -389,7 +389,7 @@ const lunchLog = [
   </p>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app, step 1" title="The lunch team opens with the problem and a context diagram" wide>
+<Slide kicker="Example: the lunch team presents" title="The lunch team opens with the problem and a context diagram" wide>
   <p class="lead">
     The problem: students wait in line for lunch. The app lets them order
     ahead and pick it up at the cafe.
@@ -442,7 +442,7 @@ const lunchLog = [
   </p>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app, step 1" title="The lunch team's design document: five sections, three with diagrams" wide>
+<Slide kicker="Example: the lunch team presents" title="The lunch team's design document: five sections, three with diagrams" wide>
   <table class="rows">
     <thead>
       <tr>
@@ -469,7 +469,7 @@ const lunchLog = [
   </p>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app, step 1" title="The architecture section's diagram" wide>
+<Slide kicker="Example: the lunch team presents" title="The architecture section's diagram" wide>
   <div class="design" role="img" aria-label="The lunch app's design: a student web app and a kitchen dashboard, both built with React, read and write Supabase, which holds sign-in and a Postgres database of cafes, dishes, and orders. Stripe takes the card payment and tells Supabase when it clears. A text message tells the student the order is ready.">
     <div class="part" style="grid-area: 1 / 1;">
       <h3>Student web app</h3>
@@ -511,7 +511,7 @@ const lunchLog = [
   </div>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app, step 2" title="The other team's written answers, each naming a section" wide>
+<Slide kicker="Example: the other team reviews" title="The other team's written answers, each naming a section" wide>
   <table class="rows">
     <thead>
       <tr>
@@ -534,8 +534,8 @@ const lunchLog = [
   </table>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app, step 3" title="The lunch team's log: one comment per point" wide>
-  <p class="lead"><strong>Reviewer:</strong> the team at the next table</p>
+<Slide kicker="Example: the lunch team logs the review" title="The lunch team's log: one comment per point" wide>
+  <p class="lead"><strong>Reviewer:</strong> Team 12</p>
   <table class="rows">
     <thead>
       <tr>
@@ -726,7 +726,7 @@ const lunchLog = [
         <td>The problem, who it's for, and what it connects to, then the document</td>
       </tr>
       <tr>
-        <th scope="row">No doubt named</th>
+        <th scope="row">The least-sure decision buried</th>
         <td class="instead">Presenting the sections in document order</td>
         <td>The decision you're least sure of, presented first</td>
       </tr>

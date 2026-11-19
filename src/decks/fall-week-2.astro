@@ -21,7 +21,7 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
 import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
-import { linkHrefs } from "../lib/deck-text.mjs";
+import { linkHrefs, plainText } from "../lib/deck-text.mjs";
 import { termWeeks } from "../lib/schedule-lines.mjs";
 
 export const title = "Fall Week 2: User Story Mapping";
@@ -45,17 +45,39 @@ const lunch = {
   ],
 };
 
-// What a team leaves the session with, on the opening slide.
-const outcome = [
-  "A backbone: the top row, four columns or more",
-  "A walking-skeleton row: a card in every column",
-  "A ? on every card that is a guess",
-  "A question for your partner for every ?",
-];
-// The outcome as list items, each ? set as code the way the template
-// writes it.
-const outcomeItems = outcome
-  .map((line) => `<li>${line.replaceAll("?", "<code>?</code>")}</li>`)
+// What a team hands in, as the workshop page states fall Workshop 1's
+// complete submission, split into its four parts: the opening slide
+// promises them, the scoring slide sums them up, and the due slide lists
+// them. The build fails when the line no longer reads as those parts.
+const SUBMISSION = "- **A complete submission:** ";
+const fallWorkshops = workshops.slice(
+  workshops.indexOf("\n## Fall"),
+  workshops.indexOf("\n## Winter")
+);
+const submissionLine = fallWorkshops
+  .split("\n### Workshop 1:")[1]
+  ?.split("\n")
+  .find((text) => text.startsWith(SUBMISSION));
+const SUBMISSION_PARTS_RE =
+  /^(a user story map of .+? walking-skeleton row), (its backbone type and the reason for it), (written user stories each marked in or out of scope for this year), and (the list of questions for your project partner, .+)$/;
+const submissionParts = submissionLine
+  ? plainText(submissionLine.slice(SUBMISSION.length)).match(
+      SUBMISSION_PARTS_RE
+    )
+  : null;
+if (!submissionParts) {
+  throw new Error(
+    "fall-week-2: the workshop page's fall Workshop 1 complete submission no longer reads as a map, its backbone type, marked stories, and partner questions."
+  );
+}
+// Each part as a list item, its first letter capitalized and each ? set as
+// code the way the template writes it.
+const handInItems = submissionParts
+  .slice(1)
+  .map(
+    (part) =>
+      `<li>${part.charAt(0).toUpperCase()}${part.slice(1).replaceAll("`?`", "<code>?</code>")}</li>`
+  )
   .join("");
 
 // Each example's links. The slides are shared with the class, so a slide
@@ -173,7 +195,7 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
 />
 
 <Slide kicker="Today's outcome" title="By the end of the session, your team has a first map">
-  <ul set:html={outcomeItems} />
+  <ul set:html={handInItems} />
   <p class="deck-small after-list">
     Why it matters: you turn the map into <code>docs/requirements.md</code> at
     Repo Checkpoint 1, and its <code>?</code> cards are the agenda for your first
@@ -206,8 +228,9 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     <li>User stories and story maps</li>
     <li>Example: ephira, a period tracker, mapped by hand, then drafted with AI</li>
     <li>Reference maps for a pipeline (LumiLab) and a research chain (TaxonBodyMassML)</li>
-    <li>Your team's first map: five steps, then a check</li>
+        <li>Check a map: steps people take, not screens</li>
     <li>Optional: two teams show their top row</li>
+    <li>Your team's first map, in five steps</li>
   </ul>
 </Slide>
 
@@ -255,9 +278,9 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     stepped
   />
   <p class="caption caption-tight">
-    A made-up campus lunch app. Add release rows as you need, then end with
-    Out of scope this year: a card in a release row is in, and one in the last
-    row is out. Jeff Patton, <a href={patton}>The New User Story Backlog is a Map</a>
+        A made-up campus lunch app. Add release rows as you need, then end with
+    Out of scope this year: a card in a release row is in, and one in Out of
+    scope this year is out. Jeff Patton, <a href={patton}>The New User Story Backlog is a Map</a>
   </p>
 </Slide>
 
@@ -335,8 +358,8 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     </li>
     <li class="fragment">
       <strong>The advertised project:</strong> enhance it, with predictions,
-      reminders, encrypted backups, easier data entry, tests, and a store
-      update
+            reminders, encrypted backups, easier data entry, tests, a store update,
+      and a start on pregnancy mode
     </li>
   </ul>
   <p class="caption">
@@ -681,13 +704,7 @@ out-of-scope row. Keep each story under eight words.</pre>
 <Slide kicker="Wrap" title="Due by Sunday of week 2">
   <p class="due-lead">Workshop 1, one PDF per team:</p>
   <ul class="due">
-    <li>
-      A map of your project's main flows: four backbone columns or more, and
-      one complete walking-skeleton row
-    </li>
-    <li>The backbone type, with one line saying why</li>
-    <li>Your stories, each in a release row or in Out of scope this year</li>
-    <li>The Questions for our partner tab: one question per <code>?</code></li>
+    <Fragment set:html={handInItems} />
     <li>The whole workbook, both tabs: in Google Sheets, choose Workbook, not Current sheet</li>
   </ul>
   {
