@@ -3,8 +3,8 @@
 // outcome, what it feeds across three terms, scoring and reading, the
 // agenda); the presented part (the activity's four rules, what a metric can
 // count, the campus lunch app of weeks 2, 3, and 7 with its three metrics
-// and the vanity number it drops, how to count what stands in for a goal
-// that's hard to count, and six metrics from other projects); then the three
+// and the vanity number it drops, six metrics from other projects, and how
+// to count what stands in for a goal that's hard to count); then the three
 // steps, one slide each, the four mistakes to check for, one slide that
 // stays on the screen while teams work, and what is due.
 // Facts come from their pages and fail the build when a page drops them:
@@ -38,10 +38,9 @@ const CHECKPOINT_2 =
 const SHIPPED_PAGE = "/assignments/definition-of-shipped/";
 const RELEASE_PAGE = "/assignments/release/";
 const activityLink = handbook(ACTIVITY_PATH);
-// Where goals, signals, and metrics come from (slide 9), and a service's
-// four golden signals (slide 7).
+// Where goals, signals, and metrics, and Google's readability example, come
+// from (slide 11).
 const SWE_BOOK = "https://abseil.io/resources/swe-book/html/ch07.html";
-const SRE_BOOK = "https://sre.google/sre-book/monitoring-distributed-systems/";
 
 // The activity as its page writes it. The build fails when the page drops
 // a part this deck shows, rather than the deck going stale.
@@ -336,8 +335,9 @@ const VANITY = {
 const lunchMetrics = [
   {
     failure:
-      "Fewer: watch a lunch rush with the cooks, and fix what slows them",
-    metric: "Share of orders ready within ten minutes of being placed",
+      "Fewer: watch a lunch rush with the cooks, and fix what makes orders early or late",
+    metric:
+      "Share of orders ready within five minutes of the pickup time the student chose, early or late",
     success: "9 in 10 or more: open it at a second cafe",
   },
   {
@@ -345,13 +345,13 @@ const lunchMetrics = [
       "Fewer: interview five students who ordered once, before building anything new",
     metric:
       "Share of students who order again within two weeks of their first order",
-    success: "3 in 10 or more: add paying with Orange Cash",
+    success: "3 in 10 or more: evaluate how to bring more students back",
   },
   {
     failure:
       "Any shift with an unmarked order: ask its cooks what stopped them",
     metric:
-      "Weekday shifts at the first cafe where every order is marked ready on the kitchen dashboard",
+      "Weekday shifts where every order is marked ready on the kitchen dashboard",
     success: "Every shift for two weeks: start handing it over to the partner",
   },
 ];
@@ -462,8 +462,8 @@ const examplesPeople: Example[] = [
     <li>The four rules for a success metric</li>
     <li>What a metric can count</li>
     <li>Example: the campus lunch app</li>
-    <li>When what you want is hard to count</li>
     <li>Examples from six other projects</li>
+    <li>When what you want is hard to count</li>
     <li>Your team's metrics, in three steps</li>
     <li>Four mistakes to check for</li>
   </ul>
@@ -507,14 +507,12 @@ const examplesPeople: Example[] = [
     </tbody>
   </table>
   <p class="caption">
-    None fits? Count what your partner or mentor agrees shows success. More metrics for each: <a href={activityLink}>Identify Success Metrics</a><br />
-    Running a service? Start from the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
-    latency, traffic, errors, and saturation (how close to full it runs).
+    None fits? Count what your partner or mentor agrees shows success. More metrics for each: <a href={activityLink}>Identify Success Metrics</a>
   </p>
 </Slide>
 
 <Slide kicker="Example: the campus lunch app" title="Three metrics, and the number the lunch app drops" wide>
-  <p class="lead">Students order lunch in the app and pick it up at the cafe. Cooks mark each order ready on a kitchen dashboard.</p>
+  <p class="lead">Students order lunch in the app for a pickup time they choose, and pick it up at the cafe. Cooks mark each order ready on a kitchen dashboard.</p>
   <table class="rows rows-tight">
     <thead>
       <tr>
@@ -539,29 +537,6 @@ const examplesPeople: Example[] = [
       }
     </tbody>
   </table>
-</Slide>
-
-<Slide kicker="When what you want is hard to count" title="Name the signal you'd see, then count a metric that stands in for it" wide>
-  <ol class="chain">
-    <li class="box">
-      <h3>Goal</h3>
-      <p>The cafe's cooks rely on the app at lunch</p>
-      <p class="note">What you want to be true</p>
-    </li>
-    <li class="box">
-      <h3>Signal</h3>
-      <p>The cooks stop writing paper tickets</p>
-      <p class="note">What you'd see if it were true, even if you can't count it</p>
-    </li>
-    <li class="box box-yes">
-      <h3>Metric</h3>
-      <p>{dashboardShifts.metric}</p>
-      <p class="note">A number you can collect that stands in for the signal</p>
-    </li>
-  </ol>
-  <p class="caption">
-    Goals, signals, and metrics: <a href={SWE_BOOK}>Software Engineering at Google, chapter 7</a>
-  </p>
 </Slide>
 
 <Slide kicker="Examples from other projects" title="A research model, an open-source contribution, and a partner's internal tool" wide>
@@ -617,6 +592,30 @@ const examplesPeople: Example[] = [
   </p>
 </Slide>
 
+<Slide kicker="Example from Google: a goal that's hard to count" title="Name the signal you'd see, then count a metric that stands in for it" wide>
+  <p class="lead">At Google, reviewers certify engineers in a language's style, a process called readability. Does it make their code better?</p>
+  <ol class="chain">
+    <li class="box">
+      <h3>Goal</h3>
+      <p>Engineers write better code as a result of the readability process</p>
+      <p class="note">What you want to be true</p>
+    </li>
+    <li class="box">
+      <h3>Signal</h3>
+      <p>Engineers with readability judge their own code better than engineers without it</p>
+      <p class="note">What you'd see if it were true, even if you can't count it</p>
+    </li>
+    <li class="box box-yes">
+      <h3>Metric</h3>
+      <p>Share of engineers satisfied with their own code's quality, from a quarterly survey</p>
+      <p class="note">A number you can collect that stands in for the signal</p>
+    </li>
+  </ol>
+  <p class="caption">
+    Google's example, from <a href={SWE_BOOK}>Software Engineering at Google, chapter 7</a>
+  </p>
+</Slide>
+
 <Slide kicker={stepKicker(0)} title={steps[0].name} wide>
   <ul>
     <li>{PARTNER_QUESTION}</li>
@@ -645,7 +644,7 @@ const examplesPeople: Example[] = [
       <h3>The lunch app</h3>
       <div class="prompt">
         <p><strong>Metric:</strong> {repeatOrders.metric}</p>
-        <p><strong>Success:</strong> 3 in 10 or more, and then we add paying with Orange Cash</p>
+        <p><strong>Success:</strong> 3 in 10 or more, and then we evaluate how to bring more students back</p>
         <p><strong>Failure:</strong> fewer, and then we interview five students who ordered once</p>
       </div>
     </div>
@@ -660,7 +659,7 @@ const examplesPeople: Example[] = [
   </ul>
   <div class="box box-yes example">
     <h3>The lunch app</h3>
-    <p>{dashboardShifts.metric}: counted per shift from the orders table, once the dashboard runs at the first cafe. Written down and dated before the first order.</p>
+    <p>{dashboardShifts.metric}: counted per shift from the orders table, once the dashboard runs at the cafe. Written down and dated before the first order.</p>
   </div>
 </Slide>
 
