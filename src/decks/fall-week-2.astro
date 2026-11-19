@@ -1,14 +1,11 @@
 ---
 // Fall week 2, Workshop 1: User Story Mapping (#466, restructured in #485,
-// tightened in #510, reworked in #704). An opening (the outcome, scoring and
-// reading, the agenda); user stories and story maps, on a made-up campus
-// lunch app; ephira mapped by hand, then drafted twice with an AI tool;
-// reference maps for a pipeline (LumiLab) and a research chain
-// (TaxonBodyMassML); then the check for a team's map, the optional show by
-// two volunteer teams, one slide of the five steps that stays on the screen
-// while teams work, and what is due. The due slide reads the week's other
-// Due items from the schedule. Every slide explains itself to someone who
-// missed the session. Each link sits on the slide that uses it. Served at
+// tightened in #510). The instruction team presents in four parts: user
+// stories and story maps, ephira mapped by hand and then drafted with an AI
+// tool, reference maps for the pipeline and research-chain backbones, then
+// the teams' own maps, with an optional show by two volunteer teams, and
+// what's due. Every slide explains itself to someone who missed the
+// session. Each link sits on the slide that uses it. Served at
 // /decks/fall-week-2/.
 import { Image } from "astro:assets";
 import lumiLabPhoto from "../assets/decks/lumilab.webp";
@@ -21,13 +18,14 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
 import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
-import { linkHrefs, plainText } from "../lib/deck-text.mjs";
+import { linkHrefs } from "../lib/deck-text.mjs";
 import { termWeeks } from "../lib/schedule-lines.mjs";
 
 export const title = "Fall Week 2: User Story Mapping";
 
-// A made-up campus lunch app: the map that labels a story map's parts, row
-// by row, and the one the self-check holds up against a map of screens.
+// A made-up campus lunch app: the map Part 1 labels part by part, the one
+// the release slide in Part 4 labels row by row, and the one its self-check
+// holds up against a map of screens.
 const lunch = {
   backbone: ["Find food", "Order it", "Pay", "Pick it up"],
   release1: [
@@ -45,39 +43,18 @@ const lunch = {
   ],
 };
 
-// What a team hands in, as the workshop page states fall Workshop 1's
-// complete submission, split into its four parts: the opening slide
-// promises them, the scoring slide sums them up, and the due slide lists
-// them. The build fails when the line no longer reads as those parts.
-const SUBMISSION = "- **A complete submission:** ";
-const fallWorkshops = workshops.slice(
-  workshops.indexOf("\n## Fall"),
-  workshops.indexOf("\n## Winter")
-);
-const submissionLine = fallWorkshops
-  .split("\n### Workshop 1:")[1]
-  ?.split("\n")
-  .find((text) => text.startsWith(SUBMISSION));
-const SUBMISSION_PARTS_RE =
-  /^(a user story map of .+? walking-skeleton row), (its backbone type and the reason for it), (written user stories each marked in or out of scope for this year), and (the list of questions for your project partner, .+)$/;
-const submissionParts = submissionLine
-  ? plainText(submissionLine.slice(SUBMISSION.length)).match(
-      SUBMISSION_PARTS_RE
-    )
-  : null;
-if (!submissionParts) {
-  throw new Error(
-    "fall-week-2: the workshop page's fall Workshop 1 complete submission no longer reads as a map, its backbone type, marked stories, and partner questions."
-  );
-}
-// Each part as a list item, its first letter capitalized and each ? set as
-// code the way the template writes it.
-const handInItems = submissionParts
-  .slice(1)
-  .map(
-    (part) =>
-      `<li>${part.charAt(0).toUpperCase()}${part.slice(1).replaceAll("`?`", "<code>?</code>")}</li>`
-  )
+// What a team leaves the session with: the opening slide promises it, and
+// the wrap checks it.
+const outcome = [
+  "A backbone: the top row, four columns or more",
+  "A walking-skeleton row: a card in every column",
+  "A ? on every card that is a guess",
+  "A question for your partner for every ?",
+];
+// The outcome as list items, each ? set as code the way the template
+// writes it; the opening slide and the wrap render the same list.
+const outcomeItems = outcome
+  .map((line) => `<li>${line.replaceAll("?", "<code>?</code>")}</li>`)
   .join("");
 
 // Each example's links. The slides are shared with the class, so a slide
@@ -195,7 +172,7 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
 />
 
 <Slide kicker="Today's outcome" title="By the end of the session, your team has a first map">
-  <ul set:html={handInItems} />
+  <ul set:html={outcomeItems} />
   <p class="deck-small after-list">
     Why it matters: you turn the map into <code>docs/requirements.md</code> at
     Repo Checkpoint 1, and its <code>?</code> cards are the agenda for your first
@@ -205,11 +182,7 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
 
 <Slide kicker="Workshop 1" title="Graded complete or incomplete">
   <ul>
-    <li>
-      Complete when it holds your map, its backbone type and why, every story
-      marked in or out of scope, and a question for every <code>?</code>:
-      there is no quality bar
-    </li>
+    <li>Complete when it holds everything listed as due: there is no quality bar</li>
     <li>{LATE["class-week"].text}</li>
     <li>
       A submission that is not about your own project or team, such as a
@@ -223,18 +196,19 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
   </p>
 </Slide>
 
-<Slide kicker="Workshop 1" title="Agenda">
+<Slide kicker="Agenda" title="Today, in four parts">
   <ul>
     <li>User stories and story maps</li>
-    <li>Example: ephira, a period tracker, mapped by hand, then drafted with AI</li>
-    <li>Reference maps for a pipeline (LumiLab) and a research chain (TaxonBodyMassML)</li>
-        <li>Check a map: steps people take, not screens</li>
-    <li>Optional: two teams show their top row</li>
-    <li>Your team's first map, in five steps</li>
+    <li>ephira, a period tracker: a user journey mapped by hand, then drafted with AI</li>
+    <li>
+      Reference maps for the other two backbone types: LumiLab (pipeline),
+      TaxonBodyMassML (research chain)
+    </li>
+    <li>Your turn: map in teams</li>
   </ul>
 </Slide>
 
-<Slide kicker="User stories and story maps" title="A user story is one thing a person can do">
+<Slide kicker="Part 1 of 4: user stories and story maps" title="A user story is one thing a person can do">
   <p class="story-def">
     Small enough to finish in one sprint (two weeks), and written so anyone
     can check it works
@@ -258,9 +232,13 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     <span class="map-card">Predict from history</span>
     <p>On a story map, the card holds only the short version</p>
   </div>
+  <p class="caption fragment">
+    On a pipeline or research map, a card is one piece of work instead: one
+    stage, one experiment.
+  </p>
 </Slide>
 
-<Slide kicker="User stories and story maps" title="What a story map is made of" wide>
+<Slide kicker="Part 1 of 4: user stories and story maps" title="What a story map is made of" wide>
   <StoryMap
     backbone={lunch.backbone}
     releases={[
@@ -278,13 +256,12 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     stepped
   />
   <p class="caption caption-tight">
-        A made-up campus lunch app. Add release rows as you need, then end with
-    Out of scope this year: a card in a release row is in, and one in Out of
-    scope this year is out. Jeff Patton, <a href={patton}>The New User Story Backlog is a Map</a>
+    A made-up campus lunch app. Add Release 2 and later rows as you need; Out
+    of scope this year is always the last row. Jeff Patton, <a href={patton}>The New User Story Backlog is a Map</a>
   </p>
 </Slide>
 
-<Slide kicker="User stories and story maps" title="Choose the backbone type that holds your hardest unknowns" wide>
+<Slide kicker="Part 1 of 4: user stories and story maps" title="Choose the backbone type that holds your hardest unknowns" wide>
   <div class="backbones">
     <div class="type">
       <h3>User journey</h3>
@@ -308,13 +285,9 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     Same rows and <code>?</code> flags for all three. Write one line saying
     why you chose yours.
   </p>
-  <p class="caption fragment">
-    On a pipeline or research map, a card is one piece of work instead of a
-    user story: one stage, one experiment.
-  </p>
 </Slide>
 
-<Slide kicker="User stories and story maps" title="More than one kind of user? Still one map" wide>
+<Slide kicker="Part 1 of 4: user stories and story maps" title="More than one kind of user? Still one map" wide>
   <StoryMap
     backbone={["Find food", "Order it", "Pay", "Kitchen cooks", "Pick it up"]}
     releases={[
@@ -342,8 +315,8 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
   </p>
 </Slide>
 
-<StatementSlide kicker="Example: ephira, a user journey">
-  One proposal, mapped by hand, then drafted twice with AI
+<StatementSlide kicker="Part 2 of 4" source="ephira, a user journey: mapped by hand, then drafted with AI">
+  One proposal, mapped twice
 </StatementSlide>
 
 <Slide kicker="Example: ephira, a user journey" title="A private period tracker, already in both app stores">
@@ -358,8 +331,8 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     </li>
     <li class="fragment">
       <strong>The advertised project:</strong> enhance it, with predictions,
-            reminders, encrypted backups, easier data entry, tests, a store update,
-      and a start on pregnancy mode
+      reminders, encrypted backups, easier data entry, tests, and a store
+      update
     </li>
   </ul>
   <p class="caption">
@@ -368,8 +341,12 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
   </p>
 </Slide>
 
-<Slide kicker="Example: ephira, mapped by hand" title="ephira: start the map from what already ships" wide>
+<Slide title="ephira: start the map from what already ships" wide>
   <StoryMap {...ephiraMap} legend={false} />
+  <p class="caption caption-tight">
+    Also on the <a href={ephira.page}>project page</a>: beta tests, docs, a
+    store update; start designing and building pregnancy mode
+  </p>
 </Slide>
 
 <TwoColumnSlide kicker="Example: ephira, what happened" title="What the team built in its year" divider wide>
@@ -393,12 +370,16 @@ const alsoDue = dueItems.filter((item) => !isWorkshop(item));
     </ul>
   </div>
   <p class="caption">
-    From the repository's history over the team's year:
-    <a href={ephira.repo}>ephira on GitHub</a>
+    Repository history over the team's year; later commits are the
+    maintainer's: <a href={ephira.repo}>ephira on GitHub</a>
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Example: ephira, drafted with AI" title="One prompt, run twice" wide>
+<StatementSlide kicker="Example: ephira, drafted with AI" source="ephira again: once from the proposal alone, once with the repository too">
+  The same proposal, drafted by AI twice
+</StatementSlide>
+
+<Slide kicker="The prompt" title="One prompt, run twice" wide>
   <pre class="prompt">Here is a software project proposal, as it was advertised to students:
 
 [ephira's project page, as advertised]
@@ -411,9 +392,8 @@ four to seven activities in the order they happen, then a walking-skeleton
 row with one story under every activity, then a Release 1 row and an
 out-of-scope row. Keep each story under eight words.</pre>
   <p class="caption">
-    Run 1: the prompt without the highlighted lines. Run 2: the whole prompt,
-    with the repository to read.<br />
-    Project page: <a href={ephira.page}>Ephira (iOS/Android)</a>
+    Run 1: without the highlighted lines, tools off. Run 2: with them, reading only the repository at app
+    version 1.1.0. Project page: <a href={ephira.page}>Ephira (iOS/Android)</a>
   </p>
 </Slide>
 
@@ -423,7 +403,7 @@ out-of-scope row. Keep each story under eight words.</pre>
     <ul class="reveal-list">
       <li>Planned the lock, the day log, and the calendar the app already had</li>
       <li>Added a fertile window the proposal never asks for</li>
-      <li>Cut pregnancy mode, which the proposal asks for, to a design document, stated as settled</li>
+      <li>Cut pregnancy to a design document, stated as settled</li>
     </ul>
   </div>
   <div slot="right">
@@ -431,8 +411,8 @@ out-of-scope row. Keep each story under eight words.</pre>
     <ul class="reveal-list">
       <li class="fragment">Found the 28-day guess and planned a prediction from average cycle length</li>
       <li class="fragment">Found no reminders and no import, and planned both</li>
-      <li class="fragment">Found encryption set up with no key: a question the hand-drawn map missed</li>
-      <li class="fragment">Still cut pregnancy mode to a design draft, with no <code>?</code> on any card</li>
+      <li class="fragment">Found the database set up for encryption with no key set: a question the hand-drawn map missed</li>
+      <li class="fragment">Still cut pregnancy to a design draft, with no <code>?</code> on any card</li>
     </ul>
   </div>
 </TwoColumnSlide>
@@ -463,7 +443,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   </p>
 </TwoColumnSlide>
 
-<StatementSlide source="LumiLab, a pipeline; TaxonBodyMassML, a research chain">
+<StatementSlide kicker="Part 3 of 4" source="LumiLab, a pipeline; TaxonBodyMassML, a research chain">
   Reference maps for the other two backbone types
 </StatementSlide>
 
@@ -501,16 +481,16 @@ out-of-scope row. Keep each story under eight words.</pre>
   </p>
 </Slide>
 
-<Slide kicker="Reference map: LumiLab" title="Photos to a luminance map: a script, then an app" wide>
+<Slide kicker="Reference map: LumiLab" title="The tutorial's steps: a script, then an app" wide>
   <StoryMap
     backbone={[
       "Select exposures",
-      "Merge into one image",
+      "Merge, nullify exposure",
       "Crop and resize",
-      "Correct the lens",
+      "Projection, vignetting, ND filter",
       "Scale to the meter",
-      "Record view angles",
-      "Check with a meter",
+      "Edit the header",
+      "Check validity",
     ]}
     releases={[
       {
@@ -518,12 +498,12 @@ out-of-scope row. Keep each story under eight words.</pre>
         goal: "one script, one photo set",
         stories: [
           "Keep frames by pixel count",
-          ["Merge with a tool", "Reset exposure"],
+          ["Merge with hdrgen", "Nullify exposure"],
           "Crop to the lens, shrink",
-          "Built-in lens files",
-          "One fixed scale factor",
-          "Fixed viewing angles",
-          "Compare with the meter",
+          ["Fisheye file", "Vignetting file", "ND filter file"],
+          "One fixed factor",
+          "Write the view line",
+          "Lux against the meter",
         ],
       },
       {
@@ -531,9 +511,9 @@ out-of-scope row. Keep each story under eight words.</pre>
         goal: "the app over the script",
         stories: [
           "Pick photos or a folder",
-          "Upload calibration",
+          "Upload the response file",
           "Type crop and size numbers",
-          "Upload lens files",
+          "Upload the .cal files",
           "? Type a meter reading",
           "Type the viewing angles",
           "Run all, view the map",
@@ -543,9 +523,10 @@ out-of-scope row. Keep each story under eight words.</pre>
     legend={false}
   />
   <p class="caption caption-tight">
-    Simplified from Table 3 of Pierson, Cauwerts, Bodart, and Wienold, <a href={pierson}>"Tutorial:
-    Luminance Maps for Daylighting Studies from High Dynamic Range
-    Photography"</a>
+    Simplified to fit the slide: two columns group the tutorial's steps (3
+    and 4; 6 to 8). Columns: steps 2 to 11 of Table 3 in Pierson, Cauwerts,
+    Bodart, and Wienold, <a href={pierson}>"Tutorial: Luminance Maps for
+    Daylighting Studies from High Dynamic Range Photography"</a>
   </p>
 </Slide>
 
@@ -612,12 +593,85 @@ out-of-scope row. Keep each story under eight words.</pre>
     legend={false}
   />
   <p class="caption caption-tight">
-    Release 1 comes from the team's repository. Its Baseline cell is empty:
-    the team never built one.
+    The instruction team drew Release 1 from the team's repository. The method
+    changed from a language model to boosted trees, and only the Method column
+    moved. The repository never had a baseline, and nobody computed the 95 of
+    100 target: the team left the Baseline and Evaluation cards thin.
   </p>
 </Slide>
 
-<Slide kicker="Before you submit" title="Check your map: steps people take, not screens" wide>
+<StatementSlide kicker="Part 4 of 4" source="Map in teams; two teams may show their maps">
+  Your turn
+</StatementSlide>
+
+<Slide kicker="Work time" title="Start here, as a team">
+  <ol class="steps" style="--steps: 5;">
+    <li>
+      <p>Open the story map template, one laptop per team</p>
+      <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Pick the kind of top row (Backbone type): user journey, pipeline, or research chain</p>
+      <span class="art art-pick" aria-hidden="true">User journey</span>
+    </li>
+    <li>
+      <p>Fill the top row (Backbone): four or more steps, in order</p>
+      <span class="art art-row" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Fill one thin row under it (Walking skeleton): a card in every column</p>
+      <span class="art art-row art-two" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b><b></b><b></b><b></b></span>
+    </li>
+    <li>
+      <p>Start every guess with <code>?</code> and add a question for it on the second tab</p>
+      <span class="art art-guess" aria-hidden="true">?</span>
+    </li>
+  </ol>
+  <p class="caption">Template: <a href={template}>the story map template</a></p>
+</Slide>
+
+<Slide kicker="Work time: after the skeleton" title="Then fill the rows under the skeleton" wide>
+  <StoryMap
+    backbone={lunch.backbone}
+    releases={[
+      { name: "Walking skeleton", stories: lunch.skeleton },
+      { name: "Release 1", stories: lunch.release1 },
+      { name: "Release 2", stories: lunch.release2 },
+      { name: "Out of scope this year", stories: [undefined, undefined, undefined, "Delivery to dorms"] },
+    ]}
+    callouts={[
+      { at: "row", row: 0, term: "Walking skeleton", text: "built in the fall" },
+      { at: "row", row: 1, term: "Release 1", text: "the first iteration after it" },
+      { at: "row", row: 2, term: "Release 2 and on", text: "insert a row per release" },
+      { at: "row", row: 3, term: "Out of scope this year", text: "always the last row" },
+    ]}
+    legend={false}
+  />
+  <p class="caption caption-tight">
+    Decide scope card by card: a card in a release row is in scope, and a
+    card in the last row is out.
+  </p>
+</Slide>
+
+<Slide kicker="Optional: two teams show their maps" title="Two volunteer teams show their top row">
+  <ol class="steps" style="--steps: 3;">
+    <li>
+      <p>A team volunteers and puts its map on the big screen</p>
+    </li>
+    <li>
+      <p>It reads its top row aloud, left to right, as one story</p>
+    </li>
+    <li>
+      <p>Two minutes of feedback from the room: one thing that works, one thing to change</p>
+    </li>
+  </ol>
+  <p class="rule-line">
+    Two teams, two minutes each. If your partner asked you to keep the project
+    confidential (an NDA), don't volunteer.
+  </p>
+</Slide>
+
+<Slide kicker="Work time: check your map" title="Check your map: steps people take, not screens" wide>
   <p class="verdict verdict-yes">Like this</p>
   <StoryMap
     backbone={lunch.backbone}
@@ -654,57 +708,16 @@ out-of-scope row. Keep each story under eight words.</pre>
   </p>
 </Slide>
 
-<Slide kicker="Optional" title="Two volunteer teams show their top row">
-  <ol class="steps" style="--steps: 3;">
-    <li>
-      <p>A team volunteers and puts its map on the big screen</p>
-    </li>
-    <li>
-      <p>It reads its top row aloud, left to right, as one story</p>
-    </li>
-    <li>
-      <p>Two minutes of feedback from the room: one thing that works, one thing to change</p>
-    </li>
-  </ol>
-  <p class="rule-line">
-    If your partner asked you to keep the project confidential (an NDA), don't
-    volunteer.
-  </p>
-</Slide>
-
-<Slide kicker="Work time" title="Your turn: five steps as a team" wide>
-  <ol class="steps" style="--steps: 5;">
-    <li>
-      <p><strong>Pick the backbone type</strong></p>
-      <p class="note">User journey, pipeline, or research chain, and one line on why</p>
-    </li>
-    <li>
-      <p><strong>Fill the backbone</strong></p>
-      <p class="note">The top row: four columns or more, in order</p>
-    </li>
-    <li>
-      <p><strong>Fill the walking skeleton</strong></p>
-      <p class="note">One thin row, with a card in every column</p>
-    </li>
-    <li>
-      <p><strong>Fill the release rows</strong></p>
-      <p class="note">Release 1 and later, then Out of scope this year, always last</p>
-    </li>
-    <li>
-      <p><strong>Start every guess with <code>?</code></strong></p>
-      <p class="note">One question for each on the Questions for our partner tab</p>
-    </li>
-  </ol>
-  <p class="caption">
-    Work in <a href={template}>the story map template</a>, one laptop per
-    team. Then check your map: steps people take, not screens.
-  </p>
-</Slide>
-
 <Slide kicker="Wrap" title="Due by Sunday of week 2">
   <p class="due-lead">Workshop 1, one PDF per team:</p>
   <ul class="due">
-    <Fragment set:html={handInItems} />
+    <li>
+      A map of your project's main flows: four backbone columns or more, and
+      one complete walking-skeleton row
+    </li>
+    <li>The backbone type, with one line saying why</li>
+    <li>Your stories, each in a release row or in Out of scope this year</li>
+    <li>The Questions for our partner tab: one question per <code>?</code></li>
     <li>The whole workbook, both tabs: in Google Sheets, choose Workbook, not Current sheet</li>
   </ul>
   {
@@ -717,9 +730,11 @@ out-of-scope row. Keep each story under eight words.</pre>
       </p>
     )
   }
-  <p class="caption">
+  <p class="deck-small after-list due-foot">
+    Bring the questions to your first partner meeting: they're its agenda.<br />
     Template: <a href={template}>the story map template</a><br />
-    Stuck? <a href={activity}>User Story Mapping</a>, or the guide's <a href={guide}>Requirements: Story Mapping</a>
+    Stuck? The activity: <a href={activity}>User Story Mapping</a><br />
+    The guide: <a href={guide}>Requirements: Story Mapping</a>
   </p>
 </Slide>
 
@@ -897,7 +912,7 @@ out-of-scope row. Keep each story under eight words.</pre>
   .steps > li {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
     padding: 104px 26px 28px;
     margin: 0;
     font-size: 36px;
@@ -933,10 +948,63 @@ out-of-scope row. Keep each story under eight words.</pre>
     margin: 0;
   }
 
-  /* A step's one-line note, under its name. */
-  .note {
+  .art {
+    margin-block-start: auto;
+  }
+
+  .art-sheet,
+  .art-row {
+    display: grid;
+    grid-template-columns: repeat(var(--cells, 3), 40px);
+    gap: 6px;
+  }
+
+  .art-row {
+    --cells: 4;
+  }
+
+  .art i,
+  .art b {
+    height: 28px;
+    border-radius: 4px;
+  }
+
+  .art-sheet i {
+    background: var(--deck-paper);
+    border: 2px solid var(--deck-rule);
+  }
+
+  .art-row i {
+    background: var(--deck-backbone);
+    border: 2px solid var(--deck-backbone-edge);
+  }
+
+  .art-row b {
+    background: var(--deck-paper);
+    border: 2px solid var(--deck-ink-soft);
+  }
+
+  .art-pick {
+    align-self: start;
+    padding: 6px 16px;
     font-size: var(--deck-text-min);
-    color: var(--deck-ink-soft);
+    font-weight: 600;
+    color: var(--deck-backbone-ink);
+    background: var(--deck-backbone);
+    border: 2px solid var(--deck-backbone-edge);
+    border-radius: 8px;
+  }
+
+  .art-guess {
+    align-self: start;
+    min-width: 1.15em;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.15em;
+    color: var(--deck-paper);
+    text-align: center;
+    background: var(--deck-assumed-edge);
+    border-radius: 999px;
   }
 
   /* The self-check's two maps, each under its verdict. */
@@ -957,9 +1025,11 @@ out-of-scope row. Keep each story under eight words.</pre>
     color: var(--deck-accent-ink);
   }
 
+  /* At the 32px floor: the due slide also carries the week's other items
+     and the links that close the session. */
   .due {
     margin-block-start: 32px;
-    font-size: 36px;
+    font-size: var(--deck-text-min);
   }
 
   /* The one submission the due list itemizes. */
@@ -975,7 +1045,11 @@ out-of-scope row. Keep each story under eight words.</pre>
 
   /* The week's other due items, in one line under the workshop's. */
   .also-due {
+    margin-block-start: 24px;
+    font-size: var(--deck-text-min);
+  }
+
+  .due-foot {
     margin-block-start: 32px;
-    font-size: 36px;
   }
 </style>
