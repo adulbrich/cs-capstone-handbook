@@ -155,14 +155,11 @@ if (!pmfMatch) {
   );
 }
 const [, pmfShare] = pmfMatch as RegExpMatchArray;
-const PMF_COUNT_RE = /directionally correct around (\d+) respondents/;
-const pmfCountMatch = planning.match(PMF_COUNT_RE);
-if (!pmfCountMatch) {
+if (!planning.includes("Report the count alongside the share")) {
   throw new Error(
-    "fall-week-8: the Planning guide no longer gives how many respondents the product-market fit share needs."
+    "fall-week-8: the Planning guide no longer says to report the count alongside the product-market fit share."
   );
 }
-const [, pmfCount] = pmfCountMatch as RegExpMatchArray;
 
 // The three steps, as the step slides and the work-time slide name them.
 const steps = [
@@ -357,57 +354,62 @@ const lunchMetrics = [
 ];
 const [, repeatOrders, dashboardShifts] = lunchMetrics;
 
-// Six metrics from other projects, three to a slide.
+// Six metrics from other projects, three to a slide. Each counts a few
+// people, since most teams have a handful of users by spring, not many.
 interface Example {
   failure: string;
   metric: string;
   project: string;
   success: string;
 }
-const examplesResult: Example[] = [
+const examplesPartner: Example[] = [
   {
     failure:
-      "Otherwise: report that it doesn't support the hypothesis, with all five runs",
-    metric: "Accuracy on test data it never trained on, over five runs",
-    project: "A research model",
-    success:
-      "Above your reproduced baseline in all five: report that it supports the hypothesis, then test a second dataset",
-  },
-  {
-    failure:
-      "Fewer: ask a maintainer what blocks review, and send a smaller patch",
-    metric: "Your pull requests the maintainers merge",
-    project: "A contribution to an open-source project",
-    success: "Two or more merged by the end of winter: take on a larger issue",
-  },
-  {
-    failure: "Any report built by hand: ask that analyst what was missing",
+      "More: find which step differs, with the lab, before you extend it",
     metric:
-      "Weekly reports the partner's analysts build with it instead of by hand",
+      "Gap between the accuracy you reproduce and the accuracy the paper reports",
+    project: "A research project for the partner's lab",
+    success: "2 points or less: run your extension on the lab's data",
+  },
+  {
+    failure: "Fewer: fix where each one got stuck, and watch five again",
+    metric:
+      "Of five staff you watch use it, those who build their weekly report in it without help",
     project: "A tool only the partner's staff use",
-    success: "Every report for four weeks: hand it over",
+    success: "All five: hand it over for daily use",
+  },
+  {
+    failure:
+      "Any: answer each one in the docs, then try with a second developer",
+    metric:
+      "Questions a partner developer asks while setting it up from your docs alone",
+    project: "Code with no screen that the partner's developers run",
+    success: "None: hand it over",
   },
 ];
-const examplesPeople: Example[] = [
+const examplesOwnUsers: Example[] = [
   {
-    failure: "Fewer: recruit at a game club, and watch where new players quit",
-    metric: "Playtesters outside the team who log 2 hours or more",
+    failure: "Fewer: watch where they stopped, and rework that part first",
+    metric:
+      "Of your first 10 playtesters outside the team, those who keep playing past 30 minutes without being asked",
     project: "A game",
-    success: "10 or more by the end of winter: build the second level",
+    success: "5 or more: build the second level",
   },
   {
     failure:
-      "Fewer: watch five new users' first session, and fix where they quit",
-    metric: "Share of installs opened again a week later",
-    project: "A release on an app store or Steam",
-    success: "1 in 4 or more: build the next feature on your list",
-  },
-  {
-    failure:
-      "Fewer: interview the users who answered very disappointed, and build for them",
-    metric: `Share of users who'd be very disappointed if they could no longer use it, from a one-question survey of ${pmfCount} or more`,
-    project: "An app with regular users",
+      "Fewer: interview the ones who answered very disappointed, and build for them",
+    metric:
+      "Share of your test users who'd be very disappointed if they could no longer use it, asked of every one",
+    project: "An app in beta or on a store, with a few test users",
     success: `${pmfShare}% or more: build more of what they use it for`,
+  },
+  {
+    failure:
+      "Fewer: rework the problem with your partner, and interview eight more",
+    metric:
+      "Of eight people you interview, those who name the problem your app solves before you mention it",
+    project: "An app still in user research",
+    success: "5 or more: build a prototype for it, and test it with them",
   },
 ];
 ---
@@ -539,7 +541,7 @@ const examplesPeople: Example[] = [
   </table>
 </Slide>
 
-<Slide kicker="Examples from other projects" title="A research model, an open-source contribution, and a partner's internal tool" wide>
+<Slide kicker="Examples from other projects" title="Projects the partner's own people use or run" wide>
   <table class="rows rows-tight">
     <thead>
       <tr>
@@ -551,7 +553,7 @@ const examplesPeople: Example[] = [
     </thead>
     <tbody>
       {
-        examplesResult.map(({ project, metric, success, failure }) => (
+        examplesPartner.map(({ project, metric, success, failure }) => (
           <tr>
             <th scope="row">{project}</th>
             <td>{metric}</td>
@@ -564,7 +566,7 @@ const examplesPeople: Example[] = [
   </table>
 </Slide>
 
-<Slide kicker="Examples from other projects" title="A game, a store release, and an app with regular users" wide>
+<Slide kicker="Examples from other projects" title="Projects that find their own users, a few at a time" wide>
   <table class="rows rows-tight">
     <thead>
       <tr>
@@ -576,7 +578,7 @@ const examplesPeople: Example[] = [
     </thead>
     <tbody>
       {
-        examplesPeople.map(({ project, metric, success, failure }) => (
+        examplesOwnUsers.map(({ project, metric, success, failure }) => (
           <tr>
             <th scope="row">{project}</th>
             <td>{metric}</td>
@@ -588,7 +590,7 @@ const examplesPeople: Example[] = [
     </tbody>
   </table>
   <p class="caption caption-tight">
-    The survey question, and where its threshold comes from: <a href={handbook(FRAMEWORKS)}>Success-Metric Frameworks</a>
+    With a few test users, one person moves the share a lot, so give the count beside it: <a href={handbook(FRAMEWORKS)}>Success-Metric Frameworks</a>
   </p>
 </Slide>
 
