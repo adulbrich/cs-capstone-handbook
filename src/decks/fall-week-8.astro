@@ -38,8 +38,8 @@ const CHECKPOINT_2 =
 const SHIPPED_PAGE = "/assignments/definition-of-shipped/";
 const RELEASE_PAGE = "/assignments/release/";
 const activityLink = handbook(ACTIVITY_PATH);
-// Where goals, signals, and metrics come from, and a service's four golden
-// signals.
+// Where goals, signals, and metrics come from (slide 9), and a service's
+// four golden signals (slide 7).
 const SWE_BOOK = "https://abseil.io/resources/swe-book/html/ch07.html";
 const SRE_BOOK = "https://sre.google/sre-book/monitoring-distributed-systems/";
 
@@ -488,7 +488,7 @@ const examplesPeople: Example[] = [
 </Slide>
 
 <Slide kicker="What a metric can count" title={`What your ${metricCount} metrics can count`} wide>
-  <table class="rows">
+  <table class="rows rows-tight">
     <thead>
       <tr>
         <th scope="col" class="group-col">What it counts</th>
@@ -507,7 +507,9 @@ const examplesPeople: Example[] = [
     </tbody>
   </table>
   <p class="caption">
-    None fits? Count what your partner or mentor agrees shows success. More metrics for each: <a href={activityLink}>Identify Success Metrics</a>
+    None fits? Count what your partner or mentor agrees shows success. More metrics for each: <a href={activityLink}>Identify Success Metrics</a><br />
+    Running a service? Start from the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
+    latency, traffic, errors, and saturation (how close to full it runs).
   </p>
 </Slide>
 
@@ -558,9 +560,7 @@ const examplesPeople: Example[] = [
     </li>
   </ol>
   <p class="caption">
-    Goals, signals, and metrics: <a href={SWE_BOOK}>Software Engineering at Google, chapter 7</a>.<br />
-    Running a service? Its usual metrics are the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
-    latency, traffic, errors, and saturation (how close to full it runs).
+    Goals, signals, and metrics: <a href={SWE_BOOK}>Software Engineering at Google, chapter 7</a>
   </p>
 </Slide>
 
