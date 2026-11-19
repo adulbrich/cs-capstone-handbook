@@ -9,7 +9,7 @@
 
 import { createHash } from "node:crypto";
 
-/** The PDF under public/, as the defense page links it. */
+/** The PDF under public/, as the defense page and the tool page link it. */
 export const EXAMPLE_PDF = "defense-live-sheet-example.pdf";
 
 /**

@@ -13,6 +13,12 @@ import { plural } from "./tools-text.mjs";
 
 /** The Astro page. */
 export const page = {
+  /** The intro's last sentence, around its link to the blank live sheet. */
+  blank: {
+    after: ", with the name, team, and assessor left to write in.",
+    before: "Without a roster, print the",
+    link: "blank live sheet",
+  },
   description:
     "Print a defense session cover for each team and a one-page live sheet for each student, from the course roster, in your browser.",
   intro:
