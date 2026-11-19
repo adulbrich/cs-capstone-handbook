@@ -1,26 +1,25 @@
 ---
-// Fall week 8: Workshop 5, Identify Success Metrics, in the week 7 deck's
-// shape. An opening (the outcome, what it feeds across three terms, scoring
-// and reading, the three steps); what the instruction team presents (the
-// activity's four rules, what a number can count, then the campus lunch app
-// of weeks 2, 3, and 7 taken through them: the vanity number it drops, its
-// three metrics with their decision rules, how it collects each one once it
-// can, and one metric each for a team whose number doesn't count people);
-// then one slide per step for the teams to work from, a self-check, the
-// wrap, and what is due. The activity has no timed steps, so the three steps
-// are built from its four rules, and each step slide quotes the rule it
-// applies. The rules, the groups, the metric count, and the line on a metric
-// that can't be measured yet come from the activity page; the timeline's
-// weeks and the week's other Due items from the schedule; the submission,
-// which is also the outcome, from the workshop page.
+// Fall week 8: Workshop 5, Identify Success Metrics. An opening (the
+// outcome, what it feeds across three terms, scoring and reading, the
+// agenda); the presented part (the activity's four rules, what a metric can
+// count, the campus lunch app of weeks 2, 3, and 7 with its three metrics
+// and the vanity number it drops, how to count what stands in for a goal
+// that's hard to count, and six metrics from other projects); then the three
+// steps, one slide each, the four mistakes to check for, one slide that
+// stays on the screen while teams work, and what is due.
+// Facts come from their pages and fail the build when a page drops them:
+// the rules, the groups, and the metric count from the activity page; the
+// timeline's weeks and the week's other Due items from the schedule; the
+// submission from the workshop page; the product-market fit threshold from
+// the Planning guide. The slide sentences are written for the slides.
 // Every slide explains itself to someone who missed the session. Each link
 // sits on the slide that uses it. Served at /decks/fall-week-8/.
 import LinkedText from "../components/deck/LinkedText.astro";
 import Slide from "../components/deck/Slide.astro";
-import StatementSlide from "../components/deck/StatementSlide.astro";
 import TitleSlide from "../components/deck/TitleSlide.astro";
 import activities from "../content/docs/activities/requirements.mdx?raw";
 import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
+import planning from "../content/docs/guides/planning.mdx?raw";
 import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
 import { linkHrefs, plainText } from "../lib/deck-text.mjs";
@@ -39,6 +38,10 @@ const CHECKPOINT_2 =
 const SHIPPED_PAGE = "/assignments/definition-of-shipped/";
 const RELEASE_PAGE = "/assignments/release/";
 const activityLink = handbook(ACTIVITY_PATH);
+// Where goals, signals, and metrics come from, and a service's four golden
+// signals.
+const SWE_BOOK = "https://abseil.io/resources/swe-book/html/ch07.html";
+const SRE_BOOK = "https://sre.google/sre-book/monitoring-distributed-systems/";
 
 // The activity as its page writes it. The build fails when the page drops
 // a part this deck shows, rather than the deck going stale.
@@ -75,7 +78,7 @@ if (rules.length !== 4) {
     `Identify Success Metrics ${rules.length} rules, and this deck presents 4`
   );
 }
-// Each step slide applies one or two rules, found by what they name.
+// The step slides restate three rules, found by what they name.
 const ruleNaming = (word: string) => {
   const found = rules.find((rule) => rule.name.toLowerCase().includes(word));
   if (!found) {
@@ -83,7 +86,7 @@ const ruleNaming = (word: string) => {
   }
   return found as (typeof rules)[number];
 };
-const ruleRule = ruleNaming("decision rule");
+ruleNaming("decision rule");
 const ruleDated = ruleNaming("dated");
 const ruleCollect = ruleNaming("collect");
 const ruleVanity = ruleNaming("vanity");
@@ -99,21 +102,32 @@ const vanityContrast = ruleVanity.detail
   .trim()
   .replace(TRAILING_PERIOD_RE, "")
   .replace(LEADING_LETTER_RE, (first) => first.toLowerCase());
+const datedReason = ruleDated.detail.replace(LEADING_LETTER_RE, (first) =>
+  first.toLowerCase()
+);
+// Step 3 tells a team what to do with a metric it can't collect yet, as the
+// activity allows.
+if (!activity.includes("A metric you can't measure yet still counts when")) {
+  fail("Identify Success Metrics no line on a metric you can't measure yet");
+}
 
-// What the number counts: the activity's groups, each with the one line this
+// What a metric counts: the activity's groups, each with the one line this
 // deck says about it. A group renamed, added, or dropped fails the build.
 const groupNotes: Record<string, string> = {
   "A Result Against a Baseline":
     "Your result next to a baseline you reproduced, judged by a rule set in advance",
   "Contributions to an Open-Source Project":
-    "Your pull requests merged into the project, and still merged later",
+    "Pull requests the maintainers merge, and whether they ship in a release",
   "People Using It": "Who signs up, who comes back, and who finishes the task",
   "Performance and Reliability":
     "Response time, uptime, or a benchmark, under conditions you state",
   "The Partner's Adoption":
     "Whether the partner's people run it, and for what task",
 };
+const sentenceCase = (name: string) =>
+  name.charAt(0) + name.slice(1).toLowerCase();
 const groups = [...activity.matchAll(/^### (.+)$/gm)].map(([, name]) => ({
+  label: sentenceCase(name),
   name,
   note: groupNotes[name],
 }));
@@ -128,7 +142,7 @@ if (unnoted.length > 0 || missing.length > 0) {
     `Identify Success Metrics groups this deck doesn't match: new ${unnoted.join(", ") || "none"}; gone ${missing.join(", ") || "none"}`
   );
 }
-// How many metrics a project commits to, for the template's count.
+// How many metrics a project commits to.
 const COUNT_RE = /Every project commits to (\d+ or \d+) metrics\./;
 const countMatch = activity.match(COUNT_RE);
 if (!countMatch) {
@@ -136,29 +150,30 @@ if (!countMatch) {
 }
 const [, metricCount] = countMatch as RegExpMatchArray;
 
-// The activity's sentence on a metric that can't be measured yet, up to its
-// examples.
-const NOT_YET_RE =
-  /^(A metric you can't measure yet still counts when [^:]+):/m;
-const notYetMatch = activity.match(NOT_YET_RE);
-if (!notYetMatch) {
-  fail("Identify Success Metrics no line on a metric you can't measure yet");
+// The product-market fit threshold, as the Planning guide sources it.
+const PMF_RE = /product-market fit requires at least (\d+)% of users/;
+const pmfMatch = planning.match(PMF_RE);
+if (!pmfMatch) {
+  throw new Error(
+    "fall-week-8: the Planning guide no longer gives the product-market fit threshold."
+  );
 }
-const notYet = plainText((notYetMatch as RegExpMatchArray)[1]);
+const [, pmfShare] = pmfMatch as RegExpMatchArray;
 
-// The three steps, each built from the rules its slide quotes.
+// The three steps, as the agenda, the step slides, and the work-time slide
+// name them.
 const steps = [
   {
     name: "Pick what your number counts",
-    note: "The number your partner would call a success",
+    note: "Ask your partner what number means success, and skip vanity numbers",
   },
   {
-    name: "Write each metric with its decision rule",
-    note: "Which value is success, which is failure, and what you do then",
+    name: `Write ${metricCount} metrics, each with its decision rule`,
+    note: "Which value is success, which is failure, and what you do in each case",
   },
   {
     name: "Say how you'll collect it, then date it",
-    note: "Dated before you measure",
+    note: "How you'll collect at least one, written down before you measure",
   },
 ];
 const stepKicker = (index: number) => `Step ${index + 1} of ${steps.length}`;
@@ -211,7 +226,8 @@ interface Feed {
   week: number;
   what: string;
 }
-// What today's metrics feed, through spring.
+// What today's metrics feed, through spring. Winter and spring entries
+// link nowhere until those terms' assignments are final.
 const feedList: Feed[] = [
   {
     detail:
@@ -232,7 +248,6 @@ const feedList: Feed[] = [
   {
     detail:
       "Its success metrics, and for one, what collects it and when it starts",
-    href: handbook(SHIPPED_PAGE),
     term: "winter",
     week: weekOf(
       "winter",
@@ -245,7 +260,6 @@ const feedList: Feed[] = [
   {
     detail:
       "Optional: run the activity again, now that you can check the number",
-    href: activityLink,
     term: "spring",
     week: weekOf(
       "spring",
@@ -258,7 +272,6 @@ const feedList: Feed[] = [
   {
     detail:
       "A real measured value for at least one metric, with evidence of how you collected it",
-    href: handbook(RELEASE_PAGE),
     term: "spring",
     week: weekOf("spring", "Due", links(RELEASE_PAGE), "Release and Metrics"),
     what: "Release and Metrics",
@@ -273,7 +286,7 @@ const termWeek = (feed: Feed) =>
   `${feed.term.charAt(0).toUpperCase()}${feed.term.slice(1)} week ${feed.week}`;
 
 // The complete-submission line, as the workshop page states it under its
-// fall workshops.
+// fall workshops, split into the two things a team hands in.
 const WORKSHOP = 5;
 const fallWorkshops = workshops.slice(
   workshops.indexOf("\n## Fall"),
@@ -284,15 +297,24 @@ const submissionLine = fallWorkshops
   .split(`\n### Workshop ${WORKSHOP}:`)[1]
   ?.split("\n")
   .find((text) => text.startsWith(SUBMISSION));
-if (!submissionLine) {
+const SUBMISSION_PARTS_RE =
+  /^(.+?) and (a named instrumentation method for at least one), (written down and dated)$/;
+const submissionParts = submissionLine
+  ? plainText(submissionLine.slice(SUBMISSION.length)).match(
+      SUBMISSION_PARTS_RE
+    )
+  : null;
+if (!submissionParts) {
   throw new Error(
-    `fall-week-8: the workshop page gives fall Workshop ${WORKSHOP} no complete submission.`
+    `fall-week-8: the workshop page's fall Workshop ${WORKSHOP} complete submission no longer reads as metrics and an instrumentation method.`
   );
 }
-const submission = plainText(submissionLine.slice(SUBMISSION.length));
-// What a team leaves with: the opening slide promises it, and the wrap
-// checks it.
-const outcome = submission.charAt(0).toUpperCase() + submission.slice(1);
+const [, metricsPart, methodPart, writtenPart] = submissionParts;
+// What a team hands in, on the opening slide and under the due line.
+const handIn = [
+  `${metricsPart.charAt(0).toUpperCase()}${metricsPart.slice(1)}, ${writtenPart}`,
+  `${methodPart.charAt(0).toUpperCase()}${methodPart.slice(1)}`,
+];
 // Who hands it in, as the workshop page states it for every workshop.
 const PER_TEAM = "One PDF per team per workshop";
 if (!workshops.includes(PER_TEAM)) {
@@ -301,72 +323,86 @@ if (!workshops.includes(PER_TEAM)) {
   );
 }
 
-// The campus lunch app of weeks 2, 3, and 7, a few weeks from its first
-// order: its three metrics, from two of the groups, each with its decision
-// rule, how it is collected, and what has to happen before it can be.
+// The campus lunch app of weeks 2, 3, and 7: the number it drops, and its
+// three metrics, each with its decision rule.
+const VANITY = {
+  metric: "Accounts created",
+  why: "it counts every student who tried the app once, not the ones who came back",
+};
 const lunchMetrics = [
   {
-    collect:
-      "The orders table: when each order is placed, and when the cook marks it ready",
-    counts: "People Using It",
     failure:
       "Fewer: watch a lunch rush with the cooks, and fix what slows them",
-    first: "The first cafe takes orders through the app",
     metric: "Orders ready within ten minutes of being placed",
     success: "9 in 10 or more: open it at a second cafe",
   },
   {
-    collect: "A count of repeat orders in the orders table",
-    counts: "People Using It",
     failure:
       "Fewer: interview five students who ordered once, before building anything new",
-    first: "Two weeks of orders at the first cafe",
     metric: "Students who order again within two weeks of their first order",
     success: "3 in 10 or more: keep building on the pickup flow",
   },
   {
-    collect:
-      "Orders the cooks mark ready on the kitchen dashboard, counted per shift",
-    counts: "The Partner's Adoption",
     failure:
       "Any shift with no orders marked ready: ask its cooks what stopped them",
-    first: "The first cafe's cooks learn the dashboard",
     metric:
       "Weekday shifts at the first cafe that run on the kitchen dashboard",
     success: "Every shift for two weeks: start handing it over to the partner",
   },
 ];
-// A metric each for a team whose number doesn't count people.
-const otherMetrics = [
-  {
-    collect: "The evaluation script's output, saved with each run",
-    failure: "Anything less: report that it refutes the hypothesis",
-    group: "A Result Against a Baseline",
-    metric: "Accuracy on the held-out test split, over five seeds",
-    success:
-      "Above the reproduced baseline by more than the spread across seeds: report that it supports the hypothesis",
-  },
-  {
-    collect: "The project's pull request history and release notes",
-    failure:
-      "Fewer: ask a maintainer what blocks review, and send a smaller patch first",
-    group: "Contributions to an Open-Source Project",
-    metric:
-      "Your pull requests merged, and still in the project's next release",
-    success: "Two or more merged and released: take on a larger issue",
-  },
-];
-const examplesGroups = [
-  ...lunchMetrics.map(({ counts }) => counts),
-  ...otherMetrics.map(({ group }) => group),
-];
-for (const name of examplesGroups) {
-  if (!groupNotes[name]) {
-    throw new Error(
-      `fall-week-8: an example counts "${name}", which is no group.`
-    );
-  }
+const [, repeatOrders, dashboardShifts] = lunchMetrics;
+
+// Six metrics from other projects, three to a slide.
+interface Example {
+  failure: string;
+  metric: string;
+  project: string;
+  success: string;
 }
+const examplesResult: Example[] = [
+  {
+    failure: "Otherwise: report that the runs don't support it",
+    metric: "Accuracy on test data it never trained on, over five runs",
+    project: "A research model",
+    success:
+      "Above your reproduced baseline in all five: report that it supports the hypothesis",
+  },
+  {
+    failure:
+      "Fewer: ask a maintainer what blocks review, and send a smaller patch",
+    metric: "Your pull requests the maintainers merge",
+    project: "A contribution to an open-source project",
+    success: "Two or more merged: take on a larger issue",
+  },
+  {
+    failure: "Any report built by hand: ask that analyst what was missing",
+    metric:
+      "Weekly reports the partner's analysts build with it instead of by hand",
+    project: "A tool only the partner's staff use",
+    success: "Every report for four weeks: hand it over",
+  },
+];
+const examplesPeople: Example[] = [
+  {
+    failure: "Fewer: watch three of them play, and fix where they stop",
+    metric: "Playtesters outside the team who play for 30 minutes or more",
+    project: "A game",
+    success: "15 or more by the end of winter: build the second level",
+  },
+  {
+    failure: "Fewer: read the store reviews, and fix the first complaint",
+    metric: "People who open it again a week after they install it",
+    project: "A release on an app store or Steam",
+    success: "1 in 4 or more: build the next feature on your list",
+  },
+  {
+    failure: "Fewer: interview the users who said it, and build for them",
+    metric:
+      "Users who'd be very disappointed if they could no longer use it, from a one-question survey",
+    project: "Users you can survey",
+    success: `${pmfShare}% or more: build more of what they use it for`,
+  },
+];
 ---
 
 <TitleSlide
@@ -377,7 +413,9 @@ for (const name of examplesGroups) {
 />
 
 <Slide kicker="Today's outcome" title="By the end of the session, your team has its success metrics">
-  <ul><li>{outcome}</li></ul>
+  <ul>
+    {handIn.map((part) => <li>{part}</li>)}
+  </ul>
 </Slide>
 
 <Slide kicker="What today feeds" title={`Your metrics, from today through ${termWeek(last).toLowerCase()}`} wide>
@@ -416,27 +454,19 @@ for (const name of examplesGroups) {
   </p>
 </Slide>
 
-<Slide kicker="Agenda" title="An example first, then your team's metrics" wide>
-  <p class="lead">
-    The instruction team presents the four rules and what a number can count,
-    and takes the campus lunch app through them. Then your team writes its
-    own:
-  </p>
-  <ol class="steps" style={`--steps: ${steps.length};`}>
-    {
-      steps.map((step) => (
-        <li>
-          <p>
-            <strong>{step.name}</strong>
-          </p>
-          <p class="note">{step.note}</p>
-        </li>
-      ))
-    }
-  </ol>
+<Slide kicker="Workshop 5" title="Agenda">
+  <ul class="agenda">
+    <li>The four rules for a success metric</li>
+    <li>What a metric can count</li>
+    <li>Example: the campus lunch app</li>
+    <li>When what you want is hard to count</li>
+    <li>Examples from six other projects</li>
+    <li>Your team's metrics, in three steps</li>
+    <li>Four mistakes to check for</li>
+  </ul>
 </Slide>
 
-<Slide kicker="Workshop 5: the four rules" title="Four rules for every success metric, whatever you build" wide>
+<Slide kicker="The four rules" title="Four rules for every success metric, whatever you build" wide>
   <table class="rows">
     <tbody>
       {
@@ -454,7 +484,7 @@ for (const name of examplesGroups) {
   </table>
 </Slide>
 
-<Slide kicker="Workshop 5: what the number counts" title="Most projects draw from two of these groups" wide>
+<Slide kicker="What a metric can count" title={`Your ${metricCount} metrics count one or more of these`} wide>
   <table class="rows">
     <thead>
       <tr>
@@ -464,9 +494,9 @@ for (const name of examplesGroups) {
     </thead>
     <tbody>
       {
-        groups.map(({ name, note }) => (
+        groups.map(({ label, note }) => (
           <tr>
-            <th scope="row">{name}</th>
+            <th scope="row">{label}</th>
             <td>{note}</td>
           </tr>
         ))
@@ -474,33 +504,12 @@ for (const name of examplesGroups) {
     </tbody>
   </table>
   <p class="caption">
-    If none fits, agree with your partner or mentor what does. Examples for
-    each group: <a href={activityLink}>Identify Success Metrics</a>
+    More metrics for each: <a href={activityLink}>Identify Success Metrics</a>
   </p>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app" title="Count the students who come back, not the accounts" wide>
-  <p class="lead">
-    The lunch line outlasts the break between classes, so the app takes
-    orders ahead. Nobody has ordered yet.
-  </p>
-  <div class="pair">
-    <div class="box">
-      <h3>Accounts created</h3>
-      <p>Counts every student who tried it once, including the ones back in the line the next day</p>
-    </div>
-    <div class="box box-yes">
-      <h3>Repeat orders</h3>
-      <p>Counts the students who came back for a second order</p>
-    </div>
-  </div>
-  <p class="caption">
-    {PARTNER_QUESTION}: for the lunch app's partner, that's lunch ready before
-    the break ends.
-  </p>
-</Slide>
-
-<Slide kicker="Example: the campus lunch app" title="Three metrics, each with its decision rule" wide>
+<Slide kicker="Example: the campus lunch app" title="Three metrics, and the number the lunch app drops" wide>
+  <p class="lead">Students order lunch in the app and pick it up at the cafe.</p>
   <table class="rows rows-tight">
     <thead>
       <tr>
@@ -510,13 +519,89 @@ for (const name of examplesGroups) {
       </tr>
     </thead>
     <tbody>
+      <tr class="dropped">
+        <th scope="row"><s>{VANITY.metric}</s></th>
+        <td colspan="2">Dropped, a vanity number: {VANITY.why}</td>
+      </tr>
       {
-        lunchMetrics.map(({ metric, counts, success, failure }) => (
+        lunchMetrics.map(({ metric, success, failure }) => (
           <tr>
-            <th scope="row">
-              {metric}
-              <span class="counts">{counts}</span>
-            </th>
+            <th scope="row">{metric}</th>
+            <td>{success}</td>
+            <td>{failure}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</Slide>
+
+<Slide kicker="When what you want is hard to count" title="Name the signal you'd see, then count a metric that stands in for it" wide>
+  <ol class="chain">
+    <li class="box">
+      <h3>Goal</h3>
+      <p>The cafe's cooks rely on the app at lunch</p>
+      <p class="note">What you want to be true</p>
+    </li>
+    <li class="box">
+      <h3>Signal</h3>
+      <p>Cooks mark orders ready on the dashboard, not on paper tickets</p>
+      <p class="note">What you'd see if it were true, even if you can't count it</p>
+    </li>
+    <li class="box box-yes">
+      <h3>Metric</h3>
+      <p>{dashboardShifts.metric}</p>
+      <p class="note">A number you can collect that stands in for the signal</p>
+    </li>
+  </ol>
+  <p class="caption">
+    Goals, signals, and metrics: <a href={SWE_BOOK}>Software Engineering at Google, chapter 7</a>.<br />
+    For a running service, start from the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
+    latency, traffic, errors, and saturation.
+  </p>
+</Slide>
+
+<Slide kicker="Examples from other projects" title="A research result, an open-source contribution, and a partner's internal tool" wide>
+  <table class="rows rows-tight">
+    <thead>
+      <tr>
+        <th scope="col" class="project-col">Project</th>
+        <th scope="col" class="example-metric-col">Metric</th>
+        <th scope="col">Success, and the next step</th>
+        <th scope="col">Failure, and the next step</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        examplesResult.map(({ project, metric, success, failure }) => (
+          <tr>
+            <th scope="row">{project}</th>
+            <td>{metric}</td>
+            <td>{success}</td>
+            <td>{failure}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</Slide>
+
+<Slide kicker="Examples from other projects" title="A game, a store release, and a survey of users" wide>
+  <table class="rows rows-tight">
+    <thead>
+      <tr>
+        <th scope="col" class="project-col">Project</th>
+        <th scope="col" class="example-metric-col">Metric</th>
+        <th scope="col">Success, and the next step</th>
+        <th scope="col">Failure, and the next step</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        examplesPeople.map(({ project, metric, success, failure }) => (
+          <tr>
+            <th scope="row">{project}</th>
+            <td>{metric}</td>
             <td>{success}</td>
             <td>{failure}</td>
           </tr>
@@ -525,106 +610,58 @@ for (const name of examplesGroups) {
     </tbody>
   </table>
   <p class="caption caption-tight">
-    Two groups: people using it, and the partner's adoption. Committed fall
-    week 8, before the first order.
+    The survey question, and where its threshold comes from: <a href={handbook(FRAMEWORKS)}>Success-Metric Frameworks</a>
   </p>
 </Slide>
 
-<Slide kicker="Example: the campus lunch app" title="How the lunch team collects each one, once it can" wide>
-  <p class="lead">{notYet}.</p>
-  <table class="rows rows-tight">
-    <thead>
-      <tr>
-        <th scope="col" class="metric-col">Metric</th>
-        <th scope="col">Collected from</th>
-        <th scope="col" class="first-col">Has to happen first</th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        lunchMetrics.map(({ metric, collect, first }) => (
-          <tr>
-            <th scope="row">{metric}</th>
-            <td>{collect}</td>
-            <td>{first}</td>
-          </tr>
-        ))
-      }
-    </tbody>
-  </table>
-</Slide>
-
-<Slide kicker="Examples: when your number doesn't count people" title="A result, and a contribution, written the same way" wide>
-  <div class="pair pair-top">
-    {
-      otherMetrics.map(({ group, metric, success, failure, collect }) => (
-        <div class="box">
-          <h3>{group}</h3>
-          <dl class="fields">
-            <dt>Metric</dt>
-            <dd>{metric}</dd>
-            <dt>Success</dt>
-            <dd>{success}</dd>
-            <dt>Failure</dt>
-            <dd>{failure}</dd>
-            <dt>Collected</dt>
-            <dd>{collect}</dd>
-          </dl>
-        </div>
-      ))
-    }
-  </div>
-</Slide>
-
-<StatementSlide kicker="Work time" source="One slide per step stays on the screen while you work; the instruction team walks the room">
-  Your turn: three steps as a team
-</StatementSlide>
-
-<Slide kicker={stepKicker(0)} title="Pick what your number counts" wide>
+<Slide kicker={stepKicker(0)} title={steps[0].name} wide>
   <ul>
     <li>{PARTNER_QUESTION}</li>
-    <li>Most projects draw from two groups; if none fits, agree with your partner or mentor what does</li>
+    <li>
+      Decide what that number counts:
+      <ul class="sub columns">
+        {groups.map(({ label }) => <li>{label}</li>)}
+      </ul>
+    </li>
+    <li>Hard to count? Name the signal you'd see, then count a metric that stands in for it</li>
     <li>{ruleVanity.name}: {vanityContrast}</li>
   </ul>
-  <ul class="group-chips" aria-label="The groups">
-    {groups.map(({ name }) => <li class="chip chip-group">{name}</li>)}
-  </ul>
-  <p class="caption">
-    Examples for each group: <a href={activityLink}>Identify Success Metrics</a>
-  </p>
 </Slide>
 
-<Slide kicker={stepKicker(1)} title="Write each metric with its decision rule" wide>
-  <div class="prompt">
-    <p><strong>Metric:</strong> [what you count]</p>
-    <p><strong>Success:</strong> [the value], and then we [what you do]</p>
-    <p><strong>Failure:</strong> [the value], and then we [what you do]</p>
+<Slide kicker={stepKicker(1)} title={steps[1].name} wide>
+  <div class="pair">
+    <div class="box">
+      <h3>Write each one this way</h3>
+      <div class="prompt">
+        <p><strong>Metric:</strong> [what you count]</p>
+        <p><strong>Success:</strong> [the value], and then we [what you do]</p>
+        <p><strong>Failure:</strong> [the value], and then we [what you do]</p>
+      </div>
+    </div>
+    <div class="box box-yes">
+      <h3>The lunch app</h3>
+      <div class="prompt">
+        <p><strong>Metric:</strong> {repeatOrders.metric}</p>
+        <p><strong>Success:</strong> 3 in 10 or more, and then we keep building on the pickup flow</p>
+        <p><strong>Failure:</strong> fewer, and then we interview five students who ordered once</p>
+      </div>
+    </div>
   </div>
-  <ul class="after-pair">
-    <li>{metricCount} metrics in all, each written this way</li>
-  </ul>
-  <p class="caption">
-    From the four rules: {ruleRule.name}
-  </p>
 </Slide>
 
 <Slide kicker={stepKicker(2)} title={steps[2].name} wide>
-  <div class="pair">
-    <div class="box box-yes">
-      <h3>Your instrumentation method</h3>
-      <p>How you'll collect at least one metric: {ruleCollect.detail}</p>
-    </div>
-    <div class="box">
-      <h3>Can't measure it yet</h3>
-      <p>Say what has to happen first, and how you'll collect it once it does</p>
-    </div>
-  </div>
-  <ul class="after-pair">
-    <li>Date your metrics: {ruleDated.detail.charAt(0).toLowerCase()}{ruleDated.detail.slice(1)}</li>
+  <ul>
+    <li>Name your instrumentation method: how you'll collect at least one metric, such as {ruleCollect.detail.replace(/, ([^,]+)$/, ", or $1")}</li>
+    <li>Can't collect it yet? Say what has to happen first, and how you'll collect it once it does</li>
+    <li>Date your metrics before you measure: {datedReason}</li>
   </ul>
+  <div class="box box-yes example">
+    <h3>The lunch app</h3>
+    <p>Repeat orders, counted from the orders table, once the first cafe takes orders through the app</p>
+  </div>
 </Slide>
 
-<Slide kicker="Work time: check your output" title="Check your metrics for four mistakes" wide>
+<Slide kicker="Before you submit" title="Check your metrics for four mistakes" wide>
   <table class="rows">
     <thead>
       <tr>
@@ -636,38 +673,55 @@ for (const name of examplesGroups) {
     <tbody>
       <tr>
         <th scope="row">A vanity number</th>
-        <td class="instead">Accounts created</td>
-        <td>Students who order again within two weeks of their first order</td>
+        <td class="instead">App downloads</td>
+        <td>Students who order a second time within two weeks of their first</td>
       </tr>
       <tr>
         <th scope="row">No decision rule</th>
-        <td class="instead">Track repeat orders</td>
-        <td>3 in 10 or more: keep building on the pickup flow; fewer: interview five students who ordered once</td>
+        <td class="instead">We'll track repeat orders</td>
+        <td>3 in 10 or more order again: keep building; fewer: interview five who ordered once</td>
       </tr>
       <tr>
         <th scope="row">No way to collect it</th>
-        <td class="instead">We'll see how it goes</td>
-        <td>A count of repeat orders in the orders table</td>
+        <td class="instead">Students like the app</td>
+        <td>Students who rate their pickup 4 or 5 out of 5 in a one-question survey after each order</td>
       </tr>
       <tr>
         <th scope="row">Chosen after the results</th>
-        <td class="instead">Picked in spring, from the numbers we got</td>
-        <td>Committed fall week 8, before the first order</td>
+        <td class="instead">Success is 80% accuracy, written after the model scored 81%</td>
+        <td>Success is beating the reproduced baseline, written and dated before the first training run</td>
       </tr>
     </tbody>
   </table>
 </Slide>
 
-<Slide kicker="Wrap" title="Check your work against today's outcome">
-  <ul><li>{outcome}</li></ul>
+<Slide kicker="Work time" title="Your turn: three steps as a team" wide>
+  <ol class="steps" style={`--steps: ${steps.length};`}>
+    {
+      steps.map((step) => (
+        <li>
+          <p>
+            <strong>{step.name}</strong>
+          </p>
+          <p class="note">{step.note}</p>
+        </li>
+      ))
+    }
+  </ol>
   <p class="caption">
-    Stuck? <a href={activityLink}>Identify Success Metrics</a>
+    Then check them for the four mistakes: a vanity number, no decision rule,
+    no way to collect it, chosen after the results.
   </p>
 </Slide>
 
 <Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}, unless the line names another week`}>
   <ul class="due">
-    <li>Workshop {WORKSHOP}, one PDF per team: {submission}</li>
+    <li>
+      Workshop {WORKSHOP}, one PDF per team:
+      <ul class="sub">
+        {handIn.map((part) => <li>{part}</li>)}
+      </ul>
+    </li>
     {
       alsoDue.map((item) => (
         <li>
@@ -691,11 +745,38 @@ for (const name of examplesGroups) {
     padding-block-start: 12px;
   }
 
-  /* A one-line fact the slide's tiles or rows depend on. */
+  /* A one-line fact the slide's rows depend on. */
   .lead {
-    margin: 0 0 32px;
+    margin: 0 0 24px;
     font-size: 36px;
     color: var(--deck-ink-soft);
+  }
+
+  /* A list nested under a bullet: step 1's groups, and the due line's two
+     parts. */
+  .sub {
+    margin-block-start: 12px;
+    font-size: var(--deck-text-min);
+  }
+
+  .sub > li {
+    margin-block-end: 8px;
+  }
+
+  /* Step 1's groups, in two columns. */
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 48px;
+  }
+
+  .columns > li {
+    margin: 0;
+  }
+
+  /* The agenda's items, closer together than a slide's bullets. */
+  .agenda > li {
+    margin-block-end: 14px;
   }
 
   /* Numbered steps drawn as tiles, left to right, each with a chevron into
@@ -750,14 +831,43 @@ for (const name of examplesGroups) {
     color: var(--deck-ink-soft);
   }
 
-  /* Two boxes side by side: a contrast, two examples, or two cases. */
+  /* Goal, signal, and metric, left to right, each with a chevron into the
+     next. */
+  .chain {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px;
+  }
+
+  .chain > li {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+  }
+
+  .chain > li::before {
+    content: none;
+  }
+
+  .chain > li + li::after {
+    position: absolute;
+    inset-block-start: 36px;
+    inset-inline-start: -44px;
+    content: "";
+    border-block: 18px solid transparent;
+    border-inline-start: 26px solid var(--deck-accent);
+  }
+
+  .chain h3 {
+    margin: 0;
+  }
+
+  /* Two boxes side by side: the template and its example. */
   .pair {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 48px;
-  }
-
-  .pair-top {
     align-items: start;
   }
 
@@ -784,31 +894,17 @@ for (const name of examplesGroups) {
     line-height: 1.25;
   }
 
-  .after-pair {
-    margin-block-start: 48px;
+  .box p.note {
+    font-size: var(--deck-text-min);
   }
 
-  /* An example metric's four fields, each label beside its text. */
-  .fields {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 16px 24px;
-    margin: 0;
-    font-size: 36px;
-    line-height: 1.22;
+  /* Step 3's example, under its list. */
+  .example {
+    margin-block-start: 40px;
   }
 
-  .fields dt {
-    font-weight: 750;
-    color: var(--deck-ink-soft);
-  }
-
-  .fields dd {
-    margin: 0;
-  }
-
-  /* Rows under a header: the rules, the groups, the lunch app's metrics,
-     and the four mistakes. */
+  /* Rows under a header: the rules, the groups, the metrics, and the four
+     mistakes. */
   .rows {
     width: 100%;
     font-size: 36px;
@@ -834,16 +930,20 @@ for (const name of examplesGroups) {
     width: 36%;
   }
 
-  .first-col {
-    width: 26%;
+  .project-col {
+    width: 20%;
+  }
+
+  .example-metric-col {
+    width: 28%;
   }
 
   .mistake-col {
-    width: 24%;
+    width: 22%;
   }
 
   .instead-col {
-    width: 30%;
+    width: 32%;
   }
 
   .rows thead th {
@@ -871,48 +971,9 @@ for (const name of examplesGroups) {
     font-weight: 700;
   }
 
-  .counts {
-    display: block;
-    margin-block-start: 8px;
-    font-weight: 400;
+  .instead,
+  .dropped {
     color: var(--deck-ink-soft);
-  }
-
-  .instead {
-    color: var(--deck-ink-soft);
-  }
-
-  .chip {
-    display: inline-block;
-    padding: 0 14px;
-    font-size: var(--deck-text-min);
-    font-weight: 700;
-    border: 2px solid;
-    border-radius: 999px;
-  }
-
-  .chip-group {
-    color: var(--deck-backbone-ink);
-    background: var(--deck-backbone);
-    border-color: var(--deck-backbone-edge);
-  }
-
-  /* The groups, as chips under step 1's list. */
-  .group-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 20px;
-    padding: 0;
-    margin: 40px 0 0;
-    list-style: none;
-  }
-
-  .group-chips > li {
-    margin: 0;
-  }
-
-  .group-chips > li::before {
-    content: none;
   }
 
   .due {
@@ -922,12 +983,8 @@ for (const name of examplesGroups) {
 
   /* A template to copy, set apart from the slide's own text. */
   .prompt {
-    padding: 24px 36px;
     font-size: 36px;
     line-height: 1.3;
-    background: var(--deck-card);
-    border: 3px solid var(--deck-rule);
-    border-radius: 12px;
   }
 
   .prompt p {
