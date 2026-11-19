@@ -230,6 +230,36 @@ if (!workshops.includes(PER_TEAM)) {
 
 // The campus lunch app of weeks 2 and 3, with week 3's choices made: the
 // sections of its design document, and which draw a diagram.
+// Other kinds of project, each with what its context diagram shows and the
+// decision it would open on, as the lunch team opens on its data model.
+const otherProjects = [
+  {
+    context: "The lab's researchers, its data, and where the runs happen",
+    decision:
+      "Which published result you reproduce first, and how you'll tell it matches",
+    project: "A research project for the partner's lab",
+  },
+  {
+    context:
+      "The partner's developers, and the systems it reads from and writes to",
+    decision:
+      "What a run does when it fails halfway: start over, or pick up where it stopped",
+    project: "Code with no screen that the partner's developers run",
+  },
+  {
+    context: "Players, the engine, and the store it ships on",
+    decision: "How a saved game still loads after the level format changes",
+    project: "A game",
+  },
+  {
+    context:
+      "The project's users, its maintainers, and the code around your change",
+    decision:
+      "Whether your change fits the project's design, before you open the pull request",
+    project: "A contribution to an open-source project",
+  },
+];
+
 const lunchSections = [
   {
     diagram: true,
@@ -370,6 +400,7 @@ const lunchLog = [
     <li>What a design review is for</li>
     <li>Pairing with the team at the next table</li>
     <li>Example: the campus lunch app's review</li>
+    <li>Examples from other projects</li>
     <li>Writing an answer the other team can act on</li>
     <li>If you have no design document or no reviewer</li>
     <li>Your team's review, in three steps</li>
@@ -631,6 +662,29 @@ const lunchLog = [
     A menu change no longer changes what a past order shows. The new diagram goes in
     the data model section, beside its text.
   </p>
+</Slide>
+
+<Slide kicker="Examples from other projects" title="Other projects open on a different decision" wide>
+  <table class="rows">
+    <thead>
+      <tr>
+        <th scope="col" class="narrow-col">Project</th>
+        <th scope="col">Its context diagram shows</th>
+        <th scope="col">The decision it opens on</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        otherProjects.map(({ context, decision, project }) => (
+          <tr>
+            <th scope="row">{project}</th>
+            <td>{context}</td>
+            <td>{decision}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
 </Slide>
 
 <Slide kicker="Workshop 4: writing an answer" title="Write an answer the other team can act on" wide>
