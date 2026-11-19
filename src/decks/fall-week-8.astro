@@ -115,11 +115,11 @@ const groupNotes: Record<string, string> = {
     "Your result next to a baseline you reproduced, judged by a rule set in advance",
   "Contributions to an Open-Source Project":
     "Pull requests the maintainers merge, and whether they ship in a release",
-  "People Using It": "Who signs up, who comes back, and who finishes the task",
+  "People Using It": "Who comes back, and who finishes the task",
   "Performance and Reliability":
     "Response time, uptime, or a benchmark, under conditions you state",
   "The Partner's Adoption":
-    "Whether the partner's people run it, and for what task",
+    "How many of the partner's people use it, and for what task",
 };
 const sentenceCase = (name: string) =>
   name.charAt(0) + name.slice(1).toLowerCase();
@@ -168,7 +168,7 @@ const [, pmfCount] = pmfCountMatch as RegExpMatchArray;
 // The three steps, as the step slides and the work-time slide name them.
 const steps = [
   {
-    name: "Pick what your number counts",
+    name: "Pick what your metrics count",
     note: "The number your partner would call a success, and no vanity metric",
   },
   {
@@ -345,11 +345,11 @@ const lunchMetrics = [
       "Fewer: interview five students who ordered once, before building anything new",
     metric:
       "Share of students who order again within two weeks of their first order",
-    success: "3 in 10 or more: start on paying in the app",
+    success: "3 in 10 or more: add paying with Orange Cash",
   },
   {
     failure:
-      "Any shift with an order on paper: ask its cooks what stopped them",
+      "Any shift with an unmarked order: ask its cooks what stopped them",
     metric:
       "Weekday shifts at the first cafe where every order is marked ready on the kitchen dashboard",
     success: "Every shift for two weeks: start handing it over to the partner",
@@ -367,7 +367,7 @@ interface Example {
 const examplesResult: Example[] = [
   {
     failure:
-      "Otherwise: report that it refutes the hypothesis, with all five runs",
+      "Otherwise: report that it doesn't support the hypothesis, with all five runs",
     metric: "Accuracy on test data it never trained on, over five runs",
     project: "A research model",
     success:
@@ -390,25 +390,24 @@ const examplesResult: Example[] = [
 ];
 const examplesPeople: Example[] = [
   {
-    failure: "Fewer: watch three of them play, and fix where they stop",
-    metric: "Playtesters outside the team who play for 30 minutes or more",
+    failure: "Fewer: recruit at a game club, and watch where new players quit",
+    metric: "Hours played by playtesters outside the team",
     project: "A game",
-    success: "15 or more by the end of winter: build the second level",
+    success: "20 or more by the end of winter: build the second level",
   },
   {
     failure:
       "Fewer: watch five new users' first session, and fix where they quit",
-    metric: "People who open it again a week after they install it",
+    metric: "Share of installs opened again a week later",
     project: "A release on an app store or Steam",
     success: "1 in 4 or more: build the next feature on your list",
   },
   {
     failure:
       "Fewer: interview the users who answered very disappointed, and build for them",
-    metric:
-      "Users who'd be very disappointed if they could no longer use it, from a one-question survey",
+    metric: `Users who'd be very disappointed if they could no longer use it, from a one-question survey of ${pmfCount} or more users`,
     project: "An app with regular users",
-    success: `${pmfShare}% or more, from ${pmfCount} or more answers: build more of what they use it for`,
+    success: `${pmfShare}% or more: build more of what they use it for`,
   },
 ];
 ---
@@ -449,7 +448,7 @@ const examplesPeople: Example[] = [
 
 <Slide kicker="Workshop 5" title="Graded complete or incomplete">
   <ul>
-    <li>Your submission is complete when it holds your metrics with their decision rules and your instrumentation method: there is no quality bar</li>
+    <li>Your submission is complete when it holds {metricsPart}, {writtenPart}, and {methodPart}: there is no quality bar</li>
     <li>{LATE["class-week"].text}</li>
     <li>
       A submission that is not about your own project or team, such as a
@@ -560,7 +559,7 @@ const examplesPeople: Example[] = [
   </ol>
   <p class="caption">
     Goals, signals, and metrics: <a href={SWE_BOOK}>Software Engineering at Google, chapter 7</a>.<br />
-    For a running service, start your metrics from the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
+    Running a service? Its usual metrics are the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
     latency, traffic, errors, and saturation (how close to full it runs).
   </p>
 </Slide>
@@ -590,7 +589,7 @@ const examplesPeople: Example[] = [
   </table>
 </Slide>
 
-<Slide kicker="Examples from other projects" title="A game, a store release, and a survey of users" wide>
+<Slide kicker="Examples from other projects" title="A game, a store release, and an app with regular users" wide>
   <table class="rows rows-tight">
     <thead>
       <tr>
@@ -622,7 +621,7 @@ const examplesPeople: Example[] = [
   <ul>
     <li>{PARTNER_QUESTION}</li>
     <li>
-      Decide what that number counts:
+      Decide what each one counts:
       <ul class="sub columns">
         {groups.map(({ label }) => <li>{label}</li>)}
       </ul>
@@ -646,7 +645,7 @@ const examplesPeople: Example[] = [
       <h3>The lunch app</h3>
       <div class="prompt">
         <p><strong>Metric:</strong> {repeatOrders.metric}</p>
-        <p><strong>Success:</strong> 3 in 10 or more, and then we start on paying in the app</p>
+        <p><strong>Success:</strong> 3 in 10 or more, and then we add paying with Orange Cash</p>
         <p><strong>Failure:</strong> fewer, and then we interview five students who ordered once</p>
       </div>
     </div>
@@ -661,7 +660,7 @@ const examplesPeople: Example[] = [
   </ul>
   <div class="box box-yes example">
     <h3>The lunch app</h3>
-    <p>{dashboardShifts.metric}: counted per shift from the orders table, once the first cafe's cooks use the dashboard. Written down and dated before the first order.</p>
+    <p>{dashboardShifts.metric}: counted per shift from the orders table, once the dashboard runs at the first cafe. Written down and dated before the first order.</p>
   </div>
 </Slide>
 
