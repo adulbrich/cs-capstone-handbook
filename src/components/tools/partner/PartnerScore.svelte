@@ -140,7 +140,7 @@ const concernsCsv = $derived(
 );
 
 const baseName = $derived(
-  rubricFile.value?.name.replace(/\.csv$/i, "") || `partner-${survey}`
+  rubricFile.value?.name.replace(/\.csv$/iu, "") || `partner-${survey}`
 );
 const files = $derived({
   concerns: `${baseName}-concerns.csv`,

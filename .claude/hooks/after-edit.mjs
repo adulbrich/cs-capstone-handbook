@@ -16,9 +16,9 @@ import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { loadRuleScripts, readInput, repoRelative, repoRoot } from "./lib.mjs";
 
-const BIOME_EXTENSIONS = /\.(?:[cm]?jsx?|tsx?|jsonc?|css|astro)$/;
+const BIOME_EXTENSIONS = /\.(?:[cm]?jsx?|tsx?|jsonc?|css|astro)$/u;
 /** Where validate-dashes.mjs and validate-dates.mjs look. */
-const CONTENT_PATH = /^(?:src|canvas|public|decks)\/|^STAFF-RUNBOOK\.md$/;
+const CONTENT_PATH = /^(?:src|canvas|public|decks)\/|^STAFF-RUNBOOK\.md$/u;
 
 const input = readInput();
 const root = repoRoot(input.cwd ?? process.cwd());

@@ -20,7 +20,7 @@ const PROTECTED = new Map([
  * gitignored and guarded at commit and in CI (AGENTS.md, hard rule 1). An
  * agent has no business writing there either.
  */
-const DATA_DIR = /^data\//;
+const DATA_DIR = /^data\//u;
 
 const input = readInput();
 const cwd = input.cwd ?? process.cwd();

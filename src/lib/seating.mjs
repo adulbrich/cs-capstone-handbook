@@ -81,11 +81,11 @@ function rowRadius(block, i) {
 // both aisles run as straight lines from front to back.
 let aisleAngle = 0;
 for (const s of ROOM.sections.filter((x) => x.side === "center")) {
-  s.rows.forEach((n, i) => {
+  for (const [i, n] of s.rows.entries()) {
     const half =
       ((n - 1) / 2) * ROOM.seatPitch + ROOM.seatPitch / 2 + ROOM.aisle / 2;
     aisleAngle = Math.max(aisleAngle, half / rowRadius(s.block, i));
-  });
+  }
 }
 
 // Seat positions: one array per row, front row first, each row left to right.

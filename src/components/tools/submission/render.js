@@ -17,10 +17,10 @@ import {
 const DIAGRAM_ID = "sdgm-x7";
 
 /** The colon or period a Mermaid error line ends on, before ours is added. */
-const TRAILING = /[\s:.]+$/;
+const TRAILING = /[\s:.]+$/u;
 
 /** "on line N" in a Mermaid error, N counted from the diagram's first line. */
-const DIAGRAM_LINE = /on line (\d+)/;
+const DIAGRAM_LINE = /on line (\d+)/u;
 
 let mermaid = null;
 let drawn = 0;

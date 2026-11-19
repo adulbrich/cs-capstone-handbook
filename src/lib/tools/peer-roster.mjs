@@ -7,7 +7,7 @@ import { attempt } from "./attempt.mjs";
 import { MAX_TEAM_SIZE } from "./peer-contacts.mjs";
 import { parseRoster, splitName } from "./roster.mjs";
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
 
 /** Why a student gets no survey. */
 export const LEFT_OUT = Object.freeze({
@@ -45,7 +45,7 @@ export function surveyedCount(summary) {
   };
 }
 
-const SPACES = /\s+/g;
+const SPACES = /\s+/gu;
 
 /** A team name as compared: trimmed, single-spaced, lower case. */
 const teamKey = (name) => name.trim().replace(SPACES, " ").toLowerCase();

@@ -3,9 +3,9 @@
 // link (`${l://SurveyLink?d=Take the survey}`) its display text. Pure: no
 // DOM, no I/O.
 
-const PIPE = /\$\{([a-z]+):\/\/([^}]*)\}/g;
-const FIELD_PREFIX = /^Field\//;
-const HTML_SPECIAL = /[&<>"']/g;
+const PIPE = /\$\{([a-z]+):\/\/([^}]*)\}/gu;
+const FIELD_PREFIX = /^Field\//u;
+const HTML_SPECIAL = /[&<>"']/gu;
 
 /**
  * The text as segments a page renders without HTML: `{ kind, text }`, kind

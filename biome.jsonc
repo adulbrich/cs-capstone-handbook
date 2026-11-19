@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
   "extends": ["ultracite/biome/core"],
   // Biome covers the code: the scripts, the Astro config and
   // components, the content schema, and the JSON configs. Everything under
@@ -11,14 +11,45 @@
   },
   "linter": {
     "rules": {
+      "style": {
+        // The rule has no fix: turning it on means naming every group and
+        // rewriting each match site that reads one by index, the guard hooks'
+        // included, for no change in behavior.
+        "useNamedCaptureGroup": "off",
+        // getElementById takes an id as it is. querySelector needs CSS.escape
+        // on each one and throws on an id from a URL hash that starts with a
+        // digit, which term-tabs.js reads.
+        "useDomQuerySelector": "off"
+      },
       "suspicious": {
-        // Biome 2.5.14 infers that RegExp.prototype.exec never returns null,
-        // so it flags every `if (match)` after an exec as always truthy.
-        // Taking its fix crashes the git guard and the sidebar validator on
-        // input that does not match. Off until the inference is fixed.
-        "noUnnecessaryConditions": "off"
+        // Every report from 2.6.8 is wrong: it calls `rule.allow` in
+        // check-prose always set, though most rules have none; a flag
+        // section-words sets inside its loop always false; an optional
+        // destructured field always undefined; and ?. on a caught value, which
+        // can be null, unneeded. Taking a fix deletes a live branch.
+        "noUnnecessaryConditions": "off",
+        // Each exemption degrades safely: @page, print-color-adjust and
+        // box-decoration-break only shape the printed PDFs, text-wrap falls
+        // back to normal wrapping, and ui-monospace sits ahead of fallbacks.
+        "useBaseline": {
+          "level": "error",
+          "options": {
+            "allowAtRules": ["page"],
+            "allowProperties": [
+              "box-decoration-break",
+              "print-color-adjust",
+              "text-wrap"
+            ],
+            "allowPropertyValues": { "font-family": ["ui-monospace"] }
+          }
+        }
       }
     }
+  },
+  // The Markdown formatter pads every table cell to its column's widest row,
+  // so one edited row in AGENTS.md rewrites the whole table.
+  "markdown": {
+    "formatter": { "enabled": false }
   },
   "overrides": [
     {

@@ -23,7 +23,7 @@ export const generatedOn = (date, locale) =>
   date.toLocaleDateString(locale, DATE_FORM);
 
 /** A loose email check: something, an @, something with no spaces. */
-const EMAIL = /^[^\s@]+@[^\s@]+$/;
+const EMAIL = /^[^\s@]+@[^\s@]+$/u;
 
 /** CSS pixels per inch, as the browser lays out and prints. */
 const PX_PER_INCH = 96;

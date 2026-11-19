@@ -40,12 +40,12 @@ export function exampleFingerprint(sheet, read) {
   return hash.digest("hex").slice(0, 12);
 }
 
-const LITERAL_TITLE = /\/Title\s*\(((?:\\.|[^\\)])*)\)/;
-const HEX_TITLE = /\/Title\s*<([0-9A-Fa-f\s]*)>/;
-const ESCAPE = /\\([nrtbf()\\]|[0-7]{1,3})/g;
+const LITERAL_TITLE = /\/Title\s*\(((?:\\.|[^\\)])*)\)/u;
+const HEX_TITLE = /\/Title\s*<([0-9A-Fa-f\s]*)>/u;
+const ESCAPE = /\\([nrtbf()\\]|[0-7]{1,3})/gu;
 const ESCAPED = { b: "\b", f: "\f", n: "\n", r: "\r", t: "\t" };
-const HEX_SPACE = /\s/g;
-const OCTAL = /^[0-7]/;
+const HEX_SPACE = /\s/gu;
+const OCTAL = /^[0-7]/u;
 
 /**
  * The title in a PDF's document information, or null when it has none.

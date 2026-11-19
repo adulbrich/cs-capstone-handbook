@@ -51,7 +51,7 @@ const activity =
         activityStart,
         activityEnd < 0 ? undefined : activityEnd
       );
-const STEP_RE = /^- \*\*(.+?)\*\*: (\d+ minutes(?: per team)?)/gm;
+const STEP_RE = /^- \*\*(.+?)\*\*: (\d+ minutes(?: per team)?)/gmu;
 const steps = [...activity.matchAll(STEP_RE)].map(([, name, time]) => ({
   name,
   time,
@@ -83,7 +83,7 @@ if (!noDocumentLine) {
   );
 }
 const noDocument = plainText(noDocumentLine.slice(NO_DOCUMENT.length)).replace(
-  /^./,
+  /^./u,
   (first) => first.toUpperCase()
 );
 

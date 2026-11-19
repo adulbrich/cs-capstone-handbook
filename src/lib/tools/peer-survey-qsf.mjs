@@ -119,7 +119,7 @@ function rateeQuestion(qid, tag, pipe) {
 }
 
 /** The rating band a survey answer maps to: "Average of 1" to "Average of 5". */
-const BAND_RE = /^Average of ([1-5])$/;
+const BAND_RE = /^Average of ([1-5])$/u;
 const LEVELS = [1, 2, 3, 4, 5];
 
 /**

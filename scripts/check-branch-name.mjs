@@ -23,10 +23,13 @@
 import { execFileSync } from "node:child_process";
 import { TYPES } from "./check-commit-message.mjs";
 
-const BRANCH = new RegExp(`^(?:${TYPES.join("|")})/[a-z0-9]+(?:-[a-z0-9]+)*$`);
+const BRANCH = new RegExp(
+  `^(?:${TYPES.join("|")})/[a-z0-9]+(?:-[a-z0-9]+)*$`,
+  "u"
+);
 
 /** Branches the rule does not reach: Dependabot names its own. */
-const EXEMPT_BRANCH = /^dependabot\//;
+const EXEMPT_BRANCH = /^dependabot\//u;
 
 /**
  * Every problem with `name`, as strings a committer can act on. Empty means

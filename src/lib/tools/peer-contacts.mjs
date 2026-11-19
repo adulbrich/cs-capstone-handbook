@@ -49,7 +49,7 @@ const CLOSE_FORMAT = new Intl.DateTimeFormat("en-US", {
  * become plain ones, so the text pastes cleanly.
  */
 export const formatCloseDate = (date) =>
-  CLOSE_FORMAT.format(date).replace(/\s/g, " ");
+  CLOSE_FORMAT.format(date).replace(/\s/gu, " ");
 
 /**
  * Builds the contact list from parsed roster students. `closeDate` is a

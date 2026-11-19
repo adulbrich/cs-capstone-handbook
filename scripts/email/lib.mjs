@@ -8,7 +8,7 @@ import { join } from "node:path";
 // The formula guard the capstone app's CSV export puts on a cell
 // (unguardCell in src/lib/csv.ts of adulbrich/eecs-capstone), reversed, so
 // "-Alpha" does not reach a letter as "'-Alpha".
-const FORMULA_LEAD = /^[=+\-@\t\r]/;
+const FORMULA_LEAD = /^[=+\-@\t\r]/u;
 const unguard = (text) =>
   text.startsWith("'") && FORMULA_LEAD.test(text.slice(1))
     ? text.slice(1)
@@ -24,13 +24,13 @@ const unguard = (text) =>
 // closing quote, with "" for a quote inside; anything else runs to the next
 // separator or line break, stray quotes included.
 const FIELD = {
-  ",": /(?:"((?:[^"]|"")*)"|([^,\r\n]*))(,|\r\n|\n|\r|$)/g,
-  "\t": /(?:"((?:[^"]|"")*)"|([^\t\r\n]*))(\t|\r\n|\n|\r|$)/g,
+  ",": /(?:"((?:[^"]|"")*)"|([^,\r\n]*))(,|\r\n|\n|\r|$)/gu,
+  "\t": /(?:"((?:[^"]|"")*)"|([^\t\r\n]*))(\t|\r\n|\n|\r|$)/gu,
 };
 
 function parseTable(text) {
-  const s = text.replace(/^\uFEFF/, "");
-  const sep = s.slice(0, s.search(/\r?\n|$/)).includes("\t") ? "\t" : ",";
+  const s = text.replace(/^\uFEFF/u, "");
+  const sep = s.slice(0, s.search(/\r?\n|$/u)).includes("\t") ? "\t" : ",";
   const rows = [];
   let row = [];
   for (const m of s.matchAll(FIELD[sep])) {
@@ -79,8 +79,11 @@ export const esc = (value) =>
 /** Turns bare URLs and addresses in already-escaped text into links. */
 export const linkify = (escaped) =>
   escaped
-    .replace(/https?:\/\/[^\s<]+[^\s<.,)]/g, (u) => `<a href="${u}">${u}</a>`)
-    .replace(/(^|[\s(>])([\w.+-]+@[\w.-]+\w)/g, '$1<a href="mailto:$2">$2</a>');
+    .replace(/https?:\/\/[^\s<]+[^\s<.,)]/gu, (u) => `<a href="${u}">${u}</a>`)
+    .replace(
+      /(^|[\s(>])([\w.+-]+@[\w.-]+\w)/gu,
+      '$1<a href="mailto:$2">$2</a>'
+    );
 
 /**
  * Bolds a paragraph's short lead-in label, as in "Meetings: we ask...", in
@@ -90,7 +93,7 @@ export const linkify = (escaped) =>
  */
 export const boldLead = (escaped) =>
   escaped.replace(
-    /^([A-Z][a-z]+(?: [a-z]+){0,2}:)(?=\s)/,
+    /^([A-Z][a-z]+(?: [a-z]+){0,2}:)(?=\s)/u,
     "<strong>$1</strong>"
   );
 
@@ -110,10 +113,10 @@ export const signatureHtml = (signature) =>
   `<p>${esc(signature).replaceAll("\n", "<br>")}</p>`;
 
 const b64 = (s) =>
-  Buffer.from(s, "utf8").toString("base64").replace(/.{76}/g, "$&\r\n");
+  Buffer.from(s, "utf8").toString("base64").replace(/.{76}/gu, "$&\r\n");
 
 const encodeHeader = (s) =>
-  /^[\x20-\x7e]*$/.test(s)
+  /^[\x20-\x7e]*$/u.test(s)
     ? s
     : `=?UTF-8?B?${Buffer.from(s, "utf8").toString("base64")}?=`;
 
@@ -187,7 +190,7 @@ export function writeLetters({ out, title, summary, problems, letters }) {
   rmSync(join(out, "eml"), { force: true, recursive: true });
   mkdirSync(join(out, "eml"), { recursive: true });
   const cards = letters.map((letter, i) => {
-    const file = `${String(i + 1).padStart(3, "0")}-${letter.stem.replace(/[^a-z0-9@._-]+/gi, "_")}.eml`;
+    const file = `${String(i + 1).padStart(3, "0")}-${letter.stem.replace(/[^a-z0-9@._-]+/giu, "_")}.eml`;
     writeFileSync(join(out, "eml", file), toEml(letter));
     const link = toMailto(letter);
     const long =

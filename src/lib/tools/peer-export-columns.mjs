@@ -74,23 +74,24 @@ export const INSTRUMENT_OF = Object.freeze({
 export const isScored = (type) => Object.hasOwn(INSTRUMENT_OF, type);
 
 /** Looped questions shared by both surveys, and the regular matrix, by tag. */
-const LOOP_TAG = /^(\d+)_(Ratee|Rating|Comment)(?:_(\w+))?$/;
+const LOOP_TAG = /^(\d+)_(Ratee|Rating|Comment)(?:_(\w+))?$/u;
 /** The generator's fallback mode, one block per slot: S1_Rating_1 and so on. */
-const SLOT_TAG = /^S(\d+)_(Ratee|Rating|Comment)/;
+const SLOT_TAG = /^S(\d+)_(Ratee|Rating|Comment)/u;
 /** The 100-point split, one column per carried-forward choice. */
-const SPLIT_TAG = /^Split_x?(\d+)$/;
+const SPLIT_TAG = /^Split_x?(\d+)$/u;
 /** The open questions after the split, one column each. */
 const OPEN_QUESTIONS = ["Allocations", "Overall", "Closing"];
 
 /** An ImportId: optional loop prefix, the QID, optional row or choice. */
-const IMPORT_ID = /^(?:(\d+)_)?(QID\d+)(?:_(\w+))?$/;
+const IMPORT_ID = /^(?:(\d+)_)?(QID\d+)(?:_(\w+))?$/u;
 
 /** The choice or row ID an ImportId suffix names: "x3" and "3" are both 3. */
-const X_PREFIX = /^x/;
+const X_PREFIX = /^x/u;
 const idNumber = (suffix) => Number(String(suffix).replace(X_PREFIX, ""));
 /** A CATME dimension's looped column: `N_` and one of catmeTags. */
 const CATME_TAG = new RegExp(
-  `^(\\d+)_(${Object.values(catmeTags).join("|")})$`
+  `^(\\d+)_(${Object.values(catmeTags).join("|")})$`,
+  "u"
 );
 
 /** The fixed and embedded columns' tags, found by ImportId first, then by tag. */
@@ -246,8 +247,8 @@ export function mapColumns(columns) {
   return map;
 }
 
-const WHITESPACE = /\s+/g;
-const LOOP_PREFIX = /^\d+_/;
+const WHITESPACE = /\s+/gu;
+const LOOP_PREFIX = /^\d+_/u;
 
 /** Whitespace collapsed, for comparing header text with a prompt. */
 const squeeze = (text) => text.replace(WHITESPACE, " ").trim();
@@ -345,8 +346,8 @@ export function rosterChoiceOf(prefix, filledSlots, follows = PREFIX_FOLLOWS) {
   return prefix === 1 ? 1 : (filledSlots[prefix - 2] ?? 0) + 1;
 }
 
-const EMAIL_IN_PARENS = /\(([^()\s]+@[^()\s]+)\)\s*$/;
-const BARE_EMAIL = /^[^\s@]+@[^\s@]+$/;
+const EMAIL_IN_PARENS = /\(([^()\s]+@[^()\s]+)\)\s*$/u;
+const BARE_EMAIL = /^[^\s@]+@[^\s@]+$/u;
 
 /** "First Last (email)" or a bare email to the email, lowercase; "" otherwise. */
 export function emailIn(value) {
@@ -358,7 +359,7 @@ export function emailIn(value) {
   return BARE_EMAIL.test(text) ? text.toLowerCase() : "";
 }
 
-const LEADING_VALUE = /^(\d+)(?:\s*:.*)?$/s;
+const LEADING_VALUE = /^(\d+)(?:\s*:.*)?$/su;
 
 /**
  * A rating cell to 1 to 5. The labels export writes the choice text, which

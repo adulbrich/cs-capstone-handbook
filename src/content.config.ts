@@ -24,7 +24,7 @@ const SOURCE_KINDS = [
 ] as const;
 
 // A string with at least one non-space character. `.min(1)` alone passes "  ".
-const NOT_BLANK = /\S/;
+const NOT_BLANK = /\S/u;
 const text = () => z.string().regex(NOT_BLANK, "must not be blank");
 
 // Percent of the term grade: a number when it is the same in every term, a
@@ -74,16 +74,16 @@ const sources = defineCollection({
       // A bare DOI ("10.2307/2666999"); Cite prefixes https://doi.org/.
       doi: z
         .string()
-        .regex(/^10\.\S+$/, "a bare DOI starting 10., not a URL")
+        .regex(/^10\.\S+$/u, "a bare DOI starting 10., not a URL")
         .optional(),
       kind: z.enum(SOURCE_KINDS),
       // Tells apart two sources that would cite the same: "1999a", "1999b".
       suffix: z
         .string()
-        .regex(/^[a-z]$/, "one lowercase letter")
+        .regex(/^[a-z]$/u, "one lowercase letter")
         .optional(),
       title: text(),
-      url: z.url({ protocol: /^https?$/ }),
+      url: z.url({ protocol: /^https?$/u }),
       venue: text(),
       // How the claims were checked. A claim verified from the abstract alone
       // must be stated in the abstract.

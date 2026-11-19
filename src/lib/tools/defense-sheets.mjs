@@ -46,19 +46,19 @@ const NUMBER_WORDS = Object.freeze({
 });
 
 /** Where the list starts: the colon closing the preamble, then "(1) ". */
-const LIST_START = /:\s*\(1\)\s+/;
+const LIST_START = /:\s*\(1\)\s+/u;
 /** Between items: "; (n) ". Bare parentheses inside an item never match. */
-const ITEM_BREAK = /;\s*\((\d+)\)\s+/;
+const ITEM_BREAK = /;\s*\((\d+)\)\s+/u;
 /** The period that closes the last item. */
-const CLOSING_PERIOD = /\.$/;
+const CLOSING_PERIOD = /\.$/u;
 /** The count a preamble opens with, "All four". */
-const ALL_COUNT = /^All (\w+)\b/i;
+const ALL_COUNT = /^All (\w+)\b/iu;
 /** An Exceeds preamble: its count, then the condition every item meets. */
-const ALL_CONDITION = /^All \w+, (.+)$/;
+const ALL_CONDITION = /^All \w+, (.+)$/u;
 /** The condition's last clause, which the Does Not Meet band already states. */
-const RED_FLAG_CLAUSE = /,\s*and no red flag$/i;
+const RED_FLAG_CLAUSE = /,\s*and no red flag$/iu;
 /** A number written as digits. */
-const DIGITS = /^\d+$/;
+const DIGITS = /^\d+$/u;
 
 /**
  * A rubric description's numbered list: the preamble before it and each
@@ -151,7 +151,7 @@ export function readCriterion(criterion, where) {
   const doesNotMeet = bandOf(criterion, "doesNotMeet", where);
   const missing = bandOf(criterion, "missing", where);
 
-  const ladder = (meets.description.match(/\d+/g) ?? []).map(Number);
+  const ladder = (meets.description.match(/\d+/gu) ?? []).map(Number);
   const descending = ladder.every((n, i) => i === 0 || n < ladder[i - 1]);
   if (
     ladder[0] !== meets.points ||
@@ -257,9 +257,9 @@ export const bandRow = (rule) => [
 ];
 
 const SESSION =
-  /\b(\w+) minutes per student plus about (\w+) minutes for setup and wrap/;
+  /\b(\w+) minutes per student plus about (\w+) minutes for setup and wrap/u;
 /** When sessions run, as the page's intro states it: "between week 8 and finals week". */
-const SESSION_WEEKS = /\bbetween (week \d+) and (finals week|week \d+)\b/;
+const SESSION_WEEKS = /\bbetween (week \d+) and (finals week|week \d+)\b/u;
 
 const toNumber = (word) =>
   DIGITS.test(word) ? Number(word) : NUMBER_WORDS[word.toLowerCase()];

@@ -29,7 +29,7 @@ const rubrics = Object.fromEntries(
 const criteria = TERMS.flatMap((term) =>
   rubrics[term].criteria.map((criterion) => ({ criterion, term }))
 );
-const PERCENT = /(\d+)%/g;
+const PERCENT = /(\d+)%/gu;
 const numbers = (text) => [...text.matchAll(PERCENT)].map((m) => Number(m[1]));
 const choicesOf = (criterion) => facetChoices(criterion, BETWEEN);
 
@@ -38,14 +38,14 @@ test("the between-anchor shares are read from the page's sentence, and a page wi
   assert.ok(BETWEEN[0] > BETWEEN[1], "upper gap first");
   assert.throws(
     () => betweenAnchors(PAGE.replaceAll("when the team sits between", "if")),
-    /no "A partner scores N% or N%/
+    /no "A partner scores N% or N%/u
   );
   assert.deepEqual(pageRules(PAGE).between, BETWEEN);
 });
 
 test("every anchored facet offers the page's five shares, and the ladder adds its own rung", () => {
   const sentence = PAGE.match(
-    /each scored at ([^;]*) of its points; spring Verification and Validation adds a (\d+)% level/
+    /each scored at ([^;]*) of its points; spring Verification and Validation adds a (\d+)% level/u
   );
   assert.ok(sentence, "the page lists the shares a facet is scored at");
   const shares = numbers(sentence[1]);
@@ -83,7 +83,7 @@ test("every facet of every term gets a short tag, unique within its term and the
     const tags = rubrics[term].criteria.map(facetTag);
     assert.equal(new Set(tags).size, tags.length, term);
     for (const [i, tag] of tags.entries()) {
-      assert.match(tag, /^[A-Za-z]+$/);
+      assert.match(tag, /^[A-Za-z]+$/u);
       const { title } = rubrics[term].criteria[i];
       assert.equal(byTitle.get(title) ?? tag, tag, title);
       byTitle.set(title, tag);
@@ -117,7 +117,7 @@ test("anchor and rung choices are the CSV's rating names and points; between cho
         assert.ok(!names.has(choice.label), choice.label);
         assert.match(
           choice.label,
-          /^Between the (top|middle) and (middle|low) anchors \((\d+)% of the points\)$/,
+          /^Between the (top|middle) and (middle|low) anchors \((\d+)% of the points\)$/u,
           `${term} ${criterion.title}`
         );
         assert.ok(BETWEEN.includes(choice.percent), choice.label);
@@ -155,7 +155,7 @@ test("the ladder's custom scale is rung count + 1 and runs from its lowest to it
   const extra = [...choicesOf(ladder), { anchor: null, id: 7, label: "x" }];
   assert.throws(
     () => customScaleChoice(ladder, extra),
-    /must be its 6 rungs alone/
+    /must be its 6 rungs alone/u
   );
 });
 
@@ -171,7 +171,7 @@ test("a between share in no gap, or an anchor named another way, stops the build
   };
   assert.throws(
     () => facetChoices(criterion, [90, 70]),
-    /Narrow: no gap .*70%/
+    /Narrow: no gap .*70%/u
   );
   const renamed = {
     ...criterion,
@@ -183,7 +183,7 @@ test("a between share in no gap, or an anchor named another way, stops the build
   };
   assert.throws(
     () => facetChoices(renamed, [90, 70]),
-    /"Excellent" is not named/
+    /"Excellent" is not named/u
   );
 });
 
@@ -193,7 +193,7 @@ test("every facet of every term has its What it looks like list on the page", ()
     const bullets = guidance.get(criterion.title);
     assert.ok(bullets?.length > 0, `${term} ${criterion.title}`);
     for (const bullet of bullets) {
-      assert.doesNotMatch(bullet, /^-|\]\(|\*\*/, bullet);
+      assert.doesNotMatch(bullet, /^-|\]\(|\*\*/u, bullet);
     }
   }
   assert.equal(guidance.get("Communication").length, 6);
@@ -248,10 +248,10 @@ test("facetGuidance stops on an unindented line under a bullet, so a reflow cann
   ].join("\n");
   assert.throws(
     () => facetGuidance(reflowed),
-    /Line 6 .*Facet.*"onto an unindented line\."/
+    /Line 6 .*Facet.*"onto an unindented line\."/u
   );
   const stray = ["## Facet", "**What it looks like**", "Text first."].join(
     "\n"
   );
-  assert.throws(() => facetGuidance(stray), /Line 3/);
+  assert.throws(() => facetGuidance(stray), /Line 3/u);
 });

@@ -101,23 +101,23 @@ test("a one-item list is one item", () => {
 test("a list the sheet cannot print as items throws, naming where", () => {
   assert.throws(
     () => readList("All three: (1) A: a; (2) B: b.", "Planning, Exceeds"),
-    /Planning, Exceeds: the preamble says "All three" but the list has 2 items/
+    /Planning, Exceeds: the preamble says "All three" but the list has 2 items/u
   );
   assert.throws(
     () => readList("Any: (1) A: a; (3) C: c.", "x"),
-    /item \(3\) follows item \(1\)/
+    /item \(3\) follows item \(1\)/u
   );
   assert.throws(
     () => readList("Any: (1) A: a; (2) no label here.", "x"),
-    /item \(2\): no "Label: "/
+    /item \(2\): no "Label: "/u
   );
   assert.throws(
     () => readList("Every item, with no list.", "x"),
-    /no numbered list/
+    /no numbered list/u
   );
   assert.throws(
     () => readList("Any: (1) A: a; (2) A: b.", "x"),
-    /two items are labeled "A"/
+    /two items are labeled "A"/u
   );
 });
 
@@ -178,7 +178,7 @@ test("criteria that score differently, or bands the sheet does not print, fail t
         rubric(PLANNING, { ...TESTING, missing: "Absent; rescheduled." }),
         "invented.csv"
       ),
-    /criterion 2 \(Testing\) scores differently from criterion 1/
+    /criterion 2 \(Testing\) scores differently from criterion 1/u
   );
   assert.throws(
     () =>
@@ -192,7 +192,7 @@ test("criteria that score differently, or bands the sheet does not print, fail t
         }),
         "invented.csv"
       ),
-    /criterion 2 \(Testing\) scores differently/
+    /criterion 2 \(Testing\) scores differently/u
   );
   assert.throws(
     () =>
@@ -203,7 +203,7 @@ test("criteria that score differently, or bands the sheet does not print, fail t
         }),
         "invented.csv"
       ),
-    /the preamble does not read "All <count>, <condition>"/
+    /the preamble does not read "All <count>, <condition>"/u
   );
   assert.throws(
     () =>
@@ -214,7 +214,7 @@ test("criteria that score differently, or bands the sheet does not print, fail t
         }),
         "invented.csv"
       ),
-    /the condition does not end ", and no red flag"/
+    /the condition does not end ", and no red flag"/u
   );
   assert.throws(
     () =>
@@ -222,11 +222,11 @@ test("criteria that score differently, or bands the sheet does not print, fail t
         rubric({ ...PLANNING, missing: "No-show, or no attempt." }),
         "invented.csv"
       ),
-    /Missing: no semicolon/
+    /Missing: no semicolon/u
   );
   assert.throws(
     () => liveSheet(rubric(PLANNING, PLANNING), "invented.csv"),
-    /two criteria are titled "Planning"/
+    /two criteria are titled "Planning"/u
   );
   assert.throws(
     () =>
@@ -237,14 +237,14 @@ test("criteria that score differently, or bands the sheet does not print, fail t
         }),
         "invented.csv"
       ),
-    /must start at its 8 points/
+    /must start at its 8 points/u
   );
   const renamed = [HEADER, row(PLANNING)]
     .join("\n")
     .replace("Missing,", "Absent,");
   assert.throws(
     () => liveSheet(parseRubricCsv(renamed, "invented.csv"), "invented.csv"),
-    /a band the live sheet does not print, "Absent"/
+    /a band the live sheet does not print, "Absent"/u
   );
 });
 
@@ -301,14 +301,14 @@ test("the session length and weeks come from the defense page", () => {
   );
   assert.throws(
     () => sessionRule(page("The session is short.")),
-    /defense\.mdx: no "<n> minutes per student/
+    /defense\.mdx: no "<n> minutes per student/u
   );
   assert.throws(
     () =>
       sessionRule(
         "Ten minutes per student plus about ten minutes for setup and wrap."
       ),
-    /defense\.mdx: no "between week <n>/
+    /defense\.mdx: no "between week <n>/u
   );
 });
 

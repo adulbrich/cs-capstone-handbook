@@ -31,7 +31,7 @@ export const OTHER_OUTCOMES = ["L07", "L08", "L09", "L10"];
 
 /** The same IDs as a regex alternation: the one spelling of the pattern. */
 export const OUTCOME_TAG = [...ABET_OUTCOMES, ...OTHER_OUTCOMES].join("|");
-export const OUTCOME_TAG_RE = new RegExp(`^(${OUTCOME_TAG})$`);
+export const OUTCOME_TAG_RE = new RegExp(`^(${OUTCOME_TAG})$`, "u");
 
 const CRITERION_HEADER = [
   "Rubric Name",
@@ -44,7 +44,7 @@ const RATING_HEADER = ["Rating Name", "Rating Description", "Rating Points"];
 /** Every rubric file is `<name>-rubric.csv`; the validators find them by this. */
 export const RUBRIC_CSV_SUFFIX = "-rubric.csv";
 
-const TRAILING_BRACKET_RE = /\s*\[([^\]]+)\]\s*$/;
+const TRAILING_BRACKET_RE = /\s*\[([^\]]+)\]\s*$/u;
 const FIELD_END = new Set([",", "\r", "\n"]);
 const FIRST_RATING = CRITERION_HEADER.length;
 const RATING_GROUP_WIDTH = RATING_HEADER.length;

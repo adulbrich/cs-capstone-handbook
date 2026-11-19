@@ -221,7 +221,7 @@ test("loop mode: the block loops over the roster's displayed choices", () => {
     questionByTag(survey, "Ratee").DefaultChoices.TEXT.Text,
     "${lm://Field/2}"
   );
-  assert.match(rating.QuestionText, /\$\{lm:\/\/Field\/1\}/);
+  assert.match(rating.QuestionText, /\$\{lm:\/\/Field\/1\}/u);
 });
 
 test("the rating matrix is a forced radio grid with recodes 1 to 5", () => {
@@ -246,14 +246,14 @@ test("the rating matrix is a forced radio grid with recodes 1 to 5", () => {
     const [{ anchors }] = ratedCriteria(RUBRICS.regular);
     assert.equal(rating.Answers[1].Display, `1: ${anchors[0]}`);
     assert.equal(rating.Answers[5].Display, `5: ${anchors[4]}`);
-    assert.match(rating.Answers[1].Display, /Better off without the member/);
+    assert.match(rating.Answers[1].Display, /Better off without the member/u);
   }
 });
 
 test("the ratee question is hidden by script, not display logic", () => {
   const ratee = questionByTag(make(), "Ratee");
   assert.equal(ratee.DisplayLogic, undefined);
-  assert.match(ratee.QuestionJS, /display = "none"/);
+  assert.match(ratee.QuestionJS, /display = "none"/u);
 });
 
 test("the split carries the roster forward, totals 100, and is forced", () => {
@@ -270,7 +270,7 @@ test("the split carries the roster forward, totals 100, and is forced", () => {
   assert.equal(split.Validation.Settings.Type, "ChoicesTotal");
   assert.equal(split.Validation.Settings.ChoiceTotal, "100");
   assert.equal(split.Validation.Settings.ForceResponse, "ON");
-  assert.doesNotMatch(split.QuestionText, /SelfFloor/);
+  assert.doesNotMatch(split.QuestionText, /SelfFloor/u);
 });
 
 test("the floor shows on teams of three or more, the even split on teams of two", () => {
@@ -279,9 +279,9 @@ test("the floor shows on teams of three or more, the even split on teams of two"
     const floor = questionByTag(survey, "SplitFloor");
     const pair = questionByTag(survey, "SplitPair");
     assert.equal(floor.QuestionType, "DB");
-    assert.match(floor.QuestionText, /\$\{e:\/\/Field\/SelfFloor\}/);
-    assert.match(pair.QuestionText, /An even split is 50 points each/);
-    assert.doesNotMatch(pair.QuestionText, /review/);
+    assert.match(floor.QuestionText, /\$\{e:\/\/Field\/SelfFloor\}/u);
+    assert.match(pair.QuestionText, /An even split is 50 points each/u);
+    assert.doesNotMatch(pair.QuestionText, /review/u);
     for (const [question, operator] of [
       [floor, "GreaterThan"],
       [pair, "EqualTo"],
@@ -410,14 +410,14 @@ test("unknown variant or mode throws", () => {
   const rubric = RUBRICS.regular;
   assert.throws(
     () => buildPeerSurvey({ rubric, variant: "spring" }),
-    /variant/
+    /variant/u
   );
   assert.throws(
     () => buildPeerSurvey({ rubric, variant: "toString" }),
-    /variant/
+    /variant/u
   );
-  assert.throws(() => buildPeerSurvey({ mode: "per-page", rubric }), /mode/);
-  assert.throws(() => buildPeerSurvey({}), /No rubric for the midterm survey/);
+  assert.throws(() => buildPeerSurvey({ mode: "per-page", rubric }), /mode/u);
+  assert.throws(() => buildPeerSurvey({}), /No rubric for the midterm survey/u);
 });
 
 // The rubric CSVs feed the survey.
@@ -469,7 +469,7 @@ test("a rated criterion whose points do not rise from 1 to 5 stops the build", (
   typo.criteria[0].ratings.find((r) => r.name === "Average of 3").points = 1.7;
   assert.throws(
     () => ratedCriteria(typo),
-    /Contributing to the Team's Work.*must rise.*10, 13\.5, 1\.7, 18\.5, 20/
+    /Contributing to the Team's Work.*must rise.*10, 13\.5, 1\.7, 18\.5, 20/u
   );
 });
 
@@ -486,13 +486,13 @@ test("a criterion with some but not all of the five bands stops the build", () =
     ],
     name: "Broken",
   };
-  assert.throws(() => ratedCriteria(broken), /Average of 1" to "Average of 5/);
+  assert.throws(() => ratedCriteria(broken), /Average of 1" to "Average of 5/u);
   const rescaled = structuredClone(RUBRICS.regular);
   rescaled.criteria[1].ratings[0].description = "Something else.";
-  assert.throws(() => make({ rubric: rescaled }), /share one scale.*Quality/);
+  assert.throws(() => make({ rubric: rescaled }), /share one scale.*Quality/u);
   const renamed = structuredClone(RUBRICS.regular);
   renamed.criteria[0].title = "Effort";
-  assert.throws(() => make({ rubric: renamed }), /prompt.*"Effort"/);
+  assert.throws(() => make({ rubric: renamed }), /prompt.*"Effort"/u);
 });
 
 // The spring end-of-term CATME variant.
@@ -531,7 +531,7 @@ test("catme: the rubric's five dimensions, tags stripped, each with its export t
   missing.criteria[0].title = "Showing up";
   assert.throws(
     () => make({ rubric: missing, variant: "catme" }),
-    /export tag.*"Showing up"/
+    /export tag.*"Showing up"/u
   );
 });
 
@@ -595,7 +595,7 @@ test("catme: each page rates five dimensions, forced, recodes 1 to 5", () => {
   }
   assert.match(
     questionByTag(make({ variant: "catme" }), "Quality").QuestionText,
-    /\$\{lm:\/\/Field\/1\}/
+    /\$\{lm:\/\/Field\/1\}/u
   );
 });
 
@@ -621,7 +621,7 @@ test("catme: no rating matrix and no split", () => {
       ),
       mode
     );
-    assert.doesNotMatch(payload(survey, "SO").SurveyMetaDescription, /100/);
+    assert.doesNotMatch(payload(survey, "SO").SurveyMetaDescription, /100/u);
   }
 });
 

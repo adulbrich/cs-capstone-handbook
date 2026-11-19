@@ -84,8 +84,8 @@ test("the report says nothing about a problem that did not happen", () => {
   };
   const lines = scoreText.results.lines({ aBound: 93, report });
   assert.equal(lines.length, 1);
-  assert.match(lines[0], /12 students scored/);
-  assert.match(lines[0], /93 of 100/);
+  assert.match(lines[0], /12 students scored/u);
+  assert.match(lines[0], /93 of 100/u);
   const more = scoreText.results.lines({
     aBound: 93,
     report: {
@@ -95,7 +95,7 @@ test("the report says nothing about a problem that did not happen", () => {
     },
   });
   assert.equal(more.length, 3);
-  assert.match(more[2], /\(empty\) \(R_1\)/);
+  assert.match(more[2], /\(empty\) \(R_1\)/u);
 });
 
 test("the preview names the answers that show a box as one list", () => {

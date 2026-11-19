@@ -39,8 +39,9 @@ import { parseFrontmatter } from "./lib/content.mjs";
 
 const DOCS_DIR = "src/content/docs";
 const ACTIVITIES_DIR = "activities";
-const PAGE_RE = /\.mdx?$/;
-const ORDER_RE = /^sidebar:\n(?:[ \t]+.*\n)*?[ \t]+order:[ \t]*(-?\d+)[ \t]*$/m;
+const PAGE_RE = /\.mdx?$/u;
+const ORDER_RE =
+  /^sidebar:\n(?:[ \t]+.*\n)*?[ \t]+order:[ \t]*(-?\d+)[ \t]*$/mu;
 
 const problems = [];
 

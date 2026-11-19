@@ -8,9 +8,9 @@
 import { parseCsv, toCsv } from "./csv.mjs";
 
 const FIELDS = ["Rating", "Points", "Comments"];
-const CRITERION_COLUMN = / - (Rating|Points|Comments)$/;
+const CRITERION_COLUMN = / - (Rating|Points|Comments)$/u;
 
-const TRAILING_TAGS = /\s*\[[^\]]*\]\s*$/;
+const TRAILING_TAGS = /\s*\[[^\]]*\]\s*$/u;
 
 /**
  * Criterion names compare trimmed, case-insensitive, and without a trailing

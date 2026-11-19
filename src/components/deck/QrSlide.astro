@@ -27,8 +27,8 @@ const code = generate(url);
 const side = code.size + QUIET * 2;
 // The address as the room reads it, breaking only after a slash.
 const shown = url
-  .replace(/^https?:\/\//, "")
-  .replace(/\/$/, "")
+  .replace(/^https?:\/\//u, "")
+  .replace(/\/$/u, "")
   .split("/");
 ---
 

@@ -32,7 +32,7 @@ test("the fingerprint changes with the sheet and with each source the example pr
   const files = Object.fromEntries(EXAMPLE_SOURCES.map((p) => [p, "text"]));
   const read = (path) => files[path];
   const base = exampleFingerprint(sheet, read);
-  assert.match(base, /^[0-9a-f]{12}$/);
+  assert.match(base, /^[0-9a-f]{12}$/u);
   assert.equal(exampleFingerprint({ ...sheet }, read), base);
   assert.notEqual(
     exampleFingerprint({ ...sheet, criteria: [{ title: "Plans" }] }, read),

@@ -10,8 +10,8 @@ import { parseCsv } from "./tools/csv.mjs";
 export const SHEET_TEAM = "Canvas Group Name";
 export const SHEET_EMAIL = "Project Partner / Mentor Email";
 
-const SPACES = /\s+/g;
-const SEPARATORS = /[\s,;]+/;
+const SPACES = /\s+/gu;
+const SEPARATORS = /[\s,;]+/u;
 
 /** A group name as written, with runs of spaces as one and no ends. */
 export const tidy = (text) => text.replace(SPACES, " ").trim();

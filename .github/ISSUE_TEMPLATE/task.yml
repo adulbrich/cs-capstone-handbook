@@ -1,6 +1,6 @@
 name: Task
 description: A change to the handbook, written so an agent can take it without a triage session.
-labels: ["needs-triage"]
+labels: [ "needs-triage" ]
 body:
   - type: markdown
     attributes:

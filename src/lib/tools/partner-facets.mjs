@@ -14,11 +14,11 @@ import { choiceTextColumn } from "./qsf.mjs";
 import { descending } from "./rubric-bands.mjs";
 
 /** A three-anchor facet's anchors are named "<Top|Middle|Low> anchor (...)". */
-const ANCHOR_NAME = /^(\w+) anchor\b/;
+const ANCHOR_NAME = /^(\w+) anchor\b/u;
 
 /** The page's between-anchor rule, the sentence the tools read. */
 const BETWEEN_RULE =
-  /A partner scores (\d+)% or (\d+)% when the team sits between two anchors\./;
+  /A partner scores (\d+)% or (\d+)% when the team sits between two anchors\./u;
 
 /**
  * The shares of a facet's points a partner gives when the team sits between
@@ -36,8 +36,8 @@ export function betweenAnchors(pageText) {
   return [Number(match[1]), Number(match[2])];
 }
 
-const SPACES = /\s+/;
-const NOT_LETTER = /[^A-Za-z]/g;
+const SPACES = /\s+/u;
+const NOT_LETTER = /[^A-Za-z]/gu;
 
 /** Tags that are not the title's first word. Keys are titles in lower case. */
 const TAG_OVERRIDES = { "verification and validation": "VnV" };
@@ -172,18 +172,18 @@ export function facetOffer(criterion, between) {
   return { choices, custom, tag };
 }
 
-const HEADING = /^(#{2,6})\s+(.+?)\s*$/;
+const HEADING = /^(#{2,6})\s+(.+?)\s*$/u;
 const LIST_HEAD = "**What it looks like**";
-const BULLET = /^-\s+(.+)$/;
-const INDENTED = /^\s+\S/;
-const LINE_BREAK = /\r?\n/;
+const BULLET = /^-\s+(.+)$/u;
+const INDENTED = /^\s+\S/u;
+const LINE_BREAK = /\r?\n/u;
 
 /** Markdown inline text as Qualtrics HTML: bold kept, links as their text. */
 const inline = (text) =>
   text
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-    .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
-    .replace(/`([^`]+)`/g, "$1");
+    .replace(/\[([^\]]+)\]\([^)]*\)/gu, "$1")
+    .replace(/\*\*([^*]+)\*\*/gu, "<b>$1</b>")
+    .replace(/`([^`]+)`/gu, "$1");
 
 /**
  * Reads one line into an open "What it looks like" list. `list` is

@@ -48,7 +48,7 @@ import { TEXT_EXTENSIONS } from "./lib/content.mjs";
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
 // alternation inside the entity so this file does not name the entity.
-const EMDASH_ENTITY = /&(?:mdash|#8212|#x2014);/i;
+const EMDASH_ENTITY = /&(?:mdash|#8212|#x2014);/iu;
 
 /**
  * The blocks emoji are drawn from: the astral range from Mahjong tiles up
@@ -100,50 +100,50 @@ const EXCLUDED_FILES = new Set([
  */
 const VOCABULARY = [
   {
-    avoid: /\bcohorts?\b/i,
+    avoid: /\bcohorts?\b/iu,
     use: "TA check-in, resume meeting, the class, or check-in sheet",
   },
-  { avoid: /\bsponsors?\b/i, use: "project partner" },
+  { avoid: /\bsponsors?\b/iu, use: "project partner" },
   {
     allow:
-      /\b(?:api|http|oauth|mcp|thin|graphql|grpc|generated|email|desktop|mobile|web|native|git|ssh|database|db) clients?\b|\bclients?[- ](?:side|server|component|librar|sdk|code|credential|secret|id\b|app\b|application|generation)|\bthe client is generated\b|\bon the client\b(?!'s)/gi,
-    avoid: /\bclients?\b/i,
+      /\b(?:api|http|oauth|mcp|thin|graphql|grpc|generated|email|desktop|mobile|web|native|git|ssh|database|db) clients?\b|\bclients?[- ](?:side|server|component|librar|sdk|code|credential|secret|id\b|app\b|application|generation)|\bthe client is generated\b|\bon the client\b(?!'s)/giu,
+    avoid: /\bclients?\b/iu,
     use: "project partner",
   },
-  { avoid: /\bstandups?\b/i, use: "stand-up" },
-  { avoid: /\bsprint reports?\b|\bprogress reports?\b/i, use: "sprint note" },
+  { avoid: /\bstandups?\b/iu, use: "stand-up" },
+  { avoid: /\bsprint reports?\b|\bprogress reports?\b/iu, use: "sprint note" },
   {
     // The handbook named a four-way taxonomy for a year and students kept
     // asking which one they were. It shows examples now and names no category,
     // so all three words for the category are retired together (#189, #608).
     avoid:
-      /\boutcome types?\b|\bproject types?\b|\bproject categor(?:y|ies)\b/i,
+      /\boutcome types?\b|\bproject types?\b|\bproject categor(?:y|ies)\b/iu,
     use: "what shipped means for the project, or the closest path in the Shipping guide",
   },
-  { avoid: /\bV&V ladders?\b|\bcategory ladders?\b/i, use: "outcome ladder" },
-  { avoid: /\brungs?\b/i, use: "level (target level, the top levels)" },
+  { avoid: /\bV&V ladders?\b|\bcategory ladders?\b/iu, use: "outcome ladder" },
+  { avoid: /\brungs?\b/iu, use: "level (target level, the top levels)" },
   {
     // "Clock" stood in for a lead time. The allowed phrases are literal
     // clocks: the flaky-test causes in the Testing Strategy guide and the
     // deck's speaker view in the runbook. `g`, so every match is cleared.
     allow:
-      /\bthe network, the clock\b|\bnetwork, clock, or random\b|\band a clock\b/gi,
-    avoid: /\bclocks?\b/i,
+      /\bthe network, the clock\b|\bnetwork, clock, or random\b|\band a clock\b/giu,
+    avoid: /\bclocks?\b/iu,
     use: "external prerequisite, lead time, or a plain wait, request, or process",
   },
-  { avoid: /\blegacy projects?\b/i, use: "existing codebase" },
-  { avoid: /\bstudent-driven\b/i, use: "student-proposed" },
-  { avoid: /\bTrack [AB]\b/, use: "NDA project, with a local note" },
+  { avoid: /\blegacy projects?\b/iu, use: "existing codebase" },
+  { avoid: /\bstudent-driven\b/iu, use: "student-proposed" },
+  { avoid: /\bTrack [AB]\b/u, use: "NDA project, with a local note" },
   {
     // Readers disagree on which day a week ends, so a deadline names Sunday.
     // The glossary names only fall; the rule rejects every term.
-    avoid: /\bend of (?:the |this )?(?:(?:fall|winter|spring) )?week\b/i,
+    avoid: /\bend of (?:the |this )?(?:(?:fall|winter|spring) )?week\b/iu,
     use: '"by Sunday of week N", or the week alone for an evaluation survey\'s close',
   },
   {
     // "No late penalty" reads as "nothing happens if you're late" until the
     // next sentence says zero; a rule names its late window instead.
-    avoid: /\blate penalt(?:y|ies)\b/i,
+    avoid: /\blate penalt(?:y|ies)\b/iu,
     use: '"late window" ("no late window"), or the consequence itself',
   },
   {
@@ -153,11 +153,11 @@ const VOCABULARY = [
     // so do the singletons: the glossary's own Instructor entry, "staff
     // mentor", and the co-instructor on the two Canvas-owned stubs.
     avoid:
-      /\bteaching staff\b|\bcourse staff\b|\bteaching team\b|\binstruction staff\b/i,
+      /\bteaching staff\b|\bcourse staff\b|\bteaching team\b|\binstruction staff\b/iu,
     use: "the instruction team, or the instructors or a TA when only they are meant",
   },
   {
-    avoid: /\bterm gates?\b/i,
+    avoid: /\bterm gates?\b/iu,
     use: "milestone, for what a repo checkpoint adds",
   },
 ];
@@ -209,23 +209,23 @@ const NET_SENSES =
  */
 const BANNED_WORDS = [
   {
-    avoid: /\b(?<!\bacademic\s)honest(?:y|ly)?\b/i,
+    avoid: /\b(?<!\bacademic\s)honest(?:y|ly)?\b/iu,
     use: 'the word the sentence means (accurate, candid, complete), or nothing; "academic honesty" stays',
   },
-  { avoid: /\bgenuinely\b/i, use: "nothing; delete it" },
-  { avoid: /\bworth stealing\b/i, use: '"worth adopting", or say why' },
+  { avoid: /\bgenuinely\b/iu, use: "nothing; delete it" },
+  { avoid: /\bworth stealing\b/iu, use: '"worth adopting", or say why' },
   {
-    avoid: /\bone[- ]way doors?\b/i,
+    avoid: /\bone[- ]way doors?\b/iu,
     use: '"hard-to-reverse decision"',
   },
   {
-    avoid: /\btwo[- ]way doors?\b/i,
+    avoid: /\btwo[- ]way doors?\b/iu,
     use: '"easy-to-reverse decision"',
   },
   {
     avoid: new RegExp(
       `\\b(?:the|your|that) net\\b(?!\\s+(?:${NET_SENSES})s?\\b)`,
-      "i"
+      "iu"
     ),
     use: '"the checks" or "your checks" (tests, CI, review gates, staging, a rollback path)',
   },
@@ -244,7 +244,7 @@ const BANNED_WORDS = [
  * with `|` and are not checked.
  */
 const BOLD_SENTENCE =
-  /(?:^\s*(?:>\s*)?|(?<!^\s*\d+)[.!?]["')]?\s+)\*\*(?=[^*\n]*?\s[^*\n]*?\*\*)[^*\n]+?(?:[.!?]\*\*|\*\*[.!?])/;
+  /(?:^\s*(?:>\s*)?|(?<!^\s*\d+)[.!?]["')]?\s+)\*\*(?=[^*\n]*?\s[^*\n]*?\*\*)[^*\n]+?(?:[.!?]\*\*|\*\*[.!?])/u;
 
 /**
  * The two openers `docs/agents/voice.md` bans: a "Without it:" lead-in to a
@@ -258,12 +258,12 @@ const BOLD_SENTENCE =
 const GUIDES_PATH = "src/content/docs/guides/";
 const BANNED_OPENERS = [
   {
-    avoid: /Without [^.:]{0,60}:\s*$/,
+    avoid: /Without [^.:]{0,60}:\s*$/u,
     use: "open on the reader's situation and what the page covers",
   },
   {
     avoid:
-      /\b(?:is|are|forms?) the (?:backbone|foundation|fundamental unit) of\b/i,
+      /\b(?:is|are|forms?) the (?:backbone|foundation|fundamental unit) of\b/iu,
     use: "say what the thing does for the reader, not how important it is",
   },
 ];
@@ -273,7 +273,7 @@ const LEGACY_OPENER_MARKER = "{/* check-prose: legacy-opener */}";
 function repoRelative(filePath) {
   const rel = nodePath.isAbsolute(filePath)
     ? nodePath.relative(process.cwd(), filePath)
-    : filePath.replace(/^\.\//, "");
+    : filePath.replace(/^\.\//u, "");
   return rel.split(nodePath.sep).join("/");
 }
 
@@ -310,7 +310,7 @@ function bannedWordsApply(filePath) {
  * is not prose, and a quoted "client fee" is someone else's word, cited.
  */
 function stripInlineCode(line) {
-  return line.replace(/`[^`]*`/g, " ").replace(/"[^"]*"/g, " ");
+  return line.replace(/`[^`]*`/gu, " ").replace(/"[^"]*"/gu, " ");
 }
 
 /**
@@ -320,7 +320,7 @@ function stripInlineCode(line) {
  */
 export function glossaryDrift() {
   const text = readFileSync(GLOSSARY_PATH, "utf8");
-  const items = [...text.matchAll(/Not: ([^.\n]+)\./g)].flatMap((m) =>
+  const items = [...text.matchAll(/Not: ([^.\n]+)\./gu)].flatMap((m) =>
     m[1].split(",").map((item) => item.trim())
   );
   const problems = [];
@@ -367,7 +367,7 @@ function vocabularyViolations(line, lineNumber) {
 }
 
 /** A line that opens or closes a fenced code block. */
-const FENCE = /^\s*(?:```|~~~)/;
+const FENCE = /^\s*(?:```|~~~)/u;
 
 /**
  * The banned-opener hits in a guide's opening: every prose line before the
@@ -451,7 +451,7 @@ function bannedWordViolations(line, lineNumber) {
 /** A bolded whole sentence on one line of a handbook page. */
 function boldSentenceViolations(line, lineNumber) {
   // Inline code only: stripping quoted phrases would cut a bold span in two.
-  if (!BOLD_SENTENCE.test(line.replace(/`[^`]*`/g, " "))) {
+  if (!BOLD_SENTENCE.test(line.replace(/`[^`]*`/gu, " "))) {
     return [];
   }
   return [
@@ -463,7 +463,7 @@ function boldSentenceViolations(line, lineNumber) {
   ];
 }
 
-const PERCENT_HEADING = /^#{1,6}\s.*%|<h[1-6]\b[^>]*>[^<]*%/i;
+const PERCENT_HEADING = /^#{1,6}\s.*%|<h[1-6]\b[^>]*>[^<]*%/iu;
 
 /** A heading carrying a percentage; the number lives where the page states it (#287). */
 function percentHeadingViolations(line, lineNumber) {

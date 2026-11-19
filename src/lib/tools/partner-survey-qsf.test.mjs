@@ -224,7 +224,7 @@ test("under each statement: an optional box at Strongly agree, a required one be
     for (const box of [top, below]) {
       assert.match(
         box.QuestionText,
-        /Shared with the team as written, including any names/
+        /Shared with the team as written, including any names/u
       );
     }
   }
@@ -279,30 +279,30 @@ test("embedded data is declared first, then the ratings and the notes, with no g
     blockOf(ratings.ID).BlockElements.every((e) => e.Type === "Question")
   );
   assert.deepEqual(tagsIn(notes.ID), ["Q2", "Q2 Names", "Q2 Comments", "Q3"]);
-  const ids = JSON.stringify(flow).match(/FL_\d+/g);
+  const ids = JSON.stringify(flow).match(/FL_\d+/gu);
   assert.equal(new Set(ids).size, ids.length);
   assert.equal(flow.Properties.Count, ids.length);
 });
 
 test("the intro pipes the team and close date and names the rubric's own words", () => {
   const intro = byTag("Start").QuestionText;
-  assert.match(intro, /\$\{e:\/\/Field\/Team\}/);
-  assert.match(intro, /\$\{e:\/\/Field\/MidtermCloseDate\}/);
-  assert.match(intro, /starting point for 5% of each student's grade/);
-  assert.match(intro, /starting point for 20%, goes into more depth/);
-  assert.match(intro, /instructors read every response/);
-  assert.match(intro, /from Strongly agree down to Strongly disagree/);
+  assert.match(intro, /\$\{e:\/\/Field\/Team\}/u);
+  assert.match(intro, /\$\{e:\/\/Field\/MidtermCloseDate\}/u);
+  assert.match(intro, /starting point for 5% of each student's grade/u);
+  assert.match(intro, /starting point for 20%, goes into more depth/u);
+  assert.match(intro, /instructors read every response/u);
+  assert.match(intro, /from Strongly agree down to Strongly disagree/u);
   assert.ok(intro.includes(OPTIONS.pageUrl));
   // The scale's top comes from the CSV.
   assert.match(
     intro,
-    /below Strongly agree asks for one sentence on what would make it Strongly agree\./
+    /below Strongly agree asks for one sentence on what would make it Strongly agree\./u
   );
   // No answer stands in for "cannot judge" (#568).
-  assert.doesNotMatch(intro, /Neither agree nor disagree/);
+  assert.doesNotMatch(intro, /Neither agree nor disagree/u);
   assert.match(
     intro,
-    /comment on each statement is shared with the team as written.*about specific students and about the course, are seen only by the instruction team/
+    /comment on each statement is shared with the team as written.*about specific students and about the course, are seen only by the instruction team/u
   );
 });
 
@@ -310,7 +310,7 @@ test("the concern questions say only the instruction team sees them", () => {
   for (const tag of ["Q2", "Q2 Names", "Q2 Comments", "Q3"]) {
     assert.match(
       byTag(tag).QuestionText,
-      /Only the instruction team sees this\./,
+      /Only the instruction team sees this\./u,
       tag
     );
   }
@@ -324,7 +324,7 @@ test("every variant's distribution email names the team in its subject and body"
     assert.ok(email.body.includes("${e://Field/Team}"), key);
     assert.ok(email.body.includes("${l://SurveyLink?d=Take the survey}"), key);
     // No piped text nested inside a link's display text.
-    assert.doesNotMatch(email.body, /\$\{l:\/\/[^}]*\$\{/, key);
+    assert.doesNotMatch(email.body, /\$\{l:\/\/[^}]*\$\{/u, key);
     assert.ok(email.body.includes("${l://OptOutLink"), key);
   }
   assert.ok(
@@ -339,7 +339,7 @@ test("a criterion with no statement, or criteria on different scales, stop the b
       i === 1 ? { ...c, description: "" } : c
     ),
   };
-  assert.throws(() => pulseScale(blank), /no statement.*Professionalism/);
+  assert.throws(() => pulseScale(blank), /no statement.*Professionalism/u);
   const renamed = {
     ...pulseRubric,
     criteria: pulseRubric.criteria.map((c, i) =>
@@ -351,10 +351,13 @@ test("a criterion with no statement, or criteria on different scales, stop the b
         : c
     ),
   };
-  assert.throws(() => pulseScale(renamed), /share one scale.*Delivery quality/);
+  assert.throws(
+    () => pulseScale(renamed),
+    /share one scale.*Delivery quality/u
+  );
   assert.throws(
     () => buildPartnerSurvey({ ...OPTIONS, variant: "nope" }),
-    /Unknown variant/
+    /Unknown variant/u
   );
   const twice = {
     ...pulseRubric,
@@ -364,7 +367,7 @@ test("a criterion with no statement, or criteria on different scales, stop the b
   };
   assert.throws(
     () => buildPartnerSurvey({ ...OPTIONS, rubric: twice }),
-    /the tag Delivery twice/
+    /the tag Delivery twice/u
   );
 });
 
@@ -641,7 +644,7 @@ test("a facet's question is its CSV statement, except a ladder, which asks the p
         text,
         `${criterion.title}: ${isLadder(criterion) ? ladderPrompts[tag] : criterion.description}`
       );
-      assert.doesNotMatch(text, /the partner scores/);
+      assert.doesNotMatch(text, /the partner scores/u);
     }
   }
   for (const tag of Object.keys(ladderPrompts)) {
@@ -777,7 +780,7 @@ test("the text above each facet holds the page's What it looks like list and the
         assert.ok(guide.includes(`<b>${rating.name}</b>`), rating.name);
         assert.ok(guide.includes(rating.description), rating.name);
       }
-      assert.match(guide, isLadder(criterion) ? /The levels/ : /The anchors/);
+      assert.match(guide, isLadder(criterion) ? /The levels/u : /The anchors/u);
     }
   }
 });
@@ -805,7 +808,7 @@ test("the end-of-term flow sets Term to its term and declares the contact list's
     assert.equal(VARIANTS[finalSurvey(term)].closeField, "FinalCloseDate");
     assert.equal(ratings.Type, "Block");
     assert.equal(notes.Type, "Standard");
-    const ids = JSON.stringify(flowPayload).match(/FL_\d+/g);
+    const ids = JSON.stringify(flowPayload).match(/FL_\d+/gu);
     assert.equal(new Set(ids).size, ids.length);
     assert.equal(flowPayload.Properties.Count, ids.length);
   }
@@ -829,19 +832,19 @@ test("the variants, the emails, and the scorer's surveys share one term list", (
 test("the end-of-term intro pipes the team and close date, and states the page's between rule and weight", () => {
   for (const term of TERMS) {
     const intro = tagged(finals[term], "Start").QuestionText;
-    assert.match(intro, /\$\{e:\/\/Field\/Team\}/);
-    assert.match(intro, /\$\{e:\/\/Field\/FinalCloseDate\}/);
+    assert.match(intro, /\$\{e:\/\/Field\/Team\}/u);
+    assert.match(intro, /\$\{e:\/\/Field\/FinalCloseDate\}/u);
     assert.ok(
       intro.includes(
         `worth ${rules.between.join("% or ")}% of the facet's points`
       )
     );
-    assert.match(intro, /starting point for 20% of each student's grade/);
-    assert.match(intro, /instructors read every response/);
-    assert.match(intro, /on 6 facets/);
+    assert.match(intro, /starting point for 20% of each student's grade/u);
+    assert.match(intro, /instructors read every response/u);
+    assert.match(intro, /on 6 facets/u);
     assert.ok(intro.includes(OPTIONS.pageUrl));
-    assert.match(intro, /below the top anchor asks for one sentence/);
-    assert.match(intro, /comment on each facet is shared with the team/);
+    assert.match(intro, /below the top anchor asks for one sentence/u);
+    assert.match(intro, /comment on each facet is shared with the team/u);
   }
   assert.ok(
     distributionEmails["final-fall"].body.includes(
@@ -858,11 +861,11 @@ test("an end-of-term survey without a What it looks like list for a facet stops 
         ...finalOptions("fall"),
         rules: { ...rules, guidance: partial },
       }),
-    /no "What it looks like" list for Teamwork/
+    /no "What it looks like" list for Teamwork/u
   );
   assert.throws(
     () => buildPartnerSurvey({ ...finalOptions("fall"), rules: undefined }),
-    /no "What it looks like" list for Reflection/
+    /no "What it looks like" list for Reflection/u
   );
 });
 
@@ -1082,7 +1085,7 @@ test("each generated end-of-term export is detected by its Term and facet tags",
     finalResponse("fall", "Compilers", { Term: "winter" }),
   ]);
   assert.equal(detectSurvey(mixed, all).kind, null);
-  assert.match(detectSurvey(mixed, all).reason, /fall, winter/);
+  assert.match(detectSurvey(mixed, all).reason, /fall, winter/u);
   const summer = labelsExport(finals.fall, [
     finalResponse("fall", "Engines", { Term: "summer" }),
   ]);
@@ -1092,7 +1095,7 @@ test("each generated end-of-term export is detected by its Term and facet tags",
     finalResponse("winter", "Engines"),
   ]);
   noFacet.columns = noFacet.columns.filter((c) => c.tag !== "Teamwork");
-  assert.match(detectSurvey(noFacet, all).reason, /no Teamwork column/);
+  assert.match(detectSurvey(noFacet, all).reason, /no Teamwork column/u);
 });
 
 test("every choice of every end-of-term facet scores its points, named by bandFor", () => {
@@ -1155,7 +1158,7 @@ test("the spring custom scale scores its share of the points, and stops out of r
   for (const bad of ["", "49", "101", "120", "abc"]) {
     assert.throws(
       () => scoreFinal("spring", [answer(bad)]),
-      /custom-scale share in VnV_7_TEXT.*from 50 to 100/,
+      /custom-scale share in VnV_7_TEXT.*from 50 to 100/u,
       bad
     );
   }
@@ -1167,7 +1170,7 @@ test("an end-of-term label the survey does not offer stops the run", () => {
       scoreFinal("fall", [
         finalResponse("fall", "Engines", { Teamwork: "Mostly fine" }),
       ]),
-    /"Mostly fine" to Teamwork .* not a choice for Teamwork/
+    /"Mostly fine" to Teamwork .* not a choice for Teamwork/u
   );
 });
 
@@ -1179,7 +1182,7 @@ test("an end-of-term export scored as another term stops the run", () => {
         [finalResponse("winter", "Engines")],
         finalSurvey("fall")
       ),
-    /Term column holds winter.*End-of-Term Survey, fall/
+    /Term column holds winter.*End-of-Term Survey, fall/u
   );
 });
 

@@ -73,28 +73,28 @@ const DAY = String.raw`\.?\s+\d{1,2}(st|nd|rd|th)?\b(?!:\d)`;
 const PATTERNS = [
   [
     "term with a year",
-    /\b(Fall|Winter|Spring|Summer|Autumn)\s+(of\s+)?20\d{2}\b/g,
+    /\b(Fall|Winter|Spring|Summer|Autumn)\s+(of\s+)?20\d{2}\b/gu,
   ],
-  ["month name", new RegExp(String.raw`\b(${bare.join("|")})\b`, "g")],
+  ["month name", new RegExp(String.raw`\b(${bare.join("|")})\b`, "gu")],
   [
     "ambiguous month with a year",
-    new RegExp(String.raw`\b(${ambiguous})\s+20\d{2}\b`, "g"),
+    new RegExp(String.raw`\b(${ambiguous})\s+20\d{2}\b`, "gu"),
   ],
   [
     "ambiguous month with a day",
-    new RegExp(String.raw`\b(${ambiguous})${DAY}`, "g"),
+    new RegExp(String.raw`\b(${ambiguous})${DAY}`, "gu"),
   ],
   [
     "day with an ambiguous month",
-    new RegExp(String.raw`\b\d{1,2}\s+(${ambiguous})\b`, "g"),
+    new RegExp(String.raw`\b\d{1,2}\s+(${ambiguous})\b`, "gu"),
   ],
-  ["ISO date", /\b20\d{2}-\d{2}-\d{2}\b/g],
-  ["academic-year range", /\b20\d{2}\s*[-/–]\s*(20)?\d{2}\b/g],
-  ["academic year", /\b(AY|academic year)\s+20\d{2}\b/gi],
+  ["ISO date", /\b20\d{2}-\d{2}-\d{2}\b/gu],
+  ["academic-year range", /\b20\d{2}\s*[-/–]\s*(20)?\d{2}\b/gu],
+  ["academic year", /\b(AY|academic year)\s+20\d{2}\b/giu],
 ];
-const URL_RE = /https?:\/\/\S+/g;
-const CODE_SPAN_RE = /`[^`\n]*`/g;
-const CITATION_RE = /\bAccessed:|^\s*(\*\*)?\[\d+\]/;
+const URL_RE = /https?:\/\/\S+/gu;
+const CODE_SPAN_RE = /`[^`\n]*`/gu;
+const CITATION_RE = /\bAccessed:|^\s*(\*\*)?\[\d+\]/u;
 
 const hits = [];
 let checked = 0;

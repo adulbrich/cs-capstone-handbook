@@ -1,4 +1,5 @@
-import { type CollectionEntry, getEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
 import { citableText, citeIds } from "./cite-pattern.mjs";
 
 /**
@@ -39,7 +40,7 @@ export function listAuthors(authors: string[]) {
   return `${authors.slice(0, -1).join(", ")}, and ${authors.at(-1)}`;
 }
 
-const ENDS_IN_PUNCTUATION = /[.?!]$/;
+const ENDS_IN_PUNCTUATION = /[.?!]$/u;
 
 /** Close a title with a period unless it already ends in punctuation. */
 export function sentence(text: string) {

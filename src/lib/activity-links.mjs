@@ -26,12 +26,12 @@ export const EFFORT_SCALE = [
 ];
 
 /** A link to an activity: its page, then its heading's anchor. */
-export const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/g;
+export const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/gu;
 
 // The assignment page heads its term sections "## Fall", "## Winter",
 // "## Spring", and each workshop under them "### Workshop N: Title".
-const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/;
-const WORKSHOP_HEADING_RE = /^### (Workshop (\d+): .+)$/;
+const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/u;
+const WORKSHOP_HEADING_RE = /^### (Workshop (\d+): .+)$/u;
 const SLUG_DROP_RE = /[^\p{L}\p{M}\p{N}\p{Pc} -]/gu;
 
 /**
@@ -44,7 +44,7 @@ export function slugify(heading) {
     .trim()
     .toLowerCase()
     .replace(SLUG_DROP_RE, "")
-    .replace(/ /g, "-");
+    .replace(/ /gu, "-");
 }
 
 /** The anchor every Helps with badge links on its assignment page. */

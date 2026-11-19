@@ -17,7 +17,7 @@ const TAG_BY_PATH = {
   "assignments/rfc#instructor-comments": "Instructor",
 };
 
-const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/g, "");
+const pagePath = (href) => href.split("#")[0].replace(/^\/|\/$/gu, "");
 
 // The tag itself, styled in src/styles/global.css.
 export const tagNode = (tag) =>

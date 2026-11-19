@@ -2,6 +2,7 @@
 // src/lib/tools/tool-storage.mjs, which holds the logic and its tests. A
 // value is written when a handler sets it, never by an effect, so "Clear
 // saved data" leaves nothing behind.
+// biome-ignore-all lint/style/noExcessiveClassesPerFile: Saved is unexported, handed out by ToolStorage.saved and saved through by PageSteps; the pages import those two from here.
 
 import { tick } from "svelte";
 import {
@@ -70,6 +71,12 @@ export class ToolStorage {
   }
 }
 
+/** Puts focus on step `id`'s heading once Svelte has rendered it. */
+async function focusStep(id) {
+  await tick();
+  document.getElementById(`step-${id}`)?.focus();
+}
+
 /**
  * A page's steps, saved under `key` (steps.mjs holds the rules). `props`
  * gives a <Step> everything it needs for one step; moving to a step that
@@ -84,17 +91,12 @@ export class PageSteps {
     this.#saved = storage.saved(key, initialSteps());
   }
 
-  async #focus(id) {
-    await tick();
-    document.getElementById(`step-${id}`)?.focus();
-  }
-
   #done(id, value, ready) {
     this.#saved.set(setDone(this.#saved.value, id, value));
     const next = stepView(this.#ids, this.#saved.value, ready).find(
       (step) => step.open && step.id !== id
     );
-    this.#focus(value && next ? next.id : id);
+    focusStep(value && next ? next.id : id);
   }
 
   /**
@@ -108,12 +110,12 @@ export class PageSteps {
       ),
       oncollapse: () => {
         this.#saved.set(collapse(this.#saved.value, id));
-        this.#focus(id);
+        focusStep(id);
       },
       ondone: (value) => this.#done(id, value, ready),
       onedit: () => {
         this.#saved.set(reopen(this.#saved.value, id));
-        this.#focus(id);
+        focusStep(id);
       },
       ready: ready[id],
     };

@@ -121,21 +121,21 @@ function parseAssignment(frontmatter) {
 // `<RubricCriterion>` renders one criterion of a CSV the page also renders in
 // full (the spring outcome ladder): same attributes, read with its name.
 function renderedCsvs(source, component) {
-  const tagRe = new RegExp(`<${component}\\s[^>]*>`, "g");
+  const tagRe = new RegExp(`<${component}\\s[^>]*>`, "gu");
   return [...source.matchAll(tagRe)].map((m) => {
-    const name = m[0].match(/\bcsv=\{(\w+)\}/)?.[1];
+    const name = m[0].match(/\bcsv=\{(\w+)\}/u)?.[1];
     const imported = name
       ? source.match(
           new RegExp(
             `^import\\s+${name}\\s+from\\s+['"]/([^'"?]+)\\?raw['"]`,
-            "m"
+            "mu"
           )
         )
       : null;
     return {
       component,
       index: m.index,
-      label: m[0].match(/\ssourceLabel="([^"]*)"/)?.[1] ?? null,
+      label: m[0].match(/\ssourceLabel="([^"]*)"/u)?.[1] ?? null,
       name,
       path: imported ? imported[1] : null,
     };
@@ -169,8 +169,8 @@ for (const file of files) {
     continue;
   }
   parsed += 1;
-  pages.set(file.replace(/\.mdx$/, ""), assignment);
-  const slug = file.replace(/\.mdx$/, "");
+  pages.set(file.replace(/\.mdx$/u, ""), assignment);
+  const slug = file.replace(/\.mdx$/u, "");
   const tables = renderedCsvs(source, "RubricTable");
   const criterionViews = renderedCsvs(source, "RubricCriterion");
   pageSources.set(slug, source);
@@ -681,12 +681,12 @@ const SKELETON = [
 ];
 const REQUIRED = ["What You Submit", "Rubric"];
 const AFTER_ACTIVITIES = new Set(["References"]);
-const AI_USE_RE = /^\*\*AI use:\*\*/m;
+const AI_USE_RE = /^\*\*AI use:\*\*/mu;
 // A submission format lives under What You Submit, never in a heading (#288).
-const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/im;
-const FENCED_CODE_RE = /^(```|~~~)[\s\S]*?^\1/gm;
-const SUMMARY_RE = /<AssignmentSummary\b/;
-const META_RE = /<AssignmentMeta\b/;
+const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/imu;
+const FENCED_CODE_RE = /^(```|~~~)[\s\S]*?^\1/gmu;
+const SUMMARY_RE = /<AssignmentSummary\b/u;
+const META_RE = /<AssignmentMeta\b/u;
 
 // Format headings on every assignment page, graded or not: the loop below
 // skips pages without an `assignment:` block. Fenced code is not a heading.
@@ -705,7 +705,7 @@ for (const file of files) {
 }
 
 for (const file of files) {
-  const slug = file.replace(/\.mdx$/, "");
+  const slug = file.replace(/\.mdx$/u, "");
   const assignment = pages.get(slug);
   if (!assignment) {
     continue;
@@ -722,7 +722,7 @@ for (const file of files) {
   }
 
   // The skeleton's sections, present and in order.
-  const sections = body.split(/^(?=## )/m).slice(1);
+  const sections = body.split(/^(?=## )/mu).slice(1);
   const titles = sections.map((text) => text.split("\n")[0].slice(3));
   const section = (name) => sections[titles.indexOf(name)];
   for (const name of REQUIRED) {
@@ -753,13 +753,13 @@ for (const file of files) {
 
   // AI use closes What You Produce's own text, before any "###".
   const produce = section("What You Produce");
-  const aiUses = body.match(new RegExp(AI_USE_RE.source, "gm")) ?? [];
+  const aiUses = body.match(new RegExp(AI_USE_RE.source, "gmu")) ?? [];
   if (produce) {
-    const [own] = produce.split(/^### /m);
+    const [own] = produce.split(/^### /mu);
     const lastBlock =
       own
         .trim()
-        .split(/\n\s*\n/)
+        .split(/\n\s*\n/u)
         .at(-1) ?? "";
     if (!AI_USE_RE.test(lastBlock) || aiUses.length !== 1) {
       console.error(
@@ -780,7 +780,7 @@ for (const file of files) {
   // named for it.
   const entryHeadings = (text) =>
     (text ?? "")
-      .split(/^(?=### )/m)
+      .split(/^(?=### )/mu)
       .slice(1)
       .map((sub) => sub.split("\n")[0].slice(4));
   const families = new Set((assignment.canvas ?? []).map(familyHeading));
@@ -830,7 +830,9 @@ for (const file of files) {
       );
       failed = true;
     }
-    const h2 = [...source.slice(0, table.index).matchAll(/^## (.*)$/gm)].at(-1);
+    const h2 = [...source.slice(0, table.index).matchAll(/^## (.*)$/gmu)].at(
+      -1
+    );
     if (h2?.[1] !== "Rubric") {
       console.error(
         `RUBRIC ${file}: renders ${table.path} outside the "## Rubric" section.`

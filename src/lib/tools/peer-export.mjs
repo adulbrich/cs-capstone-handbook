@@ -74,7 +74,7 @@ function reshape(map, ratingTags, row, index) {
 }
 
 /** Qualtrics' RecordedDate, which sorts as text. */
-const RECORDED_DATE = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+const RECORDED_DATE = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/u;
 
 /**
  * Stops when a RecordedDate is not "YYYY-MM-DD HH:MM:SS": the latest

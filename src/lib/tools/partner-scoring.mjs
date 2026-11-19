@@ -68,7 +68,7 @@ export const SURVEYS = {
 /** The surveys in the order a term runs them. */
 export const SURVEY_ORDER = ["pulse", ...TERMS.map(finalSurvey)];
 
-const A_ROW = /^A\s*\|\s*(\d+(?:\.\d+)?)\s*\|/m;
+const A_ROW = /^A\s*\|\s*(\d+(?:\.\d+)?)\s*\|/mu;
 
 /** The lower bound of an A, read from the grading scale's table. */
 export function aLowerBound(gradingText) {
@@ -273,7 +273,7 @@ function surveyQuestions(columns, rubric, definition, between) {
   return questions;
 }
 
-const NUMERIC = /^\d+(?:\.\d+)?$/;
+const NUMERIC = /^\d+(?:\.\d+)?$/u;
 
 /** Where an answer came from, for an error message. */
 const answerSource = (response, column) =>

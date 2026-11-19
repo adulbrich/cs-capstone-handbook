@@ -86,7 +86,7 @@ const shown = (value) =>
   value === undefined ? "missing" : JSON.stringify(value);
 
 /** Non-blank text, as the schema's `text()` requires. */
-const isText = (value) => typeof value === "string" && /\S/.test(value);
+const isText = (value) => typeof value === "string" && /\S/u.test(value);
 
 const isHttpUrl = (value) =>
   typeof value === "string" &&
@@ -148,7 +148,7 @@ function entryProblems(data) {
   }
   if (
     data.suffix !== undefined &&
-    !(typeof data.suffix === "string" && /^[a-z]$/.test(data.suffix))
+    !(typeof data.suffix === "string" && /^[a-z]$/u.test(data.suffix))
   ) {
     problems.push(`\`suffix\` is ${shown(data.suffix)}; one lowercase letter`);
   }
@@ -162,7 +162,7 @@ function entryProblems(data) {
   }
   if (
     data.doi !== undefined &&
-    !(typeof data.doi === "string" && /^10\.\S+$/.test(data.doi))
+    !(typeof data.doi === "string" && /^10\.\S+$/u.test(data.doi))
   ) {
     problems.push(
       `\`doi\` is ${shown(data.doi)}; give the bare DOI starting 10., not a URL`
@@ -259,7 +259,7 @@ let citations = 0;
 for (const page of walk(DOCS_DIR, MDX)) {
   const prose = citableText(readFileSync(page, "utf8"));
   const ids = citeIds(prose);
-  const hasReferences = /^<References\s*\/>\s*$/m.test(prose);
+  const hasReferences = /^<References\s*\/>\s*$/mu.test(prose);
   if (citeTagCount(prose) > ids.length) {
     problems.push(
       `${page}: a <Cite> without an id="..." attribute; every Cite names a registry entry`
@@ -286,7 +286,7 @@ for (const page of walk(DOCS_DIR, MDX)) {
 
   const lines = prose.split("\n");
   const references = lines.findIndex((line) =>
-    /^##\s+References\s*$/.test(line)
+    /^##\s+References\s*$/u.test(line)
   );
   if (references === -1) {
     problems.push(
@@ -296,13 +296,13 @@ for (const page of walk(DOCS_DIR, MDX)) {
   }
   const after = lines.slice(references + 1);
   const next = after.find((line) => line.trim() !== "");
-  if (!/^<References\s*\/>\s*$/.test(next ?? "")) {
+  if (!/^<References\s*\/>\s*$/u.test(next ?? "")) {
     problems.push(
       `${page}: \`## References\` must be followed directly by <References />`
     );
   }
-  const nextHeading = after.find((line) => /^##\s/.test(line));
-  if (!/^##\s+Additional Readings\s*$/.test(nextHeading ?? "")) {
+  const nextHeading = after.find((line) => /^##\s/u.test(line));
+  if (!/^##\s+Additional Readings\s*$/u.test(nextHeading ?? "")) {
     problems.push(
       `${page}: \`## References\` must sit directly above \`## Additional Readings\`; the next section is ${nextHeading ? `\`${nextHeading.trim()}\`` : "missing"}`
     );
