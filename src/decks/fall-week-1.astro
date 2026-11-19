@@ -1,9 +1,11 @@
 ---
 // Fall week 1: teams are announced and sit together for the first time.
-// What's due and who contacts the team next, the Two truths and a bug rules and
-// the instructor's own round (a placeholder slide the instructor fills
-// before class), the seating map while teams find their seats and play,
-// one slide for teams that inherit a codebase, then the Team Charter
+// The agenda; what's due (the introduction email, then the Due and Read
+// rows of weeks 1 and 2 from the schedule) and who contacts the team next;
+// the seating map, titled with how to find your team; the instructor's
+// round of Two truths and a bug (a placeholder slide the instructor fills
+// before class), then the game's rules, which stay up while teams play;
+// one slide for teams that inherit a codebase; then the Team Charter
 // kickoff for the rest of the session. Served at /decks/fall-week-1/. The
 // seating map is <SeatingMap>, drawn at build time from the room in
 // src/lib/seating.mjs. A line credited to a handbook page uses that page's
@@ -11,7 +13,6 @@
 import QrSlide from "../components/deck/QrSlide.astro";
 import SeatingMap from "../components/deck/SeatingMap.astro";
 import Slide from "../components/deck/Slide.astro";
-import StatementSlide from "../components/deck/StatementSlide.astro";
 import TermSessions from "../components/deck/TermSessions.astro";
 import TitleSlide from "../components/deck/TitleSlide.astro";
 import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
@@ -19,6 +20,7 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 export const title = "Team Introductions and Charter";
 
 const charter = new URL("/assignments/team-charter/", Astro.site).href;
+const emailTemplate = new URL("/email-template.txt", Astro.site).href;
 const audit = new URL(
   "/assignments/repo-checkpoints/#the-inherited-codebase-audit",
   Astro.site
@@ -36,26 +38,28 @@ const analyze = new URL(
   byline="Alex Ulbrich and Kirsten Winters"
 />
 
-<Slide kicker="Today" title="Agenda">
-  <ol>
+<Slide kicker="Fall week 1" title="Agenda">
+  <ul>
     <li>What's due, and who contacts you next</li>
-    <li>Icebreaker: Two truths and a bug, with the instructor's round first</li>
-    <li>Find your team, sit together, and play</li>
-    <li>Inherited codebases, then the Team Charter and your questions</li>
-  </ol>
+    <li>Team seating</li>
+    <li>Icebreaker: Two truths and a bug</li>
+    <li>Inherited codebases</li>
+    <li>The Team Charter</li>
+    <li>Questions</li>
+  </ul>
 </Slide>
 
 <Slide kicker="This week" title="Email your project partner">
   <ul>
     <li>By Sunday of week 1, send the introduction email to your project partner, or to your mentor, with every teammate on Cc</li>
-    <li class="fragment">Start from the introduction email template, which already carries the questions worth asking before you meet</li>
+    <li class="fragment">Start from the <a href={emailTemplate}>introduction email template</a>, which already carries the questions worth asking before you meet</li>
     <li class="fragment">Send it as soon as you know your team: the meeting you're asking for has to fit your partner's or mentor's calendar</li>
-    <li class="fragment">If every teammate already meets with your partner or mentor, don't send it: message your instructors at cs-46x-help@oregonstate.edu by Sunday of week 1</li>
+    <li class="fragment">If every teammate already meets with your partner or mentor, don't send it: message your instructors at cs-46x-help@oregonstate.edu instead</li>
   </ul>
 </Slide>
 
 <Slide kicker="Due next" title="Weeks 1 and 2" wide>
-  <TermSessions term="fall" from={1} to={2} rows={["Due", "In class", "Read"]} />
+  <TermSessions term="fall" from={1} to={2} rows={["Due", "Read"]} />
 </Slide>
 
 <Slide kicker="After this session" title="Your partner, your TA, and shared projects">
@@ -66,14 +70,11 @@ const analyze = new URL(
   </ul>
 </Slide>
 
-<Slide kicker="Icebreaker, fifteen minutes" title="Two truths and a bug">
-  <ul>
-    <li><strong>Write three claims each:</strong> two true and one invented, all about your life with computers</li>
-    <li class="fragment"><strong>Guess before the reveal:</strong> the team votes on which claim is the lie, then the author says. One round per person, a minute each, no deliberating</li>
-    <li class="fragment"><strong>Chase the interesting one:</strong> whichever claim caused the most argument, ask for the story behind it</li>
-    <li class="fragment"><strong>End with a want:</strong> one sentence each on what you most want to be better at by the time this project ends</li>
-  </ul>
-</Slide>
+<SeatingMap
+  teams={65}
+  kicker="Your team number is the number in your Project ID"
+  title="Find your team number and sit together"
+/>
 
 <Slide kicker="Two truths and a bug: the instructor's round" title="Which one is the bug?">
   <ol style="font-size: var(--deck-text-lead)">
@@ -83,11 +84,14 @@ const analyze = new URL(
   </ol>
 </Slide>
 
-<StatementSlide kicker="Your team">
-  Find your Project ID's number on the map, and sit together.
-</StatementSlide>
-
-<SeatingMap teams={65} />
+<Slide kicker="Icebreaker, fifteen minutes" title="Two truths and a bug">
+  <ul>
+    <li><strong>Write three claims each:</strong> two true and one invented, all about your life with computers</li>
+    <li class="fragment"><strong>Guess before the reveal:</strong> the team votes on which claim is the lie, then the author says. One round per person, a minute each, no deliberating</li>
+    <li class="fragment"><strong>Chase the interesting one:</strong> whichever claim caused the most argument, ask for the story behind it</li>
+    <li class="fragment"><strong>End with a want:</strong> one sentence each on what you most want to be better at by the time this project ends</li>
+  </ul>
+</Slide>
 
 <Slide kicker="Before the charter" title="If you inherit a codebase">
   <ul>

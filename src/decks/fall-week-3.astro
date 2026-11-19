@@ -1,20 +1,21 @@
 ---
 // Fall week 3: Workshop 2, Map Your Hard-to-Reverse Decisions, and Workshop
-// 3, Audit Your Safety Net, in one session and one deck, each in the week 2
-// deck's shape. A shared opening (the two outcomes, scoring and reading,
-// the agenda); what the instruction team presents for Workshop 2 (hard and
-// easy to reverse, sorted for the week 2 campus lunch app; ephira, LumiLab,
-// and TaxonBodyMassML as the inherited, pipeline, and research references)
-// and its work time; what it presents for Workshop 3 (what can reach main
-// with nothing to stop it, whoever wrote it, audited on the same lunch app;
-// two repositories whose tests never ran; eecs-capstone, the project portal) and
-// its work time; then one wrap
-// for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
-// weeks on the timeline, the Read line, and the week's other Due items come
-// from the schedule, as <TermSessions> reads it, and the two workshop
-// submissions from the workshop page.
-// Every slide explains itself to someone who missed the session. Each link
-// sits on the slide that uses it. Served at /decks/fall-week-3/.
+// 3, Audit Your Safety Net, in one session and one deck. A shared opening
+// (the two outcomes, what they feed, scoring and reading, the agenda); then
+// Workshop 2 (hard and easy to reverse, sorted for the week 2 campus lunch
+// app; ephira, LumiLab, and TaxonBodyMassML as the inherited, pipeline, and
+// research references; using an AI tool; the four mistakes to check for) and
+// one slide of its steps that stays on the screen while teams work; then
+// Workshop 3 (what can reach main with nothing to stop it, whoever wrote it,
+// audited on the same lunch app; how to name a gap; two repositories whose
+// tests never ran; eecs-capstone, the project portal) and one slide of its
+// steps; then what is due. Workshop 3 starts from the hard decisions Workshop
+// 2 found. Facts come from their pages and fail the build when a page drops
+// them: the weeks on the timeline, the Read line, and the week's other Due
+// items from the schedule, as <TermSessions> reads it; the two workshop
+// submissions from the workshop page. The slide sentences are written for
+// the slides. Every slide explains itself to someone who missed the session.
+// Each link sits on the slide that uses it. Served at /decks/fall-week-3/.
 import DecisionList from "../components/deck/DecisionList.astro";
 import LinkedText from "../components/deck/LinkedText.astro";
 import SafetyNet from "../components/deck/SafetyNet.astro";
@@ -31,8 +32,7 @@ import { termWeeks, weekWhere } from "../lib/schedule-lines.mjs";
 export const title =
   "Fall Week 3: Hard-to-Reverse Decisions and Your Safety Net";
 
-// What a team leaves each workshop with: the opening slide promises both,
-// and the wrap checks both.
+// What a team leaves each workshop with, on the opening slide.
 const outcomeDecisions = [
   "Ten upcoming decisions, written down before you mark any",
   "Each one marked hard to reverse or easy to reverse",
@@ -109,13 +109,16 @@ const lunchHard = lunchDecisions.filter((decision) => decision.hard);
 // LumiLab's decisions across its four teams, sorted the way its history
 // bears out.
 const lumiLabDecisions = [
-  { hard: true, text: "What the output header says: VIEW line, glare value" },
+  { hard: true, text: "The output file's header, which glare tools read" },
   { text: "CSS framework" },
   { hard: true, text: "Which calibration files it accepts" },
   { text: "State management library" },
   { hard: true, text: "The license, given the tools it bundles" },
   { text: "Component library" },
-  { hard: true, text: "Python desktop app, or Tauri" },
+  {
+    hard: true,
+    text: "Desktop app in Python, or a web front end packaged with Tauri",
+  },
   { text: "Built-in image viewer, or an external one" },
   { text: "Bundler" },
   { text: "Unit test framework" },
@@ -271,15 +274,7 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "You review two drafts; two students review yours",
-    href: handbook(`${RFC_PAGE}#the-peer-review`),
-    week: weekOf("Due", links(RFC_PAGE, "peer review"), "the RFC peer review"),
-    what: "RFC peer review",
-  },
-  {
-    day: "Sunday",
-    detail:
-      "Build health and safety net, worth zero points this time: start from today's gap",
+    detail: "Your checks, worth zero points this time: start from today's gap",
     from: 3,
     href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-1"),
     week: weekOf(
@@ -291,18 +286,7 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Each point they raise gets a row in your revision log",
-    href: handbook(`${RFC_PAGE}#instructor-comments`),
-    week: weekOf(
-      "Due",
-      links(`${RFC_PAGE}#instructor-comments`),
-      "the instructor comments"
-    ),
-    what: "Instructor comments on your RFC draft",
-  },
-  {
-    day: "Sunday",
-    detail: "Revised, with a log row for every point the feedback raises",
+    detail: "Revised, with what you did about each point your reviewers raised",
     from: 2,
     href: handbook(`${RFC_PAGE}#rfc-final-draft`),
     week: weekOf("Due", links(RFC_PAGE, "final"), "the RFC final"),
@@ -310,7 +294,7 @@ const feedList: Feed[] = [
   },
   {
     day: "Sunday",
-    detail: "Build health and safety net, now worth points",
+    detail: "Your checks again, now worth points",
     from: 3,
     href: handbook("/assignments/repo-checkpoints/#repo-checkpoint-2"),
     week: weekOf(
@@ -346,8 +330,24 @@ function completeSubmission(workshop: number) {
   }
   return plainText(line.slice(SUBMISSION.length));
 }
-const submissionDecisions = completeSubmission(2);
-const submissionSafetyNet = completeSubmission(3);
+// Each line split into the two things a team hands in, as the due slide
+// lists them. The scoring slide names them in its own words, so the build
+// fails when either line stops reading this way.
+const DECISIONS_PARTS_RE = /^(.+?) with (the few hard-to-reverse ones marked)$/;
+const SAFETY_NET_PARTS_RE = /^(.+?) and (the smallest change that closes it)$/;
+function handIn(workshop: number, parts: RegExp) {
+  const match = completeSubmission(workshop).match(parts);
+  if (!match) {
+    throw new Error(
+      `fall-week-3: the workshop page's fall Workshop ${workshop} complete submission no longer reads as the two parts this deck shows.`
+    );
+  }
+  return match
+    .slice(1)
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`);
+}
+const handInDecisions = handIn(2, DECISIONS_PARTS_RE);
+const handInSafetyNet = handIn(3, SAFETY_NET_PARTS_RE);
 // Who hands each in, as the workshop page states it for every workshop.
 const PER_TEAM = "One PDF per team per workshop";
 if (!workshops.includes(PER_TEAM)) {
@@ -355,6 +355,64 @@ if (!workshops.includes(PER_TEAM)) {
     `fall-week-3: the workshop page no longer says "${PER_TEAM}".`
   );
 }
+
+// The four mistakes, each with one line written the right way; the
+// Workshop 2 work-time slide names them again.
+const mistakes = [
+  {
+    name: "A task, not a decision",
+    write: "Backend: Supabase, or Postgres plus Better Auth",
+  },
+  {
+    mark: "easy",
+    name: "Marked by importance",
+    why: "because a web app moves to a new host in days",
+    write: "Hosting: Vercel or a server",
+  },
+  {
+    mark: "hard",
+    name: "A default nobody chose",
+    write: "What happens to past orders when a dish is deleted",
+  },
+  {
+    name: "Already decided for you",
+    write: "Only the choices your partner and any code you inherit leave open",
+  },
+] as const;
+
+// Each workshop's steps, on its work-time slide.
+const stepsDecisions = [
+  { name: "Open a doc or a sheet", note: "One laptop per team" },
+  {
+    name: "Write the next ten decisions",
+    note: "The ones your team expects to make. Don't mark any yet",
+  },
+  { name: "Mark each one", note: "Hard to reverse or easy to reverse" },
+  {
+    name: "Name a validator for each hard one",
+    note: "Who checks it, and what they check",
+  },
+  { name: "Count the hard ones", note: "Eight of ten? Sort again" },
+];
+const stepsSafetyNet = [
+  {
+    name: "Say how a change reaches main",
+    note: "Who writes it, and who reads it first",
+  },
+  {
+    name: "List your checks",
+    note: "Or the ones you'll have when the first change lands",
+  },
+  {
+    name: "Take your hardest decision from Workshop 2",
+    note: "What stops a bad change to it?",
+  },
+  {
+    name: "Name the gap",
+    note: "In one sentence: the bad change, and the missing check",
+  },
+  { name: "Write the smallest change", note: "The one that closes the gap" },
+];
 ---
 
 <TitleSlide
@@ -398,7 +456,10 @@ if (!workshops.includes(PER_TEAM)) {
 
 <Slide kicker="Workshops 2 and 3" title="Two submissions, each graded complete or incomplete">
   <ul>
-    <li>Complete when it holds everything listed as due: there is no quality bar</li>
+    <li>
+      Workshop 2's is complete with your sorted list, and Workshop 3's with
+      your named gap and the change that closes it: there is no quality bar
+    </li>
     <li>{LATE["class-week"].text}</li>
     <li>
       A submission that is not about your own project or team, such as a
@@ -411,18 +472,30 @@ if (!workshops.includes(PER_TEAM)) {
   </p>
 </Slide>
 
-<Slide kicker="Agenda" title="Two workshops: the instruction team presents examples, then your team works">
-  <ol>
+<Slide kicker="Workshops 2 and 3" title="Agenda">
+  <ul class="agenda">
     <li>
-      Workshop 2, Map Your Hard-to-Reverse Decisions: the lunch app sorted,
-      three reference projects, then your list
+      Workshop 2: Map Your Hard-to-Reverse Decisions
+      <ul class="sub">
+        <li>Hard and easy to reverse</li>
+        <li>Example: the campus lunch app</li>
+        <li>Examples from three projects</li>
+        <li>Using an AI tool, in both workshops</li>
+        <li>Four mistakes to check for</li>
+        <li>Your team's list</li>
+      </ul>
     </li>
     <li>
-      Workshop 3, Audit Your Safety Net: the same app audited, three
-      repositories, then your gap
+      Workshop 3: Audit Your Safety Net
+      <ul class="sub">
+        <li>What can reach main with nothing to stop it</li>
+        <li>Example: the lunch app, audited</li>
+        <li>How to name a gap</li>
+        <li>Examples from three repositories</li>
+        <li>Your team's gap</li>
+      </ul>
     </li>
-    <li>Wrap: both outcomes, and what's due</li>
-  </ol>
+  </ul>
 </Slide>
 
 <StatementSlide kicker="Workshop 2" source="Sort the decisions you can't walk back from the ones you can">
@@ -435,7 +508,7 @@ if (!workshops.includes(PER_TEAM)) {
     <ul class="reveal-list">
       <li>Database schema and data migrations</li>
       <li>Authentication and authorization</li>
-      <li>Deployment topology: what runs where, not which host</li>
+      <li>What runs where, not which host</li>
       <li>Public API shape, file formats other programs read</li>
       <li>Licensing and third-party commitments</li>
       <li>Anything touching user data you can't regenerate</li>
@@ -451,17 +524,16 @@ if (!workshops.includes(PER_TEAM)) {
     </ul>
   </div>
   <p class="caption">
-    Jeff Bezos's <a href={bezos}>2015 letter to Amazon shareholders</a> calls
-    them Type 1 and Type 2 decisions, and warns that the slow process Type 1
-    needs makes everything slow when an organization applies it to Type 2.
+    The distinction comes from Jeff Bezos's <a href={bezos}>2015 letter to
+    Amazon shareholders</a>.
   </p>
 </TwoColumnSlide>
 
 <Slide kicker="Workshop 2: the lunch app, sorted" title="Ten decisions for the campus lunch app, before any code" wide>
   <DecisionList decisions={lunchSorted} stepped />
   <p class="caption caption-tight">
-    The lunch app from last week's story map. Write all ten down before you
-    mark any.
+    Students order lunch in the app and pick it up at the cafe. Write all ten
+    down before you mark any.
   </p>
 </Slide>
 
@@ -524,7 +596,7 @@ if (!workshops.includes(PER_TEAM)) {
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="LumiLab's hard decisions: what other programs read" wide>
+<Slide kicker="Workshop 2 reference: LumiLab, a pipeline" title="LumiLab's ten decisions, sorted by how hard each is to undo" wide>
   <DecisionList decisions={lumiLabDecisions} />
   <p class="caption caption-tight">
     LumiLab turns ordinary photos into a luminance map that glare tools read.
@@ -570,80 +642,48 @@ if (!workshops.includes(PER_TEAM)) {
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 2: work time" title="Start here, as a team">
-  <ol class="steps" style="--steps: 5;">
-    <li>
-      <p>Open a doc or a sheet, one laptop per team</p>
-      <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-    </li>
-    <li>
-      <p>Write the next ten decisions your team expects to make. Don't mark any yet</p>
-      <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
-    </li>
-    <li>
-      <p>Mark each one hard to reverse or easy to reverse</p>
-      <span class="art art-chips" aria-hidden="true"><b>Hard</b><i>Easy</i></span>
-    </li>
-    <li>
-      <p>For each hard one, name who checks it and what they check</p>
-      <span class="art art-who" aria-hidden="true">Who: what</span>
-    </li>
-    <li>
-      <p>Count the hard ones. Eight of ten? Sort again</p>
-      <span class="art art-count" aria-hidden="true">3 of 10</span>
-    </li>
-  </ol>
-  <p class="caption">
-    The activity: <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
-  </p>
-</Slide>
-
 <Slide kicker="Workshop 2: check your list" title="Check your list for four mistakes" wide>
   <table class="mistakes">
     <thead>
       <tr>
         <th scope="col" class="mistake-col">Mistake</th>
-        <th scope="col">Instead of</th>
         <th scope="col">Write</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">A task, not a decision</th>
-        <td class="instead">Set up the database</td>
-        <td>Backend: Supabase, or Postgres plus Better Auth</td>
-      </tr>
-      <tr>
-        <th scope="row">Marked by importance</th>
-        <td class="instead">
-          Menu layout <span class="chip chip-hard">Hard</span> because every
-          student sees it
-        </td>
-        <td>
-          Menu layout <span class="chip chip-easy">Easy</span> because you can
-          change it any week
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">A default nobody chose</th>
-        <td class="instead missing">Missing from the list</td>
-        <td>
-          What happens to past orders when a dish is deleted
-          <span class="chip chip-hard">Hard</span>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">Already decided for you</th>
-        <td class="instead">
-          Hosting: Vercel or a server, when the partner requires OSU servers
-        </td>
-        <td>Leave it off; sort the choices left inside that limit</td>
-      </tr>
+      {
+        mistakes.map((mistake) => (
+          <tr>
+            <th scope="row">{mistake.name}</th>
+            <td>
+              {mistake.write}
+              {"mark" in mistake && <span class:list={["chip", `chip-${mistake.mark}`]}>{mistake.mark === "hard" ? "Hard" : "Easy"}</span>}
+              {"why" in mistake && mistake.why}
+            </td>
+          </tr>
+        ))
+      }
     </tbody>
   </table>
+</Slide>
+
+<Slide kicker="Work time" title="Your turn: map your hard-to-reverse decisions" wide>
+  <ol class="steps" style={`--steps: ${stepsDecisions.length};`}>
+    {
+      stepsDecisions.map((step) => (
+        <li>
+          <p>
+            <strong>{step.name}</strong>
+          </p>
+          <p class="note">{step.note}</p>
+        </li>
+      ))
+    }
+  </ol>
   <p class="caption">
-    Eight of ten hard? Ask what undoing each one would take. A week of rework
-    is easy; a migration, a contract, or users' data is hard.
+    Then check your list for the four mistakes:{" "}
+    {mistakes.map((mistake) => mistake.name.toLowerCase()).join("; ")}.<br />
+    The activity: <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
   </p>
 </Slide>
 
@@ -677,10 +717,6 @@ if (!workshops.includes(PER_TEAM)) {
 </TwoColumnSlide>
 
 <Slide kicker="Workshop 3: the lunch app, audited" title="The lunch app, a few weeks in, check by check" wide>
-  <p class="lead">
-    Four teammates, each merging their own pull requests, mostly unread by the
-    others.
-  </p>
   <SafetyNet checks={lunchChecks} stepped />
 </Slide>
 
@@ -696,8 +732,8 @@ if (!workshops.includes(PER_TEAM)) {
     <div class="fix fragment">
       <h3>The smallest change</h3>
       <p>
-        Require one teammate's review on the migrations folder: a CODEOWNERS
-        line and a branch rule
+        Require a teammate's approval before any change to the migrations
+        folder merges
       </p>
     </div>
   </div>
@@ -741,8 +777,7 @@ if (!workshops.includes(PER_TEAM)) {
       <li><strong>Smallest change:</strong> one test step in the workflow</li>
     </ul>
     <p class="caption">
-      Later commits are the maintainer's, and one added the tests to CI.
-      Repository: <a href={ephira}>ephira on GitHub</a>
+      A later commit added the tests to CI. Repository: <a href={ephira}>ephira on GitHub</a>
     </p>
   </div>
   <div slot="right">
@@ -789,64 +824,43 @@ if (!workshops.includes(PER_TEAM)) {
     </div>
   </div>
   <p class="caption">
-    With the check, eecs-capstone would stop reading a column in one release
-    and drop it in the next.
     Repository, at commit a86e08c: <a href={eecsCapstone}>eecs-capstone on GitHub</a>
   </p>
 </Slide>
 
-<Slide kicker="Workshop 3: work time" title="Start here, as a team">
-  <ol class="steps" style="--steps: 5;">
-    <li>
-      <p>Say how a change reaches main: who writes it, who reads it first</p>
-      <span class="art art-who" aria-hidden="true">Who?</span>
-    </li>
-    <li>
-      <p>List your checks, or the ones you'll have when the first change lands</p>
-      <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
-    </li>
-    <li>
-      <p>Take your hardest decision from Workshop 2. What stops a bad change to it?</p>
-      <span class="art art-chips" aria-hidden="true"><b>Hard</b></span>
-    </li>
-    <li>
-      <p>Name the gap in one sentence</p>
-      <span class="art art-who" aria-hidden="true">1 sentence</span>
-    </li>
-    <li>
-      <p>Write the smallest change that closes it</p>
-      <span class="art art-count" aria-hidden="true">1 change</span>
-    </li>
+<Slide kicker="Work time" title="Your turn: audit your safety net" wide>
+  <ol class="steps" style={`--steps: ${stepsSafetyNet.length};`}>
+    {
+      stepsSafetyNet.map((step) => (
+        <li>
+          <p>
+            <strong>{step.name}</strong>
+          </p>
+          <p class="note">{step.note}</p>
+        </li>
+      ))
+    }
   </ol>
   <p class="caption">
-    No code yet? Audit the checks you'll have when the first change lands, and
-    set them up now: like ephira's first migrations, they're free before
-    anything depends on them. The activity:{" "}
-    <a href={activitySafetyNet}>Audit Your Safety Net</a>
+    No code yet? Set those checks up now, while nothing depends on them.<br />
+    The activity: <a href={activitySafetyNet}>Audit Your Safety Net</a>
   </p>
 </Slide>
 
-<TwoColumnSlide kicker="Wrap" title="Check both outputs against today's outcome" divider wide>
-  <div slot="left">
-    <h3>Workshop 2: a sorted list</h3>
-    <ul class="reveal-list">{outcomeDecisions.map((line) => <li>{line}</li>)}</ul>
-    <p class="caption">
-      Stuck? <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
-    </p>
-  </div>
-  <div slot="right">
-    <h3>Workshop 3: one named gap</h3>
-    <ul class="reveal-list">{outcomeSafetyNet.map((line) => <li>{line}</li>)}</ul>
-    <p class="caption">
-      Stuck? <a href={activitySafetyNet}>Audit Your Safety Net</a>
-    </p>
-  </div>
-</TwoColumnSlide>
-
 <Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
   <ul class="due">
-    <li>Workshop 2, one PDF per team: {submissionDecisions}</li>
-    <li>Workshop 3, one PDF per team: {submissionSafetyNet}</li>
+    <li>
+      Workshop 2, one PDF per team:
+      <ul class="sub">
+        {handInDecisions.map((part) => <li>{part}</li>)}
+      </ul>
+    </li>
+    <li>
+      Workshop 3, one PDF per team:
+      <ul class="sub">
+        {handInSafetyNet.map((part) => <li>{part}</li>)}
+      </ul>
+    </li>
     {
       alsoDue.map((item) => (
         <li>
@@ -855,6 +869,10 @@ if (!workshops.includes(PER_TEAM)) {
       ))
     }
   </ul>
+  <p class="caption">
+    Stuck? <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>,{" "}
+    <a href={activitySafetyNet}>Audit Your Safety Net</a>
+  </p>
 </Slide>
 
 <style>
@@ -916,7 +934,7 @@ if (!workshops.includes(PER_TEAM)) {
   .steps > li {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
     padding: 104px 26px 28px;
     margin: 0;
     font-size: 36px;
@@ -952,78 +970,31 @@ if (!workshops.includes(PER_TEAM)) {
     margin: 0;
   }
 
-  .art {
-    margin-block-start: auto;
-  }
-
-  .art-sheet {
-    display: grid;
-    grid-template-columns: repeat(3, 40px);
-    gap: 6px;
-  }
-
-  .art-sheet i {
-    height: 28px;
-    background: var(--deck-paper);
-    border: 2px solid var(--deck-rule);
-    border-radius: 4px;
-  }
-
-  .art-lines {
-    display: grid;
-    gap: 8px;
-    width: 150px;
-  }
-
-  .art-lines i {
-    height: 14px;
-    background: var(--deck-ink-soft);
-    border-radius: 999px;
-  }
-
-  .art-lines i:last-child {
-    width: 60%;
-  }
-
-  .art-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .art-chips b,
-  .art-chips i,
-  .art-who,
-  .art-count {
-    align-self: start;
-    padding: 2px 14px;
+  .note {
     font-size: var(--deck-text-min);
-    font-style: normal;
-    font-weight: 700;
-    border: 3px solid var(--deck-rule);
-    border-radius: 999px;
-  }
-
-  .art-chips b {
-    color: var(--deck-accent-ink);
-    background: var(--deck-accent-wash);
-    border-color: var(--deck-accent);
-  }
-
-  .art-chips i {
     color: var(--deck-ink-soft);
-    background: var(--deck-paper);
   }
 
-  .art-who {
-    color: var(--deck-ink);
-    background: var(--deck-paper);
+  /* A list nested under a bullet: the agenda's parts, and the due lines'
+     parts. */
+  .sub {
+    margin-block-start: 12px;
+    font-size: var(--deck-text-min);
   }
 
-  .art-count {
-    color: var(--deck-accent-ink);
-    background: var(--deck-paper);
-    border-color: var(--deck-accent);
+  .sub > li {
+    margin-block-end: 8px;
+  }
+
+  /* The agenda: one column per workshop. */
+  .agenda {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 96px;
+  }
+
+  .agenda > li {
+    margin: 0;
   }
 
   /* The self-check's two lists, each under its verdict. */
@@ -1106,7 +1077,7 @@ if (!workshops.includes(PER_TEAM)) {
   .says li + li {
     margin-block-start: 16px;
   }
-  /* The four mistakes: each as a team writes it, then as it should read. */
+  /* The four mistakes, each with a line written the right way. */
   .mistakes {
     width: 100%;
     font-size: 36px;
@@ -1116,7 +1087,7 @@ if (!workshops.includes(PER_TEAM)) {
   }
 
   .mistake-col {
-    width: 26%;
+    width: 32%;
   }
 
   .mistakes thead th {
@@ -1137,14 +1108,6 @@ if (!workshops.includes(PER_TEAM)) {
 
   .mistakes tbody th {
     font-weight: 700;
-  }
-
-  .instead {
-    color: var(--deck-ink-soft);
-  }
-
-  .missing {
-    font-style: italic;
   }
 
   .chip {
