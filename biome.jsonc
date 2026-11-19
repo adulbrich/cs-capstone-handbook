@@ -101,6 +101,35 @@
           }
         }
       }
+    },
+    {
+      // The tools read files in the browser and never upload them
+      // (docs/agents/tools.md). These are the browser's request APIs, so a
+      // tool that calls one has started sending something off the page. The
+      // rule sees a bare name only: not window.fetch, and not an Astro
+      // page's <script>, which Biome does not lint.
+      "includes": [
+        "src/pages/tools/**",
+        "src/components/tools/**",
+        "src/lib/tools/**"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedGlobals": {
+              "level": "error",
+              "options": {
+                "deniedGlobals": {
+                  "EventSource": "A tool never sends a file off the page; read it in the browser.",
+                  "fetch": "A tool never sends a file off the page; read it in the browser.",
+                  "WebSocket": "A tool never sends a file off the page; read it in the browser.",
+                  "XMLHttpRequest": "A tool never sends a file off the page; read it in the browser."
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }
