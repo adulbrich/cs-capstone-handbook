@@ -69,16 +69,16 @@ An item fails for the team because the note is wrong or missing. An individual's
 
 ## Term Rhythm (staff view)
 
-| Weeks | Staff activity |
-|---|---|
-| 2, 4, 6, 8, 10 | Check-in weeks: ~16 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note) |
-| 1-2 | Team-to-TA assignments made; charters graded (TAs) |
-| 4-5 | RFC drafts land; Canvas peer review assigns each student two drafts; the week 5 repo checkpoint (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing week 6 |
-| 5 | All-hands demo day, every term (every team registered for that session, 5 minutes each; length under Lecture Plan) |
-| 5-6 (fall and winter) | Instructor draft comments: an instructor of record returns comments on each RFC draft by Sunday of week 6, Sunday of week 7 at the latest (see RFC Machinery) |
-| 8 to finals week | Defense sessions, separate from check-ins (calibration session first; see below) |
-| 8 | RFC finals land (TA-graded, instructor calibration sample) |
-| 9-10 | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing week 10; the second demo day (fall and winter) |
+| Weeks                 | Staff activity                                                                                                                                                                            |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2, 4, 6, 8, 10        | Check-in weeks: ~16 meetings at times agreed with each team, notes graded against the demos (fall 2 and spring 8 and 10 have no note)                                                     |
+| 1-2                   | Team-to-TA assignments made; charters graded (TAs)                                                                                                                                        |
+| 4-5                   | RFC drafts land; Canvas peer review assigns each student two drafts; the week 5 repo checkpoint (TAs; NDA walkthroughs in their own slots); midterm surveys out in week 5, closing week 6 |
+| 5                     | All-hands demo day, every term (every team registered for that session, 5 minutes each; length under Lecture Plan)                                                                        |
+| 5-6 (fall and winter) | Instructor draft comments: an instructor of record returns comments on each RFC draft by Sunday of week 6, Sunday of week 7 at the latest (see RFC Machinery)                             |
+| 8 to finals week      | Defense sessions, separate from check-ins (calibration session first; see below)                                                                                                          |
+| 8                     | RFC finals land (TA-graded, instructor calibration sample)                                                                                                                                |
+| 9-10                  | Term deliverable grading; the week 10 repo checkpoint (graded in finals week); final surveys out in week 9, closing week 10; the second demo day (fall and winter)                        |
 
 ## Defense Logistics
 
@@ -106,24 +106,24 @@ An item fails for the team because the note is wrong or missing. An individual's
 
 CS 461 (fall) and CS 462 (winter) are both certified Writing Intensive Curriculum courses, and each must meet these criteria on its own; CS 463 is not WIC. This table holds the WIC office's criteria (https://wic.oregonstate.edu/propose-assess-wic-courses/wic-learning-outcomes-criteria-and-rationale) against each course as it runs; the student-facing outcomes are on the handbook's WIC page.
 
-| Criterion | How the course meets it | Status |
-|---|---|---|
-| 3 or more credits | CS 461 and CS 462 are 3 credits each (catalog) | Met |
-| 300 or 400 level, juniors and seniors | 461 and 462, capstone standing | Met |
-| Regular departmental number | 461 and 462 | Met |
-| 4,000 words per student across assignments | Unmeasured beyond the RFC | Open (#60) |
-| 1,500 words of low-stakes writing per student | Two written peer reviews, the RFC revision log (outside the RFC's minimum length), five How we checked it sentences and the reviewer notes in the sprint notes, a share of five judgment layers; no length guideline today | Open (#60) |
-| One formal piece of 1,500 or more words using disciplinary sources | Each term's RFC: its minimum length (on the RFC page) clears this in both terms, and its analysis is argued from cited sources | Met |
-| 35% of the grade from writing assignments | Writing assignments are 30% of the winter grade, 38% if repo checkpoints (docs graded from the checkpoint PDF) count; the weights are on the assignments overview, in the grade grid, the RFC under Individual Evidence and the rest under Team Deliverables | Open (#60) |
-| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | Each term's RFC draft gets two peer reviews in week 5 and comments from an instructor of record by Sunday of week 6, no later than Sunday of week 7, a week or more before the final is due in week 8; TA comments do not count (RFC Machinery, #520) | Met |
-| Individually written work revised after instructor feedback is assessed | The RFC final's revision criterion checks the revision log, one row per point with a decision (#348), and each point an instructor comment on the draft raises is a row in it, so the final is graded on revision after instructor feedback as well as peer feedback (#520) | Met |
-| Student-to-instructor ratio of 25 to 1 or better | Two instructors, four TAs, about 230 students; whether GTAs count is the WIC office's call | Confirm (WIC office) |
-| Instructor of record is not a graduate student | Faculty instructors | Met |
-| WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback | Not tracked in the repo | Open (#60) |
-| Two distinct audiences and two writing types, one formal, with discipline-specific examples | RFC (formal, technical peers and staff); sprint notes (informal, staff); Definition of Shipped (partner contract). Examples: the RFC template, the ADR and requirements guides | Met |
-| Students evaluate and integrate multiple sources with citations | RFC analysis argued from cited sources; the winter literature review activity | Met |
-| The course addresses AI tools and disciplinary norms | The AI policy on the assignments overview, the generative AI guide, the delegation criterion on the RFC and the defense | Met |
-| Writing Elevation prerequisite | Catalog, not the handbook | Confirm (WIC office) |
+| Criterion                                                                                                                                           | How the course meets it                                                                                                                                                                                                                                                     | Status               |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| 3 or more credits                                                                                                                                   | CS 461 and CS 462 are 3 credits each (catalog)                                                                                                                                                                                                                              | Met                  |
+| 300 or 400 level, juniors and seniors                                                                                                               | 461 and 462, capstone standing                                                                                                                                                                                                                                              | Met                  |
+| Regular departmental number                                                                                                                         | 461 and 462                                                                                                                                                                                                                                                                 | Met                  |
+| 4,000 words per student across assignments                                                                                                          | Unmeasured beyond the RFC                                                                                                                                                                                                                                                   | Open (#60)           |
+| 1,500 words of low-stakes writing per student                                                                                                       | Two written peer reviews, the RFC revision log (outside the RFC's minimum length), five How we checked it sentences and the reviewer notes in the sprint notes, a share of five judgment layers; no length guideline today                                                  | Open (#60)           |
+| One formal piece of 1,500 or more words using disciplinary sources                                                                                  | Each term's RFC: its minimum length (on the RFC page) clears this in both terms, and its analysis is argued from cited sources                                                                                                                                              | Met                  |
+| 35% of the grade from writing assignments                                                                                                           | Writing assignments are 30% of the winter grade, 38% if repo checkpoints (docs graded from the checkpoint PDF) count; the weights are on the assignments overview, in the grade grid, the RFC under Individual Evidence and the rest under Team Deliverables                | Open (#60)           |
+| Instructor of record gives feedback at least a week before the final due date on at least one assignment; peer feedback supplements, never replaces | Each term's RFC draft gets two peer reviews in week 5 and comments from an instructor of record by Sunday of week 6, no later than Sunday of week 7, a week or more before the final is due in week 8; TA comments do not count (RFC Machinery, #520)                       | Met                  |
+| Individually written work revised after instructor feedback is assessed                                                                             | The RFC final's revision criterion checks the revision log, one row per point with a decision (#348), and each point an instructor comment on the draft raises is a row in it, so the final is graded on revision after instructor feedback as well as peer feedback (#520) | Met                  |
+| Student-to-instructor ratio of 25 to 1 or better                                                                                                    | Two instructors, four TAs, about 230 students; whether GTAs count is the WIC office's call                                                                                                                                                                                  | Confirm (WIC office) |
+| Instructor of record is not a graduate student                                                                                                      | Faculty instructors                                                                                                                                                                                                                                                         | Met                  |
+| WIC training for new faculty, every three years for continuing faculty, and for GTAs giving writing feedback                                        | Not tracked in the repo                                                                                                                                                                                                                                                     | Open (#60)           |
+| Two distinct audiences and two writing types, one formal, with discipline-specific examples                                                         | RFC (formal, technical peers and staff); sprint notes (informal, staff); Definition of Shipped (partner contract). Examples: the RFC template, the ADR and requirements guides                                                                                              | Met                  |
+| Students evaluate and integrate multiple sources with citations                                                                                     | RFC analysis argued from cited sources; the winter literature review activity                                                                                                                                                                                               | Met                  |
+| The course addresses AI tools and disciplinary norms                                                                                                | The AI policy on the assignments overview, the generative AI guide, the delegation criterion on the RFC and the defense                                                                                                                                                     | Met                  |
+| Writing Elevation prerequisite                                                                                                                      | Catalog, not the handbook                                                                                                                                                                                                                                                   | Confirm (WIC office) |
 
 ## Repo Checkpoints
 
@@ -202,16 +202,16 @@ To post a deck after the session, save it as a PDF: open `/decks/<file name>/?pr
 
 The honest budget. "Check-ins" dominates; everything else is deliberately cheap.
 
-| Activity | Fall | Winter | Spring |
-|---|---|---|---|
-| Check-ins, five weeks a term (incl. demos) | ~40 h | ~40 h | ~40 h |
-| Sprint notes (pass/fail, ~5 min each) | ~5.5 h | ~6.5 h | ~4 h |
-| Repo checkpoints (~12 min per team, x2; an NDA team's walkthrough is a separate 15-minute slot instead) | ~6.5 h | ~6.5 h | n/a |
-| RFCs (~57 x ~10 min) | ~9.5 h | ~9.5 h | n/a |
-| Defense sessions (week 8 to finals week, in addition to check-ins) + scoring, follow-ups, Canvas entry | ~14 h | ~14 h | ~14 h |
-| Term deliverable (charter / DoS + postmortem / spring set incl. release trailers) | ~6 h | ~6 h | ~8 h |
-| Modifier investigations (trigger-based only) | ~1 h | ~1 h | ~1 h |
-| **Total** | **~83 h (~8.3 h/wk)** | **~84 h** | **~67 h** |
+| Activity                                                                                                | Fall                  | Winter    | Spring    |
+| ------------------------------------------------------------------------------------------------------- | --------------------- | --------- | --------- |
+| Check-ins, five weeks a term (incl. demos)                                                              | ~40 h                 | ~40 h     | ~40 h     |
+| Sprint notes (pass/fail, ~5 min each)                                                                   | ~5.5 h                | ~6.5 h    | ~4 h      |
+| Repo checkpoints (~12 min per team, x2; an NDA team's walkthrough is a separate 15-minute slot instead) | ~6.5 h                | ~6.5 h    | n/a       |
+| RFCs (~57 x ~10 min)                                                                                    | ~9.5 h                | ~9.5 h    | n/a       |
+| Defense sessions (week 8 to finals week, in addition to check-ins) + scoring, follow-ups, Canvas entry  | ~14 h                 | ~14 h     | ~14 h     |
+| Term deliverable (charter / DoS + postmortem / spring set incl. release trailers)                       | ~6 h                  | ~6 h      | ~8 h      |
+| Modifier investigations (trigger-based only)                                                            | ~1 h                  | ~1 h      | ~1 h      |
+| **Total**                                                                                               | **~83 h (~8.3 h/wk)** | **~84 h** | **~67 h** |
 
 The check-ins row is 16 teams x 5 check-in weeks x 30 minutes, all of it in the five check-in weeks of the term (about 8 h in a check-in week, none in between). The defense row is 16 sessions at 10 minutes per student plus buffer (about 12 h at an average team of 3.5) plus ~2 h of scoring, follow-ups and Canvas entry. It was ~2 h when the defense replaced a check-in; the rest is the price of keeping every demo live (#23) and of about 2.5 minutes per criterion. **Moving demos from twice a term to every sprint does not move this number**, because the demo happens inside the existing slot rather than extending it: 2 to 3 minutes per student is 6 to 12 minutes of a 25-to-30-minute meeting for a team of three or four. What the demo displaces is open-ended coaching, which moves async.
 

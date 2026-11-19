@@ -11,12 +11,12 @@ partner contacts, and it is never committed (AGENTS.md, hard rule 1).
 
 ## The scripts
 
-| Script | Reads | One letter per |
-| --- | --- | --- |
-| `confirm-projects.mjs` | the capstone app's staff project export | proposer, plus one per student-proposed project to its mentor |
-| `team-contacts.mjs` | the Canvas group roster and the partner sheet | team, To every student on it |
-| `partner-onboarding.mjs` | the partner sheet, and the roster if given | partner or mentor, listing their teams |
-| `lib.mjs` | | (shared: CSV reading, escaping, `.eml`, `mailto:`, preview page) |
+| Script                   | Reads                                         | One letter per                                                   |
+| ------------------------ | --------------------------------------------- | ---------------------------------------------------------------- |
+| `confirm-projects.mjs`   | the capstone app's staff project export       | proposer, plus one per student-proposed project to its mentor    |
+| `team-contacts.mjs`      | the Canvas group roster and the partner sheet | team, To every student on it                                     |
+| `partner-onboarding.mjs` | the partner sheet, and the roster if given    | partner or mentor, listing their teams                           |
+| `lib.mjs`                |                                               | (shared: CSV reading, escaping, `.eml`, `mailto:`, preview page) |
 
 The wording of each letter sits in functions at the top of its script, under
 "the letter text: edit here". Change it there; the rendering code below does not
