@@ -13,6 +13,12 @@ import { plural } from "./tools-text.mjs";
 
 /** The Astro page. */
 export const page = {
+  /** The intro's last sentence, around its link to the blank live sheet. */
+  blank: {
+    after: ", with the name, team, and assessor left to write in.",
+    before: "Without a roster, print the",
+    link: "blank live sheet",
+  },
   description:
     "Print a defense session cover for each team and a one-page live sheet for each student, from the course roster, in your browser.",
   intro:
@@ -107,13 +113,13 @@ export const coverText = {
   eyebrow: "Defense session cover",
   followUp:
     "Follow-up: a 5-minute one-to-one within a week of the session, and no later than finals week. Tell the student it is routine.",
-  footer: (team) => `${team || NO_TEAM}, session cover`,
+  /** The footer: the team, cut short when long, then the page it is. */
+  footer: { after: ", session cover", team: (team) => team || NO_TEAM },
   /** The team's graders from the roster, or nothing when it has none. */
   graders: (graders) => graders.join(", "),
   length: (students, minutes) =>
     `${plural(students, "student")}, about ${minutes} minutes`,
   notes: "Session notes",
-  notOnRoster: "(not on the roster)",
   room: "Room or call link",
   start: "Start time",
   tableTitle: "The session",
@@ -151,9 +157,10 @@ export const sheetText = {
   record: "Record checked",
   recordChoices: "yes / no / shown on screen (NDA)",
   sprint: "Sprint",
-  team: (team, term) => [team, term].filter(Boolean).join(", "),
-  /** What follows the write-in line on a No team sheet. */
-  teamBlank: (term) => (term ? `, ${term}` : ""),
+  /** The write-in line's label on a No team sheet, where the team number goes. */
+  teamLabel: "Team",
+  /** What follows the team, or its write-in line, on the team line: the term. */
+  teamTerm: (term) => (term ? `, ${term}` : ""),
   /** The banner's first line: the rubric's condition on each item. */
   tick: ({ itemCondition }) =>
     `Tick an item when the student says it, ${itemCondition}.`,
@@ -162,17 +169,14 @@ export const sheetText = {
 };
 
 /**
- * The example live sheet the defense page links, printed for an invented
- * student (scripts/defense-example-pdf.mjs). Its title, and so the PDF's,
- * carries exampleFingerprint (src/lib/tools/defense-example.mjs).
+ * The example live sheet the defense page links, a blank one with the name,
+ * team, assessor, and total all left to write in
+ * (scripts/defense-example-pdf.mjs). Its title, and so the PDF's, carries
+ * exampleFingerprint (src/lib/tools/defense-example.mjs).
  */
 export const example = {
-  student: { email: "", first: "Jordan", last: "Lee" },
-  team: {
-    members: [],
-    noTeam: false,
-    team: "CS.042 Don't Panic Incident Tracker",
-  },
+  /** No team: the team line is a labeled write-in, as on a No team sheet. */
+  team: { members: [], noTeam: true, team: "" },
   /** No term: the one example serves every term's page. */
   term: "",
   title: (fingerprint) => `Defense live sheet example, ${fingerprint}`,

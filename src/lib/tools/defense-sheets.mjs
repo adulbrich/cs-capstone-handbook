@@ -333,17 +333,15 @@ export function sessionTeams(students) {
 }
 
 /**
- * The session table's rows: one per student, then one blank for a student
- * not on the roster. A row holds a name and nothing else: the speaking
- * order is drawn at the start of the session and never printed.
+ * The session table's rows, one per student. A row holds a name and
+ * nothing else: the speaking order is drawn at the start of the session
+ * and never printed.
  */
-export const coverRows = (team) => [
-  ...team.members.map((member) => ({
+export const coverRows = (team) =>
+  team.members.map((member) => ({
     id: member.email,
     name: fullName(member),
-  })),
-  { id: "", name: "" },
-];
+  }));
 
 /**
  * The pages that print, in order: for each team picked (`selected`, a Set

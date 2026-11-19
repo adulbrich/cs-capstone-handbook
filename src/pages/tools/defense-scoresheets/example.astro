@@ -1,7 +1,7 @@
 ---
-// The example live sheet the defense page links, for an invented student:
-// the live sheet as the tool prints it, from the rubric at build time, and
-// nothing else on the page. scripts/defense-example-pdf.mjs prints it to
+// The example live sheet the defense page links, blank: the live sheet as
+// the tool prints it, from the rubric at build time, with no student and no
+// team, and nothing else on the page. scripts/defense-example-pdf.mjs prints it to
 // public/defense-live-sheet-example.pdf, and the title's fingerprint tells
 // npm test whether that PDF still matches what the tool prints
 // (defense-example.mjs). The build runs from the repository root, so the
@@ -28,12 +28,7 @@ const title = example.title(
   </head>
   <body>
     <div class="ds-print ds-example">
-      <LiveSheet
-        {sheet}
-        student={example.student}
-        team={example.team}
-        term={example.term}
-      />
+      <LiveSheet {sheet} team={example.team} term={example.term} />
     </div>
     <script>
       // Fits the sheet to one page, as the tool fits each sheet it prints.

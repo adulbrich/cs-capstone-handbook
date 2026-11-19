@@ -2,7 +2,8 @@
 // Print Defense Scoresheets: a session cover per team and a one-page live
 // sheet per student, from the course roster. The rubric and the session
 // length and weeks are read at build time; the roster is read in the browser only,
-// and the pages are printed by the browser's own print dialog.
+// and the pages are printed by the browser's own print dialog. The intro links
+// the blank live sheet, the example PDF the defense page links too.
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import DefenseScoresheets from "../../../components/tools/defense/DefenseScoresheets.svelte";
 import {
@@ -10,6 +11,7 @@ import {
   sheet,
 } from "../../../components/tools/defense/defense-rubric.mjs";
 import { page } from "../../../data/defense-scoresheets.mjs";
+import { EXAMPLE_PDF } from "../../../lib/tools/defense-example.mjs";
 ---
 
 <StarlightPage
@@ -22,7 +24,7 @@ import { page } from "../../../data/defense-scoresheets.mjs";
     title: page.title,
   }}
 >
-  <p>{page.intro}</p>
+  <p>{page.intro} {page.blank.before} <a href={`/${EXAMPLE_PDF}`}>{page.blank.link}</a>{page.blank.after}</p>
   <DefenseScoresheets client:only="svelte" {session} {sheet} />
 </StarlightPage>
 

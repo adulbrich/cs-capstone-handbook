@@ -1,11 +1,12 @@
 <script>
-// One team's session cover, the same in the preview and on paper: the team,
-// the term, session weeks, and length, the assessor (the team's graders
-// from the roster, or blank to write in), room, and start time, the
-// protocol checklist, the session table, the absence and follow-up rules,
-// and lined space for notes. The table has a row per student, then a blank
-// one, and its Order column is empty: the speaking order is drawn at the
-// start of the session and never printed (coverRows in defense-sheets.mjs).
+// One team's session cover, the same in the preview and on paper: the team
+// (on one line), the term, session weeks, and length, the assessor (the
+// team's graders from the roster, or blank to write in), room, and start
+// time, the protocol checklist, the session table, the absence and
+// follow-up rules, and lined space for notes. The table has a row per
+// student, and its Order column is empty: the speaking order is drawn at
+// the start of the session and never printed (coverRows in
+// defense-sheets.mjs).
 import { coverText as text } from "../../../data/defense-scoresheets.mjs";
 import {
   coverRows,
@@ -72,7 +73,7 @@ const minutes = $derived(sessionMinutes(team.members.length, session));
     <tbody>
       {#each rows as row (row.id)}
         <tr>
-          <th scope="row" class={{ "ds-unlisted": row.name === "" }}>{row.name || text.notOnRoster}</th>
+          <th scope="row">{row.name}</th>
           <td></td>
           <td></td>
           <td></td>
@@ -95,6 +96,6 @@ const minutes = $derived(sessionMinutes(team.members.length, session));
 
   <footer class="ds-foot">
     <span>{text.entered}</span>
-    <span>{text.footer(team.team)}</span>
+    <span class="ds-team"><span class="ds-team-name">{text.footer.team(team.team)}</span><span>{text.footer.after}</span></span>
   </footer>
 </article>
