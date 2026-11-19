@@ -351,6 +351,7 @@ function vocabularyViolations(line, lineNumber) {
   const prose = stripInlineCode(line);
   const hits = [];
   for (const rule of VOCABULARY) {
+    // biome-ignore lint/suspicious/noUnnecessaryConditions: most VOCABULARY rules have no `allow`, so it is often undefined.
     const cleaned = rule.allow ? prose.replace(rule.allow, " ") : prose;
     const match = cleaned.match(rule.avoid);
     if (match) {

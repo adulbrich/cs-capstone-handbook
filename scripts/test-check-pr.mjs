@@ -287,6 +287,7 @@ for (const [
       input: JSON.stringify({
         cwd: REPO,
         tool_input: { command },
+        // biome-ignore lint/suspicious/noUnnecessaryConditions: only a failed command's response has `error`, so it is often undefined.
         ...(error === undefined ? { tool_response: toolResponse } : { error }),
       }),
       stdio: ["pipe", "pipe", "pipe"],
