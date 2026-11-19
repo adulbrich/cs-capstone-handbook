@@ -2,13 +2,15 @@
 // Fall week 8: Workshop 5, Identify Success Metrics. An opening (the
 // outcome, what it feeds across three terms, scoring and reading, the
 // agenda); the presented part (the activity's four rules, what a metric can
-// count, the campus lunch app of weeks 2, 3, and 7 with its three metrics
-// and the vanity number it drops, six metrics from other projects, and how
-// to count what stands in for a goal that's hard to count); then the three
-// steps, one slide each, the four mistakes to check for, one slide that
-// stays on the screen while teams work, and what is due.
+// count, the campus lunch app of weeks 2, 3, and 7 with its three metrics,
+// the vanity number it drops, and how it collects each one once it can, six
+// metrics from other projects, and how to count what stands in for a goal
+// that's hard to count); then the three steps, one slide each, the four
+// mistakes to check for, one slide that stays on the screen while teams
+// work, and what is due.
 // Facts come from their pages and fail the build when a page drops them:
-// the rules, the groups, and the metric count from the activity page; the
+// the rules, the groups, the metric count, and the line on a metric that
+// can't be measured yet from the activity page; the
 // timeline's weeks and the week's other Due items from the schedule; the
 // submission from the workshop page; the product-market fit threshold from
 // the Planning guide. The slide sentences are written for the slides.
@@ -39,7 +41,7 @@ const SHIPPED_PAGE = "/assignments/definition-of-shipped/";
 const RELEASE_PAGE = "/assignments/release/";
 const activityLink = handbook(ACTIVITY_PATH);
 // Where goals, signals, and metrics, and Google's readability example, come
-// from (slide 11).
+// from (the hard-to-count slide).
 const SWE_BOOK = "https://abseil.io/resources/swe-book/html/ch07.html";
 
 // The activity as its page writes it. The build fails when the page drops
@@ -101,11 +103,15 @@ const vanityContrast = ruleVanity.detail
   .trim()
   .replace(TRAILING_PERIOD_RE, "")
   .replace(LEADING_LETTER_RE, (first) => first.toLowerCase());
-// Step 3 tells a team what to do with a metric it can't collect yet, as the
-// activity allows.
-if (!activity.includes("A metric you can't measure yet still counts when")) {
+// The activity's sentence on a metric that can't be measured yet, up to its
+// examples: the collection slide's lead, and what step 3 tells a team to do.
+const NOT_YET_RE =
+  /^(A metric you can't measure yet still counts when [^:\n]+):/m;
+const notYetMatch = activity.match(NOT_YET_RE);
+if (!notYetMatch) {
   fail("Identify Success Metrics no line on a metric you can't measure yet");
 }
+const notYet = plainText((notYetMatch as RegExpMatchArray)[1]);
 
 // What a metric counts: the activity's groups, each with the one line this
 // deck says about it. A group renamed, added, or dropped fails the build.
@@ -324,29 +330,38 @@ if (!workshops.includes(PER_TEAM)) {
 }
 
 // The campus lunch app of weeks 2, 3, and 7: the number it drops, and its
-// three metrics, each with its decision rule.
+// three metrics, each with its decision rule, how it is collected, and what
+// has to happen before it can be.
 const VANITY = {
   metric: "Accounts created",
   why: "it counts every student who tried the app once, not the ones who came back",
 };
 const lunchMetrics = [
   {
+    collect:
+      "The orders table: the pickup time each student chose, and when the cook marks the order ready",
     failure:
       "Fewer: watch a lunch rush with the cooks, and fix what makes orders early or late",
+    first: "The cafe takes orders through the app",
     metric:
       "Share of orders ready within five minutes of the pickup time the student chose, early or late",
     success: "9 in 10 or more: open it at a second cafe",
   },
   {
+    collect: "The orders table: each student's order dates",
     failure:
       "Fewer: interview five students who ordered once, before building anything new",
+    first: "Two weeks of orders at the cafe",
     metric:
       "Share of students who order again within two weeks of their first order",
     success: "3 in 10 or more: evaluate how to bring more students back",
   },
   {
+    collect:
+      "The orders table: every order, and whether a cook marked it ready, counted per shift",
     failure:
       "Any shift with an unmarked order: ask its cooks what stopped them",
+    first: "The dashboard runs at the cafe",
     metric:
       "Weekday shifts where every order is marked ready on the kitchen dashboard",
     success: "Every shift for two weeks: start handing it over to the partner",
@@ -535,6 +550,30 @@ const examplesOwnUsers: Example[] = [
             <th scope="row">{metric}</th>
             <td>{success}</td>
             <td>{failure}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</Slide>
+
+<Slide kicker="Example: the campus lunch app" title="How the lunch team collects each one, once it can" wide>
+  <p class="lead">{notYet}.</p>
+  <table class="rows rows-tight">
+    <thead>
+      <tr>
+        <th scope="col" class="metric-col">Metric</th>
+        <th scope="col">Collected from</th>
+        <th scope="col" class="first-col">Has to happen first</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        lunchMetrics.map(({ metric, collect, first }) => (
+          <tr>
+            <th scope="row">{metric}</th>
+            <td>{collect}</td>
+            <td>{first}</td>
           </tr>
         ))
       }
@@ -933,6 +972,10 @@ const examplesOwnUsers: Example[] = [
 
   .metric-col {
     width: 36%;
+  }
+
+  .first-col {
+    width: 26%;
   }
 
   .project-col {
