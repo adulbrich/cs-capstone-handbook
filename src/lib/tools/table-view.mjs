@@ -15,7 +15,7 @@ export function tableFromCsv(text) {
   };
 }
 
-const NUMBER = /^-?\d+(?:\.\d+)?$/u;
+const NUMBER = /^-?\d+(?<fraction>\.\d+)?$/u;
 const collator = new Intl.Collator("en", {
   numeric: true,
   sensitivity: "base",
