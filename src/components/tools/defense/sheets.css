@@ -143,8 +143,10 @@
 .ds-cover .ds-eyebrow {
   font-size: 12px;
 }
-/* The team takes one line, cut short with an ellipsis when it runs long. */
+/* The team takes one line, cut short with an ellipsis when it runs long,
+   with room below for the descenders the overflow would otherwise clip. */
 .ds-cover h1 {
+  padding-bottom: 0.15em;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 28px;
@@ -266,7 +268,7 @@
   color: #57534e;
   border-top: 1px solid #d6d3d1;
 }
-/* The footer takes one line: the checkbox line whole, then the team
+/* The footer takes one line: the gradebook line whole, then the team
    (.ds-team) in what width is left. */
 .ds-foot > :first-child {
   flex: none;
