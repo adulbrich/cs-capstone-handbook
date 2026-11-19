@@ -232,7 +232,7 @@ function familyName(family, rows) {
 export const LATE = {
   "class-week": {
     label: "Workshops",
-    text: "Full credit in class or by Sunday of the week the class met; no late window after that.",
+    text: "Full credit in class or by Sunday after the class met; no late window after that.",
   },
   none: { label: null, needs: "none", text: null },
   "not-accepted": {
