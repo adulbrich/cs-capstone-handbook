@@ -3,7 +3,7 @@
 // link (`${l://SurveyLink?d=Take the survey}`) its display text. Pure: no
 // DOM, no I/O.
 
-const PIPE = /\$\{([a-z]+):\/\/([^}]*)\}/gu;
+const PIPE = /\$\{(?<scheme>[a-z]+):\/\/(?<path>[^}]*)\}/gu;
 const FIELD_PREFIX = /^Field\//u;
 const HTML_SPECIAL = /[&<>"']/gu;
 
@@ -20,7 +20,7 @@ export function pipedSegments(text, values = {}) {
     if (match.index > at) {
       segments.push({ kind: "text", text: text.slice(at, match.index) });
     }
-    segments.push(pipeSegment(match[1], match[2], values));
+    segments.push(pipeSegment(match.groups.scheme, match.groups.path, values));
     at = match.index + match[0].length;
   }
   if (at < text.length) {

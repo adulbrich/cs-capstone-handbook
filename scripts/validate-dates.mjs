@@ -73,7 +73,7 @@ const DAY = String.raw`\.?\s+\d{1,2}(st|nd|rd|th)?\b(?!:\d)`;
 const PATTERNS = [
   [
     "term with a year",
-    /\b(Fall|Winter|Spring|Summer|Autumn)\s+(of\s+)?20\d{2}\b/gu,
+    /\b(?:Fall|Winter|Spring|Summer|Autumn)\s+(?:of\s+)?20\d{2}\b/gu,
   ],
   ["month name", new RegExp(String.raw`\b(${bare.join("|")})\b`, "gu")],
   [
@@ -89,12 +89,12 @@ const PATTERNS = [
     new RegExp(String.raw`\b\d{1,2}\s+(${ambiguous})\b`, "gu"),
   ],
   ["ISO date", /\b20\d{2}-\d{2}-\d{2}\b/gu],
-  ["academic-year range", /\b20\d{2}\s*[-/–]\s*(20)?\d{2}\b/gu],
-  ["academic year", /\b(AY|academic year)\s+20\d{2}\b/giu],
+  ["academic-year range", /\b20\d{2}\s*[-/–]\s*(?:20)?\d{2}\b/gu],
+  ["academic year", /\b(?:AY|academic year)\s+20\d{2}\b/giu],
 ];
 const URL_RE = /https?:\/\/\S+/gu;
 const CODE_SPAN_RE = /`[^`\n]*`/gu;
-const CITATION_RE = /\bAccessed:|^\s*(\*\*)?\[\d+\]/u;
+const CITATION_RE = /\bAccessed:|^\s*(?:\*\*)?\[\d+\]/u;
 
 const hits = [];
 let checked = 0;

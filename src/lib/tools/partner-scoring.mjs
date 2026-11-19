@@ -68,7 +68,7 @@ export const SURVEYS = {
 /** The surveys in the order a term runs them. */
 export const SURVEY_ORDER = ["pulse", ...TERMS.map(finalSurvey)];
 
-const A_ROW = /^A\s*\|\s*(\d+(?:\.\d+)?)\s*\|/mu;
+const A_ROW = /^A\s*\|\s*(?<points>\d+(?:\.\d+)?)\s*\|/mu;
 
 /** The lower bound of an A, read from the grading scale's table. */
 export function aLowerBound(gradingText) {

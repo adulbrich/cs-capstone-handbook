@@ -48,13 +48,13 @@ const NUMBER_WORDS = Object.freeze({
 /** Where the list starts: the colon closing the preamble, then "(1) ". */
 const LIST_START = /:\s*\(1\)\s+/u;
 /** Between items: "; (n) ". Bare parentheses inside an item never match. */
-const ITEM_BREAK = /;\s*\((\d+)\)\s+/u;
+const ITEM_BREAK = /;\s*\((?<number>\d+)\)\s+/u;
 /** The period that closes the last item. */
 const CLOSING_PERIOD = /\.$/u;
 /** The count a preamble opens with, "All four". */
-const ALL_COUNT = /^All (\w+)\b/iu;
+const ALL_COUNT = /^All (?<count>\w+)\b/iu;
 /** An Exceeds preamble: its count, then the condition every item meets. */
-const ALL_CONDITION = /^All \w+, (.+)$/u;
+const ALL_CONDITION = /^All \w+, (?<condition>.+)$/u;
 /** The condition's last clause, which the Does Not Meet band already states. */
 const RED_FLAG_CLAUSE = /,\s*and no red flag$/iu;
 /** A number written as digits. */
@@ -257,9 +257,10 @@ export const bandRow = (rule) => [
 ];
 
 const SESSION =
-  /\b(\w+) minutes per student plus about (\w+) minutes for setup and wrap/u;
+  /\b(?<perStudent>\w+) minutes per student plus about (?<setup>\w+) minutes for setup and wrap/u;
 /** When sessions run, as the page's intro states it: "between week 8 and finals week". */
-const SESSION_WEEKS = /\bbetween (week \d+) and (finals week|week \d+)\b/u;
+const SESSION_WEEKS =
+  /\bbetween (?<first>week \d+) and (?<last>finals week|week \d+)\b/u;
 
 const toNumber = (word) =>
   DIGITS.test(word) ? Number(word) : NUMBER_WORDS[word.toLowerCase()];
@@ -273,8 +274,8 @@ const toNumber = (word) =>
  */
 export function sessionRule(mdx) {
   const found = mdx.match(SESSION);
-  const perStudent = found && toNumber(found[1]);
-  const setup = found && toNumber(found[2]);
+  const perStudent = found && toNumber(found.groups.perStudent);
+  const setup = found && toNumber(found.groups.setup);
   if (!(perStudent && setup)) {
     throw new Error(
       'defense.mdx: no "<n> minutes per student plus about <n> minutes for setup and wrap". The session cover reads the session length from it.'
@@ -286,7 +287,11 @@ export function sessionRule(mdx) {
       'defense.mdx: no "between week <n> and <week n, or finals week>". The session cover prints the weeks sessions run in from it.'
     );
   }
-  return { perStudent, setup, weeks: [between[1], between[2]] };
+  return {
+    perStudent,
+    setup,
+    weeks: [between.groups.first, between.groups.last],
+  };
 }
 
 /** The minutes a session of `students` runs. */

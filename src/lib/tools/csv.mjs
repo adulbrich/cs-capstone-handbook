@@ -7,7 +7,8 @@ const BOM = String.fromCodePoint(0xfe_ff);
  * One field and what ends it: a quoted field (doubled quotes inside), or a
  * bare one, then a comma, a line break, or the end of the text.
  */
-const FIELD = /(?:"((?:[^"]|"")*)"|([^",\r\n]*))(,|\r\n|\n|\r|$)/guy;
+const FIELD =
+  /(?:"(?<quoted>(?:[^"]|"")*)"|(?<bare>[^",\r\n]*))(?<end>,|\r\n|\n|\r|$)/guy;
 
 /**
  * Parses RFC 4180 CSV into an array of rows, each an array of strings.
@@ -24,7 +25,7 @@ export function parseCsv(text) {
     if (!match) {
       throw new Error(`Malformed CSV near character ${FIELD.lastIndex + 1}.`);
     }
-    const [, quoted, bare, end] = match;
+    const { quoted, bare, end } = match.groups;
     row.push(quoted === undefined ? bare : quoted.replaceAll('""', '"'));
     if (end !== ",") {
       rows.push(row);

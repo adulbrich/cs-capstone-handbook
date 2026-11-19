@@ -25,9 +25,9 @@ const LABELS = new Set(["Due", "In class", "Read", "Optional"]);
 // src/components/deck/TermSessions.astro shows the short form, "No session".
 const NO_SESSION = "no class session; use the time to work with your team";
 
-const WEEK_HEADING_RE = /^Week (\d+)$/u;
+const WEEK_HEADING_RE = /^Week (?<week>\d+)$/u;
 const LABEL_COLON_RE = /:$/u;
-const SPRINT_NOTE_RE = /^Sprint Note (\d+)\b/u;
+const SPRINT_NOTE_RE = /^Sprint Note (?<note>\d+)\b/u;
 
 const isBlank = (n) => n.type === "text" && !n.value.trim();
 const isEl = (n, tag) => n?.type === "element" && (!tag || n.tagName === tag);

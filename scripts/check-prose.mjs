@@ -320,8 +320,8 @@ function stripInlineCode(line) {
  */
 export function glossaryDrift() {
   const text = readFileSync(GLOSSARY_PATH, "utf8");
-  const items = [...text.matchAll(/Not: ([^.\n]+)\./gu)].flatMap((m) =>
-    m[1].split(",").map((item) => item.trim())
+  const items = [...text.matchAll(/Not: (?<synonyms>[^.\n]+)\./gu)].flatMap(
+    (m) => m[1].split(",").map((item) => item.trim())
   );
   const problems = [];
   for (const item of items) {

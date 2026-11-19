@@ -26,12 +26,13 @@ export const EFFORT_SCALE = [
 ];
 
 /** A link to an activity: its page, then its heading's anchor. */
-export const ACTIVITY_LINK_RE = /\/activities\/([a-z-]+)\/#([\w-]+)/gu;
+export const ACTIVITY_LINK_RE =
+  /\/activities\/(?<page>[a-z-]+)\/#(?<anchor>[\w-]+)/gu;
 
 // The assignment page heads its term sections "## Fall", "## Winter",
 // "## Spring", and each workshop under them "### Workshop N: Title".
-const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/u;
-const WORKSHOP_HEADING_RE = /^### (Workshop (\d+): .+)$/u;
+const TERM_HEADING_RE = /^## (?<term>Fall|Winter|Spring)\b/u;
+const WORKSHOP_HEADING_RE = /^### (?<title>Workshop (?<number>\d+): .+)$/u;
 const SLUG_DROP_RE = /[^\p{L}\p{M}\p{N}\p{Pc} -]/gu;
 
 /**
@@ -72,7 +73,7 @@ export function preparedActivities(body) {
   const section = rest.slice(0, end === -1 ? undefined : end).join("\n");
   const keys = new Set();
   for (const m of section.matchAll(ACTIVITY_LINK_RE)) {
-    keys.add(activityKey(m[1], m[2]));
+    keys.add(activityKey(m.groups.page, m.groups.anchor));
   }
   return [...keys];
 }
@@ -96,9 +97,9 @@ export function workshopEntries(source) {
     if (heading) {
       open = term
         ? {
-            heading: heading[1],
-            n: Number(heading[2]),
-            slug: slugify(heading[1]),
+            heading: heading.groups.title,
+            n: Number(heading.groups.number),
+            slug: slugify(heading.groups.title),
             term,
           }
         : null;
@@ -108,7 +109,10 @@ export function workshopEntries(source) {
     if (!(open && link)) {
       continue;
     }
-    entries.push({ ...open, key: activityKey(link[1], link[2]) });
+    entries.push({
+      ...open,
+      key: activityKey(link.groups.page, link.groups.anchor),
+    });
     open = null; // only the section's first link names its activity
   }
   return entries;
