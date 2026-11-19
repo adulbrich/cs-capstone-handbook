@@ -55,7 +55,7 @@ function drawDiagram(source) {
           return { svg };
         } catch (error) {
           // A failed render can leave its scratch element behind.
-          document.getElementById(`d${id}`)?.remove();
+          document.querySelector(`#${CSS.escape(`d${id}`)}`)?.remove();
           const [line] = String(error?.message ?? error).split("\n");
           const message = line.replace(TRAILING, "");
           return { error: message };

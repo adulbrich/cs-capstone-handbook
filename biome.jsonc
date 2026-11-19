@@ -15,11 +15,7 @@
         // The rule has no fix: turning it on means naming every group and
         // rewriting each match site that reads one by index, the guard hooks'
         // included, for no change in behavior.
-        "useNamedCaptureGroup": "off",
-        // getElementById takes an id as it is. querySelector needs CSS.escape
-        // on each one and throws on an id from a URL hash that starts with a
-        // digit, which term-tabs.js reads.
-        "useDomQuerySelector": "off"
+        "useNamedCaptureGroup": "off"
       },
       "suspicious": {
         // Every report from 2.6.8 is wrong: it calls `rule.allow` in

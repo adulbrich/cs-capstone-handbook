@@ -74,7 +74,7 @@ export class ToolStorage {
 /** Puts focus on step `id`'s heading once Svelte has rendered it. */
 async function focusStep(id) {
   await tick();
-  document.getElementById(`step-${id}`)?.focus();
+  document.querySelector(`#${CSS.escape(`step-${id}`)}`)?.focus();
 }
 
 /**

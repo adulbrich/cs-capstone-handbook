@@ -77,7 +77,7 @@ function draftOf(entry, cell, criterion) {
 
 async function focus(id) {
   await tick();
-  document.getElementById(id)?.focus();
+  document.querySelector(`#${CSS.escape(id)}`)?.focus();
 }
 
 function toggle(t, c) {

@@ -41,7 +41,7 @@
     } catch {
       return;
     }
-    const target = id ? document.getElementById(id) : null;
+    const target = id ? document.querySelector(`#${CSS.escape(id)}`) : null;
     const panel = target?.closest('[role="tabpanel"]');
     if (!panel?.hidden) {
       return;
