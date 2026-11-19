@@ -348,8 +348,9 @@ function completeSubmission(workshop: number) {
 }
 // Each line split into the two things a team hands in, as the due slide
 // lists them, so the build fails when either line stops reading this way.
-const DECISIONS_PARTS_RE = /^(.+?) with (the few hard-to-reverse ones marked)$/;
-const SAFETY_NET_PARTS_RE = /^(.+?) and (the smallest change that closes it)$/;
+const DECISIONS_PARTS_RE =
+  /^(.+?) with (the few hard-to-reverse ones marked)$/u;
+const SAFETY_NET_PARTS_RE = /^(.+?) and (the smallest change that closes it)$/u;
 function handIn(workshop: number, parts: RegExp) {
   const match = completeSubmission(workshop).match(parts);
   if (!match) {
