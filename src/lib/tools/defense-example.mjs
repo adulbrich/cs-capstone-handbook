@@ -14,9 +14,9 @@ export const EXAMPLE_PDF = "defense-live-sheet-example.pdf";
 
 /**
  * What decides the example's print besides the rubric's text, by
- * repository path: how the rubric is read, the wording and the invented
- * student, the sheet's markup and the rules it renders with, its print
- * CSS, the fit, and the example page itself.
+ * repository path: how the rubric is read, the wording and the blank
+ * team, the sheet's markup and the rules it renders with, its print CSS,
+ * the fit, and the example page itself.
  */
 export const EXAMPLE_SOURCES = Object.freeze([
   "src/components/tools/defense/defense-rubric.mjs",

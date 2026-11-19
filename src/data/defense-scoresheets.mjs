@@ -162,17 +162,14 @@ export const sheetText = {
 };
 
 /**
- * The example live sheet the defense page links, printed for an invented
- * student (scripts/defense-example-pdf.mjs). Its title, and so the PDF's,
- * carries exampleFingerprint (src/lib/tools/defense-example.mjs).
+ * The example live sheet the defense page links, a blank one with the name,
+ * team, assessor, and total all left to write in
+ * (scripts/defense-example-pdf.mjs). Its title, and so the PDF's, carries
+ * exampleFingerprint (src/lib/tools/defense-example.mjs).
  */
 export const example = {
-  student: { email: "", first: "Jordan", last: "Lee" },
-  team: {
-    members: [],
-    noTeam: false,
-    team: "CS.042 Don't Panic Incident Tracker",
-  },
+  /** No team: the team line prints blank, as on a No team sheet. */
+  team: { members: [], noTeam: true, team: "" },
   /** No term: the one example serves every term's page. */
   term: "",
   title: (fingerprint) => `Defense live sheet example, ${fingerprint}`,
