@@ -48,9 +48,7 @@
       }
     }
   },
-  // A fenced example is a fragment as its page shows it: a YAML key indented
-  // under the parent it sits in, comments aligned in a column. Formatting it
-  // as a file moves the key to the top level.
+  // Formatted, a fenced YAML fragment loses the indent that shows its parent key.
   "markdown": {
     "formatter": { "formatEmbeds": false }
   },

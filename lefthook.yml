@@ -54,7 +54,7 @@ pre-commit:
     biome:
       # biome.json ignores some files this glob matches (package-lock.json),
       # and a commit staging only those would otherwise fail on "no files".
-      glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,svelte,ts,js,mjs,css,yaml},astro.config.mjs,*.json,*.jsonc,*.yml,.github/**/*.yml,*.md,docs/**/*.md,scripts/**/*.md,.claude/skills/**/*.md,.github/**/*.md}"
+      glob: "{scripts/**/*.mjs,.claude/hooks/*.mjs,src/**/*.{astro,svelte,ts,js,mjs,css,yaml},astro.config.mjs,*.json,*.jsonc,*.yml,.github/**/*.yml,*.md,docs/**/*.md,scripts/**/*.md,.claude/skills/**/*.md}"
       run: npx biome check --no-errors-on-unmatched {staged_files}
 
 commit-msg:
