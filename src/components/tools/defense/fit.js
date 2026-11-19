@@ -2,7 +2,7 @@
 // laid-out sheet (`.ds-page`) does not run past its height. Reading the
 // layout needs the DOM, so it lives beside the components; the choice of
 // scale is firstFit in defense-sheets.mjs. Each sheet is fitted on its own,
-// since a long name or team name can take a second line of the header: the
+// since a long student name can take a second line of the header: the
 // example page fits its one sheet, the tool its preview as it changes and
 // every printed sheet before it prints.
 import { FIT_SCALES, firstFit } from "../../../lib/tools/defense-sheets.mjs";

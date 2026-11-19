@@ -111,6 +111,24 @@
   margin-top: 0.2em;
   border: 1.5px solid #1c1917;
 }
+/* A team name and what follows it, on one line: the live sheet's team line
+   and the cover's footer. A long name is cut short with an ellipsis, and
+   what follows it, the term or the page, always prints. */
+.ds-team {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+.ds-team > * {
+  flex: none;
+}
+.ds-team > .ds-team-name {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* The session cover. */
 .ds-cover {
@@ -125,8 +143,12 @@
 .ds-cover .ds-eyebrow {
   font-size: 12px;
 }
+/* The team takes one line, cut short with an ellipsis when it runs long. */
 .ds-cover h1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 28px;
+  white-space: nowrap;
 }
 .ds-cover .ds-side {
   flex: none;
@@ -196,10 +218,6 @@
 .ds-table tbody th {
   font-weight: 600;
 }
-.ds-table .ds-unlisted {
-  font-weight: 400;
-  color: #57534e;
-}
 .ds-table .ds-narrow {
   width: 52px;
   text-align: center;
@@ -248,6 +266,15 @@
   color: #57534e;
   border-top: 1px solid #d6d3d1;
 }
+/* The footer takes one line: the checkbox line whole, then the team
+   (.ds-team) in what width is left. */
+.ds-foot > :first-child {
+  flex: none;
+  white-space: nowrap;
+}
+.ds-foot > .ds-team {
+  min-width: 0;
+}
 
 /* The live sheet. Every size is in em of one base, which --ds-scale steps
    down when the rubric's text would run past the page. */
@@ -270,8 +297,7 @@
   align-items: flex-end;
   font-size: 1.1em;
 }
-/* A long team name wraps, rather than leaving the student's name too
-   little width and breaking it mid-word. */
+/* The team line stops at a width that leaves the student's name room. */
 .ds-who {
   max-width: 26em;
   color: #44403c;

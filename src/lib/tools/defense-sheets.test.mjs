@@ -359,13 +359,12 @@ test("each student keeps their grader, and a team lists its graders once each", 
   assert.deepEqual(noTeam.graders, []);
 });
 
-test("a cover's table has a row per student and one blank, and no speaking order", () => {
+test("a cover's table has a row per student and no other, and no speaking order", () => {
   const [fieldnotes] = sessionTeams(parseRoster(ROSTER));
   const rows = coverRows(fieldnotes);
   assert.deepEqual(rows, [
     { id: "chena@example.edu", name: "Ana Chen" },
     { id: "leej@example.edu", name: "Jordan Lee" },
-    { id: "", name: "" },
   ]);
   assert.ok(rows.every((r) => Object.keys(r).join() === "id,name"));
 });

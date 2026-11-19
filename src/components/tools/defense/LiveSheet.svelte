@@ -1,7 +1,7 @@
 <script>
 // One student's live sheet, the same in the preview and on paper: the
-// name, team, assessor (the student's grader from the roster, or blank to
-// write in), and total; the banner with the tick rule, the
+// name, team (on one line), assessor (the student's grader from the
+// roster, or blank to write in), and total; the banner with the tick rule, the
 // points, and the Missing rule; then each criterion's question, its items
 // to tick, its red flags, its band row, and a notes line. The rubric's text
 // comes from `sheet` (liveSheet in defense-sheets.mjs), word for word.
@@ -30,7 +30,7 @@ const bands = $derived(bandRow(sheet.rule));
     </div>
     <div class="ds-side">
       <div class="ds-who">
-        {#if team.noTeam}<span class="ds-blank"></span>{text.teamBlank(term)}{:else}{text.team(team.team, term)}{/if}<br />
+        <span class="ds-team">{#if team.noTeam}<span>{text.teamLabel}: <span class="ds-blank"></span></span>{:else}<span class="ds-team-name">{team.team}</span>{/if}<span>{text.teamTerm(term)}</span></span>
         {text.assessor}: {#if assessor}{assessor}{:else}<span class="ds-blank"></span>{/if}
       </div>
       <div class="ds-total">

@@ -107,13 +107,13 @@ export const coverText = {
   eyebrow: "Defense session cover",
   followUp:
     "Follow-up: a 5-minute one-to-one within a week of the session, and no later than finals week. Tell the student it is routine.",
-  footer: (team) => `${team || NO_TEAM}, session cover`,
+  /** The footer: the team, cut short when long, then the page it is. */
+  footer: { after: ", session cover", team: (team) => team || NO_TEAM },
   /** The team's graders from the roster, or nothing when it has none. */
   graders: (graders) => graders.join(", "),
   length: (students, minutes) =>
     `${plural(students, "student")}, about ${minutes} minutes`,
   notes: "Session notes",
-  notOnRoster: "(not on the roster)",
   room: "Room or call link",
   start: "Start time",
   tableTitle: "The session",
@@ -151,9 +151,10 @@ export const sheetText = {
   record: "Record checked",
   recordChoices: "yes / no / shown on screen (NDA)",
   sprint: "Sprint",
-  team: (team, term) => [team, term].filter(Boolean).join(", "),
-  /** What follows the write-in line on a No team sheet. */
-  teamBlank: (term) => (term ? `, ${term}` : ""),
+  /** The write-in line's label on a No team sheet, where the team number goes. */
+  teamLabel: "Team",
+  /** What follows the team, or its write-in line, on the team line: the term. */
+  teamTerm: (term) => (term ? `, ${term}` : ""),
   /** The banner's first line: the rubric's condition on each item. */
   tick: ({ itemCondition }) =>
     `Tick an item when the student says it, ${itemCondition}.`,
@@ -168,7 +169,7 @@ export const sheetText = {
  * exampleFingerprint (src/lib/tools/defense-example.mjs).
  */
 export const example = {
-  /** No team: the team line prints blank, as on a No team sheet. */
+  /** No team: the team line is a labeled write-in, as on a No team sheet. */
   team: { members: [], noTeam: true, team: "" },
   /** No term: the one example serves every term's page. */
   term: "",
