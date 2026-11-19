@@ -78,7 +78,7 @@ if (rules.length !== 4) {
     `Identify Success Metrics ${rules.length} rules, and this deck presents 4`
   );
 }
-// The step slides restate three rules, found by what they name.
+// The step slides restate the four rules, found by what they name.
 const ruleNaming = (word: string) => {
   const found = rules.find((rule) => rule.name.toLowerCase().includes(word));
   if (!found) {
@@ -86,8 +86,8 @@ const ruleNaming = (word: string) => {
   }
   return found as (typeof rules)[number];
 };
-ruleNaming("decision rule");
-const ruleDated = ruleNaming("dated");
+const ruleRule = ruleNaming("decision rule");
+ruleNaming("dated");
 const ruleCollect = ruleNaming("collect");
 const ruleVanity = ruleNaming("vanity");
 const PARTNER_QUESTION =
@@ -102,9 +102,6 @@ const vanityContrast = ruleVanity.detail
   .trim()
   .replace(TRAILING_PERIOD_RE, "")
   .replace(LEADING_LETTER_RE, (first) => first.toLowerCase());
-const datedReason = ruleDated.detail.replace(LEADING_LETTER_RE, (first) =>
-  first.toLowerCase()
-);
 // Step 3 tells a team what to do with a metric it can't collect yet, as the
 // activity allows.
 if (!activity.includes("A metric you can't measure yet still counts when")) {
@@ -159,21 +156,28 @@ if (!pmfMatch) {
   );
 }
 const [, pmfShare] = pmfMatch as RegExpMatchArray;
+const PMF_COUNT_RE = /directionally correct around (\d+) respondents/;
+const pmfCountMatch = planning.match(PMF_COUNT_RE);
+if (!pmfCountMatch) {
+  throw new Error(
+    "fall-week-8: the Planning guide no longer gives how many respondents the product-market fit share needs."
+  );
+}
+const [, pmfCount] = pmfCountMatch as RegExpMatchArray;
 
-// The three steps, as the agenda, the step slides, and the work-time slide
-// name them.
+// The three steps, as the step slides and the work-time slide name them.
 const steps = [
   {
     name: "Pick what your number counts",
-    note: "Ask your partner what number means success, and skip vanity numbers",
+    note: "The number your partner would call a success, and no vanity metric",
   },
   {
     name: `Write ${metricCount} metrics, each with its decision rule`,
-    note: "Which value is success, which is failure, and what you do in each case",
+    note: `${ruleRule.detail.charAt(0).toUpperCase()}${ruleRule.detail.slice(1)}`,
   },
   {
-    name: "Say how you'll collect it, then date it",
-    note: "How you'll collect at least one, written down before you measure",
+    name: "Say how you'll collect at least one, then date them",
+    note: "Your instrumentation method, and the date you wrote them down, before you measure",
   },
 ];
 const stepKicker = (index: number) => `Step ${index + 1} of ${steps.length}`;
@@ -313,7 +317,7 @@ const [, metricsPart, methodPart, writtenPart] = submissionParts;
 // What a team hands in, on the opening slide and under the due line.
 const handIn = [
   `${metricsPart.charAt(0).toUpperCase()}${metricsPart.slice(1)}, ${writtenPart}`,
-  `${methodPart.charAt(0).toUpperCase()}${methodPart.slice(1)}`,
+  `${methodPart.charAt(0).toUpperCase()}${methodPart.slice(1)}: how you'll collect it`,
 ];
 // Who hands it in, as the workshop page states it for every workshop.
 const PER_TEAM = "One PDF per team per workshop";
@@ -333,20 +337,21 @@ const lunchMetrics = [
   {
     failure:
       "Fewer: watch a lunch rush with the cooks, and fix what slows them",
-    metric: "Orders ready within ten minutes of being placed",
+    metric: "Share of orders ready within ten minutes of being placed",
     success: "9 in 10 or more: open it at a second cafe",
   },
   {
     failure:
       "Fewer: interview five students who ordered once, before building anything new",
-    metric: "Students who order again within two weeks of their first order",
-    success: "3 in 10 or more: keep building on the pickup flow",
+    metric:
+      "Share of students who order again within two weeks of their first order",
+    success: "3 in 10 or more: start on paying in the app",
   },
   {
     failure:
-      "Any shift with no orders marked ready: ask its cooks what stopped them",
+      "Any shift with an order on paper: ask its cooks what stopped them",
     metric:
-      "Weekday shifts at the first cafe that run on the kitchen dashboard",
+      "Weekday shifts at the first cafe where every order is marked ready on the kitchen dashboard",
     success: "Every shift for two weeks: start handing it over to the partner",
   },
 ];
@@ -361,18 +366,19 @@ interface Example {
 }
 const examplesResult: Example[] = [
   {
-    failure: "Otherwise: report that the runs don't support it",
+    failure:
+      "Otherwise: report that it refutes the hypothesis, with all five runs",
     metric: "Accuracy on test data it never trained on, over five runs",
     project: "A research model",
     success:
-      "Above your reproduced baseline in all five: report that it supports the hypothesis",
+      "Above your reproduced baseline in all five: report that it supports the hypothesis, then test a second dataset",
   },
   {
     failure:
       "Fewer: ask a maintainer what blocks review, and send a smaller patch",
     metric: "Your pull requests the maintainers merge",
     project: "A contribution to an open-source project",
-    success: "Two or more merged: take on a larger issue",
+    success: "Two or more merged by the end of winter: take on a larger issue",
   },
   {
     failure: "Any report built by hand: ask that analyst what was missing",
@@ -390,17 +396,19 @@ const examplesPeople: Example[] = [
     success: "15 or more by the end of winter: build the second level",
   },
   {
-    failure: "Fewer: read the store reviews, and fix the first complaint",
+    failure:
+      "Fewer: watch five new users' first session, and fix where they quit",
     metric: "People who open it again a week after they install it",
     project: "A release on an app store or Steam",
     success: "1 in 4 or more: build the next feature on your list",
   },
   {
-    failure: "Fewer: interview the users who said it, and build for them",
+    failure:
+      "Fewer: interview the users who answered very disappointed, and build for them",
     metric:
       "Users who'd be very disappointed if they could no longer use it, from a one-question survey",
-    project: "Users you can survey",
-    success: `${pmfShare}% or more: build more of what they use it for`,
+    project: "An app with regular users",
+    success: `${pmfShare}% or more, from ${pmfCount} or more answers: build more of what they use it for`,
   },
 ];
 ---
@@ -441,17 +449,13 @@ const examplesPeople: Example[] = [
 
 <Slide kicker="Workshop 5" title="Graded complete or incomplete">
   <ul>
-    <li>Your submission is complete when it holds everything listed as due: there is no quality bar</li>
+    <li>Your submission is complete when it holds your metrics with their decision rules and your instrumentation method: there is no quality bar</li>
     <li>{LATE["class-week"].text}</li>
     <li>
       A submission that is not about your own project or team, such as a
       generic output produced without your team's material, scores Incomplete
     </li>
   </ul>
-  <p class="caption">
-    The reading behind this session, from the Planning guide:<br />
-    <a href={handbook(FRAMEWORKS)}>Success-Metric Frameworks</a>
-  </p>
 </Slide>
 
 <Slide kicker="Workshop 5" title="Agenda">
@@ -484,7 +488,7 @@ const examplesPeople: Example[] = [
   </table>
 </Slide>
 
-<Slide kicker="What a metric can count" title={`Your ${metricCount} metrics count one or more of these`} wide>
+<Slide kicker="What a metric can count" title={`What your ${metricCount} metrics can count`} wide>
   <table class="rows">
     <thead>
       <tr>
@@ -504,12 +508,12 @@ const examplesPeople: Example[] = [
     </tbody>
   </table>
   <p class="caption">
-    More metrics for each: <a href={activityLink}>Identify Success Metrics</a>
+    None fits? Count what your partner or mentor agrees shows success. More metrics for each: <a href={activityLink}>Identify Success Metrics</a>
   </p>
 </Slide>
 
 <Slide kicker="Example: the campus lunch app" title="Three metrics, and the number the lunch app drops" wide>
-  <p class="lead">Students order lunch in the app and pick it up at the cafe.</p>
+  <p class="lead">Students order lunch in the app and pick it up at the cafe. Cooks mark each order ready on a kitchen dashboard.</p>
   <table class="rows rows-tight">
     <thead>
       <tr>
@@ -521,7 +525,7 @@ const examplesPeople: Example[] = [
     <tbody>
       <tr class="dropped">
         <th scope="row"><s>{VANITY.metric}</s></th>
-        <td colspan="2">Dropped, a vanity number: {VANITY.why}</td>
+        <td colspan="2">Dropped, a vanity metric: {VANITY.why}</td>
       </tr>
       {
         lunchMetrics.map(({ metric, success, failure }) => (
@@ -545,7 +549,7 @@ const examplesPeople: Example[] = [
     </li>
     <li class="box">
       <h3>Signal</h3>
-      <p>Cooks mark orders ready on the dashboard, not on paper tickets</p>
+      <p>The cooks stop writing paper tickets</p>
       <p class="note">What you'd see if it were true, even if you can't count it</p>
     </li>
     <li class="box box-yes">
@@ -556,12 +560,12 @@ const examplesPeople: Example[] = [
   </ol>
   <p class="caption">
     Goals, signals, and metrics: <a href={SWE_BOOK}>Software Engineering at Google, chapter 7</a>.<br />
-    For a running service, start from the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
-    latency, traffic, errors, and saturation.
+    For a running service, start your metrics from the four golden signals of <a href={SRE_BOOK}>Site Reliability Engineering, chapter 6</a>:
+    latency, traffic, errors, and saturation (how close to full it runs).
   </p>
 </Slide>
 
-<Slide kicker="Examples from other projects" title="A research result, an open-source contribution, and a partner's internal tool" wide>
+<Slide kicker="Examples from other projects" title="A research model, an open-source contribution, and a partner's internal tool" wide>
   <table class="rows rows-tight">
     <thead>
       <tr>
@@ -642,7 +646,7 @@ const examplesPeople: Example[] = [
       <h3>The lunch app</h3>
       <div class="prompt">
         <p><strong>Metric:</strong> {repeatOrders.metric}</p>
-        <p><strong>Success:</strong> 3 in 10 or more, and then we keep building on the pickup flow</p>
+        <p><strong>Success:</strong> 3 in 10 or more, and then we start on paying in the app</p>
         <p><strong>Failure:</strong> fewer, and then we interview five students who ordered once</p>
       </div>
     </div>
@@ -653,11 +657,11 @@ const examplesPeople: Example[] = [
   <ul>
     <li>Name your instrumentation method: how you'll collect at least one metric, such as {ruleCollect.detail.replace(/, ([^,]+)$/, ", or $1")}</li>
     <li>Can't collect it yet? Say what has to happen first, and how you'll collect it once it does</li>
-    <li>Date your metrics before you measure: {datedReason}</li>
+    <li>Date your metrics before you measure</li>
   </ul>
   <div class="box box-yes example">
     <h3>The lunch app</h3>
-    <p>Repeat orders, counted from the orders table, once the first cafe takes orders through the app</p>
+    <p>{dashboardShifts.metric}: counted per shift from the orders table, once the first cafe's cooks use the dashboard. Written down and dated before the first order.</p>
   </div>
 </Slide>
 
@@ -672,24 +676,24 @@ const examplesPeople: Example[] = [
     </thead>
     <tbody>
       <tr>
-        <th scope="row">A vanity number</th>
-        <td class="instead">App downloads</td>
-        <td>Students who order a second time within two weeks of their first</td>
+        <th scope="row">A vanity metric</th>
+        <td class="instead">Downloads of the game</td>
+        <td>Players who play a second session within a week of their first</td>
       </tr>
       <tr>
         <th scope="row">No decision rule</th>
-        <td class="instead">We'll track repeat orders</td>
-        <td>3 in 10 or more order again: keep building; fewer: interview five who ordered once</td>
+        <td class="instead">We'll track search response time</td>
+        <td>Under 2 seconds for 95 in 100 searches: ship it; slower: speed up the slowest query first</td>
       </tr>
       <tr>
         <th scope="row">No way to collect it</th>
-        <td class="instead">Students like the app</td>
-        <td>Students who rate their pickup 4 or 5 out of 5 in a one-question survey after each order</td>
+        <td class="instead">A satisfaction score</td>
+        <td>Students who rate their pickup 4 or 5 out of 5, from a one-question survey after each order</td>
       </tr>
       <tr>
         <th scope="row">Chosen after the results</th>
         <td class="instead">Success is 80% accuracy, written after the model scored 81%</td>
-        <td>Success is beating the reproduced baseline, written and dated before the first training run</td>
+        <td>Success is beating the reproduced baseline, written and dated before the next run</td>
       </tr>
     </tbody>
   </table>
@@ -709,7 +713,7 @@ const examplesPeople: Example[] = [
     }
   </ol>
   <p class="caption">
-    Then check them for the four mistakes: a vanity number, no decision rule,
+    Then check them for the four mistakes: a vanity metric, no decision rule,
     no way to collect it, chosen after the results.
   </p>
 </Slide>
