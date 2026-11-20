@@ -8,8 +8,9 @@
  * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
- * heading. There it also rejects a bare URL in prose and a page that does
- * not end in a newline (#715). The banned words and a percentage in a heading (Markdown or an
+ * heading. On every page it also rejects a bare URL in prose and a page
+ * that does not end in a newline (#715).
+ * The banned words and a percentage in a heading (Markdown or an
  * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the syllabi, the
  * Markdown downloads in `public/`, and the slide decks in `src/decks/`
  * (BANNED_WORD_PATHS), because students read those words and headings in
@@ -43,6 +44,7 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import nodePath from "node:path";
+import { INLINE_CODE, MDX_COMMENT } from "../src/lib/cite-pattern.mjs";
 import { RUBRIC_CSV_SUFFIX, readCsvRecords } from "../src/lib/rubric-csv.mjs";
 import { parseFrontmatter, TEXT_EXTENSIONS } from "./lib/content.mjs";
 
@@ -488,59 +490,79 @@ function blank(text) {
 }
 
 /**
+ * The index of the `}` closing the `{` at `open`, skipping quoted strings,
+ * or -1 when nothing closes it.
+ */
+function closingBrace(text, open) {
+  let depth = 0;
+  for (let at = open; at < text.length; at += 1) {
+    const char = text[at];
+    if (char === '"' || char === "'" || char === "`") {
+      at = text.indexOf(char, at + 1);
+      if (at === -1) {
+        return -1;
+      }
+    } else if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return at;
+      }
+    }
+  }
+  return -1;
+}
+
+/**
  * `text` with each `={...}` attribute value blanked, braces matched so a
- * value may nest and span lines (`images={[ { src: ... }, ... ]}`).
+ * value may nest and span lines (`images={[ { src: ... }, ... ]}`). A value
+ * nothing closes is left as it is, so a stray `={` hides no later line.
  */
 function blankExpressionAttributes(text) {
   let out = "";
   let from = 0;
   for (const { index } of text.matchAll(/[=]\{/gu)) {
-    if (index < from) {
-      continue;
+    const close = index < from ? -1 : closingBrace(text, index + 1);
+    if (close !== -1) {
+      out +=
+        text.slice(from, index + 1) + blank(text.slice(index + 1, close + 1));
+      from = close + 1;
     }
-    let depth = 0;
-    let end = index + 1;
-    for (; end < text.length; end += 1) {
-      if (text[end] === "{") {
-        depth += 1;
-      } else if (text[end] === "}") {
-        depth -= 1;
-        if (depth === 0) {
-          break;
-        }
-      }
-    }
-    out += text.slice(from, index + 1) + blank(text.slice(index + 1, end + 1));
-    from = end + 1;
   }
   return out + text.slice(from);
 }
 
-/** An MDX comment, which may span lines. */
-const MDX_COMMENT = /\{\/\*[\s\S]*?\*\/\}/gu;
+/**
+ * The spans blanked across lines before the line scan: MDX comments, inline
+ * code, and quoted attribute values, which may wrap but never cross a blank
+ * line.
+ */
+const MASKED_SPANS = [
+  MDX_COMMENT,
+  INLINE_CODE,
+  /[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu,
+];
 
 /**
- * The places on one line where a URL is not bare: inline code, a Markdown
- * link or image target, a reference definition, an autolink, and a quoted
- * attribute value.
+ * The places on one line where a URL is not bare: a Markdown link or image
+ * target, a reference definition, and an autolink.
  */
 const NOT_BARE = [
-  /`[^`]*`/gu,
   /\]\([^)]*\)/gu,
   /^\s*\[[^\]]+\]:\s*\S+/u,
   /<https?:\/\/[^>\s]*>/giu,
-  /[\w:-]+=(?:"[^"]*"|'[^']*')/gu,
 ];
 const URL_SCHEME = /https?:\/\//iu;
 
 /**
  * A bare URL on a handbook page: an `http://` or `https://` address in
  * prose, which Starlight renders as a link whose text is the address (#715).
- * A URL is not bare in frontmatter, a fenced code block, an MDX comment, an
- * attribute value, or any NOT_BARE span. Those are blanked rather than
- * dropped, so each line keeps its number. A URL used as link text is still
- * bare: the reader sees the address. Double-quoted prose is checked, unlike
- * the vocabulary rules, since a quoted URL renders as one too.
+ * A URL is not bare in frontmatter, a fenced code block, an expression
+ * attribute value, a MASKED_SPANS span, or a NOT_BARE span. Those are
+ * blanked rather than dropped, so each line keeps its number. A URL used as
+ * link text is still bare. Double-quoted prose is checked, unlike the
+ * vocabulary rules.
  */
 function bareUrlViolations(text, lines) {
   const frontmatter = parseFrontmatter(text);
@@ -557,7 +579,7 @@ function bareUrlViolations(text, lines) {
     })
     .join("\n");
   const scanned = blankExpressionAttributes(
-    unfenced.replace(MDX_COMMENT, blank)
+    MASKED_SPANS.reduce((rest, span) => rest.replace(span, blank), unfenced)
   ).split("\n");
   const hits = [];
   for (const [index, line] of scanned.entries()) {
@@ -568,7 +590,7 @@ function bareUrlViolations(text, lines) {
     if (URL_SCHEME.test(prose)) {
       hits.push(
         hit(
-          "link: a bare URL; put the link on the page's name, [name](https://...)",
+          "link: a bare URL; put the link on a name, [name](https://...)",
           index + 1,
           lines[index]
         )
@@ -658,9 +680,10 @@ function proseLines(text, lines, path, proseChecks) {
 
 /**
  * Every hit in `text`, as `{ line, kind, snippet }`. `kind` is `em dash`,
- * `emoji`, or a vocabulary or voice message. Exported for the commit-message
- * check, which adds its own rules on top; the CLI below is the same function
- * with a report. Without a `path`, only the em dash and emoji rules run.
+ * `emoji`, or a vocabulary, voice, link, or format message. Exported for the
+ * commit-message check, which adds its own rules on top; the CLI below is
+ * the same function with a report. Without a `path`, only the em dash and
+ * emoji rules run.
  */
 export function findProseViolations(text, path) {
   const violations = [];
@@ -766,7 +789,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, public/ Markdown, and src/decks/ no banned word and no percentage in a heading (docs/agents/voice.md). Handbook pages also put each link on a name, never a bare URL, and end in a newline (#715).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, public/ Markdown, and src/decks/ no banned word and no percentage in a heading (docs/agents/voice.md). Handbook pages also have no bare URL in prose and end in a newline (#715).\n"
     );
     process.exit(1);
   }
