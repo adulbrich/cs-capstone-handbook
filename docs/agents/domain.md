@@ -9,10 +9,10 @@ How the engineering skills should consume this repo's domain documentation when 
 
 ## Where a skill's writes go
 
-| When a skill says | Write it here |
-| --- | --- |
-| Add a term to `CONTEXT.md` | `src/content/docs/about/glossary.mdx`, and its "Not:" list into `scripts/check-prose.mjs` in the same commit; `glossaryDrift()` fails when the two differ |
-| Record an ADR in `docs/adr/` | The issue, for the decision and its reason, and the rule itself where it binds, as `AGENTS.md`, "Where decisions are recorded", describes |
+| When a skill says            | Write it here                                                                                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Add a term to `CONTEXT.md`   | `src/content/docs/about/glossary.mdx`, and its "Not:" list into `scripts/check-prose.mjs` in the same commit; `glossaryDrift()` fails when the two differ |
+| Record an ADR in `docs/adr/` | The issue, for the decision and its reason, and the rule itself where it binds, as `AGENTS.md`, "Where decisions are recorded", describes                 |
 
 `CONTEXT.md` stays a pointer, and neither `docs/adr/` nor a design-record directory is ever created.
 

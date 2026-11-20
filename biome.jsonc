@@ -42,10 +42,9 @@
       }
     }
   },
-  // The Markdown formatter pads every table cell to its column's widest row,
-  // so one edited row in AGENTS.md rewrites the whole table.
+  // Formatted, a fenced YAML fragment loses the indent that shows its parent key.
   "markdown": {
-    "formatter": { "enabled": false }
+    "formatter": { "formatEmbeds": false }
   },
   "overrides": [
     {
