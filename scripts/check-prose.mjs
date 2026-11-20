@@ -8,7 +8,8 @@
  * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
- * heading. The banned words and a percentage in a heading (Markdown or an
+ * heading. There it also rejects a bare URL in prose and a page that does
+ * not end in a newline (#715). The banned words and a percentage in a heading (Markdown or an
  * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the syllabi, the
  * Markdown downloads in `public/`, and the slide decks in `src/decks/`
  * (BANNED_WORD_PATHS), because students read those words and headings in
@@ -43,7 +44,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import nodePath from "node:path";
 import { RUBRIC_CSV_SUFFIX, readCsvRecords } from "../src/lib/rubric-csv.mjs";
-import { TEXT_EXTENSIONS } from "./lib/content.mjs";
+import { parseFrontmatter, TEXT_EXTENSIONS } from "./lib/content.mjs";
 
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
@@ -171,8 +172,9 @@ const VOCABULARY_PATHS = [
 const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 
 /**
- * BOLD_AND_OPENER_PATH gates only the bolded-sentence and opener rules, which
- * are about how a handbook page is written. The banned words reach further:
+ * PAGE_PATH gates the rules about how a handbook page is written: the
+ * bolded sentence, the openers, the bare URL, and the final newline. The
+ * banned words reach further:
  * the rubric CSVs and the syllabus bodies under `canvas/`, and the Markdown
  * downloads in `public/`. A CSV renders on its assignment page and imports
  * into Canvas, a syllabus is pasted into Canvas, and the templates quote
@@ -182,7 +184,7 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * percentage-in-a-heading check too. The rest of
  * `canvas/` and the runbook keep the vocabulary check alone.
  */
-const BOLD_AND_OPENER_PATH = "src/content/docs/";
+const PAGE_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
   { prefix: "src/decks/" },
@@ -288,11 +290,11 @@ function vocabularyApplies(filePath) {
   return VOCABULARY_PATHS.some((prefix) => rel.startsWith(prefix));
 }
 
-function boldAndOpenerRulesApply(filePath) {
+function pageRulesApply(filePath) {
   if (!filePath) {
     return false;
   }
-  return repoRelative(filePath).startsWith(BOLD_AND_OPENER_PATH);
+  return repoRelative(filePath).startsWith(PAGE_PATH);
 }
 
 function bannedWordsApply(filePath) {
@@ -480,6 +482,119 @@ function percentHeadingViolations(line, lineNumber) {
   ];
 }
 
+/** `text` with every character but a newline turned into a space. */
+function blank(text) {
+  return text.replace(/[^\n]/gu, " ");
+}
+
+/**
+ * `text` with each `={...}` attribute value blanked, braces matched so a
+ * value may nest and span lines (`images={[ { src: ... }, ... ]}`).
+ */
+function blankExpressionAttributes(text) {
+  let out = "";
+  let from = 0;
+  for (const { index } of text.matchAll(/[=]\{/gu)) {
+    if (index < from) {
+      continue;
+    }
+    let depth = 0;
+    let end = index + 1;
+    for (; end < text.length; end += 1) {
+      if (text[end] === "{") {
+        depth += 1;
+      } else if (text[end] === "}") {
+        depth -= 1;
+        if (depth === 0) {
+          break;
+        }
+      }
+    }
+    out += text.slice(from, index + 1) + blank(text.slice(index + 1, end + 1));
+    from = end + 1;
+  }
+  return out + text.slice(from);
+}
+
+/** An MDX comment, which may span lines. */
+const MDX_COMMENT = /\{\/\*[\s\S]*?\*\/\}/gu;
+
+/**
+ * The places on one line where a URL is not bare: inline code, a Markdown
+ * link or image target, a reference definition, an autolink, and a quoted
+ * attribute value.
+ */
+const NOT_BARE = [
+  /`[^`]*`/gu,
+  /\]\([^)]*\)/gu,
+  /^\s*\[[^\]]+\]:\s*\S+/u,
+  /<https?:\/\/[^>\s]*>/giu,
+  /[\w:-]+=(?:"[^"]*"|'[^']*')/gu,
+];
+const URL_SCHEME = /https?:\/\//iu;
+
+/**
+ * A bare URL on a handbook page: an `http://` or `https://` address in
+ * prose, which Starlight renders as a link whose text is the address (#715).
+ * A URL is not bare in frontmatter, a fenced code block, an MDX comment, an
+ * attribute value, or any NOT_BARE span. Those are blanked rather than
+ * dropped, so each line keeps its number. A URL used as link text is still
+ * bare: the reader sees the address. Double-quoted prose is checked, unlike
+ * the vocabulary rules, since a quoted URL renders as one too.
+ */
+function bareUrlViolations(text, lines) {
+  const frontmatter = parseFrontmatter(text);
+  const bodyStart = frontmatter ? text.length - frontmatter.body.length : 0;
+  let inFence = false;
+  const unfenced = (blank(text.slice(0, bodyStart)) + text.slice(bodyStart))
+    .split("\n")
+    .map((line) => {
+      if (FENCE.test(line)) {
+        inFence = !inFence;
+        return "";
+      }
+      return inFence ? "" : line;
+    })
+    .join("\n");
+  const scanned = blankExpressionAttributes(
+    unfenced.replace(MDX_COMMENT, blank)
+  ).split("\n");
+  const hits = [];
+  for (const [index, line] of scanned.entries()) {
+    const prose = NOT_BARE.reduce(
+      (rest, span) => rest.replace(span, " "),
+      line
+    );
+    if (URL_SCHEME.test(prose)) {
+      hits.push(
+        hit(
+          "link: a bare URL; put the link on the page's name, [name](https://...)",
+          index + 1,
+          lines[index]
+        )
+      );
+    }
+  }
+  return hits;
+}
+
+/**
+ * A page that does not end in a newline (#715). Biome enforces one in the
+ * files it formats, and it does not read MDX.
+ */
+function finalNewlineViolations(text, lines) {
+  if (text.length === 0 || text.endsWith("\n")) {
+    return [];
+  }
+  return [
+    hit(
+      "format: no newline at the end of the file; add one",
+      lines.length,
+      lines.at(-1)
+    ),
+  ];
+}
+
 /** The line checks that read prose at `path`, and so skip fenced code. */
 function proseChecksFor(path) {
   const checks = [];
@@ -489,7 +604,7 @@ function proseChecksFor(path) {
   if (bannedWordsApply(path)) {
     checks.push(bannedWordViolations, percentHeadingViolations);
   }
-  if (boldAndOpenerRulesApply(path)) {
+  if (pageRulesApply(path)) {
     checks.push(boldSentenceViolations);
   }
   return checks;
@@ -551,8 +666,12 @@ export function findProseViolations(text, path) {
   const violations = [];
   const lines = text.split("\n");
   const proseChecks = proseChecksFor(path);
-  if (boldAndOpenerRulesApply(path)) {
-    violations.push(...openerViolations(lines, path));
+  if (pageRulesApply(path)) {
+    violations.push(
+      ...openerViolations(lines, path),
+      ...bareUrlViolations(text, lines),
+      ...finalNewlineViolations(text, lines)
+    );
   }
   for (const { line, prose } of proseLines(text, lines, path, proseChecks)) {
     for (const check of proseChecks) {
@@ -647,7 +766,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, public/ Markdown, and src/decks/ no banned word and no percentage in a heading (docs/agents/voice.md).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, public/ Markdown, and src/decks/ no banned word and no percentage in a heading (docs/agents/voice.md). Handbook pages also put each link on a name, never a bare URL, and end in a newline (#715).\n"
     );
     process.exit(1);
   }
