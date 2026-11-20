@@ -123,7 +123,7 @@ function parseAssignment(frontmatter) {
 function renderedCsvs(source, component) {
   const tagRe = new RegExp(`<${component}\\s[^>]*>`, "gu");
   return [...source.matchAll(tagRe)].map((m) => {
-    const name = m[0].match(/\bcsv=\{(\w+)\}/u)?.[1];
+    const name = m[0].match(/\bcsv=\{(?<name>\w+)\}/u)?.[1];
     const imported = name
       ? source.match(
           new RegExp(
@@ -135,7 +135,7 @@ function renderedCsvs(source, component) {
     return {
       component,
       index: m.index,
-      label: m[0].match(/\ssourceLabel="([^"]*)"/u)?.[1] ?? null,
+      label: m[0].match(/\ssourceLabel="(?<label>[^"]*)"/u)?.[1] ?? null,
       name,
       path: imported ? imported[1] : null,
     };
@@ -683,8 +683,8 @@ const REQUIRED = ["What You Submit", "Rubric"];
 const AFTER_ACTIVITIES = new Set(["References"]);
 const AI_USE_RE = /^\*\*AI use:\*\*/mu;
 // A submission format lives under What You Submit, never in a heading (#288).
-const FORMAT_HEADING_RE = /^#{2,6} .*(\bPDF\b|submitted as).*$/imu;
-const FENCED_CODE_RE = /^(```|~~~)[\s\S]*?^\1/gmu;
+const FORMAT_HEADING_RE = /^#{2,6} .*(?:\bPDF\b|submitted as).*$/imu;
+const FENCED_CODE_RE = /^(?<fence>```|~~~)[\s\S]*?^\k<fence>/gmu;
 const SUMMARY_RE = /<AssignmentSummary\b/u;
 const META_RE = /<AssignmentMeta\b/u;
 
@@ -830,9 +830,9 @@ for (const file of files) {
       );
       failed = true;
     }
-    const h2 = [...source.slice(0, table.index).matchAll(/^## (.*)$/gmu)].at(
-      -1
-    );
+    const h2 = [
+      ...source.slice(0, table.index).matchAll(/^## (?<heading>.*)$/gmu),
+    ].at(-1);
     if (h2?.[1] !== "Rubric") {
       console.error(
         `RUBRIC ${file}: renders ${table.path} outside the "## Rubric" section.`

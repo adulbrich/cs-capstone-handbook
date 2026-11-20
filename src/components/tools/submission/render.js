@@ -20,7 +20,7 @@ const DIAGRAM_ID = "sdgm-x7";
 const TRAILING = /[\s:.]+$/u;
 
 /** "on line N" in a Mermaid error, N counted from the diagram's first line. */
-const DIAGRAM_LINE = /on line (\d+)/u;
+const DIAGRAM_LINE = /on line (?<line>\d+)/u;
 
 let mermaid = null;
 let drawn = 0;
@@ -56,6 +56,7 @@ function drawDiagram(source) {
         } catch (error) {
           // A failed render can leave its scratch element behind.
           document.querySelector(`#${CSS.escape(`d${id}`)}`)?.remove();
+          // biome-ignore lint/suspicious/noUnnecessaryConditions: a thrown value can be null or undefined, which has no `message`.
           const [line] = String(error?.message ?? error).split("\n");
           const message = line.replace(TRAILING, "");
           return { error: message };

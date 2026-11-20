@@ -174,7 +174,7 @@ reviewer reads the claim, opens the source at the locator, and checks.
 
 ## Section Skeleton
 
-Sections in **bold** are required for every guide. Sections marked *artifact*
+Sections in **bold** are required for every guide. Sections marked _artifact_
 are required for artifact guides and optional for practice guides, which keep
 them only when they say something (`conflict.mdx` keeps Validation and
 Measuring Success because its signals are real). The middle flexes with the
@@ -185,17 +185,17 @@ situation-first opener are read for, not validated.
 1. **Opening (no heading).** [The Opener](#the-opener), then one or two
    paragraphs that say what the thing is and link its authoritative reference.
 
-2. *Artifact:* `## What is X?` or an equivalent definition section. What the
+2. _Artifact:_ `## What is X?` or an equivalent definition section. What the
    artifact contains, usually as a bulleted list of its parts.
 
-3. *Artifact:* `## Addressing a Problem` (or `## Addressing an Architectural
+3. _Artifact:_ `## Addressing a Problem` (or `## Addressing an Architectural
    Problem`, matching the topic). The why. Good practice starts from a real
    problem statement: what it is, who is affected, why it matters. Known
    exception: `technical-design.mdx` has no such section, because its
    opening failure list and "What Is Technical Design?" already carry the
    why; do not add one there.
 
-4. *Artifact:* `## What Makes a Good X?` The quality bar, **with the artifact
+4. _Artifact:_ `## What Makes a Good X?` The quality bar, **with the artifact
    itself in a fenced code block**, under about 30 lines: an ADR, a
    `docs/requirements.md`, a `docs/design.md`, a team charter. It is the
    section students copy from and the one the fall workshops run on. Show the
@@ -204,22 +204,22 @@ situation-first opener are read for, not validated.
    "Writing Your Agreement", which is where its reader is when they need it.
 
    The artifact stands alone, for the reason in [Guides Are
-   Standalone](#guides-are-standalone). The prose above it states the
+Standalone](#guides-are-standalone). The prose above it states the
    project, the team, and every detail the artifact relies on, even when
    another guide uses the same project (the shift board appears in
    several), and the page defines any ID the artifact uses (`FR-3`,
    `R-2`). Examples earlier on the page are concrete without leaning on
    that project before it is introduced.
 
-5. *Topic-specific middle sections.* Flex freely. `retrospectives.mdx` uses
+5. _Topic-specific middle sections._ Flex freely. `retrospectives.mdx` uses
    `## Types`, `## Formats`, and `## Running a Good Retrospective` instead of
    steps 3 and 4, which is correct for that topic. Use `###` subsections for
    variants a reader picks between.
 
-6. *Artifact:* `## Validation`. How you know the artifact is any good: who
+6. _Artifact:_ `## Validation`. How you know the artifact is any good: who
    reviews it, what they check, what a failed check looks like.
 
-7. *Artifact:* `## Measuring Success`. The signals that the practice is
+7. _Artifact:_ `## Measuring Success`. The signals that the practice is
    working in real life, not the artifact's own quality.
 
 8. **`## Best Practices for Writing X`.** A bulleted list of concrete,
@@ -249,7 +249,6 @@ situation-first opener are read for, not validated.
 
 11. **`## Additional Readings`.** Required, and always last. Two groups, in
     this order, each a plain bulleted list:
-
     - **Sources and further reading.** External links only: official
       documentation, standards, papers, books, conference talks, and the
       authors who coined the terms the guide uses. Five to twelve per guide.
@@ -421,7 +420,7 @@ Structure; #680). Section overview and index pages are exempt and run short.
 If a guide passes 6,000, look for a section that wants to be its own guide.
 
 **The test is the reader.** If you can name someone who reads the candidate
-section *instead of* the rest of the page, it is a split; `accessibility.mdx`
+section _instead of_ the rest of the page, it is a split; `accessibility.mdx`
 and `ai-project-setup.mdx` both came out that way (#113). If everyone who
 reads one reads the other, it is not a split, and the fix is to cut whatever
 dates fastest, which is almost always a tool catalog.

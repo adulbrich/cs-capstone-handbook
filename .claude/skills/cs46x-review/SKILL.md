@@ -65,12 +65,12 @@ the ledger all reflect `HEAD`, and in round 1 the round-1 copies are saved.
 Fresh sub-agents, in parallel, in the foreground. Each gets the path of its
 brief, the inputs the brief lists, and nothing else.
 
-| Reviewer | Brief | Runs when the diff touches |
-|---|---|---|
-| Student read | [`student-read.md`](student-read.md) | text a student, partner, or mentor reads: a page under `src/content/docs/`, a rubric CSV, a syllabus, a download in `public/` |
-| Consistency | [`consistency.md`](consistency.md) | an assignment page, anything under `canvas/`, a fact with a canonical home in `AGENTS.md`, or a heading other pages link |
-| Spec and rules | [`spec-and-rules.md`](spec-and-rules.md) | anything |
-| Code | `mattpocock-skills:code-review` (Standards and Spec), with The Bar above pasted into both prompts, on those paths only: MDX is not code | `src/lib/`, `scripts/`, `.claude/hooks/`, `src/components/`, `src/pages/`, or `astro.config.mjs` |
+| Reviewer       | Brief                                                                                                                                   | Runs when the diff touches                                                                                                    |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Student read   | [`student-read.md`](student-read.md)                                                                                                    | text a student, partner, or mentor reads: a page under `src/content/docs/`, a rubric CSV, a syllabus, a download in `public/` |
+| Consistency    | [`consistency.md`](consistency.md)                                                                                                      | an assignment page, anything under `canvas/`, a fact with a canonical home in `AGENTS.md`, or a heading other pages link      |
+| Spec and rules | [`spec-and-rules.md`](spec-and-rules.md)                                                                                                | anything                                                                                                                      |
+| Code           | `mattpocock-skills:code-review` (Standards and Spec), with The Bar above pasted into both prompts, on those paths only: MDX is not code | `src/lib/`, `scripts/`, `.claude/hooks/`, `src/components/`, `src/pages/`, or `astro.config.mjs`                              |
 
 The student reader is the one reviewer that must not know what the change
 meant. From the second round on it runs again only on pages whose text or rubric changed

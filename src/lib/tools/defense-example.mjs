@@ -40,9 +40,9 @@ export function exampleFingerprint(sheet, read) {
   return hash.digest("hex").slice(0, 12);
 }
 
-const LITERAL_TITLE = /\/Title\s*\(((?:\\.|[^\\)])*)\)/u;
-const HEX_TITLE = /\/Title\s*<([0-9A-Fa-f\s]*)>/u;
-const ESCAPE = /\\([nrtbf()\\]|[0-7]{1,3})/gu;
+const LITERAL_TITLE = /\/Title\s*\((?<title>(?:\\.|[^\\)])*)\)/u;
+const HEX_TITLE = /\/Title\s*<(?<hex>[0-9A-Fa-f\s]*)>/u;
+const ESCAPE = /\\(?<escaped>[nrtbf()\\]|[0-7]{1,3})/gu;
 const ESCAPED = { b: "\b", f: "\f", n: "\n", r: "\r", t: "\t" };
 const HEX_SPACE = /\s/gu;
 const OCTAL = /^[0-7]/u;

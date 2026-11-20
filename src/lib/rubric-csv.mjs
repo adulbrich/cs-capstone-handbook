@@ -44,7 +44,7 @@ const RATING_HEADER = ["Rating Name", "Rating Description", "Rating Points"];
 /** Every rubric file is `<name>-rubric.csv`; the validators find them by this. */
 export const RUBRIC_CSV_SUFFIX = "-rubric.csv";
 
-const TRAILING_BRACKET_RE = /\s*\[([^\]]+)\]\s*$/u;
+const TRAILING_BRACKET_RE = /\s*\[(?<tags>[^\]]+)\]\s*$/u;
 const FIELD_END = new Set([",", "\r", "\n"]);
 const FIRST_RATING = CRITERION_HEADER.length;
 const RATING_GROUP_WIDTH = RATING_HEADER.length;

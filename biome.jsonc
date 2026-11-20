@@ -2,28 +2,18 @@
   "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
   "extends": ["ultracite/biome/core"],
   // Biome covers the code: the scripts, the Astro config and
-  // components, the content schema, and the JSON configs. Everything under
-  // canvas/ is HTML pasted into Canvas and public/ is served verbatim; neither
-  // is code, and reformatting them only makes the Canvas diff unreadable.
+  // components, the content schema, and the JSON configs, plus the YAML
+  // (workflows, lefthook.yml, the sources registry) and the Markdown docs.
+  // Everything under canvas/ is HTML pasted into Canvas and public/ is served
+  // verbatim; neither is code, and reformatting them only makes the Canvas
+  // diff unreadable.
   // canvas-export/ is the generated paste kit, gitignored.
   "files": {
     "includes": ["!canvas", "!canvas-export", "!public", "!dist", "!.astro"]
   },
   "linter": {
     "rules": {
-      "style": {
-        // The rule has no fix: turning it on means naming every group and
-        // rewriting each match site that reads one by index, the guard hooks'
-        // included, for no change in behavior.
-        "useNamedCaptureGroup": "off"
-      },
       "suspicious": {
-        // Every report from 2.6.8 is wrong: it calls `rule.allow` in
-        // check-prose always set, though most rules have none; a flag
-        // section-words sets inside its loop always false; an optional
-        // destructured field always undefined; and ?. on a caught value, which
-        // can be null, unneeded. Taking a fix deletes a live branch.
-        "noUnnecessaryConditions": "off",
         // Each exemption degrades safely: @page, print-color-adjust and
         // box-decoration-break only shape the printed PDFs, text-wrap falls
         // back to normal wrapping, and ui-monospace sits ahead of fallbacks.
@@ -42,10 +32,9 @@
       }
     }
   },
-  // The Markdown formatter pads every table cell to its column's widest row,
-  // so one edited row in AGENTS.md rewrites the whole table.
+  // Formatted, a fenced YAML fragment loses the indent that shows its parent key.
   "markdown": {
-    "formatter": { "enabled": false }
+    "formatter": { "formatEmbeds": false }
   },
   "overrides": [
     {
@@ -100,7 +89,7 @@
     },
     {
       // The tools read files in the browser and never upload them
-      // (docs/agents/tools.md). These are the browser's request APIs, so a
+      // (docs/agents/tools.md, #634). These are the browser's request APIs, so a
       // tool that calls one has started sending something off the page. The
       // rule sees a bare name only: not window.fetch, and not an Astro
       // page's <script>, which Biome does not lint.

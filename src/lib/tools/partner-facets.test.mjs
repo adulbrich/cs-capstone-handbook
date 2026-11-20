@@ -29,7 +29,7 @@ const rubrics = Object.fromEntries(
 const criteria = TERMS.flatMap((term) =>
   rubrics[term].criteria.map((criterion) => ({ criterion, term }))
 );
-const PERCENT = /(\d+)%/gu;
+const PERCENT = /(?<percent>\d+)%/gu;
 const numbers = (text) => [...text.matchAll(PERCENT)].map((m) => Number(m[1]));
 const choicesOf = (criterion) => facetChoices(criterion, BETWEEN);
 
@@ -45,11 +45,11 @@ test("the between-anchor shares are read from the page's sentence, and a page wi
 
 test("every anchored facet offers the page's five shares, and the ladder adds its own rung", () => {
   const sentence = PAGE.match(
-    /each scored at ([^;]*) of its points; spring Verification and Validation adds a (\d+)% level/u
+    /each scored at (?<shares>[^;]*) of its points; spring Verification and Validation adds a (?<rung>\d+)% level/u
   );
   assert.ok(sentence, "the page lists the shares a facet is scored at");
-  const shares = numbers(sentence[1]);
-  const rung = Number(sentence[2]);
+  const shares = numbers(sentence.groups.shares);
+  const rung = Number(sentence.groups.rung);
   for (const { criterion, term } of criteria) {
     const percents = choicesOf(criterion).map((c) => c.percent);
     const expected = isLadder(criterion)
@@ -117,7 +117,7 @@ test("anchor and rung choices are the CSV's rating names and points; between cho
         assert.ok(!names.has(choice.label), choice.label);
         assert.match(
           choice.label,
-          /^Between the (top|middle) and (middle|low) anchors \((\d+)% of the points\)$/u,
+          /^Between the (?:top|middle) and (?:middle|low) anchors \((?<percent>\d+)% of the points\)$/u,
           `${term} ${criterion.title}`
         );
         assert.ok(BETWEEN.includes(choice.percent), choice.label);

@@ -85,13 +85,13 @@ does not read that page for activities.
 ### Explanation versus instrument
 
 An activity over roughly 400 words is usually a guide with an exercise stapled
-to it. The test is what the bulk *is*:
+to it. The test is what the bulk _is_:
 
 - **Explanation** teaches a concept, a model, or a practice, and it belongs in
   a guide. The old conflict activities page was four sections of this, up to
   1,100 words each, and became `guides/conflict.mdx` plus four short exercises.
 - **An instrument** is something the student fills in, scores, or works
-  through *during* the activity: an assessment table, a scoring rubric, a
+  through _during_ the activity: an assessment table, a scoring rubric, a
   canvas, a checklist. It stays, however long it is. `Team Health Assessment`
   keeps its 1,219 words because they are the health check itself, not a
   lecture about health checks.
@@ -112,11 +112,11 @@ and the badge line shows it. The tier names are internal
 (`docs/agents/voice.md`, Sentences and words): student pages explain the
 badges under "Reading the Badge Line" on `activities/introduction.mdx`.
 
-| Tier | Comes from | Badge line shows | Meaning |
-|---|---|---|---|
-| Workshop | a `### Workshop N:` section on `assignments/workshop-activities.mdx` naming the activity | `Workshop N, <term>`, linking that section | Everyone does it. Runs in class, graded complete/incomplete. |
-| Recommended | an assignment's "Activities That Prepare This" section linking the activity | on a second row, a plain `Helps with` label, then one badge per linking assignment, each linking that section | The cheapest route to a specific rubric criterion. |
-| Library | neither | no tier badge | Kept because it is good and some project will need it. Nobody is expected to do most of these. |
+| Tier        | Comes from                                                                               | Badge line shows                                                                                              | Meaning                                                                                        |
+| ----------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Workshop    | a `### Workshop N:` section on `assignments/workshop-activities.mdx` naming the activity | `Workshop N, <term>`, linking that section                                                                    | Everyone does it. Runs in class, graded complete/incomplete.                                   |
+| Recommended | an assignment's "Activities That Prepare This" section linking the activity              | on a second row, a plain `Helps with` label, then one badge per linking assignment, each linking that section | The cheapest route to a specific rubric criterion.                                             |
+| Library     | neither                                                                                  | no tier badge                                                                                                 | Kept because it is good and some project will need it. Nobody is expected to do most of these. |
 
 A workshop that assignments also link shows both: the Workshop badge on the
 first row, then Helps with on the row below, and it counts as Workshop.
@@ -158,7 +158,7 @@ substitute rule. Those are still on you.
 
 Every activity is one `##` section with exactly this structure:
 
-````mdx
+```mdx
 ## Activity Name
 
 <ActivityMeta anchor="activity-name" effort="1 h" />
@@ -170,7 +170,7 @@ One or two sentences saying what this produces and why it is worth the time.
 - **Step name**: what to do.
 
 A good output is <the concrete artifact, described so a student knows whether they have it>.
-````
+```
 
 Line by line:
 

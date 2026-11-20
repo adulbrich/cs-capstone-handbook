@@ -155,7 +155,7 @@ test("the distribution email pipes the team and the two links, none nested", () 
   assert.doesNotMatch(body, /\$\{l:\/\/[^}]*\$\{/u);
   // Every field the email pipes is a contact list column.
   for (const [, name] of `${subject}\n${body}`.matchAll(
-    /\$\{e:\/\/Field\/([^}]*)\}/gu
+    /\$\{e:\/\/Field\/(?<name>[^}]*)\}/gu
   )) {
     assert.ok(Object.hasOwn(rows[0], decodeURIComponent(name)), name);
   }

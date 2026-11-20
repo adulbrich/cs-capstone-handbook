@@ -3,19 +3,23 @@
 // tightened in #510). The instruction team presents in four parts: user
 // stories and story maps, ephira mapped by hand and then drafted with an AI
 // tool, reference maps for the pipeline and research-chain backbones, then
-// the teams' own maps while the instruction team walks the room, with an
-// optional show by two volunteer teams and a wrap. Every slide explains itself to someone who missed the
+// the teams' own maps, with an optional show by two volunteer teams, and
+// what's due. Every slide explains itself to someone who missed the
 // session. Each link sits on the slide that uses it. Served at
 // /decks/fall-week-2/.
 import { Image } from "astro:assets";
 import lumiLabPhoto from "../assets/decks/lumilab.webp";
+import LinkedText from "../components/deck/LinkedText.astro";
 import Slide from "../components/deck/Slide.astro";
 import StatementSlide from "../components/deck/StatementSlide.astro";
 import StoryMap from "../components/deck/StoryMap.astro";
 import TitleSlide from "../components/deck/TitleSlide.astro";
 import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
+import schedule from "../content/docs/introduction/schedule.mdx?raw";
 import { LATE } from "../lib/canvas-entries.mjs";
+import { linkHrefs } from "../lib/deck-text.mjs";
+import { termWeeks } from "../lib/schedule-lines.mjs";
 
 export const title = "Fall Week 2: User Story Mapping";
 
@@ -139,6 +143,25 @@ if (!workshops.includes(PER_TEAM)) {
     `fall-week-2: the workshop page no longer says "${PER_TEAM}".`
   );
 }
+
+// Due this week besides the workshop submission the due slide spells out,
+// read from the fall schedule's week 2 Due line. The build fails when that
+// line no longer lists the workshop, so the slide never shows a list read
+// from the wrong line or from none.
+const WEEK = 2;
+const WORKSHOPS_PAGE = "/assignments/workshop-activities/";
+const isWorkshop = (item: string) =>
+  linkHrefs(item).some((href) => href.startsWith(WORKSHOPS_PAGE));
+const dueItems =
+  termWeeks(schedule, "fall")
+    .find(({ week }) => week === WEEK)
+    ?.rows.get("Due")?.items ?? [];
+if (!dueItems.some(isWorkshop)) {
+  throw new Error(
+    `fall-week-2: the fall schedule's week ${WEEK} Due line doesn't list the workshop.`
+  );
+}
+const alsoDue = dueItems.filter((item) => !isWorkshop(item));
 ---
 
 <TitleSlide
@@ -174,7 +197,7 @@ if (!workshops.includes(PER_TEAM)) {
 </Slide>
 
 <Slide kicker="Agenda" title="Today, in four parts">
-  <ol>
+  <ul>
     <li>User stories and story maps</li>
     <li>ephira, a period tracker: a user journey mapped by hand, then drafted with AI</li>
     <li>
@@ -182,7 +205,7 @@ if (!workshops.includes(PER_TEAM)) {
       TaxonBodyMassML (research chain)
     </li>
     <li>Your turn: map in teams</li>
-  </ol>
+  </ul>
 </Slide>
 
 <Slide kicker="Part 1 of 4: user stories and story maps" title="A user story is one thing a person can do">
@@ -578,14 +601,14 @@ out-of-scope row. Keep each story under eight words.</pre>
   </p>
 </Slide>
 
-<StatementSlide kicker="Part 4 of 4" source="Map in teams while the instruction team walks the room; two teams may show their maps">
+<StatementSlide kicker="Part 4 of 4" source="Map in teams; two teams may show their maps">
   Your turn
 </StatementSlide>
 
 <Slide kicker="Work time" title="Start here, as a team">
   <ol class="steps" style="--steps: 5;">
     <li>
-      <p>Open the story map template, one laptop per team</p>
+      <p>Open the story map template</p>
       <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
     </li>
     <li>
@@ -686,12 +709,16 @@ out-of-scope row. Keep each story under eight words.</pre>
   </p>
 </Slide>
 
-<Slide kicker="Wrap" title="Check your map against today's outcome">
-  <ul set:html={outcomeItems} />
-  <p class="deck-small after-list">
-    Stuck? The activity: <a href={activity}>User Story Mapping</a><br />
-    The guide: <a href={guide}>Requirements: Story Mapping</a>
-  </p>
+<Slide kicker="Work time" title="Your turn: map in teams">
+  <ol>
+    <li>Open the story map template</li>
+    <li>Pick the kind of top row (Backbone type): user journey, pipeline, or research chain</li>
+    <li>Fill the top row (Backbone): four or more steps, in order</li>
+    <li>Fill one thin row under it (Walking skeleton): a card in every column</li>
+    <li>Start every guess with <code>?</code> and add a question for it on the second tab</li>
+    <li>Then fill the rows under the skeleton</li>
+  </ol>
+  <p class="caption">Template: <a href={template}>the story map template</a></p>
 </Slide>
 
 <Slide kicker="Wrap" title="Due by Sunday of week 2">
@@ -706,9 +733,21 @@ out-of-scope row. Keep each story under eight words.</pre>
     <li>The Questions for our partner tab: one question per <code>?</code></li>
     <li>The whole workbook, both tabs: in Google Sheets, choose Workbook, not Current sheet</li>
   </ul>
-  <p class="deck-small after-list">
+  {
+    alsoDue.length > 0 && (
+      <p class="also-due">
+        Also due:{" "}
+        {alsoDue.map((item, index) => (
+          <>{index > 0 && (index === alsoDue.length - 1 ? " and " : ", ")}<LinkedText md={item} /></>
+        ))}
+      </p>
+    )
+  }
+  <p class="deck-small after-list due-foot">
     Bring the questions to your first partner meeting: they're its agenda.<br />
-    Template: <a href={template}>the story map template</a>
+    Template: <a href={template}>the story map template</a><br />
+    Stuck? The activity: <a href={activity}>User Story Mapping</a><br />
+    The guide: <a href={guide}>Requirements: Story Mapping</a>
   </p>
 </Slide>
 
@@ -999,9 +1038,11 @@ out-of-scope row. Keep each story under eight words.</pre>
     color: var(--deck-accent-ink);
   }
 
+  /* At the 32px floor: the due slide also carries the week's other items
+     and the links that close the session. */
   .due {
     margin-block-start: 32px;
-    font-size: 36px;
+    font-size: var(--deck-text-min);
   }
 
   /* The one submission the due list itemizes. */
@@ -1013,5 +1054,15 @@ out-of-scope row. Keep each story under eight words.</pre>
 
   .due-lead + .due {
     margin-block-start: 16px;
+  }
+
+  /* The week's other due items, in one line under the workshop's. */
+  .also-due {
+    margin-block-start: 24px;
+    font-size: var(--deck-text-min);
+  }
+
+  .due-foot {
+    margin-block-start: 32px;
   }
 </style>

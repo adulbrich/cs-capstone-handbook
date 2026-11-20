@@ -6,7 +6,7 @@ skills (`cs46x-activities`, `cs46x-assignments`, `cs46x-guides`) point here by
 section and add only what their own page type needs.
 
 Every page is reviewed for three faults (Joseph Williams and Joseph Bizup,
-*Style: Lessons in Clarity and Grace*; #680):
+_Style: Lessons in Clarity and Grace_; #680):
 
 - a **hidden actor**: the subject isn't who acts, or the action is buried in a
   noun (Concrete sentences, rule 1);
@@ -29,12 +29,12 @@ Each page type has one job, and its register follows from that job. This
 table is the one map of them; each content skill holds the rules for its own
 register.
 
-| Page type | Register | Its job | What it cites |
-|---|---|---|---|
-| Guide (`guides/`) | Explanation | Why a practice works, how it compares with the alternatives, and what good looks like. Read once for understanding, then returned to for reminders. | Evidence for every evidence-type claim (Claims), plus the links The floor requires. |
-| Activity (`activities/`) | How-to | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue. | No citation duty beyond the links The floor requires. It links the guide that explains the practice. |
-| Assignment (`assignments/`) | Brief | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, plus the links The floor requires. No research: on an assignment page it is course-design rationale and belongs in the guide the page links. |
-| Audience page (`introduction/for-*.mdx`) and syllabus | Orientation | What this is and what it asks of one reader, short enough to read before the term starts (`AGENTS.md`, Audience pages are orientation, not a course index). | No citation duty beyond the links The floor requires. |
+| Page type                                             | Register    | Its job                                                                                                                                                                                   | What it cites                                                                                                                                                                |
+| ----------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Guide (`guides/`)                                     | Explanation | Why a practice works, how it compares with the alternatives, and what good looks like. Read once for understanding, then returned to for reminders.                                       | Evidence for every evidence-type claim (Claims), plus the links The floor requires.                                                                                          |
+| Activity (`activities/`)                              | How-to      | The steps that produce one artifact in one sitting, for a reader who has already decided to do it. It gives steps and doesn't argue.                                                      | No citation duty beyond the links The floor requires. It links the guide that explains the practice.                                                                         |
+| Assignment (`assignments/`)                           | Brief       | What is due, by when, how it is judged, and why it matters to the student, as a client brief does for a professional. Read through once at the start, then checked against while working. | The standard it grades against, plus the links The floor requires. No research: on an assignment page it is course-design rationale and belongs in the guide the page links. |
+| Audience page (`introduction/for-*.mdx`) and syllabus | Orientation | What this is and what it asks of one reader, short enough to read before the term starts (`AGENTS.md`, Audience pages are orientation, not a course index).                               | No citation duty beyond the links The floor requires.                                                                                                                        |
 
 "Brief" names the assignment register only. `cs46x-review` also calls its
 reviewer prompts briefs, which is a different sense.
@@ -170,7 +170,7 @@ it in the pull request (#661).
    triple added for cadence, or a phrase that announces a point instead of
    making it ("it's worth noting that").
 7. Put a link on the words that name its topic: "read [Google Play's testing
-   requirements](...)", not "..., which [Shipping](...) covers".
+requirements](...)", not "..., which [Shipping](...) covers".
 8. An expectation names what someone could observe: "a README a new teammate
    follows without asking anyone", not "professional documentation". An
    adjective with no observable behind it ("clear", "thorough", "high

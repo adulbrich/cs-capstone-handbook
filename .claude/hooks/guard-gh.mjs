@@ -30,9 +30,9 @@ const API_WITH_BODY = /\bgh\s+api\b[\s\S]*\bbody\b/u;
 // command: reading one more file only adds checks, and issue text has no CI
 // gate (#666).
 const BODY_FILE_FLAG =
-  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s;&|)"'`<>]+))/gu;
+  /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"(?<doubleQuoted>[^"]+)"|'(?<singleQuoted>[^']+)'|(?<bare>[^\s;&|)"'`<>]+))/gu;
 const OLD_FOOTER = "Generated with [Claude Code]";
-const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/gu;
+const SHELL_VAR = /\$(?:\{(?<braced>\w+)\}|(?<bare>\w+))/gu;
 const LEADING_TILDE = /^~(?=\/|$)/u;
 
 /**
@@ -55,12 +55,13 @@ function expandVars(path) {
 function bodyFileTexts(text, dir) {
   const texts = new Set();
   for (const file of text.matchAll(BODY_FILE_FLAG)) {
+    const { doubleQuoted, singleQuoted, bare } = file.groups;
     // Single quotes expand nothing; a bare path also expands a leading `~`.
     const given =
-      file[2] ??
-      (file[1] === undefined
-        ? expandVars(file[3]).replace(LEADING_TILDE, homedir())
-        : expandVars(file[1]));
+      singleQuoted ??
+      (doubleQuoted === undefined
+        ? expandVars(bare).replace(LEADING_TILDE, homedir())
+        : expandVars(doubleQuoted));
     const path = isAbsolute(given) ? given : join(dir, given);
     try {
       texts.add(readFileSync(path, "utf8"));

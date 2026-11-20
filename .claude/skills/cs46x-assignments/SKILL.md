@@ -247,7 +247,7 @@ required; `validate-outcomes.mjs` checks the order.
    A page whose student makes nothing to hand in (Defense, Term Startup, the
    two evaluation pages) has no What You Produce and no AI-use paragraph.
 
-4. *Explanation sections*, optional: how a session runs, what deployed means, the
+4. _Explanation sections_, optional: how a session runs, what deployed means, the
    partner's facets, the sprint check-in. Named for their content.
 
 5. **`## What You Submit`**, in one or two lines: the format and what goes in
@@ -313,7 +313,7 @@ the others, so a misspelled entry heading puts the wrong text in Canvas. The
 validator checks the names under Rubric and What You Submit, not under What
 You Produce, so start a What You Produce heading with the entry's exact name.
 
-*Asides* are optional anywhere and follow Asides in `docs/agents/voice.md`.
+_Asides_ are optional anywhere and follow Asides in `docs/agents/voice.md`.
 The NDA note is the one most pages need (NDA Projects).
 
 ## Length
@@ -323,12 +323,12 @@ heading, up to the next heading of any level, without its asides, which have
 their own. Three of the budgets put numbers on limits the skeleton states in
 words:
 
-| Section | Budget | The skeleton's limit |
-|---|---|---|
-| Intro prose | 150 | one to three paragraphs |
-| What You Submit, and each entry `###` under it | 40 | one or two lines |
-| An aside | 60 | one idea (`docs/agents/voice.md`, Asides) |
-| Any other `##`, `###`, or `####` | 200 | |
+| Section                                        | Budget | The skeleton's limit                      |
+| ---------------------------------------------- | ------ | ----------------------------------------- |
+| Intro prose                                    | 150    | one to three paragraphs                   |
+| What You Submit, and each entry `###` under it | 40     | one or two lines                          |
+| An aside                                       | 60     | one idea (`docs/agents/voice.md`, Asides) |
+| Any other `##`, `###`, or `####`               | 200    |                                           |
 
 A budget is a tripwire, as the guides' split-check is, not a target. A page split into entries is budgeted section by section, so each of
 the Repo Checkpoints' milestone sections has its own 200, and a page has no

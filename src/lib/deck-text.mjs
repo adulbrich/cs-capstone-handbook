@@ -5,8 +5,8 @@
 // the class, and shows each by its name rather than its URL. linkHrefs lists
 // a line's link targets, for a deck that finds a schedule line by where it
 // points rather than by its wording.
-const MD_LINK_RE = /\[([^\]]+)\]\(([^)]*)\)/gu;
-const BOLD_RE = /\*\*([^*]+)\*\*/gu;
+const MD_LINK_RE = /\[(?<text>[^\]]+)\]\((?<href>[^)]*)\)/gu;
+const BOLD_RE = /\*\*(?<text>[^*]+)\*\*/gu;
 
 /** @param {string} text */
 const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
@@ -31,7 +31,7 @@ export function linkedLine(md) {
     if (match.index > last) {
       parts.push({ text: source.slice(last, match.index) });
     }
-    parts.push({ href: match[2], text: match[1] });
+    parts.push({ href: match.groups.href, text: match.groups.text });
     last = match.index + match[0].length;
   }
   if (last < source.length) {

@@ -44,7 +44,7 @@ export function* walk(path, extensions = TEXT_EXTENSIONS) {
  * when the file does not open with one.
  */
 export function parseFrontmatter(source) {
-  const match = /^---\n([\s\S]*?)\n---/u.exec(source);
+  const match = /^---\n(?<frontmatter>[\s\S]*?)\n---/u.exec(source);
   return match
     ? { body: source.slice(match[0].length), frontmatter: match[1] }
     : null;
