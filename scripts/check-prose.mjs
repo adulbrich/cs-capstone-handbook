@@ -508,6 +508,9 @@ function closingQuote(text, at) {
   return -1;
 }
 
+/** A letter or digit: a quote right after one is an apostrophe, not a string. */
+const WORD_CHAR = /[\p{L}\p{N}]/u;
+
 /**
  * The index of the `}` closing the `{` at `open`, skipping quoted strings,
  * or -1 when nothing closes it. Template literals are inline code by then.
@@ -516,7 +519,7 @@ function closingBrace(text, open) {
   let depth = 0;
   for (let at = open; at < text.length; at += 1) {
     const char = text[at];
-    if (char === '"' || char === "'") {
+    if ((char === '"' || char === "'") && !WORD_CHAR.test(text[at - 1])) {
       at = Math.max(at, closingQuote(text, at));
     } else if (char === "{") {
       depth += 1;
