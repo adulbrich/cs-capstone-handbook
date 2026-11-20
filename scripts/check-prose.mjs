@@ -489,13 +489,14 @@ function blank(text) {
   return text.replace(/[^\n]/gu, " ");
 }
 
-/** What ends a line of JSX text, which a string literal in an attribute never holds. */
-const NOT_IN_STRING = /[\n<>}]/u;
+/** Where a run of JSX text can end: a line end or an angle bracket. */
+const NOT_IN_STRING = /[\n<>]/u;
 
 /**
  * The index of the quote closing the one at `at`, past any backslash
- * escape, or -1. A quote whose partner lies past a line end, `<`, `>`, or
- * `}` is an apostrophe in text (`<span>the '90s</span>`), not a string.
+ * escape, or -1. A quote whose partner lies past a line end, `<`, or `>` is
+ * read as an apostrophe in text (`<span>the '90s</span>`), not a string, so
+ * a string holding an angle bracket (`{"a > b"}`) is read as text too.
  */
 function closingQuote(text, at) {
   for (let next = at + 1; next < text.length; next += 1) {
