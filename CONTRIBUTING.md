@@ -79,7 +79,7 @@ first column is what stops you locally; the last is what stops the merge.
 | Stage by name; never commit on `main` | `pre-commit` branch check | `guard-git.mjs` | ruleset: pull request required |
 | No force push at `main`, `reset --hard`, `clean -f`, `branch -D` | | `guard-git.mjs` | ruleset: force push and deletion blocked |
 | `package-lock.json` and `CLAUDE.md` are not hand-edited | | `guard-edits.mjs` | |
-| Biome clean on scripts, hooks, components, config | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
+| Biome clean on scripts, hooks, components, config, YAML | `pre-commit`, staged files; `pre-push` | `after-edit.mjs` | `build`: `npm run check` |
 | The git and gh hooks' cases pass | `pre-push` | | `build`: `test-guard-git`, `test-guard-gh`, `test-check-pr` |
 | The tools' pure modules pass their tests | `pre-push` | | `build`: `npm test` |
 | PR title is a Conventional subject; no em dash, emoji, or session link in PR or issue text | | `guard-gh.mjs` refuses a command whose text or body files carry an em dash, emoji or session link; `check-pr.mjs` reports a PR's title and text after a `pr create` or `pr edit` that prints its URL | `pr-text`: the PR title and body, re-run on every edit; issue text has no CI gate |

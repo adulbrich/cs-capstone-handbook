@@ -8,7 +8,7 @@
 // and its work time; what it presents for Workshop 3 (what can reach main
 // with nothing to stop it, whoever wrote it, audited on the same lunch app;
 // two repositories whose tests never ran; eecs-capstone, the project portal) and
-// its work time; then one wrap
+// its work time; then what's due
 // for both. Workshop 3 starts from the hard decisions Workshop 2 found. The
 // weeks on the timeline, the Read line, and the week's other Due items come
 // from the schedule, as <TermSessions> reads it, and the two workshop
@@ -346,8 +346,24 @@ function completeSubmission(workshop: number) {
   }
   return plainText(line.slice(SUBMISSION.length));
 }
-const submissionDecisions = completeSubmission(2);
-const submissionSafetyNet = completeSubmission(3);
+// Each line split into the two things a team hands in, as the due slide
+// lists them, so the build fails when either line stops reading this way.
+const DECISIONS_PARTS_RE =
+  /^(.+?) with (the few hard-to-reverse ones marked)$/u;
+const SAFETY_NET_PARTS_RE = /^(.+?) and (the smallest change that closes it)$/u;
+function handIn(workshop: number, parts: RegExp) {
+  const match = completeSubmission(workshop).match(parts);
+  if (!match) {
+    throw new Error(
+      `fall-week-3: the workshop page's fall Workshop ${workshop} complete submission no longer reads as the two parts this deck shows.`
+    );
+  }
+  return match
+    .slice(1)
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`);
+}
+const handInDecisions = handIn(2, DECISIONS_PARTS_RE);
+const handInSafetyNet = handIn(3, SAFETY_NET_PARTS_RE);
 // Who hands each in, as the workshop page states it for every workshop.
 const PER_TEAM = "One PDF per team per workshop";
 if (!workshops.includes(PER_TEAM)) {
@@ -411,8 +427,8 @@ if (!workshops.includes(PER_TEAM)) {
   </p>
 </Slide>
 
-<Slide kicker="Agenda" title="Two workshops: the instruction team presents examples, then your team works">
-  <ol>
+<Slide kicker="Workshops 2 and 3" title="Agenda">
+  <ul>
     <li>
       Workshop 2, Map Your Hard-to-Reverse Decisions: the lunch app sorted,
       three reference projects, then your list
@@ -421,8 +437,8 @@ if (!workshops.includes(PER_TEAM)) {
       Workshop 3, Audit Your Safety Net: the same app audited, three
       repositories, then your gap
     </li>
-    <li>Wrap: both outcomes, and what's due</li>
-  </ol>
+    <li>Wrap: what's due</li>
+  </ul>
 </Slide>
 
 <StatementSlide kicker="Workshop 2" source="Sort the decisions you can't walk back from the ones you can">
@@ -570,34 +586,6 @@ if (!workshops.includes(PER_TEAM)) {
   </p>
 </TwoColumnSlide>
 
-<Slide kicker="Workshop 2: work time" title="Start here, as a team">
-  <ol class="steps" style="--steps: 5;">
-    <li>
-      <p>Open a doc or a sheet, one laptop per team</p>
-      <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-    </li>
-    <li>
-      <p>Write the next ten decisions your team expects to make. Don't mark any yet</p>
-      <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
-    </li>
-    <li>
-      <p>Mark each one hard to reverse or easy to reverse</p>
-      <span class="art art-chips" aria-hidden="true"><b>Hard</b><i>Easy</i></span>
-    </li>
-    <li>
-      <p>For each hard one, name who checks it and what they check</p>
-      <span class="art art-who" aria-hidden="true">Who: what</span>
-    </li>
-    <li>
-      <p>Count the hard ones. Eight of ten? Sort again</p>
-      <span class="art art-count" aria-hidden="true">3 of 10</span>
-    </li>
-  </ol>
-  <p class="caption">
-    The activity: <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
-  </p>
-</Slide>
-
 <Slide kicker="Workshop 2: check your list" title="Check your list for four mistakes" wide>
   <table class="mistakes">
     <thead>
@@ -647,6 +635,34 @@ if (!workshops.includes(PER_TEAM)) {
   </p>
 </Slide>
 
+<Slide kicker="Workshop 2: work time" title="Start here, as a team">
+  <ol class="steps" style="--steps: 5;">
+    <li>
+      <p>Open a doc or a sheet</p>
+      <span class="art art-sheet" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Write the next ten decisions your team expects to make. Don't mark any yet</p>
+      <span class="art art-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+    </li>
+    <li>
+      <p>Mark each one hard to reverse or easy to reverse</p>
+      <span class="art art-chips" aria-hidden="true"><b>Hard</b><i>Easy</i></span>
+    </li>
+    <li>
+      <p>For each hard one, name who checks it and what they check</p>
+      <span class="art art-who" aria-hidden="true">Who: what</span>
+    </li>
+    <li>
+      <p>Count the hard ones. Eight of ten? Sort again</p>
+      <span class="art art-count" aria-hidden="true">3 of 10</span>
+    </li>
+  </ol>
+  <p class="caption">
+    The activity: <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
+  </p>
+</Slide>
+
 <StatementSlide kicker="Workshop 3" source="In Workshop 2 you found what you can't walk back; in Workshop 3 you check what guards it">
   Audit Your Safety Net
 </StatementSlide>
@@ -672,7 +688,8 @@ if (!workshops.includes(PER_TEAM)) {
   <p class="caption">
     A rushed change from a teammate and an unread one from an AI tool slip
     through the same gaps. The more that merges unread, the more your checks
-    have to catch.
+    have to catch. Contributing to an open-source project? Its maintainers own
+    main, so audit what your pull requests pass before they reach them.
   </p>
 </TwoColumnSlide>
 
@@ -826,27 +843,20 @@ if (!workshops.includes(PER_TEAM)) {
   </p>
 </Slide>
 
-<TwoColumnSlide kicker="Wrap" title="Check both outputs against today's outcome" divider wide>
-  <div slot="left">
-    <h3>Workshop 2: a sorted list</h3>
-    <ul class="reveal-list">{outcomeDecisions.map((line) => <li>{line}</li>)}</ul>
-    <p class="caption">
-      Stuck? <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a>
-    </p>
-  </div>
-  <div slot="right">
-    <h3>Workshop 3: one named gap</h3>
-    <ul class="reveal-list">{outcomeSafetyNet.map((line) => <li>{line}</li>)}</ul>
-    <p class="caption">
-      Stuck? <a href={activitySafetyNet}>Audit Your Safety Net</a>
-    </p>
-  </div>
-</TwoColumnSlide>
-
 <Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
   <ul class="due">
-    <li>Workshop 2, one PDF per team: {submissionDecisions}</li>
-    <li>Workshop 3, one PDF per team: {submissionSafetyNet}</li>
+    <li>
+      Workshop 2, one PDF per team:
+      <ul class="sub">
+        {handInDecisions.map((part) => <li>{part}</li>)}
+      </ul>
+    </li>
+    <li>
+      Workshop 3, one PDF per team:
+      <ul class="sub">
+        {handInSafetyNet.map((part) => <li>{part}</li>)}
+      </ul>
+    </li>
     {
       alsoDue.map((item) => (
         <li>
@@ -855,6 +865,10 @@ if (!workshops.includes(PER_TEAM)) {
       ))
     }
   </ul>
+  <p class="caption">
+    Stuck? <a href={activityDecisions}>Map Your Hard-to-Reverse Decisions</a><br />
+    Stuck? <a href={activitySafetyNet}>Audit Your Safety Net</a>
+  </p>
 </Slide>
 
 <style>
@@ -1250,5 +1264,15 @@ if (!workshops.includes(PER_TEAM)) {
     color: var(--deck-backbone-ink);
     background: var(--deck-backbone);
     border-color: var(--deck-backbone-edge);
+  }
+
+  /* A submission's parts, nested under its due line. */
+  .sub {
+    margin-block-start: 12px;
+    font-size: var(--deck-text-min);
+  }
+
+  .sub > li {
+    margin-block-end: 8px;
   }
 </style>

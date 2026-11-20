@@ -1,14 +1,15 @@
 ---
 // Fall week 7: Workshop 4, Peer Technical Design Review, in the week 2
 // deck's shape. An opening (the outcome, what it feeds, scoring and reading,
-// the three steps); what the instruction team presents (what a design review
+// the agenda); what the instruction team presents (what a design review
 // is for, who a team pairs with, then the campus lunch app of weeks 2 and 3 taken through the steps,
 // in diagrams where a diagram says it: its problem and context diagram, its
 // design document's sections, the architecture diagram, the other team's
 // written answers, the log of comments, the first change drawn in the data
-// model, and what an answer a team can act on reads like); the two fallbacks; then one slide per step for the teams to
-// work from, a self-check, the wrap, and an optional prompt for a team whose
-// reviewer is an agent. The step names, their minutes, and
+// model, and what an answer a team can act on reads like); the two fallbacks; then one slide per step, the
+// four mistakes to check for, one slide that summarizes the steps for work
+// time, what's due, and an optional prompt for a team whose reviewer is an
+// agent. The step names, their minutes, and
 // the reviewer questions come from the activity page; the weeks on the
 // timeline, the reading, and the week's other Due items from the schedule;
 // the submission from the workshop page.
@@ -16,7 +17,6 @@
 // sits on the slide that uses it. Served at /decks/fall-week-7/.
 import LinkedText from "../components/deck/LinkedText.astro";
 import Slide from "../components/deck/Slide.astro";
-import StatementSlide from "../components/deck/StatementSlide.astro";
 import TitleSlide from "../components/deck/TitleSlide.astro";
 import activities from "../content/docs/activities/technical-design.mdx?raw";
 import workshops from "../content/docs/assignments/workshop-activities.mdx?raw";
@@ -208,6 +208,18 @@ if (!submissionLine) {
   );
 }
 const submission = plainText(submissionLine.slice(SUBMISSION.length));
+// The submission split into the two things a team hands in, as the due
+// slide nests them, so the build fails when the line stops reading this way.
+const SUBMISSION_PARTS_RE = /^(.+?), and (the log .+)$/u;
+const submissionParts = submission.match(SUBMISSION_PARTS_RE);
+if (!submissionParts) {
+  throw new Error(
+    `fall-week-7: the workshop page's fall Workshop ${WORKSHOP} complete submission no longer reads as a design document and a log.`
+  );
+}
+const handIn = submissionParts
+  .slice(1)
+  .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`);
 // Who hands it in, as the workshop page states it for every workshop.
 const PER_TEAM = "One PDF per team per workshop";
 if (!workshops.includes(PER_TEAM)) {
@@ -218,6 +230,36 @@ if (!workshops.includes(PER_TEAM)) {
 
 // The campus lunch app of weeks 2 and 3, with week 3's choices made: the
 // sections of its design document, and which draw a diagram.
+// Other kinds of project, each with what its context diagram shows and the
+// decision it would open on, as the lunch team opens on its data model.
+const otherProjects = [
+  {
+    context: "The lab's researchers, its data, and where the runs happen",
+    decision:
+      "Which published result you reproduce first, and how you'll tell it matches",
+    project: "A research project for the partner's lab",
+  },
+  {
+    context:
+      "The partner's developers, and the systems it reads from and writes to",
+    decision:
+      "What a run does when it fails halfway: start over, or pick up where it stopped",
+    project: "Code with no screen that the partner's developers run",
+  },
+  {
+    context: "Players, the engine, and the store it ships on",
+    decision: "How a saved game still loads after the level format changes",
+    project: "A game",
+  },
+  {
+    context:
+      "The project's users, its maintainers, and the code around your change",
+    decision:
+      "Whether your change fits the project's design, before you open the pull request",
+    project: "A contribution to an open-source project",
+  },
+];
+
 const lunchSections = [
   {
     diagram: true,
@@ -353,25 +395,17 @@ const lunchLog = [
   </p>
 </Slide>
 
-<Slide kicker="Agenda" title="An example review first, then yours with the team at the next table" wide>
-  <p class="lead">
-    The instruction team presents what a design review is for, and takes the
-    campus lunch app's design document through the three steps. Then you take
-    yours through them:
-  </p>
-  <ol class="steps" style={`--steps: ${steps.length};`}>
-    {
-      steps.map((step, index) => (
-        <li>
-          <p>
-            <strong>{step.name}</strong>
-          </p>
-          <p class="note">{stepNotes[index]}</p>
-          <span class="art art-count">{step.time}</span>
-        </li>
-      ))
-    }
-  </ol>
+<Slide kicker="Workshop 4" title="Agenda">
+  <ul class="agenda">
+    <li>What a design review is for</li>
+    <li>Pairing with the team at the next table</li>
+    <li>Example: the campus lunch app's review</li>
+    <li>Examples from other projects</li>
+    <li>Writing an answer the other team can act on</li>
+    <li>If you have no design document or no reviewer</li>
+    <li>Your team's review, in three steps</li>
+    <li>Four mistakes to check for</li>
+  </ul>
 </Slide>
 
 <Slide kicker="Workshop 4: what a design review is for" title="Find the problem while it's cheap to fix" wide>
@@ -403,8 +437,8 @@ const lunchLog = [
 
 <Slide kicker="Example: the campus lunch app, step 1" title="The lunch team opens with the problem and a context diagram" wide>
   <p class="lead">
-    The problem: the campus lunch line outlasts the break between classes, so
-    the app takes orders ahead.
+    The problem: students wait in line for lunch. The app lets them order
+    ahead and pick it up at the cafe.
   </p>
   <div class="design design-context" role="img" aria-label="The lunch app's context diagram: a student orders and pays, and a cook marks orders ready, in the campus lunch app. The app uses Supabase for sign-in and data, Stripe for card payment, and a text message for pickup.">
     <div class="part person" style="grid-area: 1 / 1;">
@@ -630,6 +664,29 @@ const lunchLog = [
   </p>
 </Slide>
 
+<Slide kicker="Examples from other projects" title="Other projects open on a different decision" wide>
+  <table class="rows">
+    <thead>
+      <tr>
+        <th scope="col" class="narrow-col">Project</th>
+        <th scope="col">Its context diagram shows</th>
+        <th scope="col">The decision it opens on</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        otherProjects.map(({ context, decision, project }) => (
+          <tr>
+            <th scope="row">{project}</th>
+            <td>{context}</td>
+            <td>{decision}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</Slide>
+
 <Slide kicker="Workshop 4: writing an answer" title="Write an answer the other team can act on" wide>
   <table class="rows">
     <thead>
@@ -677,10 +734,6 @@ const lunchLog = [
     Give an agent only what your Team Charter allows.
   </p>
 </Slide>
-
-<StatementSlide kicker="Work time" source="One slide per step stays on the screen while you work; the instruction team walks the room">
-  Your turn: three steps with the team at the next table
-</StatementSlide>
 
 <Slide kicker={stepKicker(present)} title="Introduce your project, then walk through your design document" wide>
   <ul>
@@ -756,24 +809,50 @@ const lunchLog = [
   </table>
 </Slide>
 
-<Slide kicker="Wrap" title="Check your work against today's outcome">
-  <ul>{outcome.map((line) => <li>{line}</li>)}</ul>
-  <p class="caption">
-    Stuck? <a href={activityLink}>Peer Technical Design Review</a>
-  </p>
-</Slide>
-
-<Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
-  <ul class="due">
-    <li>Workshop {WORKSHOP}, one PDF per team: {submission}</li>
+<Slide kicker="Work time" title="Your turn: three steps with the team at the next table" wide>
+  <ol class="steps" style={`--steps: ${steps.length};`}>
     {
-      alsoDue.map((item) => (
+      steps.map((step, index) => (
         <li>
-          <LinkedText md={item} />
+          <p>
+            <strong>{step.name}</strong>
+          </p>
+          <p class="note">{stepNotes[index]}</p>
+          <span class="art art-count">{step.time}</span>
         </li>
       ))
     }
-  </ul>
+  </ol>
+</Slide>
+
+<Slide kicker="Wrap" title={`Due by Sunday of week ${WEEK}`}>
+  {
+    alsoDue.length === 0 ? (
+      <div class="due">
+        <p>Workshop {WORKSHOP}, one PDF per team:</p>
+        <ul>
+          {handIn.map((part) => <li>{part}</li>)}
+        </ul>
+      </div>
+    ) : (
+      <ul class="due">
+        <li>
+          Workshop {WORKSHOP}, one PDF per team:
+          <ul class="sub">
+            {handIn.map((part) => <li>{part}</li>)}
+          </ul>
+        </li>
+        {alsoDue.map((item) => (
+          <li>
+            <LinkedText md={item} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <p class="caption">
+    Stuck? <a href={activityLink}>Peer Technical Design Review</a>
+  </p>
 </Slide>
 
 <Slide kicker="Optional prompt: a team with no reviewer" title="A prompt for an agent reviewing your document" wide>
@@ -1228,6 +1307,10 @@ const lunchLog = [
     font-size: 36px;
   }
 
+  .due p {
+    margin: 0 0 16px;
+  }
+
   /* A prompt to copy, set apart from the slide's own text. */
   .prompt {
     padding: 24px 36px;
@@ -1307,5 +1390,20 @@ const lunchLog = [
     display: block;
     font-weight: 400;
     color: var(--deck-ink-soft);
+  }
+
+  /* The agenda's items, closer together than a slide's bullets. */
+  .agenda > li {
+    margin-block-end: 14px;
+  }
+
+  /* The submission's parts, nested under the due line. */
+  .sub {
+    margin-block-start: 12px;
+    font-size: var(--deck-text-min);
+  }
+
+  .sub > li {
+    margin-block-end: 8px;
   }
 </style>

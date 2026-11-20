@@ -19,6 +19,7 @@ import TwoColumnSlide from "../components/deck/TwoColumnSlide.astro";
 export const title = "Team Introductions and Charter";
 
 const charter = new URL("/assignments/team-charter/", Astro.site).href;
+const emailTemplate = new URL("/email-template.txt", Astro.site).href;
 const audit = new URL(
   "/assignments/repo-checkpoints/#the-inherited-codebase-audit",
   Astro.site
@@ -37,18 +38,18 @@ const analyze = new URL(
 />
 
 <Slide kicker="Today" title="Agenda">
-  <ol>
+  <ul>
     <li>What's due, and who contacts you next</li>
-    <li>Icebreaker: Two truths and a bug, with the instructor's round first</li>
+    <li>Icebreaker: Two truths and a bug</li>
     <li>Find your team, sit together, and play</li>
     <li>Inherited codebases, then the Team Charter and your questions</li>
-  </ol>
+  </ul>
 </Slide>
 
 <Slide kicker="This week" title="Email your project partner">
   <ul>
     <li>By Sunday of week 1, send the introduction email to your project partner, or to your mentor, with every teammate on Cc</li>
-    <li class="fragment">Start from the introduction email template, which already carries the questions worth asking before you meet</li>
+    <li class="fragment">Start from the <a href={emailTemplate}>introduction email template</a>, which already carries the questions worth asking before you meet</li>
     <li class="fragment">Send it as soon as you know your team: the meeting you're asking for has to fit your partner's or mentor's calendar</li>
     <li class="fragment">If every teammate already meets with your partner or mentor, don't send it: message your instructors at cs-46x-help@oregonstate.edu by Sunday of week 1</li>
   </ul>
