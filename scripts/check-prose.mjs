@@ -549,14 +549,26 @@ function blankExpressionAttributes(text) {
   return out + text.slice(from);
 }
 
+/** A quoted attribute value, which may wrap but never cross a blank line. */
+const QUOTED_ATTRIBUTE =
+  /[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu;
+const TAG_START = /^<[A-Za-z]/u;
+
 /**
- * A quoted attribute value inside an open tag, which may wrap but never
- * cross a blank line. The lookbehind ties it to the tag (`<LinkButton` and
- * its earlier attributes), so `class="big` in prose hides nothing. It runs
- * after expression values are blanked, so their `<` and `>` are gone.
+ * `text` with each quoted attribute value blanked when it sits inside an
+ * open tag, the nearest `<` or `>` before it being a `<` that starts one, so
+ * `class="big` in prose hides nothing. It runs after expression values are
+ * blanked, so their `<` and `>` are gone.
  */
-const TAG_ATTRIBUTE =
-  /(?<=<[A-Za-z][\w.:-]*\s(?:[^<>]*?\s)?)[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu;
+function blankTagAttributes(text) {
+  return text.replace(QUOTED_ATTRIBUTE, (match, offset) => {
+    const open = text.lastIndexOf("<", offset);
+    const inTag =
+      open > text.lastIndexOf(">", offset) &&
+      TAG_START.test(text.slice(open, open + 2));
+    return inTag ? blank(match) : match;
+  });
+}
 
 /**
  * The places on one line where a URL is not bare: a Markdown link or image
@@ -592,11 +604,11 @@ function bareUrlViolations(text, lines) {
       return inFence ? "" : line;
     })
     .join("\n");
-  const scanned = blankExpressionAttributes(
-    unfenced.replace(MDX_COMMENT, blank).replace(INLINE_CODE, blank)
-  )
-    .replace(TAG_ATTRIBUTE, blank)
-    .split("\n");
+  const scanned = blankTagAttributes(
+    blankExpressionAttributes(
+      unfenced.replace(MDX_COMMENT, blank).replace(INLINE_CODE, blank)
+    )
+  ).split("\n");
   const hits = [];
   for (const [index, line] of scanned.entries()) {
     const prose = NOT_BARE.reduce(
