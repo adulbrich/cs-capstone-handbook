@@ -490,18 +490,34 @@ function blank(text) {
 }
 
 /**
+ * The index of the quote closing the one at `at` on the same line, past any
+ * backslash escape, or -1. A quote with no partner on its line is an
+ * apostrophe in text (`<span>Partner's view</span>`), not a string.
+ */
+function closingQuote(text, at) {
+  for (let next = at + 1; next < text.length; next += 1) {
+    if (text[next] === "\n") {
+      return -1;
+    }
+    if (text[next] === "\\") {
+      next += 1;
+    } else if (text[next] === text[at]) {
+      return next;
+    }
+  }
+  return -1;
+}
+
+/**
  * The index of the `}` closing the `{` at `open`, skipping quoted strings,
- * or -1 when nothing closes it.
+ * or -1 when nothing closes it. Template literals are inline code by then.
  */
 function closingBrace(text, open) {
   let depth = 0;
   for (let at = open; at < text.length; at += 1) {
     const char = text[at];
-    if (char === '"' || char === "'" || char === "`") {
-      at = text.indexOf(char, at + 1);
-      if (at === -1) {
-        return -1;
-      }
+    if (char === '"' || char === "'") {
+      at = Math.max(at, closingQuote(text, at));
     } else if (char === "{") {
       depth += 1;
     } else if (char === "}") {
@@ -534,15 +550,13 @@ function blankExpressionAttributes(text) {
 }
 
 /**
- * The spans blanked across lines before the line scan: MDX comments, inline
- * code, and quoted attribute values, which may wrap but never cross a blank
- * line.
+ * A quoted attribute value inside an open tag, which may wrap but never
+ * cross a blank line. The lookbehind ties it to the tag (`<LinkButton` and
+ * its earlier attributes), so `class="big` in prose hides nothing. It runs
+ * after expression values are blanked, so their `<` and `>` are gone.
  */
-const MASKED_SPANS = [
-  MDX_COMMENT,
-  INLINE_CODE,
-  /[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu,
-];
+const TAG_ATTRIBUTE =
+  /(?<=<[A-Za-z][\w.:-]*\s(?:[^<>]*?\s)?)[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu;
 
 /**
  * The places on one line where a URL is not bare: a Markdown link or image
@@ -558,9 +572,9 @@ const URL_SCHEME = /https?:\/\//iu;
 /**
  * A bare URL on a handbook page: an `http://` or `https://` address in
  * prose, which Starlight renders as a link whose text is the address (#715).
- * A URL is not bare in frontmatter, a fenced code block, an expression
- * attribute value, a MASKED_SPANS span, or a NOT_BARE span. Those are
- * blanked rather than dropped, so each line keeps its number. A URL used as
+ * A URL is not bare in frontmatter, a fenced code block, an MDX comment,
+ * inline code, an attribute value, or a NOT_BARE span. Those are blanked
+ * rather than dropped, so each line keeps its number. A URL used as
  * link text is still bare. Double-quoted prose is checked, unlike the
  * vocabulary rules.
  */
@@ -579,8 +593,10 @@ function bareUrlViolations(text, lines) {
     })
     .join("\n");
   const scanned = blankExpressionAttributes(
-    MASKED_SPANS.reduce((rest, span) => rest.replace(span, blank), unfenced)
-  ).split("\n");
+    unfenced.replace(MDX_COMMENT, blank).replace(INLINE_CODE, blank)
+  )
+    .replace(TAG_ATTRIBUTE, blank)
+    .split("\n");
   const hits = [];
   for (const [index, line] of scanned.entries()) {
     const prose = NOT_BARE.reduce(
@@ -590,7 +606,7 @@ function bareUrlViolations(text, lines) {
     if (URL_SCHEME.test(prose)) {
       hits.push(
         hit(
-          "link: a bare URL; put the link on a name, [name](https://...)",
+          "link: a bare URL; link the words naming its topic, [topic](https://...)",
           index + 1,
           lines[index]
         )

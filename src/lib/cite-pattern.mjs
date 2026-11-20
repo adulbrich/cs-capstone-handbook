@@ -5,15 +5,16 @@
  * Cite.astro and References.astro) and scripts/validate-sources.mjs, which
  * runs under node at pre-commit, import the same code. Two copies of these
  * patterns would drift, and the validator would then pass pages the site
- * renders differently.
+ * renders differently. scripts/check-prose.mjs imports MDX_COMMENT and
+ * INLINE_CODE for its bare-URL check, so a change to either changes that
+ * check too.
  */
 
 // A fenced code block, including one indented under a list item. The
 // closing fence repeats the opening one at any indentation.
 const FENCED_BLOCK =
   /^[ \t]*(?<fence>`{3,}|~{3,})[^\n]*\n[\s\S]*?^[ \t]*\k<fence>[ \t]*$/gmu;
-// An MDX comment, {/* ... */}, which renders nothing. Exported for
-// check-prose's bare-URL check, which blanks the same spans.
+// An MDX comment, {/* ... */}, which renders nothing.
 export const MDX_COMMENT = /\{\/\*[\s\S]*?\*\/\}/gu;
 // An inline code span: a run of backticks closed by a run of exactly the same
 // length, within one paragraph (never across a blank line).
