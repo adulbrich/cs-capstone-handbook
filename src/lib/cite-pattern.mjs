@@ -10,15 +10,15 @@
 
 // A fenced code block, including one indented under a list item. The
 // closing fence repeats the opening one at any indentation.
-const FENCED_BLOCK = /^[ \t]*(`{3,}|~{3,})[^\n]*\n[\s\S]*?^[ \t]*\1[ \t]*$/gm;
+const FENCED_BLOCK = /^[ \t]*(`{3,}|~{3,})[^\n]*\n[\s\S]*?^[ \t]*\1[ \t]*$/gmu;
 // An MDX comment, {/* ... */}, which renders nothing.
-const MDX_COMMENT = /\{\/\*[\s\S]*?\*\/\}/g;
+const MDX_COMMENT = /\{\/\*[\s\S]*?\*\/\}/gu;
 // An inline code span: a run of backticks closed by a run of exactly the same
 // length, within one paragraph (never across a blank line).
-const INLINE_CODE = /(?<!`)(`+)(?!`)(?:(?!\n[ \t]*\n)[\s\S])*?(?<!`)\1(?!`)/g;
+const INLINE_CODE = /(?<!`)(`+)(?!`)(?:(?!\n[ \t]*\n)[\s\S])*?(?<!`)\1(?!`)/gu;
 // A Cite tag's id, in either attribute order.
-const CITE_ID = /<Cite\b[^>]*?\bid=["']([^"']+)["']/g;
-const CITE_TAG = /<Cite\b/g;
+const CITE_ID = /<Cite\b[^>]*?\bid=["']([^"']+)["']/gu;
+const CITE_TAG = /<Cite\b/gu;
 
 /**
  * The page with everything that renders no citation removed: fenced blocks,

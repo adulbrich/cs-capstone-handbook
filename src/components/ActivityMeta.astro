@@ -47,7 +47,7 @@ interface Props {
 
 const { anchor, effort, wholeTeam = false } = Astro.props;
 const { entry } = Astro.locals.starlightRoute;
-const page = Astro.props.page ?? entry.id.replace(/^activities\//, "");
+const page = Astro.props.page ?? entry.id.replace(/^activities\//u, "");
 if (effort && !EFFORT_SCALE.includes(effort)) {
   throw new Error(
     `ActivityMeta: ${page}#${anchor} on ${entry.id} has effort "${effort}", which is not one of ${EFFORT_SCALE.join(", ")}`

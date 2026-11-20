@@ -61,15 +61,15 @@ const SUBJECT = new RegExp(
  * reach. Dependabot capitalizes "Bump" and offers no setting to change it.
  */
 const EXEMPT_SUBJECT =
-  /^(?:Merge |Revert |fixup! |squash! |(?:chore|build)\(deps(?:-dev)?\): Bump )/;
+  /^(?:Merge |Revert |fixup! |squash! |(?:chore|build)\(deps(?:-dev)?\): Bump )/u;
 
 const SESSION_LINK = "claude.ai/code/session";
 /** The PR footer the harness appends by default; Assisted-by replaced it. */
 const OLD_FOOTER = "Generated with [Claude Code]";
-const SCISSORS = /^# -{8,} >8 -{8,}$/m;
+const SCISSORS = /^# -{8,} >8 -{8,}$/mu;
 /** The trailer a PR body carries above its `---` line, written exactly. */
-const TRAILER_LINE = /^Assisted-by: (?:Claude Code|none)[ \t]*$/m;
-const CUT_LINE = /^---[ \t]*$/m;
+const TRAILER_LINE = /^Assisted-by: (?:Claude Code|none)[ \t]*$/mu;
+const CUT_LINE = /^---[ \t]*$/mu;
 
 /**
  * A COMMIT_EDITMSG without git's comment lines and without anything after the

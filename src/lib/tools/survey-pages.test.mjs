@@ -45,7 +45,7 @@ test("a team of four sees intro, a rating page per member, then the split", () =
   const pages = surveyPages(survey("midterm"), quad);
   assert.equal(pages.length, 1 + 4 + 1);
   const [intro, self, ...rest] = pages;
-  assert.match(intro.questions[0].html, /<b>Quad<\/b>/);
+  assert.match(intro.questions[0].html, /<b>Quad<\/b>/u);
   assert.deepEqual(
     intro.questions[1].choices.map((c) => c.html),
     [
@@ -54,10 +54,10 @@ test("a team of four sees intro, a rating page per member, then the split", () =
     ]
   );
   assert.deepEqual(kinds(self), ["matrix", "essay"]);
-  assert.match(self.questions[0].html, /You are rating: <b>Yourself<\/b>/);
+  assert.match(self.questions[0].html, /You are rating: <b>Yourself<\/b>/u);
   assert.equal(self.questions[0].rows.length, 4);
   assert.equal(self.questions[0].columns.length, 5);
-  assert.match(rest[0].questions[0].html, /Quad Tester2/);
+  assert.match(rest[0].questions[0].html, /Quad Tester2/u);
   const closing = rest.at(-1);
   // Teams of three or more see the floor, not the pair's range.
   assert.deepEqual(kinds(closing), [
@@ -67,7 +67,7 @@ test("a team of four sees intro, a rating page per member, then the split", () =
     "essay",
     "essay",
   ]);
-  assert.match(closing.questions[0].html, /at least <b>25<\/b>/);
+  assert.match(closing.questions[0].html, /at least <b>25<\/b>/u);
   assert.equal(closing.questions[1].choices.length, 4);
   assert.equal(closing.questions[1].total, 100);
   assert.equal(closing.questions.at(-1).html, variants.midterm.question);
@@ -75,7 +75,7 @@ test("a team of four sees intro, a rating page per member, then the split", () =
 
 test("a team of two sees the even split instead of the floor", () => {
   const closing = surveyPages(survey("final"), pair).at(-1);
-  assert.match(closing.questions[0].html, /An even split is 50 points each/);
+  assert.match(closing.questions[0].html, /An even split is 50 points each/u);
   assert.equal(closing.questions[1].choices.length, 2);
   assert.equal(closing.questions.at(-1).html, variants.final.question);
 });
@@ -104,7 +104,7 @@ test("CATME rates five dimensions per member and has no split", () => {
     "essay",
   ]);
   // Best first, as the survey lists them.
-  assert.match(pages[1].questions[0].choices[0].html, /^5: /);
+  assert.match(pages[1].questions[0].choices[0].html, /^5: /u);
   assert.ok(!pages.at(-1).questions.some((q) => q.kind === "split"));
 });
 
@@ -126,7 +126,7 @@ test("a contact with no team still sees the survey, rating only themself", () =>
 test("piped values are escaped", () => {
   const row = respondentValues({ ...rows[0], Team: "<b>x</b>" });
   const [intro] = surveyPages(survey("midterm"), row);
-  assert.match(intro.questions[0].html, /&lt;b&gt;x&lt;\/b&gt;/);
+  assert.match(intro.questions[0].html, /&lt;b&gt;x&lt;\/b&gt;/u);
 });
 
 test("logic other than on embedded fields stops the preview", () => {
@@ -139,7 +139,7 @@ test("logic other than on embedded fields stops the preview", () => {
         },
         {}
       ),
-    /embedded fields only/
+    /embedded fields only/u
   );
 });
 
@@ -149,13 +149,13 @@ test("the distribution email pipes the team and the two links, none nested", () 
   assert.ok(body.includes("${e://Field/Team}"));
   assert.ok(body.includes("${l://SurveyLink?d=Take the survey}"));
   assert.ok(body.includes("${e://Field/CloseDate}"));
-  assert.doesNotMatch(body, /\[close/);
+  assert.doesNotMatch(body, /\[close/u);
   assert.ok(body.includes("${l://OptOutLink?d=Unsubscribe}"));
   // No piped text nested inside a link's display text.
-  assert.doesNotMatch(body, /\$\{l:\/\/[^}]*\$\{/);
+  assert.doesNotMatch(body, /\$\{l:\/\/[^}]*\$\{/u);
   // Every field the email pipes is a contact list column.
   for (const [, name] of `${subject}\n${body}`.matchAll(
-    /\$\{e:\/\/Field\/([^}]*)\}/g
+    /\$\{e:\/\/Field\/([^}]*)\}/gu
   )) {
     assert.ok(Object.hasOwn(rows[0], decodeURIComponent(name)), name);
   }
@@ -199,7 +199,7 @@ test("the pulse is one rating page, then the notes page", () => {
     "text",
     ...rubric.criteria.flatMap(() => ["single", "essay", "essay"]),
   ]);
-  assert.match(rating.questions[0].html, /the midterm close/);
+  assert.match(rating.questions[0].html, /the midterm close/u);
   assert.deepEqual(kinds(notes), ["single", "line", "essay", "essay"]);
 });
 
@@ -228,11 +228,11 @@ test("an End-of-Term Survey gives each facet a page of its own", () => {
     assert.equal(pages.length, rubric.criteria.length + 1, term);
     // The intro shares the first facet's page.
     assert.equal(pages[0].questions[0].kind, "text", term);
-    assert.match(pages[0].questions[0].html, /the final close/, term);
+    assert.match(pages[0].questions[0].html, /the final close/u, term);
     for (const [i, criterion] of rubric.criteria.entries()) {
       const page = pages[i];
       const guide = page.questions.at(i === 0 ? 1 : 0);
-      assert.match(guide.html, new RegExp(criterion.title), term);
+      assert.match(guide.html, new RegExp(criterion.title, "u"), term);
     }
   }
 });
@@ -264,5 +264,5 @@ test("in-page logic on anything but a selected answer stops the preview", () => 
     (e) => e.Element === "SQ" && e.Payload.InPageDisplayLogic
   ).Payload;
   keep.InPageDisplayLogic[0][0].Operator = "NotSelected";
-  assert.throws(() => surveyPages(pulse, partner), /Selected/);
+  assert.throws(() => surveyPages(pulse, partner), /Selected/u);
 });

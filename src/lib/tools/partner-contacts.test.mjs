@@ -48,9 +48,9 @@ test("the sheet reads the staff columns, splits addresses, and skips rows with n
 test("a sheet missing a column it reads stops with the column named", () => {
   assert.throws(
     () => parsePartnerSheet("Canvas Group Name,Partner Email\nA,a@example.org"),
-    /Project Partner \/ Mentor Email/
+    /Project Partner \/ Mentor Email/u
   );
-  assert.throws(() => parsePartnerSheet(""), /empty/);
+  assert.throws(() => parsePartnerSheet(""), /empty/u);
 });
 
 test("one row per partner, under the roster's spelling of the team", () => {
@@ -136,7 +136,7 @@ test("the close date reads as weekday, month, and day, in any time zone", () => 
   const day = new Date(2000, 0, 3);
   const value = [day.getFullYear(), "01", "03"].join("-");
   const text = closeDateText(value);
-  assert.match(text, /^\w+day, \w+ 3$/);
+  assert.match(text, /^\w+day, \w+ 3$/u);
   assert.equal(
     text,
     day.toLocaleDateString("en-US", {

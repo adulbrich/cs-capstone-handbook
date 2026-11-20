@@ -15,9 +15,9 @@
 
 import { pipeHtml } from "./piped-text.mjs";
 
-const INDEX = /^\d+$/;
-const HIDDEN_BY_SCRIPT = /style\.display\s*=\s*"none"/;
-const LOCATOR_QID = /^q:\/\/(\w+)\//;
+const INDEX = /^\d+$/u;
+const HIDDEN_BY_SCRIPT = /style\.display\s*=\s*"none"/u;
+const LOCATOR_QID = /^q:\/\/(\w+)\//u;
 
 /** Whether one expression on an embedded field holds for `values`. */
 function expressionHolds(expression, values) {

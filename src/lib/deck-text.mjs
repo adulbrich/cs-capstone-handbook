@@ -5,8 +5,8 @@
 // the class, and shows each by its name rather than its URL. linkHrefs lists
 // a line's link targets, for a deck that finds a schedule line by where it
 // points rather than by its wording.
-const MD_LINK_RE = /\[([^\]]+)\]\(([^)]*)\)/g;
-const BOLD_RE = /\*\*([^*]+)\*\*/g;
+const MD_LINK_RE = /\[([^\]]+)\]\(([^)]*)\)/gu;
+const BOLD_RE = /\*\*([^*]+)\*\*/gu;
 
 /** @param {string} text */
 const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);

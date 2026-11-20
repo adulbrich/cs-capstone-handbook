@@ -127,7 +127,7 @@ for (const row of rows) {
   const project = {
     teams: row["Teams supported"],
     title: row.Title,
-    url: `${args.origin.replace(/\/+$/, "")}/projects/${row.ID}`,
+    url: `${args.origin.replace(/\/+$/u, "")}/projects/${row.ID}`,
   };
   if (row["Student proposed"] === "true") {
     if (!row["Mentor email"]) {

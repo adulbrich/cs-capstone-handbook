@@ -8,7 +8,7 @@
 import { clickPaths, pathSteps } from "../../data/click-paths.mjs";
 import { parseCsv } from "./csv.mjs";
 
-const IMPORT_ID = /^\{"ImportId"/;
+const IMPORT_ID = /^\{"ImportId"/u;
 const PREVIEW = "Survey Preview";
 /** A values export writes Finished as 1 or 0; a labels export, True or False. */
 const VALUES_FINISHED = new Set(["0", "1"]);

@@ -24,16 +24,16 @@ import { isAbsolute, join } from "node:path";
 import { deny, loadRuleScripts, readInput, repoRoot } from "./lib.mjs";
 
 const PUBLISHES =
-  /\bgh\s+(?:(?:pr|issue)\s+(?:create|edit|comment|review|close|merge)|release\s+(?:create|edit))\b/;
-const API_WITH_BODY = /\bgh\s+api\b[\s\S]*\bbody\b/;
+  /\bgh\s+(?:(?:pr|issue)\s+(?:create|edit|comment|review|close|merge)|release\s+(?:create|edit))\b/u;
+const API_WITH_BODY = /\bgh\s+api\b[\s\S]*\bbody\b/u;
 // The file a `--body-file` or `-F` flag names, quoted or not, anywhere in the
 // command: reading one more file only adds checks, and issue text has no CI
 // gate (#666).
 const BODY_FILE_FLAG =
   /(?:^|\s)(?:-F|--body-file)(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s;&|)"'`<>]+))/gu;
 const OLD_FOOTER = "Generated with [Claude Code]";
-const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/g;
-const LEADING_TILDE = /^~(?=\/|$)/;
+const SHELL_VAR = /\$(?:\{(\w+)\}|(\w+))/gu;
+const LEADING_TILDE = /^~(?=\/|$)/u;
 
 /**
  * `$VAR` and `${VAR}` from this process's environment, as the shell expands

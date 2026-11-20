@@ -97,20 +97,20 @@ const GUIDES_DIR = "src/content/docs/guides";
 const SCHEDULE_PAGE = "src/content/docs/introduction/schedule.mdx";
 const scheduleSource = readFileSync(SCHEDULE_PAGE, "utf8");
 const WORKSHOP_PAGE = "src/content/docs/assignments/workshop-activities.mdx";
-const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//g;
+const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//gu;
 
 // The badge line belongs on the line after the blank line under the heading.
 // The scan window is wider than that only so a badge line pushed down by a
 // second blank line or an MDX comment is still found and reported.
 const BADGE_WINDOW_LINES = 4;
-const META_TAG_RE = /<ActivityMeta\b[^>]*>/;
+const META_TAG_RE = /<ActivityMeta\b[^>]*>/u;
 // One attribute of a badge-line tag, or null when it is absent.
 const metaAttr = (tag, name) =>
-  tag?.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? null;
+  tag?.match(new RegExp(`\\b${name}="([^"]*)"`, "u"))?.[1] ?? null;
 // The badges the badge line replaced. One left on an activity page is a
 // hand-written second copy of what the component computes.
 const RETIRED_BADGE_RE =
-  /<Badge[^>]*text="(Individual Activity|Team Activity|Workshop|Recommended)"/;
+  /<Badge[^>]*text="(Individual Activity|Team Activity|Workshop|Recommended)"/u;
 
 // The section body runs to the next h2 or end of file.
 function sectionEnd(lines, start) {
@@ -142,7 +142,7 @@ function readSection(page, lines, i) {
   return {
     anchor: metaAttr(tag, "anchor"),
     effort: metaAttr(tag, "effort"),
-    hasOutput: /^A good output/m.test(body),
+    hasOutput: /^A good output/mu.test(body),
     heading,
     // One badge line, on the line after the blank line after the heading.
     metaPlaced:
@@ -431,24 +431,24 @@ for (const file of readdirSync(GUIDES_DIR)) {
 // the pattern cannot tell "fall week 3" from "a plan made in week 2", and an
 // illustration reads as well in durations ("a month later") as in numbers.
 const STANDALONE_RULES = [
-  [/\]\(\/assignments\//, "links an assignment page"],
-  [/\b(?:first|second) half\b/i, 'says "first half" or "second half"'],
-  [/\bworkshops?\b/i, 'says "workshop"'],
-  [/\bweeks? \d/i, "names a week number"],
-  [/\bin (?:the )?(?:fall|winter|spring)\b/i, "places itself in a term"],
+  [/\]\(\/assignments\//u, "links an assignment page"],
+  [/\b(?:first|second) half\b/iu, 'says "first half" or "second half"'],
+  [/\bworkshops?\b/iu, 'says "workshop"'],
+  [/\bweeks? \d/iu, "names a week number"],
+  [/\bin (?:the )?(?:fall|winter|spring)\b/iu, "places itself in a term"],
   [
-    /\b(?:fall|winter|spring) (?:week|term|session|workshop)/i,
+    /\b(?:fall|winter|spring) (?:week|term|session|workshop)/iu,
     "places itself in a term",
   ],
-  [/\bthree terms\b/i, 'says "three terms", the course calendar'],
-  [/\bten weeks\b/i, 'says "ten weeks", the length of a term'],
+  [/\bthree terms\b/iu, 'says "three terms", the course calendar'],
+  [/\bten weeks\b/iu, 'says "ten weeks", the length of a term'],
   [
-    /\b(?:this|next|last) (?:academic )?year\b/i,
+    /\b(?:this|next|last) (?:academic )?year\b/iu,
     "places itself in the school year",
   ],
-  [/\ba year left\b/i, "measures the project by the school year"],
+  [/\ba year left\b/iu, "measures the project by the school year"],
   // Case-sensitive, so lowercase "ta" does not trip it; \b keeps it out of words.
-  [/\bTAs?\b/, "names the course staff (TA)"],
+  [/\bTAs?\b/u, "names the course staff (TA)"],
 ];
 const STANDALONE_EXEMPT = new Set([
   // The OSU Advantage Accelerator's Iterate program is an external event the
@@ -467,34 +467,34 @@ const STANDALONE_EXEMPT = new Set([
 // industry practice.
 const ASSIGNMENT_NAMES = new Map([
   ["Assignments Overview", null], // a page, not a piece of work
-  ["Bidding Survey", /\bbidding[\s-]surveys?\b/i],
+  ["Bidding Survey", /\bbidding[\s-]surveys?\b/iu],
   [
     "Career and Individual Retrospective",
-    /\bindividual[\s-]retrospectives?\b/i,
+    /\bindividual[\s-]retrospectives?\b/iu,
   ],
   // Bare "defense" is ordinary English and opens a quoted attribution.
-  ["Defense", /\b(?:design|project|technical|final)[\s-]defen[cs]es?\b/i],
-  ["Definition of Shipped", /\bdefinitions?[\s-]of[\s-]shipped\b/i],
-  ["Demo Day", /\bdemo[\s-]days?\b/i],
+  ["Defense", /\b(?:design|project|technical|final)[\s-]defen[cs]es?\b/iu],
+  ["Definition of Shipped", /\bdefinitions?[\s-]of[\s-]shipped\b/iu],
+  ["Demo Day", /\bdemo[\s-]days?\b/iu],
   // Bare "Expo" is also the React Native framework.
-  ["Engineering Expo", /\bengineering[\s-]expos?\b|\bat the expo\b/i],
+  ["Engineering Expo", /\bengineering[\s-]expos?\b|\bat the expo\b/iu],
   ["Incident Postmortem", null],
   ["Landing Page", null],
-  ["Peer Evaluations", /\bpeer[\s-]evaluations?\b/i],
+  ["Peer Evaluations", /\bpeer[\s-]evaluations?\b/iu],
   ["Project Handoff", null],
-  ["Project Partner Evaluation", /\bpartner[\s-]evaluations?\b/i],
+  ["Project Partner Evaluation", /\bpartner[\s-]evaluations?\b/iu],
   ["Project Retrospective", null],
-  ["Release and Metrics", /\brelease[\s-]and[\s-]metrics\b/i],
-  ["Repo Checkpoints", /\brepo(?:sitory)?[\s-]checkpoints?\b/i],
-  ["Resume and Intent", /\bresume[\s-]and[\s-]intent\b/i],
+  ["Release and Metrics", /\brelease[\s-]and[\s-]metrics\b/iu],
+  ["Repo Checkpoints", /\brepo(?:sitory)?[\s-]checkpoints?\b/iu],
+  ["Resume and Intent", /\bresume[\s-]and[\s-]intent\b/iu],
   [
     "RFC (Request for Comments)",
-    /\bRFCs?\b|\brequests?[\s-]for[\s-]comments?\b/i,
+    /\bRFCs?\b|\brequests?[\s-]for[\s-]comments?\b/iu,
   ],
-  ["Sprint Notes and Check-Ins", /\bsprint[\s-]notes?\b/i],
+  ["Sprint Notes and Check-Ins", /\bsprint[\s-]notes?\b/iu],
   ["Team Charter", null],
-  ["Term Retrospective", /\bterm[\s-]retrospectives?\b/i],
-  ["Term Startup", /\bterm[\s-]startups?\b/i],
+  ["Term Retrospective", /\bterm[\s-]retrospectives?\b/iu],
+  ["Term Startup", /\bterm[\s-]startups?\b/iu],
   ["Workshop Activities", null], // the "workshop" rule above covers it
 ]);
 const assignmentTitles = new Set(assignments.map((a) => a.title));
@@ -519,7 +519,7 @@ const ACTIVITY_RULES = [...STANDALONE_RULES, ...ASSIGNMENT_NAME_RULES];
 // A third-party URL is someone else's slug, not this page's prose: a link
 // whose slug ends in "-workshop" is not the page saying "workshop". Internal
 // links are kept, because the assignment-link rule reads them.
-const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/g;
+const EXTERNAL_LINK_TARGET_RE = /\]\(https?:\/\/[^)]*\)/gu;
 
 // Every MDX page under activities/ and guides/, with the directory's short
 // name for messages and keys. Rule 3 and the outcome-tag and grading-language
@@ -581,11 +581,11 @@ for (const { dir, kind, file } of activityAndGuidePages()) {
 // flagged, because the gen-AI and sprint guides use both legitimately.
 const OUTCOME_TAG_IN_TEXT_RE = new RegExp(
   String.raw`\b(${OUTCOME_TAG})\b`,
-  "g"
+  "gu"
 );
-const GRADE_NUMBER_RE = /\b\d+(?:\.\d+)?(?:%| points?\b)/g;
+const GRADE_NUMBER_RE = /\b\d+(?:\.\d+)?(?:%| points?\b)/gu;
 const GRADE_WORD_RE =
-  /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/i;
+  /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/iu;
 const GRADE_CONTEXT_CHARS = 60;
 
 for (const { dir, file, kind } of activityAndGuidePages()) {
@@ -603,7 +603,7 @@ for (const { dir, file, kind } of activityAndGuidePages()) {
     );
     if (GRADE_WORD_RE.test(context)) {
       problems.push(
-        `grading language: ${where} says "${m[0]}" next to a grading word: ${JSON.stringify(context.replace(/\s+/g, " ").trim())}`
+        `grading language: ${where} says "${m[0]}" next to a grading word: ${JSON.stringify(context.replace(/\s+/gu, " ").trim())}`
       );
     }
   }
@@ -620,7 +620,7 @@ for (const key of activities.keys()) {
 // both that the phrase is still there and that it is still true. If the count
 // drops below a hundred, change the phrase in both places and here, in the
 // same commit.
-const LIBRARY_CLAIM = /more than a hundred/i;
+const LIBRARY_CLAIM = /more than a hundred/iu;
 const LIBRARY_CLAIM_MIN = 100;
 const LIBRARY_CLAIM_PAGES = [
   join(ACTIVITIES_DIR, "introduction.mdx"),
@@ -648,9 +648,9 @@ const legendSource = readFileSync(
   join("src/content/docs", `${LEGEND_PAGE_ID}.mdx`),
   "utf8"
 );
-const examples = [...legendSource.matchAll(new RegExp(META_TAG_RE, "g"))];
-const caption = legendSource.match(/<BadgeLegend\b[^>]*>/)?.[0] ?? null;
-const hasWholeTeam = (tag) => /\bwholeTeam\b/.test(tag);
+const examples = [...legendSource.matchAll(new RegExp(META_TAG_RE, "gu"))];
+const caption = legendSource.match(/<BadgeLegend\b[^>]*>/u)?.[0] ?? null;
+const hasWholeTeam = (tag) => /\bwholeTeam\b/u.test(tag);
 if (examples.length === 1) {
   const [tag] = examples[0];
   const key = activityKey(metaAttr(tag, "page"), metaAttr(tag, "anchor"));

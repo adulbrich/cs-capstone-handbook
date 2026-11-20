@@ -23,9 +23,9 @@
 import { execFileSync } from "node:child_process";
 import { loadRuleScripts, readInput, repoRoot } from "./lib.mjs";
 
-const PR_WRITE = /\bgh\s+pr\s+(?:create|edit)\b/;
+const PR_WRITE = /\bgh\s+pr\s+(?:create|edit)\b/u;
 const PR_URL =
-  /^[ \t]*(https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+)[ \t\r]*$/gm;
+  /^[ \t]*(https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+)[ \t\r]*$/gmu;
 // The reads share one budget, under the 30 s the settings give the hook: a
 // hook cut off at its timeout shows the model nothing.
 const BUDGET_MS = 25_000;

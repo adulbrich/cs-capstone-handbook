@@ -115,7 +115,7 @@ test("a rated criterion whose 1 is not half its 5 is refused", () => {
   lowered.criteria[0].ratings.find((r) => r.name === "Average of 1").points = 8;
   assert.throws(
     () => peerCriteria(lowered, "catme"),
-    /"Average of 1" must be worth 50% of "Average of 5".*8 of 20/
+    /"Average of 1" must be worth 50% of "Average of 5".*8 of 20/u
   );
 });
 
@@ -133,7 +133,7 @@ test("a values export is refused: labels only", () => {
       parsePeerExport(exportCsv(workedExample(), { labels: false }), {
         rubrics,
       }),
-    /values export/
+    /values export/u
   );
   assert.equal(
     parsePeerExport(exportCsv(workedExample()), { rubrics }).type,
@@ -171,7 +171,7 @@ test("a team of three: a self share below the floor is rescaled", () => {
   // Fox1 gave themselves 20 of a floor of 33: raised to 33, and the 40s
   // scaled by 67 / 80 to 33.5 each.
   assert.equal(messages(problems, "note").length, 1);
-  assert.match(messages(problems, "note")[0], /raised to 33/);
+  assert.match(messages(problems, "note")[0], /raised to 33/u);
   const fox2 = resultFor(results, "fox2@example.edu");
   assert.equal(fox2.meanShare, (33.5 + 33) / 2);
   const fox3 = resultFor(results, "fox3@example.edu");
@@ -211,7 +211,7 @@ test("a finished response missing a page: reported, the ratee rated by the rest"
   const { results, problems } = run({ Emu: team }, responses);
   assert.ok(
     messages(problems, "error").some((m) =>
-      /No scored ratings page for Tester3, Emu/.test(m)
+      /No scored ratings page for Tester3, Emu/u.test(m)
     )
   );
   const emu3 = resultFor(results, "emu3@example.edu");
@@ -238,10 +238,10 @@ test("a team of two: flags for the split range and corroboration", () => {
   );
   const reviews = messages(problems, "review");
   assert.ok(
-    reviews.some((m) => /gave themselves 60, outside 45 to 55/.test(m))
+    reviews.some((m) => /gave themselves 60, outside 45 to 55/u.test(m))
   );
-  assert.ok(reviews.some((m) => /average 2, below 3/.test(m)));
-  assert.ok(reviews.some((m) => /rated each other 5 and 2/.test(m)));
+  assert.ok(reviews.some((m) => /average 2, below 3/u.test(m)));
+  assert.ok(reviews.some((m) => /rated each other 5 and 2/u.test(m)));
   // SelfFloor is 0 on a team of two: nothing is rescaled.
   assert.deepEqual(messages(problems, "note"), []);
   // The flags never change a score.
@@ -264,7 +264,7 @@ test("a team of two with a non-completer: one scores 50, one has no score", () =
   assert.equal(resultFor(results, "ibis1@example.edu").total, null);
   assert.equal(resultFor(results, "ibis2@example.edu").total, 50);
   assert.ok(
-    messages(problems, "error").some((m) => /No teammate's ratings/.test(m))
+    messages(problems, "error").some((m) => /No teammate's ratings/u.test(m))
   );
 });
 
@@ -280,12 +280,12 @@ test("a ratee answer that disagrees with the loop position is not scored", () =>
   responses[1].pages[3].ratee = "${e://Field/Team%20Member%202}";
   const { results, problems } = run({ Cod: team }, responses);
   const errors = messages(problems, "error");
-  assert.ok(errors.some((m) => /loop page 2|Loop page 2/.test(m)));
+  assert.ok(errors.some((m) => /loop page 2|Loop page 2/u.test(m)));
   assert.ok(
-    errors.some((m) => /Loop page 3: the ratee answer "\$\{e:/.test(m))
+    errors.some((m) => /Loop page 3: the ratee answer "\$\{e:/u.test(m))
   );
   assert.ok(
-    errors.some((m) => /No scored ratings page for Tester2, Cod/.test(m))
+    errors.some((m) => /No scored ratings page for Tester2, Cod/u.test(m))
   );
   // Cod2 lost Cod1's ratings, so only Cod3 rated them.
   assert.equal(resultFor(results, "cod2@example.edu").raters, 1);
@@ -310,7 +310,7 @@ test("a split that does not total 100 is left out", () => {
     ],
   });
   const { results, problems } = run({ Ant: team }, responses);
-  assert.ok(messages(problems, "error").some((m) => /totals 97/.test(m)));
+  assert.ok(messages(problems, "error").some((m) => /totals 97/u.test(m)));
   assert.equal(resultFor(results, "ant1@example.edu").meanShare, 34);
 });
 
@@ -394,7 +394,7 @@ test("the survey type is detected from the columns", () => {
     }))
   );
   assert.equal(map.type, "regular");
-  assert.match(map.problems[0], /no Split column/);
+  assert.match(map.problems[0], /no Split column/u);
 });
 
 test("cell readers: rating labels, emails in either form", () => {
@@ -423,7 +423,7 @@ test("a RecordedDate a spreadsheet rewrote stops the run", () => {
   responses[0].recordedDate = "1/1/99 10:00";
   assert.throws(
     () => parsePeerExport(exportCsv(responses), { rubrics }),
-    /RecordedDate "1\/1\/99 10:00".*Export the responses again/
+    /RecordedDate "1\/1\/99 10:00".*Export the responses again/u
   );
 });
 
@@ -441,11 +441,11 @@ test("the self floor comes from the roster; a differing survey value warns", () 
   const { problems } = run({ Gnu: team }, responses);
   assert.ok(
     messages(problems, "warning").some((m) =>
-      /showed SelfFloor 20; a team of 3 has 33/.test(m)
+      /showed SelfFloor 20; a team of 3 has 33/u.test(m)
     )
   );
   // 30 is below the computed 33, so it is raised; the survey said 20.
-  assert.ok(messages(problems, "note").some((m) => /raised to 33/.test(m)));
+  assert.ok(messages(problems, "note").some((m) => /raised to 33/u.test(m)));
 });
 
 test("a header whose ImportId disagrees with its tag is refused", () => {
@@ -455,7 +455,7 @@ test("a header whose ImportId disagrees with its tag is refused", () => {
     { importId: "QID9_x1", tag: "Split_x1" },
   ]);
   assert.equal(map.problems.length, 1);
-  assert.match(map.problems[0], /loop prefix or row disagrees/);
+  assert.match(map.problems[0], /loop prefix or row disagrees/u);
 });
 
 /** A rubric-assessment export for the given students, criteria named as in `names`. */
@@ -514,7 +514,7 @@ test("criteria match by name, with or without outcome tags", () => {
   }
   assert.throws(
     () => fill(results, owls, ["Quantity", "Effort"]),
-    /Missing: Quality.*Not in the rubric: Effort/s
+    /Missing: Quality.*Not in the rubric: Effort/su
   );
 });
 
@@ -549,7 +549,7 @@ test("a student from another section is scored and written to a CSV of their own
   assert.equal(more.length, 0);
   assert.equal(other[0], "");
   assert.equal(other[1], `${visitor.last}, ${visitor.first}`);
-  assert.match(other[2], /^Average of [1-5]$/);
+  assert.match(other[2], /^Average of [1-5]$/u);
   assert.equal(
     fill(scored.results.slice(0, 3), owls.slice(0, 3), plainNames)
       .otherSections,
@@ -599,9 +599,9 @@ test("a reordered rubric scores an export generated from the old order the same"
         { ...rubric, criteria: rubric.criteria.slice(0, 4) },
         "regular"
       ),
-    /expects 1, the point distribution/
+    /expects 1, the point distribution/u
   );
-  assert.throws(() => peerCriteria(rubric), /Unknown peer instrument/);
+  assert.throws(() => peerCriteria(rubric), /Unknown peer instrument/u);
 });
 
 test("a matrix row naming no rated criterion, or two rows naming one, stops the run", () => {
@@ -611,10 +611,10 @@ test("a matrix row naming no rated criterion, or two rows naming one, stops the 
   const none = parsePeerExport(csv.replaceAll(quality, "An invented row"), {
     rubrics,
   });
-  assert.ok(none.problems.some((m) => /names no rated criterion/.test(m)));
+  assert.ok(none.problems.some((m) => /names no rated criterion/u.test(m)));
   assert.ok(
     none.problems.some((m) =>
-      /no column for the rubric criterion "Quality"/.test(m)
+      /no column for the rubric criterion "Quality"/u.test(m)
     )
   );
   assert.deepEqual(none.responses, []);
@@ -623,7 +623,7 @@ test("a matrix row naming no rated criterion, or two rows naming one, stops the 
   });
   assert.ok(
     twice.problems.some((m) =>
-      /Two matrix rows name the rubric criterion "Quantity"/.test(m)
+      /Two matrix rows name the rubric criterion "Quantity"/u.test(m)
     )
   );
   // A rubric that rates fewer criteria than the matrix has rows.
@@ -636,7 +636,7 @@ test("a matrix row naming no rated criterion, or two rows naming one, stops the 
   });
   assert.ok(
     extra.problems.some((m) =>
-      /Matrix column N_Rating_2 .* names no rated criterion/.test(m)
+      /Matrix column N_Rating_2 .* names no rated criterion/u.test(m)
     )
   );
 });
@@ -687,7 +687,7 @@ test("the rubric assessment is filled from the scores", () => {
     row("10").slice(2),
     Array.from({ length: 15 }, () => "")
   );
-  assert.ok(problems.some((p) => /Tester1, Ibis: no score/.test(p)));
+  assert.ok(problems.some((p) => /Tester1, Ibis: no score/u.test(p)));
 });
 
 test("what students see, the filled rubric, never holds a comment; the instructor's file does", () => {
@@ -695,8 +695,8 @@ test("what students see, the filled rubric, never holds a comment; the instructo
   responses[1].pages[2].comment = "Invented private remark";
   responses[1].open = { Overall: "Invented overall remark" };
   const { comments, results } = run({ Owls: owls }, responses);
-  assert.doesNotMatch(fill(results, owls, plainNames).csv, /Invented/);
+  assert.doesNotMatch(fill(results, owls, plainNames).csv, /Invented/u);
   const instructor = commentsCsv(comments);
-  assert.match(instructor, /Invented private remark/);
-  assert.match(instructor, /Invented overall remark/);
+  assert.match(instructor, /Invented private remark/u);
+  assert.match(instructor, /Invented overall remark/u);
 });

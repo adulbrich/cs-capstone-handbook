@@ -21,10 +21,10 @@ export const IMAGE_EXTENSIONS = Object.freeze([
 export const ACCEPT = [...MARKDOWN_EXTENSIONS, ...IMAGE_EXTENSIONS].join(",");
 
 /** A link with a scheme (https:, data:) or protocol-relative: not a file. */
-const EXTERNAL = /^(?:[a-z][a-z\d+.-]*:|\/\/)/i;
+const EXTERNAL = /^(?:[a-z][a-z\d+.-]*:|\/\/)/iu;
 
 /** A link's query string or fragment, which names no part of the file. */
-const QUERY_OR_HASH = /[?#].*$/;
+const QUERY_OR_HASH = /[?#].*$/u;
 
 const extension = (path) => {
   const name = path.slice(path.lastIndexOf("/") + 1);

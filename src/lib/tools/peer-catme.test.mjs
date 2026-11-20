@@ -79,7 +79,7 @@ test("the export of the generated CATME survey is detected and carries no split"
   ]) {
     assert.ok(tags.split(",").includes(tag), tag);
   }
-  assert.doesNotMatch(tags, /Split|Rating/);
+  assert.doesNotMatch(tags, /Split|Rating/u);
   const parsed = parsePeerExport(csv, { rubrics });
   assert.equal(parsed.type, "catme");
   assert.equal(parsed.rubric, catmeRubric);
@@ -168,7 +168,7 @@ test("a CATME dimension column the rubric does not rate stops the run", () => {
   });
   assert.ok(
     parsed.problems.some((m) =>
-      /Column N_Quality is a CATME dimension the rubric does not rate/.test(m)
+      /Column N_Quality is a CATME dimension the rubric does not rate/u.test(m)
     )
   );
   assert.deepEqual(parsed.responses, []);
@@ -199,10 +199,10 @@ test("a CATME team of two: low average and divergence flags over five dimensions
     })
   );
   const reviews = messages(problems, "review");
-  assert.ok(reviews.some((m) => /average 2, below 3/.test(m)));
-  assert.ok(reviews.some((m) => /rated each other 5 and 2/.test(m)));
+  assert.ok(reviews.some((m) => /average 2, below 3/u.test(m)));
+  assert.ok(reviews.some((m) => /rated each other 5 and 2/u.test(m)));
   // No split on CATME: no 45 to 55 review.
-  assert.ok(!reviews.some((m) => /gave themselves/.test(m)));
+  assert.ok(!reviews.some((m) => /gave themselves/u.test(m)));
   assert.equal(resultFor(results, "yak1@example.edu").total, 67.5);
 });
 
@@ -255,7 +255,7 @@ test("a CATME response missing a ratee's page: reported, the ratee rated by the 
   const { results, problems } = run({ Emu: team }, responses);
   assert.ok(
     messages(problems, "error").some((m) =>
-      /No scored ratings page for Tester3, Emu/.test(m)
+      /No scored ratings page for Tester3, Emu/u.test(m)
     )
   );
   const emu3 = resultFor(results, "emu3@example.edu");
@@ -267,6 +267,6 @@ test("CATME downloads: no split columns", () => {
   const responses = workedExample();
   const { results } = run({ Kea: kea }, responses);
   const peer = peerCriteria(catmeRubric, "catme");
-  assert.doesNotMatch(detailsCsv(results, peer), /share|Multiplier/);
+  assert.doesNotMatch(detailsCsv(results, peer), /share|Multiplier/u);
   assert.ok(gapRows(results).every((row) => row.share === null));
 });

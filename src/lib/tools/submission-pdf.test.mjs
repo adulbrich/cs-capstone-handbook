@@ -78,11 +78,11 @@ const BLANK = {
 
 test("a Markdown file renders as GitHub-flavored HTML with diagrams held aside", () => {
   const read = readMarkdown(CHARTER);
-  assert.match(read.html, /<table>/);
-  assert.match(read.html, /<th>Role<\/th>/);
-  assert.match(read.html, /<div class="diagram" data-diagram="0"><\/div>/);
-  assert.doesNotMatch(read.html, /flowchart/);
-  assert.match(read.html, /<code class="language-sh">npm test/);
+  assert.match(read.html, /<table>/u);
+  assert.match(read.html, /<th>Role<\/th>/u);
+  assert.match(read.html, /<div class="diagram" data-diagram="0"><\/div>/u);
+  assert.doesNotMatch(read.html, /flowchart/u);
+  assert.match(read.html, /<code class="language-sh">npm test/u);
   assert.deepEqual(read.diagrams, [
     { line: 13, source: "flowchart LR\n  A --> B" },
   ]);
@@ -167,7 +167,7 @@ test("front matter is dropped and the line numbers still match the file", () => 
   const text = "---\ntitle: Design\n---\n# Design\n\n![](d.png)\n";
   assert.equal(stripFrontMatter(text), "\n\n\n# Design\n\n![](d.png)\n");
   const read = readMarkdown(text);
-  assert.doesNotMatch(read.html, /title: Design/);
+  assert.doesNotMatch(read.html, /title: Design/u);
   assert.equal(read.images[0].line, 6);
   assert.equal(
     stripFrontMatter("# No front matter\n---\n"),
@@ -177,8 +177,8 @@ test("front matter is dropped and the line numbers still match the file", () => 
 
 test("with breaks, each line of the text stays its own line", () => {
   const text = "Repository: https://example.edu/repo\nCommit: abc123\n";
-  assert.match(readMarkdown(text, { breaks: true }).html, /<br>/);
-  assert.doesNotMatch(readMarkdown(text).html, /<br>/);
+  assert.match(readMarkdown(text, { breaks: true }).html, /<br>/u);
+  assert.doesNotMatch(readMarkdown(text).html, /<br>/u);
 });
 
 test("a Windows line ending reads the same as a Unix one", () => {
@@ -318,12 +318,12 @@ test("the generated date spells out its month in the reader's locale", () => {
   const month = day.toLocaleDateString("en-US", { month: "long" });
   const us = generatedOn(day, "en-US");
   const uk = generatedOn(day, "en-GB");
-  assert.match(us, /^[A-Z][a-z]+ \d{1,2}, \d{4}$/);
-  assert.match(uk, /^\d{1,2} [A-Z][a-z]+ \d{4}$/);
+  assert.match(us, /^[A-Z][a-z]+ \d{1,2}, \d{4}$/u);
+  assert.match(uk, /^\d{1,2} [A-Z][a-z]+ \d{4}$/u);
   for (const text of [us, uk]) {
     assert.ok(text.includes(month));
     assert.ok(text.includes(String(day.getFullYear())));
-    assert.doesNotMatch(text, /\d+\/\d+/);
+    assert.doesNotMatch(text, /\d+\/\d+/u);
   }
 });
 

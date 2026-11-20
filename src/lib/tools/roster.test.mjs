@@ -80,7 +80,7 @@ test("parseRoster reads an optional grader column, in any case", () => {
 test("parseRoster names a missing column", () => {
   assert.throws(
     () => parseRoster("name,login_id\nA,a@example.edu"),
-    /group_name/
+    /group_name/u
   );
 });
 
@@ -102,11 +102,11 @@ test("parseRoster rejects a duplicate email and a missing one", () => {
     (error) => {
       assert.match(
         error.message,
-        /ada@example\.edu appears on data rows 1 and 2/
+        /ada@example\.edu appears on data rows 1 and 2/u
       );
       assert.match(
         error.message,
-        /Data row 3 \(Hopper, Grace\) has no login_id/
+        /Data row 3 \(Hopper, Grace\) has no login_id/u
       );
       return true;
     }
@@ -170,7 +170,7 @@ test("buildContacts stops on a team of 11 and names it", () => {
   const students = parseRoster(
     roster([...team("Big", 11), ...team("Pair", 2)])
   );
-  assert.throws(() => buildContacts(students), /Big \(11\)/);
+  assert.throws(() => buildContacts(students), /Big \(11\)/u);
 });
 
 test("contactsCsv writes the exact headers Qualtrics maps", () => {
@@ -209,9 +209,9 @@ test("the close date reads as weekday, day, time, and zone, in plain spaces", ()
   const zone = new Intl.DateTimeFormat("en-US", { timeZoneName: "short" })
     .formatToParts(date)
     .find((part) => part.type === "timeZoneName").value;
-  assert.match(text, /\bFriday\b/);
-  assert.match(text, /\b4\b/);
-  assert.match(text, /\b5:00 PM\b/);
+  assert.match(text, /\bFriday\b/u);
+  assert.match(text, /\b4\b/u);
+  assert.match(text, /\b5:00 PM\b/u);
   assert.ok(text.endsWith(zone), `${text} ends with ${zone}`);
-  assert.doesNotMatch(text, /[^\S ]/);
+  assert.doesNotMatch(text, /[^\S ]/u);
 });

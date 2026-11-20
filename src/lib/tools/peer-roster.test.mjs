@@ -76,7 +76,7 @@ test("an unknown team is refused with the closest teams, unless confirmed new", 
   assert.equal(refused.problems.length, 1);
   assert.match(
     refused.problems[0],
-    /No team "Trioo" in the roster; closest: Trio/
+    /No team "Trioo" in the roster; closest: Trio/u
   );
   assert.equal(refused.suggestions[0], "Trio");
   assert.deepEqual(closestTeams("Par", ["Trio", "Pair", "Big"], 2), [
@@ -173,7 +173,7 @@ test("the roster model reads the saved file and adds the added students", () => 
   assert.equal(model.students.length, 4);
   assert.equal(model.summary.teams[0].otherSection, 1);
   const broken = rosterModel({ name: "x.csv", text: "a,b\n1,2\n" });
-  assert.match(broken.error, /missing the columns/);
+  assert.match(broken.error, /missing the columns/u);
   assert.equal(broken.students, null);
 });
 
@@ -183,7 +183,7 @@ test("the previews mark added students and say why a team gets no survey", () =>
   const teams = teamsTable(summary);
   assert.deepEqual(teams.header, ["Team", "Size", "Members", "Note"]);
   const trio = teams.rows.find((row) => row[0] === "Trio");
-  assert.match(trio[2], /Lovelace, Ada \(another section\)$/);
+  assert.match(trio[2], /Lovelace, Ada \(another section\)$/u);
   assert.equal(trio[3], "1 from another section");
   assert.equal(
     teams.rows.find((row) => row[0] === "Big")[3],

@@ -51,7 +51,7 @@ const activity =
         activityStart,
         activityEnd < 0 ? undefined : activityEnd
       );
-const STEP_RE = /^- \*\*(.+?)\*\*: (\d+ minutes(?: per team)?)/gm;
+const STEP_RE = /^- \*\*(.+?)\*\*: (\d+ minutes(?: per team)?)/gmu;
 const steps = [...activity.matchAll(STEP_RE)].map(([, name, time]) => ({
   name,
   time,
@@ -83,7 +83,7 @@ if (!noDocumentLine) {
   );
 }
 const noDocument = plainText(noDocumentLine.slice(NO_DOCUMENT.length)).replace(
-  /^./,
+  /^./u,
   (first) => first.toUpperCase()
 );
 
@@ -210,7 +210,7 @@ if (!submissionLine) {
 const submission = plainText(submissionLine.slice(SUBMISSION.length));
 // The submission split into the two things a team hands in, as the due
 // slide nests them, so the build fails when the line stops reading this way.
-const SUBMISSION_PARTS_RE = /^(.+?), and (the log .+)$/;
+const SUBMISSION_PARTS_RE = /^(.+?), and (the log .+)$/u;
 const submissionParts = submission.match(SUBMISSION_PARTS_RE);
 if (!submissionParts) {
   throw new Error(

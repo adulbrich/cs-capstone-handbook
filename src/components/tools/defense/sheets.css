@@ -355,10 +355,10 @@
    text past the page shows in its height, which is what fitSheet reads,
    rather than in a third column beside the page. */
 .ds-criteria {
+  columns: 2;
   flex: none;
   column-gap: 1.6em;
   column-rule: 1px solid #d6d3d1;
-  columns: 2;
 }
 .ds-criterion {
   display: flex;

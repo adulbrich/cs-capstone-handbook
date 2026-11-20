@@ -51,9 +51,9 @@ function timestamp(date) {
 /** Question text without markup, for the descriptions Qualtrics lists. */
 function plain(html) {
   return html
-    .replace(/<[^>]+>/g, " ")
+    .replace(/<[^>]+>/gu, " ")
     .replaceAll("&nbsp;", " ")
-    .replace(/\s+/g, " ")
+    .replace(/\s+/gu, " ")
     .trim();
 }
 

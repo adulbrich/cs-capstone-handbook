@@ -24,18 +24,18 @@ import { parseFrontmatter } from "./lib/content.mjs";
 const PAGES_DIR = "src/content/docs/assignments/";
 const BUDGET = { aside: 60, intro: 150, section: 200, submit: 40 };
 
-const HEADING_RE = /^(#{2,4}) (.+)$/;
-const FENCE_RE = /^\s*(```|~~~)/;
-const ASIDE_OPEN_RE = /^:::(\w+)(?:\[(.*)\])?\s*$/;
-const ASIDE_CLOSE_RE = /^:::\s*$/;
-const IMPORT_RE = /^import .*$/gm;
-const COMMENT_RE = /\{\/\*[\s\S]*?\*\/\}/g;
+const HEADING_RE = /^(#{2,4}) (.+)$/u;
+const FENCE_RE = /^\s*(```|~~~)/u;
+const ASIDE_OPEN_RE = /^:::(\w+)(?:\[(.*)\])?\s*$/u;
+const ASIDE_CLOSE_RE = /^:::\s*$/u;
+const IMPORT_RE = /^import .*$/gmu;
+const COMMENT_RE = /\{\/\*[\s\S]*?\*\/\}/gu;
 // The summary card's own text is not intro prose.
 const CARD_RE =
-  /<(AssignmentSummary|AssignmentMeta)\b(?:[^>]*[^/])?>[\s\S]*?<\/\1>/g;
-const SELF_CLOSING_RE = /<[A-Za-z][^>]*\/>/g;
-const TAG_RE = /<\/?[A-Za-z][^>]*>/g;
-const LINK_RE = /!?\[([^\]]*)\]\([^)]*\)/g;
+  /<(AssignmentSummary|AssignmentMeta)\b(?:[^>]*[^/])?>[\s\S]*?<\/\1>/gu;
+const SELF_CLOSING_RE = /<[A-Za-z][^>]*\/>/gu;
+const TAG_RE = /<\/?[A-Za-z][^>]*>/gu;
+const LINK_RE = /!?\[([^\]]*)\]\([^)]*\)/gu;
 const WORD_RE = /[\p{L}\p{N}][\p{L}\p{N}'’.-]*/gu;
 
 function git(gitArgs) {

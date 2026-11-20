@@ -46,7 +46,7 @@ const OWNED = {
   fall: "Resume and Intent",
   spring: "the Career and Individual Retrospective",
 };
-const TERM_WORD = /\b(fall|winter|spring)\b/gi;
+const TERM_WORD = /\b(fall|winter|spring)\b/giu;
 
 const CELL =
   "border:1px solid #c7cdd1;padding:6px 8px;vertical-align:top;text-align:left;";
@@ -117,8 +117,8 @@ const pct = (n) => `${Number.parseFloat(n.toFixed(2))}%`;
 const slug = (s) =>
   s
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+    .replace(/[^a-z0-9]+/gu, "-")
+    .replace(/^-|-$/gu, "");
 const isEl = (n) => n.type === "element";
 const hasClass = (n, c) => (n.properties?.className ?? []).includes(c);
 const termsIn = (s) =>
@@ -170,7 +170,7 @@ function entries() {
     if (!canvas) {
       continue;
     }
-    const page = file.replace(/\.mdx$/, "");
+    const page = file.replace(/\.mdx$/u, "");
     for (const row of canvasRows(canvas)) {
       row.weeks.forEach((week, i) => {
         all.push({
@@ -254,7 +254,7 @@ const OVERRIDES = {
     const [, sprintRange, windowCell] = o.takeTable("Term")[0] ?? [];
     const i = e.family.weeks[e.term].indexOf(e.week);
     const sprint = Number.parseInt(sprintRange, 10) + i;
-    const span = windowCell?.replace(/^Weeks /, "").split(", ")[i];
+    const span = windowCell?.replace(/^Weeks /u, "").split(", ")[i];
     if (
       e.name !== `Sprint Notes ${sprint}` ||
       !span?.endsWith(` to ${e.week}`)
@@ -392,7 +392,7 @@ function outOfScope(
       (() => {
         const m = text(node)
           .trim()
-          .match(/^In (fall|winter|spring)\b/i);
+          .match(/^In (fall|winter|spring)\b/iu);
         return Boolean(m && m[1].toLowerCase() !== term);
       })()) ||
     (node.tagName === "p" &&
@@ -415,7 +415,7 @@ function dropOtherCourseColumns(root, term) {
   for (const table of selectAll("table", root)) {
     const head = select("tr", table)?.children.filter(isEl) ?? [];
     const off = head.map((c) => {
-      const course = text(c).match(/CS 46[123]/);
+      const course = text(c).match(/CS 46[123]/u);
       return course ? course[0] !== COURSE[term] : false;
     });
     if (off.some(Boolean)) {
@@ -432,12 +432,12 @@ function rubricHeadingsToGrading(top) {
     const isRubric =
       isEl(n) &&
       ["h2", "h3"].includes(n.tagName) &&
-      /^Rubric|\bRubric$/.test(text(n).trim());
+      /^Rubric|\bRubric$/u.test(text(n).trim());
     if (!isRubric) {
       continue;
     }
     const next = top[i + 1];
-    if (!next || (isEl(next) && /^h[23]$/.test(next.tagName))) {
+    if (!next || (isEl(next) && /^h[23]$/u.test(next.tagName))) {
       top.splice(i, 1);
       i -= 1;
     } else {
@@ -495,7 +495,7 @@ function trim(e, root) {
   // family on the page ("Repo Checkpoint 2: Hello, Production, fall week
   // 10:" in Repo Checkpoint 1).
   const base = familyBase(family);
-  const memberRe = base ? new RegExp(`^${base}(\\d+)\\b`) : null;
+  const memberRe = base ? new RegExp(`^${base}(\\d+)\\b`, "u") : null;
   const own = memberRe ? e.name.match(memberRe)?.[1] : null;
   const otherMember = (s) => {
     const m = memberRe ? s.match(memberRe) : null;
@@ -742,7 +742,7 @@ function captionTables(tree, { fallback, where }) {
   let heading = fallback;
   let used = false;
   visit(tree, "element", (node) => {
-    if (/^h[1-6]$/.test(node.tagName)) {
+    if (/^h[1-6]$/u.test(node.tagName)) {
       heading = text(node).trim();
       used = false;
       return;
@@ -781,7 +781,7 @@ function canvasHtml(tree, context) {
     if (typeof style === "string") {
       node.properties.style = style
         .split(";")
-        .map((d) => d.replace(/\s+/g, " ").trim())
+        .map((d) => d.replace(/\s+/gu, " ").trim())
         .filter(Boolean)
         .join("; ");
     }

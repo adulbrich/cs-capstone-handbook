@@ -20,7 +20,7 @@ let layout = $state.raw({});
 
 /** Parts whose children break separately: a list's items, a table's rows. */
 const OPEN = new Set(["OL", "TABLE", "TBODY", "TFOOT", "THEAD", "UL"]);
-const HEADING = /^H[1-6]$/;
+const HEADING = /^H[1-6]$/u;
 
 function parts(element, out = []) {
   for (const child of element.children) {

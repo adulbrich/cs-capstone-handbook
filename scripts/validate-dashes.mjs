@@ -11,7 +11,7 @@ import { readFileSync } from "node:fs";
 import { walk } from "./lib/content.mjs";
 
 const ROOTS = ["src", "canvas", "public"];
-const EM_DASH_RE = /\u2014|&mdash;|&#8212;|&#x2014;/gi;
+const EM_DASH_RE = /\u2014|&mdash;|&#8212;|&#x2014;/giu;
 
 const hits = [];
 let checked = 0;

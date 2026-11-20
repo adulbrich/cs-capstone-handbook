@@ -34,8 +34,8 @@ try {
 } catch {
   // No .nvmrc in this checkout.
 }
-const node = process.version.replace(/^v/, "");
-if (wanted && !node.startsWith(wanted.replace(/^v/, ""))) {
+const node = process.version.replace(/^v/u, "");
+if (wanted && !node.startsWith(wanted.replace(/^v/u, ""))) {
   lines.push(
     `Node: ${node} on PATH, .nvmrc wants ${wanted}. Build on the .nvmrc Node; CI does.`
   );

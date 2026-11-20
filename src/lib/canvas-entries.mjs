@@ -88,7 +88,7 @@ export function rubricAnchor(family, headings) {
   );
 }
 
-const TITLE_SUFFIX_RE = /: \{title\}$/;
+const TITLE_SUFFIX_RE = /: \{title\}$/u;
 const pct = (n) => `${Number.parseFloat(n.toFixed(2))}%`;
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 

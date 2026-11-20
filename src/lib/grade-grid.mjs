@@ -14,11 +14,11 @@ import { h } from "hastscript";
 import { tagFor, tagNode } from "./who-tag.mjs";
 
 // A weight is a whole percent; scripts/validate-outcomes.mjs reads the same rule.
-export const WEIGHT_RE = /^\d+$/;
+export const WEIGHT_RE = /^\d+$/u;
 
-const GRID_RE = /<GradeGrid>\n([\s\S]*?)\n<\/GradeGrid>/;
-const GRID_ITEM_RE = /^\[([^\]]+)\]\(\/assignments\/([a-z0-9-]+)\/[^)]*\)$/;
-const BOLD_LEAD_RE = /^\*\*(.+?)\*\*\s*(.*)$/;
+const GRID_RE = /<GradeGrid>\n([\s\S]*?)\n<\/GradeGrid>/u;
+const GRID_ITEM_RE = /^\[([^\]]+)\]\(\/assignments\/([a-z0-9-]+)\/[^)]*\)$/u;
+const BOLD_LEAD_RE = /^\*\*(.+?)\*\*\s*(.*)$/u;
 
 const tableCells = (row) =>
   row

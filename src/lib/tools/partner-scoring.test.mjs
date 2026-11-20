@@ -209,7 +209,7 @@ const STRONG = new Array(4).fill("Strongly agree");
 
 test("the A lower bound is read from the grading scale", () => {
   assert.equal(A, 93);
-  assert.throws(() => aLowerBound("no table here"), /A \| <points>/);
+  assert.throws(() => aLowerBound("no table here"), /A \| <points>/u);
 });
 
 test("the metadata rows are skipped; previews and unfinished responses dropped", () => {
@@ -224,7 +224,7 @@ test("the metadata rows are skipped; previews and unfinished responses dropped",
   assert.equal(parsed.responses[0].Team, "Engines");
   assert.deepEqual(parsed.dropped, { preview: 1, unfinished: 1 });
   assert.equal(parsed.columns[6].tag, "Responsiveness");
-  assert.match(parsed.columns[6].text, /^Responsiveness: /);
+  assert.match(parsed.columns[6].text, /^Responsiveness: /u);
 });
 
 test("a values export is refused, by Finished or by a numeric answer", () => {
@@ -233,11 +233,11 @@ test("a values export is refused, by Finished or by a numeric answer", () => {
       parseQualtricsExport(
         pulseExport([response("Engines", STRONG, { Finished: "1" })])
       ),
-    /values export.*labels export only/
+    /values export.*labels export only/u
   );
   assert.throws(
     () => run(pulseExport([response("Engines", ["5", "5", "4", "5"])])),
-    /"5" to Responsiveness .*values export/
+    /"5" to Responsiveness .*values export/u
   );
 });
 
@@ -250,7 +250,7 @@ test("an export with no finished response is refused", () => {
           response("Compilers", STRONG, { Finished: "False" }),
         ])
       ),
-    /no finished response \(1 previews, 1 unfinished/
+    /no finished response \(1 previews, 1 unfinished/u
   );
 });
 
@@ -259,7 +259,7 @@ test("a file without the ImportId row is refused", () => {
     PULSE_COLUMNS.map(([tag]) => tag),
     response("Engines", STRONG),
   ]);
-  assert.throws(() => parseQualtricsExport(text), /fewer than three|ImportId/);
+  assert.throws(() => parseQualtricsExport(text), /fewer than three|ImportId/u);
 });
 
 test("the pulse ratings, pinned: label in, points out", () => {
@@ -362,7 +362,7 @@ test("an export missing a comment column stops the run", () => {
       row.filter((_, i) => PULSE_COLUMNS[i][0] !== "Reflection Keep")
     )
   );
-  assert.throws(() => run(text), /Reflection's comment \(Reflection Keep\)/);
+  assert.throws(() => run(text), /Reflection's comment \(Reflection Keep\)/u);
 });
 
 test("a team with no finished response scores the A lower bound", () => {
@@ -377,7 +377,7 @@ test("a team with no finished response scores the A lower bound", () => {
   for (const name of EXPORT_CRITERIA) {
     assert.equal(row[`${name} - Rating`], "Somewhat agree");
     assert.equal(row[`${name} - Points`], "23.25");
-    assert.match(row[`${name} - Comments`], /did not answer/);
+    assert.match(row[`${name} - Comments`], /did not answer/u);
     total += Number(row[`${name} - Points`]);
   }
   assert.equal(total, A);
@@ -445,7 +445,7 @@ test("an answer the rubric does not name stops the run", () => {
   answers[1] = "";
   assert.throws(
     () => run(pulseExport([response("Engines", answers)])),
-    /No answer to Professionalism /
+    /No answer to Professionalism /u
   );
 });
 
@@ -536,7 +536,7 @@ test("a roster without canvas_user_id stops the run", () => {
         rubricExport: parseRubricExport(EXPORT),
         survey: "pulse",
       }),
-    /canvas_user_id/
+    /canvas_user_id/u
   );
 });
 
@@ -577,7 +577,7 @@ test("a rubric export for another rubric stops the run", () => {
   ]);
   assert.throws(
     () => run(pulseExport([response("Engines", STRONG)]), { exportCsv: other }),
-    /Missing: Responsiveness.*Not in the rubric: Teamwork/
+    /Missing: Responsiveness.*Not in the rubric: Teamwork/u
   );
 });
 
@@ -594,7 +594,7 @@ test("the pulse is detected from its questions; anything else is not", () => {
     rubrics
   );
   assert.equal(kind, null);
-  assert.match(reason, /no Term column/);
+  assert.match(reason, /no Term column/u);
 });
 
 test("a score between ratings is named after the highest rating at or below it", () => {
@@ -604,8 +604,8 @@ test("a score between ratings is named after the highest rating at or below it",
   assert.equal(bandFor(c, 32).name, "Middle anchor (80% of the points)");
   assert.equal(bandFor(c, 31.99).name, "Low anchor (half the points)");
   assert.equal(bandFor(c, 20).name, "Low anchor (half the points)");
-  assert.throws(() => bandFor(c, 19.99), /outside/);
-  assert.throws(() => bandFor(c, 41), /outside/);
+  assert.throws(() => bandFor(c, 19.99), /outside/u);
+  assert.throws(() => bandFor(c, 41), /outside/u);
 });
 
 test("regression: 70% of spring Requirements' 5 points is 3.5, not 3", () => {
@@ -662,7 +662,7 @@ test("the pulse's flagged ratings are on every pulse criterion; no end-of-term s
   for (const name of FLAGGED) {
     assert.throws(
       () => flaggedRatings("pulse", without(name)),
-      new RegExp(`Responsiveness has no "${name}" rating`)
+      new RegExp(`Responsiveness has no "${name}" rating`, "u")
     );
   }
 });
@@ -848,7 +848,7 @@ test("an edit no input scores is listed, not applied", () => {
   ]);
   // Every reason has its wording.
   for (const entry of result.unapplied) {
-    assert.doesNotMatch(scoreText.teams.unapplied.line(entry), /undefined/);
+    assert.doesNotMatch(scoreText.teams.unapplied.line(entry), /undefined/u);
   }
   assert.equal(csvOf(result), csvOf(before));
   assert.equal(cellOf(result, "Engines", "Delivery quality").review, true);

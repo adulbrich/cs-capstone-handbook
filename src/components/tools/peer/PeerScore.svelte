@@ -150,7 +150,7 @@ const notCompleted = $derived(
 const comments = $derived(scored ? commentsCsv(scored.comments) : "");
 
 const baseName = $derived(
-  rubricFile.value?.name.replace(/\.csv$/i, "") || "peer-evaluation"
+  rubricFile.value?.name.replace(/\.csv$/iu, "") || "peer-evaluation"
 );
 const files = $derived({
   comments: `${baseName}-comments.csv`,

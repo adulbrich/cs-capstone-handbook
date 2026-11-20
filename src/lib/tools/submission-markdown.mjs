@@ -14,16 +14,16 @@ import { Lexer, Marked } from "marked";
 const DIAGRAM_LANGUAGE = "mermaid";
 
 /** YAML front matter at the very top, which GitHub does not print either. */
-const FRONT_MATTER = /^---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/;
+const FRONT_MATTER = /^---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/u;
 
 /** An HTML <img> tag written in the Markdown. */
-const IMG_TAG = /<img\b[^>]*>/gi;
+const IMG_TAG = /<img\b[^>]*>/giu;
 
 /** One attribute of a tag, quoted or not. */
 const attribute = (tag, name) => {
   const match = new RegExp(
     `\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s"'>]+))`,
-    "i"
+    "iu"
   ).exec(tag);
   return match ? (match[1] ?? match[2] ?? match[3]) : null;
 };
@@ -32,7 +32,7 @@ const isDiagram = (token) =>
   token.type === "code" &&
   (token.lang ?? "").trim().toLowerCase() === DIAGRAM_LANGUAGE;
 
-const linesIn = (text) => (text.match(/\n/g) ?? []).length;
+const linesIn = (text) => (text.match(/\n/gu) ?? []).length;
 
 /**
  * Replaces front matter with as many blank lines, so line numbers still
@@ -89,13 +89,13 @@ function visit(token, found, lineOf) {
   }
 }
 
-const SPACES = /\s+/;
+const SPACES = /\s+/u;
 const WORD = /[\p{L}\p{N}]/u;
-const COMMENT = /<!--[\s\S]*?-->/g;
-const TAG = /<[^>]*>/g;
-const BR_TAG = /^<br\b/i;
-const NBSP_ENTITY = /&(?:nbsp|#160|#x0*a0);/gi;
-const ENTITY = /&(?:#\d+|#x[\da-f]+|[a-z][a-z\d]*);/gi;
+const COMMENT = /<!--[\s\S]*?-->/gu;
+const TAG = /<[^>]*>/gu;
+const BR_TAG = /^<br\b/iu;
+const NBSP_ENTITY = /&(?:nbsp|#160|#x0*a0);/giu;
+const ENTITY = /&(?:#\d+|#x[\da-f]+|[a-z][a-z\d]*);/giu;
 
 /** An HTML entity prints as one character: a space for nbsp, else a symbol. */
 const decodeEntities = (text) =>
@@ -168,7 +168,7 @@ function printedText(token) {
  * page, as GitHub shows comments; files keep Markdown's own joining.
  */
 export function readMarkdown(text, { breaks = false } = {}) {
-  const source = stripFrontMatter(String(text ?? "").replace(/\r\n?/g, "\n"));
+  const source = stripFrontMatter(String(text ?? "").replace(/\r\n?/gu, "\n"));
   const tokens = Lexer.lex(source, { breaks, gfm: true });
   const found = {
     counts: {
