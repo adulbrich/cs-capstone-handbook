@@ -8,7 +8,9 @@
  * (`docs/agents/voice.md`): the banned words and a bolded whole sentence on
  * every page, and the two banned openers ("Without it:" and "X is the
  * backbone of") in a guide's opening, the text before its first `## `
- * heading. The banned words and a percentage in a heading (Markdown or an
+ * heading. On every page it also rejects a bare URL in prose and a page
+ * that does not end in a newline (#715).
+ * The banned words and a percentage in a heading (Markdown or an
  * HTML <h1> to <h6>) also reach the Canvas rubric CSVs, the syllabi, the
  * Markdown downloads in `public/`, and the slide decks in `src/decks/`
  * (BANNED_WORD_PATHS), because students read those words and headings in
@@ -42,8 +44,9 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import nodePath from "node:path";
+import { INLINE_CODE, MDX_COMMENT } from "../src/lib/cite-pattern.mjs";
 import { RUBRIC_CSV_SUFFIX, readCsvRecords } from "../src/lib/rubric-csv.mjs";
-import { TEXT_EXTENSIONS } from "./lib/content.mjs";
+import { parseFrontmatter, TEXT_EXTENSIONS } from "./lib/content.mjs";
 
 const EMDASH = String.fromCodePoint(8212); // U+2014, kept out of the source text
 // The three entity spellings validate-dashes.mjs checks. Written as one
@@ -171,8 +174,9 @@ const VOCABULARY_PATHS = [
 const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
 
 /**
- * BOLD_AND_OPENER_PATH gates only the bolded-sentence and opener rules, which
- * are about how a handbook page is written. The banned words reach further:
+ * PAGE_PATH gates the rules about how a handbook page is written: the
+ * bolded sentence, the openers, the bare URL, and the final newline. The
+ * banned words reach further:
  * the rubric CSVs and the syllabus bodies under `canvas/`, and the Markdown
  * downloads in `public/`. A CSV renders on its assignment page and imports
  * into Canvas, a syllabus is pasted into Canvas, and the templates quote
@@ -182,7 +186,7 @@ const GLOSSARY_PATH = "src/content/docs/about/glossary.mdx";
  * percentage-in-a-heading check too. The rest of
  * `canvas/` and the runbook keep the vocabulary check alone.
  */
-const BOLD_AND_OPENER_PATH = "src/content/docs/";
+const PAGE_PATH = "src/content/docs/";
 const BANNED_WORD_PATHS = [
   { prefix: "src/content/docs/" },
   { prefix: "src/decks/" },
@@ -288,11 +292,11 @@ function vocabularyApplies(filePath) {
   return VOCABULARY_PATHS.some((prefix) => rel.startsWith(prefix));
 }
 
-function boldAndOpenerRulesApply(filePath) {
+function pageRulesApply(filePath) {
   if (!filePath) {
     return false;
   }
-  return repoRelative(filePath).startsWith(BOLD_AND_OPENER_PATH);
+  return repoRelative(filePath).startsWith(PAGE_PATH);
 }
 
 function bannedWordsApply(filePath) {
@@ -480,6 +484,185 @@ function percentHeadingViolations(line, lineNumber) {
   ];
 }
 
+/** `text` with every character but a newline turned into a space. */
+function blank(text) {
+  return text.replace(/[^\n]/gu, " ");
+}
+
+/** Where a run of JSX text can end: a line end or an angle bracket. */
+const NOT_IN_STRING = /[\n<>]/u;
+
+/**
+ * The index of the quote closing the one at `at`, past any backslash
+ * escape, or -1. A quote whose partner lies past a line end, `<`, or `>` is
+ * read as an apostrophe in text (`<span>the '90s</span>`), not a string, so
+ * a string holding an angle bracket (`{"a > b"}`) is read as text too.
+ */
+function closingQuote(text, at) {
+  for (let next = at + 1; next < text.length; next += 1) {
+    if (NOT_IN_STRING.test(text[next])) {
+      return -1;
+    }
+    if (text[next] === "\\") {
+      next += 1;
+    } else if (text[next] === text[at]) {
+      return next;
+    }
+  }
+  return -1;
+}
+
+/**
+ * What a string can open after: a space, an operator, or an opening bracket.
+ * A quote anywhere else (`Partner's`, `{name}'s`, `U.S.'s`) is an apostrophe.
+ */
+const STRING_START = /[\s([{,;:?=!&|+*/%<>~^-]/u;
+
+/**
+ * The index of the `}` closing the `{` at `open`, skipping quoted strings,
+ * or -1 when nothing closes it. Template literals are inline code by then.
+ */
+function closingBrace(text, open) {
+  let depth = 0;
+  for (let at = open; at < text.length; at += 1) {
+    const char = text[at];
+    if ((char === '"' || char === "'") && STRING_START.test(text[at - 1])) {
+      at = Math.max(at, closingQuote(text, at));
+    } else if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return at;
+      }
+    }
+  }
+  return -1;
+}
+
+/**
+ * `text` with each `={...}` attribute value blanked, braces matched so a
+ * value may nest and span lines (`images={[ { src: ... }, ... ]}`). A value
+ * nothing closes is left as it is, so a stray `={` hides no later line.
+ */
+function blankExpressionAttributes(text) {
+  let out = "";
+  let from = 0;
+  for (const { index } of text.matchAll(/[=]\{/gu)) {
+    const close = index < from ? -1 : closingBrace(text, index + 1);
+    if (close !== -1) {
+      out +=
+        text.slice(from, index + 1) + blank(text.slice(index + 1, close + 1));
+      from = close + 1;
+    }
+  }
+  return out + text.slice(from);
+}
+
+/**
+ * A quoted attribute value on one line, blanked wherever it appears. Its
+ * name follows whitespace, as in a tag, so `{"x='"}` is a string, not one.
+ */
+const ONE_LINE_ATTRIBUTE = /(?<=\s)[\w:-]+=(?:"[^"\n]*"|'[^'\n]*')/gu;
+/** A quoted attribute value that wraps, never across a blank line. */
+const WRAPPED_ATTRIBUTE =
+  /[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu;
+const TAG_START = /^<[A-Za-z]/u;
+
+/**
+ * `text` with each wrapped attribute value blanked when it sits inside an
+ * open tag, the nearest `<` or `>` before it being a `<` that starts one, so
+ * `class="big` wrapping in prose hides nothing. It runs after one-line and
+ * expression values are blanked, so their `<` and `>` are gone.
+ */
+function blankWrappedAttributes(text) {
+  return text.replace(WRAPPED_ATTRIBUTE, (match, offset) => {
+    const open = text.lastIndexOf("<", offset);
+    const inTag =
+      open > text.lastIndexOf(">", offset) &&
+      TAG_START.test(text.slice(open, open + 2));
+    return inTag ? blank(match) : match;
+  });
+}
+
+/**
+ * The places on one line where a URL is not bare: a Markdown link or image
+ * target, a reference definition, and an autolink.
+ */
+const NOT_BARE = [
+  /\]\([^)]*\)/gu,
+  /^\s*\[[^\]]+\]:\s*\S+/u,
+  /<https?:\/\/[^>\s]*>/giu,
+];
+const URL_SCHEME = /https?:\/\//iu;
+
+/**
+ * A bare URL on a handbook page: an `http://` or `https://` address in
+ * prose, which Starlight renders as a link whose text is the address (#715).
+ * A URL is not bare in frontmatter, a fenced code block, an MDX comment,
+ * inline code, an attribute value, or a NOT_BARE span. Those are blanked
+ * rather than dropped, so each line keeps its number. A URL used as
+ * link text is still bare. Double-quoted prose is checked, unlike the
+ * vocabulary rules.
+ */
+function bareUrlViolations(text, lines) {
+  const frontmatter = parseFrontmatter(text);
+  const bodyStart = frontmatter ? text.length - frontmatter.body.length : 0;
+  let inFence = false;
+  const unfenced = (blank(text.slice(0, bodyStart)) + text.slice(bodyStart))
+    .split("\n")
+    .map((line) => {
+      if (FENCE.test(line)) {
+        inFence = !inFence;
+        return "";
+      }
+      return inFence ? "" : line;
+    })
+    .join("\n");
+  const scanned = blankWrappedAttributes(
+    blankExpressionAttributes(
+      unfenced
+        .replace(MDX_COMMENT, blank)
+        .replace(INLINE_CODE, blank)
+        .replace(ONE_LINE_ATTRIBUTE, blank)
+    )
+  ).split("\n");
+  const hits = [];
+  for (const [index, line] of scanned.entries()) {
+    const prose = NOT_BARE.reduce(
+      (rest, span) => rest.replace(span, " "),
+      line
+    );
+    if (URL_SCHEME.test(prose)) {
+      hits.push(
+        hit(
+          "link: a bare URL; link the words naming its topic, [topic](https://...)",
+          index + 1,
+          lines[index]
+        )
+      );
+    }
+  }
+  return hits;
+}
+
+/**
+ * A page that does not end in a newline (#715). Biome enforces one in the
+ * files it formats, and it does not read MDX.
+ */
+function finalNewlineViolations(text, lines) {
+  if (text.length === 0 || text.endsWith("\n")) {
+    return [];
+  }
+  return [
+    hit(
+      "format: no newline at the end of the file; add one",
+      lines.length,
+      lines.at(-1)
+    ),
+  ];
+}
+
 /** The line checks that read prose at `path`, and so skip fenced code. */
 function proseChecksFor(path) {
   const checks = [];
@@ -489,7 +672,7 @@ function proseChecksFor(path) {
   if (bannedWordsApply(path)) {
     checks.push(bannedWordViolations, percentHeadingViolations);
   }
-  if (boldAndOpenerRulesApply(path)) {
+  if (pageRulesApply(path)) {
     checks.push(boldSentenceViolations);
   }
   return checks;
@@ -543,16 +726,21 @@ function proseLines(text, lines, path, proseChecks) {
 
 /**
  * Every hit in `text`, as `{ line, kind, snippet }`. `kind` is `em dash`,
- * `emoji`, or a vocabulary or voice message. Exported for the commit-message
- * check, which adds its own rules on top; the CLI below is the same function
- * with a report. Without a `path`, only the em dash and emoji rules run.
+ * `emoji`, or a vocabulary, voice, link, or format message. Exported for the
+ * commit-message check, which adds its own rules on top; the CLI below is
+ * the same function with a report. Without a `path`, only the em dash and
+ * emoji rules run.
  */
 export function findProseViolations(text, path) {
   const violations = [];
   const lines = text.split("\n");
   const proseChecks = proseChecksFor(path);
-  if (boldAndOpenerRulesApply(path)) {
-    violations.push(...openerViolations(lines, path));
+  if (pageRulesApply(path)) {
+    violations.push(
+      ...openerViolations(lines, path),
+      ...bareUrlViolations(text, lines),
+      ...finalNewlineViolations(text, lines)
+    );
   }
   for (const { line, prose } of proseLines(text, lines, path, proseChecks)) {
     for (const check of proseChecks) {
@@ -647,7 +835,7 @@ function main(argv) {
 
   if (failed) {
     process.stderr.write(
-      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, public/ Markdown, and src/decks/ no banned word and no percentage in a heading (docs/agents/voice.md).\n"
+      "Prose rule: no em dash (literal or entity), no emoji, and under the content paths only the glossary's words (about/glossary.mdx, CONTEXT.md). Use a colon, semicolon, comma, or period; use words for a status mark (AGENTS.md, hard rule 3). On handbook pages, also no banned word, bolded sentence, or banned opener, and there and in the rubric CSVs, syllabi, public/ Markdown, and src/decks/ no banned word and no percentage in a heading (docs/agents/voice.md). Handbook pages also have no bare URL in prose and end in a newline (#715).\n"
     );
     process.exit(1);
   }
