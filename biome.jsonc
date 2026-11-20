@@ -24,12 +24,6 @@
         "useDomQuerySelector": "off"
       },
       "suspicious": {
-        // Every report from 2.6.8 is wrong: it calls `rule.allow` in
-        // check-prose always set, though most rules have none; a flag
-        // section-words sets inside its loop always false; an optional
-        // destructured field always undefined; and ?. on a caught value, which
-        // can be null, unneeded. Taking a fix deletes a live branch.
-        "noUnnecessaryConditions": "off",
         // Each exemption degrades safely: @page, print-color-adjust and
         // box-decoration-break only shape the printed PDFs, text-wrap falls
         // back to normal wrapping, and ui-monospace sits ahead of fallbacks.

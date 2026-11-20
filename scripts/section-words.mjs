@@ -104,6 +104,7 @@ function sections(source) {
       current = [];
       const name = aside[2] ? `aside [${aside[2]}]` : `aside ${state.asides}`;
       texts.set([...state.path, name].join(" > "), current);
+      // biome-ignore lint/suspicious/noUnnecessaryConditions: the aside branch sets `state.inAside` true on an earlier line of the loop.
     } else if (state.inAside && ASIDE_CLOSE_RE.test(line)) {
       state.inAside = false;
       current = outer;
