@@ -489,14 +489,17 @@ function blank(text) {
   return text.replace(/[^\n]/gu, " ");
 }
 
+/** What ends a line of JSX text, which a string literal in an attribute never holds. */
+const NOT_IN_STRING = /[\n<>}]/u;
+
 /**
- * The index of the quote closing the one at `at` on the same line, past any
- * backslash escape, or -1. A quote with no partner on its line is an
- * apostrophe in text (`<span>Partner's view</span>`), not a string.
+ * The index of the quote closing the one at `at`, past any backslash
+ * escape, or -1. A quote whose partner lies past a line end, `<`, `>`, or
+ * `}` is an apostrophe in text (`<span>the '90s</span>`), not a string.
  */
 function closingQuote(text, at) {
   for (let next = at + 1; next < text.length; next += 1) {
-    if (text[next] === "\n") {
+    if (NOT_IN_STRING.test(text[next])) {
       return -1;
     }
     if (text[next] === "\\") {
@@ -508,8 +511,11 @@ function closingQuote(text, at) {
   return -1;
 }
 
-/** A letter or digit: a quote right after one is an apostrophe, not a string. */
-const WORD_CHAR = /[\p{L}\p{N}]/u;
+/**
+ * What a string can open after: a space, an operator, or an opening bracket.
+ * A quote anywhere else (`Partner's`, `{name}'s`, `U.S.'s`) is an apostrophe.
+ */
+const STRING_START = /[\s([{,;:?=!&|+*/%<>~^-]/u;
 
 /**
  * The index of the `}` closing the `{` at `open`, skipping quoted strings,
@@ -519,7 +525,7 @@ function closingBrace(text, open) {
   let depth = 0;
   for (let at = open; at < text.length; at += 1) {
     const char = text[at];
-    if ((char === '"' || char === "'") && !WORD_CHAR.test(text[at - 1])) {
+    if ((char === '"' || char === "'") && STRING_START.test(text[at - 1])) {
       at = Math.max(at, closingQuote(text, at));
     } else if (char === "{") {
       depth += 1;
@@ -552,8 +558,11 @@ function blankExpressionAttributes(text) {
   return out + text.slice(from);
 }
 
-/** A quoted attribute value on one line, blanked wherever it appears. */
-const ONE_LINE_ATTRIBUTE = /[\w:-]+=(?:"[^"\n]*"|'[^'\n]*')/gu;
+/**
+ * A quoted attribute value on one line, blanked wherever it appears. Its
+ * name follows whitespace, as in a tag, so `{"x='"}` is a string, not one.
+ */
+const ONE_LINE_ATTRIBUTE = /(?<=\s)[\w:-]+=(?:"[^"\n]*"|'[^'\n]*')/gu;
 /** A quoted attribute value that wraps, never across a blank line. */
 const WRAPPED_ATTRIBUTE =
   /[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu;
