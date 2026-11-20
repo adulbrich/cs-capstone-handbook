@@ -132,7 +132,7 @@ function paragraphs(l) {
 
 // The greeting uses a first name: the first word of the sheet's name, past a
 // leading title, so "Dr. Jane Smith" opens "Dear Jane,".
-const TITLE = /^(dr|prof|professor|mr|mrs|ms|mx)\.?$/iu;
+const TITLE = /^(?:dr|prof|professor|mr|mrs|ms|mx)\.?$/iu;
 function firstName(full) {
   const words = full.split(/\s+/u).filter(Boolean);
   return words.find((w) => !TITLE.test(w)) ?? words[0] ?? "";

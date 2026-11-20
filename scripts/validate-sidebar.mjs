@@ -41,7 +41,7 @@ const DOCS_DIR = "src/content/docs";
 const ACTIVITIES_DIR = "activities";
 const PAGE_RE = /\.mdx?$/u;
 const ORDER_RE =
-  /^sidebar:\n(?:[ \t]+.*\n)*?[ \t]+order:[ \t]*(-?\d+)[ \t]*$/mu;
+  /^sidebar:\n(?:[ \t]+.*\n)*?[ \t]+order:[ \t]*(?<order>-?\d+)[ \t]*$/mu;
 
 const problems = [];
 

@@ -74,16 +74,17 @@ export const INSTRUMENT_OF = Object.freeze({
 export const isScored = (type) => Object.hasOwn(INSTRUMENT_OF, type);
 
 /** Looped questions shared by both surveys, and the regular matrix, by tag. */
-const LOOP_TAG = /^(\d+)_(Ratee|Rating|Comment)(?:_(\w+))?$/u;
+const LOOP_TAG =
+  /^(?<prefix>\d+)_(?<role>Ratee|Rating|Comment)(?:_(?<sub>\w+))?$/u;
 /** The generator's fallback mode, one block per slot: S1_Rating_1 and so on. */
-const SLOT_TAG = /^S(\d+)_(Ratee|Rating|Comment)/u;
+const SLOT_TAG = /^S(?<slot>\d+)_(?:Ratee|Rating|Comment)/u;
 /** The 100-point split, one column per carried-forward choice. */
-const SPLIT_TAG = /^Split_x?(\d+)$/u;
+const SPLIT_TAG = /^Split_x?(?<choice>\d+)$/u;
 /** The open questions after the split, one column each. */
 const OPEN_QUESTIONS = ["Allocations", "Overall", "Closing"];
 
 /** An ImportId: optional loop prefix, the QID, optional row or choice. */
-const IMPORT_ID = /^(?:(\d+)_)?(QID\d+)(?:_(\w+))?$/u;
+const IMPORT_ID = /^(?:(?<prefix>\d+)_)?(?<qid>QID\d+)(?:_(?<suffix>\w+))?$/u;
 
 /** The choice or row ID an ImportId suffix names: "x3" and "3" are both 3. */
 const X_PREFIX = /^x/u;
@@ -117,7 +118,10 @@ function placeFixed(columns) {
 function placeLooped(map, tag, importId, text) {
   const [, prefix, role, sub] = LOOP_TAG.exec(tag);
   const id = IMPORT_ID.exec(importId);
-  if (id && (id[1] !== prefix || (sub && id[3] !== sub))) {
+  if (
+    id &&
+    (id.groups.prefix !== prefix || (sub && id.groups.suffix !== sub))
+  ) {
     return `Column ${tag} has the ImportId ${importId}: the loop prefix or row disagrees.`;
   }
   map.loop[prefix] ??= loopEntry();
@@ -145,7 +149,7 @@ const loopEntry = () => ({
 function placeDimension(map, tag, importId) {
   const [, prefix, dimension] = CATME_TAG.exec(tag);
   const id = IMPORT_ID.exec(importId);
-  if (id && id[1] !== prefix) {
+  if (id && id.groups.prefix !== prefix) {
     return `Column ${tag} has the ImportId ${importId}: the loop prefix disagrees.`;
   }
   map.loop[prefix] ??= loopEntry();
@@ -157,7 +161,7 @@ function placeDimension(map, tag, importId) {
 function placeSplit(map, tag, importId) {
   const [, choice] = SPLIT_TAG.exec(tag);
   const id = IMPORT_ID.exec(importId);
-  if (id?.[3] && idNumber(id[3]) !== Number(choice)) {
+  if (id?.groups.suffix && idNumber(id.groups.suffix) !== Number(choice)) {
     return `Column ${tag} has the ImportId ${importId}: the split choice disagrees.`;
   }
   map.split[choice] = tag;
@@ -346,7 +350,7 @@ export function rosterChoiceOf(prefix, filledSlots, follows = PREFIX_FOLLOWS) {
   return prefix === 1 ? 1 : (filledSlots[prefix - 2] ?? 0) + 1;
 }
 
-const EMAIL_IN_PARENS = /\(([^()\s]+@[^()\s]+)\)\s*$/u;
+const EMAIL_IN_PARENS = /\((?<email>[^()\s]+@[^()\s]+)\)\s*$/u;
 const BARE_EMAIL = /^[^\s@]+@[^\s@]+$/u;
 
 /** "First Last (email)" or a bare email to the email, lowercase; "" otherwise. */
@@ -359,7 +363,7 @@ export function emailIn(value) {
   return BARE_EMAIL.test(text) ? text.toLowerCase() : "";
 }
 
-const LEADING_VALUE = /^(\d+)(?:\s*:.*)?$/su;
+const LEADING_VALUE = /^(?<value>\d+)(?:\s*:.*)?$/su;
 
 /**
  * A rating cell to 1 to 5. The labels export writes the choice text, which

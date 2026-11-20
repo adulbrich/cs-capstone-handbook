@@ -7,11 +7,11 @@
 // the renderer's reader and works on the built page instead.
 
 // The schedule heads its term sections "## Fall (CS 461)".
-const TERM_HEADING_RE = /^## (Fall|Winter|Spring)\b/u;
-const WEEK_HEADING_RE = /^### Week (\d+)\b/u;
+const TERM_HEADING_RE = /^## (?<term>Fall|Winter|Spring)\b/u;
+const WEEK_HEADING_RE = /^### Week (?<week>\d+)\b/u;
 // A schedule line is a list item labelled in bold: Due, In class, Read,
 // Optional. A nested item carries no label and belongs to the line above it.
-const ROW_LABEL_RE = /^- \*\*([A-Za-z][A-Za-z -]*?):?\*\*/u;
+const ROW_LABEL_RE = /^- \*\*(?<label>[A-Za-z][A-Za-z -]*?):?\*\*/u;
 
 // Every source line with where it sits: `term` ("fall", "winter", "spring",
 // or null above the first term heading), `week` (null above a term's first
@@ -45,7 +45,7 @@ export function scheduleLines(source) {
 }
 
 // A nested item under a labelled line, such as one deliverable under Due.
-const NESTED_ITEM_RE = /^\s+- (.*)$/u;
+const NESTED_ITEM_RE = /^\s+- (?<text>.*)$/u;
 
 const join = (a, b) => (a ? `${a} ${b}` : b);
 

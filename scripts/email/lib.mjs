@@ -24,8 +24,8 @@ const unguard = (text) =>
 // closing quote, with "" for a quote inside; anything else runs to the next
 // separator or line break, stray quotes included.
 const FIELD = {
-  ",": /(?:"((?:[^"]|"")*)"|([^,\r\n]*))(,|\r\n|\n|\r|$)/gu,
-  "\t": /(?:"((?:[^"]|"")*)"|([^\t\r\n]*))(\t|\r\n|\n|\r|$)/gu,
+  ",": /(?:"(?<quoted>(?:[^"]|"")*)"|(?<bare>[^,\r\n]*))(?<end>,|\r\n|\n|\r|$)/gu,
+  "\t": /(?:"(?<quoted>(?:[^"]|"")*)"|(?<bare>[^\t\r\n]*))(?<end>\t|\r\n|\n|\r|$)/gu,
 };
 
 function parseTable(text) {
@@ -34,8 +34,9 @@ function parseTable(text) {
   const rows = [];
   let row = [];
   for (const m of s.matchAll(FIELD[sep])) {
-    row.push(m[1] === undefined ? m[2] : m[1].replaceAll('""', '"'));
-    if (m[3] === sep) {
+    const { quoted, bare, end } = m.groups;
+    row.push(quoted === undefined ? bare : quoted.replaceAll('""', '"'));
+    if (end === sep) {
       continue;
     }
     rows.push(row);
@@ -81,8 +82,8 @@ export const linkify = (escaped) =>
   escaped
     .replace(/https?:\/\/[^\s<]+[^\s<.,)]/gu, (u) => `<a href="${u}">${u}</a>`)
     .replace(
-      /(^|[\s(>])([\w.+-]+@[\w.-]+\w)/gu,
-      '$1<a href="mailto:$2">$2</a>'
+      /(?<before>^|[\s(>])(?<address>[\w.+-]+@[\w.-]+\w)/gu,
+      '$<before><a href="mailto:$<address>">$<address></a>'
     );
 
 /**
@@ -93,7 +94,7 @@ export const linkify = (escaped) =>
  */
 export const boldLead = (escaped) =>
   escaped.replace(
-    /^([A-Z][a-z]+(?: [a-z]+){0,2}:)(?=\s)/u,
+    /^(?<label>[A-Z][a-z]+(?: [a-z]+){0,2}:)(?=\s)/u,
     "<strong>$1</strong>"
   );
 

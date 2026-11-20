@@ -8,7 +8,7 @@
 import { parseCsv, toCsv } from "./csv.mjs";
 
 const FIELDS = ["Rating", "Points", "Comments"];
-const CRITERION_COLUMN = / - (Rating|Points|Comments)$/u;
+const CRITERION_COLUMN = / - (?<field>Rating|Points|Comments)$/u;
 
 const TRAILING_TAGS = /\s*\[[^\]]*\]\s*$/u;
 

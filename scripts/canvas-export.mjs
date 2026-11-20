@@ -46,7 +46,7 @@ const OWNED = {
   fall: "Resume and Intent",
   spring: "the Career and Individual Retrospective",
 };
-const TERM_WORD = /\b(fall|winter|spring)\b/giu;
+const TERM_WORD = /\b(?<term>fall|winter|spring)\b/giu;
 
 const CELL =
   "border:1px solid #c7cdd1;padding:6px 8px;vertical-align:top;text-align:left;";
@@ -392,7 +392,7 @@ function outOfScope(
       (() => {
         const m = text(node)
           .trim()
-          .match(/^In (fall|winter|spring)\b/iu);
+          .match(/^In (?<term>fall|winter|spring)\b/iu);
         return Boolean(m && m[1].toLowerCase() !== term);
       })()) ||
     (node.tagName === "p" &&

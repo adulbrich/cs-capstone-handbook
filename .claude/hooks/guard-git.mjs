@@ -45,17 +45,18 @@ import {
   repoRoot,
 } from "./lib.mjs";
 
-const HEREDOC = /<<-?\s*(["']?)([A-Za-z_][A-Za-z0-9_]*)\1\n([\s\S]*?)\n\2\b/u;
+const HEREDOC =
+  /<<-?\s*(?<quote>["']?)(?<tag>[A-Za-z_][A-Za-z0-9_]*)\k<quote>\n(?<body>[\s\S]*?)\n\k<tag>\b/u;
 const CAT_HEREDOC =
   /(?:-m|--message)(?:=|\s+)"?\$\(\s*cat\s*<<-?\s*["']?[A-Za-z_]/u;
 const QUOTED = /"(?:[^"\\]|\\.)*"|'[^']*'/gu;
 const MESSAGE_FLAG =
-  /(?:^|\s)(?:-m|--message)(?:=|\s+)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/gu;
+  /(?:^|\s)(?:-m|--message)(?:=|\s+)(?:"(?<doubleQuoted>(?:[^"\\]|\\.)*)"|'(?<singleQuoted>[^']*)')/gu;
 const SEGMENT = /\s*(?:&&|\|\||;|\|)\s*|\n/gu;
 const SHORT_CLUSTER = /^-[A-Za-z]+$/u;
 const MAIN_REF = /(?:^|[:+])(?:refs\/heads\/)?main$/u;
 /** A token wrapped in matching shell quotes. */
-const QUOTED_WHOLE = /^(["']).*\1$/u;
+const QUOTED_WHOLE = /^(?<quote>["']).*\k<quote>$/u;
 /** The whitespace-separated runs of a masked segment. */
 const TOKEN = /\S+/gu;
 /** A path this hook cannot resolve: a variable, a substitution, or a glob. */
@@ -319,11 +320,11 @@ function switchesTo(sub, args, rawArgs) {
 function extractCommitMessage(text) {
   const shape = CAT_HEREDOC.exec(text);
   if (shape) {
-    return HEREDOC.exec(text.slice(shape.index))?.[3] ?? null;
+    return HEREDOC.exec(text.slice(shape.index))?.groups.body ?? null;
   }
   const parts = [];
   for (const match of text.matchAll(MESSAGE_FLAG)) {
-    parts.push(match[1] ?? match[2]);
+    parts.push(match.groups.doubleQuoted ?? match.groups.singleQuoted);
   }
   if (parts.length === 0 || parts.some((p) => p.includes("$("))) {
     return null;

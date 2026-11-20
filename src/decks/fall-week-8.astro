@@ -64,7 +64,7 @@ const activity =
 const RULES_LEAD = "Four rules hold whatever you build:";
 const afterRules = activity.split(RULES_LEAD)[1]?.trimStart().split("\n") ?? [];
 const firstOther = afterRules.findIndex((line) => !line.startsWith("- "));
-const RULE_RE = /^- \*\*(.+?)\.?\*\*:?\s*(.*)$/u;
+const RULE_RE = /^- \*\*(?<name>.+?)\.?\*\*:?\s*(?<detail>.*)$/u;
 const TRAILING_PERIOD_RE = /\.$/u;
 const rules = afterRules
   .slice(0, firstOther < 0 ? undefined : firstOther)
@@ -106,7 +106,7 @@ const vanityContrast = ruleVanity.detail
 // The activity's sentence on a metric that can't be measured yet, up to its
 // examples: the collection slide's lead, and what step 3 tells a team to do.
 const NOT_YET_RE =
-  /^(A metric you can't measure yet still counts when [^:\n]+):/mu;
+  /^(?<sentence>A metric you can't measure yet still counts when [^:\n]+):/mu;
 const notYetMatch = activity.match(NOT_YET_RE);
 if (!notYetMatch) {
   fail("Identify Success Metrics no line on a metric you can't measure yet");
@@ -128,11 +128,13 @@ const groupNotes: Record<string, string> = {
 };
 const sentenceCase = (name: string) =>
   name.charAt(0) + name.slice(1).toLowerCase();
-const groups = [...activity.matchAll(/^### (.+)$/gmu)].map(([, name]) => ({
-  label: sentenceCase(name),
-  name,
-  note: groupNotes[name],
-}));
+const groups = [...activity.matchAll(/^### (?<name>.+)$/gmu)].map(
+  ([, name]) => ({
+    label: sentenceCase(name),
+    name,
+    note: groupNotes[name],
+  })
+);
 const unnoted = groups
   .filter((group) => !group.note)
   .map((group) => group.name);
@@ -145,7 +147,7 @@ if (unnoted.length > 0 || missing.length > 0) {
   );
 }
 // How many metrics a project commits to.
-const COUNT_RE = /Every project commits to (\d+ or \d+) metrics\./u;
+const COUNT_RE = /Every project commits to (?<count>\d+ or \d+) metrics\./u;
 const countMatch = activity.match(COUNT_RE);
 if (!countMatch) {
   fail("Identify Success Metrics no count of metrics a project commits to");
@@ -153,7 +155,7 @@ if (!countMatch) {
 const [, metricCount] = countMatch as RegExpMatchArray;
 
 // The product-market fit threshold, as the Planning guide sources it.
-const PMF_RE = /product-market fit requires at least (\d+)% of users/u;
+const PMF_RE = /product-market fit requires at least (?<share>\d+)% of users/u;
 const pmfMatch = planning.match(PMF_RE);
 if (!pmfMatch) {
   throw new Error(
@@ -304,7 +306,7 @@ const submissionLine = fallWorkshops
   ?.split("\n")
   .find((text) => text.startsWith(SUBMISSION));
 const SUBMISSION_PARTS_RE =
-  /^(.+?) and (a named instrumentation method for at least one), (written down and dated)$/u;
+  /^(?<metrics>.+?) and (?<method>a named instrumentation method for at least one), (?<written>written down and dated)$/u;
 const submissionParts = submissionLine
   ? plainText(submissionLine.slice(SUBMISSION.length)).match(
       SUBMISSION_PARTS_RE

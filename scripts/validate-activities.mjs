@@ -97,7 +97,7 @@ const GUIDES_DIR = "src/content/docs/guides";
 const SCHEDULE_PAGE = "src/content/docs/introduction/schedule.mdx";
 const scheduleSource = readFileSync(SCHEDULE_PAGE, "utf8");
 const WORKSHOP_PAGE = "src/content/docs/assignments/workshop-activities.mdx";
-const GUIDE_LINK_RE = /\/guides\/([a-z-]+)\//gu;
+const GUIDE_LINK_RE = /\/guides\/(?<slug>[a-z-]+)\//gu;
 
 // The badge line belongs on the line after the blank line under the heading.
 // The scan window is wider than that only so a badge line pushed down by a
@@ -110,7 +110,7 @@ const metaAttr = (tag, name) =>
 // The badges the badge line replaced. One left on an activity page is a
 // hand-written second copy of what the component computes.
 const RETIRED_BADGE_RE =
-  /<Badge[^>]*text="(Individual Activity|Team Activity|Workshop|Recommended)"/u;
+  /<Badge[^>]*text="(?:Individual Activity|Team Activity|Workshop|Recommended)"/u;
 
 // The section body runs to the next h2 or end of file.
 function sectionEnd(lines, start) {
@@ -220,7 +220,12 @@ function readSchedulePlacements() {
       continue;
     }
     for (const m of text.matchAll(ACTIVITY_LINK_RE)) {
-      placements.push({ key: activityKey(m[1], m[2]), row, term, week });
+      placements.push({
+        key: activityKey(m.groups.page, m.groups.anchor),
+        row,
+        term,
+        week,
+      });
     }
   }
   return placements;
@@ -585,7 +590,7 @@ const OUTCOME_TAG_IN_TEXT_RE = new RegExp(
 );
 const GRADE_NUMBER_RE = /\b\d+(?:\.\d+)?(?:%| points?\b)/gu;
 const GRADE_WORD_RE =
-  /\b(grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/iu;
+  /\b(?:grad(?:e|ed|es|ing)|rubric|(?<!success )criteri(?:on|a))\b/iu;
 const GRADE_CONTEXT_CHARS = 60;
 
 for (const { dir, file, kind } of activityAndGuidePages()) {
