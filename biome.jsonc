@@ -13,12 +13,6 @@
   },
   "linter": {
     "rules": {
-      "style": {
-        // getElementById takes an id as it is. querySelector needs CSS.escape
-        // on each one and throws on an id from a URL hash that starts with a
-        // digit, which term-tabs.js reads.
-        "useDomQuerySelector": "off"
-      },
       "suspicious": {
         // Each exemption degrades safely: @page, print-color-adjust and
         // box-decoration-break only shape the printed PDFs, text-wrap falls
