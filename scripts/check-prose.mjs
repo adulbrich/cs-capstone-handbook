@@ -549,19 +549,21 @@ function blankExpressionAttributes(text) {
   return out + text.slice(from);
 }
 
-/** A quoted attribute value, which may wrap but never cross a blank line. */
-const QUOTED_ATTRIBUTE =
+/** A quoted attribute value on one line, blanked wherever it appears. */
+const ONE_LINE_ATTRIBUTE = /[\w:-]+=(?:"[^"\n]*"|'[^'\n]*')/gu;
+/** A quoted attribute value that wraps, never across a blank line. */
+const WRAPPED_ATTRIBUTE =
   /[\w:-]+=(?:"(?:(?!\n[ \t]*\n)[^"])*"|'(?:(?!\n[ \t]*\n)[^'])*')/gu;
 const TAG_START = /^<[A-Za-z]/u;
 
 /**
- * `text` with each quoted attribute value blanked when it sits inside an
+ * `text` with each wrapped attribute value blanked when it sits inside an
  * open tag, the nearest `<` or `>` before it being a `<` that starts one, so
- * `class="big` in prose hides nothing. It runs after expression values are
- * blanked, so their `<` and `>` are gone.
+ * `class="big` wrapping in prose hides nothing. It runs after one-line and
+ * expression values are blanked, so their `<` and `>` are gone.
  */
-function blankTagAttributes(text) {
-  return text.replace(QUOTED_ATTRIBUTE, (match, offset) => {
+function blankWrappedAttributes(text) {
+  return text.replace(WRAPPED_ATTRIBUTE, (match, offset) => {
     const open = text.lastIndexOf("<", offset);
     const inTag =
       open > text.lastIndexOf(">", offset) &&
@@ -604,9 +606,12 @@ function bareUrlViolations(text, lines) {
       return inFence ? "" : line;
     })
     .join("\n");
-  const scanned = blankTagAttributes(
+  const scanned = blankWrappedAttributes(
     blankExpressionAttributes(
-      unfenced.replace(MDX_COMMENT, blank).replace(INLINE_CODE, blank)
+      unfenced
+        .replace(MDX_COMMENT, blank)
+        .replace(INLINE_CODE, blank)
+        .replace(ONE_LINE_ATTRIBUTE, blank)
     )
   ).split("\n");
   const hits = [];
