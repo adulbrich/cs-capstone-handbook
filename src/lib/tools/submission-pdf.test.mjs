@@ -463,6 +463,17 @@ test("a part that does not fit moves to the next page whole", () => {
     pageStarts([block(0, 60), block(65, 75, true), block(80, 130)], 100),
     [0, 65]
   );
+  // A heading or path that already starts the page stays there, and the part
+  // after it is cut at the page edge, as print does: moving it would leave
+  // the page holding nothing else.
+  assert.deepEqual(
+    pageStarts([block(0, 3, true), block(5, 102)], 100),
+    [0, 100]
+  );
+  assert.deepEqual(
+    pageStarts([block(0, 100), block(100, 103, true), block(105, 202)], 100),
+    [0, 100, 200]
+  );
   // A part taller than a page is cut at each page edge, where it stands.
   assert.deepEqual(pageStarts([block(0, 250)], 100), [0, 100, 200]);
   assert.deepEqual(
