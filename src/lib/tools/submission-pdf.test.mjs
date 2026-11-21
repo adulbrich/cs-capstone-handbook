@@ -449,10 +449,11 @@ test("pages number on across sheets, a sheet at least one page", () => {
 });
 
 test("a part that does not fit moves to the next page whole", () => {
-  const block = (top, bottom, keepWithNext = false) => ({
+  const block = (top, bottom, keepWithNext = false, whole = false) => ({
     bottom,
     keepWithNext,
     top,
+    whole,
   });
   // Everything fits on one page.
   assert.deepEqual(pageStarts([block(0, 50), block(60, 100)], 100), [0]);
@@ -473,6 +474,19 @@ test("a part that does not fit moves to the next page whole", () => {
   assert.deepEqual(
     pageStarts([block(0, 100), block(100, 103, true), block(105, 202)], 100),
     [0, 100, 200]
+  );
+  // An image or diagram cannot be cut, so print moves it and leaves the
+  // heading or path alone on its page; the preview does the same.
+  assert.deepEqual(
+    pageStarts([block(0, 3, true), block(5, 102, false, true)], 100),
+    [0, 5]
+  );
+  assert.deepEqual(
+    pageStarts(
+      [block(0, 100), block(100, 103, true), block(105, 202, false, true)],
+      100
+    ),
+    [0, 100, 105]
   );
   // A part taller than a page is cut at each page edge, where it stands.
   assert.deepEqual(pageStarts([block(0, 250)], 100), [0, 100, 200]);

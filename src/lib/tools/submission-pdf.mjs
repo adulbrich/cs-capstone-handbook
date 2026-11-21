@@ -237,13 +237,32 @@ export const canSave = (checks) =>
   checks.every((check) => check.ok || !["cover", "files"].includes(check.id));
 
 /**
+ * Where part `i` starts its new page when it moves: at its top, or at the
+ * top of the kept parts right before it. When they reach back to `start`,
+ * the current page's top, it returns `start` (nothing moves, so the part is
+ * cut), unless the part is `whole`, which moves and leaves them there.
+ */
+function movedTop(blocks, i, start) {
+  let next = blocks[i].top;
+  for (let j = i - 1; j >= 0 && blocks[j].keepWithNext; j -= 1) {
+    if (blocks[j].top <= start) {
+      return blocks[i].whole ? next : start;
+    }
+    next = blocks[j].top;
+  }
+  return next;
+}
+
+/**
  * Where the pages of one printed sheet start, in pixels from its top.
- * `blocks` are its parts top to bottom, `{ top, bottom, keepWithNext }`,
- * and `pageHeight` the paper's content height. Like the print CSS, a part
- * that does not fit moves to the next page whole, taking a heading or the
- * file's path before it along (`keepWithNext`); a part taller than a page,
- * or one whose kept parts start the page, is cut at the page edge. The
- * first page always starts at 0.
+ * `blocks` are its parts top to bottom, `{ top, bottom, keepWithNext,
+ * whole }`, and `pageHeight` the paper's content height. Like the print
+ * CSS, a part that does not fit moves to the next page whole, taking a
+ * heading or the file's path before it along (`keepWithNext`); a part
+ * taller than a page is cut at the page edge. When those kept parts already
+ * start the page, a part print can cut between lines is cut at the page
+ * edge, and an image or diagram (`whole`) still moves, leaving them there.
+ * The first page always starts at 0.
  */
 export function pageStarts(blocks, pageHeight) {
   const starts = [0];
@@ -253,14 +272,7 @@ export function pageStarts(blocks, pageHeight) {
       return;
     }
     if (block.top > start && block.bottom - block.top <= pageHeight) {
-      let next = block.top;
-      // Back through the kept parts; reaching the page's top means none move.
-      for (let j = i - 1; j >= 0 && next > start; j -= 1) {
-        if (!blocks[j].keepWithNext) {
-          break;
-        }
-        next = Math.max(blocks[j].top, start);
-      }
+      const next = movedTop(blocks, i, start);
       if (next > start) {
         start = next;
         starts.push(start);
