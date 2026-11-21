@@ -240,9 +240,9 @@ export const canSave = (checks) =>
  * Where the pages of one printed sheet start, in pixels from its top.
  * `blocks` are its parts top to bottom, `{ top, bottom, keepWithNext }`,
  * and `pageHeight` the paper's content height. Like the print CSS, a part
- * that does not fit moves to the next page whole, taking a heading before
- * it along (`keepWithNext`); a part taller than a page is cut at the page
- * edge. The first page always starts at 0.
+ * that does not fit moves to the next page whole, taking a heading or the
+ * file's path before it along (`keepWithNext`); a part taller than a page
+ * is cut at the page edge. The first page always starts at 0.
  */
 export function pageStarts(blocks, pageHeight) {
   const starts = [0];
