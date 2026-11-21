@@ -240,13 +240,13 @@ export const canSave = (checks) =>
  * Where part `i` starts its new page when it moves: at its top, or at the
  * top of the kept parts right before it. When they reach back to `start`,
  * the current page's top, it returns `start` (nothing moves, so the part is
- * cut), unless the part is `whole`, which moves and leaves them there.
+ * cut), unless the part is `whole`, which moves alone and leaves them all.
  */
 function movedTop(blocks, i, start) {
   let next = blocks[i].top;
   for (let j = i - 1; j >= 0 && blocks[j].keepWithNext; j -= 1) {
     if (blocks[j].top <= start) {
-      return blocks[i].whole ? next : start;
+      return blocks[i].whole ? blocks[i].top : start;
     }
     next = blocks[j].top;
   }
@@ -261,7 +261,7 @@ function movedTop(blocks, i, start) {
  * heading or the file's path before it along (`keepWithNext`); a part
  * taller than a page is cut at the page edge. When those kept parts already
  * start the page, a part print can cut between lines is cut at the page
- * edge, and an image or diagram (`whole`) still moves, leaving them there.
+ * edge, and an image or diagram (`whole`) still moves, alone.
  * The first page always starts at 0.
  */
 export function pageStarts(blocks, pageHeight) {

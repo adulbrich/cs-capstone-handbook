@@ -141,7 +141,9 @@
 /*
  * The file's path, above its first line on its first page: small and gray,
  * so it tells AGENTS.md from CONTRIBUTING.md without reading as part of
- * either. It stays on the page of the line after it.
+ * either. It stays on the page of the line after it, except at a page's
+ * top above an image or diagram that fits only a page of its own, which
+ * print moves whole.
  */
 .submission-doc .file-name {
   margin: 0 0 1em;

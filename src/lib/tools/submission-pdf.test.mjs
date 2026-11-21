@@ -465,8 +465,8 @@ test("a part that does not fit moves to the next page whole", () => {
     [0, 65]
   );
   // A heading or path that already starts the page stays there, and the part
-  // after it is cut at the page edge, as print does: moving it would leave
-  // the page holding nothing else.
+  // after it is cut at the page edge, as print does for a part it can cut
+  // between lines: moving it would leave the page holding nothing else.
   assert.deepEqual(
     pageStarts([block(0, 3, true), block(5, 102)], 100),
     [0, 100]
@@ -475,11 +475,18 @@ test("a part that does not fit moves to the next page whole", () => {
     pageStarts([block(0, 100), block(100, 103, true), block(105, 202)], 100),
     [0, 100, 200]
   );
-  // An image or diagram cannot be cut, so print moves it and leaves the
-  // heading or path alone on its page; the preview does the same.
+  // An image or diagram cannot be cut, so print moves it alone and leaves
+  // every heading and path before it on their page; the preview does the same.
   assert.deepEqual(
     pageStarts([block(0, 3, true), block(5, 102, false, true)], 100),
     [0, 5]
+  );
+  assert.deepEqual(
+    pageStarts(
+      [block(0, 3, true), block(5, 8, true), block(10, 105, false, true)],
+      100
+    ),
+    [0, 10]
   );
   assert.deepEqual(
     pageStarts(

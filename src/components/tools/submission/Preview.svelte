@@ -24,9 +24,10 @@ const HEADING = /^H[1-6]$/u;
 /** What document.css keeps on the page of the part after it: break-after: avoid. */
 const keptWithNext = (part) =>
   HEADING.test(part.tagName) || part.classList.contains("file-name");
-/** What print moves whole, never cutting it between lines: an image, a diagram. */
+/** What print moves whole, never cutting it between lines: a diagram, or an image with no text beside it. */
 const isWhole = (part) =>
-  part.matches("img, svg") || part.querySelector("img, svg") !== null;
+  part.matches("img, svg, .diagram") ||
+  (part.querySelector("img, svg") !== null && part.textContent.trim() === "");
 
 function parts(element, out = []) {
   for (const child of element.children) {
