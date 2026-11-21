@@ -69,7 +69,7 @@ export const filesText = {
   drop: "Drop Markdown files and their images here",
   imagesAdded: "Images added:",
   kinds: ".md and .markdown, plus .png, .jpg, .gif, and .svg",
-  lead: "Each Markdown file starts on a new page. Add the images your files link to as well, or drop the whole folder.",
+  lead: "Each Markdown file starts on a new page, under its file name. Add the images your files link to as well, or drop the whole folder.",
   moveDown: (name) => `Move ${name} down`,
   moveUp: (name) => `Move ${name} up`,
   remove: (name) => `Remove ${name}`,
