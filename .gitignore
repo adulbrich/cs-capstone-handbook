@@ -19,6 +19,9 @@ npm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Console logs and snapshots the Playwright MCP server writes at the root
+/.playwright-mcp/
+
 # Student PII: rosters, grades, survey exports (AGENTS.md, hard rule 1).
 # Anchored to the root so src/data/sources/, the sources registry, is tracked.
 /data/
