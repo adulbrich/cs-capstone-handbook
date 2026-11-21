@@ -553,7 +553,7 @@ const pageCss = $derived(
 <div class="print-holder">
   <div class="submission-print" {@attach toBody}>
     {#each sheetList as sheet, i (sheet.id)}
-      <Sheet copy={`print${i}`} cover={sheet.cover} html={sheet.html} />
+      <Sheet copy={`print${i}`} cover={sheet.cover} html={sheet.html} name={sheet.label} />
     {/each}
   </div>
 </div>

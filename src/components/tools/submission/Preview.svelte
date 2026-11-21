@@ -21,6 +21,9 @@ let layout = $state.raw({});
 /** Parts whose children break separately: a list's items, a table's rows. */
 const OPEN = new Set(["OL", "TABLE", "TBODY", "TFOOT", "THEAD", "UL"]);
 const HEADING = /^H[1-6]$/u;
+/** What document.css keeps on the page of the part after it: break-after: avoid. */
+const keptWithNext = (part) =>
+  HEADING.test(part.tagName) || part.classList.contains("file-name");
 
 function parts(element, out = []) {
   for (const child of element.children) {
@@ -49,7 +52,7 @@ function measure(list, pageHeight) {
         const rect = part.getBoundingClientRect();
         return {
           bottom: rect.bottom - box.top,
-          keepWithNext: HEADING.test(part.tagName),
+          keepWithNext: keptWithNext(part),
           top: rect.top - box.top,
         };
       });
@@ -130,6 +133,7 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
                       copy={`p${page.number}`}
                       cover={page.sheet.cover}
                       html={page.sheet.html}
+                      name={page.sheet.label}
                     />
                   </div>
                 </div>
@@ -168,6 +172,7 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
           copy={`m${i}`}
           cover={sheet.cover}
           html={sheet.html}
+          name={sheet.label}
         />
       </div>
     {/each}
