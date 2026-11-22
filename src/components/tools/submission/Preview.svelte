@@ -37,14 +37,16 @@ const keptWithNext = (part) =>
 const KEPT_WHOLE = "p, li, tr, pre, blockquote, .diagram, .cover";
 
 /**
- * The boxes of `part`'s text and images, `{ top, bottom, chain }` from the
- * sheet's top at `offset`, `chain` numbering the KEPT_WHOLE blocks inside the
- * part around each, outermost first; an svg is one box, as it prints.
+ * Where print may start a page inside `part`, from the boxes of its text
+ * and images, `{ top, bottom, chain }` from the sheet's top at `offset`,
+ * `chain` numbering the KEPT_WHOLE blocks inside the part around each,
+ * outermost first, and those blocks' own boxes; an svg is one box, as it
+ * prints.
  */
-function boxes(part, offset) {
-  const state = { count: 0, offset, out: [] };
+function partLines(part, offset) {
+  const state = { blocks: new Map(), count: 0, offset, out: [] };
   walk(part, [], state);
-  return state.out;
+  return lineBreaks(state.out, state.blocks);
 }
 
 /** Adds the boxes of `node`'s children, inside the blocks of `chain`, to `state.out`. */
@@ -79,6 +81,8 @@ function addElement(element, chain, state) {
     state.out.push(boxOf(element.getBoundingClientRect(), chain, state.offset));
   } else if (element.matches(KEPT_WHOLE)) {
     state.count += 1;
+    const rect = element.getBoundingClientRect();
+    state.blocks.set(state.count, boxOf(rect, [], state.offset));
     walk(element, [...chain, state.count], state);
   } else {
     walk(element, chain, state);
@@ -113,7 +117,7 @@ function measure(list, pageHeight) {
         return {
           bottom: rect.bottom - box.top,
           keepWithNext: keptWithNext(part),
-          lines: lineBreaks(boxes(part, box.top)),
+          lines: partLines(part, box.top),
           top: rect.top - box.top,
         };
       });

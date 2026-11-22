@@ -451,7 +451,7 @@ test("pages number on across sheets, a sheet at least one page", () => {
 
 test("a part's line breaks fall halfway between its lines", () => {
   const box = (top, bottom, chain = []) => ({ bottom, chain, top });
-  const own = (...ys) => ys.map((y) => ({ block: 0, depth: 0, y }));
+  const own = (...ys) => ys.map((y) => ({ block: 0, depth: 0, fit: y, y }));
   // Three lines of the part's own text, in any order: two breaks.
   assert.deepEqual(
     lineBreaks([box(44, 60), box(4, 20), box(24, 40)]),
@@ -477,14 +477,26 @@ test("a part's line breaks fall halfway between its lines", () => {
   assert.deepEqual(
     lineBreaks([box(4, 20, [1]), box(24, 40, [2]), box(44, 60, [2])]),
     [
-      { block: null, depth: 0, y: 22 },
-      { block: 2, depth: 1, y: 42 },
+      { block: null, depth: 0, fit: 22, y: 22 },
+      { block: 2, depth: 1, fit: 42, y: 42 },
     ]
+  );
+  // Given the blocks' boxes, a break between two blocks fits by the upper
+  // block's bottom and starts the next page at the lower block's top.
+  assert.deepEqual(
+    lineBreaks(
+      [box(4, 20, [1]), box(36, 52, [2])],
+      new Map([
+        [1, { bottom: 24, top: 0 }],
+        [2, { bottom: 56, top: 32 }],
+      ])
+    ),
+    [{ block: null, depth: 0, fit: 24, y: 32 }]
   );
   // In a nested item (block 1), the break between its label and its code
   // (block 2) falls between blocks one deep.
   assert.deepEqual(lineBreaks([box(4, 20, [1]), box(24, 40, [1, 2])]), [
-    { block: null, depth: 1, y: 22 },
+    { block: null, depth: 1, fit: 22, y: 22 },
   ]);
   // One line, or none, has nowhere to break.
   assert.deepEqual(lineBreaks([box(0, 900)]), []);
@@ -498,7 +510,7 @@ test("a part that does not fit breaks where print breaks it", () => {
     bottom,
     keepWithNext,
     lines: lines.map((y) =>
-      typeof y === "number" ? { block: 0, depth: 0, y } : y
+      typeof y === "number" ? { block: 0, depth: 0, fit: y, y } : y
     ),
     top,
   });
@@ -576,8 +588,8 @@ test("a part that does not fit breaks where print breaks it", () => {
   // Inside a list item, print breaks between its blocks before it breaks
   // inside one: after the step's line (block 1), before its code (block 2),
   // then inside the code at a line that keeps two at each end.
-  const between = (y, depth = 0) => ({ block: null, depth, y });
-  const code = (y) => ({ block: 2, depth: 1, y });
+  const between = (y, depth = 0, fit = y) => ({ block: null, depth, fit, y });
+  const code = (y) => ({ block: 2, depth: 1, fit: y, y });
   assert.deepEqual(
     pageStarts(
       [
@@ -597,7 +609,7 @@ test("a part that does not fit breaks where print breaks it", () => {
         block(5, 110, false, [
           between(10),
           ...[1, 2, 3, 4, 5].flatMap((n) => [
-            { block: n, depth: 1, y: 20 * n },
+            { block: n, depth: 1, fit: 20 * n, y: 20 * n },
             between(20 * n + 10),
           ]),
         ]),
@@ -614,6 +626,18 @@ test("a part that does not fit breaks where print breaks it", () => {
       100
     ),
     [0, 50]
+  );
+  // A break between two blocks fits when the upper one ends on the page,
+  // though the gap below it does not, and the next page starts at the lower.
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 3, true),
+        block(5, 150, false, [between(108, 0, 98), 120, 140]),
+      ],
+      100
+    ),
+    [0, 108]
   );
   assert.deepEqual(pageStarts([], 100), [0]);
 });

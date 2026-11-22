@@ -247,16 +247,19 @@ function sharedDepth(a, b) {
 
 /**
  * Where print may start a page inside a part, from the boxes of its text and
- * images as `{ top, bottom, chain }`, in any order: halfway between each
- * line's bottom and the next one's top, as `{ y, block, depth }`. A box's
- * `chain` numbers the blocks of the part that print keeps whole around it,
- * outermost first, none for the part's own lines. A break's `depth` counts
- * the blocks it falls inside; between two lines of one block, `block` is that
- * block's number (0 for the part's own lines), and between two blocks it is
- * `null`. Boxes that overlap are one line; a box with no height, unlike a
- * blank code line's, is none.
+ * images as `{ top, bottom, chain }`, in any order, and the boxes of the
+ * blocks they sit in, by number (`blocks`). A box's `chain` numbers the
+ * blocks of the part that print keeps whole around it, outermost first, none
+ * for the part's own lines. Each break is `{ y, fit, block, depth }`: the
+ * next page starts at `y`, and the page before holds what lies above `fit`.
+ * Between two lines of one block, both are halfway between the lines, and
+ * `block` is that block's number (0 for the part's own lines); between two
+ * blocks, `fit` is the upper block's bottom and `y` the lower one's top, and
+ * `block` is `null`. `depth` counts the blocks a break falls inside. Boxes
+ * that overlap are one line; a box with no height, unlike a blank code
+ * line's, is none.
  */
-export function lineBreaks(boxes) {
+export function lineBreaks(boxes, blocks = new Map()) {
   const lines = [];
   const found = boxes
     .filter((box) => box.bottom > box.top)
@@ -270,13 +273,20 @@ export function lineBreaks(boxes) {
     }
   }
   return lines.slice(1).map((line, k) => {
-    const above = lines[k].chain;
-    const depth = sharedDepth(above, line.chain);
-    const same = depth === above.length && depth === line.chain.length;
+    const above = lines[k];
+    const depth = sharedDepth(above.chain, line.chain);
+    const same = depth === above.chain.length && depth === line.chain.length;
+    const middle = (above.bottom + line.top) / 2;
+    if (same) {
+      return { block: line.chain.at(-1) ?? 0, depth, fit: middle, y: middle };
+    }
+    const upper = blocks.get(above.chain[depth]);
+    const lower = blocks.get(line.chain[depth]);
     return {
-      block: same ? (line.chain.at(-1) ?? 0) : null,
+      block: null,
       depth,
-      y: (lines[k].bottom + line.top) / 2,
+      fit: upper?.bottom ?? middle,
+      y: lower?.top ?? middle,
     };
   });
 }
@@ -326,8 +336,8 @@ function blockCounts(lines) {
 
 /**
  * The best-ranked break in `part`, top to bottom in `lines`, that fits the
- * page from `start` to `end`, the last of those; null when no line of the
- * part ends on this page.
+ * page from `start` to `end` (its `fit` on the page, its `y` past `start`),
+ * the last of those; null when no line of the part ends on this page.
  */
 function lineBreak(part, start, end) {
   const counts = blockCounts(part.lines);
@@ -340,7 +350,7 @@ function lineBreak(part, start, end) {
     seen.set(line.block, j + 1);
     if (line.y <= start) {
       done.set(line.block, j + 1);
-    } else if (line.y <= end) {
+    } else if (line.fit <= end) {
       const before = j + 1 - (done.get(line.block) ?? 0);
       const rank = breakRank(line, before, counts.get(line.block) - j);
       if (rank >= bestRank) {
@@ -373,9 +383,9 @@ function nextStart(blocks, i, start, pageHeight) {
 /**
  * Where the pages of one printed sheet start, in pixels from its top, as
  * Chrome's print breaks them. `blocks` are its parts top to bottom,
- * `{ top, bottom, keepWithNext, lines }`: `lines` the points between a
- * part's lines where print may start a page, from lineBreaks, none for an
- * image or a diagram, which print keeps whole. `pageHeight` is the paper's content
+ * `{ top, bottom, keepWithNext, lines }`: `lines` the breaks inside a part
+ * where print may start a page, from lineBreaks, none for an image or a
+ * diagram, which print keeps whole. `pageHeight` is the paper's content
  * height. A part that does not fit moves to the next page with the heading
  * or the file's path before it (`keepWithNext`), whatever its height. When
  * those already start the page, it breaks at its last line that fits, two
