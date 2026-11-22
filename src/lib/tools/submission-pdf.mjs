@@ -237,6 +237,28 @@ export const canSave = (checks) =>
   checks.every((check) => check.ok || !["cover", "files"].includes(check.id));
 
 /**
+ * Where print may start a page inside a part, from the boxes of its text and
+ * images as `{ top, bottom }`, in any order: halfway between each line's
+ * bottom and the next one's top. Boxes that overlap are one line; a box with
+ * no height, unlike a blank code line's, is none.
+ */
+export function lineBreaks(boxes) {
+  const lines = [];
+  const found = boxes
+    .filter((box) => box.bottom > box.top)
+    .toSorted((a, b) => a.top - b.top);
+  for (const box of found) {
+    const line = lines.at(-1);
+    if (line && box.top < line.bottom - 1) {
+      line.bottom = Math.max(line.bottom, box.bottom);
+    } else {
+      lines.push({ bottom: box.bottom, top: box.top });
+    }
+  }
+  return lines.slice(1).map((line, k) => (lines[k].bottom + line.top) / 2);
+}
+
+/**
  * Lines Chrome's print keeps together at each end of a part it breaks,
  * where it can: its default `orphans` and `widows`, which document.css
  * leaves alone.

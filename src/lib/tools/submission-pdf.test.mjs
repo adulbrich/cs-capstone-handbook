@@ -21,6 +21,7 @@ import {
   fromSaved,
   generatedOn,
   hasSaved,
+  lineBreaks,
   numberPages,
   PAPER,
   pageStarts,
@@ -446,6 +447,32 @@ test("pages number on across sheets, a sheet at least one page", () => {
     total: 7,
   });
   assert.deepEqual(numberPages([]), { firsts: [], total: 0 });
+});
+
+test("a part's line breaks fall halfway between its lines", () => {
+  const box = (top, bottom) => ({ bottom, top });
+  // Three lines of text, in any order: two breaks, each between two lines.
+  assert.deepEqual(
+    lineBreaks([box(44, 60), box(4, 20), box(24, 40)]),
+    [22, 42]
+  );
+  // Boxes that overlap are one line: an image beside the text it sits in.
+  assert.deepEqual(lineBreaks([box(0, 40), box(25, 38), box(44, 60)]), [42]);
+  // A blank line in a code block has a box with no width but its height, so
+  // it is a line of its own (44 to 60); a box with no height is no line.
+  assert.deepEqual(
+    lineBreaks([
+      box(4, 20),
+      box(24, 40),
+      box(44, 60),
+      box(64, 80),
+      box(50, 50),
+    ]),
+    [22, 42, 62]
+  );
+  // One line, or none, has nowhere to break.
+  assert.deepEqual(lineBreaks([box(0, 900)]), []);
+  assert.deepEqual(lineBreaks([]), []);
 });
 
 test("a part that does not fit breaks where print breaks it", () => {

@@ -7,7 +7,11 @@
 // Measuring is reading the layout, so it runs after each update and when an
 // image finishes loading.
 import { previewText as text } from "../../../data/submission-pdf.mjs";
-import { numberPages, pageStarts } from "../../../lib/tools/submission-pdf.mjs";
+import {
+  lineBreaks,
+  numberPages,
+  pageStarts,
+} from "../../../lib/tools/submission-pdf.mjs";
 import Sheet from "./Sheet.svelte";
 
 let { empty, paper, paperLabel, sheets, words } = $props();
@@ -26,44 +30,29 @@ const HEADING = /^H[1-6]$/u;
 const keptWithNext = (part) =>
   HEADING.test(part.tagName) || part.classList.contains("file-name");
 
-/** The boxes of `node`'s text and images; an svg is one box, as it prints. */
-function boxes(node, out = []) {
+/**
+ * The boxes of `node`'s text and images, `{ top, bottom }` from the sheet's
+ * top at `offset`; an svg is one box, as it prints.
+ */
+function boxes(node, offset, out = []) {
+  const add = (rect) =>
+    out.push({ bottom: rect.bottom - offset, top: rect.top - offset });
   for (const child of node.childNodes) {
     if (child.nodeType === Node.TEXT_NODE) {
       const range = document.createRange();
       range.selectNodeContents(child);
-      out.push(...range.getClientRects());
+      for (const rect of range.getClientRects()) {
+        add(rect);
+      }
     } else if (child.nodeType === Node.ELEMENT_NODE) {
       if (child.matches("img, svg")) {
-        out.push(child.getBoundingClientRect());
+        add(child.getBoundingClientRect());
       } else {
-        boxes(child, out);
+        boxes(child, offset, out);
       }
     }
   }
   return out;
-}
-
-/**
- * Where print may start a page inside `part`: halfway between each line's
- * bottom and the next one's top, from the sheet's top at `offset`.
- */
-function lineBreaks(part, offset) {
-  const lines = [];
-  const found = boxes(part)
-    .filter((rect) => rect.width > 0 && rect.height > 0)
-    .sort((a, b) => a.top - b.top);
-  for (const rect of found) {
-    const line = lines.at(-1);
-    if (line && rect.top < line.bottom - 1) {
-      line.bottom = Math.max(line.bottom, rect.bottom);
-    } else {
-      lines.push({ bottom: rect.bottom, top: rect.top });
-    }
-  }
-  return lines
-    .slice(1)
-    .map((line, k) => (lines[k].bottom + line.top) / 2 - offset);
 }
 
 function parts(element, out = []) {
@@ -94,7 +83,7 @@ function measure(list, pageHeight) {
         return {
           bottom: rect.bottom - box.top,
           keepWithNext: keptWithNext(part),
-          lines: lineBreaks(part, box.top),
+          lines: lineBreaks(boxes(part, box.top)),
           top: rect.top - box.top,
         };
       });
