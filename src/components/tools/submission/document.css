@@ -19,7 +19,8 @@
   overflow-wrap: break-word;
   background: #fff;
 }
-.submission-doc > :first-child {
+.submission-doc > :first-child,
+.submission-doc .file-name + * {
   margin-top: 0;
 }
 .submission-doc :is(h1, h2, h3, h4, h5, h6) {
@@ -67,9 +68,17 @@
   border: 1px solid #e7e5e4;
   border-radius: 4px;
 }
+/*
+ * A block of its own, at the body text's line pitch: lines of one font size
+ * at a set height measure the same on screen and on paper, which lines of 9pt
+ * code inside the block's own 11pt lines do not, so the preview's breaks in a
+ * code block are the printer's.
+ */
 .submission-doc pre code {
+  display: block;
   padding: 0;
   font-size: 9pt;
+  line-height: calc(11pt * 1.45);
   background: none;
 }
 .submission-doc blockquote {
@@ -135,6 +144,21 @@
 .submission-doc .cover p {
   margin: 0;
   color: #44403c;
+}
+
+/*
+ * The file's path, above its first line on its first page: small and gray,
+ * so it tells AGENTS.md from CONTRIBUTING.md without reading as part of
+ * either. It stays on the page of the line after it, except at a page's
+ * top above an image or diagram too tall to fit under it, which print moves
+ * to the next page.
+ */
+.submission-doc .file-name {
+  margin: 0 0 1em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 8.5pt;
+  color: #78716c;
+  break-after: avoid;
 }
 
 /* On screen the print copy is never shown; on paper it is all there is. */

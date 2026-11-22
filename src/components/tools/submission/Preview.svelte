@@ -1,12 +1,17 @@
 <script>
 // The pages as they will print. Each sheet is laid out once, unseen, at the
-// paper's content width, and its parts measured; pageStarts turns those into
-// page breaks by the print CSS's own rules (document.css). Each page is then
+// paper's content width, and its parts and their lines measured; pageStarts
+// turns those into page breaks as Chrome's print makes them by the print
+// CSS's own rules (document.css). Each page is then
 // a scaled copy of its sheet, shifted to its start and cut at the next.
 // Measuring is reading the layout, so it runs after each update and when an
 // image finishes loading.
 import { previewText as text } from "../../../data/submission-pdf.mjs";
-import { numberPages, pageStarts } from "../../../lib/tools/submission-pdf.mjs";
+import {
+  lineBreaks,
+  numberPages,
+  pageStarts,
+} from "../../../lib/tools/submission-pdf.mjs";
 import Sheet from "./Sheet.svelte";
 
 let { empty, paper, paperLabel, sheets, words } = $props();
@@ -21,6 +26,68 @@ let layout = $state.raw({});
 /** Parts whose children break separately: a list's items, a table's rows. */
 const OPEN = new Set(["OL", "TABLE", "TBODY", "TFOOT", "THEAD", "UL"]);
 const HEADING = /^H[1-6]$/u;
+/** What document.css keeps on the page of the part after it: break-after: avoid. */
+const keptWithNext = (part) =>
+  HEADING.test(part.tagName) || part.classList.contains("file-name");
+
+/**
+ * The blocks document.css keeps whole (break-inside: avoid), but for an
+ * image, whose line belongs to the paragraph it sits in.
+ */
+const KEPT_WHOLE = "p, li, tr, pre, blockquote, .diagram, .cover";
+
+/**
+ * Where print may start a page inside `part`, from the boxes of its text
+ * and images, `{ top, bottom, chain }` from the sheet's top at `offset`,
+ * `chain` numbering the KEPT_WHOLE blocks inside the part around each,
+ * outermost first, and those blocks' own boxes; an svg is one box, as it
+ * prints.
+ */
+function partLines(part, offset) {
+  const state = { blocks: new Map(), count: 0, offset, out: [] };
+  walk(part, [], state);
+  return lineBreaks(state.out, state.blocks);
+}
+
+/** Adds the boxes of `node`'s children, inside the blocks of `chain`, to `state.out`. */
+function walk(node, chain, state) {
+  for (const child of node.childNodes) {
+    if (child.nodeType === Node.TEXT_NODE) {
+      addText(child, chain, state);
+    } else if (child.nodeType === Node.ELEMENT_NODE) {
+      addElement(child, chain, state);
+    }
+  }
+}
+
+const boxOf = (rect, chain, offset) => ({
+  bottom: rect.bottom - offset,
+  chain,
+  top: rect.top - offset,
+});
+
+/** A text node's boxes, one for each line it runs over. */
+function addText(node, chain, state) {
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  for (const rect of range.getClientRects()) {
+    state.out.push(boxOf(rect, chain, state.offset));
+  }
+}
+
+/** An image or svg as one box; any other element's boxes, inside a block of their own if KEPT_WHOLE. */
+function addElement(element, chain, state) {
+  if (element.matches("img, svg")) {
+    state.out.push(boxOf(element.getBoundingClientRect(), chain, state.offset));
+  } else if (element.matches(KEPT_WHOLE)) {
+    state.count += 1;
+    const rect = element.getBoundingClientRect();
+    state.blocks.set(state.count, boxOf(rect, [], state.offset));
+    walk(element, [...chain, state.count], state);
+  } else {
+    walk(element, chain, state);
+  }
+}
 
 function parts(element, out = []) {
   for (const child of element.children) {
@@ -49,7 +116,8 @@ function measure(list, pageHeight) {
         const rect = part.getBoundingClientRect();
         return {
           bottom: rect.bottom - box.top,
-          keepWithNext: HEADING.test(part.tagName),
+          keepWithNext: keptWithNext(part),
+          lines: partLines(part, box.top),
           top: rect.top - box.top,
         };
       });
@@ -130,6 +198,7 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
                       copy={`p${page.number}`}
                       cover={page.sheet.cover}
                       html={page.sheet.html}
+                      name={page.sheet.label}
                     />
                   </div>
                 </div>
@@ -168,6 +237,7 @@ const scale = $derived(width > 0 ? width / paper.width : 0);
           copy={`m${i}`}
           cover={sheet.cover}
           html={sheet.html}
+          name={sheet.label}
         />
       </div>
     {/each}

@@ -21,6 +21,7 @@ import {
   fromSaved,
   generatedOn,
   hasSaved,
+  lineBreaks,
   numberPages,
   PAPER,
   pageStarts,
@@ -448,12 +449,73 @@ test("pages number on across sheets, a sheet at least one page", () => {
   assert.deepEqual(numberPages([]), { firsts: [], total: 0 });
 });
 
-test("a part that does not fit moves to the next page whole", () => {
-  const block = (top, bottom, keepWithNext = false) => ({
+test("a part's line breaks fall between its lines and its blocks", () => {
+  const box = (top, bottom, chain = []) => ({ bottom, chain, top });
+  const own = (...ys) => ys.map((y) => ({ block: 0, depth: 0, fit: y, y }));
+  // Three lines of the part's own text, in any order: two breaks.
+  assert.deepEqual(
+    lineBreaks([box(44, 60), box(4, 20), box(24, 40)]),
+    own(22, 42)
+  );
+  // Boxes that overlap are one line: an image beside the text it sits in.
+  assert.deepEqual(lineBreaks([box(0, 40), box(25, 38), box(44, 60)]), own(42));
+  // A blank line in a code block has a box with no width but its height, so
+  // it is a line of its own (44 to 60); a box with no height is no line.
+  assert.deepEqual(
+    lineBreaks([
+      box(4, 20),
+      box(24, 40),
+      box(44, 60),
+      box(64, 80),
+      box(50, 50),
+    ]),
+    own(22, 42, 62)
+  );
+  // In a list item, the break between its paragraph (block 1) and its code
+  // (block 2) falls between blocks; one between two code lines is block 2's,
+  // one block deep.
+  assert.deepEqual(
+    lineBreaks([box(4, 20, [1]), box(24, 40, [2]), box(44, 60, [2])]),
+    [
+      { block: null, depth: 0, fit: 22, y: 22 },
+      { block: 2, depth: 1, fit: 42, y: 42 },
+    ]
+  );
+  // Given the blocks' boxes, a break between two blocks fits by the upper
+  // block's bottom and starts the next page at the lower block's top.
+  assert.deepEqual(
+    lineBreaks(
+      [box(4, 20, [1]), box(36, 52, [2])],
+      new Map([
+        [1, { bottom: 24, top: 0 }],
+        [2, { bottom: 56, top: 32 }],
+      ])
+    ),
+    [{ block: null, depth: 0, fit: 24, y: 32 }]
+  );
+  // In a nested item (block 1), the break between its label and its code
+  // (block 2) falls between blocks one deep.
+  assert.deepEqual(lineBreaks([box(4, 20, [1]), box(24, 40, [1, 2])]), [
+    { block: null, depth: 1, fit: 22, y: 22 },
+  ]);
+  // One line, or none, has nowhere to break.
+  assert.deepEqual(lineBreaks([box(0, 900)]), []);
+  assert.deepEqual(lineBreaks([]), []);
+});
+
+test("a part that does not fit breaks where print breaks it", () => {
+  // `lines` are the breaks inside a part, a number being one between its own
+  // lines; a part with none, such as an image or a diagram, prints whole.
+  const block = (top, bottom, keepWithNext = false, lines = []) => ({
     bottom,
     keepWithNext,
+    lines: lines.map((y) =>
+      typeof y === "number" ? { block: 0, depth: 0, fit: y, y } : y
+    ),
     top,
   });
+  const every = (from, to, step) =>
+    Array.from({ length: (to - from) / step + 1 }, (_, i) => from + i * step);
   // Everything fits on one page.
   assert.deepEqual(pageStarts([block(0, 50), block(60, 100)], 100), [0]);
   // The second part would cross the edge, so its page starts at its top.
@@ -463,11 +525,119 @@ test("a part that does not fit moves to the next page whole", () => {
     pageStarts([block(0, 60), block(65, 75, true), block(80, 130)], 100),
     [0, 65]
   );
-  // A part taller than a page is cut at each page edge, where it stands.
+  // A part taller than a page moves too, then breaks at its last line that
+  // fits each page.
+  assert.deepEqual(
+    pageStarts([block(0, 40), block(50, 250, false, every(70, 230, 20))], 100),
+    [0, 50, 150]
+  );
+  // Without lines, it is cut at each page edge instead.
   assert.deepEqual(pageStarts([block(0, 250)], 100), [0, 100, 200]);
   assert.deepEqual(
     pageStarts([block(0, 40), block(50, 260)], 100),
-    [0, 100, 200]
+    [0, 50, 150, 250]
+  );
+  // A part print breaks keeps two lines at each end where it can, so the last
+  // two lines go over together, not the last one alone.
+  assert.deepEqual(
+    pageStarts([block(0, 110, false, every(20, 100, 20))], 100),
+    [0, 80]
+  );
+  // A heading or path that already starts the page stays there, and the part
+  // after it breaks at a line rather than leave the page holding nothing else.
+  assert.deepEqual(
+    pageStarts(
+      [block(0, 3, true), block(5, 102, false, every(25, 85, 20))],
+      100
+    ),
+    [0, 65]
+  );
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 100),
+        block(100, 103, true),
+        block(105, 202, false, every(125, 185, 20)),
+      ],
+      100
+    ),
+    [0, 100, 165]
+  );
+  // When only one line fits, it breaks there all the same.
+  assert.deepEqual(
+    pageStarts([block(0, 3, true), block(5, 130, false, [98, 110, 120])], 100),
+    [0, 98]
+  );
+  // A part with no line to break at, an image or a diagram, moves alone and
+  // leaves every heading and path before it on their page.
+  assert.deepEqual(pageStarts([block(0, 3, true), block(5, 102)], 100), [0, 5]);
+  assert.deepEqual(
+    pageStarts([block(0, 3, true), block(5, 8, true), block(10, 105)], 100),
+    [0, 10]
+  );
+  assert.deepEqual(
+    pageStarts([block(0, 100), block(100, 103, true), block(105, 202)], 100),
+    [0, 100, 105]
+  );
+  // A path that moves with an image that then does not fit under it is left
+  // at the top of that page, and the image moves on alone.
+  assert.deepEqual(
+    pageStarts([block(0, 60), block(70, 73, true), block(75, 171)], 100),
+    [0, 70, 75]
+  );
+  // Inside a list item, print breaks between its blocks before it breaks
+  // inside one: after the step's line (block 1), before its code (block 2),
+  // then inside the code at a line that keeps two at each end.
+  const between = (y, depth = 0, fit = y) => ({ block: null, depth, fit, y });
+  const code = (y) => ({ block: 2, depth: 1, fit: y, y });
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 3, true),
+        block(5, 130, false, [between(15), ...[35, 55, 75, 95, 115].map(code)]),
+      ],
+      100
+    ),
+    [0, 15, 95]
+  );
+  // And between two nested items before inside one: each item here has two
+  // lines, so the page starts at the last item that begins on it.
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 3, true),
+        block(5, 110, false, [
+          between(10),
+          ...[1, 2, 3, 4, 5].flatMap((n) => [
+            { block: n, depth: 1, fit: 20 * n, y: 20 * n },
+            between(20 * n + 10),
+          ]),
+        ]),
+      ],
+      100
+    ),
+    [0, 90]
+  );
+  // A break inside a nested item ranks below one between the items, though
+  // later: the page starts at "On Windows:", not between it and its code.
+  assert.deepEqual(
+    pageStarts(
+      [block(0, 3, true), block(5, 130, false, [between(50), between(60, 1)])],
+      100
+    ),
+    [0, 50]
+  );
+  // A break between two blocks fits when the upper one ends on the page,
+  // though the gap below it does not, and the next page starts at the lower.
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 3, true),
+        block(5, 150, false, [between(108, 0, 98), 120, 140]),
+      ],
+      100
+    ),
+    [0, 108]
   );
   assert.deepEqual(pageStarts([], 100), [0]);
 });

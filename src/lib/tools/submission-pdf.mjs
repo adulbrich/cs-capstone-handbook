@@ -236,35 +236,171 @@ export function submissionChecks(cover, files, extras = []) {
 export const canSave = (checks) =>
   checks.every((check) => check.ok || !["cover", "files"].includes(check.id));
 
+/** How many blocks two chains of blocks share from the outside in. */
+function sharedDepth(a, b) {
+  let depth = 0;
+  while (depth < a.length && depth < b.length && a[depth] === b[depth]) {
+    depth += 1;
+  }
+  return depth;
+}
+
 /**
- * Where the pages of one printed sheet start, in pixels from its top.
- * `blocks` are its parts top to bottom, `{ top, bottom, keepWithNext }`,
- * and `pageHeight` the paper's content height. Like the print CSS, a part
- * that does not fit moves to the next page whole, taking a heading before
- * it along (`keepWithNext`); a part taller than a page is cut at the page
+ * Where print may start a page inside a part, from the boxes of its text and
+ * images as `{ top, bottom, chain }`, in any order, and the boxes of the
+ * blocks they sit in, by number (`blocks`). A box's `chain` numbers the
+ * blocks of the part that print keeps whole around it, outermost first, none
+ * for the part's own lines. Each break is `{ y, fit, block, depth }`: the
+ * next page starts at `y`, and the page before holds what lies above `fit`.
+ * Between two lines of one block, both are halfway between the lines, and
+ * `block` is that block's number (0 for the part's own lines); between two
+ * blocks, `fit` is the upper block's bottom and `y` the lower one's top, the
+ * halfway point standing in for a side with no box in `blocks`, and `block`
+ * is `null`. `depth` counts the blocks a break falls inside. Boxes that
+ * overlap are one line; a box with no height, unlike a blank code line's, is
+ * none.
+ */
+export function lineBreaks(boxes, blocks = new Map()) {
+  const lines = [];
+  const found = boxes
+    .filter((box) => box.bottom > box.top)
+    .toSorted((a, b) => a.top - b.top);
+  for (const box of found) {
+    const line = lines.at(-1);
+    if (line && box.top < line.bottom - 1) {
+      line.bottom = Math.max(line.bottom, box.bottom);
+    } else {
+      lines.push({ bottom: box.bottom, chain: box.chain, top: box.top });
+    }
+  }
+  return lines.slice(1).map((line, k) => {
+    const above = lines[k];
+    const depth = sharedDepth(above.chain, line.chain);
+    const same = depth === above.chain.length && depth === line.chain.length;
+    const middle = (above.bottom + line.top) / 2;
+    if (same) {
+      return { block: line.chain.at(-1) ?? 0, depth, fit: middle, y: middle };
+    }
+    const upper = blocks.get(above.chain[depth]);
+    const lower = blocks.get(line.chain[depth]);
+    return {
+      block: null,
+      depth,
+      fit: upper?.bottom ?? middle,
+      y: lower?.top ?? middle,
+    };
+  });
+}
+
+/**
+ * Lines Chrome's print keeps together at each end of a block it breaks, the
+ * part's own lines or a block inside it, where it can: its default `orphans`
+ * and `widows`, which document.css leaves alone.
+ */
+const KEEP_LINES = 2;
+
+/**
+ * The top of part `i` with the kept parts right before it, where print
+ * breaks to move them together; null when those kept parts reach back to
+ * `start`, the current page's top, so moving them would leave it empty.
+ */
+function keptTop(blocks, i, start) {
+  let next = blocks[i].top;
+  for (let j = i - 1; j >= 0 && blocks[j].keepWithNext; j -= 1) {
+    if (blocks[j].top <= start) {
+      return null;
+    }
+    next = blocks[j].top;
+  }
+  return next;
+}
+
+/**
+ * How print ranks a break, higher first: one inside fewer of the part's
+ * blocks (`depth`) always ranks higher; at one depth, a break between
+ * blocks, or between lines of one block with KEEP_LINES of them `before` and
+ * `after` it on the page, ranks above one without.
+ */
+function breakRank({ block, depth }, before, after) {
+  const keeps = block === null || (before >= KEEP_LINES && after >= KEEP_LINES);
+  return (keeps ? 1 : 0) - 2 * depth;
+}
+
+/** How many breaks each block of `lines` has between its own lines. */
+function blockCounts(lines) {
+  const counts = new Map();
+  for (const { block } of lines) {
+    counts.set(block, (counts.get(block) ?? 0) + 1);
+  }
+  return counts;
+}
+
+/**
+ * The best-ranked break in `part`, top to bottom in `lines`, that fits the
+ * page from `start` to `end` (its `fit` on the page, its `y` past `start`),
+ * the last of those; null when no line of the part ends on this page.
+ */
+function lineBreak(part, start, end) {
+  const counts = blockCounts(part.lines);
+  const seen = new Map();
+  const done = new Map();
+  let best = null;
+  let bestRank = Number.NEGATIVE_INFINITY;
+  for (const line of part.lines) {
+    const j = seen.get(line.block) ?? 0;
+    seen.set(line.block, j + 1);
+    if (line.y <= start) {
+      done.set(line.block, j + 1);
+    } else if (line.fit <= end) {
+      const before = j + 1 - (done.get(line.block) ?? 0);
+      const rank = breakRank(line, before, counts.get(line.block) - j);
+      if (rank >= bestRank) {
+        best = line.y;
+        bestRank = rank;
+      }
+    }
+  }
+  return best;
+}
+
+/**
+ * Where the page after the one at `start` begins when part `i` does not fit
+ * it, by Chrome's print order: before the part with the kept parts before
+ * it; inside it, at a line; before it, leaving the kept parts; at the edge.
+ */
+function nextStart(blocks, i, start, pageHeight) {
+  const block = blocks[i];
+  const moved = block.top > start ? keptTop(blocks, i, start) : null;
+  if (moved !== null) {
+    return moved;
+  }
+  const line = lineBreak(block, start, start + pageHeight);
+  if (line !== null) {
+    return line;
+  }
+  return block.top > start ? block.top : start + pageHeight;
+}
+
+/**
+ * Where the pages of one printed sheet start, in pixels from its top, as
+ * Chrome's print breaks them. `blocks` are its parts top to bottom,
+ * `{ top, bottom, keepWithNext, lines }`: `lines` the breaks inside a part
+ * where print may start a page, from lineBreaks, none for an image or a
+ * diagram, which print keeps whole. `pageHeight` is the paper's content
+ * height. A part that does not fit moves to the next page with the heading
+ * or the file's path before it (`keepWithNext`), whatever its height. When
+ * those already start the page, it breaks at its last line that fits, two
+ * lines kept at each end where it can and between the blocks inside it
+ * before inside one of them, or moves alone if no line fits; a
+ * part that starts the page and has no line that fits it is cut at the page
  * edge. The first page always starts at 0.
  */
 export function pageStarts(blocks, pageHeight) {
   const starts = [0];
   let start = 0;
   blocks.forEach((block, i) => {
-    if (block.bottom - start <= pageHeight) {
-      return;
-    }
-    if (block.top > start && block.bottom - block.top <= pageHeight) {
-      let next = block.top;
-      for (let j = i - 1; j >= 0; j -= 1) {
-        const before = blocks[j];
-        if (!before.keepWithNext || before.top <= start) {
-          break;
-        }
-        next = before.top;
-      }
-      start = next;
-      starts.push(start);
-    }
     while (block.bottom - start > pageHeight) {
-      start += pageHeight;
+      start = nextStart(blocks, i, start, pageHeight);
       starts.push(start);
     }
   });
