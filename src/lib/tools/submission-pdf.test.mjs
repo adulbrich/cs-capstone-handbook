@@ -448,13 +448,17 @@ test("pages number on across sheets, a sheet at least one page", () => {
   assert.deepEqual(numberPages([]), { firsts: [], total: 0 });
 });
 
-test("a part that does not fit moves to the next page whole", () => {
-  const block = (top, bottom, keepWithNext = false, whole = false) => ({
+test("a part that does not fit breaks where print breaks it", () => {
+  // `lines` are the points between a part's lines; a part with none, such as
+  // an image or a diagram, prints whole.
+  const block = (top, bottom, keepWithNext = false, lines = []) => ({
     bottom,
     keepWithNext,
+    lines,
     top,
-    whole,
   });
+  const every = (from, to, step) =>
+    Array.from({ length: (to - from) / step + 1 }, (_, i) => from + i * step);
   // Everything fits on one page.
   assert.deepEqual(pageStarts([block(0, 50), block(60, 100)], 100), [0]);
   // The second part would cross the edge, so its page starts at its top.
@@ -464,42 +468,65 @@ test("a part that does not fit moves to the next page whole", () => {
     pageStarts([block(0, 60), block(65, 75, true), block(80, 130)], 100),
     [0, 65]
   );
-  // A heading or path that already starts the page stays there, and the part
-  // after it is cut at the page edge, as print does for a part it can cut
-  // between lines: moving it would leave the page holding nothing else.
+  // A part taller than a page moves too, then breaks at its last line that
+  // fits each page.
   assert.deepEqual(
-    pageStarts([block(0, 3, true), block(5, 102)], 100),
-    [0, 100]
+    pageStarts([block(0, 40), block(50, 250, false, every(70, 230, 20))], 100),
+    [0, 50, 150]
   );
-  assert.deepEqual(
-    pageStarts([block(0, 100), block(100, 103, true), block(105, 202)], 100),
-    [0, 100, 200]
-  );
-  // An image or diagram cannot be cut, so print moves it alone and leaves
-  // every heading and path before it on their page; the preview does the same.
-  assert.deepEqual(
-    pageStarts([block(0, 3, true), block(5, 102, false, true)], 100),
-    [0, 5]
-  );
-  assert.deepEqual(
-    pageStarts(
-      [block(0, 3, true), block(5, 8, true), block(10, 105, false, true)],
-      100
-    ),
-    [0, 10]
-  );
-  assert.deepEqual(
-    pageStarts(
-      [block(0, 100), block(100, 103, true), block(105, 202, false, true)],
-      100
-    ),
-    [0, 100, 105]
-  );
-  // A part taller than a page is cut at each page edge, where it stands.
+  // Without lines, it is cut at each page edge instead.
   assert.deepEqual(pageStarts([block(0, 250)], 100), [0, 100, 200]);
   assert.deepEqual(
     pageStarts([block(0, 40), block(50, 260)], 100),
-    [0, 100, 200]
+    [0, 50, 150, 250]
+  );
+  // A part print breaks keeps two lines at each end where it can, so the last
+  // two lines go over together, not the last one alone.
+  assert.deepEqual(
+    pageStarts([block(0, 110, false, every(20, 100, 20))], 100),
+    [0, 80]
+  );
+  // A heading or path that already starts the page stays there, and the part
+  // after it breaks at a line rather than leave the page holding nothing else.
+  assert.deepEqual(
+    pageStarts(
+      [block(0, 3, true), block(5, 102, false, every(25, 85, 20))],
+      100
+    ),
+    [0, 65]
+  );
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 100),
+        block(100, 103, true),
+        block(105, 202, false, every(125, 185, 20)),
+      ],
+      100
+    ),
+    [0, 100, 165]
+  );
+  // When only one line fits, it breaks there all the same.
+  assert.deepEqual(
+    pageStarts([block(0, 3, true), block(5, 130, false, [98, 110, 120])], 100),
+    [0, 98]
+  );
+  // A part with no line to break at, an image or a diagram, moves alone and
+  // leaves every heading and path before it on their page.
+  assert.deepEqual(pageStarts([block(0, 3, true), block(5, 102)], 100), [0, 5]);
+  assert.deepEqual(
+    pageStarts([block(0, 3, true), block(5, 8, true), block(10, 105)], 100),
+    [0, 10]
+  );
+  assert.deepEqual(
+    pageStarts([block(0, 100), block(100, 103, true), block(105, 202)], 100),
+    [0, 100, 105]
+  );
+  // A path that moves with an image that then does not fit under it is left
+  // at the top of that page, and the image moves on alone.
+  assert.deepEqual(
+    pageStarts([block(0, 60), block(70, 73, true), block(75, 171)], 100),
+    [0, 70, 75]
   );
   assert.deepEqual(pageStarts([], 100), [0]);
 });

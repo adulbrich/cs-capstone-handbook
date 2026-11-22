@@ -237,16 +237,22 @@ export const canSave = (checks) =>
   checks.every((check) => check.ok || !["cover", "files"].includes(check.id));
 
 /**
- * Where part `i` starts its new page when it moves: at its top, or at the
- * top of the kept parts right before it. When they reach back to `start`,
- * the current page's top, it returns `start` (nothing moves, so the part is
- * cut), unless the part is `whole`, which moves alone and leaves them all.
+ * Lines Chrome's print keeps together at each end of a part it breaks,
+ * where it can: its default `orphans` and `widows`, which document.css
+ * leaves alone.
  */
-function movedTop(blocks, i, start) {
+const KEEP_LINES = 2;
+
+/**
+ * The top of part `i` with the kept parts right before it, where print
+ * breaks to move them together; null when those kept parts reach back to
+ * `start`, the current page's top, so moving them would leave it empty.
+ */
+function keptTop(blocks, i, start) {
   let next = blocks[i].top;
   for (let j = i - 1; j >= 0 && blocks[j].keepWithNext; j -= 1) {
     if (blocks[j].top <= start) {
-      return blocks[i].whole ? blocks[i].top : start;
+      return null;
     }
     next = blocks[j].top;
   }
@@ -254,32 +260,63 @@ function movedTop(blocks, i, start) {
 }
 
 /**
- * Where the pages of one printed sheet start, in pixels from its top.
- * `blocks` are its parts top to bottom, `{ top, bottom, keepWithNext,
- * whole }`, and `pageHeight` the paper's content height. Like the print
- * CSS, a part that does not fit moves to the next page whole, taking a
- * heading or the file's path before it along (`keepWithNext`); a part
- * taller than a page is cut at the page edge. When those kept parts already
- * start the page, a part print can cut between lines is cut at the page
- * edge, and an image or diagram (`whole`) still moves, alone.
- * The first page always starts at 0.
+ * The last point between two lines of `block` that fits the page from
+ * `start` to `end`, preferring one that keeps KEEP_LINES lines on each side;
+ * null when no line of the block ends on this page.
+ */
+function lineBreak(block, start, end) {
+  const { lines } = block;
+  const earlier = lines.filter((y) => y <= start).length;
+  let any = null;
+  let kept = null;
+  lines.forEach((y, k) => {
+    if (y > start && y <= end) {
+      any = y;
+      if (k + 1 - earlier >= KEEP_LINES && lines.length - k >= KEEP_LINES) {
+        kept = y;
+      }
+    }
+  });
+  return kept ?? any;
+}
+
+/**
+ * Where the page after the one at `start` begins when part `i` does not fit
+ * it, by Chrome's print order: before the part with the kept parts before
+ * it; inside it, at a line; before it, leaving the kept parts; at the edge.
+ */
+function nextStart(blocks, i, start, pageHeight) {
+  const block = blocks[i];
+  const moved = block.top > start ? keptTop(blocks, i, start) : null;
+  if (moved !== null) {
+    return moved;
+  }
+  const line = lineBreak(block, start, start + pageHeight);
+  if (line !== null) {
+    return line;
+  }
+  return block.top > start ? block.top : start + pageHeight;
+}
+
+/**
+ * Where the pages of one printed sheet start, in pixels from its top, as
+ * Chrome's print breaks them. `blocks` are its parts top to bottom,
+ * `{ top, bottom, keepWithNext, lines }`: `lines` the points between a
+ * part's lines where print may start a page, none for an image or a
+ * diagram, which print keeps whole. `pageHeight` is the paper's content
+ * height. A part that does not fit moves to the next page with the heading
+ * or the file's path before it (`keepWithNext`), whatever its height. When
+ * those already start the page, it breaks at its last line that fits, two
+ * lines kept at each end where it can, or moves alone if no line fits; a
+ * part that starts the page and has no line that fits it is cut at the page
+ * edge. The first page always starts at 0.
  */
 export function pageStarts(blocks, pageHeight) {
   const starts = [0];
   let start = 0;
   blocks.forEach((block, i) => {
-    if (block.bottom - start <= pageHeight) {
-      return;
-    }
-    if (block.top > start && block.bottom - block.top <= pageHeight) {
-      const next = movedTop(blocks, i, start);
-      if (next > start) {
-        start = next;
-        starts.push(start);
-      }
-    }
     while (block.bottom - start > pageHeight) {
-      start += pageHeight;
+      start = nextStart(blocks, i, start, pageHeight);
       starts.push(start);
     }
   });

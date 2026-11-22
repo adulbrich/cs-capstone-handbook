@@ -1,7 +1,8 @@
 <script>
 // The pages as they will print. Each sheet is laid out once, unseen, at the
-// paper's content width, and its parts measured; pageStarts turns those into
-// page breaks by the print CSS's own rules (document.css). Each page is then
+// paper's content width, and its parts and their lines measured; pageStarts
+// turns those into page breaks as Chrome's print makes them by the print
+// CSS's own rules (document.css). Each page is then
 // a scaled copy of its sheet, shifted to its start and cut at the next.
 // Measuring is reading the layout, so it runs after each update and when an
 // image finishes loading.
@@ -24,10 +25,46 @@ const HEADING = /^H[1-6]$/u;
 /** What document.css keeps on the page of the part after it: break-after: avoid. */
 const keptWithNext = (part) =>
   HEADING.test(part.tagName) || part.classList.contains("file-name");
-/** What print moves whole, never cutting it between lines: a diagram, or an image with no text beside it. */
-const isWhole = (part) =>
-  part.matches("img, svg, .diagram") ||
-  (part.querySelector("img, svg") !== null && part.textContent.trim() === "");
+
+/** The boxes of `node`'s text and images; an svg is one box, as it prints. */
+function boxes(node, out = []) {
+  for (const child of node.childNodes) {
+    if (child.nodeType === Node.TEXT_NODE) {
+      const range = document.createRange();
+      range.selectNodeContents(child);
+      out.push(...range.getClientRects());
+    } else if (child.nodeType === Node.ELEMENT_NODE) {
+      if (child.matches("img, svg")) {
+        out.push(child.getBoundingClientRect());
+      } else {
+        boxes(child, out);
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Where print may start a page inside `part`: halfway between each line's
+ * bottom and the next one's top, from the sheet's top at `offset`.
+ */
+function lineBreaks(part, offset) {
+  const lines = [];
+  const found = boxes(part)
+    .filter((rect) => rect.width > 0 && rect.height > 0)
+    .sort((a, b) => a.top - b.top);
+  for (const rect of found) {
+    const line = lines.at(-1);
+    if (line && rect.top < line.bottom - 1) {
+      line.bottom = Math.max(line.bottom, rect.bottom);
+    } else {
+      lines.push({ bottom: rect.bottom, top: rect.top });
+    }
+  }
+  return lines
+    .slice(1)
+    .map((line, k) => (lines[k].bottom + line.top) / 2 - offset);
+}
 
 function parts(element, out = []) {
   for (const child of element.children) {
@@ -57,8 +94,8 @@ function measure(list, pageHeight) {
         return {
           bottom: rect.bottom - box.top,
           keepWithNext: keptWithNext(part),
+          lines: lineBreaks(part, box.top),
           top: rect.top - box.top,
-          whole: isWhole(part),
         };
       });
       next[sheet.id] = pageStarts(blocks, pageHeight);
