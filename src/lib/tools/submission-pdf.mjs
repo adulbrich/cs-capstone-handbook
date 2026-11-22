@@ -238,9 +238,12 @@ export const canSave = (checks) =>
 
 /**
  * Where print may start a page inside a part, from the boxes of its text and
- * images as `{ top, bottom }`, in any order: halfway between each line's
- * bottom and the next one's top. Boxes that overlap are one line; a box with
- * no height, unlike a blank code line's, is none.
+ * images as `{ top, bottom, block }`, in any order: halfway between each
+ * line's bottom and the next one's top, as `{ y, block }`. A box's `block`
+ * numbers the innermost block of the part that print keeps whole, 0 for the
+ * part itself; a break between two lines of one block is that block's, and
+ * one between two blocks is `null`. Boxes that overlap are one line; a box
+ * with no height, unlike a blank code line's, is none.
  */
 export function lineBreaks(boxes) {
   const lines = [];
@@ -252,10 +255,13 @@ export function lineBreaks(boxes) {
     if (line && box.top < line.bottom - 1) {
       line.bottom = Math.max(line.bottom, box.bottom);
     } else {
-      lines.push({ bottom: box.bottom, top: box.top });
+      lines.push({ block: box.block, bottom: box.bottom, top: box.top });
     }
   }
-  return lines.slice(1).map((line, k) => (lines[k].bottom + line.top) / 2);
+  return lines.slice(1).map((line, k) => ({
+    block: lines[k].block === line.block ? line.block : null,
+    y: (lines[k].bottom + line.top) / 2,
+  }));
 }
 
 /**
@@ -282,24 +288,42 @@ function keptTop(blocks, i, start) {
 }
 
 /**
- * The last point between two lines of `block` that fits the page from
- * `start` to `end`, preferring one that keeps KEEP_LINES lines on each side;
- * null when no line of the block ends on this page.
+ * How print ranks breaking at `lines[k]` when the page starts at `start`,
+ * higher first: between two blocks, or between two of the part's own lines
+ * keeping KEEP_LINES on each side (3); its own lines otherwise (2); inside a
+ * block within the part, keeping them (1) or not (0).
+ */
+function breakRank(lines, k, start) {
+  const { block } = lines[k];
+  if (block === null) {
+    return 3;
+  }
+  const same = lines.filter((line) => line.block === block);
+  const j = same.indexOf(lines[k]);
+  const earlier = same.filter((line) => line.y <= start).length;
+  const keeps = j + 1 - earlier >= KEEP_LINES && same.length - j >= KEEP_LINES;
+  return (block === 0 ? 2 : 0) + (keeps ? 1 : 0);
+}
+
+/**
+ * The best-ranked point between two lines of `block` that fits the page from
+ * `start` to `end`, the last of those; null when no line of the block ends
+ * on this page.
  */
 function lineBreak(block, start, end) {
   const { lines } = block;
-  const earlier = lines.filter((y) => y <= start).length;
-  let any = null;
-  let kept = null;
-  lines.forEach((y, k) => {
-    if (y > start && y <= end) {
-      any = y;
-      if (k + 1 - earlier >= KEEP_LINES && lines.length - k >= KEEP_LINES) {
-        kept = y;
+  let best = null;
+  let bestRank = -1;
+  lines.forEach((line, k) => {
+    if (line.y > start && line.y <= end) {
+      const rank = breakRank(lines, k, start);
+      if (rank >= bestRank) {
+        best = line.y;
+        bestRank = rank;
       }
     }
   });
-  return kept ?? any;
+  return best;
 }
 
 /**
@@ -324,12 +348,13 @@ function nextStart(blocks, i, start, pageHeight) {
  * Where the pages of one printed sheet start, in pixels from its top, as
  * Chrome's print breaks them. `blocks` are its parts top to bottom,
  * `{ top, bottom, keepWithNext, lines }`: `lines` the points between a
- * part's lines where print may start a page, none for an image or a
- * diagram, which print keeps whole. `pageHeight` is the paper's content
+ * part's lines where print may start a page, from lineBreaks, none for an
+ * image or a diagram, which print keeps whole. `pageHeight` is the paper's content
  * height. A part that does not fit moves to the next page with the heading
  * or the file's path before it (`keepWithNext`), whatever its height. When
  * those already start the page, it breaks at its last line that fits, two
- * lines kept at each end where it can, or moves alone if no line fits; a
+ * lines kept at each end where it can and between the blocks inside it
+ * before inside one of them, or moves alone if no line fits; a
  * part that starts the page and has no line that fits it is cut at the page
  * edge. The first page always starts at 0.
  */

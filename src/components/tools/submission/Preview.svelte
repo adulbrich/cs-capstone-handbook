@@ -31,28 +31,58 @@ const keptWithNext = (part) =>
   HEADING.test(part.tagName) || part.classList.contains("file-name");
 
 /**
- * The boxes of `node`'s text and images, `{ top, bottom }` from the sheet's
- * top at `offset`; an svg is one box, as it prints.
+ * The blocks document.css keeps whole (break-inside: avoid), but for an
+ * image, whose line belongs to the paragraph it sits in.
  */
-function boxes(node, offset, out = []) {
-  const add = (rect) =>
-    out.push({ bottom: rect.bottom - offset, top: rect.top - offset });
+const KEPT_WHOLE = "p, li, tr, pre, blockquote, .diagram, .cover";
+
+/**
+ * The boxes of `part`'s text and images, `{ top, bottom, block }` from the
+ * sheet's top at `offset`, `block` numbering the innermost KEPT_WHOLE block
+ * inside the part, 0 for the part itself; an svg is one box, as it prints.
+ */
+function boxes(part, offset) {
+  const state = { count: 0, offset, out: [] };
+  walk(part, 0, state);
+  return state.out;
+}
+
+/** Adds the boxes of `node`'s children, inside `block`, to `state.out`. */
+function walk(node, block, state) {
   for (const child of node.childNodes) {
     if (child.nodeType === Node.TEXT_NODE) {
-      const range = document.createRange();
-      range.selectNodeContents(child);
-      for (const rect of range.getClientRects()) {
-        add(rect);
-      }
+      addText(child, block, state);
     } else if (child.nodeType === Node.ELEMENT_NODE) {
-      if (child.matches("img, svg")) {
-        add(child.getBoundingClientRect());
-      } else {
-        boxes(child, offset, out);
-      }
+      addElement(child, block, state);
     }
   }
-  return out;
+}
+
+const boxOf = (rect, block, offset) => ({
+  block,
+  bottom: rect.bottom - offset,
+  top: rect.top - offset,
+});
+
+/** A text node's boxes, one for each line it runs over. */
+function addText(node, block, state) {
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  for (const rect of range.getClientRects()) {
+    state.out.push(boxOf(rect, block, state.offset));
+  }
+}
+
+/** An image or svg as one box; any other element's boxes, a block of their own if KEPT_WHOLE. */
+function addElement(element, block, state) {
+  if (element.matches("img, svg")) {
+    state.out.push(boxOf(element.getBoundingClientRect(), block, state.offset));
+  } else if (element.matches(KEPT_WHOLE)) {
+    state.count += 1;
+    walk(element, state.count, state);
+  } else {
+    walk(element, block, state);
+  }
 }
 
 function parts(element, out = []) {

@@ -450,14 +450,15 @@ test("pages number on across sheets, a sheet at least one page", () => {
 });
 
 test("a part's line breaks fall halfway between its lines", () => {
-  const box = (top, bottom) => ({ bottom, top });
-  // Three lines of text, in any order: two breaks, each between two lines.
+  const box = (top, bottom, block = 0) => ({ block, bottom, top });
+  const own = (...ys) => ys.map((y) => ({ block: 0, y }));
+  // Three lines of the part's own text, in any order: two breaks.
   assert.deepEqual(
     lineBreaks([box(44, 60), box(4, 20), box(24, 40)]),
-    [22, 42]
+    own(22, 42)
   );
   // Boxes that overlap are one line: an image beside the text it sits in.
-  assert.deepEqual(lineBreaks([box(0, 40), box(25, 38), box(44, 60)]), [42]);
+  assert.deepEqual(lineBreaks([box(0, 40), box(25, 38), box(44, 60)]), own(42));
   // A blank line in a code block has a box with no width but its height, so
   // it is a line of its own (44 to 60); a box with no height is no line.
   assert.deepEqual(
@@ -468,7 +469,16 @@ test("a part's line breaks fall halfway between its lines", () => {
       box(64, 80),
       box(50, 50),
     ]),
-    [22, 42, 62]
+    own(22, 42, 62)
+  );
+  // In a list item, the break between its paragraph (block 1) and its code
+  // (block 2) falls between blocks; one between two code lines is block 2's.
+  assert.deepEqual(
+    lineBreaks([box(4, 20, 1), box(24, 40, 2), box(44, 60, 2)]),
+    [
+      { block: null, y: 22 },
+      { block: 2, y: 42 },
+    ]
   );
   // One line, or none, has nowhere to break.
   assert.deepEqual(lineBreaks([box(0, 900)]), []);
@@ -476,12 +486,12 @@ test("a part's line breaks fall halfway between its lines", () => {
 });
 
 test("a part that does not fit breaks where print breaks it", () => {
-  // `lines` are the points between a part's lines; a part with none, such as
-  // an image or a diagram, prints whole.
+  // `lines` are the points between a part's lines, a number being one of
+  // its own; a part with none, such as an image or a diagram, prints whole.
   const block = (top, bottom, keepWithNext = false, lines = []) => ({
     bottom,
     keepWithNext,
-    lines,
+    lines: lines.map((y) => (typeof y === "number" ? { block: 0, y } : y)),
     top,
   });
   const every = (from, to, step) =>
@@ -554,6 +564,39 @@ test("a part that does not fit breaks where print breaks it", () => {
   assert.deepEqual(
     pageStarts([block(0, 60), block(70, 73, true), block(75, 171)], 100),
     [0, 70, 75]
+  );
+  // Inside a list item, print breaks between its blocks before it breaks
+  // inside one: after the step's line (block 1), before its code (block 2),
+  // then inside the code at a line that keeps two at each end.
+  const between = (y) => ({ block: null, y });
+  const code = (y) => ({ block: 2, y });
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 3, true),
+        block(5, 130, false, [between(15), ...[35, 55, 75, 95, 115].map(code)]),
+      ],
+      100
+    ),
+    [0, 15, 95]
+  );
+  // And between two nested items before inside one: each item here has two
+  // lines, so the page starts at the last item that begins on it.
+  assert.deepEqual(
+    pageStarts(
+      [
+        block(0, 3, true),
+        block(5, 110, false, [
+          between(10),
+          ...[1, 2, 3, 4, 5].flatMap((n) => [
+            { block: n, y: 20 * n },
+            between(20 * n + 10),
+          ]),
+        ]),
+      ],
+      100
+    ),
+    [0, 90]
   );
   assert.deepEqual(pageStarts([], 100), [0]);
 });
