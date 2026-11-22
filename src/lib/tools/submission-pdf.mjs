@@ -255,10 +255,10 @@ function sharedDepth(a, b) {
  * Between two lines of one block, both are halfway between the lines, and
  * `block` is that block's number (0 for the part's own lines); between two
  * blocks, `fit` is the upper block's bottom and `y` the lower one's top, the
- * halfway point standing in for a side that is a line of the part or of the
- * block around both, and `block` is `null`. `depth` counts the blocks a break falls inside. Boxes
- * that overlap are one line; a box with no height, unlike a blank code
- * line's, is none.
+ * halfway point standing in for a side with no box in `blocks`, and `block`
+ * is `null`. `depth` counts the blocks a break falls inside. Boxes that
+ * overlap are one line; a box with no height, unlike a blank code line's, is
+ * none.
  */
 export function lineBreaks(boxes, blocks = new Map()) {
   const lines = [];
