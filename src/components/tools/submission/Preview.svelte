@@ -37,51 +37,51 @@ const keptWithNext = (part) =>
 const KEPT_WHOLE = "p, li, tr, pre, blockquote, .diagram, .cover";
 
 /**
- * The boxes of `part`'s text and images, `{ top, bottom, block }` from the
- * sheet's top at `offset`, `block` numbering the innermost KEPT_WHOLE block
- * inside the part, 0 for the part itself; an svg is one box, as it prints.
+ * The boxes of `part`'s text and images, `{ top, bottom, chain }` from the
+ * sheet's top at `offset`, `chain` numbering the KEPT_WHOLE blocks inside the
+ * part around each, outermost first; an svg is one box, as it prints.
  */
 function boxes(part, offset) {
   const state = { count: 0, offset, out: [] };
-  walk(part, 0, state);
+  walk(part, [], state);
   return state.out;
 }
 
-/** Adds the boxes of `node`'s children, inside `block`, to `state.out`. */
-function walk(node, block, state) {
+/** Adds the boxes of `node`'s children, inside the blocks of `chain`, to `state.out`. */
+function walk(node, chain, state) {
   for (const child of node.childNodes) {
     if (child.nodeType === Node.TEXT_NODE) {
-      addText(child, block, state);
+      addText(child, chain, state);
     } else if (child.nodeType === Node.ELEMENT_NODE) {
-      addElement(child, block, state);
+      addElement(child, chain, state);
     }
   }
 }
 
-const boxOf = (rect, block, offset) => ({
-  block,
+const boxOf = (rect, chain, offset) => ({
   bottom: rect.bottom - offset,
+  chain,
   top: rect.top - offset,
 });
 
 /** A text node's boxes, one for each line it runs over. */
-function addText(node, block, state) {
+function addText(node, chain, state) {
   const range = document.createRange();
   range.selectNodeContents(node);
   for (const rect of range.getClientRects()) {
-    state.out.push(boxOf(rect, block, state.offset));
+    state.out.push(boxOf(rect, chain, state.offset));
   }
 }
 
-/** An image or svg as one box; any other element's boxes, a block of their own if KEPT_WHOLE. */
-function addElement(element, block, state) {
+/** An image or svg as one box; any other element's boxes, inside a block of their own if KEPT_WHOLE. */
+function addElement(element, chain, state) {
   if (element.matches("img, svg")) {
-    state.out.push(boxOf(element.getBoundingClientRect(), block, state.offset));
+    state.out.push(boxOf(element.getBoundingClientRect(), chain, state.offset));
   } else if (element.matches(KEPT_WHOLE)) {
     state.count += 1;
-    walk(element, state.count, state);
+    walk(element, [...chain, state.count], state);
   } else {
-    walk(element, block, state);
+    walk(element, chain, state);
   }
 }
 

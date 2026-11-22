@@ -236,14 +236,25 @@ export function submissionChecks(cover, files, extras = []) {
 export const canSave = (checks) =>
   checks.every((check) => check.ok || !["cover", "files"].includes(check.id));
 
+/** How many blocks two chains of blocks share from the outside in. */
+function sharedDepth(a, b) {
+  let depth = 0;
+  while (depth < a.length && depth < b.length && a[depth] === b[depth]) {
+    depth += 1;
+  }
+  return depth;
+}
+
 /**
  * Where print may start a page inside a part, from the boxes of its text and
- * images as `{ top, bottom, block }`, in any order: halfway between each
- * line's bottom and the next one's top, as `{ y, block }`. A box's `block`
- * numbers the innermost block of the part that print keeps whole, 0 for the
- * part itself; a break between two lines of one block is that block's, and
- * one between two blocks is `null`. Boxes that overlap are one line; a box
- * with no height, unlike a blank code line's, is none.
+ * images as `{ top, bottom, chain }`, in any order: halfway between each
+ * line's bottom and the next one's top, as `{ y, block, depth }`. A box's
+ * `chain` numbers the blocks of the part that print keeps whole around it,
+ * outermost first, none for the part's own lines. A break's `depth` counts
+ * the blocks it falls inside; between two lines of one block, `block` is that
+ * block's number (0 for the part's own lines), and between two blocks it is
+ * `null`. Boxes that overlap are one line; a box with no height, unlike a
+ * blank code line's, is none.
  */
 export function lineBreaks(boxes) {
   const lines = [];
@@ -255,19 +266,25 @@ export function lineBreaks(boxes) {
     if (line && box.top < line.bottom - 1) {
       line.bottom = Math.max(line.bottom, box.bottom);
     } else {
-      lines.push({ block: box.block, bottom: box.bottom, top: box.top });
+      lines.push({ bottom: box.bottom, chain: box.chain, top: box.top });
     }
   }
-  return lines.slice(1).map((line, k) => ({
-    block: lines[k].block === line.block ? line.block : null,
-    y: (lines[k].bottom + line.top) / 2,
-  }));
+  return lines.slice(1).map((line, k) => {
+    const above = lines[k].chain;
+    const depth = sharedDepth(above, line.chain);
+    const same = depth === above.length && depth === line.chain.length;
+    return {
+      block: same ? (line.chain.at(-1) ?? 0) : null,
+      depth,
+      y: (lines[k].bottom + line.top) / 2,
+    };
+  });
 }
 
 /**
- * Lines Chrome's print keeps together at each end of a part it breaks,
- * where it can: its default `orphans` and `widows`, which document.css
- * leaves alone.
+ * Lines Chrome's print keeps together at each end of a block it breaks, the
+ * part's own lines or a block inside it, where it can: its default `orphans`
+ * and `widows`, which document.css leaves alone.
  */
 const KEEP_LINES = 2;
 
@@ -288,41 +305,50 @@ function keptTop(blocks, i, start) {
 }
 
 /**
- * How print ranks breaking at `lines[k]` when the page starts at `start`,
- * higher first: between two blocks, or between two of the part's own lines
- * keeping KEEP_LINES on each side (3); its own lines otherwise (2); inside a
- * block within the part, keeping them (1) or not (0).
+ * How print ranks a break, higher first: one inside fewer of the part's
+ * blocks (`depth`) always ranks higher; at one depth, a break between
+ * blocks, or between lines of one block with KEEP_LINES of them `before` and
+ * `after` it on the page, ranks above one without.
  */
-function breakRank(lines, k, start) {
-  const { block } = lines[k];
-  if (block === null) {
-    return 3;
+function breakRank({ block, depth }, before, after) {
+  const keeps = block === null || (before >= KEEP_LINES && after >= KEEP_LINES);
+  return (keeps ? 1 : 0) - 2 * depth;
+}
+
+/** How many breaks each block of `lines` has between its own lines. */
+function blockCounts(lines) {
+  const counts = new Map();
+  for (const { block } of lines) {
+    counts.set(block, (counts.get(block) ?? 0) + 1);
   }
-  const same = lines.filter((line) => line.block === block);
-  const j = same.indexOf(lines[k]);
-  const earlier = same.filter((line) => line.y <= start).length;
-  const keeps = j + 1 - earlier >= KEEP_LINES && same.length - j >= KEEP_LINES;
-  return (block === 0 ? 2 : 0) + (keeps ? 1 : 0);
+  return counts;
 }
 
 /**
- * The best-ranked point between two lines of `block` that fits the page from
- * `start` to `end`, the last of those; null when no line of the block ends
- * on this page.
+ * The best-ranked break in `part`, top to bottom in `lines`, that fits the
+ * page from `start` to `end`, the last of those; null when no line of the
+ * part ends on this page.
  */
-function lineBreak(block, start, end) {
-  const { lines } = block;
+function lineBreak(part, start, end) {
+  const counts = blockCounts(part.lines);
+  const seen = new Map();
+  const done = new Map();
   let best = null;
-  let bestRank = -1;
-  lines.forEach((line, k) => {
-    if (line.y > start && line.y <= end) {
-      const rank = breakRank(lines, k, start);
+  let bestRank = Number.NEGATIVE_INFINITY;
+  for (const line of part.lines) {
+    const j = seen.get(line.block) ?? 0;
+    seen.set(line.block, j + 1);
+    if (line.y <= start) {
+      done.set(line.block, j + 1);
+    } else if (line.y <= end) {
+      const before = j + 1 - (done.get(line.block) ?? 0);
+      const rank = breakRank(line, before, counts.get(line.block) - j);
       if (rank >= bestRank) {
         best = line.y;
         bestRank = rank;
       }
     }
-  });
+  }
   return best;
 }
 
