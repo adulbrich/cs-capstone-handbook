@@ -449,7 +449,7 @@ test("pages number on across sheets, a sheet at least one page", () => {
   assert.deepEqual(numberPages([]), { firsts: [], total: 0 });
 });
 
-test("a part's line breaks fall halfway between its lines", () => {
+test("a part's line breaks fall between its lines and its blocks", () => {
   const box = (top, bottom, chain = []) => ({ bottom, chain, top });
   const own = (...ys) => ys.map((y) => ({ block: 0, depth: 0, fit: y, y }));
   // Three lines of the part's own text, in any order: two breaks.
@@ -504,8 +504,8 @@ test("a part's line breaks fall halfway between its lines", () => {
 });
 
 test("a part that does not fit breaks where print breaks it", () => {
-  // `lines` are the points between a part's lines, a number being one of
-  // its own; a part with none, such as an image or a diagram, prints whole.
+  // `lines` are the breaks inside a part, a number being one between its own
+  // lines; a part with none, such as an image or a diagram, prints whole.
   const block = (top, bottom, keepWithNext = false, lines = []) => ({
     bottom,
     keepWithNext,
