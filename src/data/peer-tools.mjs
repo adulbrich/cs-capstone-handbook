@@ -75,6 +75,9 @@ export const rosterText = {
     team: {
       help: "A team in the roster; case and spaces do not matter.",
       label: "Team",
+      list: "Teams in the roster",
+      none: "No team in the roster matches.",
+      open: "Show the teams",
     },
   },
   leftOut: "Left out of the survey",

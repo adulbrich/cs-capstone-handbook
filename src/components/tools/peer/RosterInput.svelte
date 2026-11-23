@@ -6,11 +6,15 @@
 // adds the Score page's Replace action. The wording is in
 // src/data/peer-tools.mjs.
 import { rosterText as text } from "../../../data/peer-tools.mjs";
-import { checkAddedStudent } from "../../../lib/tools/peer-roster.mjs";
+import {
+  checkAddedStudent,
+  teamNames,
+} from "../../../lib/tools/peer-roster.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
 import ClickPath from "../ui/ClickPath.svelte";
+import Combobox from "../ui/Combobox.svelte";
 import Field from "../ui/Field.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
 
@@ -21,7 +25,7 @@ let entry = $state({ ...blank });
 let newTeam = $state(false);
 let check = $state({ problems: [], suggestions: [] });
 
-const teamNames = $derived(model.summary?.teams.map((t) => t.team) ?? []);
+const teams = $derived(model.summary ? teamNames(model.summary) : []);
 
 function add(event) {
   event.preventDefault();
@@ -80,21 +84,19 @@ function remove(email) {
   </Field>
   <Field label={text.form.team.label} help={text.form.team.help}>
     {#snippet children({ describedby, id })}
-      <input
+      <Combobox
         {id}
-        type="text"
-        list="{id}-teams"
-        aria-describedby={describedby}
+        {describedby}
+        listLabel={text.form.team.list}
+        openLabel={text.form.team.open}
+        none={model.summary ? text.form.team.none : text.empty}
+        options={teams}
         bind:value={entry.team}
-        autocomplete="off"
       />
-      <datalist id="{id}-teams">
-        {#each teamNames as team (team)}<option value={team}></option>{/each}
-      </datalist>
     {/snippet}
   </Field>
   <div>
-    <Button type="submit" variant="secondary">{text.form.add}</Button>
+    <Button type="submit" variant="secondary" size="input">{text.form.add}</Button>
   </div>
   {#if check.problems.length > 0}
     <div class="problems" role="alert">
