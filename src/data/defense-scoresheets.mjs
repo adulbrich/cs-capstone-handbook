@@ -1,11 +1,12 @@
 // The wording of the defense scoresheets tool (/tools/defense-scoresheets/):
 // the page and its steps, and every line the session cover and the live
-// sheet print around the rubric's own text. The questions, items, red
-// flags, points, and the Missing rule are the rubric CSV's, read by
-// src/lib/tools/defense-sheets.mjs; nothing here retypes them. The
-// cover's protocol lines are the approved design's and follow Defense
-// Logistics in STAFF-RUNBOOK.md. An instructor tool, so it may name Canvas
-// (docs/agents/tools.md).
+// sheet print around the rubric's own text, the opening question included.
+// Each criterion's questions, items, red flags, points, and the Missing
+// rule are the rubric CSV's, read by src/lib/tools/defense-sheets.mjs;
+// nothing here retypes them but the few words askBreaks finds. The session's
+// protocol is Defense Logistics in STAFF-RUNBOOK.md; the cover prints the
+// draw of the speaking order and tips for running the session. An instructor
+// tool, so it may name Canvas (docs/agents/tools.md).
 
 import { BAND_NAMES } from "../lib/tools/defense-sheets.mjs";
 import { clickPaths } from "./click-paths.mjs";
@@ -22,7 +23,7 @@ export const page = {
   description:
     "Print a defense session cover for each team and a one-page live sheet for each student, from the course roster, in your browser.",
   intro:
-    "A session cover for each team and a one-page live sheet for each student, with names filled in from the roster. The roster is read in your browser and never uploaded; the questions, items, and red flags come from the defense rubric, word for word.",
+    "A session cover for each team and a one-page live sheet for each student, with names filled in from the roster. The roster is read in your browser and never uploaded; each criterion's questions, items, and red flags come from the defense rubric, the items and red flags word for word.",
   title: "Print Defense Scoresheets",
 };
 
@@ -87,26 +88,18 @@ export const previewText = {
     `Showing ${n} of ${plural(of, "page")} for this team. The speaking order is never printed: it is drawn at the start of the session.`,
 };
 
+/** What the cover's table and the live sheet both record of a student's turn. */
+const DISCUSSED = "Artifact or topic discussed";
+
 /** The session cover, one per team. */
 export const coverText = {
   /** The unexcused no-show, by the rubric's band name. */
   absent: `Absent, and told you before the session: reschedule them this term. Unexcused: ${BAND_NAMES.missing} on every criterion.`,
   assessor: "Assessor",
-  checklist: [
-    "Draw the speaking order here, at the start of the session. It was never published in advance.",
-    'For each student, a different artifact or part from the two or three they brought, the most recent where you can, a different "what breaks if X" question, and a sprint from this term, picked at random, for the role question.',
-    "The team's regular TA is not in the session. On a video call, every student's camera is on.",
-    "The team's recorded decisions (ADRs, RFCs), its sprint notes, and the repository are open.",
-    "If one student dominates, redirect: questions go to the named student, and only their answer scores.",
-  ],
-
-  checklistTitle: "Before the first student speaks",
   columns: {
-    artifact: "Artifact picked",
+    artifact: DISCUSSED,
     followUp: "Follow-up",
     order: "Order",
-    question: '"What breaks if X" question',
-    sprint: "Sprint",
     student: "Student",
   },
   entered: "Scores and notes entered in the gradebook: yes / no",
@@ -120,9 +113,18 @@ export const coverText = {
   length: (students, minutes) =>
     `${plural(students, "student")}, about ${minutes} minutes`,
   notes: "Session notes",
+  order: "Draw the speaking order at random.",
   room: "Room or call link",
   start: "Start time",
   tableTitle: "The session",
+  tips: [
+    "Have an open discussion, starting from the live sheet's opening question.",
+    "The goal is to see whether the student owns something. Focus on their understanding of the project and their overall contributions.",
+    "Focus on the red flags more than anything else.",
+    "If one student dominates, redirect: questions go to the named student, and only their answer scores.",
+    "Avoid negative feedback in front of the team. If you are uncertain about a student, ask them after the defense to check in with you for a follow-up.",
+  ],
+  tipsTitle: "Tips",
   /** The term and the weeks sessions run in, "Fall, week 8 to finals week". */
   when: (term, [from, until]) => `${term}, ${from} to ${until}`,
   yesNo: "yes / no",
@@ -136,9 +138,24 @@ const BAND_LETTERS = {
   missing: "",
 };
 
+/**
+ * Where the live sheet breaks a rubric question into bullets inside a
+ * sentence: the words a new ask starts with, after a comma or ", and".
+ * Sentence ends and semicolons break on their own. A break the rubric no
+ * longer holds fails the build (liveSheet in defense-sheets.mjs).
+ */
+export const askBreaks = [
+  "how did you know",
+  "name two alternatives",
+  "say which part",
+  "how do you know",
+  "list a few things",
+  "how did your team",
+];
+
 /** The live sheet, one per student. */
 export const sheetText = {
-  artifact: "Artifact",
+  artifact: DISCUSSED,
   assessor: "Assessor",
   /** "E 20", "M 16 · 12 · 8", "D 4", "0". */
   band: (key, points) =>
@@ -151,12 +168,22 @@ export const sheetText = {
   missing: ({ missing }) =>
     `${BAND_NAMES.missing}, ${missing.points}: ${missing.lead}.`,
   notes: "Notes",
+  /**
+   * The question that opens the student's turn, above the criteria, and
+   * the assessor's line under it. Not in the rubric and not scored; its
+   * marker says so, since the defense page has the example sheet show
+   * exactly what is scored.
+   */
+  opening: {
+    note: "Any work they authored or drove this term fits, code or not. The assessor picks which they walk through.",
+    question:
+      "What work did you choose for today, and which piece are you proudest of so far?",
+    title: "Opening question",
+    unscored: "Not scored",
+  },
   /** The banner's points line: the rubric's bands, in their own words. */
   points: ({ doesNotMeet, exceeds, flagRule, meetsRule }) =>
     `${flagRule}: ${doesNotMeet}. Otherwise every item ticked: ${exceeds}, or ${meetsRule}`,
-  record: "Record checked",
-  recordChoices: "yes / no / shown on screen (NDA)",
-  sprint: "Sprint",
   /** The write-in line's label on a No team sheet, where the team number goes. */
   teamLabel: "Team",
   /** What follows the team, or its write-in line, on the team line: the term. */

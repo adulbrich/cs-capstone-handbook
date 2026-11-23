@@ -2,10 +2,10 @@
 // One team's session cover, the same in the preview and on paper: the team
 // (on one line), the term, session weeks, and length, the assessor (the
 // team's graders from the roster, or blank to write in), room, and start
-// time, the protocol checklist, the session table, the absence and
-// follow-up rules, and lined space for notes. The table has a row per
-// student, and its Order column is empty: the speaking order is drawn at
-// the start of the session and never printed (coverRows in
+// time, the draw of the speaking order and the tips, the session table, the
+// absence and follow-up rules, and lined space for notes. The table has a
+// row per student, and its Order column is empty: the speaking order is
+// drawn at the start of the session and never printed (coverRows in
 // defense-sheets.mjs).
 import { coverText as text } from "../../../data/defense-scoresheets.mjs";
 import {
@@ -49,11 +49,12 @@ const minutes = $derived(sessionMinutes(team.members.length, session));
     </div>
   </div>
 
-  <div class="ds-checklist">
-    <strong>{text.checklistTitle}</strong>
-    <ul>
-      {#each text.checklist as line (line)}
-        <li><span class="ds-box"></span><span>{line}</span></li>
+  <div class="ds-tips">
+    <div class="ds-draw"><span class="ds-box"></span><strong>{text.order}</strong></div>
+    <strong>{text.tipsTitle}</strong>
+    <ul class="ds-bullets">
+      {#each text.tips as tip (tip)}
+        <li>{tip}</li>
       {/each}
     </ul>
   </div>
@@ -65,8 +66,6 @@ const minutes = $derived(sessionMinutes(team.members.length, session));
         <th scope="col" class="ds-student">{text.columns.student}</th>
         <th scope="col" class="ds-narrow">{text.columns.order}</th>
         <th scope="col">{text.columns.artifact}</th>
-        <th scope="col">{text.columns.question}</th>
-        <th scope="col" class="ds-narrow">{text.columns.sprint}</th>
         <th scope="col" class="ds-yesno">{text.columns.followUp}</th>
       </tr>
     </thead>
@@ -74,8 +73,6 @@ const minutes = $derived(sessionMinutes(team.members.length, session));
       {#each rows as row (row.id)}
         <tr>
           <th scope="row">{row.name}</th>
-          <td></td>
-          <td></td>
           <td></td>
           <td></td>
           <td class="ds-yesno">{text.yesNo}</td>

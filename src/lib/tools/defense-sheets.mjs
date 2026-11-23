@@ -13,6 +13,13 @@
 // Each item is "(n) Label: text", the items joined by "; ", the last one
 // closed by a period. The live sheet prints the label in bold and the text
 // beside it, word for word.
+//
+// The rubric writes each criterion's question as its asks and, when it has
+// one, its follow-up:
+//
+//   Asks: walk me through it; what did you keep, and how did you know? Follow-up: why there?
+//
+// The live sheet prints a bullet per ask (readAsks).
 
 import { rubricTotal } from "../rubric-csv.mjs";
 
@@ -59,6 +66,15 @@ const ALL_CONDITION = /^All \w+, (?<condition>.+)$/u;
 const RED_FLAG_CLAUSE = /,\s*and no red flag$/iu;
 /** A number written as digits. */
 const DIGITS = /^\d+$/u;
+/** A criterion's question: its asks, then its follow-up when it has one. */
+const QUESTION =
+  /^Asks: (?<asks>.+?)(?: (?<label>Follow-ups?): (?<followUps>.+))?$/u;
+/** Between two sentences: an end mark, then a capital, so "vs. production" ends none. */
+const SENTENCE_BREAK = /(?<=[.?])\s+(?=\p{Lu})/u;
+const SEMICOLON = /;\s+/u;
+/** What an ask that is a question, not an instruction, starts with. */
+const QUESTION_WORD =
+  /^(?:are|can|could|did|do|does|how|is|was|were|what|when|where|which|who|why|would)\b/iu;
 
 /**
  * A rubric description's numbered list: the preamble before it and each
@@ -116,6 +132,69 @@ export function readList(description, where) {
   return { items, preamble };
 }
 
+/** The ways the rubric joins an ask starting with `start` to the one before. */
+const joints = (start) => [`, and ${start}`, `, ${start}`];
+
+/**
+ * The asks in one sentence, as their bullets print them: each joint of a
+ * break becomes the semicolon it could be, then each ask is capitalized and
+ * loses its period, and a question in a sentence that asks one gets its
+ * question mark.
+ */
+function splitSentence(sentence, breaks) {
+  let split = sentence;
+  for (const start of breaks) {
+    for (const joint of joints(start)) {
+      split = split.replaceAll(joint, `; ${start}`);
+    }
+  }
+  return split.split(SEMICOLON).map((ask) => {
+    const words = ask.replace(CLOSING_PERIOD, "");
+    const bare = sentence.endsWith("?") && !words.endsWith("?");
+    const mark = bare && QUESTION_WORD.test(words) ? "?" : "";
+    return `${words[0].toUpperCase()}${words.slice(1)}${mark}`;
+  });
+}
+
+/**
+ * A criterion's question as the live sheet's bullets: its asks, then its
+ * follow-up's, each group `{ asks, label }`. An ask ends where its sentence
+ * does, at a semicolon, or before one of `breaks`, the words a new ask
+ * starts with after a comma; the "and" that joined it goes. Throws when the
+ * question does not start "Asks: ", when it holds a "Follow-up" besides the
+ * one label read, and when a group repeats an ask, which the sheet keys its
+ * bullets by. `where` names the question in the error.
+ */
+export function readAsks(question, breaks, where) {
+  const found = question.match(QUESTION);
+  if (!found) {
+    throw new Error(
+      `${where}: the question does not start "Asks: ". The live sheet prints what follows as bullets.`
+    );
+  }
+  const { asks, followUps, label } = found.groups;
+  const readGroup = (text) =>
+    text.split(SENTENCE_BREAK).flatMap((s) => splitSentence(s, breaks));
+  const groups = [{ asks: readGroup(asks), label: "Asks" }];
+  if (followUps) {
+    groups.push({ asks: readGroup(followUps), label });
+  }
+  if (`${asks} ${followUps}`.includes("Follow-up")) {
+    throw new Error(
+      `${where}: a "Follow-up" the sheet does not read as a label. It reads one, "Follow-up: " or "Follow-ups: ", after the asks.`
+    );
+  }
+  for (const group of groups) {
+    const repeated = group.asks.find((ask, i) => group.asks.indexOf(ask) !== i);
+    if (repeated !== undefined) {
+      throw new Error(
+        `${where}: two asks under ${group.label} read "${repeated}". Each ask is its own.`
+      );
+    }
+  }
+  return groups;
+}
+
 /** The criterion's band named BAND_NAMES[key]; throws when it has none. */
 function bandOf(criterion, key, where) {
   const band = criterion.ratings.find((r) => r.name === BAND_NAMES[key]);
@@ -128,17 +207,17 @@ function bandOf(criterion, key, where) {
 }
 
 /**
- * One criterion as the live sheet prints it, and the scoring rule its bands
- * state: Exceeds' points and the condition every item meets (its preamble
- * after "All four, "), Does Not Meet's points and its preamble ("Any red
- * flag"), the Meets ladder (each number in the Meets description, "16
- * points with one item missing, 12 with two, 8 with more"), the text after
- * the Meets description's first colon, and the Missing band. The banner
- * prints them in three lines: the item condition without its red-flag
- * clause (`itemCondition`), the points, and the Missing description up to
- * its first semicolon (`missing.lead`).
+ * One criterion as the live sheet prints it, its question split at `breaks`
+ * (readAsks), and the scoring rule its bands state: Exceeds' points and the
+ * condition every item meets (its preamble after "All four, "), Does Not
+ * Meet's points and its preamble ("Any red flag"), the Meets ladder (each
+ * number in the Meets description, "16 points with one item missing, 12
+ * with two, 8 with more"), the text after the Meets description's first
+ * colon, and the Missing band. The banner prints them in three lines: the
+ * item condition without its red-flag clause (`itemCondition`), the points,
+ * and the Missing description up to its first semicolon (`missing.lead`).
  */
-export function readCriterion(criterion, where) {
+export function readCriterion(criterion, where, breaks = []) {
   const names = Object.values(BAND_NAMES);
   const extra = criterion.ratings.filter((r) => !names.includes(r.name));
   if (extra.length > 0) {
@@ -193,9 +272,9 @@ export function readCriterion(criterion, where) {
 
   return {
     criterion: {
+      askGroups: readAsks(criterion.description, breaks, where),
       flags: flags.items,
       items: items.items,
-      question: criterion.description,
       tags: criterion.tags,
       title: criterion.title,
     },
@@ -218,14 +297,28 @@ export function readCriterion(criterion, where) {
 
 /**
  * The live sheet from the parsed defense rubric (parseRubricCsv):
- * `{ criteria, rule, total }`. The sheet's banner states the scoring rule
- * once, so it throws when any criterion's bands differ from the first's,
- * and the sheet keys its criteria by title, so it throws on a repeat.
+ * `{ criteria, rule, total }`, each question split at `breaks` (askBreaks
+ * in src/data/defense-scoresheets.mjs). The sheet's banner states the
+ * scoring rule once, so it throws when any criterion's bands differ from
+ * the first's, and the sheet keys its criteria by title, so it throws on a
+ * repeat. It throws too on a break no question holds.
  */
-export function liveSheet(rubric, sourceLabel) {
+export function liveSheet(rubric, sourceLabel, breaks = []) {
   const read = rubric.criteria.map((c, i) =>
-    readCriterion(c, `${sourceLabel}, criterion ${i + 1} (${c.title})`)
+    readCriterion(c, `${sourceLabel}, criterion ${i + 1} (${c.title})`, breaks)
   );
+  const unheld = breaks.find(
+    (start) =>
+      !joints(start).some((joint) =>
+        rubric.criteria.some((c) => c.description.includes(joint))
+      )
+  );
+  if (unheld !== undefined) {
+    const [joinedByAnd, joinedByComma] = joints(unheld);
+    throw new Error(
+      `${sourceLabel}: no question holds "${joinedByComma}" or "${joinedByAnd}". Update askBreaks in src/data/defense-scoresheets.mjs to the rubric's words.`
+    );
+  }
   const titles = read.map((r) => r.criterion.title);
   const repeated = titles.find((title, i) => titles.indexOf(title) !== i);
   if (repeated !== undefined) {

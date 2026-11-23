@@ -174,7 +174,7 @@
   min-height: 22px;
   border-bottom: 1px solid #78716c;
 }
-.ds-checklist {
+.ds-tips {
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -182,12 +182,25 @@
   border: 1px solid #a8a29e;
   border-radius: 4px;
 }
-.ds-checklist ul {
+.ds-tips ul {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.ds-checklist li,
+/* A small dot before a question or a tip, so nobody ticks it for a box. */
+.ds-bullets li {
+  position: relative;
+  padding-inline-start: 1.3em;
+}
+.ds-bullets li::before {
+  position: absolute;
+  inset-inline-start: 0.35em;
+  font-style: normal;
+  font-weight: 700;
+  color: #9a3412;
+  content: "\2022";
+}
+.ds-draw,
 .ds-items li,
 .ds-flags li {
   display: flex;
@@ -335,10 +348,6 @@
 .ds-line .ds-fill {
   flex: 1 1 12em;
 }
-.ds-line .ds-short {
-  flex: none;
-  width: 3em;
-}
 .ds-banner {
   display: flex;
   flex-direction: column;
@@ -360,6 +369,7 @@
   column-gap: 1.6em;
   column-rule: 1px solid #d6d3d1;
 }
+.ds-opening,
 .ds-criterion {
   display: flex;
   flex-direction: column;
@@ -379,7 +389,7 @@
 }
 /* A title too long to share its line with the band row takes the line,
    and the band row moves under it, kept at the right. */
-.ds-criterion h2 {
+.ds-criterion-head h2 {
   flex: 1 1 auto;
   font-size: 1.2em;
   line-height: 1.2;
@@ -405,15 +415,42 @@
   border: 1.5px solid #1c1917;
   border-radius: 1em;
 }
-.ds-question {
+/* The opening question, across both columns: no band row and no boxes,
+   since nothing in it is scored. */
+.ds-page .ds-opening-question {
+  font-size: 1.2em;
   font-style: italic;
   color: #292524;
+}
+.ds-page .ds-opening-note,
+.ds-unscored {
+  color: #57534e;
+}
+.ds-asks,
+.ds-asks ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
 }
 .ds-items,
 .ds-flags ul {
   display: flex;
   flex-direction: column;
   gap: 0.15em;
+}
+.ds-asks li {
+  font-style: italic;
+  color: #292524;
+}
+.ds-asks-title,
+.ds-flags-title {
+  font-size: 0.9em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.ds-asks-title {
+  color: #57534e;
 }
 .ds-text {
   color: #44403c;
@@ -423,12 +460,6 @@
   flex-direction: column;
   gap: 0.15em;
   color: #7f1d1d;
-}
-.ds-flags-title {
-  font-size: 0.9em;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 .ds-cross {
   flex: none;

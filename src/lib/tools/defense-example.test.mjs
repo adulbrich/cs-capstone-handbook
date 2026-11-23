@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { example } from "../../data/defense-scoresheets.mjs";
+import { askBreaks, example } from "../../data/defense-scoresheets.mjs";
 import { parseRubricCsv } from "../rubric-csv.mjs";
 import {
   EXAMPLE_PDF,
@@ -47,7 +47,7 @@ test("the fingerprint changes with the sheet and with each source the example pr
 test("the example PDF the defense page links was printed from the current rubric and sources", () => {
   const read = (path) => readFileSync(new URL(path, root), "utf8");
   const csv = "canvas/assignments/defense/defense-rubric.csv";
-  const sheet = liveSheet(parseRubricCsv(read(csv), csv), csv);
+  const sheet = liveSheet(parseRubricCsv(read(csv), csv), csv, askBreaks);
   const pdf = readFileSync(new URL(`public/${EXAMPLE_PDF}`, root));
   assert.equal(
     pdfTitle(pdf),

@@ -1,10 +1,13 @@
 <script>
 // One student's live sheet, the same in the preview and on paper: the
 // name, team (on one line), assessor (the student's grader from the
-// roster, or blank to write in), and total; the banner with the tick rule, the
-// points, and the Missing rule; then each criterion's question, its items
-// to tick, its red flags, its band row, and a notes line. The rubric's text
-// comes from `sheet` (liveSheet in defense-sheets.mjs), word for word.
+// roster, or blank to write in), and total; the artifact or topic discussed
+// and the follow-up; the banner with the tick rule, the points, and the
+// Missing rule; the opening question, which is not scored;
+// then each criterion's band row, its question as bullets, its items to
+// tick, its red flags, and a notes line. The rubric's text comes from
+// `sheet` (liveSheet in defense-sheets.mjs), its items and red flags word
+// for word.
 // `student` null is a blank sheet with the name written in. The criteria
 // run down two columns, each whole in one, so no line runs the page's
 // width. Once laid out, fitSheet (fit.js) steps the type down to fit one
@@ -43,9 +46,6 @@ const bands = $derived(bandRow(sheet.rule));
   <div class="ds-line">
     <span class="ds-label">{text.artifact}</span>
     <span class="ds-fill"></span>
-    <span class="ds-label">{text.sprint}</span>
-    <span class="ds-fill ds-short"></span>
-    <span><span class="ds-label">{text.record}:</span> {text.recordChoices}</span>
     <span><span class="ds-label">{text.followUp}:</span> {text.yesNo}</span>
   </div>
 
@@ -54,6 +54,19 @@ const bands = $derived(bandRow(sheet.rule));
     <span>{text.points(sheet.rule)}</span>
     <span>{text.missing(sheet.rule)}</span>
   </div>
+
+  <section class="ds-opening">
+    <div class="ds-criterion-head">
+      <h2>{text.opening.title}</h2>
+      <span class="ds-unscored">{text.opening.unscored}</span>
+    </div>
+    <p class="ds-opening-question">{text.opening.question}</p>
+    <p class="ds-opening-note">{text.opening.note}</p>
+    <div class="ds-notes">
+      <span class="ds-label">{text.notes}</span>
+      <span class="ds-fill"></span>
+    </div>
+  </section>
 
   <div class="ds-criteria">
     {#each sheet.criteria as criterion, i (criterion.title)}
@@ -68,7 +81,16 @@ const bands = $derived(bandRow(sheet.rule));
             {#each bands as band (band.key)}<span class="ds-band">{text.band(band.key, band.points)}</span>{/each}
           </span>
         </div>
-        <p class="ds-question">{criterion.question}</p>
+        {#each criterion.askGroups as group (group.label)}
+          <div class="ds-asks">
+            <span class="ds-asks-title">{group.label}</span>
+            <ul class="ds-bullets">
+              {#each group.asks as ask (ask)}
+                <li>{ask}</li>
+              {/each}
+            </ul>
+          </div>
+        {/each}
         <ul class="ds-items">
           {#each criterion.items as item (item.label)}
             <li>
