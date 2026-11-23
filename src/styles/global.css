@@ -10,12 +10,15 @@
    them to every docs page. */
 @source not "./deck.css";
 
-/* The docs' light accent. accent-600 is 3.6:1 on white; this is at least 4.5:1
-   on every light background accent text sits on, the gray-200 of code chips
-   and the grade grid's bands included. The dark theme and the decks keep the
-   palette's accents. */
-:root[data-theme="light"] {
-  --sl-color-accent: oklch(0.51 0.186 38.2);
+/* The docs' light accent, in the layer starlight-tailwind sets it in, so that
+   Starlight's unlayered print colors still win. accent-600 is 3.6:1 on white;
+   this is at least 4.5:1 on every light background accent text sits on, the
+   gray-200 of code chips and the grade grid's bands included. The dark theme
+   and the decks keep the palette's accents. */
+@layer utilities {
+  :root[data-theme="light"] {
+    --sl-color-accent: oklch(0.51 0.186 38.2);
+  }
 }
 
 .actions {

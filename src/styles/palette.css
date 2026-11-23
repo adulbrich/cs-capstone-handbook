@@ -1,8 +1,7 @@
 /*
  * The handbook's accent and gray palettes, generated once for the site's
  * Starlight theme. Shared by global.css (the docs) and deck.css (the slide
- * decks under /decks/), which loads no Starlight styles, so both draw the
- * same colors from one place.
+ * decks under /decks/), which loads no Starlight styles.
  */
 @theme {
   /* Generated accent color palettes. */
