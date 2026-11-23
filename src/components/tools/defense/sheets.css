@@ -452,12 +452,6 @@
 .ds-asks-title {
   color: #57534e;
 }
-/* What a follow-up's label says about it, as a sentence, not a label. */
-.ds-asks-when {
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: 0;
-}
 .ds-text {
   color: #44403c;
 }

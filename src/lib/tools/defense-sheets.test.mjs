@@ -150,7 +150,6 @@ test("a criterion's question is one bullet per sentence and per semicolon, under
           "Did it work, and why?",
         ],
         label: "Asks",
-        when: "",
       },
       {
         asks: [
@@ -158,27 +157,20 @@ test("a criterion's question is one bullet per sentence and per semicolon, under
           "Where it failed: what then?",
         ],
         label: "Follow-up",
-        when: "",
       },
     ]
   );
 });
 
-test("a question with no follow-up is one group, and a follow-up's condition is kept apart from its asks", () => {
+test("a question with no follow-up is one group, and a follow-up keeps the rubric's label", () => {
   assert.deepEqual(readAsks("Asks: what happened?", [], "x"), [
-    { asks: ["What happened?"], label: "Asks", when: "" },
+    { asks: ["What happened?"], label: "Asks" },
   ]);
   assert.deepEqual(
-    readAsks(
-      "Asks: what happened? Follow-ups, for a week the assessor picks: what did you own?",
-      [],
-      "x"
-    ).at(-1),
-    {
-      asks: ["What did you own?"],
-      label: "Follow-ups",
-      when: "for a week the assessor picks",
-    }
+    readAsks("Asks: what happened? Follow-ups: what did you own?", [], "x").at(
+      -1
+    ),
+    { asks: ["What did you own?"], label: "Follow-ups" }
   );
 });
 
@@ -221,7 +213,7 @@ test("a question the sheet cannot print as bullets throws, naming where", () => 
   assert.throws(
     () =>
       readAsks(
-        "Asks: what happened? Follow-up (a sprint): why?",
+        "Asks: what happened? Follow-up, for a sprint: why?",
         [],
         "Planning"
       ),
@@ -233,7 +225,6 @@ test("a question the sheet cannot print as bullets throws, naming where", () => 
       {
         asks: ["Walk me through it", "Follow-up work you planned"],
         label: "Asks",
-        when: "",
       },
     ]
   );
@@ -275,7 +266,7 @@ test("every word of a defense question prints, in order, but the and before a br
       criterion.description
     );
     const printed = criteria[i].askGroups
-      .flatMap(({ asks, label, when }) => [label, when, ...asks])
+      .flatMap(({ asks, label }) => [label, ...asks])
       .join(" ");
     assert.deepEqual(words(printed), words(said), criterion.title);
   });
@@ -297,7 +288,7 @@ test("the live sheet reads each criterion's question, items, red flags, and the 
     ]
   );
   assert.deepEqual(sheet.criteria[0].askGroups, [
-    { asks: ["What happened?"], label: "Asks", when: "" },
+    { asks: ["What happened?"], label: "Asks" },
   ]);
   assert.deepEqual(sheet.rule, {
     doesNotMeet: 2,

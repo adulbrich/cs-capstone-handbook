@@ -83,7 +83,7 @@ const bands = $derived(bandRow(sheet.rule));
         </div>
         {#each criterion.askGroups as group (group.label)}
           <div class="ds-asks">
-            <span class="ds-asks-title">{group.label}{#if group.when}<span class="ds-asks-when">, {group.when}</span>{/if}</span>
+            <span class="ds-asks-title">{group.label}</span>
             <ul class="ds-bullets">
               {#each group.asks as ask (ask)}
                 <li>{ask}</li>

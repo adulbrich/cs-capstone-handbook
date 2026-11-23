@@ -68,7 +68,7 @@ const RED_FLAG_CLAUSE = /,\s*and no red flag$/iu;
 const DIGITS = /^\d+$/u;
 /** A criterion's question: its asks, then its follow-up when it has one. */
 const QUESTION =
-  /^Asks: (?<asks>.+?)(?: (?<label>Follow-ups?)(?:, (?<when>[^:]+))?: (?<followUps>.+))?$/u;
+  /^Asks: (?<asks>.+?)(?: (?<label>Follow-ups?): (?<followUps>.+))?$/u;
 /** Between two sentences: an end mark, then a capital, so "vs. production" ends none. */
 const SENTENCE_BREAK = /(?<=[.?])\s+(?=\p{Lu})/u;
 const SEMICOLON = /;\s+/u;
@@ -158,14 +158,12 @@ function splitSentence(sentence, breaks) {
 
 /**
  * A criterion's question as the live sheet's bullets: its asks, then its
- * follow-up's, each group `{ asks, label, when }`, where `when` is what a
- * follow-up's label says about it ("for a sprint the assessor picks"). An
- * ask ends where its sentence does, at a semicolon, or before one of
- * `breaks`, the words a new ask starts with after a comma; the "and" that
- * joined it goes. Throws when the question does not start "Asks: ", when it
- * holds a "Follow-up" besides the one label read, and when a group repeats
- * an ask, which the sheet keys its bullets by. `where` names the question
- * in the error.
+ * follow-up's, each group `{ asks, label }`. An ask ends where its sentence
+ * does, at a semicolon, or before one of `breaks`, the words a new ask
+ * starts with after a comma; the "and" that joined it goes. Throws when the
+ * question does not start "Asks: ", when it holds a "Follow-up" besides the
+ * one label read, and when a group repeats an ask, which the sheet keys its
+ * bullets by. `where` names the question in the error.
  */
 export function readAsks(question, breaks, where) {
   const found = question.match(QUESTION);
@@ -174,16 +172,16 @@ export function readAsks(question, breaks, where) {
       `${where}: the question does not start "Asks: ". The live sheet prints what follows as bullets.`
     );
   }
-  const { asks, followUps, label, when } = found.groups;
+  const { asks, followUps, label } = found.groups;
   const readGroup = (text) =>
     text.split(SENTENCE_BREAK).flatMap((s) => splitSentence(s, breaks));
-  const groups = [{ asks: readGroup(asks), label: "Asks", when: "" }];
+  const groups = [{ asks: readGroup(asks), label: "Asks" }];
   if (followUps) {
-    groups.push({ asks: readGroup(followUps), label, when: when ?? "" });
+    groups.push({ asks: readGroup(followUps), label });
   }
   if (`${asks} ${followUps}`.includes("Follow-up")) {
     throw new Error(
-      `${where}: a "Follow-up" the sheet does not read as a label. It reads one, "Follow-up: " or "Follow-up, <when>: ", after the asks.`
+      `${where}: a "Follow-up" the sheet does not read as a label. It reads one, "Follow-up: " or "Follow-ups: ", after the asks.`
     );
   }
   for (const group of groups) {
