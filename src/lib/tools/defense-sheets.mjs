@@ -69,7 +69,7 @@ const DIGITS = /^\d+$/u;
 /** A criterion's question: its asks, then its follow-up when it has one. */
 const QUESTION =
   /^Asks: (?<asks>.+?)(?: (?<label>Follow-ups?)(?:, (?<when>[^:]+))?: (?<followUps>.+))?$/u;
-/** Between two sentences of a question. A capital starts one, so "vs." ends none. */
+/** Between two sentences: an end mark, then a capital, so "vs. production" ends none. */
 const SENTENCE_BREAK = /(?<=[.?])\s+(?=\p{Lu})/u;
 const SEMICOLON = /;\s+/u;
 /** What an ask that is a question, not an instruction, starts with. */
@@ -162,10 +162,10 @@ function splitSentence(sentence, breaks) {
  * follow-up's label says about it ("for a sprint the assessor picks"). An
  * ask ends where its sentence does, at a semicolon, or before one of
  * `breaks`, the words a new ask starts with after a comma; the "and" that
- * joined it goes. Throws when the question does not start "Asks: ", when a
- * follow-up's label is not one it reads, and when a group repeats an ask,
- * which the sheet keys its bullets by. `where` names the question in the
- * error.
+ * joined it goes. Throws when the question does not start "Asks: ", when it
+ * holds a "Follow-up" besides the one label read, and when a group repeats
+ * an ask, which the sheet keys its bullets by. `where` names the question
+ * in the error.
  */
 export function readAsks(question, breaks, where) {
   const found = question.match(QUESTION);
@@ -181,13 +181,12 @@ export function readAsks(question, breaks, where) {
   if (followUps) {
     groups.push({ asks: readGroup(followUps), label, when: when ?? "" });
   }
+  if (`${asks} ${followUps}`.includes("Follow-up")) {
+    throw new Error(
+      `${where}: a "Follow-up" the sheet does not read as a label. It reads one, "Follow-up: " or "Follow-up, <when>: ", after the asks.`
+    );
+  }
   for (const group of groups) {
-    const stray = group.asks.find((ask) => ask.startsWith("Follow-up"));
-    if (stray !== undefined) {
-      throw new Error(
-        `${where}: "${stray}" is no follow-up label the sheet reads. One follow-up, "Follow-up: " or "Follow-up, <when>: ", ends the question.`
-      );
-    }
     const repeated = group.asks.find((ask, i) => group.asks.indexOf(ask) !== i);
     if (repeated !== undefined) {
       throw new Error(

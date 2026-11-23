@@ -198,7 +198,7 @@ test("a named break splits a sentence at its comma, drops the joining and, and l
   ]);
 });
 
-test("an abbreviation ends no ask, and only a question in a question's sentence gets its mark", () => {
+test("a period before a lowercase word ends no ask, and only a question in a question's sentence gets its mark", () => {
   const [asks] = readAsks(
     "Asks: compare staging vs. production, e.g., its data; when did you stop; say why? Where a teammate decided; say whether you agree.",
     [],
@@ -225,7 +225,17 @@ test("a question the sheet cannot print as bullets throws, naming where", () => 
         [],
         "Planning"
       ),
-    /Planning: "Follow-up \(a sprint\): why\?" is no follow-up label the sheet reads/u
+    /Planning: a "Follow-up" the sheet does not read as a label/u
+  );
+  assert.deepEqual(
+    readAsks("Asks: walk me through it; follow-up work you planned.", [], "x"),
+    [
+      {
+        asks: ["Walk me through it", "Follow-up work you planned"],
+        label: "Asks",
+        when: "",
+      },
+    ]
   );
   assert.throws(
     () => readAsks("Asks: what happened? Follow-up: why? Why?", [], "Planning"),
