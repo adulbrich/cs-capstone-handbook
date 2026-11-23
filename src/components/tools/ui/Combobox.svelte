@@ -23,13 +23,14 @@ let {
 let input = $state();
 let list = $state();
 let open = $state(false);
-/** The index of the option the arrow keys are on. */
-let active = $state(NONE);
+/** The option the arrow keys are on: itself, since `options` can change. */
+let activeOption = $state(null);
 // Whether the reader has typed since the list opened. Until then it shows
 // every option, so a picked one does not hide the others.
 let typed = $state(false);
 
 const shown = $derived(typed ? matchingOptions(options, value) : options);
+const active = $derived(shown.indexOf(activeOption));
 const listId = $derived(`${id}-list`);
 const optionId = (i) => `${id}-option-${i}`;
 
@@ -39,7 +40,7 @@ function show() {
 
 function hide() {
   open = false;
-  active = NONE;
+  activeOption = null;
   typed = false;
 }
 
@@ -59,7 +60,7 @@ function pick(option) {
 
 function edit(event) {
   ({ value } = event.currentTarget);
-  active = NONE;
+  activeOption = null;
   typed = true;
   show();
 }
@@ -80,7 +81,8 @@ async function press(event) {
   if (next.picked !== NONE) {
     pick(shown[next.picked]);
   } else if (next.open) {
-    ({ active, open } = next);
+    activeOption = shown[next.active] ?? null;
+    show();
     await tick();
     list?.children[active]?.scrollIntoView({ block: "nearest" });
   } else {
@@ -247,6 +249,8 @@ function reveal(node) {
     background: var(--sl-color-gray-6);
   }
   .option.active {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: -2px;
     background: var(--sl-color-accent-low);
     color: var(--sl-color-accent-high);
   }
