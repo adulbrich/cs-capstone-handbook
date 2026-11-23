@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { askBreaks } from "../../data/defense-scoresheets.mjs";
 import { parseRubricCsv, rubricTotal } from "../rubric-csv.mjs";
 import {
   BAND_NAMES,
@@ -11,6 +12,7 @@ import {
   liveSheet,
   pageCounts,
   printPages,
+  readAsks,
   readList,
   sessionMinutes,
   sessionRule,
@@ -133,6 +135,114 @@ test("an All that is not a count, or a count past eight, is no mismatch", () => 
   );
 });
 
+test("a criterion's question is one bullet per sentence and per semicolon, under Asks and its follow-up", () => {
+  assert.deepEqual(
+    readAsks(
+      "Asks: walk me through it and where it stands; what, if anything, changed? Did it work, and why? Follow-up: say what you would keep, or why nothing. Where it failed: what then?",
+      [],
+      "Planning"
+    ),
+    [
+      {
+        asks: [
+          "Walk me through it and where it stands",
+          "What, if anything, changed?",
+          "Did it work, and why?",
+        ],
+        label: "Asks",
+        when: "",
+      },
+      {
+        asks: [
+          "Say what you would keep, or why nothing",
+          "Where it failed: what then?",
+        ],
+        label: "Follow-up",
+        when: "",
+      },
+    ]
+  );
+});
+
+test("a question with no follow-up is one group, and a follow-up's condition is kept apart from its asks", () => {
+  assert.deepEqual(readAsks("Asks: what happened?", [], "x"), [
+    { asks: ["What happened?"], label: "Asks", when: "" },
+  ]);
+  assert.deepEqual(
+    readAsks(
+      "Asks: what happened? Follow-ups, for a week the assessor picks: what did you own?",
+      [],
+      "x"
+    ).at(-1),
+    {
+      asks: ["What did you own?"],
+      label: "Follow-ups",
+      when: "for a week the assessor picks",
+    }
+  );
+});
+
+test("a named break splits a sentence at its comma, drops the joining and, and leaves every other comma", () => {
+  const [asks] = readAsks(
+    "Asks: explain why, name two risks, and say which is worse, or why none is. What did you try, what did you keep, and how did you know, and why there?",
+    ["name two", "say which", "what did you keep", "how did you know"],
+    "x"
+  );
+  assert.deepEqual(asks.asks, [
+    "Explain why",
+    "Name two risks",
+    "Say which is worse, or why none is",
+    "What did you try?",
+    "What did you keep?",
+    "How did you know, and why there?",
+  ]);
+});
+
+test("a question the sheet cannot print as bullets throws, naming where", () => {
+  assert.throws(
+    () => readAsks("What happened?", [], "Planning"),
+    /Planning: the question does not start "Asks: "/u
+  );
+});
+
+test("a break no criterion's question holds fails the build", () => {
+  const asked = (question) => ({ ...PLANNING, question });
+  assert.throws(
+    () =>
+      liveSheet(
+        rubric(asked("Asks: explain why, and say which is worse.")),
+        "invented.csv",
+        ["say which", "name two"]
+      ),
+    /invented\.csv: no question holds ", name two" or ", and name two"/u
+  );
+  assert.deepEqual(
+    liveSheet(
+      rubric(asked("Asks: explain why, and say which is worse."), TESTING),
+      "invented.csv",
+      ["say which"]
+    ).criteria.map((c) => c.asks[0].asks),
+    [["Explain why", "Say which is worse"], ["What happened?"]]
+  );
+});
+
+test("every word of a defense question prints, in order, but the and before a break", () => {
+  const path = "canvas/assignments/defense/defense-rubric.csv";
+  const parsed = parseRubricCsv(read(path), path);
+  const { criteria } = liveSheet(parsed, path, askBreaks);
+  const words = (text) => text.toLowerCase().match(/[\w'-]+/gu);
+  parsed.criteria.forEach((criterion, i) => {
+    const said = askBreaks.reduce(
+      (text, start) => text.replaceAll(`, and ${start}`, `, ${start}`),
+      criterion.description
+    );
+    const printed = criteria[i].asks
+      .flatMap(({ asks, label, when }) => [label, when, ...asks])
+      .join(" ");
+    assert.deepEqual(words(printed), words(said), criterion.title);
+  });
+});
+
 test("the live sheet reads each criterion's question, items, red flags, and the one scoring rule", () => {
   const sheet = liveSheet(rubric(PLANNING, TESTING), "invented.csv");
   assert.equal(sheet.total, 20);
@@ -148,7 +258,9 @@ test("the live sheet reads each criterion's question, items, red flags, and the 
       ["Testing", ["SO6"], 2, 1],
     ]
   );
-  assert.equal(sheet.criteria[0].question, "Asks: what happened?");
+  assert.deepEqual(sheet.criteria[0].asks, [
+    { asks: ["What happened?"], label: "Asks", when: "" },
+  ]);
   assert.deepEqual(sheet.rule, {
     doesNotMeet: 2,
     exceeds: 10,
@@ -248,7 +360,7 @@ test("criteria that score differently, or bands the sheet does not print, fail t
   );
 });
 
-test("the defense rubric prints word for word, under one rule its bands state", () => {
+test("the defense rubric's items and red flags print word for word, under one rule its bands state", () => {
   const path = "canvas/assignments/defense/defense-rubric.csv";
   const parsed = parseRubricCsv(read(path), path);
   const sheet = liveSheet(parsed, path);
@@ -270,8 +382,7 @@ test("the defense rubric prints word for word, under one rule its bands state", 
   parsed.criteria.forEach((criterion, i) => {
     const band = (name) =>
       criterion.ratings.find((r) => r.name === name).description;
-    const { flags, items, question } = sheet.criteria[i];
-    assert.equal(question, criterion.description);
+    const { flags, items } = sheet.criteria[i];
     for (const [list, name] of [
       [items, BAND_NAMES.exceeds],
       [flags, BAND_NAMES.doesNotMeet],

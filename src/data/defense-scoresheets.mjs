@@ -1,8 +1,9 @@
 // The wording of the defense scoresheets tool (/tools/defense-scoresheets/):
 // the page and its steps, and every line the session cover and the live
-// sheet print around the rubric's own text. The questions, items, red
-// flags, points, and the Missing rule are the rubric CSV's, read by
-// src/lib/tools/defense-sheets.mjs; nothing here retypes them. The
+// sheet print around the rubric's own text, the opening question included.
+// Each criterion's questions, items, red flags, points, and the Missing
+// rule are the rubric CSV's, read by src/lib/tools/defense-sheets.mjs;
+// nothing here retypes them but the few words askBreaks finds. The
 // cover's protocol lines are the approved design's and follow Defense
 // Logistics in STAFF-RUNBOOK.md. An instructor tool, so it may name Canvas
 // (docs/agents/tools.md).
@@ -22,7 +23,7 @@ export const page = {
   description:
     "Print a defense session cover for each team and a one-page live sheet for each student, from the course roster, in your browser.",
   intro:
-    "A session cover for each team and a one-page live sheet for each student, with names filled in from the roster. The roster is read in your browser and never uploaded; the questions, items, and red flags come from the defense rubric, word for word.",
+    "A session cover for each team and a one-page live sheet for each student, with names filled in from the roster. The roster is read in your browser and never uploaded; each criterion's questions, items, and red flags come from the defense rubric, the items and red flags word for word.",
   title: "Print Defense Scoresheets",
 };
 
@@ -136,6 +137,21 @@ const BAND_LETTERS = {
   missing: "",
 };
 
+/**
+ * Where the live sheet breaks a rubric question into bullets inside a
+ * sentence: the words a new ask starts with, after a comma or ", and".
+ * Sentence ends and semicolons break on their own. A break the rubric no
+ * longer holds fails the build (liveSheet in defense-sheets.mjs).
+ */
+export const askBreaks = [
+  "what did you keep",
+  "how did you know",
+  "name two alternatives",
+  "say which part",
+  "how do you know",
+  "how did your team",
+];
+
 /** The live sheet, one per student. */
 export const sheetText = {
   artifact: "Artifact",
@@ -151,6 +167,19 @@ export const sheetText = {
   missing: ({ missing }) =>
     `${BAND_NAMES.missing}, ${missing.points}: ${missing.lead}.`,
   notes: "Notes",
+  /**
+   * The question that opens the student's turn, above the criteria, and
+   * the assessor's line under it. Not in the rubric and not scored; its
+   * marker says so, since the defense page has the example sheet show
+   * exactly what is scored.
+   */
+  opening: {
+    note: "Anything they authored or drove this term counts, code or not. You pick the one they walk through.",
+    question:
+      "What work did you choose for today, and which piece are you proudest of so far?",
+    title: "Opening question",
+    unscored: "Not scored",
+  },
   /** The banner's points line: the rubric's bands, in their own words. */
   points: ({ doesNotMeet, exceeds, flagRule, meetsRule }) =>
     `${flagRule}: ${doesNotMeet}. Otherwise every item ticked: ${exceeds}, or ${meetsRule}`,

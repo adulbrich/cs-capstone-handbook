@@ -11,13 +11,18 @@
 
 import defenseCsv from "/canvas/assignments/defense/defense-rubric.csv?raw";
 import defenseMdx from "/src/content/docs/assignments/defense.mdx?raw";
+import { askBreaks } from "../../../data/defense-scoresheets.mjs";
 import { parseRubricCsv } from "../../../lib/rubric-csv.mjs";
 import { liveSheet, sessionRule } from "../../../lib/tools/defense-sheets.mjs";
 
 const LABEL = "canvas/assignments/defense/defense-rubric.csv";
 
 /** The live sheet: `{ criteria, rule, total }`. */
-export const sheet = liveSheet(parseRubricCsv(defenseCsv, LABEL), LABEL);
+export const sheet = liveSheet(
+  parseRubricCsv(defenseCsv, LABEL),
+  LABEL,
+  askBreaks
+);
 
 /** Minutes per student, of setup and wrap, and the session weeks, from the defense page. */
 export const session = sessionRule(defenseMdx);
