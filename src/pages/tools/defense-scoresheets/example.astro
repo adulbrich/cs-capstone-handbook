@@ -27,9 +27,9 @@ const title = example.title(
     <title>{title}</title>
   </head>
   <body>
-    <div class="ds-print ds-example">
+    <main class="ds-print ds-example">
       <LiveSheet {sheet} team={example.team} term={example.term} />
-    </div>
+    </main>
     <script>
       // Fits the sheet to one page, as the tool fits each sheet it prints.
       import { fitSheet } from "../../../components/tools/defense/fit.js";

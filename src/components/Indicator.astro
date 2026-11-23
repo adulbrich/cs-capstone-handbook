@@ -10,7 +10,7 @@ const { count } = Astro.props;
   {
     Array.from({ length: count }).map((_, index) => (
       <button
-        class={`indicator h-2 w-2 rounded-full md:h-3 md:w-3 mx-1 ${index === 0 ? "bg-white/80" : "bg-white/50"}`}
+        class={`indicator h-6 w-6 rounded-full bg-clip-content p-2 md:p-1.5 ${index === 0 ? "bg-white/80" : "bg-white/50"}`}
         data-slide-index={index}
         aria-label={`Go to slide ${index + 1}`}
       />
