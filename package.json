@@ -44,7 +44,6 @@
     "astro": "7.4.12",
     "astro-feelback": "^0.3.4",
     "astro-mermaid": "^2.2.0",
-    "bits-ui": "^2.21.0",
     "dompurify": "^3.4.17",
     "katex": "^0.19.1",
     "marked": "^18.2.0",
