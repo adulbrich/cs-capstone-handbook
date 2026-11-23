@@ -7,7 +7,7 @@
 // through to the <button>.
 let {
   children,
-  size = "small",
+  size = "",
   type = "button",
   variant = "primary",
   ...rest

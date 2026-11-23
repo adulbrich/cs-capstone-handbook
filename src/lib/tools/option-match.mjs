@@ -3,8 +3,11 @@
 
 const SPACES = /\s+/gu;
 
+/** Text trimmed and single-spaced. */
+export const singleSpaced = (text) => text.trim().replace(SPACES, " ");
+
 /** Text as compared: trimmed, single-spaced, lower case. */
-export const textKey = (text) => text.trim().replace(SPACES, " ").toLowerCase();
+export const textKey = (text) => singleSpaced(text).toLowerCase();
 
 /** The `options` that contain `text`, as compared (textKey), in their order. */
 export const matchingOptions = (options, text) => {

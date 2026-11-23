@@ -13,6 +13,7 @@ import {
   rosterModel,
   rosterSummary,
   surveyedCount,
+  teamNames,
   teamsTable,
   withAdded,
 } from "./peer-roster.mjs";
@@ -86,6 +87,18 @@ test("an unknown team is refused with the closest teams, unless confirmed new", 
   const confirmed = checkAddedStudent(typo, roster, { newTeam: true });
   assert.deepEqual(confirmed.problems, []);
   assert.equal(confirmed.entry.team, "Trioo");
+});
+
+test("team names are listed in natural order, not the roster's", () => {
+  const named = (team) => ({
+    ...roster[0],
+    email: `${team}@example.edu`,
+    team,
+  });
+  const summary = rosterSummary(
+    ["Team 10", "Team 2", "Alpha"].map((team) => named(team))
+  );
+  assert.deepEqual(teamNames(summary), ["Alpha", "Team 2", "Team 10"]);
 });
 
 test("a surveyed team has two members up to the largest the survey holds", () => {

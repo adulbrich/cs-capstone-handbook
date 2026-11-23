@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { matchingOptions, textKey } from "./option-match.mjs";
+import { matchingOptions, singleSpaced, textKey } from "./option-match.mjs";
 
 const teams = ["cs.003 Transit Planner", "cs.007 Tidepool  Explorer", "Trio"];
 
 test("text compares trimmed, single-spaced, and in lower case", () => {
+  assert.equal(singleSpaced("  Big \t TEAM "), "Big TEAM");
   assert.equal(textKey("  Big \t TEAM "), "big team");
 });
 

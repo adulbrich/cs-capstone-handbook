@@ -4,7 +4,7 @@
 // members, and who is left out of the survey and why. Pure: no DOM, no I/O.
 
 import { attempt } from "./attempt.mjs";
-import { textKey } from "./option-match.mjs";
+import { singleSpaced, textKey } from "./option-match.mjs";
 import { MAX_TEAM_SIZE } from "./peer-contacts.mjs";
 import { parseRoster, splitName } from "./roster.mjs";
 
@@ -45,8 +45,6 @@ export function surveyedCount(summary) {
     teams: teams.length,
   };
 }
-
-const SPACES = /\s+/gu;
 
 /** Edits from one string to the other (Levenshtein). */
 function distance(a, b) {
@@ -105,7 +103,7 @@ export function checkAddedStudent(entry, students, { newTeam = false } = {}) {
   const teams = [
     ...new Set(students.map((s) => s.team).filter((name) => name !== "")),
   ];
-  let team = entry.team.trim().replace(SPACES, " ");
+  let team = singleSpaced(entry.team);
   if (team === "") {
     problems.push("Enter the student's team.");
   } else if (matchTeam(team, teams)) {
@@ -195,6 +193,12 @@ const pick = ({ email, name, otherSection, team }) => ({
   otherSection: Boolean(otherSection),
   team,
 });
+
+const byName = new Intl.Collator("en", { numeric: true });
+
+/** The summary's team names (rosterSummary) in order, "Team 2" before "Team 10". */
+export const teamNames = (summary) =>
+  summary.teams.map(({ team }) => team).toSorted(byName.compare);
 
 /**
  * Everything a page shows about the roster, from the saved file (`{ name,

@@ -1,21 +1,20 @@
 <script>
-// A text input with a list of `options` to pick from, on Bits UI's Combobox,
-// which handles the keyboard, the focus, and the ARIA attributes. The text is
-// the value: it may be none of the options, so the form that uses it checks
-// it. The list shows every option when opened and narrows as the reader
-// types. Goes inside a Field, whose `id` and `describedby` it takes. `label`
-// names the list, `open` the button that opens it; `empty` and `none` are
-// what the list says when there are no options and when none matches.
+// A text input with a list of `options` to pick from, on Bits UI's Combobox.
+// The text is the value: it may be none of the options, so the form that uses
+// it checks it, and Enter takes an option only once the arrow keys have moved
+// to it. The list shows every option when opened and narrows as the reader
+// types. Goes inside a Field, whose `id` and `describedby` it takes.
+// `listLabel` names the list, `openLabel` the button that opens it, and
+// `none` is what the list says when it has no option to show.
 import { Combobox } from "bits-ui";
 import { matchingOptions } from "../../../lib/tools/option-match.mjs";
 
 let {
   describedby,
-  empty,
   id,
-  label,
+  listLabel,
   none,
-  open: openLabel,
+  openLabel,
   options,
   value = $bindable(""),
 } = $props();
@@ -25,21 +24,48 @@ let open = $state(false);
 // every option, so a picked one does not hide the others.
 let typed = $state(false);
 
+// Whether the arrow keys have moved to an option since the reader last typed.
+// Bits UI highlights the first match at every key and has Enter take it, which
+// would replace a typed team with one whose name contains it.
+let moved = $state(false);
+
 const shown = $derived(typed ? matchingOptions(options, value) : options);
-const message = $derived(options.length > 0 ? none : empty);
 
 function changeOpen(next) {
   if (!next) {
     typed = false;
+    moved = false;
   }
 }
 
-// Bits UI opens the list on a key press, which pasted or dictated text does
-// not have.
+// Bits UI opens the list on a key press, which dictated text, or text pasted
+// from a menu, does not have.
 function input(event) {
   ({ value } = event.currentTarget);
   typed = true;
+  moved = false;
   open = true;
+}
+
+const MOVES = new Set(["ArrowDown", "ArrowUp", "PageDown", "PageUp"]);
+
+// `active` is the option the arrow keys are on, `bits` Bits UI's own handler.
+function keydown(event, { active, bits }) {
+  if (event.key === "Enter" && !active) {
+    // Not Bits UI's: the form submits the text as typed.
+    open = false;
+    changeOpen(false);
+    return;
+  }
+  if (MOVES.has(event.key) && !event.altKey && !moved) {
+    moved = true;
+    if (open) {
+      // To the option Bits UI has highlighted already.
+      event.preventDefault();
+      return;
+    }
+  }
+  bits(event);
 }
 
 function pick(option) {
@@ -59,10 +85,19 @@ function pick(option) {
   >
     <Combobox.Input {id} oninput={input}>
       {#snippet child({ props })}
-        <input {...props} class="text" type="text" autocomplete="off" aria-describedby={describedby} />
+        {@const active = moved ? props["aria-activedescendant"] : undefined}
+        <input
+          {...props}
+          class="text"
+          type="text"
+          autocomplete="off"
+          aria-activedescendant={active}
+          aria-describedby={describedby}
+          onkeydown={(event) => keydown(event, { active, bits: props.onkeydown })}
+        />
       {/snippet}
     </Combobox.Input>
-    <Combobox.Trigger aria-label={openLabel} tabindex={-1}>
+    <Combobox.Trigger aria-expanded={open} aria-label={openLabel} tabindex={-1}>
       {#snippet child({ props })}
         <button {...props} class="open">
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
@@ -70,26 +105,31 @@ function pick(option) {
       {/snippet}
     </Combobox.Trigger>
     <Combobox.Portal>
-      <Combobox.Content aria-label={label} sideOffset={4}>
+      <Combobox.Content aria-label={listLabel} sideOffset={4}>
         {#snippet child({ open: isOpen, props, wrapperProps })}
           {#if isOpen}
             <div {...wrapperProps}>
-              <div {...props} class="list">
+              <div {...props} class={["list", { moved }]}>
                 <Combobox.Viewport>
-                  {#each shown as option (option)}
-                    <Combobox.Item value={option} label={option}>
-                      {#snippet child({ props: itemProps, selected })}
-                        <div {...itemProps} class="option">
-                          <span>{option}</span>
-                          {#if selected}
-                            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
-                          {/if}
-                        </div>
-                      {/snippet}
-                    </Combobox.Item>
-                  {:else}
-                    <div class="option message" role="option" aria-disabled="true" aria-selected="false">{message}</div>
-                  {/each}
+                  {#snippet child({ props: viewportProps })}
+                    <!-- Without the attribute, since Bits UI hides the scrollbar by it. -->
+                    <div {...viewportProps} data-combobox-viewport={undefined}>
+                      {#each shown as option (option)}
+                        <Combobox.Item value={option} label={option}>
+                          {#snippet child({ props: itemProps, selected })}
+                            <div {...itemProps} class="option">
+                              <span>{option}</span>
+                              {#if selected}
+                                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                              {/if}
+                            </div>
+                          {/snippet}
+                        </Combobox.Item>
+                      {:else}
+                        <div class="option message" role="option" aria-disabled="true" aria-selected="false">{none}</div>
+                      {/each}
+                    </div>
+                  {/snippet}
                 </Combobox.Viewport>
               </div>
             </div>
@@ -98,7 +138,7 @@ function pick(option) {
       </Combobox.Content>
     </Combobox.Portal>
   </Combobox.Root>
-  <span class="visually-hidden" role="status">{open && shown.length === 0 ? message : ""}</span>
+  <span class="visually-hidden" role="status">{open && shown.length === 0 ? none : ""}</span>
 </div>
 
 <style>
@@ -171,7 +211,8 @@ function pick(option) {
     flex: none;
     color: var(--sl-color-text-accent);
   }
-  .option[data-highlighted] {
+  .moved .option[data-highlighted],
+  .option:not(.message):hover {
     background: var(--sl-color-accent-low);
     color: var(--sl-color-accent-high);
   }

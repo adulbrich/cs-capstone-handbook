@@ -6,7 +6,10 @@
 // adds the Score page's Replace action. The wording is in
 // src/data/peer-tools.mjs.
 import { rosterText as text } from "../../../data/peer-tools.mjs";
-import { checkAddedStudent } from "../../../lib/tools/peer-roster.mjs";
+import {
+  checkAddedStudent,
+  teamNames,
+} from "../../../lib/tools/peer-roster.mjs";
 import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
@@ -22,11 +25,7 @@ let entry = $state({ ...blank });
 let newTeam = $state(false);
 let check = $state({ problems: [], suggestions: [] });
 
-const teamNames = $derived(
-  (model.summary?.teams.map((t) => t.team) ?? []).toSorted((a, b) =>
-    a.localeCompare(b, undefined, { numeric: true })
-  )
-);
+const teams = $derived(model.summary ? teamNames(model.summary) : []);
 
 function add(event) {
   event.preventDefault();
@@ -88,11 +87,10 @@ function remove(email) {
       <Combobox
         {id}
         {describedby}
-        label={text.form.team.list}
-        open={text.form.team.open}
-        empty={text.empty}
-        none={text.form.team.none}
-        options={teamNames}
+        listLabel={text.form.team.list}
+        openLabel={text.form.team.open}
+        none={model.summary ? text.form.team.none : text.empty}
+        options={teams}
         bind:value={entry.team}
       />
     {/snippet}
