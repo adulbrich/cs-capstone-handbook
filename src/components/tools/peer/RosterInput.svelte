@@ -11,6 +11,7 @@ import Button from "../ui/Button.svelte";
 import Callout from "../ui/Callout.svelte";
 import Checkbox from "../ui/Checkbox.svelte";
 import ClickPath from "../ui/ClickPath.svelte";
+import Combobox from "../ui/Combobox.svelte";
 import Field from "../ui/Field.svelte";
 import FileDrop from "../ui/FileDrop.svelte";
 
@@ -21,7 +22,11 @@ let entry = $state({ ...blank });
 let newTeam = $state(false);
 let check = $state({ problems: [], suggestions: [] });
 
-const teamNames = $derived(model.summary?.teams.map((t) => t.team) ?? []);
+const teamNames = $derived(
+  (model.summary?.teams.map((t) => t.team) ?? []).toSorted((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true })
+  )
+);
 
 function add(event) {
   event.preventDefault();
@@ -80,21 +85,20 @@ function remove(email) {
   </Field>
   <Field label={text.form.team.label} help={text.form.team.help}>
     {#snippet children({ describedby, id })}
-      <input
+      <Combobox
         {id}
-        type="text"
-        list="{id}-teams"
-        aria-describedby={describedby}
+        {describedby}
+        label={text.form.team.list}
+        open={text.form.team.open}
+        empty={text.empty}
+        none={text.form.team.none}
+        options={teamNames}
         bind:value={entry.team}
-        autocomplete="off"
       />
-      <datalist id="{id}-teams">
-        {#each teamNames as team (team)}<option value={team}></option>{/each}
-      </datalist>
     {/snippet}
   </Field>
   <div>
-    <Button type="submit" variant="secondary">{text.form.add}</Button>
+    <Button type="submit" variant="secondary" size="input">{text.form.add}</Button>
   </div>
   {#if check.problems.length > 0}
     <div class="problems" role="alert">

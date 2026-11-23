@@ -1,13 +1,20 @@
 <script>
 // The tools kit's button. "primary" is filled with the accent, as
 // Starlight's primary LinkButton is; "secondary" is outlined; "link" reads
-// as inline text. Colors come only from Starlight's variables, so the theme
+// as inline text. Size "input" is as tall as a Field's input, to stand
+// beside one. Colors come only from Starlight's variables, so the theme
 // switch restyles it. Any other attribute (onclick, disabled, aria-*) passes
 // through to the <button>.
-let { children, type = "button", variant = "primary", ...rest } = $props();
+let {
+  children,
+  size = "small",
+  type = "button",
+  variant = "primary",
+  ...rest
+} = $props();
 </script>
 
-<button {type} class={["button", variant]} {...rest}>{@render children()}</button>
+<button {type} class={["button", size, variant]} {...rest}>{@render children()}</button>
 
 <style>
   .button {
@@ -22,6 +29,12 @@ let { children, type = "button", variant = "primary", ...rest } = $props();
     font-size: var(--sl-text-sm);
     line-height: 1.4;
     cursor: pointer;
+  }
+  /* Field's input: the same vertical padding, font, and line height. */
+  .input {
+    padding-block: 0.35rem;
+    font-size: inherit;
+    line-height: inherit;
   }
   .primary {
     background: var(--sl-color-text-accent);
