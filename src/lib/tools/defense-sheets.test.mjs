@@ -198,10 +198,38 @@ test("a named break splits a sentence at its comma, drops the joining and, and l
   ]);
 });
 
+test("an abbreviation ends no ask, and only a question in a question's sentence gets its mark", () => {
+  const [asks] = readAsks(
+    "Asks: compare staging vs. production, e.g., its data; when did you stop; say why? Where a teammate decided; say whether you agree.",
+    [],
+    "x"
+  );
+  assert.deepEqual(asks.asks, [
+    "Compare staging vs. production, e.g., its data",
+    "When did you stop?",
+    "Say why?",
+    "Where a teammate decided",
+    "Say whether you agree",
+  ]);
+});
+
 test("a question the sheet cannot print as bullets throws, naming where", () => {
   assert.throws(
     () => readAsks("What happened?", [], "Planning"),
     /Planning: the question does not start "Asks: "/u
+  );
+  assert.throws(
+    () =>
+      readAsks(
+        "Asks: what happened? Follow-up (a sprint): why?",
+        [],
+        "Planning"
+      ),
+    /Planning: "Follow-up \(a sprint\): why\?" is no follow-up label the sheet reads/u
+  );
+  assert.throws(
+    () => readAsks("Asks: what happened? Follow-up: why? Why?", [], "Planning"),
+    /Planning: two asks under Follow-up read "Why\?"/u
   );
 });
 
@@ -221,7 +249,7 @@ test("a break no criterion's question holds fails the build", () => {
       rubric(asked("Asks: explain why, and say which is worse."), TESTING),
       "invented.csv",
       ["say which"]
-    ).criteria.map((c) => c.asks[0].asks),
+    ).criteria.map((c) => c.askGroups[0].asks),
     [["Explain why", "Say which is worse"], ["What happened?"]]
   );
 });
@@ -236,7 +264,7 @@ test("every word of a defense question prints, in order, but the and before a br
       (text, start) => text.replaceAll(`, and ${start}`, `, ${start}`),
       criterion.description
     );
-    const printed = criteria[i].asks
+    const printed = criteria[i].askGroups
       .flatMap(({ asks, label, when }) => [label, when, ...asks])
       .join(" ");
     assert.deepEqual(words(printed), words(said), criterion.title);
@@ -258,7 +286,7 @@ test("the live sheet reads each criterion's question, items, red flags, and the 
       ["Testing", ["SO6"], 2, 1],
     ]
   );
-  assert.deepEqual(sheet.criteria[0].asks, [
+  assert.deepEqual(sheet.criteria[0].askGroups, [
     { asks: ["What happened?"], label: "Asks", when: "" },
   ]);
   assert.deepEqual(sheet.rule, {

@@ -174,7 +174,7 @@
   min-height: 22px;
   border-bottom: 1px solid #78716c;
 }
-.ds-checklist {
+.ds-tips {
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -182,12 +182,25 @@
   border: 1px solid #a8a29e;
   border-radius: 4px;
 }
-.ds-checklist ul {
+.ds-tips ul {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.ds-checklist li,
+/* A small dot before a question or a tip, so nobody ticks it for a box. */
+.ds-bullets li {
+  position: relative;
+  padding-inline-start: 1.3em;
+}
+.ds-bullets li::before {
+  position: absolute;
+  inset-inline-start: 0.35em;
+  font-style: normal;
+  font-weight: 700;
+  color: #9a3412;
+  content: "\2022";
+}
+.ds-draw,
 .ds-items li,
 .ds-flags li {
   display: flex;
@@ -335,10 +348,6 @@
 .ds-line .ds-fill {
   flex: 1 1 12em;
 }
-.ds-line .ds-short {
-  flex: none;
-  width: 3em;
-}
 .ds-banner {
   display: flex;
   flex-direction: column;
@@ -429,20 +438,9 @@
   flex-direction: column;
   gap: 0.15em;
 }
-/* A question's bullet is a small dot, so nobody ticks it for an item's box. */
 .ds-asks li {
-  position: relative;
-  padding-inline-start: 1.3em;
   font-style: italic;
   color: #292524;
-}
-.ds-asks li::before {
-  position: absolute;
-  inset-inline-start: 0.35em;
-  font-style: normal;
-  font-weight: 700;
-  color: #9a3412;
-  content: "\2022";
 }
 .ds-asks-title,
 .ds-flags-title {
