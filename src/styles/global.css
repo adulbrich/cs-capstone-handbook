@@ -19,11 +19,17 @@
   :root[data-theme="light"] {
     --sl-color-accent: var(--color-accent-700);
   }
-}
 
-/* A linked code chip is on gray-100, a plain one on gray-200. */
-:root[data-theme="light"] .sl-markdown-content a code {
-  background-color: var(--sl-color-gray-7);
+  /* A linked code chip is on gray-100, a plain one on gray-200. */
+  :root[data-theme="light"] .sl-markdown-content a code {
+    background-color: var(--sl-color-gray-7);
+  }
+
+  /* The search dialog's Cancel button is on gray-200. In the dark theme this
+     is the color it already has. */
+  site-search button[data-close-modal] {
+    color: var(--sl-color-accent-high);
+  }
 }
 
 .actions {
