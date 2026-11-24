@@ -527,20 +527,27 @@ function isAutolink({ position, type }, text) {
 }
 
 /**
- * The nodes of a page that hold its prose: every `text` node outside an
- * autolink, and an expression that is one string. An address anywhere else
- * sits in another type of node (code, frontmatter, an `import` or `export`,
- * any other expression, MDX comments included, a reference definition, an
- * image) or in no node (an attribute, a link's target), so it is not read.
+ * The nodes of a page that hold its prose, in page order: every `text` node
+ * outside an autolink, and an expression that is one string. An address
+ * anywhere else sits in another type of node (code, frontmatter, an `import`
+ * or `export`, any other expression, MDX comments included, a reference
+ * definition, an image, raw HTML in plain Markdown) or in no node (an
+ * attribute, a link's target), so it is not read.
  */
-function* proseNodes(node, text) {
-  if (node.type === "text" || isStringExpression(node)) {
-    yield node;
-  } else if (!isAutolink(node, text)) {
-    for (const child of node.children ?? []) {
-      yield* proseNodes(child, text);
+function proseNodes(tree, text) {
+  const found = [];
+  const stack = [tree];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === "text" || isStringExpression(node)) {
+      found.push(node);
+    } else if (!isAutolink(node, text)) {
+      for (const child of (node.children ?? []).toReversed()) {
+        stack.push(child);
+      }
     }
   }
+  return found;
 }
 
 const URL_SCHEME = /https?:\/\//giu;
@@ -551,6 +558,7 @@ const URL_SCHEME = /https?:\/\//giu;
  * A URL used as link text is still bare. Double-quoted prose is checked,
  * unlike the vocabulary rules. One hit per line. A page Satteri cannot parse
  * is one hit instead, and its message opens with the line and column (#718).
+ * The build also compiles the page, so it alone refuses a broken `import`.
  */
 function bareUrlViolations(text, lines, path) {
   const { markdownToMdast, mdxToMdast } = loadSatteri();
