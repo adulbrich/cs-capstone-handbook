@@ -49,7 +49,7 @@ const html = toHtml(gradeGrid(tree, { levels }));
   }
 
   .grade-grid :global(.grade-grid__component td) {
-    background: var(--sl-color-gray-6);
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
     padding-top: 0.6rem;
   }
   .grade-grid :global(.grade-grid__component td:not(:first-child)) {

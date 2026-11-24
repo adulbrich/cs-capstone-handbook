@@ -11,14 +11,19 @@
 @source not "./deck.css";
 
 /* The docs' light accent, in the layer starlight-tailwind sets it in, so that
-   Starlight's unlayered print colors still win. accent-600 is 3.6:1 on white;
-   this is at least 4.5:1 on every light background accent text sits on, the
-   gray-200 of code chips and the grade grid's bands included. The dark theme
-   and the decks keep the palette's accents. */
+   Starlight's unlayered print colors still win. Text needs 4.5:1: accent-600
+   is 3.6:1 on white, and accent-700 is 5.2:1, or 4.8:1 on gray-100. On
+   gray-200 it is 4.2:1, so accent text sits on nothing darker than gray-100.
+   The dark theme and the decks don't use it. */
 @layer utilities {
   :root[data-theme="light"] {
-    --sl-color-accent: oklch(0.51 0.186 38.2);
+    --sl-color-accent: var(--color-accent-700);
   }
+}
+
+/* A linked code chip is on gray-100, a plain one on gray-200. */
+:root[data-theme="light"] .sl-markdown-content a code {
+  background-color: var(--sl-color-gray-7);
 }
 
 .actions {
