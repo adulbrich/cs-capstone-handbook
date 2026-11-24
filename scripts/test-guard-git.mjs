@@ -37,7 +37,6 @@ const RULE_FILES = [
   "scripts/check-prose.mjs",
   "scripts/check-commit-message.mjs",
   "scripts/lib",
-  "src/lib/cite-pattern.mjs",
   "src/lib/rubric-csv.mjs",
 ];
 

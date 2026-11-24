@@ -14,6 +14,8 @@ updates:
           - astro
           - "@astrojs/*"
           - "starlight-*"
+          # check-prose parses pages with the version Astro resolves (#718).
+          - satteri
         update-types:
           - minor
           - patch
