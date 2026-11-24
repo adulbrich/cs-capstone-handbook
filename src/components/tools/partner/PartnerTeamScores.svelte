@@ -459,7 +459,7 @@ function closeOnEscape(event) {
   }
   .edited {
     border-color: var(--sl-color-text-accent);
-    color: var(--sl-color-text-accent);
+    color: var(--sl-color-accent-high);
   }
   .reviewed {
     border-color: var(--sl-color-green);

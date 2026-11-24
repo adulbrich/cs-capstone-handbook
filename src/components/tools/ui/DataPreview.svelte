@@ -287,7 +287,7 @@ const ariaSort = (column) => {
   }
   .arrow {
     font-size: var(--sl-text-xs);
-    color: var(--sl-color-text-accent);
+    color: var(--sl-color-accent-high);
   }
   .full td {
     padding: 0.4rem 0.75rem;

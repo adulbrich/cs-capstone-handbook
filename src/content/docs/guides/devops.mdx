@@ -283,24 +283,24 @@ Create each migration, run it locally, commit it, and let the deployment apply i
 Walk through this before your first production deployment and again whenever the setup changes.
 
 ### Application
-- [ ] The application builds and starts with production configuration.
-- [ ] Environment variables are set for production (database URL, API keys, secrets).
-- [ ] Logging captures errors without leaking sensitive data.
+- The application builds and starts with production configuration.
+- Environment variables are set for production (database URL, API keys, secrets).
+- Logging captures errors without leaking sensitive data.
 
 ### Infrastructure
-- [ ] HTTPS is enabled (most PaaS providers handle this automatically).
-- [ ] The database is hosted and reachable from the production environment.
-- [ ] Database migrations have run against the production database.
-- [ ] DNS is configured if you use a custom domain.
+- HTTPS is enabled (most PaaS providers handle this automatically).
+- The database is hosted and reachable from the production environment.
+- Database migrations have run against the production database.
+- DNS is configured if you use a custom domain.
 
 ### Operations
-- [ ] The team knows how a deployment is triggered (automatic on merge, or manual steps).
-- [ ] The team knows how to roll back a deployment.
-- [ ] Error tracking is set up ([Sentry](https://sentry.io/), or at minimum centralized logging).
-- [ ] The team can read production logs.
+- The team knows how a deployment is triggered (automatic on merge, or manual steps).
+- The team knows how to roll back a deployment.
+- Error tracking is set up ([Sentry](https://sentry.io/), or at minimum centralized logging).
+- The team can read production logs.
 
 ### Security
-- [ ] The [security misconfiguration checklist](/guides/security/#security-misconfiguration) passes: debug mode, default credentials, secrets, CORS, and error pages.
+- The [security misconfiguration checklist](/guides/security/#security-misconfiguration) passes: debug mode, default credentials, secrets, CORS, and error pages.
 
 ## Monitoring and Error Tracking
 
